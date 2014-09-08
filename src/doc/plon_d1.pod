@@ -1,0 +1,81 @@
+=head1 PlON_d1
+
+=over 10
+
+=item PlON_d1 -  
+
+Compute all the "orthonormalized" Legendre polynomials and first derivatives.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 21
+
+=item SUBROUTINE PlON_d1 ( 
+
+P, DP, LMAX, Z )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+P(LMAX+1), DP(LMAX+1), Z
+
+=item INTEGER
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<PlON_d1> will calculate all of the "orthonormalized" Legendre polynomials and first derivatives up to degree LMAX for a given argument. These are calculated using a standard three-term recursion formula, and the integral of the "orthonormalized" Legendre polynomials over the interval [-1, 1] is 2/(4pi). Note that the derivative of the Legendre polynomials is calculated with respect to its arguement Z, and not latitude or colatitude. If Z=cos(theta), where theta is the colatitude, then it is only necessary to multiply DP by -sin(theta) to obtain the derivative with respect to theta.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item P
+
+(output) REAL*8, DIMENSION (LMAX+1)
+
+An array of "orthonormalized" Legendre polynomials up to degree LMAX. Degree L corresponds to array index L+1.
+	
+=item DP
+
+(output) REAL*8, DIMENSION (LMAX+1)
+
+An array of the first derivatives of the "orthonormalized" Legendre polynomials up to degree LMAX. Degree L corresponds to array index L+1.
+
+=item LMAX
+
+(input) INTEGER
+
+The maximum degree of the Legendre polynomials to be computed.
+
+=item Z
+
+(input) REAL*8
+
+The argument of the Legendre polynomial.
+
+=back
+
+=head1 SEE ALSO
+
+plbar(1), plbar_d1(1), plmbar(1), plmbar_d1(1), plon(1), plmon(1), plmon_d1(1), plschmidt(1), plschmidt_d1(1), plmschmidt(1), plmschmidt_d1(1), plegendre(1), plegendre_d1(1), plegendrea(1), plegendrea_d1(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

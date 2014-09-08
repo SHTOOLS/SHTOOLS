@@ -1,0 +1,61 @@
+=head1 NGLQSHN
+
+=over 10
+
+=item NGLQSHN -  
+
+Determine the number of Gauss-Legendre quadrature points required when computing the spherical harmonic coefficients of a function raised to the nth power.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 27
+
+=item INTEGER FUNCTION NGLQSHN ( 
+
+L )
+
+=back
+
+=over 4
+
+=over 10
+
+=item INTEGER	
+
+L
+
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<NGLQSHN> will determine the number of Gauss-Legendre quadrature points required when computing the spherical harmonic coefficients of a function of degree L raised to the nth power. This is equal to ceiling( ((N+1)*L + 1)/2). For this situation, the integrand is equal to the function raised to the nth power multiplied by a spherical harmonic.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item N
+
+(input) INTEGER
+
+The spherical harmonic degree of the function.
+
+=back
+
+=head1 SEE ALSO
+
+preglq(1), nglq(1), nglqsh(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

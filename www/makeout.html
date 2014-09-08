@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Make output</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<meta name="description" content="Example output from a sucessful make of SHTOOLS.">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
+				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
+				<td><a href="faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+		
+	<p class="dir">
+>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="compilation.html" class="dir">Compilation Instructions</a>
+</p>
+	
+	<h1>Make Output</h1>
+
+	<blockquote class="small"><p><tt>
+make -C src -f Makefile all VERSION=2.9 F95=f95 F95FLAGS="-m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host"<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHTOOLS.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host CilmPlus.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host ComputeD0.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host ComputeDG82.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host ComputeDm.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host DHaj.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host djpi2.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host FFTW3.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host Hilm.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeGrid2D.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host GLQGridCoord.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeGridPoint.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeMagGridDH.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlanetsConstants.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlBar.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlBar_d1.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PLegendre.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PLegendreA.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PLegendreA_d1.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlmBar.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlmBar_d1.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlmIndex.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlmSchmidt.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlmSchmidt_d1.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlSchmidt.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlSchmidt_d1.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PreGLQ.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host Random.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHAdmitCorr.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHBias.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHBiasK.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHConvertCoef.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHFindLWin.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHLocalizedAdmitCorr.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHMultiply.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHMultiTaperCSE.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHMultiTaperSE.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHPowerSpectra.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHRead.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHReadJPL.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHReturnTapersM.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHRotateCoef.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHRotateRealCoef.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SphericalCapCoef.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host Wigner3j.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host wl.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHRead2.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeGeoidGrid.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeCircleCoord.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHSjkPG0.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHReturnTapers.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHSjkPG.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlON.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlON_d1.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlmON.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PlmON_d1.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeGravGridDH.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHConfidence.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHMagPowerSpectra.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHBiasAdmitCorr.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHCilmToVector.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host YilmIndex.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host ComputeDMap.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHReturnTapersMap.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host Curve2Mask.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeEllipseCoord.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host CilmPlusRhoH.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host HilmRhoH.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host NormalGravity.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeGravGradGridDH.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host EigValSym.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host EigValVecSym.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host EigValVecSymTri.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHExpandLSQ.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHMTDebias.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHMTVarOpt0.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHMTVarOpt.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeGridDH.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeGridDHC.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeGridGLQ.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host MakeGridGLQC.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host PreCompute.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host ReadWisdom.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHExpandDH.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHExpandDHC.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHExpandGLQ.f95<br>
+f95 -c -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host SHExpandGLQC.f95<br>
+<br>
+COMPILATION OF SOURCE FILES SUCCESSFUL.<br>
+<br>
+ar -r ../lib/libSHTOOLS2.9.a CilmPlus.o ComputeD0.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o FFTW3.o Hilm.o MakeGrid2D.o GLQGridCoord.o MakeGridPoint.o MakeMagGridDH.o PlanetsConstants.o PlBar.o PlBar_d1.o PLegendre.o PLegendreA.o PLegendreA_d1.o PlmBar.o PlmBar_d1.o PlmIndex.o PlmSchmidt.o PlmSchmidt_d1.o PlSchmidt.o PlSchmidt_d1.o PreGLQ.o Random.o SHAdmitCorr.o SHBias.o SHBiasK.o SHConvertCoef.o SHFindLWin.o SHLocalizedAdmitCorr.o SHMultiply.o SHMultiTaperCSE.o SHMultiTaperSE.o SHPowerSpectra.o SHRead.o SHReadJPL.o SHReturnTapersM.o SHRotateCoef.o SHRotateRealCoef.o SHTOOLS.o SphericalCapCoef.o Wigner3j.o wl.o SHRead2.o MakeGeoidGrid.o MakeCircleCoord.o SHSjkPG0.o SHReturnTapers.o SHSjkPG.o PlON.o PlON_d1.o PlmON.o PlmON_d1.o MakeGravGridDH.o SHConfidence.o SHMagPowerSpectra.o SHPowerSpectra.o SHBiasAdmitCorr.o SHCilmToVector.o YilmIndex.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o MakeEllipseCoord.o CilmPlusRhoH.o HilmRhoH.o NormalGravity.o MakeGravGradGridDH.o EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o SHMTDebias.o SHMTVarOpt0.o SHMTVarOpt.o MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o PreCompute.o ReadWisdom.o SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o<br>
+ar: creating archive ../lib/libSHTOOLS2.9.a<br>
+<br>
+ranlib  ../lib/libSHTOOLS2.9.a <br>
+<br>
+CREATION OF STATIC LIBRARY SUCCESSFUL.<br>
+<br>
+LIBRARY AND MODULE FILES MOVED TO ../lib and ../modules<br>
+<br>
+ARCHIVE SUCCESSFULLY CREATED<br>
+<br>
+MAKE SUCCESSFUL!<br>
+<br>
+---------------------------------------------------------------------------------------------<br>
+Compile your code with the following flags:<br>
+<br>
+f95 -p modpath -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host -Llibpath -lSHTOOLS2.9 -lfftw3 -lm<br>
+<br>
+where modpath and libpath are replaced with their respective paths.<br>
+--------------------------------------------------------------------------------------------<br>
+</tt></p>
+</blockquote>
+
+	<p class="dir">
+>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="compilation.html" class="dir">Compilation Instructions</a></p>
+
+	<table class="footer2" summary = "Mark Wieczorek">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Complex spherical harmonics</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<meta name="description" content="Definitions and normalization conventions of the complex spherical harmonic functions used in SHTOOLS.">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+		<tr>
+		<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+		<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+		<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
+		<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
+		<td><a href="faq.html">FAQ</a> </td>
+		</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+	>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>	
+	
+	<p class="dir"><a class="dir2" href="conventions.html">Real spherical harmonics</a></p>
+		
+	<h1>Complex Spherical Harmonics</h1>
+		
+	<h2>"Geodesy" 4&pi;-normalized complex spherical harmonics</h2>
+
+	<p>Any complex square-integrable function can be expressed in spherical harmonics as</p>
+	
+	<img class="eqinline" src="Figures/f_c.gif" alt="f_c.gif">
+	
+	<p>where f<sub>l</sub><sup>m</sup> is the complex spherical harmonic coefficient, Y<sub>l</sub><sup>m</sup> is the complex spherical harmonic function, &Omega; represents position on the sphere in terms of co-latitude &theta; and longitude &phi;,and <i>l</i> and <i>m</i> are the spherical harmonic degree and order, respectively. The complex spherical harmonics are defined as</p>
+		
+	<img class="eqinline" src="Figures/ylm_complex.gif" alt="ylm_complex.gif">
+	
+	<p>where the normalized associated Legendre functions, as used in geodesy and gravity applications (calculated by the routine <tt>PlmBar</tt> with <tt>cnorm=1</tt>), are given by</p>
+	
+	<img class="eqinline" src="Figures/plmbar_complex.gif" alt="plmbar_complex.gif">
+	
+	<p>with the following definition for the unnormalized associated Legendre functions:</p>
+	
+	<img class="eqinline" src="Figures/plmdef.gif" alt="plmdef.gif">
+	
+	<p>The normalized associated Legendre functions are orthogonal for a given value of <i>m</i>,</p>
+
+	<img class="eqinline" src="Figures/plmnorm_c.gif" alt="plmnorm_c.gif">.
+		
+	<p>The normalized Legendre functions (including the orthonormalized and Schmidt semi-normalized functions) are efficiently calculating using the algorithm of <i>Holmes and Featherstone</i> (2002, J. Geodesy, 76, 279-299) that is accurate to approximately degree 2800. Note that the above definition of the associated Legendre functions does not include the Condon-Shortley phase of <tt>(-1)<sup>m</sup></tt> that is often employed in the physics and seismology communities  (e.g., <i>Varsalovich et al., </i>1988; <i>Dahlen and Tromp,</i> 1998). This can be included by specifying the optional argument <tt>CSPHASE=-1</tt> in most of the Legendre and spherical harmonic routines. (Alternatively, the default phase convention can be modified during compilation of the SHTOOLS archive.)</p>
+		
+	<p> The complex spherical harmonics possess the following symmetry relationship for positive and negative angular orders,</p>
+	
+	<img class="eqinline" src="Figures/ylm_complex_sym.gif" alt="ylm_complex_sym.gif">
+	
+	<p>and satisfy the orthogonality relationship</p>
+	
+	<img class="eqinline" src="Figures/ylm_complex_norm.gif" alt="ylm_complex_norm.gif">.
+	
+	<p>Using this relationship, it is straightforward to show that the spherical harmonic coefficients of a function can be calculated by the integral</p>
+	
+	<img class="eqinline" src="Figures/flm_c.gif" alt="flm_c.gif">.
+		
+	<p>The cross-power of two functions <i>f</i> and <i>g</i> is equal to</p>
+
+	<img class="eqinline" src="Figures/totalpower_c.gif" alt="totalpower_c.gif">,
+
+	<p>where the "cross-power spectrum" of the two functions  is given by</p>
+
+	<img class="eqinline" src="Figures/crosspower_c.gif" alt="crosspower_c.gif">.
+
+	<p>If the functions <i>f</i> and <i>g</i> have a zero mean, then S<sub>fg</sub> is the contribution to the covariance as a function of spherical harmonic degree.</p>
+	
+	<p>If a function defined on the sphere is entirely real, then the <a  href="conventions.html">real</a> and complex spherical harmonic coefficients are related by</p>
+	
+	<img class="eqinline" src="Figures/real_complex.gif" alt="real_complex.gif">
+	
+		
+	<h2>Other complex normalization conventions</h2>
+
+	<p class="nomarginbot">The above 4&pi; normalization scheme is the default for all routines in SHTOOLS with the exception of <tt>MakeMagGrid2D</tt>, which uses the standard geomagnetism Schmidt semi-normalization. By specifying an optional parameter <tt>norm</tt>, the default normalization can be changed in most of the routines (e.g., <tt>PreCompute</tt>, <tt>MakeGridGLQ</tt>, <tt>SHExpandGLQ</tt>, <tt>SHExpandDH</tt>, <tt>MakeGrid2D</tt>, <tt>MakeGridPoint</tt>, <tt>SHMultiply</tt> and <tt>SHExpandLSQ</tt>). The following normalizations are permitted:</p>
+		
+	<ul>
+		<li> <tt>norm=1</tt>: Geodesy 4&pi; normalization (default, unless stated otherwise).</li>
+		<li> <tt>norm=2</tt>: Schmidt semi-normalization.</li>
+		<li> <tt>norm=3</tt>: Unnormalized.</li>
+		<li> <tt>norm=4</tt>: Orthonormalized.</li>
+	</ul>
+		
+	<p>Explicit expressions for the Legendre functions and real spherical harmonic normalizations are the following:</p>
+
+	<p class="underline">Geodesy 4&pi;</p>
+	
+	<img class="eqinline" src="Figures/plmbar_complex.gif" alt="plmbar_complex.gif"><br>
+	<img class="eqinline" src="Figures/plmnorm_c.gif" alt="plmnorm_c.gif"><br>
+	<img class="eqinline" src="Figures/ylm_complex_norm.gif" alt="ylm_complex_norm.gif">
+	
+	<p class="underline">Schmidt semi-normalized</p>
+	
+	<img class="eqinline" src="Figures/plmschmidt_c.gif" alt="plmschmidt_c.gif"><br>
+	<img class="eqinline" src="Figures/plmschmidtnorm_c.gif" alt="plmschmidtnorm_c.gif"><br>
+	<img class="eqinline" src="Figures/ylmschmidt_c.gif" alt="ylmschmidt_c.gif">
+	
+	<p class="underline">Unnormalized</p>
+	
+	<img class="eqinline" src="Figures/plmunnormalized_c.gif" alt="plmunnormalized_c.gif"><br>
+	<img class="eqinline" src="Figures/plmunnormnorm_c.gif" alt="plmunnormnorm_c.gif"><br>
+	<img class="eqinline" src="Figures/ylmunnorm_c.gif" alt="ylmunnorm_c.gif">
+	
+	<p class="underline">Orthonormalized</p>
+	
+	<img class="eqinline" src="Figures/plmon_c.gif" alt="plmon_c.gif"><br>
+	<img class="eqinline" src="Figures/plmonnorm_c.gif" alt="plmonnorm_c.gif"><br>
+	<img class="eqinline" src="Figures/ylmorthonorm_c.gif" alt="ylmorthonorm_c.gif">
+	
+	
+	<h2>Further information</h2>
+	<p class="nomarginbot">Further information regarding spherical harmonic functions can be found at the following web sites:</p>
+	
+	<ul>
+		<li><a href="http://mathworld.wolfram.com/SphericalHarmonic.html">Mathworld - Spherical Harmonic</a></li>
+		<li><a href="http://en.wikipedia.org/wiki/Spherical_harmonics">Wikipedia - Spherical harmonics</a></li>
+	</ul>
+	
+	<p class="dir">
+	>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
+
+	<table class="footer2" summary = "Mark Wieczorek">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

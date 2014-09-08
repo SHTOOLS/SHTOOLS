@@ -1,0 +1,10 @@
+2900.0d0
+3500.0d0
+0
+0
+50
+3.0d0
+moho.sh
+2.0d0
+thick.dat
+misfit.sh

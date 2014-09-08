@@ -1,0 +1,85 @@
+=head1 Wl
+
+=over 5
+
+=item Wl -  
+
+Compute the minimum-amplitude downward continuation filter of Wieczorek and Phillips (1998).
+
+=back
+
+=head1 SYNOPSIS
+
+=over 21
+
+=item REAL*8 FUNCTION Wl ( 
+
+L, HALF, R, D )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+R, D
+
+=item INTEGER
+
+L, HALF
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<Wl> will calculate the downward continuation filter of Wieczorek and Phillips (1998; eq. 19) for a given spherical harmonic degree L. The input parameters include HALF, which is the degree for which the filter is equal to 0.5, and R and D, which are the reference radius of the gravitational field and the radius of the surface to downward continue to, respectively.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item L
+
+(input) INTEGER
+
+The spherical harmonic degree of the downward continuation filter.
+	
+=item HALF
+
+(input) INTEGER
+
+The spherical harmonic degree for which the filter is equal to 0.5.
+
+=item R
+
+(input) REAL*8
+
+The reference radius of the gravitational field.
+
+=item D
+
+(input) REAL*8 
+
+The radius of the surface to downward continue to.
+
+=back
+
+=head1 SEE ALSO
+
+wlcurv(1), hilm(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, I<J. Geophys. Res.>, 103, 1715-1724, 1998.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../CSS/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../Figures/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+				<td class="selected"><a href="../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
+				<td><a href="../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>SHSJKPG(1)</B>                                   SHTOOLS 2.9                                  <B>SHSJKPG(1)</B>
+
+
+</PRE>
+<H2 class="man">SHSjkPG</H2 class="man"><PRE>
+       SHSjkPG - Calculate the expectation of the product of two functions, each multiplied by a
+                 different data taper, for a given spherical harmonic degree and two different
+                 angular orders.
+
+
+</PRE>
+<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
+       COMPLEX*16 SHSjkPG ( INCSPECTRA, L, M, MPRIME, HJ_REAL, HK_REAL, MJ, MK, LWIN, HKCC )
+
+           REAL*8    INCPECTRA(L+LWIN+1), HJ_REAL(LWIN+1), HK_REAL(LWIN+1)
+
+           INTEGER   L, M, MPRIME, MJ, MK, LWIN, HKCC
+
+
+</PRE>
+<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
+       <B>SHSjkPG</B> will calculate the expectation of two functions (f and g), each localized by a
+       different data taper that is a solution of the spherical cap concentration problem, for a
+       given spherical harmonic degree and two different angular orders. As described in Wieczorek
+       and Simons (2006), this is the function
+
+             /    m(j)       mprime(k)* \
+            |  Phi      Gamma            |
+             \    l          l          /
+
+       The global cross-power spectrum of f and g is input as INCSPECTRA, and the real coefficients
+       of the two data tapers of angular order MJ and MK (obtained by a call to <B>SHReturnTapers</B>) are
+       specified by HJ_REAL and HK_REAL. If HKCC is set to 1, then the above function is calculated
+       as is. However, if this is set to 2, then the complex conjugate of the second localized
+       function is not taken.
+
+
+</PRE>
+<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
+       INCSPECTRA    (input) REAL*8, DIMENSION (L+LWIN+1)
+
+                     The global cross-power spectrum of f and g.
+
+       L             (input) INTEGER
+
+                     The spherical harmonic degree for which to calculate the expectation.
+
+       M             (input) INTEGER
+
+                     The angular order of the first localized function, Phi.
+
+       MPRIME        (input) INTEGER
+
+                     The angular order of the second localized function, Gamma.
+
+       HJ_REAL       (input) REAL*8, DIMENSION (LWIN+1)
+
+                     The real spherical harmonic coefficients of angular order MJ used to localize
+                     the first function f. These are obtained by a call to <B>SHReturnTapers</B>.
+
+       HK_REAL       (input) REAL*8, DIMENSION (LWIN+1)
+
+                     The real spherical harmonic coefficients of angular order MK used to localize
+                     the second function g. These are obtained by a call to <B>SHReturnTapers</B>.
+
+       MJ            (input) INTEGER
+
+                     The angular order of the window coefficients HJ_REAL.
+
+       MK            (input) INTEGER
+
+                     The angular order of the window coefficients HK_REAL.
+
+       LWIN          (input) INTEGER
+
+                     The spherical harmonic bandwidth of the localizing windows HJ_REAL and HK_REAL.
+
+       HKCC          (input) INTEGER
+
+                     If 1, the function described in the DESCRIPTION will be calculated as is. If 2,
+                     the second localized function Gamma will not have its complex conjugate taken.
+
+
+</PRE>
+<H2 class="man">SEE ALSO</H2 class="man"><PRE>
+       <B>shreturntapers(1)</B>, <B>shmtvaropt(1)</B>, <B>shmtvaropt0(1)</B>, <B>shsjkpg0(1)</B>
+
+       &lt;http://shtools.ipgp.fr/&gt;
+
+
+</PRE>
+<H2 class="man">REFERENCES</H2 class="man"><PRE>
+       Wieczorek, M. A. and F. J. Simons, Minimum variance multitaper spectral analysis on the
+       sphere, <B>J.</B> <B>Fourier</B> <B>Analy.</B> <B>Appl.</B>, submitted manuscript, 2006.
+
+
+</PRE>
+<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
+       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
+
+       This is free software; you can distribute and modify it under the terms of the revised BSD
+       license.
+
+SHTOOLS 2.9                                  2012-03-08                                   <B>SHSJKPG(1)</B>
+</PRE>
+
+	<p class="dir">
+>  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "Mark Wieczorek">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

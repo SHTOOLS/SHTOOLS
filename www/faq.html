@@ -1,0 +1,407 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Frequently asked questions</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<meta name="description" content="Frequently asked questions about SHTOOLS.">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>	
+				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>	
+				<td><a href="documentation.html">DOCUMENTATION</a></td>
+				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
+				<td class="selected"><a href="faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+		
+<p class="dir">
+>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> </p>
+	
+	<h1>Frequently Asked Questions</h1>
+	
+	<p class="headbox">General</p>
+		
+		<ul>
+			<li><a href="#g1">Who maintains SHTOOLS?</a></li>
+			<li><a href="#g2">I have a question.</a></li>
+			<li><a href="#g2b">I have a suggestion.</a></li>
+			<li><a href="#g3">Do you plan on making a routine to...</a></li>
+			<li><a href="#g4">Can I use the SHTOOLS library with C, F77 and Matlab codes?</a></li>
+			<li><a href="#g6">How do I cite SHTOOLS in a publication?</a></li>
+			<li><a href="#g7">Where can I find more information?</a></li>
+			<li><a href="#g8">Will you help me with my homework?</a></li>
+			<li><a href="#g9">I don't understand Fortran. Will you explain step by step how to modify the example codes?</a></li>
+			<li><a href="#g10">How do I make images with the output from SHTOOLS?</a></li>
+			<li><a href="#g11">Can I donate?</a></li>
+		</ul>
+			
+		<p class="headbox">Compiling Problems</p>
+		
+		<ul>
+			<li><a href="#c1">SHTOOLS won't compile on my computer.</a></li>
+			<li><a href="#c2">Can I compile SHTOOLS with Fortran 77?</a></li>
+		</ul>
+		
+		<p class="headbox">Linking Problems</p>
+		<ul>
+			<li><a href="#l1">Linking fails because of "Undefined symbols".</a></li>
+			<li><a href="#l2">Linking fails because e_wsfe, z_abs, c_sqrt, s_cmp, etc., are undefined.</a></li>
+			<li><a href="#l2a">Linking fails because of undefined references to SHTOOLS routines.</a></li>
+			<li><a href="#l3">The linker can't seem to find either the LAPACK, BLAS, or FFTW libraries.</a></li>
+			<li><a href="#l4">How do I know if I need to append underscores to external function and subroutine names?</a></li>
+			<li><a href="#l5">Linking fails because SHTOOLS routines are undefined.</a></li>
+		</ul>
+		
+		<p class="headbox">Runtime Problems</p>
+		
+		<ul>
+			<li><a href="#r1">I get a "segmentation fault" when running a program that links to the SHTOOLS library.</a></li>
+			<li><a href="#r2">My program crashes when calling SHTOOLS routines.</a></li>
+			<li><a href="#r3">How do I specify "optional" parameters in functions and subroutines?</a></li>
+			<li><a href="#r4">The LAPACK routine DSTEGR crashes with an arithmetic exception.</a></li>
+			<li><a href="#r5">SHExpandGLQ and SHExpandDH are 10 times slower than MakeGridGLQ and MakeGridDH.</a></li>
+		</ul>
+			
+	<hr>
+
+	<h2><a name="g1"></a>Who maintains SHTOOLS?</h2>
+	
+	<p>This archive was created, and is maintained, by Mark Wieczorek. If you have any questions, send me a mail at <a href="mailto:wieczor@ipgp.fr">wieczor@ipgp.fr</a>. </p>
+
+	<h2><a name="g2"></a>I have a question.</h2>
+	
+	<p>Before sending send me a mail, please (1) read the page <a href="compilation.html">Compilation Instructions</a>, (2) read the section <a href="using.html">Using SHTOOLS</a>, (3) read this FAQ, (4) ensure that you are using the current version of SHTOOLS, (5) perform a <tt>make clean</tt> and recompile SHTOOLS, and finally (6) consult the <a href="https://sourceforge.net/p/shtools/discussion/">User Forum</a>. </p>
+	
+	<h2><a name="g2b"></a>I have a suggestion.</h2>
+	
+	<p>I often make improvements to my code based on user suggestions. Nevertheless, please realize that I am very busy, and that I am neither a professional web designer nor a professional programmer. I am not paid to develop or maintain this archive.</p>
+	
+	<h2><a name="g3"></a>Do you plan on making a routine to...</h2>
+	
+	<p>Please ask, and I will let you know.</p>
+	
+	<h2><a name="g4"></a>Can I use the SHTOOLS library with C, F77, Matlab and Python?</h2>
+	
+	<p>Probably. If you get this to work, let me know how you did it, and I will add the instructions and source files to the distribution. Portions of SHTOOLS have been ported to Python but I have not tested these.</p>
+	
+
+	<h2><a name="g6"></a>How do I cite SHTOOLS in a publication?</h2>
+	
+	<p>At this point, there is not a publication describing this archive of code. I suggest either referencing the web page as </p>
+	
+	<blockquote><p>
+		<i>Wieczorek, M. A., SHTOOLS - Tools for working with spherical harmonics, shtools.ipgp.fr, downloaded x/y/z.</i></p>
+	</blockquote>
+	
+	<p>or putting a statement in the paper's acknowledgements, such as:</p>
+	
+	<blockquote><p>
+		<i>Our spherical harmonic analyses were performed using the freely available software archive SHTOOLS (shtools.ipgp.fr).</i></p>
+	</blockquote>
+	
+	<p>If you are using a routine that is based on an algorithm that I developed (such as the computation of potential anomalies resulting from finite-amplitude topography, multitaper spectral analyses, or computation of the geoid) then you should reference the appropriate publication cited in the man pages.</p>
+	
+	<h2><A name="g7"></a>Where can I find more information?</h2>
+	
+	<p class="nomarginbot">Two good online resources are:</p>
+	
+	<ul>
+		<li><a href="http://mathworld.wolfram.com/SphericalHarmonic.html">Mathworld - Spherical Harmonic</a></li>
+		<li><a href="http://en.wikipedia.org/wiki/Spherical_harmonics">Wikipedia - Spherical harmonics</a></li>
+	</ul>
+
+	<h2><A name="g8"></a>Will you help me with my homework?</h2>
+	
+	<p>No.</p>
+	
+	<h2><A name="g9"></a>I don't understand Fortran. Will you explain how to modify the example codes?</h2>
+	
+	<p>No.</p>
+	
+	<h2><A name="g10"></a>How do I make images with the output from SHTOOLS?</h2>
+	
+	<p>The output from SHTOOLS is typically in the form of an ASCII raster file. Any standard graphics package, such as MATLAB, should be able to read these files. An alternative is to use the free unix-based command line software <a href="http://gmt.soest.hawaii.edu/">GMT</a>.</p>
+	
+
+	<h2><A name="g11"></a>Can I donate?</h2>
+	
+	<p class="nomarginbot">If you find that SHTOOLS is indispensable for your work, and if you would like to support further software development, please make a Bitcoin, Litecoin, or Peercoin donation:</p>
+
+<p class="indent nomarginbot">BTC: 139oAA4fDSjX8y8ZpTUecXomosYb1HJ9SR</p>
+<p class="indent nomarginbot nomargintop">LTC: LcSDUEefvrpRLuDWyLuDtRhJ4xyev8HyZQ</p>
+<p class="indent nomargintop">PPC: PDbVn43p7z2ANnQLV5yrcwMSsxvtwHednN</p>
+	
+	<h2><a name="c1"></a>SHTOOLS won't compile on my computer.</h2>
+	
+	<p class="nomarginbot">If the command <tt>make all</tt> (or <tt>make all2</tt> or <tt>make all3</tt>) results in compilation errors</p>
+	
+	<ol>
+		<li> Verify that you have the latest release of SHTOOLS.</li>
+		<li> Perform a <tt>make clean</tt> and try again.</li>
+		<li> Go to the SHTOOLS <a href="https://sourceforge.net/p/shtools/discussion/">User Forum</a> to see if this problem has already been documented.</li>
+		<li> Send me the <b>entire</b> output generated by the Makefile, along with information on the operating system and fortran compiler that you are using.</li>
+	</ol>
+	
+	<p>
+	If you are having problems linking an already compiled SHTOOLS library to your code, see the "linking problems" below. If you are instead receiving compilation errors in <i>your</i> code, only contact me after you have thoroughly debugged your program. If you are receiving non fatal warnings, please let me know so that I can clean up the relevant code.</p>
+	
+	<h2><A name="c2"></a>Can I compile SHTOOLS with Fortran 77?</h2>
+	
+	<p>No, you must use a fortran 90/95 compiler. Two free Fortran 90/95 compilers are <tt>gfortran</tt> (as part of <a href="http://gcc.gnu.org/">GCC</a>) and <a href="http://www.g95.org/">g95</a>. Personally, I have had a better experience with <tt>gfortran</tt>.</p>
+
+	<h2><a name="l1"></a>Linking fails because of "Undefined symbols".</h2>
+	
+	<p class="nomarginbot">Linking your program to the SHTOOLS and LAPACK libraries might result in an error similar to the following:</p>
+	
+	<blockquote class="small"><p><tt>
+	ld: Undefined symbols:<br>
+	_dgels<br>
+	../../lib/libSHTOOLS2.0.a(SHExpandLSQ.o) reference to undefined _dgels<br>
+	link failed.</tt></p>
+	</blockquote>
+
+	<p class="nomarginbot">If the linker is correctly finding the LAPACK and FFTW libraries, the most likely cause of this is that the subroutine names in the SHTOOLS, LAPACK, and FFTW libraries are not exactly the same. If SHTOOLS is able to link to the FFTW library correctly, try rebuilding SHTOOLS using</p>
+
+	<blockquote class="small"><p><tt>
+		make clean<br>
+		make all2</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">If a similar problem is arising with the FFTW libraries, use</p>
+	
+	<blockquote class="small"><p><tt>
+		make clean<br>
+		make all3</tt></p>
+	</blockquote>
+
+	<p>These commands will compile an alterative set of source files that appends explictly underscores to either the LAPACK of FFTW subroutine names. These alternative files have "2" appended to their names in the directory <tt>src</tt>. If you get similar link errors, but with an added underscore, this probably means that the linker can't find the LAPACK libarary. See also <a href="#l4">How do I know if I need to append underscores to external function and subroutine names?</a></p>
+	
+	
+	<h2><a name="l2"></a>Linking fails because e_wsfe, z_abs, c_sqrt, s_cmp, etc., are undefined.</h2>
+	
+	<p class="nomarginbot">Linking your program to the SHTOOLS, LAPACK, BLAS, and FFTW libraries might result in link errors similar to:</p>
+
+	<blockquote class="small"><p><tt>
+	/usr/lib///liblapack.so: undefined reference to `e_wsfe'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `z_abs'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `c_sqrt'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `s_cmp'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `z_exp'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `c_exp'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `do_fio'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `z_sqrt'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `s_cat'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `s_stop'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `c_abs'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `s_wsfe'<br>
+ 	/usr/lib///liblapack.so: undefined reference to `s_copy'
+ 	</tt></p>
+ 	</blockquote>
+ 
+	<p class="nomarginbot">This can arise when the offending libraries were built using the g77 compiler. In order to rectify this, it should only be necessary to link to the additional library <tt>libg2c.a</tt> (i.e., g77 to c). Assuming that this library can be found by the linker, just append <tt>-lg2c</tt> to the list of libraries passed to the linker. If the <tt>g2c</tt> libary can not be found by the linker, an easy way to find its location is by using either the "locate" or "find" shell commands</p>
+
+	<blockquote class="small"><p>
+	<tt> locate libg2c.a<br>
+	find /usr -name libg2c.a</tt></p>
+	</blockquote>
+
+	<p class="nomarginbot">where the find command searches the directory <tt>/usr</tt>. This pathname can then be added to the linker's search path by using the option <tt>-Ldirname</tt>, by, for example,</p>
+
+	<blockquote class="small"><p><tt>
+	-L/usr/lib/gcc/i586-mandrake-linux-gnu/3.4.3 -lg2c</tt></p>
+	</blockquote>
+	
+	<h2><a name="l2a"></a>Linking fails because of undefined references to SHTOOLS routines.</h2>
+	
+	<p class="nomarginbot">For some compilers, the location of the source file following the compiler name is important. When this is the case, if the source file is not in its correct position, you could receive link errors that resemble the following:</p>
+	
+	<blockquote class="small"><p>
+	gfortran -L../lib -lSHTOOLS2.8 TimingAccuracy/TimingAccuracyGLQC.f95 -I../modules/ -L../lib -lfftw3 -lm -m64 -O3 -o TimingAccuracy/TimingAccuracyGLQC<br>
+/tmp/cchgdOpg.o: In function `MAIN__':<br>
+TimingAccuracyGLQC.f95:(.text+0x5b3): undefined reference to `randomgaussian_'<br>
+TimingAccuracyGLQC.f95:(.text+0xb9b): undefined reference to `precompute_'<br>
+TimingAccuracyGLQC.f95:(.text+0xd39): undefined reference to `makegridglqc_'<br>
+TimingAccuracyGLQC.f95:(.text+0xedd): undefined reference to `shexpandglqc_'<br>
+collect2: error: ld returned 1 exit status<br></p>
+	</blockquote>
+	
+	<p class="nomarginbot">For this example, successful compilation can be achieved by placing the source file before the library calls:</p>
+	
+	<blockquote class="small"><p>
+	gfortran  TimingAccuracy/TimingAccuracyGLQC.f95 -L../lib -lSHTOOLS2.8 -I../modules/ -L../lib -lfftw3 -lm -m64 -O3 -o TimingAccuracy/TimingAccuracyGLQC</p>
+	</blockquote>
+	
+	
+	<h2><a name="l3"></a>The linker can't seem to find either the LAPACK, BLAS, or FFTW libraries.</h2>
+	
+	<p class="nomarginbot">The linker <tt>ld</tt> generally searches for libraries in the directories <tt>/lib</tt>, <tt>/usr/lib</tt> and <tt>/usr/local/lib</tt>. When passing <tt>-lname</tt> to the linker, it will search for the filename <tt>libname.a</tt> in these directories. Additional directories can be added to the search path by passing one or more <tt>-Ldirname</tt> to the linker. For instance, to link to the library <tt>/Users/Me/Lapack/liblapack.a</tt> you would pass the following to the linker</p>
+	
+	<blockquote class="small"><p>
+	<tt>-L/Users/Me/Lapack -llapack</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">If you do not know the location of a given library, it can be easily found using either the "locate" or "find" shell commands</p>
+
+	<blockquote class="small"><p>
+	<tt> locate lapack.a<br>
+	find /usr -name lapack.a</tt></p>
+	</blockquote>
+
+	<p>where the find command searches the directory <tt>/usr</tt>.</p>
+
+	<p> Note that the LAPACK and BLAS library names might be somewhat different than assumed in this documentation. For instance, the LAPACK and BLAS libraries might be invoked by passing <tt>-llapack3</tt>, <tt>-lf77BLAS</tt>, or <tt>-lcblas</tt> to the linker. Note that if the library ATLAS is present, it can be substituted for the BLAS library. If you are certain that the library exists, and that the linker is attempting to link to it, then see <a href="#l4">How do I know if I need to append underscores to external function and subroutine names?</a></p>
+
+	<h2><a name="l4"></a>How do I know if I need to append underscores to external function and subroutine names?</h2>
+	
+	<p>When making libraries such as SHTOOLS, LAPACK and FFTW, some compilers by default add trailing underscores to external function and subroutine names. If the function and subroutine names in the SHTOOLS library do not correspond exactly to what is in the LAPACK and FFTW libraries, the linker will not be able to resolve all of the symbols, and you will receive a linker "undefined symbols" error. Most compilers have options that allows you to "modify" the name of the subroutine and function name by specifying arguments such as "fold external function names to lower case", "do not append trailing underscores to external function names", and so on. For example, the latter case corresponds to <tt>-fno-underscoring</tt> for the g95 compiler.</p>
+	
+	<p class="nomarginbot">If you are certain that you have correctly installed the FFTW, LAPACK and BLAS libraries, and that the linker can indeed find them, then it is quite possible that a linking problem is related to a trailing underscore being present in the external library, but not in the function and subroutine names in the SHTOOLS library (or vice versa). It is simple to inspect these libraries to determine the underscoring convections. For instance, the unix command "display name list"</p>
+	
+	<blockquote class="small"><p>
+	<tt> nm -j libSHTOOLS2.8.a | grep makegridglq</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">yields</p>
+
+	<blockquote class="small"><p><tt>
+	_makegridglq_<br>
+	_makegridglq_<br>
+	_makegridglq_<br>
+	_makegridglq_<br>
+	_makegridglqc_<br>
+ 	</tt></p>
+	</blockquote>
+	
+	<p>Indicating that underscores were added to the SHTOOLS subroutine names.</p>
+
+	<p class="nomarginbot">The command</p>
+	
+	<blockquote class="small"><p>
+	<tt> nm -j /Applications/Absoft13.0/lib/liblapack.a | grep dgels</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">yields</p>
+
+	<blockquote class="small"><p><tt>
+	/Applications/Absoft/lib/liblapack.a(dgels.o):<br>
+	_dgels_<br>
+	/Applications/Absoft/lib/liblapack.a(dgelsd.o):<br>
+	_dgelsd_<br>
+	/Applications/Absoft/lib/liblapack.a(dgelss.o):<br>
+	_dgelss_<br>
+	/Applications/Absoft/lib/liblapack.a(dgelsx.o):<br>
+	_dgelsx_<br>
+	/Applications/Absoft/lib/liblapack.a(dgelsy.o):<br>
+	_dgelsy_
+ 	</tt></p>
+	 </blockquote>
+ 
+	<p class="nomarginbot">indicating that trailing underscores where also appended to the LAPACK subroutine names. However, the command</p>
+
+	<blockquote class="small"><p>
+	<tt> nm -j /usr/local/lib/libfftw3.a | grep dfftw_plan_dft_r2c_1d</tt></p>
+	</blockquote>
+
+	<p class="nomarginbot">might yield</p>
+
+	<blockquote class="small"><p><tt>
+	nm: no name list<br>
+	_dfftw_plan_dft_r2c_1d</tt></p>
+	 </blockquote>
+
+	<p>indicating that trailing underscores were note appended to the FFTW subroutine names. It is this discrepancy between the FFTW and LAPACK libraries that could make it difficult to link to both simultaneously. </p>
+	
+	<p>It is for this reason that three different makes are possible: <tt>make all</tt>, <tt>make all2</tt> and <tt>make all3</tt>. The first uses source code where the external function names do not contain underscores, the second uses source code where trailing underscores are appended only to the LAPACK subroutine names, and the third uses source code where trailing underscores are appended only to the FFTW subroutine names.</p> 
+
+	<h2><a name="l5"></a>Linking fails because SHTOOLS routines are undefined.</h2>
+	
+	<p class="nomarginbot">Linking your program to the SHTOOLS library might result in errors such as</p>
+	
+	<blockquote><p><tt>
+	TestSHRotate.f95:(.text+0xdb6): undefined reference to `makegrid2d'</tt></p>
+	</blockquote>
+	
+	<p>The most likely source of this error is that the SHTOOLS library was compiled with a different set of options than used when compiling your program. In particular, it is necessary to use the same compiler options that relate to the naming of external names, such as "fold to lower case" and the appending of underscrores.</p>
+ 
+
+	<h2><a name="r1"></a>I get a "segmentation fault" when running a program that links to the SHTOOLS library.</h2>
+	<p class="nomarginbot">If the error is related to SHTOOLS, and not your code, then there are a few possible ways to fix this. One possibility is that this problem is related to memory allocation and stack overflows. First, try recompiling your code with the option <tt>-s</tt>. This will try to allocate dynamic arrays in the dataspace, as opposed to the stack. Second, try increasing the stacksize by typing</p>
+	
+	<blockquote class="small"><p><tt>
+		limit stacksize unlimited
+ 		</tt></p>
+ 	</blockquote>	
+	
+	<p class="nomarginbot">at the unix prompt. If this works, consider adding this to your default shell initialization file. Finally, try increasing the datasize by typing</p>
+	
+	<blockquote class="small"><p><tt>
+		limit datasize unlimited
+ 		</tt></p>
+ 	</blockquote>
+
+	<h2><a name="r2"></a>My program crashes when calling SHTOOLS routines.</h2>
+	<p class="nomarginbot">If your program still crashes after making the above modifications, then try the following:</p>
+	
+	<ol>
+		<li>Read the version history to make certain that you are aware of any recent modifications. </li>
+		<li>Verify that you have enough memory to perform the calculations. Be aware that some routines dynamically allocate arrays. If you are precomputing the array PLX, consider removing this optional argument. </li>
+		<li>Verify that the documentation describing the routine is correct by (1) comparing the man pages with the intent and argument ordering in the interface block of the file <tt>SHTOOLS.f95</tt>, and (2) reading the documentation in the actual source code.  </li>
+		<li>Try recompiling the SHTOOLS library <i>without</i> using optimization, i.e., by removing the fortran flag <tt>-O2</tt>. If this works, please let me know.</li>
+		<li>Use a debugger to find out where the error is occurring.</li>
+		<li>Go to <a href="http://sourceforge.net/p/shtools/discussion/">SHTOOLS forum</a> at SourceForge and see if others are having the same problem.</li>
+	</ol>
+	
+	<p>If this all fails, then let me know which routine is involved, as well as the error message you encounter. Any debugging that is done on your part will help greatly in finding the problem. Be aware that I am not being paid to solve your problems.</p>
+	
+	<h2><a name="r3"></a>How do I specify "optional" parameters in functions and subroutines?</h2>
+	
+	<p> In fortran 95, this can be specified in one of two ways. First, if there is only one possible optional parameter, it is only necessary to include (or exclude) it at the end of the list of arguments. In contrast, if more than one optional parameter is allowed, it is necessary to use the syntax <tt>OPTIONALVARIABLENAME=variable</tt> at the end of the list of calling arguments. It is strongly suggested that you always directly specify the name of the optional parameter, because it is quite possible that additional optional parameters will be added at a later date.</p>
+
+	<h2><a name="r4"></a>The LAPACK routine DSTEGR crashes with an arithmetic exception.</h2>
+	
+	<p class="nomarginbot"> The LAPACK rotuine DSTEGR is used to obtain the eigenvalues of a symmetric real tridiagonal matrix. Normal execution of this routine may generate infinities and NANs that are properly treated by ieee-754 floating point standards. If this routine crashes with the message</p>
+	
+	<blockquote><p>
+	<tt>*** Arithmetic exception:  - aborting<br>
+	Aborted</tt></p>
+	</blockquote>
+
+	<p>the LAPACK library was most likely not compiled using full ieee-754 standards. Try recompiling LAPACK with a compiler option such as <tt>-ieee=full</tt>.</p>
+	
+	<h2><a name="r5"></a>SHExpandGLQ and SHExpandDH are 10 times slower than MakeGridGLQ and MakeGridDH.</h2>
+	
+	<p>The routines <tt>SHExpandGLQ</tt> and <tt>SHExpandDH</tt> are the inverse to <tt>MakeGridGLQ</tt> and <tt>MakeGridDH</tt>, repsectively. The forward and inverse routines are very symmetric and should, in principle, take the same amount of time to execute. This is indeed the case when using (at least) the Absoft ProFortran and gfortran compilers with optimizations. However, it has been found that the optimizer for the g95 compiler (version 0.91) is not too smart. Even though the forward and inverse routines are very symmetric, one takes about ten times longer to execute than the other. There is probably a way to modify the source code to help the g95 optimizer figure out what to do, but I have so far not been successful in doing this. If you have any suggestions, please let me know.</p>
+	
+<p class="dir">
+>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> </p>
+
+	<table class="footer2" summary = "Mark Wieczorek">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

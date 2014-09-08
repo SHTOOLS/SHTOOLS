@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Spherical harmonic transformations</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<meta name="description" content="Spherical harmonic transformations and reconstructions using Driscoll and Healy's sampling theorem and Gauss-Legendre quadrature.">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
+				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
+				<td><a href="faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+<p class="dir">
+>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
+		
+	<h1>Spherical Harmonic Transformations</h1>
+
+	<table class="main">
+		<tbody>
+
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Equally sampled (N&#215;N) and equally spaced (N&#215;2N) Grids</p></td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shexpanddh.html"><tt>SHExpandDH</tt></a></td> 
+		<td class="right">Expand an equally sampled or equally spaced map into spherical harmonics using <i>Driscoll and Healy</i>'s (1994) sampling theorem.</td>
+		</tr>	
+	
+		<tr>
+		<td class="left"><a href="man/makegriddh.html"><tt>MakeGridDH</tt></a></td> 
+		<td class="right">Create a 2D map from a set of spherical harmonic coefficients that conforms with <i>Driscoll and Healy</i>'s (1994) sampling theorem.</td>
+		</tr>	
+		
+		<tr>
+		<td class="left"><a href="man/shexpanddhc.html"><tt>SHExpandDHC</tt></a></td> 
+		<td class="right">Expand an equally sampled or equally spaced complex map into complex spherical harmonics using <i>Driscoll and Healy</i>'s (1994) sampling theorem.</td>
+		</tr>	
+	
+		<tr>
+		<td class="left"><a href="man/makegriddhc.html"><tt>MakeGridDHC</tt></a></td> 
+		<td class="right">Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with <i>Driscoll and Healy</i>'s (1994) sampling theorem.</td>
+		</tr>	
+	
+		<tr>
+		<td class="left"><a href="man/dhaj.html"><tt>DHaj</tt></a></td> 
+		<td class="right">Compute the latitudinal weights used in the <I>Driscoll and Healy</I> (1994) spherical harmonic transform.</td>
+		</tr>
+	
+	
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Gauss-Legendre quadrature grids</p></td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/precompute.html"><tt>PreCompute</tt></a></td> 
+		<td class="right">Precompute weights, nodes, and associated Legendre functions used in the GLQ-based spherical harmonics routines.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shexpandglq.html"><tt>SHExpandGLQ</tt></a></td> 
+		<td class="right">Expand a 2D map sampled on the Gauss-Legendre quadrature nodes into spherical harmonics.</td>
+		</tr>
+	
+		<tr>
+		<td class="left"><a href="man/makegridglq.html"><tt>MakeGridGLQ</tt></a></td> 
+		<td class="right">Create a 2D map from a set of spherical harmonic coefficients sampled on a the Gauss-Legendre quadrature nodes.</td>
+		</tr>	
+		
+		<tr>
+		<td class="left"><a href="man/shexpandglqc.html"><tt>SHExpandGLQC</tt></a></td> 
+		<td class="right">Expand a 2D complex map sampled on the Gauss-Legendre quadrature nodes into complex spherical harmonics.</td>
+		</tr>
+	
+		<tr>
+		<td class="left"><a href="man/makegridglqc.html"><tt>MakeGridGLQC</tt></a></td> 
+		<td class="right">Create a 2D complex map from a set of complex spherical harmonic coefficients sampled on a the Gauss-Legendre quadrature nodes.</td>
+		</tr>	
+	
+		<tr>
+		<td class="left"><a href="man/glqgridcoord.html"><tt>GLQGridCoord</tt></a></td> 
+		<td class="right">Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids.</td>
+		</tr>	
+		
+		<tr>
+		<td class="left"><a href="man/preglq.html"><tt>PreGLQ</tt></a></td> 
+		<td class="right">Calculate the weights and nodes used in integrating a function by Gauss-Legendre quadrature.</td>
+		</tr>	
+	
+		<tr>
+		<td class="left"><a href="man/nglq.html"><tt>NGLQ</tt></a></td> 
+		<td class="right">Determine the number of Gauss-Legendre quadrature points required to integrate a polynomial of degree L.</td>
+		</tr>	
+	
+		<tr>
+		<td class="left"><a href="man/nglqsh.html"><tt>NGLQSH</tt></a></td> 
+		<td class="right">Determine the number of Gauss-Legendre quadrature points required when computing the spherical harmonic coefficients of a function.</td>
+		</tr>	
+	
+		<tr>
+		<td class="left"><a href="man/nglqshn.html"><tt>NGLQSHN</tt></a></td> 
+		<td class="right">Determine the number of Gauss-Legendre quadrature points required when computing the spherical harmonic coefficients of a function raised to the n-th power.</td>
+		</tr>
+	
+	
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Other</p></td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shexpandlsq.html"><tt>SHExpandLSQ</tt></a></td> 
+		<td class="right">Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.</td>
+		</tr>			
+	
+		<tr>
+		<td class="left"><a href="man/makegrid2d.html"><tt>MakeGrid2D</tt></a></td> 
+		<td class="right">Create a 2D cylindrical map from a set of spherical harmonic coefficients.</td>
+		</tr>		
+	
+		<tr>
+		<td class="left"><a href="man/makegridpoint.html"><tt>MakeGridPoint</tt></a></td> 
+		<td class="right">Expand a set of spherical harmonic coefficients at a single point.</td>
+		</tr>	
+	
+		<tr>
+		<td class="left"><a href="man/shmultiply.html"><tt>SHMultiply</tt></a></td> 
+		<td class="right">Multiply two functions and determine the resulting spherical harmonic coefficients.</td>
+		</tr>	
+		</tbody>
+	</table>
+			
+<br>
+
+<p class="dir">
+>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
+
+	<table class="footer2" summary = "Mark Wieczorek">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

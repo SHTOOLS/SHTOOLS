@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Spherical harmonic I/O and storage routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../CSS/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../Figures/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+				<td class="selected"><a href="../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
+				<td><a href="../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>SHREADJPL(1)</B>                                 SHTOOLS 2.9                                <B>SHREADJPL(1)</B>
+
+
+</PRE>
+<H2 class="man">SHReadJPL</H2 class="man"><PRE>
+       SHReadJPL - Read spherical harmonic coefficients from a JPL ASCII file.
+
+
+</PRE>
+<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
+       SUBROUTINE SHReadJPL ( FILENAME, CILM, LMAX, ERROR, GM, FORMATSTRING )
+
+           CHARACTER(*)          FILENAME
+
+           REAL*8                CILM(2, LMAX+1, LMAX+1)
+
+           INTEGER               LMAX
+
+           REAL*8, OPTIONAL      GM(2 ), ERROR(2, LMAX+1, LMAX+1)
+
+           CHARACTER, OPTIONAL   FORMATSTRING*6
+
+
+</PRE>
+<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
+       <B>SHReadJPL</B> will read spherical harmonic coefficients from a JPL ASCII formatted file into an
+       array CILM. The maximum spherical harmonic degree LMAX must be known a priori. The errors
+       associated with the coefficients CILM will be read if the optional array ERROR is specified.
+       The real numbers are assumed to be formated with the specifier "E19.12", but this can be
+       changed by specifiying the optional string FORMATSTRING. If the optional parameter GM is
+       specified, the mass-gravitational constant and error will be output, if present.
+
+
+</PRE>
+<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
+       FILENAME      (input) CHARACTER(*)
+
+                     The JPL ASCII filename containing the spherical harmonic coefficients.
+
+       CILM          (output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+                     The spherical harmonic coefficients contained in FILENAME.
+
+       LMAX          (input) INTEGER
+
+                     The maximum spherical harmonic degree of CILM.
+
+       ERROR         (output) REAL*8, OPTIONAL, DIMENSION (2, LMAX+1, LMAX+1)
+
+                     The errors corresponding to the spherical harmonic coefficients CILM.
+
+       GM            (output) REAL*8, OPTIONAL, DIMENSION(2 )
+
+                     The mass-gravitational constant and error.
+
+       FORMATSTRING  (input) CHARACTER*6, OPTIONAL
+
+                     The format string used to read the elements of CILM and CILM_ERROR. The default
+                     is "E19.12".
+
+
+</PRE>
+<H2 class="man">NOTES</H2 class="man"><PRE>
+       The JPL ASCII formatted file is organized as follows:
+
+       1. Comment lines starting with "#".
+
+       2. GM (if a gravitational potential file)
+
+       3. A list of J_l, which is -CILM(1,l+1, 1).
+
+       4. A list of the cosine and sine terms.
+
+       5. The errors of the above (starting at step 2).
+
+
+</PRE>
+<H2 class="man">SEE ALSO</H2 class="man"><PRE>
+       <B>shread(1)</B>, <B>shreadgrace(1)</B>, <B>shreadchamp(1)</B>
+
+       &lt;http://shtools.ipgp.fr/&gt;
+
+
+</PRE>
+<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
+       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
+
+       This is free software; you can distribute and modify it under the terms of the revised BSD
+       license.
+
+SHTOOLS 2.9                                  2012-03-08                                 <B>SHREADJPL(1)</B>
+</PRE>
+
+	<p class="dir">
+>  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O</a></p>
+
+	<table class="footer2" summary = "Mark Wieczorek">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

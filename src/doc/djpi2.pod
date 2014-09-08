@@ -1,0 +1,73 @@
+=head1 djpi2
+
+=over 9
+
+=item djpi2 -  
+
+Compute the rotation matrix d(pi/2) used in rotating spherical harmonic coefficents.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 19
+
+=item SUBROUTINE djpi2 (
+
+DJ, LMAX )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+DJ(LMAX+1, LMAX+1, LMAX+1)
+
+=item INTEGER
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<djpi2> will calculate the rotation matrix d_{mM}^j (pi/2) that is used in rotating spherical harmonics in the routines I<SHRotateRealCoef> and I<SHRotateCoef>.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item DJ
+
+(output) REAL*8, DIMENSION (LMAX+1, LMAX+1, LMAX+1)
+
+The rotation matrix dj(pi/2).
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of the spherical harmonic rotation.
+
+=back
+
+=head1 NOTES
+
+This routine is based on code originally written by Guy Masters, subsequently modified by Mark Simons, and finally turned into f95 code by myself.
+
+=head1 SEE ALSO
+
+shrotatecoef(1), shrotaterealcoef(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

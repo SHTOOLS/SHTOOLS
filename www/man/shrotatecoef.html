@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS -  Spherical harmonic rotations</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../CSS/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../Figures/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+				<td class="selected"><a href="../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
+				<td><a href="../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>SHROTATECOEF(1)</B>                              SHTOOLS 2.9                             <B>SHROTATECOEF(1)</B>
+
+
+</PRE>
+<H2 class="man">SHRotateCoef</H2 class="man"><PRE>
+       SHRotateCoef - Determine the spherical harmonic coefficients of a complex function rotated by
+                      three Euler angles.
+
+
+</PRE>
+<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
+       SUBROUTINE SHRotateCoef ( X, COEF, RCOEF, DJ, LMAX )
+
+           REAL*8    <B>X(3)</B>, COEF(2, (LMAX+1)*(LMAX+2)/2), RCOEF(2, (LMAX+1)*(LMAX+2)/2),
+                     DJ(LMAX+1, LMAX+1, LMAX+1)
+
+           INTEGER   LMAX
+
+
+</PRE>
+<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
+       <B>SHRotateCoef</B> will take the complex spherical harmonic coefficients of a function, rotate it
+       according to the three Euler anlges in X, and output the spherical harmonic coefficients of
+       the rotated function. The input and output coefficients are in an indexed form that can be
+       converted to and from CILM(2,:,:) form by using the functions <B>SHCilmToCindex</B> and
+       <B>SHCindexToCilm</B>. The coefficients MUST correspond to unit-normalized spherical harmonics that
+       possess the Condon-Shortley phase convention. Real spherical harmonics can be converted to
+       and from complex form using <B>SHrtoc</B> and <B>SHctor</B>. The input rotation matrix DJ is computed by a
+       call to <B>DJPi2</B>.
+
+       The rotation of a coordinate system or body can be viewed in two complementary ways involving
+       three successive rotations. Both methods have the same initial and final configurations, and
+       the angles listed in both schemes are the same.
+
+       Scheme A:   (I) Rotation about the z axis by alpha.
+
+                   (II) Rotation about the new y axis by beta.
+
+                   (III) Rotation about the new z axis by gamma.
+
+       Scheme B:   (I) Rotation about the z axis by gamma.
+
+                   (II) Rotation about the initial y axis by beta.
+
+                   (III) Rotation about the initial z axis by alpha.
+
+       The rotations can further be viewed either as a rotation of the coordinate system or the
+       physical body. For a rotation of the coordinate system without rotation of the physical body,
+       use
+
+                   X(alpha, beta, gamma).
+
+       For a rotation of the physical body without rotation of the coordinate system, use
+
+                   X(-gamma, -beta, -alpha).
+
+       To perform the inverse transform of X(alpha, beta, gamma), use X(-gamma, -beta, -alpha).
+
+       Note that this routine uses the "y convention", where the second rotation is with respect to
+       the new y axis. If alpha, beta, and gamma were orginally defined in terms of the "x
+       convention", where the second rotation was with respect to the newx axis, the Euler angles
+       according to the y convention would be alpha_y = alpha_x - pi/2, beta_x = beta_y, and gamma_y
+       = gamma_x + pi/2.
+
+
+</PRE>
+<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
+       X            (input) REAL*8, DIMENSION(3 )
+
+                    The three Euler angles, alpha, beta, and gamma.
+
+       COEF         (input) REAL*8, DIMENSION (2, (LMAX+1)*(LMAX+2)/2)
+
+                    The input complex spherical harmonic coefficients. This is an indexed array
+                    where the real and complex components are given by COEF(1,:) and COEF(2,:),
+                    respectively. The functions <B>SHCilmToCindex</B> and <B>SHCindexToCilm</B> are used to
+                    convert to and from indexed and CILM(2,:,:) form. The coefficients must
+                    correspond to unit-normalized spherical harmonics that possess the Condon-
+                    Shortley phase convention.
+
+       RCOEF        (output) REAL*8, DIMENSION (2, (LMAX+1)*(LMAX+2)/2)
+
+                    The spherical harmonic coefficients of the rotated function in indexed form.
+
+       DJ           (input) REAL*8, DIMENSION (LMAX+1, LMAX+1, LMAX+1)
+
+                    The rotation matrix DJ(pi/2), obtained from a call to <B>DJPi2</B>.
+
+       LMAX         (input) INTEGER, OPTIONAL
+
+                    The maximum spherical harmonic degree of the input and output coefficients.
+
+
+</PRE>
+<H2 class="man">NOTES</H2 class="man"><PRE>
+       This routine is based upon code originally written by Guy Masters, which was then
+       subsequently modified by Mark Simons and myself.
+
+
+</PRE>
+<H2 class="man">SEE ALSO</H2 class="man"><PRE>
+       <B>djpi2(1)</B>, <B>shrotaterealcoef(1)</B>, <B>shctor(1)</B>, <B>shrtoc(1)</B>, <B>shcilmtocindex(1)</B>, <B>shcindextocilm(1)</B>
+
+       &lt;http://shtools.ipgp.fr/&gt;
+
+
+</PRE>
+<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
+       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
+
+       This is free software; you can distribute and modify it under the terms of the revised BSD
+       license.
+
+SHTOOLS 2.9                                  2012-04-25                              <B>SHROTATECOEF(1)</B>
+</PRE>
+
+	<p class="dir">
+>  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
+
+	<table class="footer2" summary = "Mark Wieczorek">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

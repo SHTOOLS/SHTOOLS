@@ -1,0 +1,116 @@
+=head1 SHMultiply
+
+=over 13
+
+=item SHMultiply -  
+
+Multiply two functions and determine the resulting spherical harmonic coefficients.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 24
+
+=item SUBROUTINE SHMultiply ( 
+
+SHOUT, SH1, LMAX1, SH2, LMAX2, PRECOMP, NORM, CSPHASE )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+SHOUT(2, LMAX1+LMAX2+1, LMAX1+LMAX2+1), S<SH1(2, LMAX1+1, LMAX1+1)>, S<SH2(2, LMAX2+1, LMAX2+1)>
+
+=item INTEGER
+
+LMAX1, LMAX2
+
+=item INTEGER, OPTIONAL
+
+PRECOMP, NORM, CSPHASE
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHMultiply> will take two sets of spherical harmonic coefficients, multiply them in the space domain, and expand the resulting field in spherical harmonics using I<SHExpandGLQ>. The spherical harmonic bandwidth of the resulting field is LMAX1+LMAX2, where LMAX1 and LMAX2 are the bandwidths of the input fields. If the optional parameter PRECOMP is set, then the Legendre functions will be precomputed on the Gauss-Legendre quadrature nodes (these are thus calculated only once, as opposed to three times).
+
+The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments NORM and CSPHASE; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
+
+=head1 ARGUMENTS
+
+=over 11
+
+=item SHOUT
+
+(output) REAL*8, DIMENSION (2, LMAX1+LMAX2+1, LMAX1+LMAX2+1)
+
+The real spherical harmonic coefficients of the space domain mulitplication of SH1 and SH2.
+	
+=item SH1
+
+(input) REAL*8, DIMENSION (2, LMAX1+1, LMAX1+1)
+
+The spherical harmonic coefficients of the first function.
+
+=item LMAX1
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of SH1.
+
+=item SH2
+
+(input) REAL*8, DIMENSION (2, LMAX2+1, LMAX2+1)
+
+The spherical harmonic coefficients of the second function.
+
+=item LMAX2
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of SH2.
+
+=item PRECOMP
+
+(input) INTEGER
+
+If 1, the Legendre functions will be precomputed on the Gauss-Legendre quadrature nodes. If 0, they will not be precomputed.
+	
+=item NORM
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+
+=item CSPHASE
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+
+=back
+
+=head1 NOTES
+
+This routine makes use of the Gauss-Legendre quadrature routines I<MakeGridGLQ> and I<SHExpandGLQ>. While these could be substituted by I<MakeGridDH> and I<SHExpandDH>, the routines would be twice as slow.
+
+=head1 SEE ALSO
+
+shexpandglq(1), makegridglq(1), precompute(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

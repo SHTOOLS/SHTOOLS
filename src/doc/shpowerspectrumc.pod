@@ -1,0 +1,82 @@
+=head1 SHPowerSpectrumC
+
+=over 19
+
+=item SHPowerSpectrumC -  
+
+Compute the power spectrum of a complex function.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 30
+
+=item SUBROUTINE SHPowerSpectrumC (
+
+C, LMAX, SPECTRUM )
+
+=back
+
+=over 4
+
+=over 14
+
+=item COMPLEX*16	
+
+C(2, LMAX+1, LMAX+1)
+
+=item REAL*8
+
+SPECTRUM(LMAX+1)
+
+=item INTEGER
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHPowerSpectrumC> will calculate the power spectrum of a function expressed in complex spherical harmonics. For a given degree L, this is explicitly calculated as:
+
+Sum_{i=1}^2 Sum_{m=0}^L | C(i, L+1, m+1) |**2 .
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item C
+
+(input) COMPLEX*16, DIMENSION (2, LMAX+1, LMAX+1)
+
+The function expressed in complex spherical harmonics.
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree to calculate the power spectrum.
+
+=item SPECTRUM
+
+(output) REAL*8, DIMENSION (LMAX+1)
+
+The power spectrum of the function.
+
+=back
+
+=head1 SEE ALSO
+
+shpowerlc(1), shpowerdensitylc(1), shcrosspowerlc(1), shcrosspowerdensitylc(1), shpowerspectrumdensityc(1), shcrosspowerspectrumc(1), shcrosspowerspectrumdensityc(1), shadmitcorr(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

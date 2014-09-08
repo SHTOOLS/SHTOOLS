@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<meta name="description" content="Localized multitaper spectral analysis routines for data expressed on the sphere.">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
+				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
+				<td><a href="faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+		
+<p class="dir">
+>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
+
+	<h1>Localized spectral analysis</h1>
+	
+	<table class="main">
+		<tbody>
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Multitaper spectral estimation (spherical cap domain)</p></td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shmultitaperse.html"><tt>SHMultiTaperSE</tt></a></td> 
+		<td class="right">Perform a localized multitaper spectral analysis.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shmultitapercse.html"><tt>SHMultiTaperCSE</tt></a></td> 
+		<td class="right">Perform a localized multitaper cross-spectral analysis.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shlocalizedadmitcorr.html"><tt>SHLocalizedAdmitCorr</tt></a></td> 
+		<td class="right">Calculate the localized admittance and correlation spectra of two functions at a given location.</td>
+		</tr>	
+		
+		<tr>
+		<td class="left"><a href="man/shreturntapers.html"><tt>SHReturnTapers</tt></a></td> 
+		<td class="right">Calculate the eigenfunctions of the spherical-cap concentration problem.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shreturntapersm.html"><tt>SHReturnTapersM</tt></a></td> 
+		<td class="right">Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/computed0.html"><tt>ComputeD0</tt></a></td> 
+		<td class="right">Compute the zonal space-concentration kernel of a spherical cap.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/computedm.html"><tt>ComputeDm</tt></a></td> 
+		<td class="right">Compute the space-concentration kernel of a spherical cap.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/computedg82.html"><tt>ComputeDG82</tt></a></td> 
+		<td class="right">Compute the tridiagonal matrix of <i>Gr&uuml;nbaum et al.</i> (1982) that commutes with the space-concentration kernel of a spherical cap.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shfindlwin.html"><tt>SHFindLWin</tt></a></td> 
+		<td class="right">Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shbiask.html"><tt>SHBiasK</tt></a></td> 
+		<td class="right">Calculate the multitaper (cross-)power spectrum expectation of a windowed function.</td>
+		</tr>	
+		
+		<tr>
+		<td class="left"><a href="man/shbiasadmitcorr.html"><tt>SHBiasAdmitCorr</tt></a></td> 
+		<td class="right">Calculate the expected multitaper admittance and correlation spectra associated with the input global cross-power spectra of two functions.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shmtdebias.html"><tt>SHMTDebias</tt></a></td> 
+		<td class="right">Invert for the global power spectrum given a localized multitaper spectrum estimate.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/shmtvaropt0.html"><tt>SHMTVarOpt0</tt></a></td> 
+		<td class="right">Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate using zonal tapers.
+		</td>
+		</tr>	
+		
+		<tr>
+		<td class="left"><a href="man/shmtvaropt.html"><tt>SHMTVarOpt</tt></a></td> 
+		<td class="right">Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.</td>
+		</tr>	
+		
+		<tr>
+		<td class="left"><a href="man/shsjkpg0.html"><tt>SHSjkPG0</tt></a></td> 
+		<td class="right">Calculate the expectation of the product of two functions, each multiplied by a different zonal data taper, for a given spherical harmonic degree and angular order.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/shsjkpg.html"><tt>SHSjkPG</tt></a></td> 
+		<td class="right">Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.</td>
+		</tr>
+
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Localization windows (arbitrary domain)</p></td>
+		</tr>
+	
+		<tr>
+		<td class="left"><a href="man/shreturntapersmap.html"><tt>SHReturnTapersMap</tt></a></td> 
+		<td class="right">Calculate the eigenfunctions of the concentration problem for an arbitrary concentration region.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/computedmap.html"><tt>ComputeDMap</tt></a></td> 
+		<td class="right">Compute the space-concentration kernel of a mask defined on the sphere.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a href="man/curve2mask.html"><tt>Curve2Mask</tt></a></td> 
+		<td class="right">Given a set of latitude and longitude coordinates representing a closed curve, determine if each node of a gridded mask is inside or outside of the curve.
+		</td>
+		</tr>	
+
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Localization Bias (General)</p></td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/shbias.html"><tt>SHBias</tt></a></td> 
+		<td class="right">Calculate the (cross-)power spectrum expectation of a windowed function.</td>
+		</tr>	
+		
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Other</p></td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/sphericalcapcoef.html"><tt>SphericalCapCoef</tt></a></td> 
+		<td class="right">Calculate the spherical harmonic coefficients of a spherical cap.
+		</td>
+		</tr>	
+	
+		</tbody>
+	</table>
+			
+<br>
+
+<p class="dir">
+>  <a href="../SHTOOLS.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
+
+	<table class="footer2" summary = "Mark Wieczorek">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

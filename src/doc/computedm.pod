@@ -1,0 +1,79 @@
+=head1 ComputeDM
+
+ComputeDM -  Compute the space-concentration kernel of a spherical cap.
+
+=head1 SYNOPSIS
+
+=over 23
+
+=item SUBROUTINE ComputeDM ( 
+
+D0, LMAX, M, THETA0 )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+D0(LMAX+1, LMAX+1), THETA0
+
+=item INTEGER
+
+LMAX, M
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<ComputeDM> will calculate the space-concentration kernel of angular order M for the spherical-cap concentration problem. The eigenfunctions of this matrix correspond to a family of orthogonal windowing functions, and the eigenvalues correspond to the window's concentration factor (i.e., the power of the window within THETA0 divided by the total power of the function). It is implicitly assumed that the employed spherical harmonic functions are normalized to the same value for all degrees and angular orders, which is the case for both the geodesy 4-pi and orthonormalized harmonics. This kernel is symmetric and is computed exactly by Gauss-Legendre quadrature.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item DM 
+
+(output) REAL*8, DIMENSION (LMAX+1, LMAX+1)
+
+The space-concentration kernel or angular order M.
+	
+=item LMAX
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the windows.
+	
+=item M
+
+(input) INTEGER
+
+The angular order of the concentration problem.
+
+=item THETA0
+
+(input) REAL*8
+
+The angular radius of the spherical cap in RADIANS.
+
+=back
+
+=head1 SEE ALSO
+
+computedg82(1), computed0(1), shreturntapers(1), shreturntapersm(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, I<SIAM Review>, 48, 504-536, 2006.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

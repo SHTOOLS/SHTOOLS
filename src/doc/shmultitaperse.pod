@@ -1,0 +1,162 @@
+=head1 SHMultiTaperSE
+
+=over 17
+
+=item SHMultiTaperSE -  
+
+Perform a localized multitaper spectral analysis.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 28
+
+=item SUBROUTINE SHMultiTaperSE ( 
+
+MTSE, SD, SH, LMAX, TAPERS, TAPER_ORDER, LMAXT, K, ALPHA, LAT, LON, TAPER_WT, NORM, CSPHASE )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+MTSE(LMAX-LMAXT+1), SD(LMAX-LMAXT+1), SH(2, LMAX+1, LMAX+1), TAPERS(LMAXT+1, K)
+
+=item INTEGER
+
+LMAX, TAPER_ORDER(K), LMAXT, K
+
+=item REAL*8, OPTIONAL
+
+ALPHA(3), LAT, LON, TAPER_WT(K)
+
+=item INTEGER, OPTIONAL
+
+NORM, CSPHASE
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHMultiTaperSE> will perform a localized multitaper spectral analysis of an input function expressed in spherical harmonics (SH). The maximum degree of the localized multitaper cross-power spectrum estimate is LMAX-LMAXT. The coefficients and angular orders of the windowing coefficients (TAPERS and TAPER_ORDER) are obtained by a call to I<SHReturnTapers>. If LAT and LON or ALPHA is specified, then the symmetry axis of the localizing windows will be rotated to these coordinates. Otherwise, the windows will not be rotated, and the localized spectral analysis will be centered over the north pole.
+
+If the optional array TAPER_WT is specified, then these weights will be used in calculating a weighted average of the individual K tapered estimates (MTSE) and the corresponding standard error of the estimates (SD). If not present, the weights will all be assumed to be equal.
+
+The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments NORM and CSPHASE; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
+
+=head1 ARGUMENTS
+
+=over 13
+
+=item MTSE
+
+(output) REAL*8, DIMENSION (LMAX-LMAXT+1)
+
+The localized multitaper power spectral estimates. 
+
+=item SD
+
+(output) REAL*8, DIMENSION (LMAX-LMAXT+1)
+
+The standard error of the localized multitaper power spectral estimates.
+	
+=item SH
+
+(input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The spherical harmonic coefficients of the function to be localized.
+
+=item LMAX
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of SH.
+
+=item TAPERS
+
+(input) REAL*8, DIMENSION (LMAXT+1, K)
+
+An array of the K windowing functions, arranged in columns, obtained from a call to I<SHReturnTapers>. Each window has non-zero coefficients for a single angular order that is specified in the array TAPER_ORDER.
+
+=item TAPER_ORDER
+
+(input) INTEGER, DIMENSION (K)
+
+An array containing the angular orders of the spherical harmonic coefficients in each column of the array TAPERS.
+
+=item LMAXT
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the windowing functions in the array TAPERS.
+
+=item K
+
+(input) INTEGER
+
+The number of tapers to be utilized in performing the multitaper spectral analysis.
+
+=item ALPHA
+
+(input) REAL*8, OPTIONAL, DIMENSION(3 )
+
+The Euler rotation angles used in rotating the windowing functions. ALPHA(1 ) = 0, ALPHA(2 ) = -(90-LAT)*PI/180, ALPHA(3 ) = -LON*PI/180. Either ALPHA or LAT and LON can be specified, but not both. If none of these are specified, the window functions will not be rotated, and the spectral analysis will be centered at the north pole.
+
+=item LAT
+
+(input) REAL*8, OPTIONAL
+
+The latitude in DEGREES of the localized analysis. Either ALPHA or LAT and LON can be specified but not both. If none of these are specified, the window functions will not be rotated, and the spectral analysis will be centered at the north pole.
+
+=item LON
+
+(input) REAL*8, OPTIONAL
+
+The longitude in DEGREES of the localized analysis. Either ALPHA or LAT and LON can be specified, but not both. If none of these are specified, the window functions will not be rotated, and the spectral analysis will be centered at the north pole.
+
+=item TAPER_WT
+
+(input) REAL*8, OPTIONAL, DIMENSION (K)
+
+The weights used in calculating the multitaper spectral estimates and standard error. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine I<SHMTVarOpt>.
+	
+=item NORM
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+
+=item CSPHASE
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+
+=back
+
+=head1 NOTES
+
+If TAPER_WT is not specified, the mutltitaper spectral estimate for a given degree will be calculated as the average obtained from the K individual tapered estimates. The standard error of the multitaper estimate at degree l is simply the population standard deviation, S = sqrt( sum (Si - MTSE)^2 / (K-1) ), divided by sqrt(K). If the expectations of each tapered estimate are different, then this method will overestimate the standard error. See Wieczorek and Simons (2007) for the relevant expressions when weigted estimates are used.
+
+=head1 SEE ALSO
+
+shmultitapercse(1), shreturntapers(1), shreturntapersm(1), shmtvaropt(1), shmtvaropt0(1), shrotaterealcoef(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and F. J. Minimum-variance multitaper spectral estimation on the sphere, I<J. Fourier Anal. Appl.>, 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.
