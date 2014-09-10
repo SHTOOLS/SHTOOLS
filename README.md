@@ -12,7 +12,7 @@ While several collections of code exist for working with data expressed in spher
 
 * Spherical harmonic transforms are calculated by exact quadrature rules using either (1) the sampling theorem of *Driscoll and Healy* (1994) where data are equally sampled (or spaced) in latitude and longitude, or (2) Gauss-Legendre quadrature. A least squares inversion routine for irregularly sampled data is included.
 
-* One can choose to use or exclude the Condon-Shortley phase factor of (-1)^m with the associated Legendre functions.
+* One can choose to use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup> with the associated Legendre functions.
 
 * The spherical harmonic transforms are proven to be accurate to approximately degree 2800, corresponding to a spatial resolution of better than 4 arc minutes.
 
