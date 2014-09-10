@@ -24,8 +24,8 @@ While several collections of code exist for working with data expressed in spher
 		
 ## How do I use SHTOOLS? ##
 
-SHTOOLS is invoked by standard subroutine and function calls in your fortran 90/95 program. For some routines, it will be necessary to have installed the freely available Fourier transform package FFTW (http://www.fftw.org), and the linear algebra packages LAPACK (http://www.netlib.org/lapack/) and BLAS (http://www.netlib.org/blas/).
+SHTOOLS is invoked by standard subroutine and function calls in your fortran 90/95 program. For some routines, it will be necessary to have installed the freely available Fourier transform package [FFTW](http://www.fftw.org), and the linear algebra packages [LAPACK](http://www.netlib.org/lapack/) and [BLAS](http://www.netlib.org/blas/).
 
 ## How much does it cost? ##
 
-The SHTOOLS software package is free. Two free Fortran 95 compilers exist (gfortran as part of GCC, http://gcc.gnu.org/, and g95, http://www.g95.org/). SHTOOLS can be modified and distributed according to the revised BSD license.
+The SHTOOLS software package is free. Two free Fortran 95 compilers exist (gfortran as part of [GCC](http://gcc.gnu.org/) and [g95](http://www.g95.org/)). SHTOOLS can be modified and distributed according to the revised BSD license.
