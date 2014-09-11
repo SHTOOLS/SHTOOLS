@@ -6,7 +6,7 @@ SHTOOLS is an archive of fortran 95 based software that can be used to perform s
 
 While several collections of code exist for working with data expressed in spherical harmonics, this one is unique for several reasons:
 	
-* It can accommodate any standard normalization of the spherical harmonic functions ("geodesy" 4-pi; normalized,  Schmidt semi-normalized, orthonormalized, and unnormalized).
+* It can accommodate any standard normalization of the spherical harmonic functions ("geodesy" 4&pi; normalized,  Schmidt semi-normalized, orthonormalized, and unnormalized).
 		
 * Both real and complex spherical harmonics are supported.
 
