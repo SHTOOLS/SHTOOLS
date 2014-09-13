@@ -29,10 +29,10 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHREADJPL(1)</B>                                 SHTOOLS 2.9                                <B>SHREADJPL(1)</B>
+<B>SHREADJPL(1)</B>                     SHTOOLS 2.10                     <B>SHREADJPL(1)</B>
 
 
 </PRE>
@@ -57,23 +57,27 @@
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHReadJPL</B> will read spherical harmonic coefficients from a JPL ASCII formatted file into an
-       array CILM. The maximum spherical harmonic degree LMAX must be known a priori. The errors
-       associated with the coefficients CILM will be read if the optional array ERROR is specified.
-       The real numbers are assumed to be formated with the specifier "E19.12", but this can be
-       changed by specifiying the optional string FORMATSTRING. If the optional parameter GM is
-       specified, the mass-gravitational constant and error will be output, if present.
+       <B>SHReadJPL</B> will read spherical harmonic coefficients from a JPL ASCII
+       formatted file into an array CILM. The maximum spherical harmonic
+       degree LMAX must be known a priori. The errors associated with the
+       coefficients CILM will be read if the optional array ERROR is
+       specified. The real numbers are assumed to be formated with the
+       specifier "E19.12", but this can be changed by specifiying the optional
+       string FORMATSTRING. If the optional parameter GM is specified, the
+       mass-gravitational constant and error will be output, if present.
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        FILENAME      (input) CHARACTER(*)
 
-                     The JPL ASCII filename containing the spherical harmonic coefficients.
+                     The JPL ASCII filename containing the spherical harmonic
+                     coefficients.
 
        CILM          (output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
 
-                     The spherical harmonic coefficients contained in FILENAME.
+                     The spherical harmonic coefficients contained in
+                     FILENAME.
 
        LMAX          (input) INTEGER
 
@@ -81,7 +85,8 @@
 
        ERROR         (output) REAL*8, OPTIONAL, DIMENSION (2, LMAX+1, LMAX+1)
 
-                     The errors corresponding to the spherical harmonic coefficients CILM.
+                     The errors corresponding to the spherical harmonic
+                     coefficients CILM.
 
        GM            (output) REAL*8, OPTIONAL, DIMENSION(2 )
 
@@ -89,8 +94,8 @@
 
        FORMATSTRING  (input) CHARACTER*6, OPTIONAL
 
-                     The format string used to read the elements of CILM and CILM_ERROR. The default
-                     is "E19.12".
+                     The format string used to read the elements of CILM and
+                     CILM_ERROR. The default is "E19.12".
 
 
 </PRE>
@@ -119,14 +124,14 @@
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                                 <B>SHREADJPL(1)</B>
+SHTOOLS 2.10                      2012-03-08                      <B>SHREADJPL(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

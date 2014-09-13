@@ -29,103 +29,117 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHMTVAROPT(1)</B>                                SHTOOLS 2.9                               <B>SHMTVAROPT(1)</B>
+<B>SHMTVAROPT(1)</B>                    SHTOOLS 2.10                    <B>SHMTVAROPT(1)</B>
 
 
 </PRE>
 <H2 class="man">SHMTVarOpt</H2 class="man"><PRE>
-       SHMTVarOpt - Calculate the minimum variance and corresponding optimal weights of a localized
-                    multitaper spectral estimate.
+       SHMTVarOpt - Calculate the minimum variance and corresponding optimal
+                    weights of a localized multitaper spectral estimate.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHMTVarOpt ( L, TAPERS, TAPER_ORDER, LWIN, KMAX, SFF, VAR_OPT, VAR_UNIT,
-                               WEIGHT_OPT, UNWEIGHTED_COVAR, NOCROSS )
+       SUBROUTINE SHMTVarOpt ( L, TAPERS, TAPER_ORDER, LWIN, KMAX, SFF,
+                               VAR_OPT, VAR_UNIT, WEIGHT_OPT,
+                               UNWEIGHTED_COVAR, NOCROSS )
 
-           REAL*8             TAPERS(LWIN+1, KMAX), SFF(L+WIN+1), VAR_OPT(KMAX), VAR_UNIT(KMAX)
+           REAL*8             TAPERS(LWIN+1, KMAX), SFF(L+WIN+1),
+                              VAR_OPT(KMAX), VAR_UNIT(KMAX)
 
            INTEGER            L, TAPER_ORDER(KMAX), LWIN, KMAX
 
-           REAL*8, OPTIONAL   WEIGHT_OPT(KMAX, KMAX), UNWEIGHTED_COVAR(KMAX, KMAX)
+           REAL*8, OPTIONAL   WEIGHT_OPT(KMAX, KMAX),
+                              UNWEIGHTED_COVAR(KMAX, KMAX)
 
            INTEGER, OPTIONAL  NOCROSS
 
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHMTVarOpt</B> will determine the minimum variance that can be achieved by a weighted multitaper
-       spectral analysis, as is described by Wieczorek and Simons (2006, submitted manuscript). The
-       minimum variance is output as a function of the number of tapers utilized, from 1 to a
-       maximum of KMAX, and the corresponding variance using equal weights is output for comparison.
-       The windowing functions are assumed to be solutions to the spherical-cap concentration
-       problem, as determined by a call to <B>SHReturnTapers</B> or <B>SHReturnTapersM</B>. The minimum variance
-       and weights are dependent upon the form of the global unwindowed power spectrum, SFF.
+       <B>SHMTVarOpt</B> will determine the minimum variance that can be achieved by
+       a weighted multitaper spectral analysis, as is described by Wieczorek
+       and Simons (2006, submitted manuscript). The minimum variance is output
+       as a function of the number of tapers utilized, from 1 to a maximum of
+       KMAX, and the corresponding variance using equal weights is output for
+       comparison. The windowing functions are assumed to be solutions to the
+       spherical-cap concentration problem, as determined by a call to
+       <B>SHReturnTapers</B> or <B>SHReturnTapersM</B>. The minimum variance and weights are
+       dependent upon the form of the global unwindowed power spectrum, SFF.
 
-       If the optional argument WEIGHT_OPT is specified, then the optimal weights will be returned
-       as a function of the number of tapers employed, from 1 KMAX. If UNWEIGHTED_COVAR is
-       specified, then the unweighted covariance matrix of the KMAX tapers (i.e., Fij) will be
-       output. If the optional argument NOCROSS is set to 1, then only the diagnonal terms of Fij
-       will be computed.
+       If the optional argument WEIGHT_OPT is specified, then the optimal
+       weights will be returned as a function of the number of tapers
+       employed, from 1 KMAX. If UNWEIGHTED_COVAR is specified, then the
+       unweighted covariance matrix of the KMAX tapers (i.e., Fij) will be
+       output. If the optional argument NOCROSS is set to 1, then only the
+       diagnonal terms of Fij will be computed.
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        L                 (input) INTEGER
 
-                         The angular degree to determine the minimum variance and optimal weights.
+                         The angular degree to determine the minimum variance
+                         and optimal weights.
 
        TAPERS            (input) REAL*8, DIMENSION (LWIN+1, KMAX)
 
-                         A matrix of localization functions obtained from <B>SHReturnTapers</B> or
-                         <B>SHReturnTapersM</B>.
+                         A matrix of localization functions obtained from
+                         <B>SHReturnTapers</B> or <B>SHReturnTapersM</B>.
 
        TAPER_ORDER       (input) INTEGER, DIMENSION (K)
 
-                         The angular order of the windowing coefficients in TAPERS. If this matrix
-                         was created using <B>SHReturnTapersM</B>, then this array must be composed of
+                         The angular order of the windowing coefficients in
+                         TAPERS. If this matrix was created using
+                         <B>SHReturnTapersM</B>, then this array must be composed of
                          zeros.
 
        LWIN              (input) INTEGER
 
-                         The spherical harmonic bandwidth of the localizing windows.
+                         The spherical harmonic bandwidth of the localizing
+                         windows.
 
        KMAX              (input) INTEGER
 
-                         The maximum number of tapers to be used when calculating the minimum
-                         variance and optimal weights. All values from 1 to KMAX will be returned.
+                         The maximum number of tapers to be used when
+                         calculating the minimum variance and optimal weights.
+                         All values from 1 to KMAX will be returned.
 
        SFF               (input) REAL*8, DIMENSION (L+LWIN+1)
 
-                         The global unwindowed power spectrum of the function to be localized.
+                         The global unwindowed power spectrum of the function
+                         to be localized.
 
        VAR_OPT           (output) REAL*8, DIMENSION (KMAX)
 
-                         The minimum variance of the multitaper spectral estimate for degree L using
-                         1 through KMAX tapers.
+                         The minimum variance of the multitaper spectral
+                         estimate for degree L using 1 through KMAX tapers.
 
        VAR_UNIT          (output) REAL*8, DIMENSION (KMAX)
 
-                         The variance of the multitaper spectral estimate using equal weights for
-                         degree L using 1 through KMAX tapers.
+                         The variance of the multitaper spectral estimate
+                         using equal weights for degree L using 1 through KMAX
+                         tapers.
 
        WEIGHT_OPT        (output) REAL*8, OPTIONAL, DIMENSION (KMAX, KMAX)
 
-                         The optimal weights (in columns) that minimize the multitaper spectral
-                         estimate's variance using 1 through KMAX tapers.
+                         The optimal weights (in columns) that minimize the
+                         multitaper spectral estimate's variance using 1
+                         through KMAX tapers.
 
        UNWEIGHTED_COVAR  (output) REAL*8, OPTIONAL, DIMENSION (KMAX, KMAX)
 
-                         The unweighted covariance matrix of the KMAX tapers (i.e., Fij in Wieczorek
-                         and Simons 2007).
+                         The unweighted covariance matrix of the KMAX tapers
+                         (i.e., Fij in Wieczorek and Simons 2007).
 
        NOCROSS           (input) INTEGER, OPTIONAL
 
-                         If 1, only the diagonal terms of the covariance matrix Fij will be
-                         computed. If 0, all terms will be computed.
+                         If 1, only the diagonal terms of the covariance
+                         matrix Fij will be computed. If 0, all terms will be
+                         computed.
 
 
 </PRE>
@@ -137,22 +151,22 @@
 
 </PRE>
 <H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Wieczorek, M. A. and F. J. Simons, Minimum variance multitaper spectral estimation on the
-       sphere, <B>J.</B> <B>Fourier</B> <B>Anal.</B> <B>Appl.</B>, submitted 2006.
+       Wieczorek, M. A. and F. J. Simons, Minimum variance multitaper spectral
+       estimation on the sphere, <B>J.</B> <B>Fourier</B> <B>Anal.</B> <B>Appl.</B>, submitted 2006.
 
 
 </PRE>
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                                <B>SHMTVAROPT(1)</B>
+SHTOOLS 2.10                      2012-03-08                     <B>SHMTVAROPT(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

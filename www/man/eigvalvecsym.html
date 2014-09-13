@@ -29,22 +29,24 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../other.html" class="dir">Other</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../other.html" class="dir">Other</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>EIGVALVECSYM(1)</B>                              SHTOOLS 2.9                             <B>EIGVALVECSYM(1)</B>
+<B>EIGVALVECSYM(1)</B>                  SHTOOLS 2.10                  <B>EIGVALVECSYM(1)</B>
 
 
 </PRE>
 <H2 class="man">EigValVecSym</H2 class="man"><PRE>
-       EigValVecSym -  Compute the eigenvalues and eigenvectors of a real symmetric matrix.
+       EigValVecSym -  Compute the eigenvalues and eigenvectors of a real
+                       symmetric matrix.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
        SUBROUTINE EigValVecSym ( AIN, N, EVAL, EVEC, UL, K )
 
-           REAL*8                AIN(N, N), EVAL(N) or EVAL(K), EVEC(N, N) or EVEC(N, K)
+           REAL*8                AIN(N, N), EVAL(N) or EVAL(K), EVEC(N, N) or
+                                 EVEC(N, K)
 
            INTEGER               N
 
@@ -55,22 +57,25 @@
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>EigValVecSym</B> will calculate the eigenvalues and eigenvectors of a real symmetric matrix. By
-       default, only the upper portion of the matrix is used, but this can be changed by the
-       optional argument UL. The eigenvalues and eigenvectors are sorted from largest to smallest
-       eigenvalues. If the optional parameter K is specified, then only the K largest eigenvalues
-       and their corresponding eigenvectors will be output.
+       <B>EigValVecSym</B> will calculate the eigenvalues and eigenvectors of a real
+       symmetric matrix. By default, only the upper portion of the matrix is
+       used, but this can be changed by the optional argument UL. The
+       eigenvalues and eigenvectors are sorted from largest to smallest
+       eigenvalues. If the optional parameter K is specified, then only the K
+       largest eigenvalues and their corresponding eigenvectors will be
+       output.
 
-       The matrix Ain is first factorized into a tridiagonal matrix using the LAPACK routine DSYTRD,
-       and then the eigenvalues are calculated by calls to DSTEGR and DORMTR.
+       The matrix Ain is first factorized into a tridiagonal matrix using the
+       LAPACK routine DSYTRD, and then the eigenvalues are calculated by calls
+       to DSTEGR and DORMTR.
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        AIN       (input) REAL*8, DIMENSION (N, N)
 
-                 The input real symmetric matrix. By default, only the upper portion of the matrix
-                 is used.
+                 The input real symmetric matrix. By default, only the upper
+                 portion of the matrix is used.
 
        N         (input) INTEGER
 
@@ -82,23 +87,27 @@
 
        EVEC      (output) REAL*8, DIMENSION (N, N) or DIMENSION (N, K)
 
-                 The eigenvectors of AIN, sorted from largest to smallest eigenvalues. The sign of
-                 the first element of each eigenvector is chosen to be positive.
+                 The eigenvectors of AIN, sorted from largest to smallest
+                 eigenvalues. The sign of the first element of each
+                 eigenvector is chosen to be positive.
 
        UL        (input) CHARACTER, OPTIONAL
 
-                 If "U" then the upper portion of the matrix AIN will be used (default). If "L" then
-                 the lower portion of the matrix AIN will be used.
+                 If "U" then the upper portion of the matrix AIN will be used
+                 (default). If "L" then the lower portion of the matrix AIN
+                 will be used.
 
        K         (input) INTEGER, OPTIONAL
 
-                 The number of largest eigenvalues and corresponding eigenvectors to be output.
+                 The number of largest eigenvalues and corresponding
+                 eigenvectors to be output.
 
 
 </PRE>
 <H2 class="man">NOTES</H2 class="man"><PRE>
-       This routine requires the matrix algebra packages BLAS and LAPACK which are available at
-       &lt;http://www.netlib.org/lapack/&gt; and &lt;http://www.netlib.org/blas/&gt;, respectively.
+       This routine requires the matrix algebra packages BLAS and LAPACK which
+       are available at &lt;http://www.netlib.org/lapack/&gt; and
+       &lt;http://www.netlib.org/blas/&gt;, respectively.
 
 
 </PRE>
@@ -112,14 +121,14 @@
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                              <B>EIGVALVECSYM(1)</B>
+SHTOOLS 2.10                      2012-03-08                   <B>EIGVALVECSYM(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../other.html" class="dir">Other</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../other.html" class="dir">Other</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

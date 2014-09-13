@@ -29,23 +29,25 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHMULTIPLY(1)</B>                                SHTOOLS 2.9                               <B>SHMULTIPLY(1)</B>
+<B>SHMULTIPLY(1)</B>                    SHTOOLS 2.10                    <B>SHMULTIPLY(1)</B>
 
 
 </PRE>
 <H2 class="man">SHMultiply</H2 class="man"><PRE>
-       SHMultiply - Multiply two functions and determine the resulting spherical harmonic
-                    coefficients.
+       SHMultiply - Multiply two functions and determine the resulting
+                    spherical harmonic coefficients.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHMultiply ( SHOUT, SH1, LMAX1, SH2, LMAX2, PRECOMP, NORM, CSPHASE )
+       SUBROUTINE SHMultiply ( SHOUT, SH1, LMAX1, SH2, LMAX2, PRECOMP, NORM,
+                               CSPHASE )
 
-           REAL*8             SHOUT(2, LMAX1+LMAX2+1, LMAX1+LMAX2+1), SH1(2, LMAX1+1, LMAX1+1),
+           REAL*8             SHOUT(2, LMAX1+LMAX2+1, LMAX1+LMAX2+1),
+                              SH1(2, LMAX1+1, LMAX1+1),
                               SH2(2, LMAX2+1, LMAX2+1)
 
            INTEGER            LMAX1, LMAX2
@@ -55,24 +57,27 @@
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHMultiply</B> will take two sets of spherical harmonic coefficients, multiply them in the space
-       domain, and expand the resulting field in spherical harmonics using <B>SHExpandGLQ</B>. The
-       spherical harmonic bandwidth of the resulting field is LMAX1+LMAX2, where LMAX1 and LMAX2 are
-       the bandwidths of the input fields. If the optional parameter PRECOMP is set, then the
-       Legendre functions will be precomputed on the Gauss-Legendre quadrature nodes (these are thus
-       calculated only once, as opposed to three times).
+       <B>SHMultiply</B> will take two sets of spherical harmonic coefficients,
+       multiply them in the space domain, and expand the resulting field in
+       spherical harmonics using <B>SHExpandGLQ</B>. The spherical harmonic bandwidth
+       of the resulting field is LMAX1+LMAX2, where LMAX1 and LMAX2 are the
+       bandwidths of the input fields. If the optional parameter PRECOMP is
+       set, then the Legendre functions will be precomputed on the Gauss-
+       Legendre quadrature nodes (these are thus calculated only once, as
+       opposed to three times).
 
-       The employed spherical harmonic normalization and Condon-Shortley phase convention can be set
-       by the optional arguments NORM and CSPHASE; if not set, the default is to use geodesy 4-pi
-       normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
+       The employed spherical harmonic normalization and Condon-Shortley phase
+       convention can be set by the optional arguments NORM and CSPHASE; if
+       not set, the default is to use geodesy 4-pi normalized harmonics that
+       exclude the Condon-Shortley phase of (-1)^m.
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        SHOUT      (output) REAL*8, DIMENSION (2, LMAX1+LMAX2+1, LMAX1+LMAX2+1)
 
-                  The real spherical harmonic coefficients of the space domain mulitplication of SH1
-                  and SH2.
+                  The real spherical harmonic coefficients of the space domain
+                  mulitplication of SH1 and SH2.
 
        SH1        (input) REAL*8, DIMENSION (2, LMAX1+1, LMAX1+1)
 
@@ -92,26 +97,29 @@
 
        PRECOMP    (input) INTEGER
 
-                  If 1, the Legendre functions will be precomputed on the Gauss-Legendre quadrature
-                  nodes. If 0, they will not be precomputed.
+                  If 1, the Legendre functions will be precomputed on the
+                  Gauss-Legendre quadrature nodes. If 0, they will not be
+                  precomputed.
 
        NORM       (input) INTEGER, OPTIONAL
 
-                  1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized
-                  harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+                  1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt
+                  semi-normalized harmonics; 3 = unnormalized harmonics; 4 =
+                  orthonormal harmonics.
 
        CSPHASE    (input) INTEGER, OPTIONAL
 
-                  1 (default) = do not apply the Condon-Shortley phase factor to the associated
-                  Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the
-                  associated Legendre functions.
+                  1 (default) = do not apply the Condon-Shortley phase factor
+                  to the associated Legendre functions; -1 = append the
+                  Condon-Shortley phase factor of (-1)^m to the associated
+                  Legendre functions.
 
 
 </PRE>
 <H2 class="man">NOTES</H2 class="man"><PRE>
-       This routine makes use of the Gauss-Legendre quadrature routines <B>MakeGridGLQ</B> and <B>SHExpandGLQ</B>.
-       While these could be substituted by <B>MakeGridDH</B> and <B>SHExpandDH</B>, the routines would be twice as
-       slow.
+       This routine makes use of the Gauss-Legendre quadrature routines
+       <B>MakeGridGLQ</B> and <B>SHExpandGLQ</B>. While these could be substituted by
+       <B>MakeGridDH</B> and <B>SHExpandDH</B>, the routines would be twice as slow.
 
 
 </PRE>
@@ -125,14 +133,14 @@
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                                <B>SHMULTIPLY(1)</B>
+SHTOOLS 2.10                      2012-03-08                     <B>SHMULTIPLY(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

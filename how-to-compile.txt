@@ -28,7 +28,7 @@ and
 
 	make run-examples
 
-Note that the timing tests could take almost a day to complete. To
+Note that the timing tests could take an hour or two to complete. To
 delete the compiled archive, module files, object files, and example
 executables, use
 

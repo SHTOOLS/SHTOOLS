@@ -29,22 +29,25 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHBIAS(1)</B>                                    SHTOOLS 2.9                                   <B>SHBIAS(1)</B>
+<B>SHBIAS(1)</B>                        SHTOOLS 2.10                        <B>SHBIAS(1)</B>
 
 
 </PRE>
 <H2 class="man">SHBias</H2 class="man"><PRE>
-       SHBias - Calculate the (cross-)power spectrum expectation of a windowed function.
+       SHBias - Calculate the (cross-)power spectrum expectation of a windowed
+                function.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHBias ( SHH, LWIN, INCSPECTRA, LDATA, OUTCSPECTRA, SAVE_CG )
+       SUBROUTINE SHBias ( SHH, LWIN, INCSPECTRA, LDATA, OUTCSPECTRA, SAVE_CG
+                           )
 
-           REAL*8               SHH(LWIN+1), INCSPECTRA(LDATA+1), OUTCSPECTRA(*)
+           REAL*8               SHH(LWIN+1), INCSPECTRA(LDATA+1),
+                                OUTCSPECTRA(*)
 
            INTEGER              LWIN, LDATA
 
@@ -53,23 +56,27 @@
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHBias</B> will calculate the (cross-)power spectrum expectation of a function multiplied by a
-       localizing window. This is given by equation 35 of Wieczorek and Simons (2005) and equation
-       2.11 of Wieczorek and Simons (2007),
+       <B>SHBias</B> will calculate the (cross-)power spectrum expectation of a
+       function multiplied by a localizing window. This is given by equation
+       35 of Wieczorek and Simons (2005) and equation 2.11 of Wieczorek and
+       Simons (2007),
 
        &lt;SFG&gt; = Sum_{j=0}^L Shh Sum_{i=|l-j|}^{|l+j|} Sfg (C_{j0i0}^{l0})^2
 
-       where &lt;SFG&gt; is the expectation of the localized (cross-)power spectrum, Shh is the power
-       spectrum of the window bandlimited to degree L, Sfg is the global unwindowed (cross-)power
-       spectrum, and C is a Clebsch-Gordan coefficient. The Clebsch-Gordan coefficients are
-       calculated using a simple relationship to the Wigner 3-j symbols. The maximum calculated
-       degree of the windowed power spectrum expectation corresponds to the smaller of (LDATA+LWIN)
-       and SIZE(OUTCSPECTRA)-1. It is implicitly assumed that the power spectrum of INSPECTRUM is
-       zero beyond degree LDATA.
+       where &lt;SFG&gt; is the expectation of the localized (cross-)power spectrum,
+       Shh is the power spectrum of the window bandlimited to degree L, Sfg is
+       the global unwindowed (cross-)power spectrum, and C is a Clebsch-Gordan
+       coefficient. The Clebsch-Gordan coefficients are calculated using a
+       simple relationship to the Wigner 3-j symbols. The maximum calculated
+       degree of the windowed power spectrum expectation corresponds to the
+       smaller of (LDATA+LWIN) and SIZE(OUTCSPECTRA)-1. It is implicitly
+       assumed that the power spectrum of INSPECTRUM is zero beyond degree
+       LDATA.
 
-       If this routine is to be called several times using the same values of LWIN and LDATA, then
-       the Clebsch-Gordon coefficients can be precomputed and saved by setting the optional
-       parameter SAVE_CG equal to 1. To deallocate the saved memory, which is a matrix of size
+       If this routine is to be called several times using the same values of
+       LWIN and LDATA, then the Clebsch-Gordon coefficients can be precomputed
+       and saved by setting the optional parameter SAVE_CG equal to 1. To
+       deallocate the saved memory, which is a matrix of size
        (LWIN+LDATA,LWIN,2*LWIN+LDATA+1), set SAVE_CG equal to -1.
 
 
@@ -81,7 +88,8 @@
 
        LWIN          (input) INTEGER
 
-                     The spherical harmonic bandwidth of the localizing window.
+                     The spherical harmonic bandwidth of the localizing
+                     window.
 
        INCSPECTRA    (input) REAL*8, DIMENSION (LDATA+1)
 
@@ -89,50 +97,56 @@
 
        LDATA         (input) INTEGER
 
-                     The maximum degree of the global unwindowed power spectrum.
+                     The maximum degree of the global unwindowed power
+                     spectrum.
 
        OUTCSPECTRA   (output) REAL*8, DIMENSION (*)
 
-                     The expectation of the localized (cross-)power spectrum. The maximum spherical
-                     harmonic degree of the output is min(LDATA+LWIN, SIZE(OUTSCSPECTRA)-1).
+                     The expectation of the localized (cross-)power spectrum.
+                     The maximum spherical harmonic degree of the output is
+                     min(LDATA+LWIN, SIZE(OUTSCSPECTRA)-1).
 
        SAVE_CG       (input) INTEGER, OPTIONAL
 
-                     If set equal to 1, the Clebsch-Gordon coefficients will be precomputed and
-                     saved for future use (if LWIN or LDATA change, this will be recomputed). To
-                     deallocate the saved memory, set this parameter equal to 1. If set equal to 0
-                     (default), the Clebsch-Gordon coefficients will be recomputed for each call.
+                     If set equal to 1, the Clebsch-Gordon coefficients will
+                     be precomputed and saved for future use (if LWIN or LDATA
+                     change, this will be recomputed). To deallocate the saved
+                     memory, set this parameter equal to 1. If set equal to 0
+                     (default), the Clebsch-Gordon coefficients will be
+                     recomputed for each call.
 
 
 </PRE>
 <H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shpowerspectra(1)</B>, <B>shcrosspowerspectra(1)</B>, <B>wigner3j(1)</B>, <B>shreturntapers(1)</B>,
-       <B>shreturntapersm(1)</B>, <B>shbiasadmitcorr(1)</B>
+       <B>shpowerspectra(1)</B>, <B>shcrosspowerspectra(1)</B>, <B>wigner3j(1)</B>,
+       <B>shreturntapers(1)</B>, <B>shreturntapersm(1)</B>, <B>shbiasadmitcorr(1)</B>
 
        &lt;http://shtools.ipgp.fr/&gt;
 
 
 </PRE>
 <H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, <B>Geophys.</B> <B>J.</B>
-       <B>Int.</B>, 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.
+       Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the
+       sphere, <B>Geophys.</B> <B>J.</B> <B>Int.</B>, 162, 655-675,
+       doi:10.1111/j.1365-246X.2005.02687.x, 2005.
 
-       Wieczorek, M. A. and F. J. Minimum-variance multitaper spectral estimation on a sphere, <B>J.</B>
-       <B>Fourier</B> <B>Anal.</B> <B>Appl.</B>, 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
+       Wieczorek, M. A. and F. J. Minimum-variance multitaper spectral
+       estimation on a sphere, <B>J.</B> <B>Fourier</B> <B>Anal.</B> <B>Appl.</B>, 13, 665-692,
+       doi:10.1007/s00041-006-6904-1, 2007.
 
 
 </PRE>
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                                    <B>SHBIAS(1)</B>
+SHTOOLS 2.10                      2012-03-08                         <B>SHBIAS(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

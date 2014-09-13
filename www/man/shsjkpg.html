@@ -29,22 +29,23 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHSJKPG(1)</B>                                   SHTOOLS 2.9                                  <B>SHSJKPG(1)</B>
+<B>SHSJKPG(1)</B>                       SHTOOLS 2.10                       <B>SHSJKPG(1)</B>
 
 
 </PRE>
 <H2 class="man">SHSjkPG</H2 class="man"><PRE>
-       SHSjkPG - Calculate the expectation of the product of two functions, each multiplied by a
-                 different data taper, for a given spherical harmonic degree and two different
-                 angular orders.
+       SHSjkPG - Calculate the expectation of the product of two functions,
+                 each multiplied by a different data taper, for a given
+                 spherical harmonic degree and two different angular orders.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       COMPLEX*16 SHSjkPG ( INCSPECTRA, L, M, MPRIME, HJ_REAL, HK_REAL, MJ, MK, LWIN, HKCC )
+       COMPLEX*16 SHSjkPG ( INCSPECTRA, L, M, MPRIME, HJ_REAL, HK_REAL, MJ,
+                            MK, LWIN, HKCC )
 
            REAL*8    INCPECTRA(L+LWIN+1), HJ_REAL(LWIN+1), HK_REAL(LWIN+1)
 
@@ -53,20 +54,22 @@
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHSjkPG</B> will calculate the expectation of two functions (f and g), each localized by a
-       different data taper that is a solution of the spherical cap concentration problem, for a
-       given spherical harmonic degree and two different angular orders. As described in Wieczorek
-       and Simons (2006), this is the function
+       <B>SHSjkPG</B> will calculate the expectation of two functions (f and g), each
+       localized by a different data taper that is a solution of the spherical
+       cap concentration problem, for a given spherical harmonic degree and
+       two different angular orders. As described in Wieczorek and Simons
+       (2006), this is the function
 
              /    m(j)       mprime(k)* \
             |  Phi      Gamma            |
              \    l          l          /
 
-       The global cross-power spectrum of f and g is input as INCSPECTRA, and the real coefficients
-       of the two data tapers of angular order MJ and MK (obtained by a call to <B>SHReturnTapers</B>) are
-       specified by HJ_REAL and HK_REAL. If HKCC is set to 1, then the above function is calculated
-       as is. However, if this is set to 2, then the complex conjugate of the second localized
-       function is not taken.
+       The global cross-power spectrum of f and g is input as INCSPECTRA, and
+       the real coefficients of the two data tapers of angular order MJ and MK
+       (obtained by a call to <B>SHReturnTapers</B>) are specified by HJ_REAL and
+       HK_REAL. If HKCC is set to 1, then the above function is calculated as
+       is. However, if this is set to 2, then the complex conjugate of the
+       second localized function is not taken.
 
 
 </PRE>
@@ -77,7 +80,8 @@
 
        L             (input) INTEGER
 
-                     The spherical harmonic degree for which to calculate the expectation.
+                     The spherical harmonic degree for which to calculate the
+                     expectation.
 
        M             (input) INTEGER
 
@@ -85,17 +89,20 @@
 
        MPRIME        (input) INTEGER
 
-                     The angular order of the second localized function, Gamma.
+                     The angular order of the second localized function,
+                     Gamma.
 
        HJ_REAL       (input) REAL*8, DIMENSION (LWIN+1)
 
-                     The real spherical harmonic coefficients of angular order MJ used to localize
-                     the first function f. These are obtained by a call to <B>SHReturnTapers</B>.
+                     The real spherical harmonic coefficients of angular order
+                     MJ used to localize the first function f. These are
+                     obtained by a call to <B>SHReturnTapers</B>.
 
        HK_REAL       (input) REAL*8, DIMENSION (LWIN+1)
 
-                     The real spherical harmonic coefficients of angular order MK used to localize
-                     the second function g. These are obtained by a call to <B>SHReturnTapers</B>.
+                     The real spherical harmonic coefficients of angular order
+                     MK used to localize the second function g. These are
+                     obtained by a call to <B>SHReturnTapers</B>.
 
        MJ            (input) INTEGER
 
@@ -107,12 +114,14 @@
 
        LWIN          (input) INTEGER
 
-                     The spherical harmonic bandwidth of the localizing windows HJ_REAL and HK_REAL.
+                     The spherical harmonic bandwidth of the localizing
+                     windows HJ_REAL and HK_REAL.
 
        HKCC          (input) INTEGER
 
-                     If 1, the function described in the DESCRIPTION will be calculated as is. If 2,
-                     the second localized function Gamma will not have its complex conjugate taken.
+                     If 1, the function described in the DESCRIPTION will be
+                     calculated as is. If 2, the second localized function
+                     Gamma will not have its complex conjugate taken.
 
 
 </PRE>
@@ -124,22 +133,23 @@
 
 </PRE>
 <H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Wieczorek, M. A. and F. J. Simons, Minimum variance multitaper spectral analysis on the
-       sphere, <B>J.</B> <B>Fourier</B> <B>Analy.</B> <B>Appl.</B>, submitted manuscript, 2006.
+       Wieczorek, M. A. and F. J. Simons, Minimum variance multitaper spectral
+       analysis on the sphere, <B>J.</B> <B>Fourier</B> <B>Analy.</B> <B>Appl.</B>, submitted manuscript,
+       2006.
 
 
 </PRE>
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                                   <B>SHSJKPG(1)</B>
+SHTOOLS 2.10                      2012-03-08                        <B>SHSJKPG(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

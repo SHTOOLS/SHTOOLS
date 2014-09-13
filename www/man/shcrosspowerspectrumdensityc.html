@@ -29,60 +29,66 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gspectra.html" class="dir">Global Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHCROSSPOWERSPECTRUMDENSITYC(1)</B>              SHTOOLS 2.9             <B>SHCROSSPOWERSPECTRUMDENSITYC(1)</B>
+<B>SHCROSSPOWERSPECTRUMDENSITYC(1)</B>  SHTOOLS 2.10  <B>SHCROSSPOWERSPECTRUMDENSITYC(1)</B>
 
 
 </PRE>
 <H2 class="man">SHCrossPowerSpectrumDensityC</H2 class="man"><PRE>
-       SHCrossPowerSpectrumDensityC - Compute the cross-power spectral density of two complex
-                                      functions.
+       SHCrossPowerSpectrumDensityC - Compute the cross-power spectral density
+                                      of two complex functions.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
        SUBROUTINE SHCrossPowerSpectrumDensityC ( C1, C2, LMAX, CSPECTRUM )
 
-           COMPLEX*16    C1(2, LMAX+1, LMAX+1), C2(2, LMAX+1, LMAX+1), CSPECTRUM(LMAX+1)
+           COMPLEX*16    C1(2, LMAX+1, LMAX+1), C2(2, LMAX+1, LMAX+1),
+                         CSPECTRUM(LMAX+1)
 
            INTEGER       LMAX
 
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHCrossPowerSpectrumDensityC</B> will calculate the cross-power spectral density of two functions
-       expressed in complex spherical harmonics. For a given degree L, this is explicitly calculated
-       as:
+       <B>SHCrossPowerSpectrumDensityC</B> will calculate the cross-power spectral
+       density of two functions expressed in complex spherical harmonics. For
+       a given degree L, this is explicitly calculated as:
 
-       Sum_{i=1}^2 Sum_{m=0}^L C1(i, L+1, m+1) * conjg[C2(i, L+1, m+1)] / (2L + 1).
+       Sum_{i=1}^2 Sum_{m=0}^L C1(i, L+1, m+1) * conjg[C2(i, L+1, m+1)] / (2L
+       + 1).
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        C1            (input) COMPLEX*16, DIMENSION (2, LMAX+1, LMAX+1)
 
-                     The first function expressed in complex spherical harmonics.
+                     The first function expressed in complex spherical
+                     harmonics.
 
        C2            (input) COMPLEX*16, DIMENSION (2, LMAX+1, LMAX+1)
 
-                     The second function expressed in complex spherical harmonics.
+                     The second function expressed in complex spherical
+                     harmonics.
 
        LMAX          (input) INTEGER
 
-                     The maximum spherical harmonic degree for which the cross power spectral
-                     density will be calculated.
+                     The maximum spherical harmonic degree for which the cross
+                     power spectral density will be calculated.
 
        CSPECTRUM     (output) COMPLEX*16, DIMENSION (LMAX+1)
 
-                     The cross-power spectral density of the two complex functions.
+                     The cross-power spectral density of the two complex
+                     functions.
 
 
 </PRE>
 <H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shpowerlc(1)</B>, <B>shpowerdensitylc(1)</B>, <B>shcrosspowerc(1)</B>, <B>shcrosspowerdensitylc(1)</B>,
-       <B>shpowerspectrumc(1)</B>, <B>shpowerspectrumdensityc(1)</B>, <B>shcrosspowerspectrumc(1)</B>, <B>shadmitcorr(1)</B>
+       <B>shpowerlc(1)</B>, <B>shpowerdensitylc(1)</B>, <B>shcrosspowerc(1)</B>,
+       <B>shcrosspowerdensitylc(1)</B>, <B>shpowerspectrumc(1)</B>,
+       <B>shpowerspectrumdensityc(1)</B>, <B>shcrosspowerspectrumc(1)</B>, <B>shadmitcorr(1)</B>
 
        &lt;http://shtools.ipgp.fr/&gt;
 
@@ -91,14 +97,14 @@
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08              <B>SHCROSSPOWERSPECTRUMDENSITYC(1)</B>
+SHTOOLS 2.10                      2012-03-08   <B>SHCROSSPOWERSPECTRUMDENSITYC(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gspectra.html" class="dir">Global Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

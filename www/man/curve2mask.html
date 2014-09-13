@@ -29,16 +29,17 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>CURVE2MASK(1)</B>                                SHTOOLS 2.9                               <B>CURVE2MASK(1)</B>
+<B>CURVE2MASK(1)</B>                    SHTOOLS 2.10                    <B>CURVE2MASK(1)</B>
 
 
 </PRE>
 <H2 class="man">Curve2Mask</H2 class="man"><PRE>
-       Curve2Mask - Given a set of latitude and longitude coordinates representing a closed curve,
-                    determine if each node of a gridded mask is inside or outside of the curve.
+       Curve2Mask - Given a set of latitude and longitude coordinates
+                    representing a closed curve, determine if each node of a
+                    gridded mask is inside or outside of the curve.
 
 
 </PRE>
@@ -46,43 +47,47 @@
        SUBROUTINE Curve2Mask (
                               MASK_DH, N, SAMPLING, PROFILE, NPROFILE, NP )
 
-           INTEGER             MASK_DH (N, N) or (N, 2*N), N, SAMPLING, NPROFILE, NP
+           INTEGER             MASK_DH (N, N) or (N, 2*N), N, SAMPLING,
+                               NPROFILE, NP
 
            REAL*8              PROFILE(NPROFILE, 2)
 
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>Curve2Mask</B> will take a list of latitude and longitude coordinates that represent a single
-       closed curve, and output a mask MASK_DH that contains 1s and 0s where the grid nodes are
-       inside and outside of the curve, respectively. MASK_DH must be sampled according to the
-       Driscoll and Healy (1994) sampling theorem with N samples in latitude, and either possess N
-       samples in longitude (SAMPLING=1) or 2*N samples in longitude (SAMPLING=2). It is necessary
-       to specify a single point as being inside or outside of the curve, and for this the value at
-       the North pole (90N, 0E) must be specified as either 0 or 1.
+       <B>Curve2Mask</B> will take a list of latitude and longitude coordinates that
+       represent a single closed curve, and output a mask MASK_DH that
+       contains 1s and 0s where the grid nodes are inside and outside of the
+       curve, respectively. MASK_DH must be sampled according to the Driscoll
+       and Healy (1994) sampling theorem with N samples in latitude, and
+       either possess N samples in longitude (SAMPLING=1) or 2*N samples in
+       longitude (SAMPLING=2). It is necessary to specify a single point as
+       being inside or outside of the curve, and for this the value at the
+       North pole (90N, 0E) must be specified as either 0 or 1.
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        DH_MASK   (output) INTEGER, DIMENSION (N, N) or DIMENSION (N, 2*N)
 
-                 A Driscoll and Healy (1994) sampled grid describing the concentration region R. All
-                 elements on output will either be 1 (for inside the concentration region) or 0 (for
-                 outside R).
+                 A Driscoll and Healy (1994) sampled grid describing the
+                 concentration region R. All elements on output will either be
+                 1 (for inside the concentration region) or 0 (for outside R).
 
        N         (input) INTEGER
 
-                 The number of latitudinal samples in DH_MASK. The effective spherical harmonic
-                 bandwidth of this grid is L = N/2 - 1.
+                 The number of latitudinal samples in DH_MASK. The effective
+                 spherical harmonic bandwidth of this grid is L = N/2 - 1.
 
        SAMPLING  (input) INTEGER
 
-                 For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x 2N samples.
+                 For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x 2N
+                 samples.
 
        PROFILE   (input) REAL*8, DIMENSION (NPROFILE, 2)
 
-                 List of latitude (:,1) and longitude (:,2) coordinates in DEGREES specifying a
-                 single closed curve.
+                 List of latitude (:,1) and longitude (:,2) coordinates in
+                 DEGREES specifying a single closed curve.
 
        NPROFILE  (input) INTEGER
 
@@ -90,23 +95,25 @@
 
        NP        (input) INTEGER
 
-                 The value of the returned mask at the North pole (90N, 0E). If the North pole is
-                 outside of the concentration region, set this to 0; if it is inside the
-                 concentration region, set this to 1.
+                 The value of the returned mask at the North pole (90N, 0E).
+                 If the North pole is outside of the concentration region, set
+                 this to 0; if it is inside the concentration region, set this
+                 to 1.
 
 
 </PRE>
 <H2 class="man">NOTES</H2 class="man"><PRE>
-       This routine saves the three-term recursion factors and square roots of the integers the
-       first time being called. If subsequent calls possess the same value of LMAX, these will not
-       be recomputed. If you wish to deallocate this memory, which is an array of length
-       (LMAX+1)*(LMAX+2), recall this routine with LMAX=-1.
+       This routine saves the three-term recursion factors and square roots of
+       the integers the first time being called. If subsequent calls possess
+       the same value of LMAX, these will not be recomputed. If you wish to
+       deallocate this memory, which is an array of length (LMAX+1)*(LMAX+2),
+       recall this routine with LMAX=-1.
 
 
 </PRE>
 <H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere,
-       <B>Adv.</B> <B>Appl.</B> <B>Math.</B>, 15, 202-250, 1994.
+       Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and
+       convolutions on the 2-sphere, <B>Adv.</B> <B>Appl.</B> <B>Math.</B>, 15, 202-250, 1994.
 
 
 </PRE>
@@ -120,14 +127,14 @@
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                                <B>CURVE2MASK(1)</B>
+SHTOOLS 2.10                      2012-03-08                     <B>CURVE2MASK(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

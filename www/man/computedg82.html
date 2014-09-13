@@ -29,16 +29,17 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>COMPUTEDG82(1)</B>                               SHTOOLS 2.9                              <B>COMPUTEDG82(1)</B>
+<B>COMPUTEDG82(1)</B>                   SHTOOLS 2.10                   <B>COMPUTEDG82(1)</B>
 
 
 </PRE>
 <H2 class="man">ComputeDG82</H2 class="man"><PRE>
-       ComputeDG82 -  Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with
-                      the space-concentration kernel of a spherical cap.
+       ComputeDG82 -  Compute the tridiagonal matrix of Grunbaum et al. (1982)
+                      that commutes with the space-concentration kernel of a
+                      spherical cap.
 
 
 </PRE>
@@ -52,23 +53,27 @@
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>ComputeDG82</B> will calculate the tridiagonal matrix of Grunbaum et al. (1982) that commutes
-       with the space-concentration kernel of order M of a spherical cap. The eigenfunctions of this
-       matrix correspond to a family of orthogonal windowing functions, and the eigenvalues
-       correspond to the window's concentration factor (i.e., the power of the window within THETA0
-       divided by the total power of the function). It is implicitly assumed that the employed
-       spherical harmonic functions are normalized to the same value for all degrees and angular
-       orders, which is the case for both the geodesy 4-pi and orthonormalized harmonics. The
-       returned matrix is symmetric, and the first element corresponds to (abs(M), abs(M)) as the
-       values for elements less than this are identically zero.
+       <B>ComputeDG82</B> will calculate the tridiagonal matrix of Grunbaum et al.
+       (1982) that commutes with the space-concentration kernel of order M of
+       a spherical cap. The eigenfunctions of this matrix correspond to a
+       family of orthogonal windowing functions, and the eigenvalues
+       correspond to the window's concentration factor (i.e., the power of the
+       window within THETA0 divided by the total power of the function). It is
+       implicitly assumed that the employed spherical harmonic functions are
+       normalized to the same value for all degrees and angular orders, which
+       is the case for both the geodesy 4-pi and orthonormalized harmonics.
+       The returned matrix is symmetric, and the first element corresponds to
+       (abs(M), abs(M)) as the values for elements less than this are
+       identically zero.
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        D0        (output) REAL*8, DIMENSION (LMAX-ABS(M)+1, LMAX-ABS(M)+1)
 
-                 The tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-
-                 concentration kernel of order M of a spherical cap.
+                 The tridiagonal matrix of Grunbaum et al. (1982) that
+                 commutes with the space-concentration kernel of order M of a
+                 spherical cap.
 
        LMAX      (input) INTEGER
 
@@ -92,26 +97,26 @@
 
 </PRE>
 <H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Grunbaum, F.A., L. Longhi, and M. Perlstadt, Differential operators commuting with finite
-       convolution integral operators: some non-abelian examples, <B>SIAM</B> <B>J.</B> <B>Appl.</B> <B>Math.</B>, 42, 941-955,
-       1982.
+       Grunbaum, F.A., L. Longhi, and M. Perlstadt, Differential operators
+       commuting with finite convolution integral operators: some non-abelian
+       examples, <B>SIAM</B> <B>J.</B> <B>Appl.</B> <B>Math.</B>, 42, 941-955, 1982.
 
-       Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, <B>SIAM</B>
-       <B>Review</B>, 48, 504-536, 2006.
+       Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral
+       concentration on a sphere, <B>SIAM</B> <B>Review</B>, 48, 504-536, 2006.
 
 
 </PRE>
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                               <B>COMPUTEDG82(1)</B>
+SHTOOLS 2.10                      2012-03-08                    <B>COMPUTEDG82(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

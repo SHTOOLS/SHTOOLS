@@ -29,10 +29,10 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../other.html" class="dir">Other</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../other.html" class="dir">Other</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>WIGNER3J(1)</B>                                  SHTOOLS 2.9                                 <B>WIGNER3J(1)</B>
+<B>WIGNER3J(1)</B>                      SHTOOLS 2.10                      <B>WIGNER3J(1)</B>
 
 
 </PRE>
@@ -56,43 +56,48 @@
                / J  J2 J3 \
                \ M1 M2 M3 /
 
-       for all allowable values of J. The returned values in the array W3J are calculated only for
-       the limits
+       for all allowable values of J. The returned values in the array W3J are
+       calculated only for the limits
 
                  JMIN = max(|J2-J3|, M1|)  and
 
                  JMAX = J2 + J3.
 
-       To be non-zero, M1 + M2 + M3 must equal 0. It is assumed that all Js and Ms are integers.
-       Returned values have a relative error less than ~1.d-8 when J2 and J3 are less than about 100
-       (see NOTES below). In practice, this routine is probably usable up to about 165.
+       To be non-zero, M1 + M2 + M3 must equal 0. It is assumed that all Js
+       and Ms are integers. Returned values have a relative error less than
+       ~1.d-8 when J2 and J3 are less than about 100 (see NOTES below). In
+       practice, this routine is probably usable up to about 165.
 
-       The employed algorithm is based upon the stable non-linear recurrence relations of Luscombe
-       and Luban (1998) for the "non classical" regions near JMIN and JMAX. The direction of the
-       iteration starts from low values of J to high values, but when abs(W3J(J+2)/W3J(J)) is less
-       than one, the iteration will restart from high to low values. For the classical region, the
-       standard three term recursion relationship is used (e.g., Schulten and Gordon 1975). As this
-       three term recursion can lead to overflows, the values are rescaled by a factor "scalef"
-       whenever the absolute value of the 3j coefficient becomes greater than unity.  More efficient
-       algorithms probably exist for specific cases (for instance, when all Ms are zero).
+       The employed algorithm is based upon the stable non-linear recurrence
+       relations of Luscombe and Luban (1998) for the "non classical" regions
+       near JMIN and JMAX. The direction of the iteration starts from low
+       values of J to high values, but when abs(W3J(J+2)/W3J(J)) is less than
+       one, the iteration will restart from high to low values. For the
+       classical region, the standard three term recursion relationship is
+       used (e.g., Schulten and Gordon 1975). As this three term recursion can
+       lead to overflows, the values are rescaled by a factor "scalef"
+       whenever the absolute value of the 3j coefficient becomes greater than
+       unity.  More efficient algorithms probably exist for specific cases
+       (for instance, when all Ms are zero).
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        W3J       (output) REAL*8, DIMENSION (J2+J3+1)
 
-                 An array of the Wigner-3j symbols evaluated for all allowable values of J. The
-                 minimum and maximum values of J are given by JMIN and JMAX.
+                 An array of the Wigner-3j symbols evaluated for all allowable
+                 values of J. The minimum and maximum values of J are given by
+                 JMIN and JMAX.
 
        JMIN      (output) INTEGER
 
-                 The minimum value of J in the array W3J. This corresponds to the first element of
-                 W3J.
+                 The minimum value of J in the array W3J. This corresponds to
+                 the first element of W3J.
 
        JMAX      (output) INTEGER
 
-                 The maximum value of J in the array W3J. This corresponds to the last non-zero
-                 element of W3J.
+                 The maximum value of J in the array W3J. This corresponds to
+                 the last non-zero element of W3J.
 
        J2        (input) INTEGER
 
@@ -117,13 +122,16 @@
 
 </PRE>
 <H2 class="man">NOTES</H2 class="man"><PRE>
-       The results of this routine have been verified against the same routine run in quadruple
-       precision. For 1.e7 acceptable random values of J2, J3, M2, and M3 between -200 and 200, the
-       relative error was calculated only for those 3j coefficients that had an absolute value
-       greater than 1.d-17 (values smaller than this are for all practical purposed zero, and can be
-       heavily affected by machine roundoff errors or underflow). 853 combinations of parameters
-       were found to have relative errors greater than 1.d-8. Here I list the minimum value of
-       max(J2,J3) for different ranges of error, as well as the number of times this error occurred:
+       The results of this routine have been verified against the same routine
+       run in quadruple precision. For 1.e7 acceptable random values of J2,
+       J3, M2, and M3 between -200 and 200, the relative error was calculated
+       only for those 3j coefficients that had an absolute value greater than
+       1.d-17 (values smaller than this are for all practical purposed zero,
+       and can be heavily affected by machine roundoff errors or underflow).
+       853 combinations of parameters were found to have relative errors
+       greater than 1.d-8. Here I list the minimum value of max(J2,J3) for
+       different ranges of error, as well as the number of times this error
+       occurred:
 
             (103) ; 1.d-7 &lt; error  &lt;=1.d-8 ; Number of occurrences = 483
 
@@ -133,18 +141,20 @@
 
             (167) 1.d-4 &lt; error &lt;= 1.d-5 ; Number of occurrences = 36
 
-       Many times (maybe always), the large relative errors occur when the 3j coefficient changes
-       sign and is very close to zero (i.e., adjacent values are about 1.e7 times greater in
-       magnitude). Thus, if one does not need to know highly accurate values of the 3j coefficients
-       when they are almost zero (i.e., ~1.e-10) then this routine is probably usable up to about
-       160.
+       Many times (maybe always), the large relative errors occur when the 3j
+       coefficient changes sign and is very close to zero (i.e., adjacent
+       values are about 1.e7 times greater in magnitude). Thus, if one does
+       not need to know highly accurate values of the 3j coefficients when
+       they are almost zero (i.e., ~1.e-10) then this routine is probably
+       usable up to about 160.
 
-       These results have also been verified for parameter values less than 100 using a code based
-       on the algorith of de Blanc (1987), which was originally coded by Olav van Genabeek, and
-       modified by M. Fang. (This code was run in quadruple precision and only calculates one
-       coefficient for each call.) Maximum relative errors between the two routines were less than
-       1.d-8 for a large number of values (again, only 3j coefficients greater than 1.d-17 were
-       considered here).
+       These results have also been verified for parameter values less than
+       100 using a code based on the algorith of de Blanc (1987), which was
+       originally coded by Olav van Genabeek, and modified by M. Fang. (This
+       code was run in quadruple precision and only calculates one coefficient
+       for each call.) Maximum relative errors between the two routines were
+       less than 1.d-8 for a large number of values (again, only 3j
+       coefficients greater than 1.d-17 were considered here).
 
 
 </PRE>
@@ -154,26 +164,26 @@
 
 </PRE>
 <H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Luscombe, J. J., and M. Luban, Simplified recursive algorithm for Wigner 3j and 6j symbols,
-       <B>Phys.</B> <B>Rev.</B> <B>E</B>, 57, 7274-7277, 1998.
+       Luscombe, J. J., and M. Luban, Simplified recursive algorithm for
+       Wigner 3j and 6j symbols, <B>Phys.</B> <B>Rev.</B> <B>E</B>, 57, 7274-7277, 1998.
 
-       Schulten, K., and R. G. Gordon, Exact recursive evaluation of 3j-coefficients and
-       6j-coefficients for quantum-mechanical coupling of angular momenta, <B>J.</B> <B>Math.</B> <B>Phys.</B>, 16,
-       1961-1970, 1975.
+       Schulten, K., and R. G. Gordon, Exact recursive evaluation of
+       3j-coefficients and 6j-coefficients for quantum-mechanical coupling of
+       angular momenta, <B>J.</B> <B>Math.</B> <B>Phys.</B>, 16, 1961-1970, 1975.
 
 
 </PRE>
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                                  <B>WIGNER3J(1)</B>
+SHTOOLS 2.10                      2012-03-08                       <B>WIGNER3J(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../other.html" class="dir">Other</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../other.html" class="dir">Other</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

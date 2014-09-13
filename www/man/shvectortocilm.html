@@ -29,16 +29,17 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHVECTORTOCILM(1)</B>                            SHTOOLS 2.9                           <B>SHVECTORTOCILM(1)</B>
+<B>SHVECTORTOCILM(1)</B>                SHTOOLS 2.10                <B>SHVECTORTOCILM(1)</B>
 
 
 </PRE>
 <H2 class="man">SHVectorToCilm</H2 class="man"><PRE>
-       SHVectorToCilm - Convert a 1-dimensional indexed vector of real spherical harmonic
-                        coefficients to a three-dimensional array.
+       SHVectorToCilm - Convert a 1-dimensional indexed vector of real
+                        spherical harmonic coefficients to a three-dimensional
+                        array.
 
 
 </PRE>
@@ -52,20 +53,23 @@
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHVectorToCilm</B> will convert a 1-dimensional indexed vector of real spherical harmonic
-       coefficients to a three-dimensional array.  The degree L, order M, and I (1 = cosine, 2 =
-       sine) corresponds to the index 1 + L**2 + (I-1)*L + M.
+       <B>SHVectorToCilm</B> will convert a 1-dimensional indexed vector of real
+       spherical harmonic coefficients to a three-dimensional array.  The
+       degree L, order M, and I (1 = cosine, 2 = sine) corresponds to the
+       index 1 + L**2 + (I-1)*L + M.
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        VECTOR       (input) REAL*8, DIMENSION ( (LMAX+1)**2 )
 
-                    The input 1-D indexed array of real spherical harmonic coefficients.
+                    The input 1-D indexed array of real spherical harmonic
+                    coefficients.
 
        CILM         (output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
 
-                    The 3-D arrary of output real spherical harmonic coefficients.
+                    The 3-D arrary of output real spherical harmonic
+                    coefficients.
 
        LMAX         (input) INTEGER
 
@@ -74,7 +78,8 @@
 
 </PRE>
 <H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shvectortocilm(1)</B>, <B>yilmindex(1)</B>, <B>shctor(1)</B>, <B>shrtoc(1)</B>, <B>shcilmtocindex(1)</B>, <B>shcindextocilm(1)</B>
+       <B>shvectortocilm(1)</B>, <B>yilmindex(1)</B>, <B>shctor(1)</B>, <B>shrtoc(1)</B>,
+       <B>shcilmtocindex(1)</B>, <B>shcindextocilm(1)</B>
 
        &lt;http://shtools.ipgp.fr/&gt;
 
@@ -83,14 +88,14 @@
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                            <B>SHVECTORTOCILM(1)</B>
+SHTOOLS 2.10                      2012-03-08                 <B>SHVECTORTOCILM(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

@@ -29,15 +29,16 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../legendre.html" class="dir">Legendre Functions</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../legendre.html" class="dir">Legendre Functions</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>PLSCHMIDT_D1(1)</B>                              SHTOOLS 2.9                             <B>PLSCHMIDT_D1(1)</B>
+<B>PLSCHMIDT_D1(1)</B>                  SHTOOLS 2.10                  <B>PLSCHMIDT_D1(1)</B>
 
 
 </PRE>
 <H2 class="man">PlSchmidt_d1</H2 class="man"><PRE>
-       PlSchmidt_d1 - Compute all the Schmidt-normalized Legendre polynomials and first derivatives.
+       PlSchmidt_d1 - Compute all the Schmidt-normalized Legendre polynomials
+                      and first derivatives.
 
 
 </PRE>
@@ -51,12 +52,14 @@
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>PlSchmidt</B><B>_</B><B>d1</B> will calculate all of the Schmidt-normalized Legendre polynomials and first
-       derivatives up to degree LMAX for a given argument. These are calculated using a standard
-       three-term recursion formula, and the integral of the Schmidt-normalized Legendre polynomials
-       over the interval [-1, 1] is 2/(2L+1). Note that the derivative of the Legendre polynomials
-       is calculated with respect to its arguement Z, and not latitude or colatitude. If
-       Z=cos(theta), where theta is the colatitude, then it is only necessary to multiply DP by
+       <B>PlSchmidt</B><B>_</B><B>d1</B> will calculate all of the Schmidt-normalized Legendre
+       polynomials and first derivatives up to degree LMAX for a given
+       argument. These are calculated using a standard three-term recursion
+       formula, and the integral of the Schmidt-normalized Legendre
+       polynomials over the interval [-1, 1] is 2/(2L+1). Note that the
+       derivative of the Legendre polynomials is calculated with respect to
+       its arguement Z, and not latitude or colatitude. If Z=cos(theta), where
+       theta is the colatitude, then it is only necessary to multiply DP by
        -sin(theta) to obtain the derivative with respect to theta.
 
 
@@ -64,17 +67,19 @@
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        P         (output) REAL*8, DIMENSION (LMAX+1)
 
-                 An array of Schmidt-normalized Legendre polynomials up to degree LMAX. Degree L
-                 corresponds to array index L+1.
+                 An array of Schmidt-normalized Legendre polynomials up to
+                 degree LMAX. Degree L corresponds to array index L+1.
 
        DP        (output) REAL*8, DIMENSION (LMAX+1)
 
-                 An array of the first derivatives of the Schmidt-normalized Legendre polynomials up
-                 to degree LMAX. Degree L corresponds to array index L+1.
+                 An array of the first derivatives of the Schmidt-normalized
+                 Legendre polynomials up to degree LMAX. Degree L corresponds
+                 to array index L+1.
 
        LMAX      (input) INTEGER
 
-                 The maximum degree of the Legendre polynomials to be computed.
+                 The maximum degree of the Legendre polynomials to be
+                 computed.
 
        Z         (input) REAL*8
 
@@ -83,9 +88,9 @@
 
 </PRE>
 <H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>plbar(1)</B>, <B>plbar_d1(1)</B>, <B>plmbar(1)</B>, <B>plmbar_d1(1)</B>, <B>plon(1)</B>, <B>plon_d1(1)</B>, <B>plmon(1)</B>, <B>plmon_d1(1)</B>,
-       <B>plschmidt(1)</B>, <B>plmschmidt(1)</B>, <B>plmschmidt_d1(1)</B>, <B>plegendre(1)</B>, <B>plegendre_d1(1)</B>, <B>plegendrea(1)</B>,
-       <B>plegendrea_d1(1)</B>
+       <B>plbar(1)</B>, <B>plbar_d1(1)</B>, <B>plmbar(1)</B>, <B>plmbar_d1(1)</B>, <B>plon(1)</B>, <B>plon_d1(1)</B>,
+       <B>plmon(1)</B>, <B>plmon_d1(1)</B>, <B>plschmidt(1)</B>, <B>plmschmidt(1)</B>, <B>plmschmidt_d1(1)</B>,
+       <B>plegendre(1)</B>, <B>plegendre_d1(1)</B>, <B>plegendrea(1)</B>, <B>plegendrea_d1(1)</B>
 
        &lt;http://shtools.ipgp.fr/&gt;
 
@@ -94,14 +99,14 @@
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                              <B>PLSCHMIDT_D1(1)</B>
+SHTOOLS 2.10                      2012-03-08                   <B>PLSCHMIDT_D1(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../legendre.html" class="dir">Legendre Functions</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../legendre.html" class="dir">Legendre Functions</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

@@ -29,16 +29,17 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gravmag.html" class="dir">Gravity and Magnetics</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHMAGPOWERL(1)</B>                               SHTOOLS 2.9                              <B>SHMAGPOWERL(1)</B>
+<B>SHMAGPOWERL(1)</B>                   SHTOOLS 2.10                   <B>SHMAGPOWERL(1)</B>
 
 
 </PRE>
 <H2 class="man">SHMagPowerL</H2 class="man"><PRE>
-       SHMagPowerL - Compute the power of the magnetic field for a single degree L given the Schmidt
-                     seminormalized magnetic potential spherical harmonic coefficients.
+       SHMagPowerL - Compute the power of the magnetic field for a single
+                     degree L given the Schmidt seminormalized magnetic
+                     potential spherical harmonic coefficients.
 
 
 </PRE>
@@ -52,9 +53,10 @@
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHMagPowerL</B> will calculate the power of the magnetic field at radius R for a single degree L
-       given the magnetic potential Schmidt seminormalized spherical harmonic coefficients C
-       evaluated at radius A. This is explicitly calculated as:
+       <B>SHMagPowerL</B> will calculate the power of the magnetic field at radius R
+       for a single degree L given the magnetic potential Schmidt
+       seminormalized spherical harmonic coefficients C evaluated at radius A.
+       This is explicitly calculated as:
 
         (L+1) (A/R)**(2L+4) Sum_{m=0}^L [ C(1, L+1, m+1)**2 + C(2, L+1, m+1)**2 ].
 
@@ -63,12 +65,13 @@
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
        C         (input) REAL*8, DIMENSION (2, L+1, L+1)
 
-                 The Schmidt seminormalized spherical harmonic coefficients of the magnetic
-                 potential.
+                 The Schmidt seminormalized spherical harmonic coefficients of
+                 the magnetic potential.
 
        A         (input) REAL*8
 
-                 The reference radius of the magnetic potential spherical harmonic coefficients.
+                 The reference radius of the magnetic potential spherical
+                 harmonic coefficients.
 
        R         (input) REAL*8
 
@@ -76,14 +79,15 @@
 
        L         (input) INTEGER
 
-                 The spherical harmonic degree for which the power will be calculated.
+                 The spherical harmonic degree for which the power will be
+                 calculated.
 
 
 </PRE>
 <H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shmagpowerspectrum(1)</B>, <B>shpowerdensityl(1)</B>, <B>shcrosspowerl(1)</B>, <B>shcrosspowerdensityl(1)</B>,
-       <B>shpowerspectrum(1)</B>, <B>shpowerspectrumdensity(1)</B>, <B>shcrosspowerspectrum(1)</B>,
-       <B>shcrosspowerspectrumdensity(1)</B>, <B>shadmitcorr(1)</B>
+       <B>shmagpowerspectrum(1)</B>, <B>shpowerdensityl(1)</B>, <B>shcrosspowerl(1)</B>,
+       <B>shcrosspowerdensityl(1)</B>, <B>shpowerspectrum(1)</B>, <B>shpowerspectrumdensity(1)</B>,
+       <B>shcrosspowerspectrum(1)</B>, <B>shcrosspowerspectrumdensity(1)</B>, <B>shadmitcorr(1)</B>
 
        &lt;http://shtools.ipgp.fr/&gt;
 
@@ -92,14 +96,14 @@
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                               <B>SHMAGPOWERL(1)</B>
+SHTOOLS 2.10                      2012-03-08                    <B>SHMAGPOWERL(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gravmag.html" class="dir">Gravity and Magnetics</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

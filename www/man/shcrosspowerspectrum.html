@@ -29,30 +29,33 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gspectra.html" class="dir">Global Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHCROSSPOWERSPECTRUM(1)</B>                      SHTOOLS 2.9                     <B>SHCROSSPOWERSPECTRUM(1)</B>
+<B>SHCROSSPOWERSPECTRUM(1)</B>          SHTOOLS 2.10          <B>SHCROSSPOWERSPECTRUM(1)</B>
 
 
 </PRE>
 <H2 class="man">SHCrossPowerSpectrum</H2 class="man"><PRE>
-       SHCrossPowerSpectrum - Compute the cross-power spectrum of two real functions.
+       SHCrossPowerSpectrum - Compute the cross-power spectrum of two real
+                              functions.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
        SUBROUTINE SHCrossPowerSpectrum ( C1, C2, LMAX, CSPECTRUM )
 
-           REAL*8    C1(2, LMAX+1, LMAX+1), C2(2, LMAX+1, LMAX+1), CSPECTRUM(LMAX+1)
+           REAL*8    C1(2, LMAX+1, LMAX+1), C2(2, LMAX+1, LMAX+1),
+                     CSPECTRUM(LMAX+1)
 
            INTEGER   LMAX
 
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHCrossPowerSpectrum</B> will calculate the cross-power spectrum of two functions expressed in
-       real spherical harmonics. For a given degree L, this is explicitly calculated as:
+       <B>SHCrossPowerSpectrum</B> will calculate the cross-power spectrum of two
+       functions expressed in real spherical harmonics. For a given degree L,
+       this is explicitly calculated as:
 
        Sum_{i=1}^2 Sum_{m=0}^L C1(i, L+1, m+1) * C2(i, L+1, m+1) .
 
@@ -69,8 +72,8 @@
 
        LMAX      (input) INTEGER
 
-                 The maximum spherical harmonic degree for which the cross power spectrum will be
-                 calculated.
+                 The maximum spherical harmonic degree for which the cross
+                 power spectrum will be calculated.
 
        CSPECTRUM (output) REAL*8, DIMENSION (LMAX+1)
 
@@ -79,8 +82,9 @@
 
 </PRE>
 <H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shpowerl(1)</B>, <B>shpowerdensityl(1)</B>, <B>shcrosspower(1)</B>, <B>shcrosspowerdensityl(1)</B>,
-       <B>shpowerspectrum(1)</B>, <B>shpowerspectrumdensity(1)</B>, <B>shcrosspowerspectrumdensity(1)</B>, <B>shadmitcorr(1)</B>
+       <B>shpowerl(1)</B>, <B>shpowerdensityl(1)</B>, <B>shcrosspower(1)</B>,
+       <B>shcrosspowerdensityl(1)</B>, <B>shpowerspectrum(1)</B>, <B>shpowerspectrumdensity(1)</B>,
+       <B>shcrosspowerspectrumdensity(1)</B>, <B>shadmitcorr(1)</B>
 
        &lt;http://shtools.ipgp.fr/&gt;
 
@@ -89,14 +93,14 @@
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                      <B>SHCROSSPOWERSPECTRUM(1)</B>
+SHTOOLS 2.10                      2012-03-08           <B>SHCROSSPOWERSPECTRUM(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../gspectra.html" class="dir">Global Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>

@@ -29,37 +29,42 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHRETURNTAPERS(1)</B>                            SHTOOLS 2.9                           <B>SHRETURNTAPERS(1)</B>
+<B>SHRETURNTAPERS(1)</B>                SHTOOLS 2.10                <B>SHRETURNTAPERS(1)</B>
 
 
 </PRE>
 <H2 class="man">SHReturnTapers</H2 class="man"><PRE>
-       SHReturnTapers - Calculate the eigenfunctions of the spherical-cap concentration problem.
+       SHReturnTapers - Calculate the eigenfunctions of the spherical-cap
+                        concentration problem.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHReturnTapers ( THETA0, LMAX, TAPERS, EIGENVALUES, TAPER_ORDER )
+       SUBROUTINE SHReturnTapers ( THETA0, LMAX, TAPERS, EIGENVALUES,
+                                   TAPER_ORDER )
 
-           REAL*8    THETA0, TAPERS(LMAX+1, (LMAX+1)**2), EIGENVALUES((LMAX+1)**2)
+           REAL*8    THETA0, TAPERS(LMAX+1, (LMAX+1)**2),
+                     EIGENVALUES((LMAX+1)**2)
 
            INTEGER   LMAX, TAPER_ORDER((LMAX+1)**2)
 
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHReturnTapers</B> will calculate the eigenfunctions (i.e., localization windows) of the
-       spherical-cap concentration problem. Each column of the matrix TAPERS contains the spherical
-       harmonic coefficients of a single window and the corresponding concentration factor is given
-       in the array EIGENVALUES.  Each window has non-zero coefficients for only a single angular
-       order that is specified in TAPER_ORDER: all other spherical harmonic coefficients for a given
-       window are identically zero. The columns of TAPERS are ordered from best to worst
-       concentrated, and the first and last rows of each column correspond to spherical harmonic
-       degrees 0 and LMAX, respectively. The localization windows are normalized such that they have
-       unit power.
+       <B>SHReturnTapers</B> will calculate the eigenfunctions (i.e., localization
+       windows) of the spherical-cap concentration problem. Each column of the
+       matrix TAPERS contains the spherical harmonic coefficients of a single
+       window and the corresponding concentration factor is given in the array
+       EIGENVALUES.  Each window has non-zero coefficients for only a single
+       angular order that is specified in TAPER_ORDER: all other spherical
+       harmonic coefficients for a given window are identically zero. The
+       columns of TAPERS are ordered from best to worst concentrated, and the
+       first and last rows of each column correspond to spherical harmonic
+       degrees 0 and LMAX, respectively. The localization windows are
+       normalized such that they have unit power.
 
 
 </PRE>
@@ -70,16 +75,19 @@
 
        LMAX          (input) INTEGER
 
-                     The spherical harmonic bandwidth of the localization windows.
+                     The spherical harmonic bandwidth of the localization
+                     windows.
 
        TAPERS        (output) REAL*8, DIMENSION (LMAX+1, (LMAX+1)**2)
 
-                     The spherical harmonic coefficients of the (LMAX+1)**2 localization windows.
-                     Each column contains the coefficients of a single window that possesses non-
-                     zero coefficients for the single angular order specified in TAPER_ORDER. The
-                     first and last rows of each column correspond to spherical harmonic degrees 0
-                     and LMAX, respectively, and the columns are arranged from best to worst
-                     concentrated.
+                     The spherical harmonic coefficients of the (LMAX+1)**2
+                     localization windows. Each column contains the
+                     coefficients of a single window that possesses non-zero
+                     coefficients for the single angular order specified in
+                     TAPER_ORDER. The first and last rows of each column
+                     correspond to spherical harmonic degrees 0 and LMAX,
+                     respectively, and the columns are arranged from best to
+                     worst concentrated.
 
        EIGENVALUES   (output) REAL*8, DIMENSION ((LMAX+1)**2)
 
@@ -87,8 +95,8 @@
 
        TAPER_ORDER   (output) INTEGER, DIMENSION ((LMAX+1)**2)
 
-                     The angular order of the non-zero spherical harmonic coefficients in each
-                     column of TAPERS.
+                     The angular order of the non-zero spherical harmonic
+                     coefficients in each column of TAPERS.
 
 
 </PRE>
@@ -100,25 +108,25 @@
 
 </PRE>
 <H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, <B>Geophys.</B> <B>J.</B>
-       <B>Int.</B>, 162, 655-675.
+       Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the
+       sphere, <B>Geophys.</B> <B>J.</B> <B>Int.</B>, 162, 655-675.
 
-       Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, <B>SIAM</B>
-       <B>Review</B>, 48, 504-536, 2006.
+       Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral
+       concentration on a sphere, <B>SIAM</B> <B>Review</B>, 48, 504-536, 2006.
 
 
 </PRE>
 <H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
        Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
 
-       This is free software; you can distribute and modify it under the terms of the revised BSD
-       license.
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
 
-SHTOOLS 2.9                                  2012-03-08                            <B>SHRETURNTAPERS(1)</B>
+SHTOOLS 2.10                      2012-03-08                 <B>SHRETURNTAPERS(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../SHTOOLS.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "Mark Wieczorek">
 	<tbody>
