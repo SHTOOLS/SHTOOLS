@@ -9,6 +9,8 @@ sys.path = [os.path.join(os.path.dirname(__file__), "../../lib")] + sys.path
 import pyshtools as shtools
 import matplotlib.pyplot as plt
 
+print shtools.params.norm
+
 #==== MAIN FUNCTION ====
 def main():
     test_shtransforms()
