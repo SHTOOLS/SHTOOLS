@@ -15,9 +15,10 @@
 #		FFTW and LAPACK libraries with conflicting underscore conventions. 
 # 		The default is to use "f95".
 #
+#       make python-wrapper
+#
 #	make clean
 #		Remove the lib and module files in the LOCAL directory.
-#
 #
 #	Written by Mark Wieczorek (July 2006).
 #

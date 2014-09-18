@@ -17,6 +17,9 @@
 #		use FFTW and LAPACK	libraries with conflicting underscore 
 #		conventions.
 #
+#       make python-wrapper
+#               compile the python wrapper with the f2py compiler
+#
 #	make clean
 #		Remove the compile lib, module, and object files.
 #
@@ -48,16 +51,18 @@
 
 VERSION = 2.10
 
-F95 = f95
+F95 = gfortran
 
-SHELL=/bin/tcsh
-MAKE = make
+SHELL  = /bin/tcsh
+MAKE   = make
 DOCDIR = src/doc
 SRCDIR = src
-EXDIR = examples
+LIBDIR = lib
+INCDIR = modules
+EXDIR  = examples
 
 
-.PHONY: all all2 all3 install doc remove-doc clean getflags examples remove-examples run-examples
+.PHONY: all all2 all3 python-wrapper install doc remove-doc clean getflags examples remove-examples run-examples
 	
 all: getflags
 	$(MAKE) -C $(SRCDIR) -f Makefile all VERSION=$(VERSION) F95=$(F95) F95FLAGS="$(F95FLAGS)"
@@ -100,6 +105,21 @@ all3: getflags
 	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
+
+python-wrapper: all
+	f2py -I$(INCDIR) -L$(LIBDIR) -lSHTOOLS$(VERSION) -lfftw3 -lm -llapack -lblas\
+	    --f90flags="-m64 -fPIC" --f77flags="-m64 -fPIC" -c -m pyshtools $(SRCDIR)/PythonWrapper.f95
+	mv pyshtools.so lib/.
+	@echo
+	@echo MAKE SUCCESSFUL!
+	@echo	
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo import shtools with:
+	@echo
+	@echo import shtools
+	@echo
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo 
 	
 getflags:
 ifeq ($(F95),f95)
@@ -110,7 +130,7 @@ endif
 
 ifeq ($(F95),gfortran)
 # Default gfortran flags
-F95FLAGS ?= -m64 -O3 -march=native
+F95FLAGS ?= -m64 -fPIC -O3 -march=native
 MODFLAG = -Imodpath
 endif
 

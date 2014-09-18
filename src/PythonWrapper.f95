@@ -25,168 +25,199 @@
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-module pyshtools
-    !can contain global module variables 
-    !(e.g. csphase and cnorm could be moved here)
+module params
     implicit none
-contains
+
+    !configuration variables:
+    integer :: norm = 1
+    integer :: csphase = 1
+end module
 
 !========  LEGENDRE FUNCTIONS ========
-
     !== Geodesy 4pi normalized ==
-    subroutine PlmBar(p, lmax, z, csphase, cnorm)
-        use shtools, only: PlmBar_f => PlmBar
+    subroutine pyPlmBar(p, lmax, z)
+        use shtools, only: PlmBar
+        use params
         implicit none
-        integer, intent(in) :: csphase, cnorm
         integer, intent(in) :: lmax
         real(8), intent(out) :: p((lmax + 1)*(lmax + 2) / 2)
         real(8), intent(in) :: z
         !f2py depend(lmax) p
-        !f2py integer, optional :: csphase=1
-        !f2py integer, optional :: cnorm=0
     
-        call PlmBar_f(p, lmax, z, csphase, cnorm)
-    end subroutine PlmBar
-    !PlmBar_d1
-    subroutine PlBar(p, lmax, z)
-        use shtools, only: PlBar_f => PlBar
+        call PlmBar(p, lmax, z, csphase, norm)
+    end subroutine
+    !missing: PlmBar_d1
+    subroutine pyPlBar(p, lmax, z)
+        use shtools, only: PlBar
+        use params
         implicit none
         integer, intent(in) :: lmax
         real(8), intent(out) :: p(lmax + 1)
         real(8), intent(in) :: z
         !f2py depend(lmax) p
     
-        call PlBar_f(p, lmax, z)
-    end subroutine PlBar
+        call PlBar(p, lmax, z)
+    end subroutine
     
-    subroutine PlBar_d1(p, dp, lmax, z)
-        use shtools, only: PlBar_d1_f => PlBar_d1
+    subroutine pyPlBar_d1(p, dp, lmax, z)
+        use shtools, only: PlBar_d1
+        use params
         implicit none
         integer, intent(in) :: lmax
         real(8), intent(out), dimension(lmax + 1) :: p, dp
         real(8), intent(in) :: z
         !f2py depend(lmax) p, dp
     
-        call PlBar_d1_f(p, dp, lmax, z)
-    end subroutine PlBar_d1
+        call PlBar_d1(p, dp, lmax, z)
+    end subroutine
     
     !== Orthonormalized ==
-    subroutine PlmON(p, lmax, z, csphase, cnorm)
-        use shtools, only: PlmON_f => PlmON
+    subroutine pyPlmON(p, lmax, z)
+        use shtools, only: PlmON
+        use params
         implicit none
         integer, intent(in) :: lmax
         real(8), intent(out) :: p((lmax + 1)*(lmax + 2) / 2)
         real(8), intent(in) :: z
-        integer, intent(in) :: csphase, cnorm
         !f2py depend(lmax) p
-        !f2py integer, optional :: csphase=1
-        !f2py integer, optional :: cnorm=0
     
-        call PlmON_f(p, lmax, z, csphase, cnorm)
-    end subroutine PlmOn
+        call PlmON(p, lmax, z, csphase, norm)
+    end subroutine
     !PlmON_d1
-    subroutine PlON(p, lmax, z)
-        use shtools, only: PlON_f => PlON
+    subroutine pyPlON(p, lmax, z)
+        use shtools, only: PlON
+        use params
         implicit none
         integer, intent(in) :: lmax
         real(8), intent(out) :: p(lmax + 1)
         real(8), intent(in) :: z
         !f2py depend(lmax) p
         
-        call PlON_f(p, lmax, z)
-    end subroutine PlON
+        call PlON(p, lmax, z)
+    end subroutine
     
-    subroutine PlON_d1(p, dp, lmax, z)
-        use shtools, only: PlON_d1_f => PlON_d1
+    subroutine pyPlON_d1(p, dp, lmax, z)
+        use shtools, only: PlON_d1
+        use params
         implicit none
         integer, intent(in) :: lmax
         real(8), intent(out), dimension(lmax + 1) :: p, dp
         real(8), intent(in) :: z
         !f2py depend(lmax) p, dp
     
-        call PlON_d1_f(p, dp, lmax, z)
-    end subroutine PlON_d1
+        call PlON_d1(p, dp, lmax, z)
+    end subroutine
     
     !== Schmidt normalized ==
-    subroutine PlmSchmidt(p, lmax, z, csphase, cnorm)
-        use shtools, only: PlmSchmidt_f => PlmSchmidt
+    subroutine pyPlmSchmidt(p, lmax, z)
+        use shtools, only: PlmSchmidt
+        use params
         implicit none
-        integer, intent(in) :: csphase, cnorm
         integer, intent(in) :: lmax
         real(8), intent(out) :: p((lmax + 1)*(lmax + 2) / 2)
         real(8), intent(in) :: z
         !f2py depend(lmax) p
-        !f2py integer, optional :: csphase=1
-        !f2py integer, optional :: cnorm=0
     
-        call PlmSchmidt_f(p, lmax, z, csphase, cnorm)
-    end subroutine PlmSchmidt
-    !PlmSchmidt_d1
-    subroutine PlSchmidt(p, lmax, z)
-        use shtools, only: PlSchmidt_f => PlSchmidt
+        call PlmSchmidt(p, lmax, z, csphase, norm)
+    end subroutine
+    !missing: PlmSchmidt_d1
+    subroutine pyPlSchmidt(p, lmax, z)
+        use shtools, only: PlSchmidt
+        use params
         implicit none
         integer, intent(in) :: lmax
         real(8), intent(out) :: p(lmax + 1)
         real(8), intent(in) :: z
         !f2py depend(lmax) p
         
-        call PlSchmidt_f(p, lmax, z)
-    end subroutine PlSchmidt
+        call PlSchmidt(p, lmax, z)
+    end subroutine
     
-    subroutine PlSchmidt_d1(p, dp, lmax, z)
-        use shtools, only: PlSchmidt_d1_f => PlSchmidt_d1
+    subroutine pyPlSchmidt_d1(p, dp, lmax, z)
+        use shtools, only: PlSchmidt_d1
+        use params
         implicit none
         integer, intent(in) :: lmax
         real(8), intent(out), dimension(lmax + 1) :: p, dp
         real(8), intent(in) :: z
         !f2py depend(lmax) p, dp
     
-        call PlSchmidt_d1_f(p, dp, lmax, z)
-    end subroutine PlSchmidt_d1
+        call PlSchmidt_d1(p, dp, lmax, z)
+    end subroutine
     
     !== Unnormalized ==
-    !PLegendreA
-    subroutine PLegendreA_d1(p, dp, lmax, z, csphase)
-        use shtools, only: PLegendreA_d1_f => PLegendreA_d1
+    !missing: PLegendreA
+    subroutine pyPLegendreA_d1(p, dp, lmax, z)
+        use shtools, only: PLegendreA_d1
+        use params
         implicit none
         integer, intent(in) :: lmax
         real(8), intent(out), dimension((lmax + 1)*(lmax + 2) / 2) :: p, dp
-        !real(8), intent(out), dimension((lmax + 1)*(lmax + 2) / 2) :: dp
         real(8), intent(in) :: z
-        integer, intent(in) :: csphase
         !f2py depend(lmax) p
         !f2py depend(lmax) dp
-        !f2py integer, optional :: csphase=1
     
-        call PLegendreA_d1_f(p, dp, lmax, z, csphase)
-    end subroutine PLegendreA_d1
+        call PLegendreA_d1(p, dp, lmax, z, csphase)
+    end subroutine
     
-    subroutine PLegendre(p, lmax, z)
-        use shtools, only: PLegendre_f => PLegendre
+    subroutine pyPLegendre(p, lmax, z)
+        use shtools, only: PLegendre
+        use params
         implicit none
         integer, intent(in) :: lmax
         real(8), intent(out) :: p(lmax + 1)
         real(8), intent(in) :: z
         !f2py depend(lmax) p
     
-        call PLegendre_f(p, lmax, z)
-    end subroutine PLegendre
-    !Plegendre_d1
+        call PLegendre(p, lmax, z)
+    end subroutine
+    !missing: Plegendre_d1
     
     !Other
-    function PlmIndex(l, m)
-        use shtools, only: PlmIndex_f => PlmIndex
+    function pyPlmIndex(l, m)
+        use shtools, only: PlmIndex
+        use params
         implicit none
-        integer :: PlmIndex
+        integer :: pyPlmIndex
         integer, intent(in) :: l, m
     
         ! TODO check fortran -> python index issue.
         ! Fortran: 1-based. Python: 0-based
-        PlmIndex = PlmIndex_f(l, m) - 1
-    end function PlmIndex
+        pyPlmIndex = PlmIndex(l, m) - 1
+    end function
 
 !======== SPHERICAL HARMONICS TRANSFORMATIONS ========
+    subroutine pySHExpandDH(grid,nlat,nlon,coeffs,lmax_coeffs,sampling)
+        use shtools, only: SHExpandDH
+        use params
+        implicit none
+        double precision grid(nlat,nlon)
+        double precision coeffs(2,lmax_coeffs+1,lmax_coeffs+1)
+        integer nlat,lmax_coeffs,lmax_grid, nlon, sampling
+        !f2py intent(out) coeffs
+        !f2py intent(in) grid
+        !f2py integer intent(hide), optional, depend(grid) :: nlat = shape(grid,0)
+        !f2py integer intent(hide), optional, depend(grid) :: nlon = shape(grid,1)
+        !f2py integer intent(in), optional, depend(nlat):: lmax_coeffs = nlat/2-1
+        !f2py integer optional :: sampling = 2
 
+        call SHExpandDH(grid, nlat, coeffs, lmax_grid, norm, sampling, csphase, lmax_coeffs)
+    end subroutine
 
-
-end module
+    subroutine pyMakeGridDH(grid, nlat, coeffs, lmax, sampling, lmax_calc)
+        use shtools, only: MakeGridDH
+        use params
+        implicit none
+        double precision :: interval
+        integer :: n, nlat, lmax, lmax_calc, sampling
+        double precision grid(nlat,sampling*nlat)
+        double precision coeffs(2,lmax+1,lmax+1)
+        !f2py intent(out) grid
+        !f2py intent(in) coeffs
+        !f2py integer intent(in), depend(coeffs), optional :: lmax = shape(coeffs,1)-1
+        !f2py integer intent(in), depend(lmax),   optional :: nlat = 2*(lmax +1)
+        !f2py integer optional :: lmax_calc=lmax
+        !f2py integer optional :: sampling = 2
+    
+        call MakeGridDH(grid, n, coeffs, lmax, norm, sampling, csphase, lmax_calc)
+    end subroutine
