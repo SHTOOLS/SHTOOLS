@@ -1,0 +1,88 @@
+=head1 SHFindLWin
+
+=over 13
+
+=item SHFindLWin -  
+
+Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 30
+
+=item INTEGER FUNCTION SHFindLWin ( 
+
+THETA0, M, ALPHA, TAPER_NUMBER )
+
+=back
+
+=over 4
+
+=over 20
+
+=item REAL*8	
+
+THETA0, ALPHA
+
+=item INTEGER
+
+M
+
+=item INTEGER, OPTIONAL
+
+TAPER_NUMBER
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHFindLWin> will determine the spherical harmonic bandwidth that is required for a window of the spherical-cap concentration problem to achive a certain concentration factor. By default, the first taper corresponding to the angular order M will be used, but this can be modified by specifying the optional argument TAPER_NUMBER. 
+
+=head1 ARGUMENTS
+
+=over 15
+
+=item THETA0 
+
+The angular radius of the spherical cap in RADIANS.
+
+=item M
+
+(input) INTEGER
+
+The angular order of the taper.
+
+=item ALPHA
+
+(input) REAL*8
+
+The desired concentration factor of the window. This must lie between 0 and 1.
+
+=item TAPER_NUMBER
+
+(input) INTEGER, OPTIONAL
+
+The taper number corresponding to the angular order M. The default is to use the first taper.
+
+=back
+
+=head1 SEE ALSO
+
+computed0(1), computedg82(1), computedm(1), shreturntapers(1), shreturntapersm(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
+I<Geophys. J. Int.>, 162, 655-675.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

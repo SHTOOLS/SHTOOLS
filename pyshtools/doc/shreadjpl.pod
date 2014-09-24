@@ -1,0 +1,120 @@
+=head1 SHReadJPL
+
+=over 12
+
+=item SHReadJPL -  
+
+Read spherical harmonic coefficients from a JPL ASCII file.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 23
+
+=item SUBROUTINE SHReadJPL ( 
+
+FILENAME, CILM, LMAX, ERROR, GM, FORMATSTRING )
+
+=back
+
+=over 4
+
+=over 22
+
+=item CHARACTER(*)
+
+FILENAME
+
+=item REAL*8	
+
+CILM(2, LMAX+1, LMAX+1)
+
+=item INTEGER
+
+LMAX
+
+=item REAL*8, OPTIONAL
+
+GM(2 ), ERROR(2, LMAX+1, LMAX+1)
+
+=item CHARACTER, OPTIONAL
+
+FORMATSTRING*6
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHReadJPL> will read spherical harmonic coefficients from a JPL ASCII formatted file into an array CILM. The maximum spherical harmonic degree LMAX must be known a priori. The errors associated with the coefficients CILM will be read if the optional array ERROR is specified. The real numbers are assumed to be formated with the specifier "E19.12", but this can be changed by specifiying the optional string FORMATSTRING. If the optional parameter GM is specified, the mass-gravitational constant and error will be output, if present.
+
+
+=head1 ARGUMENTS
+
+=over 14
+
+=item FILENAME
+
+(input) CHARACTER(*)
+
+The JPL ASCII filename containing the spherical harmonic coefficients.
+	
+=item CILM
+
+(output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The spherical harmonic coefficients contained in FILENAME.
+
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of CILM.
+
+=item ERROR
+
+(output) REAL*8, OPTIONAL, DIMENSION (2, LMAX+1, LMAX+1)
+
+The errors corresponding to the spherical harmonic coefficients CILM.
+
+=item GM
+
+(output) REAL*8, OPTIONAL, DIMENSION(2 )
+
+The mass-gravitational constant and error.
+
+=item FORMATSTRING
+
+(input) CHARACTER*6, OPTIONAL
+
+The format string used to read the elements of CILM and CILM_ERROR. The default is "E19.12".
+
+=back
+
+=head1 NOTES
+
+The JPL ASCII formatted file is organized as follows:
+
+1. Comment lines starting with "#".
+
+2. GM (if a gravitational potential file)
+
+3. A list of J_l, which is -CILM(1,l+1, 1).
+
+4. A list of the cosine and sine terms.
+
+5. The errors of the above (starting at step 2).
+
+=head1 SEE ALSO
+
+shread(1), shreadgrace(1), shreadchamp(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

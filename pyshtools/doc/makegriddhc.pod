@@ -1,0 +1,130 @@
+=head1 MakeGridDHC
+
+=over 15
+
+=item MakeGridDHC -  
+
+Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with Driscoll and Healy's (1994) sampling theorem.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 25
+
+=item SUBROUTINE MakeGridDHC ( 
+
+GRIDDH, N, CILM, LMAX, NORM, SAMPLING, CSPHASE, LMAX_CALC )
+
+=back
+
+=over 4
+
+=over 19
+
+=item COMPLEX*16	
+
+GRIDDH(2*LMAX+2, 2*LMAX+2), S<CILM(2, LMAX+1, LMAX+1)>
+
+=item INTEGER
+
+LMAX, N
+
+=item INTEGER, OPTIONAL
+
+NORM, SAMPLING, CSPHASE, LMAX_CALC
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<MakeGridDHC> will create a 2-dimensional complex map equally sampled (N by N) or equally spaced (N by 2N) in latitude and longitude from a set of input complex spherical harmonic coefficients, where N is 2*LMAX+2. This grid conforms with the sampling theorem of Driscoll and Healy (1994) and this routine is the inverse of I<SHExpandDHC>. The function is evaluated at each longitudinal band by inverse Fourier transforming the exponential terms for each degree l, and then summing over all degrees. When evaluating the function, the maximum spherical harmonic degree that is considered is the minimum of LMAX, the size of CILM-1, or LMAX_CALC (if specified).
+
+The default is to use an input grid that is equally sampled (N by N), but this can be changed to use an equally spaced grid (N by 2N) by the optional argument SAMPLING. The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/N degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/N for equally sampled and 180/N for equally spaced grids, respectively. 
+
+The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments NORM and CSPHASE; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
+
+=head1 ARGUMENTS
+
+=over 12
+
+=item GRIDDH
+
+(output) COMPLEX*16, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) COMPLEX*16, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled (N by N; default), or equally spaced (N by 2N) complex map of the input complex spherical harmonic coefficients CILM that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/N degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/N for an equally sampled and 180/N for an equally spaced grid, respectively.
+
+=item N
+
+(output) INTEGER
+
+The number of samples in latitude and longitude of GRIDDH. This is equal to 2*LMAX + 2, which will always be even. 
+
+=item CILM 
+
+(input) COMPLEX*16, DIMENSION (2, LMAX+1, LMAX+1)
+
+The complex spherical harmonic coefficients of the function.  The first index specifies the coefficient corresponding to the positive (1) and negative (2) order of m, respectively, with Clm = CILM(1, l+1, m+1) and Cl,-m = CILM(2, l+1, m+1).
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of the function. This determines the number of samples N.
+	
+=item NORM
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+
+=item SAMPLING
+
+(input) INTEGER, OPTIONAL
+
+If 1 (default) the input grid is equally sampled (N by N). If 2, the grid is equally spaced (N by 2*N).
+
+=item CSPHASE
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+
+=item LMAX_CALC
+
+(input) INTEGER, OPTIONAL
+
+The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to LMAX.
+
+=back
+
+=head1 NOTES
+
+The normalized legendre functions are calculated using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. In contrast, the unnormalized functions are only accurate to about degree 15.
+
+This routine takes into account the symmetry of the associated Legendre functions about the equator in order to reduce computational time.
+
+=head1 SEE ALSO
+
+shexpanddhc(1), shexpandglqc(1), shexpanddh(1), shexpandglq(1), makegridglq(1), makegridglqc(1), makegriddh(1), dhaj(1), makegrid2d(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, I<Adv. Appl. Math.>, 15, 202-250, 1994.
+
+Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
+summation and the recursive computation of very high degree and
+order normalised associated Legendre functions, I<J. Geodesy>, 76, 279-
+299, 2002.
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

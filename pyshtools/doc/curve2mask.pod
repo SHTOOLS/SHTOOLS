@@ -1,0 +1,102 @@
+=head1 Curve2Mask
+
+=over 13
+
+=item Curve2Mask -  
+
+Given a set of latitude and longitude coordinates representing a closed curve, determine if each node of a gridded mask is inside or outside of the curve.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 23
+
+=item SUBROUTINE Curve2Mask ( 
+
+MASK_DH, N, SAMPLING, PROFILE, NPROFILE, NP )
+
+=back
+
+=over 4
+
+=over 20
+
+=item INTEGER	
+
+MASK_DH (N, N) or (N, 2*N), N, SAMPLING, NPROFILE, NP
+
+=item REAL*8
+
+PROFILE(NPROFILE, 2)
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<Curve2Mask> will take a list of latitude and longitude coordinates that represent a single closed curve, and output a mask MASK_DH that contains 1s and 0s where the grid nodes are inside and outside of the curve, respectively. MASK_DH must be sampled according to the Driscoll and Healy (1994) sampling theorem with N samples in latitude, and either possess N samples in longitude (SAMPLING=1) or 2*N samples in longitude (SAMPLING=2). It is necessary to specify a single point as being inside or outside of the curve, and for this the value at the North pole (90N, 0E) must be specified as either 0 or 1.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item DH_MASK
+
+(output) INTEGER, DIMENSION (N, N) or DIMENSION (N, 2*N)
+
+A Driscoll and Healy (1994) sampled grid describing the concentration region R. All elements on output will either be 1 (for inside the concentration region) or 0 (for outside R).
+	
+=item N
+
+(input) INTEGER
+
+The number of latitudinal samples in DH_MASK. The effective spherical harmonic bandwidth of this grid is L = N/2 - 1.
+
+=item SAMPLING
+
+(input) INTEGER
+
+For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x 2N samples. 
+
+=item PROFILE
+
+(input) REAL*8, DIMENSION (NPROFILE, 2)
+
+List of latitude (:,1) and longitude (:,2) coordinates in DEGREES specifying a single closed curve.
+
+=item NPROFILE
+
+(input) INTEGER
+
+The number of coordinates in the curve PROFILE.
+
+=item NP
+
+(input) INTEGER
+
+The value of the returned mask at the North pole (90N, 0E). If the North pole is outside of the concentration region, set this to 0; if it is inside the concentration region, set this to 1.
+
+
+=back
+
+=head1 NOTES
+
+This routine saves the three-term recursion factors and square roots of the integers the first time being called. If subsequent calls possess the same value of LMAX, these will not be recomputed. If you wish to deallocate this memory, which is an array of length (LMAX+1)*(LMAX+2), recall this routine with LMAX=-1.
+
+=head1 REFERENCES
+
+Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, I<Adv. Appl. Math.>, 15, 202-250, 1994.
+
+=head1 SEE ALSO
+
+shreturntapersmap(1), computedmap(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

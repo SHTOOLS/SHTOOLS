@@ -1,0 +1,84 @@
+=head1 SHCrossPowerSpectrumDensityC
+
+=over 31
+
+=item SHCrossPowerSpectrumDensityC -  
+
+Compute the cross-power spectral density of two complex functions.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 42
+
+=item SUBROUTINE SHCrossPowerSpectrumDensityC ( 
+
+C1, C2, LMAX, CSPECTRUM )
+
+=back
+
+=over 4
+
+=over 14
+
+=item COMPLEX*16	
+
+C1(2, LMAX+1, LMAX+1), C2(2, LMAX+1, LMAX+1), CSPECTRUM(LMAX+1)
+
+=item INTEGER
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHCrossPowerSpectrumDensityC> will calculate the cross-power spectral density of two functions expressed in complex spherical harmonics. For a given degree L, this is explicitly calculated as:
+
+Sum_{i=1}^2 Sum_{m=0}^L C1(i, L+1, m+1) * conjg[C2(i, L+1, m+1)] / (2L + 1).
+
+=head1 ARGUMENTS
+
+=over 14
+
+=item C1
+
+(input) COMPLEX*16, DIMENSION (2, LMAX+1, LMAX+1)
+
+The first function expressed in complex spherical harmonics.
+
+=item C2
+
+(input) COMPLEX*16, DIMENSION (2, LMAX+1, LMAX+1)
+
+The second function expressed in complex spherical harmonics.
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree for which the cross power spectral density will be calculated.
+
+=item CSPECTRUM
+
+(output) COMPLEX*16, DIMENSION (LMAX+1)
+
+The cross-power spectral density of the two complex functions.
+
+=back
+
+=head1 SEE ALSO
+
+shpowerlc(1), shpowerdensitylc(1), shcrosspowerc(1), shcrosspowerdensitylc(1), shpowerspectrumc(1), shpowerspectrumdensityc(1), shcrosspowerspectrumc(1), shadmitcorr(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

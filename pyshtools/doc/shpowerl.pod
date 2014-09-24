@@ -1,0 +1,72 @@
+=head1 SHPowerL
+
+=over 11
+
+=item SHPowerL -  
+
+Compute the spectral power of a real function for a single degree L.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 27
+
+=item REAL*8 FUNCTION SHPowerL ( 
+
+C, L )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+C(2, L+1, L+1)
+
+=item INTEGER
+
+L
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHPowerL> will calculate the spectral power of a function expressed in real spherical harmonics for a single degree L. This is explicitly calculated as:
+
+Sum_{i=1}^2 Sum_{m=0}^L C(i, L+1, m+1)**2 .
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item C
+
+(input) REAL*8, DIMENSION (2, L+1, L+1)
+
+The function expressed in real spherical harmonics.
+	
+=item L
+
+(input) INTEGER
+
+The spherical harmonic degree for which the power will be calculated.
+
+=back
+
+=head1 SEE ALSO
+
+shpowerdensityl(1), shcrosspowerl(1), shcrosspowerdensityl(1), shpowerspectrum(1), shpowerspectrumdensity(1), shcrosspowerspectrum(1), shcrosspowerspectrumdensity(1), shadmitcorr(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

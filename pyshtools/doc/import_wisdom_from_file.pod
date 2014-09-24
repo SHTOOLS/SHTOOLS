@@ -1,0 +1,66 @@
+=head1 Import_Wisdom_From_File
+
+=over 26
+
+=item Import_Wisdom_From_File -  
+
+Import FFTW wisdom file.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 37
+
+=item SUBROUTINE Import_Wisdom_From_File ( 
+
+ISUCCESS, IUNIT )
+
+=back
+
+=over 4
+
+=over 10
+
+=item INTEGER
+
+ISUCCESS, IUNIT
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<Import_Wisdom_From_File> will read a local FFTW wisdom file. IUNIT corresponds to the unit number of the opened file, and if the file was read successfully, ISUCCESS will be zero.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item ISUCCESS
+
+(output) INTEGER
+
+If the file was successfully read, then this will be zero.
+	
+=item IUNIT
+
+(input) INTEGER
+
+The unit number of the already opened wisdom file.
+
+=back
+
+=head1 SEE ALSO
+
+export_wisdom_to_file(1)
+
+L<http://shtools.ipgp.fr/>
+L<http://www.fftw.org/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

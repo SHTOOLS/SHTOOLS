@@ -74,7 +74,7 @@ OBJS0 =	CilmPlus.o ComputeD0.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o \
 	MakeCircleCoord.o SHSjkPG0.o SHReturnTapers.o SHSjkPG.o \
 	PlON.o PlON_d1.o PlmON.o PlmON_d1.o MakeGravGridDH.o \
 	SHConfidence.o SHMagPowerSpectra.o \
-	SHPowerSpectra.o SHBiasAdmitCorr.o SHCilmToVector.o \
+	SHPowerSpectraC.o SHBiasAdmitCorr.o SHCilmToVector.o \
 	YilmIndex.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o MakeEllipseCoord.o \
 	CilmPlusRhoH.o HilmRhoH.o NormalGravity.o MakeGravGradGridDH.o
 	
