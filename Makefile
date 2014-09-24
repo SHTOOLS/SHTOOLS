@@ -17,8 +17,9 @@
 #		use FFTW and LAPACK	libraries with conflicting underscore 
 #		conventions.
 #
-#       make python-wrapper
-#               compile the python wrapper with the f2py compiler
+#	make python-wrapper
+#		Compile the python wrapper with the f2py compiler. This should be 
+#		after the Fortran files are compiled.
 #
 #	make clean
 #		Remove the compile lib, module, and object files.
@@ -52,6 +53,7 @@
 VERSION = 2.10
 
 F95 = gfortran
+F2PY = f2py-2.7
 
 SHELL  = /bin/tcsh
 MAKE   = make
@@ -107,17 +109,16 @@ all3: getflags
 	@echo 
 
 python-wrapper: all
-	f2py -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" --f77flags="-m64 -fPIC" \
+	$(f2py) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" --f77flags="-m64 -fPIC" \
 	    -c $(SRCDIR)/pyshtools.pyf -lSHTOOLS$(VERSION) -lfftw3 -lm -llapack -lblas
 	mv SHTOOLS.so pyshtools/.
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo	
 	@echo ---------------------------------------------------------------------------------------------------
-	@echo import shtools with:
+	@echo import shtools into Python with:
 	@echo
 	@echo import shtools
-	@echo
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 	
