@@ -53,7 +53,7 @@
 VERSION = 2.10
 
 F95 = gfortran
-F2PY = f2py-2.7
+F2PY = f2py
 
 SHELL  = /bin/tcsh
 MAKE   = make
@@ -109,9 +109,9 @@ all3: getflags
 	@echo 
 
 python-wrapper: all
-	$(f2py) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" --f77flags="-m64 -fPIC" \
+	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" --f77flags="-m64 -fPIC" \
 	    -c $(SRCDIR)/pyshtools.pyf -lSHTOOLS$(VERSION) -lfftw3 -lm -llapack -lblas
-	mv SHTOOLS.so pyshtools/.
+	mv _SHTOOLS.so pyshtools/.
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo	
