@@ -208,17 +208,17 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, csphase)
 	ind1 = 0
 
 	do l=0, lmax
-			! do cos terms
-			do m=0, l	
-				ind1 = ind1 + 1
-				cilm(1,l+1, m+1) = mm(ind1)
-			enddo
+		! do cos terms
+		do m=0, l	
+			ind1 = ind1 + 1
+			cilm(1,l+1, m+1) = mm(ind1)
+		enddo
 			
-			! do sin terms
-			do m=1, l, 1	
-				ind1 = ind1 + 1
-				cilm(2, l+1, m+1) = mm(ind1)
-			enddo
+		! do sin terms
+		do m=1, l, 1	
+			ind1 = ind1 + 1
+			cilm(2, l+1, m+1) = mm(ind1)
+		enddo
 	enddo
 	
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -287,6 +287,7 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc)
 				enddo
 
 		end select	
+		
 		lmax_old = lmax_comp
 		norm_old = lnorm
 	

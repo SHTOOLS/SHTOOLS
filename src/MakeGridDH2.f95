@@ -86,8 +86,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 	integer, intent(in) :: 	lmax
 	integer, intent(out) ::	n
 	integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
-	integer :: 		l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, &
-				nlong
+	integer :: 		l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, nlong
 	real*8 :: 		grid(4*lmax+4), pi, theta, coef0, scalef, rescalem, u, p, pmm, &
 				pm1, pm2, z, coef0s, tempr
 	complex*16 ::		coef(2*lmax+3), coefs(2*lmax+3), tempc
@@ -359,7 +358,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 	
 		i_s = 2*i_eq -i
 	
-		theta = (i-1) * pi / dble(n)
+		theta = pi * dble(i-1)/dble(n)
 		z = cos(theta)
 		u = sqrt( (1.0d0-z) * (1.0d0+z) )
 
@@ -370,7 +369,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 		
 		select case(lnorm)
 			case(1,2,3);	pm2 = 1.0d0
-			case(4);	pm2 = 1.0d0 / sqrt(4*pi)
+			case(4);	pm2 = 1.0d0 / sqrt(4.0d0*pi)
 		end select
 
 		tempr =  cilm(1,1,1) * pm2
@@ -395,7 +394,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 		select case(lnorm)
 			case(1,2);	pmm = sqr(2) * scalef
 			case(3);	pmm = scalef
-			case(4);	pmm = sqr(2) * scalef / sqrt(4*pi)
+			case(4);	pmm = sqr(2) * scalef / sqrt(4.0d0*pi)
 		end select
 				
 		rescalem = 1.0d0/scalef
@@ -413,7 +412,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 					pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
 					pm2 = pmm / sqr(2*m+1)
 				case(3)
-					pmm = phase * pmm * (2*m-1)
+					pmm = phase * pmm * dble(2*m-1)
 					pm2 = pmm
 			end select
 			
@@ -449,7 +448,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
          	select case(lnorm)
             		case(1,4);	pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
             		case(2);	pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
-            		case(3);	pmm = phase * pmm * (2*lmax_comp-1) * rescalem
+            		case(3);	pmm = phase * pmm * dble(2*lmax_comp-1) * rescalem
         	end select
          			
         	tempc = dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm
@@ -495,7 +494,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 	
 	select case(lnorm)
 		case(1,2,3);	pm2 = 1.0d0
-		case(4);	pm2 = 1.0d0 / sqrt(4*pi)
+		case(4);	pm2 = 1.0d0 / sqrt(4.0d0*pi)
 	end select
 	
 	coef0 = coef0 + cilm(1,1,1) * pm2
@@ -510,7 +509,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 	select case(lnorm)
 		case(1,2);	pmm = sqr(2) * scalef
 		case(3);	pmm = scalef
-		case(4);	pmm = sqr(2) * scalef / sqrt(4*pi)
+		case(4);	pmm = sqr(2) * scalef / sqrt(4.0d0*pi)
 	end select
 				
 	rescalem = 1.0d0/scalef
@@ -527,7 +526,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 				pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
 				pm2 = pmm / sqr(2*m+1)
 			case(3)
-				pmm = phase * pmm * (2*m-1)
+				pmm = phase * pmm * dble(2*m-1)
 				pm2 = pmm
 		end select
 					
@@ -547,7 +546,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
         select case(lnorm)
             	case(1,4);	pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp)
             	case(2);	pmm = phase * pmm / sqr(2*lmax_comp)
-            	case(3);	pmm = phase * pmm * (2*lmax_comp-1)
+            	case(3);	pmm = phase * pmm * dble(2*lmax_comp-1)
         end select
          			
         coef(lmax_comp+1) = coef(lmax_comp+1) + dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &

@@ -374,7 +374,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_c
 				
 				select case(lnorm)
 					case(1,2,3);	pmm = scalef
-					case(4);	pmm = scalef / sqrt(4.0d0*pi)
+					case(4);	pmm = scalef / sqrt(4*pi)
 				end select
 				
 				rescalem = 1.0d0/scalef
@@ -562,7 +562,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_c
 		case(3)
 		
 			do l=0, lmax_comp, 1
-				prod = 4 * pi/dble(2*l+1)
+				prod = 4 * pi / dble(2*l+1)
 				cilm(1,l+1,1) = cilm(1,l+1,1) / prod
 				do m=1, l-1, 1
 					prod = prod * (l+m) * (l-m+1)

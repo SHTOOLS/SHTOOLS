@@ -72,10 +72,8 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_c
 	complex*16, intent(out) ::	cilm(:,:,:)
 	integer, intent(in) ::	lmax
 	integer, intent(in), optional :: norm, csphase, lmax_calc
-	integer :: 		nlong, nlat, i, l, m, k, l1, m1, i_s, astat(4), &
-				lnorm, lmax_comp
-	real*8 :: 		pi, prod, scalef, rescalem, u, p, pmm, &
-				pm1, pm2, z
+	integer :: 		nlong, nlat, i, l, m, k, l1, m1, i_s, astat(4), lnorm, lmax_comp
+	real*8 :: 		pi, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z
 	complex*16 ::		cc(2*lmax+1), gridl(2*lmax+1),  fcoef1(2*lmax+1), fcoef2(2*lmax+1), ffc1(-1:1), ffc2(-1:1)
 	integer*8 :: 		plan
 	real*8, save, allocatable ::	ff1(:,:), ff2(:,:), sqr(:)
@@ -85,7 +83,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_c
 
 	if (present(lmax_calc)) then
 		if (lmax_calc > lmax) then
-			print*, "Error --- SHExpandGLQ"
+			print*, "Error --- SHExpandGLQC"
 			print*, "LMAX_CALC must be less than or equal to LMAX."
 			print*, "LMAX = ", lmax
 			print*, "LMAX_CALC = ", lmax_calc

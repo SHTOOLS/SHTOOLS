@@ -68,7 +68,7 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
 
 	endif
 	
-	allocate(z(n, n), stat=astat)
+	allocate(z(n, n), stat = astat)
 	if (astat /= 0) then
 		print*, "Error --- EigValVecSymTri2"
 		print*, "Problem allocating arrays Z", astat

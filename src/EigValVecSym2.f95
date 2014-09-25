@@ -75,6 +75,13 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
 	endif
 	
 	if (present(K)) then
+		if (K > n .or. K < 1) then
+			print*, "Error --- EigValVecSym"
+			print*, "The number of eigenvalues to output must be between 0 and N."
+			print*, "N = ", n
+			print*, "K = ", k
+			stop
+		endif
 		if(size(eig) < K) then
 			print*, "Error --- EigValVecSym"
 			print*, "EIG must be dimensioned as (K) where K is ", K

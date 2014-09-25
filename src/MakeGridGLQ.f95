@@ -333,11 +333,11 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc)
 			! This summation order is intended to add the smallest terms first
 			do l = lmax_comp, 0, -1
 				l1 = l+1
-				k =  ((l1*l))/2 + 1	! m=0
+				k =  (l1*l)/2 + 1	! m=0
 				coef0 = coef0 + cilm(1,l1,1) * plx(i,k)
 				do m = 1, l, 1
 					m1 = m+1
-					k = ((l1*l))/2 + m1
+					k = (l1*l)/2 + m1
 					coef(m1) = coef(m1) + dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) &
 						* plx(i,k)/2.0d0
 				enddo

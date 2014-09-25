@@ -468,7 +468,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
             	select case(lnorm)
             		case(1,4);	pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
             		case(2);	pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
-            		case(3);	pmm = phase * pmm * dble(2*lmax_comp-1) * rescalem
+            		case(3);	pmm = phase * pmm * (2*lmax_comp-1) * rescalem
         	end select
         			
         	cilm(1:2,lmax_comp+1,lmax_comp+1) = cilm(1:2,lmax_comp+1,lmax_comp+1) + pmm * &

@@ -110,17 +110,16 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, csphase)
      		phase = CSPHASE_DEFAULT
      	endif
      	
-     	allocate(mm(max((lmax+1)**2, nmax)), stat = astat(1))
+    allocate(mm(max((lmax+1)**2, nmax)), stat = astat(1))
 	allocate(gg(nmax, (lmax+1)**2), stat = astat(2))
 	allocate(p((lmax+1)*(lmax+2)/2), stat = astat(3))
 	allocate(work(min((lmax+1)**2, nmax)*(1+opt)), stat = astat(4))
 	if (astat(1) /= 0 .or. astat(2) /=0 .or. astat(3) /= 0 .or. astat(4) /= 0) then
-		print*, "Error --- SHExpandLSQ2"
+		print*, "Error --- SHExpandLSQ"
 		print*, "Problem allocating arrays MM, GG, P, and WORK", astat(1), astat(2), astat(3), astat(4)
 		stop
 	endif
 
-	
 	lwork = min((lmax+1)**2, nmax)*(1+opt)
 	pi = acos(-1.0d0)
 	mm = 0.0d0
