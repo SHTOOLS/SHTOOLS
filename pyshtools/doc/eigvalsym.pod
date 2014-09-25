@@ -1,0 +1,83 @@
+=head1 EigValSym
+
+EigValSym -  Compute the eigenvalues of a real symmetric matrix.
+
+=head1 SYNOPSIS
+
+=over 23
+
+=item SUBROUTINE EigValSym ( 
+
+AIN, N, EVAL, UL )
+
+=back
+
+=over 4
+
+=over 22
+
+=item REAL*8	
+
+AIN(N, N), EVAL(N)
+
+=item INTEGER
+
+N
+
+=item CHARACTER, OPTIONAL
+
+UL
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<EigValSym> will calculate the eigenvalues of a real symmetric matrix. By default, only the upper portion of the matrix is used, but this can be changed by the optional argument UL. The eigenvalues are sorted from largest to smallest.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item AIN
+
+(input) REAL*8, DIMENSION (N, N)
+
+The input real symmetric matrix. By default, only the upper portion of the matrix is used.
+	
+=item N
+
+(input) INTEGER
+
+The rank of the matrix AIN.
+	
+=item EVAL
+
+(output) REAL*8, DIMENSION (N)
+
+The eigenvalues of AIN, sorted from largest to smallest.
+
+=item UL
+
+(input) CHARACTER, OPTIONAL
+
+If "U" then the upper portion of the matrix AIN will be used (default). If "L" then the lower portion of the matrix AIN will be used.
+
+=back
+
+=head1 NOTES
+
+This routine requires the matrix algebra packages BLAS and LAPACK which are available at L<http://www.netlib.org/lapack/> and L<http://www.netlib.org/blas/>, respectively.
+
+=head1 SEE ALSO
+
+lapack(1), blas(1), eigvalvecsym(1), eigvalvecsymtri(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

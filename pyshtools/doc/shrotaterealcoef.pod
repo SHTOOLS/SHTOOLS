@@ -1,0 +1,135 @@
+=head1 SHRotateRealCoef
+
+=over 19
+
+=item SHRotateRealCoef -  
+
+Determine the spherical harmonic coefficients of a real function rotated by three Euler angles.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 30
+
+=item SUBROUTINE SHRotateRealCoef ( 
+
+CILMROT, CILM, LMAX, X, DJ )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+CILMROT(2, LMAX+1, LMAX+1), S<CILM(2, LMAX+1, LMAX+1),> S<X(3),> S<DJ(LMAX+1, LMAX+1, LMAX+1)>
+
+=item INTEGER
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHRotateRealCoef> will take the real spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in X, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention. The input rotation matrix DJ is computed by a call to I<DJPi2>.
+
+The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.
+
+=over 12
+
+=item Scheme A: 
+
+(I) Rotation about the z axis by alpha.
+
+(II) Rotation about the new y axis by beta.
+
+(III) Rotation about the new z axis by gamma.
+
+=item Scheme B:	
+
+(I) Rotation about the z axis by gamma.
+
+(II) Rotation about the initial y axis by beta.
+
+(III) Rotation about the initial z axis by alpha.
+
+=back
+
+The rotations can further be viewed either as a rotation of the coordinate system or the physical body. For a rotation of the coordinate system without rotation of the physical body, use 
+
+=over 12
+
+X(alpha, beta, gamma). 
+
+=back
+
+For a rotation of the physical body without rotation of the coordinate system, use 
+
+=over 12
+
+X(-gamma, -beta, -alpha).
+
+=back
+
+To perform the inverse transform of X(alpha, beta, gamma), use X(-gamma, -beta, -alpha).
+
+Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the "x convention", where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be alpha_y = alpha_x - pi/2, beta_x = beta_y, and gamma_y = gamma_x + pi/2.
+
+=head1 ARGUMENTS
+
+=over 13
+
+=item CILMROT
+
+(output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The spherical harmonic coefficients of the rotated function, normalized for use with the geodesy 4-pi spherical harmonics.
+	
+=item CILM
+
+(input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The input real spherical harmonic coefficients. The coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention.
+
+=item X
+
+(input) REAL*8, DIMENSION(3 )
+
+The three Euler angles, alpha, beta, and gamma.
+
+=item DJ
+
+(input) REAL*8, DIMENSION (LMAX+1, LMAX+1, LMAX+1)
+
+The rotation matrix DJ(pi/2), obtained from a call to I<DJPi2>.
+
+=item LMAX
+
+(input) INTEGER, OPTIONAL
+
+The maximum spherical harmonic degree of the input and output coefficients. 
+
+
+=back
+
+=head1 NOTES 
+
+This routine first converts the real coefficients to complex form using I<SHrtoc>. If the compilation-time parameter CSPHASE_DEFAULT is set to 1 (default), then the Condon-Shortley phase of the coefficients is modified. Then the coefficients are converted to indexed form using I<SHCilmToCindex>, these are sent to I<SHRotateCoef>, the result if converted back to CILM complex form using I<SHCindexToCilm>, and these are finally converted back to real form using I<SHctor>.
+
+=head1 SEE ALSO
+
+djpi2(1), shrotatecoef(1), shctor(1), shrtoc(1), shcilmtocindex(1), shcindextocilm(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

@@ -1,0 +1,196 @@
+=head1 MakeGravGradGridDH
+
+=over 22
+
+=item MakeGravGradGridDH -  
+
+Create 2D cylindrical maps on a flattened ellipsoid of the gravity "gradient" tensor in a local north-oriented reference frame.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 32
+
+=item SUBROUTINE MakeGravGradGridDH ( 
+
+CILM, LMAX, GM, R0, A, F, VXX, VYY, VZZ, VXY, VXZ, VYZ, N, SAMPLING, LMAX_CALC )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+CILM(2, LMAX+1, LMAX+1), GM, R0, A, F, VXX(2*LMAX+2, 2*LMAX+2), S<VYY(2*LMAX+2, 2*LMAX+2)>, S<VZZ(2*LMAX+2, 2*LMAX+2)>, S<VXY(2*LMAX+2, 2*LMAX+2)>, S<VXZ(2*LMAX+2, 2*LMAX+2)>, S<VYZ(2*LMAX+2, 2*LMAX+2)> 
+
+=item INTEGER
+
+LMAX, N
+
+=item INTEGER, OPTIONAL
+
+SAMPLING, LMAX_CALC
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<MakeGravGradGridDH> will create 2-dimensional cylindrical maps from the spherical harmonic coefficients CILM, equally sampled (N by N) or equally spaced (N by 2N) in latitude and longitude, for six components of the gravity "gradient" tensor (all using geocentric coordinates):
+
+	(Vxx,	Vxy,	Vxz)
+	(Vyx,	Vyy,	Vyz)
+	(Vzx,	Vzy,	Vzz)
+	
+The reference frame is north-oriented, where X points north, Y points west, and Z points upward (all tangent or perpendical to a sphere of radius r). The gravitational potential is defined as
+
+	V = GM/r Sum_{l=0}^LMAX (R0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}, 
+	
+where R0 is the reference radius R0 of the spherical harmonic coefficients Clm, and the gravitational acceleration is
+
+	B = Grad V.
+
+The gravity tensor is symmetric, and satisfies Vxx + Vyy + Vzz = 0, though all three diagonal elements are calculated independently in this routine.
+
+The components of the gravity tensor are calculated according to eq. 1 in Petrovskaya and Vershkov (2006), which is based on eq. 3.28 in Reed (1973) (noting that Reed's equations are in terms of latitude and that the Y axis points east):
+
+	Vzz = Vrr
+	Vxx = 1/r Vr + 1/r^2 Vtt
+	Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
+	Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
+	Vxz = 1/r^2 Vt - 1/r Vrt
+	Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
+
+where r, t, p stand for radius, theta, and phi, respectively, and subscripts on V denote partial derivatives.
+
+The output grid are in units of s^-2 and are cacluated on a flattened ellipsoid with semi-major axis A and flattening F. To obtain units of Eotvos (10^-9 s^-2), multiply the output by 10^9. The calculated values should be considered exact only when the radii on the ellipsoid are less than the maximum radius of the planet (the potential coefficients are simply downward continued in the spectral domain).
+
+The default is to calculate grids for use in the Driscoll and Healy (1994) routines that are equally sampled (N by N), but this can be changed to calculate equally spaced grids (N by 2N) by setting the optional argument SAMPLING to 2. The input value of LMAX determines the number of samples, N=2*LMAX+2, and the latitudinal sampling interval, 90/(LMAX+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/N degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/N for equally sampled and 180/N for equally spaced grids, respectively.
+
+=head1 ARGUMENTS
+
+=over 11
+
+=item CILM 
+
+(input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The real gravitational potential spherical harmonic coefficients. The coefficients C1lm and C2lm refer to the "cosine" (Clm) and "sine" (Slm) coefficients, respectively, with Clm = CILM(1, l+1, m+1) and Slm = CILM(2, l+1, m+1). Alternatively, C1lm and C2lm correspond to the positive and negative order coefficients, respectively.
+
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of the coefficients CILM. This determines the number of samples of the output grids, N=2*LMAX+2, and the latitudinal sampling interval, 90/(LMAX+1).
+
+=item GM
+
+(input) REAL*8 
+
+The gravitational constant multiplied by the mass of the planet.
+
+=item R0
+
+(input) REAL*8
+
+The reference radius of the spherical harmonic coefficients.
+
+=item A
+
+(input) REAL*8
+
+The semi-major axis of the flattened ellipsoid on which the field is computed.
+
+=item F
+
+(input) REAL*8 
+
+The flattening of the reference ellipsoid: i.e., F = (R_equator - R_pole) / R_equator = (A - B) / A.
+
+=item VXX
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled (N by N) or equally spaced (N by 2N) grid of the XX component of the gravity tensor. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/N degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/N for an equally sampled and 180/N for an equally spaced grid, respectively.
+
+=item VYY
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled or equally spaced grid of the YY component of the gravity tensor.
+
+=item VZZ
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled or equally spaced grid of the ZZ component of the gravity tensor.
+
+=item VXY
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled or equally spaced grid of the XY component of the gravity tensor.
+
+=item VXZ
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled or equally spaced grid of the XZ component of the gravity tensor.
+
+=item VYZ
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled or equally spaced grid of the YZ component of the gravity tensor.
+
+=item N
+
+(output) INTEGER
+
+The number of samples in latitude of the output grids. This is equal to 2*LMAX + 2, which will always be even.
+
+=item SAMPLING 
+
+(input) INTEGER, OPTIONAL
+
+If 1 (default) the output grids are equally sampled (N by N). If 2, the grids are equally spaced (N by 2*N).
+
+=item LMAX_CALC 
+
+(input) INTEGER, OPTIONAL
+
+The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to LMAX.
+
+
+=back
+
+=head1 SEE ALSO
+
+makegravgriddh(1), makegeoidgrid(1), makegriddh(1), shexpanddh(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Reed, G.B., Application of kinematical geodesy for determining
+the short wave length components of the gravity field by satellite gradiometry, Ohio State University, Dept. of Geod. Sciences, Rep. No. 201, Columbus, Ohio, 1973.
+
+Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, I<Adv. Appl. Math.>, 15, 202-250, 1994.
+
+Petrovskaya, M.S. and A.N. Vershkov, Non-singular expressions for the gravity gradients in the local north-oriented and orbital reference frames, I<J. Geod.>, 80, 117-127, 2006.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

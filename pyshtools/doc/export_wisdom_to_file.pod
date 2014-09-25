@@ -1,0 +1,60 @@
+=head1 Export_Wisdom_To_File
+
+=over 24
+
+=item Export_Wisdom_To_File -  
+
+Export FFTW wisdom file.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 35
+
+=item SUBROUTINE Export_Wisdom_To_File ( 
+
+IUNIT )
+
+=back
+
+=over 4
+
+=over 10
+
+=item INTEGER
+
+IUNIT
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<Export_Wisdom_To_File> will write the current FFTW wisdom to a file. IUNIT corresponds to the unit number of the opened file.
+
+=head1 ARGUMENTS
+
+=over 10
+	
+=item IUNIT
+
+(input) INTEGER
+
+The unit number of the already opened export wisdom file.
+
+=back
+
+=head1 SEE ALSO
+
+import_wisdom_to_file(1)
+
+L<http://shtools.ipgp.fr/>
+L<http://www.fftw.org/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

@@ -1,0 +1,161 @@
+=head1 CilmPlusRhoH
+
+=over 16 
+
+=item CilmPlusRhoH - 
+
+Calculate the gravitational potential of relief referenced to a spherical interface with laterally varying density using the finite amplitude algorithm of Wieczorek (2007).
+
+=back
+
+=head1 SYNOPSIS
+
+=over 26
+
+=item SUBROUTINE CilmPlusRhoH ( 
+
+CILM, GRIDIN, LMAX, NMAX, MASS, D, RHO, GRIDTYPE, W, ZERO, PLX, N, DREF )
+
+=back
+
+=over 4
+
+=over 18
+
+=item REAL*8	
+
+CILM(2, LMAX+1, LMAX+1), GRIDIN(LMAX+1, 2*LMAX+1), MASS, D, RHO(LMAX+1, 2*LMAX+1), 
+
+=item REAL*8, OPTIONAL
+
+W(LMAX+1), ZERO(LMAX+1), S<PLX(LMAX+1, (LMAX+1)*(LMAX+2)/2)>, DREF
+
+=item INTEGER
+
+LMAX, NMAX, GRIDTYPE
+
+=item INTEGER, OPTIONAL
+
+N
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<CilmPlusRhoH> will calculate the spherical harmonic coefficients of the gravitational potential that correspond to relief referenced to a spherical interface with laterally varying density. This is equation 30 of Wieczorek (2007), which is based on the equation 10 of Wieczorek and Phillips (1998). The potential is strictly valid only when the coefficients are evaluated at a radius greater than the maximum radius of the relief. The relief and laterally varying density are input as a grid, whose type is specified by GRIDTYPE (1 for Gauss-Legendre quadrature grids, 2 for NxN Driscoll and Healy sampled grids, and 3 for Nx2N Driscoll and Healy sampled grids). The input relief GRIDIN must correspond to absolute radii. The parameter NMAX is the order of the Taylor series used in the algorithm to approximate the potential coefficients. By default, the relief and spherical harmonic coefficients will be referenced to the mean radius of GRIDIN. However, if the optional parameter DREF is specified, this will be used instead as the reference radius. 
+
+It is important to understand that as an intermediate step, this routine calculates the spherical harmonic coefficients of the density multiplied by relief (referenced to the mean radius of GRIDIN or DREF) raised to the nth power, i.e., RHO*(GRIDIN-D)**n. As such, if the input function is bandlimited to degree L, the resulting function will be bandlimited to degree L*NMAX. This subroutine implicitly assumes that the GRIDIN has an effective spherical harmonic bandwidth greater or equal to L*NMAX. (The effective bandwidth is equal to LMAX for GRIDIN=1, and is specified by N/2-1 for GRIDIN=2 or 3.) If this is not the case, then aliasing will occur. In practice, for accurate results, it is found that the effective bandwidth needs only to be about three times the size of L, though this should be verified for each application. Thus, if the input function is considered to be bandlimited to degree L, the function should be evaluated on a grid corresponding to a maximum degree of about 3*L. Aliasing effects can be minimized by using Driscoll and Healy Nx2N grids.
+
+If the input grid is evaluated on the Gauss-Legendre points, it is necessary to specify the optional parameters W and ZERO, or W and PLX, which are calculated by a call to I<PreCompute>. In contast, if Driscoll-Healy grids are used (NxN or Nx2N), it is necessary to specify the optional parameter N.
+
+If memory is not an issue, the algorithm can be speeded up considerably when using Gauss-Lengendre grids by inputing the optional array PLX (along with W) of precomputed associated Legendre functions on the Gauss-Legendre nodes.  Both of these variables are computed by a call to I<PreCompute>.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item CILM 
+
+(output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential corresponding to constant density relief referenced to a spherical interface of radius D.
+	
+=item GRIDIN
+
+(input) REAL*8, DIMENSION (LMAX+1, 2*LMAX+1) for GRIDTYPE 1, DIMENSION (N, N) for GRIDTYPE 2, DIMENSION (N, 2*N) for GRIDTYPE 3
+
+The radii of the interface evaluated on a grid corresponding to a function of maximum spherical harmonic degree LMAX. This is calculated by a call to either I<MakeGridGLQ> or I<MakeGridDH>.
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of the output spherical harmonic coefficients. This degree also determines the dimension of the input relief GRIDGLQ for GRIDTYPE 1. (As a general rule, this should be about twice the spherical harmonic bandwidth of the input function.) For Driscoll-Healy grids, LMAX must be less than or equal to N/2 - 1. 
+
+=item NMAX
+
+(input) INTEGER
+
+The maximum order used in the Taylor-series expansion used in calculating the potential coefficients. As a rule, this should be about 4.
+	
+=item MASS
+
+(input) REAL*8
+
+The mass of the planet in kg.
+	
+=item D
+
+(output) REAL*8
+
+The mean radius of the relief in meters.
+	
+=item RHO
+
+(input) REAL*8, DIMENSION (LMAX+1, 2*LMAX+1) for GRIDTYPE 1, DIMENSION (N, N) for GRIDTYPE 2, DIMENSION (N, 2*N) for GRIDTYPE 3
+
+The density contrast of the relief in kg/m^3 expressed on a grid with the same dimensions as GRIDIN.
+
+=item GRIDTYPE
+
+(input) INTEGER
+
+1 = Gauss-Legendre grids, calculated using I<PreCompute> and I<MakeGridGLQ>. 2 = Equally sampled Driscoll-Healy grids, NxN, calculated using I<MakeGridDH>. 3 = Equally spaced Driscoll-Healy grids, Nx2N, calculated using I<MakeGridDH>.
+	
+=item W
+
+(input) REAL*8, OPTIONAL DIMENSION (LMAX+1)
+
+The weights used in the Gauss-Legendre quadrature, which are required for GRIDTYPE = 1. These are calculated from a call to I<PreCompute> (or alternatively, I<PreGLQ>).
+
+=item ZERO
+
+(input) REAL*8, OPTIONAL, DIMENSION (LMAX+1)
+
+The nodes used in the Gauss-Legendre quadrature over latitude for GRIDTYPE 1, calculated by a call to I<PreCompute>. One of PLX or ZERO must be present when GRIDTYPE = 1, but not both. 
+
+=item PLX
+
+(input) REAL*8, OPTIONAL, DIMENSION (LMAX+1, (LMAX+1)*(LMAX+2)/2)
+
+An array of the associated Legendre functions calculated at the nodes used in the Gauss-Legendre quadrature for GRIDTYPE 1. These are determined from a call to I<PreCompute>. One of PLX or ZERO must be present when GRIDTYPE = 1, but not both. 
+	
+=item N
+
+(input) INTEGER, OPTIONAL
+
+The number of samples in latitude when using Driscoll-Healy grids. For a function bandlimited to LMAX, N = 2 (LMAX + 1). This is required for GRIDTYPE = 2 and 3.
+
+=item DREF
+
+(input) REAL*8, OPTIONAL
+
+The reference radius to be used when calculating both the relief and spherical harmonic coefficients. If this is not specified, this parameter will be set equal to the mean radius of GRIDIN.
+
+=back
+
+=head1 NOTES
+
+This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase; This can not be modified.
+
+This routine requires the fast Fourier transform library I<FFTW>, which is available at L<http://www.fftw.org>.
+
+=head1 SEE ALSO
+
+cilmplus(1), shexpandglq(1), makegridglq(1), precompute(1), preglq(1), glqgridcoord(1), makegriddh(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, I<J. Geophys. Res.>, 103, 1715-1724, 1998.
+
+Wieczorek, M. A., Gravity and topography of the terrestrial planets, I<Treatise on Geophysics>, 10, 165-206, doi:10.1016/B978-044452748-6/00156-5, 2007.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

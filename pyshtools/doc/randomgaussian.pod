@@ -1,0 +1,68 @@
+=head1 RandomGaussian
+
+=over 17
+
+=item RandomGaussian -  
+
+Return a pseudo Gaussian deviate of zero mean and unit variance.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 33
+
+=item REAL*8 FUNCTION RandomGaussian ( 
+
+SEED )
+
+=back
+
+=over 4
+
+=over 11
+
+=item INTEGER
+
+SEED
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<RandomGaussian> will return a Gaussian random deviate with unit variance and zero mean. The underlying random number generator uses the algorithm of Park and Miller combined with a Marsaglia shift sequence, which is claimed to have a periodicity of about 3.1 10^18. The random number generator is intialized by calling with a negative value of SEED, and afterwards, this variable should not be modified. To obtain a Gaussian deviate with a standard deviation of SIGMA, it is only necessary to multiply the unit variance deviate by this value.
+
+
+=head1 ARGUMENTS
+
+=over 13
+
+=item SEED
+
+(input/output) INTEGER
+
+Input a negative integer to (re-)initialize the random number generator. Afterwards, this argument should not be modified.
+
+=back
+
+=head1 NOTES
+
+This is a slightly modified version of the algorithm that was published in NUMERICAL RECIPES as GASDEV.
+
+=head1 SEE ALSO
+
+randomn(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

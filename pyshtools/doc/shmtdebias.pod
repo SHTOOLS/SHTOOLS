@@ -1,0 +1,137 @@
+=head1 SHMTDebias
+
+=over 13
+
+=item SHMTDebias -  
+
+Invert for the global power spectrum given a localized multitaper spectrum estimate.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 24
+
+=item SUBROUTINE SHMTDebias ( 
+
+MTDEBIAS, MTSPECTRA, LMAX, TAPERS, LWIN, K, NL, LMID, N, TAPER_WT )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+MTDEBIAS(2, (LMAX+2)/NL), MTSPECTRA(2, LMAX+1), TAPERS(LWIN+1, K), LMID((LMAX+2)/NL)
+
+=item INTEGER
+
+LMAX, LWIN, K, NL, N
+
+=item REAL*8, OPTIONAL
+
+TAPER_WT(K)
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHMTDebias> will invert for the global power spectrum given a localized multitaper spectrum estimate. This linear inverse problem is inherently underdetermined, and in order to achive a unique solution it is assumed that the global spectrum is constant in bins of width NL, and that the global power spectrum is constant for degrees greater than LMAX. In practice NL should be increased until the global power spectrum is everywhere positive (negative values would be unphysical) and the variances are reasonable. Further details can be found in Wieczorek and Simons (2007).
+
+This set of linear equations is solved using the method of singular value decomposition as outlined in Press et al. (1992, pp. 670-672). In particular each value of multitaper spectrum estimate MTSPECTRA(1,:), as well as the corresponding rows of the transformation matrix, is divided by the uncertainties of the estimate MTSPECTRA(2,:). The solution and uncertainty are given by eqs 15.4.17 and 15.4.19 of Press et al. (1992, p. 671), respectively.
+
+=head1 ARGUMENTS
+
+=over 13
+
+=item MTDEBIAS
+
+(output) REAL*8, DIMENSION (2, (LMAX+2)/NL)
+
+The global power spectrum (column 1) and uncertainty (column 2). The midpoints of the N spherical harmonic bins are given in LMID.
+
+=item MTSPECTRA
+
+(input) REAL*8, DIMENSION (2, LMAX+1)
+
+The localized multitaper spectrum estimate and uncertainty, obtained from a routine such as I<SHMultitaperCSE> or I<SHMultitaperSE>.
+	
+=item LMAX
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the localized multitaper spectrum estimates.
+
+=item TAPERS
+
+(input) REAL*8, DIMENSION (LMAXT+1, K)
+
+An array of the K windowing functions, arranged in columns, obtained from a call to I<SHReturnTapers>. 
+
+
+=item LWIN
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the windowing functions in the array TAPERS.
+
+=item K
+
+(input) INTEGER
+
+The number of tapers to be utilized in performing the multitaper spectral analysis.
+
+=item NL
+
+(input) INTEGER
+
+The global power spectrum is assumed to be constant within bins of spherical harmonic wdith NL. In addition, the global power spectrum will be assumed to be constant beyond LMAX.
+
+=item LMID
+
+(output) REAL*8, DIMENSION ( (LMAX+2)/NL )
+
+The midpoints of the spherical harmonic bins for which the global power spectrum is constant.
+
+=item N
+
+(output) INTEGER
+
+The number of bins used in MTDEBIAS and LMID.
+
+=item TAPER_WT
+
+(input) REAL*8, OPTIONAL, DIMENSION (K)
+
+The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine I<SHMTVarOpt>.
+	
+
+=back
+
+=head1 NOTES
+
+If TAPER_WT is not specified, the weights will all be assumed to be equal to 1/K.
+
+
+=head1 SEE ALSO
+
+shmultitaperse(1), shmultitapercse(1), shreturntapers(1), shmtvaropt(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.
+
+Wieczorek, M. A., and F. J. Simons, Minimum variance multitaper spectral estimation on the sphere, submitted to J. Fourier Anal. Appl., submitted 2006.
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

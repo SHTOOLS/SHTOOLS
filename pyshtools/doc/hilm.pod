@@ -1,0 +1,175 @@
+=head1 Hilm
+
+=over 8 
+
+=item Hilm -  
+
+Iteratively calculate the relief along an interface of constant density contrast that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998).
+
+=back
+
+=head1 SYNOPSIS
+
+=over 18
+
+=item SUBROUTINE Hilm ( 
+
+CILM, BA, GRID, LMAX, NMAX, MASS, R0, RHO, GRIDTYPE, W, PLX, ZERO, FILTER_TYPE, FILTER_DEG, LMAX_CALC )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+CILM(2, LMAX+1, LMAX+1), BA(2, LMAX+1, LMAX+1), GRID(NLAT, NLONG), MASS, R0, RHO
+
+=item REAL*8, OPTIONAL
+
+S<PLX(LMAX+1, (LMAX+1)*(LMAX+2)/2)>, ZERO(LMAX+1), W(LMAX+1)
+
+=item INTEGER
+
+LMAX, NMAX, GRIDTYPE
+
+=item INTEGER, OPTIONAL
+
+FILTER_TYPE, FILTER_DEG, LMAX_CALC
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<Hilm> is used to solve iteratively for the relief along an interface that corresponds to a given Bouguer anomaly. This is equation 18 of Wieczorek and Phillips (1998) which implicitly takes into consideration the finite-amplitude correction. Each iteration takes as input a guess for the relief (specified by GRID) and outputs the iteratively improved spherical harmonic coefficients of this relief. These coefficients can then be re-expanded on grid and re-input into this routine as the next guess. For the initial guess, it is often sufficient to use the relief predicted using the first-order "mass sheet" approximation, or perhaps zero. The input relief GRID can be of one of three type specified by GRIDTYPE: 1 for Gauss-Legendre grids, 2 for NxN Driscoll-Healy grids, and 3 for Nx2N Driscoll-Healy grids.
+
+If the algorithm does not converge, one might want to try damping the initial estimate. Alternatively, iterations of the following form have proven successfulin in damping oscilations between successive iterations:
+
+h3 = (h2+h1)/2
+h4 = f(h3)
+
+It is important to understand that as an intermediate step, this routine calculates the spherical harmonic coefficients of the relief raised to the nth power, i.e., GRID**n. As such, if the input function is bandlimited to degree L, the resulting function will thus be bandlimited to degree L*NMAX. This subroutine implicitly assumes that LMAX is greater than or equal to L*NMAX. If this is not the case, then aliasing will occur. In practice, for accurate results, it is found that LMAX needs only to be about twice the size of L, though this should be verified for each application. Thus, if the input function is considered to be bandlimited to degree L, the function should be evaluated on a Gauss-Legendre grid corresponding to a maximum degree of about 2*L.
+
+If the input grid is evaluated on the Gauss-Legendre points, it is necessary to specify the optional parameters W and ZERO, or W and PLX, which are calculated by a call to I<PreCompute>. If memory is not an issue, the algorithm can be speeded up considerably by inputing the optional array PLX of precomputed associated Legendre functions on the Gauss-Legendre nodes. If PLX is not specified, then it is necessary to input the optional array ZERO that contains the latitudinal Gauss-Legendre quadrature nodes.
+
+=head1 ARGUMENTS
+
+=over 13
+
+=item CILM 
+
+(output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1) I<or> DIMENSION (2, LMAX_CALC+1, LMAX_CALC+1)
+
+An estimate of the real spherical harmonic coefficients (geodesy normalized) of relief along an interface with density contrast RHO that satisfies the Bouguer anomaly BA. The degree zero term corresponds to the mean radius of the relief.
+
+=item BA
+
+(input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1) I<or> DIMENSION (2, LMAX_CALC+1, LMAX_CALC+1)
+
+The real spherical harmonic coefficients of the Bouguer anomaly referenced to a spherical interface R0.
+
+=item GRID
+
+(input) REAL*8, DIMENSION (LMAX+1, 2*LMAX+1) for GRIDTYPE = 1, DIMENSION (2*LMAX+2, 2*LMAX+2) for GRIDTYPE = 2, DIMENSION (2*LMAX+2, 4*LMAX+4) for GRIDTYPE = 3)
+
+The initial estimate for the radii of the interface evaluated a grid corresponding to a function of maximum spherical harmonic degree LMAX. This is calculated by a call to either I<MakeGridGLQ> or I<MakeGridDH> This grid must contain the degree-0 average radius of the interface.
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of the output spherical harmonic coefficients for the relief and the input spherical harmonics for the Bouguer anomaly. As a general rule, this should be about twice the spherical harmonic bandwidth of the input function.
+
+=item NMAX
+
+(input) INTEGER
+
+The maximum order used in the Taylor-series expansion used in calculating the potential coefficients. As a rule, this should be about 4.
+	
+=item MASS
+
+(input) REAL*8
+
+The mass of the planet in kg.
+	
+=item R0
+
+(input) REAL*8
+
+The reference radius of the Bouguer anomaly BA.
+	
+=item RHO
+
+(input) REAL*8
+
+The density contrast of the relief in kg/m^3.
+
+=item GRIDTYPE
+
+(input) INTEGER
+
+1 = Gauss-Legendre grids, calculated using I<PreCompute> and I<MakeGridGLQ>. 2 = Equally sampled Driscoll-Healy grids, NxN, calculated using I<MakeGridDH>. 3 = Equally spaced Driscoll-Healy grids, Nx2N, calculated using I<MakeGridDH>.
+	
+=item W
+
+(input) REAL*8, OPTIONAL DIMENSION (LMAX+1)
+
+The weights used in the Gauss-Legendre quadrature. These are calculated from a call to I<PreCompute> (or alternatively, I<PreGLQ>). If present, one of PLX or ZERO must also be present.
+
+=item PLX
+
+(input) REAL*8, OPTIONAL, DIMENSION (LMAX+1, (LMAX+1)*(LMAX+2)/2)
+
+An array of the associated Legendre functions calculated at the nodes used in the Gauss-Legendre quadrature. These are determined from a call to I<PreCompute>. 
+	
+=item ZERO
+
+(input) REAL*8, OPTIONAL, DIMENSION (LMAX+1)
+
+The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to I<PreCompute>. 
+
+=item FILTER_TYPE
+
+(input) INTEGER, OPTIONAL
+
+Apply a filter when calculating the relief in order to minimize the destabilizing effects of downward continuation which amplify uncertainties in the Bouguer anomaly. If 0, no filtering is applied. If 1, use the minimum amplitude filter of Wieczorek and Phillips (1998; equation 19). If 2, use a minimum curvature filter. 
+
+=item FILTER_DEG
+
+(input) INTEGER, OPTIONAL
+
+The spherical harmonic degree for which the filter is 0.5.
+
+=item LMAX_CALC
+
+(input) INTEGER, OPTIONAL
+
+The maximum degree that will be calculated in the spherical harmonic expansions.
+
+
+=back
+
+=head1 NOTES
+
+This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase; This can not be modified.
+
+This routine requires the fast Fourier transform library I<FFTW>, which is available at L<http://www.fftw.org>.
+
+=head1 SEE ALSO
+
+hilmrhoh(1), shexpandglq(1), makegridglq(1), precompute(1), preglq(1), shexpanddh(1), makegriddh(1), glqgridcoord(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, I<J. Geophys. Res.>, 103, 1715-1724, 1998.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

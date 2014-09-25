@@ -1,0 +1,122 @@
+=head1 SHRead
+
+=over 9
+
+=item SHRead -  
+
+Read spherical harmonic coefficients from an ASCII file.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 20
+
+=item SUBROUTINE SHRead ( 
+
+FILENAME, CILM, LMAX, SKIP, HEADER, ERROR )
+
+=back
+
+=over 4
+
+=over 20
+
+=item CHARACTER(*)
+
+FILENAME
+
+=item REAL*8	
+
+CILM(2, LMAX+1, LMAX+1)
+
+=item INTEGER
+
+LMAX
+
+=item INTEGER, OPTIONAL
+
+SKIP
+
+=item REAL*8, OPTIONAL
+
+HEADER(), ERROR(2, LMAX+1, LMAX+1)
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHRead> will read spherical harmonic coefficients from an ASCII file into an array CILM. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array CILM - 1 and the maximum degree of the coefficients in the file. If the optional array SKIP is specified, parsing of the file will commence after the first SKIP lines. If the optional array HEADER is specified, then the first N elements after the skipped lines will be output, where N is the length of the array HEADER.
+
+The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree L and angular order M according to the format
+
+L, M, CILM(1, L+1, M+1), CILM(2, L+1, M+1).
+
+The actual delimeters are unimportant. If the optional array ERROR is specified, then the error for each coefficient will be read according to the format
+
+L, M, CILM(1, L+1, M+1), CILM(2, L+1, M+1), ERROR(1, L+1, M+1), ERROR(2, L+1, M+1).
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item FILENAME
+
+(input) CHARACTER(*)
+
+The ASCII filename containing the spherical harmonic coefficients.
+	
+=item CILM
+
+(output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The spherical harmonic coefficients contained in FILENAME.
+
+=item LMAX
+
+(output) INTEGER
+
+The maximum spherical harmonic degree of CILM. This is the minimum of the maximum spherical harmonic degree of FILENAME and the dimension of CILM - 1.
+
+=item SKIP
+
+(input) INTEGER, OPTIONAL
+
+The number of lines to skip before parsing FILENAME.
+
+=item HEADER
+
+(output) REAL*8, OPTIONAL DIMENSION (N)
+
+A vector containing the first N numbers in the first line of the file (following any skipped lines). 
+
+
+=item ERROR
+
+(output) REAL*8, OPTIONAL DIMENSION (2, LMAX+1, LMAX+1)
+
+The errors corresponding to the spherical harmonic coefficients CILM.
+
+=back
+
+=head1 NOTES
+
+The first spherical harmonic degree of the filename does not have to be 0; this is determined from the first element after the SKIP and HEADER lines. 
+
+The ordering of the file is explcitly given by
+
+l, 0 / l, 1 / l, 2 /l, ... / l, m / l+1, 0 / l+1, 1 / ...
+
+=head1 SEE ALSO
+
+shreadjpl(1), shreadgrace(1), shreadchamp(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

@@ -1,0 +1,99 @@
+=head1 PreGLQ
+
+=over 9
+
+=item PreGLQ -  
+
+Calculate the weights and nodes used in integrating a function by Gauss-Legendre quadrature.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 20
+
+=item SUBROUTINE PreGLQ ( 
+
+LOWER, UPPER, N, ZERO, W )
+
+=back
+
+=over 4
+
+=over 11
+
+=item REAL*8	
+
+LOWER, UPPER, ZERO(N), W(N)
+
+=item INTEGER
+
+N
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<PreGLQ> will calculate the weights and zeros used to integrate a function using Gauss-Legendre quadrature. For N quadrature points, the integration will be exact if the function is a polynomial of degree 2N-1, or less. The quadrature nodes correspond to the zeros of the Legendre polynomial of degree N. The number of quadrature points required to integrate a polynomial of degree L can be determined by a call to I<NGLQ>.
+
+To integrate a function between the bounds LOWER and UPPER it is only necessary to calculate the sum of the function evaluated at the nodes ZERO multiplied by the weights.
+
+
+=head1 ARGUMENTS
+
+=over 13
+
+=item LOWER
+
+(input) REAL*8
+
+The lower bound of the integration.
+
+=item UPPER
+
+(input) REAL*8
+
+The upper bound of the integration.
+
+=item N
+
+(input) INTEGER
+
+The number of integration points to use. This will integrate exactly a polynomial of degree 2*N-1.
+
+=item ZERO
+
+(output) REAL*8, DIMENSION (N)
+
+The zeros used in the Gauss-Legendre quadrature.
+
+=item W
+
+(output) REAL*8, DIMENSION (N)
+
+The weights used in the Gauss-Legendre quadrature.
+
+
+=back
+
+=head1 NOTES
+
+This is a slightly modified version of the algorithm that was published in NUMERICAL RECIPES.
+
+=head1 SEE ALSO
+
+nglq(1), nglqsh(1), nglqshn(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

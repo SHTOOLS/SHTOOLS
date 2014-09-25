@@ -1,0 +1,77 @@
+=head1 SHCilmToVector
+
+=over 17
+
+=item SHCilmToVector -  
+
+Convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed vector.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 28
+
+=item SUBROUTINE SHCilmToVector ( 
+
+CILM, VECTOR, LMAX )
+
+=back
+
+=over 4
+
+=over 20
+
+=item REAL*8	
+
+CILM(2, LMAX+1, LMAX+1), VECTOR( (LMAX+1)**2 )
+
+=item INTEGER
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHCilmToVector> will convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed array.  The degree L, order M, and I (1 for cosine, 2 for sine) corresponds to the index 1 + L**2 + (I-1)*L + M.
+
+=head1 ARGUMENTS
+
+=over 13
+
+=item CILM
+
+(input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The input real spherical harmonic coefficients.
+	
+=item VECTOR
+
+(output) REAL*8, DIMENSION ( (LMAX+1)**2 )
+
+The indexed output real spherical harmonic coefficients.
+
+=item LMAX
+
+(input) INTEGER
+
+The maximum degree of the output coefficients to convert.
+
+
+=back
+
+=head1 SEE ALSO
+
+shvectortocilm(1), yilmindex(1), shctor(1), shrtoc(1), shcindextocilm(1), shcilmtocindex(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

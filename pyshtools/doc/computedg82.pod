@@ -1,0 +1,87 @@
+=head1 ComputeDG82
+
+=over 15
+
+=item ComputeDG82 -  
+
+Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of a spherical cap.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 25
+
+=item SUBROUTINE ComputeDG82 ( 
+
+DG82, LMAX, M, THETA0 )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+D0(LMAX-ABS(M)+1, LMAX-ABS(M)+1), THETA0
+
+=item INTEGER
+
+LMAX, M
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<ComputeDG82> will calculate the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of order M of a spherical cap. The eigenfunctions of this matrix correspond to a family of orthogonal windowing functions, and the eigenvalues correspond to the window's concentration factor (i.e., the power of the window within THETA0 divided by the total power of the function). It is implicitly assumed that the employed spherical harmonic functions are normalized to the same value for all degrees and angular orders, which is the case for both the geodesy 4-pi and orthonormalized harmonics. The returned matrix is symmetric, and the first element corresponds to (abs(M), abs(M)) as the values for elements less than this are identically zero.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item D0 
+
+(output) REAL*8, DIMENSION (LMAX-ABS(M)+1, LMAX-ABS(M)+1)
+
+The tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of order M of a spherical cap.
+	
+=item LMAX
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the windows.
+
+=item M
+
+(input) INTEGER
+
+The angular order of the concentration problem.
+	
+=item THETA0
+
+(input) REAL*8
+
+The angular radius of the spherical cap in RADIANS.
+
+=back
+
+=head1 SEE ALSO
+
+computed0(1), computedm(1), shreturntapers(1), shreturntapersm(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Grunbaum, F.A., L. Longhi, and M. Perlstadt, Differential operators commuting with finite convolution integral operators: some non-abelian examples, I<SIAM J. Appl. Math.>, 42, 941-955, 1982.
+
+Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, I<SIAM Review>, 48, 504-536, 2006.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

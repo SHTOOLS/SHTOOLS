@@ -1,0 +1,108 @@
+=head1 ComputeD0
+
+=over 15
+
+=item ComputeDMap -  
+
+Compute the space-concentration kernel of a mask defined on the sphere.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 25
+
+=item SUBROUTINE ComputeDMap ( 
+
+DIJ, DH_MASK, N, SAMPLING, LMAX )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+DIJ( (LMAX+1)**2, (LMAX+1)**2 )
+
+=item INTEGER
+
+DH_MASK( N, N ) or DH_MASK( N, 2*N ), N, SAMPLING, LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<ComputeDMap> will calculate the space-concentration kernel for a generic mask defined on the sphere. The input mask DH_MASK must be sampled according to the Driscoll and Healy (1994) sampling theorem with N samples in latitude, and possess a value of 1 inside the concentration region, and 0 elsewhere. DH_MASK can either possess N samples in longitude (SAMPLING=1) or 2*N samples in longitude (SAMPLING=2). Given the approximate way in which the elements of DIJ are calculated (see below), SAMPLING=2 should be preferred. DIJ is symmetric, and the elements are ordered according to the scheme described in I<YilmIndex>. See Simons et al. (2006) for further details.
+
+The elements of DIJ are explicitly given by 
+
+Dlm,l'm' = 1/(4pi) Integral_R Ylm Yl'm' dOmega,
+
+where R is the concentration region. In this routine, all values of l'm' are calculated in a single spherical harmonic transform (I<SHExpandDH>) for a given value of lm according to
+
+Dl'm' = 1/(4pi) Integral_Omega F Yl'm' dOmega.
+
+where 
+
+F = Ylm DH_MASK.
+
+The function F is in general not a polynomial, and thus the coefficients Dl'm' should not be expected to be exact. For this reason, the effective spherical harmonic degree of the input mask (L = N/2 - 1) should be greater than LMAX. The exact value of N should be chosen such that further increases in N do not alter the returned eigenvalues. The routine prints out the fractional area of the mask computed in the pixel domain divided by D(1,1) (the fractional area computed by the spherical harmonic transforms), and the ratio of the two should be close to 1. Experience suggests that L should be about 5 times LMAX.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item DIJ 
+
+(output) REAL*8, DIMENSION ( (LMAX+1)**2, (LMAX+1)**2 )
+
+The space-concentration kernel corresponding to the mask DH_MASK.
+
+=item DH_MASK
+
+(input) INTEGER, DIMENSION (N, N) or DIMENSION (N, 2*N)
+
+A Driscoll and Healy (1994) sampled grid describing the concentration region R. All elements should either be 1 (for inside the concentration region) or 0 (for outside R).
+
+=item N
+
+(input) INTEGER
+
+The number of latitudinal samples in DH_MASK. The effective spherical harmonic bandwidth of this grid is L = N/2 - 1.
+
+=item SAMPLING
+
+(input) INTEGER
+
+For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x 2N samples. 
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of the matrix DIJ.
+
+
+=back
+
+=head1 SEE ALSO
+
+shreturntapersmap(1), yilmindex(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, I<Adv. Appl. Math.>, 15, 202-250, 1994.
+
+Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, I<SIAM Review>, 48, 504-536, 2006.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

@@ -1,0 +1,88 @@
+=head1 SHctor
+
+=over 10
+
+=item SHctor -  
+
+Convert complex spherical harmonics to real form.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 20
+
+=item SUBROUTINE SHctor ( 
+
+CCILM, RCILM, DEGMAX, CONVENTION, SWITCHCS )
+
+=back
+
+=over 4
+
+=over 20
+
+=item REAL*8	
+
+CCILM(2, *, *), RCILM(2, *, *)
+
+=item INTEGER, OPTIONAL
+
+DEGMAX, CONVENTION, SWITCHCS
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHctor> will convert complex spherical harmonics of a real function to real form. By default, the dimension of the output array is the minimum of RCILM(1,*,*) and CCILM(1,*,*), though this can be changed by specifying the optional parameter DEGMAX. The normalization of the input and output coefficients are by default the same, but if the optional argument CONVENTION is set to 2, this routine will convert from geodesy 4-pi normalized coefficients to orthonormalized coefficients. The Condon-Shortley phase convention between the input an output coefficients can be modified by the optional argument SWITCHCS.
+
+=head1 ARGUMENTS
+
+=over 13
+	
+=item CCILM
+
+(input) REAL*8, DIMENSION (2, *, *)
+
+The input complex spherical harmonic coefficients. S<CCILM(1, *, *)> and S<CCILM(2, *, *)> correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are input; the negative orders are assumed to satisfy the relation C_{l-m} = (-1)^m C_{lm}^*.
+
+=item RCILM
+
+(output) REAL*8, DIMENSION (2, *, *)
+
+The output real spherical harmonic coefficients. S<RCILM(1, *, *)> and S<RCILM(2, *, *)> correspond to the COS and SIN terms, respectively.
+
+=item DEGMAX
+
+(input) INTEGER, OPTIONAL
+
+The maximum degree of the output coefficients. By default, the dimension of the output coefficients will be the smallest of RCILM and CCILM.
+
+=item CONVENTION
+
+(input) INTEGER, OPTIONAL
+
+If 1 (default), the input and output coefficients will have the same normalization. If 2, orthonormalized coefficients will be converted to real geodesy 4-pi form.
+
+=item SWTICHCS
+
+(input) INTEGER, OPTIONAL
+
+If 0 (default), the input and output coefficients will possess the same Condon-Shortley phase convention. If 1, the input coefficients will first be multiplied by (-1)^m.
+
+=back
+
+=head1 SEE ALSO
+
+shrtoc(1), shcilmtocindex(1), shcindextocilm(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

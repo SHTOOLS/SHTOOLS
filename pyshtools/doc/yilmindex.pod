@@ -1,0 +1,71 @@
+=head1 YilmIndex
+
+=over 12
+
+=item YilmIndex -  
+
+Compute the index of an 1D array of spherical harmonic coefficients corresponding to I, L, and M.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 29
+
+=item INTEGER FUNCTION YilmIndex ( 
+
+I, L, M )
+
+=back
+
+=over 4
+
+=over 10
+
+=item INTEGER
+
+I, L, M
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<YilmIndex> will calculate the index of a 1D vector of spherical harmonic coefficients corresponding to degree L, angular order M and I (1 = cosine, 2 = sine). The index is given by 1 + L**2 + (I-1)*L + M.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item I
+
+(input) INTEGER
+
+1 corresponds to the Cosine coefficient, and 2 corresponds to the Sine coefficient.
+
+=item L
+
+(input) INTEGER
+
+The spherical harmonic degree.
+	
+=item M
+
+(input) INTEGER
+
+The angular order.
+
+=back
+
+=head1 SEE ALSO
+
+shcilmtovector(1), shvectortocilm(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

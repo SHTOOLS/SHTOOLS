@@ -1,0 +1,94 @@
+=head1 SHReturnTapers
+
+=over 17
+
+=item SHReturnTapers -  
+
+Calculate the eigenfunctions of the spherical-cap concentration problem.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 28
+
+=item SUBROUTINE SHReturnTapers ( 
+
+THETA0, LMAX, TAPERS, EIGENVALUES, TAPER_ORDER )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+THETA0, TAPERS(LMAX+1, (LMAX+1)**2), S<EIGENVALUES((LMAX+1)**2)>
+
+=item INTEGER
+
+LMAX, TAPER_ORDER((LMAX+1)**2)
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHReturnTapers> will calculate the eigenfunctions (i.e., localization windows) of the spherical-cap concentration problem. Each column of the matrix TAPERS contains the spherical harmonic coefficients of a single window and the corresponding concentration factor is given in the array EIGENVALUES.  Each window has non-zero coefficients for only a single angular order that is specified in TAPER_ORDER: all other spherical harmonic coefficients for a given window are identically zero. The columns of TAPERS are ordered from best to worst concentrated, and the first and last rows of each column correspond to spherical harmonic degrees 0 and LMAX, respectively. The localization windows are normalized such that they have unit power.
+
+=head1 ARGUMENTS
+
+=over 14
+
+=item THETA0
+
+(input) REAL*8
+
+The angular radius of the spherical cap in RADIANS.
+
+=item LMAX
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the localization windows.
+
+=item TAPERS
+
+(output) REAL*8, DIMENSION (LMAX+1, (LMAX+1)**2)
+
+The spherical harmonic coefficients of the (LMAX+1)**2 localization windows. Each column contains the coefficients of a single window that possesses non-zero coefficients for the single angular order specified in TAPER_ORDER. The first and last rows of each column correspond to spherical harmonic degrees 0 and LMAX, respectively, and the columns are arranged from best to worst concentrated.
+
+=item EIGENVALUES
+
+(output) REAL*8, DIMENSION ((LMAX+1)**2)
+
+The concentration factors of the localization windows.
+
+=item TAPER_ORDER
+
+(output) INTEGER, DIMENSION ((LMAX+1)**2)
+
+The angular order of the non-zero spherical harmonic coefficients in each column of TAPERS.
+
+=back
+
+=head1 SEE ALSO
+
+shreturntapersm(1), computedg82(1), computed0(1), computedm(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
+I<Geophys. J. Int.>, 162, 655-675.
+
+Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, I<SIAM Review>, 48, 504-536, 2006.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.
