@@ -110,7 +110,8 @@ all3: getflags
 
 python-wrapper: all
 	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" --f77flags="-m64 -fPIC" \
-	    -c $(SRCDIR)/pyshtools.pyf -lSHTOOLS$(VERSION) -lfftw3 -lm -llapack -lblas
+	    -c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
+	    -lSHTOOLS$(VERSION) -lfftw3 -lm -llapack -lblas
 	mv _SHTOOLS.so pyshtools/.
 	@echo
 	@echo MAKE SUCCESSFUL!

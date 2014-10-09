@@ -1,628 +1,1895 @@
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!
-!      This is a simple Python wrapper for the shtools library written by Mark
-!      Wieczorek (http://shtools.ipgp.fr/). It uses the f2py compiler to create
-!      the shtools.so shared object that can be opened from python. I tried to
-!      make the wrapper guess the array shapes and other optional
-!      parameters automatically from the input arrays. This wrapper is far from complete!
-!      After installation and setup of "f2py" (usually comes with
-!      numpy/scipy)(http://www.scipy.org/F2py) compile with: f2py
-!      -I<SHTOOLS_INCLUDE_DIR> -L<SHTOOLS_LIB_DIR> -lSHTOOLS2.8 \ -lfftw3 -lm
-!      --f90flags="-m64 -fPIC" --f77flags="-m64 -fPIC" -c -m shtools wrapper.f90
-!
-!      in python type: >>> import shtools. Examine content with shtools.<TAB>
-!      and use ipythons ? operator with shtools.<subroutine>? . You can also use
-!      pythons dir(shtools) as well as print shtools.pymakegriddh.__doc__ to get
-!      info on input and output variables. Also check out SHTOOLS documentary
-!      for more information. We use geodesy + no Condon-Shortley Phase. To
-!      change it, you have to change the subroutine below and recompile.
-!
-!      Authors: Paul Anton Letnes (2011),  Matthias Meschede (2013)
-!
-!      Functions and subroutines that do not need wrapping:
-!          Random.f95: Replace by 'import random' or 'import numpy.random' in python
-!          FFTW3.f95:  Seems to be 'internal use only', no need to expose it
-!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-!==== GLOBAL CONFIGURATION VARIABLES ====
-module params
-    implicit none
-    integer :: norm = 1
-    integer :: csphase = 1
-end module
-
-!========  LEGENDRE FUNCTIONS ========
-!== Geodesy 4pi normalized ==
-subroutine pyPlmBar(p, lmax, z)
-    use shtools, only: PlmBar
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out) :: p((lmax + 1)*(lmax + 2) / 2)
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p
-
-    call PlmBar(p, lmax, z, csphase, norm)
-end subroutine
-
-!missing: PlmBar_d1
-
-subroutine pyPlBar(p, lmax, z)
-    use shtools, only: PlBar
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out) :: p(lmax + 1)
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p
-
-    call PlBar(p, lmax, z)
-end subroutine
-
-subroutine pyPlBar_d1(p, dp, lmax, z)
-    use shtools, only: PlBar_d1
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out), dimension(lmax + 1) :: p, dp
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p, dp
-
-    call PlBar_d1(p, dp, lmax, z)
-end subroutine
-
-!== Orthonormalized ==
-subroutine pyPlmON(p, lmax, z)
-    use shtools, only: PlmON
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out) :: p((lmax + 1)*(lmax + 2) / 2)
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p
-
-    call PlmON(p, lmax, z, csphase, norm)
-end subroutine
-
-!missing: PlmON_d1
-
-subroutine pyPlON(p, lmax, z)
-    use shtools, only: PlON
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out) :: p(lmax + 1)
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p
-    
-    call PlON(p, lmax, z)
-end subroutine
-
-subroutine pyPlON_d1(p, dp, lmax, z)
-    use shtools, only: PlON_d1
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out), dimension(lmax + 1) :: p, dp
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p, dp
-
-    call PlON_d1(p, dp, lmax, z)
-end subroutine
-
-!== Schmidt normalized ==
-subroutine pyPlmSchmidt(p, lmax, z)
-    use shtools, only: PlmSchmidt
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out) :: p((lmax + 1)*(lmax + 2) / 2)
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p
-
-    call PlmSchmidt(p, lmax, z, csphase, norm)
-end subroutine
-
-!missing: PlmSchmidt_d1
-
-subroutine pyPlSchmidt(p, lmax, z)
-    use shtools, only: PlSchmidt
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out) :: p(lmax + 1)
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p
-    
-    call PlSchmidt(p, lmax, z)
-end subroutine
-
-subroutine pyPlSchmidt_d1(p, dp, lmax, z)
-    use shtools, only: PlSchmidt_d1
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out), dimension(lmax + 1) :: p, dp
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p, dp
-
-    call PlSchmidt_d1(p, dp, lmax, z)
-end subroutine
-
-!== Unnormalized ==
-
-!missing: PLegendreA
-
-subroutine pyPLegendreA_d1(p, dp, lmax, z)
-    use shtools, only: PLegendreA_d1
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out), dimension((lmax + 1)*(lmax + 2) / 2) :: p, dp
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p
-    !f2py depend(lmax) dp
-
-    call PLegendreA_d1(p, dp, lmax, z, csphase)
-end subroutine
-
-subroutine pyPLegendre(p, lmax, z)
-    use shtools, only: PLegendre
-    use params
-    implicit none
-    integer, intent(in) :: lmax
-    real(8), intent(out) :: p(lmax + 1)
-    real(8), intent(in) :: z
-    !f2py depend(lmax) p
-
-    call PLegendre(p, lmax, z)
-end subroutine
-
-!missing: Plegendre_d1
-
-!Other
-function pyPlmIndex(l, m)
-    use shtools, only: PlmIndex
-    use params
-    implicit none
-    integer :: pyPlmIndex
-    integer, intent(in) :: l, m
-
-    ! TODO check fortran -> python index issue.
-    ! Fortran: 1-based. Python: 0-based
-    pyPlmIndex = PlmIndex(l, m) - 1
-end function
-
-!======== SPHERICAL HARMONICS TRANSFORMATIONS ========
-!== Equally Sampled Grids ==
-subroutine pySHExpandDH(grid,nlat,nlon,coeffs,lmax_coeffs,sampling)
-    use shtools, only: SHExpandDH
-    use params
-    implicit none
-    double precision grid(nlat,nlon)
-    double precision coeffs(2,lmax_coeffs+1,lmax_coeffs+1)
-    integer nlat,lmax_coeffs,lmax_grid, nlon, sampling
-    !f2py intent(out) coeffs
-    !f2py intent(in) grid
-    !f2py integer intent(hide), optional, depend(grid) :: nlat = shape(grid,0)
-    !f2py integer intent(hide), optional, depend(grid) :: nlon = shape(grid,1)
-    !f2py integer intent(in), optional, depend(nlat):: lmax_coeffs = nlat/2-1
-    !f2py integer optional :: sampling = 2
-
-    call SHExpandDH(grid, nlat, coeffs, lmax_grid, norm, sampling, csphase, lmax_coeffs)
-end subroutine
-
-subroutine pyMakeGridDH(grid, nlat, coeffs, lmax, sampling, lmax_calc)
-    use shtools, only: MakeGridDH
-    use params
-    implicit none
-    double precision :: interval
-    integer :: n, nlat, lmax, lmax_calc, sampling
-    double precision grid(nlat,sampling*nlat)
-    double precision coeffs(2,lmax+1,lmax+1)
-    !f2py intent(out) grid
-    !f2py intent(in) coeffs
-    !f2py integer intent(in), depend(coeffs), optional :: lmax = shape(coeffs,1)-1
-    !f2py integer intent(in), depend(lmax),   optional :: nlat = 2*(lmax +1)
-    !f2py integer optional :: lmax_calc=lmax
-    !f2py integer optional :: sampling = 2
-
-    call MakeGridDH(grid, n, coeffs, lmax, norm, sampling, csphase, lmax_calc)
-end subroutine
-
-!missing: SHExpandDHC
-!missing: MakeGridDHC
-!missing: DHaj
-
-!== Gauss-Legendre quadrature grids ==
-
-!missing: PreCompute
-!missing: SHExpandGLQ
-!missing: MakeGridGLQ
-!missing: SHExpandGLQC
-!missing: MakeGridGLQC
-!missing: GLQGridCoord
-!missing: PreGLQ
-!missing: NGLQ
-!missing: NGLQSH
-!missing: NGLQSHN
-
-!== Other ==
-
-!missing: SHExpandLSQ
-!missing: MakeGrid2D
-subroutine pyMakeGridPoint(coeffs,lmax_calc,lmax_coeffs,lat,lon,return_value)
-    use shtools, only: MakeGridPoint
-    implicit none
-    integer lmax_calc,lmax_coeffs
-    double precision coeffs(2,lmax_coeffs+1,lmax_coeffs+1)
-    double precision lat, lon
-    double precision return_value
-    !f2py intent(in) coeffs
-    !f2py intent(in) lat
-    !f2py intent(in) lon
-    !f2py intent(out) return_value
-    !f2py integer intent(in),depend(coeffs),optional :: lmax_coeffs = shape(coeffs,1)-1
-    !f2py integer intent(in),depend(lmax_coeffs),optional :: lmax_calc = lmax_coeffs
-    return_value = MakeGridPoint(coeffs, lmax_calc, lat, lon)
-end subroutine
-
-subroutine pySHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp)
-    use shtools, only: SHMultiply
-    use params
-    implicit none
-    double precision shout(2,lmax1+lmax2+1, lmax1+lmax2+1)
-    double precision sh1(2,lmax1+1,lmax1+1)
-    double precision sh2(2,lmax2+1,lmax2+1)
-    integer lmax1,lmax2,precomp
-    !f2py intent(out) shout
-    !f2py intent(in) sh1, sh2
-    !f2py integer intent(in), depend(sh1), optional :: lmax1 = shape(sh1,1)-1
-    !f2py integer intent(in), depend(sh2), optional :: lmax2 = shape(sh2,1)-1
-    !f2py integer, optional :: precomp = 0
-    call SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
-end subroutine
-
-!======== SPHERICAL HARMONIC I/O, STORAGE, AND CONVERSIONS ========
-
-!== Spherical harmonic I/O ==
-!missing: SHRead
-!missing: SHRead2
-!missing: SHReadJPL
-
-!== Spherical harmonic storage ==
-!missing: SHCilmToCindex
-!missing: SHCindexToCilm
-!missing: SHCilmToVector
-subroutine pySHVectorToCilm(vector, cilm, lmax)
-    use shtools, only: SHVectorToCilm
-    implicit none
-    double precision vector((lmax+1)*(lmax+1))
-    double precision cilm(2,lmax+1,lmax+1)
-    integer lmax
-    !f2py intent(in)  lmax,vector
-    !f2py intent(out) cilm
-    call SHVectorToCilm(vector, cilm, lmax)
-end subroutine
-!missing: YilmIndex
-
-!== Spherical harmonic conversions ==
-!missing: SHrtoc
-!missing: SHctor
-
-!======== GLOBAL SPECTRAL ANALYSIS ========
-
-!== Real spectral analysis ==
-!missing: SHPowerL
-!missing: SHPowerDensityL
-!missing: SHCrossPowerL
-!missing: SHCrossPowerDensityL
-subroutine pySHPowerSpectrum(coeffs,lmax,spectrum)
-    use shtools, only: SHPowerSpectrum
-    implicit none
-    double precision coeffs(2,lmax+1,lmax+1)
-    double precision spectrum(lmax+1)
-    integer lmax
-    !f2py intent(out) spectrum
-    !f2py intent(in)  coeffs
-    !f2py integer intent(hide), depend(coeffs) :: lmax = shape(coeffs,1) - 1
-
-    call SHPowerSpectrum(coeffs, lmax, spectrum)
-end subroutine
-!missing: SHPowerSpectrumDensity
-subroutine pySHCrossPowerSpectrum(coeffs1, coeffs2, lmax, cspectrum)
-    use shtools, only: SHCrossPowerSpectrum
-    implicit none
-    double precision coeffs1(2,lmax+1,lmax+1)
-    double precision coeffs2(2,lmax+1,lmax+1)
-    double precision cspectrum(lmax+1)
-    integer lmax
-    !f2py intent(in) coeffs1
-    !f2py intent(in) coeffs2
-    !f2py integer intent(hide),depend(coeffs1) :: lmax = shape(coeffs1,1) - 1
-    !f2py intent(out) cspectrum
-
-    call SHCrossPowerSpectrum(coeffs1,coeffs2,lmax,cspectrum)
-end subroutine
-
-subroutine pySHCrossPowerSpectrumDensity(coeffs1, coeffs2, lmax, cspectrum)
-    use shtools, only: SHCrossPowerSpectrum
-    implicit none
-    double precision coeffs1(2,lmax+1,lmax+1)
-    double precision coeffs2(2,lmax+1,lmax+1)
-    double precision cspectrum(lmax+1)
-    integer lmax
-    !f2py intent(in) coeffs1
-    !f2py intent(in) coeffs2
-    !f2py integer intent(hide),depend(coeffs1) :: lmax = shape(coeffs1,1) - 1
-    !f2py intent(out) cspectrum
-
-    call SHCrossPowerSpectrumDensity(coeffs1,coeffs2,lmax,cspectrum)
-end subroutine
-
-subroutine pySHAdmitCorr(coeffs1,coeffs2,lmax,admit,corr, admit_error)
-    use shtools, only: SHAdmitCorr
-    implicit none
-    double precision coeffs1(2,lmax+1,lmax+1)
-    double precision coeffs2(2,lmax+1,lmax+1)
-    double precision admit(lmax+1)
-    double precision corr(lmax+1)
-    double precision admit_error(lmax+1)
-    integer lmax
-    !f2py intent(in) coeffs1
-    !f2py intent(in) coeffs2
-    !f2py integer intent(hide),depend(coeffs1) :: lmax = shape(coeffs1,1) - 1
-    !f2py intent(out) admit
-    !f2py intent(out) corr
-    !f2py intent(out) admit_error
-
-    call SHAdmitCorr(coeffs1, coeffs2, lmax, admit, corr, admit_error=admit_error)
-end subroutine
-
-subroutine pySHConfidence(l, corr, return_value)
-    use shtools, only: SHConfidence
-    implicit none
-    integer l
-    double precision corr, return_value
-    !f2py intent(in) l
-    !f2py intent(in) corr
-    !f2py intent(out) return_value
-
-    return_value = SHConfidence(l,corr)
-end subroutine
-
-!== Complex spectral analysis ==
-!missing: SHPowerLC
-!missing: SHPowerDensityLC
-!missing: SHCrossPowerLC
-!missing: SHCrossPowerDensityLC
-!missing: SHPowerSpectrumC
-!missing: SHPowerSpectrumDensityC
-!missing: SHCrossPowerSpectrumC
-!missing: SHCrossPowerSpectrumDenistyC
-
-!======== LOCALIZED SPECTRAL ANALYSIS ========
-!== Multitaper spectral estimation (spherical cap domain) ==
-subroutine pySHMultiTaperSE(mtse, mtse_dev, coeffs, lmax_coeffs, tapers, taper_order, &
-                                lmaxt, ntapers, k, angles, clat, clon, taper_wt)
-    use shtools, only: SHMultiTaperSE
-    implicit none
-    integer lmax_coeffs, lmaxt, k, ntapers
-    double precision mtse(lmax_coeffs - lmaxt + 1)
-    double precision mtse_dev(lmax_coeffs - lmaxt + 1)
-    double precision coeffs(2,lmax_coeffs+1,lmax_coeffs+1)
-    double precision tapers(lmaxt+1, ntapers), taper_wt(k)
-    integer taper_order( ntapers )
-    double precision clat, clon
-    double precision angles(3)
-    !f2py intent(out) mtse,mtse_dev
-    !f2py integer intent(in),depend(tapers),optional :: lmaxt = shape(tapers,0)-1
-    !f2py integer intent(in),depend(tapers),optional :: ntapers = shape(tapers,1)
-    !f2py intent(in) coeffs
-    !f2py integer intent(in),depend(coeffs),optional :: lmax_coeffs = shape(coeffs,1)-1
-    !f2py intent(in) k
-    !f2py intent(in) tapers
-    !f2py intent(in) taper_order
-    !f2py intent(in), optional :: clat=0
-    !f2py intent(in), optional :: clon=0
-    !f2py intent(in), optional :: angles = {0} 
-    !f2py intent(in), optional :: taper_wt = {-1}
-    if (taper_wt(1) > 0) then
-        call SHMultiTaperSE(mtse, mtse_dev, coeffs, lmax_coeffs, tapers, taper_order, lmaxt, k, &
-                                             angles, clat, clon, taper_wt=taper_wt)
-    else
-        call SHMultiTaperSE(mtse, mtse_dev, coeffs, lmax_coeffs, tapers, taper_order, lmaxt, k, &
-                                                                  angles, clat, clon)
-    endif
-end subroutine
-
-!missing: SHMultiTaperCSE
-subroutine pySHLocalizedAdmitCorr(tapers, taper_order, lwin, clat, clon,&
-    coeffs1, coeffs2, lmax,admit,corr, k, admit_error, corr_error)
-    use shtools, only: SHLocalizedAdmitCorr
-    implicit none
-    integer lwin, lmax, k, i, j 
-    integer taper_order(k)
-    double precision tapers(lwin+1, k)
-    double precision coeffs1(2,lmax+1,lmax+1)
-    double precision coeffs2(2,lmax+1,lmax+1)
-    double precision clat,clon
-    double precision, dimension(lmax-lwin+1) :: admit,corr,admit_error,corr_error
-    !f2py intent(in) tapers, taper_order
-    !f2py intent(in) coeffs1, coeffs2
-    !f2py intent(out) admit, corr, admit_error, corr_error
-    !f2py integer intent(in),depend(tapers),optional :: k = shape(tapers,1)
-    !f2py integer intent(in),depend(tapers),optional :: lwin = shape(tapers,0)-1
-    !f2py integer intent(in),depend(coeffs1),optional :: lmax = shape(coeffs1,1)-1
-    call SHLocalizedAdmitCorr(tapers, taper_order, lwin, clat, clon, coeffs1,&
-                             coeffs2, lmax, admit, corr, k, admit_error, corr_error)
-end subroutine
-
-subroutine pySHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order)
-    use shtools, only: SHReturnTapers
-    implicit none
-    integer lmax
-    double precision theta0
-    double precision tapers(lmax+1, (lmax+1)*(lmax+1))
-    double precision eigenvalues((lmax+1)*(lmax+1))
-    integer taper_order( (lmax+1)*(lmax+1) )
-    !f2py intent(in) theta0, lmax
-    !f2py intent(out) tapers, eigenvalues, taper_order
-    call SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order)
-end subroutine
-
-subroutine pySHReturnTapersM(theta0, lmax, m, tapers, eigenvalues)
-    use shtools, only: SHReturnTapersM
-    implicit none
-    integer m, lmax
-    double precision theta0
-    double precision tapers(lmax+1, (lmax+1))
-    double precision eigenvalues((lmax+1))
-    !f2py intent(in) theta0, lmax, m
-    !f2py intent(out) tapers, eigenvalues
-    call SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues)
-end subroutine
-
-subroutine pyComputeD0(d0, lmax, theta0)
-    use shtools, only: ComputeD0
-    implicit none
-    integer lmax
-    double precision theta0
-    double precision d0(lmax+1, lmax+1)
-    !f2py intent(in) lmax,theta0
-    !f2py intent(out) d0
-    call ComputeD0(d0, lmax, theta0)
-end subroutine
-
-subroutine pyComputeDm(dllm, lmax, m, theta0)
-    use shtools, only: ComputeDm
-    implicit none
-    integer lmax,m
-    double precision theta0
-    double precision dllm(lmax+1, lmax+1)
-    !f2py intent(in) lmax,theta0,m
-    !f2py intent(out) dllm
-    call ComputeDm(dllm, lmax, m, theta0)
-end subroutine
-!missing: ComputeDG82
-!missing: SHFindLWin
-subroutine pySHBiasK(tapers, lmaxt, k, inspec, lmax_in, outspec)
-    use shtools, only: SHBiasK
-    implicit none
-    double precision tapers(lmaxt+1, k)
-    double precision inspec(lmax_in+1)
-    double precision outspec(lmax_in+1)
-    integer lmaxt, k, lmax_in
-    !f2py intent(in) tapers, inspec
-    !f2py integer intent(in), depend(tapers), optional :: lmaxt   = shape(tapers,0)-1
-    !f2py integer intent(in), depend(tapers), optional :: k   = shape(tapers,1)
-    !f2py integer intent(in), depend(inspec), optional :: lmax_in = shape(inspec,0)-1
-    !f2py intent(out) outspec
-    call SHBiasK(tapers, lmaxt, k, inspec, lmax_in, outspec)
-end subroutine
-
-!missing: SHBiasAdmitCorr
-
-subroutine pySHMTDebias(mtdebias, mtspectra, lmax, nl, tapers, lwin, k, lmid,n )
-    use shtools, only: SHMTDebias
-    implicit none
-    double precision mtdebias(2,lmax+1 )
-    double precision mtspectra(2, lmax+1)
-    double precision tapers(lwin+1, k)
-    double precision lmid(n)
-    integer lmax, nl, lwin, k, n
-    !!integer n should be: np.ceiling(lmax+1/nl)
-    !f2py intent(in) mtspectra
-    !f2py intent(in) nl
-    !f2py intent(in) tapers
-    !f2py intent(in) n
-    !f2py integer intent(in), depend(mtspectra), optional :: lmax = shape(mtspectra,1)-1
-    !f2py integer intent(in), depend(tapers), optional :: lwin = shape(tapers,0)-1
-    !f2py integer intent(in), depend(tapers), optional :: k    = shape(tapers,1)
-    !f2py intent(out) mtdebias
-    !f2py intent(out) lmid
-    call SHMTDebias(mtdebias, mtspectra, lmax, tapers, lwin, k, nl, lmid, n)
-end subroutine
-
-!missing: SHMTVarOpt0
-!missing: SHMTVarOpt
-!missing: SHSjkPG0
-!missing: SHSjkPG
-
-!== Localization windows (arbitrary domain) ==
-subroutine pySHReturnTapersMap(tapers, eigenvalues, dh_mask, n, lmaxt, ntapers)
-    use shtools, only: SHReturnTapersMap
-    implicit none
-    double precision tapers((lmaxt+1)*(lmaxt+1), ntapers)
-    double precision eigenvalues(ntapers)
-    integer lmaxt,n,ntapers
-    integer dh_mask(N,2*N)
-    !f2py intent(out) tapers, eigenvalues
-    !f2py intent(in) dh_mask, n, lmaxt, ntapers
-    !f2py integer intent(in), depend(dh_mask), optional :: n = shape(dh_mask,0)
-    call SHReturnTapersMap(tapers, eigenvalues, dh_mask, n, 2, lmaxt, ntapers)
-end subroutine
-!missing: SHComputeDMap
-!missing: SHCurve2Mask
-
-!== Localization Bias (General) ==
-!missing: SHBias
-
-!== Other ==
-!missing: SphericalCapCoef
-
-!======== SPHERICAL HARMONIC ROTATIONS ========
-subroutine pydjpi2(DJ, lmax)
-    use shtools, only: djpi2
-    implicit none
-    integer lmax
-    double precision DJ(lmax+1,lmax+1,lmax+1)
-    !f2py intent(in) lmax
-    !f2py intent(out) DJ
-    call djpi2(DJ,lmax)
-end subroutine
-
-!missing: SHRotateCoef
-
-subroutine pySHRotateRealCoef(coeffs_rot, coeffs, lmax, angles, DJ)
-    use shtools, only: SHRotateRealCoef
-    implicit none
-    double precision coeffs_rot(2,lmax+1,lmax+1)
-    double precision coeffs(2,lmax+1,lmax+1)
-    double precision angles(3)
-    double precision DJ(lmax+1,lmax+1,lmax+1)
-    integer lmax
-    !f2py intent(in) coeffs
-    !f2py intent(in) angles
-    !f2py intent(in) DJ
-    !f2py integer intent(hide),depend(coeffs) :: lmax = shape(coeffs,1) - 1
-    !f2py intent(out) coeffs_rot
-
-    call SHRotateRealCoef(coeffs_rot, coeffs, lmax, angles, DJ)
-end subroutine
-
-subroutine pySHRotateRealCoef_direct(coeffs_rot, coeffs, lmax, angles)
-    !----convenience function----
-    use shtools, only: SHRotateRealCoef, djpi2
-    implicit none
-    double precision coeffs_rot(2,lmax+1,lmax+1)
-    double precision coeffs(2,lmax+1,lmax+1)
-    double precision angles(3)
-    double precision DJ(lmax+1,lmax+1,lmax+1)
-    integer lmax
-    !f2py intent(in) coeffs
-    !f2py intent(in) angles
-    !f2py intent(in) DJ
-    !f2py integer intent(hide),depend(coeffs) :: lmax = shape(coeffs,1) - 1
-    !f2py intent(out) coeffs_rot
-
-    call djpi2(DJ,lmax)
-    call SHRotateRealCoef(coeffs_rot, coeffs, lmax, angles, DJ)
-end subroutine
-
-!======== GRAVITY AND MAGNETICS ========
-!== Gravity routines ==
-!== Magnetics routines ==
-
-!======== OTHER ROUTINES ========
+    subroutine pyPlmBar(p,lmax,z,csphase,cnorm,p_d0) 
+        use shtools, only: PlmBar
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: cnorm
+        integer, intent(in) :: p_d0
+        call PlmBar(p,lmax,z,csphase,cnorm)
+    end subroutine pyPlmBar
+
+    subroutine pyPlmBar_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0) 
+        use shtools, only: PlmBar_d1
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        real*8, dimension(dp_d0),intent(out) :: dp
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: cnorm
+        integer, intent(in) :: p_d0
+        integer, intent(in) :: dp_d0
+        call PlmBar_d1(p,dp,lmax,z,csphase,cnorm)
+    end subroutine pyPlmBar_d1
+
+    subroutine pyPlBar(p,lmax,z,p_d0) 
+        use shtools, only: PlBar
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, intent(in) :: p_d0
+        call PlBar(p,lmax,z)
+    end subroutine pyPlBar
+
+    subroutine pyPlBar_d1(p,dp,lmax,z,p_d0,dp_d0) 
+        use shtools, only: PlBar_d1
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        real*8, dimension(dp_d0),intent(out) :: dp
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, intent(in) :: p_d0
+        integer, intent(in) :: dp_d0
+        call PlBar_d1(p,dp,lmax,z)
+    end subroutine pyPlBar_d1
+
+    subroutine pyPlmSchmidt(p,lmax,z,csphase,cnorm,p_d0) 
+        use shtools, only: PlmSchmidt
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: cnorm
+        integer, intent(in) :: p_d0
+        call PlmSchmidt(p,lmax,z,csphase,cnorm)
+    end subroutine pyPlmSchmidt
+
+    subroutine pyPlSchmidt(p,lmax,z,p_d0) 
+        use shtools, only: PlSchmidt
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, intent(in) :: p_d0
+        call PlSchmidt(p,lmax,z)
+    end subroutine pyPlSchmidt
+
+    subroutine pyPlmSchmidt_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0) 
+        use shtools, only: PlmSchmidt_d1
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        real*8, dimension(dp_d0),intent(out) :: dp
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: cnorm
+        integer, intent(in) :: p_d0
+        integer, intent(in) :: dp_d0
+        call PlmSchmidt_d1(p,dp,lmax,z,csphase,cnorm)
+    end subroutine pyPlmSchmidt_d1
+
+    subroutine pyPlSchmidt_d1(p,dp,lmax,z,p_d0,dp_d0) 
+        use shtools, only: PlSchmidt_d1
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        real*8, dimension(dp_d0),intent(out) :: dp
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, intent(in) :: p_d0
+        integer, intent(in) :: dp_d0
+        call PlSchmidt_d1(p,dp,lmax,z)
+    end subroutine pyPlSchmidt_d1
+
+    subroutine pyPLegendre(p,lmax,z,p_d0) 
+        use shtools, only: PLegendre
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, intent(in) :: p_d0
+        call PLegendre(p,lmax,z)
+    end subroutine pyPLegendre
+
+    subroutine pyPLegendreA(p,lmax,z,csphase,p_d0) 
+        use shtools, only: PLegendreA
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: p_d0
+        call PLegendreA(p,lmax,z,csphase)
+    end subroutine pyPLegendreA
+
+    subroutine pyPLegendre_d1(p,dp,lmax,z,p_d0,dp_d0) 
+        use shtools, only: PLegendre_d1
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        real*8, dimension(dp_d0),intent(out) :: dp
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, intent(in) :: p_d0
+        integer, intent(in) :: dp_d0
+        call PLegendre_d1(p,dp,lmax,z)
+    end subroutine pyPLegendre_d1
+
+    subroutine pyPLegendreA_d1(p,dp,lmax,z,csphase,p_d0,dp_d0) 
+        use shtools, only: PLegendreA_d1
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        real*8, dimension(dp_d0),intent(out) :: dp
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: p_d0
+        integer, intent(in) :: dp_d0
+        call PLegendreA_d1(p,dp,lmax,z,csphase)
+    end subroutine pyPLegendreA_d1
+
+    subroutine pyCilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,plx,n,dref,gridin_d0,gridin_d1&
+                              ,cilm_d0,cilm_d1,cilm_d2,plx_d0,plx_d1,zero_d0,w_d0) 
+        use shtools, only: CilmPlus
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, intent(in) :: rho
+        integer, intent(in) :: gridtype
+        real*8, optional,dimension(w_d0),intent(in) :: w
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        integer, optional,intent(in) :: n
+        real*8, optional,intent(in) :: dref
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: plx_d0
+        integer, intent(in) :: plx_d1
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,plx,n,dref)
+    end subroutine pyCilmPlus
+
+    subroutine pyCilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,plx,n,dref,gridin_d0,gridin_d1&
+                                  ,cilm_d0,cilm_d1,cilm_d2,plx_d0,plx_d1,zero_d0,w_d0,rho_d0,rho_d1) 
+        use shtools, only: CilmPlusRhoH
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
+        integer, intent(in) :: gridtype
+        real*8, optional,dimension(w_d0),intent(in) :: w
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        integer, optional,intent(in) :: n
+        real*8, optional,intent(in) :: dref
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: plx_d0
+        integer, intent(in) :: plx_d1
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        integer, intent(in) :: rho_d0
+        integer, intent(in) :: rho_d1
+        call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,plx,n,dref)
+    end subroutine pyCilmPlusRhoH
+
+    subroutine pyHilm(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx,zero,filter_type,filter_deg&
+                          ,lmax_calc,ba_d0,ba_d1,ba_d2,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0&
+                          ,w_d0,plx_d0,plx_d1) 
+        use shtools, only: Hilm
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
+        real*8, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(in) :: r0
+        real*8, intent(in) :: rho
+        integer, intent(in) :: gridtype
+        real*8, optional,dimension(w_d0),intent(in) :: w
+        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: filter_type
+        integer, optional,intent(in) :: filter_deg
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: ba_d0
+        integer, intent(in) :: ba_d1
+        integer, intent(in) :: ba_d2
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        integer, intent(in) :: plx_d0
+        integer, intent(in) :: plx_d1
+        call Hilm(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx,zero,filter_type,filter_deg,lmax_calc)
+    end subroutine pyHilm
+
+    subroutine pyHilmRhoH(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx,zero,filter_type,filter_deg&
+                              ,lmax_calc,ba_d0,ba_d1,ba_d2,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2&
+                              ,zero_d0,w_d0,rho_d0,rho_d1,plx_d0,plx_d1) 
+        use shtools, only: HilmRhoH
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
+        real*8, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(in) :: r0
+        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
+        integer, intent(in) :: gridtype
+        real*8, optional,dimension(w_d0),intent(in) :: w
+        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: filter_type
+        integer, optional,intent(in) :: filter_deg
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: ba_d0
+        integer, intent(in) :: ba_d1
+        integer, intent(in) :: ba_d2
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        integer, intent(in) :: rho_d0
+        integer, intent(in) :: rho_d1
+        integer, intent(in) :: plx_d0
+        integer, intent(in) :: plx_d1
+        call HilmRhoH(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx,zero,filter_type,filter_deg&
+                          ,lmax_calc)
+    end subroutine pyHilmRhoH
+
+    subroutine pyMakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west&
+                                ,dealloc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1) 
+        use shtools, only: MakeGrid2d
+        implicit none
+        real*8, dimension(grid_d0,grid_d1),intent(out) :: grid
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: interval
+        integer, intent(out) :: nlat
+        integer, intent(out) :: nlong
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        real*8, optional,intent(in) :: f
+        real*8, optional,intent(in) :: a
+        real*8, optional,intent(in) :: north
+        real*8, optional,intent(in) :: south
+        real*8, optional,intent(in) :: east
+        real*8, optional,intent(in) :: west
+        integer, optional,intent(in) :: dealloc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: grid_d0
+        integer, intent(in) :: grid_d1
+        call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west,dealloc)
+    end subroutine pyMakeGrid2d
+
+    subroutine pyGLQGridCoord(latglq,longlq,lmax,nlat,nlong,latglq_d0,longlq_d0) 
+        use shtools, only: GLQGridCoord
+        implicit none
+        real*8, dimension(latglq_d0),intent(out) :: latglq
+        real*8, dimension(longlq_d0),intent(out) :: longlq
+        integer, intent(in) :: lmax
+        integer, intent(out) :: nlat
+        integer, intent(out) :: nlong
+        integer, intent(in) :: latglq_d0
+        integer, intent(in) :: longlq_d0
+        call GLQGridCoord(latglq,longlq,lmax,nlat,nlong)
+    end subroutine pyGLQGridCoord
+
+    subroutine pyMakeGridGLQ(gridglq,cilm,lmax,plx,zero,norm,csphase,lmax_calc,plx_d0,plx_d1,gridglq_d0&
+                                    ,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0) 
+        use shtools, only: MakeGridGLQ
+        implicit none
+        real*8, dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: plx_d0
+        integer, intent(in) :: plx_d1
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: zero_d0
+        call MakeGridGLQ(gridglq,cilm,lmax,plx,zero,norm,csphase,lmax_calc)
+    end subroutine pyMakeGridGLQ
+
+    subroutine pySHExpandGLQ(cilm,lmax,gridglq,w,plx,zero,norm,csphase,lmax_calc,plx_d0,plx_d1,cilm_d0&
+                                 ,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0) 
+        use shtools, only: SHExpandGLQ
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(in) :: lmax
+        real*8, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
+        real*8, dimension(w_d0),intent(in) :: w
+        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: plx_d0
+        integer, intent(in) :: plx_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        call SHExpandGLQ(cilm,lmax,gridglq,w,plx,zero,norm,csphase,lmax_calc)
+    end subroutine pySHExpandGLQ
+
+    subroutine pyPreCompute(lmax,zero,w,plx,wisdom_file,norm,csphase,cnorm,zero_d0,plx_d0,plx_d1,w_d0) 
+        use shtools, only: PreCompute
+        implicit none
+        integer, intent(in) :: lmax
+        real*8, dimension(zero_d0),intent(out) :: zero
+        real*8, dimension(w_d0),intent(out) :: w
+        real*8, optional,dimension(plx_d0,plx_d1),intent(out) :: plx
+        character*(*), optional,intent(in) :: wisdom_file
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: cnorm
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: plx_d0
+        integer, intent(in) :: plx_d1
+        integer, intent(in) :: w_d0
+        call PreCompute(lmax,zero,w,plx,wisdom_file,norm,csphase,cnorm)
+    end subroutine pyPreCompute
+
+    subroutine pyPreGLQ(x1,x2,n,zero,w,zero_d0,w_d0) 
+        use shtools, only: PreGLQ
+        implicit none
+        real*8, intent(in) :: x1
+        real*8, intent(in) :: x2
+        integer, intent(in) :: n
+        real*8, dimension(zero_d0),intent(out) :: zero
+        real*8, dimension(w_d0),intent(out) :: w
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        call PreGLQ(x1,x2,n,zero,w)
+    end subroutine pyPreGLQ
+
+    function pyNGLQ(degree) 
+        use shtools, only: NGLQ
+        implicit none
+        integer, intent(in) :: degree
+        integer :: pyNGLQ
+        pyNGLQ=NGLQ(degree)
+    end function pyNGLQ
+
+    function pyNGLQSH(degree) 
+        use shtools, only: NGLQSH
+        implicit none
+        integer, intent(in) :: degree
+        integer :: pyNGLQSH
+        pyNGLQSH=NGLQSH(degree)
+    end function pyNGLQSH
+
+    function pyNGLQSHN(degree,n) 
+        use shtools, only: NGLQSHN
+        implicit none
+        integer, intent(in) :: degree
+        integer, intent(in) :: n
+        integer :: pyNGLQSHN
+        pyNGLQSHN=NGLQSHN(degree,n)
+    end function pyNGLQSHN
+
+    subroutine pySHRead(filename,cilm,lmax,skip,header,error,cilm_d0,cilm_d1,cilm_d2,header_d0,error_d0&
+                                ,error_d1,error_d2) 
+        use shtools, only: SHRead
+        implicit none
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, optional,intent(in) :: skip
+        real*8, optional,dimension(header_d0),intent(out) :: header
+        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: header_d0
+        integer, intent(in) :: error_d0
+        integer, intent(in) :: error_d1
+        integer, intent(in) :: error_d2
+        call SHRead(filename,cilm,lmax,skip,header,error)
+    end subroutine pySHRead
+
+    subroutine pyMakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid,n,sampling,lmax_calc&
+                                   ,pot_grid,total_grid_d0,total_grid_d1,cilm_d0,cilm_d1,cilm_d2,rad_grid_d0&
+                                   ,rad_grid_d1,theta_grid_d0,theta_grid_d1,phi_grid_d0,phi_grid_d1,pot_grid_d0&
+                                   ,pot_grid_d1) 
+        use shtools, only: MakeMagGridDH
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: r0
+        real*8, intent(in) :: a
+        real*8, intent(in) :: f
+        real*8, dimension(rad_grid_d0,rad_grid_d1),intent(out) :: rad_grid
+        real*8, dimension(theta_grid_d0,theta_grid_d1),intent(out) :: theta_grid
+        real*8, dimension(phi_grid_d0,phi_grid_d1),intent(out) :: phi_grid
+        real*8, dimension(total_grid_d0,total_grid_d1),intent(out) :: total_grid
+        integer, intent(out) :: n
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: lmax_calc
+        real*8, optional,dimension(pot_grid_d0,pot_grid_d1),intent(out) :: pot_grid
+        integer, intent(in) :: total_grid_d0
+        integer, intent(in) :: total_grid_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: rad_grid_d0
+        integer, intent(in) :: rad_grid_d1
+        integer, intent(in) :: theta_grid_d0
+        integer, intent(in) :: theta_grid_d1
+        integer, intent(in) :: phi_grid_d0
+        integer, intent(in) :: phi_grid_d1
+        integer, intent(in) :: pot_grid_d0
+        integer, intent(in) :: pot_grid_d1
+        call MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid,n,sampling,lmax_calc&
+                               ,pot_grid)
+    end subroutine pyMakeMagGridDH
+
+    function pySHPowerL(c,l,c_d0,c_d1,c_d2) 
+        use shtools, only: SHPowerL
+        implicit none
+        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        integer, intent(in) :: l
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        real*8 :: pySHPowerL
+        pySHPowerL=SHPowerL(c,l)
+    end function pySHPowerL
+
+    function pySHPowerDensityL(c,l,c_d0,c_d1,c_d2) 
+        use shtools, only: SHPowerDensityL
+        implicit none
+        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        integer, intent(in) :: l
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        real*8 :: pySHPowerDensityL
+        pySHPowerDensityL=SHPowerDensityL(c,l)
+    end function pySHPowerDensityL
+
+    function pySHCrossPowerL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) 
+        use shtools, only: SHCrossPowerL
+        implicit none
+        real*8, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+        real*8, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+        integer, intent(in) :: l
+        integer, intent(in) :: c2_d0
+        integer, intent(in) :: c2_d1
+        integer, intent(in) :: c2_d2
+        integer, intent(in) :: c1_d0
+        integer, intent(in) :: c1_d1
+        integer, intent(in) :: c1_d2
+        real*8 :: pySHCrossPowerL
+        pySHCrossPowerL=SHCrossPowerL(c1,c2,l)
+    end function pySHCrossPowerL
+
+    function pySHCrossPowerDensityL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) 
+        use shtools, only: SHCrossPowerDensityL
+        implicit none
+        real*8, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+        real*8, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+        integer, intent(in) :: l
+        integer, intent(in) :: c2_d0
+        integer, intent(in) :: c2_d1
+        integer, intent(in) :: c2_d2
+        integer, intent(in) :: c1_d0
+        integer, intent(in) :: c1_d1
+        integer, intent(in) :: c1_d2
+        real*8 :: pySHCrossPowerDensityL
+        pySHCrossPowerDensityL=SHCrossPowerDensityL(c1,c2,l)
+    end function pySHCrossPowerDensityL
+
+    subroutine pySHPowerSpectrum(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) 
+        use shtools, only: SHPowerSpectrum
+        implicit none
+        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        integer, intent(in) :: lmax
+        real*8, dimension(spectra_d0),intent(out) :: spectra
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        integer, intent(in) :: spectra_d0
+        call SHPowerSpectrum(c,lmax,spectra)
+    end subroutine pySHPowerSpectrum
+
+    subroutine pySHPowerSpectrumDensity(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) 
+        use shtools, only: SHPowerSpectrumDensity
+        implicit none
+        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        integer, intent(in) :: lmax
+        real*8, dimension(spectra_d0),intent(out) :: spectra
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        integer, intent(in) :: spectra_d0
+        call SHPowerSpectrumDensity(c,lmax,spectra)
+    end subroutine pySHPowerSpectrumDensity
+
+    subroutine pySHCrossPowerSpectrum(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0) 
+        use shtools, only: SHCrossPowerSpectrum
+        implicit none
+        real*8, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+        real*8, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+        integer, intent(in) :: lmax
+        real*8, dimension(cspectra_d0),intent(out) :: cspectra
+        integer, intent(in) :: c2_d0
+        integer, intent(in) :: c2_d1
+        integer, intent(in) :: c2_d2
+        integer, intent(in) :: c1_d0
+        integer, intent(in) :: c1_d1
+        integer, intent(in) :: c1_d2
+        integer, intent(in) :: cspectra_d0
+        call SHCrossPowerSpectrum(c1,c2,lmax,cspectra)
+    end subroutine pySHCrossPowerSpectrum
+
+    subroutine pySHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0) 
+        use shtools, only: SHCrossPowerSpectrumDensity
+        implicit none
+        real*8, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+        real*8, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+        integer, intent(in) :: lmax
+        real*8, dimension(cspectra_d0),intent(out) :: cspectra
+        integer, intent(in) :: c2_d0
+        integer, intent(in) :: c2_d1
+        integer, intent(in) :: c2_d2
+        integer, intent(in) :: c1_d0
+        integer, intent(in) :: c1_d1
+        integer, intent(in) :: c1_d2
+        integer, intent(in) :: cspectra_d0
+        call SHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra)
+    end subroutine pySHCrossPowerSpectrumDensity
+
+    subroutine pydjpi2(dj,lmax,dj_d0,dj_d1,dj_d2) 
+        use shtools, only: djpi2
+        implicit none
+        real*8, dimension(dj_d0,dj_d1,dj_d2),intent(out) :: dj
+        integer, intent(in) :: lmax
+        integer, intent(in) :: dj_d0
+        integer, intent(in) :: dj_d1
+        integer, intent(in) :: dj_d2
+        call djpi2(dj,lmax)
+    end subroutine pydjpi2
+
+    subroutine pySHrtoc(rcilm,ccilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1&
+                             ,ccilm_d2) 
+        use shtools, only: SHrtoc
+        implicit none
+        real*8, dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
+        real*8, dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
+        integer, optional,intent(in) :: degmax
+        integer, optional,intent(in) :: convention
+        integer, optional,intent(in) :: switchcs
+        integer, intent(in) :: rcilm_d0
+        integer, intent(in) :: rcilm_d1
+        integer, intent(in) :: rcilm_d2
+        integer, intent(in) :: ccilm_d0
+        integer, intent(in) :: ccilm_d1
+        integer, intent(in) :: ccilm_d2
+        call SHrtoc(rcilm,ccilm,degmax,convention,switchcs)
+    end subroutine pySHrtoc
+
+    subroutine pySHctor(ccilm,rcilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1&
+                             ,ccilm_d2) 
+        use shtools, only: SHctor
+        implicit none
+        real*8, dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
+        real*8, dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
+        integer, optional,intent(in) :: degmax
+        integer, optional,intent(in) :: convention
+        integer, optional,intent(in) :: switchcs
+        integer, intent(in) :: rcilm_d0
+        integer, intent(in) :: rcilm_d1
+        integer, intent(in) :: rcilm_d2
+        integer, intent(in) :: ccilm_d0
+        integer, intent(in) :: ccilm_d1
+        integer, intent(in) :: ccilm_d2
+        call SHctor(ccilm,rcilm,degmax,convention,switchcs)
+    end subroutine pySHctor
+
+    subroutine pySHCilmToCindex(cilm,cindex,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2) 
+        use shtools, only: SHCilmToCindex
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        real*8, dimension(cindex_d0,cindex_d1),intent(out) :: cindex
+        integer, optional,intent(in) :: degmax
+        integer, intent(in) :: cindex_d0
+        integer, intent(in) :: cindex_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHCilmToCindex(cilm,cindex,degmax)
+    end subroutine pySHCilmToCindex
+
+    subroutine pySHCindexToCilm(cindex,cilm,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2) 
+        use shtools, only: SHCindexToCilm
+        implicit none
+        real*8, dimension(cindex_d0,cindex_d1),intent(in) :: cindex
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, optional,intent(in) :: degmax
+        integer, intent(in) :: cindex_d0
+        integer, intent(in) :: cindex_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHCindexToCilm(cindex,cilm,degmax)
+    end subroutine pySHCindexToCilm
+
+    subroutine pySHRotateCoef(x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1) 
+        use shtools, only: SHRotateCoef
+        implicit none
+        real*8, dimension(3),intent(in) :: x
+        real*8, dimension(cof_d0,cof_d1),intent(in) :: cof
+        real*8, dimension(rcof_d0,rcof_d1),intent(out) :: rcof
+        real*8, dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
+        integer, intent(in) :: lmax
+        integer, intent(in) :: rcof_d0
+        integer, intent(in) :: rcof_d1
+        integer, intent(in) :: dj_d0
+        integer, intent(in) :: dj_d1
+        integer, intent(in) :: dj_d2
+        integer, intent(in) :: cof_d0
+        integer, intent(in) :: cof_d1
+        call SHRotateCoef(x,cof,rcof,dj,lmax)
+    end subroutine pySHRotateCoef
+
+    subroutine pySHRotateRealCoef(cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2&
+                                         ,cilmrot_d0,cilmrot_d1,cilmrot_d2) 
+        use shtools, only: SHRotateRealCoef
+        implicit none
+        real*8, dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out) :: cilmrot
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, dimension(x_d0),intent(in) :: x
+        real*8, dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
+        integer, intent(in) :: x_d0
+        integer, intent(in) :: dj_d0
+        integer, intent(in) :: dj_d1
+        integer, intent(in) :: dj_d2
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: cilmrot_d0
+        integer, intent(in) :: cilmrot_d1
+        integer, intent(in) :: cilmrot_d2
+        call SHRotateRealCoef(cilmrot,cilm,lmax,x,dj)
+    end subroutine pySHRotateRealCoef
+
+    subroutine pyDHaj(n,aj,aj_d0) 
+        use shtools, only: DHaj
+        implicit none
+        integer, intent(in) :: n
+        real*8, dimension(aj_d0),intent(out) :: aj
+        integer, intent(in) :: aj_d0
+        call DHaj(n,aj)
+    end subroutine pyDHaj
+
+    subroutine pySHExpandDH(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0&
+                                ,grid_d1) 
+        use shtools, only: SHExpandDH
+        implicit none
+        real*8, dimension(grid_d0,grid_d1),intent(in) :: grid
+        integer, intent(in) :: n
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: grid_d0
+        integer, intent(in) :: grid_d1
+        call SHExpandDH(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+    end subroutine pySHExpandDH
+
+    subroutine pyMakeGridDH(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2&
+                                  ,griddh_d0,griddh_d1) 
+        use shtools, only: MakeGridDH
+        implicit none
+        real*8, dimension(griddh_d0,griddh_d1),intent(out) :: griddh
+        integer, intent(out) :: n
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: griddh_d0
+        integer, intent(in) :: griddh_d1
+        call MakeGridDH(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+    end subroutine pyMakeGridDH
+
+    function pyMakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2) 
+        use shtools, only: MakeGridPoint
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: longitude
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: dealloc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        real*8 :: pyMakeGridPoint
+        pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc)
+    end function pyMakeGridPoint
+
+    function pyWl(l,half,r,d) 
+        use shtools, only: Wl
+        implicit none
+        integer, intent(in) :: l
+        integer, intent(in) :: half
+        real*8, intent(in) :: r
+        real*8, intent(in) :: d
+        real*8 :: pyWl
+        pyWl=Wl(l,half,r,d)
+    end function pyWl
+
+    function pyWlCurv(l,half,r,d) 
+        use shtools, only: WlCurv
+        implicit none
+        integer, intent(in) :: l
+        integer, intent(in) :: half
+        real*8, intent(in) :: r
+        real*8, intent(in) :: d
+        real*8 :: pyWlCurv
+        pyWlCurv=WlCurv(l,half,r,d)
+    end function pyWlCurv
+
+    subroutine pySHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm,chi2,csphase,d_d0,lon_d0,cilm_d0,cilm_d1,cilm_d2&
+                                 ,lat_d0) 
+        use shtools, only: SHExpandLSQ
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(d_d0),intent(in) :: d
+        real*8, dimension(lat_d0),intent(in) :: lat
+        real*8, dimension(lon_d0),intent(in) :: lon
+        integer, intent(in) :: nmax
+        integer, intent(in) :: lmax
+        integer, optional,intent(in) :: norm
+        real*8, optional,intent(out) :: chi2
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: d_d0
+        integer, intent(in) :: lon_d0
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: lat_d0
+        call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm,chi2,csphase)
+    end subroutine pySHExpandLSQ
+
+    subroutine pySHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0&
+                                 ,sh2_d1,sh2_d2,shout_d0,shout_d1,shout_d2) 
+        use shtools, only: SHMultiply
+        implicit none
+        real*8, dimension(shout_d0,shout_d1,shout_d2),intent(out) :: shout
+        real*8, dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
+        integer, intent(in) :: lmax1
+        real*8, dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
+        integer, intent(in) :: lmax2
+        integer, optional,intent(in) :: precomp
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: sh1_d0
+        integer, intent(in) :: sh1_d1
+        integer, intent(in) :: sh1_d2
+        integer, intent(in) :: sh2_d0
+        integer, intent(in) :: sh2_d1
+        integer, intent(in) :: sh2_d2
+        integer, intent(in) :: shout_d0
+        integer, intent(in) :: shout_d1
+        integer, intent(in) :: shout_d2
+        call SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp,norm,csphase)
+    end subroutine pySHMultiply
+
+    subroutine pyComputeD0(D0,lmax,theta0,D0_d0,D0_d1) 
+        use shtools, only: ComputeD0
+        implicit none
+        real*8, dimension(D0_d0,D0_d1),intent(out) :: D0
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: D0_d0
+        integer, intent(in) :: D0_d1
+        call ComputeD0(D0,lmax,theta0)
+    end subroutine pyComputeD0
+
+    subroutine pyComputeDm(dllm,lmax,m,theta0,dllm_d0,dllm_d1) 
+        use shtools, only: ComputeDm
+        implicit none
+        real*8, dimension(dllm_d0,dllm_d1),intent(out) :: dllm
+        integer, intent(in) :: lmax
+        integer, intent(in) :: m
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: dllm_d0
+        integer, intent(in) :: dllm_d1
+        call ComputeDm(dllm,lmax,m,theta0)
+    end subroutine pyComputeDm
+
+    subroutine pySphericalCapCoef(coef,theta,lmax,coef_d0) 
+        use shtools, only: SphericalCapCoef
+        implicit none
+        real*8, dimension(coef_d0),intent(out) :: coef
+        real*8, intent(in) :: theta
+        integer, optional,intent(in) :: lmax
+        integer, intent(in) :: coef_d0
+        call SphericalCapCoef(coef,theta,lmax)
+    end subroutine pySphericalCapCoef
+
+    subroutine pyEigValVecSym(ain,n,eig,evec,ul,K,evec_d0,evec_d1,ain_d0,ain_d1,eig_d0) 
+        use shtools, only: EigValVecSym
+        implicit none
+        real*8, dimension(ain_d0,ain_d1),intent(in) :: ain
+        integer, intent(in) :: n
+        real*8, dimension(eig_d0),intent(out) :: eig
+        real*8, dimension(evec_d0,evec_d1),intent(out) :: evec
+        character, optional,intent(in) :: ul
+        integer, optional,intent(in) :: K
+        integer, intent(in) :: evec_d0
+        integer, intent(in) :: evec_d1
+        integer, intent(in) :: ain_d0
+        integer, intent(in) :: ain_d1
+        integer, intent(in) :: eig_d0
+        call EigValVecSym(ain,n,eig,evec,ul,K)
+    end subroutine pyEigValVecSym
+
+    subroutine pySHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,shannon,tapers_d0,tapers_d1,eigenvalues_d0) 
+        use shtools, only: SHReturnTapersM
+        implicit none
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: lmax
+        integer, intent(in) :: m
+        real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
+        real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
+        real*8, optional,intent(out) :: shannon
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: eigenvalues_d0
+        call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,shannon)
+    end subroutine pySHReturnTapersM
+
+    subroutine pyEigValSym(ain,n,eval,ul,ain_d0,ain_d1,eval_d0) 
+        use shtools, only: EigValSym
+        implicit none
+        real*8, dimension(ain_d0,ain_d1),intent(in) :: ain
+        integer, intent(in) :: n
+        real*8, dimension(eval_d0),intent(out) :: eval
+        character, optional,intent(in) :: ul
+        integer, intent(in) :: ain_d0
+        integer, intent(in) :: ain_d1
+        integer, intent(in) :: eval_d0
+        call EigValSym(ain,n,eval,ul)
+    end subroutine pyEigValSym
+
+    function pySHFindLWin(theta0,m,alpha,taper_number) 
+        use shtools, only: SHFindLWin
+        implicit none
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: m
+        real*8, intent(in) :: alpha
+        integer, optional,intent(in) :: taper_number
+        integer :: pySHFindLWin
+        pySHFindLWin=SHFindLWin(theta0,m,alpha,taper_number)
+    end function pySHFindLWin
+
+    subroutine pySHAdmitCorr(G,T,lmax,admit,corr,admit_error,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0&
+                              ,T_d1,T_d2,corr_d0) 
+        use shtools, only: SHAdmitCorr
+        implicit none
+        real*8, dimension(G_d0,G_d1,G_d2),intent(in) :: G
+        real*8, dimension(T_d0,T_d1,T_d2),intent(in) :: T
+        integer, intent(in) :: lmax
+        real*8, dimension(admit_d0),intent(out) :: admit
+        real*8, dimension(corr_d0),intent(out) :: corr
+        real*8, optional,dimension(admit_error_d0),intent(out) :: admit_error
+        integer, intent(in) :: G_d0
+        integer, intent(in) :: G_d1
+        integer, intent(in) :: G_d2
+        integer, intent(in) :: admit_d0
+        integer, intent(in) :: admit_error_d0
+        integer, intent(in) :: T_d0
+        integer, intent(in) :: T_d1
+        integer, intent(in) :: T_d2
+        integer, intent(in) :: corr_d0
+        call SHAdmitCorr(G,T,lmax,admit,corr,admit_error)
+    end subroutine pySHAdmitCorr
+
+    subroutine pySHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,admit_error&
+                                            ,corr_error,taper_wt,mtdef,k1linsig,taper_order_d0,g_d0,g_d1&
+                                            ,g_d2,taper_wt_d0,corr_error_d0,admit_d0,admit_error_d0,corr_d0&
+                                            ,tapers_d0,tapers_d1,t_d0,t_d1,t_d2) 
+        use shtools, only: SHLocalizedAdmitCorr
+        implicit none
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, dimension(taper_order_d0),intent(in) :: taper_order
+        integer, intent(in) :: lwin
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: lon
+        real*8, dimension(g_d0,g_d1,g_d2),intent(in) :: g
+        real*8, dimension(t_d0,t_d1,t_d2),intent(in) :: t
+        integer, intent(in) :: lmax
+        real*8, dimension(admit_d0),intent(out) :: admit
+        real*8, dimension(corr_d0),intent(out) :: corr
+        integer, intent(in) :: K
+        real*8, optional,dimension(admit_error_d0),intent(out) :: admit_error
+        real*8, optional,dimension(corr_error_d0),intent(out) :: corr_error
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: mtdef
+        integer, optional,intent(in) :: k1linsig
+        integer, intent(in) :: taper_order_d0
+        integer, intent(in) :: g_d0
+        integer, intent(in) :: g_d1
+        integer, intent(in) :: g_d2
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: corr_error_d0
+        integer, intent(in) :: admit_d0
+        integer, intent(in) :: admit_error_d0
+        integer, intent(in) :: corr_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: t_d0
+        integer, intent(in) :: t_d1
+        integer, intent(in) :: t_d2
+        call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,admit_error,corr_error&
+                                        ,taper_wt,mtdef,k1linsig)
+    end subroutine pySHLocalizedAdmitCorr
+
+    subroutine pyEigValVecSymTri(ain,n,eig,evec,ul,ain_d0,ain_d1,evec_d0,evec_d1,eig_d0) 
+        use shtools, only: EigValVecSymTri
+        implicit none
+        real*8, dimension(ain_d0,ain_d1),intent(in) :: ain
+        integer, intent(in) :: n
+        real*8, dimension(eig_d0),intent(out) :: eig
+        real*8, dimension(evec_d0,evec_d1),intent(out) :: evec
+        character, optional,intent(in) :: ul
+        integer, intent(in) :: ain_d0
+        integer, intent(in) :: ain_d1
+        integer, intent(in) :: evec_d0
+        integer, intent(in) :: evec_d1
+        integer, intent(in) :: eig_d0
+        call EigValVecSymTri(ain,n,eig,evec,ul)
+    end subroutine pyEigValVecSymTri
+
+    subroutine pyComputeDG82(dG82,lmax,m,theta0,dG82_d0,dG82_d1) 
+        use shtools, only: ComputeDG82
+        implicit none
+        real*8, dimension(dG82_d0,dG82_d1),intent(out) :: dG82
+        integer, intent(in) :: lmax
+        integer, intent(in) :: m
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: dG82_d0
+        integer, intent(in) :: dG82_d1
+        call ComputeDG82(dG82,lmax,m,theta0)
+    end subroutine pyComputeDG82
+
+    function pyPlmIndex(l,m) 
+        use shtools, only: PlmIndex
+        implicit none
+        integer, intent(in) :: l
+        integer, intent(in) :: m
+        integer :: pyPlmIndex
+        pyPlmIndex=PlmIndex(l,m)
+    end function pyPlmIndex
+
+    function pyRandomN(idum) 
+        use shtools, only: RandomN
+        implicit none
+        integer(kind=4), intent(inout) :: idum
+        real*8 :: pyRandomN
+        pyRandomN=RandomN(idum)
+    end function pyRandomN
+
+    function pyRandomGaussian(idum) 
+        use shtools, only: RandomGaussian
+        implicit none
+        integer(kind=4), intent(inout) :: idum
+        real*8 :: pyRandomGaussian
+        pyRandomGaussian=RandomGaussian(idum)
+    end function pyRandomGaussian
+
+    subroutine pyWigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0) 
+        use shtools, only: Wigner3j
+        implicit none
+        real*8, dimension(w3j_d0),intent(out) :: w3j
+        integer, intent(out) :: jmin
+        integer, intent(out) :: jmax
+        integer, intent(in) :: j2
+        integer, intent(in) :: j3
+        integer, intent(in) :: m1
+        integer, intent(in) :: m2
+        integer, intent(in) :: m3
+        integer, intent(in) :: w3j_d0
+        call Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3)
+    end subroutine pyWigner3j
+
+    subroutine pySHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg,Shh_d0,incspectra_d0,outcspectra_d0) 
+        use shtools, only: SHBias
+        implicit none
+        real*8, dimension(Shh_d0),intent(in) :: Shh
+        integer, intent(in) :: lwin
+        real*8, dimension(incspectra_d0),intent(in) :: incspectra
+        integer, intent(in) :: ldata
+        real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
+        integer, optional,intent(in) :: save_cg
+        integer, intent(in) :: Shh_d0
+        integer, intent(in) :: incspectra_d0
+        integer, intent(in) :: outcspectra_d0
+        call SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg)
+    end subroutine pySHBias
+
+    subroutine pySHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0&
+                               ,tapers_d1,incspectra_d0,outcspectra_d0) 
+        use shtools, only: SHBiasK
+        implicit none
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lwin
+        integer, intent(in) :: numk
+        real*8, dimension(incspectra_d0),intent(in) :: incspectra
+        integer, intent(in) :: ldata
+        real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: save_cg
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: incspectra_d0
+        integer, intent(in) :: outcspectra_d0
+        call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,taper_wt,save_cg)
+    end subroutine pySHBiasK
+
+    function pySHSjkPG0(incspectra,j,k,l,m,evec,lwin,evec_d0,evec_d1,incspectra_d0) 
+        use shtools, only: SHSjkPG0
+        implicit none
+        real*8, dimension(incspectra_d0),intent(in) :: incspectra
+        integer, intent(in) :: j
+        integer, intent(in) :: k
+        integer, intent(in) :: l
+        integer, intent(in) :: m
+        real*8, dimension(evec_d0,evec_d1),intent(in) :: evec
+        integer, intent(in) :: lwin
+        integer, intent(in) :: evec_d0
+        integer, intent(in) :: evec_d1
+        integer, intent(in) :: incspectra_d0
+        real*8 :: pySHSjkPG0
+        pySHSjkPG0=SHSjkPG0(incspectra,j,k,l,m,evec,lwin)
+    end function pySHSjkPG0
+
+    subroutine pySHMTVarOpt0(l,tapers,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar,nocross&
+                              ,unweighted_covar_d0,unweighted_covar_d1,var_unit_d0,weight_opt_d0,weight_opt_d1&
+                              ,var_opt_d0,Sff_d0,tapers_d0,tapers_d1) 
+        use shtools, only: SHMTVarOpt0
+        implicit none
+        integer, intent(in) :: l
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lwin
+        integer, intent(in) :: kmax
+        real*8, dimension(Sff_d0),intent(in) :: Sff
+        real*8, dimension(var_opt_d0),intent(out) :: var_opt
+        real*8, dimension(var_unit_d0),intent(out) :: var_unit
+        real*8, optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
+        real*8, optional,dimension(unweighted_covar_d0,unweighted_covar_d1),intent(out) :: unweighted_covar
+        integer, optional,intent(in) :: nocross
+        integer, intent(in) :: unweighted_covar_d0
+        integer, intent(in) :: unweighted_covar_d1
+        integer, intent(in) :: var_unit_d0
+        integer, intent(in) :: weight_opt_d0
+        integer, intent(in) :: weight_opt_d1
+        integer, intent(in) :: var_opt_d0
+        integer, intent(in) :: Sff_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        call SHMTVarOpt0(l,tapers,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar,nocross)
+    end subroutine pySHMTVarOpt0
+
+    subroutine pySHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,taper_wt,norm&
+                                    ,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,alpha_d0,tapers_d0&
+                                    ,tapers_d1,mtse_d0,sd_d0) 
+        use shtools, only: SHMultiTaperSE
+        implicit none
+        real*8, dimension(mtse_d0),intent(out) :: mtse
+        real*8, dimension(sd_d0),intent(out) :: sd
+        real*8, dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
+        integer, intent(in) :: lmax
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, dimension(taper_order_d0),intent(in) :: taper_order
+        integer, intent(in) :: lmaxt
+        integer, intent(in) :: K
+        real*8, optional,dimension(alpha_d0),intent(in) :: alpha
+        real*8, optional,intent(in) :: lat
+        real*8, optional,intent(in) :: lon
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: taper_order_d0
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: sh_d0
+        integer, intent(in) :: sh_d1
+        integer, intent(in) :: sh_d2
+        integer, intent(in) :: alpha_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: mtse_d0
+        integer, intent(in) :: sd_d0
+        call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,taper_wt,norm,csphase)
+    end subroutine pySHMultiTaperSE
+
+    subroutine pySHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha,lat,lon&
+                                     ,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2&
+                                     ,taper_order_d0,taper_wt_d0,tapers_d0,tapers_d1,alpha_d0,sd_d0,mtse_d0) 
+        use shtools, only: SHMultiTaperCSE
+        implicit none
+        real*8, dimension(mtse_d0),intent(out) :: mtse
+        real*8, dimension(sd_d0),intent(out) :: sd
+        real*8, dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
+        integer, intent(in) :: lmax1
+        real*8, dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
+        integer, intent(in) :: lmax2
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, dimension(taper_order_d0),intent(in) :: taper_order
+        integer, intent(in) :: lmaxt
+        integer, intent(in) :: K
+        real*8, optional,dimension(alpha_d0),intent(in) :: alpha
+        real*8, optional,intent(in) :: lat
+        real*8, optional,intent(in) :: lon
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: sh1_d0
+        integer, intent(in) :: sh1_d1
+        integer, intent(in) :: sh1_d2
+        integer, intent(in) :: sh2_d0
+        integer, intent(in) :: sh2_d1
+        integer, intent(in) :: sh2_d2
+        integer, intent(in) :: taper_order_d0
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: alpha_d0
+        integer, intent(in) :: sd_d0
+        integer, intent(in) :: mtse_d0
+        call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha,lat,lon,taper_wt&
+                                 ,norm,csphase)
+    end subroutine pySHMultiTaperCSE
+
+    subroutine pySHReadJPL(filename,cilm,lmax,error,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1&
+                                   ,error_d2) 
+        use shtools, only: SHReadJPL
+        implicit none
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(in) :: lmax
+        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        real*8, optional,dimension(2),intent(out) :: gm
+        character*6, optional,intent(in) :: formatstring
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: error_d0
+        integer, intent(in) :: error_d1
+        integer, intent(in) :: error_d2
+        call SHReadJPL(filename,cilm,lmax,error,gm,formatstring)
+    end subroutine pySHReadJPL
+
+    subroutine pySHRead2(filename,cilm,lmax,gm,r0_pot,error,dot,doystart,doyend,epoch,cilm_d0,cilm_d1&
+                                 ,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2) 
+        use shtools, only: SHRead2
+        implicit none
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        real*8, intent(out) :: gm
+        real*8, intent(out) :: r0_pot
+        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        real*8, optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
+        real*8, optional,intent(out) :: doystart
+        real*8, optional,intent(out) :: doyend
+        real*8, optional,intent(out) :: epoch
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: error_d0
+        integer, intent(in) :: error_d1
+        integer, intent(in) :: error_d2
+        integer, intent(in) :: dot_d0
+        integer, intent(in) :: dot_d1
+        integer, intent(in) :: dot_d2
+        call SHRead2(filename,cilm,lmax,gm,r0_pot,error,dot,doystart,doyend,epoch)
+    end subroutine pySHRead2
+
+    subroutine pyMakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,gridtype,order,nlat,nlong,interval&
+                                    ,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1) 
+        use shtools, only: MakeGeoidGrid
+        implicit none
+        real*8, dimension(geoid_d0,geoid_d1),intent(out) :: geoid
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: r0pot
+        real*8, intent(in) :: GM
+        real*8, intent(in) :: PotRef
+        real*8, intent(in) :: omega
+        real*8, intent(in) :: r
+        integer, intent(in) :: gridtype
+        integer, intent(in) :: order
+        integer, intent(out) :: nlat
+        integer, intent(out) :: nlong
+        real*8, optional,intent(in) :: interval
+        integer, optional,intent(in) :: lmax_calc
+        real*8, optional,intent(in) :: a
+        real*8, optional,intent(in) :: f
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: geoid_d0
+        integer, intent(in) :: geoid_d1
+        call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,gridtype,order,nlat,nlong,interval&
+                                ,lmax_calc,a,f)
+    end subroutine pyMakeGeoidGrid
+
+    subroutine pyPlmON(p,lmax,z,csphase,cnorm,p_d0) 
+        use shtools, only: PlmON
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: cnorm
+        integer, intent(in) :: p_d0
+        call PlmON(p,lmax,z,csphase,cnorm)
+    end subroutine pyPlmON
+
+    subroutine pyPlON(p,lmax,z,p_d0) 
+        use shtools, only: PlON
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, intent(in) :: p_d0
+        call PlON(p,lmax,z)
+    end subroutine pyPlON
+
+    subroutine pyPlmON_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0) 
+        use shtools, only: PlmON_d1
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        real*8, dimension(dp_d0),intent(out) :: dp
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: cnorm
+        integer, intent(in) :: p_d0
+        integer, intent(in) :: dp_d0
+        call PlmON_d1(p,dp,lmax,z,csphase,cnorm)
+    end subroutine pyPlmON_d1
+
+    subroutine pyPlON_d1(p,dp,lmax,z,p_d0,dp_d0) 
+        use shtools, only: PlON_d1
+        implicit none
+        real*8, dimension(p_d0),intent(out) :: p
+        real*8, dimension(dp_d0),intent(out) :: dp
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: z
+        integer, intent(in) :: p_d0
+        integer, intent(in) :: dp_d0
+        call PlON_d1(p,dp,lmax,z)
+    end subroutine pyPlON_d1
+
+    subroutine pyMakeCircleCoord(coord,lat,lon,theta0,cinterval,cnum,coord_d0,coord_d1) 
+        use shtools, only: MakeCircleCoord
+        implicit none
+        real*8, dimension(coord_d0,coord_d1),intent(out) :: coord
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: lon
+        real*8, intent(in) :: theta0
+        real*8, optional,intent(in) :: cinterval
+        integer, optional,intent(out) :: cnum
+        integer, intent(in) :: coord_d0
+        integer, intent(in) :: coord_d1
+        call MakeCircleCoord(coord,lat,lon,theta0,cinterval,cnum)
+    end subroutine pyMakeCircleCoord
+
+    subroutine pySHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,eigenvalues_d0,tapers_d0,tapers_d1&
+                                      ,taper_order_d0) 
+        use shtools, only: SHReturnTapers
+        implicit none
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: lmax
+        real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
+        real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
+        integer, dimension(taper_order_d0),intent(out) :: taper_order
+        integer, intent(in) :: eigenvalues_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: taper_order_d0
+        call SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order)
+    end subroutine pySHReturnTapers
+
+    function pySHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,hk_real_d0,incspectra_d0&
+                                 ,hj_real_d0) 
+        use shtools, only: SHSjkPG
+        implicit none
+        real*8, dimension(incspectra_d0),intent(in) :: incspectra
+        integer, intent(in) :: l
+        integer, intent(in) :: m
+        integer, intent(in) :: mprime
+        real*8, dimension(hj_real_d0),intent(in) :: hj_real
+        real*8, dimension(hk_real_d0),intent(in) :: hk_real
+        integer, intent(in) :: mj
+        integer, intent(in) :: mk
+        integer, intent(in) :: lwin
+        integer, intent(in) :: hkcc
+        integer, intent(in) :: hk_real_d0
+        integer, intent(in) :: incspectra_d0
+        integer, intent(in) :: hj_real_d0
+        complex*16 :: pySHSjkPG
+        pySHSjkPG=SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc)
+    end function pySHSjkPG
+
+    subroutine pySHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar&
+                             ,nocross,unweighted_covar_d0,unweighted_covar_d1,taper_order_d0,weight_opt_d0&
+                             ,weight_opt_d1,var_unit_d0,var_opt_d0,Sff_d0,tapers_d0,tapers_d1) 
+        use shtools, only: SHMTVarOpt
+        implicit none
+        integer, intent(in) :: l
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, dimension(taper_order_d0),intent(in) :: taper_order
+        integer, intent(in) :: lwin
+        integer, intent(in) :: kmax
+        real*8, dimension(Sff_d0),intent(in) :: Sff
+        real*8, dimension(var_opt_d0),intent(out) :: var_opt
+        real*8, dimension(var_unit_d0),intent(out) :: var_unit
+        real*8, optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
+        real*8, optional,dimension(unweighted_covar_d0,unweighted_covar_d1),intent(out) :: unweighted_covar
+        integer, optional,intent(in) :: nocross
+        integer, intent(in) :: unweighted_covar_d0
+        integer, intent(in) :: unweighted_covar_d1
+        integer, intent(in) :: taper_order_d0
+        integer, intent(in) :: weight_opt_d0
+        integer, intent(in) :: weight_opt_d1
+        integer, intent(in) :: var_unit_d0
+        integer, intent(in) :: var_opt_d0
+        integer, intent(in) :: Sff_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        call SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar&
+                         ,nocross)
+    end subroutine pySHMTVarOpt
+
+    subroutine pySHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n,taper_wt,mtdebias_d0,mtdebias_d1&
+                                    ,taper_wt_d0,mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1,lmid_d0) 
+        use shtools, only: SHMTDebias
+        implicit none
+        real*8, dimension(mtdebias_d0,mtdebias_d1),intent(out) :: mtdebias
+        real*8, dimension(mtspectra_d0,mtspectra_d1),intent(in) :: mtspectra
+        integer, intent(in) :: lmax
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lwin
+        integer, intent(in) :: K
+        integer, intent(in) :: nl
+        real*8, dimension(lmid_d0),intent(out) :: lmid
+        integer, intent(out) :: n
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, intent(in) :: mtdebias_d0
+        integer, intent(in) :: mtdebias_d1
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: mtspectra_d0
+        integer, intent(in) :: mtspectra_d1
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: lmid_d0
+        call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n,taper_wt)
+    end subroutine pySHMTDebias
+
+    subroutine pyMakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,omega,normal_gravity&
+                                    ,pot,phi_d0,phi_d1,total_d0,total_d1,pot_d0,pot_d1,rad_d0,rad_d1,cilm_d0&
+                                    ,cilm_d1,cilm_d2,theta_d0,theta_d1) 
+        use shtools, only: MakeGravGridDH
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: gm
+        real*8, intent(in) :: r0
+        real*8, intent(in) :: a
+        real*8, intent(in) :: f
+        real*8, dimension(rad_d0,rad_d1),intent(out) :: rad
+        real*8, dimension(theta_d0,theta_d1),intent(out) :: theta
+        real*8, dimension(phi_d0,phi_d1),intent(out) :: phi
+        real*8, dimension(total_d0,total_d1),intent(out) :: total
+        integer, intent(out) :: n
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: lmax_calc
+        real*8, optional,intent(in) :: omega
+        integer, optional,intent(in) :: normal_gravity
+        real*8, optional,dimension(pot_d0,pot_d1),intent(out) :: pot
+        integer, intent(in) :: phi_d0
+        integer, intent(in) :: phi_d1
+        integer, intent(in) :: total_d0
+        integer, intent(in) :: total_d1
+        integer, intent(in) :: pot_d0
+        integer, intent(in) :: pot_d1
+        integer, intent(in) :: rad_d0
+        integer, intent(in) :: rad_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: theta_d0
+        integer, intent(in) :: theta_d1
+        call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,omega,normal_gravity&
+                                ,pot)
+    end subroutine pyMakeGravGridDH
+
+    function pyNormalGravity(geocentric_lat,gm,omega,a,b) 
+        use shtools, only: NormalGravity
+        implicit none
+        real*8, intent(in) :: geocentric_lat
+        real*8, intent(in) :: gm
+        real*8, intent(in) :: omega
+        real*8, intent(in) :: a
+        real*8, intent(in) :: b
+        real*8 :: pyNormalGravity
+        pyNormalGravity=NormalGravity(geocentric_lat,gm,omega,a,b)
+    end function pyNormalGravity
+
+    function pySHConfidence(l_conf,r) 
+        use shtools, only: SHConfidence
+        implicit none
+        integer, intent(in) :: l_conf
+        real*8, intent(in) :: r
+        real*8 :: pySHConfidence
+        pySHConfidence=SHConfidence(l_conf,r)
+    end function pySHConfidence
+
+    function pySHMagPowerL(c,a,r,l,c_d0,c_d1,c_d2) 
+        use shtools, only: SHMagPowerL
+        implicit none
+        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        real*8, intent(in) :: a
+        real*8, intent(in) :: r
+        integer, intent(in) :: l
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        real*8 :: pySHMagPowerL
+        pySHMagPowerL=SHMagPowerL(c,a,r,l)
+    end function pySHMagPowerL
+
+    subroutine pySHMagPowerSpectrum(c,a,r,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) 
+        use shtools, only: SHMagPowerSpectrum
+        implicit none
+        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        real*8, intent(in) :: a
+        real*8, intent(in) :: r
+        integer, intent(in) :: lmax
+        real*8, dimension(spectra_d0),intent(out) :: spectra
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        integer, intent(in) :: spectra_d0
+        call SHMagPowerSpectrum(c,a,r,lmax,spectra)
+    end subroutine pySHMagPowerSpectrum
+
+    subroutine pySHExpandDHC(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2&
+                                 ,grid_d0,grid_d1) 
+        use shtools, only: SHExpandDHC
+        implicit none
+        complex*16, dimension(grid_d0,grid_d1),intent(in) :: grid
+        integer, intent(in) :: n
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: grid_d0
+        integer, intent(in) :: grid_d1
+        call SHExpandDHC(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+    end subroutine pySHExpandDHC
+
+    subroutine pyMakeGridDHC(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2&
+                                   ,griddh_d0,griddh_d1) 
+        use shtools, only: MakeGridDHC
+        implicit none
+        complex*16, dimension(griddh_d0,griddh_d1),intent(out) :: griddh
+        integer, intent(out) :: n
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: griddh_d0
+        integer, intent(in) :: griddh_d1
+        call MakeGridDHC(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+    end subroutine pyMakeGridDHC
+
+    subroutine pyMakeGridGLQC(gridglq,cilm,lmax,plx,zero,norm,csphase,lmax_calc,plx_d0,plx_d1,gridglq_d0&
+                                     ,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0) 
+        use shtools, only: MakeGridGLQC
+        implicit none
+        complex*16, dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: plx_d0
+        integer, intent(in) :: plx_d1
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: zero_d0
+        call MakeGridGLQC(gridglq,cilm,lmax,plx,zero,norm,csphase,lmax_calc)
+    end subroutine pyMakeGridGLQC
+
+    subroutine pySHExpandGLQC(cilm,lmax,gridglq,w,plx,zero,norm,csphase,lmax_calc,plx_d0,plx_d1,cilm_d0&
+                                  ,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0) 
+        use shtools, only: SHExpandGLQC
+        implicit none
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(in) :: lmax
+        complex*16, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
+        real*8, dimension(w_d0),intent(in) :: w
+        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: plx_d0
+        integer, intent(in) :: plx_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        call SHExpandGLQC(cilm,lmax,gridglq,w,plx,zero,norm,csphase,lmax_calc)
+    end subroutine pySHExpandGLQC
+
+    function pySHPowerLC(c,l,c_d0,c_d1,c_d2) 
+        use shtools, only: SHPowerLC
+        implicit none
+        complex*16, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        integer, intent(in) :: l
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        real*8 :: pySHPowerLC
+        pySHPowerLC=SHPowerLC(c,l)
+    end function pySHPowerLC
+
+    function pySHPowerDensityLC(c,l,c_d0,c_d1,c_d2) 
+        use shtools, only: SHPowerDensityLC
+        implicit none
+        complex*16, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        integer, intent(in) :: l
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        real*8 :: pySHPowerDensityLC
+        pySHPowerDensityLC=SHPowerDensityLC(c,l)
+    end function pySHPowerDensityLC
+
+    function pySHCrossPowerLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) 
+        use shtools, only: SHCrossPowerLC
+        implicit none
+        complex*16, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+        complex*16, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+        integer, intent(in) :: l
+        integer, intent(in) :: c2_d0
+        integer, intent(in) :: c2_d1
+        integer, intent(in) :: c2_d2
+        integer, intent(in) :: c1_d0
+        integer, intent(in) :: c1_d1
+        integer, intent(in) :: c1_d2
+        complex*16 :: pySHCrossPowerLC
+        pySHCrossPowerLC=SHCrossPowerLC(c1,c2,l)
+    end function pySHCrossPowerLC
+
+    function pySHCrossPowerDensityLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) 
+        use shtools, only: SHCrossPowerDensityLC
+        implicit none
+        complex*16, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+        complex*16, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+        integer, intent(in) :: l
+        integer, intent(in) :: c2_d0
+        integer, intent(in) :: c2_d1
+        integer, intent(in) :: c2_d2
+        integer, intent(in) :: c1_d0
+        integer, intent(in) :: c1_d1
+        integer, intent(in) :: c1_d2
+        complex*16 :: pySHCrossPowerDensityLC
+        pySHCrossPowerDensityLC=SHCrossPowerDensityLC(c1,c2,l)
+    end function pySHCrossPowerDensityLC
+
+    subroutine pySHPowerSpectrumC(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) 
+        use shtools, only: SHPowerSpectrumC
+        implicit none
+        complex*16, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        integer, intent(in) :: lmax
+        real*8, dimension(spectra_d0),intent(out) :: spectra
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        integer, intent(in) :: spectra_d0
+        call SHPowerSpectrumC(c,lmax,spectra)
+    end subroutine pySHPowerSpectrumC
+
+    subroutine pySHPowerSpectrumDensityC(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) 
+        use shtools, only: SHPowerSpectrumDensityC
+        implicit none
+        complex*16, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        integer, intent(in) :: lmax
+        real*8, dimension(spectra_d0),intent(out) :: spectra
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        integer, intent(in) :: spectra_d0
+        call SHPowerSpectrumDensityC(c,lmax,spectra)
+    end subroutine pySHPowerSpectrumDensityC
+
+    subroutine pySHCrossPowerSpectrumC(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0) 
+        use shtools, only: SHCrossPowerSpectrumC
+        implicit none
+        complex*16, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+        complex*16, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+        integer, intent(in) :: lmax
+        complex*16, dimension(cspectra_d0),intent(out) :: cspectra
+        integer, intent(in) :: c2_d0
+        integer, intent(in) :: c2_d1
+        integer, intent(in) :: c2_d2
+        integer, intent(in) :: c1_d0
+        integer, intent(in) :: c1_d1
+        integer, intent(in) :: c1_d2
+        integer, intent(in) :: cspectra_d0
+        call SHCrossPowerSpectrumC(c1,c2,lmax,cspectra)
+    end subroutine pySHCrossPowerSpectrumC
+
+    subroutine pySHCrossPowerSpectrumDensityC(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2&
+                                                ,cspectra_d0) 
+        use shtools, only: SHCrossPowerSpectrumDensityC
+        implicit none
+        complex*16, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+        complex*16, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+        integer, intent(in) :: lmax
+        complex*16, dimension(cspectra_d0),intent(out) :: cspectra
+        integer, intent(in) :: c2_d0
+        integer, intent(in) :: c2_d1
+        integer, intent(in) :: c2_d2
+        integer, intent(in) :: c1_d0
+        integer, intent(in) :: c1_d1
+        integer, intent(in) :: c1_d2
+        integer, intent(in) :: cspectra_d0
+        call SHCrossPowerSpectrumDensityC(c1,c2,lmax,cspectra)
+    end subroutine pySHCrossPowerSpectrumDensityC
+
+    subroutine pySHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef,taper_wt,taper_wt_d0&
+                                    ,sgt_d0,stt_d0,admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0) 
+        use shtools, only: SHBiasAdmitCorr
+        implicit none
+        real*8, dimension(sgt_d0),intent(in) :: sgt
+        real*8, dimension(sgg_d0),intent(in) :: sgg
+        real*8, dimension(stt_d0),intent(in) :: stt
+        integer, intent(in) :: lmax
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lwin
+        integer, intent(in) :: K
+        real*8, dimension(admit_d0),intent(out) :: admit
+        real*8, dimension(corr_d0),intent(out) :: corr
+        integer, optional,intent(in) :: mtdef
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: sgt_d0
+        integer, intent(in) :: stt_d0
+        integer, intent(in) :: admit_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: corr_d0
+        integer, intent(in) :: sgg_d0
+        call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef,taper_wt)
+    end subroutine pySHBiasAdmitCorr
+
+    subroutine pySHCilmToVector(cilm,vector,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2) 
+        use shtools, only: SHCilmToVector
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        real*8, dimension(vector_d0),intent(out) :: vector
+        integer, intent(in) :: lmax
+        integer, intent(in) :: vector_d0
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHCilmToVector(cilm,vector,lmax)
+    end subroutine pySHCilmToVector
+
+    subroutine pySHVectorToCilm(vector,cilm,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2) 
+        use shtools, only: SHVectorToCilm
+        implicit none
+        real*8, dimension(vector_d0),intent(in) :: vector
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(in) :: lmax
+        integer, intent(in) :: vector_d0
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHVectorToCilm(vector,cilm,lmax)
+    end subroutine pySHVectorToCilm
+
+    function pyYilmIndex(i,l,m) 
+        use shtools, only: YilmIndex
+        implicit none
+        integer, intent(in) :: i
+        integer, intent(in) :: l
+        integer, intent(in) :: m
+        integer :: pyYilmIndex
+        pyYilmIndex=YilmIndex(i,l,m)
+    end function pyYilmIndex
+
+    subroutine pyComputeDMap(Dij,dh_mask,n_dh,sampling,lmax,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1) 
+        use shtools, only: ComputeDMap
+        implicit none
+        real*8, dimension(Dij_d0,Dij_d1),intent(out) :: Dij
+        integer, dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
+        integer, intent(in) :: n_dh
+        integer, intent(in) :: sampling
+        integer, intent(in) :: lmax
+        integer, intent(in) :: dh_mask_d0
+        integer, intent(in) :: dh_mask_d1
+        integer, intent(in) :: Dij_d0
+        integer, intent(in) :: Dij_d1
+        call ComputeDMap(Dij,dh_mask,n_dh,sampling,lmax)
+    end subroutine pyComputeDMap
+
+    subroutine pySHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,sampling,lmax,Ntapers,dh_mask_d0,dh_mask_d1&
+                                         ,tapers_d0,tapers_d1,eigenvalues_d0) 
+        use shtools, only: SHReturnTapersMap
+        implicit none
+        real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
+        real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
+        integer, dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
+        integer, intent(in) :: n_dh
+        integer, intent(in) :: sampling
+        integer, intent(in) :: lmax
+        integer, optional,intent(in) :: Ntapers
+        integer, intent(in) :: dh_mask_d0
+        integer, intent(in) :: dh_mask_d1
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: eigenvalues_d0
+        call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,sampling,lmax,Ntapers)
+    end subroutine pySHReturnTapersMap
+
+    subroutine pyCurve2Mask(dhgrid,n,sampling,profile,nprofile,NP,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1) 
+        use shtools, only: Curve2Mask
+        implicit none
+        integer, dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
+        integer, intent(in) :: n
+        integer, intent(in) :: sampling
+        real*8, dimension(profile_d0,profile_d1),intent(in) :: profile
+        integer, intent(in) :: nprofile
+        integer :: NP
+        integer, intent(in) :: profile_d0
+        integer, intent(in) :: profile_d1
+        integer, intent(in) :: dhgrid_d0
+        integer, intent(in) :: dhgrid_d1
+        call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP)
+    end subroutine pyCurve2Mask
+
+    subroutine pyMakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval,cnum,coord_d0,coord_d1) 
+        use shtools, only: MakeEllipseCoord
+        implicit none
+        real*8, dimension(coord_d0,coord_d1),intent(out) :: coord
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: lon
+        real*8, intent(in) :: dec
+        real*8, intent(in) :: A_theta
+        real*8, intent(in) :: B_theta
+        real*8, optional,intent(in) :: cinterval
+        integer, optional,intent(out) :: cnum
+        integer, intent(in) :: coord_d0
+        integer, intent(in) :: coord_d1
+        call MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval,cnum)
+    end subroutine pyMakeEllipseCoord
+
+    subroutine pyMakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc,vyz_d0&
+                                        ,vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0&
+                                        ,vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1) 
+        use shtools, only: MakeGravGradGridDH
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: gm
+        real*8, intent(in) :: r0
+        real*8, intent(in) :: a
+        real*8, intent(in) :: f
+        real*8, dimension(vxx_d0,vxx_d1),intent(out) :: vxx
+        real*8, dimension(vyy_d0,vyy_d1),intent(out) :: vyy
+        real*8, dimension(vzz_d0,vzz_d1),intent(out) :: vzz
+        real*8, dimension(vxy_d0,vxy_d1),intent(out) :: vxy
+        real*8, dimension(vxz_d0,vxz_d1),intent(out) :: vxz
+        real*8, dimension(vyz_d0,vyz_d1),intent(out) :: vyz
+        integer, intent(out) :: n
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: vyz_d0
+        integer, intent(in) :: vyz_d1
+        integer, intent(in) :: vyy_d0
+        integer, intent(in) :: vyy_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: vzz_d0
+        integer, intent(in) :: vzz_d1
+        integer, intent(in) :: vxy_d0
+        integer, intent(in) :: vxy_d1
+        integer, intent(in) :: vxx_d0
+        integer, intent(in) :: vxx_d1
+        integer, intent(in) :: vxz_d0
+        integer, intent(in) :: vxz_d1
+        call MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc)
+    end subroutine pyMakeGravGradGridDH
+
