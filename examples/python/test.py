@@ -18,7 +18,7 @@ def main():
 
 #==== TEST FUNCTIONS ====
 def test_shtransforms():
-    lmax = 200
+    lmax = 2
     #create random coefficients
     coeffs    = np.random.normal( loc=0., scale=1.,size=2*lmax*lmax ).reshape(2,lmax,lmax)
     print coeffs
