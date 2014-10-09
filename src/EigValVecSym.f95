@@ -225,4 +225,3 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
 	deallocate(z)
 	
 end subroutine EigValVecSym
-

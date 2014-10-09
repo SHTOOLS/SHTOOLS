@@ -169,7 +169,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc
 	
 	if (present(lmax_calc)) then
 		if (lmax_calc > lmax) then
-			print*, "Error --- MakeGridDH"
+			print*, "Error --- MakeGridDHC"
 			print*, "LMAX_CALC must be less than or equal to LMAX."
 			print*, "LMAX = ", lmax
 			print*, "LMAX_CALC = ", lmax_calc

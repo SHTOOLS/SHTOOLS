@@ -296,7 +296,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
 	
 		select case(lnorm)
 			case(1,2,3);	pm2 = 1.0d0
-			case(4);	pm2 = 1.0d0 / sqrt(4.0d0*pi)
+			case(4);	pm2 = 1.0d0 / sqrt(4*pi)
 		end select
 		
 		gridglq(1:nlat, 1:nlong) = cilm(1,1,1) * pm2
@@ -353,7 +353,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
 				
 				select case(lnorm)
 					case(1,2,3);	pm2 = 1.0d0
-					case(4);	pm2 = 1.0d0 / sqrt(4.0d0*pi)
+					case(4);	pm2 = 1.0d0 / sqrt(4*pi)
 				end select
 
 				coef(1) = coef(1) + cilm(1,1,1) * pm2
@@ -367,7 +367,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
 				
 				select case(lnorm)
 					case(1,2,3);	pmm = scalef
-					case(4);	pmm = scalef / sqrt(4.0d0*pi)
+					case(4);	pmm = scalef / sqrt(4*pi)
 				end select
 								
 				rescalem = 1.0d0/scalef
@@ -384,7 +384,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
 							pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
 							pm2 = pmm / sqr(2*m+1)
 						case(3)
-							pmm = phase * pmm * dble(2*m-1)
+							pmm = phase * pmm * (2*m-1)
 							pm2 = pmm
 					end select
 					
@@ -407,7 +407,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
            			select case(lnorm)
             				case(1,4);	pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
             				case(2);	pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
-            				case(3);	pmm = phase * pmm * dble(2*lmax_comp-1) * rescalem
+            				case(3);	pmm = phase * pmm * (2*lmax_comp-1) * rescalem
         			end select
           			
         			coef(lmax_comp+1) = coef(lmax_comp+1) + cilm(1,lmax_comp+1,lmax_comp+1) * pmm
@@ -429,7 +429,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
 				
 				select case(lnorm)
 					case(1,2,3);	pm2 = 1.0d0
-					case(4);	pm2 = 1.0d0 / sqrt(4.0d0*pi)
+					case(4);	pm2 = 1.0d0 / sqrt(4*pi)
 				end select
 
 				coef(1) = coef(1) + cilm(1,1,1) * pm2
@@ -450,7 +450,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
 				
 				select case(lnorm)
 					case(1,2,3);	pmm = scalef
-					case(4);	pmm = scalef / sqrt(4.0d0*pi)
+					case(4);	pmm = scalef / sqrt(4*pi)
 				end select
 				
 				rescalem = 1.0d0/scalef
@@ -468,7 +468,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
 							pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
 							pm2 = pmm / sqr(2*m+1)
 						case(3)
-							pmm = phase * pmm * dble(2*m-1)
+							pmm = phase * pmm * (2*m-1)
 							pm2 = pmm
 					end select
 					

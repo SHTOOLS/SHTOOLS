@@ -45,7 +45,7 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
 	character, intent(in), optional :: ul
 	integer, parameter ::	nb = 80, nbl = 10
 	real*8 ::	d(n), e(n), work(nb*n), vl, vu, abstol, w(n)
-	real*8, allocatable ::	z(:, :)
+	real*8, allocatable ::	z(:,:)
 	integer ::	lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), i, astat
 	external 	dstegr_
 	

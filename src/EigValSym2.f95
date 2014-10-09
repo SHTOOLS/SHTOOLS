@@ -33,7 +33,7 @@ subroutine EigValSym(ain, n, eval, ul)
 !
 !	Written by Mark Wieczorek June 2004.
 !
-!	Copyright (c) 2005,2006 Mark A. Wieczorek
+!	Copyright (c) 2005 Mark A. Wieczorek
 !	All rights reserved.
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

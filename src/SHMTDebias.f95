@@ -72,7 +72,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, n, 
 	allocate(work(lwork), stat=astat(5))
 	
 	if (astat(1) /= 0 .or. astat(2) /= 0 .or. astat(3) /= 0 .or. astat(4) /= 0 .or. astat(5) /= 0) then
-		print*, "Error --- SHMTDebias2"
+		print*, "Error --- SHMTDebias"
 		print*, "Problem allocating arrays MMT, A, VT, UU and WORK", astat(1), astat(2), astat(3), &
 			astat(4), astat(5)
 		stop

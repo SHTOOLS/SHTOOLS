@@ -45,7 +45,7 @@ Subroutine SHMTVarOpt0(l, tapers, lwin, kmax, Sff, var_opt, var_unit, weight_opt
 	integer, parameter ::	nb = 64
 	real*8 ::		Fij(kmax, kmax), ww(kmax), bb(kmax+1), MM(kmax+1, kmax+1), work((kmax+1)*nb)
 	integer ::	i,j, m, k, ipiv(kmax+1), info, lwork
-	external :: 	DSYSV_
+	external :: 	DSYSV
 	
 	if (size(Sff) < l+lwin + 1) then
 		print*, "Error --- SHMTVarOpt0"
@@ -184,7 +184,7 @@ Subroutine SHMTVarOpt0(l, tapers, lwin, kmax, Sff, var_opt, var_unit, weight_opt
 		bb(1:k) = 0.0d0
 		bb(k+1) = 1.0d0
 		
-		call DSYSV_("u", k+1, 1, MM, kmax+1, ipiv,  bb,  kmax+1,  work,  lwork, info)
+		call DSYSV("u", k+1, 1, MM, kmax+1, ipiv,  bb,  kmax+1,  work,  lwork, info)
 		if (info /=0) then
 			print*, "Error --- SHMTVarOpt0"
 			print*, "Problem with call to DSYSV."
