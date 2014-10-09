@@ -18,11 +18,11 @@ def main():
 
 #==== TEST FUNCTIONS ====
 def test_shtransforms():
-    lmax = 2
+    lmax = 200
     #create random coefficients
     coeffs    = np.random.normal( loc=0., scale=1.,size=2*lmax*lmax ).reshape(2,lmax,lmax)
     print coeffs
-    grid,nlat = shtools.MakeGridDH(coeffs,norm=3,csphase=1,sampling=2)
+    grid,nlat = shtools.MakeGridDH(coeffs,norm=1,csphase=1,sampling=2)
     #coeffs2   = shtools.SHExpandDH(grid,sampling=2)
 
     print grid.shape
