@@ -379,6 +379,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: error_d1
             integer intent(in) :: error_d2
         end subroutine SHRead
+
         subroutine MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid,n,sampling,lmax_calc,pot_grid,total_grid_d0,total_grid_d1,cilm_d0,cilm_d1,cilm_d2,rad_grid_d0,rad_grid_d1,theta_grid_d0,theta_grid_d1,phi_grid_d0,phi_grid_d1,pot_grid_d0,pot_grid_d1) ! in PythonWrapper.f95
             fortranname pymakemaggriddh
             use shtools, only: MakeMagGridDH
@@ -409,6 +410,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: pot_grid_d0
             integer intent(in) :: pot_grid_d1
         end subroutine MakeMagGridDH
+
         function SHPowerL(c,l,c_d0,c_d1,c_d2) ! in PythonWrapper.f95
             fortranname pyshpowerl
             use shtools, only: SHPowerL
@@ -419,6 +421,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
             real*8 :: pySHPowerL
         end function SHPowerL
+
         function SHPowerDensityL(c,l,c_d0,c_d1,c_d2) ! in PythonWrapper.f95
             fortranname pyshpowerdensityl
             use shtools, only: SHPowerDensityL
@@ -429,6 +432,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
             real*8 :: pySHPowerDensityL
         end function SHPowerDensityL
+
         function SHCrossPowerL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) ! in PythonWrapper.f95
             fortranname pyshcrosspowerl
             use shtools, only: SHCrossPowerL
@@ -443,6 +447,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
             real*8 :: pySHCrossPowerL
         end function SHCrossPowerL
+
         function SHCrossPowerDensityL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) ! in PythonWrapper.f95
             fortranname pyshcrosspowerdensityl
             use shtools, only: SHCrossPowerDensityL
@@ -457,6 +462,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
             real*8 :: pySHCrossPowerDensityL
         end function SHCrossPowerDensityL
+
         subroutine SHPowerSpectrum(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) ! in PythonWrapper.f95
             fortranname pyshpowerspectrum
             use shtools, only: SHPowerSpectrum
@@ -468,6 +474,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
             integer intent(in) :: spectra_d0
         end subroutine SHPowerSpectrum
+
         subroutine SHPowerSpectrumDensity(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) ! in PythonWrapper.f95
             fortranname pyshpowerspectrumdensity
             use shtools, only: SHPowerSpectrumDensity
@@ -479,6 +486,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
             integer intent(in) :: spectra_d0
         end subroutine SHPowerSpectrumDensity
+
         subroutine SHCrossPowerSpectrum(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0) ! in PythonWrapper.f95
             fortranname pyshcrosspowerspectrum
             use shtools, only: SHCrossPowerSpectrum
@@ -494,6 +502,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
             integer intent(in) :: cspectra_d0
         end subroutine SHCrossPowerSpectrum
+
         subroutine SHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0) ! in PythonWrapper.f95
             fortranname pyshcrosspowerspectrumdensity
             use shtools, only: SHCrossPowerSpectrumDensity
@@ -509,6 +518,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
             integer intent(in) :: cspectra_d0
         end subroutine SHCrossPowerSpectrumDensity
+
         subroutine djpi2(dj,lmax,dj_d0,dj_d1,dj_d2) ! in PythonWrapper.f95
             fortranname pydjpi2
             use shtools, only: djpi2
@@ -518,6 +528,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: dj_d1
             integer intent(in) :: dj_d2
         end subroutine djpi2
+
         subroutine SHrtoc(rcilm,ccilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2) ! in PythonWrapper.f95
             fortranname pyshrtoc
             use shtools, only: SHrtoc
@@ -533,6 +544,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: ccilm_d1
             integer intent(in) :: ccilm_d2
         end subroutine SHrtoc
+
         subroutine SHctor(ccilm,rcilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2) ! in PythonWrapper.f95
             fortranname pyshctor
             use shtools, only: SHctor
@@ -548,6 +560,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(ccilm,1)==ccilm_d1),depend(ccilm) :: ccilm_d1=shape(ccilm,1)
             integer, optional,intent(in),check(shape(ccilm,2)==ccilm_d2),depend(ccilm) :: ccilm_d2=shape(ccilm,2)
         end subroutine SHctor
+
         subroutine SHCilmToCindex(cilm,cindex,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2) ! in PythonWrapper.f95
             fortranname pyshcilmtocindex
             use shtools, only: SHCilmToCindex
@@ -560,6 +573,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
         end subroutine SHCilmToCindex
+
         subroutine SHCindexToCilm(cindex,cilm,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2) ! in PythonWrapper.f95
             fortranname pyshcindextocilm
             use shtools, only: SHCindexToCilm
@@ -572,6 +586,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: cilm_d1
             integer intent(in) :: cilm_d2
         end subroutine SHCindexToCilm
+
         subroutine SHRotateCoef(x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1) ! in PythonWrapper.f95
             fortranname pyshrotatecoef
             use shtools, only: SHRotateCoef
@@ -588,6 +603,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(cof,0)==cof_d0),depend(cof) :: cof_d0=shape(cof,0)
             integer, optional,intent(in),check(shape(cof,1)==cof_d1),depend(cof) :: cof_d1=shape(cof,1)
         end subroutine SHRotateCoef
+
         subroutine SHRotateRealCoef(cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2,cilmrot_d0,cilmrot_d1,cilmrot_d2) ! in PythonWrapper.f95
             fortranname pyshrotaterealcoef
             use shtools, only: SHRotateRealCoef
@@ -607,6 +623,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: cilmrot_d1
             integer intent(in) :: cilmrot_d2
         end subroutine SHRotateRealCoef
+
         subroutine DHaj(n,aj,aj_d0) ! in PythonWrapper.f95
             fortranname pydhaj
             use shtools, only: DHaj
@@ -614,6 +631,7 @@ python module _SHTOOLS ! in
             real*8 dimension(aj_d0),intent(out),depend(aj_d0) :: aj
             integer intent(in) :: aj_d0
         end subroutine DHaj
+
         subroutine SHExpandDH(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1) ! in PythonWrapper.f95
             fortranname pyshexpanddh
             use shtools, only: SHExpandDH
@@ -631,23 +649,25 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(grid,0)==grid_d0),depend(grid) :: grid_d0=shape(grid,0)
             integer, optional,intent(in),check(shape(grid,1)==grid_d1),depend(grid) :: grid_d1=shape(grid,1)
         end subroutine SHExpandDH
+
         subroutine MakeGridDH(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1) ! in PythonWrapper.f95
             fortranname pymakegriddh
             use shtools, only: MakeGridDH
             real*8 dimension(griddh_d0,griddh_d1),intent(out),depend(griddh_d0,griddh_d1) :: griddh
             integer intent(out) :: n
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer intent(in) :: lmax
-            integer, optional,intent(in) :: norm
-            integer, optional,intent(in) :: sampling
-            integer, optional,intent(in) :: csphase
-            integer, optional,intent(in) :: lmax_calc
-            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm) :: cilm_d0=shape(cilm,0)
-            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
-            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
-            integer intent(in) :: griddh_d0
-            integer intent(in) :: griddh_d1
+            integer, optional,intent(in),depend(cilm) :: lmax=shape(cilm,1)-1
+            integer, optional,intent(in) :: norm=1
+            integer, optional,intent(in) :: sampling=1
+            integer, optional,intent(in) :: csphase=1
+            integer, optional,intent(in),depend(lmax) :: lmax_calc=lmax
+            integer, optional,intent(in),depend(cilm) :: cilm_d0=shape(cilm,0)
+            integer, optional,intent(in),depend(cilm) :: cilm_d1=shape(cilm,1)
+            integer, optional,intent(in),depend(cilm) :: cilm_d2=shape(cilm,2)
+            integer, optional,intent(in),depend(lmax) :: griddh_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(griddh_d0,sampling) :: griddh_d1=sampling*griddh_d0
         end subroutine MakeGridDH
+
         function MakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2) ! in PythonWrapper.f95
             fortranname pymakegridpoint
             use shtools, only: MakeGridPoint

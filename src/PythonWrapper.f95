@@ -750,7 +750,11 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: griddh_d0
         integer, intent(in) :: griddh_d1
+        print *, 'coeffs'
+        print *, cilm
         call MakeGridDH(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+        print *,'grid'
+        print *, griddh
     end subroutine pyMakeGridDH
 
     function pyMakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2) 
