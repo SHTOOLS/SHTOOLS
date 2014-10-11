@@ -313,30 +313,27 @@
         call GLQGridCoord(latglq,longlq,lmax,nlat,nlong)
     end subroutine pyGLQGridCoord
 
-    subroutine pyMakeGridGLQ(gridglq,cilm,lmax,plx,zero,norm,csphase,lmax_calc,plx_d0,plx_d1,gridglq_d0&
+    subroutine pyMakeGridGLQ(gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0&
                                     ,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0) 
         use shtools, only: MakeGridGLQ
         implicit none
         real*8, dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer, intent(in) :: lmax
-        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         real*8, optional,dimension(zero_d0),intent(in) :: zero
         integer, optional,intent(in) :: norm
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: plx_d0
-        integer, intent(in) :: plx_d1
         integer, intent(in) :: gridglq_d0
         integer, intent(in) :: gridglq_d1
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: zero_d0
-        call MakeGridGLQ(gridglq,cilm,lmax,plx,zero,norm,csphase,lmax_calc)
+        call MakeGridGLQ(gridglq,cilm,lmax,zero=zero,norm=norm,csphase=csphase,lmax_calc=lmax_calc)
     end subroutine pyMakeGridGLQ
 
-    subroutine pySHExpandGLQ(cilm,lmax,gridglq,w,plx,zero,norm,csphase,lmax_calc,plx_d0,plx_d1,cilm_d0&
+    subroutine pySHExpandGLQ(cilm,lmax,gridglq,w,zero,norm,csphase,lmax_calc,cilm_d0&
                                  ,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0) 
         use shtools, only: SHExpandGLQ
         implicit none
@@ -344,13 +341,10 @@
         integer, intent(in) :: lmax
         real*8, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
         real*8, dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         real*8, optional,dimension(zero_d0),intent(in) :: zero
         integer, optional,intent(in) :: norm
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: plx_d0
-        integer, intent(in) :: plx_d1
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
@@ -358,25 +352,26 @@
         integer, intent(in) :: gridglq_d1
         integer, intent(in) :: zero_d0
         integer, intent(in) :: w_d0
-        call SHExpandGLQ(cilm,lmax,gridglq,w,plx,zero,norm,csphase,lmax_calc)
+        call SHExpandGLQ(cilm,lmax,gridglq,w,zero=zero,norm=norm,csphase=csphase,lmax_calc=lmax_calc)
     end subroutine pySHExpandGLQ
 
-    subroutine pyPreCompute(lmax,zero,w,plx,wisdom_file,norm,csphase,cnorm,zero_d0,plx_d0,plx_d1,w_d0) 
+    subroutine pyPreCompute(lmax,zero,w,wisdom_file,norm,csphase,cnorm,zero_d0,w_d0) 
         use shtools, only: PreCompute
         implicit none
         integer, intent(in) :: lmax
         real*8, dimension(zero_d0),intent(out) :: zero
         real*8, dimension(w_d0),intent(out) :: w
-        real*8, optional,dimension(plx_d0,plx_d1),intent(out) :: plx
         character*(*), optional,intent(in) :: wisdom_file
         integer, optional,intent(in) :: norm
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: zero_d0
-        integer, intent(in) :: plx_d0
-        integer, intent(in) :: plx_d1
         integer, intent(in) :: w_d0
-        call PreCompute(lmax,zero,w,plx,wisdom_file,norm,csphase,cnorm)
+        if (wisdom_file == '') then
+            call PreCompute(lmax,zero,w,norm=norm,csphase=csphase,cnorm=cnorm)
+        else
+            call PreCompute(lmax,zero,w,wisdom_file=wisdom_file,norm=norm,csphase=csphase,cnorm=cnorm)
+        endif
     end subroutine pyPreCompute
 
     subroutine pyPreGLQ(x1,x2,n,zero,w,zero_d0,w_d0) 
