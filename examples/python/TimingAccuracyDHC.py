@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
-This script is a python version of TimingAccuracy. We use some numpy functions
-to simplify the creation of random coefficients.
+This script is a python version of TimingAccuracyDHC. We use numpy functions to
+simplify the creation of random coefficients.
 """
 
 import os, sys, time
@@ -12,10 +12,10 @@ import pyshtools as shtools
 
 #==== MAIN FUNCTION ====
 def main():
-    TimingAccuracyDH()
+    TimingAccuracyDHC()
 
 #==== TEST FUNCTIONS ====
-def TimingAccuracyDH():
+def TimingAccuracyDHC():
     #---- input parameters ----
     maxdeg = 2800
     ls = np.arange(maxdeg+1)
@@ -31,8 +31,14 @@ def TimingAccuracyDH():
 
     #---- create Gaussian powerlaw coefficients ----
     print 'creating {:d} random coefficients'.format(2*(maxdeg+1)*(maxdeg+1))
+    cilm            = np.zeros( (2,(maxdeg+1),(maxdeg+1)) ,dtype=np.complex)
+
     random_numbers = np.random.normal( loc=0., scale=1.,size=2*(maxdeg+1)*(maxdeg+1) )
-    cilm    = random_numbers.reshape(2,maxdeg+1,maxdeg+1)
+    cilm.imag       = random_numbers.reshape(2,maxdeg+1,maxdeg+1)
+
+    random_numbers = np.random.normal( loc=0., scale=1.,size=2*(maxdeg+1)*(maxdeg+1) )
+    cilm.real       = random_numbers.reshape(2,maxdeg+1,maxdeg+1)
+
     cilm[:,1:,:]   *= np.sqrt((ls[1:]**beta)/(2.*ls[1:]+1.))[None,:,None]
 
     #---- time spherical harmonics transform for lmax set to increasing powers of 2 ----
@@ -45,20 +51,20 @@ def TimingAccuracyDH():
 
         #synthesis / inverse
         tstart = time.time()
-        grid,n = shtools.MakeGridDH(cilm_trim,lmax,sampling=sampling) 
+        grid,n = shtools.MakeGridDHC(cilm_trim,lmax,sampling=sampling) 
         tend   = time.time()
         tinverse = tend-tstart
 
         #analysis / forward
         tstart = time.time()
-        cilm2_trim,l  = shtools.SHExpandDH(grid[:n+1,:sampling*n+1],n,sampling=sampling)
+        cilm2_trim,l  = shtools.SHExpandDHC(grid,n,sampling=sampling)
         tend   = time.time()
         tforward = tend-tstart
 
         #compute error
-        err = ((cilm_trim[mask_trim] - cilm2_trim[mask_trim])/cilm_trim[mask_trim])**2
-        maxerr = np.sqrt(err.max())
-        rmserr = np.mean(err)
+        err = np.abs(cilm_trim[mask_trim] - cilm2_trim[mask_trim])/np.abs(cilm_trim[mask_trim])
+        maxerr = err.max()
+        rmserr = np.mean(err**2)
 
         print '{:4d}    {:1.2e}    {:1.2e}    {:1.1e}s    {:1.1e}s'.\
                 format(lmax,maxerr,rmserr,tinverse,tforward)

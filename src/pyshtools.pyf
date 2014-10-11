@@ -666,10 +666,10 @@ python module _SHTOOLS ! in
             integer, optional,intent(in) :: norm=1
             integer, optional,intent(in) :: sampling=1
             integer, optional,intent(in) :: csphase=1
-            integer, optional,intent(in),depend(lmax) :: lmax_calc=n/2-1
+            integer, optional,intent(in),depend(n) :: lmax_calc=n/2-1
             integer, optional,intent(in) :: cilm_d0=2
-            integer, optional,intent(in),depend(lmax) :: cilm_d1=n/2
-            integer, optional,intent(in),depend(lmax) :: cilm_d2=n/2
+            integer, optional,intent(in),depend(n) :: cilm_d1=n/2
+            integer, optional,intent(in),depend(n) :: cilm_d2=n/2
             integer, optional,intent(in),check(shape(grid,0)==grid_d0),depend(grid) :: grid_d0=shape(grid,0)
             integer, optional,intent(in),check(shape(grid,1)==grid_d1),depend(grid) :: grid_d1=shape(grid,1)
         end subroutine SHExpandDH
@@ -1396,13 +1396,13 @@ python module _SHTOOLS ! in
             integer intent(in) :: n
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out),depend(cilm_d0,cilm_d1,cilm_d2) :: cilm
             integer intent(out) :: lmax
-            integer, optional,intent(in) :: norm
-            integer, optional,intent(in) :: sampling
-            integer, optional,intent(in) :: csphase
-            integer, optional,intent(in) :: lmax_calc
-            integer intent(in) :: cilm_d0
-            integer intent(in) :: cilm_d1
-            integer intent(in) :: cilm_d2
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: sampling = 1
+            integer, optional,intent(in) :: csphase = 1
+            integer, optional,intent(in),depend(n) :: lmax_calc = n/2-1
+            integer, optional,intent(in) :: cilm_d0=2
+            integer, optional,intent(in),depend(n) :: cilm_d1=n/2
+            integer, optional,intent(in),depend(n) :: cilm_d2=n/2
             integer, optional,intent(in),check(shape(grid,0)==grid_d0),depend(grid) :: grid_d0=shape(grid,0)
             integer, optional,intent(in),check(shape(grid,1)==grid_d1),depend(grid) :: grid_d1=shape(grid,1)
         end subroutine SHExpandDHC
@@ -1414,15 +1414,15 @@ python module _SHTOOLS ! in
             integer intent(out) :: n
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer intent(in) :: lmax
-            integer, optional,intent(in) :: norm
-            integer, optional,intent(in) :: sampling
-            integer, optional,intent(in) :: csphase
-            integer, optional,intent(in) :: lmax_calc
+            integer, optional,intent(in) :: norm=1
+            integer, optional,intent(in) :: sampling=1
+            integer, optional,intent(in) :: csphase=1
+            integer, optional,intent(in),depend(lmax) :: lmax_calc=lmax
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
-            integer intent(in) :: griddh_d0
-            integer intent(in) :: griddh_d1
+            integer, optional,intent(in),depend(lmax) :: griddh_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(griddh_d0,sampling) :: griddh_d1=sampling*griddh_d0
         end subroutine MakeGridDHC
 
         subroutine MakeGridGLQC(gridglq,cilm,lmax,plx,zero,norm,csphase,lmax_calc,plx_d0,plx_d1,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0) ! in PythonWrapper.f95
