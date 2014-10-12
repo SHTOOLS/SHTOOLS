@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 """
-This script is a python version of TimingAccuracyGLQ. We use numpy functions to
+This script is a python version of TimingAccuracyGLQC. We use numpy functions to
 simplify the creation of random coefficients.
 """
 
 import os, sys, time
 import numpy as np
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools as shtools
 
 #==== MAIN FUNCTION ====
 def main():
-    TimingAccuracyGLQ()
+    TimingAccuracyGLQC()
 
 #==== TEST FUNCTIONS ====
-def TimingAccuracyGLQ():
+def TimingAccuracyGLQC():
     #---- input parameters ----
     maxdeg = 2800
     ls = np.arange(maxdeg+1)
@@ -30,9 +30,16 @@ def TimingAccuracyGLQ():
 
     #---- create Gaussian powerlaw coefficients ----
     print 'creating {:d} random coefficients'.format(2*(maxdeg+1)*(maxdeg+1))
+    cilm            = np.zeros( (2,(maxdeg+1),(maxdeg+1)) ,dtype=np.complex)
+
     random_numbers = np.random.normal( loc=0., scale=1.,size=2*(maxdeg+1)*(maxdeg+1) )
-    cilm       = random_numbers.reshape(2,maxdeg+1,maxdeg+1)
+    cilm.imag       = random_numbers.reshape(2,maxdeg+1,maxdeg+1)
+
+    random_numbers = np.random.normal( loc=0., scale=1.,size=2*(maxdeg+1)*(maxdeg+1) )
+    cilm.real       = random_numbers.reshape(2,maxdeg+1,maxdeg+1)
+
     cilm[:,1:,:]   *= np.sqrt((ls[1:]**beta)/(2.*ls[1:]+1.))[None,:,None]
+    cilm[np.invert(mask)] = 0.
 
     #---- time spherical harmonics transform for lmax set to increasing powers of 2 ----
     lmax = 2
@@ -50,13 +57,13 @@ def TimingAccuracyGLQ():
 
         #synthesis / inverse
         tstart = time.time()
-        grid = shtools.MakeGridGLQ(cilm_trim,lmax,zeros)
+        grid = shtools.MakeGridGLQC(cilm_trim,lmax,zeros)
         tend   = time.time()
         tinverse = tend-tstart
 
         #analysis / forward
         tstart = time.time()
-        cilm2_trim  = shtools.SHExpandGLQ(lmax,grid,weights,zeros)
+        cilm2_trim  = shtools.SHExpandGLQC(lmax,grid,weights,zeros)
         tend   = time.time()
         tforward = tend-tstart
 

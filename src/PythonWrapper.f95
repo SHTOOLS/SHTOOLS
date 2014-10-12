@@ -1557,30 +1557,27 @@
         call MakeGridDHC(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
     end subroutine pyMakeGridDHC
 
-    subroutine pyMakeGridGLQC(gridglq,cilm,lmax,plx,zero,norm,csphase,lmax_calc,plx_d0,plx_d1,gridglq_d0&
+    subroutine pyMakeGridGLQC(gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0&
                                      ,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0) 
         use shtools, only: MakeGridGLQC
         implicit none
         complex*16, dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
         complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer, intent(in) :: lmax
-        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         real*8, optional,dimension(zero_d0),intent(in) :: zero
         integer, optional,intent(in) :: norm
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: plx_d0
-        integer, intent(in) :: plx_d1
         integer, intent(in) :: gridglq_d0
         integer, intent(in) :: gridglq_d1
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: zero_d0
-        call MakeGridGLQC(gridglq,cilm,lmax,plx,zero,norm,csphase,lmax_calc)
+        call MakeGridGLQC(gridglq,cilm,lmax,zero=zero,norm=norm,csphase=csphase,lmax_calc=lmax_calc)
     end subroutine pyMakeGridGLQC
 
-    subroutine pySHExpandGLQC(cilm,lmax,gridglq,w,plx,zero,norm,csphase,lmax_calc,plx_d0,plx_d1,cilm_d0&
+    subroutine pySHExpandGLQC(cilm,lmax,gridglq,w,zero,norm,csphase,lmax_calc,cilm_d0&
                                   ,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0) 
         use shtools, only: SHExpandGLQC
         implicit none
@@ -1588,13 +1585,10 @@
         integer, intent(in) :: lmax
         complex*16, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
         real*8, dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         real*8, optional,dimension(zero_d0),intent(in) :: zero
         integer, optional,intent(in) :: norm
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: plx_d0
-        integer, intent(in) :: plx_d1
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
@@ -1602,7 +1596,7 @@
         integer, intent(in) :: gridglq_d1
         integer, intent(in) :: zero_d0
         integer, intent(in) :: w_d0
-        call SHExpandGLQC(cilm,lmax,gridglq,w,plx,zero,norm,csphase,lmax_calc)
+        call SHExpandGLQC(cilm,lmax,gridglq,w,zero=zero,norm=norm,csphase=csphase,lmax_calc=lmax_calc)
     end subroutine pySHExpandGLQC
 
     function pySHPowerLC(c,l,c_d0,c_d1,c_d2) 
