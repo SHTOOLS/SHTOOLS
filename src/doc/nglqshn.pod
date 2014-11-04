@@ -14,7 +14,7 @@ Determine the number of Gauss-Legendre quadrature points required when computing
 
 =item INTEGER FUNCTION NGLQSHN ( 
 
-L )
+L, N )
 
 =back
 
@@ -24,7 +24,7 @@ L )
 
 =item INTEGER	
 
-L
+L, N
 
 
 =back
@@ -39,11 +39,17 @@ I<NGLQSHN> will determine the number of Gauss-Legendre quadrature points require
 
 =over 10
 
-=item N
+=item L
 
 (input) INTEGER
 
 The spherical harmonic degree of the function.
+
+=item N
+
+(input) INTEGER
+
+Power to which the function is raised.
 
 =back
 
