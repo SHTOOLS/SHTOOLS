@@ -26,16 +26,15 @@ def main():
     lmax  = 40            #maximum degree
     mplot = min(lmax,10)  #maximum plotting order (all degrees are plotted)
 
-    print 'testing Plm{0} and Plm{0}_d1...'.format(normalization)
+    #--- run tests ---
     test_associatedlegendre(lmax,mplot,normalization)
-
-    print 'testing Pl{0} and Pl{0}_d1...'.format(normalization)
     test_legendre(lmax,normalization)
 
     plt.show()
 
 #==== TEST LEGENDRE FUNCTIONS ====
 def test_legendre(lmax,normalization):
+    print 'testing Pl{0} and Pl{0}_d1...'.format(normalization)
     #--- import function from shtools ---
     if normalization == '':
         Pl    = shtools.PLegendre
@@ -75,6 +74,7 @@ def test_legendre(lmax,normalization):
 
 #==== TEST ASSOCIATED LEGENDRE FUNCTIONS ====
 def test_associatedlegendre(lmax,mplot,normalization):
+    print 'testing Plm{0} and Plm{0}_d1...'.format(normalization)
     #--- import function from shtools ---
     if normalization == '':
         Plm    = shtools.PLegendreA

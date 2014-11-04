@@ -43,23 +43,6 @@ def compute_plot_power(coeffs):
 
     ax.legend()
 
-#==== PLOT POWER SPECTRA ====
-def compute_plot_power(coeffs):
-    ls = np.arange(coeffs.shape[1])
-    pspectrum = shtools.SHPowerSpectrum(coeffs)
-    pdensity  = shtools.SHPowerSpectrumDensity(coeffs)
-
-    fig,ax = plt.subplots(1,1)
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_xlabel('degree l')
-    ax.grid(True,which='both')
-
-    ax.plot(ls[1:],pspectrum[1:],label='power per degree l')
-    ax.plot(ls[1:],pdensity[1:],label ='power per degree l and order m')
-
-    ax.legend()
-
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

@@ -1,0 +1,49 @@
+==== INSTALLATION ====
+
+
+======== KNOWN ISSUES ========
+
+---- assumed array shapes ----
+assumed array shapes are not supported in C or Python and compiler dependent. The file 
+PythonWrapper.f95 provides wrapper subroutines that converts arrays from assumed to
+explicit shapes.
+
+---- optional return parameters ----
+optional return parameters are not supported in C or Python. We either have
+to return them always which is memory intensive and not good for speed, or
+we need two separate subroutines. Affected routines:
+
+======== WRAPPED AND UNWRAPPED FUNCTIONS ========
+
+= LEGENDRE FUNCTIONS =
+
+ALL WRAPPED
+
+= SPHERICAL HARMONIC TRANSFORMATIONS =
+
+-- wrapped: --
+MakeGridDH
+SHExpandDH
+MakeGridDHC
+SHExpandDHC
+MakeGridGLQ
+SHExpandGLQ
+MakeGridGLQC
+SHExpandGLQC
+PreCompute (partially - optional parameters)
+SHRead     (partially - optional parameters)
+
+-- unwrapped: --
+GLQGridCoord
+PreGLQ
+NGLQ
+NGLQSH
+NGLQSHN
+SHExpandLSQ
+MakeGrid2D
+MakeGridPoint
+SHMultiply
+
+= GLOBAL SPECTRAL ANALYSIS =
+SHPowerSpectrum
+SHPowerSpectrumDensity
