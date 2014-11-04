@@ -604,7 +604,7 @@
         integer, intent(in) :: ccilm_d0
         integer, intent(in) :: ccilm_d1
         integer, intent(in) :: ccilm_d2
-        call SHrtoc(rcilm,ccilm,degmax,convention,switchcs)
+        call SHrtoc(rcilm, ccilm, degmax=degmax, convention=convention, switchcs=switchcs)
     end subroutine pySHrtoc
 
     subroutine pySHctor(ccilm,rcilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1&
