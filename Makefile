@@ -67,51 +67,52 @@ EXDIR  = examples
 .PHONY: all all2 all3 python-wrapper install doc remove-doc clean getflags examples remove-examples run-examples
 	
 all: getflags
-	$(MAKE) -C $(SRCDIR) -f Makefile all VERSION=$(VERSION) F95=$(F95) F95FLAGS="$(F95FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo	
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS$(VERSION) -lfftw3 -lm
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS -lfftw3 -lm
 	@echo
 	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
 all2: getflags
-	$(MAKE) -C $(SRCDIR) -f Makefile all2 VERSION=$(VERSION) F95=$(F95) F95FLAGS="$(F95FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all2 F95=$(F95) F95FLAGS="$(F95FLAGS)"
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS$(VERSION) -lfftw3 -lm
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS -lfftw3 -lm
 	@echo
 	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 	
 all3: getflags
-	$(MAKE) -C $(SRCDIR) -f Makefile all3 VERSION=$(VERSION) F95=$(F95) F95FLAGS="$(F95FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS)"
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo	
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS$(VERSION) -lfftw3 -lm
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS -lfftw3 -lm
 	@echo
 	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
 python-wrapper: all
-	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" --f77flags="-m64 -fPIC" \
+	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" \
 	    -c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-	    -lSHTOOLS$(VERSION) -lfftw3 -lm -llapack -lblas
+	    -lSHTOOLS -lfftw3 -lm -llapack -lblas	
+	$(F2PY) -c $(SRCDIR)/PlanetsConstants.f95 -m constants
 	mv _SHTOOLS.so pyshtools/.
 	@echo
 	@echo MAKE SUCCESSFUL!
@@ -126,13 +127,13 @@ python-wrapper: all
 getflags:
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host
+F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic #-march=host
 MODFLAG = -p modpath
 endif
 
 ifeq ($(F95),gfortran)
 # Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 -march=native
+F95FLAGS ?= -m64 -fPIC -O3 # -march=native
 MODFLAG = -Imodpath
 endif
 
@@ -171,12 +172,12 @@ remove-doc:
 	@echo REMOVED MAN AND HTML-MAN FILES
 	
 clean:
-	$(MAKE) -C $(SRCDIR) -f Makefile VERSION=$(VERSION) clean
+	$(MAKE) -C $(SRCDIR) -f Makefile clean
 	@echo
 	@echo REMOVED LIB, MODULE, AND OBJECT FILES
 
 examples: getflags
-	$(MAKE) -C $(EXDIR) -f Makefile all VERSION=$(VERSION) F95=$(F95) F95FLAGS="$(F95FLAGS)"
+	$(MAKE) -C $(EXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
 	@echo
 	@echo MAKE OF EXAMPLES SUCCESSFUL
 

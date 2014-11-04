@@ -1,6 +1,8 @@
 *.a
 *.mod
 *.o
+*.pyc
+*.so
 examples/MarsCrustalThickness/MarsCrustalThickness
 examples/SHCilmPlus/TestCilmPlus
 examples/SHExpandDH/TestExpandDH

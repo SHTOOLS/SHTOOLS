@@ -38,7 +38,7 @@ LDFLAGS = -s
 MAKE = make
 
 
-PROG =	../lib/libSHTOOLS$(VERSION).a
+PROG =	../lib/libSHTOOLS.a
 
 SRCS0 =	CilmPlus.f95 ComputeD0.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
 	djpi2.f95 FFTW3.f95 Hilm.f95 MakeGrid2D.f95 \
@@ -152,7 +152,7 @@ $(PROG): $(OBJS)
 getflags:
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host
+F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic # -march=host
 endif
 
 ifeq ($(F95),g95)
@@ -162,7 +162,7 @@ endif
 
 ifeq ($(F95),gfortran)
 # Default gfortran flags
-F95FLAGS ?= -m64 -O3
+F95FLAGS ?= -m64 -fPIC -O3
 endif
 
 ifeq ($(F95),ifort)

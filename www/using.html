@@ -70,27 +70,27 @@ As an example of compiling and linking a program "MyProgram.f95" to the necessar
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>f95 MyProgram.f95  -p $SHTOOLSMODPATH -L$SHTOOLSLIBPATH <i>-YEXT_NAMES=LCS</i>
-		<i>-YEXT_SFX=_</i> -lSHTOOLS2.x -lfftw3 -lm -llapack -lblas -O3 -m64 -o MyProgram</tt></p>
+		<i>-YEXT_SFX=_</i> -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -o MyProgram</tt></p>
 	</blockquote>
 	
 	<h3>g95</h3>
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>g95 MyProgram.f95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH
-		<i>-fno-second-underscore </i> -lSHTOOLS2.x -lfftw3 -lm -llapack -lblas -O3 -m64 -o MyProgram</tt></p>
+		<i>-fno-second-underscore </i> -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -o MyProgram</tt></p>
 	</blockquote>
 	
 	<h3>gfortran</h3>
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>gfortran MyProgram.f95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH
-		-lSHTOOLS2.x -lfftw3 -lm -llapack -lblas -O3 -m64 -o MyProgram</tt></p>
+		-lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -o MyProgram</tt></p>
 	</blockquote>
 	
 	<h3>Intel Fortran <tt>ifort</tt></h3>
 
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>ifort -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS2.x
+		<p class="nomargintop nomarginbot"><tt>ifort -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS
 		-lfftw3 -lm -llapack -lblas -O3 -m64 -Tf MyProgram.f95 -o MyProgram</tt></p>
 	</blockquote>
 
