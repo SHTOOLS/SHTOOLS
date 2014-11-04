@@ -30,15 +30,17 @@ MakeGridGLQ
 SHExpandGLQ
 MakeGridGLQC
 SHExpandGLQC
-PreCompute (partially - optional parameters)
+PreCompute (partially - optional parameter PLX not implemented)
 SHRead     (partially - optional parameters)
-
--- unwrapped: --
+DHaj
 GLQGridCoord
 PreGLQ
 NGLQ
 NGLQSH
 NGLQSHN
+
+-- unwrapped: --
+
 SHExpandLSQ
 MakeGrid2D
 MakeGridPoint

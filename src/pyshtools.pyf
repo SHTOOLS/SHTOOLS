@@ -288,8 +288,8 @@ python module _SHTOOLS ! in
             integer intent(in) :: lmax
             integer intent(out) :: nlat
             integer intent(out) :: nlong
-            integer intent(in) :: latglq_d0
-            integer intent(in) :: longlq_d0
+            integer, optional,intent(in),depend(lmax) :: latglq_d0 = lmax+1
+            integer, optional,intent(in),depend(lmax) :: longlq_d0 = 2*lmax+1
         end subroutine GLQGridCoord
 
         subroutine MakeGridGLQ(gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0) ! in PythonWrapper.f95
@@ -352,28 +352,28 @@ python module _SHTOOLS ! in
             integer intent(in) :: n
             real*8 dimension(zero_d0),intent(out),depend(zero_d0) :: zero
             real*8 dimension(w_d0),intent(out),depend(w_d0) :: w
-            integer intent(in) :: zero_d0
-            integer intent(in) :: w_d0
+            integer, optional,intent(in),depend(n) :: zero_d0 = n
+            integer, optional,intent(in),depend(n) :: w_d0 = n
         end subroutine PreGLQ
 
         function NGLQ(degree) ! in PythonWrapper.f95
             fortranname pynglq
             use shtools, only: NGLQ
-            integer intent(in) :: degree
+            integer intent(in),check(degree > 0) :: degree
             integer :: pyNGLQ
         end function NGLQ
 
         function NGLQSH(degree) ! in PythonWrapper.f95
             fortranname pynglqsh
             use shtools, only: NGLQSH
-            integer intent(in) :: degree
+            integer intent(in),check(degree > 0) :: degree
             integer :: pyNGLQSH
         end function NGLQSH
 
         function NGLQSHN(degree,n) ! in PythonWrapper.f95
             fortranname pynglqshn
             use shtools, only: NGLQSHN
-            integer intent(in) :: degree
+            integer intent(in),check(degree > 0) :: degree
             integer intent(in) :: n
             integer :: pyNGLQSHN
         end function NGLQSHN
@@ -640,7 +640,7 @@ python module _SHTOOLS ! in
             use shtools, only: DHaj
             integer intent(in) :: n
             real*8 dimension(aj_d0),intent(out),depend(aj_d0) :: aj
-            integer intent(in) :: aj_d0
+            integer, optional,intent(in),depend(n),check(n%2==0) :: aj_d0 = n
         end subroutine DHaj
 
         subroutine SHExpandDH(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1) ! in PythonWrapper.f95
