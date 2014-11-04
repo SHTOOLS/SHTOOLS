@@ -1,19 +1,28 @@
 #!/usr/bin/env python
 """
-This script tests and plots all Geodesy normalized Legendre functions
+This script tests and plots all Geodesy normalized Legendre functions.
+Parameters can be changed in the main function.
 """
 
+#standard imports:
 import os, sys
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+#import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools as shtools
+
+#set shtools plot style:
+sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
+from FigStyle import style_shtools, textwidth_in
+mpl.rcParams.update(style_shtools)
 
 #==== MAIN FUNCTION ====
 def main():
     #--- input parameters (change here) ---
-    normalization = ''  #normalization should be one of ['Bar','Schmidt','ON','']
+    normalization = ''    #normalization should be one of ['Bar','Schmidt','ON','']
     lmax  = 40            #maximum degree
     mplot = min(lmax,10)  #maximum plotting order (all degrees are plotted)
 

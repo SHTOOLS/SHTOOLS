@@ -412,24 +412,18 @@
         pyNGLQSHN=NGLQSHN(degree,n)
     end function pyNGLQSHN
 
-    subroutine pySHRead(filename,cilm,lmax,skip,header,error,cilm_d0,cilm_d1,cilm_d2,header_d0,error_d0&
-                                ,error_d1,error_d2) 
+    subroutine pySHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2) 
         use shtools, only: SHRead
         implicit none
         character*(*), intent(in) :: filename
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         integer, intent(out) :: lmax
+        integer, intent(in)  :: lmax_in
         integer, optional,intent(in) :: skip
-        real*8, optional,dimension(header_d0),intent(out) :: header
-        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
-        integer, intent(in) :: header_d0
-        integer, intent(in) :: error_d0
-        integer, intent(in) :: error_d1
-        integer, intent(in) :: error_d2
-        call SHRead(filename,cilm,lmax,skip,header,error)
+        call SHRead(filename,cilm,lmax,skip)
     end subroutine pySHRead
 
     subroutine pyMakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid,n,sampling,lmax_calc&

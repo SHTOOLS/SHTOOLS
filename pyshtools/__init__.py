@@ -4,9 +4,7 @@ Python Wrapper for the SHTOOLS library by Mark Wieczorek
 Authors: Matthias Meschede, Mark Wieczorek, 2014
 """
 
-#try to load documentation if interactive
-import __main__ as main
-if not hasattr(main, '__file__'):
+def load_documentation():
     import _SHTOOLS
     import os
     import re
@@ -27,6 +25,11 @@ if not hasattr(main, '__file__'):
                 func.__doc__ = 'SIGNATURE\n--------\n\n'+func.__doc__ +description + notes
             except Exception,msg:
                 print msg
+
+#try to load documentation if interactive
+import __main__ as main
+if not hasattr(main, '__file__'):
+    load_documentation()
 
 #import into main namespace
 from _SHTOOLS import *
