@@ -545,15 +545,15 @@ python module _SHTOOLS ! in
             use shtools, only: SHrtoc
             real*8 dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
             real*8 dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out),depend(ccilm_d0,ccilm_d1,ccilm_d2) :: ccilm
-            integer, optional,intent(in) :: degmax
-            integer, optional,intent(in) :: convention
-            integer, optional,intent(in) :: switchcs
+            integer, optional,intent(in),depend(rcilm_d1) :: degmax = rcilm_d1-1
+            integer, optional,intent(in) :: convention = 2
+            integer, optional,intent(in) :: switchcs = 1
             integer, optional,intent(in),check(shape(rcilm,0)==rcilm_d0),depend(rcilm) :: rcilm_d0=shape(rcilm,0)
             integer, optional,intent(in),check(shape(rcilm,1)==rcilm_d1),depend(rcilm) :: rcilm_d1=shape(rcilm,1)
             integer, optional,intent(in),check(shape(rcilm,2)==rcilm_d2),depend(rcilm) :: rcilm_d2=shape(rcilm,2)
-            integer intent(in) :: ccilm_d0
-            integer intent(in) :: ccilm_d1
-            integer intent(in) :: ccilm_d2
+            integer, optional,intent(in),depend(rcilm_d0) :: ccilm_d0 = rcilm_d0
+            integer, optional,intent(in),depend(rcilm_d1) :: ccilm_d1 = rcilm_d1
+            integer, optional,intent(in),depend(rcilm_d2) :: ccilm_d2 = rcilm_d2
         end subroutine SHrtoc
 
         subroutine SHctor(ccilm,rcilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2) ! in PythonWrapper.f95
@@ -561,12 +561,12 @@ python module _SHTOOLS ! in
             use shtools, only: SHctor
             real*8 dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
             real*8 dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out),depend(rcilm_d0,rcilm_d1,rcilm_d2) :: rcilm
-            integer, optional,intent(in) :: degmax
-            integer, optional,intent(in) :: convention
-            integer, optional,intent(in) :: switchcs
-            integer intent(in) :: rcilm_d0
-            integer intent(in) :: rcilm_d1
-            integer intent(in) :: rcilm_d2
+            integer, optional,intent(in),depend(ccilm_d1) :: degmax = ccilm_d1-1
+            integer, optional,intent(in) :: convention = 2
+            integer, optional,intent(in) :: switchcs = 1
+            integer, optional,intent(in),depend(ccilm_d0) :: rcilm_d0 = ccilm_d0
+            integer, optional,intent(in),depend(ccilm_d1) :: rcilm_d1 = ccilm_d1
+            integer, optional,intent(in),depend(ccilm_d2) :: rcilm_d2 = ccilm_d2
             integer, optional,intent(in),check(shape(ccilm,0)==ccilm_d0),depend(ccilm) :: ccilm_d0=shape(ccilm,0)
             integer, optional,intent(in),check(shape(ccilm,1)==ccilm_d1),depend(ccilm) :: ccilm_d1=shape(ccilm,1)
             integer, optional,intent(in),check(shape(ccilm,2)==ccilm_d2),depend(ccilm) :: ccilm_d2=shape(ccilm,2)

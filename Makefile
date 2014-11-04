@@ -112,7 +112,7 @@ python-wrapper: all
 	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" \
 	    -c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 	    -lSHTOOLS -lfftw3 -lm -llapack -lblas	
-	$(F2PY) -c $(SRCDIR)/PlanetsConstants.f95 -m _constants
+	$(F2PY) --f90flags="-Wtabs" -c $(SRCDIR)/PlanetsConstants.f95 -m _constants
 	mv _SHTOOLS.so pyshtools/.
 	mv _constants.so pyshtools/.
 	@echo

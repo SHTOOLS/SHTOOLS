@@ -47,5 +47,13 @@ MakeGridPoint
 SHMultiply
 
 = GLOBAL SPECTRAL ANALYSIS =
+
+-- wrapped: --
 SHPowerSpectrum
 SHPowerSpectrumDensity
+
+= IO/STORAGE/ =
+
+-- wrapped: --
+SHrtoc (bug in SHrtoc fortran function: case convention=1 does nothing)
+SHctor (bug in SHctor fortran function: case convention=1 does nothing)
