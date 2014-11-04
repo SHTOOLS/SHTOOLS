@@ -27,9 +27,11 @@ def load_documentation():
                 print msg
 
 #try to load documentation if interactive
-import __main__ as main
-if not hasattr(main, '__file__'):
-    load_documentation()
+#import __main__ as main
+#if not hasattr(main, '__file__'):
+#    load_documentation()
 
 #import into main namespace
+from _constants import planetsconstants as constants
+
 from _SHTOOLS import *
