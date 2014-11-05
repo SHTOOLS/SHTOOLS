@@ -360,14 +360,14 @@ python module _SHTOOLS ! in
             fortranname pynglq
             use shtools, only: NGLQ
             integer intent(in),check(degree > 0) :: degree
-            integer :: pyNGLQ
+            integer :: NGLQ
         end function NGLQ
 
         function NGLQSH(degree) ! in PythonWrapper.f95
             fortranname pynglqsh
             use shtools, only: NGLQSH
             integer intent(in),check(degree > 0) :: degree
-            integer :: pyNGLQSH
+            integer :: NGLQSH
         end function NGLQSH
 
         function NGLQSHN(degree,n) ! in PythonWrapper.f95
@@ -375,7 +375,7 @@ python module _SHTOOLS ! in
             use shtools, only: NGLQSHN
             integer intent(in),check(degree > 0) :: degree
             integer intent(in) :: n
-            integer :: pyNGLQSHN
+            integer :: NGLQSHN
         end function NGLQSHN
 
         subroutine SHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2) ! in PythonWrapper.f95
@@ -430,7 +430,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c) :: c_d0=shape(c,0)
             integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c) :: c_d1=shape(c,1)
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
-            real*8 :: pySHPowerL
+            real*8 :: SHPowerL
         end function SHPowerL
 
         function SHPowerDensityL(c,l,c_d0,c_d1,c_d2) ! in PythonWrapper.f95
@@ -441,7 +441,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c) :: c_d0=shape(c,0)
             integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c) :: c_d1=shape(c,1)
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
-            real*8 :: pySHPowerDensityL
+            real*8 :: SHPowerDensityL
         end function SHPowerDensityL
 
         function SHCrossPowerL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) ! in PythonWrapper.f95
@@ -456,7 +456,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1) :: c1_d0=shape(c1,0)
             integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1) :: c1_d1=shape(c1,1)
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
-            real*8 :: pySHCrossPowerL
+            real*8 :: SHCrossPowerL
         end function SHCrossPowerL
 
         function SHCrossPowerDensityL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) ! in PythonWrapper.f95
@@ -471,7 +471,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1) :: c1_d0=shape(c1,0)
             integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1) :: c1_d1=shape(c1,1)
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
-            real*8 :: pySHCrossPowerDensityL
+            real*8 :: SHCrossPowerDensityL
         end function SHCrossPowerDensityL
 
         subroutine SHPowerSpectrum(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) ! in PythonWrapper.f95
@@ -577,12 +577,12 @@ python module _SHTOOLS ! in
             use shtools, only: SHCilmToCindex
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             real*8 dimension(cindex_d0,cindex_d1),intent(out),depend(cindex_d0,cindex_d1) :: cindex
-            integer, optional,intent(in) :: degmax
-            integer intent(in) :: cindex_d0
-            integer intent(in) :: cindex_d1
-            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm) :: cilm_d0=shape(cilm,0)
-            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
-            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
+            integer, optional,intent(in),depend(cilm_d1) :: degmax = cilm_d1-1
+            integer, optional,intent(in) :: cindex_d0 = 2
+            integer, optional,intent(in),depend(degmax) :: cindex_d1 = (degmax+1)*(degmax+2)/2
+            integer, optional,intent(in),depend(cilm) :: cilm_d0=shape(cilm,0)
+            integer, optional,intent(in),depend(cilm) :: cilm_d1=shape(cilm,1)
+            integer, optional,intent(in),depend(cilm) :: cilm_d2=shape(cilm,2)
         end subroutine SHCilmToCindex
 
         subroutine SHCindexToCilm(cindex,cilm,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2) ! in PythonWrapper.f95
@@ -590,12 +590,12 @@ python module _SHTOOLS ! in
             use shtools, only: SHCindexToCilm
             real*8 dimension(cindex_d0,cindex_d1),intent(in) :: cindex
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out),depend(cilm_d0,cilm_d1,cilm_d2) :: cilm
-            integer, optional,intent(in) :: degmax
+            integer, optional,intent(in) :: degmax = (-3+sqrt(1+8*cindex_d1))/2
             integer, optional,intent(in),check(shape(cindex,0)==cindex_d0),depend(cindex) :: cindex_d0=shape(cindex,0)
             integer, optional,intent(in),check(shape(cindex,1)==cindex_d1),depend(cindex) :: cindex_d1=shape(cindex,1)
-            integer intent(in) :: cilm_d0
-            integer intent(in) :: cilm_d1
-            integer intent(in) :: cilm_d2
+            integer, optional,intent(in) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(degmax) :: cilm_d1 = degmax+1
+            integer, optional,intent(in),depend(degmax) :: cilm_d2 = degmax+1
         end subroutine SHCindexToCilm
 
         subroutine SHRotateCoef(x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1) ! in PythonWrapper.f95
@@ -692,7 +692,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
-            real*8 :: pyMakeGridPoint
+            real*8 :: MakeGridPoint
         end function MakeGridPoint
 
         function Wl(l,half,r,d) ! in PythonWrapper.f95
@@ -702,7 +702,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: half
             real*8 intent(in) :: r
             real*8 intent(in) :: d
-            real*8 :: pyWl
+            real*8 :: Wl
         end function Wl
 
         function WlCurv(l,half,r,d) ! in PythonWrapper.f95
@@ -712,7 +712,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: half
             real*8 intent(in) :: r
             real*8 intent(in) :: d
-            real*8 :: pyWlCurv
+            real*8 :: WlCurv
         end function WlCurv
 
         subroutine SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm,chi2,csphase,d_d0,lon_d0,cilm_d0,cilm_d1,cilm_d2,lat_d0) ! in PythonWrapper.f95
@@ -836,7 +836,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: m
             real*8 intent(in) :: alpha
             integer, optional,intent(in) :: taper_number
-            integer :: pySHFindLWin
+            integer :: SHFindLWin
         end function SHFindLWin
 
         subroutine SHAdmitCorr(G,T,lmax,admit,corr,admit_error,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0) ! in PythonWrapper.f95
@@ -932,14 +932,14 @@ python module _SHTOOLS ! in
             fortranname pyrandomn
             use shtools, only: RandomN
             integer(kind=4) intent(inout) :: idum
-            real*8 :: pyRandomN
+            real*8 :: RandomN
         end function RandomN
 
         function RandomGaussian(idum) ! in PythonWrapper.f95
             fortranname pyrandomgaussian
             use shtools, only: RandomGaussian
             integer(kind=4) intent(inout) :: idum
-            real*8 :: pyRandomGaussian
+            real*8 :: RandomGaussian
         end function RandomGaussian
 
         subroutine Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0) ! in PythonWrapper.f95
@@ -1001,7 +1001,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(evec,0)==evec_d0),depend(evec) :: evec_d0=shape(evec,0)
             integer, optional,intent(in),check(shape(evec,1)==evec_d1),depend(evec) :: evec_d1=shape(evec,1)
             integer, optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra) :: incspectra_d0=len(incspectra)
-            real*8 :: pySHSjkPG0
+            real*8 :: SHSjkPG0
         end function SHSjkPG0
 
         subroutine SHMTVarOpt0(l,tapers,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar,nocross,unweighted_covar_d0,unweighted_covar_d1,var_unit_d0,weight_opt_d0,weight_opt_d1,var_opt_d0,Sff_d0,tapers_d0,tapers_d1) ! in PythonWrapper.f95
@@ -1245,7 +1245,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(len(hk_real)>=hk_real_d0),depend(hk_real) :: hk_real_d0=len(hk_real)
             integer, optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra) :: incspectra_d0=len(incspectra)
             integer, optional,intent(in),check(len(hj_real)>=hj_real_d0),depend(hj_real) :: hj_real_d0=len(hj_real)
-            complex*16 :: pySHSjkPG
+            complex*16 :: SHSjkPG
         end function SHSjkPG
 
         subroutine SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar,nocross,unweighted_covar_d0,unweighted_covar_d1,taper_order_d0,weight_opt_d0,weight_opt_d1,var_unit_d0,var_opt_d0,Sff_d0,tapers_d0,tapers_d1) ! in PythonWrapper.f95
@@ -1339,14 +1339,15 @@ python module _SHTOOLS ! in
             real*8 intent(in) :: omega
             real*8 intent(in) :: a
             real*8 intent(in) :: b
-            real*8 :: pyNormalGravity
+            real*8 :: NormalGravity
         end function NormalGravity
+
         function SHConfidence(l_conf,r) ! in PythonWrapper.f95
             fortranname pyshconfidence
             use shtools, only: SHConfidence
             integer intent(in) :: l_conf
             real*8 intent(in) :: r
-            real*8 :: pySHConfidence
+            real*8 :: SHConfidence
         end function SHConfidence
 
         function SHMagPowerL(c,a,r,l,c_d0,c_d1,c_d2) ! in PythonWrapper.f95
@@ -1359,7 +1360,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c) :: c_d0=shape(c,0)
             integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c) :: c_d1=shape(c,1)
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
-            real*8 :: pySHMagPowerL
+            real*8 :: SHMagPowerL
         end function SHMagPowerL
 
         subroutine SHMagPowerSpectrum(c,a,r,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) ! in PythonWrapper.f95
@@ -1458,7 +1459,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c) :: c_d0=shape(c,0)
             integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c) :: c_d1=shape(c,1)
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
-            real*8 :: pySHPowerLC
+            real*8 :: SHPowerLC
         end function SHPowerLC
 
         function SHPowerDensityLC(c,l,c_d0,c_d1,c_d2) ! in PythonWrapper.f95
@@ -1469,7 +1470,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c) :: c_d0=shape(c,0)
             integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c) :: c_d1=shape(c,1)
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
-            real*8 :: pySHPowerDensityLC
+            real*8 :: SHPowerDensityLC
         end function SHPowerDensityLC
 
         function SHCrossPowerLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) ! in PythonWrapper.f95
@@ -1484,7 +1485,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1) :: c1_d0=shape(c1,0)
             integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1) :: c1_d1=shape(c1,1)
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
-            complex*16 :: pySHCrossPowerLC
+            complex*16 :: SHCrossPowerLC
         end function SHCrossPowerLC
 
         function SHCrossPowerDensityLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2) ! in PythonWrapper.f95
@@ -1499,7 +1500,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1) :: c1_d0=shape(c1,0)
             integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1) :: c1_d1=shape(c1,1)
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
-            complex*16 :: pySHCrossPowerDensityLC
+            complex*16 :: SHCrossPowerDensityLC
         end function SHCrossPowerDensityLC
 
         subroutine SHPowerSpectrumC(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) ! in PythonWrapper.f95
@@ -1587,8 +1588,8 @@ python module _SHTOOLS ! in
             use shtools, only: SHCilmToVector
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             real*8 dimension(vector_d0),intent(out),depend(vector_d0) :: vector
-            integer intent(in) :: lmax
-            integer intent(in) :: vector_d0
+            integer, optional,intent(in) :: lmax = cilm_d1-1
+            integer, optional,intent(in),depend(lmax) :: vector_d0 = (lmax+1)*(lmax+1)
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
@@ -1599,11 +1600,11 @@ python module _SHTOOLS ! in
             use shtools, only: SHVectorToCilm
             real*8 dimension(vector_d0),intent(in) :: vector
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out),depend(cilm_d0,cilm_d1,cilm_d2) :: cilm
-            integer intent(in) :: lmax
+            integer intent(in) :: lmax = sqrt(vector_d0)-1
             integer, optional,intent(in),check(len(vector)>=vector_d0),depend(vector) :: vector_d0=len(vector)
-            integer intent(in) :: cilm_d0
-            integer intent(in) :: cilm_d1
-            integer intent(in) :: cilm_d2
+            integer, optional,intent(in) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(lmax) :: cilm_d1 = lmax+1
+            integer, optional,intent(in),depend(lmax) :: cilm_d2 = lmax+1
         end subroutine SHVectorToCilm
 
         function YilmIndex(i,l,m) ! in PythonWrapper.f95
@@ -1612,7 +1613,7 @@ python module _SHTOOLS ! in
             integer intent(in) :: i
             integer intent(in) :: l
             integer intent(in) :: m
-            integer :: pyYilmIndex
+            integer :: YilmIndex
         end function YilmIndex
 
         subroutine ComputeDMap(Dij,dh_mask,n_dh,sampling,lmax,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1) ! in PythonWrapper.f95

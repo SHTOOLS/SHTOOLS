@@ -1,25 +1,57 @@
-==== INSTALLATION ====
+INSTALLATION INSTRUCTIONS
+=========================
 
 
-======== KNOWN ISSUES ========
 
----- assumed array shapes ----
+
+EXAMPLES
+========
+
+
+
+
+KNOWN ISSUES
+============
+
+assumed array shapes
+--------------------
 assumed array shapes are not supported in C or Python and compiler dependent. The file 
 PythonWrapper.f95 provides wrapper subroutines that converts arrays from assumed to
 explicit shapes.
 
----- optional return parameters ----
+
+optional return parameters
+--------------------------
 optional return parameters are not supported in C or Python. We either have
 to return them always which is memory intensive and not good for speed, or
 we need two separate subroutines. Affected routines:
 
-======== WRAPPED AND UNWRAPPED FUNCTIONS ========
 
-= LEGENDRE FUNCTIONS =
+fortran 95's intrinsic 'present()' procedure 
+--------------------------------------------
+This is also not supported in C or Python. We always pass all optional
+arguments. If their value is not given they are filled with a default.
+
+
+fortran's 'stop' statement
+--------------------------
+unfortunately this also kills the underlying Python interpreter if used in
+interactive mode. Fortran error's can not be caught from Python.
+
+
+
+
+LIST OF WRAPPED AND UNWRAPPED FUNCTIONS 
+=======================================
+
+LEGENDRE FUNCTIONS
+------------------
 
 ALL WRAPPED
 
-= SPHERICAL HARMONIC TRANSFORMATIONS =
+
+SPHERICAL HARMONIC TRANSFORMATIONS
+----------------------------------
 
 -- wrapped: --
 MakeGridDH
@@ -46,10 +78,18 @@ MakeGrid2D
 MakeGridPoint
 SHMultiply
 
-= GLOBAL SPECTRAL ANALYSIS =
+
+GLOBAL SPECTRAL ANALYSIS
+------------------------
 
 -- wrapped: --
 SHPowerSpectrum
 SHPowerSpectrumDensity
 
-= IO/STORAGE/ =
+
+IO/STORAGE/CONVERSIONS
+----------------------
+
+-- wrapped: --
+SHrtoc
+SHctor
