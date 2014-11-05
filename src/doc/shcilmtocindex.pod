@@ -4,7 +4,7 @@
 
 =item SHCilmToCindex -  
 
-Convert a three-dimensional array of complex spherical harmonic coefficients to a two-dimensional indexed array.
+Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.
 
 =back
 
@@ -36,7 +36,7 @@ DEGMAX
 
 =head1 DESCRIPTION
 
-I<SHCilmToCindex> will convert a three-dimensional array of complex spherical harmonic coefficients to a two-dimensional indexed array.  The degree L and order M corresponds to the index L*(L+1)/2+M+1. The default is to convert the entire array CILM, but a subset of this array can be converted by specifying the optional argument DEGMAX.
+I<SHCilmToCindex> will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.  The degree L and order M corresponds to the index L*(L+1)/2+M+1. The default is to convert the entire array CILM, but a subset of this array can be converted by specifying the optional argument DEGMAX.
 
 =head1 ARGUMENTS
 
@@ -46,13 +46,13 @@ I<SHCilmToCindex> will convert a three-dimensional array of complex spherical ha
 
 (input) REAL*8, DIMENSION (2, *, *)
 
-The input complex spherical harmonic coefficients. S<CILM(1, *, *)> and S<CILM(2, *, *)> correspond to the real and imaginary components, respectively.
+The input spherical harmonic coefficients. S<CILM(1, *, *)> and S<CILM(2, *, *)> correspond to either the real and imaginary components, or cosine and sine coefficients, respectively.
 	
 =item CINDEX
 
 (output) REAL*8, DIMENSION (2, *)
 
-The indexed output complex spherical harmonic coefficients. The second dimension of this array must be greater than (LMAX+1)*(LMAX+2)/2 where LMAX is the maximum degree of CILM.
+The indexed output spherical harmonic coefficients. The second dimension of this array must be greater than (LMAX+1)*(LMAX+2)/2 where LMAX is the maximum degree of CILM.
 
 =item DEGMAX
 

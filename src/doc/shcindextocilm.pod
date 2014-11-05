@@ -1,10 +1,10 @@
-=head1 SHCilmToCindex
+=head1 SHCindexToCilm
 
 =over 17
 
-=item SHCilmToCindex -  
+=item SHCindexToCilm -  
 
-Convert a three-dimensional array of complex spherical harmonic coefficients to a two-dimensional indexed array.
+Convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array.
 
 =back
 
@@ -12,9 +12,9 @@ Convert a three-dimensional array of complex spherical harmonic coefficients to 
 
 =over 28
 
-=item SUBROUTINE SHCilmToCindex ( 
+=item SUBROUTINE SHCindexToCilm ( 
 
-CILM, CINDEX, DEGMAX )
+CINDEX, CILM, DEGMAX )
 
 =back
 
@@ -24,7 +24,7 @@ CILM, CINDEX, DEGMAX )
 
 =item REAL*8	
 
-CILM(2, *, *), CINDEX(2, *)
+CINDEX(2, *), CILM(2, *, *)
 
 =item INTEGER, OPTIONAL
 
@@ -36,30 +36,29 @@ DEGMAX
 
 =head1 DESCRIPTION
 
-I<SHCilmToCindex> will convert a three-dimensional array of complex spherical harmonic coefficients to a two-dimensional indexed array.  The degree L and order M corresponds to the index L*(L+1)/2+M+1. The default is to convert the entire array CILM, but a subset of this array can be converted by specifying the optional argument DEGMAX.
+I<SHCindexToCilm> will convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array of complex spherical harmonic coefficients.  The degree L and order M corresponds to the index L*(L+1)/2+M+1. The default is to convert the entire array CINDEX, but a subset of this array can be converted by specifying the optional argument DEGMAX.
 
 =head1 ARGUMENTS
 
 =over 13
 
 =item CILM
-
-(input) REAL*8, DIMENSION (2, *, *)
-
-The input complex spherical harmonic coefficients. S<CILM(1, *, *)> and S<CILM(2, *, *)> correspond to the real and imaginary components, respectively.
 	
 =item CINDEX
 
-(output) REAL*8, DIMENSION (2, *)
+(input) REAL*8, DIMENSION (2, *)
 
-The indexed output complex spherical harmonic coefficients. The second dimension of this array must be greater than (LMAX+1)*(LMAX+2)/2 where LMAX is the maximum degree of CILM.
+The indexed spherical harmonic coefficients. The second dimension of this array must be greater than (LMAX+1)*(LMAX+2)/2 where LMAX is the maximum degree of CILM.
+
+(output) REAL*8, DIMENSION (2, *, *)
+
+The input spherical harmonic coefficients. S<CILM(1, *, *)> and S<CILM(2, *, *)> correspond to either the real and imaginary components, or cosine and sine coefficients, respectively.
 
 =item DEGMAX
 
 (input) INTEGER, OPTIONAL
 
 The maximum degree of the output coefficients. By default, the entire array CCILM will be converted.
-
 
 =back
 
