@@ -91,5 +91,11 @@ IO/STORAGE/CONVERSIONS
 ----------------------
 
 -- wrapped: --
+SHRead (partially - some optional arguments not implemented)
+SHCilmToCindex
+SHCindexToCilm
+SHCilmToVector
+SHVectorToCilm
+YilmIndex
 SHrtoc
 SHctor
