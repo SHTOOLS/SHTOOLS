@@ -427,9 +427,9 @@ python module _SHTOOLS ! in
             use shtools, only: SHPowerL
             real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             integer intent(in) :: l
-            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c) :: c_d0=shape(c,0)
-            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c) :: c_d1=shape(c,1)
-            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
+            integer, optional,intent(in),depend(c) :: c_d0=shape(c,0)
+            integer, optional,intent(in),depend(c) :: c_d1=shape(c,1)
+            integer, optional,intent(in),depend(c) :: c_d2=shape(c,2)
             real*8 :: SHPowerL
         end function SHPowerL
 
@@ -503,7 +503,7 @@ python module _SHTOOLS ! in
             use shtools, only: SHCrossPowerSpectrum
             real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer intent(in) :: lmax
+            integer, optional, intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
             real*8 dimension(cspectra_d0),intent(out),depend(cspectra_d0) :: cspectra
             integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2) :: c2_d0=shape(c2,0)
             integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2) :: c2_d1=shape(c2,1)
@@ -511,7 +511,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1) :: c1_d0=shape(c1,0)
             integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1) :: c1_d1=shape(c1,1)
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
-            integer intent(in) :: cspectra_d0
+            integer, optional,intent(in),depend(lmax) :: cspectra_d0 = lmax+1
         end subroutine SHCrossPowerSpectrum
 
         subroutine SHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0) ! in PythonWrapper.f95
@@ -519,7 +519,7 @@ python module _SHTOOLS ! in
             use shtools, only: SHCrossPowerSpectrumDensity
             real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer intent(in) :: lmax
+            integer, optional, intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
             real*8 dimension(cspectra_d0),intent(out),depend(cspectra_d0) :: cspectra
             integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2) :: c2_d0=shape(c2,0)
             integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2) :: c2_d1=shape(c2,1)
@@ -527,7 +527,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1) :: c1_d0=shape(c1,0)
             integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1) :: c1_d1=shape(c1,1)
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
-            integer intent(in) :: cspectra_d0
+            integer, optional,intent(in),depend(lmax) :: cspectra_d0 = lmax+1
         end subroutine SHCrossPowerSpectrumDensity
 
         subroutine djpi2(dj,lmax,dj_d0,dj_d1,dj_d2) ! in PythonWrapper.f95
@@ -844,19 +844,19 @@ python module _SHTOOLS ! in
             use shtools, only: SHAdmitCorr
             real*8 dimension(G_d0,G_d1,G_d2),intent(in) :: G
             real*8 dimension(T_d0,T_d1,T_d2),intent(in) :: T
-            integer intent(in) :: lmax
+            integer, optional, intent(in),depend(G_d1,T_d1) :: lmax = min(G_d1,T_d1)-1
             real*8 dimension(admit_d0),intent(out),depend(admit_d0) :: admit
             real*8 dimension(corr_d0),intent(out),depend(corr_d0) :: corr
             real*8, optional,dimension(admit_error_d0),intent(out),depend(admit_error_d0) :: admit_error
             integer, optional,intent(in),check(shape(G,0)==G_d0),depend(G) :: G_d0=shape(G,0)
             integer, optional,intent(in),check(shape(G,1)==G_d1),depend(G) :: G_d1=shape(G,1)
             integer, optional,intent(in),check(shape(G,2)==G_d2),depend(G) :: G_d2=shape(G,2)
-            integer intent(in) :: admit_d0
-            integer intent(in) :: admit_error_d0
             integer, optional,intent(in),check(shape(T,0)==T_d0),depend(T) :: T_d0=shape(T,0)
             integer, optional,intent(in),check(shape(T,1)==T_d1),depend(T) :: T_d1=shape(T,1)
             integer, optional,intent(in),check(shape(T,2)==T_d2),depend(T) :: T_d2=shape(T,2)
-            integer intent(in) :: corr_d0
+            integer, optional,intent(in),depend(lmax) :: admit_d0 = lmax+1
+            integer, optional,intent(in),depend(lmax) :: admit_error_d0 = lmax+1
+            integer, optional,intent(in),depend(lmax) :: corr_d0 = lmax+1
         end subroutine SHAdmitCorr
 
         subroutine SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,admit_error,corr_error,taper_wt,mtdef,k1linsig,taper_order_d0,g_d0,g_d1,g_d2,taper_wt_d0,corr_error_d0,admit_d0,admit_error_d0,corr_d0,tapers_d0,tapers_d1,t_d0,t_d1,t_d2) ! in PythonWrapper.f95
@@ -1507,24 +1507,24 @@ python module _SHTOOLS ! in
             fortranname pyshpowerspectrumc
             use shtools, only: SHPowerSpectrumC
             complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(c_d1) :: lmax = c_d1-1
             real*8 dimension(spectra_d0),intent(out),depend(spectra_d0) :: spectra
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c) :: c_d0=shape(c,0)
             integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c) :: c_d1=shape(c,1)
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
-            integer intent(in) :: spectra_d0
+            integer, optional,intent(in),depend(lmax) :: spectra_d0 = lmax+1
         end subroutine SHPowerSpectrumC
 
         subroutine SHPowerSpectrumDensityC(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) ! in PythonWrapper.f95
             fortranname pyshpowerspectrumdensityc
             use shtools, only: SHPowerSpectrumDensityC
             complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(c_d1) :: lmax = c_d1-1
             real*8 dimension(spectra_d0),intent(out),depend(spectra_d0) :: spectra
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c) :: c_d0=shape(c,0)
             integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c) :: c_d1=shape(c,1)
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c) :: c_d2=shape(c,2)
-            integer intent(in) :: spectra_d0
+            integer, optional,intent(in),depend(lmax) :: spectra_d0 = lmax+1
         end subroutine SHPowerSpectrumDensityC
 
         subroutine SHCrossPowerSpectrumC(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0) ! in PythonWrapper.f95
@@ -1532,7 +1532,7 @@ python module _SHTOOLS ! in
             use shtools, only: SHCrossPowerSpectrumC
             complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer intent(in) :: lmax
+            integer, optional, intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
             complex*16 dimension(cspectra_d0),intent(out),depend(cspectra_d0) :: cspectra
             integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2) :: c2_d0=shape(c2,0)
             integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2) :: c2_d1=shape(c2,1)
@@ -1540,7 +1540,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1) :: c1_d0=shape(c1,0)
             integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1) :: c1_d1=shape(c1,1)
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
-            integer intent(in) :: cspectra_d0
+            integer, optioanl,intent(in),depend(lmax) :: cspectra_d0 = lmax+1
         end subroutine SHCrossPowerSpectrumC
 
         subroutine SHCrossPowerSpectrumDensityC(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0) ! in PythonWrapper.f95
@@ -1548,7 +1548,7 @@ python module _SHTOOLS ! in
             use shtools, only: SHCrossPowerSpectrumDensityC
             complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer intent(in) :: lmax
+            integer, optional, intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
             complex*16 dimension(cspectra_d0),intent(out),depend(cspectra_d0) :: cspectra
             integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2) :: c2_d0=shape(c2,0)
             integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2) :: c2_d1=shape(c2,1)
@@ -1556,7 +1556,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1) :: c1_d0=shape(c1,0)
             integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1) :: c1_d1=shape(c1,1)
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1) :: c1_d2=shape(c1,2)
-            integer intent(in) :: cspectra_d0
+            integer, optioanl,intent(in),depend(lmax) :: cspectra_d0 = lmax+1
         end subroutine SHCrossPowerSpectrumDensityC
 
         subroutine SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0,admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0) ! in PythonWrapper.f95

@@ -44,10 +44,13 @@ interactive mode. Fortran error's can not be caught from Python.
 LIST OF WRAPPED AND UNWRAPPED FUNCTIONS 
 =======================================
 
+
+
 LEGENDRE FUNCTIONS
 ------------------
 
 ALL WRAPPED
+
 
 
 SPHERICAL HARMONIC TRANSFORMATIONS
@@ -79,12 +82,15 @@ MakeGridPoint
 SHMultiply
 
 
+
 GLOBAL SPECTRAL ANALYSIS
 ------------------------
 
--- wrapped: --
-SHPowerSpectrum
-SHPowerSpectrumDensity
+ALL WRAPPED
+
+-- issues: --
+SHAdmitCorr (always returns ADMIT_ERROR)
+
 
 
 IO/STORAGE/CONVERSIONS
