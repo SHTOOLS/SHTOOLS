@@ -22,19 +22,22 @@
 #		after the Fortran files are compiled.
 #
 #	make clean
-#		Remove the compile lib, module, and object files.
+#		Remove the compiled lib, module, object, and Python files.
 #
-#	make examples
+#	make fortran-examples
 #		Compile example programs. Optionally, one
 #		can specify the parameters F95="my compiler" and 
 #		F95FLAGS="my compiler flags", which should be identical to
 #		those used to make "all".
 #
-#	make remove-examples
+#	make run-fortran-examples
+#		Run all fortran examples programs.
+#
+#	make clean-fortran-examples
 #		Delete compiled example programs.
 #
-#	make run-examples
-#		Run all examples programs.
+#   make run-python-tests
+#		Run all python tests
 #
 #	make doc
 #		Create the man and html-man pages from input POD files.
@@ -54,6 +57,7 @@ VERSION = 2.10
 
 F95 = gfortran
 F2PY = f2py
+PYTHON = python
 
 SHELL  = /bin/tcsh
 MAKE   = make
@@ -62,9 +66,10 @@ SRCDIR = src
 LIBDIR = lib
 INCDIR = modules
 EXDIR  = examples
+PEXDIR = examples/python
 
 
-.PHONY: all all2 all3 python-wrapper install doc remove-doc clean getflags examples remove-examples run-examples
+.PHONY: all all2 all3 python-wrapper install doc remove-doc clean getflags fortran-examples clean-fortran-examples run-fortran-examples run-python-tests
 	
 all: getflags
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
@@ -176,22 +181,29 @@ clean:
 	$(MAKE) -C $(SRCDIR) -f Makefile clean
 	rm -f pyshtools/*.so
 	rm -f pyshtools/*.pyc
+	rm -f $(PEXDIR)/TestLegendre/*.pyc
 	@echo
-	@echo REMOVED LIB, MODULE, OBJECT FILES, and Compiled Python files
+	@echo REMOVED LIB, MODULE, OBJECT FILES, AND COMPILED PYTHON FILES
 
-examples: getflags
+fortran-examples: getflags
 	$(MAKE) -C $(EXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
 	@echo
-	@echo MAKE OF EXAMPLES SUCCESSFUL
+	@echo MAKE OF FORTRAN EXAMPLES SUCCESSFUL
 
-remove-examples:
+run-fortran-examples:
+	$(MAKE) -C $(EXDIR) -f Makefile run-fortran-examples
+	@echo
+	@echo RAN ALL FORTRAN EXAMPLE PROGRAMS
+	
+clean-fortran-examples:
 	$(MAKE) -C $(EXDIR) -f Makefile clean
 	@echo
-	@echo REMOVED EXAMPLE EXECUTABLES
-
-run-examples:
-	$(MAKE) -C $(EXDIR) -f Makefile run-examples
+	@echo REMOVED FORTRAN EXAMPLE EXECUTABLES AND FILES
+	
+run-python-tests:
+	$(PYTHON) $(PEXDIR)/TestLegendre/TestLegendre.py
 	@echo
-	@echo RAN ALL EXAMPLE PROGRAMS
+	@echo RAN ALL PYTHON TESTS
+	
 
 	
