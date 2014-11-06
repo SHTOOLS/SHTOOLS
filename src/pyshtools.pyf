@@ -535,9 +535,9 @@ python module _SHTOOLS ! in
             use shtools, only: djpi2
             real*8 dimension(dj_d0,dj_d1,dj_d2),intent(out),depend(dj_d0,dj_d1,dj_d2) :: dj
             integer intent(in) :: lmax
-            integer intent(in) :: dj_d0
-            integer intent(in) :: dj_d1
-            integer intent(in) :: dj_d2
+            integer, optional,intent(in),depend(lmax) :: dj_d0 = lmax+1
+            integer, optional,intent(in),depend(lmax) :: dj_d1 = lmax+1
+            integer, optional,intent(in),depend(lmax) :: dj_d2 = lmax+1
         end subroutine djpi2
 
         subroutine SHrtoc(rcilm,ccilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2) ! in PythonWrapper.f95
@@ -603,11 +603,11 @@ python module _SHTOOLS ! in
             use shtools, only: SHRotateCoef
             real*8 dimension(3),intent(in) :: x
             real*8 dimension(cof_d0,cof_d1),intent(in) :: cof
-            real*8 dimension(rcof_d0,rcof_d1),intent(out),depend(rcof_d0,rcof_d1) :: rcof
             real*8 dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
-            integer intent(in) :: lmax
-            integer intent(in) :: rcof_d0
-            integer intent(in) :: rcof_d1
+            real*8 dimension(rcof_d0,rcof_d1),intent(out),depend(rcof_d0,rcof_d1) :: rcof
+            integer, optional,intent(in),depend(cof_d1) :: lmax = (-3+sqrt(1+8*cof_d1))/2
+            integer, optional,intent(in),depend(lmax) :: rcof_d0 = 2
+            integer, optional,intent(in),depend(lmax) :: rcof_d1 = (lmax+1)*(lmax+2)/2
             integer, optional,intent(in),check(shape(dj,0)==dj_d0),depend(dj) :: dj_d0=shape(dj,0)
             integer, optional,intent(in),check(shape(dj,1)==dj_d1),depend(dj) :: dj_d1=shape(dj,1)
             integer, optional,intent(in),check(shape(dj,2)==dj_d2),depend(dj) :: dj_d2=shape(dj,2)
@@ -618,9 +618,9 @@ python module _SHTOOLS ! in
         subroutine SHRotateRealCoef(cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2,cilmrot_d0,cilmrot_d1,cilmrot_d2) ! in PythonWrapper.f95
             fortranname pyshrotaterealcoef
             use shtools, only: SHRotateRealCoef
-            real*8 dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out),depend(cilmrot_d0,cilmrot_d1,cilmrot_d2) :: cilmrot
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer intent(in) :: lmax
+            real*8 dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out),depend(cilmrot_d0,cilmrot_d1,cilmrot_d2) :: cilmrot
+            integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
             real*8 dimension(x_d0),intent(in) :: x
             real*8 dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
             integer, optional,intent(in),check(len(x)>=x_d0),depend(x) :: x_d0=len(x)
@@ -630,9 +630,9 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
-            integer intent(in) :: cilmrot_d0
-            integer intent(in) :: cilmrot_d1
-            integer intent(in) :: cilmrot_d2
+            integer, optional,intent(in),depend(lmax) :: cilmrot_d0 = 2
+            integer, optional,intent(in),depend(lmax) :: cilmrot_d1 = lmax+1
+            integer, optional,intent(in),depend(lmax) :: cilmrot_d2 = lmax+1
         end subroutine SHRotateRealCoef
 
         subroutine DHaj(n,aj,aj_d0) ! in PythonWrapper.f95

@@ -45,7 +45,6 @@ LIST OF WRAPPED AND UNWRAPPED FUNCTIONS
 =======================================
 
 
-
 LEGENDRE FUNCTIONS
 ------------------
 
@@ -105,3 +104,10 @@ SHVectorToCilm
 YilmIndex
 SHrtoc
 SHctor
+
+
+
+SPHERICAL HARMONICS ROTATIONS
+-----------------------------
+
+ALL WRAPPED
