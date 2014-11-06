@@ -111,3 +111,13 @@ SPHERICAL HARMONICS ROTATIONS
 -----------------------------
 
 ALL WRAPPED
+
+
+
+LOCALIZED SPECTRAL ANALYSIS
+---------------------------
+
+-- wrapped: --
+SphericalCapCoef
+SHBias
+Curve2Mask (has a bug?! vertical lines can appear for specific values)
