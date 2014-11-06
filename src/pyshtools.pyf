@@ -11,7 +11,7 @@ python module _SHTOOLS ! in
             real*8 intent(in) :: z
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in) :: cnorm   = 0
-            integer, intent(in),depend(lmax) :: p_d0 = (lmax+1)*(lmax+2)/2
+            integer, intent(hide),depend(lmax) :: p_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PlmBar
 
         subroutine PlmBar_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0) ! in PythonWrapper.f95

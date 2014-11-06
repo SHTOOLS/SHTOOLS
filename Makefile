@@ -174,8 +174,10 @@ remove-doc:
 	
 clean:
 	$(MAKE) -C $(SRCDIR) -f Makefile clean
+	rm -f pyshtools/*.so
+	rm -f pyshtools/*.pyc
 	@echo
-	@echo REMOVED LIB, MODULE, AND OBJECT FILES
+	@echo REMOVED LIB, MODULE, OBJECT FILES, and Compiled Python files
 
 examples: getflags
 	$(MAKE) -C $(EXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
