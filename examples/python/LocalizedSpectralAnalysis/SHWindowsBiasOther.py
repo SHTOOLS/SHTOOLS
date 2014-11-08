@@ -60,6 +60,22 @@ def test_LocalizationWindows():
     #plt.imshow(dhmask)
     #plt.show()
 
+    print '\n---- testing ComputeDMap ----'
+    nlat = 180
+    lmax = 20
+    dlat = 180./nlat
+    lats = np.linspace(90.-dlat/2.,-90.+dlat/2.,nlat)
+    lons = np.linspace(0.+dlat,360.-dlat/2.,nlat)
+    latgrid,longrid = np.meshgrid(lats,lons,indexing='ij')
+    dh_mask = np.logical_and(5.<latgrid,latgrid<20.)
+    print 'dij matrix[0,:lmax={:d}]:'.format(lmax)
+    dij_matrix = shtools.ComputeDMap(dh_mask,lmax)
+    print dij_matrix[0,:lmax]
+
+    print '\n---- testing SHReturnTapersMap ----'
+    tapers,evalues = shtools.SHReturnTapersMap(dh_mask,lmax,Ntapers=1)
+    print 'best taper concentration: {:2.2f}'.format(evalues[0])
+
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

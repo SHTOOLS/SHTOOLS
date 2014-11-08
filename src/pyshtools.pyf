@@ -1621,13 +1621,13 @@ python module _SHTOOLS ! in
             use shtools, only: ComputeDMap
             real*8 dimension(Dij_d0,Dij_d1),intent(out),depend(Dij_d0,Dij_d1) :: Dij
             integer dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
-            integer intent(in) :: n_dh
-            integer intent(in) :: sampling
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(dh_mask_d0) :: n_dh = dh_mask_d0
+            integer, optional,intent(in),depend(dh_mask_d0,dh_mask_d1),check(sampling==1 || sampling==2) :: sampling = dh_mask_d0/dh_mask_d1
+            integer, intent(in) :: lmax
             integer, optional,intent(in),check(shape(dh_mask,0)==dh_mask_d0),depend(dh_mask) :: dh_mask_d0=shape(dh_mask,0)
             integer, optional,intent(in),check(shape(dh_mask,1)==dh_mask_d1),depend(dh_mask) :: dh_mask_d1=shape(dh_mask,1)
-            integer intent(in) :: Dij_d0
-            integer intent(in) :: Dij_d1
+            integer, optional,intent(in),depend(lmax) :: Dij_d0 = (lmax+1)*(lmax+1)
+            integer, optional,intent(in),depend(lmax) :: Dij_d1 = (lmax+1)*(lmax+1)
         end subroutine ComputeDMap
 
         subroutine SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,sampling,lmax,Ntapers,dh_mask_d0,dh_mask_d1,tapers_d0,tapers_d1,eigenvalues_d0) ! in PythonWrapper.f95
@@ -1636,15 +1636,15 @@ python module _SHTOOLS ! in
             real*8 dimension(tapers_d0,tapers_d1),intent(out),depend(tapers_d0,tapers_d1) :: tapers
             real*8 dimension(eigenvalues_d0),intent(out),depend(eigenvalues_d0) :: eigenvalues
             integer dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
-            integer intent(in) :: n_dh
-            integer intent(in) :: sampling
+            integer, optional,intent(in),depend(dh_mask_d0) :: n_dh = dh_mask_d0
+            integer, optional,intent(in),depend(dh_mask_d0,dh_mask_d1),check(sampling==1 || sampling==2) :: sampling = dh_mask_d0/dh_mask_d1
             integer intent(in) :: lmax
-            integer, optional,intent(in) :: Ntapers
+            integer, optional,intent(in),depend(lmax) :: Ntapers = (lmax+1)*(lmax+1)
             integer, optional,intent(in),check(shape(dh_mask,0)==dh_mask_d0),depend(dh_mask) :: dh_mask_d0=shape(dh_mask,0)
             integer, optional,intent(in),check(shape(dh_mask,1)==dh_mask_d1),depend(dh_mask) :: dh_mask_d1=shape(dh_mask,1)
-            integer intent(in) :: tapers_d0
-            integer intent(in) :: tapers_d1
-            integer intent(in) :: eigenvalues_d0
+            integer intent(in) :: tapers_d0 = (lmax+1)*(lmax+1)
+            integer intent(in) :: tapers_d1 = Ntapers
+            integer intent(in) :: eigenvalues_d0 = Ntapers
         end subroutine SHReturnTapersMap
 
         subroutine Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1) ! in PythonWrapper.f95
