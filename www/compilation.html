@@ -58,13 +58,13 @@
 	<p class="nomarginbot">To compile and then run the example files, use</p>
 	
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make examples F95="MyCompiler" F95FLAGS="MyCompilerFlags"</tt></p>
+		<p class="nomargintop nomarginbot"><tt>make fortran-examples F95="MyCompiler" F95FLAGS="MyCompilerFlags"</tt></p>
 	</blockquote>
 	
 	<p class="nomarginbot">and</p>
 	
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make run-examples</tt></p>
+		<p class="nomargintop nomarginbot"><tt>make run-fortran-examples</tt></p>
 	</blockquote>
 	
 	<p class="nomarginbot">Note that the final timing tests could take an hour to complete. To delete the compiled archive, module files, object files, and example executables, use</p>
@@ -76,7 +76,7 @@
 	<p class="nomarginbot">and</p>
 	
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make remove-examples</tt></p>
+		<p class="nomargintop nomarginbot"><tt>make clean-fortran-examples</tt></p>
 	</blockquote>
 	
 	<p>If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by typing "make clean".</p>

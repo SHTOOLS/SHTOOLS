@@ -17,9 +17,9 @@ def load_documentation():
             try:
                 path = os.path.join(DOC_DIR,name.lower()+'.pod')
                 docfile = open(path,'r').read()
-                description = '\nDESCRIPTION\n--------' + redescr.search(docfile).group(1) + '\n'
+                description = '\nDESCRIPTION\n-----------' + redescr.search(docfile).group(1) + '\n'
                 try:
-                    notes       = 'NOTES\n------'         + renotes.search(docfile).group(1) + '\n'
+                    notes       = 'NOTES\n-----'         + renotes.search(docfile).group(1) + '\n'
                 except:
                     notes = ''
                 func.__doc__ = 'SIGNATURE\n--------\n\n'+func.__doc__ +description + notes

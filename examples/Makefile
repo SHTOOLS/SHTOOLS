@@ -3,10 +3,11 @@
 #	make all
 #		Compile example programs in their directories.
 #
-# 	make remove-examples
-#		Delete the compile executibles.
+#	make run-fortran-examples
+#		Run the Fortran examples
 #
-#	make run-examples
+# 	make clean
+#		Delete the compile executibles.
 #
 #	Written by Mark Wieczorek (June 2012).
 #
@@ -55,7 +56,7 @@ all: getflags
 	
 	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyGLQC
 	
-make run-examples:
+make run-fortran-examples:
 	 @echo CREATE_WISDOM
 	 cd fftw_wisdom ; ./create_wisdom < input.txt
 	 @echo
