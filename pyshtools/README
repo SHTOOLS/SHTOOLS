@@ -118,6 +118,9 @@ LOCALIZED SPECTRAL ANALYSIS
 ---------------------------
 
 -- wrapped: --
+SHMultiTaperSE (if first weight is negative (default) they are not used)
+SHReturnTapers
+SHReturnTapersM
 SHReturnTapersMap
 ComputeDMap
 SphericalCapCoef

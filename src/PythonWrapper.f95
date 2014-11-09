@@ -1154,7 +1154,13 @@
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: mtse_d0
         integer, intent(in) :: sd_d0
-        call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,taper_wt,norm,csphase)
+        if(taper_wt(1) < 0.d0) then
+            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,&
+                                                  norm=norm,csphase=csphase)
+        else
+            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,&
+                                                              taper_wt,norm,csphase)
+        endif
     end subroutine pySHMultiTaperSE
 
     subroutine pySHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha,lat,lon&

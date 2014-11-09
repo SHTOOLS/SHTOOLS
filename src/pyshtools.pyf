@@ -811,10 +811,10 @@ python module _SHTOOLS ! in
             integer intent(in) :: m
             real*8 dimension(tapers_d0,tapers_d1),intent(out),depend(tapers_d0,tapers_d1) :: tapers
             real*8 dimension(eigenvalues_d0),intent(out),depend(eigenvalues_d0) :: eigenvalues
-            real*8, optional,intent(out) :: shannon
-            integer intent(in) :: tapers_d0
-            integer intent(in) :: tapers_d1
-            integer intent(in) :: eigenvalues_d0
+            real*8 intent(out) :: shannon
+            integer intent(in) :: tapers_d0 = lmax+1
+            integer intent(in) :: tapers_d1 = lmax+1
+            integer intent(in) :: eigenvalues_d0 = lmax+1
         end subroutine SHReturnTapersM
 
         subroutine EigValSym(ain,n,eval,ul,ain_d0,ain_d1,eval_d0) ! in PythonWrapper.f95
@@ -1034,27 +1034,27 @@ python module _SHTOOLS ! in
             real*8 dimension(mtse_d0),intent(out),depend(mtse_d0) :: mtse
             real*8 dimension(sd_d0),intent(out),depend(sd_d0) :: sd
             real*8 dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(sh_d1) :: lmax = sh_d1-1
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer dimension(taper_order_d0),intent(in) :: taper_order
-            integer intent(in) :: lmaxt
-            integer intent(in) :: K
-            real*8, optional,dimension(alpha_d0),intent(in) :: alpha
-            real*8, optional,intent(in) :: lat
-            real*8, optional,intent(in) :: lon
-            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-            integer, optional,intent(in) :: norm
-            integer, optional,intent(in) :: csphase
-            integer, optional,intent(in),check(len(taper_order)>=taper_order_d0),depend(taper_order) :: taper_order_d0=len(taper_order)
-            integer, optional,intent(in),check(len(taper_wt)>=taper_wt_d0),depend(taper_wt) :: taper_wt_d0=len(taper_wt)
-            integer, optional,intent(in),check(shape(sh,0)==sh_d0),depend(sh) :: sh_d0=shape(sh,0)
-            integer, optional,intent(in),check(shape(sh,1)==sh_d1),depend(sh) :: sh_d1=shape(sh,1)
-            integer, optional,intent(in),check(shape(sh,2)==sh_d2),depend(sh) :: sh_d2=shape(sh,2)
-            integer, optional,intent(in),check(len(alpha)>=alpha_d0),depend(alpha) :: alpha_d0=len(alpha)
-            integer, optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers) :: tapers_d0=shape(tapers,0)
-            integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers) :: tapers_d1=shape(tapers,1)
-            integer intent(in) :: mtse_d0
-            integer intent(in) :: sd_d0
+            integer, optional,intent(in),depend(tapers_d0) :: lmaxt = tapers_d0-1
+            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
+            real*8,  optional,dimension(alpha_d0),intent(in) :: alpha = 0
+            real*8,  optional,intent(in) :: lat = 0.0
+            real*8,  optional,intent(in) :: lon = 0.0
+            real*8,  optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: csphase = 1
+            integer, optional,intent(in),check(taper_order_d0>0),depend(taper_order) :: taper_order_d0=len(taper_order)
+            integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1)    :: taper_wt_d0=tapers_d1
+            integer, optional,intent(in),check(sh_d0>0),depend(sh) :: sh_d0=shape(sh,0)
+            integer, optional,intent(in),check(sh_d1>0),depend(sh) :: sh_d1=shape(sh,1)
+            integer, optional,intent(in),check(sh_d2>0),depend(sh) :: sh_d2=shape(sh,2)
+            integer, optional,intent(in) :: alpha_d0=3
+            integer, optional,intent(in),check(tapers_d0>0),depend(tapers) :: tapers_d0=shape(tapers,0)
+            integer, optional,intent(in),check(tapers_d1>0),depend(tapers) :: tapers_d1=shape(tapers,1)
+            integer, optional,intent(in),check(mtse_d0>0),depend(lmax,lmaxt) :: mtse_d0 = lmax - lmaxt+1
+            integer, optional,intent(in),check(sd_d0>0),depend(lmax,lmaxt) :: sd_d0 = lmax-lmaxt+1
         end subroutine SHMultiTaperSE
 
         subroutine SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha,lat,lon,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_order_d0,taper_wt_d0,tapers_d0,tapers_d1,alpha_d0,sd_d0,mtse_d0) ! in PythonWrapper.f95
@@ -1223,10 +1223,10 @@ python module _SHTOOLS ! in
             real*8 dimension(tapers_d0,tapers_d1),intent(out),depend(tapers_d0,tapers_d1) :: tapers
             real*8 dimension(eigenvalues_d0),intent(out),depend(eigenvalues_d0) :: eigenvalues
             integer dimension(taper_order_d0),intent(out),depend(taper_order_d0) :: taper_order
-            integer intent(in) :: eigenvalues_d0
-            integer intent(in) :: tapers_d0
-            integer intent(in) :: tapers_d1
-            integer intent(in) :: taper_order_d0
+            integer, optional,intent(in),depend(lmax) :: eigenvalues_d0 = (lmax+1)*(lmax+1)
+            integer, optional,intent(in),depend(lmax) :: tapers_d0 = (lmax+1)
+            integer, optional,intent(in),depend(lmax) :: tapers_d1 = (lmax+1)*(lmax+1)
+            integer, optional,intent(in),depend(lmax) :: taper_order_d0 = (lmax+1)*(lmax+1)
         end subroutine SHReturnTapers
 
         function SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,hk_real_d0,incspectra_d0,hj_real_d0) ! in PythonWrapper.f95
