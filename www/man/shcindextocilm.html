@@ -32,48 +32,50 @@
 >  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHCINDEXTOCILM(1)</B>                SHTOOLS 2.10                <B>SHCINDEXTOCILM(1)</B>
+<B>SHCINDEXTOCILM(1)</B>                 SHTOOLS 3.0                <B>SHCINDEXTOCILM(1)</B>
 
 
 </PRE>
-<H2 class="man">SHCilmToCindex</H2 class="man"><PRE>
-       SHCilmToCindex - Convert a three-dimensional array of complex spherical
-                        harmonic coefficients to a two-dimensional indexed
-                        array.
+<H2 class="man">SHCindexToCilm</H2 class="man"><PRE>
+       SHCindexToCilm - Convert a two-dimensional indexed array of spherical
+                        harmonic coefficients to a three-dimensional array.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHCilmToCindex ( CILM, CINDEX, DEGMAX )
+       SUBROUTINE SHCindexToCilm ( CINDEX, CILM, DEGMAX )
 
-           REAL*8              CILM(2, *, *), CINDEX(2, *)
+           REAL*8              CINDEX(2, *), CILM(2, *, *)
 
            INTEGER, OPTIONAL   DEGMAX
 
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHCilmToCindex</B> will convert a three-dimensional array of complex
-       spherical harmonic coefficients to a two-dimensional indexed array.
-       The degree L and order M corresponds to the index L*(L+1)/2+M+1. The
-       default is to convert the entire array CILM, but a subset of this array
-       can be converted by specifying the optional argument DEGMAX.
+       <B>SHCindexToCilm</B> will convert a two-dimensional indexed array of
+       spherical harmonic coefficients to a three-dimensional array of complex
+       spherical harmonic coefficients.  The degree L and order M corresponds
+       to the index L*(L+1)/2+M+1. The default is to convert the entire array
+       CINDEX, but a subset of this array can be converted by specifying the
+       optional argument DEGMAX.
 
 
 </PRE>
 <H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       CILM         (input) REAL*8, DIMENSION (2, *, *)
+       CILM
+       CINDEX       (input) REAL*8, DIMENSION (2, *)
 
-                    The input complex spherical harmonic coefficients.
-                    CILM(1, *, *) and CILM(2, *, *) correspond to the real and
-                    imaginary components, respectively.
+                    The indexed spherical harmonic coefficients. The second
+                    dimension of this array must be greater than
+                    (LMAX+1)*(LMAX+2)/2 where LMAX is the maximum degree of
+                    CILM.
 
-       CINDEX       (output) REAL*8, DIMENSION (2, *)
+                    (output) REAL*8, DIMENSION (2, *, *)
 
-                    The indexed output complex spherical harmonic
-                    coefficients. The second dimension of this array must be
-                    greater than (LMAX+1)*(LMAX+2)/2 where LMAX is the maximum
-                    degree of CILM.
+                    The input spherical harmonic coefficients. CILM(1, *, *)
+                    and CILM(2, *, *) correspond to either the real and
+                    imaginary components, or cosine and sine coefficients,
+                    respectively.
 
        DEGMAX       (input) INTEGER, OPTIONAL
 
@@ -95,7 +97,7 @@
        This is free software; you can distribute and modify it under the terms
        of the revised BSD license.
 
-SHTOOLS 2.10                      2012-03-08                 <B>SHCINDEXTOCILM(1)</B>
+SHTOOLS 3.0                       2014-11-05                 <B>SHCINDEXTOCILM(1)</B>
 </PRE>
 
 	<p class="dir">

@@ -32,22 +32,25 @@
 >  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>COMPUTEDMAP(1)</B>                   SHTOOLS 2.10                   <B>COMPUTEDMAP(1)</B>
+<B>COMPUTEDMAP(1)</B>                    SHTOOLS 3.0                   <B>COMPUTEDMAP(1)</B>
 
 
 </PRE>
-<H2 class="man">ComputeD0</H2 class="man"><PRE>
+<H2 class="man">ComputeDMap</H2 class="man"><PRE>
        ComputeDMap -  Compute the space-concentration kernel of a mask defined
                       on the sphere.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE ComputeDMap ( DIJ, DH_MASK, N, SAMPLING, LMAX )
+       SUBROUTINE ComputeDMap ( DIJ, DH_MASK, N, LMAX, SAMPLING )
 
            REAL*8    DIJ( (LMAX+1)**2, (LMAX+1)**2 )
 
-           INTEGER   DH_MASK( N, N ) or DH_MASK( N, 2*N ), N, SAMPLING, LMAX
+           INTEGER   DH_MASK( N, N ) or DH_MASK( N, 2*N ), N, LMAX
+
+           INTEGER, OPTIONAL
+                     SAMPLING
 
 
 </PRE>
@@ -106,14 +109,14 @@
                  The number of latitudinal samples in DH_MASK. The effective
                  spherical harmonic bandwidth of this grid is L = N/2 - 1.
 
-       SAMPLING  (input) INTEGER
-
-                 For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x 2N
-                 samples.
-
        LMAX      (input) INTEGER
 
                  The maximum spherical harmonic degree of the matrix DIJ.
+
+       SAMPLING  (input) INTEGER, OPTIONAL
+
+                 For 1 (default), DH_MASK has N x N samples. For 2, DH_MASK
+                 has N x 2N samples.
 
 
 </PRE>
@@ -139,7 +142,7 @@
        This is free software; you can distribute and modify it under the terms
        of the revised BSD license.
 
-SHTOOLS 2.10                      2012-03-08                    <B>COMPUTEDMAP(1)</B>
+SHTOOLS 3.0                       2014-11-10                    <B>COMPUTEDMAP(1)</B>
 </PRE>
 
 	<p class="dir">

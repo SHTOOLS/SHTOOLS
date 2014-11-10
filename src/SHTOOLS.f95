@@ -714,15 +714,16 @@ module SHTOOLS
 			integer, intent(in) ::	i, l, m
 		end function YilmIndex
 		
-		subroutine ComputeDMap(Dij, dh_mask, n_dh, sampling, lmax)
+		subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
 			real*8, intent(out) ::	Dij(:,:)
-			integer, intent(in) ::	dh_mask(:,:), n_dh, sampling, lmax
+			integer, intent(in) ::	dh_mask(:,:), n_dh, lmax
+			integer, intent(in), optional :: sampling
 		end subroutine ComputeDMap
 		
-		subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, sampling, lmax, Ntapers)
+		subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, sampling, Ntapers)
 			real*8, intent(out) ::	tapers(:,:), eigenvalues(:)
-			integer, intent(in) ::	dh_mask(:,:), n_dh, sampling, lmax
-			integer, intent(in), optional ::	Ntapers
+			integer, intent(in) ::	dh_mask(:,:), n_dh, lmax
+			integer, intent(in), optional ::	sampling, Ntapers
 		end subroutine SHReturnTapersMap
 		
 		subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP)

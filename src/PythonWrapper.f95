@@ -1778,22 +1778,22 @@
         pyYilmIndex=YilmIndex(i,l,m)
     end function pyYilmIndex
 
-    subroutine pyComputeDMap(Dij,dh_mask,n_dh,sampling,lmax,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1) 
+    subroutine pyComputeDMap(Dij,dh_mask,n_dh,lmax,sampling,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1) 
         use shtools, only: ComputeDMap
         implicit none
         real*8, dimension(Dij_d0,Dij_d1),intent(out) :: Dij
         integer, dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
         integer, intent(in) :: n_dh
-        integer, intent(in) :: sampling
+        integer, intent(in), optional :: sampling
         integer, intent(in) :: lmax
         integer, intent(in) :: dh_mask_d0
         integer, intent(in) :: dh_mask_d1
         integer, intent(in) :: Dij_d0
         integer, intent(in) :: Dij_d1
-        call ComputeDMap(Dij,dh_mask,n_dh,sampling,lmax)
+        call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling)
     end subroutine pyComputeDMap
 
-    subroutine pySHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,sampling,lmax,Ntapers,dh_mask_d0,dh_mask_d1&
+    subroutine pySHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,Ntapers,dh_mask_d0,dh_mask_d1&
                                          ,tapers_d0,tapers_d1,eigenvalues_d0) 
         use shtools, only: SHReturnTapersMap
         implicit none
@@ -1801,7 +1801,7 @@
         real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
         integer, dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
         integer, intent(in) :: n_dh
-        integer, intent(in) :: sampling
+        integer, intent(in), optional :: sampling
         integer, intent(in) :: lmax
         integer, optional,intent(in) :: Ntapers
         integer, intent(in) :: dh_mask_d0
@@ -1809,7 +1809,7 @@
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: eigenvalues_d0
-        call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,sampling,lmax,Ntapers)
+        call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,Ntapers)
     end subroutine pySHReturnTapersMap
 
     subroutine pyCurve2Mask(dhgrid,n,sampling,profile,nprofile,NP,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1) 

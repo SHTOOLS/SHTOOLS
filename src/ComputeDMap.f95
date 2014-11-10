@@ -1,4 +1,4 @@
-subroutine ComputeDMap(Dij, dh_mask, n_dh, sampling, lmax)
+subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 !	This subroutine will compute the matrix D(lm,l'm') for the spatiospectral concentration
@@ -28,13 +28,14 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, sampling, lmax)
 !	Calling Parameters
 !		IN
 !			dh_mask		Integer grid sampled according to the Driscoll and Healy sampling
-!					theorem. A value of 1 indicates the the grid node is in the concentration
-!					domain, and a value of 0 indicates that it is outside. Dimensioned as
-!					(n_dh, n_dh) for SAMPLING = 1 or (n_dh, 2*n_dh) for SAMPLING = 2.
+!						theorem. A value of 1 indicates the the grid node is in the concentration
+!						domain, and a value of 0 indicates that it is outside. Dimensioned as
+!						(n_dh, n_dh) for SAMPLING = 1 or (n_dh, 2*n_dh) for SAMPLING = 2.
 !			n_dh		The number of latitude samples in the Driscoll and Healy sampled grid.
-!			SAMPLING	1 corresponds to equal sampling (n_dh, n_dh), whereas 2 corresponds
-!					to equal spaced grids (n_dh, 2*n_dh).
 !			lmax		Maximum spherical harmonic degree of elements in the matrix D.
+!		IN, OPTIONAL
+!			SAMPLING	1 (default) corresponds to equal sampling (n_dh, n_dh), whereas 2 corresponds
+!						to equal spaced grids (n_dh, 2*n_dh).
 !		OUT
 !			Dij		Elements of the matrix D, which is symmetric, and whose elements
 !					are packed into a 1D array according to YilmINDEX. Dimesions of 
@@ -51,7 +52,8 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, sampling, lmax)
 	implicit none
 		
 	real*8, intent(out) ::	Dij(:,:)
-	integer, intent(in) ::	dh_mask(:,:), n_dh, sampling, lmax
+	integer, intent(in) ::	dh_mask(:,:), n_dh, lmax
+	integer, intent(in), optional::	sampling
 	integer ::		nlat, nlong, lmax_dh, astat, i, j, k, l, m, max_mask, min_mask
 	real*8, allocatable ::	f(:,:), plm(:), clm(:,:,:), vec(:)
 	real*8 ::		colat, lat_int, temp(2*n_dh), lon, lon_int
@@ -73,17 +75,23 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, sampling, lmax)
 	
 	nlat = n_dh
 	lat_int = acos(-1.0d0) / dble(nlat)
-	if (sampling == 1) then
+	
+	if (present(sampling)) then
+		if (sampling == 1) then
+			nlong = nlat
+			lon_int = 2.0d0*lat_int
+		elseif (sampling == 2) then
+			nlong = 2*nlat
+			lon_int = lat_int
+		else 
+			print*, "Error --- ComputeDMap"
+			print*, "SAMPLING must be either 1 (equally sampled) or 2 (equally spaced)."
+			print*, "SAMPLING = ", sampling
+			stop
+		endif
+	else
 		nlong = nlat
 		lon_int = 2.0d0*lat_int
-	elseif (sampling == 2) then
-		nlong = 2*nlat
-		lon_int = lat_int
-	else 
-		print*, "Error --- ComputeDMap"
-		print*, "SAMPLING must be either 1 (equally sampled) or 2 (equally spaced)."
-		print*, "SAMPLING = ", sampling
-		stop
 	endif
 	
 	if (size(dh_mask(:,1)) < nlat .or. size(dh_mask(1,:)) < nlong) then
@@ -186,7 +194,11 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, sampling, lmax)
 				
 				i = YilmIndex(j, l, m)
 				
-				call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = sampling, lmax_calc = l)
+				if (present(sampling)) then	
+					call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = sampling, lmax_calc = l)
+				else
+					call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = 1, lmax_calc = l)
+				endif
 				
 				call SHCilmToVector(clm, vec, l)
 				

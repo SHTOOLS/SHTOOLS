@@ -14,7 +14,7 @@ Calculate the eigenfunctions and eigenvalues of the space-concentration problem 
 
 =item SUBROUTINE SHReturnTapersMap ( 
 
-TAPERS, EIGENVALUES, DH_MASK, N, SAMPLING, LMAX, NTAPERS )
+TAPERS, EIGENVALUES, DH_MASK, N, LMAX, SAMPLING, NTAPERS )
 
 =back
 
@@ -28,11 +28,11 @@ S<TAPERS ( (LMAX+1)**2, (LMAX+1)**2 )> or S<( (LMAX+1)**2, NTAPERS ),> S<EIGENVA
 
 =item INTEGER
 
-DH_MASK (N, N) or (N, 2*N), N, SAMPLING, LMAX
+DH_MASK (N, N) or (N, 2*N), N, LMAX
 
 =item INTEGER, OPTIONAL
 
-NTAPERS
+SAMPLING, NTAPERS
 
 =back
 
@@ -72,17 +72,17 @@ A Driscoll and Healy (1994) sampled grid describing the concentration region R. 
 
 The number of latitudinal samples in DH_MASK. The effective spherical harmonic bandwidth of this grid is L = N/2 - 1.
 
-=item SAMPLING
-
-(input) INTEGER
-
-For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x 2N samples. 
-
 =item LMAX
 
 (input) INTEGER
 
 The spherical harmonic bandwidth of the localization windows.
+
+=item SAMPLING
+
+(input) INTEGER
+
+For 1 (default), DH_MASK has N x N samples. For 2, DH_MASK has N x 2N samples. 
 
 =item NTAPERS
 

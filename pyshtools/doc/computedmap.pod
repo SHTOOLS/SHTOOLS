@@ -1,4 +1,4 @@
-=head1 ComputeD0
+=head1 ComputeDMap
 
 =over 15
 
@@ -14,7 +14,7 @@ Compute the space-concentration kernel of a mask defined on the sphere.
 
 =item SUBROUTINE ComputeDMap ( 
 
-DIJ, DH_MASK, N, SAMPLING, LMAX )
+DIJ, DH_MASK, N, LMAX, SAMPLING )
 
 =back
 
@@ -28,7 +28,11 @@ DIJ( (LMAX+1)**2, (LMAX+1)**2 )
 
 =item INTEGER
 
-DH_MASK( N, N ) or DH_MASK( N, 2*N ), N, SAMPLING, LMAX
+DH_MASK( N, N ) or DH_MASK( N, 2*N ), N, LMAX
+
+=item INTEGER, OPTIONAL
+
+SAMPLING
 
 =back
 
@@ -73,12 +77,6 @@ A Driscoll and Healy (1994) sampled grid describing the concentration region R. 
 (input) INTEGER
 
 The number of latitudinal samples in DH_MASK. The effective spherical harmonic bandwidth of this grid is L = N/2 - 1.
-
-=item SAMPLING
-
-(input) INTEGER
-
-For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x 2N samples. 
 	
 =item LMAX
 
@@ -86,6 +84,11 @@ For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x 2N samples.
 
 The maximum spherical harmonic degree of the matrix DIJ.
 
+=item SAMPLING
+
+(input) INTEGER, OPTIONAL
+
+For 1 (default), DH_MASK has N x N samples. For 2, DH_MASK has N x 2N samples. 
 
 =back
 

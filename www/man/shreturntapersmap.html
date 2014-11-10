@@ -32,7 +32,7 @@
 >  <a href="../../index.html" class="dir">Home</a> > <a href="../documentation.html" class="dir">Documentation</a> > <a href="../localized.html" class="dir">Localized Spectral Analysis</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHRETURNTAPERSMAP(1)</B>             SHTOOLS 2.10             <B>SHRETURNTAPERSMAP(1)</B>
+<B>SHRETURNTAPERSMAP(1)</B>              SHTOOLS 3.0             <B>SHRETURNTAPERSMAP(1)</B>
 
 
 </PRE>
@@ -44,16 +44,16 @@
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHReturnTapersMap ( TAPERS, EIGENVALUES, DH_MASK, N,
-                                      SAMPLING, LMAX, NTAPERS )
+       SUBROUTINE SHReturnTapersMap ( TAPERS, EIGENVALUES, DH_MASK, N, LMAX,
+                                      SAMPLING, NTAPERS )
 
            REAL*8              TAPERS ( (LMAX+1)**2, (LMAX+1)**2 ) or
                                ( (LMAX+1)**2, NTAPERS ),
                                EIGENVALUES( LMAX+1 ) or (NTAPERS)
 
-           INTEGER             DH_MASK (N, N) or (N, 2*N), N, SAMPLING, LMAX
+           INTEGER             DH_MASK (N, N) or (N, 2*N), N, LMAX
 
-           INTEGER, OPTIONAL   NTAPERS
+           INTEGER, OPTIONAL   SAMPLING, NTAPERS
 
 
 </PRE>
@@ -112,15 +112,15 @@
                      effective spherical harmonic bandwidth of this grid is L
                      = N/2 - 1.
 
-       SAMPLING      (input) INTEGER
-
-                     For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x
-                     2N samples.
-
        LMAX          (input) INTEGER
 
                      The spherical harmonic bandwidth of the localization
                      windows.
+
+       SAMPLING      (input) INTEGER
+
+                     For 1 (default), DH_MASK has N x N samples. For 2,
+                     DH_MASK has N x 2N samples.
 
        NTAPERS       (input) INTEGER, OPTIONAL
 
@@ -152,7 +152,7 @@
        This is free software; you can distribute and modify it under the terms
        of the revised BSD license.
 
-SHTOOLS 2.10                      2012-10-18              <B>SHRETURNTAPERSMAP(1)</B>
+SHTOOLS 3.0                       2014-11-10              <B>SHRETURNTAPERSMAP(1)</B>
 </PRE>
 
 	<p class="dir">
