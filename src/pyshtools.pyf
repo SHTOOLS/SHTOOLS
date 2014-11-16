@@ -864,34 +864,34 @@ python module _SHTOOLS ! in
             use shtools, only: SHLocalizedAdmitCorr
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer dimension(taper_order_d0),intent(in) :: taper_order
-            integer intent(in) :: lwin
-            real*8 intent(in) :: lat
-            real*8 intent(in) :: lon
+            integer,optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
             real*8 dimension(g_d0,g_d1,g_d2),intent(in) :: g
             real*8 dimension(t_d0,t_d1,t_d2),intent(in) :: t
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(t_d1) :: lmax = t_d1-1
             real*8 dimension(admit_d0),intent(out),depend(admit_d0) :: admit
             real*8 dimension(corr_d0),intent(out),depend(corr_d0) :: corr
-            integer intent(in) :: K
+            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
             real*8, optional,dimension(admit_error_d0),intent(out),depend(admit_error_d0) :: admit_error
             real*8, optional,dimension(corr_error_d0),intent(out),depend(corr_error_d0) :: corr_error
-            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-            integer, optional,intent(in) :: mtdef
-            integer, optional,intent(in) :: k1linsig
-            integer, optional,intent(in),check(len(taper_order)>=taper_order_d0),depend(taper_order) :: taper_order_d0=len(taper_order)
-            integer, optional,intent(in),check(shape(g,0)==g_d0),depend(g) :: g_d0=shape(g,0)
-            integer, optional,intent(in),check(shape(g,1)==g_d1),depend(g) :: g_d1=shape(g,1)
-            integer, optional,intent(in),check(shape(g,2)==g_d2),depend(g) :: g_d2=shape(g,2)
-            integer, optional,intent(in),check(len(taper_wt)>=taper_wt_d0),depend(taper_wt) :: taper_wt_d0=len(taper_wt)
-            integer intent(in) :: corr_error_d0
-            integer intent(in) :: admit_d0
-            integer intent(in) :: admit_error_d0
-            integer intent(in) :: corr_d0
-            integer, optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers) :: tapers_d0=shape(tapers,0)
-            integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers) :: tapers_d1=shape(tapers,1)
-            integer, optional,intent(in),check(shape(t,0)==t_d0),depend(t) :: t_d0=shape(t,0)
-            integer, optional,intent(in),check(shape(t,1)==t_d1),depend(t) :: t_d1=shape(t,1)
-            integer, optional,intent(in),check(shape(t,2)==t_d2),depend(t) :: t_d2=shape(t,2)
+            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
+            real*8, optional,intent(in) :: lat = 0.0
+            real*8, optional,intent(in) :: lon = 0.0
+            integer, optional,intent(in) :: mtdef = 1
+            integer, optional,intent(in) :: k1linsig = -1
+            integer, optional,intent(in),check(tapers_d0>0),depend(tapers) :: tapers_d0=shape(tapers,0)
+            integer, optional,intent(in),check(tapers_d1>0),depend(tapers) :: tapers_d1=shape(tapers,1)
+            integer, optional,intent(in),check(taper_order_d0>0),depend(taper_order) :: taper_order_d0=len(taper_order)
+            integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1) :: taper_wt_d0=tapers_d1
+            integer, optional,intent(in),check(g_d0>0),depend(g) :: g_d0=shape(g,0)
+            integer, optional,intent(in),check(g_d1>0),depend(g) :: g_d1=shape(g,1)
+            integer, optional,intent(in),check(g_d2>0),depend(g) :: g_d2=shape(g,2)
+            integer, optional,intent(in),check(t_d0>0),depend(t) :: t_d0=shape(t,0)
+            integer, optional,intent(in),check(t_d1>0),depend(t) :: t_d1=shape(t,1)
+            integer, optional,intent(in),check(t_d2>0),depend(t) :: t_d2=shape(t,2)
+            integer, optional,intent(in),depend(lmax,lwin) :: corr_error_d0 = lmax-lwin+1
+            integer, optional,intent(in),depend(lmax,lwin) :: admit_d0 = lmax-lwin+1
+            integer, optional,intent(in),depend(lmax,lwin) :: admit_error_d0 = lmax-lwin+1
+            integer, optional,intent(in),depend(lmax,lwin) :: corr_d0 = lmax-lwin+1
         end subroutine SHLocalizedAdmitCorr
 
         subroutine EigValVecSymTri(ain,n,eig,evec,ul,ain_d0,ain_d1,evec_d0,evec_d1,eig_d0) ! in PythonWrapper.f95

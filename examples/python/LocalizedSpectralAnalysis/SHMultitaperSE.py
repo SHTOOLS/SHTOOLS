@@ -61,6 +61,10 @@ def test_MultitaperSE():
     localpower,localpower_sd = shtools.SHMultiTaperCSE(coeffs1,coeffs2,tapers,torders)
     print 'total power:',np.sum(localpower)
 
+    print '\n---- testing SHLocalizedAdmitCorr ----'
+    admit,corr,dadmit,dcorr = shtools.SHLocalizedAdmitCorr(tapers,torders,coeffs1,coeffs2)
+    print admit
+
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

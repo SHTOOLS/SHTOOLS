@@ -974,8 +974,24 @@
         integer, intent(in) :: t_d0
         integer, intent(in) :: t_d1
         integer, intent(in) :: t_d2
-        call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,admit_error,corr_error&
-                                        ,taper_wt,mtdef,k1linsig)
+        if(taper_wt(1) < 0.d0) then
+            if(k1linsig<0) then
+                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,&
+                                        admit_error,corr_error,mtdef=mtdef)
+            else
+                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,&
+                                        admit_error,corr_error,mtdef=mtdef,k1linsig=k1linsig)
+            endif
+        else
+            if(k1linsig<0) then
+                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,&
+                                        admit_error,corr_error,taper_wt=taper_wt,mtdef=mtdef)
+            else
+                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,&
+                                        admit_error,corr_error,taper_wt,mtdef,k1linsig)
+            endif
+        endif
+
     end subroutine pySHLocalizedAdmitCorr
 
     subroutine pyEigValVecSymTri(ain,n,eig,evec,ul,ain_d0,ain_d1,evec_d0,evec_d1,eig_d0) 

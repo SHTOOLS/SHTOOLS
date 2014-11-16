@@ -118,6 +118,7 @@ LOCALIZED SPECTRAL ANALYSIS
 ---------------------------
 
 -- wrapped: --
+SHLocalizedAdmitCorr (k1linsig and taper_wt are not used if negative (default))
 SHMultiTaperCSE (if first weight is negative (default) they are not used)
 SHMultiTaperSE (if first weight is negative (default) they are not used)
 SHReturnTapers
