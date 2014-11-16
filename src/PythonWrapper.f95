@@ -1197,8 +1197,13 @@
         integer, intent(in) :: alpha_d0
         integer, intent(in) :: sd_d0
         integer, intent(in) :: mtse_d0
-        call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha,lat,lon,taper_wt&
-                                 ,norm,csphase)
+        if(taper_wt(1) < 0.d0) then
+            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha,lat,lon,&
+                                                  norm=norm,csphase=csphase)
+        else
+            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha,lat,lon,&
+                                                              taper_wt,norm,csphase)
+        endif
     end subroutine pySHMultiTaperCSE
 
     subroutine pySHReadJPL(filename,cilm,lmax,error,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1&

@@ -31,8 +31,8 @@ def test_MultitaperSE():
     print 'creating spherical cap tapers with:',
     print 'size {:1.0f}deg, bandwidth {:d}, order {:d}'.format(theta0_deg,lmax,orderM)
     tapers,concentrations,shannon = shtools.SHReturnTapersM(theta0,lmax,orderM)
-    print 'taper concentrations:'
-    print concentrations
+    print 'first 3 taper concentrations:'
+    print concentrations[:3]
 
     print '\n---- testing SHReturnTapers ----'
     theta0_deg = 20.
@@ -41,8 +41,8 @@ def test_MultitaperSE():
     print 'creating spherical cap tapers of',
     print 'size {:1.0f}deg with bandwidth {:d}'.format(theta0_deg,lmax)
     tapers,concentrations,taperorder = shtools.SHReturnTapers(theta0,lmax)
-    print 'taper concentrations:'
-    print concentrations
+    print 'first 3 taper concentrations:'
+    print concentrations[:3]
 
     print '\n---- testing SHMultiTaperSE ----'
     lmax = 80
@@ -50,9 +50,16 @@ def test_MultitaperSE():
     tapers = tapers[:,:ntapers]
     torders = taperorder[:ntapers]
     coeffs = np.random.normal(size = 2*(lmax+1)*(lmax+1)).reshape(2,lmax+1,lmax+1)
-    print tapers.shape
     localpower,localpower_sd = shtools.SHMultiTaperSE(coeffs,tapers,torders)
-    print localpower
+    print 'total power:',np.sum(localpower)
+
+    print '\n---- testing SHMultiTaperCSE ----'
+    lmax = 80
+    ntapers = 3
+    coeffs1 = np.random.normal(size = 2*(lmax+1)*(lmax+1)).reshape(2,lmax+1,lmax+1)
+    coeffs2 = 0.5*(coeffs1+np.random.normal(size = 2*(lmax+1)*(lmax+1)).reshape(2,lmax+1,lmax+1))
+    localpower,localpower_sd = shtools.SHMultiTaperCSE(coeffs1,coeffs2,tapers,torders)
+    print 'total power:',np.sum(localpower)
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

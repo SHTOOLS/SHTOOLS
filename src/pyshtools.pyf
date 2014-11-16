@@ -1063,32 +1063,32 @@ python module _SHTOOLS ! in
             real*8 dimension(mtse_d0),intent(out),depend(mtse_d0) :: mtse
             real*8 dimension(sd_d0),intent(out),depend(sd_d0) :: sd
             real*8 dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-            integer intent(in) :: lmax1
+            integer, optional,intent(in),depend(sh1_d1) :: lmax1 = sh1_d1-1
             real*8 dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-            integer intent(in) :: lmax2
+            integer, optional,intent(in),depend(sh2_d1) :: lmax2 = sh2_d2-1
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer dimension(taper_order_d0),intent(in) :: taper_order
-            integer intent(in) :: lmaxt
-            integer intent(in) :: K
-            real*8, optional,dimension(alpha_d0),intent(in) :: alpha
-            real*8, optional,intent(in) :: lat
-            real*8, optional,intent(in) :: lon
-            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-            integer, optional,intent(in) :: norm
-            integer, optional,intent(in) :: csphase
-            integer, optional,intent(in),check(shape(sh1,0)==sh1_d0),depend(sh1) :: sh1_d0=shape(sh1,0)
-            integer, optional,intent(in),check(shape(sh1,1)==sh1_d1),depend(sh1) :: sh1_d1=shape(sh1,1)
-            integer, optional,intent(in),check(shape(sh1,2)==sh1_d2),depend(sh1) :: sh1_d2=shape(sh1,2)
-            integer, optional,intent(in),check(shape(sh2,0)==sh2_d0),depend(sh2) :: sh2_d0=shape(sh2,0)
-            integer, optional,intent(in),check(shape(sh2,1)==sh2_d1),depend(sh2) :: sh2_d1=shape(sh2,1)
-            integer, optional,intent(in),check(shape(sh2,2)==sh2_d2),depend(sh2) :: sh2_d2=shape(sh2,2)
-            integer, optional,intent(in),check(len(taper_order)>=taper_order_d0),depend(taper_order) :: taper_order_d0=len(taper_order)
-            integer, optional,intent(in),check(len(taper_wt)>=taper_wt_d0),depend(taper_wt) :: taper_wt_d0=len(taper_wt)
-            integer, optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers) :: tapers_d0=shape(tapers,0)
-            integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers) :: tapers_d1=shape(tapers,1)
-            integer, optional,intent(in),check(len(alpha)>=alpha_d0),depend(alpha) :: alpha_d0=len(alpha)
-            integer intent(in) :: sd_d0
-            integer intent(in) :: mtse_d0
+            integer, optional,intent(in),depend(tapers_d0) :: lmaxt = tapers_d0-1
+            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
+            real*8, optional,dimension(alpha_d0),intent(in) :: alpha = 0
+            real*8, optional,intent(in) :: lat = 0.0
+            real*8, optional,intent(in) :: lon = 0.0
+            real*8,  optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: csphase = 1
+            integer, optional,intent(in),check(sh1_d0>0),depend(sh1) :: sh1_d0=shape(sh1,0)
+            integer, optional,intent(in),check(sh1_d1>0),depend(sh1) :: sh1_d1=shape(sh1,1)
+            integer, optional,intent(in),check(sh1_d2>0),depend(sh1) :: sh1_d2=shape(sh1,2)
+            integer, optional,intent(in),check(sh2_d0>0),depend(sh2) :: sh2_d0=shape(sh2,0)
+            integer, optional,intent(in),check(sh2_d1>0),depend(sh2) :: sh2_d1=shape(sh2,1)
+            integer, optional,intent(in),check(sh2_d2>0),depend(sh2) :: sh2_d2=shape(sh2,2)
+            integer, optional,intent(in),check(taper_order_d0>0),depend(taper_order) :: taper_order_d0=len(taper_order)
+            integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1) :: taper_wt_d0=tapers_d1
+            integer, optional,intent(in),check(tapers_d0>0),depend(tapers) :: tapers_d0=shape(tapers,0)
+            integer, optional,intent(in),check(tapers_d1>0),depend(tapers) :: tapers_d1=shape(tapers,1)
+            integer, optional,intent(in) :: alpha_d0=3
+            integer, optional,intent(in),check(sd_d0>0),depend(lmax1,lmax2,lmaxt) :: sd_d0 =  min(lmax1,lmax2)-lmaxt+1
+            integer, optional,intent(in),check(mtse_d0>0),depend(lmax1,lmax2,lmaxt) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
         end subroutine SHMultiTaperCSE
 
         subroutine SHReadJPL(filename,cilm,lmax,error,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2) ! in PythonWrapper.f95

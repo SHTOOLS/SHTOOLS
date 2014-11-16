@@ -118,6 +118,7 @@ LOCALIZED SPECTRAL ANALYSIS
 ---------------------------
 
 -- wrapped: --
+SHMultiTaperCSE (if first weight is negative (default) they are not used)
 SHMultiTaperSE (if first weight is negative (default) they are not used)
 SHReturnTapers
 SHReturnTapersM
