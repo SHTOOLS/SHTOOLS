@@ -65,6 +65,39 @@ def test_MultitaperSE():
     admit,corr,dadmit,dcorr = shtools.SHLocalizedAdmitCorr(tapers,torders,coeffs1,coeffs2)
     print admit
 
+    print '\n---- testing ComputeD0 ----'
+    theta0_deg = 20.
+    theta0     = np.radians(theta0_deg)
+    lmax       = 10
+    D0 = shtools.ComputeD0(lmax,theta0)
+    print D0[0,:3]
+
+    print '\n---- testing ComputeDm ----'
+    theta0_deg = 20.
+    theta0     = np.radians(theta0_deg)
+    lmax       = 10
+    m          = 2
+    Dm = shtools.ComputeDm(lmax,m,theta0)
+    print Dm[:3,:3]
+
+    print '\n---- testing ComputeDG82 ----'
+    theta0_deg = 20.
+    theta0     = np.radians(theta0_deg)
+    lmax       = 10
+    m          = 2
+    DG82 = shtools.ComputeDG82(lmax,m,theta0)
+    print DG82[:3,:3]
+
+    print '\n---- testing SHFindLWin ----'
+    theta0_deg = 20.
+    theta0     = np.radians(theta0_deg)
+    m          = 2
+    ntapers    = 3
+    minconcentration = 0.8
+    lmax = shtools.SHFindLWin(theta0,m,minconcentration,taper_number=ntapers)
+    print lmax
+
+
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

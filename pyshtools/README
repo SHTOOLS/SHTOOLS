@@ -117,7 +117,19 @@ ALL WRAPPED
 LOCALIZED SPECTRAL ANALYSIS
 ---------------------------
 
+-- not wrapped: --
+SHBiasK
+SHBiasAdmitCorr
+SHMTDebias
+SHMTVarOpt0
+SHSjkPG0
+SHSjkPG
+
 -- wrapped: --
+ComputeD0
+ComputeDm
+ComputeDG82
+SHFindLWin
 SHLocalizedAdmitCorr (k1linsig and taper_wt are not used if negative (default))
 SHMultiTaperCSE (if first weight is negative (default) they are not used)
 SHMultiTaperSE (if first weight is negative (default) they are not used)

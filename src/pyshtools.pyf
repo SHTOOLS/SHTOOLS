@@ -763,8 +763,8 @@ python module _SHTOOLS ! in
             real*8 dimension(D0_d0,D0_d1),intent(out),depend(D0_d0,D0_d1) :: D0
             integer intent(in) :: lmax
             real*8 intent(in) :: theta0
-            integer intent(in) :: D0_d0
-            integer intent(in) :: D0_d1
+            integer,optional,intent(in),depend(lmax) :: D0_d0 = lmax+1
+            integer,optional,intent(in),depend(lmax) :: D0_d1 = lmax+1
         end subroutine ComputeD0
 
         subroutine ComputeDm(dllm,lmax,m,theta0,dllm_d0,dllm_d1) ! in PythonWrapper.f95
@@ -774,8 +774,8 @@ python module _SHTOOLS ! in
             integer intent(in) :: lmax
             integer intent(in) :: m
             real*8 intent(in) :: theta0
-            integer intent(in) :: dllm_d0
-            integer intent(in) :: dllm_d1
+            integer, optional,intent(in),depend(lmax) :: dllm_d0 = lmax+1
+            integer, optional,intent(in),depend(lmax) :: dllm_d1 = lmax+1
         end subroutine ComputeDm
 
         subroutine SphericalCapCoef(coef,theta,lmax,coef_d0) ! in PythonWrapper.f95
@@ -835,7 +835,7 @@ python module _SHTOOLS ! in
             real*8 intent(in) :: theta0
             integer intent(in) :: m
             real*8 intent(in) :: alpha
-            integer, optional,intent(in) :: taper_number
+            integer, optional,intent(in) :: taper_number = 1
             integer :: SHFindLWin
         end function SHFindLWin
 
@@ -916,8 +916,8 @@ python module _SHTOOLS ! in
             integer intent(in) :: lmax
             integer intent(in) :: m
             real*8 intent(in) :: theta0
-            integer intent(in) :: dG82_d0
-            integer intent(in) :: dG82_d1
+            integer, optional,intent(in),depend(lmax,m) :: dG82_d0 = lmax-abs(m)+1
+            integer, optional,intent(in),depend(lmax,m) :: dG82_d1 = lmax-abs(m)+1
         end subroutine ComputeDG82
 
         function PlmIndex(l,m) ! in PythonWrapper.f95
