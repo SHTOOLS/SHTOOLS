@@ -97,6 +97,17 @@ def test_MultitaperSE():
     lmax = shtools.SHFindLWin(theta0,m,minconcentration,taper_number=ntapers)
     print lmax
 
+    print '\n---- testing SHBiasK ----'
+    lmax = 80
+    power_unbiased = 1./(1.+np.arange(lmax))**2
+    power_biased = shtools.SHBiasK(tapers,power_unbiased)
+    print (power_biased[:lmax]/power_unbiased)[:5]
+
+    print '\n---- testing SHBias ----'
+    lmax = 80
+    power_unbiased = 1./(1.+np.arange(lmax))**2
+    power_biased = shtools.SHBias(tapers[:,2],power_unbiased)
+    print (power_biased[:lmax]/power_unbiased)[:5]
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

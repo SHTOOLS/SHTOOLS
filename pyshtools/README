@@ -118,7 +118,6 @@ LOCALIZED SPECTRAL ANALYSIS
 ---------------------------
 
 -- not wrapped: --
-SHBiasK
 SHBiasAdmitCorr
 SHMTDebias
 SHMTVarOpt0
@@ -126,6 +125,8 @@ SHSjkPG0
 SHSjkPG
 
 -- wrapped: --
+SHBiasK
+SHBias
 ComputeD0
 ComputeDm
 ComputeDG82

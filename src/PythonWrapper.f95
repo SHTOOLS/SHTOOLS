@@ -1094,7 +1094,11 @@
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: incspectra_d0
         integer, intent(in) :: outcspectra_d0
-        call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,taper_wt,save_cg)
+        if(taper_wt(1) < 0.d0) then
+            call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,save_cg=save_cg)
+        else
+            call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,taper_wt,save_cg)
+        endif
     end subroutine pySHBiasK
 
     function pySHSjkPG0(incspectra,j,k,l,m,evec,lwin,evec_d0,evec_d1,incspectra_d0) 

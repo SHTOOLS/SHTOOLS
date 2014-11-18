@@ -965,7 +965,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(incspectra_d0) :: ldata = incspectra_d0-1
             real*8 dimension(outcspectra_d0),intent(out),depend(outcspectra_d0) :: outcspectra
             integer, optional,intent(in) :: save_cg = 0
-            integer, optional,intent(in),check(len(Shh)>=Shh_d0),depend(Shh) :: Shh_d0=len(Shh)
+            integer, optional,intent(in),check(Shh_d0>0),depend(Shh) :: Shh_d0=len(Shh)
             integer, optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra) :: incspectra_d0=len(incspectra)
             integer, optional,intent(in) :: outcspectra_d0 = ldata+lwin
         end subroutine SHBias
@@ -974,18 +974,18 @@ python module _SHTOOLS ! in
             fortranname pyshbiask
             use shtools, only: SHBiasK
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer intent(in) :: lwin
-            integer intent(in) :: numk
+            integer, optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
+            integer, optional,intent(in),depend(tapers_d1) :: numk = tapers_d1
             real*8 dimension(incspectra_d0),intent(in) :: incspectra
-            integer intent(in) :: ldata
+            integer, optional,intent(in),depend(incspectra_d0) :: ldata = incspectra_d0-1
             real*8 dimension(outcspectra_d0),intent(out),depend(outcspectra_d0) :: outcspectra
-            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-            integer, optional,intent(in) :: save_cg
-            integer, optional,intent(in),check(len(taper_wt)>=taper_wt_d0),depend(taper_wt) :: taper_wt_d0=len(taper_wt)
+            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
+            integer, optional,intent(in) :: save_cg = 0
+            integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1) :: taper_wt_d0=tapers_d1
             integer, optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers) :: tapers_d0=shape(tapers,0)
             integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers) :: tapers_d1=shape(tapers,1)
             integer, optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra) :: incspectra_d0=len(incspectra)
-            integer intent(in) :: outcspectra_d0
+            integer, optional,intent(in),depend(ldata,lwin) :: outcspectra_d0 = ldata+lwin
         end subroutine SHBiasK
 
         function SHSjkPG0(incspectra,j,k,l,m,evec,lwin,evec_d0,evec_d1,incspectra_d0) ! in PythonWrapper.f95
@@ -1565,15 +1565,15 @@ python module _SHTOOLS ! in
             real*8 dimension(sgt_d0),intent(in) :: sgt
             real*8 dimension(sgg_d0),intent(in) :: sgg
             real*8 dimension(stt_d0),intent(in) :: stt
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(sgt_d0) :: lmax = sgt_d0-1
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer intent(in) :: lwin
-            integer intent(in) :: K
+            integer, optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
+            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
             real*8 dimension(admit_d0),intent(out),depend(admit_d0) :: admit
             real*8 dimension(corr_d0),intent(out),depend(corr_d0) :: corr
-            integer, optional,intent(in) :: mtdef
+            integer, optional,intent(in) :: mtdef = 0
             real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-            integer, optional,intent(in),check(len(taper_wt)>=taper_wt_d0),depend(taper_wt) :: taper_wt_d0=len(taper_wt)
+            integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1) :: taper_wt_d0=tapers_d1
             integer, optional,intent(in),check(len(sgt)>=sgt_d0),depend(sgt) :: sgt_d0=len(sgt)
             integer, optional,intent(in),check(len(stt)>=stt_d0),depend(stt) :: stt_d0=len(stt)
             integer intent(in) :: admit_d0
