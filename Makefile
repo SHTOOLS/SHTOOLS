@@ -120,6 +120,7 @@ python-wrapper: all
 	$(F2PY) --f90flags="-Wtabs" -c $(SRCDIR)/PlanetsConstants.f95 -m _constants
 	mv _SHTOOLS.so pyshtools/.
 	mv _constants.so pyshtools/.
+	mkdir -p pyshtools/doc
 	./pyshtools/make_docs.py .
 	@echo
 	@echo MAKE SUCCESSFUL!
