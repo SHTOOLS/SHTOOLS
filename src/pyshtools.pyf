@@ -671,7 +671,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in) :: norm=1
             integer, optional,intent(in) :: sampling=1
             integer, optional,intent(in) :: csphase=1
-            integer, optional,intent(in),depend(lmax) :: lmax_calc=lmax
+            integer, optional,intent(in),depend(cilm_d1) :: lmax_calc=cilm_d1-1
             integer, optional,intent(in),depend(cilm) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),depend(cilm) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),depend(cilm) :: cilm_d2=shape(cilm,2)

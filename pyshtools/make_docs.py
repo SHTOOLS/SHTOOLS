@@ -98,6 +98,11 @@ def process_f2pydoc(f2pydoc):
                 docparts[3] = re.sub(arg,default,docparts[3])
                 docparts[2] = re.sub(searchpattern,'',docparts[2])
 
+    #---- remove all optional _d# from optional argument list:
+    if doc_has_optionals:
+        searchpattern = '\w+_d\d : input.*\n.*Default: (.*)\n'
+        docparts[2] = re.sub(searchpattern,'',docparts[2])
+
     #---- combine doc parts to a single string
     processed_signature = '\n--'.join(docparts)
 
