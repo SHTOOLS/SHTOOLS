@@ -8,7 +8,6 @@ string of the f2py wrapped functions.
 
 import sys, os, re
 import _SHTOOLS
-import mydebug
 
 def main():
     #---- input/output folders ----
@@ -39,14 +38,15 @@ def main():
                 if match is None:
                     description = '\nDESCRIPTION\n-----------\nDOCUMENTATION NOT AVAILABLE'
                 else:
-                    description = '\nDESCRIPTION\n-----------' + match.group(1)
+                    poddoc = process_pod(match.group(1))
+                    description = '\nDESCRIPTION\n-----------' + poddoc
     
                 match = renotes.search(podstring)
                 if match is None:
                     notes       = ''
                 else:
-                    notes       = '\nNOTES\n-----'+ match.group(1)
-    
+                    poddoc = process_pod(match.group(1))
+                    notes       = '\nNOTES\n-----' + poddoc
                 podfile.close()
     
                 #combine docstring:
@@ -61,7 +61,7 @@ def main():
             except IOError,msg:
                 print msg
 
-#===== HELPER FUNCTIONS ====
+#===== PROCESS F2PY DOCUMENTATION ====
 def process_f2pydoc(f2pydoc):
     """
     this function replace all optional _d0 arguments with their default values
@@ -96,11 +96,23 @@ def process_f2pydoc(f2pydoc):
             if match:
                 default = match.group(1) #this returns the value in brackets in the search pattern
                 docparts[3] = re.sub(arg,default,docparts[3])
+                docparts[2] = re.sub(searchpattern,'',docparts[2])
 
     #---- combine doc parts to a single string
     processed_signature = '\n--'.join(docparts)
 
     return processed_signature
+
+#===== PROCESS POD DOCUMENTATION ====
+def process_pod(string):
+    """This function removes some of the pod language commands to get, for example, bold text."""
+    while True:
+        match = re.search('I<(\w+)>',string)
+        if match:
+            string = re.sub(match.group(0),match.group(1),string)
+        else:
+            break
+    return string
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
