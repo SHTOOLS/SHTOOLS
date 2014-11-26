@@ -50,13 +50,13 @@ def TimingAccuracyGLQ():
 
         #synthesis / inverse
         tstart = time.time()
-        grid = shtools.MakeGridGLQ(cilm_trim,lmax,zeros)
+        grid = shtools.MakeGridGLQ(cilm_trim,zeros)
         tend   = time.time()
         tinverse = tend-tstart
 
         #analysis / forward
         tstart = time.time()
-        cilm2_trim  = shtools.SHExpandGLQ(lmax,grid,weights,zeros)
+        cilm2_trim  = shtools.SHExpandGLQ(grid,weights,zeros)
         tend   = time.time()
         tforward = tend-tstart
 

@@ -45,13 +45,13 @@ def TimingAccuracyDH():
 
         #synthesis / inverse
         tstart = time.time()
-        grid,n = shtools.MakeGridDH(cilm_trim,lmax,sampling=sampling) 
+        grid = shtools.MakeGridDH(cilm_trim,sampling=sampling) 
         tend   = time.time()
         tinverse = tend-tstart
 
         #analysis / forward
         tstart = time.time()
-        cilm2_trim,l  = shtools.SHExpandDH(grid,n,sampling=sampling)
+        cilm2_trim  = shtools.SHExpandDH(grid,sampling=sampling)
         tend   = time.time()
         tforward = tend-tstart
 

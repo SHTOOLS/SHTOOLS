@@ -297,7 +297,7 @@ python module _SHTOOLS ! in
             use shtools, only: MakeGridGLQ
             real*8 dimension(gridglq_d0,gridglq_d1),intent(out),depend(gridglq_d0,gridglq_d1) :: gridglq
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
             real*8, dimension(zero_d0),intent(in) :: zero
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1
@@ -314,7 +314,7 @@ python module _SHTOOLS ! in
             fortranname pyshexpandglq
             use shtools, only: SHExpandGLQ
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out),depend(cilm_d0,cilm_d1,cilm_d2) :: cilm
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(gridglq_d0) :: lmax=gridglq_d0-1
             real*8 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
             real*8 dimension(w_d0),intent(in) :: w
             real*8, dimension(zero_d0),intent(in) :: zero
@@ -647,9 +647,9 @@ python module _SHTOOLS ! in
             fortranname pyshexpanddh
             use shtools, only: SHExpandDH
             real*8 dimension(grid_d0,grid_d1),intent(in) :: grid
-            integer intent(in) :: n
+            integer, optional,intent(in),depend(grid_d0) :: n=grid_d0
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out),depend(cilm_d0,cilm_d1,cilm_d2) :: cilm
-            integer intent(out) :: lmax
+            integer, intent(hide) :: lmax
             integer, optional,intent(in) :: norm=1
             integer, optional,intent(in) :: sampling=1
             integer, optional,intent(in) :: csphase=1
@@ -665,9 +665,9 @@ python module _SHTOOLS ! in
             fortranname pymakegriddh
             use shtools, only: MakeGridDH
             real*8 dimension(griddh_d0,griddh_d1),intent(out),depend(griddh_d0,griddh_d1) :: griddh
-            integer intent(out) :: n
+            integer intent(hide) :: n
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer, intent(in) :: lmax
+            integer, optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
             integer, optional,intent(in) :: norm=1
             integer, optional,intent(in) :: sampling=1
             integer, optional,intent(in) :: csphase=1
@@ -1381,9 +1381,9 @@ python module _SHTOOLS ! in
             fortranname pyshexpanddhc
             use shtools, only: SHExpandDHC
             complex*16 dimension(grid_d0,grid_d1),intent(in) :: grid
-            integer intent(in) :: n
+            integer, optional,intent(in),depend(grid_d0) :: n=grid_d0
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out),depend(cilm_d0,cilm_d1,cilm_d2) :: cilm
-            integer intent(out) :: lmax
+            integer intent(hide) :: lmax
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: sampling = 1
             integer, optional,intent(in) :: csphase = 1
@@ -1399,9 +1399,9 @@ python module _SHTOOLS ! in
             fortranname pymakegriddhc
             use shtools, only: MakeGridDHC
             complex*16 dimension(griddh_d0,griddh_d1),intent(out),depend(griddh_d0,griddh_d1) :: griddh
-            integer intent(out) :: n
+            integer intent(hide) :: n
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
             integer, optional,intent(in) :: norm=1
             integer, optional,intent(in) :: sampling=1
             integer, optional,intent(in) :: csphase=1
@@ -1418,8 +1418,8 @@ python module _SHTOOLS ! in
             use shtools, only: MakeGridGLQC
             complex*16 dimension(gridglq_d0,gridglq_d1),intent(out),depend(gridglq_d0,gridglq_d1) :: gridglq
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer intent(in) :: lmax
-            real*8, optional,dimension(zero_d0),intent(in) :: zero
+            integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
+            real*8, dimension(zero_d0),intent(in) :: zero
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
@@ -1435,19 +1435,19 @@ python module _SHTOOLS ! in
             fortranname pyshexpandglqc
             use shtools, only: SHExpandGLQC
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out),depend(cilm_d0,cilm_d1,cilm_d2) :: cilm
-            integer intent(in) :: lmax
             complex*16 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
             real*8 dimension(w_d0),intent(in) :: w
-            real*8, optional,dimension(zero_d0),intent(in) :: zero
+            real*8, dimension(zero_d0),intent(in) :: zero
+            integer, optional,intent(in),depend(gridglq_d0) :: lmax=gridglq_d0-1
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
             integer, optional,intent(in) :: cilm_d0 = 2
             integer, optional,intent(in),depend(lmax) :: cilm_d1 = lmax+1
             integer, optional,intent(in),depend(lmax) :: cilm_d2 = lmax+1
-            integer, optional,intent(in),check(shape(gridglq,0)==gridglq_d0),depend(gridglq) :: gridglq_d0=shape(gridglq,0)
-            integer, optional,intent(in),check(shape(gridglq,1)==gridglq_d1),depend(gridglq) :: gridglq_d1=shape(gridglq,1)
-            integer, optional,intent(in),check(len(zero)>=zero_d0),depend(zero) :: zero_d0=len(zero)
+            integer, optional,intent(in),depend(gridglq) :: gridglq_d0=shape(gridglq,0)
+            integer, optional,intent(in),depend(gridglq) :: gridglq_d1=shape(gridglq,1)
+            integer, optional,intent(in),depend(zero) :: zero_d0=len(zero)
             integer, optional,intent(in),check(len(w)>=w_d0),depend(w) :: w_d0=len(w)
         end subroutine SHExpandGLQC
 
