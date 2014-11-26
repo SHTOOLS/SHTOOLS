@@ -8,6 +8,7 @@ string of the f2py wrapped functions.
 
 import sys, os, re
 import _SHTOOLS
+import mydebug
 
 def main():
     #---- input/output folders ----
@@ -67,13 +68,36 @@ def process_f2pydoc(f2pydoc):
     in the function signature. These arguments are not intended to be used and
     signify merely the array dimensions of the associated argument.
     """
-    #I.  split f2py document in its parts
+    #---- split f2py document in its parts
+    #0=Call Signature
+    #1=Parameters
+    #2=Other (optional) Parameters (only if present)
+    #3=Returns
     docparts    = re.split('\n--',f2pydoc)
 
-    #II. replace arguments with _d suffix with empty string in function signature (remove them):
+    if len(docparts) == 4: 
+        doc_has_optionals = True
+    elif len(docparts) == 3:
+        doc_has_optionals = False
+    else:
+        print '-- uninterpretable f2py documentation --'
+        return f2pydoc
+
+    #---- replace arguments with _d suffix with empty string in function signature (remove them):
     docparts[0] = re.sub('[\[(,]\w+_d\d','',docparts[0])
 
-    # combine doc parts to a single string
+    #---- replace _d arguments of the return arrays with their default value:
+    if doc_has_optionals:
+
+        returnarray_dims = re.findall('[\[(,](\w+_d\d)',docparts[3])
+        for arg in returnarray_dims:
+            searchpattern = arg+' : input.*\n.*Default: (.*)\n'
+            match = re.search(searchpattern,docparts[2])
+            if match:
+                default = match.group(1) #this returns the value in brackets in the search pattern
+                docparts[3] = re.sub(arg,default,docparts[3])
+
+    #---- combine doc parts to a single string
     processed_signature = '\n--'.join(docparts)
 
     return processed_signature
