@@ -100,12 +100,10 @@ NGLQ
 NGLQSH
 NGLQSHN
 MakeGrid2D (if f,a < 0, they are treated as not present, default is f=-1,a=-1)
-
--- unwrapped: --
-
 SHExpandLSQ
 MakeGridPoint
 SHMultiply
+
 
 
 

@@ -683,12 +683,12 @@ python module _SHTOOLS ! in
             fortranname pymakegridpoint
             use shtools, only: MakeGridPoint
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
             real*8 intent(in) :: lat
             real*8 intent(in) :: longitude
-            integer, optional,intent(in) :: norm
-            integer, optional,intent(in) :: csphase
-            integer, optional,intent(in) :: dealloc
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: csphase = 1
+            integer, optional,intent(in) :: dealloc = 0
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
@@ -719,20 +719,20 @@ python module _SHTOOLS ! in
             fortranname pyshexpandlsq
             use shtools, only: SHExpandLSQ
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out),depend(cilm_d0,cilm_d1,cilm_d2) :: cilm
+            real*8 intent(out) :: chi2
             real*8 dimension(d_d0),intent(in) :: d
             real*8 dimension(lat_d0),intent(in) :: lat
             real*8 dimension(lon_d0),intent(in) :: lon
-            integer intent(in) :: nmax
+            integer intent(in),check(lat_d0==d_d0 && lon_d0==d_d0),depend(lat_d0,lon_d0,d_d0) :: nmax = d_d0
             integer intent(in) :: lmax
-            integer, optional,intent(in) :: norm
-            real*8, optional,intent(out) :: chi2
-            integer, optional,intent(in) :: csphase
-            integer, optional,intent(in),check(len(d)>=d_d0),depend(d) :: d_d0=len(d)
-            integer, optional,intent(in),check(len(lon)>=lon_d0),depend(lon) :: lon_d0=len(lon)
-            integer intent(in) :: cilm_d0
-            integer intent(in) :: cilm_d1
-            integer intent(in) :: cilm_d2
-            integer, optional,intent(in),check(len(lat)>=lat_d0),depend(lat) :: lat_d0=len(lat)
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: csphase = 1
+            integer, optional,intent(in),depend(d) :: d_d0=len(d)
+            integer, optional,intent(in),depend(lon) :: lon_d0=len(lon)
+            integer, optional,intent(in),depend(lat) :: lat_d0=len(lat)
+            integer, optional,intent(in) :: cilm_d0=2
+            integer, optional,intent(in),depend(lmax) :: cilm_d1 = lmax+1
+            integer, optional,intent(in),depend(lmax) :: cilm_d2 = lmax+1
         end subroutine SHExpandLSQ
 
         subroutine SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,shout_d0,shout_d1,shout_d2) ! in PythonWrapper.f95
@@ -740,21 +740,21 @@ python module _SHTOOLS ! in
             use shtools, only: SHMultiply
             real*8 dimension(shout_d0,shout_d1,shout_d2),intent(out),depend(shout_d0,shout_d1,shout_d2) :: shout
             real*8 dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-            integer intent(in) :: lmax1
+            integer, optional,intent(in),depend(sh1_d1) :: lmax1 = sh1_d1-1
             real*8 dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-            integer intent(in) :: lmax2
-            integer, optional,intent(in) :: precomp
-            integer, optional,intent(in) :: norm
-            integer, optional,intent(in) :: csphase
-            integer, optional,intent(in),check(shape(sh1,0)==sh1_d0),depend(sh1) :: sh1_d0=shape(sh1,0)
-            integer, optional,intent(in),check(shape(sh1,1)==sh1_d1),depend(sh1) :: sh1_d1=shape(sh1,1)
-            integer, optional,intent(in),check(shape(sh1,2)==sh1_d2),depend(sh1) :: sh1_d2=shape(sh1,2)
-            integer, optional,intent(in),check(shape(sh2,0)==sh2_d0),depend(sh2) :: sh2_d0=shape(sh2,0)
-            integer, optional,intent(in),check(shape(sh2,1)==sh2_d1),depend(sh2) :: sh2_d1=shape(sh2,1)
-            integer, optional,intent(in),check(shape(sh2,2)==sh2_d2),depend(sh2) :: sh2_d2=shape(sh2,2)
-            integer intent(in) :: shout_d0
-            integer intent(in) :: shout_d1
-            integer intent(in) :: shout_d2
+            integer, optional,intent(in),depend(sh2_d1) :: lmax2 = sh2_d1-1
+            integer, optional,intent(in) :: precomp = 0
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: csphase = 1
+            integer, optional,intent(in),depend(sh1) :: sh1_d0=shape(sh1,0)
+            integer, optional,intent(in),depend(sh1) :: sh1_d1=shape(sh1,1)
+            integer, optional,intent(in),depend(sh1) :: sh1_d2=shape(sh1,2)
+            integer, optional,intent(in),depend(sh2) :: sh2_d0=shape(sh2,0)
+            integer, optional,intent(in),depend(sh2) :: sh2_d1=shape(sh2,1)
+            integer, optional,intent(in),depend(sh2) :: sh2_d2=shape(sh2,2)
+            integer, optional,intent(in) :: shout_d0 = 2
+            integer, optional,intent(in),depend(lmax1,lmax2) :: shout_d1 = lmax1+lmax2+1
+            integer, optional,intent(in),depend(lmax1,lmax2) :: shout_d2 = lmax1+lmax2+1
         end subroutine SHMultiply
 
         subroutine ComputeD0(D0,lmax,theta0,D0_d0,D0_d1) ! in PythonWrapper.f95
