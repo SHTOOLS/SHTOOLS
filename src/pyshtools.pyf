@@ -255,29 +255,29 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(plx,1)==plx_d1),depend(plx) :: plx_d1=shape(plx,1)
         end subroutine HilmRhoH
 
-        subroutine MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west,dealloc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1) ! in PythonWrapper.f95
+        subroutine MakeGrid2D(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west,dealloc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1) ! in PythonWrapper.f95
             fortranname pymakegrid2d
             use shtools, only: MakeGrid2d
             real*8 dimension(grid_d0,grid_d1),intent(out),depend(grid_d0,grid_d1) :: grid
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer intent(in) :: lmax
-            real*8 intent(in) :: interval
-            integer intent(out) :: nlat
-            integer intent(out) :: nlong
-            integer, optional,intent(in) :: norm
-            integer, optional,intent(in) :: csphase
-            real*8, optional,intent(in) :: f
-            real*8, optional,intent(in) :: a
-            real*8, optional,intent(in) :: north
-            real*8, optional,intent(in) :: south
-            real*8, optional,intent(in) :: east
-            real*8, optional,intent(in) :: west
-            integer, optional,intent(in) :: dealloc
+            integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
+            real*8 intent(in) :: interval = 1.0
+            integer, intent(hide) :: nlat
+            integer, intent(hide) :: nlong
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: csphase = 1
+            real*8, optional,intent(in) :: f = -1.0
+            real*8, optional,intent(in) :: a = -1.0
+            real*8, optional,intent(in) :: north = 90.
+            real*8, optional,intent(in) :: south = -90.
+            real*8, optional,intent(in) :: east = 360.
+            real*8, optional,intent(in) :: west = 0.
+            integer, optional,intent(in) :: dealloc = 0
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
-            integer intent(in) :: grid_d0
-            integer intent(in) :: grid_d1
+            integer, optional,intent(in),depend(north,south,interval)  :: grid_d0 = (north-south)/interval + 1
+            integer, optional,intent(in),depend(east,west,interval) :: grid_d1 = (east-west)/interval + 1
         end subroutine MakeGrid2d
 
         subroutine GLQGridCoord(latglq,longlq,lmax,nlat,nlong,latglq_d0,longlq_d0) ! in PythonWrapper.f95

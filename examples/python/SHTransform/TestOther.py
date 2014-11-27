@@ -16,14 +16,23 @@ def main():
     test_GLQGridCoord()
     test_PreGLQ()
     test_NGLQ()
+    test_MakeGrid2D()
 
 #==== TEST FUNCTIONS ====
+def test_MakeGrid2D():
+	print '--- Testing MakeGrid2D ---'
+        lmax   = 50
+	coeffs = np.random.normal(size=2*(lmax+1)*(lmax+1)).reshape(2,lmax+1,lmax+1)
+	grid = shtools.MakeGrid2D(coeffs)
+        print np.sum(grid)
+
 def test_DHaj():
 	print '--- Testing DHaj ---'
 	n=20
 	aj = shtools.DHaj(n)
 	print 'n = ', n
 	print 'Driscoll-Healy weights = ', aj
+
 def test_GLQGridCoord():
 	print '--- Testing GLQGridCoord ---'
 	lmax = 10
@@ -32,6 +41,7 @@ def test_GLQGridCoord():
 	print '(nlat,nlong) = ', (nlat,nlong)
 	print 'latitude = ', lat
 	print 'longitude = ', lon	
+
 def test_PreGLQ():
 	print '--- Testing PreGLQ ---'
 	lower, upper, n = (-1.0, 1.0, 20)
@@ -41,6 +51,7 @@ def test_PreGLQ():
 	print 'N = ', n
 	print 'zeros = ', zero
 	print 'weights = ', w
+
 def test_NGLQ():
 	print '--- Testing NGLQ, NGLQSH, NGLQSHN ---'
 	lmax = 20
@@ -50,6 +61,7 @@ def test_NGLQ():
 	print 'NGLQ = ', shtools.NGLQ(lmax)
 	print 'NGLQSH = ', shtools.NGLQSH(lmax)
 	print 'NGLQNSH = ', shtools.NGLQSHN(lmax, n)
+
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

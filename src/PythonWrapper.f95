@@ -297,7 +297,12 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: grid_d0
         integer, intent(in) :: grid_d1
-        call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west,dealloc)
+        if (f>0 .and. a>0) then
+            call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west,dealloc)
+        else
+            call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm,csphase=csphase,&
+                               north=north,south=south,east=east,west=west,dealloc=dealloc)
+        endif
     end subroutine pyMakeGrid2d
 
     subroutine pyGLQGridCoord(latglq,longlq,lmax,nlat,nlong,latglq_d0,longlq_d0) 
