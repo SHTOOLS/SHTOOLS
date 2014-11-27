@@ -1,11 +1,38 @@
+LICENSE INFORMATION
+===================
+
+
 INSTALLATION INSTRUCTIONS
 =========================
 
+1. check and adjust the Makefile
+
+2. type: make all
+
+3. type: make python-wrapper
 
 
 
-EXAMPLES
-========
+
+MINI EXAMPLES
+=============
+
+typical imports
+---------------
+>> import numpy as np
+>> import pyshtools
+
+creating coefficient array
+--------------------------
+>> lmax = 80
+>> coeffs = np.random.normal(size=2*(lmax+1)*(lmax+1)).reshape(2,lmax+1,lmax+1)
+or
+>> coeffs = np.zeros( (2,lmax+1,lmax+1) )
+
+forward and inverse spherical harmonic transforms
+-------------------------------------------------
+>> grid = pyshtools.MakeGridDH(coeffs)
+>> coeffs = pyshtools.SHExpandDH(grid)
 
 
 
