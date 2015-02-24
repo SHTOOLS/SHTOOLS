@@ -77,19 +77,19 @@ Reference radius of the gravitational-potential model.
 
 Angular rotation rate of the Moon.
 
-=item C_MOI
+=item C_MOI_Moon
 
 Polar moment of inertia, using R=1738 km.
 
-=item I_MOI
+=item I_MOI_Moon
 
 Average moment of inertia, using R=1738 km.
 
-=item Gamma_MOI
+=item Gamma_MOI_Moon
 
 Gamma = (B-A)/C.
 
-=item Beta_MOI
+=item Beta_MOI_Moon
 
 Beta = (C-A)/B.
 

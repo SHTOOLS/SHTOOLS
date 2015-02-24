@@ -1,14 +1,12 @@
-subroutine PreCompute(lmax, zero, w, plx, wisdom_file, norm, csphase, cnorm)
+subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 !	This routine will precompute several arrays and matrixes that are 
 !	necessary for the Gauss-Legendre quadrature sherical harmonic
 !	expansion routines. This is done only to speed up computations
 !	in the case where more than one expansion is performed.
-!	In addition, system-wide FFTW wisdom will be loaded, as well 
-!	as an optional user wisdom file. Note, if memory is an issue
-!	because of large spherical harmonic degrees, DO NOT PRECOMPUTE
-!	THE ARRAY PLX!
+!	Note, if memory is an issue because of large spherical harmonic 
+!	degrees, DO NOT PRECOMPUTE THE ARRAY PLX!
 !
 !	Calling Parameters:
 !		IN
@@ -20,7 +18,6 @@ subroutine PreCompute(lmax, zero, w, plx, wisdom_file, norm, csphase, cnorm)
 !			w:		An array of length lmax + 1 which contains the weights used in the 
 !					Gauss-Legendre quadrature routines.
 !		OPTIONAL
-!			wisdom_file	User wisdom file name.
 !			plx:		Array of normalized associated Legendre Polnomials computed
 !					at the Gauss points. The size of this array must be
 !					(1:lmax+1, 1:(lmax+1)*(lmax+2)/2).
@@ -45,6 +42,7 @@ subroutine PreCompute(lmax, zero, w, plx, wisdom_file, norm, csphase, cnorm)
 !	takes place at the same speed as before. The only reason for precomputing this
 !	is in case it it reused several times.
 !	May 1, 2008. Added optional arguement CNORM to calculate complex normalized Legendre functions.
+!	Feb. 24, 2015. Removed support for FFTW wisdom files.
 !
 !	Copyright (c) 2005-2008, Mark A. Wieczorek
 !	All rights reserved.
@@ -58,10 +56,7 @@ subroutine PreCompute(lmax, zero, w, plx, wisdom_file, norm, csphase, cnorm)
 	real*8, intent(out) ::	zero(:), w(:)
 	real*8, intent(out), optional ::	plx(:,:)
 	integer, intent(in), optional ::	norm, csphase, cnorm
-	character(*), intent(in), optional ::	wisdom_file
-	character ::	system_wisdom(80)
-	integer ::		n, i, isuccess, fn, istat, astat, phase, l, m, i_s, cnormin
-	integer, save ::	first_call = 1
+	integer ::		n, i, istat, astat, phase, l, m, i_s, cnormin
 	real*8  :: 		upper, lower, pi
 	real*8, allocatable :: 	 pl(:)
 	
@@ -122,46 +117,7 @@ subroutine PreCompute(lmax, zero, w, plx, wisdom_file, norm, csphase, cnorm)
 		cnormin = 0
 	endif
 	
-	pi = acos(-1.0d0)
-
-	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	!
-	! 	Load FFTW wisdom files if this is the first time this routine is being called
-	!
-	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
-	if (first_call == 1) then
-	
-		system_wisdom = "/etc/fftw/wisdom"
-		call dfftw_import_system_wisdom(isuccess)
-	
-		if (isuccess /= 0) then
-			print*, "Using system-wide FFTW wisdom."
-		endif
-
-		if (present(wisdom_file)) then
-
-			fn = 12
-			open(unit=fn, file=wisdom_file, iostat = istat)
-			
-			if (istat /= 0 ) then
-				print*, "Error --- PreCompute"
-				print*, "Problem opening user defined FFTW wisdom file."
-			endif
-			
-			call import_wisdom_from_file(isuccess, fn)
-			if (isuccess == 0) then
-				print*, "Local Wisdom file successfully read."
-			else
-				print*, "Local Wisdom file not read."
-			endif
-
-		endif
-		
-		first_call = 0
-		
-	endif
-	
+	pi = acos(-1.0d0)	
 	
 	upper = 1.0d0
 	lower = -1.0d0			

@@ -32,8 +32,6 @@ all: getflags
 	@echo -------------------------------------------------------------------------------------------------------
 	@echo
 	
-	$(F95) fftw_wisdom/create_wisdom.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o fftw_wisdom/create_wisdom
-	
 	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o MarsCrustalThickness/MarsCrustalThickness
 	
 	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHCilmPlus/TestCilmPlus
@@ -57,9 +55,6 @@ all: getflags
 	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyGLQC
 	
 make run-fortran-examples:
-	 @echo CREATE_WISDOM
-	 cd fftw_wisdom ; ./create_wisdom < input.txt
-	 @echo
 	 @echo MARS CRUSTAL THICKNESS
 	 cd MarsCrustalThickness ; ./MarsCrustalThickness < input.txt
 	 @echo
@@ -141,7 +136,6 @@ endif
 
 
 clean:
-	@rm -f fftw_wisdom/create_wisdom
 	@rm -f MarsCrustalThickness/MarsCrustalThickness
 	@rm -f MarsCrustalThickness/*.sh
 	@rm -f MarsCrustalThickness/*.dat

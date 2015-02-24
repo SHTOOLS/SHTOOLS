@@ -4,7 +4,7 @@
 
 =item djpi2 -  
 
-Compute the rotation matrix d(pi/2) used in rotating spherical harmonic coefficents.
+Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical harmonics.
 
 =back
 

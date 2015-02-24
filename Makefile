@@ -22,7 +22,8 @@
 #		after the Fortran files are compiled.
 #
 #	make clean
-#		Remove the compiled lib, module, object, and Python files.
+#		Remove the compiled lib, module, object, and Python files. Also removes 
+#		compiled fortram 95 tests.
 #
 #	make fortran-examples
 #		Compile example programs. Optionally, one
@@ -135,13 +136,15 @@ python-wrapper: all
 getflags:
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic #-march=host
+F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic
+#-march=host
 MODFLAG = -p modpath
 endif
 
 ifeq ($(F95),gfortran)
 # Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 # -march=native
+F95FLAGS ?= -m64 -fPIC -O3
+# -march=native
 MODFLAG = -Imodpath
 endif
 
@@ -184,8 +187,9 @@ clean:
 	rm -f pyshtools/*.so
 	rm -f pyshtools/*.pyc
 	rm -f $(PEXDIR)/TestLegendre/*.pyc
+	$(MAKE) -C $(EXDIR) -f Makefile clean
 	@echo
-	@echo REMOVED LIB, MODULE, OBJECT FILES, AND COMPILED PYTHON FILES
+	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN EXAMPLES, AND COMPILED PYTHON FILES
 
 fortran-examples: getflags
 	$(MAKE) -C $(EXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"

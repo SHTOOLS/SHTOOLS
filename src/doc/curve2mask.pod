@@ -4,7 +4,7 @@
 
 =item Curve2Mask -  
 
-Given a set of latitude and longitude coordinates representing a closed curve, determine if each node of a gridded mask is inside or outside of the curve.
+Given a set of latitude and longitude coordinates representing a closed curve, output a gridded mask.
 
 =back
 

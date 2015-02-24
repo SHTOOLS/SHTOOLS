@@ -6,24 +6,23 @@
 <head>
 	<title>SHTOOLS - Compilation Instructions</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
-	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
-	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
-	<meta name="description" content="Instructions on how to compile the SHTOOLS fortran 95 software archive.">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<meta name="description" content="Instructions on how to compile the SHTOOLS Fortran 95 and Python software archive.">
 </head>
 <body>
 
 <div class="main">
 
-	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
     	
 	<table class="menu">
 		<tbody>
 			<tr>
 				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>	
-				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
-				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
 				<td><a href="faq.html">FAQ</a> </td>
 			</tr>
 		</tbody>
@@ -35,36 +34,19 @@
 
 	<h1>Compilation Instructions</h1>
 
-	<p class="nomarginbot">In order to compile the SHTOOLS archive into a static library, in most cases, it is necessary to type only the command</p>
+	<p class="nomarginbot">Before compiling SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. When this is done, the Fortran 95 and Python components of SHTOOLS can be compiled in most cases by executing the following two commands in a unix shell in the main SHTOOLS directory:</p>
 	
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make</tt></p>
+		<p class="nomargintop nomarginbot"><tt>make</tt><br>
+		<tt>make python-wrapper</tt></p>
 	</blockquote>
 	
-	<p class="nomarginbot">in the directory <tt>SHTOOLS</tt>, or</p>
-	
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make F95="MyCompiler"</tt></p>
-	</blockquote>
-	
-	<p class="nomarginbot">where "<tt>MyCompiler</tt>" is replaced by the compiler name. If the compiler name is not specified, the default compiler will be assumed to be "<tt>f95</tt>" (two free Fortran 90/95 compilers are <a href="http://gcc.gnu.org/">gfortran</a> and <a href="http://www.g95.org/">g95</a>). To modify the default compiler flags set in the makefile, use</p>
-	
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make F95="MyCompiler" F95FLAGS="MyCompilerFlags"</tt></p>
-	</blockquote>
-	
-	<p>Successful compilation will create the library file <tt>libSHTOOLS.a</tt> in the directory <tt>lib</tt> and will place a few compiled module files in the directory <tt>modules</tt>. The resulting output should look something like <a href="makeout.html">this</a>.</p>
+	<p class="nomarginbot">To compile and run the Fortran 95 examples and Python tests, use</p>
 
-	<p class="nomarginbot">To compile and then run the example files, use</p>
-	
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make fortran-examples F95="MyCompiler" F95FLAGS="MyCompilerFlags"</tt></p>
-	</blockquote>
-	
-	<p class="nomarginbot">and</p>
-	
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make run-fortran-examples</tt></p>
+		<p class="nomargintop nomarginbot"><tt>make fortran-examples</tt><br>
+		<tt>make run-fortran-examples</tt><br>
+		<tt>make run-python-tests</tt></p>
 	</blockquote>
 	
 	<p class="nomarginbot">Note that the final timing tests could take an hour to complete. To delete the compiled archive, module files, object files, and example executables, use</p>
@@ -73,20 +55,22 @@
 		<p class="nomargintop nomarginbot"><tt>make clean</tt></p>
 	</blockquote>
 	
-	<p class="nomarginbot">and</p>
+	<p class="nomarginbot">The default Fortran 95 compiler is set to <tt>gfortran</tt> (which is part of the <a href="http://gcc.gnu.org/"><tt>gcc</tt></a> suite), but if desired, a different compiler and compiler options can be specified by using</p>
 	
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make clean-fortran-examples</tt></p>
+<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make F95="MyCompiler" F95FLAGS="MyCompilerFlags"</tt></p>
 	</blockquote>
 	
-	<p>If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by typing "make clean".</p>
+	<p class="nomarginbot">where "<tt>MyCompiler</tt>" and "<tt>MyCompilerFlags</tt>" are to be replaced by the compiler name and options, respectively.</p>
+	
+	<p>Successful compilation will create the library file <tt>libSHTOOLS.a</tt> in the directory <tt>lib</tt>, will place a few compiled module files in the directory <tt>modules</tt>, and will create a few <tt>.so</tt> files in the directory <tt>pyshtools</tt>. The resulting output should look something like <a href="makeout.html">this</a>. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using <tt>make clean</tt>.</p>
 	
 	<p>In order to access the unix man pages, it will be necessary to add <tt>"shtoolslocation"/man</tt> to your man path, where <tt>"shtoolslocation"</tt> is the path of the root directory of <tt>SHTOOLS</tt>. The link to the local html web page is <tt>"shtoolslocation"/index.html</tt></p>
 	
 
 	<h2>Compiler flags and optimization</h2>
 	
-	<p>Default compiler options are specified in the Makefile for a few common compilers (Absoft <tt>f95</tt>, <tt>gfortran</tt>, <tt>g95</tt>, and <tt>ifort</tt>). If it is necessary to change these, consider the following guidelines:</p>
+	<p>Default compiler options are specified in the main <tt>Makefile</tt> for a few common compilers (Absoft <tt>f95</tt>, <tt>gfortran</tt>, <tt>g95</tt>, and <tt>ifort</tt>). If it is necessary to change these, consider the following guidelines:</p>
 	
 	<p class="nomarginbot">One should always use some form of optimization when compiling SHTOOLS, such as by specifying the option</p>
 	
@@ -94,7 +78,7 @@
 		<p class="nomargintop nomarginbot"><tt>-O3</tt></p>
 	</blockquote>
 	
-	<p class="nomarginbot">Specifying the compiler to target the host architecture by</p>
+	<p class="nomarginbot">Performance will likely be increased by 10s of percent by specifying the compiler to target the host architecture</p>
 	
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>-march=host</tt>  (f95)</p>
@@ -107,8 +91,6 @@
 		<p class="nomargintop nomarginbot"><tt>-speed_math=11</tt>  (f95)</p>
 		<p class="nomargintop nomarginbot"><tt>-ffast-math</tt>  (gfortran)</p>
 	</blockquote>
-	
-	<p>will likely result in performance gains of 10s of percent.</p>
 	
 	<p>The biggest difficulty in compiling SHTOOLS is setting the compiler flags so that the external subroutine names are in a format that is compatible with the FFTW and LAPACK libraries. In general, it is necessary to ensure that the SHTOOLS subroutine names are in lower case and have the right number of underscores appended to them.</p>
 	
@@ -176,24 +158,24 @@
 	
 	<h2>Condon-Shortley phase</h2>
 	
-	<p class="nomarginbot">SHTOOLS by default excludes the Condon-Shortley phase factor of <tt>(-1)<sup>m</sup></tt> when calculating the spherical harmonic and Legendre functions (though this can be changed in each routine by use of the optional argument <tt>csphase</tt>). To change globally the default (but not the documentation!) such that this phase is appended to each Lengendre function, it is only necessary to set the parameter</p>
+	<p class="nomarginbot">SHTOOLS by default excludes the Condon-Shortley phase factor of <tt>(-1)<sup>m</sup></tt> when calculating the spherical harmonic and Legendre functions (though this can be changed in each routine by use of the optional argument <tt>csphase</tt>). To change globally the default (but not the documentation!) such that this phase is appended to each Legendre function, it is only necessary to set the parameter</p>
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>CSPHASE_DEFAULT = -1</tt></p>
 	</blockquote>
 	
-	<p>in the file <tt>src/SHTOOLS.f95</tt> before compiling. Note, however, that the gravity and magnetics routines will still explicitly exclude this phase factor, regardless of this default.</p>
+	<p>in the file <tt>src/SHTOOLS.f95</tt> before compiling. Note, however, that the gravity and magnetics routines will still explicitly exclude this phase factor, regardless of this default. Only do this if you really know what you are doing.</p>
 	
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a>
 	</p>
 	
-	<table class="footer2" summary = "Mark Wieczorek">
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>
 		<tr>
 			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
 			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
-			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
 		</tr>
 	</tbody>
 	</table>
