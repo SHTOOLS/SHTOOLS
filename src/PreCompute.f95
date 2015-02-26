@@ -56,7 +56,7 @@ subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
 	real*8, intent(out) ::	zero(:), w(:)
 	real*8, intent(out), optional ::	plx(:,:)
 	integer, intent(in), optional ::	norm, csphase, cnorm
-	integer ::		n, i, istat, astat, phase, l, m, i_s, cnormin
+	integer ::		n, i, astat, phase, l, m, i_s, cnormin
 	real*8  :: 		upper, lower, pi
 	real*8, allocatable :: 	 pl(:)
 	

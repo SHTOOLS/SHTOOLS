@@ -34,27 +34,32 @@
 
 	<h1>Using SHTOOLS with Python</h1>
 		
-	<p class="nomarginbot">To access the SHTOOLS routines from Python, it is necessary that the main SHTOOLS directory be in the Python search path. This can be accomplished by using the command</p>
+	<p class="nomarginbot">To access the SHTOOLS routines from Python, it is necessary that the main SHTOOLS directory be in the Python search path. This can be accomplished in one of two ways. First, the location of the SHTOOLS main directory could be added to the system PYTHONPATH by using the command</p>
 	
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>setenv PYTHONPATH = "shtoolslocation"</tt></p>
+		<p class="nomargintop nomarginbot"><tt>setenv PYTHONPATH = "myshtoolsfolder"</tt></p>
    	</blockquote>
    	
    	<p class="nomarginbot">in a C-shell, or by using the command</p>
    	
    	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>export PYTHONPATH="shtoolslocation"</tt></p>
+		<p class="nomargintop nomarginbot"><tt>export PYTHONPATH="myshtoolsfolder"</tt></p>
    	</blockquote>
 		
-	<p class="nomarginbot">in a bash shell, where <tt>"shtoolslocation"</tt> is the root directory of the SHTOOLS directory, typically <tt>/usr/local/shtools</tt>. 
+	<p class="nomarginbot">in a bash shell. <tt>"myshtoolsfolder"</tt> is the root directory of the SHTOOLS directory, typically <tt>/usr/local/shtools</tt>. Alternatively, one could add the SHTOOLS director to the search path from within Python by entering</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>import sys<br>
+		sys.path.append('/myshtoolsfolder')</tt></p>
+   	</blockquote>
 	
-	After entering the Python environment, it is only necessary to execute the statement</p>
+	<p>After entering the Python environment, it is then only necessary to execute the statement</p>
 		
 		<blockquote class="small">
 			<p class="nomargintop nomarginbot"><tt>import pyshtools as shtools </tt></p>
 		</blockquote>
 
-	<p>to load the routines and documentation. If you are using <a href="http://ipython.org/">iPython</a>, which adds improved functionality to Python and which is highly recommended, the available <tt>shtools</tt> routines can be explored by typing</p>
+	<p>to load the routines and documentation. If you are using <a href="http://ipython.org/">iPython</a>, which adds improved functionality to Python, the available <tt>shtools</tt> routines can be explored by typing</p>
 	
 	<blockquote class="small">
 			<p class="nomargintop nomarginbot"><tt>shtools.[tab]</tt></p>
