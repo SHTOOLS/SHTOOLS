@@ -23,7 +23,7 @@
 #
 #	make clean
 #		Remove the compiled lib, module, object, and Python files. Also removes 
-#		compiled fortram 95 tests.
+#		compiled fortran and Python tests.
 #
 #	make fortran-examples
 #		Compile example programs. Optionally, one
@@ -40,6 +40,8 @@
 #   	make run-python-tests
 #		Run all python tests
 #
+#	make clean-python-tests
+#		Detelet all compiled python tests
 #	make doc
 #		Create the man and html-man pages from input POD files.
 #		These are PRE-MADE in the distribution, so it shouldn't
@@ -186,10 +188,10 @@ clean:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
-	-rm -f $(PEXDIR)/TestLegendre/*.pyc
 	-$(MAKE) -C $(FEXDIR) -f Makefile clean
+	-$(MAKE) -C $(PEXDIR) -f Makefile clean
 	@echo
-	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN EXAMPLES, AND COMPILED PYTHON FILES
+	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN EXAMPLES, COMPILED PYTHON FILES AND EXAMPLES
 
 fortran-examples: getflags
 	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
