@@ -91,19 +91,19 @@ OBJSLAPACK2 = EigValSym2.o EigValVecSym2.o EigValVecSymTri2.o SHExpandLSQ2.o SHM
 	SHMTVarOpt02.o SHMTVarOpt2.o
 	
 SRCSFFTW1 = MakeGridDH.f95 MakeGridDHC.f95 MakeGridGLQ.f95 MakeGridGLQC.f95 PreCompute.f95 \
-	ReadWisdom.f95 SHExpandDH.f95 SHExpandDHC.f95 SHExpandGLQ.f95 SHExpandGLQC.f95 \
+	SHExpandDH.f95 SHExpandDHC.f95 SHExpandGLQ.f95 SHExpandGLQC.f95 \
 	MakeGravGradGridDH.f95 MakeGravGridDH.f95 MakeMagGridDH.f95
 	
 OBJSFFTW1 = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o PreCompute.o \
-	ReadWisdom.o SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \
+	SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \
 	MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o
 
 SRCSFFTW2 = MakeGridDH2.f95 MakeGridDHC2.f95 MakeGridGLQ2.f95 MakeGridGLQC2.f95 PreCompute2.f95 \
-	ReadWisdom2.f95 SHExpandDH2.f95 SHExpandDHC2.f95 SHExpandGLQ2.f95 SHExpandGLQC2.f95 \
+	SHExpandDH2.f95 SHExpandDHC2.f95 SHExpandGLQ2.f95 SHExpandGLQC2.f95 \
 	MakeGravGradGridDH2.f95 MakeGravGridDH2.f95 MakeMagGridDH2.f95
 	
 OBJSFFTW2 = MakeGridDH2.o MakeGridDHC2.o MakeGridGLQ2.o MakeGridGLQC2.o PreCompute2.o \
-	ReadWisdom2.o SHExpandDH2.o SHExpandDHC2.o SHExpandGLQ2.o SHExpandGLQC2.o \
+	SHExpandDH2.o SHExpandDHC2.o SHExpandGLQ2.o SHExpandGLQC2.o \
 	MakeGravGradGridDH2.o MakeGravGridDH2.o MakeMagGridDH2.o
 
 

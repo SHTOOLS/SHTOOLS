@@ -24,10 +24,10 @@ module PlanetsConstants
 				g0_Moon = 1.6247750d0, &	! gravitational acceleration at R_Moon, not including rotation.
 				R0_pot_Moon = 1738.d3, &	! Reference radius of LP150Q gravity model.
 				Omega_Moon = 2.0d0 *pi_constant / 27.3215820d0 / 24.0d0 / 60.0d0 / 60.0d0 , &! Lunar rotation rate, Yoder 1995
-				c_moi = 0.39320d0, &		! normalized polar moment of inertia (R=1738),Konopliv et al. (1998
-				i_moi = 0.39310d0, &		! average moment of inertia (R=1748), Konopliv et al. (1998)
-				gamma_moi = 227.8710d-6, &	! (B-A)/C from LLR (Konopliv et al. 1998)
-				beta_moi = 631.4860d-6 ! (C-A)/B) from LLR (Konopliv et al.)
+				c_moi_Moon = 0.39320d0, &		! normalized polar moment of inertia (R=1738),Konopliv et al. (1998
+				i_moi_Moon = 0.39310d0, &		! average moment of inertia (R=1748), Konopliv et al. (1998)
+				gamma_moi_Moon = 227.8710d-6, &	! (B-A)/C from LLR (Konopliv et al. 1998)
+				beta_moi_Moon = 631.4860d-6 ! (C-A)/B) from LLR (Konopliv et al.)
 	real*8, parameter ::	rho_bar_Moon =  Mass_Moon * 3.0d0 / 4.0d0 / pi_constant / R_Moon**3	
 	
 	! Mars

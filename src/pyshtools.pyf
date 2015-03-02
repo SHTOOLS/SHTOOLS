@@ -330,13 +330,12 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(len(w)>=w_d0),depend(w) :: w_d0=len(w)
         end subroutine SHExpandGLQ
 
-        subroutine PreCompute(lmax,zero,w,wisdom_file,norm,csphase,cnorm,zero_d0,w_d0) ! in PythonWrapper.f95
+        subroutine PreCompute(lmax,zero,w,norm,csphase,cnorm,zero_d0,w_d0) ! in PythonWrapper.f95
             fortranname pyprecompute
             use shtools, only: PreCompute
             integer intent(in) :: lmax
             real*8 dimension(zero_d0),intent(out),depend(zero_d0) :: zero
             real*8 dimension(w_d0),intent(out),depend(w_d0) :: w
-            character*(*), optional,intent(in) :: wisdom_file = ''
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in) :: cnorm = 0 !default value is not in the documentation
@@ -1681,7 +1680,7 @@ python module _SHTOOLS ! in
             fortranname pymakegravgradgriddh
             use shtools, only: MakeGravGradGridDH
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
             real*8 intent(in) :: gm
             real*8 intent(in) :: r0
             real*8 intent(in) :: a
@@ -1693,23 +1692,23 @@ python module _SHTOOLS ! in
             real*8 dimension(vxz_d0,vxz_d1),intent(out),depend(vxz_d0,vxz_d1) :: vxz
             real*8 dimension(vyz_d0,vyz_d1),intent(out),depend(vyz_d0,vyz_d1) :: vyz
             integer intent(out) :: n
-            integer, optional,intent(in) :: sampling
-            integer, optional,intent(in) :: lmax_calc
-            integer intent(in) :: vyz_d0
-            integer intent(in) :: vyz_d1
-            integer intent(in) :: vyy_d0
-            integer intent(in) :: vyy_d1
+            integer, optional,intent(in) :: sampling = 1
+            integer, optional,intent(in),depend(cilm_d1) :: lmax_calc=cilm_d1-1
+            integer, optional,intent(in),depend(lmax) :: vyz_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vyz_d0,sampling) :: vyz_d1=sampling*vyz_d0
+            integer, optional,intent(in),depend(lmax) :: vyy_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vyy_d0,sampling) :: vyy_d1 = sampling*vyy_d0
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm) :: cilm_d2=shape(cilm,2)
-            integer intent(in) :: vzz_d0
-            integer intent(in) :: vzz_d1
-            integer intent(in) :: vxy_d0
-            integer intent(in) :: vxy_d1
-            integer intent(in) :: vxx_d0
-            integer intent(in) :: vxx_d1
-            integer intent(in) :: vxz_d0
-            integer intent(in) :: vxz_d1
+            integer, optional,intent(in),depend(lmax) :: vzz_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vzz_d0,sampling) :: vzz_d1=sampling*vzz_d0
+            integer, optional,intent(in),depend(lmax) :: vxy_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vxy_d0,sampling) :: vxy_d1=sampling*vxy_d0
+            integer, optional,intent(in),depend(lmax) :: vxx_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vxx_d0,sampling) :: vxx_d1=sampling*vxx_d0
+            integer, optional,intent(in),depend(lmax) :: vxz_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vxz_d0,sampling) :: vxz_d1=sampling*vxz_d0
         end subroutine MakeGravGradGridDH
     end interface 
 end python module _SHTOOLS

@@ -6,9 +6,9 @@
 <head>
 	<title>SHTOOLS - Version history</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
-	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
-	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<meta name="description" content="SHTOOLS version history and changes log.">
 </head>
 
@@ -16,15 +16,14 @@
 
 <div class="main">
 
-	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
     	
 	<table class="menu">
 		<tbody>
 		<tr>
 		<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
-		<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+		<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 		<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
-		<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
 		<td><a href="faq.html">FAQ</a> </td>
 		</tr>
 		</tbody>
@@ -37,9 +36,12 @@
 	
 	<h2>Version 3.0</h2>
 	<ul>
+			<li>Added full python compatibility. This includes python wrappers for all SHTOOLS functions, python documentation for all functions, and a simple test suite to ensure that the SHTOOLS functions are working correctly.</li>
+			<li>Moved the project from Sourceforge to <a href="https://github.com/SHTOOLS/SHTOOLS">GitHub</a>. The Sourceforge project will no longer be maintained.</li>
 			<li>Fixed bugs in <tt>SHrtoc</tt> and <tt>SHctor</tt> when the optional parameter CONVENTION was set to its default values, causing zeros to be returned.</li>
 			<li>Modified <tt>ComputeDMap</tt> and <tt>SJHReturnTapersMap</tt> such that the parameter <tt>SAMPLING</tt> is optional.</li>
-		
+			<li>Fixed a bug in <tt>Curve2Mask</tt> that could give rise to vertical lines when the longitudes of the profile points were decreasing.</li>
+			<li>Removed the routines <tt>Import_Wisdom_From_File</tt> and <tt>Export_Wisdom_From_File</tt>.</li>
 		</ul>
 	
 	<h2>Version 2.9 (August 11, 2014)</h2>
@@ -60,7 +62,7 @@
 			<li>Replaced the routine <tt>MakeMagGrid2D</tt> with <tt>MakeMagGridDH</tt>, which is orders of magnitude faster than its predecessor.</li>
 			<li>Added the routine <tt>NormalGravity</tt> to calculate the normal gravity on an ellipsoid.</li>
 			<li>Modified <tt>SHLocalizedAdmitCorr</tt> to increase performance.</li>
-			<li>Modified <tt>MakeCircleCoord</tt> such that the output coordinates are organised in a clockwise manner with the first index corresponding to due north.</li>
+			<li>Modified <tt>MakeCircleCoord</tt> such that the output coordinates are organized in a clockwise manner with the first index corresponding to due north.</li>
 			<li>Introduced a different scaling procedure in <tt>CilmPlus</tt> and <tt>CilmRho</tt> that should be more accurate at high powers.</li>
 		</ul>
 
@@ -284,12 +286,12 @@
 	<p class="dir">
 	>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
 
-	<table class="footer2" summary = "Mark Wieczorek">
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>
 		<tr>
 			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
 			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
-			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
 		</tr>
 	</tbody>
 	</table>

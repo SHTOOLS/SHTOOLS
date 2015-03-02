@@ -360,23 +360,18 @@
         call SHExpandGLQ(cilm,lmax,gridglq,w,zero=zero,norm=norm,csphase=csphase,lmax_calc=lmax_calc)
     end subroutine pySHExpandGLQ
 
-    subroutine pyPreCompute(lmax,zero,w,wisdom_file,norm,csphase,cnorm,zero_d0,w_d0) 
+    subroutine pyPreCompute(lmax,zero,w,norm,csphase,cnorm,zero_d0,w_d0) 
         use shtools, only: PreCompute
         implicit none
         integer, intent(in) :: lmax
         real*8, dimension(zero_d0),intent(out) :: zero
         real*8, dimension(w_d0),intent(out) :: w
-        character*(*), optional,intent(in) :: wisdom_file
         integer, optional,intent(in) :: norm
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: zero_d0
         integer, intent(in) :: w_d0
-        if (wisdom_file == '') then
-            call PreCompute(lmax,zero,w,norm=norm,csphase=csphase,cnorm=cnorm)
-        else
-            call PreCompute(lmax,zero,w,wisdom_file=wisdom_file,norm=norm,csphase=csphase,cnorm=cnorm)
-        endif
+		call PreCompute(lmax,zero,w,norm=norm,csphase=csphase,cnorm=cnorm)
     end subroutine pyPreCompute
 
     subroutine pyPreGLQ(x1,x2,n,zero,w,zero_d0,w_d0) 

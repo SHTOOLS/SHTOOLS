@@ -40,8 +40,8 @@ PODFILES = cilmplus.pod computed0.pod computedg82.pod computedm.pod \
 	plegendrea_d1.pod plegendrea.pod plmbar_d1.pod plmbar.pod plmindex.pod \
 	plon.pod plon_d1.pod plmon.pod plmon_d1.pod plschmidt.pod plschmidt_d1.pod \
 	plmschmidt.pod plmschmidt_d1.pod precompute.pod preglq.pod nglq.pod nglqsh.pod \
-	nglqshn.pod randomn.pod randomgaussian.pod import_wisdom_from_file.pod \
-	export_wisdom_to_file.pod shadmitcorr.pod shbias.pod shbiask.pod shrtoc.pod \
+	nglqshn.pod randomn.pod randomgaussian.pod \
+	shadmitcorr.pod shbias.pod shbiask.pod shrtoc.pod \
 	shctor.pod shcilmtocindex.pod shcindextocilm.pod  \
 	shexpanddh.pod shexpandglq.pod shexpandlsq.pod shfindlwin.pod \
 	shlocalizedadmitcorr.pod shmtvaropt.pod shmtvaropt0.pod shmultiply.pod \
@@ -66,7 +66,7 @@ MANFILES = cilmplus.1 computed0.1 computedg82.1 computedm.1 \
 	plbar.1 plegendre.1 plegendre_d1.1 plegendrea_d1.1 plegendrea.1 plmbar_d1.1 \
 	plmbar.1 plmindex.1 plon.1 plon_d1.1 plmon.1 plmon_d1.1 plschmidt.1 plschmidt_d1.1 \
 	plmschmidt.1 plmschmidt_d1.1 precompute.1 preglq.1 nglq.1 nglqsh.1 nglqshn.1 \
-	randomn.1 randomgaussian.1 import_wisdom_from_file.1 export_wisdom_to_file.1 \
+	randomn.1 randomgaussian.1 \
 	shadmitcorr.1 shbias.1 shbiask.1 shrtoc.1 shctor.1 shcilmtocindex.1 shcindextocilm.1 \
 	shexpanddh.1 shexpandglq.1 shexpandlsq.1 shfindlwin.1 \
 	shlocalizedadmitcorr.1 shmtvaropt.1 shmtvaropt0.1 shmultiply.1 wl.1 wlcurv.1 \
@@ -121,8 +121,8 @@ HTMLFILES_gravmag = cilmplus.html hilm.html makegeoidgrid.html \
 	normalgravity.html makegravgradgriddh.html
 
 HTMLFILES_other =  eigvalsym.html eigvalvecsym.html eigvalvecsymtri.html \
-	 makecirclecoord.html randomn.html randomgaussian.html import_wisdom_from_file.html \
-	 export_wisdom_to_file.html wigner3j.html makeellipsecoord.html
+	makecirclecoord.html randomn.html randomgaussian.html \
+	wigner3j.html makeellipsecoord.html
  
 
 all: install-man install-html move
