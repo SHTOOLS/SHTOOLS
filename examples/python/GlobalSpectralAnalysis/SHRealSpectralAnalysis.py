@@ -82,7 +82,7 @@ def example():
     lmax = coeffs.shape[1]-1
 
     #--- plot grid ---
-    grid,nlat = shtools.MakeGridDH(coeffs,lmax,csphase=-1)
+    grid  = shtools.MakeGridDH(coeffs,csphase=-1)
     plt.figure()
     plt.imshow(grid)
 

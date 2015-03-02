@@ -17,7 +17,7 @@
 #		use FFTW and LAPACK	libraries with conflicting underscore 
 #		conventions.
 #
-#	make python-wrapper
+#	make python
 #		Compile the python wrapper with the f2py compiler. This should be 
 #		after the Fortran files are compiled.
 #
@@ -69,7 +69,7 @@ EXDIR  = examples
 PEXDIR = examples/python
 
 
-.PHONY: all all2 all3 python-wrapper install doc remove-doc clean getflags fortran-examples clean-fortran-examples run-fortran-examples run-python-tests
+.PHONY: all all2 all3 python install doc remove-doc clean getflags fortran-examples clean-fortran-examples run-fortran-examples run-python-tests
 	
 all: getflags
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
@@ -113,7 +113,7 @@ all3: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
-python-wrapper: all
+python: all
 	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" \
 	    -c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 	    -lSHTOOLS -lfftw3 -lm -llapack -lblas	
@@ -141,7 +141,8 @@ endif
 
 ifeq ($(F95),gfortran)
 # Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 # -march=native
+#F95FLAGS ?= -m64 -fPIC -O3 # -march=native
+F95FLAGS ?= -m64 -fPIC -ggdb -O0 # -march=native
 MODFLAG = -Imodpath
 endif
 

@@ -58,9 +58,6 @@ def test_SHStorage():
     ind = shtools.YilmIndex(i,l,m)
     print 'index for i,l,m = {:d},{:d},{:d}: {:d}'.format(i,l,m,ind)
 
-
-
-
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

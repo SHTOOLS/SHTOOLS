@@ -1278,23 +1278,23 @@ python module _SHTOOLS ! in
             fortranname pyshmtdebias
             use shtools, only: SHMTDebias
             real*8 dimension(mtdebias_d0,mtdebias_d1),intent(out),depend(mtdebias_d0,mtdebias_d1) :: mtdebias
-            real*8 dimension(mtspectra_d0,mtspectra_d1),intent(in) :: mtspectra
-            integer intent(in) :: lmax
-            real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer intent(in) :: lwin
-            integer intent(in) :: K
-            integer intent(in) :: nl
             real*8 dimension(lmid_d0),intent(out),depend(lmid_d0) :: lmid
-            integer intent(out) :: n
-            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-            integer intent(in) :: mtdebias_d0
-            integer intent(in) :: mtdebias_d1
-            integer, optional,intent(in),check(len(taper_wt)>=taper_wt_d0),depend(taper_wt) :: taper_wt_d0=len(taper_wt)
-            integer, optional,intent(in),check(shape(mtspectra,0)==mtspectra_d0),depend(mtspectra) :: mtspectra_d0=shape(mtspectra,0)
-            integer, optional,intent(in),check(shape(mtspectra,1)==mtspectra_d1),depend(mtspectra) :: mtspectra_d1=shape(mtspectra,1)
-            integer, optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers) :: tapers_d0=shape(tapers,0)
-            integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers) :: tapers_d1=shape(tapers,1)
-            integer intent(in) :: lmid_d0
+            integer intent(hide) :: n
+            real*8 dimension(mtspectra_d0,mtspectra_d1),intent(in) :: mtspectra
+            integer, optional,intent(in),depend(mtspectra_d1) :: lmax = mtspectra_d1-1
+            real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+            integer, optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
+            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
+            integer intent(in) :: nl
+            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt=-1
+            integer, optional,intent(in) :: mtdebias_d0=2
+            integer, optional,intent(in),depend(lmax) :: mtdebias_d1 = lmax+1
+            integer, optional,intent(in),depend(tapers_d1) :: taper_wt_d0=tapers_d1
+            integer, optional,intent(in),depend(mtspectra) :: mtspectra_d0=shape(mtspectra,0)
+            integer, optional,intent(in),depend(mtspectra) :: mtspectra_d1=shape(mtspectra,1)
+            integer, optional,intent(in),depend(tapers) :: tapers_d0=shape(tapers,0)
+            integer, optional,intent(in),depend(tapers) :: tapers_d1=shape(tapers,1)
+            integer, optional,intent(in),depend(lmax,nl) :: lmid_d0 = (int)ceil( (lmax+1)/(float)nl )
         end subroutine SHMTDebias
 
         subroutine MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,omega,normal_gravity,pot,phi_d0,phi_d1,total_d0,total_d1,pot_d0,pot_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1) ! in PythonWrapper.f95
@@ -1562,6 +1562,8 @@ python module _SHTOOLS ! in
         subroutine SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0,admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0) ! in PythonWrapper.f95
             fortranname pyshbiasadmitcorr
             use shtools, only: SHBiasAdmitCorr
+            real*8 dimension(admit_d0),intent(out),depend(admit_d0) :: admit
+            real*8 dimension(corr_d0),intent(out),depend(corr_d0) :: corr
             real*8 dimension(sgt_d0),intent(in) :: sgt
             real*8 dimension(sgg_d0),intent(in) :: sgg
             real*8 dimension(stt_d0),intent(in) :: stt
@@ -1569,18 +1571,16 @@ python module _SHTOOLS ! in
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer, optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
             integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
-            real*8 dimension(admit_d0),intent(out),depend(admit_d0) :: admit
-            real*8 dimension(corr_d0),intent(out),depend(corr_d0) :: corr
-            integer, optional,intent(in) :: mtdef = 0
-            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-            integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1) :: taper_wt_d0=tapers_d1
-            integer, optional,intent(in),check(len(sgt)>=sgt_d0),depend(sgt) :: sgt_d0=len(sgt)
-            integer, optional,intent(in),check(len(stt)>=stt_d0),depend(stt) :: stt_d0=len(stt)
-            integer intent(in) :: admit_d0
-            integer, optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers) :: tapers_d0=shape(tapers,0)
-            integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers) :: tapers_d1=shape(tapers,1)
-            integer intent(in) :: corr_d0
-            integer, optional,intent(in),check(len(sgg)>=sgg_d0),depend(sgg) :: sgg_d0=len(sgg)
+            integer, optional,intent(in) :: mtdef = 1
+            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt=-1
+            integer, optional,intent(in),depend(tapers_d1) :: taper_wt_d0=tapers_d1
+            integer, optional,intent(in),depend(sgt) :: sgt_d0=len(sgt)
+            integer, optional,intent(in),depend(stt) :: stt_d0=len(stt)
+            integer, optional,intent(in),depend(tapers) :: tapers_d0=shape(tapers,0)
+            integer, optional,intent(in),depend(tapers) :: tapers_d1=shape(tapers,1)
+            integer, optional,intent(in),depend(sgg) :: sgg_d0=len(sgg)
+            integer, optional,intent(in),depend(lmax,lwin) :: corr_d0  = lmax-lwin+1
+            integer, optional,intent(in),depend(lmax,lwin) :: admit_d0 = lmax-lwin+1
         end subroutine SHBiasAdmitCorr
 
         subroutine SHCilmToVector(cilm,vector,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2) ! in PythonWrapper.f95

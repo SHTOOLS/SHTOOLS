@@ -1456,7 +1456,11 @@
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: lmid_d0
-        call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n,taper_wt)
+        if(taper_wt(1) < 0.d0) then
+            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n)
+        else
+            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n,taper_wt=taper_wt)
+        endif
     end subroutine pySHMTDebias
 
     subroutine pyMakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,omega,normal_gravity&
@@ -1769,7 +1773,11 @@
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: corr_d0
         integer, intent(in) :: sgg_d0
-        call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef,taper_wt)
+        if(taper_wt(1) < 0.d0) then
+            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef)
+        else
+            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef,taper_wt)
+        endif
     end subroutine pySHBiasAdmitCorr
 
     subroutine pySHCilmToVector(cilm,vector,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2) 

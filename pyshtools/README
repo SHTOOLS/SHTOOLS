@@ -105,8 +105,6 @@ MakeGridPoint
 SHMultiply
 
 
-
-
 GLOBAL SPECTRAL ANALYSIS
 ------------------------
 
@@ -114,7 +112,6 @@ ALL WRAPPED
 
 -- issues: --
 SHAdmitCorr (always returns ADMIT_ERROR)
-
 
 
 IO/STORAGE/CONVERSIONS
@@ -143,13 +140,16 @@ LOCALIZED SPECTRAL ANALYSIS
 ---------------------------
 
 -- not wrapped: --
-SHBiasAdmitCorr
-SHMTDebias
+SHMTDebias (throws error. Some 'double memory free' problem in the wrapper. This could be either
+a simple bug in the wrapper or a more profound problem connected to the lapack routine
+that is used in SHMTDebias)
+
 SHMTVarOpt0
 SHSjkPG0
 SHSjkPG
 
 -- wrapped: --
+SHBiasAdmitCorr
 SHBiasK
 SHBias
 ComputeD0

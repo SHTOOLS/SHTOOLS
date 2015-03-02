@@ -99,15 +99,36 @@ def test_MultitaperSE():
 
     print '\n---- testing SHBiasK ----'
     lmax = 80
-    power_unbiased = 1./(1.+np.arange(lmax))**2
+    power_unbiased = 1./(1.+np.arange(lmax+1))**2
     power_biased = shtools.SHBiasK(tapers,power_unbiased)
-    print (power_biased[:lmax]/power_unbiased)[:5]
+    print (power_biased[:lmax+1]/power_unbiased)[:5]
 
     print '\n---- testing SHBias ----'
     lmax = 80
-    power_unbiased = 1./(1.+np.arange(lmax))**2
+    power_unbiased = 1./(1.+np.arange(lmax+1))**2
     power_biased = shtools.SHBias(tapers[:,2],power_unbiased)
-    print (power_biased[:lmax]/power_unbiased)[:5]
+    print tapers.shape
+    print (power_biased[:lmax+1]/power_unbiased)[:5]
+
+    print '\n---- testing SHBiasAdmitCorr ----'
+    lmax = 80
+    Stt = 1./(1.+np.arange(lmax+1))**2
+    Sgg = 1./(1.+np.arange(lmax+1))**2
+    Sgt = 0.5/(1.+np.arange(lmax+1))**2
+    admit,corr = shtools.SHBiasAdmitCorr(Sgt,Sgg,Stt,tapers[:,2])
+    print corr
+
+    print '\n---- testing SHMTDebias ----'
+    print 'THIS FUNCTION THROWS AN ERROR'
+    print '(uncomment in file to see it)'
+    #lmax = 80
+    #lwin,ntapers = tapers.shape
+    #mtspectra = np.zeros( (2,lmax+lwin-1) )
+    #mtspectra[0] = power_biased
+    #mtspectra[1] = 1e-1*power_biased
+    #print mtspectra.shape
+    #mtdebias,lmid = shtools.SHMTDebias(mtspectra,tapers[:,:2],nl=2*lwin)
+    #print mtdebias
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
