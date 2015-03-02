@@ -75,7 +75,7 @@ program TestCilmPlus
 	
 	!print*, "Spherical Harmonic file > "
 	!read(*,*) infile
-	infile = "../ExampleDataFiles/MarsTopo719.shape"
+	infile = "../../ExampleDataFiles/MarsTopo719.shape"
 	
 	!print*, "Maximum degree to read > "
 	!read(*,*) lmax

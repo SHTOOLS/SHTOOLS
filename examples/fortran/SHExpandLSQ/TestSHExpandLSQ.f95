@@ -32,7 +32,7 @@ program TestSHExpandLSQ
 	lat = 0.0d0
 	pi = acos(-1.0d0)
 	
-	infile = "../ExampleDataFiles/MarsTopo719.shape"
+	infile = "../../ExampleDataFiles/MarsTopo719.shape"
 	
 	call SHRead(infile, cilm, lmaxfile)
 	print*, "Maximum degree of spherical harmonic file = ", lmaxfile

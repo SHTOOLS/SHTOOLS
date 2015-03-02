@@ -27,8 +27,8 @@ Program LocalizedAdmitCorr
 	
 	degmax = 360
 
-	topography_file = "../ExampleDataFiles/MarsTopo719.shape"
-	potential_file = "../ExampleDataFiles/jgmro_110b_sha.tab"
+	topography_file = "../../ExampleDataFiles/MarsTopo719.shape"
+	potential_file = "../../ExampleDataFiles/jgmro_110b_sha.tab"
 
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	!

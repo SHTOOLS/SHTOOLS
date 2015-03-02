@@ -19,7 +19,7 @@ SHELL=/bin/tcsh
 
 MAKE = make
 
-.PHONY: all getflags clean
+.PHONY: all getflags clean run-fortran-examples
 
 
 all: getflags
@@ -32,29 +32,29 @@ all: getflags
 	@echo -------------------------------------------------------------------------------------------------------
 	@echo
 	
-	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o MarsCrustalThickness/MarsCrustalThickness
+	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o MarsCrustalThickness/MarsCrustalThickness
 	
-	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHCilmPlus/TestCilmPlus
+	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHCilmPlus/TestCilmPlus
 	
-	$(F95) SHExpandDH/TestExpandDH.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHExpandDH/TestExpandDH
+	$(F95) SHExpandDH/TestExpandDH.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHExpandDH/TestExpandDH
 	
-	$(F95) SHExpandLSQ/TestSHExpandLSQ.f95 $(MODFLAG) -L../lib -lSHTOOLS -llapack -lblas -lfftw3 -lm $(F95FLAGS) -o SHExpandLSQ/TestSHExpandLSQ
+	$(F95) SHExpandLSQ/TestSHExpandLSQ.f95 $(MODFLAG) -L../../lib -lSHTOOLS -llapack -lblas -lfftw3 -lm $(F95FLAGS) -o SHExpandLSQ/TestSHExpandLSQ
 	
-	$(F95) SHLocalizedAdmitCorr/LocalizedAdmitCorr.f95 $(MODFLAG) -L../lib -lSHTOOLS -llapack -lblas -lfftw3 -lm $(F95FLAGS) -o SHLocalizedAdmitCorr/LocalizedAdmitCorr
+	$(F95) SHLocalizedAdmitCorr/LocalizedAdmitCorr.f95 $(MODFLAG) -L../../lib -lSHTOOLS -llapack -lblas -lfftw3 -lm $(F95FLAGS) -o SHLocalizedAdmitCorr/LocalizedAdmitCorr
 	
-	$(F95) SHMag/SHMag.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHMag/SHMag
+	$(F95) SHMag/SHMag.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHMag/SHMag
 	
-	$(F95) SHRotate/TestSHRotate.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHRotate/TestSHRotate
+	$(F95) SHRotate/TestSHRotate.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHRotate/TestSHRotate
 	
-	$(F95) TimingAccuracy/TimingAccuracyDH.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyDH
+	$(F95) TimingAccuracy/TimingAccuracyDH.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyDH
 	
-	$(F95) TimingAccuracy/TimingAccuracyDHC.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyDHC
+	$(F95) TimingAccuracy/TimingAccuracyDHC.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyDHC
 	
-	$(F95) TimingAccuracy/TimingAccuracyGLQ.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyGLQ
+	$(F95) TimingAccuracy/TimingAccuracyGLQ.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyGLQ
 	
-	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyGLQC
+	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyGLQC
 	
-make run-fortran-examples:
+run-fortran-examples:
 	 @echo MARS CRUSTAL THICKNESS
 	 cd MarsCrustalThickness ; ./MarsCrustalThickness < input.txt
 	 @echo
@@ -106,22 +106,22 @@ getflags:
 
 ifeq ($(F95),f95)
 F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host -speed_math=11
-MODFLAG = -p ../modules/
+MODFLAG = -p ../../modules/
 endif
 
 ifeq ($(F95),gfortran)
 F95FLAGS ?= -m64 -O3 -march=native -ffast-math
-MODFLAG = -I../modules/
+MODFLAG = -I../../modules/
 endif
 
 ifeq ($(F95),ifort)
 F95FLAGS ?= -m64 -free -O3 -Tf
-MODFLAG = -I../modules/
+MODFLAG = -I../../modules/
 endif
 
 ifeq ($(F95),g95)
 F95FLAGS ?= -O3 -fno-second-underscore 
-MODFLAG = -I../modules/
+MODFLAG = -I../../modules/
 endif
 
 ifeq ($(F95),pgf90)
@@ -131,34 +131,34 @@ endif
 
 ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
-MODFLAG = -I../modules/
+MODFLAG = -I../../modules/
 endif
 
 
 clean:
-	@rm -f MarsCrustalThickness/MarsCrustalThickness
-	@rm -f MarsCrustalThickness/*.sh
-	@rm -f MarsCrustalThickness/*.dat
-	@rm -f SHCilmPlus/TestCilmPlus
-	@rm -f SHCilmPlus/*.dat
-	@rm -f SHExpandDH/TestExpandDH
-	@rm -f SHExpandLSQ/TestSHExpandLSQ
-	@rm -f SHLocalizedAdmitCorr/LocalizedAdmitCorr
-	@rm -f SHLocalizedAdmitCorr/*.dat
-	@rm -f SHMag/SHMag
-	@rm -f SHMag/*.dat
-	@rm -f SHRotate/TestSHRotate
-	@rm -f SHRotate/*.sh
-	@rm -f SHRotate/*.dat
-	@rm -f TimingAccuracy/TimingAccuracyDH
-	@rm -f TimingAccuracy/TimingAccuracyDHC
-	@rm -f TimingAccuracy/TimingAccuracyGLQ
-	@rm -f TimingAccuracy/TimingAccuracyGLQC
-	@rm -f TimingAccuracy/output*
-	@rm -f TimingAccuracy/*.maxerror
-	@rm -f TimingAccuracy/*.rmserror
-	@rm -f TimingAccuracy/*.timef
-	@rm -f TimingAccuracy/*.timei
+	-rm -f MarsCrustalThickness/MarsCrustalThickness
+	-rm -f MarsCrustalThickness/*.sh
+	-rm -f MarsCrustalThickness/*.dat
+	-rm -f SHCilmPlus/TestCilmPlus
+	-rm -f SHCilmPlus/*.dat
+	-rm -f SHExpandDH/TestExpandDH
+	-rm -f SHExpandLSQ/TestSHExpandLSQ
+	-rm -f SHLocalizedAdmitCorr/LocalizedAdmitCorr
+	-rm -f SHLocalizedAdmitCorr/*.dat
+	-rm -f SHMag/SHMag
+	-rm -f SHMag/*.dat
+	-rm -f SHRotate/TestSHRotate
+	-rm -f SHRotate/*.sh
+	-rm -f SHRotate/*.dat
+	-rm -f TimingAccuracy/TimingAccuracyDH
+	-rm -f TimingAccuracy/TimingAccuracyDHC
+	-rm -f TimingAccuracy/TimingAccuracyGLQ
+	-rm -f TimingAccuracy/TimingAccuracyGLQC
+	-rm -f TimingAccuracy/output*
+	-rm -f TimingAccuracy/*.maxerror
+	-rm -f TimingAccuracy/*.rmserror
+	-rm -f TimingAccuracy/*.timef
+	-rm -f TimingAccuracy/*.timei
 	
 
 

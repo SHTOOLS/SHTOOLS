@@ -37,7 +37,7 @@
 #	make clean-fortran-examples
 #		Delete compiled example programs.
 #
-#   make run-python-tests
+#   	make run-python-tests
 #		Run all python tests
 #
 #	make doc
@@ -66,12 +66,12 @@ DOCDIR = src/doc
 SRCDIR = src
 LIBDIR = lib
 INCDIR = modules
-EXDIR  = examples
+FEXDIR  = examples/fortran
 PEXDIR = examples/python
 
 
 .PHONY: all all2 all3 python install doc remove-doc clean getflags fortran-examples clean-fortran-examples run-fortran-examples run-python-tests
-	
+
 all: getflags
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
 	@echo
@@ -99,7 +99,7 @@ all2: getflags
 	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
-	
+
 all3: getflags
 	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS)"
 	@echo
@@ -129,10 +129,10 @@ python: all
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo import shtools into Python with:
 	@echo
-	@echo import shtools
+	@echo import pyshtools as shtools
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
-	
+
 getflags:
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags
@@ -144,7 +144,7 @@ endif
 ifeq ($(F95),gfortran)
 # Default gfortran flags
 #F95FLAGS ?= -m64 -fPIC -O3 # -march=native
-F95FLAGS ?= -m64 -fPIC -ggdb -O0 # -march=native
+F95FLAGS ?= -m64 -fPIC -O3 # -march=native  # -ggdb
 MODFLAG = -Imodpath
 endif
 
@@ -177,39 +177,41 @@ doc:
 	@echo DOCUMENTATION SUCCESSFULLY CREATED
 
 remove-doc:
-	@rm -f man/man1/*.1
-	@rm -f www/man/*.html
+	-rm -f man/man1/*.1
+	-rm -f www/man/*.html
 	@echo
 	@echo REMOVED MAN AND HTML-MAN FILES
-	
+
 clean:
-	$(MAKE) -C $(SRCDIR) -f Makefile clean
-	rm -f pyshtools/*.so
-	rm -f pyshtools/*.pyc
-	rm -f $(PEXDIR)/TestLegendre/*.pyc
-	$(MAKE) -C $(EXDIR) -f Makefile clean
+	-$(MAKE) -C $(SRCDIR) -f Makefile clean
+	-rm -f pyshtools/*.so
+	-rm -f pyshtools/*.pyc
+	-rm -f $(PEXDIR)/TestLegendre/*.pyc
+	-$(MAKE) -C $(FEXDIR) -f Makefile clean
 	@echo
 	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN EXAMPLES, AND COMPILED PYTHON FILES
 
 fortran-examples: getflags
-	$(MAKE) -C $(EXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
+	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
 	@echo
 	@echo MAKE OF FORTRAN EXAMPLES SUCCESSFUL
 
 run-fortran-examples:
-	$(MAKE) -C $(EXDIR) -f Makefile run-fortran-examples
+	$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-examples
 	@echo
 	@echo RAN ALL FORTRAN EXAMPLE PROGRAMS
-	
+
 clean-fortran-examples:
-	$(MAKE) -C $(EXDIR) -f Makefile clean
+	$(MAKE) -C $(FEXDIR) -f Makefile clean
 	@echo
 	@echo REMOVED FORTRAN EXAMPLE EXECUTABLES AND FILES
-	
+
 run-python-tests:
-	$(PYTHON) $(PEXDIR)/TestLegendre/TestLegendre.py
+	$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON)
 	@echo
 	@echo RAN ALL PYTHON TESTS
-	
 
-	
+clean-python-tests:
+	$(MAKE) -C $(PEXDIR) -f Makefile clean
+	@echo
+	@echo REMOVED PYTHON EXAMPLE EXECUTABLES AND FILES

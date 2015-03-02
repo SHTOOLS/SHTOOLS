@@ -22,7 +22,7 @@ Program TestExpandDH
 				error, maxerror
 	integer ::		lmax, n, nlat, nlong, lmax2, l, m, i
 	
-	infile = "../ExampleDataFiles/MarsTopo719.shape"
+	infile = "../../ExampleDataFiles/MarsTopo719.shape"
 		
 	call SHRead(infile, cilm, lmax)
 	print*, "Lmax of data file = ", lmax

@@ -69,8 +69,8 @@ program MarsCrustalThickness
 		read(*,*) half
 	endif
 		
-	grav_file = "../ExampleDataFiles/jgmro_110b_sha.tab"
-	topo_file = "../ExampleDataFiles/MarsTopo719.shape"
+	grav_file = "../../ExampleDataFiles/jgmro_110b_sha.tab"
+	topo_file = "../../ExampleDataFiles/MarsTopo719.shape"
 	
 	print*, "Remove degree 1 topo coefficients from Bouguer Correction? (0:no, 1:yes) > "
 	read(*,*) r1

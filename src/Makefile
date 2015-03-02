@@ -178,14 +178,14 @@ endif
 .PHONY: clean getflags
 
 clean:
-	rm -f $(PROG)
-	rm -f $(OBJS0) 
-	rm -f $(OBJSLAPACK1) 
-	rm -f $(OBJSLAPACK2) 
-	rm -f $(OBJSFFTW1) 
-	rm -f $(OBJSFFTW2) 
-	rm -f *.mod 
-	rm -f ../modules/*.mod
+	-rm -f $(PROG)
+	-rm -f $(OBJS0) 
+	-rm -f $(OBJSLAPACK1) 
+	-rm -f $(OBJSLAPACK2) 
+	-rm -f $(OBJSFFTW1) 
+	-rm -f $(OBJSFFTW2) 
+	-rm -f *.mod 
+	-rm -f ../modules/*.mod
 
 
 .SUFFIXES: $(SUFFIXES) .f95 

@@ -28,7 +28,7 @@ program SHMag
 	real*8, allocatable ::	glm(:,:,:), rad(:,:), phi(:,:), theta(:,:), total(:,:), pot(:,:)		
 	integer ::		lmax, lmaxp, n, n_out, nlong, nlat, i, j, astat(6), sampling
 	
-	infile = "../ExampleDataFiles/FSU_mars90.sh"
+	infile = "../../ExampleDataFiles/FSU_mars90.sh"
 	f = 1.0d0/169.864881d0	! Mars flattening = (R_eq - R_p)/R_eq
 	mpr = 3389.508d3	! Mean radius of mars
 	z = 145.d3		! mean altitude to calculate field at.

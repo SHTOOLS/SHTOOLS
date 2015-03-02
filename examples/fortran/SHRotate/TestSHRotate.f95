@@ -27,7 +27,7 @@ program TestSHRotate
 		stop
 	endif
 	
-	infile = "../ExampleDataFiles/MarsTopo719.shape"
+	infile = "../../ExampleDataFiles/MarsTopo719.shape"
 	print*, "Input file = ", infile
 	call SHRead(infile, cilm1, lmax)
 	print*, "Lmax of input file = ", lmax
