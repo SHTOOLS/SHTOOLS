@@ -16,7 +16,7 @@ import pyshtools as shtools
 
 #set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
-from FigStyle import style_shtools, textwidth_in
+from FigStyle import style_shtools
 mpl.rcParams.update(style_shtools)
 
 #==== MAIN FUNCTION ====
@@ -29,8 +29,6 @@ def main():
     #--- run tests ---
     test_associatedlegendre(lmax,mplot,normalization)
     test_legendre(lmax,normalization)
-
-    plt.show()
 
 #==== TEST LEGENDRE FUNCTIONS ====
 def test_legendre(lmax,normalization):
@@ -66,11 +64,12 @@ def test_legendre(lmax,normalization):
         raise Exception('Legendre functions from PlmON and PlmON_d1 are different (rtol>1e-10)')
 
     #---- plot the legendre functions and derivatives up to maximum order mplot ---
-    fig,ax = plt.subplots(1,2,sharey=True)
+    fig,ax = plt.subplots(1,2,sharey=True,figsize=(15,6))
     fig.suptitle('orthonormalized Legendre functions (col1) and derivatives (col2)')
     ax[0].imshow(Pl1[:,:],extent=(0.,lmax,0.,np.pi),aspect='auto')
     ax[1].imshow(dPl2[:,:],extent=(0.,lmax,0.,np.pi),aspect='auto')
     ax[1].set_xlabel('l')
+    fig.savefig('legendre.png')
 
 #==== TEST ASSOCIATED LEGENDRE FUNCTIONS ====
 def test_associatedlegendre(lmax,mplot,normalization):
@@ -108,13 +107,14 @@ def test_associatedlegendre(lmax,mplot,normalization):
         raise Exception('Legendre functions from PlmON and PlmON_d1 are different (rtol>1e-10)')
 
     #---- plot the legendre functions and derivatives up to maximum order mplot ---
-    fig,ax = plt.subplots(2,mplot,sharey=True,sharex=True)
+    fig,ax = plt.subplots(2,mplot,sharey=True,sharex=True,figsize=(15,6))
     fig.suptitle('orthonormalized associated Legendre functions (row1) and derivatives (row2)')
     for m in range(mplot):
         ax[0,m].imshow(Plm1[:,:,m],extent=(0.,lmax,0.,np.pi),aspect='auto')
         ax[0,m].set_title('m=%d'%m)
         ax[1,m].imshow(dPlm2[:,:,m],extent=(0.,lmax,0.,np.pi),aspect='auto')
         ax[1,m].set_xlabel('l')
+    fig.savefig('associatedlegendre.png')
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
