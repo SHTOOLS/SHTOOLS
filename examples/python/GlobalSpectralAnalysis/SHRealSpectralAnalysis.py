@@ -83,7 +83,7 @@ def example():
 
     #--- plot grid ---
     grid  = shtools.MakeGridDH(coeffs,csphase=-1)
-    plt.figure()
+    fig_map = plt.figure()
     plt.imshow(grid)
 
     #---- compute spectrum ----
@@ -92,7 +92,7 @@ def example():
     pdensity  = shtools.SHPowerSpectrumDensity(coeffs)
 
     #---- plot spectrum ----
-    fig,ax = plt.subplots(1,1)
+    fig_spectrum,ax = plt.subplots(1,1)
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.set_xlabel('degree l')
@@ -103,7 +103,11 @@ def example():
 
     ax.legend()
 
-    plt.show()
+    fig_map.savefig('SHRtopography_mars.png')
+    fig_spectrum.savefig('SHRspectrum_mars.png')
+    print 'mars topography and spectrum saved'
+
+    #plt.show()
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

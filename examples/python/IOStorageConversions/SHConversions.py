@@ -66,8 +66,10 @@ def example():
     axes[1].set_title('from complex coefficients')
 
     fig.tight_layout(pad=1)
+    fig.savefig('topography_mars.png')
+    print 'mars topography plotted and saved to file'
 
-    plt.show()
+    #plt.show()
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
