@@ -503,7 +503,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
             real*8, optional,dimension(pot_grid_d0,pot_grid_d1),intent(out) :: pot_grid
             integer, optional,intent(in),depend(lmax),intent(hide) :: total_grid_d0 = 2*(lmax+1)
-            integer, optional,intent(in),depend(total_grid_d0,sampling) :: total_grid_d1*sampling
+            integer, optional,intent(in),depend(total_grid_d0,sampling) :: total_grid_d1 = total_grid_d0*sampling
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
