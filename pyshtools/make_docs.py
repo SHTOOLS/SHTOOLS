@@ -12,7 +12,7 @@ import _SHTOOLS
 def main():
     #---- input/output folders ----
     libfolder = os.path.abspath(sys.argv[1])
-    poddocfolder = os.path.join(libfolder,'src/doc')
+    poddocfolder = os.path.join(libfolder,'src/pydoc')
     pydocfolder = os.path.join(libfolder,'pyshtools/doc')
     print '---- searching documentation in folder: {} ----'.format(poddocfolder)
     

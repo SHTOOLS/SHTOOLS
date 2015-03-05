@@ -1,0 +1,104 @@
+=head1 SHReturnTapersM
+
+=over 18
+
+=item SHReturnTapersM -  
+
+Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 29
+
+=item SUBROUTINE SHReturnTapersM ( 
+
+THETA0, LMAX, M, TAPERS, EIGENVALUES, SHANNON )
+
+=back
+
+=over 4
+
+=over 20
+
+=item REAL*8	
+
+THETA0, TAPERS(LMAX+1), S<EIGENVALUES(LMAX+1)>
+
+=item INTEGER
+
+LMAX, M
+
+=item REAL*8, OPTIONAL
+
+SHANNON
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHReturnTapersM> will calculate the eigenfunctions (i.e., localization windows) of the spherical-cap concentration problem for a singular angular order. The spherical harmonic coefficients of each window are given in the columns of TAPERS, and the corresponding concentration factors are given in EIGENVAULES. The columns of TAPERS are ordered from best to worst concentrated, and the first and last rows of each column correspond to spherical harmonic degrees 0 and LMAX, respectively. The localization windows are normalized such that they have unit power.
+
+=head1 ARGUMENTS
+
+=over 14
+
+=item THETA0
+
+(input) REAL*8
+
+The angular radius of the spherical cap in RADIANS.
+
+=item LMAX
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the localization windows.
+
+=item M
+
+(input) INTEGER
+
+The angular order of the localization windows.
+
+=item TAPERS
+
+(output) REAL*8, DIMENSION (LMAX+1, LMAX+1)
+
+The spherical harmonic coefficients of the LMAX+1 localization windows, arranged in columns. The first and last rows of each column correspond to spherical harmonic degrees 0 and LMAX, respectively, and the columns are arranged from best to worst concentrated. 
+
+=item EIGENVALUES
+
+(output) REAL*8, DIMENSION (LMAX+1)
+
+The concentration factors of the localization windows.
+
+=item SHANNON
+
+(output) REAL*8, OPTIONAL
+
+The shannon number, which is calculated as the trace of the concentration kernel.
+
+=back
+
+=head1 SEE ALSO
+
+shreturntapers(1), computedg82(1), computed0(1), computedm(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
+I<Geophys. J. Int.>, 162, 655-675.
+
+Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, I<SIAM Review>, 48, 504-536, 2006.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

@@ -1,0 +1,80 @@
+=head1 ComputeD0
+
+=over 13
+
+=item ComputeD0 -  
+
+Compute the zonal space-concentration kernel of a spherical cap.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 23
+
+=item SUBROUTINE ComputeD0 ( 
+
+D0, LMAX, THETA0 )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+D0(LMAX+1, LMAX+1), THETA0
+
+=item INTEGER
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<ComputeD0> will calculate the zonal space-concentration kernel for the spherical-cap concentration problem. The eigenfunctions of this matrix correspond to a family of orthogonal windowing functions, and the eigenvalues correspond to the window's concentration factor (i.e., the power of the window within THETA0 divided by the total power of the function). It is implicitly assumed that the employed spherical harmonic functions are normalized to the same value for all degrees and angular orders, which is the case for both the geodesy 4-pi and orthonormalized harmonics. This kernel is symmetric and is computed using the exact expressions presented in Appendix B of Wieczorek and Simons (2005).
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item D0 
+
+(output) REAL*8, DIMENSION (LMAX+1, LMAX+1)
+
+The zonal space-concentration kernel.
+	
+=item LMAX
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the windows.
+	
+=item THETA0
+
+(input) REAL*8
+
+The angular radius of the spherical cap in RADIANS.
+
+=back
+
+=head1 SEE ALSO
+
+computedg82(1), computedm(1), shreturntapers(1), shreturntapersm(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
+I<Geophys. J. Int.>, 162, 655-675.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

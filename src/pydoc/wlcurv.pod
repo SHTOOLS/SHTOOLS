@@ -1,0 +1,91 @@
+=head1 WlCurv
+
+=over 9
+
+=item WlCurv -  
+
+Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 25
+
+=item REAL*8 FUNCTION WlCurv ( 
+
+L, HALF, R, D )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+R, D
+
+=item INTEGER
+
+L, HALF
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<WlCurv> will calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree L. The input parameters include HALF, which is the degree for which the filter is equal to 0.5, and R and D, which are the reference radius of the gravitational field and the radius of the surface to downward continue to, respectively. This filter is numerically similar to the Cartesian minimum-curvature filter of Phipps Morgan and Blackman (1993). See Wieczorek and Phillips (1998) for details concerning the derivation of a minimum-amplitude downward continuation filter in spherical geometry.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item L
+
+(input) INTEGER
+
+The spherical harmonic degree of the downward continuation filter.
+	
+=item HALF
+
+(input) INTEGER
+
+The spherical harmonic degree for which the filter is equal to 0.5.
+
+=item R
+
+(input) REAL*8
+
+The reference radius of the gravitational field.
+
+=item D
+
+(input) REAL*8 
+
+The radius of the surface to downward continue to.
+
+=back
+
+=head1 NOTES
+
+A simple analytic expression exists for the downward continuation filter, following the methodology of Wieczorek and Phillips (1998), only when taking the first, third, fifth, and so on, derivatives of their equation 17. For this minimum-curvature filter, which corresponds to the second derivative, I have simply generalized the form of the analytic equation for odd derivatives. This may or may not turn out to be exact. In any case, the form of this filter is numerically very similar to the Cartesian minimum-curvature filter of Phipps Morgan and Blackman (1993).
+
+=head1 SEE ALSO
+
+wl(1), hilm(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Phipps Morgan, J., and D. K. Blackman, Inversion of combined gravity and bathymetry data for crustal structure: A prescription for downward continuation, I<Earth Planet. Sci. Lett.>, 119, 167-179, 1993.
+
+Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, I<J. Geophys. Res.>, 103, 1715-1724, 1998.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

@@ -130,8 +130,8 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, gridtyp
 		nlat = 2*lmax+2
 		nlong = 2*nlat
 	elseif (gridtype == 4) then
-		nlat = 180.0/interval + 1
-		nlong = 360./interval + 1
+		nlat = 180.0d0/interval + 1
+		nlong = 360.0d0/interval + 1
 	endif
 		
 	if (size(geoid(:,1)) < nlat .or. size(geoid(1,:)) < nlong ) then

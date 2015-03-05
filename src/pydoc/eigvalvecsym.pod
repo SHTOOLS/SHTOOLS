@@ -1,0 +1,107 @@
+=head1 EigValVecSym
+
+=over 16
+
+=item EigValVecSym -  
+
+Compute the eigenvalues and eigenvectors of a real symmetric matrix.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 26
+
+=item SUBROUTINE EigValVecSym ( 
+
+AIN, N, EVAL, EVEC, UL, K )
+
+=back
+
+=over 4
+
+=over 22
+
+=item REAL*8	
+
+AIN(N, N), EVAL(N) or EVAL(K), EVEC(N, N) or EVEC(N, K)
+
+=item INTEGER
+
+N
+
+=item CHARACTER, OPTIONAL
+
+UL
+
+=item INTEGER, OPTIONAL
+
+K
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<EigValVecSym> will calculate the eigenvalues and eigenvectors of a real symmetric matrix. By default, only the upper portion of the matrix is used, but this can be changed by the optional argument UL. The eigenvalues and eigenvectors are sorted from largest to smallest eigenvalues. If the optional parameter K is specified, then only the K largest eigenvalues and their corresponding eigenvectors will be output. 
+
+The matrix Ain is first factorized into a tridiagonal matrix using the LAPACK routine DSYTRD, and then the eigenvalues are calculated by calls to DSTEGR and DORMTR.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item AIN
+
+(input) REAL*8, DIMENSION (N, N)
+
+The input real symmetric matrix. By default, only the upper portion of the matrix is used.
+	
+=item N
+
+(input) INTEGER
+
+The rank of the matrix AIN.
+	
+=item EVAL
+
+(output) REAL*8, DIMENSION (N) or DIMENSION (K)
+
+The eigenvalues of AIN, sorted from largest to smallest.
+
+=item EVEC
+
+(output) REAL*8, DIMENSION (N, N) or DIMENSION (N, K)
+
+The eigenvectors of AIN, sorted from largest to smallest eigenvalues. The sign of the first element of each eigenvector is chosen to be positive.
+
+=item UL
+
+(input) CHARACTER, OPTIONAL
+
+If "U" then the upper portion of the matrix AIN will be used (default). If "L" then the lower portion of the matrix AIN will be used.
+
+=item K
+
+(input) INTEGER, OPTIONAL
+
+The number of largest eigenvalues and corresponding eigenvectors to be output.
+
+=back
+
+=head1 NOTES
+
+This routine requires the matrix algebra packages BLAS and LAPACK which are available at L<http://www.netlib.org/lapack/> and L<http://www.netlib.org/blas/>, respectively.  
+
+=head1 SEE ALSO
+
+lapack(1), blas(1), eigvalsym(1), eigvalvecsymtri(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

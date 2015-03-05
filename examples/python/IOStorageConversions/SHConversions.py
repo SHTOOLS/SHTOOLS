@@ -42,7 +42,7 @@ def example():
     infile = '../../ExampleDataFiles/MarsTopo719.shape'
     coeffs1, lmax = shtools.SHRead(infile,719)
     coeffs1 = coeffs1[:,:lmax+1,:lmax+1]
-
+    
     #--- convert to complex coefficients, fill negative order coefficients ---
     coeffs2 = np.empty( (2,lmax+1,lmax+1), dtype=np.complex )
     coeffs2_buf = shtools.SHrtoc(coeffs1,convention=1,switchcs=0)
@@ -51,8 +51,8 @@ def example():
     coeffs2[1] = coeffs2[0].conjugate()*((-1)**np.arange(lmax+1)).reshape(1,1,lmax+1)
 
     #--- compute and plot grid ---
-    grid1,nlat = shtools.MakeGridDH(coeffs1,lmax,csphase=-1)
-    grid2,nlat = shtools.MakeGridDHC(coeffs2,lmax,csphase=-1)
+    grid1 = shtools.MakeGridDH(coeffs1,lmax,csphase=-1)
+    grid2 = shtools.MakeGridDHC(coeffs2,lmax,csphase=-1)
 
     gridmin=min(grid1.min(),grid2.real.min())
     gridmax=max(grid1.max(),grid2.real.max())

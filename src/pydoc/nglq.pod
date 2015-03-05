@@ -1,0 +1,61 @@
+=head1 NGLQ
+
+=over 8
+
+=item NGLQ -  
+
+Determine the number of Gauss-Legendre quadrature points required to integrate a polynomial of degree L.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 24
+
+=item INTEGER FUNCTION NGLQ ( 
+
+L )
+
+=back
+
+=over 4
+
+=over 10
+
+=item INTEGER	
+
+L
+
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<NGLQ> will determine the number of Gauss-Legendre quadrature points that are required to integrate a polynomial of degree L. This is equal to ceiling((L+1)/2).
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item N
+
+(input) INTEGER
+
+The degree of the polynomial.
+
+=back
+
+=head1 SEE ALSO
+
+preglq(1), nglqsh(1), nglqshn(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

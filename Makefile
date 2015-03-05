@@ -64,7 +64,8 @@ PYTHON = python
 
 SHELL  = /bin/tcsh
 MAKE   = make
-DOCDIR = src/doc
+FDOCDIR = src/fdoc
+PYDOCDIR = src/pydoc
 SRCDIR = src
 LIBDIR = lib
 INCDIR = modules
@@ -119,7 +120,7 @@ all3: getflags
 python: all
 	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" \
 	    -c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-	    -lSHTOOLS -lfftw3 -lm -llapack -lblas	
+	    -lSHTOOLS -lfftw3 -lm -llapack -lblas
 	$(F2PY) --f90flags="-Wtabs" -c $(SRCDIR)/PlanetsConstants.f95 -m _constants
 	mv _SHTOOLS.so pyshtools/.
 	mv _constants.so pyshtools/.
@@ -175,12 +176,14 @@ endif
 
 
 doc: 
-	$(MAKE) -C $(DOCDIR) -f Makefile VERSION=$(VERSION)
+	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
+	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
 	@echo DOCUMENTATION SUCCESSFULLY CREATED
 
 remove-doc:
 	-rm -f man/man1/*.1
-	-rm -f www/man/*.html
+	-rm -f www/man/fortran/*.html
+	-rm -f www/man/python/*.html
 	@echo
 	@echo REMOVED MAN AND HTML-MAN FILES
 

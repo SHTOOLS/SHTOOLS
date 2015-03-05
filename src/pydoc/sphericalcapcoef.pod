@@ -1,0 +1,73 @@
+=head1 SphericalCapCoef
+
+=over 19
+
+=item SphericalCapCoef -  
+
+Calculate the spherical harmonic coefficients of a spherical cap.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 30
+
+=item SUBROUTINE SphericalCapCoef ( 
+
+COEF, THETA, LMAX )
+
+=back
+
+=over 4
+
+=over 20
+
+=item REAL*8	
+
+COEF(*), THETA
+
+=item INTEGER, OPTIONAL
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SphericalCapCoef> will calculate the spherical harmonic coefficients of a spherical cap centered over the north pole. The zonal coefficients, returned in the array COEF, are normalized such that the degree-0 term is 1, and are to be used with either the geodesy 4-pi normalized or orthonormalized spherical harmonics.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item COEF
+
+(output) REAL*8, DIMENSION(*)
+
+The zonal spherical harmonic coefficients of a spherical cap centered over the north pole. The coefficients are calculated up to spherical harmonic degree LMAX, if present, or the dimension of the input array - 1. The coefficients are to be used with either the geodesy 4-pi normalized or orthonormalized spherical harmonics
+	
+=item THETA
+
+(input) REAL*8
+
+The angular radius of the spherical cap in RADIANS.
+
+=item LMAX
+
+(input) INTEGER, OPTIONAL
+
+The maximum spherical harmonic degree to calculate the spherical harmonic coefficients.
+
+=back
+
+=head1 SEE ALSO
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

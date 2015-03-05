@@ -7,7 +7,7 @@
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
-        call PlmBar(p,lmax,z,csphase,cnorm)
+        call PlmBar(p,lmax,z,csphase=csphase,cnorm=cnorm)
     end subroutine pyPlmBar
 
     subroutine pyPlmBar_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0) 
@@ -21,7 +21,7 @@
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        call PlmBar_d1(p,dp,lmax,z,csphase,cnorm)
+        call PlmBar_d1(p,dp,lmax,z,csphase=csphase,cnorm=cnorm)
     end subroutine pyPlmBar_d1
 
     subroutine pyPlBar(p,lmax,z,p_d0) 
@@ -55,7 +55,7 @@
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
-        call PlmSchmidt(p,lmax,z,csphase,cnorm)
+        call PlmSchmidt(p,lmax,z,csphase=csphase,cnorm=cnorm)
     end subroutine pyPlmSchmidt
 
     subroutine pyPlSchmidt(p,lmax,z,p_d0) 
@@ -79,7 +79,7 @@
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        call PlmSchmidt_d1(p,dp,lmax,z,csphase,cnorm)
+        call PlmSchmidt_d1(p,dp,lmax,z,csphase=csphase,cnorm=cnorm)
     end subroutine pyPlmSchmidt_d1
 
     subroutine pyPlSchmidt_d1(p,dp,lmax,z,p_d0,dp_d0) 
@@ -112,7 +112,7 @@
         real*8, intent(in) :: z
         integer, optional,intent(in) :: csphase
         integer, intent(in) :: p_d0
-        call PLegendreA(p,lmax,z,csphase)
+        call PLegendreA(p,lmax,z,csphase=csphase)
     end subroutine pyPLegendreA
 
     subroutine pyPLegendre_d1(p,dp,lmax,z,p_d0,dp_d0) 
@@ -137,11 +137,36 @@
         integer, optional,intent(in) :: csphase
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        call PLegendreA_d1(p,dp,lmax,z,csphase)
+        call PLegendreA_d1(p,dp,lmax,z,csphase=csphase)
     end subroutine pyPLegendreA_d1
 
-    subroutine pyCilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,plx,n,dref,gridin_d0,gridin_d1&
-                              ,cilm_d0,cilm_d1,cilm_d2,plx_d0,plx_d1,zero_d0,w_d0) 
+    subroutine pyCilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1&
+                              ,cilm_d0,cilm_d1,cilm_d2) 
+        use shtools, only: CilmPlus
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, intent(in) :: rho
+        integer, intent(in) :: sampling
+        integer, optional,intent(in) :: n
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        if (sampling == 1) then
+        	call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n)
+        else 
+        	call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n)
+        endif
+    end subroutine pyCilmPlusDH
+
+    subroutine pyCilmPlusGLQ(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,gridin_d0,gridin_d1&
+                              ,cilm_d0,cilm_d1,cilm_d2,zero_d0,w_d0) 
         use shtools, only: CilmPlus
         implicit none
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
@@ -154,23 +179,45 @@
         integer, intent(in) :: gridtype
         real*8, optional,dimension(w_d0),intent(in) :: w
         real*8, optional,dimension(zero_d0),intent(in) :: zero
-        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-        integer, optional,intent(in) :: n
-        real*8, optional,intent(in) :: dref
         integer, intent(in) :: gridin_d0
         integer, intent(in) :: gridin_d1
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
-        integer, intent(in) :: plx_d0
-        integer, intent(in) :: plx_d1
         integer, intent(in) :: zero_d0
         integer, intent(in) :: w_d0
-        call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,plx,n,dref)
-    end subroutine pyCilmPlus
+        call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,1,w=w,zero=zero)
+    end subroutine pyCilmPlusGLQ
 
-    subroutine pyCilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,plx,n,dref,gridin_d0,gridin_d1&
-                                  ,cilm_d0,cilm_d1,cilm_d2,plx_d0,plx_d1,zero_d0,w_d0,rho_d0,rho_d1) 
+    subroutine pyCilmPlusRhoHDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1&
+                                  ,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1) 
+        use shtools, only: CilmPlusRhoH
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
+        integer, intent(in) :: sampling
+        integer, optional,intent(in) :: n
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: rho_d0
+        integer, intent(in) :: rho_d1
+        if (sampling == 1) then
+        	call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n)
+        else
+        	call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n)
+		endif
+    end subroutine pyCilmPlusRhoHDH
+    
+    subroutine pyCilmPlusRhoHGLQ(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,gridin_d0,gridin_d1&
+                                  ,cilm_d0,cilm_d1,cilm_d2,zero_d0,w_d0,rho_d0,rho_d1) 
         use shtools, only: CilmPlusRhoH
         implicit none
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
@@ -183,24 +230,53 @@
         integer, intent(in) :: gridtype
         real*8, optional,dimension(w_d0),intent(in) :: w
         real*8, optional,dimension(zero_d0),intent(in) :: zero
-        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-        integer, optional,intent(in) :: n
-        real*8, optional,intent(in) :: dref
+
         integer, intent(in) :: gridin_d0
         integer, intent(in) :: gridin_d1
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
-        integer, intent(in) :: plx_d0
-        integer, intent(in) :: plx_d1
         integer, intent(in) :: zero_d0
         integer, intent(in) :: w_d0
         integer, intent(in) :: rho_d0
         integer, intent(in) :: rho_d1
-        call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,plx,n,dref)
-    end subroutine pyCilmPlusRhoH
+        call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w=w,zero=zero)
+    end subroutine pyCilmPlusRhoHGLQ
 
-    subroutine pyHilm(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx,zero,filter_type,filter_deg&
+    subroutine pyHilmDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling,filter_type,filter_deg&
+                          ,lmax_calc,ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2) 
+        use shtools, only: Hilm
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
+        real*8, dimension(griddh_d0,griddh_d1),intent(in) :: griddh
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(in) :: r0
+        real*8, intent(in) :: rho
+        integer, intent(in) :: sampling
+        integer, optional,intent(in) :: filter_type
+        integer, optional,intent(in) :: filter_deg
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: ba_d0
+        integer, intent(in) :: ba_d1
+        integer, intent(in) :: ba_d2
+        integer, intent(in) :: griddh_d0
+        integer, intent(in) :: griddh_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        if (sampling == 1) then
+        	call Hilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2,filter_type=filter_type,&
+        		filter_deg=filter_deg,lmax_calc=lmax_calc)
+        else
+        	call Hilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3,filter_type=filter_type,&
+        		filter_deg=filter_deg,lmax_calc=lmax_calc)
+        endif	
+    end subroutine pyHilmDH
+    
+    subroutine pyHilmGLQ(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx,zero,filter_type,filter_deg&
                           ,lmax_calc,ba_d0,ba_d1,ba_d2,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0&
                           ,w_d0,plx_d0,plx_d1) 
         use shtools, only: Hilm
@@ -232,12 +308,49 @@
         integer, intent(in) :: w_d0
         integer, intent(in) :: plx_d0
         integer, intent(in) :: plx_d1
-        call Hilm(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx,zero,filter_type,filter_deg,lmax_calc)
-    end subroutine pyHilm
+        call Hilm(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w=w,plx=plx,zero=zero,filter_type=filter_type,&
+        	filter_deg=filter_deg,lmax_calc=lmax_calc)
+    end subroutine pyHilmGLQ
 
-    subroutine pyHilmRhoH(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx,zero,filter_type,filter_deg&
+    subroutine pyHilmRhoHDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling,filter_type,filter_deg&
+                              ,lmax_calc,ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2&
+                              ,rho_d0,rho_d1) 
+        use shtools, only: HilmRhoH
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
+        real*8, dimension(griddh_d0,griddh_d1),intent(in) :: griddh
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(in) :: r0
+        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: filter_type
+        integer, optional,intent(in) :: filter_deg
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: ba_d0
+        integer, intent(in) :: ba_d1
+        integer, intent(in) :: ba_d2
+        integer, intent(in) :: griddh_d0
+        integer, intent(in) :: griddh_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: rho_d0
+        integer, intent(in) :: rho_d1
+        if (sampling == 1) then
+        	call HilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2,&
+        		filter_type=filter_type,filter_deg=filter_deg,lmax_calc=lmax_calc)
+        else
+        	call HilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3,&
+        		filter_type=filter_type,filter_deg=filter_deg,lmax_calc=lmax_calc)
+        endif
+    end subroutine pyHilmRhoHDH
+
+    subroutine pyHilmRhoHGLQ(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,zero,filter_type,filter_deg&
                               ,lmax_calc,ba_d0,ba_d1,ba_d2,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2&
-                              ,zero_d0,w_d0,rho_d0,rho_d1,plx_d0,plx_d1) 
+                              ,zero_d0,w_d0,rho_d0,rho_d1) 
         use shtools, only: HilmRhoH
         implicit none
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
@@ -250,7 +363,6 @@
         real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
         integer, intent(in) :: gridtype
         real*8, optional,dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         real*8, optional,dimension(zero_d0),intent(in) :: zero
         integer, optional,intent(in) :: filter_type
         integer, optional,intent(in) :: filter_deg
@@ -267,11 +379,9 @@
         integer, intent(in) :: w_d0
         integer, intent(in) :: rho_d0
         integer, intent(in) :: rho_d1
-        integer, intent(in) :: plx_d0
-        integer, intent(in) :: plx_d1
-        call HilmRhoH(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx,zero,filter_type,filter_deg&
-                          ,lmax_calc)
-    end subroutine pyHilmRhoH
+        call HilmRhoH(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w=w,zero=zero,&
+        	filter_type=filter_type,filter_deg=filter_deg,lmax_calc=lmax_calc)
+    end subroutine pyHilmRhoHGLQ
 
     subroutine pyMakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west&
                                 ,dealloc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1) 
@@ -297,11 +407,12 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: grid_d0
         integer, intent(in) :: grid_d1
-        if (f>0 .and. a>0) then
-            call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west,dealloc)
+        if (f<0.0d0 .and. a<0.0d0) then
+        	call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm,csphase=csphase,north=north,&
+            	south=south,east=east,west=west,dealloc=dealloc)
         else
-            call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm,csphase=csphase,&
-                               north=north,south=south,east=east,west=west,dealloc=dealloc)
+        	call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm,csphase=csphase,f=f,a=a,north=north,&
+            	south=south,east=east,west=west,dealloc=dealloc)
         endif
     end subroutine pyMakeGrid2d
 
@@ -423,8 +534,26 @@
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
-        call SHRead(filename,cilm,lmax,skip)
+        call SHRead(filename,cilm,lmax,skip=skip)
     end subroutine pySHRead
+    
+    subroutine pySHReadError(filename,cilm,error,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2) 
+        use shtools, only: SHRead
+        implicit none
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        integer, intent(out) :: lmax
+        integer, intent(in)  :: lmax_in
+        integer, optional,intent(in) :: skip
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+    	integer, intent(in) :: error_d0
+        integer, intent(in) :: error_d1
+        integer, intent(in) :: error_d2
+        call SHRead(filename,cilm,lmax,skip=skip,error=error)
+    end subroutine pySHReadError
 
     subroutine pyMakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid,n,sampling,lmax_calc&
                                    ,pot_grid,total_grid_d0,total_grid_d1,cilm_d0,cilm_d1,cilm_d2,rad_grid_d0&
@@ -458,8 +587,8 @@
         integer, intent(in) :: phi_grid_d1
         integer, intent(in) :: pot_grid_d0
         integer, intent(in) :: pot_grid_d1
-        call MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid,n,sampling,lmax_calc&
-                               ,pot_grid)
+        call MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid,n,&
+        	sampling=sampling,lmax_calc=lmax_calc,pot_grid=pot_grid)
     end subroutine pyMakeMagGridDH
 
     function pySHPowerL(c,l,c_d0,c_d1,c_d2) 
@@ -604,7 +733,7 @@
         integer, intent(in) :: ccilm_d0
         integer, intent(in) :: ccilm_d1
         integer, intent(in) :: ccilm_d2
-        call SHrtoc(rcilm, ccilm, degmax=degmax, convention=convention, switchcs=switchcs)
+        call SHrtoc(rcilm,ccilm,degmax=degmax,convention=convention,switchcs=switchcs)
     end subroutine pySHrtoc
 
     subroutine pySHctor(ccilm,rcilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1&
@@ -622,7 +751,7 @@
         integer, intent(in) :: ccilm_d0
         integer, intent(in) :: ccilm_d1
         integer, intent(in) :: ccilm_d2
-        call SHctor(ccilm,rcilm,degmax,convention,switchcs)
+        call SHctor(ccilm,rcilm,degmax=degmax,convention=convention,switchcs=switchcs)
     end subroutine pySHctor
 
     subroutine pySHCilmToCindex(cilm,cindex,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2) 
@@ -636,7 +765,7 @@
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
-        call SHCilmToCindex(cilm,cindex,degmax)
+        call SHCilmToCindex(cilm,cindex,degmax=degmax)
     end subroutine pySHCilmToCindex
 
     subroutine pySHCindexToCilm(cindex,cilm,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2) 
@@ -650,7 +779,7 @@
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
-        call SHCindexToCilm(cindex,cilm,degmax)
+        call SHCindexToCilm(cindex,cilm,degmax=degmax)
     end subroutine pySHCindexToCilm
 
     subroutine pySHRotateCoef(x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1) 
@@ -719,7 +848,7 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: grid_d0
         integer, intent(in) :: grid_d1
-        call SHExpandDH(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+        call SHExpandDH(grid,n,cilm,lmax,norm=norm,sampling=sampling,csphase=csphase,lmax_calc=lmax_calc)
     end subroutine pySHExpandDH
 
     subroutine pyMakeGridDH(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2&
@@ -739,7 +868,7 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: griddh_d0
         integer, intent(in) :: griddh_d1
-        call MakeGridDH(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+        call MakeGridDH(griddh,n,cilm,lmax,norm=norm,sampling=sampling,csphase=csphase,lmax_calc=lmax_calc)
     end subroutine pyMakeGridDH
 
     function pyMakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2) 
@@ -756,7 +885,7 @@
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
         real*8 :: pyMakeGridPoint
-        pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc)
+        pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,longitude,norm=norm,csphase=csphase,dealloc=dealloc)
     end function pyMakeGridPoint
 
     function pyWl(l,half,r,d) 
@@ -800,7 +929,7 @@
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: lat_d0
-        call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm,chi2,csphase)
+        call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,csphase=csphase)
     end subroutine pySHExpandLSQ
 
     subroutine pySHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0&
@@ -824,7 +953,7 @@
         integer, intent(in) :: shout_d0
         integer, intent(in) :: shout_d1
         integer, intent(in) :: shout_d2
-        call SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp,norm,csphase)
+        call SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp=precomp,norm=norm,csphase=csphase)
     end subroutine pySHMultiply
 
     subroutine pyComputeD0(D0,lmax,theta0,D0_d0,D0_d1) 
@@ -857,7 +986,7 @@
         real*8, intent(in) :: theta
         integer, optional,intent(in) :: lmax
         integer, intent(in) :: coef_d0
-        call SphericalCapCoef(coef,theta,lmax)
+        call SphericalCapCoef(coef,theta,lmax=lmax)
     end subroutine pySphericalCapCoef
 
     subroutine pyEigValVecSym(ain,n,eig,evec,ul,K,evec_d0,evec_d1,ain_d0,ain_d1,eig_d0) 
@@ -874,7 +1003,7 @@
         integer, intent(in) :: ain_d0
         integer, intent(in) :: ain_d1
         integer, intent(in) :: eig_d0
-        call EigValVecSym(ain,n,eig,evec,ul,K)
+        call EigValVecSym(ain,n,eig,evec,ul=ul,K=K)
     end subroutine pyEigValVecSym
 
     subroutine pySHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,shannon,tapers_d0,tapers_d1,eigenvalues_d0) 
@@ -889,7 +1018,7 @@
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: eigenvalues_d0
-        call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,shannon)
+        call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,shannon=shannon)
     end subroutine pySHReturnTapersM
 
     subroutine pyEigValSym(ain,n,eval,ul,ain_d0,ain_d1,eval_d0) 
@@ -902,7 +1031,7 @@
         integer, intent(in) :: ain_d0
         integer, intent(in) :: ain_d1
         integer, intent(in) :: eval_d0
-        call EigValSym(ain,n,eval,ul)
+        call EigValSym(ain,n,eval,ul=ul)
     end subroutine pyEigValSym
 
     function pySHFindLWin(theta0,m,alpha,taper_number) 
@@ -913,7 +1042,7 @@
         real*8, intent(in) :: alpha
         integer, optional,intent(in) :: taper_number
         integer :: pySHFindLWin
-        pySHFindLWin=SHFindLWin(theta0,m,alpha,taper_number)
+        pySHFindLWin=SHFindLWin(theta0,m,alpha,taper_number=taper_number)
     end function pySHFindLWin
 
     subroutine pySHAdmitCorr(G,T,lmax,admit,corr,admit_error,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0&
@@ -935,7 +1064,7 @@
         integer, intent(in) :: T_d1
         integer, intent(in) :: T_d2
         integer, intent(in) :: corr_d0
-        call SHAdmitCorr(G,T,lmax,admit,corr,admit_error)
+        call SHAdmitCorr(G,T,lmax,admit,corr,admit_error=admit_error)
     end subroutine pySHAdmitCorr
 
     subroutine pySHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,admit_error&
@@ -975,20 +1104,22 @@
         integer, intent(in) :: t_d1
         integer, intent(in) :: t_d2
         if(taper_wt(1) < 0.d0) then
-            if(k1linsig<0) then
+            if (k1linsig<0) then
                 call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,&
-                                        admit_error,corr_error,mtdef=mtdef)
+                    admit_error=admit_error,corr_error=corr_error,mtdef=mtdef)
             else
                 call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,&
-                                        admit_error,corr_error,mtdef=mtdef,k1linsig=k1linsig)
+                    admit_error=admit_error,corr_error=corr_error,mtdef=mtdef,&
+                    k1linsig=k1linsig)
             endif
         else
-            if(k1linsig<0) then
+            if (k1linsig<0) then
                 call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,&
-                                        admit_error,corr_error,taper_wt=taper_wt,mtdef=mtdef)
+                    admit_error=admit_error,corr_error=corr_error,taper_wt=taper_wt,mtdef=mtdef)
             else
                 call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr,K,&
-                                        admit_error,corr_error,taper_wt,mtdef,k1linsig)
+                	admit_error=admit_error,corr_error=corr_error,taper_wt=taper_wt,mtdef=mtdef,&
+                	k1linsig=k1linsig)
             endif
         endif
 
@@ -1007,7 +1138,7 @@
         integer, intent(in) :: evec_d0
         integer, intent(in) :: evec_d1
         integer, intent(in) :: eig_d0
-        call EigValVecSymTri(ain,n,eig,evec,ul)
+        call EigValVecSymTri(ain,n,eig,evec,ul=ul)
     end subroutine pyEigValVecSymTri
 
     subroutine pyComputeDG82(dG82,lmax,m,theta0,dG82_d0,dG82_d1) 
@@ -1074,7 +1205,7 @@
         integer, intent(in) :: Shh_d0
         integer, intent(in) :: incspectra_d0
         integer, intent(in) :: outcspectra_d0
-        call SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg)
+        call SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg=save_cg)
     end subroutine pySHBias
 
     subroutine pySHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0&
@@ -1094,10 +1225,10 @@
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: incspectra_d0
         integer, intent(in) :: outcspectra_d0
-        if(taper_wt(1) < 0.d0) then
+        if (taper_wt(1) < 0.d0) then
             call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,save_cg=save_cg)
         else
-            call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,taper_wt,save_cg)
+            call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,taper_wt=taper_wt,save_cg=save_cg)
         endif
     end subroutine pySHBiasK
 
@@ -1142,7 +1273,8 @@
         integer, intent(in) :: Sff_d0
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
-        call SHMTVarOpt0(l,tapers,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar,nocross)
+        call SHMTVarOpt0(l,tapers,lwin,kmax,Sff,var_opt,var_unit,weight_opt=weight_opt,&
+        	unweighted_covar=unweighted_covar,nocross=nocross)
     end subroutine pySHMTVarOpt0
 
     subroutine pySHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,taper_wt,norm&
@@ -1174,12 +1306,12 @@
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: mtse_d0
         integer, intent(in) :: sd_d0
-        if(taper_wt(1) < 0.d0) then
-            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,&
+        if (taper_wt(1) < 0.d0) then
+            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha=alpha,lat=lat,lon=lon,&
                                                   norm=norm,csphase=csphase)
         else
-            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,&
-                                                              taper_wt,norm,csphase)
+            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha=alpha,lat=lat,lon=lon,&
+                                                              taper_wt=taper_wt,norm=norm,csphase=csphase)
         endif
     end subroutine pySHMultiTaperSE
 
@@ -1218,21 +1350,37 @@
         integer, intent(in) :: sd_d0
         integer, intent(in) :: mtse_d0
         if(taper_wt(1) < 0.d0) then
-            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha,lat,lon,&
+            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha=alpha,lat=lat,lon=lon,&
                                                   norm=norm,csphase=csphase)
         else
-            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha,lat,lon,&
-                                                              taper_wt,norm,csphase)
+            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,alpha=alpha,lat=lat,lon=lon,&
+                                                              taper_wt=taper_wt,norm=norm,csphase=csphase)
         endif
     end subroutine pySHMultiTaperCSE
 
-    subroutine pySHReadJPL(filename,cilm,lmax,error,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1&
+    subroutine pySHReadJPL(filename,cilm,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2) 
+        use shtools, only: SHReadJPL
+        implicit none
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+     	integer, intent(in) :: lmax_in
+        real*8, optional,dimension(2),intent(out) :: gm
+        character*6, optional,intent(in) :: formatstring
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHReadJPL(filename,cilm,lmax,gm=gm,formatstring=formatstring)
+    end subroutine pySHReadJPL
+
+    subroutine pySHReadJPLError(filename,cilm,lmax,lmax_in,error,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1&
                                    ,error_d2) 
         use shtools, only: SHReadJPL
         implicit none
         character*(*), intent(in) :: filename
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         integer, intent(in) :: lmax
+     	integer, intent(in) :: lmax_in
         real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
         real*8, optional,dimension(2),intent(out) :: gm
         character*6, optional,intent(in) :: formatstring
@@ -1242,16 +1390,40 @@
         integer, intent(in) :: error_d0
         integer, intent(in) :: error_d1
         integer, intent(in) :: error_d2
-        call SHReadJPL(filename,cilm,lmax,error,gm,formatstring)
-    end subroutine pySHReadJPL
+        call SHReadJPL(filename,cilm,lmax,error=error,gm=gm,formatstring=formatstring)
+    end subroutine pySHReadJPLError
 
-    subroutine pySHRead2(filename,cilm,lmax,gm,r0_pot,error,dot,doystart,doyend,epoch,cilm_d0,cilm_d1&
+    subroutine pySHRead2(filename,cilm,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1&
+                                 ,cilm_d2,dot_d0,dot_d1,dot_d2) 
+        use shtools, only: SHRead2
+        implicit none
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, intent(in) :: lmax_in
+        real*8, intent(out) :: gm
+        real*8, intent(out) :: r0_pot
+        real*8, optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
+        real*8, optional,intent(out) :: doystart
+        real*8, optional,intent(out) :: doyend
+        real*8, optional,intent(out) :: epoch
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: dot_d0
+        integer, intent(in) :: dot_d1
+        integer, intent(in) :: dot_d2
+        call SHRead2(filename,cilm,lmax,gm,r0_pot,dot=dot,doystart=doystart,doyend=doyend,epoch=epoch)
+    end subroutine pySHRead2
+
+    subroutine pySHRead2Error(filename,cilm,lmax,lmax_in,gm,r0_pot,error,dot,doystart,doyend,epoch,cilm_d0,cilm_d1&
                                  ,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2) 
         use shtools, only: SHRead2
         implicit none
         character*(*), intent(in) :: filename
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         integer, intent(out) :: lmax
+        integer, intent(in) :: lmax_in
         real*8, intent(out) :: gm
         real*8, intent(out) :: r0_pot
         real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
@@ -1268,10 +1440,10 @@
         integer, intent(in) :: dot_d0
         integer, intent(in) :: dot_d1
         integer, intent(in) :: dot_d2
-        call SHRead2(filename,cilm,lmax,gm,r0_pot,error,dot,doystart,doyend,epoch)
-    end subroutine pySHRead2
+        call SHRead2(filename,cilm,lmax,gm,r0_pot,error=error,dot=dot,doystart=doystart,doyend=doyend,epoch=epoch)
+    end subroutine pySHRead2Error
 
-    subroutine pyMakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,gridtype,order,nlat,nlong,interval&
+    subroutine pyMakeGeoidGridGLQ(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,order,nlat,nlong&
                                     ,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1) 
         use shtools, only: MakeGeoidGrid
         implicit none
@@ -1283,7 +1455,66 @@
         real*8, intent(in) :: PotRef
         real*8, intent(in) :: omega
         real*8, intent(in) :: r
-        integer, intent(in) :: gridtype
+        integer, intent(in) :: order
+        integer, intent(out) :: nlat
+        integer, intent(out) :: nlong
+        integer, optional,intent(in) :: lmax_calc
+        real*8, optional,intent(in) :: a
+        real*8, optional,intent(in) :: f
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: geoid_d0
+        integer, intent(in) :: geoid_d1
+        call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,1,order,nlat,nlong,&
+        		lmax_calc=lmax_calc,a=a,f=f)
+    end subroutine pyMakeGeoidGridGLQ
+    
+    subroutine pyMakeGeoidGridDH(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,sampling,order,nlat,nlong&
+                                    ,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1) 
+        use shtools, only: MakeGeoidGrid
+        implicit none
+        real*8, dimension(geoid_d0,geoid_d1),intent(out) :: geoid
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: r0pot
+        real*8, intent(in) :: GM
+        real*8, intent(in) :: PotRef
+        real*8, intent(in) :: omega
+        real*8, intent(in) :: r
+        integer, intent(in) :: sampling
+        integer, intent(in) :: order
+        integer, intent(out) :: nlat
+        integer, intent(out) :: nlong
+        integer, optional,intent(in) :: lmax_calc
+        real*8, optional,intent(in) :: a
+        real*8, optional,intent(in) :: f
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: geoid_d0
+        integer, intent(in) :: geoid_d1
+        if (sampling == 1) then
+        	call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,2,order,nlat,nlong,&
+        		lmax_calc=lmax_calc,a=a,f=f)
+        elseif (sampling == 2) then
+        	call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,3,order,nlat,nlong,&
+        		lmax_calc=lmax_calc,a=a,f=f)
+        endif
+    end subroutine pyMakeGeoidGridDH
+
+    subroutine pyMakeGeoidGrid2D(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,order,nlat,nlong,interval&
+                                    ,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1) 
+        use shtools, only: MakeGeoidGrid
+        implicit none
+        real*8, dimension(geoid_d0,geoid_d1),intent(out) :: geoid
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: r0pot
+        real*8, intent(in) :: GM
+        real*8, intent(in) :: PotRef
+        real*8, intent(in) :: omega
+        real*8, intent(in) :: r
         integer, intent(in) :: order
         integer, intent(out) :: nlat
         integer, intent(out) :: nlong
@@ -1296,9 +1527,9 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: geoid_d0
         integer, intent(in) :: geoid_d1
-        call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,gridtype,order,nlat,nlong,interval&
-                                ,lmax_calc,a,f)
-    end subroutine pyMakeGeoidGrid
+        call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,4,order,nlat,nlong,&
+        		interval=interval,lmax_calc=lmax_calc,a=a,f=f)
+    end subroutine pyMakeGeoidGrid2D
 
     subroutine pyPlmON(p,lmax,z,csphase,cnorm,p_d0) 
         use shtools, only: PlmON
@@ -1309,7 +1540,7 @@
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
-        call PlmON(p,lmax,z,csphase,cnorm)
+        call PlmON(p,lmax,z,csphase=csphase,cnorm=cnorm)
     end subroutine pyPlmON
 
     subroutine pyPlON(p,lmax,z,p_d0) 
@@ -1333,7 +1564,7 @@
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        call PlmON_d1(p,dp,lmax,z,csphase,cnorm)
+        call PlmON_d1(p,dp,lmax,z,csphase=csphase,cnorm=cnorm)
     end subroutine pyPlmON_d1
 
     subroutine pyPlON_d1(p,dp,lmax,z,p_d0,dp_d0) 
@@ -1359,7 +1590,7 @@
         integer, optional,intent(out) :: cnum
         integer, intent(in) :: coord_d0
         integer, intent(in) :: coord_d1
-        call MakeCircleCoord(coord,lat,lon,theta0,cinterval,cnum)
+        call MakeCircleCoord(coord,lat,lon,theta0,cinterval=cinterval,cnum=cnum)
     end subroutine pyMakeCircleCoord
 
     subroutine pySHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,eigenvalues_d0,tapers_d0,tapers_d1&
@@ -1425,8 +1656,8 @@
         integer, intent(in) :: Sff_d0
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
-        call SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar&
-                         ,nocross)
+        call SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit,weight_opt=weight_opt,&
+        	unweighted_covar=unweighted_covar,nocross=nocross)
     end subroutine pySHMTVarOpt
 
     subroutine pySHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n,taper_wt,mtdebias_d0,mtdebias_d1&
@@ -1451,7 +1682,7 @@
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: lmid_d0
-        if(taper_wt(1) < 0.d0) then
+        if (taper_wt(1) < 0.d0) then
             call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n)
         else
             call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n,taper_wt=taper_wt)
@@ -1492,8 +1723,8 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: theta_d0
         integer, intent(in) :: theta_d1
-        call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,omega,normal_gravity&
-                                ,pot)
+        call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling=sampling,&
+        	lmax_calc=lmax_calc,omega=omega,normal_gravity=normal_gravity,pot=pot)
     end subroutine pyMakeGravGridDH
 
     function pyNormalGravity(geocentric_lat,gm,omega,a,b) 
@@ -1563,7 +1794,7 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: grid_d0
         integer, intent(in) :: grid_d1
-        call SHExpandDHC(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+        call SHExpandDHC(grid,n,cilm,lmax,norm=norm,sampling=sampling,csphase=csphase,lmax_calc=lmax_calc)
     end subroutine pySHExpandDHC
 
     subroutine pyMakeGridDHC(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2&
@@ -1583,7 +1814,7 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: griddh_d0
         integer, intent(in) :: griddh_d1
-        call MakeGridDHC(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc)
+        call MakeGridDHC(griddh,n,cilm,lmax,norm=norm,sampling=sampling,csphase=csphase,lmax_calc=lmax_calc)
     end subroutine pyMakeGridDHC
 
     subroutine pyMakeGridGLQC(gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0&
@@ -1768,10 +1999,10 @@
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: corr_d0
         integer, intent(in) :: sgg_d0
-        if(taper_wt(1) < 0.d0) then
-            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef)
+        if (taper_wt(1) < 0.d0) then
+            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef=mtdef)
         else
-            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef,taper_wt)
+            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef=mtdef,taper_wt=taper_wt)
         endif
     end subroutine pySHBiasAdmitCorr
 
@@ -1823,7 +2054,7 @@
         integer, intent(in) :: dh_mask_d1
         integer, intent(in) :: Dij_d0
         integer, intent(in) :: Dij_d1
-        call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling)
+        call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling=sampling)
     end subroutine pyComputeDMap
 
     subroutine pySHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,Ntapers,dh_mask_d0,dh_mask_d1&
@@ -1842,7 +2073,7 @@
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: eigenvalues_d0
-        call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,Ntapers)
+        call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling=sampling,Ntapers=Ntapers)
     end subroutine pySHReturnTapersMap
 
     subroutine pyCurve2Mask(dhgrid,n,sampling,profile,nprofile,NP,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1) 
@@ -1853,7 +2084,7 @@
         integer, intent(in) :: sampling
         real*8, dimension(profile_d0,profile_d1),intent(in) :: profile
         integer, intent(in) :: nprofile
-        integer :: NP
+        integer, intent(in) :: NP
         integer, intent(in) :: profile_d0
         integer, intent(in) :: profile_d1
         integer, intent(in) :: dhgrid_d0
@@ -1874,7 +2105,7 @@
         integer, optional,intent(out) :: cnum
         integer, intent(in) :: coord_d0
         integer, intent(in) :: coord_d1
-        call MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval,cnum)
+        call MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval=cinterval,cnum=cnum)
     end subroutine pyMakeEllipseCoord
 
     subroutine pyMakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc,vyz_d0&
@@ -1912,6 +2143,6 @@
         integer, intent(in) :: vxx_d1
         integer, intent(in) :: vxz_d0
         integer, intent(in) :: vxz_d1
-        call MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc)
+        call MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling=sampling,lmax_calc=lmax_calc)
     end subroutine pyMakeGravGradGridDH
 

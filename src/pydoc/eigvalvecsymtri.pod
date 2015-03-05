@@ -1,0 +1,95 @@
+=head1 EigValVecSymTri
+
+=over 19
+
+=item EigValVecSymTri -  
+
+Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 29
+
+=item SUBROUTINE EigValVecSymTri ( 
+
+AIN, N, EVAL, EVEC, UL )
+
+=back
+
+=over 4
+
+=over 22
+
+=item REAL*8	
+
+AIN(N, N), EVAL(N), EVEC(N, N)
+
+=item INTEGER
+
+N
+
+=item CHARACTER, OPTIONAL
+
+UL
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<EigValVecSymTri> will calculate the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix. By default, only the lower portion of the matrix is used, but this can be changed by the optional argument UL. The eigenvalues and eigenvectors are sorted from largest to smallest eigenvalues, and the sign of the first element of each eigenvector is chosen to be positive. 
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item AIN
+
+(input) REAL*8, DIMENSION (N, N)
+
+The input real symmetric tridiagonal matrix. 
+	
+=item N
+
+(input) INTEGER
+
+The rank of the matrix AIN.
+	
+=item EVAL
+
+(output) REAL*8, DIMENSION (N)
+
+The eigenvalues of AIN, sorted from largest to smallest.
+
+=item EVEC
+
+(output) REAL*8, DIMENSION (N, N)
+
+The eigenvectors of AIN, sorted from largest to smallest eigenvalues. The sign of the first element of each eigenvector is chosen to be positive.
+
+=item UL
+
+(input) CHARACTER, OPTIONAL
+
+If "U" then the upper portion of the matrix AIN will be used. If "L" then the lower portion of the matrix AIN will be used (default).
+
+=back
+
+=head1 NOTES
+
+This routine requires the matrix algebra packages BLAS and LAPACK which are available at L<http://www.netlib.org/lapack/> and L<http://www.netlib.org/blas/>, respectively.
+
+=head1 SEE ALSO
+
+lapack(1), blas(1), eigvalsym(1), eigvalvecsym(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

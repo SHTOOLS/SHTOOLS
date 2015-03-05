@@ -20,18 +20,18 @@ MAKE = make
 
 
 all:
-	$(PYTHON) GlobalSpectralAnalysis/SHComplexSpectralAnalysis.py
-	$(PYTHON) GlobalSpectralAnalysis/SHRealSpectralAnalysis.py
-	$(PYTHON) IOStorageConversions/SHConversions.py
-	$(PYTHON) IOStorageConversions/SHStorage.py
-	$(PYTHON) LocalizedSpectralAnalysis/SHMultitaperSE.py
-	$(PYTHON) LocalizedSpectralAnalysis/SHWindowsBiasOther.py
-	$(PYTHON) SHRotations/SHRotations.py
-	$(PYTHON) TestLegendre/TestLegendre.py
-	$(PYTHON) TimingAccuracy/TimingAccuracyDH.py
-	$(PYTHON) TimingAccuracy/TimingAccuracyDHC.py
-	$(PYTHON) TimingAccuracy/TimingAccuracyGLQ.py
-	$(PYTHON) TimingAccuracy/TimingAccuracyGLQC.py
+	cd GlobalSpectralAnalysis ; $(PYTHON) ./SHComplexSpectralAnalysis.py
+	cd GlobalSpectralAnalysis ; $(PYTHON) ./SHRealSpectralAnalysis.py
+	cd IOStorageConversions ; $(PYTHON) ./SHConversions.py
+	cd IOStorageConversions ; $(PYTHON) ./SHStorage.py
+	cd LocalizedSpectralAnalysis ; $(PYTHON) ./SHMultitaperSE.py
+	cd LocalizedSpectralAnalysis ; $(PYTHON) ./SHWindowsBiasOther.py
+	cd SHRotations ; $(PYTHON) ./SHRotations.py
+	cd TestLegendre ; $(PYTHON) ./TestLegendre.py
+	cd TimingAccuracy ; $(PYTHON) ./TimingAccuracyDH.py
+	cd TimingAccuracy ; $(PYTHON) ./TimingAccuracyDHC.py
+	cd TimingAccuracy ; $(PYTHON) ./TimingAccuracyGLQ.py
+	cd TimingAccuracy ; $(PYTHON) ./TimingAccuracyGLQC.py
 
 clean:
 	-rm -f GlobalSpectralAnalysis/*.pyc

@@ -1,0 +1,103 @@
+=head1 MakeGridPoint
+
+=over 17
+
+=item MakeGridPoint -  
+
+Expand a set of spherical harmonic coefficients at a single point.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 32
+
+=item REAL*8 FUNCTION MakeGridPoint ( 
+
+CILM, LMAX, LAT, LON, NORM, CSPHASE, DEALLOC )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+S<CILM(2, LMAX+1, LMAX+1)>, LAT, LON
+
+=item INTEGER
+
+LMAX
+
+=item INTEGER, OPTIONAL
+
+NORM, CSPHASE, DEALLOC
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<MakeGridPoint> will expand a set of spherical harmonic coefficients at a single point. The input latitude and longitude are in degrees. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments NORM and CSPHASE; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. 
+
+=head1 ARGUMENTS
+
+=over 11
+
+=item CILM 
+
+(input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The real spherical harmonic coefficients to be expanded in the space domain. The coefficients C1lm and C2lm refer to the "cosine" (Clm) and "sine" (Slm) coefficients, respectively, with Clm = CILM(1, l+1, m+1) and Slm = CILM(2, l+1, m+1). Alternatively, C1lm and C2lm correspond to the positive and negative order coefficients, respectively.
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of the coefficients CILM.
+
+=item LAT
+
+(input) REAL*8 
+
+The latitude of the point in DEGREES.
+
+=item LON
+
+(input) REAL*8 
+
+The longitude of the point in DEGREES.
+	
+=item NORM
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+
+=item CSPHASE
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+
+=item DEALLOC
+
+(input) INTEGER, OPTIONAL
+
+0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
+
+=back
+
+=head1 SEE ALSO
+
+makegrid2d(1), makegriddh(1), makegridglq(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

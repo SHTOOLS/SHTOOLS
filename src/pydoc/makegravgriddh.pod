@@ -1,0 +1,184 @@
+=head1 MakeGravGridDH
+
+=over 18
+
+=item MakeGravGridDH -  
+
+Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 28
+
+=item SUBROUTINE MakeGravGridDH ( 
+
+CILM, LMAX, GM, R0, A, F, RAD, THETA, PHI, TOTAL, N, SAMPLING, LMAX_CALC, OMEGA, NORMAL_GRAVITY, POT_GRID )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+CILM(2, LMAX+1, LMAX+1), GM, R0, A, F, RAD(2*LMAX+2, 2*LMAX+2), S<THETA(2*LMAX+2, 2*LMAX+2)>, PHI(2*LMAX+2, 2*LMAX+2), TOTAL(2*LMAX+2, 2*LMAX+2)
+
+=item INTEGER
+
+LMAX, N
+
+=item REAL*8, OPTIONAL
+
+OMEGA, POT_GRID(2*LMAX+2,2*LMAX+2)
+
+=item INTEGER, OPTIONAL
+
+SAMPLING, LMAX_CALC, NORMAL_GRAVITY
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<MakeGravGridDH> will create 2-dimensional cylindrical maps from the spherical harmonic coefficients CILM, equally sampled (N by N) or equally spaced (N by 2N) in latitude and longitude, for the three vector components of the gravity field, the magnitude of the gravity field, and the potential (all using geocentric coordinates). The gravitational potential is given by
+
+V = GM/r Sum_{l=0}^LMAX (R0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}, 
+
+and the gravitational acceleration is
+
+B = Grad V.
+
+The coefficients are referenced to a radius R0, and the function is computed on a flattened ellipsoid with semi-major axis A (i.e., the mean equatorial radius) and flattening F. All grids are output in SI units, and the sign of the radial components is positive when directed upwards. If the optional angular rotation rate OMEGA is specified, the potential and radial gravitational acceleration will be calculated in a body-fixed rotating reference frame. 
+
+To remove the "normal gravity" (the total gravitational acceleration on the ellipsoid) from the magnitude of the total gravity field (to obtain the "gravity disturbance"), set NORMAL_GRAVITY equal to 1. To convert m/s^2 to mGals, multiply by 10^5.
+
+The calculated values should be considered exact only when the radii on the ellipsoid are less than the maximum radius of the planet (the potential coefficients are simply downward continued in the spectral domain). The components of the gravity vector are calculated using spherical coordinates whose origin is at the center of the planet, and the components are thus not normal to the reference ellipsoid.
+
+The default is to calculate grids for use in the Driscoll and Healy routines that are equally sampled (N by N), but this can be changed to calculate equally spaced grids (N by 2N) by setting the optional argument SAMPLING to 2. The input value of LMAX determines the number of samples, N=2*LMAX+2, and the latitudinal sampling interval, 90/(LMAX+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/N degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/N for equally sampled and 180/N for equally spaced grids, respectively.
+
+=head1 ARGUMENTS
+
+=over 11
+
+=item CILM 
+
+(input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The real gravitational potential spherical harmonic coefficients. The coefficients C1lm and C2lm refer to the "cosine" (Clm) and "sine" (Slm) coefficients, respectively, with Clm = CILM(1, l+1, m+1) and Slm = CILM(2, l+1, m+1). Alternatively, C1lm and C2lm correspond to the positive and negative order coefficients, respectively.
+
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of the coefficients CILM. This determines the number of samples of the output grids, N=2*LMAX+2, and the latitudinal sampling interval, 90/(LMAX+1).
+
+=item GM
+
+(input) REAL*8 
+
+The gravitational constant multiplied by the mass of the planet.
+
+=item R0
+
+(input) REAL*8
+
+The reference radius of the spherical harmonic coefficients.
+
+=item A
+
+(input) REAL*8
+
+The semi-major axis of the flattened ellipsoid on which the field is computed.
+
+=item F
+
+(input) REAL*8 
+
+The flattening of the reference ellipsoid: i.e., F = (R_equator - R_pole) / R_equator = (A - B) / A.
+
+=item RAD
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled (N by N) or equally spaced (N by 2N) grid of the radial component of the gravity field corresponding to the input spherical harmonic coefficients CILM. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/N degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/N for an equally sampled and 180/N for an equally spaced grid, respectively.
+
+=item THETA
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled or equally spaced grid of the theta component of the gravity field.
+
+=item PHI
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled or equally spaced grid of the phi component of the gravity field.
+
+=item TOTAL
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2) I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4)
+
+A 2D equally sampled or equally spaced grid of the magnitude of the gravity acceleration.
+
+=item N
+
+(output) INTEGER
+
+The number of samples in latitude of the output grids. This is equal to 2*LMAX + 2, which will always be even.
+
+=item SAMPLING 
+
+(input) INTEGER, OPTIONAL
+
+If 1 (default) the output grids are equally sampled (N by N). If 2, the grids are equally spaced (N by 2*N).
+
+=item LMAX_CALC 
+
+(input) INTEGER, OPTIONAL
+
+The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to LMAX.
+
+=item OMEGA
+
+(input) REAL*8, OPTIONAL
+
+The angular rotation rate of the planet.
+
+=item NORMAL_GRAVITY
+
+(input) INTEGER, OPTIONAL
+
+If 1, the normal gravity (the gravitational acceleration on the ellipsoid) will be subtracted from the total gravity, yielding the "gravity disturbance." This is done using Somigliana's formula (after converting geocentric to geodetic coordinates).
+
+=item POT_GRID
+
+(output) REAL*8, DIMENSION(2*LMAX+2, 2*LMAX+2), OPTIONAL I<or>
+(output) REAL*8, DIMENSION(2*LMAX+2, 4*LMAX+4), OPTIONAL
+
+A 2D equally sampled or equaly spaced grid of the gravitational potential.
+
+=back
+
+=head1 SEE ALSO
+
+makegriddh(1), shexpanddh(1), makegeoidgrid(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, I<Adv. Appl. Math.>, 15, 202-250, 1994.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

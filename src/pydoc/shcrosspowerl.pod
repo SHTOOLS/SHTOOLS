@@ -1,0 +1,78 @@
+=head1 SHCrossPowerL
+
+=over 16
+
+=item SHCrossPowerL -  
+
+Compute the spectral cross-power of two real functions for a single degree L.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 32
+
+=item REAL*8 FUNCTION SHCrossPowerL ( 
+
+C1, C2, L )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+C1(2, L+1, L+1), C2(2, L+1, L+1)
+
+=item INTEGER
+
+L
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHCrossPowerL> will calculate the spectral cross-power of two functions expressed in real spherical harmonics for a single degree L. This is explicitly calculated as:
+
+Sum_{i=1}^2 Sum_{m=0}^L C1(i, L+1, m+1) * C2(i, L+1, m+1) .
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item C1
+
+(input) REAL*8, DIMENSION (2, L+1, L+1)
+
+The first function expressed in real spherical harmonics.
+
+=item C2
+
+(input) REAL*8, DIMENSION (2, L+1, L+1)
+
+The second function expressed in real spherical harmonics.
+	
+=item L
+
+(input) INTEGER
+
+The spherical harmonic degree for which the cross power will be calculated.
+
+=back
+
+=head1 SEE ALSO
+
+shpowerl(1), shpowerdensityl(1), shcrosspowerdensityl(1), shpowerspectrum(1), shpowerspectrumdensity(1), shcrosspowerspectrum(1), shcrosspowerspectrumdensity(1), shadmitcorr(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

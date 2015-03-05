@@ -1,0 +1,72 @@
+=head1 SHPowerLC
+
+=over 12
+
+=item SHPowerLC -  
+
+Compute the spectral power of a complex function for a single degree L.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 28
+
+=item REAL*8 FUNCTION SHPowerLC ( 
+
+C, L )
+
+=back
+
+=over 4
+
+=over 14
+
+=item COMPLEX*16	
+
+C(2, L+1, L+1)
+
+=item INTEGER
+
+L
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHPowerLC> will calculate the spectral power of a function expressed in complex spherical harmonics for a single degree L. This is explicitly calculated as:
+
+Sum_{i=1}^2 Sum_{m=0}^L | C(i, L+1, m+1) |**2 .
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item C
+
+(input) COMPLEX*16, DIMENSION (2, L+1, L+1)
+
+The function expressed in complex spherical harmonics.
+	
+=item L
+
+(input) INTEGER
+
+The spherical harmonic degree for which the power will be calculated.
+
+=back
+
+=head1 SEE ALSO
+
+shpowerdensitylc(1), shcrosspowerlc(1), shcrosspowerdensitylc(1), shpowerspectrumc(1), shpowerspectrumdensityc(1), shcrosspowerspectrumc(1), shcrosspowerspectrumdensityc(1), shadmitcorr(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Gravity and magnetics routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>CILMPLUSRHOHGLQ(1)</B>                SHTOOLS 3.0               <B>CILMPLUSRHOHGLQ(1)</B>
+
+
+</PRE>
+<H2 class="man">CilmPlusRhoHGLQ</H2 class="man"><PRE>
+       CilmPlusRhoHGLQ -  Calculate the gravitational potential of relief
+                          referenced to a spherical interface with laterally
+                          varying density using the finite amplitude algorithm
+                          of Wieczorek (2007).
+
+
+</PRE>
+<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
+       SUBROUTINE CilmPlusRhoHGLQ ( CILM, GRIDIN, LMAX, NMAX, MASS, D, RHO, W,
+                                    ZERO )
+
+           REAL*8            CILM(2, LMAX+1, LMAX+1), GRIDIN(LMAX+1,
+                             2*LMAX+1), MASS, D, RHO(LMAX+1, 2*LMAX+1),
+
+           REAL*8            W(LMAX+1), ZERO(LMAX+1)
+
+           INTEGER           LMAX, NMAX
+
+
+</PRE>
+<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
+       <B>CilmPlusRhoHGLQ</B> will calculate the spherical harmonic coefficients of
+       the gravitational potential that correspond to relief referenced to a
+       spherical interface with laterally varying density. This is equation 30
+       of Wieczorek (2007), which is based on the equation 10 of Wieczorek and
+       Phillips (1998). The potential is strictly valid only when the
+       coefficients are evaluated at a radius greater than the maximum radius
+       of the relief. The relief and laterally varying density are input as a
+       grid, whose type is specified by GRIDTYPE (1 for Gauss-Legendre
+       quadrature grids, 2 for NxN Driscoll and Healy sampled grids, and 3 for
+       Nx2N Driscoll and Healy sampled grids). The input relief GRIDIN must
+       correspond to absolute radii. The parameter NMAX is the order of the
+       Taylor series used in the algorithm to approximate the potential
+       coefficients. By default, the relief and spherical harmonic
+       coefficients will be referenced to the mean radius of GRIDIN. However,
+       if the optional parameter DREF is specified, this will be used instead
+       as the reference radius.
+
+       It is important to understand that as an intermediate step, this
+       routine calculates the spherical harmonic coefficients of the density
+       multiplied by relief (referenced to the mean radius of GRIDIN or DREF)
+       raised to the nth power, i.e., RHO*(GRIDIN-D)**n. As such, if the input
+       function is bandlimited to degree L, the resulting function will be
+       bandlimited to degree L*NMAX. This subroutine implicitly assumes that
+       the GRIDIN has an effective spherical harmonic bandwidth greater or
+       equal to L*NMAX. (The effective bandwidth is equal to LMAX for
+       GRIDIN=1, and is specified by N/2-1 for GRIDIN=2 or 3.) If this is not
+       the case, then aliasing will occur. In practice, for accurate results,
+       it is found that the effective bandwidth needs only to be about three
+       times the size of L, though this should be verified for each
+       application. Thus, if the input function is considered to be
+       bandlimited to degree L, the function should be evaluated on a grid
+       corresponding to a maximum degree of about 3*L. Aliasing effects can be
+       minimized by using Driscoll and Healy Nx2N grids.
+
+       If the input grid is evaluated on the Gauss-Legendre points, it is
+       necessary to specify the optional parameters W and ZERO, or W and PLX,
+       which are calculated by a call to <B>PreCompute</B>. In contast, if Driscoll-
+       Healy grids are used (NxN or Nx2N), it is necessary to specify the
+       optional parameter N.
+
+       If memory is not an issue, the algorithm can be speeded up considerably
+       when using Gauss-Lengendre grids by inputing the optional array PLX
+       (along with W) of precomputed associated Legendre functions on the
+       Gauss-Legendre nodes.  Both of these variables are computed by a call
+       to <B>PreCompute</B>.
+
+
+</PRE>
+<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
+       CILM      (output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+                 The real spherical harmonic coefficients (geodesy normalized)
+                 of the gravitational potential corresponding to constant
+                 density relief referenced to a spherical interface of radius
+                 D.
+
+       GRIDIN    (input) REAL*8, DIMENSION (LMAX+1, 2*LMAX+1) for GRIDTYPE 1,
+                 DIMENSION (N, N) for GRIDTYPE 2, DIMENSION (N, 2*N) for
+                 GRIDTYPE 3
+
+                 The radii of the interface evaluated on a grid corresponding
+                 to a function of maximum spherical harmonic degree LMAX. This
+                 is calculated by a call to either <B>MakeGridGLQ</B> or <B>MakeGridDH</B>.
+
+       LMAX      (input) INTEGER
+
+                 The maximum spherical harmonic degree of the output spherical
+                 harmonic coefficients. This degree also determines the
+                 dimension of the input relief GRIDGLQ for GRIDTYPE 1. (As a
+                 general rule, this should be about twice the spherical
+                 harmonic bandwidth of the input function.) For Driscoll-Healy
+                 grids, LMAX must be less than or equal to N/2 - 1.
+
+       NMAX      (input) INTEGER
+
+                 The maximum order used in the Taylor-series expansion used in
+                 calculating the potential coefficients. As a rule, this
+                 should be about 4.
+
+       MASS      (input) REAL*8
+
+                 The mass of the planet in kg.
+
+       D         (output) REAL*8
+
+                 The mean radius of the relief in meters.
+
+       RHO       (input) REAL*8, DIMENSION (LMAX+1, 2*LMAX+1) for GRIDTYPE 1,
+                 DIMENSION (N, N) for GRIDTYPE 2, DIMENSION (N, 2*N) for
+                 GRIDTYPE 3
+
+                 The density contrast of the relief in kg/m^3 expressed on a
+                 grid with the same dimensions as GRIDIN.
+
+       W         (input) REAL*8, OPTIONAL DIMENSION (LMAX+1)
+
+                 The weights used in the Gauss-Legendre quadrature, which are
+                 required for GRIDTYPE = 1. These are calculated from a call
+                 to <B>PreCompute</B> (or alternatively, <B>PreGLQ</B>).
+
+       ZERO      (input) REAL*8, OPTIONAL, DIMENSION (LMAX+1)
+
+                 The nodes used in the Gauss-Legendre quadrature over latitude
+                 for GRIDTYPE 1, calculated by a call to <B>PreCompute</B>. One of
+                 PLX or ZERO must be present when GRIDTYPE = 1, but not both.
+
+
+</PRE>
+<H2 class="man">NOTES</H2 class="man"><PRE>
+       This routine uses geodesy 4-pi normalized spherical harmonics that
+       exclude the Condon-Shortley phase; This can not be modified.
+
+       This routine requires the fast Fourier transform library <B>FFTW</B>, which is
+       available at &lt;http://www.fftw.org&gt;.
+
+
+</PRE>
+<H2 class="man">SEE ALSO</H2 class="man"><PRE>
+       <B>cilmplus(1)</B>, <B>shexpandglq(1)</B>, <B>makegridglq(1)</B>, <B>precompute(1)</B>, <B>preglq(1)</B>,
+       <B>glqgridcoord(1)</B>, <B>makegriddh(1)</B>
+
+       &lt;http://shtools.ipgp.fr/&gt;
+
+
+</PRE>
+<H2 class="man">REFERENCES</H2 class="man"><PRE>
+       Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere:
+       applications to the thickness of the lunar crust, <B>J.</B> <B>Geophys.</B> <B>Res.</B>,
+       103, 1715-1724, 1998.
+
+       Wieczorek, M. A., Gravity and topography of the terrestrial planets,
+       <B>Treatise</B> <B>on</B> <B>Geophysics</B>, 10, 165-206,
+       doi:10.1016/B978-044452748-6/00156-5, 2007.
+
+
+</PRE>
+<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
+       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
+
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
+
+SHTOOLS 3.0                       2015-03-05                <B>CILMPLUSRHOHGLQ(1)</B>
+</PRE>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>
