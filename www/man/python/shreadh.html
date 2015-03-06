@@ -31,17 +31,17 @@
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
-<B>SHREAD(1)</B>                         SHTOOLS 3.0                        <B>SHREAD(1)</B>
+<B>SHREADH(1)</B>                        SHTOOLS 3.0                       <B>SHREADH(1)</B>
 
 
 </PRE>
-<H2 class="man">SHRead</H2 class="man"><PRE>
-       SHRead - Read spherical harmonic coefficients from an ASCII file.
+<H2 class="man">SHReadH</H2 class="man"><PRE>
+       SHReadH - Read spherical harmonic coefficients from an ASCII file.
 
 
 </PRE>
 <H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHRead ( FILENAME, CILM, LMAX, SKIP )
+       SUBROUTINE SHReadH ( FILENAME, CILM, LMAX, SKIP, HEADER )
 
            CHARACTER(*)        FILENAME
 
@@ -51,10 +51,12 @@
 
            INTEGER, OPTIONAL   SKIP
 
+           REAL*8, OPTIONAL    <B>HEADER()</B>
+
 
 </PRE>
 <H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHRead</B> will read spherical harmonic coefficients from an ASCII file
+       <B>SHReadH</B> will read spherical harmonic coefficients from an ASCII file
        into an array CILM. The maximum spherical harmonic degree that is read
        is determined by the minimum of the dimension of the input array CILM -
        1 and the maximum degree of the coefficients in the file. If the
@@ -98,6 +100,11 @@
 
                  The number of lines to skip before parsing FILENAME.
 
+       HEADER    (output) REAL*8, OPTIONAL DIMENSION (N)
+
+                 A vector containing the first N numbers in the first line of
+                 the file (following any skipped lines).
+
 
 </PRE>
 <H2 class="man">NOTES</H2 class="man"><PRE>
@@ -124,7 +131,7 @@
        This is free software; you can distribute and modify it under the terms
        of the revised BSD license.
 
-SHTOOLS 3.0                       2015-03-06                         <B>SHREAD(1)</B>
+SHTOOLS 3.0                       2015-03-06                        <B>SHREADH(1)</B>
 </PRE>
 
 	<p class="dir">

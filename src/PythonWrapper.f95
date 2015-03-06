@@ -537,6 +537,22 @@
         call SHRead(filename,cilm,lmax,skip=skip)
     end subroutine pySHRead
     
+    subroutine pySHReadH(filename,cilm,lmax,lmax_in,header,skip,cilm_d0,cilm_d1,cilm_d2,header_d0) 
+        use shtools, only: SHRead
+        implicit none
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, intent(in)  :: lmax_in
+        real*8, dimension(header_d0),intent(out) :: header
+        integer, optional,intent(in) :: skip
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: header_d0
+        call SHRead(filename,cilm,lmax,skip=skip,header=header)
+    end subroutine pySHReadH
+    
     subroutine pySHReadError(filename,cilm,error,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2) 
         use shtools, only: SHRead
         implicit none
@@ -554,6 +570,27 @@
         integer, intent(in) :: error_d2
         call SHRead(filename,cilm,lmax,skip=skip,error=error)
     end subroutine pySHReadError
+    
+    subroutine pySHReadErrorH(filename,cilm,error,lmax,lmax_in,header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,&
+    		error_d1,error_d2,header_d0) 
+        use shtools, only: SHRead
+        implicit none
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        integer, intent(out) :: lmax
+        integer, intent(in)  :: lmax_in
+        real*8, dimension(header_d0),intent(out) :: header
+        integer, optional,intent(in) :: skip
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+    	integer, intent(in) :: error_d0
+        integer, intent(in) :: error_d1
+        integer, intent(in) :: error_d2
+        integer, intent(in) :: header_d0
+        call SHRead(filename,cilm,lmax,skip=skip,error=error,header=header)
+    end subroutine pySHReadErrorH
 
     subroutine pyMakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid,n,sampling,lmax_calc&
                                    ,pot_grid,total_grid_d0,total_grid_d1,cilm_d0,cilm_d1,cilm_d2,rad_grid_d0&

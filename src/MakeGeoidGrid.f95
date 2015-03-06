@@ -22,32 +22,31 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, gridtyp
 !		IN
 !			cilm		Spherical harmonic potential coefficients.
 !			lmax		Maximum spherical harmonic degree. For gridtype=1, this
-!					is simply the maximum degree used in evaluating the 
-!					spherical harmonic coefficients. For the other grids,
-!					this sets the spacing of the output grid.
+!						is simply the maximum degree used in evaluating the 
+!						spherical harmonic coefficients. For the other grids,
+!						this sets the spacing of the output grid.
 !			r0pot		Reference radius of the potential coefficients.
-!			GM		GM associated with the potential coefficients.
+!			GM			GM associated with the potential coefficients.
 !			PotRef		Reference potential of the geoid.
 !			omega		Angular rotation rate used when calculating the geoid
-!					on in the rotating coordinate system.
-!			r		Reference sperical radius to calculate the geoid heights.
+!						on in the rotating coordinate system.
+!			r			Reference sperical radius to calculate the geoid heights.
 !			gridtype	1 = Gauss-Legendre quadrature grid corresponding to LMAX.
-!					2 = N by N Driscoll and Healy grid corresponding to LMAX.
-!					3 = N by 2N Driscoll and Healy grid corresponding to LMAX.
-!					4 = 2D Cartesian using MakeGrid2D.
+!						2 = N by N Driscoll and Healy grid corresponding to LMAX.
+!						3 = N by 2N Driscoll and Healy grid corresponding to LMAX.
+!						4 = 2D Cartesian using MakeGrid2D.
 !			order 		Order of the Taylor expansion. Either 1, 2, or 3.
 !		OUT
 !			geoid		Gridded values of the geoid, in meters, referenced to the spherical
-!					radius R.
-!			nlat, nlong	Number of latitude and longitude points for the grid.
+!						radius R.
+!						nlat, nlong	Number of latitude and longitude points for the grid.
 !		OPTIONAL, IN
 !			interval	Grid spacing of the output grid in DEGREES. Used only when
-!					GRIDTYPE = 1.
+!						GRIDTYPE = 1.
 !			lmax_calc	For GRIDTYPE 2, 3, and 4, this specifies the maximum spherical
-!					harmonic degree to evaluate the function to.
-!			a		Semimajor axis of the reference flattened ellipsoid.
-!			f		Flattening of the reference ellipsoid.
-!			
+!						harmonic degree to evaluate the function to.
+!			a			Semimajor axis of the reference flattened ellipsoid.
+!			f			Flattening of the reference ellipsoid.
 !			
 !
 !	Dependencies :  MakeGrid2D, MakeGridGLQ, MakeGridDH, NGLQSH, PreCompute

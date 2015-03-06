@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "SHREADERROR 1"
-.TH SHREADERROR 1 "2015-03-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH SHREADERROR 1 "2015-03-06" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -138,7 +138,7 @@ Read spherical harmonic coefficients from an \s-1ASCII\s0 file.
 .IX Header "SYNOPSIS"
 .IP "\s-1SUBROUTINE\s0 SHReadError (" 25
 .IX Item "SUBROUTINE SHReadError ("
-\&\s-1FILENAME\s0, \s-1CILM\s0, \s-1LMAX\s0, \s-1SKIP\s0, \s-1HEADER\s0, \s-1ERROR\s0 )
+\&\s-1FILENAME\s0, \s-1CILM\s0, \s-1LMAX\s0, \s-1SKIP\s0, \s-1ERROR\s0 )
 .RS 4
 .IP "\s-1CHARACTER\s0(*)" 20
 .IX Item "CHARACTER(*)"
@@ -154,7 +154,7 @@ Read spherical harmonic coefficients from an \s-1ASCII\s0 file.
 \&\s-1SKIP\s0
 .IP "REAL*8, \s-1OPTIONAL\s0" 20
 .IX Item "REAL*8, OPTIONAL"
-\&\s-1\fIHEADER\s0()\fR, \s-1ERROR\s0(2, \s-1LMAX+1\s0, \s-1LMAX+1\s0)
+\&\s-1ERROR\s0(2, \s-1LMAX+1\s0, \s-1LMAX+1\s0)
 .RE
 .RS 4
 .RE
@@ -191,11 +191,6 @@ The maximum spherical harmonic degree of \s-1CILM\s0. This is the minimum of the
 (input) \s-1INTEGER\s0, \s-1OPTIONAL\s0
 .Sp
 The number of lines to skip before parsing \s-1FILENAME\s0.
-.IP "\s-1HEADER\s0" 10
-.IX Item "HEADER"
-(output) REAL*8, \s-1OPTIONAL\s0 \s-1DIMENSION\s0 (N)
-.Sp
-A vector containing the first N numbers in the first line of the file (following any skipped lines).
 .IP "\s-1ERROR\s0" 10
 .IX Item "ERROR"
 (output) REAL*8, \s-1OPTIONAL\s0 \s-1DIMENSION\s0 (2, \s-1LMAX+1\s0, \s-1LMAX+1\s0)

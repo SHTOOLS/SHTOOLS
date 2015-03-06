@@ -123,22 +123,22 @@
 .rm #[ #] #H #V #F C
 .\" ========================================================================
 .\"
-.IX Title "SHREAD 1"
-.TH SHREAD 1 "2015-03-06" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.IX Title "SHREADH 1"
+.TH SHREADH 1 "2015-03-06" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
 .nh
-.SH "SHRead"
-.IX Header "SHRead"
-.IP "SHRead \-" 9
-.IX Item "SHRead -"
+.SH "SHReadH"
+.IX Header "SHReadH"
+.IP "SHReadH \-" 10
+.IX Item "SHReadH -"
 Read spherical harmonic coefficients from an \s-1ASCII\s0 file.
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-.IP "\s-1SUBROUTINE\s0 SHRead (" 20
-.IX Item "SUBROUTINE SHRead ("
-\&\s-1FILENAME\s0, \s-1CILM\s0, \s-1LMAX\s0, \s-1SKIP\s0 )
+.IP "\s-1SUBROUTINE\s0 SHReadH (" 21
+.IX Item "SUBROUTINE SHReadH ("
+\&\s-1FILENAME\s0, \s-1CILM\s0, \s-1LMAX\s0, \s-1SKIP\s0, \s-1HEADER\s0 )
 .RS 4
 .IP "\s-1CHARACTER\s0(*)" 20
 .IX Item "CHARACTER(*)"
@@ -152,12 +152,15 @@ Read spherical harmonic coefficients from an \s-1ASCII\s0 file.
 .IP "\s-1INTEGER\s0, \s-1OPTIONAL\s0" 20
 .IX Item "INTEGER, OPTIONAL"
 \&\s-1SKIP\s0
+.IP "REAL*8, \s-1OPTIONAL\s0" 20
+.IX Item "REAL*8, OPTIONAL"
+\&\s-1\fIHEADER\s0()\fR
 .RE
 .RS 4
 .RE
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-\&\fISHRead\fR will read spherical harmonic coefficients from an \s-1ASCII\s0 file into an array \s-1CILM\s0. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array \s-1CILM\s0 \- 1 and the maximum degree of the coefficients in the file. If the optional array \s-1SKIP\s0 is specified, parsing of the file will commence after the first \s-1SKIP\s0 lines. If the optional array \s-1HEADER\s0 is specified, then the first N elements after the skipped lines will be output, where N is the length of the array \s-1HEADER\s0.
+\&\fISHReadH\fR will read spherical harmonic coefficients from an \s-1ASCII\s0 file into an array \s-1CILM\s0. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array \s-1CILM\s0 \- 1 and the maximum degree of the coefficients in the file. If the optional array \s-1SKIP\s0 is specified, parsing of the file will commence after the first \s-1SKIP\s0 lines. If the optional array \s-1HEADER\s0 is specified, then the first N elements after the skipped lines will be output, where N is the length of the array \s-1HEADER\s0.
 .PP
 The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree L and angular order M according to the format
 .PP
@@ -188,6 +191,11 @@ The maximum spherical harmonic degree of \s-1CILM\s0. This is the minimum of the
 (input) \s-1INTEGER\s0, \s-1OPTIONAL\s0
 .Sp
 The number of lines to skip before parsing \s-1FILENAME\s0.
+.IP "\s-1HEADER\s0" 10
+.IX Item "HEADER"
+(output) REAL*8, \s-1OPTIONAL\s0 \s-1DIMENSION\s0 (N)
+.Sp
+A vector containing the first N numbers in the first line of the file (following any skipped lines).
 .SH "NOTES"
 .IX Header "NOTES"
 The first spherical harmonic degree of the filename does not have to be 0; this is determined from the first element after the \s-1SKIP\s0 and \s-1HEADER\s0 lines.

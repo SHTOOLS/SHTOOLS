@@ -27,6 +27,7 @@ all:
 	cd LocalizedSpectralAnalysis ; $(PYTHON) ./SHMultitaperSE.py
 	cd LocalizedSpectralAnalysis ; $(PYTHON) ./SHWindowsBiasOther.py
 	cd SHRotations ; $(PYTHON) ./SHRotations.py
+	cd GravMag ; $(PYTHON) ./TestGrav.py
 	cd TestLegendre ; $(PYTHON) ./TestLegendre.py
 	cd TimingAccuracy ; $(PYTHON) ./TimingAccuracyDH.py
 	cd TimingAccuracy ; $(PYTHON) ./TimingAccuracyDHC.py

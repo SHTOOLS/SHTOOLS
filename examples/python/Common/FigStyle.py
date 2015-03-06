@@ -18,7 +18,7 @@ style_shtools = {'font.size'       : 7,
                  'legend.fontsize' : 'medium',
                  'figure.dpi'      : 160,
                  'savefig.dpi'     : 160,
-                 'font.family'     : 'serif',
+                 'font.family'     : 'sans-serif',
                  'font.serif'      : ['Computer Modern Roman'],
                  'text.usetex'     : True,
                  'figure.figsize'  : (columnwidth_in, columnwidth_in/2)}

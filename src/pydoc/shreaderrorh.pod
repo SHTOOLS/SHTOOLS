@@ -1,8 +1,8 @@
-=head1 SHReadError
+=head1 SHReadErrorH
 
-=over 14
+=over 15
 
-=item SHReadError -  
+=item SHReadErrorH -  
 
 Read spherical harmonic coefficients from an ASCII file.
 
@@ -10,11 +10,11 @@ Read spherical harmonic coefficients from an ASCII file.
 
 =head1 SYNOPSIS
 
-=over 25
+=over 26
 
-=item SUBROUTINE SHReadError ( 
+=item SUBROUTINE SHReadErrorH ( 
 
-FILENAME, CILM, LMAX, SKIP, ERROR )
+FILENAME, CILM, LMAX, SKIP, HEADER, ERROR )
 
 =back
 
@@ -40,7 +40,7 @@ SKIP
 
 =item REAL*8, OPTIONAL
 
-ERROR(2, LMAX+1, LMAX+1)
+HEADER(), ERROR(2, LMAX+1, LMAX+1)
 
 =back
 
@@ -48,7 +48,7 @@ ERROR(2, LMAX+1, LMAX+1)
 
 =head1 DESCRIPTION
 
-I<SHReadError> will read spherical harmonic coefficients from an ASCII file into an array CILM. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array CILM - 1 and the maximum degree of the coefficients in the file. If the optional array SKIP is specified, parsing of the file will commence after the first SKIP lines. If the optional array HEADER is specified, then the first N elements after the skipped lines will be output, where N is the length of the array HEADER.
+I<SHReadErrorH> will read spherical harmonic coefficients from an ASCII file into an array CILM. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array CILM - 1 and the maximum degree of the coefficients in the file. If the optional array SKIP is specified, parsing of the file will commence after the first SKIP lines. If the optional array HEADER is specified, then the first N elements after the skipped lines will be output, where N is the length of the array HEADER.
 
 The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree L and angular order M according to the format
 
@@ -85,6 +85,13 @@ The maximum spherical harmonic degree of CILM. This is the minimum of the maximu
 (input) INTEGER, OPTIONAL
 
 The number of lines to skip before parsing FILENAME.
+
+=item HEADER
+
+(output) REAL*8, OPTIONAL DIMENSION (N)
+
+A vector containing the first N numbers in the first line of the file (following any skipped lines). 
+
 
 =item ERROR
 

@@ -14,7 +14,7 @@ Read spherical harmonic coefficients from an ASCII file.
 
 =item SUBROUTINE SHRead ( 
 
-FILENAME, CILM, LMAX, SKIP, HEADER )
+FILENAME, CILM, LMAX, SKIP )
 
 =back
 
@@ -37,10 +37,6 @@ LMAX
 =item INTEGER, OPTIONAL
 
 SKIP
-
-=item REAL*8, OPTIONAL
-
-HEADER()
 
 =back
 
@@ -85,12 +81,6 @@ The maximum spherical harmonic degree of CILM. This is the minimum of the maximu
 (input) INTEGER, OPTIONAL
 
 The number of lines to skip before parsing FILENAME.
-
-=item HEADER
-
-(output) REAL*8, OPTIONAL DIMENSION (N)
-
-A vector containing the first N numbers in the first line of the file (following any skipped lines). 
 
 =back
 

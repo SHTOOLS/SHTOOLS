@@ -57,7 +57,7 @@ PODFILES = cilmplusdh.pod cilmplusglq.pod computed0.pod computedg82.pod computed
 	shcrosspowerlc.pod shbiasadmitcorr.pod shcilmtovector.pod shvectortocilm.pod \
 	yilmindex.pod computedmap.pod shreturntapers.pod curve2mask.pod makeellipsecoord.pod \
 	cilmplusrhohdh.pod cilmplusglq.pod hilmrhohdh.pod hilmrhohglq.pod normalgravity.pod \
-	makegravgradgriddh.pod
+	makegravgradgriddh.pod shreadh.pod shreaderrorh.pod
 
 MANFILES = cilmplusdh.1 cilmplusglq.1 computed0.1 computedg82.1 computedm.1 \
 	dhaj.1 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilmdh.1 hilmglq.1 \
@@ -82,7 +82,7 @@ MANFILES = cilmplusdh.1 cilmplusglq.1 computed0.1 computedg82.1 computedm.1 \
 	shpowerspectrumc.1 shpowerspectrumdensityc.1 shcrosspowerspectrumc.1 shcrosspowerspectrumdensityc.1 \
 	shcrosspowerlc.1 shbiasadmitcorr.1 shcilmtovector.1 shvectortocilm.1 yilmindex.1 \
 	computedmap.1 shreturntapersmap.1 curve2mask.1 makeellipsecoord.1 cilmplusrhohdh.1 cilmplusrhohglq.1 \
-	hilmrhohdh.1 hilmrhohglq.1 normalgravity.1 makegravgradgriddh.1
+	hilmrhohdh.1 hilmrhohglq.1 normalgravity.1 makegravgradgriddh.1 shreadh.1 shreaderrorh.1
 
 HTMLFILES_modules = planetsconstants.html shtools.html
 
@@ -99,7 +99,7 @@ HTMLFILES_transformations = dhaj.html  makegrid2d.html glqgridcoord.html \
 
 HTMLFILES_io = shread.html shreaderror.html shreadjpl.html shreadjplerror.html shread2.html \
  	shread2error.html shrtoc.html shctor.html shcilmtocindex.html shcindextocilm.html \
- 	shcilmtovector.html shvectortocilm.html yilmindex.html
+ 	shcilmtovector.html shvectortocilm.html yilmindex.html shreadh.html shreaderrorh.html
 	
 HTMLFILES_gspectra = shadmitcorr.html shpowerl.html \
 	shpowerdensityl.html shcrosspowerdensityl.html shpowerspectrum.html \
