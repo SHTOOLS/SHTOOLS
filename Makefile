@@ -25,19 +25,19 @@
 #		Remove the compiled lib, module, object, and Python files. Also removes 
 #		compiled fortran and Python tests.
 #
-#	make fortran-examples
-#		Compile example programs. Optionally, one
+#	make fortran-tests
+#		Compile example programs and test suite. Optionally, one
 #		can specify the parameters F95="my compiler" and 
 #		F95FLAGS="my compiler flags", which should be identical to
 #		those used to make "all".
 #
-#	make run-fortran-examples
-#		Run all fortran examples programs.
+#	make run-fortran-tests
+#		Run all fortran examples and test suite.
 #
-#	make clean-fortran-examples
-#		Delete compiled example programs.
+#	make clean-fortran-tests
+#		Delete compiled test suite programs.
 #
-#   	make run-python-tests
+#   make python-tests
 #		Run all python tests
 #
 #	make clean-python-tests
@@ -73,7 +73,7 @@ FEXDIR  = examples/fortran
 PEXDIR = examples/python
 
 
-.PHONY: all all2 all3 python install doc remove-doc clean getflags fortran-examples clean-fortran-examples run-fortran-examples run-python-tests
+.PHONY: all all2 all3 python install doc remove-doc clean getflags fortran-tests clean-fortran-tests run-fortran-tests run-python-tests
 
 all: getflags
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
@@ -121,9 +121,9 @@ python: all
 	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" \
 	    -c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 	    -lSHTOOLS -lfftw3 -lm -llapack -lblas
-	$(F2PY) --f90flags="-Wtabs" -c $(SRCDIR)/PlanetsConstants.f95 -m _constants
+	$(F2PY) --f90flags="-Wtabs" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _SHTOOLS.so pyshtools/.
-	mv _constants.so pyshtools/.
+	mv _constant.so pyshtools/.
 	mkdir -p pyshtools/doc
 	./pyshtools/make_docs.py .
 	@echo
@@ -194,24 +194,28 @@ clean:
 	-$(MAKE) -C $(FEXDIR) -f Makefile clean
 	-$(MAKE) -C $(PEXDIR) -f Makefile clean
 	@echo
-	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN EXAMPLES, COMPILED PYTHON FILES AND EXAMPLES
+	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN TESTS, COMPILED PYTHON FILES AND TESTS
 
-fortran-examples: getflags
+fortran-tests: getflags
 	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
 	@echo
-	@echo MAKE OF FORTRAN EXAMPLES SUCCESSFUL
-
-run-fortran-examples:
-	$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-examples
+	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
 	@echo
-	@echo RAN ALL FORTRAN EXAMPLE PROGRAMS
+	$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests
+	@echo
+	@echo RAN ALL FORTRAN EXAMPLE AND TESTS
 
-clean-fortran-examples:
+run-fortran-tests:
+	$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests
+	@echo
+	@echo RAN ALL FORTRAN EXAMPLE AND TESTS
+
+clean-fortran-tests:
 	$(MAKE) -C $(FEXDIR) -f Makefile clean
 	@echo
-	@echo REMOVED FORTRAN EXAMPLE EXECUTABLES AND FILES
+	@echo REMOVED FORTRAN TEST SUITE EXECUTABLES AND FILES
 
-run-python-tests:
+python-tests:
 	$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON)
 	@echo
 	@echo RAN ALL PYTHON TESTS
@@ -219,4 +223,4 @@ run-python-tests:
 clean-python-tests:
 	$(MAKE) -C $(PEXDIR) -f Makefile clean
 	@echo
-	@echo REMOVED PYTHON EXAMPLE EXECUTABLES AND FILES
+	@echo REMOVED PYTHON TEST SUITE EXECUTABLES AND FILES

@@ -1,10 +1,10 @@
 ######################################################################
 #
 #	make all
-#		Compile example programs in their directories.
+#		Compile example programs and tests in their directories.
 #
-#	make run-fortran-examples
-#		Run the Fortran examples
+#	make run-fortran-tests
+#		Run the Fortran examples and test suite
 #
 # 	make clean
 #		Delete the compile executibles.
@@ -19,14 +19,14 @@ SHELL=/bin/tcsh
 
 MAKE = make
 
-.PHONY: all getflags clean run-fortran-examples
+.PHONY: all getflags clean run-fortran-tests
 
 
 all: getflags
 
 	@echo
 	@echo -------------------------------------------------------------------------------------------------------
-	@echo Compiling example code in SHTOOLS/examples with the following flags:
+	@echo Compiling example and test suite code in SHTOOLS/examples/fortran with the following flags:
 	@echo
 	@echo $(F95) $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS)
 	@echo -------------------------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ all: getflags
 	
 	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyGLQC
 	
-run-fortran-examples:
+run-fortran-tests:
 	 @echo MARS CRUSTAL THICKNESS
 	 cd MarsCrustalThickness ; ./MarsCrustalThickness < input.txt
 	 @echo

@@ -28,7 +28,7 @@ if not hasattr(main, '__file__'):
     load_documentation()
 
 #import into main namespace
-from . import _constants
-constants = _constants.planetsconstants
+from . import _constant
+constant = _constant.planetsconstants
 
 from _SHTOOLS import *

@@ -23,13 +23,14 @@ def main():
 	TestNormalGravity()
 	TestMakeGeoidGrid()
 	TestGravGrad()
+	TestFilter()
 
 #==== TEST FUNCTIONS ====
 def TestNormalGravity():
-	gm = shtools.constants.gm_mars
-	omega = shtools.constants.omega_mars
-	a = shtools.constants.a_mars
-	b = shtools.constants.b_mars
+	gm = shtools.constant.gm_mars
+	omega = shtools.constant.omega_mars
+	a = shtools.constant.a_mars
+	b = shtools.constant.b_mars
 	lat = np.arange(-90.,90.,1.)
 	ng = np.array([shtools.NormalGravity(x,gm,omega,a,b) for x in lat])
 	fig = plt.figure()
@@ -43,7 +44,7 @@ def TestMakeGeoidGrid():
 	gm = header[1] * 1.e9
 	r0 = header[0] * 1.e3
 	clm[0,0,0] = 1.0
-	geoid = shtools.MakeGeoidGridDH(clm,r0,gm,shtools.constants.w0_mars,a=shtools.constants.a_mars,f=shtools.constants.f_mars,omega=shtools.constants.omega_mars)
+	geoid = shtools.MakeGeoidGridDH(clm,r0,gm,shtools.constant.w0_mars,a=shtools.constant.a_mars,f=shtools.constant.f_mars,omega=shtools.constant.omega_mars)
 	geoid = geoid / 1.e3 # convert to meters
 	fig_map = plt.figure()
 	plt.imshow(geoid)
@@ -75,7 +76,23 @@ def TestGravGrad():
 		axes.flat[num].set_yticks(())
 	
 	fig.savefig('GravGrad_C22.png')
-			
+	
+def TestFilter():
+	half = 80
+	r = shtools.constant.r_moon
+	d = r - 40.e3
+	deglist = np.arange(1,200,1)
+	wl  = np.zeros(len(deglist)+1)
+	wlcurv = np.zeros(len(deglist)+1)
+	for l in deglist:
+		wl[l] = shtools.Wl(l,half,r,d)
+	for l in deglist:
+		wlcurv[l] = shtools.WlCurv(l,half,r,d)
+	fig = plt.figure()
+	plt.plot(deglist, wl[1:], 'b-', deglist, wlcurv[1:], 'r-',)
+	fig.savefig('Filter.png')
+
+    	
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()
