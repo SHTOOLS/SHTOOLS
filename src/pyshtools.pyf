@@ -143,8 +143,8 @@ python module _SHTOOLS ! in
             real*8 intent(in) :: mass
             real*8 intent(out) :: d
             real*8 intent(in) :: rho
-            integer optional,intent(in),check(sampling==1 || sampling==2) :: sampling = 2
-            integer, optional,intent(in),depend(gridin_d0) :: n = gridin_d0
+            integer depend(gridin_d0,gridin_d1),intent(hide) :: sampling = gridin_d1/gridin_d0
+            integer, optional,intent(in),depend(gridin_d0),intent(hide) :: n = gridin_d0
             integer, optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0=shape(gridin,0)
             integer, optional,intent(in),check(shape(gridin,1)==gridin_d1),depend(gridin) :: gridin_d1=shape(gridin,1)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
@@ -184,8 +184,8 @@ python module _SHTOOLS ! in
             real*8 intent(in) :: mass
             real*8 intent(out) :: d
             real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
-            integer, option,intent(in),check(sampling==1 || sampling==2) :: sampling = 2
-            integer, optional,intent(in),depend(gridin_d0) :: n = gridin_d0
+            integer depend(gridin_d0,gridin_d1),intent(hide) :: sampling = gridin_d1/gridin_d0
+            integer, optional,intent(in),depend(gridin_d0),intent(hide) :: n = gridin_d0
             integer, optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0=shape(gridin,0)
             integer, optional,intent(in),check(shape(gridin,1)==gridin_d1),depend(gridin) :: gridin_d1=shape(gridin,1)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
@@ -225,26 +225,23 @@ python module _SHTOOLS ! in
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(griddh_d0,griddh_d1),intent(in) :: griddh
-            integer,optional,intent(in) :: lmax 
+            integer,optional,intent(in),depend(ba_d1) :: lmax = ba_d1 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(in) :: r0
             real*8 intent(in) :: rho
-            integer, optional,intent(in),check(sampling==1 || sampling==2) :: sampling = 2
-            real*8, optional,dimension(w_d0),intent(in) :: w
-            real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-            real*8, optional,dimension(zero_d0),intent(in) :: zero
+            integer depend(griddh_d0,griddh_d1),intent(hide) :: sampling = griddh_d1/griddh_d0
             integer, optional,intent(in) :: filter_type = 0
             integer, optional,intent(in) :: filter_deg = 0
-            integer, optional,intent(in) :: lmax_calc = lmax
+            integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
             integer, optional,intent(in),check(shape(ba,0)==ba_d0),depend(ba) :: ba_d0=shape(ba,0)
             integer, optional,intent(in),check(shape(ba,1)==ba_d1),depend(ba) :: ba_d1=shape(ba,1)
             integer, optional,intent(in),check(shape(ba,2)==ba_d2),depend(ba) :: ba_d2=shape(ba,2)
             integer, optional,intent(in),check(shape(griddh,0)==griddh_d0),depend(griddh) :: griddh_d0=shape(griddh,0)
             integer, optional,intent(in),check(shape(griddh,1)==griddh_d1),depend(griddh) :: griddh_d1=shape(griddh,1)
-            integer intent(in) :: cilm_d0
-            integer intent(in) :: cilm_d1
-            integer intent(in) :: cilm_d2
+            integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d1 = lmax_calc + 1
+            integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d2 = lmax_calc + 1
         end subroutine HilmDH
 
         subroutine HilmGLQ(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,zero,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1,ba_d2,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0,w_d0) ! in PythonWrapper.f95
@@ -253,7 +250,7 @@ python module _SHTOOLS ! in
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-            integer intent(in) :: lmax
+            integer,optional,intent(in),depend(ba_d1) :: lmax = ba_d1 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(in) :: r0
@@ -261,17 +258,17 @@ python module _SHTOOLS ! in
             integer intent(hide) :: gridtype = 1
             real*8, optional,dimension(w_d0),intent(in) :: w
             real*8, optional,dimension(zero_d0),intent(in) :: zero
-            integer, optional,intent(in) :: filter_type
-            integer, optional,intent(in) :: filter_deg
+            integer, optional,intent(in) :: filter_type = 0
+            integer, optional,intent(in) :: filter_deg = 
             integer, optional,intent(in) :: lmax_calc = lmax
             integer, optional,intent(in),check(shape(ba,0)==ba_d0),depend(ba) :: ba_d0=shape(ba,0)
             integer, optional,intent(in),check(shape(ba,1)==ba_d1),depend(ba) :: ba_d1=shape(ba,1)
             integer, optional,intent(in),check(shape(ba,2)==ba_d2),depend(ba) :: ba_d2=shape(ba,2)
             integer, optional,intent(in),check(shape(gridglq,0)==gridglq_d0),depend(gridglq) :: gridglq_d0=shape(gridglq,0)
             integer, optional,intent(in),check(shape(gridglq,1)==gridglq_d1),depend(gridglq) :: gridglq_d1=shape(gridglq,1)
-            integer intent(in) :: cilm_d0
-            integer intent(in) :: cilm_d1
-            integer intent(in) :: cilm_d2
+            integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d1 = lmax_calc + 1
+            integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d2 = lmax_calc + 1
             integer, optional,intent(in),check(len(zero)>=zero_d0),depend(zero) :: zero_d0=len(zero)
             integer, optional,intent(in),check(len(w)>=w_d0),depend(w) :: w_d0=len(w)
         end subroutine HilmGLQ
@@ -282,23 +279,23 @@ python module _SHTOOLS ! in
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(griddh_d0,griddh_d1),intent(in) :: griddh
-            integer intent(in) :: lmax
+            integer,optional,intent(in),depend(ba_d1) :: lmax  = ba_d1 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(in) :: r0
             real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
-            integer, optional,intent(in),check(sampling==1 || sampling==2) :: sampling = 2
+            integer depend(griddh_d0,griddh_d1),intent(hide) :: sampling = griddh_d1/griddh_d0
             integer, optional,intent(in) :: filter_type = 0
             integer, optional,intent(in) :: filter_deg = 0
-            integer, optional,intent(in) :: lmax_calc = lmax
+            integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
             integer, optional,intent(in),check(shape(ba,0)==ba_d0),depend(ba) :: ba_d0=shape(ba,0)
             integer, optional,intent(in),check(shape(ba,1)==ba_d1),depend(ba) :: ba_d1=shape(ba,1)
             integer, optional,intent(in),check(shape(ba,2)==ba_d2),depend(ba) :: ba_d2=shape(ba,2)
             integer, optional,intent(in),check(shape(griddh,0)==griddh_d0),depend(griddh) :: griddh_d0=shape(griddh,0)
             integer, optional,intent(in),check(shape(griddh,1)==griddh_d1),depend(griddh) :: griddh_d1=shape(griddh,1)
-            integer intent(in) :: cilm_d0
-            integer intent(in) :: cilm_d1
-            integer intent(in) :: cilm_d2
+            integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d1 = lmax_calc + 1
+            integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d2 = lmax_calc + 1
             integer, optional,intent(in),check(shape(rho,0)==rho_d0),depend(rho) :: rho_d0=shape(rho,0)
             integer, optional,intent(in),check(shape(rho,1)==rho_d1),depend(rho) :: rho_d1=shape(rho,1)
         end subroutine HilmRhoHDH
@@ -309,7 +306,7 @@ python module _SHTOOLS ! in
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-            integer intent(in) :: lmax
+            integer,optional,intent(in),depend(ba_d1) :: lmax  = ba_d1 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(in) :: r0
@@ -325,9 +322,9 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(shape(ba,2)==ba_d2),depend(ba) :: ba_d2=shape(ba,2)
             integer, optional,intent(in),check(shape(gridglq,0)==gridglq_d0),depend(gridglq) :: gridglq_d0=shape(gridglq,0)
             integer, optional,intent(in),check(shape(gridglq,1)==gridglq_d1),depend(gridglq) :: gridglq_d1=shape(gridglq,1)
-            integer intent(in) :: cilm_d0
-            integer intent(in) :: cilm_d1
-            integer intent(in) :: cilm_d2
+            integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d1 = lmax_calc + 1
+            integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d2 = lmax_calc + 1
             integer, optional,intent(in),check(len(zero)>=zero_d0),depend(zero) :: zero_d0=len(zero)
             integer, optional,intent(in),check(len(w)>=w_d0),depend(w) :: w_d0=len(w)
             integer, optional,intent(in),check(shape(rho,0)==rho_d0),depend(rho) :: rho_d0=shape(rho,0)
