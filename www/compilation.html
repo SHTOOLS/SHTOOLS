@@ -48,7 +48,7 @@
 		<tt>make python-tests</tt></p>
 	</blockquote>
 	
-	<p class="nomarginbot">Note that the final timing tests could take an hour to complete. To delete the compiled archive, module files, object files, and test suite executables, use</p>
+	<p class="nomarginbot">Note that the final timing tests could take about an hour to complete. To delete the compiled archive, module files, object files, and test suite executables, use</p>
 	
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make clean</tt></p>
@@ -60,7 +60,15 @@
 		<p class="nomargintop nomarginbot"><tt>make F95="MyCompiler" F95FLAGS="MyCompilerFlags"</tt></p>
 	</blockquote>
 	
-	<p class="nomarginbot">where "<tt>MyCompiler</tt>" and "<tt>MyCompilerFlags</tt>" are to be replaced by the compiler name and options, respectively.</p>
+	<p class="nomarginbot">where "<tt>MyCompiler</tt>" and "<tt>MyCompilerFlags</tt>" are to be replaced by the compiler name and options, respectively. Other options that can be set are</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>F2PY : </tt>Name (including path) of the <tt>f2py</tt> executable<br>
+		<tt>PYTHON : </tt>Name (including path) of the <tt>python</tt> executable<br>
+		<tt>FFTW : </tt>Name and path of the FFTW3 library of the form "-Lpath -lfftw3"<br>
+		<tt>LAPACK : </tt>Name and path of the LAPACK library of the form "-Lpath -llapack"<br>
+		<tt>BLAS : </tt>Name and path of the BLAS library of the form "-Lpath -lblas"<br></p>
+	</blockquote>
 	
 	<p>Successful compilation will create the library file <tt>libSHTOOLS.a</tt> in the directory <tt>lib</tt>, will place a few compiled module files in the directory <tt>modules</tt>, and will create a few <tt>.so</tt> files in the directory <tt>pyshtools</tt>. The resulting output should look something like <a href="makeout.html">this</a>. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using <tt>make clean</tt>.</p>
 	
