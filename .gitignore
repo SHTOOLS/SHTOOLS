@@ -3,6 +3,7 @@
 *.o
 *.pyc
 *.so
+pyshtools/doc/
 examples/fortran/MarsCrustalThickness/MarsCrustalThickness
 examples/fortran/SHCilmPlus/TestCilmPlus
 examples/fortran/SHExpandDH/TestExpandDH
@@ -67,3 +68,18 @@ examples/fortran/TimingAccuracy/GLQC_m2.rmserror
 examples/fortran/TimingAccuracy/GLQC_m2.timef
 examples/fortran/TimingAccuracy/GLQC_m2.timei
 examples/fortran/TimingAccuracy/output8
+examples/python/Circles.png
+examples/python/GlobalSpectralAnalysis/SHCspectrum_mars.png
+examples/python/GlobalSpectralAnalysis/SHCtopography_mars.png
+examples/python/GlobalSpectralAnalysis/SHRspectrum_mars.png
+examples/python/GlobalSpectralAnalysis/SHRtopography_mars.png
+examples/python/GravMag/Filter.png
+examples/python/GravMag/GravGrad_C22.png
+examples/python/GravMag/MarsGeoid.png
+examples/python/GravMag/Mars_normalgravity.png
+examples/python/Histogram.png
+examples/python/IOStorageConversions/topography_mars.png
+examples/python/Other/Circles.png
+examples/python/Other/Histogram.png
+examples/python/TestLegendre/associatedlegendre.png
+examples/python/TestLegendre/legendre.png

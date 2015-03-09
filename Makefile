@@ -26,7 +26,7 @@
 #		compiled fortran and Python tests.
 #
 #	make fortran-tests
-#		Compile example programs and test suite. Optionally, one
+#		Compile and run example programs and test suite. Optionally, one
 #		can specify the parameters F95="my compiler" and 
 #		F95FLAGS="my compiler flags", which should be identical to
 #		those used to make "all".
@@ -62,6 +62,10 @@ F95 = gfortran
 F2PY = f2py
 PYTHON = python
 
+FFTW = "-lfftw3"
+LAPACK = -llapack 
+BLAS = -lblas
+
 SHELL  = /bin/tcsh
 MAKE   = make
 FDOCDIR = src/fdoc
@@ -83,7 +87,7 @@ all: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS -lfftw3 -lm
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
 	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
@@ -97,7 +101,7 @@ all2: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS -lfftw3 -lm
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
 	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
@@ -111,17 +115,17 @@ all3: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS -lfftw3 -lm
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
 	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
 python: all
-	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="-m64 -fPIC" \
+	$(F2PY) -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 	    -c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-	    -lSHTOOLS -lfftw3 -lm -llapack -lblas
-	$(F2PY) --f90flags="-Wtabs" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
+	    -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	$(F2PY) --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _SHTOOLS.so pyshtools/.
 	mv _constant.so pyshtools/.
 	mkdir -p pyshtools/doc
@@ -149,6 +153,7 @@ ifeq ($(F95),gfortran)
 #F95FLAGS ?= -m64 -fPIC -O3 # -march=native
 F95FLAGS ?= -m64 -fPIC -O3 # -march=native  # -ggdb
 MODFLAG = -Imodpath
+#LAPACK = #"-framework accelerate" This will compile and run the fortran code, but will not compile the python library.
 endif
 
 ifeq ($(F95),ifort)
@@ -197,7 +202,7 @@ clean:
 	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN TESTS, COMPILED PYTHON FILES AND TESTS
 
 fortran-tests: getflags
-	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
+	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" FFTW=$(FFTW) LAPACK=$(LAPACK) BLAS=$(BLAS)
 	@echo
 	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
 	@echo

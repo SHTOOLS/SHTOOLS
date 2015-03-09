@@ -15,8 +15,11 @@
 
 F95 = gfortran
 
-SHELL=/bin/tcsh
+FFTW = -lfftw3
+LAPACK = -llapack
+BLAS = -lblas
 
+SHELL=/bin/tcsh
 MAKE = make
 
 .PHONY: all getflags clean run-fortran-tests
@@ -28,31 +31,31 @@ all: getflags
 	@echo -------------------------------------------------------------------------------------------------------
 	@echo Compiling example and test suite code in SHTOOLS/examples/fortran with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) -L../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo -------------------------------------------------------------------------------------------------------
 	@echo
 	
-	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o MarsCrustalThickness/MarsCrustalThickness
+	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o MarsCrustalThickness/MarsCrustalThickness
 	
-	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHCilmPlus/TestCilmPlus
+	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHCilmPlus/TestCilmPlus
 	
-	$(F95) SHExpandDH/TestExpandDH.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHExpandDH/TestExpandDH
+	$(F95) SHExpandDH/TestExpandDH.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandDH/TestExpandDH
 	
-	$(F95) SHExpandLSQ/TestSHExpandLSQ.f95 $(MODFLAG) -L../../lib -lSHTOOLS -llapack -lblas -lfftw3 -lm $(F95FLAGS) -o SHExpandLSQ/TestSHExpandLSQ
+	$(F95) SHExpandLSQ/TestSHExpandLSQ.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandLSQ/TestSHExpandLSQ
 	
-	$(F95) SHLocalizedAdmitCorr/LocalizedAdmitCorr.f95 $(MODFLAG) -L../../lib -lSHTOOLS -llapack -lblas -lfftw3 -lm $(F95FLAGS) -o SHLocalizedAdmitCorr/LocalizedAdmitCorr
+	$(F95) SHLocalizedAdmitCorr/LocalizedAdmitCorr.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHLocalizedAdmitCorr/LocalizedAdmitCorr
 	
-	$(F95) SHMag/SHMag.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHMag/SHMag
+	$(F95) SHMag/SHMag.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHMag/SHMag
 	
-	$(F95) SHRotate/TestSHRotate.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o SHRotate/TestSHRotate
+	$(F95) SHRotate/TestSHRotate.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHRotate/TestSHRotate
 	
-	$(F95) TimingAccuracy/TimingAccuracyDH.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyDH
+	$(F95) TimingAccuracy/TimingAccuracyDH.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDH
 	
-	$(F95) TimingAccuracy/TimingAccuracyDHC.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyDHC
+	$(F95) TimingAccuracy/TimingAccuracyDHC.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDHC
 	
-	$(F95) TimingAccuracy/TimingAccuracyGLQ.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyGLQ
+	$(F95) TimingAccuracy/TimingAccuracyGLQ.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQ
 	
-	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) -L../../lib -lSHTOOLS -lfftw3 -lm $(F95FLAGS) -o TimingAccuracy/TimingAccuracyGLQC
+	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQC
 	
 run-fortran-tests:
 	 @echo MARS CRUSTAL THICKNESS
@@ -77,6 +80,7 @@ run-fortran-tests:
 	 cd SHRotate ; ./TestSHRotate < input.txt
 	 @echo
 	 @echo "*** The following 8 timing and accuracy tests will take about an hour to complete ***"
+	 @echo "*** If you are impatient, press Control-C to exit ***"
 	 @echo
 	 @echo TIMING ACCURACY GLQ
 	 cd TimingAccuracy ; ./TimingAccuracyGLQ < input1 > output1
@@ -105,12 +109,12 @@ run-fortran-tests:
 getflags:
 
 ifeq ($(F95),f95)
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -march=host -speed_math=11
+F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic
 MODFLAG = -p ../../modules/
 endif
 
 ifeq ($(F95),gfortran)
-F95FLAGS ?= -m64 -O3 -march=native -ffast-math
+F95FLAGS ?= -m64 -fPIC -O3
 MODFLAG = -I../../modules/
 endif
 
