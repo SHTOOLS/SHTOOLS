@@ -25,7 +25,7 @@ def main():
 	TestGravGrad()
 	TestFilter()
 	TestMakeMagGrid()
-
+	
 #==== TEST FUNCTIONS ====
 def TestMakeGravGrid():
 	infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
@@ -154,7 +154,7 @@ def TestMakeMagGrid():
 	ax.legend()
 	
 	fig_spectrum.savefig('Mars_MagPowerSpectrum.png')
-    	
+	
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()
