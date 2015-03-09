@@ -520,7 +520,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(header),intent(hide) :: header_d0 = len(header)
         end subroutine SHReadErrorH
 
-        subroutine MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid,n,sampling,lmax_calc,pot_grid,total_grid_d0,total_grid_d1,cilm_d0,cilm_d1,cilm_d2,rad_grid_d0,rad_grid_d1,theta_grid_d0,theta_grid_d1,phi_grid_d0,phi_grid_d1,pot_grid_d0,pot_grid_d1) ! in PythonWrapper.f95
+        subroutine MakeMagGridDH(cilm,lmax,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,pot,total_d0,total_d1,cilm_d0,cilm_d1,cilm_d2,rad_d0,rad_d1,theta_d0,theta_d1,phi_d0,phi_d1,pot_d0,pot_d1) ! in PythonWrapper.f95
             fortranname pymakemaggriddh
             use shtools, only: MakeMagGridDH
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
@@ -528,27 +528,27 @@ python module _SHTOOLS ! in
             real*8 intent(in) :: r0
             real*8, optional,intent(in),depend(r0) :: a = r0
             real*8, optional,intent(in) :: f = 0.0
-            real*8 dimension(rad_grid_d0,rad_grid_d1),intent(out) :: rad_grid
-            real*8 dimension(theta_grid_d0,theta_grid_d1),intent(out) :: theta_grid
-            real*8 dimension(phi_grid_d0,phi_grid_d1),intent(out) :: phi_grid
-            real*8 dimension(total_grid_d0,total_grid_d1),intent(out) :: total_grid
+            real*8 dimension(rad_d0,rad_d1),intent(out) :: rad
+            real*8 dimension(theta_d0,theta_d1),intent(out) :: theta
+            real*8 dimension(phi_d0,phi_d1),intent(out) :: phi
+            real*8 dimension(total_d0,total_d1),intent(out) :: total
             integer intent(hide) :: n
             integer, optional,intent(in) :: sampling = 2
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
-            real*8, optional,dimension(pot_grid_d0,pot_grid_d1),intent(out) :: pot_grid
-            integer, optional,intent(in),depend(lmax),intent(hide) :: total_grid_d0 = 2*(lmax+1)
-            integer, optional,intent(in),depend(total_grid_d0,sampling) :: total_grid_d1 = total_grid_d0*sampling
+            real*8, optional,dimension(pot_d0,pot_d1),intent(out) :: pot
+            integer, optional,intent(in),depend(lmax),intent(hide) :: total_d0 = 2*(lmax+1)
+            integer, optional,intent(in),depend(total_d0,sampling) :: total_d1 = total_d0*sampling
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
-            integer, optional,intent(in),intent(hide),depend(total_grid_d0) :: rad_grid_d0 = total_grid_d0
-            integer, optional,intent(in),intent(hide),depend(total_grid_d1)  :: rad_grid_d1 = total_grid_d1
-            integer, optional,intent(in),intent(hide),depend(total_grid_d0) :: theta_grid_d0 = total_grid_d0
-            integer, optional,intent(in),intent(hide),depend(total_grid_d1) :: theta_grid_d1 = total_grid_d1
-            integer, optional,intent(in),intent(hide),depend(total_grid_d0) :: phi_grid_d0 = total_grid_d0
-            integer, optional,intent(in),intent(hide),depend(total_grid_d1)  :: phi_grid_d1 = total_grid_d1
-            integer, optional,intent(in),intent(hide),depend(total_grid_d0)  :: pot_grid_d0 = total_grid_d0
-            integer, optional,intent(in),intent(hide),depend(total_grid_d1)  :: pot_grid_d1 = total_grid_d1
+            integer, optional,intent(in),intent(hide),depend(total_d0) :: rad_d0 = total_d0
+            integer, optional,intent(in),intent(hide),depend(total_d1)  :: rad_d1 = total_d1
+            integer, optional,intent(in),intent(hide),depend(total_d0) :: theta_d0 = total_d0
+            integer, optional,intent(in),intent(hide),depend(total_d1) :: theta_d1 = total_d1
+            integer, optional,intent(in),intent(hide),depend(total_d0) :: phi_d0 = total_d0
+            integer, optional,intent(in),intent(hide),depend(total_d1)  :: phi_d1 = total_d1
+            integer, optional,intent(in),intent(hide),depend(total_d0)  :: pot_d0 = total_d0
+            integer, optional,intent(in),intent(hide),depend(total_d1)  :: pot_d1 = total_d1
         end subroutine MakeMagGridDH
 
         function SHPowerL(c,l,c_d0,c_d1,c_d2) ! in PythonWrapper.f95
@@ -1581,18 +1581,18 @@ python module _SHTOOLS ! in
             real*8 :: SHMagPowerL
         end function SHMagPowerL
 
-        subroutine SHMagPowerSpectrum(c,a,r,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0) ! in PythonWrapper.f95
+        subroutine SHMagPowerSpectrum(c,a,r,lmax,spectrum,c_d0,c_d1,c_d2,spectrum_d0) ! in PythonWrapper.f95
             fortranname pyshmagpowerspectrum
             use shtools, only: SHMagPowerSpectrum
             real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             real*8 intent(in) :: a
             real*8, optional,intent(in) :: r = a
             integer, optional,intent(in) :: lmax = c_d1 - 1
-            real*8 dimension(spectra_d0),intent(out) :: spectra
+            real*8 dimension(spectrum_d0),intent(out) :: spectrum
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
             integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
-            integer, optional,intent(in),intent(hide),depend(c_d1) :: spectra_d0 = c_d1
+            integer, optional,intent(in),intent(hide),depend(c_d1) :: spectrum_d0 = c_d1
         end subroutine SHMagPowerSpectrum
 
         subroutine SHExpandDHC(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1) ! in PythonWrapper.f95

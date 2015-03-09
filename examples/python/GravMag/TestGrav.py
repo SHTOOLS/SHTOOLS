@@ -20,12 +20,41 @@ mpl.rcParams.update(style_shtools)
 
 #==== MAIN FUNCTION ====
 def main():
+	TestMakeGravGrid()
 	TestNormalGravity()
-	TestMakeGeoidGrid()
 	TestGravGrad()
 	TestFilter()
+	TestMakeMagGrid()
 
 #==== TEST FUNCTIONS ====
+def TestMakeGravGrid():
+	infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
+	header = np.zeros(2,dtype=float)
+	clm,lmax, header = shtools.SHReadH(infile,110,header)
+	gm = header[1] * 1.e9
+	r0 = header[0] * 1.e3
+	clm[0,0,0] = 1.0
+
+	geoid = shtools.MakeGeoidGridDH(clm,r0,gm,shtools.constant.w0_mars,a=shtools.constant.a_mars,f=shtools.constant.f_mars,omega=shtools.constant.omega_mars)
+	geoid = geoid / 1.e3 # convert to meters
+	fig_map = plt.figure()
+	plt.imshow(geoid)
+	fig_map.savefig('MarsGeoid.png')
+	
+	rad,theta,phi,total,pot = shtools.MakeGravGridDH(clm,gm,r0,lmax=719,a=shtools.constant.a_mars,f=shtools.constant.f_mars,lmax_calc=85,omega=shtools.constant.omega_mars,normal_gravity=1)
+	fig, axes = plt.subplots(2,2)
+		
+	for num, vv, s in ((0,rad,"$g_{r}$"), (1,theta,"$g_{\theta}$"), (2,phi,"$g_{\phi}$"), (3,total,"Gravity disturbance") ):
+		if (num==3):
+			axes.flat[num].imshow(vv*1.e5, vmin=-400,vmax=550) # Convert to mGals
+		else:
+			axes.flat[num].imshow(vv)
+		axes.flat[num].set_title(s)
+		axes.flat[num].set_xticks(())
+		axes.flat[num].set_yticks(())
+	
+	fig.savefig('Mars_Grav.png')
+	
 def TestNormalGravity():
 	gm = shtools.constant.gm_mars
 	omega = shtools.constant.omega_mars
@@ -35,21 +64,11 @@ def TestNormalGravity():
 	ng = np.array([shtools.NormalGravity(x,gm,omega,a,b) for x in lat])
 	fig = plt.figure()
 	plt.plot(lat, ng, '-')
+	plt.xlim(-90,90)
+	plt.xlabel('latitude')
+	plt.ylabel('$g, m s^{-2}$')
 	fig.savefig('Mars_normalgravity.png')
 		
-def TestMakeGeoidGrid():
-	infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
-	header = np.zeros(2,dtype=float)
-	clm,lmax, header = shtools.SHReadH(infile,110,header)
-	gm = header[1] * 1.e9
-	r0 = header[0] * 1.e3
-	clm[0,0,0] = 1.0
-	geoid = shtools.MakeGeoidGridDH(clm,r0,gm,shtools.constant.w0_mars,a=shtools.constant.a_mars,f=shtools.constant.f_mars,omega=shtools.constant.omega_mars)
-	geoid = geoid / 1.e3 # convert to meters
-	fig_map = plt.figure()
-	plt.imshow(geoid)
-	fig_map.savefig('MarsGeoid.png')
-
 def TestGravGrad():
 	#---- input parameters ----
 	lmax = 100
@@ -84,14 +103,57 @@ def TestFilter():
 	deglist = np.arange(1,200,1)
 	wl  = np.zeros(len(deglist)+1)
 	wlcurv = np.zeros(len(deglist)+1)
+	
 	for l in deglist:
 		wl[l] = shtools.Wl(l,half,r,d)
-	for l in deglist:
 		wlcurv[l] = shtools.WlCurv(l,half,r,d)
+		
 	fig = plt.figure()
-	plt.plot(deglist, wl[1:], 'b-', deglist, wlcurv[1:], 'r-',)
+	plt.plot(deglist, wl[1:], 'b-', label='Minimum amplitude')
+	plt.plot(deglist, wlcurv[1:], 'r-', label='Minimum curvature')
+	plt.xlabel('degree, l')
+	plt.ylabel('W')
+	plt.legend()
+	
 	fig.savefig('Filter.png')
 
+def TestMakeMagGrid():
+	infile = '../../ExampleDataFiles/FSU_mars90.sh'
+	header = np.zeros(4,dtype=float)
+	clm,lmax, header = shtools.SHReadH(infile,90,header=header,skip=1)
+	r0 = header[0] * 1.e3
+	a = shtools.constant.r_mars + 145.0e3	# radius to evaluate the field
+	
+	rad,theta,phi,total,pot = shtools.MakeMagGridDH(clm,r0,lmax=719,a=a,f=shtools.constant.f_mars,lmax_calc=90)
+	fig, axes = plt.subplots(2,2)
+		
+	for num, vv, s in ((0,rad,"$B_{r}$"), (1,theta,"$B_{\theta}$"), (2,phi,"$B_{\phi}$"), (3,total,"$|B|$") ):
+		if (num==3):
+			axes.flat[num].imshow(vv, vmin=0,vmax=700) 
+		else:
+			axes.flat[num].imshow(vv)
+		axes.flat[num].set_title(s)
+		axes.flat[num].set_xticks(())
+		axes.flat[num].set_yticks(())
+
+	fig.savefig('Mars_Mag.png')
+	
+	ls = np.arange(lmax+1)
+	pspectrum = shtools.SHMagPowerSpectrum(clm,r0)
+	pspectrum2 = np.array([shtools.SHMagPowerL(clm,r0,l) for l in range(0,lmax+1)])
+	print "Minimum and maximum difference in spectra = ", (pspectrum-pspectrum2).min(), (pspectrum-pspectrum2).max()
+
+	fig_spectrum,ax = plt.subplots(1,1)
+	ax.set_xscale('linear')
+	ax.set_yscale('log')
+	ax.set_xlabel('degree, l')
+	ax.set_ylabel('Power')
+	ax.grid(True,which='both')
+
+	ax.plot(ls[1:],pspectrum[1:],label='Magnetic power spectrum')
+	ax.legend()
+	
+	fig_spectrum.savefig('Mars_MagPowerSpectrum.png')
     	
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

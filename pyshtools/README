@@ -1,17 +1,11 @@
-LICENSE INFORMATION
-===================
-
-
 INSTALLATION INSTRUCTIONS
 =========================
 
 1. check and adjust the Makefile
 
-2. type: make all
+2. type: make
 
-3. type: make python-wrapper
-
-
+3. type: make python
 
 
 MINI EXAMPLES
@@ -20,7 +14,7 @@ MINI EXAMPLES
 typical imports
 ---------------
 >> import numpy as np
->> import pyshtools
+>> import pyshtools as shtools
 
 creating coefficient array
 --------------------------
@@ -31,138 +25,33 @@ or
 
 forward and inverse spherical harmonic transforms
 -------------------------------------------------
->> grid = pyshtools.MakeGridDH(coeffs)
->> coeffs = pyshtools.SHExpandDH(grid)
-
-
+>> grid = shtools.MakeGridDH(coeffs)
+>> coeffs = phtools.SHExpandDH(grid)
 
 
 KNOWN ISSUES
 ============
 
-assumed array shapes
+Assumed array shapes
 --------------------
-assumed array shapes are not supported in C or Python and compiler dependent. The file 
-PythonWrapper.f95 provides wrapper subroutines that converts arrays from assumed to
-explicit shapes.
+Assumed array shapes are not supported in C or Python and are compiler dependent. 
+The file PythonWrapper.f95 provides wrapper subroutines that converts arrays from 
+assumed to explicit shapes.
 
-
-optional return parameters
+Optional return parameters
 --------------------------
-optional return parameters are not supported in C or Python. We either have
-to return them always which is memory intensive and not good for speed, or
-we need two separate subroutines. Affected routines:
+Optional return parameters are not supported in C or Python. We either have
+to return them always, which is memory intensive and not good for speed, or
+we need to have separate python subroutines that explicitly make use of these 
+options.
 
-
-fortran 95's intrinsic 'present()' procedure 
+Fortran 95's intrinsic 'present()' procedure 
 --------------------------------------------
-This is also not supported in C or Python. We always pass all optional
-arguments. If their value is not given they are filled with a default.
+This is also not supported in C or Python, as optional arguments are not supported. 
+We always pass all optional arguments to the Fortran routine. If their value is not 
+specified in the python call, they are filled with default values.
 
-
-fortran's 'stop' statement
+Fortran's 'stop' statement
 --------------------------
-unfortunately this also kills the underlying Python interpreter if used in
-interactive mode. Fortran error's can not be caught from Python.
-
-
-
-
-LIST OF WRAPPED AND UNWRAPPED FUNCTIONS 
-=======================================
-
-
-LEGENDRE FUNCTIONS
-------------------
-
-ALL WRAPPED
-
-
-
-SPHERICAL HARMONIC TRANSFORMATIONS
-----------------------------------
-
--- wrapped: --
-MakeGridDH
-SHExpandDH
-MakeGridDHC
-SHExpandDHC
-MakeGridGLQ
-SHExpandGLQ
-MakeGridGLQC
-SHExpandGLQC
-PreCompute (partially - optional parameter PLX not implemented)
-SHRead     (partially - optional parameters)
-DHaj
-GLQGridCoord
-PreGLQ
-NGLQ
-NGLQSH
-NGLQSHN
-MakeGrid2D (if f,a < 0, they are treated as not present, default is f=-1,a=-1)
-SHExpandLSQ
-MakeGridPoint
-SHMultiply
-
-
-GLOBAL SPECTRAL ANALYSIS
-------------------------
-
-ALL WRAPPED
-
--- issues: --
-SHAdmitCorr (always returns ADMIT_ERROR)
-
-
-IO/STORAGE/CONVERSIONS
-----------------------
-
--- wrapped: --
-SHRead (partially - some optional arguments not implemented)
-SHCilmToCindex
-SHCindexToCilm
-SHCilmToVector
-SHVectorToCilm
-YilmIndex
-SHrtoc
-SHctor
-
-
-
-SPHERICAL HARMONICS ROTATIONS
------------------------------
-
-ALL WRAPPED
-
-
-
-LOCALIZED SPECTRAL ANALYSIS
----------------------------
-
--- not wrapped: --
-SHMTDebias (throws error. Some 'double memory free' problem in the wrapper. This could be either
-a simple bug in the wrapper or a more profound problem connected to the lapack routine
-that is used in SHMTDebias)
-
-SHMTVarOpt0
-SHSjkPG0
-SHSjkPG
-
--- wrapped: --
-SHBiasAdmitCorr
-SHBiasK
-SHBias
-ComputeD0
-ComputeDm
-ComputeDG82
-SHFindLWin
-SHLocalizedAdmitCorr (k1linsig and taper_wt are not used if negative (default))
-SHMultiTaperCSE (if first weight is negative (default) they are not used)
-SHMultiTaperSE (if first weight is negative (default) they are not used)
-SHReturnTapers
-SHReturnTapersM
-SHReturnTapersMap
-ComputeDMap
-SphericalCapCoef
-SHBias
-Curve2Mask (has a bug?! vertical lines can appear for specific values)
+Unfortunately, this kills the underlying Python interpreter if used in
+interactive mode. Fortran error can not be caught from Python.

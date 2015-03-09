@@ -5,6 +5,10 @@ Authors: Matthias Meschede, Mark Wieczorek, 2014
 """
 
 def load_documentation():
+    """
+    Load the pyshtools documentation into memory
+    """
+
     import os
     from . import _SHTOOLS
     print('loading shtools documentation')
@@ -22,10 +26,9 @@ def load_documentation():
             except IOError as msg:
                 print(msg)
 
-#try to load documentation if interactive
+#load documentation
 import __main__ as main
-if not hasattr(main, '__file__'):
-    load_documentation()
+load_documentation()
 
 #import into main namespace
 from . import _constant

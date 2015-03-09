@@ -62,7 +62,7 @@ F95 = gfortran
 F2PY = f2py
 PYTHON = python
 
-FFTW = "-lfftw3"
+FFTW = -lfftw3
 LAPACK = -llapack 
 BLAS = -lblas
 
@@ -196,6 +196,7 @@ clean:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
+	-rm -rf pyshtools/doc
 	-$(MAKE) -C $(FEXDIR) -f Makefile clean
 	-$(MAKE) -C $(PEXDIR) -f Makefile clean
 	@echo
