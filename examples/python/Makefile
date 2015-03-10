@@ -4,7 +4,7 @@
 #		Run all Python tests.
 #
 #	make clean
-#		Remove compiled Python files.
+#		Remove compiled Python files and output.
 #
 #	Written by Mark Wieczorek (March 2015).
 #
@@ -18,7 +18,6 @@ MAKE = make
 
 .PHONY: all clean
 
-
 all:
 	cd GlobalSpectralAnalysis ; $(PYTHON) ./SHComplexSpectralAnalysis.py
 	cd GlobalSpectralAnalysis ; $(PYTHON) ./SHRealSpectralAnalysis.py
@@ -28,7 +27,7 @@ all:
 	cd LocalizedSpectralAnalysis ; $(PYTHON) ./SHWindowsBiasOther.py
 	cd SHRotations ; $(PYTHON) ./SHRotations.py
 	cd GravMag ; $(PYTHON) ./TestGrav.py
-#	cd GravMag ; $(PYTHON) ./TestCT.py
+	cd GravMag ; $(PYTHON) ./TestCT.py
 	cd Other ; $(PYTHON) ./TestOther.py
 	cd TestLegendre ; $(PYTHON) ./TestLegendre.py
 	cd TimingAccuracy ; $(PYTHON) ./TimingAccuracyDH.py
@@ -38,12 +37,20 @@ all:
 
 clean:
 	-rm -f GlobalSpectralAnalysis/*.pyc
+	-rm -f GlobalSpectralAnalysis/*.png
 	-rm -f IOStorageConversions/*.pyc
+	-rm -f IOStorageConversions/*.png
 	-rm -f LocalizedSpectralAnalysis/*.pyc
+	-rm -f LocalizedSpectralAnalysis/*.png
 	-rm -f SHRotations/*.pyc
+	-rm -f SHRotations/*.png
 	-rm -f TestLegendre/*.pyc
+	-rm -f TestLegendre/*.png
 	-rm -f TimingAccuracy/*.pyc
+	-rm -f TimingAccuracy/*.png
 	-rm -f GravMag/*.pyc
+	-rm -f GravMag/*.png
 	-rm -f Other/*.pyc
+	-rm -f Other/*.png
 
 

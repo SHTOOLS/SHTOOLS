@@ -225,7 +225,7 @@ python module _SHTOOLS ! in
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(griddh_d0,griddh_d1),intent(in) :: griddh
-            integer,optional,intent(in),depend(ba_d1) :: lmax = ba_d1 - 1
+            integer,optional,intent(in),depend(griddh_d0) :: lmax = griddh_d0/2 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(in) :: r0
@@ -250,7 +250,7 @@ python module _SHTOOLS ! in
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-            integer,optional,intent(in),depend(ba_d1) :: lmax = ba_d1 - 1
+            integer,optional,intent(in),depend(gridglq_d0) :: lmax = gridglq_d0 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(in) :: r0
@@ -279,7 +279,7 @@ python module _SHTOOLS ! in
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(griddh_d0,griddh_d1),intent(in) :: griddh
-            integer,optional,intent(in),depend(ba_d1) :: lmax  = ba_d1 - 1
+            integer,optional,intent(in),depend(griddh_d0) :: lmax = griddh_d0/2 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(in) :: r0
@@ -306,7 +306,7 @@ python module _SHTOOLS ! in
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-            integer,optional,intent(in),depend(ba_d1) :: lmax  = ba_d1 - 1
+            integer,optional,intent(in),depend(gridglq_d0) :: lmax = gridglq_d0 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(in) :: r0
@@ -461,7 +461,7 @@ python module _SHTOOLS ! in
             integer intent(out) :: lmax
             integer intent(in)  :: lmax_in
             integer, optional,intent(in) :: skip = 0
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d1 = lmax_in+1
             integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
         end subroutine SHRead
@@ -797,7 +797,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: sampling = 1
             integer, optional,intent(in) :: csphase = 1
-            integer, optional,intent(in),depend(cilm_d1) :: lmax_calc=cilm_d1-1
+            integer, optional,intent(in),depend(lmax) :: lmax_calc=lmax
             integer, optional,intent(in),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
             integer, optional,intent(in),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
             integer, optional,intent(in),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)

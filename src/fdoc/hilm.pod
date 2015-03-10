@@ -81,7 +81,7 @@ The initial estimate for the radii of the interface evaluated a grid correspondi
 
 (input) INTEGER
 
-The maximum spherical harmonic degree of the output spherical harmonic coefficients for the relief and the input spherical harmonics for the Bouguer anomaly. As a general rule, this should be about twice the spherical harmonic bandwidth of the input function.
+The spherical harmonic bandwidth of the input relief GRID. If LMAX_CALC is not set, this determines also the maximum spherical harmonic degree of the output spherical harmonic coefficients of the relief and the input spherical harmonics of the Bouguer anomaly. As a general rule, LMAX should be about twice the real spherical harmonic bandwidth of the input function to avoid aliasing.
 
 =item NMAX
 

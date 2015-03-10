@@ -198,7 +198,7 @@ program MarsCrustalThickness
 				/(4.0d0*pi*(rho_mantle-rho_crust)*d**2)
 			endif
 		enddo
-	
+        
 		call MakeGridDH(moho_grid3, n_out, moho_c, lmax, norm = 1, sampling = sampling, csphase = 1, lmax_calc = degmax)
 	
 		max_thick = maxval(topo_grid(1:nlat, 1:nlong)-moho_grid3(1:nlat, 1:nlong))
