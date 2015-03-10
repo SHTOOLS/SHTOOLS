@@ -132,11 +132,13 @@
 
        LMAX         (input) INTEGER
 
-                    The maximum spherical harmonic degree of the output
-                    spherical harmonic coefficients for the relief and the
-                    input spherical harmonics for the Bouguer anomaly. As a
-                    general rule, this should be about twice the spherical
-                    harmonic bandwidth of the input function.
+                    The spherical harmonic bandwidth of the input relief GRID.
+                    If LMAX_CALC is not set, this determines also the maximum
+                    spherical harmonic degree of the output spherical harmonic
+                    coefficients of the relief and the input spherical
+                    harmonics of the Bouguer anomaly. As a general rule, LMAX
+                    should be about twice the real spherical harmonic
+                    bandwidth of the input function to avoid aliasing.
 
        NMAX         (input) INTEGER
 
@@ -225,7 +227,7 @@
        This is free software; you can distribute and modify it under the terms
        of the revised BSD license.
 
-SHTOOLS 3.0                       2015-03-05                    <B>HILMRHOHGLQ(1)</B>
+SHTOOLS 3.0                       2015-03-10                    <B>HILMRHOHGLQ(1)</B>
 </PRE>
 
 	<p class="dir">
