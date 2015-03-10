@@ -6,9 +6,9 @@
 <head>
 	<title>SHTOOLS - Miscellaneous routines</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
-	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
-	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<meta name="description" content="Miscellaneous routines included in SHTOOLS.">
 </head>
 
@@ -16,15 +16,14 @@
 
 <div class="main">
 
-	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
     	
 	<table class="menu">
 		<tbody>
 			<tr>
 				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
-				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
-				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
 				<td><a href="faq.html">FAQ</a> </td>
 			</tr>
 		</tbody>
@@ -38,55 +37,45 @@
 	<table class="main">
 		<tbody>
 		<tr>
-		<td class="left"><a href="man/makecirclecoord.html"><tt>MakeCircleCoord</tt></a></td> 
+		<td class="left"><a href="man/fortran/makecirclecoord.html"><tt>MakeCircleCoord</tt></a></td> 
 		<td class="right">Compute coordinates of a circle placed at a given latitude and longitude.
 		</td>
 		</tr>	
 		
 		<tr>
-		<td class="left"><a href="man/makeellipsecoord.html"><tt>MakeEllipseCoord</tt></a></td> 
+		<td class="left"><a href="man/fortran/makeellipsecoord.html"><tt>MakeEllipseCoord</tt></a></td> 
 		<td class="right">Compute coordinates of an ellipse placed at a given latitude and longitude.
 		</td>
 		</tr>	
 
 		<tr>
-		<td class="left"><a href="man/randomn.html"><tt>RandomN</tt></a></td> 
+		<td class="left"><a href="man/fortran/randomn.html"><tt>RandomN</tt></a></td> 
 		<td class="right">Return a pseudo uniform random deviate between 0 and 1 using the algorithm of Park and Miller with a Marsaglia shift sequence.
 		</td>
 		</tr>	
 	
 		<tr>
-		<td class="left"><a href="man/randomgaussian.html"><tt>RandomGaussian</tt></a></td> 
+		<td class="left"><a href="man/fortran/randomgaussian.html"><tt>RandomGaussian</tt></a></td> 
 		<td class="right">Return a pseudo Gaussian deviate of zero mean and unit variance.</td>
-		</tr>	
-		
-		<tr>
-		<td class="left"><a href="man/import_wisdom_from_file.html"><tt>Import_Wisdom_From_File</tt></a></td> 
-		<td class="right">Import FFTW wisdom file.</td>
-		</tr>	
-		
-		<tr>
-		<td class="left"><a href="man/export_wisdom_to_file.html"><tt>Export_Wisdom_To_File</tt></a></td> 
-		<td class="right">Export FFTW wisdom file.</td>
 		</tr>		
 
 		<tr>
-		<td class="left"><a href="man/eigvalvecsym.html"><tt>EigValVecSym</tt></a></td> 
+		<td class="left"><a href="man/fortran/eigvalvecsym.html"><tt>EigValVecSym</tt></a></td> 
 		<td class="right">Compute the eigenvalues and eigenvectors of a real symmetric matrix.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><a href="man/eigvalvecsymtri.html"><tt>EigValVecSymTri</tt></a></td> 
+		<td class="left"><a href="man/fortran/eigvalvecsymtri.html"><tt>EigValVecSymTri</tt></a></td> 
 		<td class="right">Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix.</td>
 		</tr>		
 	
 		<tr>
-		<td class="left"><a href="man/eigvalsym.html"><tt>EigValSym</tt></a></td> 
+		<td class="left"><a href="man/fortran/eigvalsym.html"><tt>EigValSym</tt></a></td> 
 		<td class="right">Compute the eigenvalues of a real symmetric matrix.</td>
 		</tr>		
 	
 		<tr>
-		<td class="left"><a href="man/wigner3j.html"><tt>Wigner3j</tt></a></td> 
+		<td class="left"><a href="man/fortran/wigner3j.html"><tt>Wigner3j</tt></a></td> 
 		<td class="right">Compute the Wigner-3j symbols for all allowable values of J.</td>
 		</tr>
 		</tbody>
@@ -97,12 +86,12 @@
 <p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
 
-	<table class="footer2" summary = "Mark Wieczorek">
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>
 		<tr>
 			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
 			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
-			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
 		</tr>
 	</tbody>
 	</table>

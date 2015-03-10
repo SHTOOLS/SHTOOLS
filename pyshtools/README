@@ -1,0 +1,57 @@
+INSTALLATION INSTRUCTIONS
+=========================
+
+1. check and adjust the Makefile
+
+2. type: make
+
+3. type: make python
+
+
+MINI EXAMPLES
+=============
+
+typical imports
+---------------
+>> import numpy as np
+>> import pyshtools as shtools
+
+creating coefficient array
+--------------------------
+>> lmax = 80
+>> coeffs = np.random.normal(size=2*(lmax+1)*(lmax+1)).reshape(2,lmax+1,lmax+1)
+or
+>> coeffs = np.zeros( (2,lmax+1,lmax+1) )
+
+forward and inverse spherical harmonic transforms
+-------------------------------------------------
+>> grid = shtools.MakeGridDH(coeffs)
+>> coeffs = phtools.SHExpandDH(grid)
+
+
+KNOWN ISSUES
+============
+
+Assumed array shapes
+--------------------
+Assumed array shapes are not supported in C or Python and are compiler dependent. 
+The file PythonWrapper.f95 provides wrapper subroutines that converts arrays from 
+assumed to explicit shapes.
+
+Optional return parameters
+--------------------------
+Optional return parameters are not supported in C or Python. We either have
+to return them always, which is memory intensive and not good for speed, or
+we need to have separate python subroutines that explicitly make use of these 
+options.
+
+Fortran 95's intrinsic 'present()' procedure 
+--------------------------------------------
+This is also not supported in C or Python, as optional arguments are not supported. 
+We always pass all optional arguments to the Fortran routine. If their value is not 
+specified in the python call, they are filled with default values.
+
+Fortran's 'stop' statement
+--------------------------
+Unfortunately, this kills the underlying Python interpreter if used in
+interactive mode. Fortran error can not be caught from Python.

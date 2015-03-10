@@ -122,6 +122,13 @@ integer function NGLQ(degree)
 	implicit none
 	integer, intent(in) ::	degree
 	
+	if (degree < 0) then
+		print*, "Error --- NGLQ"
+		print*, "DEGREE must be greater or equal to zero"
+		print*, "DEGREE = ", degree
+		stop
+	endif
+	
 	nglq = ceiling((degree+1.0d0)/2.0d0) 	
 	
 end function NGLQ
@@ -137,6 +144,13 @@ integer function NGLQSH(degree)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	implicit none
 	integer, intent(in) ::	degree
+	
+	if (degree < 0) then
+		print*, "Error --- NGLQSH"
+		print*, "DEGREE must be greater or equal to zero"
+		print*, "DEGREE = ", degree
+		stop
+	endif
 	
 	nglqsh = degree + 1.0d0
 
@@ -154,6 +168,13 @@ integer function NGLQSHN(degree, n)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	implicit none
 	integer, intent(in) ::	degree, n
+	
+	if (degree < 0) then
+		print*, "Error --- NGLQSHN"
+		print*, "DEGREE must be greater or equal to zero"
+		print*, "DEGREE = ", degree
+		stop
+	endif
 	
 	nglqshn = ceiling( ((n+1.0d0)*degree + 1.0d0)/2.0d0)
 

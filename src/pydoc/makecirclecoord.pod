@@ -1,0 +1,97 @@
+=head1 MakeCircleCoord
+
+=over 19
+
+=item MakeCircleCoord -  
+
+Compute coordinates of a circle placed at a given latitude and longitude.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 29
+
+=item SUBROUTINE MakeCircleCoord ( 
+
+COORD, LAT, LON, THETA0, CINTERVAL, CNUM ) 
+
+=back
+
+=over 4
+
+=over 18
+
+=item REAL*8	
+
+COORD(360/CINTERVAL, 2), LAT, LON, THETA0
+
+=item REAL*8, OPTIONAL
+
+CINTERVAL
+
+=item INTEGER, OPTIONAL
+
+CNUM
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<MakeCircleCoord> will calculate the latitude and longitude coordinates of a circle of angular radius THETA0 placed on a sphere at position (LAT, LON). This is useful for plotting circles on geographic maps. The first index in the output vectors corresponds to the point directly north of the cirlce origin, and subsequent points are arranged in a clockwise manner. Input and output units are in DEGREES.
+
+=head1 ARGUMENTS
+
+=over 17
+
+=item COORD
+
+(output) REAL*8, DIMENSION(360/CINTERVAL, 2)
+
+The latitude (:,1) and longitude (:,2) coordinates of the circle in DEGREES. If not specified, CINTERVAL is assumed to 1.
+	
+=item LAT
+
+(input) REAL*8
+
+The latitude of the center of the circle in DEGREES.
+
+=item LON
+
+(input) REAL*8
+
+The longitude of the center of the circle in DEGREES.
+
+=item THETA0
+
+(input) REAL*8
+
+The angular radius of the circle in DEGREES.
+
+=item CINTERVAL
+
+(input) REAL*8, OPTIONAL
+
+Angular spacing in DEGREES of the output latitude and longitude points. If not present, the default is 1.
+
+=item CNUM
+
+(output) INTEGER, OPTIONAL
+
+Number of elements in the output arrays.
+
+=back
+
+=head1 SEE ALSO
+
+makeellipsecoord(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

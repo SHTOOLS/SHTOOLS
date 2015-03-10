@@ -6,48 +6,47 @@
 <head>
 	<title>SHTOOLS - Tools for working with spherical harmonics</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" type="text/css" href="www/CSS/sh.css">
-	<meta name="keywords" content="spherical harmonics software package, spherical harmonic transform, legendre function, multitaper spectral analysis, fortran, f90, f95, gravity, CMB, magnetics, magnetic field">
-	<meta name="description" content="SHTOOLS is a fortran 95 software package for performing spherical harmonic transforms and reconstructions, rotations of spherical harmonic coefficients, and multitaper spectral analyses on the sphere.">
-	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="www/Figures/favicon.ico">
-	<link rel="icon" type="image/vnd.microsoft.icon" href="www/Figures/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="www/css/sh.css">
+	<meta name="keywords" content="spherical harmonics software package, spherical harmonic transform, legendre function, multitaper spectral analysis, fortran, f90, f95, Python, gravity, magnetics, magnetic field, github">
+	<meta name="description" content="SHTOOLS is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="www/images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="www/images/favicon.ico">
 </head>
 
 <body>
 
 <div class="main">
 	
-	<p class="centeredimage"><img src="www/Figures/logo.jpg" width=894 height=135 alt="SHTOOLS; Fortran spherical harmonic transform software package"></p>
+	<p class="centeredimage"><img src="www/images/logo.jpg" width=894 height=135 alt="SHTOOLS; Fortran/Python spherical harmonic transform software package"></p>
 		
-	<table class="menu" summary="spherical harmonics software package, spherical harmonic transform, legendre function, multitaper spectral analysis, fortran, f90, f95, gravity, CMB, magnetics, magnetic field">
+	<table class="menu" summary="spherical harmonics software package, spherical harmonic transform, legendre function, multitaper spectral analysis, fortran, f90, f95, gravity, Python, magnetics, magnetic field">
 		<tbody>
 		<tr>
 		<td class="selected"><a href="http://shtools.ipgp.fr/">HOME</a></td>
 		<td>
-		<a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+		<a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 		<td><a href="www/documentation.html">DOCUMENTATION</a></td>
-		<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
 		<td><a href="www/faq.html">FAQ</a> </td>
 		</tr>
 		</tbody>
 	</table>
 		
-	<p class="center"><i>The current version of SHTOOLS is 2.9 (released August 11, 2014)</i></p>
+	<p class="center"><i>The current version of SHTOOLS is 3.0 (released March 10, 2015)</i></p>
 		
 	<h2>What is SHTOOLS?</h2>
 		
-	<p>SHTOOLS is an archive of fortran 95 based software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere. </p>
+	<p>SHTOOLS is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.</p>
 
 	<h2>What makes SHTOOLS different?</h2>
 
-	<p class="nomarginbot">While several collections of code exist for working with data expressed in spherical harmonics, this one is unique for several reasons:</p>
+	<p class="nomarginbot">SHTOOLS is extremely versatile:</p>
 
 	<ul>	
 		<li>It can accommodate any standard normalization of the spherical harmonic functions ("geodesy" 4&pi; normalized,  Schmidt semi-normalized, orthonormalized, and unnormalized).</li>
 		
 		<li>Both real and complex spherical harmonics are supported.</li>
 
-		<li>Spherical harmonic transforms are calculated by exact quadrature rules using either (1) the sampling theorem of <i>Driscoll and Healy</i> (1994) where data are equally sampled (or spaced) in latitude and longitude, or (2) Gauss-Legendre quadrature. A least squares inversion routine for irregularly sampled data is included.</li>
+		<li>Spherical harmonic transforms are calculated by exact quadrature rules using either the sampling theorem of <i>Driscoll and Healy</i> (1994) where data are equally sampled (or spaced) in latitude and longitude, or Gauss-Legendre quadrature.</li>
 
 		<li>One can choose to use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup> with the associated Legendre functions.</li>
 
@@ -62,19 +61,31 @@
 		
 	<h2>How do I use SHTOOLS?</h2>
 
-	<p>SHTOOLS is invoked by standard subroutine and function calls in your fortran 90/95 program. For some routines, it will be necessary to have installed the freely available Fourier transform package <a href="http://www.fftw.org">FFTW</a>, and the linear algebra packages <a href="http://www.netlib.org/lapack/">LAPACK</a> and <a href="http://www.netlib.org/blas/">BLAS</a>.</p>
+	<p>SHTOOLS can be used in any Fortran 95 or Python program. The base SHTOOLS software is written in Fortran 95, and Python wrappers allow simple access to all fortran-compiled routines. SHTOOLS makes use of the freely available Fourier transform package <a href="http://www.fftw.org">FFTW</a> and the linear algebra packages <a href="http://www.netlib.org/lapack/">LAPACK</a> and <a href="http://www.netlib.org/blas/">BLAS</a>.</p>
+	
+	<h2>How do I install SHTOOLS?</h2>
+
+	<p>The most recent release of SHTOOLS can be downloaded from <a href="https://github.com/SHTOOLS/SHTOOLS/">GitHub</a>. Installation of SHTOOLS can be as simple as executing the following commands in a unix terminal:</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot">
+		<tt>make</tt><br>
+		<tt>make python</tt></p>
+	</blockquote>
+
+	<p>More information can be found on the GitHub <a href="https://github.com/SHTOOLS/SHTOOLS/wiki">wiki</a> and in the SHTOOLS <a href="www/documentation.html">documentation</a>. Keep up to date by following SHTOOLS on <a href="https://twitter.com/SH_tools">Twitter</a>.</p>
 
 	<h2>How much does it cost?</h2>
 
-	<p class="extramarginbot">The SHTOOLS software package is free. Two free Fortran 95 compilers exist (gfortran as part of <a href="http://gcc.gnu.org/">GCC</a> and <a href="http://www.g95.org/">g95</a>). SHTOOLS can be modified and distributed according to the revised BSD license.</p>
-	
+	<p class="extramarginbot">The SHTOOLS software package is entirely free and open source. Two free Fortran 95 compilers exist (<a href="http://gcc.gnu.org/">gfortran</a> and <a href="http://www.g95.org/">g95</a>), and <a href="https://www.python.org/">Python</a> is readily available. SHTOOLS can be modified and distributed according to the revised BSD license.</p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran spherical harmonic transform software package">
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>
 		<tr>
 			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
 			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
-			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
 		</tr>
 	</tbody>
 	</table>

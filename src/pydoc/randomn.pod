@@ -1,0 +1,68 @@
+=head1 RandomN
+
+=over 10
+
+=item RandomN -  
+
+Return a pseudo uniform random deviate between 0 and 1 using the algorithm of Park and Miller with a Marsaglia shift sequence.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 26
+
+=item REAL*8 FUNCTION RandomN ( 
+
+SEED )
+
+=back
+
+=over 4
+
+=over 11
+
+=item INTEGER
+
+SEED
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<RandomN> will return a uniform random deviate between 0 and 1 (exclusive of the endpoints) using the algorithm of Park and Miller combined with a Marsaglia shift sequence. The random number generator is intialized by calling with a negative value of SEED, and afterwards this variable should not be modified. The period of this generator is claimed to be about 3.1 10^18. 
+
+
+=head1 ARGUMENTS
+
+=over 13
+
+=item SEED
+
+(input/output) INTEGER
+
+Input a negative integer to (re-)initialize the random number generator. Afterwards, this argument should not be modified.
+
+=back
+
+=head1 NOTES
+
+This is the algorithm that was published in NUMERICAL RECIPES IN FORTRAN 90.
+
+=head1 SEE ALSO
+
+randomgaussian(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN 90: Volume 2 of FORTRAN numerical recipes, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 2002.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

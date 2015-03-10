@@ -1,0 +1,82 @@
+=head1 SHPowerSpectrumDensityC
+
+=over 26
+
+=item SHPowerSpectrumDensityC -  
+
+Compute the power spectral density of a complex function.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 37
+
+=item SUBROUTINE SHPowerSpectrumDensityC (
+
+C, LMAX, SPECTRUM )
+
+=back
+
+=over 4
+
+=over 14
+
+=item COMPLEX*16	
+
+C(2, LMAX+1, LMAX+1)
+
+=item REAL*8
+
+SPECTRUM(LMAX+1)
+
+=item INTEGER
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHPowerSpectrumDensityC> will calculate the power spectral density of a function expressed in complex spherical harmonics. For a given degree L, this is explicitly calculated as:
+
+Sum_{i=1}^2 Sum_{m=0}^L | C(i, L+1, m+1) |**2 / (2L + 1).
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item C
+
+(input) COMPLEX*16, DIMENSION (2, LMAX+1, LMAX+1)
+
+The function expressed in complex spherical harmonics.
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree to calculate the power spectral density.
+
+=item SPECTRUM
+
+(output) REAL*8, DIMENSION (LMAX+1)
+
+The power spectral density of the function.
+
+=back
+
+=head1 SEE ALSO
+
+shpowerlc(1), shpowerdensitylc(1), shcrosspowerlc(1), shcrosspowerdensitylc(1), shpowerspectrumc(1), shcrosspowerspectrumc(1), shcrosspowerspectrumdensityc(1), shadmitcorr(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

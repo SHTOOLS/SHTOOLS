@@ -26,18 +26,28 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP)
 !	Copyright (c) 2009, Mark A. Wieczorek
 !	All rights reserved.
 !
+!	Dec. 14, 2014 - Fixed a bug that could lead to vertical lines appearing at the profile
+!					points when the longitude was decreasing.
+!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	implicit none
 	integer, intent(out) ::		dhgrid(:,:)
 	real*8, intent(in) ::		profile(:,:)
 	integer, intent(in) ::		n, sampling, nprofile, np
-	integer, parameter ::		maxcross = 1000
+	integer, parameter ::		maxcross = 2000
 	integer ::			i, j, k, k_loc, nlat, nlong, numcross, next, ind1, ind2
 	real*8 ::			lat_int, long_int, lon, cross(maxcross), cross_sort(maxcross)
 	
 	nlat = n
 	lat_int = 180.0d0 / dble(nlat)
 	dhgrid = 0
+	
+	if (mod(n,2) /= 0) then	
+		print*, "Error --- Curve2Mask"
+		print*, "N must be even"
+		print*, "N = ", n
+		stop
+	endif
 	
 	if (sampling == 1) then 
 		nlong = nlat
@@ -98,7 +108,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP)
 				endif
 				cross(numcross) = profile(i,1) + (profile(i+1,1)-profile(i,1)) / &
 						(profile(i+1,2)-profile(i,2)) * (lon - profile(i,2))
-			elseif (profile(i,2) >= lon .and. profile(i+1,2) < lon) then
+			elseif (profile(i,2) > lon .and. profile(i+1,2) <= lon) then
 				numcross = numcross + 1
 				if (numcross > maxcross) then
 					print*, "Error --- Curve2Mask"
@@ -123,7 +133,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP)
 			endif
 			cross(numcross) = profile(nprofile,1) + (profile(1,1)-profile(nprofile,1)) / &
 					(profile(1,2)-profile(nprofile,2)) * (lon - profile(nprofile,2))
-		elseif (profile(nprofile,2) >= lon .and. profile(1,2) < lon) then
+		elseif (profile(nprofile,2) > lon .and. profile(1,2) <= lon) then
 			numcross = numcross + 1
 			if (numcross > maxcross) then
 				print*, "Error --- Curve2Mask"

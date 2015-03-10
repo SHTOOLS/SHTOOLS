@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>SHMTVAROPT0(1)</B>                    SHTOOLS 3.0                   <B>SHMTVAROPT0(1)</B>
+
+
+</PRE>
+<H2 class="man">SHMTVarOpt0</H2 class="man"><PRE>
+       SHMTVarOpt0 - Calculate the minimum variance and corresponding optimal
+                     weights of a localized multitaper spectral estimate using
+                     zonal tapers.
+
+
+</PRE>
+<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
+       SUBROUTINE SHMTVarOpt0 ( L, TAPERS, LWIN, KMAX, SFF, VAR_OPT, VAR_UNIT,
+                                WEIGHT_OPT, UNWEIGHTED_COVAR NOCROSS )
+
+           REAL*8             TAPERS(LWIN+1, KMAX), SFF(L+WIN+1),
+                              VAR_OPT(KMAX), VAR_UNIT(KMAX)
+
+           INTEGER            L, LWIN, KMAX
+
+           REAL*8, OPTIONAL   WEIGHT_OPT(KMAX, KMAX),
+                              UNWEIGHTED_COVAR(KMAX, KMAX)
+
+           INTEGER, OPTIONAL  NOCROSS
+
+
+</PRE>
+<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
+       <B>SHMTVarOpt0</B> will determine the minimum variance that can be achieved by
+       a weighted multitaper spectral analysis using zonal tapers, as is
+       described by Wieczorek and Simons (2006, submitted manuscript). The
+       minimum variance is output as a function of the number of tapers
+       utilized, from 1 to a maximum of KMAX, and the corresponding variance
+       using equal weights is output for comparison. The windowing functions
+       are assumed to be solutions to the spherical-cap concentration problem,
+       as determined by a call to <B>SHReturnTapersM</B>. The minimum variance and
+       weights are dependent upon the form of the global unwindowed power
+       spectrum, SFF.
+
+       If the optional argument WEIGHT_OPT is specified, then the optimal
+       weights will be returned as a function of the number of tapers
+       employed, from 1 KMAX. If UNWEIGHTED_COVAR is specified, then the
+       unweighted covariance matrix of the KMAX tapers (i.e., F_ij) will be
+       output. If the optional argument NOCROSS is set to 1, then only the
+       diagnonal terms of Fij will be computed.
+
+
+</PRE>
+<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
+       L                 (input) INTEGER
+
+                         The angular degree to determine the minimum variance
+                         and optimal weights.
+
+       TAPERS            (input) REAL*8, DIMENSION (LWIN+1, KMAX)
+
+                         A matrix of localization functions obtained from
+                         <B>SHReturnTapersM</B>.
+
+       LWIN              (input) INTEGER
+
+                         The spherical harmonic bandwidth of the localizing
+                         windows.
+
+       KMAX              (input) INTEGER
+
+                         The maximum number of tapers to be used when
+                         calculating the minimum variance and optimal weights.
+                         All values from 1 to KMAX will be returned.
+
+       SFF               (input) REAL*8, DIMENSION (L+LWIN+1)
+
+                         The global unwindowed power spectrum of the function
+                         to be localized.
+
+       VAR_OPT           (output) REAL*8, DIMENSION (KMAX)
+
+                         The minimum variance of the multitaper spectral
+                         estimate for degree L using 1 through KMAX tapers.
+
+       VAR_UNIT          (output) REAL*8, DIMENSION (KMAX)
+
+                         The variance of the multitaper spectral estimate
+                         using equal weights for degree L using 1 through KMAX
+                         tapers.
+
+       WEIGHT_OPT        (output) REAL*8, OPTIONAL, DIMENSION (KMAX, KMAX)
+
+                         The optimal weights (in columns) that minimize the
+                         multitaper spectral estimate's variance using 1
+                         through KMAX tapers.
+
+       UNWEIGHTED_COVAR  (output) REAL*8, OPTIONAL, DIMENSION (KMAX, KMAX)
+
+                         The unweighted covariance matrix of the KMAX tapers
+                         (i.e., Fij in Wieczorek and Simons 2007).
+
+       NOCROSS           (input) INTEGER, OPTIONAL
+
+                         If 1, only the diagonal terms of the covariance
+                         matrix Fij will be computed. If 0, all terms will be
+                         computed.
+
+
+</PRE>
+<H2 class="man">SEE ALSO</H2 class="man"><PRE>
+       <B>shreturntapers(1)</B>, <B>shreturntapersm(1)</B>, <B>shmtvaropt(1)</B>
+
+       &lt;http://shtools.ipgp.fr/&gt;
+
+
+</PRE>
+<H2 class="man">REFERENCES</H2 class="man"><PRE>
+       Wieczorek, M. A. and F. J. Simons, Minimum variance multitaper spectral
+       estimation on the sphere, <B>J.</B> <B>Fourier</B> <B>Anal.</B> <B>Appl.</B>, submitted 2006.
+
+
+</PRE>
+<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
+       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
+
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
+
+SHTOOLS 3.0                       2014-09-12                    <B>SHMTVAROPT0(1)</B>
+</PRE>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

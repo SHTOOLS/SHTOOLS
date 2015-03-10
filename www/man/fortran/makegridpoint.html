@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Spherical harmonic transformations</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>MAKEGRIDPOINT(1)</B>                  SHTOOLS 3.0                 <B>MAKEGRIDPOINT(1)</B>
+
+
+</PRE>
+<H2 class="man">MakeGridPoint</H2 class="man"><PRE>
+       MakeGridPoint -  Expand a set of spherical harmonic coefficients at a
+                        single point.
+
+
+</PRE>
+<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
+       REAL*8 FUNCTION MakeGridPoint ( CILM, LMAX, LAT, LON, NORM, CSPHASE,
+                                       DEALLOC )
+
+           REAL*8             CILM(2, LMAX+1, LMAX+1), LAT, LON
+
+           INTEGER            LMAX
+
+           INTEGER, OPTIONAL  NORM, CSPHASE, DEALLOC
+
+
+</PRE>
+<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
+       <B>MakeGridPoint</B> will expand a set of spherical harmonic coefficients at a
+       single point. The input latitude and longitude are in degrees. The
+       employed spherical harmonic normalization and Condon-Shortley phase
+       convention can be set by the optional arguments NORM and CSPHASE; if
+       not set, the default is to use geodesy 4-pi normalized harmonics that
+       exclude the Condon-Shortley phase of (-1)^m.
+
+
+</PRE>
+<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
+       CILM       (input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+                  The real spherical harmonic coefficients to be expanded in
+                  the space domain. The coefficients C1lm and C2lm refer to
+                  the "cosine" (Clm) and "sine" (Slm) coefficients,
+                  respectively, with Clm = CILM(1, l+1, m+1) and Slm = CILM(2,
+                  l+1, m+1). Alternatively, C1lm and C2lm correspond to the
+                  positive and negative order coefficients, respectively.
+
+       LMAX       (input) INTEGER
+
+                  The maximum spherical harmonic degree of the coefficients
+                  CILM.
+
+       LAT        (input) REAL*8
+
+                  The latitude of the point in DEGREES.
+
+       LON        (input) REAL*8
+
+                  The longitude of the point in DEGREES.
+
+       NORM       (input) INTEGER, OPTIONAL
+
+                  1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt
+                  semi-normalized harmonics; 3 = unnormalized harmonics; 4 =
+                  orthonormal harmonics.
+
+       CSPHASE    (input) INTEGER, OPTIONAL
+
+                  1 (default) = do not apply the Condon-Shortley phase factor
+                  to the associated Legendre functions; -1 = append the
+                  Condon-Shortley phase factor of (-1)^m to the associated
+                  Legendre functions.
+
+       DEALLOC    (input) INTEGER, OPTIONAL
+
+                  0 (default) = Save variables used in the external Legendre
+                  function calls. (1) Deallocate this memory at the end of the
+                  funcion call.
+
+
+</PRE>
+<H2 class="man">SEE ALSO</H2 class="man"><PRE>
+       <B>makegrid2d(1)</B>, <B>makegriddh(1)</B>, <B>makegridglq(1)</B>
+
+       &lt;http://shtools.ipgp.fr/&gt;
+
+
+</PRE>
+<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
+       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
+
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
+
+SHTOOLS 3.0                       2014-09-12                  <B>MAKEGRIDPOINT(1)</B>
+</PRE>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

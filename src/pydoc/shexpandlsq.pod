@@ -1,0 +1,119 @@
+=head1 SHExpandLSQ
+
+=over 14
+
+=item SHExpandLSQ -  
+
+Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 25
+
+=item SUBROUTINE SHExpandLSQ ( 
+
+CILM, D, LAT, LON, NMAX, LMAX, NORM, CHI2, CSPHASE )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+CILM(2, LMAX+1, LMAX+1), D(NMAX), LAT(NMAX), LON(NMAX)
+
+=item INTEGER
+
+NMAX, LMAX
+
+
+=item INTEGER, OPTIONAL
+
+NORM, CHI2, CSPHASE
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHExpandLSQ> will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When there are more data points than spherical harmonic coefficients (i.e., NMAX > (LMAX+1)**2), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. See the LAPACK documentation concerning DGELS for further information.
+
+The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments NORM and CSPHASE; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
+
+=head1 ARGUMENTS
+
+=over 11
+
+=item CILM 
+
+(output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The real spherical harmonic coefficients of the function. The coefficients C1lm and C2lm refer to the "cosine" (Clm) and "sine" (Slm) coefficients, respectively, with Clm = CILM(1, l+1, m+1) and Slm = CILM(2, l+1, m+1). Alternatively, C1lm and C2lm correspond to the positive and negative order coefficients, respectively.
+
+=item D
+
+(input) REAL*8, DIMENSION (NMAX)
+
+The value of the function at the coordinates (LAT, LON).
+
+=item LAT
+
+(input) REAL*8, DIMENSION (NMAX)
+
+The latitude in DEGREES corresponding to the value in D.
+
+=item LON
+
+(input) REAL*8, DIMENSION (NMAX)
+
+The longitude in DEGREES corresponding to the value in D.
+
+=item NMAX
+
+(input) INTEGER
+
+The number of data points.
+
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree of the output coefficients CILM.
+	
+=item NORM
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+
+=item CHI2
+
+(output) REAL*8, OPTIONAL
+
+The residual sum of squares misfit for an overdetermined inversion.
+
+=item CSPHASE
+
+(input) INTEGER, OPTIONAL
+
+1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+
+=back
+
+=head1 SEE ALSO
+
+dgels(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

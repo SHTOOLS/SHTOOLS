@@ -1,0 +1,84 @@
+=head1 SHMagPowerL
+
+=over 14
+
+=item SHMagPowerL -  
+
+Compute the power of the magnetic field for a single degree L given the Schmidt seminormalized magnetic potential spherical harmonic coefficients.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 30
+
+=item REAL*8 FUNCTION SHMagPowerL ( 
+
+C, A, R, L )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+C(2, L+1, L+1), A, R
+
+=item INTEGER
+
+L
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHMagPowerL> will calculate the power of the magnetic field at radius R for a single degree L given the magnetic potential Schmidt seminormalized spherical harmonic coefficients C evaluated at radius A. This is explicitly calculated as:
+
+ (L+1) (A/R)**(2L+4) Sum_{m=0}^L [ C(1, L+1, m+1)**2 + C(2, L+1, m+1)**2 ].
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item C
+
+(input) REAL*8, DIMENSION (2, L+1, L+1)
+
+The Schmidt seminormalized spherical harmonic coefficients of the magnetic potential.
+
+=item A
+
+(input) REAL*8
+
+The reference radius of the magnetic potential spherical harmonic coefficients.
+
+=item R
+
+(input) REAL*8
+
+The radius to evaluate the magnetic field.
+	
+=item L
+
+(input) INTEGER
+
+The spherical harmonic degree for which the power will be calculated.
+
+=back
+
+=head1 SEE ALSO
+
+shmagpowerspectrum(1), shpowerdensityl(1), shcrosspowerl(1), shcrosspowerdensityl(1), shpowerspectrum(1), shpowerspectrumdensity(1), shcrosspowerspectrum(1), shcrosspowerspectrumdensity(1), shadmitcorr(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

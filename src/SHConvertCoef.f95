@@ -7,25 +7,24 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs)
 !
 !		c_l,m* = (-1)^m c_l,-m
 !
-!	This sign convention is designed to be used with the spherical haromic rotation routines
-!	taken from Mark Simons' code. If degmax is not specified, then the maximum degree of the 
-!	conversion is taken from the size of the input arrays.
+!	If degmax is not specified, then the maximum degree of the conversion is taken from 
+!	the size of the input arrays.
 !
 !
 !	Calling Parameters
 !		IN
 !			rcilm		Real "geodesy" spherical harmonic coefficients with dimensions
-!					(2, lmax+1, lmax+1).
+!						(2, lmax+1, lmax+1).
 !		OUT
 !			ccilm		Complex unity-normalized spherical harmonic coefficients, dimensioned
-!					as (2, lmax+1, lmax+1). The first index corresponds to the real and
-!					complex coefficients, respectively.
+!						as (2, lmax+1, lmax+1). The first index corresponds to the real and
+!						complex coefficients, respectively.
 !		OPTIONAL
 !			degmax		Maximum degree of conversion to be performed.
 !			convention	1=output 4-pi normalized coefficients
-!					2=output  Varshalovich et al. normalized coefficients
-!			switchcs	If 1, Change between different Condon-Shortley phase convenctions.
-!					If 0, use consistent phase convention.
+!						2=output  Varshalovich et al. normalized coefficients
+!			switchcs	If 1, Change between different Condon-Shortley phase conventions.
+!						If 0, use consistent phase convention.
 !
 !		Dependencies:	None
 !			
@@ -41,9 +40,10 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs)
 	real*8, intent(in) :: 		rcilm(:,:,:)
 	real*8, intent(out) ::	 	ccilm(:,:,:) 
 	integer, intent(in), optional ::	degmax, convention, switchcs
-	integer :: 			lmax, l, m
+	integer :: 			lmax, l, m, convention_flag, switchcs_flag
 	real*8 ::			pi
 	
+	switchcs_flag = 0
 	if (present(switchcs)) then
 		if (switchcs /= 1 .and. switchcs /=0) then
 			print*, "Error --- SHrtoc"
@@ -51,8 +51,10 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs)
 			print*, "Input value is ", switchcs
 			stop
 		endif
+		switchcs_flag = switchcs
 	endif
 	
+	convention_flag = 1
 	if (present(convention) ) then
 		if (convention /=1 .and. convention /=2) then
 			print*, "Error --- SHrtoc"
@@ -60,6 +62,7 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs)
 			print*, "Input valuse is ", convention
 			stop
 		endif
+		convention_flag = convention
 	endif
 
 	if (present(degmax)) then
@@ -98,40 +101,30 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs)
 		
 	do l = 0, lmax, 1
 	
-		if (present(convention) ) then
-			if (convention == 2) then
-				ccilm(1,l+1, 1) = sqrt(4.0d0*pi)*rcilm(1,l+1,1)
-				ccilm(2,l+1, 1) = 0.0d0
+		if (convention_flag == 2) then
+		
+			ccilm(1,l+1, 1) = sqrt(4.0d0*pi)*rcilm(1,l+1,1)
+			ccilm(2,l+1, 1) = 0.0d0
 			
-				do m=1, l, 1
-					if (present(switchcs)) then
-						if (switchcs == 1) then
-							ccilm(1, l+1, m+1) = sqrt(2.0d0*pi) * rcilm(1,l+1,m+1) * (-1.0d0)**m
-							ccilm(2, l+1, m+1) = -sqrt(2.0d0*pi) * rcilm(2,l+1,m+1) * (-1.0d0)**m
-						else
-							ccilm(1, l+1, m+1) = sqrt(2.0d0*pi) * rcilm(1,l+1,m+1) 
-							ccilm(2, l+1, m+1) = -sqrt(2.0d0*pi) * rcilm(2,l+1,m+1)
-						endif
-					else
-						ccilm(1, l+1, m+1) = sqrt(2.0d0*pi) * rcilm(1,l+1,m+1) 
-						ccilm(2, l+1, m+1) = -sqrt(2.0d0*pi) * rcilm(2,l+1,m+1)
-					endif
-				enddo
-			endif
+			do m=1, l, 1
+				if (switchcs_flag == 1) then
+					ccilm(1, l+1, m+1) = sqrt(2.0d0*pi) * rcilm(1,l+1,m+1) * (-1.0d0)**m
+					ccilm(2, l+1, m+1) = -sqrt(2.0d0*pi) * rcilm(2,l+1,m+1) * (-1.0d0)**m
+				else
+					ccilm(1, l+1, m+1) = sqrt(2.0d0*pi) * rcilm(1,l+1,m+1) 
+					ccilm(2, l+1, m+1) = -sqrt(2.0d0*pi) * rcilm(2,l+1,m+1)
+				endif	
+			enddo
 			
 		else
+		
 			ccilm(1,l+1, 1) = rcilm(1,l+1,1)
 			ccilm(2,l+1, 1) = 0.0d0
 			
 			do m=1, l, 1
-				if (present(switchcs)) then
-					if (switchcs == 1) then
-						ccilm(1, l+1, m+1) = rcilm(1,l+1,m+1)/sqrt(2.0d0) * (-1.0d0)**m
-						ccilm(2, l+1, m+1) = -rcilm(2,l+1,m+1)/sqrt(2.0d0) * (-1.0d0)**m
-					else
-						ccilm(1, l+1, m+1) = rcilm(1,l+1,m+1)/sqrt(2.0d0)
-						ccilm(2, l+1, m+1) = -rcilm(2,l+1,m+1)/sqrt(2.0d0)
-					endif
+				if (switchcs_flag == 1) then
+					ccilm(1, l+1, m+1) = rcilm(1,l+1,m+1)/sqrt(2.0d0) * (-1.0d0)**m
+					ccilm(2, l+1, m+1) = -rcilm(2,l+1,m+1)/sqrt(2.0d0) * (-1.0d0)**m
 				else
 					ccilm(1, l+1, m+1) = rcilm(1,l+1,m+1)/sqrt(2.0d0)
 					ccilm(2, l+1, m+1) = -rcilm(2,l+1,m+1)/sqrt(2.0d0)
@@ -157,17 +150,17 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs)
 !	Calling Parameters
 !		IN
 !			ccilm		Complex unity-normalized spherical harmonic coefficients, dimensioned
-!					as (2, lmax+1, lmax+1). The first index corresponds to the real and
-!					complex coefficients, respectively.
+!						as (2, lmax+1, lmax+1). The first index corresponds to the real and
+!						complex coefficients, respectively.
 !		OUT
 !			rcilm		Real "geodesy" spherical harmonic coefficients with dimensions
-!					(2, lmax+1, lmax+1).
+!						(2, lmax+1, lmax+1).
 !		OPTIONAL
 !			degmax		Maximum degree of conversion to be performed.
 !			convention	1=input coefficients are 4-pi normalized
-!					2=input coefficients are Varshalovich et al. normalized.
-!			switchcs	If 1, Change between different Condon-Shortley phase convenctions.
-!					If 0, use consistent phase convention.
+!						2=input coefficients are Varshalovich et al. normalized.
+!			switchcs	If 1, Change between different Condon-Shortley phase conventions.
+!						If 0, use consistent phase convention.
 !
 !		Dependencies:	None
 !
@@ -182,9 +175,10 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs)
 	real*8, intent(in) :: ccilm(:,:,:)
 	real*8, intent(out) :: rcilm(:,:,:)
 	integer, intent(in), optional ::	degmax, convention, switchcs
-	integer ::	lmax, l, m
+	integer ::	lmax, l, m, convention_flag, switchcs_flag
 	real*8 ::	pi
 	
+	switchcs_flag = 0
 	if (present(switchcs)) then
 		if (switchcs /= 1 .and. switchcs /=0) then
 			print*, "Error --- SHrtoc"
@@ -192,8 +186,10 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs)
 			print*, "Input value is ", switchcs
 			stop
 		endif
+		switchcs_flag = switchcs
 	endif
 	
+	convention_flag = 1
 	if (present(convention) ) then
 		if (convention /=1 .and. convention /=2) then
 			print*, "Error --- SHrtoc"
@@ -201,6 +197,7 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs)
 			print*, "Input valuse is ", convention
 			stop
 		endif
+		convention_flag = convention
 	endif
 
 	if (present(degmax)) then
@@ -239,41 +236,29 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs)
 		
 	do l = 0, lmax, 1
 	
-		if (present(convention) ) then
-			if (convention == 2) then
-				rcilm(1,l+1,1) = ccilm(1,l+1,1)/sqrt(4.0d0*pi)
-				rcilm(2, l+1, 1) = 0.0d0
+		if (convention == 2) then
+			rcilm(1,l+1,1) = ccilm(1,l+1,1)/sqrt(4.0d0*pi)
+			rcilm(2, l+1, 1) = 0.0d0
 			
-				do m=1, l, 1
-					if (present(switchcs)) then
-						if (switchcs == 1) then
-							rcilm(1,l+1, m+1) =  ccilm(1, l+1, m+1) / sqrt(2.0d0*pi) * (-1.0d0)**m
-							rcilm(2,l+1, m+1) =  - ccilm(2,l+1,m+1) /sqrt(2.0d0*pi) * (-1.0d0)**m
-						else
-							rcilm(1,l+1, m+1) =  ccilm(1, l+1, m+1) / sqrt(2.0d0*pi)
-							rcilm(2,l+1, m+1) =  - ccilm(2,l+1,m+1) /sqrt(2.0d0*pi)
-						endif
-					else
-						rcilm(1,l+1, m+1) =  ccilm(1, l+1, m+1) / sqrt(2.0d0*pi)
-						rcilm(2,l+1, m+1) =  - ccilm(2,l+1,m+1) /sqrt(2.0d0*pi) 
-					endif
-				enddo
-			endif
-			
+			do m=1, l, 1
+				if (switchcs == 1) then
+					rcilm(1,l+1, m+1) =  ccilm(1, l+1, m+1) / sqrt(2.0d0*pi) * (-1.0d0)**m
+					rcilm(2,l+1, m+1) =  - ccilm(2,l+1,m+1) /sqrt(2.0d0*pi) * (-1.0d0)**m
+				else
+					rcilm(1,l+1, m+1) =  ccilm(1, l+1, m+1) / sqrt(2.0d0*pi)
+					rcilm(2,l+1, m+1) =  - ccilm(2,l+1,m+1) /sqrt(2.0d0*pi)
+				endif
+			enddo
+		
 		else
 		
 			rcilm(1,l+1,1) = ccilm(1,l+1,1)
 			rcilm(2, l+1, 1) = 0.0d0
 			
 			do m=1, l, 1
-				if (present(switchcs)) then
-					if(switchcs == 1) then
-						rcilm(1,l+1, m+1) = sqrt(2.0d0) * ccilm(1, l+1, m+1) * (-1.0d0)**m
-						rcilm(2,l+1, m+1) = -sqrt(2.0d0) * ccilm(2, l+1, m+1) * (-1.0d0)**m
-					else
-						rcilm(1,l+1, m+1) = sqrt(2.0d0) * ccilm(1, l+1, m+1)
-						rcilm(2,l+1, m+1) = -sqrt(2.0d0) * ccilm(2, l+1, m+1)
-					endif
+				if(switchcs == 1) then
+					rcilm(1,l+1, m+1) = sqrt(2.0d0) * ccilm(1, l+1, m+1) * (-1.0d0)**m
+					rcilm(2,l+1, m+1) = -sqrt(2.0d0) * ccilm(2, l+1, m+1) * (-1.0d0)**m
 				else
 					rcilm(1,l+1, m+1) = sqrt(2.0d0) * ccilm(1, l+1, m+1)
 					rcilm(2,l+1, m+1) = -sqrt(2.0d0) * ccilm(2, l+1, m+1)
@@ -281,6 +266,7 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs)
 			enddo
 		
 		endif
+		
 	enddo
 	
 end subroutine SHctor
