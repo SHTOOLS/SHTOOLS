@@ -223,6 +223,7 @@ A.invisible:visited
 .underline { text-decoration: underline; }
 .imgcenter {display:block; margin-left:auto; margin-right:auto;margin-top:30px;}
 .extramarginbot {margin-bottom:40px;}
+.normalfont {font-family: Arial, 'Helvetica neue', Helvetica, sans-serif;}
 
 P.centeredimage
 {
