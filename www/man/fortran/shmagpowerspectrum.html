@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Gravity and magnetics routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>SHMAGPOWERSPECTRUM(1)</B>             SHTOOLS 3.0            <B>SHMAGPOWERSPECTRUM(1)</B>
+
+
+</PRE>
+<H2 class="man">SHMagPowerSpectrum</H2 class="man"><PRE>
+       SHMagPowerSpectrum - Compute the power spectrum of the magnetic field
+                            given the Schmidt seminormalized magnetic
+                            potential spherical harmonic coefficients.
+
+
+</PRE>
+<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
+       SUBROUTINE SHMagPowerSpectrum ( C, A, R, LMAX, SPECTRUM )
+
+           REAL*8    C(2, LMAX+1, LMAX+1), SPECTRUM(LMAX+1), A, R
+
+           INTEGER   LMAX
+
+
+</PRE>
+<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
+       <B>SHMagPowerSpectrum</B> will calculate the power spectrum of the magnetic
+       field at radius R given the magnetic potential Schmidt seminormalized
+       spherical harmonic coefficients C evaluated at radius A. For a given
+       degree L, this is explicitly calculated as:
+
+        (L+1) (A/R)**(2L+4) Sum_{m=0}^L [ C(1, L+1, m+1)**2 + C(2, L+1, m+1)**2 ].
+
+
+</PRE>
+<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
+       C         (input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+                 The Schmidt seminormalized spherical harmonic coefficients of
+                 the magnetic potential.
+
+       A         (input) REAL*8
+
+                 The reference radius of the magnetic potential spherical
+                 harmonic coefficients.
+
+       R         (input) REAL*8
+
+                 The radius to evaluate the magnetic field.
+
+       LMAX      (input) INTEGER
+
+                 The maximum spherical harmonic degree to calculate the power
+                 spectrum.
+
+       SPECTRUM  (output) REAL*8, DIMENSION (LMAX+1)
+
+                 The power spectrum of the magnetic field.
+
+
+</PRE>
+<H2 class="man">SEE ALSO</H2 class="man"><PRE>
+       <B>shmagpowerl(1)</B>, <B>shpowerl(1)</B>, <B>shpowerdensityl(1)</B>, <B>shcrosspowerl(1)</B>,
+       <B>shcrosspowerdensityl(1)</B>, <B>shpowerspectrumdensity(1)</B>,
+       <B>shcrosspowerspectrum(1)</B>, <B>shcrosspowerspectrumdensity(1)</B>, <B>shadmitcorr(1)</B>
+
+       &lt;http://shtools.ipgp.fr/&gt;
+
+
+</PRE>
+<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
+       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
+
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
+
+SHTOOLS 3.0                       2014-09-12             <B>SHMAGPOWERSPECTRUM(1)</B>
+</PRE>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

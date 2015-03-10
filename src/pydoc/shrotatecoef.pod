@@ -1,0 +1,135 @@
+=head1 SHRotateCoef
+
+=over 15
+
+=item SHRotateCoef -  
+
+Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 26
+
+=item SUBROUTINE SHRotateCoef ( 
+
+X, COEF, RCOEF, DJ, LMAX )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+X(3), COEF(2, (LMAX+1)*(LMAX+2)/2), S<RCOEF(2, (LMAX+1)*(LMAX+2)/2)>, S<DJ(LMAX+1, LMAX+1, LMAX+1)>
+
+=item INTEGER
+
+LMAX
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHRotateCoef> will take the complex spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in X, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients are in an indexed form that can be converted to and from CILM(2,:,:) form by using the functions I<SHCilmToCindex> and I<SHCindexToCilm>. The coefficients MUST correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention. Real spherical harmonics can be converted to and from complex form using I<SHrtoc> and I<SHctor>. The input rotation matrix DJ is computed by a call to I<DJPi2>.
+
+The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.
+
+=over 12
+
+=item Scheme A: 
+
+(I) Rotation about the z axis by alpha.
+
+(II) Rotation about the new y axis by beta.
+
+(III) Rotation about the new z axis by gamma.
+
+=item Scheme B:	
+
+(I) Rotation about the z axis by gamma.
+
+(II) Rotation about the initial y axis by beta.
+
+(III) Rotation about the initial z axis by alpha.
+
+=back
+
+The rotations can further be viewed either as a rotation of the coordinate system or the physical body. For a rotation of the coordinate system without rotation of the physical body, use 
+
+=over 12
+
+X(alpha, beta, gamma). 
+
+=back
+
+For a rotation of the physical body without rotation of the coordinate system, use 
+
+=over 12
+
+X(-gamma, -beta, -alpha).
+
+=back
+
+To perform the inverse transform of X(alpha, beta, gamma), use X(-gamma, -beta, -alpha).
+
+Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the "x convention", where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be alpha_y = alpha_x - pi/2, beta_x = beta_y, and gamma_y = gamma_x + pi/2.
+
+=head1 ARGUMENTS
+
+=over 13
+
+=item X
+
+(input) REAL*8, DIMENSION(3 )
+
+The three Euler angles, alpha, beta, and gamma.
+	
+=item COEF
+
+(input) REAL*8, DIMENSION (2, (LMAX+1)*(LMAX+2)/2)
+
+The input complex spherical harmonic coefficients. This is an indexed array where the real and complex components are given by COEF(1,:) and COEF(2,:), respectively. The functions I<SHCilmToCindex> and I<SHCindexToCilm> are used to convert to and from indexed and CILM(2,:,:) form. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention.
+
+=item RCOEF
+
+(output) REAL*8, DIMENSION (2, (LMAX+1)*(LMAX+2)/2)
+
+The spherical harmonic coefficients of the rotated function in indexed form.
+
+=item DJ
+
+(input) REAL*8, DIMENSION (LMAX+1, LMAX+1, LMAX+1)
+
+The rotation matrix DJ(pi/2), obtained from a call to I<DJPi2>.
+
+=item LMAX
+
+(input) INTEGER, OPTIONAL
+
+The maximum spherical harmonic degree of the input and output coefficients. 
+
+
+=back
+
+=head1 NOTES 
+
+This routine is based upon code originally written by Guy Masters, which was then subsequently modified by Mark Simons and myself.
+
+=head1 SEE ALSO
+
+djpi2(1), shrotaterealcoef(1), shctor(1), shrtoc(1), shcilmtocindex(1), shcindextocilm(1)
+
+L<http://shtools.ipgp.fr/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

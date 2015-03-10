@@ -1,0 +1,114 @@
+=head1 SHTOOLS
+
+=over 10
+
+=item SHTOOLS -  
+
+A library of fortran 95 routines used for working with spherical harmonics and functions defined on the sphere.
+
+=back
+
+=head1 SYNOPSIS
+
+use SHTOOLS
+
+f95 -p $SHTOOLSMODPATH -L$SHTOOLSLIBPATH -YEXT_NAMES=LCS -YEXT_SFX=_ -lSHTOOLS2.4 -lfftw3 -lm -llapack -lblas -O3 MyProgram.f95 -o MyProgram
+
+
+g95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -fno-second-underscore -lSHTOOLS2.4 -lfftw3 -lm -llapack -lblas -O3 MyProgram.f95 -o MyProgram
+
+
+gfortran -J$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS2.4 -lfftw3 -lm -llapack -lblas -O3 MyProgram.f95 -o MyProgram
+
+
+=head1 DESCRIPTION
+
+SHTOOLS is an archive of fortran 95 based software that can be used to perform (among others) spherical harmonic transforms and reconstructions, rotations of spherical harmonic coefficients, and multitaper spectral analyses on the sphere.
+
+While several collections of code currently exist for working with data expressed in spherical harmonics, this one is unique for several reasons:
+
+=over 3
+
+=item - 
+
+It can accommodate any standard normalization of the spherical harmonic functions, including the "Geodesy" 4-pi; normalized, orthonormalized, Schmidt semi-normalized, and unnormalized harmonics.
+
+=item - 
+
+Spherical harmonic transforms can be calculated by exact quadrature rules using either (1) the sampling theorem of Driscoll and Heally (1994) where data are equally sampled (or spaced) in latitude and longitude, or (2) Gauss-Legendre quadrature. In addition, a least squares inversion routine for irregularly sampled data is included.
+
+=item - 
+
+One can choose to use or exclude the Condon-Shortley phase factor of (-1)^m with the associated Legendre functions.
+
+=item - 
+
+The spherical harmonic transforms are proven to be accurate to approximately degree 2800, corresponding to a spatial resolution of better than 4 arc minutes.
+
+=item - 
+
+Routines are included for performing localized multitaper spectral analyses.
+
+=item - 
+
+Routines are included for performing standard gravity calculations, such as computation of the geoid and the determination of the potential associated with finite-amplitude topography.
+
+=item - 
+
+The routines are fast.
+
+=back
+
+=head1 USE
+
+In order to use the SHTOOLS functions and subroutines in your own code, it is necessary to place the statement
+
+     USE SHTOOLS
+
+directly after the routine name, and before an IMPLICIT NONE statement.  When compiling your code, it will be necessary to link to the SHTOOLS library and pre-compiled module files. For this purpose, it may be useful to define the environment variables SHTOOLSMODPATH and SHTOOLSLIBPATH in your C-shell login file by using
+
+	setenv SHTOOLSMODPATH = "shtoolslocation"/SHTOOLS/modules
+   	setenv SHTOOLSLIBPATH = "shtoolslocation"/SHTOOLS/lib
+   
+where "shtoolslocation" is the root directory of the SHTOOLS directory, normally /usr/local. For a bash shell, use
+	
+	export SHTOOLSMODPATH = "shtoolslocation"/SHTOOLS/modules
+	export SHTOOLSLIBPATH = "shtoolslocation"/SHTOOLS/lib
+
+In addition, some routines require linking to the fast Fourier transform package FFTW, and linear algebra packages LAPACK and BLAS.
+
+As an example of compiling and linking a program "MyProgram.f95" to the necessary library and module files, one might use the following commands:
+
+=head3 Absoft ProFortran 10
+
+f95 -p $SHTOOLSMODPATH -L$SHTOOLSLIBPATH -YEXT_NAMES=LCS -YEXT_SFX=_ -lSHTOOLS2.4 -lfftw3 -lm -llapack -lblas -O3 MyProgram.f95 -o MyProgram
+
+=head3 g95
+
+g95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -fno-second-underscore -lSHTOOLS2.4 -lfftw3 -lm -llapack -lblas -O3 MyProgram.f95 -o MyProgram
+
+=head3 gfortran
+
+gfortran -J$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS2.4 -lfftw3 -lm -llapack -lblas -O3 MyProgram.f95 -o MyProgram
+
+
+It may be necessary to modify the fortran compiler options in order to link to the LAPACK and FFTW libraries. If the library ATLAS exists on your system, this could be used instead of BLAS.
+
+=head1 SEE ALSO
+
+L<http://shtools.ipgp.fr/> 
+
+L<http://www.fftw.org> 
+
+L<http://www.netlib.org/lapack/> 
+
+L<http://g95.sourceforge.net/> 
+
+L<http://gcc.gnu.org/>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

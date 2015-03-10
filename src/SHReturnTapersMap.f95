@@ -1,4 +1,4 @@
-subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, sampling, lmax, Ntapers)
+subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, sampling, Ntapers)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 !	This subroutine will calculate the eigenvalues and eigenfunctions of the generalized
@@ -18,14 +18,15 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, sampling, lmax,
 !	Calling Parameters
 !		IN
 !			dh_mask		Integer grid sampled according to the Driscoll and Healy sampling
-!					theorem. A value of 1 indicates the the grid node is in the concentration
-!					domain, and a value of 0 indicates that it is outside. Dimensioned as
-!					(n_dh, n_dh) for SAMPLING = 1 or (n_dh, 2*n_dh) for SAMPLING = 2.
+!						theorem. A value of 1 indicates the the grid node is in the concentration
+!						domain, and a value of 0 indicates that it is outside. Dimensioned as
+!						(n_dh, n_dh) for SAMPLING = 1 or (n_dh, 2*n_dh) for SAMPLING = 2.
 !			n_dh		The number of latitude samples in the Driscoll and Healy sampled grid.
-!			SAMPLING	1 corresponds to equal sampling (n_dh, n_dh), whereas 2 corresponds
-!					to equal spaced grids (n_dh, 2*n_dh).
+!			
 !			lmax		Maximum spherical harmonic degree of the outpt spherical harmonic coefficients.
 !		IN, OPTIONAL
+!			SAMPLING	1 (default) corresponds to equal sampling (n_dh, n_dh), whereas 2 corresponds
+!						to equal spaced grids (n_dh, 2*n_dh).
 !			ntapers		Number of tapers and eigenvalues to output
 !		OUT
 !			Tapers		Column vectors contain the spherical harmonic coefficients, packed according
@@ -45,8 +46,8 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, sampling, lmax,
 	implicit none
 		
 	real*8, intent(out) ::	tapers(:,:), eigenvalues(:)
-	integer, intent(in) ::	dh_mask(:,:), n_dh, sampling, lmax
-	integer, intent(in), optional ::	ntapers
+	integer, intent(in) ::	dh_mask(:,:), n_dh, lmax
+	integer, intent(in), optional ::	 sampling, ntapers
 	
 	real*8, allocatable ::	dij(:,:)
 	integer ::		nlat, nlong, lmax_dh, astat, i, j
@@ -100,17 +101,23 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, sampling, lmax,
 	
 	nlat = n_dh
 	lat_int = pi/dble(nlat)
-	if (sampling == 1) then
+	
+	if (present(sampling)) then
+		if (sampling == 1) then
+			nlong = nlat
+			long_int = 2.0d0 * lat_int
+		elseif (sampling == 2) then
+			nlong = 2*nlat
+			long_int = lat_int
+		else 
+			print*, "Error --- SHReturnTapersMap"
+			print*, "SAMPLING must be either 1 (equally sampled) or 2 (equally spaced)."
+			print*, "SAMPLING = ", sampling
+			stop
+		endif
+	else
 		nlong = nlat
 		long_int = 2.0d0 * lat_int
-	elseif (sampling == 2) then
-		nlong = 2*nlat
-		long_int = lat_int
-	else 
-		print*, "Error --- SHReturnTapersMap"
-		print*, "SAMPLING must be either 1 (equally sampled) or 2 (equally spaced)."
-		print*, "SAMPLING = ", sampling
-		stop
 	endif
 	
 	if (size(dh_mask(:,1)) < nlat .or. size(dh_mask(1,:)) < nlong) then
@@ -139,7 +146,11 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, sampling, lmax,
 		stop
 	endif
 	
-	call ComputeDMap(Dij, dh_mask, n_dh, sampling, lmax)
+	if (present(sampling)) then	
+		call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=sampling)
+	else
+		call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=1)
+	endif
 	
 	if (present(ntapers)) then
 		call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, k = ntapers)

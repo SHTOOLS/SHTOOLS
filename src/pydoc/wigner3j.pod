@@ -1,0 +1,150 @@
+=head1 Wigner3j
+
+=over 11
+
+=item Wigner3j -  
+
+Compute the Wigner-3j symbols for all allowable values of J.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 22
+
+=item SUBROUTINE Wigner3j ( 
+
+W3J, JMIN, JMAX, J2, J3, M1, M2, M3 )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+W3J(J2+J3+1)
+
+=item INTEGER
+
+JMIN, JMAX, J2, J3, M1, M2, M3
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<Wigner3j>  will calculate the Wigner 3J symbols
+
+	/ J  J2 J3 \
+	\ M1 M2 M3 /
+
+for all allowable values of J. The returned values in the array W3J are calculated only for the limits
+
+=over 10
+
+JMIN = max(|J2-J3|, M1|)  and
+
+JMAX = J2 + J3.
+
+=back
+
+To be non-zero, M1 + M2 + M3 must equal 0. It is assumed that all Js and Ms are integers. Returned values have a relative error less than ~1.d-8 when J2 and J3 are less than about 100 (see NOTES below). In practice, this routine is probably usable up to about 165.
+
+The employed algorithm is based upon the stable non-linear recurrence relations of Luscombe and Luban (1998) for the "non classical" regions near JMIN and JMAX. The direction of the iteration starts from low values of J to high values, but when abs(W3J(J+2)/W3J(J)) is less than one, the iteration will restart from high to low values. For the classical region, the standard three term recursion relationship is used (e.g., Schulten and Gordon 1975). As this three term recursion can lead to overflows, the values are rescaled by a factor "scalef" whenever the absolute value of the 3j coefficient becomes greater than unity.  More efficient algorithms probably exist for specific cases (for instance, when all Ms are zero).
+
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item W3J
+
+(output) REAL*8, DIMENSION (J2+J3+1)
+
+An array of the Wigner-3j symbols evaluated for all allowable values of J. The minimum and maximum values of J are given by JMIN and JMAX.
+	
+=item JMIN
+
+(output) INTEGER
+
+The minimum value of J in the array W3J. This corresponds to the first element of W3J.
+
+=item JMAX
+
+(output) INTEGER
+
+The maximum value of J in the array W3J. This corresponds to the last non-zero element of W3J.
+
+=item J2
+
+(input) INTEGER
+
+A positive integer.
+
+=item J3
+
+(input) INTEGER
+
+A positive integer.
+
+=item M1
+
+(input) INTEGER
+
+An integer.
+
+=item M2
+
+(input) INTEGER
+
+An integer.
+
+=item M3
+
+(input) INTEGER
+
+An integer.
+
+
+=back
+
+=head1 NOTES
+
+The results of this routine have been verified against the same routine run in quadruple precision. For 1.e7 acceptable random values of J2, J3, M2, and M3 between -200 and 200, the relative error was calculated only for those 3j coefficients that had an absolute value greater than 1.d-17 (values smaller than this are for all practical purposed zero, and can be heavily affected by machine roundoff errors or underflow). 853 combinations of parameters were found to have relative errors greater than 1.d-8. Here I list the minimum value of max(J2,J3) for different ranges of error, as well as the number of times this error occurred:
+	
+=over 5 
+
+(103) ; 1.d-7 < error  <=1.d-8 ; Number of occurrences = 483
+
+(116) ; 1.d-6 < error <= 1.d-7 ; Number of occurrences = 240
+
+(165) ; 1.d-5 < error <= 1.d-6 ; Number of occurrences = 93
+
+(167) 1.d-4 < error <= 1.d-5 ; Number of occurrences = 36
+
+=back
+
+Many times (maybe always), the large relative errors occur when the 3j coefficient changes sign and is very close to zero (i.e., adjacent values are about 1.e7 times greater in magnitude). Thus, if one does not need to know highly accurate values of the 3j coefficients when they are almost zero (i.e., ~1.e-10) then this routine is probably usable up to about 160.
+
+These results have also been verified for parameter values less than 100 using a code based on the algorith of de Blanc (1987), which was originally coded by Olav van Genabeek, and modified by M. Fang. (This code was run in quadruple precision and only calculates one coefficient for each call.) Maximum relative errors between the two routines were less than 1.d-8 for a large number of values (again, only 3j coefficients greater than 1.d-17 were considered here).
+
+=head1 SEE ALSO
+
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Luscombe, J. J., and M. Luban, Simplified recursive algorithm for Wigner 3j and 6j symbols, I<Phys. Rev. E>, 57, 7274-7277, 1998.
+
+Schulten, K., and R. G. Gordon, Exact recursive evaluation of 3j-coefficients
+and 6j-coefficients for quantum-mechanical coupling of angular momenta, I<J. Math. Phys.>, 16, 1961-1970, 1975.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

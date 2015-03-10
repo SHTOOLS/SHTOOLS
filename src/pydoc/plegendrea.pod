@@ -1,0 +1,85 @@
+=head1 PLegendreA
+
+=over 13
+
+=item PLegendreA -  
+
+Compute all the (unnormalized) associated Legendre functions.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 24
+
+=item SUBROUTINE PLegendreA ( 
+
+P, LMAX, Z, CSPHASE )
+
+=back
+
+=over 4
+
+=over 20
+
+=item REAL*8	
+
+P((LMAX+1)*(LMAX+2)/2), Z
+
+=item INTEGER
+
+LMAX
+
+=item INTEGER, OPTIONAL
+
+CSPHASE
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<PLegendreA> will calculate all of the (unnormalized) associated Legendre functions up to degree LMAX for a given argument. These are calculated using a standard three-term recursion formula and hence will overflow for moderate values of L and M. The index of the array corresponding to a given degree L and angular order M can be computed by a call to I<PlmIndex>. The integral of the associated Legendre functions over the interval [-1, 1] is 2 * (l+m)! / (l-m)! / (2l+1). The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument CSPHASE to -1.
+
+=head1 ARGUMENTS
+
+=over 10
+
+=item P
+
+(output) REAL*8, DIMENSION ((LMAX+1)*(LMAX+2)/2)
+
+An array of (unnormalized) associated Legendre functions up to degree LMAX. The index corresponds to L*(L+1)/2 + M + 1, which can be calculated by a call to I<PlmIndex>.
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum degree of the associated Legendre functions to be computed.
+
+=item Z
+
+(input) REAL*8
+
+The argument of the associated Legendre functions.
+
+=item CSPHASE
+
+(input) INTEGER, OPTIONAL
+
+if 1 (default), the Condon-Shortley phase will be excluded. If -1, the Condon-Shortley phase of (-1)^m will be appended to the associated Legendre functions.
+
+=back
+
+=head1 SEE ALSO
+
+plbar(1), plbar_d1(1), plmbar(1), plmbar_d1(1), plon(1), plon_d1(1), plmon(1), plmon_d1(1), plschmidt(1), plschmidt_d1(1), plmschmidt(1), plmschmidt_d1(1), plegendre(1), plegendre_d1(1), plegendrea_d1(1), plmindex(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

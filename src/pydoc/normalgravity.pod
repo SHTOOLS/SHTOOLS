@@ -1,0 +1,88 @@
+=head1 NormalGravity
+
+=over 17
+
+=item NormalGravity -  
+
+Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 25
+
+=item FUNCTION NormalGravity ( 
+
+GEOCENTRIC_LAT, GM, OMEGA, A, B )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+GEOCENTRIC_LAT, GM, OMEGA, A, B
+
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<NormalGravity> will calculate the magnitude of the predicted gravity (in m/s^2) on a flattened ellipsoid using Somigliana's formula. The latitude is input in geocentric coordinates in degrees, which is later converted to geodetic coordinates in the routine for use with Somigliana's formula. Other input parameters include GM, the product of the gravitational constant and the planet's mass, and the semi-major and semi-minor axes of the planet, A and B, respectively. For further details, see sections 2.7 and 2.8 of Physical Geodesy (Hofmann-Wellenhof and Moritz).
+
+=head1 ARGUMENTS
+
+=over 11
+
+=item RAD
+
+(input) REAL*8, GEOCENTRIC_LAT
+
+Geocentric latitude in degrees.
+
+=item GM
+
+(input) REAL*8 
+
+The gravitational constant multiplied by the mass of the planet.
+
+=item OMEGA
+
+(input) REAL*8
+
+The angular rotation rate of the planet.
+
+=item A
+
+(input) REAL*8
+
+The semi-major axis of the flattened ellipsoid on which the normal gravity is computed.
+
+=item B
+
+(input) REAL*8
+
+The semi-minor axis of the flattened ellipsoid on which the normal gravity is computed.
+
+=back
+
+=head1 SEE ALSO
+
+makegravgrid2d(1), makegravgriddh(1), makegeoidgrid(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Hofmann-Wellenhof B, and H. Moritz, "Physical Geodesy," second edition, Springer, Wien, 403 pp., 2006.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

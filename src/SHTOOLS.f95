@@ -162,12 +162,11 @@ module SHTOOLS
 			integer, intent(in), optional :: norm, csphase, lmax_calc
 		end subroutine SHExpandGLQ
 		
-		subroutine PreCompute(lmax, zero, w, plx, wisdom_file, norm, csphase, cnorm)
+		subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	zero(:), w(:)
 			real*8, intent(out), optional ::	plx(:,:)
 			integer, intent(in), optional :: norm, csphase, cnorm
-			character(*), intent(in), optional ::	wisdom_file
 		end subroutine PreCompute
 
 		subroutine PreGLQ(x1, x2, n, zero, w)
@@ -591,7 +590,7 @@ module SHTOOLS
 			integer, intent(in), optional :: sampling, lmax_calc, normal_gravity
 		end subroutine MakeGravGridDH
 		
-		real*8 function NormalGravity(geocentric_lat, GM, omega, a, b)
+		real*8 function NormalGravity(geocentric_lat, gm, omega, a, b)
 			real*8, intent(in) ::	geocentric_lat, gm, omega, a, b
 		end function NormalGravity
 		
@@ -690,7 +689,7 @@ module SHTOOLS
 			complex*16, intent(out) ::	cspectra(:)
 		end subroutine SHCrossPowerSpectrumDensityC
 
-		subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, corr, mtdef, taper_wt)
+		subroutine SHBiasAdmitCorr(sgt, sgg, stt, lmax, tapers, lwin, K, admit, corr, mtdef, taper_wt)
 			real*8, intent(in) ::	sgt(:), sgg(:), stt(:), tapers(:,:)
 			integer, intent(in) ::	lmax, lwin, K
 			real*8, intent(out) ::	admit(:), corr(:)
@@ -714,15 +713,16 @@ module SHTOOLS
 			integer, intent(in) ::	i, l, m
 		end function YilmIndex
 		
-		subroutine ComputeDMap(Dij, dh_mask, n_dh, sampling, lmax)
+		subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
 			real*8, intent(out) ::	Dij(:,:)
-			integer, intent(in) ::	dh_mask(:,:), n_dh, sampling, lmax
+			integer, intent(in) ::	dh_mask(:,:), n_dh, lmax
+			integer, intent(in), optional :: sampling
 		end subroutine ComputeDMap
 		
-		subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, sampling, lmax, Ntapers)
+		subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, sampling, Ntapers)
 			real*8, intent(out) ::	tapers(:,:), eigenvalues(:)
-			integer, intent(in) ::	dh_mask(:,:), n_dh, sampling, lmax
-			integer, intent(in), optional ::	Ntapers
+			integer, intent(in) ::	dh_mask(:,:), n_dh, lmax
+			integer, intent(in), optional ::	sampling, Ntapers
 		end subroutine SHReturnTapersMap
 		
 		subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP)

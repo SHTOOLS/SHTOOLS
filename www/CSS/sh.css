@@ -43,7 +43,7 @@ P {margin-bottom:20px;}
 
 TT { font-family: courrier, monospace; }
 
-PRE
+PRE,BLOCKQUOTE
 {
 	font-family: courrier, monospace;
 	font-size: 10pt;
@@ -211,6 +211,7 @@ A.invisible:visited
 
 
 .smaller { font-size: 10pt; }
+.smallerlineheight { line-height: 12pt; }
 .small { font-size: 11pt; }
 .eqinline { margin-left: 55pt;}
 .nomargin {margin-left: 0pt; }
@@ -218,10 +219,11 @@ A.invisible:visited
 .center {text-align: center;}
 .nomarginbot { margin-bottom: 0px; }
 .nomargintop { margin-top: 0px; }
-.zerolineheight { line-height: 0px; }
+.zerolineheight { line-height: 0pt; }
 .underline { text-decoration: underline; }
 .imgcenter {display:block; margin-left:auto; margin-right:auto;margin-top:30px;}
 .extramarginbot {margin-bottom:40px;}
+.normalfont {font-family: Arial, 'Helvetica neue', Helvetica, sans-serif;}
 
 P.centeredimage
 {

@@ -6,9 +6,9 @@
 <head>
 	<title>SHTOOLS - Speed</title>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
-	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
-	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<meta name="description" content="Timing results of the spherical harmonic transform routines in SHTOOLS.">
 </head>
 
@@ -16,15 +16,14 @@
 
 <div class="main">
 
-	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
     	
 	<table class="menu">
 		<tbody>
 			<tr>
 				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
-				<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
-				<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
 				<td><a href="faq.html">FAQ</a> </td>
 			</tr>
 		</tbody>
@@ -34,21 +33,21 @@
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
 		
 	<h1>Speed</h1>
-	<p>The following figure shows the amount of time in seconds that it takes to perform the forward and inverse spherical harmonic transform of a gridded data set as function of the spherical harmonic bandwidth. Results are shown for both the real and complex Gauss-Legendre quadrature (<tt>SHExpandGLQ</tt>, <tt>MakeGridGLQ</tt>, <tt>SHExpandGLQC</tt> and <tt>MakeGridGLQC</tt>) and Driscoll and Healy (<tt>SHExpandDH</tt>, <tt>MakeGridDH</tt>, <tt>SHExpandDHC</tt> and <tt>MakeGridDHC</tt>) routines. These calculations were performed on a Mac Pro 2x3.2 GHz Quad-Core Intel Xeon with 8 Gbytes of memory using 64 bit executibles and level 3 optimizations.  For the real Gauss-Legendre quadrature routines, the transform time is seen to be on the order of one second for degrees close to 600 and about 77 seconds for degree 2800. For the real Driscoll and Healy routines, the transform time is close to a second for degree 500 and about 150 seconds for degree 2800. The complex routines are slower by a factor of about 1.4.</p>
+	<p>The figure below shows the amount of time in seconds that it takes to perform the forward and inverse spherical harmonic transform of a gridded data set as function of the spherical harmonic bandwidth. Results are shown for both the real and complex Gauss-Legendre quadrature (<tt>SHExpandGLQ</tt>, <tt>MakeGridGLQ</tt>, <tt>SHExpandGLQC</tt> and <tt>MakeGridGLQC</tt>) and Driscoll and Healy (<tt>SHExpandDH</tt>, <tt>MakeGridDH</tt>, <tt>SHExpandDHC</tt> and <tt>MakeGridDHC</tt>) routines. These calculations were performed on a Mac Pro 2.7 GHz 12-Core Intel Xeon E5 using 64 bit executables and level 3 optimizations.  For the real Gauss-Legendre quadrature routines, the transform time is seen to be on the order of one second for degrees close to 800 and about 38 seconds for degree 2800. For the real Driscoll and Healy routines, the transform time is close to a second for degree 650 and about 76 seconds for degree 2800. The complex routines are slower by a factor of about 1.4.</p>
 	
-	<img class="imgcenter" src="Figures/time2.jpg" alt="time2.jpg" width=600>
+	<img class="imgcenter" src="images/time2.jpg" alt="time2.jpg" width=600>
 		
 	<p class="smaller"><b>Figure 2.</b>  Time to perform the forward and inverse spherical harmonic transform as a function of spherical harmonic bandwidth using real and complex Gauss-Legendre quadrature and Driscoll and Healy routines.</p>
 	
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
 
-	<table class="footer2" summary = "Mark Wieczorek">
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>
 		<tr>
 			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
 			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
-			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
 		</tr>
 	</tbody>
 	</table>

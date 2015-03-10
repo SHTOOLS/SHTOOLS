@@ -1,0 +1,112 @@
+=head1 SHSjkPG0
+
+=over 11
+
+=item SHSjkPG0 -  
+
+Calculate the expectation of the product of two functions, each multiplied by a different zonal data taper, for a given spherical harmonic degree and angular order.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 18
+
+=item REAL*8 SHSjkPG0 ( 
+
+INCSPECTRA, J, K, L, M, EVEC, LWIN )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+INCPECTRA(L+LWIN+1), EVEC(LWIN+1, LWIN+1)
+
+=item INTEGER
+
+J, K, L, M, LWIN
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHSjkPG0> will calculate the expectation of two functions (f and g), each localized by a different zonal data taper that is a solution of the spherical cap concentration problem, for a given spherical harmonic degree and angular order. As described in Wieczorek and Simons (2005, eq. D8), this is the function
+
+
+      /    (j)        (k) \
+     |  Phi      Gamma     |
+      \    lm         lm  /
+
+The global cross-power spectrum of f and g is input as INCSPECTRA, and the real coefficients of the data tapers (obtained by a call to I<SHReturnTapersM>) is input as the matrix EVEC. 
+
+
+=head1 ARGUMENTS
+
+=over 14
+
+=item INCSPECTRA
+
+(input) REAL*8, DIMENSION (L+LWIN+1)
+
+The global cross-power spectrum of f and g.
+
+=item J
+
+(input) INTEGER
+
+The taper number (corresponding to the column of EVEC) that is used to localize the first function f.
+
+=item K
+
+(input) INTEGER
+
+The taper number (corresponding to the column of EVEC) that is used to localize the second function g.
+
+=item L
+
+(input) INTEGER
+
+The spherical harmonic degree for which to calculate the expectation.
+
+=item M
+
+(input) INTEGER
+
+The angular order for which to calculated the expectation.
+
+=item EVEC
+
+(input) REAL*8, DIMENSION (LWIN+1, LWIN+1)
+
+The spherical harmonic coefficients that are the solutions to the zonal spherical-cap concentration problem. These are arranged in columns, and are obtained by a call to I<SHReturnTapersM>.
+
+=item LWIN
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the localizing windows.
+
+=back
+
+=head1 SEE ALSO
+
+shreturntaper0(1), shmtvaropt0(1), shmtvaropt(1), shsjkpg(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
+I<Geophys. J. Int.>, 162, 655-675.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

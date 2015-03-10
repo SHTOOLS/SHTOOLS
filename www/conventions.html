@@ -6,9 +6,9 @@
 <head>
 	<title>SHTOOLS - Real spherical harmonics</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" type="text/css" href="CSS/sh.css">
-	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
-	<link rel="icon" type="image/vnd.microsoft.icon" href="Figures/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<meta name="description" content="Definitions and normalization conventions of the real spherical harmonic functions used in SHTOOLS.">
 </head>
 
@@ -16,15 +16,14 @@
 
 <div class="main">
 
-	<p class="centeredimage"><img src="Figures/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
     	
 	<table class="menu">
 		<tbody>
 		<tr>
 		<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
-		<td><a href="http://sourceforge.net/projects/shtools/">DOWNLOAD</a></td>
+		<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 		<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
-		<td><a href="https://sourceforge.net/p/shtools/discussion/">FORUM</a></td>
 		<td><a href="faq.html">FAQ</a> </td>
 		</tr>
 		</tbody>
@@ -41,42 +40,42 @@
 
 	<p>Any real square-integrable function can be expressed in spherical harmonics as</p>
 	
-	<img class="eqinline" src="Figures/f.gif" alt="f.gif">
+	<img class="eqinline" src="images/f.png" alt="f.png" width=224 height=48>
 	
 	<p>where f<sub>lm</sub> is the spherical harmonic coefficient, Y<sub>lm</sub> is the spherical harmonic function, &Omega; represents position on the sphere in terms of co-latitude &theta; and longitude &phi;, and <i>l</i> and <i>m</i> are the spherical harmonic degree and order, respectively. (It is common to refer to the positive order coefficient as C<sub>lm</sub>, and the negative order coefficient as S<sub>lm</sub>, in reference to the "cosine" and "sine" coefficients, respectively.) The real spherical harmonics are defined as</p>
 		
-	<img class="eqinline" src="Figures/ylm.gif" alt="ylm.gif">
+	<img class="eqinline" src="images/ylm.png" alt="ylm.png" width=312 height=39>
 	
 	<p>where the normalized associated Legendre functions, as used in geodesy and gravity applications (calculated by the routine <tt>PlmBar</tt>), are given by</p>
 	
-	<img class="eqinline" src="Figures/plmbar.gif" alt="plmbar.gif">
+	<img class="eqinline" src="images/plmbar.png" alt="plmbar.png" width=318 height=49>
 	
 	<p>with the following definition for the unnormalized associated Legendre functions:</p>
 	
-	<img class="eqinline" src="Figures/plmdef.gif" alt="plmdef.gif">.
+	<img class="eqinline" src="images/plmdef.png" alt="plmdef.png" width=254 height=82>.
 	
 	<p>The normalized associated Legendre functions are orthogonal for a given value of <i>m</i>,</p>
 
-	<img class="eqinline" src="Figures/plmnorm.gif" alt="plmnorm.gif">.
+	<img class="eqinline" src="images/plmnorm.png" alt="plmnorm.png" width=253 height=41>.
 		
 		
-	<p>The normalized Legendre functions (including the orthonormalized and Schmidt semi-normalized functions) are efficiently calculating using the algorithm of <i>Holmes and Featherstone</i> (2002, J. Geodesy, 76, 279-299) that is accurate to approximately degree 2800. Note that the above definition of the associated Legendre functions does not include the Condon-Shortley phase of <tt>(-1)<sup>m</sup></tt> that is often employed in the physics and seismology communities  (e.g., <i>Varsalovich et al., </i>1988; <i>Dahlen and Tromp,</i> 1998). This can be included by specifying the optional argument <tt>CSPHASE=-1</tt> in most of the Legendre and spherical harmonic routines. (Alternatively, the default phase convention can be modified during compilation of the SHTOOLS archive.)</p>
+	<p>The normalized Legendre functions (including the orthonormalized and Schmidt semi-normalized functions) are efficiently calculating using the algorithm of <i>Holmes and Featherstone</i> (2002, J. Geodesy, 76, 279-299) that is accurate to approximately degree 2800. Note that the above definition of the associated Legendre functions does not include the Condon-Shortley phase of <tt>(-1)<sup>m</sup></tt> that is often employed in the physics and seismology communities  (e.g., <i>Varsalovich et al., </i>1988; <i>Dahlen and Tromp,</i> 1998). This can be included by specifying the optional argument <tt>CSPHASE=-1</tt> in most of the Legendre and spherical harmonic routines.</p>
 
 	<p>The spherical harmonics are orthogonal over both <i>l</i> and <i>m</i> with the normalization</p>
 
-	<img class="eqinline" src="Figures/ylmnorm.gif" alt="ylmnorm.gif">.
+	<img class="eqinline" src="images/ylmnorm.png" alt="ylmnorm.png" width=272 height=37>.
 	
 	<p>Using this relationship, it is straightforward to show that the spherical harmonic coefficients of a function can be calculated by the integral</p>
 	
-	<img class="eqinline" src="Figures/flm.gif" alt="flm.gif">.
+	<img class="eqinline" src="images/flm.png" alt="flm.png" width=224 height=37>.
 		
 	<p>The cross-power of two functions <i>f</i> and <i>g</i> is equal to</p>
 
-	<img class="eqinline" src="Figures/totalpower.gif" alt="totalpower.gif">,
+	<img class="eqinline" src="images/totalpower.png" alt="totalpower.png" width=246 height=45>,
 
 	<p>where the "cross-power spectrum" of the two functions  is given by</p>
 
-	<img class="eqinline" src="Figures/crosspower.gif" alt="crosspower.gif">.
+	<img class="eqinline" src="images/crosspower.png" alt="crosspower.png" width=150 height=48>.
 
 	<p>If the functions <i>f</i> and <i>g</i> have a zero mean, then S<sub>fg</sub> is the contribution to the covariance as a function of spherical harmonic degree.</p>
 	
@@ -96,27 +95,27 @@
 
 	<p class="underline">Geodesy 4&pi;</p>
 	
-	<img class="eqinline" src="Figures/plmbar.gif" alt="plmbar.gif"><br>
-	<img class="eqinline" src="Figures/plmnorm.gif" alt="plmnorm.gif"><br>
-	<img class="eqinline" src="Figures/ylmnorm.gif" alt="ylmnorm.gif">
+	<img class="eqinline" src="images/plmbar.png" alt="plmbar.png" width=318 height=49><br>
+	<img class="eqinline" src="images/plmnorm.png" alt="plmnorm.png" width=253 height=41><br>
+	<img class="eqinline" src="images/ylmnorm.png" alt="ylmnorm.png" width=272 height=37>
 	
 	<p class="underline">Schmidt semi-normalized</p>
 	
-	<img class="eqinline" src="Figures/plmschmidt.gif" alt="plmschmidt.gif"><br>
-	<img class="eqinline" src="Figures/plmschmidtnorm.gif" alt="plmschmidtnorm.gif"><br>
-	<img class="eqinline" src="Figures/ylmschmidt.gif" alt="ylmschmidt.gif">
+	<img class="eqinline" src="images/plmschmidt.png" alt="plmschmidt.png" width=263 height=49><br>
+	<img class="eqinline" src="images/plmschmidtnorm.png" alt="plmschmidtnorm.png" width=255 height=41><br>
+	<img class="eqinline" src="images/ylmschmidt.png" alt="ylmschmidt.png" width=304 height=37>
 	
 	<p class="underline">Unnormalized</p>
 	
-	<img class="eqinline" src="Figures/plmunnormalized.gif" alt="plmunnormalized.gif"><br>
-	<img class="eqinline" src="Figures/plmunnormnorm.gif" alt="plmunnormnorm.gif"><br>
-	<img class="eqinline" src="Figures/ylmunnorm.gif" alt="ylmunnorm.gif">
+	<img class="eqinline" src="images/plmunnormalized.png" alt="plmunnormalized.png" width=117 height=18><br>
+	<img class="eqinline" src="images/plmunnormnorm.png" alt="plmunnormnorm.png" width=279 height=41><br>
+	<img class="eqinline" src="images/ylmunnorm.png" alt="ylmunnorm.png" width=437 height=38>
 	
 	<p class="underline">Orthonormalized</p>
 	
-	<img class="eqinline" src="Figures/plmon.gif" alt="plmon.gif"><br>
-	<img class="eqinline" src="Figures/plmonnorm.gif" alt="plmonnorm.gif"><br>
-	<img class="eqinline" src="Figures/ylmorthonorm.gif" alt="ylmorthonorm.gif">
+	<img class="eqinline" src="images/plmon.png" alt="plmon.png" width=322 height=49><br>
+	<img class="eqinline" src="images/plmonnorm.png" alt="plmonnorm.png" width=244 height=41><br>
+	<img class="eqinline" src="images/ylmorthonorm.png" alt="ylmorthonorm.png" width=257 height=37>
 		
 	<h2>Further information</h2>
 	<p class="nomarginbot">Further information regarding spherical harmonic functions can be found at the following web sites:</p>
@@ -129,12 +128,12 @@
 	<p class="dir">
 	>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a></p>
 
-	<table class="footer2" summary = "Mark Wieczorek">
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>
 		<tr>
 			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
 			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
-			<td class="c3">&copy; 2014 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
 		</tr>
 	</tbody>
 	</table>

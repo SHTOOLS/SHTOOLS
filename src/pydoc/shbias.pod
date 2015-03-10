@@ -1,0 +1,111 @@
+=head1 SHBias
+
+=over 9
+
+=item SHBias -  
+
+Calculate the (cross-)power spectrum expectation of a windowed function.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 20
+
+=item SUBROUTINE SHBias ( 
+
+SHH, LWIN, INCSPECTRA, LDATA, OUTCSPECTRA, SAVE_CG )
+
+=back
+
+=over 4
+
+=over 21
+
+=item REAL*8	
+
+SHH(LWIN+1), INCSPECTRA(LDATA+1), OUTCSPECTRA(*)
+
+=item INTEGER
+
+LWIN, LDATA
+
+=item INTEGER, OPTIONAL
+
+SAVE_CG
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHBias> will calculate the (cross-)power spectrum expectation of a function multiplied by a localizing window. This is given by equation 35 of Wieczorek and Simons (2005) and equation 2.11 of Wieczorek and Simons (2007),
+
+<SFG> = Sum_{j=0}^L Shh Sum_{i=|l-j|}^{|l+j|} Sfg (C_{j0i0}^{l0})^2
+
+where <SFG> is the expectation of the localized (cross-)power spectrum, Shh is the power spectrum of the window bandlimited to degree L, Sfg is the global unwindowed (cross-)power spectrum, and C is a Clebsch-Gordan coefficient. The Clebsch-Gordan coefficients are calculated using a simple relationship to the Wigner 3-j symbols. The maximum calculated degree of the windowed power spectrum expectation corresponds to the smaller of (LDATA+LWIN) and SIZE(OUTCSPECTRA)-1. It is implicitly assumed that the power spectrum of INSPECTRUM is zero beyond degree LDATA.
+
+If this routine is to be called several times using the same values of LWIN and LDATA, then the Clebsch-Gordon coefficients can be precomputed and saved by setting the optional parameter SAVE_CG equal to 1. To deallocate the saved memory, which is a matrix of size (LWIN+LDATA,LWIN,2*LWIN+LDATA+1), set SAVE_CG equal to -1.
+
+
+=head1 ARGUMENTS
+
+=over 14
+
+=item SHH
+
+(input) REAL*8, DIMENSION (LWIN+1)
+
+The power spectrum of the localizing window.
+
+=item LWIN
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the localizing window.
+	
+=item INCSPECTRA
+
+(input) REAL*8, DIMENSION (LDATA+1)
+
+The global unwindowed (cross-)power spectrum.
+
+=item LDATA
+
+(input) INTEGER
+
+The maximum degree of the global unwindowed power spectrum.
+
+=item OUTCSPECTRA
+
+(output) REAL*8, DIMENSION (*)
+
+The expectation of the localized (cross-)power spectrum. The maximum spherical harmonic degree of the output is min(LDATA+LWIN, SIZE(OUTSCSPECTRA)-1).
+
+=item SAVE_CG
+
+(input) INTEGER, OPTIONAL
+
+If set equal to 1, the Clebsch-Gordon coefficients will be precomputed and saved for future use (if LWIN or LDATA change, this will be recomputed). To deallocate the saved memory, set this parameter equal to 1. If set equal to 0 (default), the Clebsch-Gordon coefficients will be recomputed for each call.
+
+=back
+
+=head1 SEE ALSO
+
+shpowerspectra(1), shcrosspowerspectra(1), wigner3j(1), shreturntapers(1), shreturntapersm(1), shbiasadmitcorr(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
+I<Geophys. J. Int.>, 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.
+
+Wieczorek, M. A. and F. J. Minimum-variance multitaper spectral estimation on a sphere, I<J. Fourier Anal. Appl.>, 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

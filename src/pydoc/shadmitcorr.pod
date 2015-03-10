@@ -1,0 +1,104 @@
+=head1 SHAdmitCorr
+
+=over 14
+
+=item SHAdmitCorr -  
+
+Calculate the admittance and correlation spectra of two real functions.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 25
+
+=item SUBROUTINE SHAdmitCorr ( 
+
+GILM, TILM, LMAX, ADMIT, CORR, ADMIT_ERROR )
+
+=back
+
+=over 4
+
+=over 19
+
+=item REAL*8	
+
+GILM(2, LMAX+1, LMAX+1), TILM(2, LMAX+1, LMAX+1), ADMIT(LMAX+1), CORR(LMAX+1)
+
+=item INTEGER
+
+LMAX
+
+=item REAL*8, OPTIONAL
+
+ADMIT_ERROR(LMAX+1)
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHAdmitCorr> will calculate the admittance and correlation spectra associated with two real functions expressed in real spherical harmonics. The admittance is defined as Sgt/Stt, where Sgt is the cross-power spectrum of two functions G and T. The degree-correlation spectrum is defined as Sgt / sqrt( Sgg Stt ), which can possess values between -1 and 1. 
+
+If the optional argument ADMIT_ERROR is specified, then the error of the admittance will be calculated by assuming that G and T are related by a linear isotropic transfer function: Gilm = Ql Tilm + Nilm, where N is noise that is uncorrelated with the topography. It is important to note that the relationship between two fields is often not described by such an isotropic expression, such as, for example, the geophysical loading model of Forsyth (1985).
+
+=head1 ARGUMENTS
+
+=over 14
+
+=item GILM
+
+(input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The real spherical harmonic coefficients of the function G.
+
+=item TILM
+
+(input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
+
+The real spherical harmonic coefficients of the function T.
+	
+=item LMAX
+
+(input) INTEGER
+
+The maximum spherical harmonic degree that will be calculated for the admittance and correlation spectra.
+
+=item ADMIT
+
+(output) REAL*8, DIMENSION (LMAX+1)
+
+The admittance function, which is equal to Sgt / Stt.
+
+=item CORR
+
+(output) REAL*8, DIMENSION (LMAX+1)
+
+The degree correlation function, which is equal to Sgt / sqrt ( Sgg Stt ).
+
+=item ADMIT_ERROR
+
+(output) REAL*8, OPTIONAL, DIMENSION (LMAX+1)
+
+The uncertainty of the admittance function, assuming that GILM and TILM are related by a linear isotropic transfer function, and that the lack of correlation is a result of uncorrelated noise.
+
+
+=back
+
+=head1 SEE ALSO
+
+shpowerspectrum(1), shcrosspowerspectrum(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Forsyth, D. W., Subsurface loading and estimates of the flexural rigidity of continental lithosphere, I<J. Geophys. Res.>, 90, 12,623-12,632, 1985.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.

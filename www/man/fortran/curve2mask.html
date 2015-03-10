@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>CURVE2MASK(1)</B>                     SHTOOLS 3.0                    <B>CURVE2MASK(1)</B>
+
+
+</PRE>
+<H2 class="man">Curve2Mask</H2 class="man"><PRE>
+       Curve2Mask - Given a set of latitude and longitude coordinates
+                    representing a closed curve, output a gridded mask.
+
+
+</PRE>
+<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
+       SUBROUTINE Curve2Mask (
+                              MASK_DH, N, SAMPLING, PROFILE, NPROFILE, NP )
+
+           INTEGER             MASK_DH (N, N) or (N, 2*N), N, SAMPLING,
+                               NPROFILE, NP
+
+           REAL*8              PROFILE(NPROFILE, 2)
+
+
+</PRE>
+<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
+       <B>Curve2Mask</B> will take a list of latitude and longitude coordinates that
+       represent a single closed curve, and output a mask MASK_DH that
+       contains 1s and 0s where the grid nodes are inside and outside of the
+       curve, respectively. MASK_DH must be sampled according to the Driscoll
+       and Healy (1994) sampling theorem with N samples in latitude, and
+       either possess N samples in longitude (SAMPLING=1) or 2*N samples in
+       longitude (SAMPLING=2). It is necessary to specify a single point as
+       being inside or outside of the curve, and for this the value at the
+       North pole (90N, 0E) must be specified as either 0 or 1.
+
+
+</PRE>
+<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
+       DH_MASK   (output) INTEGER, DIMENSION (N, N) or DIMENSION (N, 2*N)
+
+                 A Driscoll and Healy (1994) sampled grid describing the
+                 concentration region R. All elements on output will either be
+                 1 (for inside the concentration region) or 0 (for outside R).
+
+       N         (input) INTEGER
+
+                 The number of latitudinal samples in DH_MASK. The effective
+                 spherical harmonic bandwidth of this grid is L = N/2 - 1.
+
+       SAMPLING  (input) INTEGER
+
+                 For 1, DH_MASK has N x N samples. For 2, DH_MASK has N x 2N
+                 samples.
+
+       PROFILE   (input) REAL*8, DIMENSION (NPROFILE, 2)
+
+                 List of latitude (:,1) and longitude (:,2) coordinates in
+                 DEGREES specifying a single closed curve.
+
+       NPROFILE  (input) INTEGER
+
+                 The number of coordinates in the curve PROFILE.
+
+       NP        (input) INTEGER
+
+                 The value of the returned mask at the North pole (90N, 0E).
+                 If the North pole is outside of the concentration region, set
+                 this to 0; if it is inside the concentration region, set this
+                 to 1.
+
+
+</PRE>
+<H2 class="man">NOTES</H2 class="man"><PRE>
+       This routine saves the three-term recursion factors and square roots of
+       the integers the first time being called. If subsequent calls possess
+       the same value of LMAX, these will not be recomputed. If you wish to
+       deallocate this memory, which is an array of length (LMAX+1)*(LMAX+2),
+       recall this routine with LMAX=-1.
+
+
+</PRE>
+<H2 class="man">REFERENCES</H2 class="man"><PRE>
+       Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and
+       convolutions on the 2-sphere, <B>Adv.</B> <B>Appl.</B> <B>Math.</B>, 15, 202-250, 1994.
+
+
+</PRE>
+<H2 class="man">SEE ALSO</H2 class="man"><PRE>
+       <B>shreturntapersmap(1)</B>, <B>computedmap(1)</B>
+
+       &lt;http://shtools.ipgp.fr/&gt;
+
+
+</PRE>
+<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
+       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
+
+       This is free software; you can distribute and modify it under the terms
+       of the revised BSD license.
+
+SHTOOLS 3.0                       2015-02-25                     <B>CURVE2MASK(1)</B>
+</PRE>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+=head1 SHSjkPG
+
+=over 10
+
+=item SHSjkPG -  
+
+Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.
+
+=back
+
+=head1 SYNOPSIS
+
+=over 21
+
+=item COMPLEX*16 SHSjkPG ( 
+
+INCSPECTRA, L, M, MPRIME, HJ_REAL, HK_REAL, MJ, MK, LWIN, HKCC )
+
+=back
+
+=over 4
+
+=over 10
+
+=item REAL*8	
+
+INCPECTRA(L+LWIN+1), HJ_REAL(LWIN+1), HK_REAL(LWIN+1)
+
+=item INTEGER
+
+L, M, MPRIME, MJ, MK, LWIN, HKCC
+
+=back
+
+=back
+
+=head1 DESCRIPTION
+
+I<SHSjkPG> will calculate the expectation of two functions (f and g), each localized by a different data taper that is a solution of the spherical cap concentration problem, for a given spherical harmonic degree and two different angular orders. As described in Wieczorek and Simons (2006), this is the function
+
+      /    m(j)       mprime(k)* \
+     |  Phi      Gamma            |
+      \    l          l          /
+
+The global cross-power spectrum of f and g is input as INCSPECTRA, and the real coefficients of the two data tapers of angular order MJ and MK (obtained by a call to I<SHReturnTapers>) are specified by HJ_REAL and HK_REAL. If HKCC is set to 1, then the above function is calculated as is. However, if this is set to 2, then the complex conjugate of the second localized function is not taken.
+
+
+
+=head1 ARGUMENTS
+
+=over 14
+
+=item INCSPECTRA
+
+(input) REAL*8, DIMENSION (L+LWIN+1)
+
+The global cross-power spectrum of f and g.
+
+=item L
+
+(input) INTEGER
+
+The spherical harmonic degree for which to calculate the expectation.
+
+=item M
+
+(input) INTEGER
+
+The angular order of the first localized function, Phi.
+
+=item MPRIME
+
+(input) INTEGER
+
+The angular order of the second localized function, Gamma.
+
+=item HJ_REAL
+
+(input) REAL*8, DIMENSION (LWIN+1)
+
+The real spherical harmonic coefficients of angular order MJ used to localize the first function f. These are obtained by a call to I<SHReturnTapers>.
+
+=item HK_REAL
+
+(input) REAL*8, DIMENSION (LWIN+1)
+
+The real spherical harmonic coefficients of angular order MK used to localize the second function g. These are obtained by a call to I<SHReturnTapers>.
+
+=item MJ
+
+(input) INTEGER
+
+The angular order of the window coefficients HJ_REAL.
+
+=item MK
+
+(input) INTEGER
+
+The angular order of the window coefficients HK_REAL.
+
+=item LWIN
+
+(input) INTEGER
+
+The spherical harmonic bandwidth of the localizing windows HJ_REAL and HK_REAL.
+
+=item HKCC
+
+(input) INTEGER
+
+If 1, the function described in the DESCRIPTION will be calculated as is. If 2, the second localized function Gamma will not have its complex conjugate taken.
+
+=back
+
+=head1 SEE ALSO
+
+shreturntapers(1), shmtvaropt(1), shmtvaropt0(1), shsjkpg0(1)
+
+L<http://shtools.ipgp.fr/>
+
+=head1 REFERENCES
+
+Wieczorek, M. A. and F. J. Simons, Minimum variance multitaper spectral analysis on the sphere, I<J. Fourier Analy. Appl.>, submitted manuscript, 2006.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2012 by Mark Wieczorek <wieczor@ipgp.fr>.
+
+This is free software; you can distribute and modify it under the terms of the revised BSD license.
