@@ -1,12 +1,16 @@
 """
 Python Wrapper for the SHTOOLS library by Mark Wieczorek
 
-Authors: Matthias Meschede, Mark Wieczorek, 2014
+see   http://shtools.ipgp.fr/
+or    https://github.com/SHTOOLS/SHTOOLS
+
+The python wrapper was written by: Matthias Meschede, Mark Wieczorek, 2014
 """
 
 def load_documentation():
     """
-    Load the pyshtools documentation into memory
+    Fills the modules __doc__ strings with a useful documentation that was
+    generated at compile time
     """
 
     import os
@@ -26,12 +30,15 @@ def load_documentation():
             except IOError as msg:
                 print(msg)
 
-#load documentation
-import __main__ as main
+#load documentation that was generated at compile time (.doc files)
 load_documentation()
 
-#import into main namespace
+#import planetary constants into module namespace
 from . import _constant
 constant = _constant.planetsconstants
 
+#import all functions into module namespace
 from _SHTOOLS import *
+
+#import class interface
+from .classes import SHCoefficients
