@@ -13,6 +13,9 @@
 #	make clean
 #		Remove the man and html-man pages in the LOCAL directory.
 #
+#	make uninstall
+#		Remove man pages from /usr/local
+#
 #
 #	Written by Mark Wieczorek (July 2006).
 #
@@ -196,7 +199,7 @@ $(HTMLFILES_other) : %.html : %.1
 	@rm -f test.html
 
 
-.PHONY: move clean
+.PHONY: move clean uninstall
 
 move:	
 	@mv $(MANFILES) $(MANDIR)
@@ -213,6 +216,9 @@ move:
 
 clean:
 	-rm -f $(MANFILES) $(HTMLFILES) 
+	
+uninstall:
+	-cd /usr/local/share/man/man1/ ; rm $(MANFILES)
 
 
 .SUFFIXES: $(SUFFIXES)  .pod .html .1

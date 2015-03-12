@@ -13,6 +13,8 @@
 #	make clean
 #		Remove the man and html-man pages in the LOCAL directory.
 #
+#	make uninstall
+#		Remove man pages from /usr/local
 #
 #	Written by Mark Wieczorek (July 2006).
 #
@@ -83,6 +85,31 @@ MANFILES = cilmplusdh.1 cilmplusglq.1 computed0.1 computedg82.1 computedm.1 \
 	shcrosspowerlc.1 shbiasadmitcorr.1 shcilmtovector.1 shvectortocilm.1 yilmindex.1 \
 	computedmap.1 shreturntapersmap.1 curve2mask.1 makeellipsecoord.1 cilmplusrhohdh.1 cilmplusrhohglq.1 \
 	hilmrhohdh.1 hilmrhohglq.1 normalgravity.1 makegravgradgriddh.1 shreadh.1 shreaderrorh.1
+
+PYMANFILES = pycilmplusdh.1 pycilmplusglq.1 pycomputed0.1 pycomputedg82.1 pycomputedm.1 \
+	pydhaj.1 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
+	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
+	pymakegrid2d.1 pyglqgridcoord.1 pymakegriddh.1 \
+	pymakegridglq.1 pymakegridpoint.1 pymakemaggriddh.1 pyplanetsconstants.1 pyplbar_d1.1 \
+	pyplbar.1 pyplegendre.1 pyplegendre_d1.1 pyplegendrea_d1.1 pyplegendrea.1 pyplmbar_d1.1 \
+	pyplmbar.1 pyplmindex.1 pyplon.1 pyplon_d1.1 pyplmon.1 pyplmon_d1.1 pyplschmidt.1 pyplschmidt_d1.1 \
+	pyplmschmidt.1 pyplmschmidt_d1.1 pyprecompute.1 pypreglq.1 pynglq.1 pynglqsh.1 pynglqshn.1 \
+	pyrandomn.1 pyrandomgaussian.1 \
+	pyshadmitcorr.1 pyshbias.1 pyshbiask.1 pyshrtoc.1 pyshctor.1 pyshcilmtocindex.1 pyshcindextocilm.1 \
+	pyshexpanddh.1 pyshexpandglq.1 pyshexpandlsq.1 pyshfindlwin.1 \
+	pyshlocalizedadmitcorr.1 pyshmtvaropt.1 pyshmtvaropt0.1 pyshmultiply.1 pywl.1 pywlcurv.1 \
+	pyshmultitapercse.1 pyshmultitaperse.1 pyshpowerl.1 pyshpowerdensityl.1 pyshcrosspowerdensityl.1 \
+	pyshpowerspectrum.1 pyshpowerspectrumdensity.1 pyshcrosspowerspectrum.1 \
+	pyshcrosspowerspectrumdensity.1 pyshcrosspowerl.1 pyshread.1 pyshreaderror.1 pyshreadjpl.1 pyshreadjplerror.1 \
+	pyshread2.1 pyshread2error.1 \
+	pyshreturntapers.1 pyshreturntapersm.1 pyshrotatecoef.1 pyshrotaterealcoef.1 \
+	pywigner3j.1 pyshsjkpg.1 pyshsjkpg0.1 pyshtools.1 pysphericalcapcoef.1 pyshmtdebias.1 pymakegravgriddh.1 \
+	pyshconfidence.1 pyshmagpowerl.1 pyshmagpowerspectrum.1 pymakegriddhc.1 pyshexpanddhc.1 \
+	pymakegridglqc.1 pyshexpandglqc.1 pyshpowerlc.1 pyshpowerdensitylc.1 pyshcrosspowerdensitylc.1 \
+	pyshpowerspectrumc.1 pyshpowerspectrumdensityc.1 pyshcrosspowerspectrumc.1 pyshcrosspowerspectrumdensityc.1 \
+	pyshcrosspowerlc.1 pyshbiasadmitcorr.1 pyshcilmtovector.1 pyshvectortocilm.1 pyyilmindex.1 \
+	pycomputedmap.1 pyshreturntapersmap.1 pycurve2mask.1 pymakeellipsecoord.1 pycilmplusrhohdh.1 pycilmplusrhohglq.1 \
+	pyhilmrhohdh.1 pyhilmrhohglq.1 pynormalgravity.1 pymakegravgradgriddh.1 pyshreadh.1 pyshreaderrorh.1
 
 HTMLFILES_modules = planetsconstants.html shtools.html
 
@@ -200,7 +227,7 @@ $(HTMLFILES_other) : %.html : py%.1
 	@rm -f test.html
 
 
-.PHONY: move clean
+.PHONY: move clean uninstall
 
 move:	
 	@mv *.1 $(MANDIR)
@@ -217,6 +244,9 @@ move:
 
 clean:
 	-rm -f $(MANFILES) $(HTMLFILES) 
+	
+uninstall:
+	-cd /usr/local/share/man/man1/ ; rm $(PYMANFILES)
 
 
 .SUFFIXES: $(SUFFIXES)  .pod .html .1

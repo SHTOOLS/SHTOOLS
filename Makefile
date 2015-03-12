@@ -8,6 +8,8 @@
 #       make python         : install the python components    
 #       make fortran-tests  : compile and run the fortran test/example suite
 #       make python-tests   : run the python test/example suite
+#		make install		: place the compiled libraries and docs in /usr/local
+#		make uninstall		: remove files copied to /usr/local
 #       make clean          : return the folder to its original state
 #
 #   In some cases, where there are underscore problems when linking to the 
@@ -106,7 +108,7 @@ LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)/pyshtools
 
-.PHONY: all all2 all3 python install doc remove-doc clean getflags fortran-tests clean-fortran-tests run-fortran-tests run-python-tests
+.PHONY: all all2 all3 python install doc remove-doc clean getflags fortran-tests clean-fortran-tests run-fortran-tests run-python-tests install uninstall
 
 all: getflags
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
@@ -167,6 +169,44 @@ python: all
 	@echo import pyshtools as shtools
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
+
+install :
+	mkdir -p /usr/local/lib/python2.7/site-packages
+	cp -r pyshtools/ /usr/local/lib/python2.7/site-packages/pyshtools/
+	mkdir -p /usr/local/lib
+	cp $(LIBDIR)/libSHTOOLS.a /usr/local/lib/libSHTOOLS.a
+	mkdir -p /usr/local/include
+	cp $(INCDIR)/fftw3.mod /usr/local/include/fftw3.mod
+	cp $(INCDIR)/planetsconstants.mod /usr/local/include/planetsconstants.mod
+	cp $(INCDIR)/shtools.mod /usr/local/include/shtools.mod
+	mkdir -p /usr/local/share/shtools
+	cp -r examples/ /usr/local/share/shtools/examples/
+	mkdir -p /usr/local/share/man/man1
+	cp -r man/man1/ /usr/local/share/man/man1/
+	mkdir -p /usr/local/share/doc/shtools
+	cp index.html /usr/local/share/doc/shtools/index.html
+	cp -r www/ /usr/local/share/doc/shtools/www/
+	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/Makefile" > "temp.txt"
+	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
+	cp temp2.txt "/usr/local/share/shtools/examples/Makefile"
+	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/fortran/Makefile" > "temp.txt"
+	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
+	cp temp2.txt "/usr/local/share/shtools/examples/fortran/Makefile"
+	rm temp.txt
+	rm temp2.txt
+	
+uninstall :
+	-rm -r /usr/local/lib/python2.7/site-packages/pyshtools/
+	-rm -r /usr/local/lib/libSHTOOLS.a
+	-rm -r /usr/local/include/fftw3.mod
+	-rm -r /usr/local/include/planetsconstants.mod
+	-rm -r /usr/local/include/shtools.mod
+	-rm -r /usr/local/share/shtools/examples/
+	-rm -r /usr/local/share/doc/shtools/index.html
+	-rm -r /usr/local/share/doc/shtools/www/
+	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
+	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
+
 
 getflags:
 ifeq ($(F95),f95)
