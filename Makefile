@@ -1,9 +1,36 @@
 ###################################################################################
 #
-#	make all
-#		Compile program in the current directory. Optionally, one
-#		can specify the parameters F95="my compiler" and 
-#		F95FLAGS="my compiler flags". The default is to use "f95".
+#   INSTRUCTIONS
+#
+#   The normal user should only have to use the following commands
+#   
+#       make                : install the fortan components
+#       make python         : install the python components    
+#       make fortran-tests  : compile and run the fortran test/example suite
+#       make python-tests   : run the python test/example suite
+#       make clean          : return the folder to its original state
+#
+#   In some cases, where there are underscore problems when linking to the 
+#   LAPACK, BLAS, and FFTW3 libraries, it might be necessary to use
+#   make all2 or make all3 instead of the initial "make". ALL OF THE OTHER
+#   MAKES LISTED BELOW ARE FOR DEVELOPERS ONLY.
+#
+#   This Makefile accepts the following optional arguments that can be passed
+#   using the syntax : make F95="name of f95 compile"
+#   
+#       F95         : Name and path of the fortran-95 compiler
+#       F95FLAGS    : Fortran-95 compiler flags
+#       F2PY        : Name (including path) of the f2py executable
+#       PYTHON      : Name (including path) of the python executable
+#       FFTW        : Name and path of the FFTW3 library of the form "-Lpath -lfftw3"
+#       LAPACK      : Name and path of the LAPACK library of the form "-Lpath -llapack"
+#       BLAS        : Name and path of the BLAS library of the form "-Lpath -lblas"
+#
+#
+#   LIST OF ALL SUPPORTED MAKE TARGETS
+#
+#	make, make all
+#		Compile program in the current directory.
 #
 #	make all2
 #		Variant of make all: LAPACK subroutine names have
@@ -26,10 +53,8 @@
 #		compiled fortran and Python tests.
 #
 #	make fortran-tests
-#		Compile and run example programs and test suite. Optionally, one
-#		can specify the parameters F95="my compiler" and 
-#		F95FLAGS="my compiler flags", which should be identical to
-#		those used to make "all".
+#		Compile and run example programs and test suite. Optional parameters 
+#       should be identical to those used to make "all".
 #
 #	make run-fortran-tests
 #		Run all fortran examples and test suite.
@@ -42,6 +67,7 @@
 #
 #	make clean-python-tests
 #		Detelet all compiled python tests
+#
 #	make doc
 #		Create the man and html-man pages from input POD files.
 #		These are PRE-MADE in the distribution, so it shouldn't
@@ -52,7 +78,7 @@
 #		Remove the man and html-man pages.
 #
 #
-#	Written by Mark Wieczorek (July 2012).
+#	Written by Mark Wieczorek (March 2015).
 #
 #####################################################################################
 
