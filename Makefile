@@ -102,6 +102,9 @@ INCDIR = modules
 FEXDIR  = examples/fortran
 PEXDIR = examples/python
 
+LIBPATH = $(PWD)/$(LIBDIR)
+MODPATH = $(PWD)/$(INCDIR)
+PYPATH = $(PWD)/pyshtools
 
 .PHONY: all all2 all3 python install doc remove-doc clean getflags fortran-tests clean-fortran-tests run-fortran-tests run-python-tests
 
@@ -113,9 +116,8 @@ all: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
-	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
@@ -129,7 +131,6 @@ all2: getflags
 	@echo
 	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
-	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
@@ -143,7 +144,6 @@ all3: getflags
 	@echo
 	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
-	@echo where modpath and libpath are replaced with their respective paths.
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
@@ -162,6 +162,8 @@ python: all
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo import shtools into Python with:
 	@echo
+	@echo import sys
+	@echo sys.path.append\(\'$(PYPATH)\'\)
 	@echo import pyshtools as shtools
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
@@ -171,27 +173,26 @@ ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags
 F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic
 #-march=host
-MODFLAG = -p modpath
+MODFLAG = -p $(MODPATH)
 endif
 
 ifeq ($(F95),gfortran)
 # Default gfortran flags
 #F95FLAGS ?= -m64 -fPIC -O3 # -march=native
 F95FLAGS ?= -m64 -fPIC -O3 # -march=native  # -ggdb
-MODFLAG = -Imodpath
-#LAPACK = #"-framework accelerate" This will compile and run the fortran code, but will not compile the python library.
+MODFLAG = -I$(MODPATH)
 endif
 
 ifeq ($(F95),ifort)
 # Default intel fortran flags
 F95FLAGS ?= -m64 -free -O3 -Tf
-MODFLAG = -Imodpath
+MODFLAG = -I$(MODPATH)
 endif
 
 ifeq ($(F95),g95)
 # Default g95 flags.
 F95FLAGS ?= -O3 -fno-second-underscore 
-MODFLAG = -Imodpath
+MODFLAG = -I$(MODPATH)
 endif
 
 ifeq ($(F95),pgf90)
@@ -202,7 +203,7 @@ endif
 
 ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
-MODFLAG = -Imodpath
+MODFLAG = -I$(MODPATH)
 endif
 
 

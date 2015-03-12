@@ -19,6 +19,9 @@ FFTW = -lfftw3
 LAPACK = -llapack
 BLAS = -lblas
 
+LIBPATH = ../../lib
+MODPATH = ../../modules/
+
 SHELL=/bin/tcsh
 MAKE = make
 
@@ -31,31 +34,31 @@ all: getflags
 	@echo -------------------------------------------------------------------------------------------------------
 	@echo Compiling example and test suite code in SHTOOLS/examples/fortran with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo -------------------------------------------------------------------------------------------------------
 	@echo
 	
-	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o MarsCrustalThickness/MarsCrustalThickness
+	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o MarsCrustalThickness/MarsCrustalThickness
 	
-	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHCilmPlus/TestCilmPlus
+	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHCilmPlus/TestCilmPlus
 	
-	$(F95) SHExpandDH/TestExpandDH.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandDH/TestExpandDH
+	$(F95) SHExpandDH/TestExpandDH.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandDH/TestExpandDH
 	
-	$(F95) SHExpandLSQ/TestSHExpandLSQ.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandLSQ/TestSHExpandLSQ
+	$(F95) SHExpandLSQ/TestSHExpandLSQ.f95 $(MODFLAG) $(F95FLAGS)-L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandLSQ/TestSHExpandLSQ
 	
-	$(F95) SHLocalizedAdmitCorr/LocalizedAdmitCorr.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHLocalizedAdmitCorr/LocalizedAdmitCorr
+	$(F95) SHLocalizedAdmitCorr/LocalizedAdmitCorr.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHLocalizedAdmitCorr/LocalizedAdmitCorr
 	
-	$(F95) SHMag/SHMag.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHMag/SHMag
+	$(F95) SHMag/SHMag.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHMag/SHMag
 	
-	$(F95) SHRotate/TestSHRotate.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHRotate/TestSHRotate
+	$(F95) SHRotate/TestSHRotate.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHRotate/TestSHRotate
 	
-	$(F95) TimingAccuracy/TimingAccuracyDH.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDH
+	$(F95) TimingAccuracy/TimingAccuracyDH.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDH
 	
-	$(F95) TimingAccuracy/TimingAccuracyDHC.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDHC
+	$(F95) TimingAccuracy/TimingAccuracyDHC.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDHC
 	
-	$(F95) TimingAccuracy/TimingAccuracyGLQ.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQ
+	$(F95) TimingAccuracy/TimingAccuracyGLQ.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQ
 	
-	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) $(F95FLAGS) -L../../lib -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQC
+	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQC
 	
 run-fortran-tests:
 	 @echo MARS CRUSTAL THICKNESS
@@ -110,22 +113,22 @@ getflags:
 
 ifeq ($(F95),f95)
 F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic
-MODFLAG = -p ../../modules/
+MODFLAG = -p $(MODPATH)
 endif
 
 ifeq ($(F95),gfortran)
 F95FLAGS ?= -m64 -fPIC -O3
-MODFLAG = -I../../modules/
+MODFLAG = -I$(MODPATH)
 endif
 
 ifeq ($(F95),ifort)
 F95FLAGS ?= -m64 -free -O3 -Tf
-MODFLAG = -I../../modules/
+MODFLAG = -I$(MODPATH)
 endif
 
 ifeq ($(F95),g95)
 F95FLAGS ?= -O3 -fno-second-underscore 
-MODFLAG = -I../../modules/
+MODFLAG = -I$(MODPATH)
 endif
 
 ifeq ($(F95),pgf90)
@@ -135,7 +138,7 @@ endif
 
 ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
-MODFLAG = -I../../modules/
+MODFLAG = -I$(MODPATH)
 endif
 
 
