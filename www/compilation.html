@@ -72,7 +72,29 @@
 	
 	<p>Successful compilation will create the library file <tt>libSHTOOLS.a</tt> in the directory <tt>lib</tt>, will place a few compiled module files in the directory <tt>modules</tt>, and will create a few <tt>.so</tt> files in the directory <tt>pyshtools</tt>. The resulting output should look something like <a href="makeout.html">this</a>. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using <tt>make clean</tt>.</p>
 	
-	<p>In order to access the unix man pages, it will be necessary to add <tt>"shtoolslocation"/man</tt> to your man path, where <tt>"shtoolslocation"</tt> is the path of the root directory of <tt>SHTOOLS</tt>. The link to the local html web page is <tt>"shtoolslocation"/index.html</tt></p>
+	<p>To make all files available at a system level, run</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make install</tt></p>
+	</blockquote>
+	
+	<p>This will move the compiled SHTOOLS files to the standard locations in <tt>/usr/local</tt>:</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>/usr/local/lib/python2.7/site-packages/pyshtools (python module)<br>
+ /usr/local/lib (libSHTOOLS.a)<br>
+ /usr/local/include (fftw3.mod, planetsconstants.mod, shtools.mod)<br>
+ /usr/local/share/shtools/examples (example files)<br>
+ /usr/local/share/man/man1 (man pages)<br>
+ /usr/local/share/doc/shtools/index.html (web documentation)</tt></p>
+	</blockquote>
+	
+	<p>To remove all SHTOOLS files from <tt>/usr/local</tt>, use</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make uninstall</tt></p>
+	</blockquote>
+	
+	<p>To access the unix man pages, it will be necessary to add <tt>/usr/local/share/man</tt> to your man path.</p>
 	
 
 	<h2>Compiler flags and optimization</h2>
