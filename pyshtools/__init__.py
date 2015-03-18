@@ -38,7 +38,7 @@ from . import _constant
 constant = _constant.planetsconstants
 
 #import all functions into module namespace
-from _SHTOOLS import *
+from ._SHTOOLS import *
 
-#import class interface
-from .classes import SHCoefficients
+#import class interface into namespace
+from .classes import SHCoeffs, SHGrid

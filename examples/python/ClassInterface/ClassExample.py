@@ -10,11 +10,10 @@ from __future__ import print_function
 import os, sys
 import numpy as np
 import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 #import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-import pyshtools as shtools
+from pyshtools import SHCoeffs
 
 #set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
@@ -23,20 +22,20 @@ mpl.rcParams.update(style_shtools)
 
 #==== MAIN FUNCTION ====
 def main():
-    example()
+    # generate random spherical harmonics coefficients with a given
+    # power spectrum and plot its bandspectrum
+    degrees = np.arange(201)
+    scale   = 10
+    power   = 1./(1.+(degrees/scale)**2)**2
 
-#==== PLOT POWER SPECTRA ====
-def example():
-    lmax   = 200
-    scale  = 10
-    power  = 1./(1.+(np.arange(lmax+1)/scale)**2)**2
-
-    coeffs = shtools.SHCoefficients.from_random(power)
+    coeffs = SHCoeffs.from_random(power)
     coeffs.plot_bandpower(show=False)
 
-    grid = coeffs.expand(kind='DH1')
-    grid.plot_rawdata(show=False)
+    #expand coefficients into a spatial grid and plot it
+    grid1 = coeffs.expand(kind='DH1')
+    grid1.plot_rawdata(show=False)
 
+    #rotate coefficients, expand to grid and plot again
     coeffs.rotate(40.,0.,0.,degrees=True)
     grid2 = coeffs.expand(kind='DH1')
     grid2.plot_rawdata()

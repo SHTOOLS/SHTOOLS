@@ -11,20 +11,20 @@ import matplotlib.pyplot as plt
 from _SHTOOLS import *
 
 #=========== COEFFICIENT CLASSES ===============================================
-class SHCoefficients(object):
+class SHCoeffs(object):
     """
     Spherical Harmonics Coefficient super class. Coefficients can be initialized
     using one of the constructor methods:
 
-    >> SHCoefficients.from_array( np.zeros(2*(lmax+1)*(lmax+1)) )
-    >> SHCoefficients.from_random( np.exp(-ls**2) )
-    >> SHCoefficients.from_file( 'fname.dat' )
+    >> SHCoeffs.from_array( np.zeros(2*(lmax+1)*(lmax+1)) )
+    >> SHCoeffs.from_random( np.exp(-ls**2) )
+    >> SHCoeffs.from_file( 'fname.dat' )
     """
     def __init__(self):
         print('use one of the following methods to initialize sh-coefficients:\n\n'+
-              '>> SHCoefficients.from_array(...)\n'+
-              '>> SHCoefficients.from_random(...)\n'+
-              '>> SHCoefficients.from_file(...)')
+              '>> SHCoeffs.from_array(...)\n'+
+              '>> SHCoeffs.from_random(...)\n'+
+              '>> SHCoeffs.from_file(...)')
 
     #---- factory methods:
     @classmethod
@@ -116,7 +116,7 @@ class SHCoefficients(object):
         if show: plt.show()
 
 #---- implementation for real spherical harmonics ----
-class SHRealCoeffients(SHCoefficients):
+class SHRealCoefficients(SHCoeffs):
     """
     Real Spherical Harmonics Coefficients class.
     """
@@ -147,7 +147,7 @@ class SHRealCoeffients(SHCoefficients):
 
     def _expandDH(self,sampling):
         data = MakeGridDH(self.coeffs,sampling=sampling)
-        grid = SphericalGrid.from_array(data)
+        grid = SHGrid.from_array(data)
         return grid
 
     def _expandGLQ(self):
@@ -155,7 +155,7 @@ class SHRealCoeffients(SHCoefficients):
         return MakeGridGLQ(cilm_trim,zeros)
 
 #---- implementation for complex spherical harmonics ----
-class SHComplexCoeffients(SHCoefficients):
+class SHComplexCoefficients(SHCoeffs):
     """
     Complex Spherical Harmonics Coefficients class.
     """
@@ -180,7 +180,7 @@ class SHComplexCoeffients(SHCoefficients):
         raise NotImplementedError('not implemented by subclass %s'%s.__class__)
 
 #=========== GRID CLASSES ===============================================
-class SphericalGrid(object):
+class SHGrid(object):
     """
     Spherical Grid Class that can deal with spatial data on the sphere that is
     defined on different grids. Can be constructed from:
@@ -205,8 +205,11 @@ class SphericalGrid(object):
         self._plot_rawdata()
         if show: plt.show()
 
+    def expand(self):
+        return self._expand()
+
 #---- implementation of the Driscoll and Healy Grid class ----
-class DHGrid(SphericalGrid):
+class DHGrid(SHGrid):
     """
     Driscoll and Healy Grid (publication?)
     """
@@ -225,6 +228,11 @@ class DHGrid(SphericalGrid):
                              'it needs nlat=nlon or nlat=2*nlon'.format(nlat,nlon))
         self.data = array
 
+    def _expand(self):
+        cilm   = SHExpandDH(self.data)
+        coeffs = SHCoeffs.from_array(cilm)
+        return coeffs
+
     def _plot_rawdata(self):
         fig,ax = plt.subplots(1,1)
         ax.imshow(self.data,origin='top',extent=(0.,360.,-90.,90.))
@@ -234,7 +242,7 @@ class DHGrid(SphericalGrid):
         fig.tight_layout(pad=0.5)
 
 #---- implementation of the Gauss-Legendre Grid class ----
-class GLQGrid(SphericalGrid):
+class GLQGrid(SHGrid):
     """
     Gauss Legendre Class
     """
@@ -243,15 +251,7 @@ class GLQGrid(SphericalGrid):
         return kind == 'DH'
 
     def __init__(self, array):
-        nlat,nlon = array.shape
-        if nlat == 2*nlon:
-            self.sampling = 2
-        if nlat == nlon:
-            self.sampling = 1
-        else:
-            raise ValueError('input array with shape (nlat={:d},nlon={:d})\n'+
-                             'it needs nlat=nlon or nlat=2*nlon'.format(nlat,nlon))
-        self.data = array
+        raise NotImplementedError('GLQ grid not yet implemented')
 
     def _plot_rawdata(self):
         fig,ax = plt.subplots(1,1)
