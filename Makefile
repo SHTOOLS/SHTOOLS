@@ -8,8 +8,8 @@
 #       make python         : install the python components    
 #       make fortran-tests  : compile and run the fortran test/example suite
 #       make python-tests   : run the python test/example suite
-#		make install		: place the compiled libraries and docs in /usr/local
-#		make uninstall		: remove files copied to /usr/local
+#       make install		: place the compiled libraries and docs in /usr/local
+#       make uninstall		: remove files copied to /usr/local
 #       make clean          : return the folder to its original state
 #
 #   In some cases, where there are underscore problems when linking to the 
@@ -31,56 +31,56 @@
 #
 #   LIST OF ALL SUPPORTED MAKE TARGETS
 #
-#	make, make all
-#		Compile program in the current directory.
+#   make, make all
+#       Compile program in the current directory.
 #
-#	make all2
-#		Variant of make all: LAPACK subroutine names have
-#		an underscore appended to them in the source files in order to 
-#		use FFTW and LAPACK	libraries with conflicting underscore 
-#		conventions.
+#   make all2
+#       Variant of make all: LAPACK subroutine names have
+#       an underscore appended to them in the source files in order to 
+#       use FFTW and LAPACK	libraries with conflicting underscore 
+#       conventions.
 #
 #	make all3
-#		Variant of make all: FFTW subroutine names have
-#		an underscore appended to them in the source files in order to 
-#		use FFTW and LAPACK	libraries with conflicting underscore 
-#		conventions.
+#       Variant of make all: FFTW subroutine names have
+#       an underscore appended to them in the source files in order to 
+#       use FFTW and LAPACK	libraries with conflicting underscore 
+#       conventions.
 #
-#	make python
-#		Compile the python wrapper with the f2py compiler. This should be 
-#		after the Fortran files are compiled.
+#   make python
+#       Compile the python wrapper with the f2py compiler. This should be 
+#       after the Fortran files are compiled.
 #
-#	make clean
-#		Remove the compiled lib, module, object, and Python files. Also removes 
-#		compiled fortran and Python tests.
+#   make clean
+#	    Remove the compiled lib, module, object, and Python files. Also removes 
+#       compiled fortran and Python tests.
 #
-#	make fortran-tests
-#		Compile and run example programs and test suite. Optional parameters 
+#   make fortran-tests
+#       Compile and run example programs and test suite. Optional parameters 
 #       should be identical to those used to make "all".
 #
-#	make run-fortran-tests
-#		Run all fortran examples and test suite.
+#   make run-fortran-tests
+#       Run all fortran examples and test suite.
 #
-#	make clean-fortran-tests
-#		Delete compiled test suite programs.
+#   make clean-fortran-tests
+#       Delete compiled test suite programs.
 #
 #   make python-tests
-#		Run all python tests
+#       Run all python tests
 #
-#	make clean-python-tests
-#		Detelet all compiled python tests
+#   make clean-python-tests
+#       Detele all compiled python tests
 #
-#	make doc
-#		Create the man and html-man pages from input POD files.
-#		These are PRE-MADE in the distribution, so it shouldn't
-#		be necessary to recreate these unless there is some kind
-#		of problem.
+#   make doc
+#       Create the man and html-man pages from input POD files.
+#       These are PRE-MADE in the distribution. To remake these
+#       files, it will be necessary to install "pandoc" and "cabal",
+#       and then "cabal install pandoc-types".
 #
-#	make remove-doc
-#		Remove the man and html-man pages.
+#   make remove-doc
+#       Remove the man and html-man pages.
 #
 #
-#	Written by Mark Wieczorek (March 2015).
+#   Written by Mark Wieczorek (March 2015).
 #
 #####################################################################################
 
@@ -131,7 +131,7 @@ all2: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
@@ -144,7 +144,7 @@ all3: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -Llibpath -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 

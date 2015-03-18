@@ -28,7 +28,7 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
 <PRE>
 <!-- Manpage converted by man2html 3.0.1 -->
 <B>MAKEGEOIDGRID(1)</B>                  SHTOOLS 3.0                 <B>MAKEGEOIDGRID(1)</B>
@@ -87,8 +87,8 @@
                  A global grid of the height to the potential POTREF above a
                  sphere of radius R (or above a flattened ellipsoid if both A
                  and F are specified). The number of latitude and longitude
-                 points depends upon GRIDTYPE: (1) LMAX+1 by 2*LMAX + 1, (2)
-                 2*LMAX+2 by 2*LMAX+2, (3) 2*LMAX+2 by 4*LMAX+4, or (4)
+                 points depends upon GRIDTYPE: \<B>fIs0(1)</B> LMAX+1 by 2*LMAX + 1,
+                 (2) 2*LMAX+2 by 2*LMAX+2, (3) 2*LMAX+2 by 4*LMAX+4, or (4)
                  180/INTERVAL + 1 by 360/INTERVAL + 1.
 
        CILM      (input) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
@@ -131,11 +131,11 @@
        GRIDTYPE  (input) INTEGER
 
                  The output grid is (1) a Gauss-Legendre quadrature grid whose
-                 grid nodes are determined by LMAX, (2) an equally sampled N
-                 by N grid used with the Driscoll and Healy (1994) sampling
-                 theorem, (3) ar a similar N by 2N grid that is oversampled in
-                 longitude, or (4) a 2D Cartesian grid with latitudinal and
-                 longitudinal spacing given by INTERVAL.
+                 grid nodes are determined by LMAX, \<B>fIs0(2)</B> an equally
+                 sampled N by N grid used with the Driscoll and Healy (1994)
+                 sampling theorem, (3) ar a similar N by 2N grid that is
+                 oversampled in longitude, or (4) a 2D Cartesian grid with
+                 latitudinal and longitudinal spacing given by INTERVAL.
 
        ORDER     (input) INTEGER
 
@@ -202,11 +202,11 @@
        This is free software; you can distribute and modify it under the terms
        of the revised BSD license.
 
-SHTOOLS 3.0                       2015-03-04                  <B>MAKEGEOIDGRID(1)</B>
+SHTOOLS 3.0                       2015-03-10                  <B>MAKEGEOIDGRID(1)</B>
 </PRE>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

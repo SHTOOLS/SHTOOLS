@@ -21,7 +21,6 @@
 #
 #######################################################################
 
-
 SHELL=/bin/tcsh
 
 MAN2HTML = man2html
@@ -131,7 +130,7 @@ all: install-man install-html move
 
 install-man: $(MANFILES)
 	@echo
-	@echo MAN PAGES SUCCESSFULLY MADE
+	@echo FORTRAN 95 MAN PAGES SUCCESSFULLY MADE
 	@echo
 	
 
@@ -140,7 +139,7 @@ install-html: $(HTMLFILES_modules) $(HTMLFILES_legendre) $(HTMLFILES_transformat
 	$(HTMLFILES_rotations) $(HTMLFILES_gravmag) \
 	$(HTMLFILES_other)
 	@echo
-	@echo HTML WEB PAGES SUCCESSFULLY MADE
+	@echo FORTRAN 95 HTML WEB PAGES SUCCESSFULLY MADE
 	@echo
 	
 
