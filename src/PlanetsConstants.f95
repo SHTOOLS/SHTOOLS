@@ -19,14 +19,14 @@ module PlanetsConstants
 				GM_Moon = 4902.801076d9, & ! Konopliv et al. (2001), LP150Q	
 				Mass_Moon = GM_Moon / Grav_constant, & ! Wieczorek et al. (2005)
 				a_Moon = 384399.0d3, & ! Semi-major axis (meters), Williams et al. (2001)
-				g0_Moon = 1.6247750d0, & ! gravitational acceleration at R_Moon, not including rotation.
 				R0_pot_Moon = 1738.d3, & ! Reference radius of LP150Q gravity model.
 				Omega_Moon = 2.0d0 *pi_constant / 27.3215820d0 / 24.0d0 / 60.0d0 / 60.0d0 , & ! Lunar rotation rate, Yoder 1995
-				c_moi_Moon = 0.39320d0, & ! normalized polar moment of inertia (R=1738),Konopliv et al. (1998
-				i_moi_Moon = 0.39310d0, & ! average moment of inertia (R=1748), Konopliv et al. (1998)
-				gamma_moi_Moon = 227.8710d-6, &	! (B-A)/C from LLR (Konopliv et al. 1998)
-				beta_moi_Moon = 631.4860d-6 ! (C-A)/B) from LLR (Konopliv et al.)
-	real*8, parameter ::	rho_bar_Moon =  Mass_Moon * 3.0d0 / 4.0d0 / pi_constant / R_Moon**3	
+				c_moi_Moon = 0.39320d0, & ! normalized polar moment of inertia (R=1738), Konopliv et al. (1998)
+				i_moi_Moon = 0.39310d0, & ! average moment of inertia (R=1738), Konopliv et al. (1998)
+				gamma_moi_Moon = 227.7317d-6, &	! (B-A)/C from Williams et al. 2014
+				beta_moi_Moon = 631.0213d-6 ! (C-A)/B) from Williams et al. 2014
+	real*8, parameter ::	rho_bar_Moon =  Mass_Moon * 3.0d0 / 4.0d0 / pi_constant / R_Moon**3	, &
+							g0_Moon = GM_Moon / R_Moon**2  ! gravitational acceleration at R_Moon, not including rotation.
 	
 	! Mars
 	real*8, parameter ::	R_Mars = 3389500.12207057, & ! MarsTopo2600
@@ -56,8 +56,8 @@ module PlanetsConstants
 				Mass_Earth = GM_Earth / Grav_constant, &
 				WGS84_a = 6378137.0d0, & ! WGS84 ellipsoid semi-major axis
 				WGS84_f = 1.0d0 /298.2572235630d0, & ! WGS84 ellipsoid flattening
-				WGS84_gm = 3986004.418D8, & ! WGS84 gm, includes the atmosphere
-				WGS84_omega = 7292115.0D-11, & ! WGS84 angular velocity, radians/sec
+				WGS84_gm = 3986004.418d8, & ! WGS84 gm, includes the atmosphere
+				WGS84_omega = 7292115.0d-11, & ! WGS84 angular velocity, radians/sec
 				WGS84_gma = 3.50d8, & !	WGS84 gm of the atmosphere
 				WGS84_b = 6356752.31420d0, & ! WGS84 semi-minor axis
 				WGS84_U0 = 62636851.7146d0, & ! WGS84 Theoretical normal potential
@@ -68,7 +68,7 @@ module PlanetsConstants
 				Mass_Mercury = GM_Mercury / Grav_constant, &
 				R0_pot_Mercury = 2440.0000000000000e+03, & ! for model ggmes_20v04_sha
 				R_Mercury = 2.4393717480908799e+06, & ! degree 0 term of the model gtmes_24v01_sha available on the PDS
-				Omega_Mercury_orbit = 2.0d0 *pi_constant / 87.9690d0 / 24.0d0 / 60.0d0 / 60.0d0, & ! Rambaux and Boois (2004)
+				Omega_Mercury_orbit = 2.0d0 *pi_constant / 87.9690d0 / 24.0d0 / 60.0d0 / 60.0d0, & ! Rambaux and Bois (2004)
 				Omega_Mercury_spin = 3.0d0 / 2.0d0 * Omega_Mercury_orbit 
 	real*8, parameter ::	rho_bar_Mercury = Mass_Mercury * 3.0d0 / 4.0d0 / pi_constant / R_Mercury**3, &
 				g0_Mercury = GM_Mercury/R_Mercury**2

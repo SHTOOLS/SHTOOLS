@@ -29,168 +29,190 @@
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../modules.html" class="dir">Modules</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>PLANETSCONSTANTS(1)</B>               SHTOOLS 3.0              <B>PLANETSCONSTANTS(1)</B>
-
-
-</PRE>
-<H2 class="man">PlanetsConstants</H2 class="man"><PRE>
-       PlanetsConstants - Module containing planetary constants.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       USE PlanetsConstants
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>PlanetsConstants</B> defines several constants that are useful when working
-       with gravity and topography data of the Earth, Mars, Venus, and Moon.
-       All units are SI. Confer with the source file for exact values and
-       references.
-
-
-</PRE>
-<H2 class="man">CONSTANTS</H2 class="man"><PRE>
-   <B>Fundamental</B> <B>Constants</B>
-       Grav_constant     Gravitational Constant.
-
-       pi_constant       PI.
-
-       mu0_constant      Magnetic constant.
-
-   <B>The</B> <B>Moon</B>
-       R_Moon            Radius of the Moon.
-
-       GM_Moon           Gravitational constant times the mass of the Moon.
-
-       Mass_Moon         Mass of the Moon.
-
-       rho_bar_Moon      Average density of the Moon.
-
-       a_Moon            Semi-major axis of the lunar orbit.
-
-       g0_Moon           Gravitational acceleration at R_Moon, not including
-                         rotation.
-
-       R0_pot_Moon       Reference radius of the gravitational-potential
-                         model.
-
-       Omega_Moon        Angular rotation rate of the Moon.
-
-       C_MOI_Moon        Polar moment of inertia, using R=1738 km.
-
-       I_MOI_Moon        Average moment of inertia, using R=1738 km.
-
-       Gamma_MOI_Moon    Gamma = (B-A)/C.
-
-       Beta_MOI_Moon     Beta = (C-A)/B.
-
-   <B>Mars</B>
-       R_Mars            Average radius of Mars
-
-       GM_Mars           Gravitational constant times the mass of the Mars.
-
-       Mass_Mars         Mass of Mars.
-
-       rho_bar_Mars      Average density of Mars
-
-       g0_Mars           Gravitational acceleration at R_Mars, not including
-                         rotation.
-
-       R0_pot_Mars       Reference radius of the gravitational-potential
-                         model.
-
-       Omega_Mars        Angular rotation rate of Mars.
-
-       f_Mars            Topographic flattening of Mars.
-
-       a_Mars            Mean equatorial radius of Mars.
-
-   <B>Venus</B>
-       R_Venus           Average radius of Venus.
-
-       R0_pot_Venus      Reference radius of the gravitational-potential
-                         model.
-
-       GM_Venus          Gravitational constant times the mass of the Venus.
-
-       Mass_Venus        Mass of Venus.
-
-       Omega_Venus       Angular rotation rate of Venus.
-
-       rho_bar_Venus     Average density of Venus.
-
-       g0_Venus          Gravitational acceleration at R_Mars, not including
-                         rotation.
-
-   <B>Earth</B>
-       GM_Earth          Gravitational constant times the mass of the Earth.
-
-       R0_pot_Earth      Reference radius of the gravitational-potential
-                         model.
-
-       Mass_Earth        The mass of the Earth.
-
-       WGS84_a           The semi-major axis of the WGS84 ellipsoid.
-
-       WGS84_b           The semi-minor axis of the WGS84 ellipsoid.
-
-       WGS84_r3          The radius of a sphere of Earth's volume.
-
-       WGS84_f           The flattening of the WGS84 ellipsoid.
-
-       WGS84_gm          The adopted GM of the WGS84 model, which includes the
-                         atmosphere.
-
-       WGS84_gma         The GM of the atmosphere adopted by the WGS84 model.
-
-       WGS84_omega       The adopted angular rotation rate of the Earth of the
-                         WGS84 model.
-
-                         = item WGS84_U0
-
-                         The theoretical normal potential associated with the
-                         WGS84 model.
-
-   <B>Mercury</B>
-       R_Mercury         Average radius of Mercury.
-
-       GM_Mercury        Gravitational constant times the mass of the Mercury.
-
-       Mass_Mercury      Mass of Mercury.
-
-       R0_Pot_Mercury    Reference radius used for the spherical harmonic
-                         gravity solutions.
-
-       Omega_Mercury_orbit
-                         Angular rotation rate of Mercury about the Sun.
-
-       Omega_Mercury_spin
-                         Angular rotation rate of Mercury.
-
-       rho_bar_Mercury   Average density of Mercury.
-
-       g0_Mercury        Gravitational acceleration at R_Mercury, not
-                         including rotation.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2015-03-10               <B>PLANETSCONSTANTS(1)</B>
-</PRE>
+<h2 id="planetsconstants">PlanetsConstants</h2>
+<p>SHTOOLS Module containing planetary constants.</p>
+<h2 id="description">Description</h2>
+<p><code>PlanetsConstants</code> defines several constants that are useful when working with gravity and topography data of the Earth, Mars, Venus, and Moon. All units are SI. Confer with the source file or the Python documentation for exact values and references.</p>
+<h2 id="constants">Constants</h2>
+<h3 id="fundamental-constants">Fundamental Constants</h3>
+<dl>
+<dt><code>Grav_constant</code></dt>
+<dd>Gravitational Constant.
+</dd>
+<dt><code>pi_constant</code></dt>
+<dd>Pi.
+</dd>
+<dt><code>mu0_constant</code></dt>
+<dd>Magnetic constant.
+</dd>
+</dl>
+<h3 id="the-moon">The Moon</h3>
+<dl>
+<dt><code>R_Moon</code></dt>
+<dd>Mean radius of the Moon.
+</dd>
+<dt><code>GM_Moon</code></dt>
+<dd>Gravitational constant times the mass of the Moon.
+</dd>
+<dt><code>Mass_Moon</code></dt>
+<dd>Mass of the Moon.
+</dd>
+<dt><code>rho_bar_Moon</code></dt>
+<dd>Average density of the Moon.
+</dd>
+<dt><code>a_Moon</code></dt>
+<dd>Semi-major axis of the lunar orbit.
+</dd>
+<dt><code>g0_Moon</code></dt>
+<dd>Gravitational acceleration at R_Moon, not including rotation.
+</dd>
+<dt><code>R0_pot_Moon</code></dt>
+<dd>Reference radius of the gravitational-potential model.
+</dd>
+<dt><code>Omega_Moon</code></dt>
+<dd>Angular rotation rate of the Moon.
+</dd>
+<dt><code>C_MOI_Moon</code></dt>
+<dd>Polar moment of inertia, using R=1738 km.
+</dd>
+<dt><code>I_MOI_Moon</code></dt>
+<dd>Average moment of inertia, using R=1738 km.
+</dd>
+<dt><code>Gamma_MOI_Moon</code></dt>
+<dd>Gamma = (B-A)/C.
+</dd>
+<dt><code>Beta_MOI_Moon</code></dt>
+<dd>Beta = (C-A)/B.
+</dd>
+</dl>
+<h3 id="mars">Mars</h3>
+<dl>
+<dt><code>R_Mars</code></dt>
+<dd>Average radius of Mars.
+</dd>
+<dt><code>GM_Mars</code></dt>
+<dd>Gravitational constant times the mass of the Mars.
+</dd>
+<dt><code>Mass_Mars</code></dt>
+<dd>Mass of Mars.
+</dd>
+<dt><code>rho_bar_Mars</code></dt>
+<dd>Average density of Mars.
+</dd>
+<dt><code>g0_Mars</code></dt>
+<dd>Gravitational acceleration at R_Mars, not including rotation.
+</dd>
+<dt><code>R0_pot_Mars</code></dt>
+<dd>Reference radius of the gravitational-potential model.
+</dd>
+<dt><code>Omega_Mars</code></dt>
+<dd>Angular rotation rate of Mars.
+</dd>
+<dt><code>f_Mars</code></dt>
+<dd>Topographic flattening of Mars.
+</dd>
+<dt><code>a_Mars</code></dt>
+<dd>Semi-major axis radius of Mars.
+</dd>
+<dt><code>b_Mars</code></dt>
+<dd>Semi-minor axis radius of Mars.
+</dd>
+<dt><code>W0_mars</code></dt>
+<dd>Reference potential of Mars.
+</dd>
+</dl>
+<h3 id="venus">Venus</h3>
+<dl>
+<dt><code>R_Venus</code></dt>
+<dd>Average radius of Venus.
+</dd>
+<dt><code>R0_pot_Venus</code></dt>
+<dd>Reference radius of the gravitational-potential model.
+</dd>
+<dt><code>GM_Venus</code></dt>
+<dd>Gravitational constant times the mass of the Venus.
+</dd>
+<dt><code>Mass_Venus</code></dt>
+<dd>Mass of Venus.
+</dd>
+<dt><code>Omega_Venus</code></dt>
+<dd>Angular rotation rate of Venus.
+</dd>
+<dt><code>rho_bar_Venus</code></dt>
+<dd>Average density of Venus.
+</dd>
+<dt><code>g0_Venus</code></dt>
+<dd>Gravitational acceleration at R_Venus, not including rotation.
+</dd>
+</dl>
+<h3 id="earth">Earth</h3>
+<dl>
+<dt><code>GM_Earth</code></dt>
+<dd>Gravitational constant times the mass of the Earth.
+</dd>
+<dt><code>R0_pot_Earth</code></dt>
+<dd>Reference radius of the gravitational-potential model.
+</dd>
+<dt><code>Mass_Earth</code></dt>
+<dd>The mass of the Earth.
+</dd>
+<dt><code>WGS84_a</code></dt>
+<dd>The semi-major axis of the WGS84 ellipsoid.
+</dd>
+<dt><code>WGS84_b</code></dt>
+<dd>The semi-minor axis of the WGS84 ellipsoid.
+</dd>
+<dt><code>WGS84_r3</code></dt>
+<dd>The radius of a sphere of Earth's volume.
+</dd>
+<dt><code>WGS84_f</code></dt>
+<dd>The flattening of the WGS84 ellipsoid.
+</dd>
+<dt><code>WGS84_gm</code></dt>
+<dd>The adopted GM of the WGS84 model, which includes the atmosphere.
+</dd>
+<dt><code>WGS84_gma</code></dt>
+<dd>The GM of the atmosphere adopted by the WGS84 model.
+</dd>
+<dt><code>WGS84_omega</code></dt>
+<dd>The adopted angular rotation rate of the Earth of the WGS84 model.
+</dd>
+<dt><code>WGS84_U0</code></dt>
+<dd>The theoretical normal potential associated with the WGS84 model.
+</dd>
+</dl>
+<h3 id="mercury">Mercury</h3>
+<dl>
+<dt><code>R_Mercury</code></dt>
+<dd>Average radius of Mercury.
+</dd>
+<dt><code>GM_Mercury</code></dt>
+<dd>Gravitational constant times the mass of the Mercury.
+</dd>
+<dt><code>Mass_Mercury</code></dt>
+<dd>Mass of Mercury.
+</dd>
+<dt><code>R0_pot_Mercury</code></dt>
+<dd>Reference radius used for the spherical harmonic gravity solutions.
+</dd>
+<dt><code>Omega_Mercury_orbit</code></dt>
+<dd>Angular rotation rate of Mercury about the Sun.
+</dd>
+<dt><code>Omega_Mercury_spin</code></dt>
+<dd>Angular rotation rate of Mercury.
+</dd>
+<dt><code>rho_bar_Mercury</code></dt>
+<dd>Average density of Mercury.
+</dd>
+<dt><code>g0_Mercury</code></dt>
+<dd>Gravitational acceleration at R_Mercury, not including rotation.
+</dd>
+</dl>
+<h2 id="see-also">See also</h2>
+<p>shtools</p>
+<h2 id="copyright-and-license">Copyright and License</h2>
+<p>Copyright 2015 Mark Wieczorek.</p>
+<p>This is free software. You can distribute and modify it under the terms of the revised BSD license.</p>
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../modules.html" class="dir">Modules</a></p>

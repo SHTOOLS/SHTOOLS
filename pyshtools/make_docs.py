@@ -6,13 +6,15 @@ saved as ascii text files which are loaded on runtime and replace the __doc__
 string of the f2py wrapped functions.
 """
 
-import sys, os, re
+import sys, os, re, textwrap, string
 import _SHTOOLS
+import _constant
 
 def main():
     #---- input/output folders ----
     libfolder = os.path.abspath(sys.argv[1])
     poddocfolder = os.path.join(libfolder,'src/pydoc')
+    mddocfolder = os.path.join(libfolder,'src/pydoc')
     pydocfolder = os.path.join(libfolder,'pyshtools/doc')
     print '---- searching documentation in folder: {} ----'.format(poddocfolder)
     
@@ -20,46 +22,134 @@ def main():
     redescr = re.compile('DESCRIPTION(.*?)=head1 ARGUMENTS',re.DOTALL)
     renotes = re.compile('NOTES(.*?)=head1',re.DOTALL)
 
+    #---- md file search patterns ----
+    retail = re.compile('# See (.*)',re.DOTALL)
+    reh2 = re.compile('## (.*?)\n',re.DOTALL)
+    reh1 = re.compile('\A# (.*?)\n',re.DOTALL)
+    reh1b = re.compile('\n# (.*?)\n',re.DOTALL)
+    recode = re.compile('`(.*?)`',re.DOTALL)
+    #rebold = re.compile('(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
+    
     #---- loop through the f2py _SHTOOLS functions and make docstrings ----
     for name,func in _SHTOOLS.__dict__.items():
         if callable(func):
             try:
-                #-- process and load documentation from different sources --
-                #get and process f2py generated call signature:
-                callsign = process_f2pydoc(func.__doc__)
-                signature = 'SIGNATURE\n---------\n' + callsign
-    
-                #read pod file documentation:
-                fname_poddoc = os.path.join(poddocfolder,name.lower()+'.pod')
-                podfile   = open(fname_poddoc,'r')
-                podstring = podfile.read()
-    
-                match = redescr.search(podstring)
-                if match is None:
-                    description = '\nDESCRIPTION\n-----------\nDOCUMENTATION NOT AVAILABLE'
+                #---- process and load documentation
+                #read md file documentation:
+                fname_mddoc = os.path.join(mddocfolder,'py'+name.lower()+'.md')
+                if (os.path.isfile(fname_mddoc)):
+                    mdfile   = open(fname_mddoc,'r')
+                    mdstring = mdfile.read()
+
+                    match = retail.search(mdstring)
+                    if match != None:
+                        #    mdstring = re.sub(match.group(0),'',mdstring) doesn't work. don't know why
+                        mdstring = string.replace(mdstring,match.group(0),'')
+
+                    match = reh1.search(mdstring)
+                    while match != None:
+                        mdstring = re.sub(match.group(0),match.group(1)+'\n'+len(match.group(1))*'='+'\n',mdstring)
+                        match = reh1.search(mdstring)
+
+                    match = reh1b.search(mdstring)
+                    while match != None:
+                        mdstring = re.sub(match.group(0),'\n'+match.group(1)+'\n'+len(match.group(1))*'='+'\n',mdstring)
+                        match = reh1b.search(mdstring)
+
+                    match = reh2.search(mdstring)
+                    while match != None:
+                        mdstring = re.sub(match.group(0),match.group(1)+'\n'+len(match.group(1))*'-'+'\n',mdstring)
+                        match = reh2.search(mdstring)
+                                   
+                    match = recode.search(mdstring)
+                    while match != None:
+                    #    mdstring = re.sub(match.group(0),match.group(1),mdstring) doesn't work. don't know why
+                        mdstring = string.replace(mdstring,match.group(0),match.group(1))
+                        match = recode.search(mdstring)                
+
+                    # wrap each line of the string individually.
+                    docstring =  ''
+                    tmp = mdstring.splitlines(True)
+                    for i in range(0,len(tmp)):
+                        if tmp[i][0:4] == ':   ':
+                            docstring += textwrap.fill(tmp[i][4:], width=80,\
+                            replace_whitespace=False,initial_indent='    ', \
+                            subsequent_indent='    ')+'\n'
+                        else: 
+                            docstring += textwrap.fill(tmp[i], width=80,replace_whitespace=False)+'\n'
+                 
+                    #---- save combined docstring in the pydoc folder--
+                    fname_pydoc  = os.path.join(pydocfolder,name.lower()+'.doc')
+                    pydocfile = open(fname_pydoc,'w')
+                    pydocfile.write(docstring)
+                    pydocfile.close()
+                    
                 else:
-                    poddoc = process_pod(match.group(1))
-                    description = '\nDESCRIPTION\n-----------' + poddoc
-    
-                match = renotes.search(podstring)
-                if match is None:
-                    notes       = ''
-                else:
-                    poddoc = process_pod(match.group(1))
-                    notes       = '\nNOTES\n-----' + poddoc
-                podfile.close()
-    
-                #combine docstring:
-                docstring       =  signature + description + notes
-    
-                #-- save combined docstring in the pydoc folder--
-                fname_pydoc  = os.path.join( pydocfolder,name.lower()+'.doc')
-                pydocfile = open(fname_pydoc,'w')
-                pydocfile.write(docstring)
-                pydocfile.close()
-    
-            except IOError,msg:
+                    # delete this after converted all doc files from pod to md!!!!
+                    #-- process and load documentation from different sources --
+                    #get and process f2py generated call signature:
+                    callsign = process_f2pydoc(func.__doc__)
+                    signature = 'SIGNATURE\n---------\n' + callsign
+                    #read pod file documentation:
+                    fname_poddoc = os.path.join(poddocfolder,name.lower()+'.pod')
+                    podfile   = open(fname_poddoc,'r')
+                    podstring = podfile.read()   
+                    match = redescr.search(podstring)
+                    if match is None:
+                        description = '\nDESCRIPTION\n-----------\nDOCUMENTATION NOT AVAILABLE'
+                    else:
+                        poddoc = process_pod(match.group(1))
+                        description = '\nDESCRIPTION\n-----------' + poddoc
+                    match = renotes.search(podstring)
+                    if match is None:
+                        notes       = ''
+                    else:
+                        poddoc = process_pod(match.group(1))
+                        notes       = '\nNOTES\n-----' + poddoc
+                    podfile.close()
+                    #combine docstring:
+                    docstring       =  signature + description + notes
+                    #-- save combined docstring in the pydoc folder--
+                    fname_pydoc  = os.path.join(pydocfolder,name.lower()+'.doc')
+                    pydocfile = open(fname_pydoc,'w')
+                    pydocfile.write(docstring)
+                    pydocfile.close()
+            
+            except IOError, msg:
                 print msg
+
+    #---- loop through the f2py constants and make docstrings ----
+    for name,value in _constant.planetsconstants.__dict__.items():
+        try:  
+            #---- read md file documentation:
+            fname_mddoc = os.path.join(mddocfolder,'constant_'+name.lower()+'.md')
+            mdfile   = open(fname_mddoc,'r')
+            mdstring = mdfile.read()
+  
+            match = reh1.search(mdstring)
+            while match != None:
+                mdstring = re.sub(match.group(0),match.group(1)+'\n'+len(match.group(1))*'='+'\n',mdstring)
+                match = reh1.search(mdstring)
+
+            match = reh2.search(mdstring)
+            while match != None:
+                mdstring = re.sub(match.group(0),match.group(1)+'\n'+len(match.group(1))*'-'+'\n',mdstring)
+                match = reh2.search(mdstring)
+
+            # wrap each line of the string individually.
+            docstring =  ''
+            tmp = mdstring.splitlines(True)
+            for i in range(0,len(tmp)):
+                docstring += textwrap.fill(tmp[i], width=80,replace_whitespace=False)+'\n'
+
+            #-- save docstring in the pydoc folder--
+            fname_pydoc = os.path.join(pydocfolder,'constant_'+name.lower()+'.doc')
+            pydocfile = open(fname_pydoc,'w')
+            pydocfile.write(docstring)
+            pydocfile.close()
+    
+        except IOError,msg:
+            print msg
 
 #===== PROCESS F2PY DOCUMENTATION ====
 def process_f2pydoc(f2pydoc):

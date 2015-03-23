@@ -23,17 +23,18 @@
 SHELL=/bin/tcsh
 
 PANDOC = pandoc
+PDHTMLFLAGS = --base-header-level=2
 MANDIR = ../../man/man1
 WWWDIR = ../../www/man/python
 
-MDFILES = pymakegriddh.md 
+MDFILES = pymakegriddh.md pyplmbar.pod
 #pycilmplusdh.pod pycilmplusglq.pod pycomputed0.pod pycomputedg82.pod pycomputedm.pod \
 	pydhaj.pod pydjpi2.pod pyeigvalsym.pod pyeigvalvecsym.pod pyeigvalvecsymtri.pod \
 	pyhilmdh.pod pyhilmglq.pod pymakecirclecoord.pod pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
 	pymakegeoidgrid2d.pod pymakegrid2d.pod pyglqgridcoord.pod \
 	pymakegridglq.pod pymakegridpoint.pod pymakemaggriddh.pod \
-	pyplanetsconstants.pod pyplbar_d1.pod pyplbar.pod pyplegendre.pod pyplegendre_d1.pod \
-	pyplegendrea_d1.pod pyplegendrea.pod pyplmbar_d1.pod pyplmbar.pod pyplmindex.pod \
+ 	pyplbar_d1.pod pyplbar.pod pyplegendre.pod pyplegendre_d1.pod \
+	pyplegendrea_d1.pod pyplegendrea.pod pyplmbar_d1.pod  pyplmindex.pod \
 	pyplon.pod pyplon_d1.pod pyplmon.pod pyplmon_d1.pod pyplschmidt.pod pyplschmidt_d1.pod \
 	pyplmschmidt.pod pyplmschmidt_d1.pod pyprecompute.pod pypreglq.pod pynglq.pod pynglqsh.pod \
 	pynglqshn.pod pyrandomn.pod pyrandomgaussian.pod \
@@ -46,7 +47,7 @@ MDFILES = pymakegriddh.md
 	pyshpowerspectrumdensity.pod pyshcrosspowerspectrum.pod pyshcrosspowerspectrumdensity.pod \
 	pyshcrosspowerl.pod pyshread.pod pyshreaderror.pod pyshreadjpl.pod pyshreadjplerror.pod pyshread2.pod \
 	pyshread2error.pod pyshreturntapers.pod pyshreturntapersm.pod pyshrotatecoef.pod pyshrotaterealcoef.pod \
-	pywigner3j.pod pyshsjkpg.pod pyshsjkpg0.pod pyshtools.pod pysphericalcapcoef.pod pyshmtdebias.pod \
+	pywigner3j.pod pyshsjkpg.pod pyshsjkpg0.pod pysphericalcapcoef.pod pyshmtdebias.pod \
 	pymakegravgriddh.pod pyshconfidence.pod pyshmagpowerl.pod pyshmagpowerspectrum.pod \
 	pymakegriddhc.pod pyshexpanddhc.pod pymakegridglqc.pod pyshexpandglqc.pod pyshpowerlc.pod \
 	pyshpowerdensitylc.pod pyshcrosspowerdensitylc.pod pyshpowerspectrumc.pod \
@@ -56,14 +57,14 @@ MDFILES = pymakegriddh.md
 	pycilmplusrhohdh.pod pycilmplusglq.pod pyhilmrhohdh.pod pyhilmrhohglq.pod pynormalgravity.pod \
 	pymakegravgradgriddh.pod pyshreadh.pod pyshreaderrorh.pod
 
-MANFILES = pymakegriddh.1 
+MANFILES = pymakegriddh.1 pyplmbar.1
 #pycilmplusdh.1 pycilmplusglq.1 pycomputed0.1 pycomputedg82.1 pycomputedm.1 \
 	pydhaj.1 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
 	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
 	pymakegrid2d.1 pyglqgridcoord.1  \
-	pymakegridglq.1 pymakegridpoint.1 pymakemaggriddh.1 pyplanetsconstants.1 pyplbar_d1.1 \
+	pymakegridglq.1 pymakegridpoint.1 pymakemaggriddh.1 pyplbar_d1.1 \
 	pyplbar.1 pyplegendre.1 pyplegendre_d1.1 pyplegendrea_d1.1 pyplegendrea.1 pyplmbar_d1.1 \
-	pyplmbar.1 pyplmindex.1 pyplon.1 pyplon_d1.1 pyplmon.1 pyplmon_d1.1 pyplschmidt.1 pyplschmidt_d1.1 \
+	 pyplmindex.1 pyplon.1 pyplon_d1.1 pyplmon.1 pyplmon_d1.1 pyplschmidt.1 pyplschmidt_d1.1 \
 	pyplmschmidt.1 pyplmschmidt_d1.1 pyprecompute.1 pypreglq.1 pynglq.1 pynglqsh.1 pynglqshn.1 \
 	pyrandomn.1 pyrandomgaussian.1 \
 	pyshadmitcorr.1 pyshbias.1 pyshbiask.1 pyshrtoc.1 pyshctor.1 pyshcilmtocindex.1 pyshcindextocilm.1 \
@@ -74,7 +75,7 @@ MANFILES = pymakegriddh.1
 	pyshcrosspowerspectrumdensity.1 pyshcrosspowerl.1 pyshread.1 pyshreaderror.1 pyshreadjpl.1 pyshreadjplerror.1 \
 	pyshread2.1 pyshread2error.1 \
 	pyshreturntapers.1 pyshreturntapersm.1 pyshrotatecoef.1 pyshrotaterealcoef.1 \
-	pywigner3j.1 pyshsjkpg.1 pyshsjkpg0.1 pyshtools.1 pysphericalcapcoef.1 pyshmtdebias.1 pymakegravgriddh.1 \
+	pywigner3j.1 pyshsjkpg.1 pyshsjkpg0.1 pysphericalcapcoef.1 pyshmtdebias.1 pymakegravgriddh.1 \
 	pyshconfidence.1 pyshmagpowerl.1 pyshmagpowerspectrum.1 pymakegriddhc.1 pyshexpanddhc.1 \
 	pymakegridglqc.1 pyshexpandglqc.1 pyshpowerlc.1 pyshpowerdensitylc.1 pyshcrosspowerdensitylc.1 \
 	pyshpowerspectrumc.1 pyshpowerspectrumdensityc.1 pyshcrosspowerspectrumc.1 pyshcrosspowerspectrumdensityc.1 \
@@ -82,11 +83,9 @@ MANFILES = pymakegriddh.1
 	pycomputedmap.1 pyshreturntapersmap.1 pycurve2mask.1 pymakeellipsecoord.1 pycilmplusrhohdh.1 pycilmplusrhohglq.1 \
 	pyhilmrhohdh.1 pyhilmrhohglq.1 pynormalgravity.1 pymakegravgradgriddh.1 pyshreadh.1 pyshreaderrorh.1
 
-HTMLFILES_modules = #pyplanetsconstants.html pyshtools.html
-
-HTMLFILES_legendre =  
+HTMLFILES_legendre =  pyplmbar.html
 #pyplbar_d1.html pyplbar.html pyplegendre.html pyplegendre_d1.html \
-	pyplegendrea_d1.html pyplegendrea.html pyplmbar_d1.html pyplmbar.html pyplmindex.html \
+	pyplegendrea_d1.html pyplegendrea.html pyplmbar_d1.html  pyplmindex.html \
 	pyplon.html pyplon_d1.html pyplmon.html pyplmon_d1.html pyplschmidt.html pyplschmidt_d1.html \
 	pyplmschmidt.html pyplmschmidt_d1.html 
 
@@ -150,48 +149,43 @@ install-html: $(HTMLFILES_modules) $(HTMLFILES_legendre) $(HTMLFILES_transformat
 	@echo PYTHON HTML WEB PAGES SUCCESSFULLY MADE
 	@echo
 	
-$(HTMLFILES_modules) : %.html : %.md
-	$(PANDOC) $< -o test.html
-	cat header_modules.html test.html tail_modules.html > $@
-	@rm -f test.html
-	
 $(HTMLFILES_legendre) : %.html : %.md
-	$(PANDOC) $< -o test.html
+	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_legendre.html test.html tail_legendre.html > $@
 	@rm -f test.html
 
 $(HTMLFILES_transformations) : %.html : %.md
-	$(PANDOC) $< -o test.html
+	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_transformations.html test.html tail_transformations.html > $@
 	@rm -f test.html
 	
 $(HTMLFILES_io) : %.html : %.md
-	$(PANDOC) $< -o test.html
+	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_io.html test.html tail_io.html > $@
 	@rm -f test.html
 
 $(HTMLFILES_gspectra) : %.html : %.md
-	$(PANDOC) $< -o test.html
+	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_gspectra.html test.html tail_gspectra.html > $@
 	@rm -f test.html
 
 $(HTMLFILES_localized) : %.html : %.md
-	$(PANDOC) $< -o test.html
+	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_localized.html test.html tail_localized.html > $@
 	@rm -f test.html
 
 $(HTMLFILES_rotations) : %.html : %.md
-	$(PANDOC) $< -o test.html
+	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_rotations.html test.html tail_rotations.html > $@
 	@rm -f test.html
 
 $(HTMLFILES_gravmag) : %.html : %.md
-	$(PANDOC) $< -o test.html
+	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_gravmag.html test.html tail_gravmag.html > $@
 	@rm -f test.html
 
 $(HTMLFILES_other) : %.html : %.md
-	$(PANDOC) $< -o test.html
+	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_other.html test.html tail_other.html > $@
 	@rm -f test.html
 
@@ -200,9 +194,8 @@ $(HTMLFILES_other) : %.html : %.md
 
 move:	
 	@mv *.1 $(MANDIR)
-#	@mv $(HTMLFILES_modules) $(WWWDIR)
-#	@mv $(HTMLFILES_legendre) $(WWWDIR)
-	@mv $(HTMLFILES_transformations) $(WWWDIR)
+	@mv $(HTMLFILES_legendre) $(WWWDIR)
+#	@mv $(HTMLFILES_transformations) $(WWWDIR)
 #	@mv $(HTMLFILES_io) $(WWWDIR)
 #	@mv $(HTMLFILES_gspectra) $(WWWDIR)
 #	@mv $(HTMLFILES_localized) $(WWWDIR)
