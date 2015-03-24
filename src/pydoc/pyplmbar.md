@@ -4,11 +4,11 @@ Compute all the 4-pi-normalized associated Legendre functions.
 
 # Usage
 
-`plm` = pyshtools.PlmBar(`lmax`, `z`, [`csphase`, `cnorm`])
+`p` = pyshtools.PlmBar(`lmax`, `z`, [`csphase`, `cnorm`])
 
 # Returns
 
-`plm` : float, dimension ((`lmax`+1)\*(`lmax`+2)/2)
+`p` : float, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of 4-pi-normalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m`,.
 
 # Parameters

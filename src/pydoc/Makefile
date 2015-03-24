@@ -27,14 +27,14 @@ PDHTMLFLAGS = --base-header-level=2
 MANDIR = ../../man/man1
 WWWDIR = ../../www/man/python
 
-MDFILES = pymakegriddh.md pyplmbar.pod
+MDFILES = pymakegriddh.md pyplmbar.md pyplmbar_d1.md
 #pycilmplusdh.pod pycilmplusglq.pod pycomputed0.pod pycomputedg82.pod pycomputedm.pod \
 	pydhaj.pod pydjpi2.pod pyeigvalsym.pod pyeigvalvecsym.pod pyeigvalvecsymtri.pod \
 	pyhilmdh.pod pyhilmglq.pod pymakecirclecoord.pod pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
 	pymakegeoidgrid2d.pod pymakegrid2d.pod pyglqgridcoord.pod \
 	pymakegridglq.pod pymakegridpoint.pod pymakemaggriddh.pod \
  	pyplbar_d1.pod pyplbar.pod pyplegendre.pod pyplegendre_d1.pod \
-	pyplegendrea_d1.pod pyplegendrea.pod pyplmbar_d1.pod  pyplmindex.pod \
+	pyplegendrea_d1.pod pyplegendrea.pod   pyplmindex.pod \
 	pyplon.pod pyplon_d1.pod pyplmon.pod pyplmon_d1.pod pyplschmidt.pod pyplschmidt_d1.pod \
 	pyplmschmidt.pod pyplmschmidt_d1.pod pyprecompute.pod pypreglq.pod pynglq.pod pynglqsh.pod \
 	pynglqshn.pod pyrandomn.pod pyrandomgaussian.pod \
@@ -57,13 +57,13 @@ MDFILES = pymakegriddh.md pyplmbar.pod
 	pycilmplusrhohdh.pod pycilmplusglq.pod pyhilmrhohdh.pod pyhilmrhohglq.pod pynormalgravity.pod \
 	pymakegravgradgriddh.pod pyshreadh.pod pyshreaderrorh.pod
 
-MANFILES = pymakegriddh.1 pyplmbar.1
+MANFILES = pymakegriddh.1 pyplmbar.1 pyplmbar_d1.1
 #pycilmplusdh.1 pycilmplusglq.1 pycomputed0.1 pycomputedg82.1 pycomputedm.1 \
 	pydhaj.1 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
 	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
 	pymakegrid2d.1 pyglqgridcoord.1  \
 	pymakegridglq.1 pymakegridpoint.1 pymakemaggriddh.1 pyplbar_d1.1 \
-	pyplbar.1 pyplegendre.1 pyplegendre_d1.1 pyplegendrea_d1.1 pyplegendrea.1 pyplmbar_d1.1 \
+	pyplbar.1 pyplegendre.1 pyplegendre_d1.1 pyplegendrea_d1.1 pyplegendrea.1  \
 	 pyplmindex.1 pyplon.1 pyplon_d1.1 pyplmon.1 pyplmon_d1.1 pyplschmidt.1 pyplschmidt_d1.1 \
 	pyplmschmidt.1 pyplmschmidt_d1.1 pyprecompute.1 pypreglq.1 pynglq.1 pynglqsh.1 pynglqshn.1 \
 	pyrandomn.1 pyrandomgaussian.1 \
@@ -83,9 +83,9 @@ MANFILES = pymakegriddh.1 pyplmbar.1
 	pycomputedmap.1 pyshreturntapersmap.1 pycurve2mask.1 pymakeellipsecoord.1 pycilmplusrhohdh.1 pycilmplusrhohglq.1 \
 	pyhilmrhohdh.1 pyhilmrhohglq.1 pynormalgravity.1 pymakegravgradgriddh.1 pyshreadh.1 pyshreaderrorh.1
 
-HTMLFILES_legendre =  pyplmbar.html
+HTMLFILES_legendre =  pyplmbar.html pyplmbar_d1.html
 #pyplbar_d1.html pyplbar.html pyplegendre.html pyplegendre_d1.html \
-	pyplegendrea_d1.html pyplegendrea.html pyplmbar_d1.html  pyplmindex.html \
+	pyplegendrea_d1.html pyplegendrea.html   pyplmindex.html \
 	pyplon.html pyplon_d1.html pyplmon.html pyplmon_d1.html pyplschmidt.html pyplschmidt_d1.html \
 	pyplmschmidt.html pyplmschmidt_d1.html 
 

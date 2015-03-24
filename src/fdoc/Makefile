@@ -27,13 +27,13 @@ PDHTMLFLAGS = --base-header-level=2
 MANDIR = ../../man/man1
 WWWDIR = ../../www/man/fortran
 
-MDFILES = shtools.md planetsconstants.md plmbar.pod
+MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md
 # cilmplus.pod computed0.pod computedg82.pod computedm.pod \
 	dhaj.pod djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
 	hilm.pod makecirclecoord.pod makegeoidgrid.pod makegrid2d.pod glqgridcoord.pod \
 	makegriddh.pod makegridglq.pod makegridpoint.pod makemaggriddh.pod \
 	 plbar_d1.pod plbar.pod plegendre.pod plegendre_d1.pod \
-	plegendrea_d1.pod plegendrea.pod plmbar_d1.pod  plmindex.pod \
+	plegendrea_d1.pod plegendrea.pod   plmindex.pod \
 	plon.pod plon_d1.pod plmon.pod plmon_d1.pod plschmidt.pod plschmidt_d1.pod \
 	plmschmidt.pod plmschmidt_d1.pod precompute.pod preglq.pod nglq.pod nglqsh.pod \
 	nglqshn.pod randomn.pod randomgaussian.pod \
@@ -55,12 +55,12 @@ MDFILES = shtools.md planetsconstants.md plmbar.pod
 	yilmindex.pod computedmap.pod shreturntapers.pod curve2mask.pod makeellipsecoord.pod \
 	cilmplusrhoh.pod hilmrhoh.pod normalgravity.pod makegravgradgriddh.pod
 
-MANFILES = shtools.1 planetsconstants.1 plmbar.1
+MANFILES = shtools.1 planetsconstants.1 plmbar.1 plmbar_d1.1
 #cilmplus.1 computed0.1 computedg82.1 computedm.1 \
 	dhaj.1 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
 	makecirclecoord.1 makegeoidgrid.1 makegrid2d.1 glqgridcoord.1 makegriddh.1 \
 	makegridglq.1 makegridpoint.1 makemaggriddh.1  plbar_d1.1 \
-	plbar.1 plegendre.1 plegendre_d1.1 plegendrea_d1.1 plegendrea.1 plmbar_d1.1 \
+	plbar.1 plegendre.1 plegendre_d1.1 plegendrea_d1.1 plegendrea.1 \
 	 plmindex.1 plon.1 plon_d1.1 plmon.1 plmon_d1.1 plschmidt.1 plschmidt_d1.1 \
 	plmschmidt.1 plmschmidt_d1.1 precompute.1 preglq.1 nglq.1 nglqsh.1 nglqshn.1 \
 	randomn.1 randomgaussian.1 \
@@ -81,9 +81,9 @@ MANFILES = shtools.1 planetsconstants.1 plmbar.1
 
 HTMLFILES_modules = planetsconstants.html 
 
-HTMLFILES_legendre =  plmbar.html
+HTMLFILES_legendre =  plmbar.html plmbar_d1.html
 # plbar_d1.html plbar.html plegendre.html plegendre_d1.html \
-	plegendrea_d1.html plegendrea.html plmbar_d1.html  plmindex.html \
+	plegendrea_d1.html plegendrea.html   plmindex.html \
 	plon.html plon_d1.html plmon.html plmon_d1.html plschmidt.html plschmidt_d1.html \
 	plmschmidt.html plmschmidt_d1.html 
 

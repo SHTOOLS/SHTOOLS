@@ -4,11 +4,11 @@ Compute all the 4-pi-normalized associated Legendre functions.
 
 # Usage
 
-call subroutine PlmBar(`plm`, `lmax`, `z`, `csphase`, `cnorm`)`
+call subroutine PlmBar(`p`, `lmax`, `z`, `csphase`, `cnorm`)`
 
 # Parameters
 
-`plm` :	output, real\*8, dimension ((`lmax`+1)\*(`lmax`+2)/2)
+`p` : output, real\*8, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of 4-pi-normalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m+1`, which can be calculated by a call to `PlmIndex`.
 
 `lmax` : input, integer

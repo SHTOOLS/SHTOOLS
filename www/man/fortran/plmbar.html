@@ -32,10 +32,10 @@
 <h2 id="plmbar">PlmBar</h2>
 <p>Compute all the 4-pi-normalized associated Legendre functions.</p>
 <h2 id="usage">Usage</h2>
-<p>call subroutine PlmBar(<code>plm</code>, <code>lmax</code>, <code>z</code>, <code>csphase</code>, <code>cnorm</code>)`</p>
+<p>call subroutine PlmBar(<code>p</code>, <code>lmax</code>, <code>z</code>, <code>csphase</code>, <code>cnorm</code>)`</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><code>plm</code> : output, real*8, dimension ((<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
+<dt><code>p</code> : output, real*8, dimension ((<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
 <dd>An array of 4-pi-normalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.
 </dd>
 <dt><code>lmax</code> : input, integer</dt>
