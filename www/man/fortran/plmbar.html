@@ -29,14 +29,14 @@
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>
-<h2 id="plmbar">PlmBar</h2>
-<p>Compute all the 4-pi-normalized associated Legendre functions.</p>
-<h2 id="usage">Usage</h2>
-<p>call subroutine PlmBar(<code>p</code>, <code>lmax</code>, <code>z</code>, <code>csphase</code>, <code>cnorm</code>)`</p>
-<h2 id="parameters">Parameters</h2>
+<h1 id="plmbar">PlmBar</h1>
+<p>Compute all the 4-pi (geodesy) normalized associated Legendre functions.</p>
+<h1 id="usage">Usage</h1>
+<p>call subroutine PlmBar (<code>p</code>, <code>lmax</code>, <code>z</code>, <code>csphase</code>, <code>cnorm</code>)</p>
+<h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>p</code> : output, real*8, dimension ((<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
-<dd>An array of 4-pi-normalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.
+<dd>An array of 4-pi (geodesy) normalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.
 </dd>
 <dt><code>lmax</code> : input, integer</dt>
 <dd>The maximum degree of the associated Legendre functions to be computed. If <code>lmax = -1</code>, allocated memory will be deallocated.
@@ -51,17 +51,14 @@
 <dd>If 1, the complex normalization of the associated Legendre functions will be used. The default is to use the real normalization.
 </dd>
 </dl>
-<h2 id="description">Description</h2>
-<p><code>PlmBar</code> will calculate all of the 4-pi-normalized associated Legendre functions up to degree <code>lmax</code> for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree <code>l</code> and angular order <code>m</code> can be computed by a call to <code>PlmIndex</code>.</p>
+<h1 id="description">Description</h1>
+<p><code>PlmBar</code> will calculate all of the 4-pi (geodesy) normalized associated Legendre functions up to degree <code>lmax</code> for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree <code>l</code> and angular order <code>m</code> corresponds to <code>l*(l+1)/2+m+1</code>, which can be computed by a call to <code>PlmIndex</code>.</p>
 <p>The integral of the squared Legendre functions over the interval [-1, 1] is <code>2*(2-delta(0,m))</code>, where <code>delta</code> is the Kronecker delta function. If the optional parameter <code>cnorm</code> is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is <code>2</code>. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument <code>csphase</code> to -1.</p>
 <p>This routine saves the three-term recursion factors and square roots of the integers the first time being called. If subsequent calls possess the same value of <code>lmax</code>, these will not be recomputed. If you wish to deallocate this memory, which is an array of length <code>(lmax+1)*(lmax+2)</code>, recall this routine with <code>lmax = -1</code>.</p>
-<h2 id="references">References</h2>
+<h1 id="references">References</h1>
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, 2002.</p>
-<h2 id="see-also">See also</h2>
+<h1 id="see-also">See also</h1>
 <p><a href="plbar.html"><code>plbar</code></a>, <a href="plbar_d1.html"><code>plbar_d1</code></a>, <a href="plmbar_d1.html"><code>plmbar_d1</code></a>, <a href="plon.html"><code>plon</code></a>, <a href="plon_d1"><code>plon_d1</code></a>, <a href="plmon.html"><code>plmon</code></a>, <a href="plmon_d1"><code>plmon_d1</code></a>, <a href="plschmidt.html"><code>plschmidt</code></a>, <a href="plschmidt_d1.html"><code>plschmidt_d1</code></a>, <a href="plmschmidt.html"><code>plmschmidt</code></a>, <a href="plmschmidt_d1.html"><code>plmschmidt_d1</code></a>, <a href="plegendre.html"><code>plegendre</code></a>, <a href="plegendre_d1.html"><code>plegendre_d1</code></a>, <a href="plegendrea.html"><code>plegendrea</code></a>, <a href="plegendrea_d1.html"><code>plegendrea_d1</code></a>, <a href="plmindex.html"><code>plmindex</code></a></p>
-<h2 id="copyright-and-license">Copyright and License</h2>
-<p>Copyright 2015 Mark Wieczorek.</p>
-<p>This is free software; you can distribute and modify it under the terms of the revised BSD license.</p>
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>

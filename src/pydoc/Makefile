@@ -23,19 +23,20 @@
 SHELL=/bin/tcsh
 
 PANDOC = pandoc
-PDHTMLFLAGS = --base-header-level=2
+PDHTMLFLAGS = --base-header-level=1
 MANDIR = ../../man/man1
 WWWDIR = ../../www/man/python
 
-MDFILES = pymakegriddh.md pyplmbar.md pyplmbar_d1.md
+MDFILES = pymakegriddh.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pyplon.md \
+    pyplmon.md pyplmon_d1.md pyplon_d1.md
 #pycilmplusdh.pod pycilmplusglq.pod pycomputed0.pod pycomputedg82.pod pycomputedm.pod \
 	pydhaj.pod pydjpi2.pod pyeigvalsym.pod pyeigvalvecsym.pod pyeigvalvecsymtri.pod \
 	pyhilmdh.pod pyhilmglq.pod pymakecirclecoord.pod pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
 	pymakegeoidgrid2d.pod pymakegrid2d.pod pyglqgridcoord.pod \
 	pymakegridglq.pod pymakegridpoint.pod pymakemaggriddh.pod \
- 	pyplbar_d1.pod pyplbar.pod pyplegendre.pod pyplegendre_d1.pod \
+ 	  pyplegendre.pod pyplegendre_d1.pod \
 	pyplegendrea_d1.pod pyplegendrea.pod   pyplmindex.pod \
-	pyplon.pod pyplon_d1.pod pyplmon.pod pyplmon_d1.pod pyplschmidt.pod pyplschmidt_d1.pod \
+	    pyplschmidt.pod pyplschmidt_d1.pod \
 	pyplmschmidt.pod pyplmschmidt_d1.pod pyprecompute.pod pypreglq.pod pynglq.pod pynglqsh.pod \
 	pynglqshn.pod pyrandomn.pod pyrandomgaussian.pod \
 	pyshadmitcorr.pod pyshbias.pod pyshbiask.pod pyshrtoc.pod \
@@ -57,14 +58,16 @@ MDFILES = pymakegriddh.md pyplmbar.md pyplmbar_d1.md
 	pycilmplusrhohdh.pod pycilmplusglq.pod pyhilmrhohdh.pod pyhilmrhohglq.pod pynormalgravity.pod \
 	pymakegravgradgriddh.pod pyshreadh.pod pyshreaderrorh.pod
 
-MANFILES = pymakegriddh.1 pyplmbar.1 pyplmbar_d1.1
+MANFILES = $(addprefix $(MANDIR)/, pymakegriddh.1 pyplmbar.1 pyplmbar_d1.1 pyplbar.1 pyplbar_d1.1 \
+    pyplon.1 pyplmon.1 pyplmon_d1.1 pyplon_d1.1 \
+)
 #pycilmplusdh.1 pycilmplusglq.1 pycomputed0.1 pycomputedg82.1 pycomputedm.1 \
 	pydhaj.1 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
 	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
 	pymakegrid2d.1 pyglqgridcoord.1  \
-	pymakegridglq.1 pymakegridpoint.1 pymakemaggriddh.1 pyplbar_d1.1 \
-	pyplbar.1 pyplegendre.1 pyplegendre_d1.1 pyplegendrea_d1.1 pyplegendrea.1  \
-	 pyplmindex.1 pyplon.1 pyplon_d1.1 pyplmon.1 pyplmon_d1.1 pyplschmidt.1 pyplschmidt_d1.1 \
+	pymakegridglq.1 pymakegridpoint.1 pymakemaggriddh.1  \
+	 pyplegendre.1 pyplegendre_d1.1 pyplegendrea_d1.1 pyplegendrea.1  \
+	 pyplmindex.1     pyplschmidt.1 pyplschmidt_d1.1 \
 	pyplmschmidt.1 pyplmschmidt_d1.1 pyprecompute.1 pypreglq.1 pynglq.1 pynglqsh.1 pynglqshn.1 \
 	pyrandomn.1 pyrandomgaussian.1 \
 	pyshadmitcorr.1 pyshbias.1 pyshbiask.1 pyshrtoc.1 pyshctor.1 pyshcilmtocindex.1 pyshcindextocilm.1 \
@@ -83,13 +86,18 @@ MANFILES = pymakegriddh.1 pyplmbar.1 pyplmbar_d1.1
 	pycomputedmap.1 pyshreturntapersmap.1 pycurve2mask.1 pymakeellipsecoord.1 pycilmplusrhohdh.1 pycilmplusrhohglq.1 \
 	pyhilmrhohdh.1 pyhilmrhohglq.1 pynormalgravity.1 pymakegravgradgriddh.1 pyshreadh.1 pyshreaderrorh.1
 
-HTMLFILES_legendre =  pyplmbar.html pyplmbar_d1.html
-#pyplbar_d1.html pyplbar.html pyplegendre.html pyplegendre_d1.html \
+HTMLFILES_legendre =  $(addprefix $(WWWDIR)/, pyplmbar.html pyplmbar_d1.html pyplbar.html \
+pyplbar_d1.html pyplon.html pyplmon.html pyplmon_d1.html pyplon_d1.html \
+\
+)
+#  pyplegendre.html pyplegendre_d1.html \
 	pyplegendrea_d1.html pyplegendrea.html   pyplmindex.html \
-	pyplon.html pyplon_d1.html pyplmon.html pyplmon_d1.html pyplschmidt.html pyplschmidt_d1.html \
+	    pyplschmidt.html pyplschmidt_d1.html \
 	pyplmschmidt.html pyplmschmidt_d1.html 
 
-HTMLFILES_transformations = pymakegriddh.html 
+HTMLFILES_transformations = $(addprefix $(WWWDIR)/, pymakegriddh.html \
+\
+)
 #pydhaj.html  pymakegrid2d.html pyglqgridcoord.html \
 	 pymakegridglq.html pymakegridpoint.html pyprecompute.html \
 	pyshexpanddh.html pyshexpandglq.html pyshexpandlsq.html pyshmultiply.html \
@@ -132,7 +140,7 @@ HTMLFILES_other =
 	pywigner3j.html pymakeellipsecoord.html
  
 
-all: install-man install-html move
+all: install-man install-html
 
 
 install-man: $(MANFILES)
@@ -149,60 +157,48 @@ install-html: $(HTMLFILES_modules) $(HTMLFILES_legendre) $(HTMLFILES_transformat
 	@echo PYTHON HTML WEB PAGES SUCCESSFULLY MADE
 	@echo
 	
-$(HTMLFILES_legendre) : %.html : %.md
+$(HTMLFILES_legendre) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_legendre.html test.html tail_legendre.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_transformations) : %.html : %.md
+$(HTMLFILES_transformations) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_transformations.html test.html tail_transformations.html > $@
 	@rm -f test.html
 	
-$(HTMLFILES_io) : %.html : %.md
+$(HTMLFILES_io) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_io.html test.html tail_io.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_gspectra) : %.html : %.md
+$(HTMLFILES_gspectra) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_gspectra.html test.html tail_gspectra.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_localized) : %.html : %.md
+$(HTMLFILES_localized) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_localized.html test.html tail_localized.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_rotations) : %.html : %.md
+$(HTMLFILES_rotations) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_rotations.html test.html tail_rotations.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_gravmag) : %.html : %.md
+$(HTMLFILES_gravmag) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_gravmag.html test.html tail_gravmag.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_other) : %.html : %.md
+$(HTMLFILES_other) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_other.html test.html tail_other.html > $@
 	@rm -f test.html
 
 
-.PHONY: move clean uninstall
-
-move:	
-	@mv *.1 $(MANDIR)
-	@mv $(HTMLFILES_legendre) $(WWWDIR)
-#	@mv $(HTMLFILES_transformations) $(WWWDIR)
-#	@mv $(HTMLFILES_io) $(WWWDIR)
-#	@mv $(HTMLFILES_gspectra) $(WWWDIR)
-#	@mv $(HTMLFILES_localized) $(WWWDIR)
-#	@mv $(HTMLFILES_rotations) $(WWWDIR)
-#	@mv $(HTMLFILES_gravmag) $(WWWDIR)
-#	@mv $(HTMLFILES_other) $(WWWDIR)
-
+.PHONY: clean uninstall
 
 clean:
 	-rm -f $(MANFILES) $(HTMLFILES) 
@@ -214,7 +210,7 @@ uninstall:
 .SUFFIXES: $(SUFFIXES)  .md .html .1
 	
 
-.md.1:	
+$(MANDIR)/%.1 : %.md
 	printf "%% $(basename $<)(1) SHTOOLS $(VERSION) | SHTOOLS $(VERSION)\n%%\n\%% %s" > temp.md
 	stat -t "%F" -f "%Sm" $< >> temp.md
 	cat $< >> temp.md

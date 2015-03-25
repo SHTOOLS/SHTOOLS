@@ -29,17 +29,14 @@
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>
-<h1 id="plmbar_d1">PlmBar_d1</h1>
-<p>Compute all the 4-pi (geodesy) normalized associated Legendre functions and first derivatives.</p>
+<h1 id="plmon">PlmON</h1>
+<p>Compute all the orthonormalized associated Legendre functions.</p>
 <h1 id="usage">Usage</h1>
-<p>call subroutine PlmBar_d1 (<code>p</code>, <code>dp</code>, <code>lmax</code>, <code>z</code>, <code>csphase</code>, <code>cnorm</code>)</p>
+<p>call subroutine PlmON (<code>p</code>, <code>lmax</code>, <code>z</code>, <code>csphase</code>, <code>cnorm</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>p</code> : output, real*8, dimension ((<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
-<dd>An array of 4-pi (geodesy) normalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.
-</dd>
-<dt><code>dp</code> : output, real*8, dimension ((<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
-<dd>An array of the first derivatives of the 4-pi (geodesy) normalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.
+<dd>An array of orthonormalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.
 </dd>
 <dt><code>lmax</code> : input, integer</dt>
 <dd>The maximum degree of the associated Legendre functions to be computed. If <code>lmax</code> is -1, allocated memory will be deallocated.
@@ -55,13 +52,13 @@
 </dd>
 </dl>
 <h1 id="description">Description</h1>
-<p><code>PlmBar_d1</code> will calculate all of the 4-pi (geodesy) normalized associated Legendre functions and first derivatives up to degree <code>lmax</code> for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree <code>l</code> and angular order <code>m</code> corresponds to <code>l*(l+1)/2+m+1</code>, which can be computed by a call to <code>PlmIndex</code>.</p>
-<p>The integral of the squared Legendre functions over the interval [-1, 1] is <code>2*(2-delta(0,m))</code>, where delta is the Kronecker delta function. If the optional parameter <code>cnorm</code> is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is 2. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument <code>csphase</code> to -1. Note that the derivative of the Legendre functions is calculated with respect to its arguement <code>z</code>, and not latitude or colatitude. If <code>z=cos(theta)</code>, where <code>theta</code> is the colatitude, then it is only necessary to multiply <code>dp</code> by <code>-sin(theta)</code> to obtain the derivative with respect to <code>theta</code>.</p>
+<p><code>PlmON</code> will calculate all of the orthonormalized associated Legendre functions up to degree <code>lmax</code> for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree <code>l</code> and angular order <code>m</code> is <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.</p>
+<p>The integral of the squared Legendre functions over the interval [-1, 1] is <code>(2-delta(0,m))/(2pi)</code>, where delta is the Kronecker delta function. If the optional parameter <code>cnorm</code> is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is <code>1/(2pi)</code>. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument <code>csphase</code> to -1.</p>
 <p>This routine saves the three-term recursion factors and square roots of the integers the first time being called. If subsequent calls possess the same value of <code>lmax</code>, these will not be recomputed. If you wish to deallocate this memory, which is an array of length <code>(lmax+1)*(lmax+2)</code>, recall this routine with <code>lmax</code>=-1.</p>
 <h1 id="references">References</h1>
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, 2002.</p>
 <h1 id="see-also">See also</h1>
-<p><a href="plbar.html">plbar</a>, <a href="plbar_d1.html">plbar_d1</a>, <a href="plmbar.html">plmbar</a>, <a href="plon.html">plon</a>, <a href="plon_d1.html">plon_d1</a>, <a href="plmon.html">plmon</a>, <a href="plmon_d1.html">plmon_d1</a>, <a href="plschmidt.html">plschmidt</a>, <a href="plschmidt_d1.html">plschmidt_d1</a>, <a href="plmschmidt.html">plmschmidt</a>, <a href="plmschmidt_d1.html">plmschmidt_d1</a>, <a href="plegendre.html">plegendre</a>, <a href="plegendre_d1.html">plegendre_d1</a>, <a href="plegendrea.html">plegendrea</a>, <a href="plegendrea_d1.html">plegendrea_d1</a>, <a href="plmindex.html">plmindex</a></p>
+<p><a href="plbar.html">plbar</a>, <a href="plbar_d1.html">plbar_d1</a>, <a href="plmbar.html">plmbar</a>, <a href="plmbar_d1.html">plmbar_d1</a>, <a href="plon.html">plon</a>, <a href="plon_d1.html">plon_d1</a>, <a href="plmon_d1.html">plmon_d1</a>, <a href="plschmidt.html">plschmidt</a>, <a href="plschmidt_d1.html">plschmidt_d1</a>, <a href="plmschmidt.html">plmschmidt</a>, <a href="plmschmidt_d1.html">plmschmidt_d1</a>, <a href="plegendre.html">plegendre</a>, <a href="plegendre_d1.html">plegendre_d1</a>, <a href="plegendrea.html">plegendrea</a>, <a href="plegendrea_d1.html">plegendrea_d1</a>, <a href="plmindex.html">plmindex</a></p>
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>

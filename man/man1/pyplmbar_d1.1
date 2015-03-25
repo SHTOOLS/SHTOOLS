@@ -1,8 +1,8 @@
-.TH "pyplmbar_d1" "1" "2015\-03\-24" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "pyplmbar_d1" "1" "2015\-03\-25" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH PlmBar_d1
 .PP
-Compute all the geodesy\-normalized associated Legendre functions and
-first derivatives.
+Compute all the 4\-pi (geodesy) normalized associated Legendre functions
+and first derivatives.
 .SH Usage
 .PP
 \f[C]p\f[], \f[C]dp\f[] = pyshtools.PlmBar_d1(\f[C]lmax\f[], \f[C]z\f[],
@@ -10,8 +10,8 @@ first derivatives.
 .SH Returns
 .TP
 .B \f[C]p\f[] : float, dimension ((\f[C]lmax\f[]+1)*(\f[C]lmax\f[]+2)/2)
-An array of 4\-pi\-normalized associated Legendre functions up to degree
-\f[C]lmax\f[].
+An array of 4\-pi (geodesy) normalized associated Legendre functions up
+to degree \f[C]lmax\f[].
 The index corresponds to \f[C]l*(l+1)/2+m\f[],.
 .RS
 .RE
@@ -19,7 +19,7 @@ The index corresponds to \f[C]l*(l+1)/2+m\f[],.
 .B \f[C]dp\f[] : float, dimension ((\f[C]lmax\f[]+1)*(\f[C]lmax\f[]+2)/2)
 An array of the first derivatives of the geodesy\-normalized associated
 Legendre functions up to degree \f[C]lmax\f[].
-The index corresponds to \f[C]l*(l+1)/2+m+1\f[].
+The index corresponds to \f[C]l*(l+1)/2+m\f[].
 .RS
 .RE
 .SH Parameters
@@ -50,15 +50,15 @@ The default is to use the real normalization.
 .RE
 .SH Description
 .PP
-\f[C]PlmBar_d1\f[] will calculate all of the geodesy\-normalized
+\f[C]PlmBar_d1\f[] will calculate all of the 4\-pi (geodesy) normalized
 associated Legendre functions and first derivatives up to degree
 \f[C]lmax\f[] for a given argument.
 These are calculated using a standard three\-term recursion formula, and
 in order to prevent overflows, the scaling approach of Holmes and
 Featherstone (2002) is utilized.
 These functions are accurate to about degree 2800.
-The index of the array corresponding to a given degree l and angular
-order m can be computed by a call to \f[C]PlmIndex\f[].
+The index of the array corresponding to a given degree \f[C]l\f[] and
+angular order \f[C]m\f[] corresponds to \f[C]l*(l+1)/2+m\f[].
 .PP
 The integral of the squared Legendre functions over the interval [\-1,
 1] is \f[C]2*(2\-delta(0,m))\f[], where delta is the Kronecker delta
@@ -94,9 +94,3 @@ Geodesy, 76, 279\- 299, 2002.
 plbar, plbar_d1, plmbar, plon, plon_d1, plmon, plmon_d1, plschmidt,
 plschmidt_d1, plmschmidt, plmschmidt_d1, plegendre, plegendre_d1,
 plegendrea, plegendrea_d1, plmindex
-.SH Copyright and License
-.PP
-Copyright 2012 Mark Wieczorek.
-.PP
-This is free software; you can distribute and modify it under the terms
-of the revised BSD license.

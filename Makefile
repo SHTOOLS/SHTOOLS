@@ -77,8 +77,9 @@
 #	make doc
 #		Create the man and html-man pages from input POD files.
 #		These are PRE-MADE in the distribution. To remake these
-#		files, it will be necessary to install "pandoc" and "cabal",
-#		and then "cabal install pandoc-types".
+#		files, it will be necessary to install "pandoc", 
+#       "ghc" and "cabal-install" (all using brew on OSX),
+#		and then execute "cabal update| and "cabal install pandoc-types".
 #
 #	make remove-doc
 #		Remove the man and html-man pages.
@@ -320,7 +321,7 @@ uninstall:
 getflags:
 ifeq ($(F95),f95)
 # Default Absoft f95 flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic
+F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=11
 #-march=host
 MODFLAG = -p $(MODPATH)
 SYSMODFLAG = -p $(SYSMODPATH)
@@ -328,7 +329,7 @@ endif
 
 ifeq ($(F95),gfortran)
 # Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 
+F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
 # -march=native
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)

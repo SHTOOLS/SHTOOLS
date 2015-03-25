@@ -1,0 +1,38 @@
+.TH "pyplbar" "1" "2015\-03\-25" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH PlBar
+.PP
+Compute all the 4\-pi (geodesy) normalized Legendre polynomials.
+.SH Usage
+.PP
+\f[C]p\f[] = pyshtools.PlBar (\f[C]lmax\f[], \f[C]z\f[])
+.SH Returns
+.TP
+.B \f[C]p\f[] : float, dimension (\f[C]lmax\f[]+1)
+An array of 4\-pi (geodesy) normalized Legendre polynomials up to degree
+\f[C]lmax\f[].
+Degree \f[C]l\f[] corresponds to array index \f[C]l\f[].
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]lmax\f[] : integer
+The maximum degree of the Legendre polynomials to be computed.
+.RS
+.RE
+.TP
+.B \f[C]z\f[] : float
+The argument of the Legendre polynomial.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]PlBar\f[] will calculate all of the 4\-pi (geodesy) normalized
+Legendre polynomials up to degree \f[C]lmax\f[] for a given argument.
+These are calculated using a standard three\-term recursion formula.
+The integral of the geodesy\-normalized Legendre polynomials over the
+interval [\-1, 1] is 2.
+.SH See also
+.PP
+plbar_d1, plmbar, plmbar_d1, plon, plon_d1, plmon, plmon_d1, plschmidt,
+plschmidt_d1, plmschmidt, plmschmidt_d1, plegendre, plegendre_d1,
+plegendrea, plegendrea_d1

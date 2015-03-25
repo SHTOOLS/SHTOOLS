@@ -1,0 +1,37 @@
+.TH "plon" "1" "2015\-03\-25" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH PlON
+.PP
+Compute all the orthonormalized Legendre polynomials.
+.SH Usage
+.PP
+call subroutine PlON (\f[C]p\f[], \f[C]lmax\f[], \f[C]z\f[])
+.SH Parameters
+.TP
+.B \f[C]p\f[] : output, real*8, dimension (\f[C]lmax\f[]+1)
+An array of orthonormalized Legendre polynomials up to degree
+\f[C]lmax\f[].
+Degree \f[C]l\f[] corresponds to array index \f[C]l+1\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum degree of the Legendre polynomials to be computed.
+.RS
+.RE
+.TP
+.B \f[C]z\f[] : input, real*8
+The argument of the Legendre polynomial.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]PlON\f[] will calculate all of the orthonormalized Legendre
+polynomials up to degree \f[C]lmax\f[] for a given argument.
+These are calculated using a standard three\-term recursion formula.
+The integral of the orthonormalized normalized Legendre polynomials over
+the interval [\-1, 1] is 2/(4pi).
+.SH See also
+.PP
+plbar, plbar_d1, plmbar, plmbar_d1, plon_d1, plmon, plmon_d1, plschmidt,
+plschmidt_d1, plmschmidt, plmschmidt_d1, plegendre, plegendre_d1,
+plegendrea, plegendrea_d1

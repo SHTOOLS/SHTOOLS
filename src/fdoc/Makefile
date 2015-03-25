@@ -23,18 +23,19 @@
 SHELL=/bin/tcsh
 
 PANDOC = pandoc
-PDHTMLFLAGS = --base-header-level=2
+PDHTMLFLAGS = --base-header-level=1
 MANDIR = ../../man/man1
 WWWDIR = ../../www/man/fortran
 
-MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md
+MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d1.pod \
+    plon.md plmon.md plmon_d1.md plon_d1.md
 # cilmplus.pod computed0.pod computedg82.pod computedm.pod \
 	dhaj.pod djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
 	hilm.pod makecirclecoord.pod makegeoidgrid.pod makegrid2d.pod glqgridcoord.pod \
 	makegriddh.pod makegridglq.pod makegridpoint.pod makemaggriddh.pod \
-	 plbar_d1.pod plbar.pod plegendre.pod plegendre_d1.pod \
+	   plegendre.pod plegendre_d1.pod \
 	plegendrea_d1.pod plegendrea.pod   plmindex.pod \
-	plon.pod plon_d1.pod plmon.pod plmon_d1.pod plschmidt.pod plschmidt_d1.pod \
+	  plschmidt.pod plschmidt_d1.pod \
 	plmschmidt.pod plmschmidt_d1.pod precompute.pod preglq.pod nglq.pod nglqsh.pod \
 	nglqshn.pod randomn.pod randomgaussian.pod \
 	shadmitcorr.pod shbias.pod shbiask.pod shrtoc.pod \
@@ -55,13 +56,16 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md
 	yilmindex.pod computedmap.pod shreturntapers.pod curve2mask.pod makeellipsecoord.pod \
 	cilmplusrhoh.pod hilmrhoh.pod normalgravity.pod makegravgradgriddh.pod
 
-MANFILES = shtools.1 planetsconstants.1 plmbar.1 plmbar_d1.1
+MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_d1.1 \
+    plbar.1 plbar_d1.1 plon.1 plmon.1 plmon_d1.1 plon_d1.1 \
+\
+)
 #cilmplus.1 computed0.1 computedg82.1 computedm.1 \
 	dhaj.1 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
 	makecirclecoord.1 makegeoidgrid.1 makegrid2d.1 glqgridcoord.1 makegriddh.1 \
-	makegridglq.1 makegridpoint.1 makemaggriddh.1  plbar_d1.1 \
-	plbar.1 plegendre.1 plegendre_d1.1 plegendrea_d1.1 plegendrea.1 \
-	 plmindex.1 plon.1 plon_d1.1 plmon.1 plmon_d1.1 plschmidt.1 plschmidt_d1.1 \
+	makegridglq.1 makegridpoint.1 makemaggriddh.1   \
+	 plegendre.1 plegendre_d1.1 plegendrea_d1.1 plegendrea.1 \
+	 plmindex.1     plschmidt.1 plschmidt_d1.1 \
 	plmschmidt.1 plmschmidt_d1.1 precompute.1 preglq.1 nglq.1 nglqsh.1 nglqshn.1 \
 	randomn.1 randomgaussian.1 \
 	shadmitcorr.1 shbias.1 shbiask.1 shrtoc.1 shctor.1 shcilmtocindex.1 shcindextocilm.1 \
@@ -79,12 +83,17 @@ MANFILES = shtools.1 planetsconstants.1 plmbar.1 plmbar_d1.1
 	computedmap.1 shreturntapersmap.1 curve2mask.1 makeellipsecoord.1 cilmplusrhoh.1 \
 	hilmrhoh.1 normalgravity.1 makegravgradgriddh.1
 
-HTMLFILES_modules = planetsconstants.html 
+HTMLFILES_modules = $(addprefix $(WWWDIR)/, planetsconstants.html \
+\
+)
 
-HTMLFILES_legendre =  plmbar.html plmbar_d1.html
-# plbar_d1.html plbar.html plegendre.html plegendre_d1.html \
+HTMLFILES_legendre =  $(addprefix $(WWWDIR)/,plmbar.html plmbar_d1.html plbar.html \
+    plbar_d1.html plon.html plmon.html plmon_d1.html plon_d1.html \
+\
+)
+#   plegendre.html plegendre_d1.html \
 	plegendrea_d1.html plegendrea.html   plmindex.html \
-	plon.html plon_d1.html plmon.html plmon_d1.html plschmidt.html plschmidt_d1.html \
+	  plschmidt.html plschmidt_d1.html \
 	plmschmidt.html plmschmidt_d1.html 
 
 HTMLFILES_transformations = 
@@ -130,7 +139,7 @@ HTMLFILES_other =
 	wigner3j.html makeellipsecoord.html
  
 
-all: install-man install-html move
+all: install-man install-html 
 
 
 install-man: $(MANFILES)
@@ -147,66 +156,53 @@ install-html: $(HTMLFILES_modules) $(HTMLFILES_legendre) $(HTMLFILES_transformat
 	@echo FORTRAN 95 HTML WEB PAGES SUCCESSFULLY MADE
 	@echo
 	
-$(HTMLFILES_modules) : %.html : %.md
+$(HTMLFILES_modules) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_modules.html test.html tail_modules.html > $@
 	@rm -f test.html
 	
-$(HTMLFILES_legendre) : %.html : %.md
+$(HTMLFILES_legendre) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_legendre.html test.html tail_legendre.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_transformations) : %.html : %.md
+$(HTMLFILES_transformations) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_transformations.html test.html tail_transformations.html > $@
 	@rm -f test.html
 	
-$(HTMLFILES_io) : %.html : %.md
+$(HTMLFILES_io) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_io.html test.html tail_io.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_gspectra) : %.html : %.md
+$(HTMLFILES_gspectra) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_gspectra.html test.html tail_gspectra.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_localized) : %.html : %.md
+$(HTMLFILES_localized) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_localized.html test.html tail_localized.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_rotations) : %.html : %.md
+$(HTMLFILES_rotations) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_rotations.html test.html tail_rotations.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_gravmag) : %.html : %.md
+$(HTMLFILES_gravmag) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_gravmag.html test.html tail_gravmag.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_other) : %.html : %.md
+$(HTMLFILES_other) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_other.html test.html tail_other.html > $@
 	@rm -f test.html
 
 
-.PHONY: move clean uninstall
-
-move:	
-	@mv $(MANFILES) $(MANDIR)
-	@mv $(HTMLFILES_modules) $(WWWDIR)
-	@mv $(HTMLFILES_legendre) $(WWWDIR)
-#	@mv $(HTMLFILES_transformations) $(WWWDIR)
-#	@mv $(HTMLFILES_io) $(WWWDIR)
-#	@mv $(HTMLFILES_gspectra) $(WWWDIR)
-#	@mv $(HTMLFILES_localized) $(WWWDIR)
-#	@mv $(HTMLFILES_rotations) $(WWWDIR)
-#	@mv $(HTMLFILES_gravmag) $(WWWDIR)
-#	@mv $(HTMLFILES_other) $(WWWDIR)
-
+.PHONY: clean uninstall
 
 clean:
 	-rm -f $(MANFILES) $(HTMLFILES) 
@@ -217,8 +213,7 @@ uninstall:
 
 .SUFFIXES: $(SUFFIXES)  .md .html .1
 	
-
-.md.1:	
+$(MANDIR)/%.1 : %.md
 	printf "%% $(basename $<)(1) SHTOOLS $(VERSION) | SHTOOLS $(VERSION)\n%%\n\%% %s" > temp.md
 	stat -t "%F" -f "%Sm" $< >> temp.md
 	cat $< >> temp.md

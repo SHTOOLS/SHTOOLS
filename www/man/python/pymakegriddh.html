@@ -29,17 +29,17 @@
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pytransformations.html" class="dir">Spherical Harmonic Transformations</a></p>
-<h2 id="makegriddh">MakeGridDH</h2>
+<h1 id="makegriddh">MakeGridDH</h1>
 <p>Create a 2D map from a set of spherical harmonic coefficients using the Driscoll and Healy (1994) sampling theorem.</p>
-<h2 id="usage">Usage</h2>
+<h1 id="usage">Usage</h1>
 <p><code>griddh</code> = pyshtools.MakeGridDH(<code>cilm</code>,[<code>lmax</code>,<code>norm</code>,<code>sampling</code>,<code>csphase</code>,<code>lmax_calc</code>])`</p>
-<h2 id="returns">Returns</h2>
+<h1 id="returns">Returns</h1>
 <dl>
 <dt><code>griddh</code> : float, dimension(2*(<code>lmax</code>+1), <code>sampling</code>*2*(<code>lmax</code>+1))</dt>
 <dd>A 2D equally sampled (default) or equally spaced map in degrees (for <code>sampling=2</code>) of the spherical harmonic coefficients cilm that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/N degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/N for an equally sampled and 180/N for an equally spaced grid, respectively.
 </dd>
 </dl>
-<h2 id="parameters">Parameters</h2>
+<h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>cilm</code> : float, dimension(2,<code>lmaxin</code>+1,<code>lmaxin</code>+1)</dt>
 <dd>The real spherical harmonic coefficients of the function. The coefficients <code>cilm[0,lm]</code> and <code>cilm[1,l,m]</code> refer to the &quot;cosine&quot; and &quot;sine&quot; coefficients, respectively.
@@ -60,17 +60,17 @@
 <dd>The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to <code>lmax</code>, and does not affect the number of samples of the output grid.
 </dd>
 </dl>
-<h2 id="description">Description</h2>
+<h1 id="description">Description</h1>
 <p><code>MakeGridDH</code> will create a 2-dimensional map equally sampled or equally spaced in latitude and longitude from a set of input spherical harmonic coefficients. This grid conforms with the sampling theorem of Driscoll and Healy (1994) and this routine is the inverse of SHExpandDH. The function is evaluated at each longitudinal band by inverse Fourier transforming the sin and cos terms for each degree l, and then summing over all degrees. When evaluating the function, the maximum spherical harmonic degree that is considered is the minimum of lmaxin, lmax, and lmax_calc (if specified).</p>
 <p>The default is to use an input grid that is equally sampled (N by N), but this can be changed to use an equally spaced grid (N by 2N) by providing <code>sampling=2</code>. The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/N degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/N for equally sampled and 180/N for equally spaced grids, respectively.</p>
 <p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code>norm</code> and <code>csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
 <p>The normalized legendre functions are calculated using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. This routine takes into account the symmetry of the associated Legendre functions about the equator in order to reduce computational time.</p>
-<h2 id="references">References</h2>
+<h1 id="references">References</h1>
 <p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, 2002.</p>
-<h2 id="see-also">See also</h2>
+<h1 id="see-also">See also</h1>
 <p><a href="pyshexpanddh.html"><code>shexpanddh</code></a>, <a href="pymakegriddhc.html"><code>makegriddhc</code></a>, <a href="pyshexpanddhc.html"><code>shexpanddhc</code></a>, <a href="pymakegridglq.html"><code>makegridglq</code></a>, <a href="pyshexpandglq.html"><code>shexpandglq</code></a>, <a href="pymakegridglqc.html"><code>makegridglqc</code></a>, <a href="pyshexpandglqc.html"><code>shexpandglqc</code></a>, <a href="pymakegrid2d.html"><code>makegrid2d</code></a></p>
-<h2 id="copyright-and-license">Copyright and License</h2>
+<h1 id="copyright-and-license">Copyright and License</h1>
 <p>Copyright 2015 Mark Wieczorek.</p>
 <p>This is free software; you can distribute and modify it under the terms of the revised BSD license.</p>
 
