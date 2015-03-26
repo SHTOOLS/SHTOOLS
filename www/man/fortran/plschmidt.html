@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Legendre functions</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>
+<h1 id="plschmidt">PlSchmidt</h1>
+<p>Compute all the Schmidt-normalized Legendre polynomials.</p>
+<h1 id="usage">Usage</h1>
+<p>call subroutine PlSchmidt (<code>p</code>, <code>lmax</code>, <code>z</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>p</code> : output, real*8, dimension (<code>lmax</code>+1)</dt>
+<dd>An array of Schmidt-normalized Legendre polynomials up to degree <code>lmax</code>. Degree <code>l</code> corresponds to array index <code>l+1</code>.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The maximum degree of the Legendre polynomials to be computed.
+</dd>
+<dt><code>z</code> : input, real*8</dt>
+<dd>The argument of the Legendre polynomial.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>PlSchmidt</code> will calculate all of the Schmidt-normalized Legendre polynomials up to degree <code>lmax</code> for a given argument. These are calculated using a standard three-term recursion formula. The integral of the Schmidt-normalized Legendre polynomials over the interval [-1, 1] is <code>2/(2l+1)</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="plbar.html">plbar</a>, <a href="plbar_d1.html">plbar_d1</a>, <a href="plmbar.html">plmbar</a>, <a href="plmbar_d1.html">plmbar_d1</a>, <a href="plon.html">plon</a>, <a href="plon_d1.html">plon_d1</a>, <a href="plmon.html">plmon</a>, <a href="plmon_d1.html">plmon_d1</a>, <a href="plschmidt.html">plschmidt</a>, <a href="plschmidt_d1.html">plschmidt_d1</a>, <a href="plmschmidt_d1.html">plmschmidt_d1</a>, <a href="plegendre.html">plegendre</a>, <a href="plegendre_d1.html">plegendre_d1</a>, <a href="plegendrea.html">plegendrea</a>, <a href="plegendrea_d1.html">plegendrea_d1</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

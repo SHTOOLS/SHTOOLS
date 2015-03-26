@@ -28,6 +28,7 @@ def main():
     reh1 = re.compile('\A# (.*?)\n',re.DOTALL)
     reh1b = re.compile('\n# (.*?)\n',re.DOTALL)
     recode = re.compile('`(.*?)`',re.DOTALL)
+    restaresc = re.compile(r'(\\\*)',re.DOTALL)
     #rebold = re.compile('(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
     
     #---- loop through the f2py _SHTOOLS functions and make docstrings ----
@@ -48,24 +49,24 @@ def main():
 
                     match = reh1.search(mdstring)
                     while match != None:
-                        mdstring = re.sub(match.group(0),match.group(1)+'\n'+len(match.group(1))*'='+'\n',mdstring)
+                        mdstring = re.sub(match.group(0),match.group(1)+'\n'+len(match.group(1))*'-'+'\n',mdstring)
                         match = reh1.search(mdstring)
 
                     match = reh1b.search(mdstring)
                     while match != None:
-                        mdstring = re.sub(match.group(0),'\n'+match.group(1)+'\n'+len(match.group(1))*'='+'\n',mdstring)
+                        mdstring = re.sub(match.group(0),'\n'+match.group(1)+'\n'+len(match.group(1))*'-'+'\n',mdstring)
                         match = reh1b.search(mdstring)
-
-                    match = reh2.search(mdstring)
-                    while match != None:
-                        mdstring = re.sub(match.group(0),match.group(1)+'\n'+len(match.group(1))*'-'+'\n',mdstring)
-                        match = reh2.search(mdstring)
                                    
                     match = recode.search(mdstring)
                     while match != None:
                     #    mdstring = re.sub(match.group(0),match.group(1),mdstring) doesn't work. don't know why
                         mdstring = string.replace(mdstring,match.group(0),match.group(1))
-                        match = recode.search(mdstring)                
+                        match = recode.search(mdstring)      
+                        
+                    match = restaresc.search(mdstring)
+                    while match != None:
+                        mdstring = string.replace(mdstring,match.group(0),'*')
+                        match = recode.search(mdstring)               
 
                     # wrap each line of the string individually.
                     docstring =  ''
