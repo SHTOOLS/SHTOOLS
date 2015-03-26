@@ -29,7 +29,7 @@ def main():
     power   = 1./(1.+(degrees/scale)**2)**2
 
     coeffs = SHCoeffs.from_random(power)
-    coeffs.plot_bandpower(show=False)
+    coeffs.plot_powerperband(show=False)
 
     #expand coefficients into a spatial grid and plot it
     grid1 = coeffs.expand(kind='DH1')

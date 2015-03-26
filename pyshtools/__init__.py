@@ -27,7 +27,7 @@ def load_documentation():
                 pydoc = pydocfile.read()
                 pydocfile.close()
 
-                func.__doc__ = pydoc 
+                func.__doc__  = pydoc 
             except IOError as msg:
                 print(msg)
 

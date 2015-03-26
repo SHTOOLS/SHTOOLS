@@ -10,10 +10,21 @@ import matplotlib.pyplot as plt
 
 from _SHTOOLS import *
 
+
+
+
+
+
+
+#===============================================================================
 #=========== COEFFICIENT CLASSES ===============================================
+#===============================================================================
+
+
+
 class SHCoeffs(object):
     """
-    Spherical Harmonics Coefficient super class. Coefficients can be initialized
+    Spherical Harmonics Coefficient class. Coefficients can be initialized
     using one of the constructor methods:
 
     >> SHCoeffs.from_array( np.zeros(2*(lmax+1)*(lmax+1)) )
@@ -64,31 +75,59 @@ class SHCoeffs(object):
             if format=='shtools' and cls.istype('real'):
                 return cls(coeffs)
 
-    #---- extracting data:
-    def get_powerperdegree(self):
-        return self._powerperdegree()
-
+    #---- extracting data ----
     def get_degrees(self):
+        """returns the array [0,...,lmax] that contains the degrees l"""
         return np.arange(self.lmax+1)
 
-    #---- rotation:
+    def get_powerperdegree(self):
+        """returns the power per degree l spectrum"""
+        return self._powerperdegree()
+
+    def get_powerperband(self,bandwidth):
+        """returns the power per log_{bandwidth} l spectrum"""
+        ls = self.get_degrees()
+        return self._powerperdegree()*ls*np.log(bandwidth)
+
+    #---- conversions ----
+    def get_coeffs(self,normalization='4pi'):
+        raise NotImplementedError('Not yet implemented')
+
+    #---- rotation ----
     def rotate(self,alpha,beta,gamma,degrees=True):
+        """
+        rotates the spherical harmonics coefficients by
+        alpha, beta, gamma
+        """
         if degrees:
             angles = np.radians([alpha,beta,gamma])
         else:
             angles = np.array([alpha,beta,gamma])
         self._rotate(angles)
 
-    #---- expansion:
+    #---- expansion ----
     def expand(self,kind='DH1'):
-        if kind == 'DH1':
+        """
+        expands the coefficients to a spherical grid. 
+        Available grid types:
+           kind ='DH1': equidistant lat/lon grid with   nlat=nlon
+           kind ='DH2': equidistant lat/lon grid with 2*nlat=nlon
+           kind ='GLQ': Gauss Legendre Grid
+        """
+        if   kind == 'DH1':
             grid = self._expandDH(sampling=1)
+        elif kind == 'DH2':
+            grid = self._expandDH(sampling=2)
         else:
             raise NotImplementedError('grid type {:s} not found/implemented'.format(kind))
         return grid
 
-    #---- plotting routines:
+    #---- plotting routines ----
     def plot_powerperdegree(self,loglog=True,show=True):
+        """
+        plots the power per degree spectrum. This is in particular useful to
+        analyze global isotropic power at a certain wavelength.
+        """
         power = self.get_powerperdegree()
         ls    = self.get_degrees()
 
@@ -102,9 +141,13 @@ class SHCoeffs(object):
             ax.plot(ls[1:],power[1:],label='power per degree l')
         if show: plt.show()
 
-    def plot_bandpower(self,bandwidth=2,show=True):
+    def plot_powerperband(self,bandwidth=2,show=True):
+        """
+        plots the power per log_{bandwidth}(degree) spectrum. This is in
+        particular useful to analyze local heterogeneity strength.
+        """
+        power = self.get_powerperband(bandwidth)
         ls    = self.get_degrees()
-        power = self.get_powerperdegree()*ls*np.log(bandwidth)
 
         fig,ax = plt.subplots(1,1)
         ax.set_xlabel('degree l')
@@ -115,7 +158,9 @@ class SHCoeffs(object):
         ax.plot(ls[1:],power[1:],label='power per degree l')
         if show: plt.show()
 
-#---- implementation for real spherical harmonics ----
+
+#================== REAL SPHERICAL HARMONICS ================
+
 class SHRealCoefficients(SHCoeffs):
     """
     Real Spherical Harmonics Coefficients class.
@@ -137,24 +182,38 @@ class SHRealCoefficients(SHCoeffs):
         self.coeffs = np.copy(coeffs)
         self.coeffs[np.invert(mask)] = 0.
 
+    def make_complex(self,convention=1,switchcs=0):
+        """converts the real coefficient class to the complex harmonic coefficient class"""
+        complex_coeffs = SHrtoc(self.coeffs,convention=convention,switchcs=switchcs)
+        return SHCoeffs.from_array(complex_coeffs,kind='complex')
+
     def _powerperdegree(self):
+        """-> use powerperdegree instead of _powerperdegree"""
         return SHPowerSpectrum(self.coeffs)
 
     def _rotate(self,angles,dj_matrix=None):
+        """-> use rotate instead of _rotate"""
         if dj_matrix is None:
             dj_matrix = djpi2(self.lmax+1)
         self.coeffs = SHRotateRealCoef(self.coeffs, angles, dj_matrix)
 
     def _expandDH(self,sampling):
+        """-> use expand(kind='DH1') instead of _expandDH"""
         data = MakeGridDH(self.coeffs,sampling=sampling)
         grid = SHGrid.from_array(data)
         return grid
 
-    def _expandGLQ(self):
-        zeros, weights = PreCompute(lmax)
+    def _expandGLQ(self,zeros=None):
+        """-> use expand(kind='GLQ') instead of _expandGLQ"""
+        if zeros is None:
+            zeros, weights = PreCompute(lmax)
         return MakeGridGLQ(cilm_trim,zeros)
 
-#---- implementation for complex spherical harmonics ----
+
+
+#=============== COMPLEX SPHERICAL HARMONICS ================
+
+
 class SHComplexCoefficients(SHCoeffs):
     """
     Complex Spherical Harmonics Coefficients class.
@@ -167,19 +226,44 @@ class SHComplexCoefficients(SHCoeffs):
         self.coeffs = coeffs
         self.lmax = coeffs.shape[1]-1
 
+    def make_real(self,convention=1,switchcs=0):
+        """converts the complex coefficient class to the real harmonic coefficient class"""
+        complex_coeffs = SHctor(self.coeffs,convention=convention,switchcs=switchcs)
+        return SHCoeffs.from_array(complex_coeffs,kind='real')
+
     def _powerperdegree():
+        """-> use powerperdegree instead of _powerperdegree"""
         return SHCPowerSpectrum(self.coeffs)
 
-    def _rotate():
-        raise NotImplementedError('not implemented by subclass %s'%s.__class__)
+    def _rotate(self,angles,dj_matrix=None):
+        """-> use rotate instead of _rotate"""
+        if dj_matrix is None:
+            dj_matrix = djpi2(self.lmax+1)
+        self.coeffs = SHRotateRealCoef(self.coeffs, angles, dj_matrix)
 
-    def _expandDH():
-        raise NotImplementedError('not implemented by subclass %s'%s.__class__)
+    def _expandDH(self,sammpling):
+        """-> use expand(kind='DH1') instead of _expandDH"""
+        data = MakeGridDHC(self.coeffs,sampling=sampling)
+        grid = SHGrid.from_array(data)
+        return grid
 
-    def _expandGLQ():
-        raise NotImplementedError('not implemented by subclass %s'%s.__class__)
+    def _expandGLQ(self, zeros=None):
+        """-> use expand(kind='GLQ') instead of _expandGLQ"""
+        if zeros is None:
+            zeros, weights = PreCompute(lmax)
+        return MakeGridGLQC(cilm_trim,zeros)
 
-#=========== GRID CLASSES ===============================================
+
+
+
+
+
+#========================================================================
+#======      GRID CLASSES      ==========================================
+#========================================================================
+
+
+
 class SHGrid(object):
     """
     Spherical Grid Class that can deal with spatial data on the sphere that is
@@ -229,11 +313,13 @@ class DHGrid(SHGrid):
         self.data = array
 
     def _expand(self):
+        """-> use expand instead of _expand"""
         cilm   = SHExpandDH(self.data)
         coeffs = SHCoeffs.from_array(cilm)
         return coeffs
 
     def _plot_rawdata(self):
+        """-> use plot_rawdata instead of _plot_rawdata"""
         fig,ax = plt.subplots(1,1)
         ax.imshow(self.data,origin='top',extent=(0.,360.,-90.,90.))
         ax.set_title('Driscoll Healy Grid')
