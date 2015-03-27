@@ -5,30 +5,30 @@ Compute all the Schmidt\-normalized Legendre polynomials and first
 derivatives.
 .SH Usage
 .PP
-call subroutine PlSchmidt_d1 (\f[C]p\f[], \f[C]dp\f[], \f[C]lmax\f[],
+\f[C]p\f[], \f[C]dp\f[] = call pyshtools.PlSchmidt_d1 (\f[C]lmax\f[],
 \f[C]z\f[])
-.SH Parameters
 .TP
-.B \f[C]p\f[] : output, real*8, dimension (\f[C]lmax\f[]+1)
+.B \f[C]p\f[] : float, dimension (\f[C]lmax\f[]+1)
 An array of Schmidt\-normalized Legendre polynomials up to degree
 \f[C]lmax\f[].
-Degree \f[C]l\f[] corresponds to array index \f[C]l+1\f[].
+Degree \f[C]l\f[] corresponds to array index \f[C]l\f[].
 .RS
 .RE
 .TP
-.B \f[C]dp\f[] : output, real*8, dimension (\f[C]lmax\f[]+1)
+.B \f[C]dp\f[] : float, dimension (\f[C]lmax\f[]+1)
 An array of the first derivatives of the Schmidt\-normalized Legendre
 polynomials up to degree \f[C]lmax\f[].
-Degree \f[C]l\f[] corresponds to array index \f[C]l+1\f[].
+Degree \f[C]l\f[] corresponds to array index \f[C]l\f[].
 .RS
 .RE
+.SH Parameters
 .TP
-.B \f[C]lmax\f[] : input, integer
+.B \f[C]lmax\f[] :integer
 The maximum degree of the Legendre polynomials to be computed.
 .RS
 .RE
 .TP
-.B \f[C]z\f[] : input, real*8
+.B \f[C]z\f[] : float
 The argument of the Legendre polynomial.
 .RS
 .RE

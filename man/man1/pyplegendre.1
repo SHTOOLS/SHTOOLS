@@ -1,0 +1,40 @@
+.TH "pyplegendre" "1" "2015\-03\-27" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH PLegendre
+.PP
+Compute all the unnormalized Legendre polynomials.
+.SH Usage
+.PP
+\f[C]p\f[] = pyshtools.PLegendre (\f[C]lmax\f[], \f[C]z\f[])
+.SH Returns
+.TP
+.B \f[C]p\f[] : float, dimension (\f[C]lmax\f[]+1)
+An array of unnormalized Legendre polynomials up to degree
+\f[C]lmax\f[].
+Degree \f[C]l\f[] corresponds to array index \f[C]l\f[].
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]lmax\f[] : integer
+The maximum degree of the Legendre polynomials to be computed.
+.RS
+.RE
+.TP
+.B \f[C]z\f[] : float
+The argument of the Legendre polynomial.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]PLegendre\f[] will calculate all of the unnormalized Legendre
+polynomials up to degree \f[C]lmax\f[] for a given argument.
+These are calculated using a standard three\-term recursion formula.
+The integral of the Legendre polynomials over the interval [\-1, 1] is
+\f[C]2/(2l+1)\f[].
+.SH See also
+.PP
+\f[C]plbar\f[], \f[C]plbar_d1\f[], \f[C]plmbar\f[], \f[C]plmbar_d1\f[],
+\f[C]plon\f[], \f[C]plon_d1\f[], \f[C]plmon\f[], \f[C]plmon_d1\f[],
+\f[C]plschmidt\f[], \f[C]plschmidt_d1\f[], \f[C]plmschmidt\f[],
+\f[C]plmschmidt_d1\f[], \f[C]plegendre_d1\f[], \f[C]plegendrea\f[],
+\f[C]plegendrea_d1\f[]

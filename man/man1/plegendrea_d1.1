@@ -1,0 +1,69 @@
+.TH "plegendrea_d1" "1" "2015\-03\-27" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH PLegendreA_d1
+.PP
+Compute all the unnormalized associated Legendre functions and first
+derivatives.
+.SH Usage
+.PP
+call subroutine PLegendreA_d1 (\f[C]p\f[], \f[C]dp\f[], \f[C]lmax\f[],
+\f[C]z\f[], \f[C]csphase\f[])
+.SH Parameters
+.TP
+.B \f[C]p\f[] : output, real*8, dimension ((\f[C]lmax\f[]+1)*(\f[C]lmax\f[]+2)/2)
+An array of unnormalized associated Legendre functions up to degree
+\f[C]lmax\f[].
+The index corresponds to \f[C]l*(l+1)/2+m+1\f[], which can be calculated
+by a call to \f[C]PlmIndex\f[].
+.RS
+.RE
+.TP
+.B \f[C]dp\f[] : output, real*8, dimension ((\f[C]lmax\f[]+1)*(\f[C]lmax\f[]+2)/2)
+An array of the first derivatives of the unnormalized associated
+Legendre functions up to degree \f[C]lmax\f[].
+The index corresponds to \f[C]l*(l+1)/2+m+1\f[], which can be calculated
+by a call to \f[C]PlmIndex\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum degree of the associated Legendre functions to be computed.
+.RS
+.RE
+.TP
+.B \f[C]z\f[] : input, real*8
+The argument of the associated Legendre functions.
+.RS
+.RE
+.TP
+.B \f[C]csphase\f[] : input, integer, optional, default = 1
+If 1 (default), the Condon\-Shortley phase will be excluded.
+If \-1, the Condon\-Shortley phase of (\-1)^m will be appended to the
+associated Legendre functions.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]PLegendreA_d1\f[] will calculate all of the unnormalized associated
+Legendre functions and first derivatives up to degree \f[C]lmax\f[] for
+a given argument.
+These are calculated using a standard three\-term recursion formula and
+hence will overflow for moderate values of \f[C]l\f[] and \f[C]m\f[].
+The index of the array corresponding to a given degree \f[C]l\f[] and
+angular order \f[C]m\f[] corresponds to \f[C]l*(l+1)/2+m+1\f[], which
+can be calculated by a call to \f[C]PlmIndex\f[].
+The integral of the associated Legendre functions over the interval
+[\-1, 1] is \f[C]2*(l+m)!/(l\-m)!/(2l+1)\f[].
+The default is to exclude the Condon\-Shortley phase, but this can be
+modified by setting the optional argument \f[C]csphase\f[] to \-1.
+Note that the derivative of the Legendre polynomials is calculated with
+respect to its arguement \f[C]z\f[], and not latitude or colatitude.
+If \f[C]z=cos(theta)\f[], where \f[C]theta\f[] is the colatitude, then
+it is only necessary to multiply \f[C]dp\f[] by \f[C]\-sin(theta)\f[] to
+obtain the derivative with respect to \f[C]theta\f[].
+.SH See also
+.PP
+\f[C]plbar\f[], \f[C]plbar_d1\f[], \f[C]plmbar\f[], \f[C]plmbar_d1\f[],
+\f[C]plon\f[], \f[C]plon_d1\f[], \f[C]plmon\f[], \f[C]plmon_d1\f[],
+\f[C]plschmidt\f[], \f[C]plschmidt_d1\f[], \f[C]plmschmidt\f[],
+\f[C]plmschmidt_d1\f[], \f[C]plegendre\f[], \f[C]plegendre_d1\f[],
+\f[C]plegendrea\f[], \f[C]plmindex\f[]

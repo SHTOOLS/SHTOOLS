@@ -29,13 +29,12 @@ WWWDIR = ../../www/man/fortran
 
 MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d1.pod \
     plon.md plmon.md plmon_d1.md plon_d1.md plmschmidt.md plschmidt.md plmschmidt_d1.md \
-    plschmidt_d1.md
+    plschmidt_d1.md plegendrea.md plegendrea_d1.md plegendre.md plegendre_d1.md \
+    plmindex.md
 # cilmplus.pod computed0.pod computedg82.pod computedm.pod \
 	dhaj.pod djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
 	hilm.pod makecirclecoord.pod makegeoidgrid.pod makegrid2d.pod glqgridcoord.pod \
 	makegriddh.pod makegridglq.pod makegridpoint.pod makemaggriddh.pod \
-	   plegendre.pod plegendre_d1.pod \
-	plegendrea_d1.pod plegendrea.pod   plmindex.pod \
 	  precompute.pod preglq.pod nglq.pod nglqsh.pod \
 	nglqshn.pod randomn.pod randomgaussian.pod \
 	shadmitcorr.pod shbias.pod shbiask.pod shrtoc.pod \
@@ -58,14 +57,13 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
 
 MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_d1.1 \
     plbar.1 plbar_d1.1 plon.1 plmon.1 plmon_d1.1 plon_d1.1 plmschmidt.1 plschmidt.1 \
-    plmschmidt_d1.1 plschmidt_d1.1\
-)
+    plmschmidt_d1.1 plschmidt_d1.1 plegendrea.1 plegendrea_d1.1 plegendre.1 plegendre_d1.1 \
+    plmindex.1 \
+    )
 #cilmplus.1 computed0.1 computedg82.1 computedm.1 \
 	dhaj.1 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
 	makecirclecoord.1 makegeoidgrid.1 makegrid2d.1 glqgridcoord.1 makegriddh.1 \
 	makegridglq.1 makegridpoint.1 makemaggriddh.1   \
-	 plegendre.1 plegendre_d1.1 plegendrea_d1.1 plegendrea.1 \
-	 plmindex.1      \
 	  precompute.1 preglq.1 nglq.1 nglqsh.1 nglqshn.1 \
 	randomn.1 randomgaussian.1 \
 	shadmitcorr.1 shbias.1 shbiask.1 shrtoc.1 shctor.1 shcilmtocindex.1 shcindextocilm.1 \
@@ -83,18 +81,12 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_
 	computedmap.1 shreturntapersmap.1 curve2mask.1 makeellipsecoord.1 cilmplusrhoh.1 \
 	hilmrhoh.1 normalgravity.1 makegravgradgriddh.1
 
-HTMLFILES_modules = $(addprefix $(WWWDIR)/, planetsconstants.html \
-\
-)
+HTMLFILES_modules = $(addprefix $(WWWDIR)/, planetsconstants.html )
 
 HTMLFILES_legendre =  $(addprefix $(WWWDIR)/,plmbar.html plmbar_d1.html plbar.html \
     plbar_d1.html plon.html plmon.html plmon_d1.html plon_d1.html plmschmidt.html \
-    plschmidt.html plmschmidt_d1.html plschmidt_d1.html\
-)
-#   plegendre.html plegendre_d1.html \
-	plegendrea_d1.html plegendrea.html   plmindex.html \
-	    \
-	  
+    plschmidt.html plmschmidt_d1.html plschmidt_d1.html plegendrea.html \
+    plegendrea_d1.html plegendre.html plegendre_d1.html plmindex.html )  
 
 HTMLFILES_transformations = 
 # dhaj.html  makegrid2d.html glqgridcoord.html \
