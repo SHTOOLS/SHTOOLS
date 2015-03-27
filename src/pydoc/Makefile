@@ -28,7 +28,8 @@ MANDIR = ../../man/man1
 WWWDIR = ../../www/man/python
 
 MDFILES = pymakegriddh.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pyplon.md \
-    pyplmon.md pyplmon_d1.md pyplon_d1.md
+    pyplmon.md pyplmon_d1.md pyplon_d1.md pyplmschmidt.mdpyplschmidt.md \
+    pyplmschmidt_d1.md pyplschmidt_d1.md
 #pycilmplusdh.pod pycilmplusglq.pod pycomputed0.pod pycomputedg82.pod pycomputedm.pod \
 	pydhaj.pod pydjpi2.pod pyeigvalsym.pod pyeigvalvecsym.pod pyeigvalvecsymtri.pod \
 	pyhilmdh.pod pyhilmglq.pod pymakecirclecoord.pod pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
@@ -36,8 +37,7 @@ MDFILES = pymakegriddh.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md py
 	pymakegridglq.pod pymakegridpoint.pod pymakemaggriddh.pod \
  	  pyplegendre.pod pyplegendre_d1.pod \
 	pyplegendrea_d1.pod pyplegendrea.pod   pyplmindex.pod \
-	    pyplschmidt.pod pyplschmidt_d1.pod \
-	pyplmschmidt.pod pyplmschmidt_d1.pod pyprecompute.pod pypreglq.pod pynglq.pod pynglqsh.pod \
+	  pyprecompute.pod pypreglq.pod pynglq.pod pynglqsh.pod \
 	pynglqshn.pod pyrandomn.pod pyrandomgaussian.pod \
 	pyshadmitcorr.pod pyshbias.pod pyshbiask.pod pyshrtoc.pod \
 	pyshctor.pod pyshcilmtocindex.pod pyshcindextocilm.pod  \
@@ -59,16 +59,17 @@ MDFILES = pymakegriddh.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md py
 	pymakegravgradgriddh.pod pyshreadh.pod pyshreaderrorh.pod
 
 MANFILES = $(addprefix $(MANDIR)/, pymakegriddh.1 pyplmbar.1 pyplmbar_d1.1 pyplbar.1 pyplbar_d1.1 \
-    pyplon.1 pyplmon.1 pyplmon_d1.1 pyplon_d1.1 \
-)
+    pyplon.1 pyplmon.1 pyplmon_d1.1 pyplon_d1.1 pyplmschmidt.1 pyplschmidt.1 pyplmschmidt_d1.1 \
+    pyplschmidt_d1.1 \
+    )
 #pycilmplusdh.1 pycilmplusglq.1 pycomputed0.1 pycomputedg82.1 pycomputedm.1 \
 	pydhaj.1 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
 	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
 	pymakegrid2d.1 pyglqgridcoord.1  \
 	pymakegridglq.1 pymakegridpoint.1 pymakemaggriddh.1  \
 	 pyplegendre.1 pyplegendre_d1.1 pyplegendrea_d1.1 pyplegendrea.1  \
-	 pyplmindex.1     pyplschmidt.1 pyplschmidt_d1.1 \
-	pyplmschmidt.1 pyplmschmidt_d1.1 pyprecompute.1 pypreglq.1 pynglq.1 pynglqsh.1 pynglqshn.1 \
+	 pyplmindex.1       \
+	  pyprecompute.1 pypreglq.1 pynglq.1 pynglqsh.1 pynglqshn.1 \
 	pyrandomn.1 pyrandomgaussian.1 \
 	pyshadmitcorr.1 pyshbias.1 pyshbiask.1 pyshrtoc.1 pyshctor.1 pyshcilmtocindex.1 pyshcindextocilm.1 \
 	pyshexpanddh.1 pyshexpandglq.1 pyshexpandlsq.1 pyshfindlwin.1 \
@@ -87,13 +88,13 @@ MANFILES = $(addprefix $(MANDIR)/, pymakegriddh.1 pyplmbar.1 pyplmbar_d1.1 pyplb
 	pyhilmrhohdh.1 pyhilmrhohglq.1 pynormalgravity.1 pymakegravgradgriddh.1 pyshreadh.1 pyshreaderrorh.1
 
 HTMLFILES_legendre =  $(addprefix $(WWWDIR)/, pyplmbar.html pyplmbar_d1.html pyplbar.html \
-pyplbar_d1.html pyplon.html pyplmon.html pyplmon_d1.html pyplon_d1.html \
-\
+    pyplbar_d1.html pyplon.html pyplmon.html pyplmon_d1.html pyplon_d1.html pyplmschmidt.html \
+    pyplschmidt.html pyplmschmidt_d1.html pyplschmidt_d1.html \
 )
 #  pyplegendre.html pyplegendre_d1.html \
 	pyplegendrea_d1.html pyplegendrea.html   pyplmindex.html \
-	    pyplschmidt.html pyplschmidt_d1.html \
-	pyplmschmidt.html pyplmschmidt_d1.html 
+	      \
+	  
 
 HTMLFILES_transformations = $(addprefix $(WWWDIR)/, pymakegriddh.html \
 \
