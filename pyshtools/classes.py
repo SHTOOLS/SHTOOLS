@@ -91,6 +91,10 @@ class SHCoeffs(object):
 
     #---- conversions ----
     def get_coeffs(self,normalization='4pi'):
+        """
+        returns complex or real, raw spherical harmonics coefficients 
+        in different normalizations
+        """
         raise NotImplementedError('Not yet implemented')
 
     #---- rotation ----
@@ -106,7 +110,7 @@ class SHCoeffs(object):
         self._rotate(angles)
 
     #---- expansion ----
-    def expand(self,kind='DH1'):
+    def expand(self,**kwargs):
         """
         expands the coefficients to a spherical grid. 
         Available grid types:
@@ -114,12 +118,14 @@ class SHCoeffs(object):
            kind ='DH2': equidistant lat/lon grid with 2*nlat=nlon
            kind ='GLQ': Gauss Legendre Grid
         """
-        if   kind == 'DH1':
+        if   kwargs['kind'] == 'DH1' or kwargs['kind'] == 'DH':
             grid = self._expandDH(sampling=1)
-        elif kind == 'DH2':
+        elif kwargs['kind'] == 'DH2':
             grid = self._expandDH(sampling=2)
+        elif kwargs['kind'] == 'GLQ':
+            grid = self._expandGLQ()
         else:
-            raise NotImplementedError('grid type {:s} not found/implemented'.format(kind))
+            raise NotImplementedError('grid type {:s} not implemented'.format(kind))
         return grid
 
     #---- plotting routines ----
@@ -200,14 +206,16 @@ class SHRealCoefficients(SHCoeffs):
     def _expandDH(self,sampling):
         """-> use expand(kind='DH1') instead of _expandDH"""
         data = MakeGridDH(self.coeffs,sampling=sampling)
-        grid = SHGrid.from_array(data)
+        grid = SHGrid.from_array(data,'DH')
         return grid
 
     def _expandGLQ(self,zeros=None):
         """-> use expand(kind='GLQ') instead of _expandGLQ"""
         if zeros is None:
-            zeros, weights = PreCompute(lmax)
-        return MakeGridGLQ(cilm_trim,zeros)
+            zeros, weights = PreCompute(self.lmax)
+        data = MakeGridGLQ(self.coeffs,zeros)
+        grid = SHGrid.from_array(data,'GLQ')
+        return grid
 
 
 
@@ -250,8 +258,10 @@ class SHComplexCoefficients(SHCoeffs):
     def _expandGLQ(self, zeros=None):
         """-> use expand(kind='GLQ') instead of _expandGLQ"""
         if zeros is None:
-            zeros, weights = PreCompute(lmax)
-        return MakeGridGLQC(cilm_trim,zeros)
+            zeros, weights = PreCompute(self.lmax)
+        data = MakeGridGLQ(self.coeffs,zeros)
+        grid = SHGrid.from_array(data,'GLQ')
+        return grid
 
 
 
@@ -277,20 +287,28 @@ class SHGrid(object):
               '>> SphericalGrid.from_array(...)\n'+
               '>> SphericalGrid.from_file(...)')
 
-    #---- constructors:
+    #---- constructors ----
     @classmethod
     def from_array(self, array, kind='DH'):
         for cls in self.__subclasses__():
             if cls.istype(kind):
                 return cls(array)
 
-    #---- plotting routines:
+    #---- extract data ----
+    def get_lats():
+        return self._get_lats()
+
+    def get_lons():
+        return self._get_lats()
+
+    #---- plotting routines ----
     def plot_rawdata(self,show=True):
         self._plot_rawdata()
         if show: plt.show()
 
     def expand(self):
         return self._expand()
+
 
 #---- implementation of the Driscoll and Healy Grid class ----
 class DHGrid(SHGrid):
@@ -302,20 +320,30 @@ class DHGrid(SHGrid):
         return kind == 'DH'
 
     def __init__(self, array):
-        nlat,nlon = array.shape
-        if nlat == 2*nlon:
+        self.nlat,self.nlon = array.shape
+        if self.nlat == 2*self.nlon:
             self.sampling = 2
-        if nlat == nlon:
+        if self.nlat == self.nlon:
             self.sampling = 1
         else:
             raise ValueError('input array with shape (nlat={:d},nlon={:d})\n'+
-                             'it needs nlat=nlon or nlat=2*nlon'.format(nlat,nlon))
+                             'it needs nlat=nlon or nlat=2*nlon'.format(self.nlat,self.nlon))
         self.data = array
+
+    def _getlats(self):
+        dlat = 360./self.nlat
+        lats = np.linspace(0.+dlat/2.,360.-dlat/2.,self.nlat)
+        return lats
+
+    def _getlons(self):
+        dlon = 360./self.nlon
+        lons = np.linspace(0.+dlon/2.,360.-dlon/2.,self.nlon)
+        return lons
 
     def _expand(self):
         """-> use expand instead of _expand"""
         cilm   = SHExpandDH(self.data)
-        coeffs = SHCoeffs.from_array(cilm)
+        coeffs = SHCoeffs.from_array(cilm,kind='DH')
         return coeffs
 
     def _plot_rawdata(self):
@@ -334,15 +362,44 @@ class GLQGrid(SHGrid):
     """
     @staticmethod
     def istype(kind):
-        return kind == 'DH'
+        return kind == 'GLQ'
 
-    def __init__(self, array):
-        raise NotImplementedError('GLQ grid not yet implemented')
+    def __init__(self, array, zeros=None):
+        """use superclass constructors"""
+        #---- check if input is correct ----
+        self.nlat,self.nlon = array.shape
+        assert self.nlon-1 == 2*(self.nlat-1),'nlon should equal 2*nlat for GLQ grid'
+
+        #---- store data in class ----
+        self.lmax = self.nlat-1
+        self.data = array
+        if zeros is None:
+            self.zeros, weights = PreCompute(self.lmax)
+        else:
+            self.zeros = zeros
+
+    def _getlats(self):
+        """-> use getlats instead of _getlats"""
+        lats = 90.-np.degrees(self.zeros)
+        return lats
+
+    def _getlons(self):
+        """-> use getlons instead of _getlons"""
+        dlon = 360./self.nlon
+        lons = np.linspace(0.+dlon/2.,360.-dlon/2.,self.nlon)
+        return lons
+
+    def _expand(self):
+        """-> use expand instead of _expand"""
+        cilm   = SHExpandGLQ(self.data)
+        coeffs = SHCoeffs.from_array(cilm,kind='GLQ')
+        return coeffs
 
     def _plot_rawdata(self):
+        """use plot_rawdata instead of _rawdata"""
         fig,ax = plt.subplots(1,1)
-        ax.imshow(self.data,origin='top',extent=(0.,360.,-90.,90.))
-        ax.set_title('Driscoll Healy Grid')
-        ax.set_xlabel('longitude')
-        ax.set_ylabel('latitude')
+        ax.imshow(self.data,origin='top')
+        ax.set_title('Gauss-Legendre Quadrature Grid')
+        ax.set_xlabel('longitude index')
+        ax.set_ylabel('latitude  index')
         fig.tight_layout(pad=0.5)
