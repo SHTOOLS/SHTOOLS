@@ -30,16 +30,16 @@ WWWDIR = ../../www/man/fortran
 MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d1.pod \
     plon.md plmon.md plmon_d1.md plon_d1.md plmschmidt.md plschmidt.md plmschmidt_d1.md \
     plschmidt_d1.md plegendrea.md plegendrea_d1.md plegendre.md plegendre_d1.md \
-    plmindex.md
+    plmindex.md shexpanddh.md makegriddh.md shexpanddhc.md makegriddhc.md
 # cilmplus.pod computed0.pod computedg82.pod computedm.pod \
-	dhaj.pod djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
+	 djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
 	hilm.pod makecirclecoord.pod makegeoidgrid.pod makegrid2d.pod glqgridcoord.pod \
-	makegriddh.pod makegridglq.pod makegridpoint.pod makemaggriddh.pod \
-	  precompute.pod preglq.pod nglq.pod nglqsh.pod \
-	nglqshn.pod randomn.pod randomgaussian.pod \
+	 makegridglq.pod makegridpoint.pod makemaggriddh.pod \
+	  precompute.pod preglq.pod  \
+	 randomn.pod randomgaussian.pod \
 	shadmitcorr.pod shbias.pod shbiask.pod shrtoc.pod \
 	shctor.pod shcilmtocindex.pod shcindextocilm.pod  \
-	shexpanddh.pod shexpandglq.pod shexpandlsq.pod shfindlwin.pod \
+	 shexpandglq.pod shexpandlsq.pod shfindlwin.pod \
 	shlocalizedadmitcorr.pod shmtvaropt.pod shmtvaropt0.pod shmultiply.pod \
 	wl.pod wl_curv.pod shmultitapercse.pod shmultitaperse.pod shpowerl.pod \
 	shpowerdensityl.pod shcrosspowerdensityl.pod shpowerspectrum.pod \
@@ -48,7 +48,7 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
 	shreturntapers.pod shreturntapersm.pod shrotatecoef.pod shrotaterealcoef.pod \
 	wigner3j.pod shsjkpg.pod shsjkpg0.pod sphericalcapcoef.pod shmtdebias.pod \
 	makegravgriddh.pod shconfidence.pod shmagpowerl.pod shmagpowerspectrum.pod \
-	makegriddhc.pod shexpanddhc.pod makegridglqc.pod shexpandglqc.pod shpowerlc.pod \
+	  makegridglqc.pod shexpandglqc.pod shpowerlc.pod \
 	shpowerdensitylc.pod shcrosspowerdensitylc.pod shpowerspectrumc.pod \
 	shpowerspectrumdensityc.pod shcrosspowerspectrumc.pod shcrosspowerspectrumdensityc.pod \
 	shcrosspowerlc.pod shbiasadmitcorr.pod shcilmtovector.pod shvectortocilm.pod \
@@ -58,23 +58,23 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
 MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_d1.1 \
     plbar.1 plbar_d1.1 plon.1 plmon.1 plmon_d1.1 plon_d1.1 plmschmidt.1 plschmidt.1 \
     plmschmidt_d1.1 plschmidt_d1.1 plegendrea.1 plegendrea_d1.1 plegendre.1 plegendre_d1.1 \
-    plmindex.1 \
+    plmindex.1 shexpanddh.1 makegriddh.1 shexpanddhc.1 makegriddhc.1 \
     )
 #cilmplus.1 computed0.1 computedg82.1 computedm.1 \
-	dhaj.1 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
-	makecirclecoord.1 makegeoidgrid.1 makegrid2d.1 glqgridcoord.1 makegriddh.1 \
+	 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
+	makecirclecoord.1 makegeoidgrid.1 makegrid2d.1 glqgridcoord.1  \
 	makegridglq.1 makegridpoint.1 makemaggriddh.1   \
-	  precompute.1 preglq.1 nglq.1 nglqsh.1 nglqshn.1 \
+	  precompute.1 preglq.1  \
 	randomn.1 randomgaussian.1 \
 	shadmitcorr.1 shbias.1 shbiask.1 shrtoc.1 shctor.1 shcilmtocindex.1 shcindextocilm.1 \
-	shexpanddh.1 shexpandglq.1 shexpandlsq.1 shfindlwin.1 \
+	 shexpandglq.1 shexpandlsq.1 shfindlwin.1 \
 	shlocalizedadmitcorr.1 shmtvaropt.1 shmtvaropt0.1 shmultiply.1 wl.1 wlcurv.1 \
 	shmultitapercse.1 shmultitaperse.1 shpowerl.1 shpowerdensityl.1 shcrosspowerdensityl.1 \
 	shpowerspectrum.1 shpowerspectrumdensity.1 shcrosspowerspectrum.1 \
 	shcrosspowerspectrumdensity.1 shcrosspowerl.1 shread.1 shreadjpl.1 shread2.1 \
 	shreturntapers.1 shreturntapersm.1 shrotatecoef.1 shrotaterealcoef.1 \
 	wigner3j.1 shsjkpg.1 shsjkpg0.1 sphericalcapcoef.1 shmtdebias.1 makegravgriddh.1 \
-	shconfidence.1 shmagpowerl.1 shmagpowerspectrum.1 makegriddhc.1 shexpanddhc.1 \
+	shconfidence.1 shmagpowerl.1 shmagpowerspectrum.1   \
 	makegridglqc.1 shexpandglqc.1 shpowerlc.1 shpowerdensitylc.1 shcrosspowerdensitylc.1 \
 	shpowerspectrumc.1 shpowerspectrumdensityc.1 shcrosspowerspectrumc.1 shcrosspowerspectrumdensityc.1 \
 	shcrosspowerlc.1 shbiasadmitcorr.1 shcilmtovector.1 shvectortocilm.1 yilmindex.1 \
@@ -88,12 +88,13 @@ HTMLFILES_legendre =  $(addprefix $(WWWDIR)/,plmbar.html plmbar_d1.html plbar.ht
     plschmidt.html plmschmidt_d1.html plschmidt_d1.html plegendrea.html \
     plegendrea_d1.html plegendre.html plegendre_d1.html plmindex.html )  
 
-HTMLFILES_transformations = 
-# dhaj.html  makegrid2d.html glqgridcoord.html \
-	makegriddh.html makegridglq.html makegridpoint.html precompute.html \
-	shexpanddh.html shexpandglq.html shexpandlsq.html shmultiply.html \
-	shexpanddhc.html makegriddhc.html makegridglqc.html shexpandglqc.html \
-	preglq.html nglq.html nglqsh.html nglqshn.html
+HTMLFILES_transformations = $(addprefix $(WWWDIR)/, shexpanddh.html makegriddh.html \
+	shexpanddhc.html makegriddhc.html )
+#   makegrid2d.html glqgridcoord.html \
+	 makegridglq.html makegridpoint.html precompute.html \
+	 shexpandglq.html shexpandlsq.html shmultiply.html \
+	  makegridglqc.html shexpandglqc.html \
+	preglq.html 
 
 HTMLFILES_io = 
 # shread.html shreadjpl.html shread2.html \
@@ -138,7 +139,6 @@ install-man: $(MANFILES)
 	@echo
 	@echo FORTRAN 95 MAN PAGES SUCCESSFULLY MADE
 	@echo
-	
 
 install-html: $(HTMLFILES_modules) $(HTMLFILES_legendre) $(HTMLFILES_transformations) \
 	$(HTMLFILES_io) $(HTMLFILES_gspectra) $(HTMLFILES_localized) \
@@ -162,7 +162,7 @@ $(HTMLFILES_transformations) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_transformations.html test.html tail_transformations.html > $@
 	@rm -f test.html
-	
+
 $(HTMLFILES_io) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
 	cat header_io.html test.html tail_io.html > $@

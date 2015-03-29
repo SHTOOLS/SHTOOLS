@@ -364,8 +364,8 @@ endif
 
 
 doc: 
-	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
-	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
+	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
+	@$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
 	@echo DOCUMENTATION SUCCESSFULLY CREATED
 
 remove-doc:

@@ -1,4 +1,4 @@
-.TH "planetsconstants" "1" "2015\-03\-24" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "planetsconstants" "1" "2015\-03\-25" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH PlanetsConstants
 .PP
 SHTOOLS Module containing planetary constants.
@@ -8,8 +8,8 @@ SHTOOLS Module containing planetary constants.
 working with gravity and topography data of the Earth, Mars, Venus, and
 Moon.
 All units are SI.
-Confer with the source file or the Python documentation for exact values
-and references.
+Confer with the Python documentation or fortran source file for exact
+values and references.
 .SH Constants
 .SS Fundamental Constants
 .TP
@@ -55,12 +55,13 @@ Semi\-major axis of the lunar orbit.
 .RE
 .TP
 .B \f[C]g0_Moon\f[]
-Gravitational acceleration at R_Moon, not including rotation.
+Mean gravitational acceleration of the Moon at the mean surface radius
+(R_Moon), not including rotation.
 .RS
 .RE
 .TP
 .B \f[C]R0_pot_Moon\f[]
-Reference radius of the gravitational\-potential model.
+Reference radius of the gravitational\-potential models of the Moon.
 .RS
 .RE
 .TP
@@ -70,22 +71,22 @@ Angular rotation rate of the Moon.
 .RE
 .TP
 .B \f[C]C_MOI_Moon\f[]
-Polar moment of inertia, using R=1738 km.
+Polar moment of inertia of the Moon, using R=1738 km.
 .RS
 .RE
 .TP
 .B \f[C]I_MOI_Moon\f[]
-Average moment of inertia, using R=1738 km.
+Average moment of inertia of the Moon, using R=1738 km.
 .RS
 .RE
 .TP
 .B \f[C]Gamma_MOI_Moon\f[]
-Gamma = (B\-A)/C.
+Libration parameter of the Moon, (B\-A)/C.
 .RS
 .RE
 .TP
 .B \f[C]Beta_MOI_Moon\f[]
-Beta = (C\-A)/B.
+Libration parameter of the Moon, (C\-A)/B.
 .RS
 .RE
 .SS Mars
@@ -111,12 +112,12 @@ Average density of Mars.
 .RE
 .TP
 .B \f[C]g0_Mars\f[]
-Gravitational acceleration at R_Mars, not including rotation.
+Gravitational acceleration of Mars at R_Mars, not including rotation.
 .RS
 .RE
 .TP
 .B \f[C]R0_pot_Mars\f[]
-Reference radius of the gravitational\-potential model.
+Reference radius of the gravitational\-potential models of Mars.
 .RS
 .RE
 .TP
@@ -152,7 +153,7 @@ Average radius of Venus.
 .RE
 .TP
 .B \f[C]R0_pot_Venus\f[]
-Reference radius of the gravitational\-potential model.
+Reference radius of the gravitational\-potential models of Venus.
 .RS
 .RE
 .TP
@@ -188,7 +189,7 @@ Gravitational constant times the mass of the Earth.
 .RE
 .TP
 .B \f[C]R0_pot_Earth\f[]
-Reference radius of the gravitational\-potential model.
+Reference radius of the terrestrial gravitational\-potential models.
 .RS
 .RE
 .TP
@@ -280,10 +281,3 @@ Gravitational acceleration at R_Mercury, not including rotation.
 .SH See also
 .PP
 shtools
-.SH Copyright and License
-.PP
-Copyright 2015 Mark Wieczorek.
-.PP
-This is free software.
-You can distribute and modify it under the terms of the revised BSD
-license.

@@ -14,7 +14,7 @@ Precompute weights, nodes, and associated Legendre functions used in the GLQ-bas
 
 =item SUBROUTINE PreCompute ( 
 
-LMAX, ZERO, W, PLX, WISDOM_FILE, NORM, CSPHASE, CNORM )
+LMAX, ZERO, W, PLX, NORM, CSPHASE, CNORM )
 
 =back
 
@@ -38,17 +38,13 @@ S<PLX(LMAX+1, (LMAX+1)*(LMAX+2)/2)>
 
 NORM, CSPHASE, CNORM
 
-=item CHARACTER(*), OPTIONAL 
-
-WISDOM_FILE
-
 =back
 
 =back
 
 =head1 DESCRIPTION
 
-I<PreCompute> will calculate the weights and zeros used in the Gauss-Legendre quadrature based spherical harmonic routines I<SHExpandGLQ>, I<MakeGridGLQ>, I<SHExpandGLQC>, and I<MakeGridGLQC>. Optionally, an array of the associated Legendre functions evaluated on the quadrature nodes can be computed as well. For the first call to this routine, a system wide FFTW wisdom file will be read from /etc/fftw/wisdom (if present) or the optionally specified file in WISDOM_FILE. If the complex routines are to be used, the optional parameter CNORM must here be set equal to 1.
+I<PreCompute> will calculate the weights and zeros used in the Gauss-Legendre quadrature based spherical harmonic routines I<SHExpandGLQ>, I<MakeGridGLQ>, I<SHExpandGLQC>, and I<MakeGridGLQC>. Optionally, an array of the associated Legendre functions evaluated on the quadrature nodes can be computed as well. If the complex routines are to be used, the optional parameter CNORM must here be set equal to 1.
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments NORM and CSPHASE; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. 
 
@@ -74,19 +70,12 @@ The nodes used in the Gauss-Legendre quadrature over latitude, determined from a
 
 The weights used in the Gauss-Legendre quadrature over latitude, determined from a call to I<PreGLQ>.
 
-
 =item PLX
 
 (output) REAL*8, OPTIONAL, DIMENSION (LMAX+1, (LMAX+1)*(LMAX+2)/2)
 
 An array of the associated Legendre functions calculated at the nodes used in the Gauss-Legendre quadrature. 
 	
-=item WISDOM_FILE
-
-(input) CHARACTER(*), OPTIONAL
-
-The location of the FFTW wisdom file that will be read during the first call to this routine.
-
 =item NORM
 
 (input) INTEGER, OPTIONAL

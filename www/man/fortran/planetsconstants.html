@@ -32,7 +32,7 @@
 <h1 id="planetsconstants">PlanetsConstants</h1>
 <p>SHTOOLS Module containing planetary constants.</p>
 <h1 id="description">Description</h1>
-<p><code>PlanetsConstants</code> defines several constants that are useful when working with gravity and topography data of the Earth, Mars, Venus, and Moon. All units are SI. Confer with the source file or the Python documentation for exact values and references.</p>
+<p><code>PlanetsConstants</code> defines several constants that are useful when working with gravity and topography data of the Earth, Mars, Venus, and Moon. All units are SI. Confer with the Python documentation or fortran source file for exact values and references.</p>
 <h1 id="constants">Constants</h1>
 <h2 id="fundamental-constants">Fundamental Constants</h2>
 <dl>
@@ -64,25 +64,25 @@
 <dd>Semi-major axis of the lunar orbit.
 </dd>
 <dt><code>g0_Moon</code></dt>
-<dd>Gravitational acceleration at R_Moon, not including rotation.
+<dd>Mean gravitational acceleration of the Moon at the mean surface radius (R_Moon), not including rotation.
 </dd>
 <dt><code>R0_pot_Moon</code></dt>
-<dd>Reference radius of the gravitational-potential model.
+<dd>Reference radius of the gravitational-potential models of the Moon.
 </dd>
 <dt><code>Omega_Moon</code></dt>
 <dd>Angular rotation rate of the Moon.
 </dd>
 <dt><code>C_MOI_Moon</code></dt>
-<dd>Polar moment of inertia, using R=1738 km.
+<dd>Polar moment of inertia of the Moon, using R=1738 km.
 </dd>
 <dt><code>I_MOI_Moon</code></dt>
-<dd>Average moment of inertia, using R=1738 km.
+<dd>Average moment of inertia of the Moon, using R=1738 km.
 </dd>
 <dt><code>Gamma_MOI_Moon</code></dt>
-<dd>Gamma = (B-A)/C.
+<dd>Libration parameter of the Moon, (B-A)/C.
 </dd>
 <dt><code>Beta_MOI_Moon</code></dt>
-<dd>Beta = (C-A)/B.
+<dd>Libration parameter of the Moon, (C-A)/B.
 </dd>
 </dl>
 <h2 id="mars">Mars</h2>
@@ -100,10 +100,10 @@
 <dd>Average density of Mars.
 </dd>
 <dt><code>g0_Mars</code></dt>
-<dd>Gravitational acceleration at R_Mars, not including rotation.
+<dd>Gravitational acceleration of Mars at R_Mars, not including rotation.
 </dd>
 <dt><code>R0_pot_Mars</code></dt>
-<dd>Reference radius of the gravitational-potential model.
+<dd>Reference radius of the gravitational-potential models of Mars.
 </dd>
 <dt><code>Omega_Mars</code></dt>
 <dd>Angular rotation rate of Mars.
@@ -127,7 +127,7 @@
 <dd>Average radius of Venus.
 </dd>
 <dt><code>R0_pot_Venus</code></dt>
-<dd>Reference radius of the gravitational-potential model.
+<dd>Reference radius of the gravitational-potential models of Venus.
 </dd>
 <dt><code>GM_Venus</code></dt>
 <dd>Gravitational constant times the mass of the Venus.
@@ -151,7 +151,7 @@
 <dd>Gravitational constant times the mass of the Earth.
 </dd>
 <dt><code>R0_pot_Earth</code></dt>
-<dd>Reference radius of the gravitational-potential model.
+<dd>Reference radius of the terrestrial gravitational-potential models.
 </dd>
 <dt><code>Mass_Earth</code></dt>
 <dd>The mass of the Earth.
@@ -210,9 +210,6 @@
 </dl>
 <h1 id="see-also">See also</h1>
 <p>shtools</p>
-<h1 id="copyright-and-license">Copyright and License</h1>
-<p>Copyright 2015 Mark Wieczorek.</p>
-<p>This is free software. You can distribute and modify it under the terms of the revised BSD license.</p>
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../modules.html" class="dir">Modules</a></p>

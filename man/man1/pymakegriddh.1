@@ -1,48 +1,50 @@
-.TH "pymakegriddh" "1" "2015\-03\-24" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "pymakegriddh" "1" "2015\-03\-29" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH MakeGridDH
 .PP
 Create a 2D map from a set of spherical harmonic coefficients using the
 Driscoll and Healy (1994) sampling theorem.
 .SH Usage
 .PP
-\f[C]griddh\f[] =
-pyshtools.MakeGridDH(\f[C]cilm\f[],[\f[C]lmax\f[],\f[C]norm\f[],\f[C]sampling\f[],\f[C]csphase\f[],\f[C]lmax_calc\f[]])`
+\f[C]griddh\f[] = pyshtools.MakeGridDH(\f[C]cilm\f[], [\f[C]lmax\f[],
+\f[C]norm\f[], \f[C]sampling\f[], \f[C]csphase\f[], \f[C]lmax_calc\f[]])
 .SH Returns
 .TP
-.B \f[C]griddh\f[] : float, dimension(2*(\f[C]lmax\f[]+1), \f[C]sampling\f[]*2*(\f[C]lmax\f[]+1))
-A 2D equally sampled (default) or equally spaced map in degrees (for
-\f[C]sampling=2\f[]) of the spherical harmonic coefficients cilm that
-conforms to the sampling theorem of Driscoll and Healy (1994).
+.B \f[C]griddh\f[] : float, dimension (2*\f[C]lmax\f[]+2, \f[C]sampling\f[]*(2*\f[C]lmax\f[]+2))
+A 2D equally sampled (default) or equally spaced map in degrees of the
+spherical harmonic coefficients \f[C]cilm\f[] that conforms to the
+sampling theorem of Driscoll and Healy (1994).
 The first latitudinal band corresponds to 90 N, the latitudinal band for
-90 S is not included, and the latitudinal sampling interval is 180/N
-degrees.
+90 S is not included, and the latitudinal sampling interval is
+180/\f[C]n\f[] degrees.
 The first longitudinal band is 0 E, the longitudinal band for 360 E is
-not included, and the longitudinal sampling interval is 360/N for an
-equally sampled and 180/N for an equally spaced grid, respectively.
+not included, and the longitudinal sampling interval is 360/\f[C]n\f[]
+for an equally sampled and 180/\f[C]m\f[] for an equally spaced grid,
+respectively.
 .RS
 .RE
 .SH Parameters
 .TP
-.B \f[C]cilm\f[] : float, dimension(2,\f[C]lmaxin\f[]+1,\f[C]lmaxin\f[]+1)
+.B \f[C]cilm\f[] : float, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
 The real spherical harmonic coefficients of the function.
-The coefficients \f[C]cilm[0,lm]\f[] and \f[C]cilm[1,l,m]\f[] refer to
-the "cosine" and "sine" coefficients, respectively.
+The coefficients \f[C]cilm[0,l,m]\f[] and \f[C]cilm[1,l,m]\f[] refer to
+the "cosine" (\f[C]Clm\f[]) and "sine" (\f[C]Slm\f[]) coefficients,
+respectively.
 .RS
 .RE
 .TP
-.B \f[C]lmax\f[] : int, optional, default = \f[C]lmaxin\f[]
+.B \f[C]lmax\f[] : integer, optional, default = \f[C]lmaxin\f[]
 The maximum spherical harmonic degree of the function, which determines
 the sampling of the output grid.
 .RS
 .RE
 .TP
-.B \f[C]norm\f[] : int, optional, default = 1
-1 = Geodesy 4\-pi normalized harmonics; 2 = Schmidt semi\-normalized
+.B \f[C]norm\f[] : integer, optional, default = 1
+1 = 4\-pi (geodesy) normalized harmonics; 2 = Schmidt semi\-normalized
 harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 .RS
 .RE
 .TP
-.B \f[C]sampling\f[] : int, optional, default = 1
+.B \f[C]sampling\f[] : integer, optional, default = 1
 If 1, the output grid contains the same number of samples in latitude as
 in longitude.
 If 2, the grid is equally spaced in degrees, having twice as many
@@ -50,14 +52,14 @@ samples in longitude as latitude.
 .RS
 .RE
 .TP
-.B \f[C]csphase\f[] : int, optional, default = 1
+.B \f[C]csphase\f[] : integer, optional, default = 1
 1 = do not apply the Condon\-Shortley phase factor to the associated
 Legendre functions; \-1 = append the Condon\-Shortley phase factor of
 (\-1)^m to the associated Legendre functions.
 .RS
 .RE
 .TP
-.B \f[C]lmax_calc\f[] : int, optional, default = \f[C]lmax\f[]
+.B \f[C]lmax_calc\f[] : integer, optional, default = \f[C]lmax\f[]
 The maximum spherical harmonic degree used in evaluating the function.
 This must be less than or equal to \f[C]lmax\f[], and does not affect
 the number of samples of the output grid.
@@ -71,22 +73,16 @@ harmonic coefficients.
 This grid conforms with the sampling theorem of Driscoll and Healy
 (1994) and this routine is the inverse of SHExpandDH.
 The function is evaluated at each longitudinal band by inverse Fourier
-transforming the sin and cos terms for each degree l, and then summing
-over all degrees.
+transforming the sin and cos terms for each degree \f[C]l\f[], and then
+summing over all degrees.
 When evaluating the function, the maximum spherical harmonic degree that
-is considered is the minimum of lmaxin, lmax, and lmax_calc (if
-specified).
+is considered is the minimum of \f[C]lmaxin\f[], \f[C]lmax\f[], and
+\f[C]lmax_calc\f[] (if specified).
 .PP
-The default is to use an input grid that is equally sampled (N by N),
-but this can be changed to use an equally spaced grid (N by 2N) by
-providing \f[C]sampling=2\f[].
-The first latitudinal band of the grid corresponds to 90 N, the
-latitudinal band for 90 S is not calculated, and the latitudinal
-sampling interval is 180/N degrees.
-The first longitudinal band is 0 E, the longitudinal band for 360 E is
-not calculated, and the longitudinal sampling interval is 360/N for
-equally sampled and 180/N for equally spaced grids, respectively.
-.PP
+The default is to use an input grid that is equally sampled (\f[C]n\f[]
+by \f[C]n\f[]), but this can be changed to use an equally spaced grid
+(\f[C]n\f[] by 2\f[C]n\f[]) by use of the optional parameter
+\f[C]sampling\f[].
 The employed spherical harmonic normalization and Condon\-Shortley phase
 convention can be set by the optional arguments \f[C]norm\f[] and
 \f[C]csphase\f[]; if not set, the default is to use geodesy 4\-pi
@@ -95,8 +91,7 @@ normalized harmonics that exclude the Condon\-Shortley phase of (\-1)^m.
 The normalized legendre functions are calculated using the scaling
 algorithm of Holmes and Featherstone (2002), which are accurate to about
 degree 2800.
-This routine takes into account the symmetry of the associated Legendre
-functions about the equator in order to reduce computational time.
+The unnormalized functions are accurate only to about degree 15.
 .SH References
 .PP
 Driscoll, J.R.
@@ -118,9 +113,3 @@ Geodesy, 76, 279\- 299, 2002.
 \f[C]shexpanddh\f[], \f[C]makegriddhc\f[], \f[C]shexpanddhc\f[],
 \f[C]makegridglq\f[], \f[C]shexpandglq\f[], \f[C]makegridglqc\f[],
 \f[C]shexpandglqc\f[], \f[C]makegrid2d\f[]
-.SH Copyright and License
-.PP
-Copyright 2015 Mark Wieczorek.
-.PP
-This is free software; you can distribute and modify it under the terms
-of the revised BSD license.

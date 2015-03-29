@@ -431,28 +431,6 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(n),intent(hide) :: w_d0 = n
         end subroutine PreGLQ
 
-        function NGLQ(degree) ! in PythonWrapper.f95
-            fortranname pynglq
-            use shtools, only: NGLQ
-            integer intent(in),check(degree > 0) :: degree
-            integer :: NGLQ
-        end function NGLQ
-
-        function NGLQSH(degree) ! in PythonWrapper.f95
-            fortranname pynglqsh
-            use shtools, only: NGLQSH
-            integer intent(in),check(degree > 0) :: degree
-            integer :: NGLQSH
-        end function NGLQSH
-
-        function NGLQSHN(degree,n) ! in PythonWrapper.f95
-            fortranname pynglqshn
-            use shtools, only: NGLQSHN
-            integer intent(in),check(degree > 0) :: degree
-            integer intent(in) :: n
-            integer :: NGLQSHN
-        end function NGLQSHN
-
         subroutine SHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2) ! in PythonWrapper.f95
             fortranname pyshread
             use shtools, only: SHRead
@@ -760,14 +738,6 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d1 = lmax+1
             integer, optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d2 = lmax+1
         end subroutine SHRotateRealCoef
-
-        subroutine DHaj(n,aj,aj_d0) ! in PythonWrapper.f95
-            fortranname pydhaj
-            use shtools, only: DHaj
-            integer intent(in) :: n
-            real*8 dimension(aj_d0),intent(out) :: aj
-            integer, optional,intent(in),depend(n),check(n%2==0),intent(hide) :: aj_d0 = n
-        end subroutine DHaj
 
         subroutine SHExpandDH(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1) ! in PythonWrapper.f95
             fortranname pyshexpanddh

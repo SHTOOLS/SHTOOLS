@@ -1,0 +1,121 @@
+.TH "makegriddh" "1" "2015\-03\-29" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH MakeGridDH
+.PP
+Create a 2D map from a set of spherical harmonic coefficients that
+conforms with Driscoll and Healy\[aq]s (1994) sampling theorem.
+.SH Usage
+.PP
+call subroutine MakeGridDH (\f[C]griddh\f[], \f[C]n\f[], \f[C]cilm\f[],
+\f[C]lmax\f[], \f[C]norm\f[], \f[C]sampling\f[], \f[C]csphase\f[],
+\f[C]lmax_calc\f[])
+.SH Parameters
+.TP
+.B \f[C]griddh\f[] : output, real*8, dimension (2*\f[C]lmax\f[]+2, 2*\f[C]lmax\f[]+2) or (2*\f[C]lmax\f[]+2, 4*\f[C]lmax\f[]+4)
+A 2D equally sampled (\f[C]n\f[] by \f[C]n\f[], default), or equally
+spaced (\f[C]n\f[] by 2\f[C]n\f[]) map of the input spherical harmonic
+coefficients \f[C]cilm\f[] that conforms to the sampling theorem of
+Driscoll and Healy (1994).
+The first latitudinal band corresponds to 90 N, the latitudinal band for
+90 S is not included, and the latitudinal sampling interval is
+180/\f[C]n\f[] degrees.
+The first longitudinal band is 0 E, the longitudinal band for 360 E is
+not included, and the longitudinal sampling interval is 360/\f[C]n\f[]
+for an equally sampled and 180/\f[C]n\f[] for an equally spaced grid,
+respectively.
+.RS
+.RE
+.TP
+.B \f[C]n\f[] : output, integer
+The number of samples in latitude and longitude of \f[C]griddh\f[].
+This is equal to \f[C]2lmax+2\f[], which will always be even.
+.RS
+.RE
+.TP
+.B \f[C]cilm\f[] : input, real*8, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+The real spherical harmonic coefficients of the function.
+The coefficients \f[C]c1lm\f[] and \f[C]c2lm\f[] refer to the cosine
+(\f[C]Clm\f[]) and sine (\f[C]Slm\f[]) coefficients, respectively, with
+\f[C]Clm=cilm(1,l+1,m+1)\f[] and \f[C]Slm=cilm(2,l+1,m+1)\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum spherical harmonic degree of the function.
+This determines the number of samples \f[C]n\f[].
+.RS
+.RE
+.TP
+.B \f[C]norm\f[] : input, integer, optional, default = 1
+1 (default) = 4\-pi (geodesy) normalized harmonics; 2 = Schmidt
+semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
+harmonics.
+.RS
+.RE
+.TP
+.B \f[C]sampling\f[] : input, integer, optional, default = 1
+If 1 (default) the input grid is equally sampled (\f[C]n\f[] by
+\f[C]n\f[]).
+If 2, the grid is equally spaced (\f[C]n\f[] by 2\f[C]n\f[]).
+.RS
+.RE
+.TP
+.B \f[C]csphase\f[] : input, integer, optional, default = 1
+1 (default) = do not apply the Condon\-Shortley phase factor to the
+associated Legendre functions; \-1 = append the Condon\-Shortley phase
+factor of (\-1)^m to the associated Legendre functions.
+.RS
+.RE
+.TP
+.B \f[C]lmax_calc\f[] : input, integer, optional, default = \f[C]lmax\f[]
+The maximum spherical harmonic degree used in evaluating the function.
+This must be less than or equal to \f[C]lmax\f[].
+.RS
+.RE
+.SH Description
+.PP
+\f[C]MakeGridDH\f[] will create a 2\-dimensional map equally sampled
+(\f[C]n\f[] by \f[C]n\f[]) or equally spaced (\f[C]n\f[] by 2\f[C]n\f[])
+in latitude and longitude from a set of input spherical harmonic
+coefficients, where \f[C]n=2lmax+2\f[].
+This grid conforms with the sampling theorem of Driscoll and Healy
+(1994) and this routine is the inverse of \f[C]SHExpandDH\f[].
+The function is evaluated at each longitudinal band by inverse Fourier
+transforming the sin and cos terms for each degree \f[C]l\f[], and then
+summing over all degrees.
+When evaluating the function, the maximum spherical harmonic degree that
+is considered is the minimum of \f[C]lmax\f[], the size of
+\f[C]cilm\-1\f[], or \f[C]lmax_calc\f[] (if specified).
+.PP
+The default is to use an input grid that is equally sampled (\f[C]n\f[]
+by \f[C]n\f[]), but this can be changed to use an equally spaced grid
+(\f[C]n\f[] by 2\f[C]n\f[]) by the optional argument \f[C]sampling\f[].
+The employed spherical harmonic normalization and Condon\-Shortley phase
+convention can be set by the optional arguments \f[C]norm\f[] and
+\f[C]csphase\f[]; if not set, the default is to use geodesy 4\-pi
+normalized harmonics that exclude the Condon\-Shortley phase of (\-1)^m.
+.PP
+The normalized legendre functions are calculated using the scaling
+algorithm of Holmes and Featherstone (2002), which are accurate to about
+degree 2800.
+The unnormalized functions are accurate only to about degree 15.
+.SH References
+.PP
+Driscoll, J.R.
+and D.M.
+Healy, Computing Fourier transforms and convolutions on the 2\-sphere,
+Adv.
+Appl.
+Math., 15, 202\-250, 1994.
+.PP
+Holmes, S.
+A., and W.
+E.
+Featherstone, A unified approach to the Clenshaw summation and the
+recursive computation of very high degree and order normalised
+associated Legendre functions, J.
+Geodesy, 76, 279\-299, 2002.
+.SH See also
+.PP
+\f[C]shexpanddh\f[], \f[C]makegriddhc\f[], \f[C]shexpanddhc\f[],
+\f[C]makegridglq\f[], \f[C]shexpandglq\f[], \f[C]makegridglqc\f[],
+\f[C]shexpandglqc\f[], \f[C]shexpandlsq\f[]

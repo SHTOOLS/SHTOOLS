@@ -4,7 +4,7 @@ SHTOOLS Module containing planetary constants.
 
 # Description
 
-`PlanetsConstants` defines several constants that are useful when working with gravity and topography data of the Earth, Mars, Venus, and Moon. All units are SI. Confer with the source file or the Python documentation for exact values and references.
+`PlanetsConstants` defines several constants that are useful when working with gravity and topography data of the Earth, Mars, Venus, and Moon. All units are SI. Confer with the Python documentation or fortran source file for exact values and references.
 
 # Constants
 
@@ -38,25 +38,25 @@ SHTOOLS Module containing planetary constants.
 :   Semi-major axis of the lunar orbit.
 
 `g0_Moon`
-:   Gravitational acceleration at R_Moon, not including rotation.
+:   Mean gravitational acceleration of the Moon at the mean surface radius (R_Moon), not including rotation.
 
 `R0_pot_Moon`
-:   Reference radius of the gravitational-potential model.
+:   Reference radius of the gravitational-potential models of the Moon.
 
 `Omega_Moon`
 :   Angular rotation rate of the Moon.
 
 `C_MOI_Moon`
-:   Polar moment of inertia, using R=1738 km.
+:   Polar moment of inertia of the Moon, using R=1738 km.
 
 `I_MOI_Moon`
-:   Average moment of inertia, using R=1738 km.
+:   Average moment of inertia of the Moon, using R=1738 km.
 
 `Gamma_MOI_Moon`
-:   Gamma = (B-A)/C.
+:   Libration parameter of the Moon, (B-A)/C.
 
 `Beta_MOI_Moon`
-:   Beta = (C-A)/B.
+:   Libration parameter of the Moon, (C-A)/B.
 
 ## Mars
 
@@ -73,10 +73,10 @@ SHTOOLS Module containing planetary constants.
 :   Average density of Mars.
 
 `g0_Mars`
-:   Gravitational acceleration at R_Mars, not including rotation.
+:   Gravitational acceleration of Mars at R_Mars, not including rotation.
 
 `R0_pot_Mars`
-:   Reference radius of the gravitational-potential model.
+:   Reference radius of the gravitational-potential models of Mars.
 
 `Omega_Mars`
 :   Angular rotation rate of Mars.
@@ -99,7 +99,7 @@ SHTOOLS Module containing planetary constants.
 :   Average radius of Venus.
 
 `R0_pot_Venus` 
-:   Reference radius of the gravitational-potential model.
+:   Reference radius of the gravitational-potential models of Venus.
 
 `GM_Venus`
 :   Gravitational constant times the mass of the Venus.
@@ -122,7 +122,7 @@ SHTOOLS Module containing planetary constants.
 :   Gravitational constant times the mass of the Earth.
 
 `R0_pot_Earth`
-:   Reference radius of the gravitational-potential model.
+:   Reference radius of the terrestrial gravitational-potential models.
 
 `Mass_Earth`
 :   The mass of the Earth.
@@ -180,9 +180,3 @@ SHTOOLS Module containing planetary constants.
 # See also
 
 shtools
-
-# Copyright and License
-
-Copyright 2015 Mark Wieczorek.
-
-This is free software. You can distribute and modify it under the terms of the revised BSD license.

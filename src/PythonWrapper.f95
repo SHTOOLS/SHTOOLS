@@ -498,31 +498,6 @@
         call PreGLQ(x1,x2,n,zero,w)
     end subroutine pyPreGLQ
 
-    function pyNGLQ(degree) 
-        use shtools, only: NGLQ
-        implicit none
-        integer, intent(in) :: degree
-        integer :: pyNGLQ
-        pyNGLQ=NGLQ(degree)
-    end function pyNGLQ
-
-    function pyNGLQSH(degree) 
-        use shtools, only: NGLQSH
-        implicit none
-        integer, intent(in) :: degree
-        integer :: pyNGLQSH
-        pyNGLQSH=NGLQSH(degree)
-    end function pyNGLQSH
-
-    function pyNGLQSHN(degree,n) 
-        use shtools, only: NGLQSHN
-        implicit none
-        integer, intent(in) :: degree
-        integer, intent(in) :: n
-        integer :: pyNGLQSHN
-        pyNGLQSHN=NGLQSHN(degree,n)
-    end function pyNGLQSHN
-
     subroutine pySHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2) 
         use shtools, only: SHRead
         implicit none
@@ -858,15 +833,6 @@
         integer, intent(in) :: cilmrot_d2
         call SHRotateRealCoef(cilmrot,cilm,lmax,x,dj)
     end subroutine pySHRotateRealCoef
-
-    subroutine pyDHaj(n,aj,aj_d0) 
-        use shtools, only: DHaj
-        implicit none
-        integer, intent(in) :: n
-        real*8, dimension(aj_d0),intent(out) :: aj
-        integer, intent(in) :: aj_d0
-        call DHaj(n,aj)
-    end subroutine pyDHaj
 
     subroutine pySHExpandDH(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0&
                                 ,grid_d1) 
