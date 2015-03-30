@@ -2,7 +2,7 @@
 		
 SHTOOLS is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.
 
-# FEATURES
+# Features
 
 SHTOOLS is extremely versatile:
 
@@ -15,7 +15,7 @@ SHTOOLS is extremely versatile:
 * Routines are included for performing standard gravity and magnetic field calculations, such as computation of the geoid and the determination of the potential associated with finite-amplitude topography.
 * The routines are fast. Spherical harmonic transforms and reconstructions take on the order of 1 second for bandwidths less than 600 and about 3 minutes for bandwidths close to 2800.
     
-# USAGE
+# Usage
 
 To call the SHTOOLS routines from within a Fortran 95 program, you will need to place the command
 
@@ -31,8 +31,10 @@ To use SHTOOLS in Python, enter the following:
     sys.path.append('/usr/local/lib/python2.7/site-packages')
     import pyshtools as shtools
 
-# LICENSE
+# License
 
 The SHTOOLS software package is entirely free and open source. It can be modified and distributed according to the revised BSD license.
 
+# See also
 
+[SHTOOLS](shtools.ipgp.fr)

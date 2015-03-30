@@ -84,7 +84,7 @@ This is a slightly modified version of the algorithm that was published in NUMER
 
 =head1 SEE ALSO
 
-precompute(1)
+shglq(1)
 
 L<http://shtools.ipgp.fr/>
 

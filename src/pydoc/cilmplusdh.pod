@@ -40,9 +40,9 @@ I<CilmPlusDH> will calculate the spherical harmonic coefficients of the gravitat
 
 It is important to understand that as an intermediate step, this routine calculates the spherical harmonic coefficients of the relief (referenced to the mean radius of GRIDIN or DREF) raised to the nth power, i.e., (GRIDIN-D)**n. As such, if the input function is bandlimited to degree L, the resulting function will be bandlimited to degree L*NMAX. This subroutine implicitly assumes that the GRIDIN has an effective spherical harmonic bandwidth greater or equal to L*NMAX. (The effective bandwidth is equal to LMAX for GRIDIN=1, and is specified by N/2-1 for GRIDIN=2 or 3.) If this is not the case, then aliasing will occur. In practice, for accurate results, it is found that the effective bandwidth needs only to be about three times the size of L, though this should be verified for each application. Thus, if the input function is considered to be bandlimited to degree L, the function should be evaluated on a grid corresponding to a maximum degree of about 3*L. Aliasing effects can be minimized by using Driscoll and Healy Nx2N grids.
 
-If the input grid is evaluated on the Gauss-Legendre points, it is necessary to specify the optional parameters W and ZERO, or W and PLX, which are calculated by a call to I<PreCompute>. In contast, if Driscoll-Healy grids are used (NxN or Nx2N), it is necessary to specify the optional parameter N.
+If the input grid is evaluated on the Gauss-Legendre points, it is necessary to specify the optional parameters W and ZERO, or W and PLX, which are calculated by a call to `SHGLQ`. In contast, if Driscoll-Healy grids are used (NxN or Nx2N), it is necessary to specify the optional parameter N.
 
-If memory is not an issue, the algorithm can be speeded up considerably when using Gauss-Lengendre grids by inputing the optional array PLX (along with W) of precomputed associated Legendre functions on the Gauss-Legendre nodes.  Both of these variables are computed by a call to I<PreCompute>.
+If memory is not an issue, the algorithm can be speeded up considerably when using Gauss-Lengendre grids by inputing the optional array PLX (along with W) of precomputed associated Legendre functions on the Gauss-Legendre nodes.  Both of these variables are computed by a call to `SHGLQ`.
 
 =head1 ARGUMENTS
 
@@ -112,7 +112,7 @@ This routine requires the fast Fourier transform library I<FFTW>, which is avail
 
 =head1 SEE ALSO
 
-cilmplusrhoh(1), shexpandglq(1), makegridglq(1), precompute(1), preglq(1), glqgridcoord(1), makegriddh(1)
+cilmplusrhoh(1), shexpandglq(1), makegridglq(1), shglq(1), preglq(1), glqgridcoord(1), makegriddh(1)
 
 L<http://shtools.ipgp.fr/>
 

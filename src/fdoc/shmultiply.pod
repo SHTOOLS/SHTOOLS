@@ -104,7 +104,7 @@ This routine makes use of the Gauss-Legendre quadrature routines I<MakeGridGLQ> 
 
 =head1 SEE ALSO
 
-shexpandglq(1), makegridglq(1), precompute(1)
+shexpandglq(1), makegridglq(1), shglq(1)
 
 L<http://shtools.ipgp.fr/>
 

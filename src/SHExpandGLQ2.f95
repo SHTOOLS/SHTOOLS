@@ -24,7 +24,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_ca
 !					If LMAX_CALC is not specified, this corresponds
 !					to the maximum spherical harmonic degree of the expansion.
 !			w		Gauss-Legendre points used in the integrations
-!					(determined from a call to PreCompute).
+!					(determined from a call to SHGLQ).
 !		OUT
 !			cilm 		Spherical harmonic coefficients of expansion with 
 !					dimensions (2, LMAX+1, LMAX+1), or if LMAX_CAL is
@@ -32,11 +32,11 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_ca
 !		OPTIONAL (IN)
 !			plx		Input array of Associated Legendre Polnomials computed
 !					at the Gauss-Legendre points (determined from a call to
-!					PreCompute). If this is not included, then the optional
+!					SHGLQ). If this is not included, then the optional
 !					array ZERO MUST be inlcuded.
 !			zero		Array of dimension LMAX+1 that contains the latitudinal
 !					gridpoints used in the Gauss-Legendre quadrature integration
-!					scheme, calculated from a call to PreCompute. This is only 
+!					scheme, calculated from a call to SHGLQ. This is only 
 !					needed if PLX is not given.
 !			norm		Normalization to be used when calculating the Legendre functions
 !						(1) "geodesy" (default)

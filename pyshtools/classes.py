@@ -212,7 +212,7 @@ class SHRealCoefficients(SHCoeffs):
     def _expandGLQ(self,zeros=None):
         """-> use expand(kind='GLQ') instead of _expandGLQ"""
         if zeros is None:
-            zeros, weights = PreCompute(self.lmax)
+            zeros, weights = SHGLQ(self.lmax)
         data = MakeGridGLQ(self.coeffs,zeros)
         grid = SHGrid.from_array(data,'GLQ')
         return grid
@@ -258,7 +258,7 @@ class SHComplexCoefficients(SHCoeffs):
     def _expandGLQ(self, zeros=None):
         """-> use expand(kind='GLQ') instead of _expandGLQ"""
         if zeros is None:
-            zeros, weights = PreCompute(self.lmax)
+            zeros, weights = SHGLQ(self.lmax)
         data = MakeGridGLQ(self.coeffs,zeros)
         grid = SHGrid.from_array(data,'GLQ')
         return grid
@@ -374,7 +374,7 @@ class GLQGrid(SHGrid):
         self.lmax = self.nlat-1
         self.data = array
         if zeros is None:
-            self.zeros, weights = PreCompute(self.lmax)
+            self.zeros, weights = SHGLQ(self.lmax)
         else:
             self.zeros = zeros
 

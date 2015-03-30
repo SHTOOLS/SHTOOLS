@@ -1,0 +1,50 @@
+.TH "glqgridcoord" "1" "2015\-03\-30" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH GLQGridCoord
+.PP
+Compute the latitude and longitude coordinates used in Gauss\-Legendre
+quadrature grids.
+.SH Usage
+.PP
+call subroutine GLQGridCoord (\f[C]latglq\f[], \f[C]longlq\f[],
+\f[C]lmax\f[], \f[C]nlat\f[], \f[C]nlong\f[])
+.SH Parameters
+.TP
+.B \f[C]latglq\f[] : output, real*8, dimension (\f[C]lmax\f[]+1)
+The latitude coordinates of a grid, corresponding to the indices (:,1),
+in DEGREES.
+.RS
+.RE
+.TP
+.B \f[C]longlq\f[] : output, real*8, dimension (2*\f[C]lmax\f[]+1)
+The longitude coordinates of a grid, corresponding to the indices (1,:),
+in DEGREES.
+The first node is 0 E.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum spherical harmonic degree that will be integrated exactly by
+Gauss\-Legendre quadrature.
+.RS
+.RE
+.TP
+.B \f[C]nlat\f[] : output, integer
+The number of samples in latitude.
+.RS
+.RE
+.TP
+.B \f[C]nlong\f[] : output, integer
+The number of samples in longitude.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]GLQGridCoord\f[] will compute the latitude and longitude
+coordinates that are used in Gauss\-Legendre quadrature grids for
+performing spherical harmonic transforms and reconstructions.
+The latitudinal nodes correspond to the zeros of the Legendre polynomial
+of degree \f[C]lmax+1\f[], and the longitudinal nodes are equally spaced
+with an interval of \f[C]360/(2*lmax+1)\f[] degrees.
+.SH See also
+.PP
+shglq, shexpandglq, makegridglq, shexpandglqc, makegridglqc, preglq

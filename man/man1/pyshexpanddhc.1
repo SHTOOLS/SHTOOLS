@@ -1,4 +1,4 @@
-.TH "pyshexpanddhc" "1" "2015\-03\-29" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "pyshexpanddhc" "1" "2015\-03\-30" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH SHExpandDHC
 .PP
 Expand an equally sampled or equally spaced complex grid into complex
@@ -6,8 +6,8 @@ spherical harmonics using Driscoll and Healy\[aq]s (1994) sampling
 theorem.
 .SH Usage
 .PP
-\f[C]cilm\f[] = pyshtools.SHExpandDHC (\f[C]griddh\f[], [\f[C]n\f[],
-\f[C]norm\f[], \f[C]sampling\f[], \f[C]csphase\f[], \f[C]lmax_calc\f[]])
+\f[C]cilm\f[] = pyshtools.SHExpandDHC (\f[C]griddh\f[], [\f[C]norm\f[],
+\f[C]sampling\f[], \f[C]csphase\f[], \f[C]lmax_calc\f[]])
 .SH Returns
 .TP
 .B \f[C]cilm\f[] : complex, dimension (2, \f[C]n\f[]/2, \f[C]n\f[]/2) or (2, \f[C]lmax_calc\f[]+1, \f[C]lmax_calc\f[]+1)
@@ -30,16 +30,6 @@ The first latitudinal band corresponds to 90 N, the latitudinal band for
 The first longitudinal band is 0 E, the longitude band for 360 E is not
 included, and the longitudinal sampling interval is 360/\f[C]n\f[] for
 an equally and 180/\f[C]n\f[] for an equally spaced grid, respectively.
-.RS
-.RE
-.TP
-.B \f[C]n\f[] : integer, optional, default = shape(\f[C]griddh\f[],0)
-The number of samples in latitude of \f[C]griddh\f[].
-If \f[C]sampling\f[] is 1 (default) then the number of samples in
-longitude is \f[C]n\f[].
-If \f[C]sampling\f[] is 2 then the number of longitudinal samples is
-\f[C]2n\f[].
-\f[C]n\f[] must be even.
 .RS
 .RE
 .TP

@@ -162,12 +162,12 @@ module SHTOOLS
 			integer, intent(in), optional :: norm, csphase, lmax_calc
 		end subroutine SHExpandGLQ
 		
-		subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
+		subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	zero(:), w(:)
 			real*8, intent(out), optional ::	plx(:,:)
 			integer, intent(in), optional :: norm, csphase, cnorm
-		end subroutine PreCompute
+		end subroutine SHGLQ
 
 		subroutine PreGLQ(x1, x2, n, zero, w)
 			real*8, intent(in) :: 	x1, x2

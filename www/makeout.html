@@ -118,7 +118,7 @@ gfortran -c -m64 -fPIC -O3  MakeGridDH.f95<br>
 gfortran -c -m64 -fPIC -O3  MakeGridDHC.f95<br>
 gfortran -c -m64 -fPIC -O3  MakeGridGLQ.f95<br>
 gfortran -c -m64 -fPIC -O3  MakeGridGLQC.f95<br>
-gfortran -c -m64 -fPIC -O3  PreCompute.f95<br>
+gfortran -c -m64 -fPIC -O3  SHGLQ.f95<br>
 gfortran -c -m64 -fPIC -O3  SHExpandDH.f95<br>
 gfortran -c -m64 -fPIC -O3  SHExpandDHC.f95<br>
 gfortran -c -m64 -fPIC -O3  SHExpandGLQ.f95<br>
@@ -129,7 +129,7 @@ gfortran -c -m64 -fPIC -O3  MakeMagGridDH.f95<br>
 <br>
 COMPILATION OF SOURCE FILES SUCCESSFUL.<br>
 <br>
-ar -r ../lib/libSHTOOLS.a CilmPlus.o ComputeD0.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o FFTW3.o Hilm.o MakeGrid2D.o GLQGridCoord.o MakeGridPoint.o PlanetsConstants.o PlBar.o PlBar_d1.o PLegendre.o PLegendreA.o PLegendreA_d1.o PlmBar.o PlmBar_d1.o PlmIndex.o PlmSchmidt.o PlmSchmidt_d1.o PlSchmidt.o PlSchmidt_d1.o PreGLQ.o Random.o SHAdmitCorr.o SHBias.o SHBiasK.o SHConvertCoef.o SHFindLWin.o SHLocalizedAdmitCorr.o SHMultiply.o SHMultiTaperCSE.o SHMultiTaperSE.o SHPowerSpectra.o SHRead.o SHReadJPL.o SHReturnTapersM.o SHRotateCoef.o SHRotateRealCoef.o SHTOOLS.o SphericalCapCoef.o Wigner3j.o wl.o SHRead2.o MakeGeoidGrid.o MakeCircleCoord.o SHSjkPG0.o SHReturnTapers.o SHSjkPG.o PlON.o PlON_d1.o PlmON.o PlmON_d1.o SHConfidence.o SHMagPowerSpectra.o SHPowerSpectraC.o SHBiasAdmitCorr.o SHCilmToVector.o YilmIndex.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o MakeEllipseCoord.o CilmPlusRhoH.o HilmRhoH.o NormalGravity.o EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o SHMTDebias.o SHMTVarOpt0.o SHMTVarOpt.o MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o PreCompute.o SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o<br>
+ar -r ../lib/libSHTOOLS.a CilmPlus.o ComputeD0.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o FFTW3.o Hilm.o MakeGrid2D.o GLQGridCoord.o MakeGridPoint.o PlanetsConstants.o PlBar.o PlBar_d1.o PLegendre.o PLegendreA.o PLegendreA_d1.o PlmBar.o PlmBar_d1.o PlmIndex.o PlmSchmidt.o PlmSchmidt_d1.o PlSchmidt.o PlSchmidt_d1.o PreGLQ.o Random.o SHAdmitCorr.o SHBias.o SHBiasK.o SHConvertCoef.o SHFindLWin.o SHLocalizedAdmitCorr.o SHMultiply.o SHMultiTaperCSE.o SHMultiTaperSE.o SHPowerSpectra.o SHRead.o SHReadJPL.o SHReturnTapersM.o SHRotateCoef.o SHRotateRealCoef.o SHTOOLS.o SphericalCapCoef.o Wigner3j.o wl.o SHRead2.o MakeGeoidGrid.o MakeCircleCoord.o SHSjkPG0.o SHReturnTapers.o SHSjkPG.o PlON.o PlON_d1.o PlmON.o PlmON_d1.o SHConfidence.o SHMagPowerSpectra.o SHPowerSpectraC.o SHBiasAdmitCorr.o SHCilmToVector.o YilmIndex.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o MakeEllipseCoord.o CilmPlusRhoH.o HilmRhoH.o NormalGravity.o EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o SHMTDebias.o SHMTVarOpt0.o SHMTVarOpt.o MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o SHGLQ.o SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o<br>
 ar: creating archive ../lib/libSHTOOLS.a<br>
 /opt/local/bin/ranlib: file: ../lib/libSHTOOLS.a(FFTW3.o) has no symbols<br>
 /opt/local/bin/ranlib: file: ../lib/libSHTOOLS.a(PlanetsConstants.o) has no symbols<br>
@@ -253,9 +253,9 @@ get_useparameters: no module shtools info used by MakeGridGLQ
 			Block: SHExpandGLQ
 In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHExpandGLQ
 get_useparameters: no module shtools info used by SHExpandGLQ
-			Block: PreCompute
-In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PreCompute
-get_useparameters: no module shtools info used by PreCompute
+			Block: SHGLQ
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHGLQ
+get_useparameters: no module shtools info used by SHGLQ
 			Block: PreGLQ
 In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PreGLQ
 get_useparameters: no module shtools info used by PreGLQ
@@ -563,8 +563,8 @@ Building modules...
 		  gridglq = MakeGridGLQ(cilm,zero,[lmax,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0])
 		Constructing wrapper function "SHExpandGLQ"...
 		  cilm = SHExpandGLQ(gridglq,w,zero,[lmax,norm,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0])
-		Constructing wrapper function "PreCompute"...
-		  zero,w = PreCompute(lmax,[norm,csphase,cnorm,zero_d0,w_d0])
+		Constructing wrapper function "SHGLQ"...
+		  zero,w = SHGLQ(lmax,[zero_d0,w_d0])
 		Constructing wrapper function "PreGLQ"...
 		  zero,w = PreGLQ(x1,x2,n,[zero_d0,w_d0])
 		Creating wrapper for Fortran function "NGLQ"("pynglq")...

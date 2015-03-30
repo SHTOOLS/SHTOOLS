@@ -1,10 +1,11 @@
-subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
+subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
-!	This routine will precompute several arrays and matrixes that are 
+!	This routine will precompute the zeros and weights that are 
 !	necessary for the Gauss-Legendre quadrature sherical harmonic
-!	expansion routines. This is done only to speed up computations
-!	in the case where more than one expansion is performed.
+!	expansion routines. This routine can also calculate a matrix of
+!   legendre functions on the grid nodes to speed up computations
+!	in the case where more than one expansion is performed. 
 !	Note, if memory is an issue because of large spherical harmonic 
 !	degrees, DO NOT PRECOMPUTE THE ARRAY PLX!
 !
@@ -62,12 +63,12 @@ subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
 	
 	
 	if (size(zero) < lmax+1) then 
-		print*, "Error --- PreCompute"
+		print*, "Error --- SHGLQ"
 		print*, "ZERO must be dimensioned as (LMAX+1) where LMAX is ", lmax
 		print*, "Input array is dimensioned ", size(zero)
 		stop
 	elseif (size(w) < lmax+1) then 
-		print*, "Error --- PreCompute"
+		print*, "Error --- SHGLQ"
 		print*, "W must be dimensioned as (LMAX+1) where LMAX is ", lmax
 		print*, "Input array is dimensioned ", size(w)
 		stop
@@ -75,7 +76,7 @@ subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
 	
 	if (present(plx)) then
 		if (size(plx(:,1)) < lmax +1 .or. size(plx(1,:)) < (lmax+1)*(lmax+2)/2) then
-			print*, "Error --- PreCompute"
+			print*, "Error --- SHGLQ"
 			print*, "PLX must be dimensioned as (LMAX+1, (LMAX+1)*(LMAX+2)/2) where LMAX is ", lmax
 			print*, "Input array is dimensioned as ", size(plx(:,1)), size(plx(1,:))
 			stop
@@ -84,7 +85,7 @@ subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
 	
 	if (present(norm)) then
 		if (norm > 4 .or. norm < 1) then
-			print*, "Error - PreCompute"
+			print*, "Error - SHGLQ"
 			print*, "Parameter NORM must be 1 (geodesy), 2 (Schmidt), 3 (unnormalized), or 4 (orthonormalized)."
 			print*, "Input value is ", norm
 			stop
@@ -93,7 +94,7 @@ subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
 	
 	if (present(csphase)) then
      		if (csphase /= -1 .and. csphase /= 1) then
-     			print*, "PreCompute --- Error"
+     			print*, "Error --- SHGLQ"
      			print*, "CSPHASE must be 1 (exclude) or -1 (include)."
      			print*, "Input value is ", csphase
      			stop
@@ -106,7 +107,7 @@ subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
      	
      	allocate(pl(((lmax+2)*(lmax+1))/2), stat = astat)
      	if (astat /= 0) then
-		print*, "Error --- PreCompute"
+		print*, "Error --- SHGLQ"
 		print*, "Problem allocating array PL", astat
 		stop
 	endif
@@ -177,5 +178,5 @@ subroutine PreCompute(lmax, zero, w, plx, norm, csphase, cnorm)
 	
 	deallocate(pl)
 
-end subroutine PreCompute
+end subroutine SHGLQ
 

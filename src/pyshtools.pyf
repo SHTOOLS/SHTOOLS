@@ -362,8 +362,8 @@ python module _SHTOOLS ! in
             real*8 dimension(latglq_d0),intent(out) :: latglq
             real*8 dimension(longlq_d0),intent(out) :: longlq
             integer intent(in) :: lmax
-            integer intent(out) :: nlat
-            integer intent(out) :: nlong
+            integer intent(hide) :: nlat
+            integer intent(hide) :: nlong
             integer, optional,intent(in),depend(lmax),intent(hide) :: latglq_d0 = lmax+1
             integer, optional,intent(in),depend(lmax),intent(hide) :: longlq_d0 = 2*lmax+1
         end subroutine GLQGridCoord
@@ -390,7 +390,7 @@ python module _SHTOOLS ! in
             fortranname pyshexpandglq
             use shtools, only: SHExpandGLQ
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out), :: cilm
-            integer, optional,intent(in),depend(gridglq_d0) :: lmax=gridglq_d0-1
+            integer, intent(hide),depend(gridglq_d0) :: lmax=gridglq_d0-1
             real*8 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
             real*8 dimension(w_d0),intent(in) :: w
             real*8, dimension(zero_d0),intent(in) :: zero
@@ -406,18 +406,15 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(len(w)>=w_d0),depend(w),intent(hide) :: w_d0=len(w)
         end subroutine SHExpandGLQ
 
-        subroutine PreCompute(lmax,zero,w,norm,csphase,cnorm,zero_d0,w_d0) ! in PythonWrapper.f95
-            fortranname pyprecompute
-            use shtools, only: PreCompute
+        subroutine SHGLQ(lmax,zero,w,zero_d0,w_d0) ! in PythonWrapper.f95
+            fortranname pyshglq
+            use shtools, only: SHGLQ
             integer intent(in) :: lmax
             real*8 dimension(zero_d0),intent(out):: zero
             real*8 dimension(w_d0),intent(out) :: w
-            integer, optional,intent(in) :: norm = 1
-            integer, optional,intent(in) :: csphase = 1
-            integer, optional,intent(in) :: cnorm = 0
             integer intent(in),depend(lmax),intent(hide) :: zero_d0 = lmax + 1
             integer intent(in),depend(lmax),intent(hide) :: w_d0 = lmax + 1
-        end subroutine PreCompute
+        end subroutine SHGLQ
 
         subroutine PreGLQ(x1,x2,n,zero,w,zero_d0,w_d0) ! in PythonWrapper.f95
             fortranname pypreglq
@@ -743,7 +740,7 @@ python module _SHTOOLS ! in
             fortranname pyshexpanddh
             use shtools, only: SHExpandDH
             real*8 dimension(grid_d0,grid_d1),intent(in) :: grid
-            integer, optional,intent(in),depend(grid_d0) :: n=grid_d0
+            integer, intent(hide),depend(grid_d0) :: n=grid_d0
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer, intent(hide) :: lmax
             integer, optional,intent(in) :: norm=1
@@ -1566,7 +1563,7 @@ python module _SHTOOLS ! in
             fortranname pyshexpanddhc
             use shtools, only: SHExpandDHC
             complex*16 dimension(grid_d0,grid_d1),intent(in) :: grid
-            integer, optional,intent(in),depend(grid_d0) :: n=grid_d0
+            integer, intent(hide),depend(grid_d0) :: n=grid_d0
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer intent(hide) :: lmax
             integer, optional,intent(in) :: norm = 1
@@ -1623,7 +1620,7 @@ python module _SHTOOLS ! in
             complex*16 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
             real*8 dimension(w_d0),intent(in),depend(w_d0) :: w
             real*8, dimension(zero_d0),intent(in) :: zero
-            integer, optional,intent(in),depend(gridglq_d0) :: lmax=gridglq_d0-1
+            integer, intent(hide),depend(gridglq_d0) :: lmax=gridglq_d0-1
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax

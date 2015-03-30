@@ -11,7 +11,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
 !	LMAX_CALC.
 !
 !	The optional array PLX contains precomputed associated legendre functions
-!	evaluated on the Gauss-Legendre quadrature nodes (obtained from PreCompute with CNORM=1)
+!	evaluated on the Gauss-Legendre quadrature nodes (obtained from SHGLQ with CNORM=1)
 !	and should not be precomputed when memory is an issue (i.e., lmax>360).
 !	If PLX is not present, the Legendre functions are computed on the fly
 !	using the scaling methodolgy presented in Holmes and Featherston (2002). 
@@ -33,7 +33,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc
 !		OPTIONAL (IN)
 !			plx:		Input array of Associated Legendre Polnomials computed
 !					at the Gauss points (determined from a call to
-!					PreCompute). If this is not included, then the optional
+!					SHGLQ). If this is not included, then the optional
 !					array ZERO MUST be inlcuded. PLX must be computed using CNORM=1.
 !			zero		Array of dimension lmax+1 that contains the latitudinal
 !					gridpoints used in the Gauss-Legendre quadrature integration

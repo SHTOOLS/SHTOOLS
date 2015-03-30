@@ -49,7 +49,7 @@ h4 = f(h3)
 
 It is important to understand that as an intermediate step, this routine calculates the spherical harmonic coefficients of the density multiplied by the relief raised to the nth power, i.e., RHO*GRID**n. As such, if the input function is bandlimited to degree L, the resulting function will thus be bandlimited to degree L*NMAX. This subroutine implicitly assumes that LMAX is greater than or equal to L*NMAX. If this is not the case, then aliasing will occur. In practice, for accurate results, it is found that LMAX needs only to be about twice the size of L, though this should be verified for each application. Thus, if the input function is considered to be bandlimited to degree L, the function should be evaluated on a Gauss-Legendre grid corresponding to a maximum degree of about 2*L.
 
-If the input grid is evaluated on the Gauss-Legendre points, it is necessary to specify the optional parameters W and ZERO, or W and PLX, which are calculated by a call to I<PreCompute>. If memory is not an issue, the algorithm can be speeded up considerably by inputing the optional array PLX of precomputed associated Legendre functions on the Gauss-Legendre nodes. If PLX is not specified, then it is necessary to input the optional array ZERO that contains the latitudinal Gauss-Legendre quadrature nodes.
+If the input grid is evaluated on the Gauss-Legendre points, it is necessary to specify the optional parameters W and ZERO, or W and PLX, which are calculated by a call to `SHGLQ`. If memory is not an issue, the algorithm can be speeded up considerably by inputing the optional array PLX of precomputed associated Legendre functions on the Gauss-Legendre nodes. If PLX is not specified, then it is necessary to input the optional array ZERO that contains the latitudinal Gauss-Legendre quadrature nodes.
 
 =head1 ARGUMENTS
 
@@ -107,13 +107,13 @@ The density contrast of the relief in kg/m^3, with the same dimensions as GRID.
 
 (input) REAL*8, DIMENSION (LMAX+1)
 
-The weights used in the Gauss-Legendre quadrature. These are calculated from a call to I<PreCompute> (or alternatively, I<PreGLQ>). If present, one of PLX or ZERO must also be present.
+The weights used in the Gauss-Legendre quadrature. These are calculated from a call to `SHGLQ` (or alternatively, I<PreGLQ>). If present, one of PLX or ZERO must also be present.
 	
 =item ZERO
 
 (input) REAL*8, DIMENSION (LMAX+1)
 
-The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to I<PreCompute>. 
+The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`. 
 
 =item FILTER_TYPE
 
@@ -144,7 +144,7 @@ This routine requires the fast Fourier transform library I<FFTW>, which is avail
 
 =head1 SEE ALSO
 
-hilm(1), shexpandglq(1), makegridglq(1), precompute(1), preglq(1), shexpanddh(1), makegriddh(1), glqgridcoord(1)
+hilm(1), shexpandglq(1), makegridglq(1), shglq(1), preglq(1), shexpanddh(1), makegriddh(1), glqgridcoord(1)
 
 L<http://shtools.ipgp.fr/>
 

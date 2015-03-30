@@ -51,7 +51,7 @@ def TimingAccuracyGLQC():
 
         #precompute grid nodes and associated Legendre functions
         tstart = time.time()
-        zeros, weights = shtools.PreCompute(lmax)
+        zeros, weights = shtools.SHGLQ(lmax)
         tend   = time.time()
         tprecompute = tend-tstart
 

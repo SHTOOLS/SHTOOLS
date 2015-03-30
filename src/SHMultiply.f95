@@ -20,7 +20,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
 !					lmax1 + lmax2.
 !		OPTIONAL (IN)
 !			precomp		If 1, the array plx will be precomputed when calling
-!					the subroutine PreCompute. If 0 (default), then this array will 
+!					the subroutine SHGLQ. If 0 (default), then this array will 
 !					not be precomputed.
 !			csphase:	1: Do not include the phase factor of (-1)^m
 !					-1: Apply the phase factor of (-1)^m.
@@ -30,18 +30,18 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
 !						(3) unnormalized
 !						(4) orthonormalized
 !
-!	Dependencies:	PreCompute, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
+!	Dependencies:	SHGLQ, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
 !
 !	Written by Mark Wieczorek 2004
 !	September 3, 2005. Modified to include the optional argument precomp which determines whether
-!	the array plx will be precomputed in the subroutine PreCompute.
+!	the array plx will be precomputed in the subroutine SHGLQ.
 !	July 25, 2012. Modified to save arrays ZERO and W to reduce redundancy with multiple calls.
 !
 !	Copyright (c) 2005-2006, Mark A. Wieczorek
 !	All rights reserved.
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	use SHTOOLS, only: PreCompute, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
+	use SHTOOLS, only: SHGLQ, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
 
 	implicit none
 		
@@ -122,7 +122,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
 			stop
 		endif
 		
-		call PreCompute(lmaxout, zero, w, csphase = phase, norm = mnorm)
+		call SHGLQ(lmaxout, zero, w, csphase = phase, norm = mnorm)
 	endif
 	
 	if (lmaxout /= lmaxout_last) then
@@ -138,7 +138,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
 			stop
 		endif
 		
-		call PreCompute(lmaxout, zero, w, csphase = phase, norm = mnorm)
+		call SHGLQ(lmaxout, zero, w, csphase = phase, norm = mnorm)
 		
 	endif
 	
@@ -169,7 +169,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
 				stop
 			endif
 			
-			call PreCompute(lmaxout, zero, w, plx = plx, csphase = phase, norm = mnorm)
+			call SHGLQ(lmaxout, zero, w, plx = plx, csphase = phase, norm = mnorm)
 	
 			call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax1+1, 1:lmax1+1), lmaxout, plx = plx, csphase = phase, norm = mnorm)
 

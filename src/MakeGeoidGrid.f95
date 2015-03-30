@@ -49,7 +49,7 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, gridtyp
 !			f			Flattening of the reference ellipsoid.
 !			
 !
-!	Dependencies :  MakeGrid2D, MakeGridGLQ, MakeGridDH, NGLQSH, PreCompute
+!	Dependencies :  MakeGrid2D, MakeGridGLQ, MakeGridDH, NGLQSH, SHGLQ
 !
 !	Written by Mark Wieczorek (October 2005)
 !
@@ -64,7 +64,7 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, gridtyp
 !	All rights reserved.
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	use SHTOOLS, only: MakeGrid2D, MakeGridGLQ, MakeGridDH, NGLQSH, PreCompute
+	use SHTOOLS, only: MakeGrid2D, MakeGridGLQ, MakeGridDH, NGLQSH, SHGLQ
 
 	implicit none
 	
@@ -164,7 +164,7 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, gridtyp
 			print*, "Problem allocating array W, ", astat
 			stop
 		endif
-		call PreCompute(lmax, zero, w, norm=1, csphase=1)
+		call SHGLQ(lmax, zero, w, norm=1, csphase=1)
 	endif
 	
 	allocate(cilm1(2,lmax+1,lmax+1), stat = astat1)

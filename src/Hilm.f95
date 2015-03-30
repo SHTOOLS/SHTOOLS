@@ -28,13 +28,13 @@ subroutine Hilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, plx, zer
 !			
 !		OPTIONAL		
 !			w:		Gauss-Legendre points used in integrations (for GRIDTYPE=1, 
-!					determined from a call to PreCompute).
+!					determined from a call to SHGLQ).
 !			zero:		Array of dimension lmax+1 that contains the latitudinal
 !					gridpoints used in the Gauss-Legendre quadrature integration
 !					scheme (For GRIDTYPE=1). Only needed if plx is not included.
 !			plx:		Input array of Associated Legendre Polnomials computed
 !					at the Gauss points (for GRIDTYPE=1, determined from a call to
-!					PreCompute). If this is not included, then the optional
+!					SHGLQ). If this is not included, then the optional
 !					array zero MUST be inlcuded.
 !			filter_deg:	If specified, each interation will be filtered according to
 !					equation 18 in Wieczorek and Phillips (1998), where the value

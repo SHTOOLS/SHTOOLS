@@ -32,10 +32,10 @@ subroutine CilmPlusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zer
 !			zero:		Array of dimension lmax+1 that contains the latitudinal
 !					gridpoints used in the Gauss-Legendre quadrature integration
 !					scheme. Only needed when PLX is not included.
-!					(Determined from a call to PreCompute).
+!					(Determined from a call to SHGLQ).
 !			plx:		Input array of Associated Legendre Polnomials computed
 !					at the Gauss points (determined from a call to
-!					PreCompute). If this is not included, then the optional
+!					SHGLQ). If this is not included, then the optional
 !					array zero MUST be inlcuded.
 !			N:		Number of latitude points in the Driscoll and Healy grid. Required for Gridtype 2 and 3
 !			dref:		The reference radius used to be used when calculating the spherical
