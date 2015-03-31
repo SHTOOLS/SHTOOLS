@@ -32,18 +32,18 @@ MDFILES = pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pyplon.md \
     pyplmschmidt_d1.md pyplschmidt_d1.md pyplegendrea.md pyplegendre.md pyplegendrea_d1.md \
     pyplegendre_d1.md pyshexpanddh.md pymakegriddh.md pyshexpanddhc.md pymakegriddhc.md \
     pyshglq.md pyglqgridcoord.md pyshexpandglq.md pymakegridglq.md pyshexpandglqc.md \
-    pymakegridglqc.md pyshexpandlsq.md pymakegrid2d.md
+    pymakegridglqc.md pyshexpandlsq.md pymakegrid2d.md pymakegridpoint.md pyshmultiply.pod
 #pycilmplusdh.pod pycilmplusglq.pod pycomputed0.pod pycomputedg82.pod pycomputedm.pod \
 	 pydjpi2.pod pyeigvalsym.pod pyeigvalvecsym.pod pyeigvalvecsymtri.pod \
 	pyhilmdh.pod pyhilmglq.pod pymakecirclecoord.pod pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
 	pymakegeoidgrid2d.pod   \
-	 pymakegridpoint.pod pymakemaggriddh.pod \
+	  pymakemaggriddh.pod \
 	   pypreglq.pod \
 	 pyrandomn.pod pyrandomgaussian.pod \
 	pyshadmitcorr.pod pyshbias.pod pyshbiask.pod pyshrtoc.pod \
 	pyshctor.pod pyshcilmtocindex.pod pyshcindextocilm.pod  \
 	   pyshfindlwin.pod \
-	pyshlocalizedadmitcorr.pod pyshmtvaropt.pod pyshmtvaropt0.pod pyshmultiply.pod \
+	pyshlocalizedadmitcorr.pod pyshmtvaropt.pod pyshmtvaropt0.pod  \
 	pywl.pod pywl_curv.pod pyshmultitapercse.pod pyshmultitaperse.pod pyshpowerl.pod \
 	pyshpowerdensityl.pod pyshcrosspowerdensityl.pod pyshpowerspectrum.pod \
 	pyshpowerspectrumdensity.pod pyshcrosspowerspectrum.pod pyshcrosspowerspectrumdensity.pod \
@@ -64,17 +64,17 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmbar.1 pyplmbar_d1.1 pyplbar.1 pyplbar_d1
     pyplschmidt_d1.1 pyplegendrea.1 pyplegendre.1 pyplegendrea_d1.1 pyplegendre_d1.1 \
     pyshexpanddh.1 pymakegriddh.1 pyshexpanddhc.1 pymakegriddhc.1 pyshglq.1 pyglqgridcoord.1\
     pyshexpandglq.1 pymakegridglq.1 pyshexpandglqc.1 pymakegridglqc.1 pyshexpandlsq.1 \
-    pymakegrid2d.1 )
+    pymakegrid2d.1 pymakegridpoint.1 pyshmultiply.1)
 #pycilmplusdh.1 pycilmplusglq.1 pycomputed0.1 pycomputedg82.1 pycomputedm.1 \
 	 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
 	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
 	   \
-	 pymakegridpoint.1 pymakemaggriddh.1      \
+	  pymakemaggriddh.1      \
 	   pypreglq.1  \
 	pyrandomn.1 pyrandomgaussian.1 \
 	pyshadmitcorr.1 pyshbias.1 pyshbiask.1 pyshrtoc.1 pyshctor.1 pyshcilmtocindex.1 pyshcindextocilm.1 \
 	   pyshfindlwin.1 \
-	pyshlocalizedadmitcorr.1 pyshmtvaropt.1 pyshmtvaropt0.1 pyshmultiply.1 pywl.1 pywlcurv.1 \
+	pyshlocalizedadmitcorr.1 pyshmtvaropt.1 pyshmtvaropt0.1  pywl.1 pywlcurv.1 \
 	pyshmultitapercse.1 pyshmultitaperse.1 pyshpowerl.1 pyshpowerdensityl.1 pyshcrosspowerdensityl.1 \
 	pyshpowerspectrum.1 pyshpowerspectrumdensity.1 pyshcrosspowerspectrum.1 \
 	pyshcrosspowerspectrumdensity.1 pyshcrosspowerl.1 pyshread.1 pyshreaderror.1 pyshreadjpl.1 pyshreadjplerror.1 \
@@ -96,12 +96,7 @@ HTMLFILES_legendre =  $(addprefix $(WWWDIR)/, pyplmbar.html pyplmbar_d1.html pyp
 HTMLFILES_transformations = $(addprefix $(WWWDIR)/, pyshexpanddh.html pymakegriddh.html  \
 	pyshexpanddhc.html pymakegriddhc.html pyshglq.html pyglqgridcoord.html pyshexpandglq.html\
     pymakegridglq.html pyshexpandglqc.html pymakegridglqc.html pyshexpandlsq.html \
-    pymakegrid2d.html)
-#    \
-	  pymakegridpoint.html  \
-	   pyshmultiply.html \
-	    \
-	pypreglq.html
+    pymakegrid2d.html pymakegridpoint.html pyshmultiply.html)
 
 HTMLFILES_io = 
 #pyshread.html pyshreaderror.html pyshreadjpl.html pyshreadjplerror.html pyshread2.html \
@@ -136,7 +131,7 @@ HTMLFILES_gravmag =
 HTMLFILES_other =  
 #pyeigvalsym.html pyeigvalvecsym.html pyeigvalvecsymtri.html \
 	pymakecirclecoord.html pyrandomn.html pyrandomgaussian.html \
-	pywigner3j.html pymakeellipsecoord.html
+	pywigner3j.html pymakeellipsecoord.html pypreglq.html
  
 
 all: install-man install-html

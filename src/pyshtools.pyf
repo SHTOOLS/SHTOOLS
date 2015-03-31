@@ -836,7 +836,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(sh1_d1) :: lmax1 = sh1_d1-1
             real*8 dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
             integer, optional,intent(in),depend(sh2_d1) :: lmax2 = sh2_d1-1
-            integer, optional,intent(in) :: precomp = 0
+            integer, intent(hide) :: precomp = 0
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in),depend(sh1),intent(hide) :: sh1_d0=shape(sh1,0)

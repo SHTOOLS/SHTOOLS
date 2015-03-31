@@ -32,17 +32,17 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
     plschmidt_d1.md plegendrea.md plegendrea_d1.md plegendre.md plegendre_d1.md \
     plmindex.md shexpanddh.md makegriddh.md shexpanddhc.md makegriddhc.md shglq.md \
     glqgridcoord.md shexpandglq.md makegridglq.md shexpandglqc.md makegridglqc.md \
-    shexpandlsq.md makegrid2d.md
+    shexpandlsq.md makegrid2d.md makegridpoint.md shmultiply.md
 # cilmplus.pod computed0.pod computedg82.pod computedm.pod \
 	 djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
 	hilm.pod makecirclecoord.pod makegeoidgrid.pod \
-	  makegridpoint.pod makemaggriddh.pod \
+	   makemaggriddh.pod \
 	   preglq.pod  \
 	 randomn.pod randomgaussian.pod \
 	shadmitcorr.pod shbias.pod shbiask.pod shrtoc.pod \
 	shctor.pod shcilmtocindex.pod shcindextocilm.pod  \
 	   shfindlwin.pod \
-	shlocalizedadmitcorr.pod shmtvaropt.pod shmtvaropt0.pod shmultiply.pod \
+	shlocalizedadmitcorr.pod shmtvaropt.pod shmtvaropt0.pod  \
 	wl.pod wl_curv.pod shmultitapercse.pod shmultitaperse.pod shpowerl.pod \
 	shpowerdensityl.pod shcrosspowerdensityl.pod shpowerspectrum.pod \
 	shpowerspectrumdensity.pod shcrosspowerspectrum.pod shcrosspowerspectrumdensity.pod \
@@ -61,16 +61,17 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_
     plbar.1 plbar_d1.1 plon.1 plmon.1 plmon_d1.1 plon_d1.1 plmschmidt.1 plschmidt.1 \
     plmschmidt_d1.1 plschmidt_d1.1 plegendrea.1 plegendrea_d1.1 plegendre.1 plegendre_d1.1 \
     plmindex.1 shexpanddh.1 makegriddh.1 shexpanddhc.1 makegriddhc.1 glqgridcoord.1 \
-    shexpandglq.1 makegridglq.1 shexpandglqc.1 makegridglqc.1 shexpandlsq.1 makegrid2d.1)
+    shexpandglq.1 makegridglq.1 shexpandglqc.1 makegridglqc.1 shexpandlsq.1 makegrid2d.1 \
+    makegridpoint.1 shmultiply.1)
 #cilmplus.1 computed0.1 computedg82.1 computedm.1 \
 	 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
 	makecirclecoord.1 makegeoidgrid.1    \
-	 makegridpoint.1 makemaggriddh.1 shglq.1 \
+	  makemaggriddh.1 shglq.1 \
 	   preglq.1  \
 	randomn.1 randomgaussian.1 \
 	shadmitcorr.1 shbias.1 shbiask.1 shrtoc.1 shctor.1 shcilmtocindex.1 shcindextocilm.1 \
 	   shfindlwin.1 \
-	shlocalizedadmitcorr.1 shmtvaropt.1 shmtvaropt0.1 shmultiply.1 wl.1 wlcurv.1 \
+	shlocalizedadmitcorr.1 shmtvaropt.1 shmtvaropt0.1  wl.1 wlcurv.1 \
 	shmultitapercse.1 shmultitaperse.1 shpowerl.1 shpowerdensityl.1 shcrosspowerdensityl.1 \
 	shpowerspectrum.1 shpowerspectrumdensity.1 shcrosspowerspectrum.1 \
 	shcrosspowerspectrumdensity.1 shcrosspowerl.1 shread.1 shreadjpl.1 shread2.1 \
@@ -92,12 +93,8 @@ HTMLFILES_legendre =  $(addprefix $(WWWDIR)/,plmbar.html plmbar_d1.html plbar.ht
 
 HTMLFILES_transformations = $(addprefix $(WWWDIR)/, shexpanddh.html makegriddh.html \
 	shexpanddhc.html makegriddhc.html shglq.html glqgridcoord.html shexpandglq.html \
-	makegridglq.html shexpandglqc.html makegridglqc.html shexpandlsq.html makegrid2d.html)
-#     \
-	  makegridpoint.html  \
-	   shmultiply.html \
-	    \
-	preglq.html 
+	makegridglq.html shexpandglqc.html makegridglqc.html shexpandlsq.html \
+	makegrid2d.html makegridpoint.html shmultiply.html)
 
 HTMLFILES_io = 
 # shread.html shreadjpl.html shread2.html \
@@ -132,7 +129,7 @@ HTMLFILES_gravmag =
 HTMLFILES_other =  
 # eigvalsym.html eigvalvecsym.html eigvalvecsymtri.html \
 	makecirclecoord.html randomn.html randomgaussian.html \
-	wigner3j.html makeellipsecoord.html
+	wigner3j.html makeellipsecoord.html preglq.html 
  
 
 all: install-man install-html 
