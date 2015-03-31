@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/sh.css">
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
-	<meta name="description" content="Instructions on how to compile the SHTOOLS Fortran 95 and Python software archive.">
+	<meta name="description" content="Instructions on how to install the SHTOOLS Fortran 95 and Python software archive.">
 </head>
 <body>
 
@@ -32,7 +32,20 @@
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a>
 	</p>
 
-	<h1>Compilation Instructions</h1>
+	<h1>Installation Instructions</h1>
+	
+	<h2>Use a package manager</h2>
+	
+	<p>The easiest way to install SHTOOLS is by using a package manager. The following options are currently available:</p>
+	
+	<h3>OSX (Homebrew)</h3>
+	<p class="nomarginbot">If <a href="http://brew.sh">brew</a> is already installed, it is only necessary to enter the following commands in the terminal:</p>
+		<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>brew tap shtools/shtools</tt><br>
+		<tt>brew install shtools</tt></p>
+	</blockquote>
+    
+	<h2>Manual installation</h2>
 
 	<p class="nomarginbot">Before compiling SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main SHTOOLS directory:</p>
 	
@@ -47,7 +60,7 @@
 		<tt>make python-tests</tt></p>
 	</blockquote>
 	
-	<p class="nomarginbot">Note that the final timing tests could take about an hour to complete. To delete the compiled archive, module files, object files, and test suite executables, use</p>
+	<p class="nomarginbot">To delete the compiled archive, module files, object files, and test suite executables, use</p>
 	
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make clean</tt></p>
@@ -96,7 +109,7 @@
 	<p>To access the unix man pages, it will be necessary to add <tt>/usr/local/share/man</tt> to your man path.</p>
 	
 
-	<h2>Compiler flags and optimization</h2>
+	<h3>Compiler flags and optimization</h3>
 	
 	<p>Default compiler options are specified in the main <tt>Makefile</tt> for a few common compilers (Absoft <tt>f95</tt>, <tt>gfortran</tt>, <tt>g95</tt>, and <tt>ifort</tt>). If it is necessary to change these, consider the following guidelines:</p>
 	
@@ -183,17 +196,7 @@
 	</blockquote>
 	
 	<p>For this case, it will be necessary to use 64-bit compiled FFTW and LAPACK libraries.</p>
-	
-	<h2>Condon-Shortley phase</h2>
-	
-	<p class="nomarginbot">SHTOOLS by default excludes the Condon-Shortley phase factor of <tt>(-1)<sup>m</sup></tt> when calculating the spherical harmonic and Legendre functions (though this can be changed in each routine by use of the optional argument <tt>csphase</tt>). To change globally the default (but not the documentation!) such that this phase is appended to each Legendre function, it is only necessary to set the parameter</p>
-
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>CSPHASE_DEFAULT = -1</tt></p>
-	</blockquote>
-	
-	<p>in the file <tt>src/SHTOOLS.f95</tt> before compiling. Note, however, that the gravity and magnetics routines will still explicitly exclude this phase factor, regardless of this default. Only do this if you really know what you are doing.</p>
-	
+		
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a>
 	</p>

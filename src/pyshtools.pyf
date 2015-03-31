@@ -816,7 +816,7 @@ python module _SHTOOLS ! in
             real*8 dimension(d_d0),intent(in) :: d
             real*8 dimension(lat_d0),intent(in) :: lat
             real*8 dimension(lon_d0),intent(in) :: lon
-            integer intent(in),check(lat_d0==d_d0 && lon_d0==d_d0) :: nmax = d_d0
+            integer intent(hide),check(lat_d0==d_d0 && lon_d0==d_d0) :: nmax = d_d0
             integer intent(in) :: lmax
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1

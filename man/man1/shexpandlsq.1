@@ -1,0 +1,86 @@
+.TH "shexpandlsq" "1" "2015\-03\-31" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH SHExpandLSQ
+.PP
+Expand a set of irregularly sampled data points into spherical harmonics
+using a least squares inversion.
+.SH Usage
+.PP
+call subroutine SHExpandLSQ (\f[C]cilm\f[], \f[C]d\f[], \f[C]lat\f[],
+\f[C]lon\f[], \f[C]nmax\f[], \f[C]lmax\f[], \f[C]norm\f[],
+\f[C]chi2\f[], \f[C]csphase\f[])
+.SH Parameters
+.TP
+.B \f[C]cilm\f[] : output, real*8, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+The real spherical harmonic coefficients of the function.
+The coefficients \f[C]C1lm\f[] and \f[C]C2lm\f[] refer to the cosine
+(\f[C]Clm\f[]) and sine (\f[C]Slm\f[]) coefficients, respectively, with
+\f[C]Clm=cilm(1,l+1,m+1)\f[] and \f[C]Slm=cilm(2,l+1,m+1)\f[].
+.RS
+.RE
+.TP
+.B \f[C]d\f[] : input, real*8, dimension (\f[C]nmax\f[])
+The value of the function at the coordinates (\f[C]lat\f[],
+\f[C]lon\f[]).
+.RS
+.RE
+.TP
+.B \f[C]lat\f[] : input, real*8, dimension (\f[C]nmax\f[])
+The latitude in DEGREES corresponding to the value in \f[C]d\f[].
+.RS
+.RE
+.TP
+.B \f[C]lon\f[] : input, real*8, dimension (\f[C]nmax\f[])
+The longitude in DEGREES corresponding to the value in \f[C]d\f[].
+.RS
+.RE
+.TP
+.B \f[C]nmax\f[] : input, integer
+The number of data points.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum spherical harmonic degree of the output coefficients
+\f[C]cilm\f[].
+.RS
+.RE
+.TP
+.B \f[C]norm\f[] : input, integer, optional, default = 1
+1 (default) = Geodesy 4\-pi normalized harmonics; 2 = Schmidt
+semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
+harmonics.
+.RS
+.RE
+.TP
+.B \f[C]chi2\f[] : output, real*8, optional
+The residual sum of squares misfit for an overdetermined inversion.
+.RS
+.RE
+.TP
+.B \f[C]csphase\f[] : input, integer, optional, default = 1
+1 (default) = do not apply the Condon\-Shortley phase factor to the
+associated Legendre functions; \-1 = append the Condon\-Shortley phase
+factor of (\-1)^m to the associated Legendre functions.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHExpandLSQ\f[] will expand a set of irregularly sampled data
+points into spherical harmonics by a least squares inversion.
+When there are more data points than spherical harmonic coefficients
+(i.e., \f[C]nmax>(lmax+1)**2\f[]), the solution of the overdetermined
+system will be determined.
+If there are more coefficients than data points, then the solution of
+the underdetermined system that minimizes the solution norm will be
+determined.
+See the LAPACK documentation concerning DGELS for further information.
+.PP
+The employed spherical harmonic normalization and Condon\-Shortley phase
+convention can be set by the optional arguments \f[C]norm\f[] and
+\f[C]csphase\f[]; if not set, the default is to use geodesy 4\-pi
+normalized harmonics that exclude the Condon\-Shortley phase of (\-1)^m.
+.SH See also
+.PP
+\f[C]makegriddh\f[], \f[C]shexpanddh\f[], \f[C]makegriddhc\f[],
+\f[C]shexpanddhc\f[], \f[C]makegridglq\f[], \f[C]shexpandglq\f[],
+\f[C]makegridglqc\f[], \f[C]shexpandglqc\f[], \f[C]dgels(1)\f[]

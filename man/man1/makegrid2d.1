@@ -1,0 +1,156 @@
+.TH "makegrid2d" "1" "2015\-03\-31" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH MakeGrid2D
+.PP
+Create a 2D cylindrical map of arbitrary grid spacing from a set of
+spherical harmonic coefficients.
+.SH Usage
+.PP
+call subroutine MakeGrid2D (\f[C]grid\f[], \f[C]cilm\f[], \f[C]lmax\f[],
+\f[C]interval\f[], \f[C]nlat\f[], \f[C]nlong\f[], \f[C]norm\f[],
+\f[C]csphase\f[], \f[C]f\f[], \f[C]a\f[], \f[C]north\f[],
+\f[C]south\f[], \f[C]east\f[], \f[C]west\f[], \f[C]dealloc\f[])
+.SH Parameters
+.TP
+.B \f[C]grid\f[] : output, real*8, dimension (180/\f[C]interval\f[]+1, 360/\f[C]interval\f[]+1)
+A 2D equally spaced map of the input spherical harmonic coefficients
+\f[C]cilm\f[].
+The array is in raster format with upper\-left and lower\-right
+coordinates of (90 N, 0 E) and (90 S, 360 E), respectively.
+.RS
+.RE
+.TP
+.B \f[C]cilm\f[] : input, real*8, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+The real spherical harmonic coefficients to be expanded in the space
+domain.
+The coefficients \f[C]C1lm\f[] and \f[C]C2lm\f[] refer to the cosine
+(\f[C]Clm\f[]) and sine (\f[C]Slm\f[]) coefficients, respectively, with
+\f[C]Clm=cilm(1,l+1,m+1)\f[] and \f[C]Slm=cilm(2,l+1,m+1)\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum spherical harmonic degree of the coefficients \f[C]cilm\f[]
+used when calculating the grid.
+.RS
+.RE
+.TP
+.B \f[C]interval\f[] : input, real*8
+The latitudinal and longitudinal spacing of \f[C]grid\f[].
+.RS
+.RE
+.TP
+.B \f[C]nlat\f[] : output, integer
+The number of latitudinal samples.
+Both 90 N and 90 S are included.
+.RS
+.RE
+.TP
+.B \f[C]nlong\f[] : output, integer
+The number of longitudinal samples.
+Both 0 and 360 E are included.
+.RS
+.RE
+.TP
+.B \f[C]norm\f[] : input, integer, optional, default = 1
+1 (default) = 4\-pi (geodesy) normalized harmonics; 2 = Schmidt
+semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
+harmonics.
+.RS
+.RE
+.TP
+.B \f[C]csphase\f[] : input, integer, optional, default = 1
+1 (default) = do not apply the Condon\-Shortley phase factor to the
+associated Legendre functions; \-1 = append the Condon\-Shortley phase
+factor of (\-1)^m to the associated Legendre functions.
+.RS
+.RE
+.TP
+.B \f[C]f\f[] : input, real*8, optional
+The flattening of the reference ellipoid that is subtracted from the
+function.
+This is given by (\f[C]R_equator\-R_pole)/R_equator\f[].
+The semi\-major axis \f[C]a\f[] (i.e., \f[C]R_equator\f[]) must be
+specified for this calculation.
+.RS
+.RE
+.TP
+.B \f[C]a\f[] : input, real*8, optional
+The semi\-major axis of the reference ellispoid that is subtracted from
+the function.
+The flattening \f[C]f\f[] must be specified for this calculation.
+.RS
+.RE
+.TP
+.B \f[C]north\f[] : input, real*8, optional, default = 90
+The maximum latitude of the output raster grid, in degrees.
+The default is 90 degrees.
+.RS
+.RE
+.TP
+.B \f[C]south\f[] : input, real*8, optional, default = \-90
+The minimum latitude of the output raster grid, in degrees.
+The default is \-90 degrees.
+.RS
+.RE
+.TP
+.B \f[C]east\f[] : input, real*8, optional, default = 360
+The maximum longitude of the output raster grid, in degrees.
+The default is 360 degrees.
+.RS
+.RE
+.TP
+.B \f[C]west\f[] : input, real*8, optional, default = 0
+The minimum longitude of the output raster grid, in degrees.
+The default is 0 degrees.
+.RS
+.RE
+.TP
+.B \f[C]dealloc\f[] : input, integer, optional, default = 0
+0 (default) = Save variables used in the external Legendre function
+calls.
+(1) Deallocate this memory at the end of the funcion call.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]MakeGrid2D\f[] will create a 2\-dimensional cylindrical map,
+equally spaced in (geocentric) latitude and longitude, from a set of
+input spherical harmonic coefficients.
+The output grid is in raster format possessing upper\-left and
+lower\-right coordinates of (90 N, 0 E) and (90 S, 360 E), repsectively.
+If the optional parameters \f[C]north\f[], \f[C]south\f[], \f[C]east\f[]
+and \f[C]west\f[] are specified, then the output grid will possess
+upper\-left and lower\-right coordinates of (\f[C]north\f[],
+\f[C]west\f[]) and (\f[C]south\f[], \f[C]east\f[]), repsectively.
+The employed spherical harmonic normalization and Condon\-Shortley phase
+convention can be set by the optional arguments \f[C]norm\f[] and
+\f[C]csphase\f[]; if not set, the default is to use geodesy 4\-pi
+normalized harmonics that exclude the Condon\-Shortley phase of (\-1)^m.
+.PP
+If the optional arguments \f[C]f\f[] and \f[C]a\f[] are specified, the
+output function will be referenced to an ellipsoid with flattening
+\f[C]f\f[] and semimajor axis \f[C]a\f[].
+The normalized legendre functions are calculated in this routine using
+the scaling algorithm of Holmes and Featherstone (2002), which are
+accurate to about degree 2800.
+The unnormalized functions are accurate only to about degree 15.
+.SH References
+.PP
+Driscoll, J.R.
+and D.M.
+Healy, Computing Fourier transforms and convolutions on the 2\-sphere,
+Adv.
+Appl.
+Math., 15, 202\-250, 1994.
+.PP
+Holmes, S.
+A., and W.
+E.
+Featherstone, A unified approach to the Clenshaw summation and the
+recursive computation of very high degree and order normalised
+associated Legendre functions, J.
+Geodesy, 76, 279\-299, 2002.
+.SH See also
+.PP
+\f[C]makegriddh\f[], \f[C]makegriddhc\f[], \f[C]makegridglq\f[],
+\f[C]makegridglqc\f[], \f[C]makegravgriddh\f[], \f[C]makemaggriddh\f[]
