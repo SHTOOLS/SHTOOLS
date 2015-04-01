@@ -29,11 +29,11 @@ def main():
 #==== TEST FUNCTIONS ====
 def TestMakeGravGrid():
 	infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
-	header = np.zeros(2,dtype=float)
-	clm,lmax, header = shtools.SHReadH(infile,110,header)
+	clm,lmax, header = shtools.SHReadH(infile,110,2)
 	gm = header[1] * 1.e9
 	r0 = header[0] * 1.e3
 	clm[0,0,0] = 1.0
+	print gm, r0
 
 	geoid = shtools.MakeGeoidGridDH(clm,r0,gm,shtools.constant.w0_mars,a=shtools.constant.a_mars,f=shtools.constant.f_mars,omega=shtools.constant.omega_mars)
 	geoid = geoid / 1.e3 # convert to meters
@@ -119,8 +119,7 @@ def TestFilter():
 
 def TestMakeMagGrid():
 	infile = '../../ExampleDataFiles/FSU_mars90.sh'
-	header = np.zeros(4,dtype=float)
-	clm,lmax, header = shtools.SHReadH(infile,90,header=header,skip=1)
+	clm, lmax, header = shtools.SHReadH(infile,90,4,skip=1)
 	r0 = header[0] * 1.e3
 	a = shtools.constant.r_mars + 145.0e3	# radius to evaluate the field
 	

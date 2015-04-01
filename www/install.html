@@ -34,7 +34,7 @@
 
 	<h1>Installation Instructions</h1>
 	
-	<h2>Use a package manager</h2>
+	<h2>1. Use a package manager</h2>
 	
 	<p>The easiest way to install SHTOOLS is by using a package manager. The following options are currently available:</p>
 	
@@ -45,9 +45,9 @@
 		<tt>brew install shtools</tt></p>
 	</blockquote>
     
-	<h2>Manual installation</h2>
+	<h2>2. Manual installation</h2>
 
-	<p class="nomarginbot">Before compiling SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main SHTOOLS directory:</p>
+	<p class="nomarginbot">Before installing SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main SHTOOLS directory:</p>
 	
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make</tt></p>
@@ -109,7 +109,7 @@
 	<p>To access the unix man pages, it will be necessary to add <tt>/usr/local/share/man</tt> to your man path.</p>
 	
 
-	<h3>Compiler flags and optimization</h3>
+	<h3>2.1 Compiler flags and optimization</h3>
 	
 	<p>Default compiler options are specified in the main <tt>Makefile</tt> for a few common compilers (Absoft <tt>f95</tt>, <tt>gfortran</tt>, <tt>g95</tt>, and <tt>ifort</tt>). If it is necessary to change these, consider the following guidelines:</p>
 	

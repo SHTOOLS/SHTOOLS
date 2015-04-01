@@ -509,19 +509,19 @@
         call SHRead(filename,cilm,lmax,skip=skip)
     end subroutine pySHRead
     
-    subroutine pySHReadH(filename,cilm,lmax,lmax_in,header,skip,cilm_d0,cilm_d1,cilm_d2,header_d0) 
+    subroutine pySHReadH(filename,cilm,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2) 
         use shtools, only: SHRead
         implicit none
         character*(*), intent(in) :: filename
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         integer, intent(out) :: lmax
         integer, intent(in)  :: lmax_in
-        real*8, dimension(header_d0),intent(out) :: header
+        integer, intent(in) ::  nheader
+        real*8, dimension(nheader),intent(out) :: header
         integer, optional,intent(in) :: skip
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
-        integer, intent(in) :: header_d0
         call SHRead(filename,cilm,lmax,skip=skip,header=header)
     end subroutine pySHReadH
     
@@ -543,8 +543,8 @@
         call SHRead(filename,cilm,lmax,skip=skip,error=error)
     end subroutine pySHReadError
     
-    subroutine pySHReadErrorH(filename,cilm,error,lmax,lmax_in,header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,&
-    		error_d1,error_d2,header_d0) 
+    subroutine pySHReadErrorH(filename,cilm,error,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,&
+    		error_d1,error_d2) 
         use shtools, only: SHRead
         implicit none
         character*(*), intent(in) :: filename
@@ -552,7 +552,8 @@
         real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
         integer, intent(out) :: lmax
         integer, intent(in)  :: lmax_in
-        real*8, dimension(header_d0),intent(out) :: header
+        integer, intent(in) :: nheader
+        real*8, dimension(nheader),intent(out) :: header
         integer, optional,intent(in) :: skip
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
@@ -560,7 +561,6 @@
     	integer, intent(in) :: error_d0
         integer, intent(in) :: error_d1
         integer, intent(in) :: error_d2
-        integer, intent(in) :: header_d0
         call SHRead(filename,cilm,lmax,skip=skip,error=error,header=header)
     end subroutine pySHReadErrorH
 

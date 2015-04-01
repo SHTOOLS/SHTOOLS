@@ -37,8 +37,7 @@ def TestCrustalThickness():
     half = 0
 
     gravfile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
-    header = np.zeros(2,dtype=float)
-    pot, lmaxp, header = shtools.SHReadH(gravfile,degmax,header)
+    pot, lmaxp, header = shtools.SHReadH(gravfile,degmax,2)
     gm = header[1] * 1.e9
     mass = gm / shtools.constant.grav_constant
     r_grav = header[0] * 1.e3

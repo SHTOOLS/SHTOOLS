@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Spherical harmonic I/O and storage routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyio.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+<h1 id="shreaderror">SHReadError</h1>
+<p>Read spherical harmonic coefficients and associated errors from an ascii-formatted file.</p>
+<h1 id="usage">Usage</h1>
+<p><code>cilm</code>, <code>error</code>, <code>lmax</code> = pyshtools.SHRead (<code>filename</code>, <code>lmaxin</code>, [<code>skip</code>])</p>
+<h1 id="returns">Returns</h1>
+<dl>
+<dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The spherical harmonic coefficients contained in <code>filename</code>. Note that dimensions of the output array are determined by <code>lmaxin</code>, and not the output <code>lmax</code>.
+</dd>
+<dt><code>error</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The errors of the spherical harmonic coefficients contained in <code>filename</code>. Note that dimensions of the output array are determined by <code>lmaxin</code>, and not the output <code>lmax</code>.
+</dd>
+<dt><code>lmax</code> : integer</dt>
+<dd>The maximum spherical harmonic degree of <code>cilm</code>. This is the minimum of the maximum spherical harmonic degree of <code>filename</code> and the dimension of <code>cilm</code>-1.
+</dd>
+</dl>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>filename</code> : character(:)</dt>
+<dd>The filename of the ascii file containing the spherical harmonic coefficients.
+</dd>
+<dt><code>lmaxin</code> : integer</dt>
+<dd>This spherical harmonic degree controls the dimension of the output array <code>cilm</code>. The coefficients between <code>lmax+1</code> and <code>lmaxin</code> will be set to zero.
+</dd>
+<dt><code>skip</code> : integer, optional</dt>
+<dd>The number of lines to skip before parsing <code>filename</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHRead</code> will read spherical harmonic coefficients from an ascii-formatted file into an array <code>cilm</code>. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array <code>cilm</code>-1 and the maximum degree of the coefficients in the file. If the optional array <code>skip</code> is specified, parsing of the file will commence after the first <code>skip</code> lines.</p>
+<p>The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree <code>l</code> and angular order <code>m</code> according to the format</p>
+<p><code>l, m, cilm(1,l+1,m+1), cilm(2,l+1,m+1)</code></p>
+<p>The ordering of the file is explcitly given by</p>
+<p><code>l, 0 / l, 1 / l, 2 /l, ... / l, m / l+1, 0 / l+1, 1 / ...</code></p>
+<p>The first spherical harmonic degree of the filename does not have to be 0; this is determined from the first element after the <code>skip</code> and <code>header</code> lines.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="pyshread.html">shread</a>, <a href="pyshreadh.html">shreadh</a>, <a href="pyshreaderrorh.html">shreaderrorh</a>, <a href="pyshread2.html">shread2</a>, <a href="pyshread2error.html">shread2error</a>, <a href="pyshreadjpl.html">shreadjpl</a> <a href="pyshreadjplerror.html">shreadjplerror</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyio.html" class="dir">Spherical Harmonic I/O</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

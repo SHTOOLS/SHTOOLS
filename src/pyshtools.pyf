@@ -441,19 +441,19 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
         end subroutine SHRead
         
-        subroutine SHReadH(filename,cilm,lmax,lmax_in,header,skip,cilm_d0,cilm_d1,cilm_d2,header_d0) ! in PythonWrapper.f95
+        subroutine SHReadH(filename,cilm,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2) ! in PythonWrapper.f95
             fortranname pyshreadh
             use shtools, only: SHRead
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer intent(out) :: lmax
             integer intent(in)  :: lmax_in
-            real*8, intent(in,out),dimension(header_d0) :: header
+            integer, intent(in) :: nheader
+            real*8, intent(out), dimension(nheader) :: header
             integer, optional,intent(in) :: skip = 0
             integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
             integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d1 = lmax_in+1
             integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
-            integer, optional,intent(in),depend(header),intent(hide) :: header_d0 = len(header)
         end subroutine SHReadH
 
         subroutine SHReadError(filename,cilm,error,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2) ! in PythonWrapper.f95
@@ -473,7 +473,7 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2 = cilm_d2
         end subroutine SHReadError
 
-        subroutine SHReadErrorH(filename,cilm,error,lmax,lmax_in,header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2,header_d0) ! in PythonWrapper.f95
+        subroutine SHReadErrorH(filename,cilm,error,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2) ! in PythonWrapper.f95
             fortranname pyshreaderrorh
             use shtools, only: SHRead
             character*(*) intent(in) :: filename
@@ -481,7 +481,8 @@ python module _SHTOOLS ! in
             real*8 dimension(error_d0,error_d1,error_d2),intent(out) :: error
             integer intent(out) :: lmax
             integer intent(in)  :: lmax_in
-            real*8, intent(in,out),dimension(header_d0) :: header
+            integer, intent(in) :: nheader
+            real*8, intent(out),dimension(nheader) :: header
             integer, optional,intent(in) :: skip = 0          
             integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
             integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d1 = lmax_in+1
@@ -489,7 +490,6 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(cilm_d0),intent(hide) :: error_d0 = cilm_d0
             integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1 = cilm_d1
             integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2 = cilm_d2
-            integer, optional,intent(in),depend(header),intent(hide) :: header_d0 = len(header)
         end subroutine SHReadErrorH
 
         subroutine MakeMagGridDH(cilm,lmax,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,pot,total_d0,total_d1,cilm_d0,cilm_d1,cilm_d2,rad_d0,rad_d1,theta_d0,theta_d1,phi_d0,phi_d1,pot_d0,pot_d1) ! in PythonWrapper.f95
