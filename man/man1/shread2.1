@@ -1,0 +1,100 @@
+.TH "shread2" "1" "2015\-04\-02" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH SHRead2
+.PP
+Read spherical harmonic coefficients from a CHAMP or GRACE\-like
+ascii\-formatted file.
+.SH Usage
+.PP
+call subroutine SHRead2 (\f[C]filename\f[], \f[C]cilm\f[],
+\f[C]lmax\f[], \f[C]gm\f[], \f[C]r0_pot\f[], \f[C]error\f[],
+\f[C]dot\f[], \f[C]doystart\f[], \f[C]doyend\f[], \f[C]epoch\f[])
+.SH Parameters
+.TP
+.B \f[C]filename\f[] : input, character(*)
+The ascii\-formatted filename containing the spherical harmonic
+coefficients.
+.RS
+.RE
+.TP
+.B \f[C]cilm\f[] : output, real*8, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+The spherical harmonic coefficients contained in \f[C]filename\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : output, integer
+The maximum spherical harmonic degree of \f[C]cilm\f[].
+.RS
+.RE
+.TP
+.B \f[C]gm\f[] : output, real*8
+The mass\-gravitational constant.
+.RS
+.RE
+.TP
+.B \f[C]r0_pot\f[] : output, real*8
+The reference radius of the potential coefficients.
+.RS
+.RE
+.TP
+.B \f[C]error\f[] : output, real*8, optional, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+The errors corresponding to the spherical harmonic coefficients
+\f[C]cilm\f[].
+.RS
+.RE
+.TP
+.B \f[C]dot\f[] : output, real*8, optional, dimension (2, :, :)
+The time derivatives of the spherical harmonic coefficients.
+The dimension of this array can be smaller than \f[C]lmax+1\f[].
+.RS
+.RE
+.TP
+.B \f[C]doystart\f[] : output, real*8, optional
+The starting time of the solution.
+.RS
+.RE
+.TP
+.B \f[C]doyend\f[] : output, real*8, optional
+The ending time of the solution
+.RS
+.RE
+.TP
+.B \f[C]epoch\f[] : output, real*8, optional
+The epoch time for the time derivates.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHRead2\f[] will read spherical harmonic coefficients from a CHAMP
+or GRACE\-like ascii\-formatted file into an array \f[C]cilm\f[].
+The errors and time derivatives associated with the coefficients will be
+read if the optional arrays \f[C]error\f[] and \f[C]dot\f[] are
+specified, respectively.
+The staring and ending date of the solution are specified by the
+optional parameters \f[C]doystart\f[] and \f[C]doyend\f[], and the epoch
+of the time derivates is specified by the optional parameter
+\f[C]epoch\f[].
+The maximum spherical harmonic degree is read from the file, and the
+file does not need to be ordered by angular degree or order.
+.PP
+This routine does not read and output all parameters in the file.
+Records that are read (and at least partially output) include:
+\f[C]EARTH\f[], \f[C]GGM\f[], \f[C]SHM\f[], \f[C]GRCOF2\f[],
+\f[C]GRDOTA\f[], \f[C]CALSDV\f[], \f[C]gfc\f[], \f[C]gfct\f[], and
+\f[C]dot\f[].
+Comments specified by the record \f[C]CMMNT\f[] will be print out to the
+screen, as will the record names that are not currently implemented.
+.PP
+Each line of the file starts with a character string describing what
+follows.
+.IP \[bu] 2
+\f[C]EARTH\f[] or \f[C]GGM\f[]: \f[C]GM\f[], \f[C]R0_POT\f[]
+.IP \[bu] 2
+\f[C]SHM\f[]: Maximum spherical harmonic degree of file.
+.IP \[bu] 2
+\f[C]GRCOF2\f[], \f[C]CALSDV\f[], or \f[C]gfc\f[]: spherical harmonic
+coefficients, formatted as (\f[C]l\f[], \f[C]m\f[], \f[C]clm\f[],
+\f[C]slm\f[]) or (\f[C]l\f[], \f[C]m\f[], \f[C]clm\f[], \f[C]slm\f[],
+\f[C]clm_error\f[], \f[C]slm_error\f[]).
+.SH See also
+.PP
+shread, shreadjpl

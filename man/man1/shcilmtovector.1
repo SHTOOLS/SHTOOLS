@@ -1,0 +1,34 @@
+.TH "shcilmtovector" "1" "2015\-04\-02" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH SHCilmToVector
+.PP
+Convert a three\-dimensional array of real spherical harmonic
+coefficients to a 1\-dimensional indexed vector.
+.SH Usage
+.PP
+call subroutine SHCilmToVector (\f[C]cilm\f[], \f[C]vector\f[],
+[\f[C]lmax\f[]])
+.SH Parameters
+.TP
+.B \f[C]cilm\f[] : input, real*8, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+The input real spherical harmonic coefficients.
+.RS
+.RE
+.TP
+.B \f[C]vector\f[] : output, real*8, dimension ( (\f[C]lmax\f[]+1)**2 )
+The indexed output real spherical harmonic coefficients.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum degree of the output coefficients to convert.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHCilmToVector\f[] will convert a three\-dimensional array of real
+spherical harmonic coefficients to a 1\-dimensional indexed array.
+The degree \f[C]l\f[], order \f[C]m\f[], and \f[C]i\f[] (1 for cosine, 2
+for sine) corresponds to the index \f[C]l**2+(i\-1)*l+M+1\f[].
+.SH See also
+.PP
+shvectortocilm, yilmindex, shcindextocilm, shcilmtocindex

@@ -1,0 +1,11 @@
+DEBUG:storj.downstream_farmer:Creating directory /Users/lunokhod/SphericalHarmonics/shtools-git/data/chunks
+ERROR:storj.downstream_farmer:Traceback (most recent call last):
+  File "/Users/lunokhod/.venvs/downstream/lib/python2.7/site-packages/downstream_farmer-0.1.8-py2.7.egg/downstream_farmer/shell.py", line 37, in eval_args
+    farmer = Farmer(args)
+  File "/Users/lunokhod/.venvs/downstream/lib/python2.7/site-packages/downstream_farmer-0.1.8-py2.7.egg/downstream_farmer/farmer.py", line 63, in __init__
+    self.prepare_chunk_dir()
+  File "/Users/lunokhod/.venvs/downstream/lib/python2.7/site-packages/downstream_farmer-0.1.8-py2.7.egg/downstream_farmer/farmer.py", line 102, in prepare_chunk_dir
+    format(sys.exc_info()[1]))
+DownstreamError: Chunk directory could not be created: [Errno 2] No such file or directory: 'data/chunks'
+
+INFO:storj.downstream_farmer:Error: Chunk directory could not be created: [Errno 2] No such file or directory: 'data/chunks'

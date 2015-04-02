@@ -1,0 +1,75 @@
+.TH "pyshreadjplerror" "1" "2015\-04\-02" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH SHReadJPL
+.PP
+Read spherical harmonic coefficients from a JPL ascii\-formatted file.
+.SH Usage
+.PP
+\f[C]cilm\f[], \f[C]error\f[], \f[C]lmax\f[], \f[C]gm\f[] =
+pyshtools.SHReadJPL (\f[C]filename\f[], \f[C]lmaxin\f[],
+[\f[C]formatstring\f[]])
+.SH Returns
+.TP
+.B \f[C]cilm\f[] : float, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
+The spherical harmonic coefficients contained in \f[C]filename\f[].
+.RS
+.RE
+.TP
+.B \f[C]error\f[] : float, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
+The uncertainties associated with the spherical harmonic coefficients
+contained in \f[C]filename\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : integer
+The maximum spherical harmonic degree of \f[C]cilm\f[].
+.RS
+.RE
+.TP
+.B \f[C]gm\f[] : float, dimension(2)
+The mass\-gravitational constant and error.
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]filename\f[] : character(*)
+The filename of the JPL ascii\-formatted spherical harmonic
+coefficients.
+.RS
+.RE
+.TP
+.B \f[C]lmaxin\f[] : integer
+This spherical harmonic degree controls the dimension of the output
+array \f[C]cilm\f[].
+The coefficients between \f[C]lmax+1\f[] and \f[C]lmaxin\f[] will be set
+to zero.
+.RS
+.RE
+.TP
+.B \f[C]formatstring\f[] : character*6, optional, default = "E19.12"
+The format string used to read the elements of \f[C]cilm\f[] and
+\f[C]error\f[].
+The default is "E19.12".
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHReadJPL\f[] will read spherical harmonic coefficients from a JPL
+ascii formatted file into an array \f[C]cilm\f[].
+The real numbers are assumed to be formated with the specifier
+\f[C]E19.12\f[], but this can be changed by specifiying the optional
+string \f[C]formatstring\f[].
+.PP
+The JPL ascii\-formatted file is organized as follows:
+.IP \[bu] 2
+Comment lines starting with "#".
+.IP \[bu] 2
+\f[C]gm\f[] (if a gravitational potential file)
+.IP \[bu] 2
+A list of \f[C]J_l\f[], which is \f[C]\-cilm(1,l+1,1)\f[].
+.IP \[bu] 2
+A list of the cosine and sine terms.
+.IP \[bu] 2
+The errors of the above (starting at step 2).
+.SH See also
+.PP
+shread, shread2, shreadjpl

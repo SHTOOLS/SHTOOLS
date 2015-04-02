@@ -1191,25 +1191,21 @@ python module _SHTOOLS ! in
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer intent(out) :: lmax
             integer intent(out) :: lmax_in
-            real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
             real*8, optional,dimension(2),intent(out) :: gm
             character*6, optional,intent(in) :: formatstring = 'E19.12'
             integer, optional,intent(in),intent(hide) :: cilm_d0=2
             integer, optional,intent(in),depend(lmax_in),intent(hide):: cilm_d1 = lmax_in + 1
             integer, optional,intent(in),depend(cilm_d1),intent(hide) :: cilm_d2=cilm_d1
-            integer, optional,intent(in),intent(hide) :: error_d0=2
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1=cilm_d1
-            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2=cilm_d2
         end subroutine SHReadJPL
 
-        subroutine SHReadJPLError(filename,cilm,lmax,lmax_in,error,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2) ! in PythonWrapper.f95
+        subroutine SHReadJPLError(filename,cilm,error,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2) ! in PythonWrapper.f95
             fortranname pyshreadjplerror
             use shtools, only: SHReadJPL
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
             integer intent(out) :: lmax
             integer intent(out) :: lmax_in
-            real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
             real*8, optional,dimension(2),intent(out) :: gm
             character*6, optional,intent(in) :: formatstring = 'E19.12'
             integer, optional,intent(in),intent(hide) :: cilm_d0=2
@@ -1241,16 +1237,16 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(cilm_d2),intent(hide) :: dot_d2=cilm_d1
         end subroutine SHRead2
 
-        subroutine SHRead2Error(filename,cilm,lmax,lmax_in,gm,r0_pot,error,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2) ! in PythonWrapper.f95
+        subroutine SHRead2Error(filename,cilm,error,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2) ! in PythonWrapper.f95
             fortranname pyshread2error
             use shtools, only: SHRead2
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
             integer intent(out) :: lmax
             integer, intent(in) :: lmax_in
             real*8 intent(out) :: gm
             real*8 intent(out) :: r0_pot
-            real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
             real*8, optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
             real*8, intent(out) :: doystart
             real*8, intent(out) :: doyend
@@ -1782,7 +1778,7 @@ python module _SHTOOLS ! in
             use shtools, only: SHVectorToCilm
             real*8 dimension(vector_d0),intent(in) :: vector
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer intent(in),depend(vector_d0) :: lmax = sqrt(vector_d0)-1
+            integer optional,intent(in),depend(vector_d0) :: lmax = sqrt(vector_d0)-1
             integer, optional,intent(in),check(len(vector)>=vector_d0),depend(vector),intent(hide) :: vector_d0=len(vector)
             integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d1 = lmax+1

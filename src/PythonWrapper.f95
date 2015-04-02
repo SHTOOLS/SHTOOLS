@@ -1373,15 +1373,15 @@
         call SHReadJPL(filename,cilm,lmax,gm=gm,formatstring=formatstring)
     end subroutine pySHReadJPL
 
-    subroutine pySHReadJPLError(filename,cilm,lmax,lmax_in,error,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1&
+    subroutine pySHReadJPLError(filename,cilm,error,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1&
                                    ,error_d2) 
         use shtools, only: SHReadJPL
         implicit none
         character*(*), intent(in) :: filename
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
         integer, intent(in) :: lmax
      	integer, intent(in) :: lmax_in
-        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
         real*8, optional,dimension(2),intent(out) :: gm
         character*6, optional,intent(in) :: formatstring
         integer, intent(in) :: cilm_d0
@@ -1416,17 +1416,17 @@
         call SHRead2(filename,cilm,lmax,gm,r0_pot,dot=dot,doystart=doystart,doyend=doyend,epoch=epoch)
     end subroutine pySHRead2
 
-    subroutine pySHRead2Error(filename,cilm,lmax,lmax_in,gm,r0_pot,error,dot,doystart,doyend,epoch,cilm_d0,cilm_d1&
+    subroutine pySHRead2Error(filename,cilm,error,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1&
                                  ,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2) 
         use shtools, only: SHRead2
         implicit none
         character*(*), intent(in) :: filename
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
         integer, intent(out) :: lmax
         integer, intent(in) :: lmax_in
         real*8, intent(out) :: gm
         real*8, intent(out) :: r0_pot
-        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
         real*8, optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
         real*8, optional,intent(out) :: doystart
         real*8, optional,intent(out) :: doyend

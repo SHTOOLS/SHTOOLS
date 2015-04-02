@@ -1,0 +1,28 @@
+# SHCilmToVector
+
+Convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed vector.
+
+# Usage
+
+`vector` = pyshtools.SHCilmToVector (`cilm`, [`lmax`])
+
+# Returns
+
+`vector` : float, dimension ( (`lmax`+1)\*\*2 )
+:   The indexed output real spherical harmonic coefficients.
+
+# Parameters
+
+`cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
+:   The input real spherical harmonic coefficients.
+	
+`lmax` : integer, optional, default = `lmaxin`
+:   The maximum degree of the output coefficients to convert.
+
+# Description
+
+`SHCilmToVector` will convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed array.  The degree `l`, order `m`, and `i` (1 for cosine, 2 for sine) corresponds to the index `l**2+(i-1)*l+M`.
+
+# See also
+
+[shvectortocilm](pyshvectortocilm.html), [yilmindex](pyyilmindex.html), [shcindextocilm](pyshcindextocilm.html), [shcilmtocindex](pyshcilmtocindex.html)
