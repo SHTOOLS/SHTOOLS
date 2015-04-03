@@ -709,9 +709,9 @@ module SHTOOLS
 			integer, intent(in) ::	lmax
 		end subroutine SHVectorToCilm
 
-		integer function YilmIndex(i, l, m)
+		integer function YilmIndexVector(i, l, m)
 			integer, intent(in) ::	i, l, m
-		end function YilmIndex
+		end function YilmIndexVector
 		
 		subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
 			real*8, intent(out) ::	Dij(:,:)

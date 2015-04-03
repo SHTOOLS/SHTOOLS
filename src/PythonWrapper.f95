@@ -2032,16 +2032,6 @@
         call SHVectorToCilm(vector,cilm,lmax)
     end subroutine pySHVectorToCilm
 
-    function pyYilmIndex(i,l,m) 
-        use shtools, only: YilmIndex
-        implicit none
-        integer, intent(in) :: i
-        integer, intent(in) :: l
-        integer, intent(in) :: m
-        integer :: pyYilmIndex
-        pyYilmIndex=YilmIndex(i,l,m)
-    end function pyYilmIndex
-
     subroutine pyComputeDMap(Dij,dh_mask,n_dh,lmax,sampling,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1) 
         use shtools, only: ComputeDMap
         implicit none

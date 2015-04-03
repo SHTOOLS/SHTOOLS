@@ -47,7 +47,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
 !	All rights reserved.
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	use SHTOOLS, only : SHExpandDH, PlmIndex, PlmBar, SHCilmToVector, YilmIndex
+	use SHTOOLS, only : SHExpandDH, PlmIndex, PlmBar, SHCilmToVector, YilmIndexVector
 	
 	implicit none
 		
@@ -192,7 +192,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
 							* dble(dh_mask(k, 1:nlong))
 				enddo
 				
-				i = YilmIndex(j, l, m)
+				i = YilmIndexVector(j, l, m)
 				
 				if (present(sampling)) then	
 					call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = sampling, lmax_calc = l)

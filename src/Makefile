@@ -56,7 +56,7 @@ SRCS0 =	CilmPlus.f95 ComputeD0.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
 	MakeCircleCoord.f95 SHSjkPG0.f95  \
 	SHReturnTapers.f95 SHSjkPG.f95 PlON.f95 PlON_d1.f95 \
 	PlmON.f95 PlmON_d1.f95 SHConfidence.f95 SHMagPowerSpectra.f95 \
-	SHPowerSpectraC.f95 SHBiasAdmitCorr.f95 SHCimToVector.f95 YilmIndex.f95 \
+	SHPowerSpectraC.f95 SHBiasAdmitCorr.f95 SHCimToVector.f95 YilmIndexVector.f95 \
 	ComputeDMap.f95 SHReturnTapersMap.f95 Curve2Mask.f95 MakeEllipseCoord.f95 \
 	CilmPlusRhoH.f95 HilmRhoH.f95 NormalGravity.f95
 
@@ -75,7 +75,7 @@ OBJS0 =	CilmPlus.o ComputeD0.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o \
 	PlON.o PlON_d1.o PlmON.o PlmON_d1.o \
 	SHConfidence.o SHMagPowerSpectra.o \
 	SHPowerSpectraC.o SHBiasAdmitCorr.o SHCilmToVector.o \
-	YilmIndex.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o MakeEllipseCoord.o \
+	YilmIndexVector.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o MakeEllipseCoord.o \
 	CilmPlusRhoH.o HilmRhoH.o NormalGravity.o
 	
 SRCSLAPACK1 = EigValSym.f95 EigValVecSym.f95 EigValVecSymTri.f95 SHExpandLSQ.f95 SHMTDebias.f95  \

@@ -1,4 +1,4 @@
-integer function YilmIndex(i, l, m)
+integer function YilmIndexVector(i, l, m)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 !	This function will give the index in a 1-dimensional array of the spherical 
@@ -26,21 +26,21 @@ integer function YilmIndex(i, l, m)
 	integer, intent(in) ::	i, l, m
 	
 	if (i /= 1 .and. i /= 2) then
-		print*, "Error --- YilmIndex"
+		print*, "Error --- YilmIndexVector"
 		print*, "I must be 1 (for cosine terms) or 2 (for sine terms)."
 		print*, "I = ", i
 		stop
 	endif
 	
 	if (l < 0) then
-		print*, "Error --- YilmIndex"
+		print*, "Error --- YilmIndexVector"
 		print*, "L must be positive."
 		print*, "L = ", l
 		stop
 	endif
 	
 	if (m < 0 .or. m > l) then
-		print*, "Error --- YilmIndex"
+		print*, "Error --- YilmIndexVector"
 		print*, "M must be positive and less than L."
 		print*, "M = ", m
 		print*, "L = ", l
@@ -48,13 +48,13 @@ integer function YilmIndex(i, l, m)
 	endif
 	
 	if (m == 0 .and. i == 2) then
-		print*, "Error --- YilmIndex"
+		print*, "Error --- YilmIndexVector"
 		print*, "When M = 0, I must be 1."
 		print*, "I = ", i
 		print*, "M = ", m
 		stop
 	endif
 	
-	yilmindex = 1 + l**2 + (i-1)*l + m	
+	yilmindexvector = l**2 + (i-1)*l + m + 1
 	
-end function YilmIndex
+end function YilmIndexVector
