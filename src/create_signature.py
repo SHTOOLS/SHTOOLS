@@ -11,25 +11,27 @@ shapes using a similar procedure.
 from numpy.f2py import crackfortran
 
 #==== MAIN FUNCTION ====
+
+
 def main():
     fname_wrapper = 'PythonWrapper.f95'
-    fname_signature  = 'pyshtools.pyf'
-    outfile = open(fname_signature,'w')
+    fname_signature = 'pyshtools.pyf'
+    outfile = open(fname_signature, 'w')
 
     print 'now cracking Fortran file SHTOOLS.f95 using f2py function...'
-    crackfortran.verbose=False
-    crackfortran.dolowercase=False
+    crackfortran.verbose = False
+    crackfortran.dolowercase = False
     cracked_shtools = crackfortran.crackfortran(fname_wrapper)
     for subroutine in cracked_shtools:
-        subroutine['f2pyenhancements'] = {'fortranname':subroutine['name'].lower()}
+        subroutine['f2pyenhancements'] = {'fortranname': subroutine['name'].lower()}
     for subroutine in cracked_shtools:
         subroutine['name'] = subroutine['name'][2:]
-    interface = {'block':'interface','name':'unknown_interface','from':'',
-                 'body':cracked_shtools,'externals':[],'interfaced':[],
-                 'vars':{}}
-    module = {'block':'python module','name':'_SHTOOLS','from':'',
-              'body':interface,'externals':[],'interfaced':[],
-              'vars':{}}
+    interface = {'block': 'interface', 'name': 'unknown_interface', 'from': '',
+                 'body': cracked_shtools, 'externals': [], 'interfaced': [],
+                 'vars': {}}
+    module = {'block': 'python module', 'name': '_SHTOOLS', 'from': '',
+              'body': interface, 'externals': [], 'interfaced': [],
+              'vars': {}}
     out = crackfortran.crack2fortran(module)
     outfile.write(out)
     outfile.close()
