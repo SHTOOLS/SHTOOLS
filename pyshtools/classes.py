@@ -1,6 +1,22 @@
 """
 This file contains some classes that facilitate in particular the interactive
-examination of spherical data.
+examination of spherical data with shtools. Subclasses are used to handle
+different internal data types and superclasses are used to implement interface
+functions and the documentation.
+
+The following three classes will be implemented:
+
+    SHCoeffs
+        SHRealCoefficients
+        SHComplexCoefficients
+
+    SHGrid
+        DHGrid
+        GLQGrid
+
+    SHWindow (not yet implemented)
+        SymmetricWindow
+        AsymmetricWindow
 
 Matthias Meschede and Mark Wieczorek, 2015
 """
@@ -42,17 +58,17 @@ class SHCoeffs(object):
 
     @classmethod
     def from_random(self, power, kind='real'):
-        lmax = len(power) - 1
+        nl = len(power)
         for cls in self.__subclasses__():
             if cls.istype(kind):
                 if kind == 'real':
-                    coeffs = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
-                    coeffs *= np.sqrt(power.reshape(1, lmax + 1, 1))
+                    coeffs = np.random.normal(size=2 * nl * nl).reshape(2, nl, nl)
+                    coeffs *= np.sqrt(power.reshape(1, lmax+1, 1))
                 elif kind == 'complex':
-                    coeffs = np.random.normal( loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1) ) + \
-                        1j * np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1))
-                    coeffs = coeffs1.reshape(2, lmax + 1, lmax + 1)
-                    coeffs *= np.sqrt(power.reshape(1, lmax + 1, 1))
+                    coeffs = np.random.normal(loc=0., scale=1., size=2 * nl * nl ) + \
+                        1j * np.random.normal(loc=0., scale=1., size=2 * nl * nl )
+                    coeffs = coeffs1.reshape(2, nl, nl)
+                    coeffs *= np.sqrt(power.reshape(1, nl, 1))
                 else:
                     raise ValueError("kind='{:s}' should be 'real' or 'complex'".format(str(kind)))
                 return cls(coeffs)
