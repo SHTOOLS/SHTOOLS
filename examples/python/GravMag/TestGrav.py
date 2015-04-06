@@ -35,8 +35,8 @@ def main():
 def TestMakeGravGrid():
     infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
     clm, lmax, header = shtools.SHReadH(infile, 110, 2)
-    gm = header[1] * 1.e9
     r0 = header[0] * 1.e3
+    gm = header[1] * 1.e9
     clm[0, 0, 0] = 1.0
     print gm, r0
 

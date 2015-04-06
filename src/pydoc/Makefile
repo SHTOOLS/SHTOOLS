@@ -42,12 +42,12 @@ MDFILES = pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pyplon.md \
     pyshconfidence.md pyshpowerlc.md pyshpowerdensitylc.md pyshcrosspowerlc.md \
     pyshcrosspowerdensitylc.md pyshpowerspectrumc.md pyshpowerspectrumdensityc.md \
     pyshcrosspowerspectrumc.md pyshcrosspowerspectrumdensityc.md
-#pycilmplusdh.pod pycilmplusglq.pod pycomputed0.pod pycomputedg82.pod pycomputedm.pod \
+#pycilmplusdh.pod pycilmplusglq.pod pycomputedg82.pod pycomputedm.pod \
 	 pydjpi2.pod pyeigvalsym.pod pyeigvalvecsym.pod pyeigvalvecsymtri.pod \
 	pyhilmdh.pod pyhilmglq.pod pymakecirclecoord.pod pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
 	pymakegeoidgrid2d.pod pymakemaggriddh.pod pypreglq.pod \
 	 pyrandomn.pod pyrandomgaussian.pod pyshbias.pod pyshbiask.pod   pyshfindlwin.pod \
-	pyshlocalizedadmitcorr.pod pyshmtvaropt.pod pyshmtvaropt0.pod  \
+	pyshlocalizedadmitcorr.pod pyshmtvaropt.pod   \
 	pywl.pod pywl_curv.pod pyshmultitapercse.pod pyshmultitaperse.pod  \
 	 pyshreturntapers.pod pyshreturntapersm.pod pyshrotatecoef.pod pyshrotaterealcoef.pod \
 	pywigner3j.pod pyshsjkpg.pod pyshsjkpg0.pod pysphericalcapcoef.pod pyshmtdebias.pod \
@@ -70,12 +70,12 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmbar.1 pyplmbar_d1.1 pyplbar.1 pyplbar_d1
     pyshadmitcorr.1 pyshconfidence.1 pyshpowerlc.1 pyshpowerdensitylc.1 \
     pyshcrosspowerlc.1 pyshcrosspowerdensitylc.1 pyshpowerspectrumc.1 \
     pyshpowerspectrumdensityc.1 pyshcrosspowerspectrumc.1 pyshcrosspowerspectrumdensityc.1)
-#pycilmplusdh.1 pycilmplusglq.1 pycomputed0.1 pycomputedg82.1 pycomputedm.1 \
+#pycilmplusdh.1 pycilmplusglq.1 pycomputedg82.1 pycomputedm.1 \
 	 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
 	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
 	  pymakemaggriddh.1  pypreglq.1 pyrandomn.1 pyrandomgaussian.1 \
 	 pyshbias.1 pyshbiask.1   pyshfindlwin.1 \
-	pyshlocalizedadmitcorr.1 pyshmtvaropt.1 pyshmtvaropt0.1  pywl.1 pywlcurv.1 \
+	pyshlocalizedadmitcorr.1 pyshmtvaropt.1   pywl.1 pywlcurv.1 \
 	pyshmultitapercse.1 pyshmultitaperse.1    \
 	pyshreturntapers.1 pyshreturntapersm.1 pyshrotatecoef.1 pyshrotaterealcoef.1 \
 	pywigner3j.1 pyshsjkpg.1 pyshsjkpg0.1 pysphericalcapcoef.1 pyshmtdebias.1 pymakegravgriddh.1 \
@@ -107,9 +107,9 @@ HTMLFILES_gspectra = $(addprefix $(WWWDIR)/, pyshpowerl.html pyshpowerdensityl.h
 	pyshcrosspowerspectrumc.html pyshcrosspowerspectrumdensityc.html)
 
 HTMLFILES_localized = 
-#pycomputed0.html pycomputedg82.html pycomputedm.html \
+#pycomputedg82.html pycomputedm.html \
 	pyshbias.html pyshbiask.html pyshfindlwin.html \
-	pyshlocalizedadmitcorr.html pyshmtvaropt.html pyshmtvaropt0.html pyshmultitapercse.html \
+	pyshlocalizedadmitcorr.html pyshmtvaropt.html  pyshmultitapercse.html \
 	pyshmultitaperse.html pyshreturntapers.html pyshreturntapersm.html pyshsjkpg.html \
 	pyshsjkpg0.html pysphericalcapcoef.html pyshmtdebias.html pyshbiasadmitcorr.html \
 	pycomputedmap.html pyshreturntapersmap.html pycurve2mask.html

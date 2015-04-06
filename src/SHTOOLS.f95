@@ -340,13 +340,7 @@ module SHTOOLS
 			integer, intent(in) ::	lmax1, lmax2
 			integer, intent(in), optional ::	precomp, norm, csphase
 		end subroutine SHMultiply
-		
-		subroutine ComputeD0(D0, lmax, theta0)
-			real*8, intent(out) ::	D0(:,:)
-			real*8, intent(in) ::	theta0
-			integer, intent(in) :: 	lmax
-		end subroutine ComputeD0
-		
+				
 		subroutine ComputeDm(dllm, lmax, m, theta0)
 			real*8, intent(out) ::	dllm(:,:)
 			real*8, intent(in) ::	theta0
@@ -359,17 +353,6 @@ module SHTOOLS
 			integer, intent(in), optional ::	lmax
 		end subroutine SphericalCapCoef
 		
-		real*8 function SHDeltaL(coef, lmax)
-			real*8, intent(in) ::	coef(:)
-			integer, intent(in) :: 	lmax
-		end function SHDeltaL
-		
-		real*8 function SHDeltaX(coef, lmax, m)
-			real*8, intent(in) ::	coef(:)
-			integer, intent(in) :: 	lmax
-			integer, intent(in), optional :: m
-		end function SHDeltaX
-
 		subroutine EigValVecSym(ain, n, eig, evec, ul, K)
 			real*8, intent(in) ::	ain(:,:)
 			integer, intent(in) ::	n

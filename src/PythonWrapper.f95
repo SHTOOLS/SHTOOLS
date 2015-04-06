@@ -517,7 +517,7 @@
         integer, intent(out) :: lmax
         integer, intent(in)  :: lmax_in
         integer, intent(in) ::  nheader
-        real*8, dimension(nheader),intent(out) :: header
+        real*8, intent(out), dimension(nheader) :: header
         integer, optional,intent(in) :: skip
         integer, intent(in) :: cilm_d0
         integer, intent(in) :: cilm_d1
@@ -956,17 +956,6 @@
         call SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp=precomp,norm=norm,csphase=csphase)
     end subroutine pySHMultiply
 
-    subroutine pyComputeD0(D0,lmax,theta0,D0_d0,D0_d1) 
-        use shtools, only: ComputeD0
-        implicit none
-        real*8, dimension(D0_d0,D0_d1),intent(out) :: D0
-        integer, intent(in) :: lmax
-        real*8, intent(in) :: theta0
-        integer, intent(in) :: D0_d0
-        integer, intent(in) :: D0_d1
-        call ComputeD0(D0,lmax,theta0)
-    end subroutine pyComputeD0
-
     subroutine pyComputeDm(dllm,lmax,m,theta0,dllm_d0,dllm_d1) 
         use shtools, only: ComputeDm
         implicit none
@@ -1231,51 +1220,6 @@
             call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,taper_wt=taper_wt,save_cg=save_cg)
         endif
     end subroutine pySHBiasK
-
-    function pySHSjkPG0(incspectra,j,k,l,m,evec,lwin,evec_d0,evec_d1,incspectra_d0) 
-        use shtools, only: SHSjkPG0
-        implicit none
-        real*8, dimension(incspectra_d0),intent(in) :: incspectra
-        integer, intent(in) :: j
-        integer, intent(in) :: k
-        integer, intent(in) :: l
-        integer, intent(in) :: m
-        real*8, dimension(evec_d0,evec_d1),intent(in) :: evec
-        integer, intent(in) :: lwin
-        integer, intent(in) :: evec_d0
-        integer, intent(in) :: evec_d1
-        integer, intent(in) :: incspectra_d0
-        real*8 :: pySHSjkPG0
-        pySHSjkPG0=SHSjkPG0(incspectra,j,k,l,m,evec,lwin)
-    end function pySHSjkPG0
-
-    subroutine pySHMTVarOpt0(l,tapers,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar,nocross&
-                              ,unweighted_covar_d0,unweighted_covar_d1,var_unit_d0,weight_opt_d0,weight_opt_d1&
-                              ,var_opt_d0,Sff_d0,tapers_d0,tapers_d1) 
-        use shtools, only: SHMTVarOpt0
-        implicit none
-        integer, intent(in) :: l
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, intent(in) :: lwin
-        integer, intent(in) :: kmax
-        real*8, dimension(Sff_d0),intent(in) :: Sff
-        real*8, dimension(var_opt_d0),intent(out) :: var_opt
-        real*8, dimension(var_unit_d0),intent(out) :: var_unit
-        real*8, optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
-        real*8, optional,dimension(unweighted_covar_d0,unweighted_covar_d1),intent(out) :: unweighted_covar
-        integer, optional,intent(in) :: nocross
-        integer, intent(in) :: unweighted_covar_d0
-        integer, intent(in) :: unweighted_covar_d1
-        integer, intent(in) :: var_unit_d0
-        integer, intent(in) :: weight_opt_d0
-        integer, intent(in) :: weight_opt_d1
-        integer, intent(in) :: var_opt_d0
-        integer, intent(in) :: Sff_d0
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        call SHMTVarOpt0(l,tapers,lwin,kmax,Sff,var_opt,var_unit,weight_opt=weight_opt,&
-        	unweighted_covar=unweighted_covar,nocross=nocross)
-    end subroutine pySHMTVarOpt0
 
     subroutine pySHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,taper_wt,norm&
                                     ,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,alpha_d0,tapers_d0&

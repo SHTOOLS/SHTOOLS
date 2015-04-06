@@ -449,7 +449,7 @@ python module _SHTOOLS ! in
             integer intent(out) :: lmax
             integer intent(in)  :: lmax_in
             integer, intent(in) :: nheader
-            real*8, intent(out), dimension(nheader) :: header
+            real*8 intent(out), dimension(nheader) :: header
             integer, optional,intent(in) :: skip = 0
             integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
             integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d1 = lmax_in+1
@@ -850,16 +850,6 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),depend(lmax1,lmax2),intent(hide) :: shout_d2 = lmax1+lmax2+1
         end subroutine SHMultiply
 
-        subroutine ComputeD0(D0,lmax,theta0,D0_d0,D0_d1) ! in PythonWrapper.f95
-            fortranname pycomputed0
-            use shtools, only: ComputeD0
-            real*8 dimension(D0_d0,D0_d1),intent(out) :: D0
-            integer intent(in) :: lmax
-            real*8 intent(in) :: theta0
-            integer,optional,intent(in),depend(lmax),intent(hide) :: D0_d0 = lmax+1
-            integer,optional,intent(in),depend(lmax),intent(hide) :: D0_d1 = lmax+1
-        end subroutine ComputeD0
-
         subroutine ComputeDm(dllm,lmax,m,theta0,dllm_d0,dllm_d1) ! in PythonWrapper.f95
             fortranname pycomputedm
             use shtools, only: ComputeDm
@@ -1080,46 +1070,6 @@ python module _SHTOOLS ! in
             integer, optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra),intent(hide) :: incspectra_d0=len(incspectra)
             integer, optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin
         end subroutine SHBiasK
-
-        function SHSjkPG0(incspectra,j,k,l,m,evec,lwin,evec_d0,evec_d1,incspectra_d0) ! in PythonWrapper.f95
-            fortranname pyshsjkpg0
-            use shtools, only: SHSjkPG0
-            real*8 dimension(incspectra_d0),intent(in) :: incspectra
-            integer intent(in) :: j
-            integer intent(in) :: k
-            integer intent(in) :: l
-            integer intent(in) :: m
-            real*8 dimension(evec_d0,evec_d1),intent(in) :: evec
-            integer intent(in) :: lwin
-            integer, optional,intent(in),check(shape(evec,0)==evec_d0),depend(evec),intent(hide) :: evec_d0=shape(evec,0)
-            integer, optional,intent(in),check(shape(evec,1)==evec_d1),depend(evec),intent(hide) :: evec_d1=shape(evec,1)
-            integer, optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra),intent(hide) :: incspectra_d0=len(incspectra)
-            real*8 :: SHSjkPG0
-        end function SHSjkPG0
-
-        subroutine SHMTVarOpt0(l,tapers,lwin,kmax,Sff,var_opt,var_unit,weight_opt,unweighted_covar,nocross,unweighted_covar_d0,unweighted_covar_d1,var_unit_d0,weight_opt_d0,weight_opt_d1,var_opt_d0,Sff_d0,tapers_d0,tapers_d1) ! in PythonWrapper.f95
-            fortranname pyshmtvaropt0
-            use shtools, only: SHMTVarOpt0
-            integer intent(in) :: l
-            real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer intent(in) :: lwin
-            integer intent(in) :: kmax
-            real*8 dimension(Sff_d0),intent(in) :: Sff
-            real*8 dimension(var_opt_d0),intent(out):: var_opt
-            real*8 dimension(var_unit_d0),intent(out) :: var_unit
-            real*8, optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
-            real*8, optional,dimension(unweighted_covar_d0,unweighted_covar_d1),intent(out) :: unweighted_covar
-            integer, optional,intent(in) :: nocross
-            integer intent(in),depend(kmax),intent(hide) :: unweighted_covar_d0 = kmax
-            integer intent(in),depend(kmax),intent(hide) :: unweighted_covar_d1 = kmax
-            integer intent(in),depend(kmax),intent(hide) :: var_unit_d0 = kmax
-            integer intent(in),depend(kmax),intent(hide) :: weight_opt_d0 = kmax
-            integer intent(in),depend(kmax),intent(hide) :: weight_opt_d1 = kmax
-            integer intent(in),depend(kmax),intent(hide) :: var_opt_d0 = kmax
-            integer, optional,intent(in),check(len(Sff)>=Sff_d0),depend(Sff),intent(hide) :: Sff_d0=len(Sff)
-            integer, optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers),intent(hide):: tapers_d0=shape(tapers,0)
-            integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers),intent(hide) :: tapers_d1=shape(tapers,1)
-        end subroutine SHMTVarOpt0
 
         subroutine SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,alpha,lat,lon,taper_wt,norm,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,alpha_d0,tapers_d0,tapers_d1,mtse_d0,sd_d0) ! in PythonWrapper.f95
             fortranname pyshmultitaperse

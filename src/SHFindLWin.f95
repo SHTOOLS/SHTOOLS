@@ -17,7 +17,7 @@ integer function SHFindLWin(theta0, m, alpha, taper_number)
 !			taper_number	Taper number used to calculate concentration factors.
 !	
 !
-!	Dependencies: LAPACK, BLAS, ComputeDm, ComputeD0, EigValSym
+!	Dependencies: LAPACK, BLAS, ComputeDm, EigValSym
 !
 !	Written by Mark Wieczorek June 2004.
 !
@@ -25,7 +25,7 @@ integer function SHFindLWin(theta0, m, alpha, taper_number)
 !	All rights reserved.
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	use SHTOOLS, only: ComputeDm, ComputeD0, EigvalSym
+	use SHTOOLS, only: ComputeDm, EigvalSym
 
 	implicit none
 
@@ -73,12 +73,7 @@ integer function SHFindLWin(theta0, m, alpha, taper_number)
 			stop
 		endif
 
-		if (m==0) then
-			call ComputeD0(dllm, l, theta0)
-		else
-			call ComputeDm(dllm, l, abs(m), theta0)
-		endif
-		
+		call ComputeDm(dllm, l, abs(m), theta0)		
 		call EigValSym(dllm, l+1, eval(1:l+1))
 		
 		alpha1 = eval(tn)
