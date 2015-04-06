@@ -1,0 +1,45 @@
+.TH "shcrosspowerl" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH SHCrossPowerL
+.PP
+Compute the cross\-power of two real functions for a single spherical
+harmonic degree.
+.SH Usage
+.PP
+\f[C]cpower\f[] = SHCrossPowerL (\f[C]cilm1\f[], \f[C]cilm2\f[],
+\f[C]l\f[])
+.SH Parameters
+.TP
+.B \f[C]cpower\f[] : output, real*8
+The cross power of the two functions for spherical harmonic degree
+\f[C]l\f[].
+.RS
+.RE
+.TP
+.B \f[C]cilm1\f[] : input, real*8, dimension (2, \f[C]lmaxin1\f[]+1, \f[C]lmaxin1\f[]+1)
+The spherical harmonic coefficients of the first function.
+.RS
+.RE
+.TP
+.B \f[C]cilm2\f[] : input, real*8, dimension (2, \f[C]lmaxin2\f[]+1, \f[C]lmaxin2\f[]+1)
+The spherical harmonic coefficients of the second function.
+.RS
+.RE
+.TP
+.B \f[C]l\f[] : input, integer
+The spherical harmonic degree.
+This must be less than or equal to the minimum of \f[C]lmaxin1\f[] and
+\f[C]lmaxin2\f[].
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHCrossPowerL\f[] will calculate the cross\-power of two functions
+for a single spherical harmonic degree \f[C]l\f[].
+This is explicitly calculated as:
+.PP
+\f[C]cpower\ =\ Sum_{i=1}^2\ Sum_{m=0}^l\ cilm1(i,\ l+1,\ m+1)\ *\ cilm2(i,\ l+1,\ m+1)\f[].
+.SH See also
+.PP
+shpowerl, shpowerdensityl, shcrosspowerdensityl, shpowerspectrum,
+shpowerspectrumdensity, shcrosspowerspectrum,
+shcrosspowerspectrumdensity, shadmitcorr

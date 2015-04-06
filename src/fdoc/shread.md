@@ -4,7 +4,7 @@ Read spherical harmonic coefficients from an ascii-formatted file.
 
 # Usage
 
-call subroutine SHRead (`filename`, `cilm`, `lmax`, `skip`, `header`, `error`)
+call SHRead (`filename`, `cilm`, `lmax`, `skip`, `header`, `error`)
 
 # Parameters
 

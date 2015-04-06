@@ -4,7 +4,7 @@ Compute the index of an array corresponding to degree `l` and angular order `m`.
 
 # Usage
 
-index = PlmIndex (`l`, `m`)
+`index` = PlmIndex (`l`, `m`)
 
 # Parameters
 

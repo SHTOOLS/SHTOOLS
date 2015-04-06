@@ -4,18 +4,18 @@ Convert a two-dimensional indexed array of spherical harmonic coefficients to a 
 
 # Usage
 
-call subroutine SHCindexToCilm (`cindex`, `cilm`, `degmax`)
+call SHCindexToCilm (`cindex`, `cilm`, `degmax`)
 
 # Parameters
 
-`cindex` : input, real\*8, dimension (2, :)
-:   The indexed spherical harmonic coefficients. The second dimension of this array must be greater than `(lmax+1)*(lmax+2)/2` where `lmax` is the maximum degree of `cilm`.
+`cindex` : input, real\*8, dimension (2, (`lmaxin`+1)\*(`lmaxin`+2)/2)
+:   The indexed spherical harmonic coefficients.
 
-`cilm` : output, real\*8, dimension (2, :, :)
+`cilm` : output, real\*8, dimension (2, `degmax`+1, `degmax`+1)
 :   The input spherical harmonic coefficients. `cilm(1,:,:)` and `cilm(2,:,:)` correspond to either the real and imaginary components, or cosine and sine coefficients, respectively.
 
-`degmax` : input, integer, optional
-:   The maximum degree of the output coefficients. By default, the entire array `cilm` will be converted.
+`degmax` : input, integer, optional, default = `lmaxin`
+:   The maximum degree of the output coefficients. 
 
 # Description
 

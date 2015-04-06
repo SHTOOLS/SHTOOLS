@@ -4,7 +4,7 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients th
 
 # Usage
 
-call subroutine MakeGridDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
+call MakeGridDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
 
 # Parameters
 

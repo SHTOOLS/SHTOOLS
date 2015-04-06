@@ -4,7 +4,7 @@ Compute all the unnormalized Legendre polynomials and first derivatives.
 
 # Usage 
 
-call subroutine PLegendre_d1 (`p`, `dp`, `lmax`, `z`)
+call PLegendre_d1 (`p`, `dp`, `lmax`, `z`)
 
 # Parameters
 

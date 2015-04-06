@@ -4,7 +4,7 @@ Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted 
 
 # Usage
 
-call subroutine SHRead2 (`filename`, `cilm`, `lmax`, `gm`, `r0_pot`, `error`, `dot`, `doystart`, `doyend`, `epoch`)
+call SHRead2 (`filename`, `cilm`, `lmax`, `gm`, `r0_pot`, `error`, `dot`, `doystart`, `doyend`, `epoch`)
 
 # Parameters
 
@@ -26,7 +26,7 @@ call subroutine SHRead2 (`filename`, `cilm`, `lmax`, `gm`, `r0_pot`, `error`, `d
 `error` : output, real\*8, optional, dimension (2, `lmax`+1, `lmax`+1)
 :   The errors corresponding to the spherical harmonic coefficients `cilm`.
 
-`dot` : output, real\*8, optional, dimension (2, :, :)
+`dot` : output, real\*8, optional, dimension (2, `lmaxout`+1, `lmaxout`+1)
 :   The time derivatives of the spherical harmonic coefficients. The dimension of this array can be smaller than `lmax+1`.
 
 `doystart` : output, real\*8, optional

@@ -4,18 +4,18 @@ Convert complex spherical harmonics to real form.
 
 # Usage
 
-call subroutine SHctor (`ccilm`, `rcilm`, `degmax`, `convention`, `switchcs`)
+call SHctor (`ccilm`, `rcilm`, `degmax`, `convention`, `switchcs`)
 
 # Parameters
 
-`ccilm` : input, real\*8, dimension (2, :, :)
+`ccilm` : input, real\*8, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input complex spherical harmonic coefficients. `ccilm(1,:,:)` and `ccilm(2,:,:)` correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are input; the negative orders are assumed to satisfy the relation `C_{l-m}=(-1)^m C_{lm}^*`.
 
-`rcilm` : output, real\*8, dimension (2, :, :)
+`rcilm` : output, real\*8, dimension (2, `lmaxout`+1, `lmaxout`+1)
 :   The output real spherical harmonic coefficients. `rcilm(1,:,:)` and `rcilm(2,:,:)` correspond to the cosine and sine terms, respectively.
 
-`degmax` : input, integer, optional
-:   The maximum degree of the output coefficients. By default, the dimension of the output coefficients will be the smallest of `rcilm` and `ccilm`.
+`degmax` : input, integer, optional, default = min(`lmaxin`, `lmaxout`)
+:   The maximum degree of the output coefficients.
 
 `convention` : input, integer, optional, default = 1
 :   If 1 (default), the input and output coefficients will have the same normalization. If 2, orthonormalized coefficients will be converted to real geodesy 4-pi form.

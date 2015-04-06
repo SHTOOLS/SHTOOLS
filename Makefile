@@ -79,7 +79,7 @@
 #		These are PRE-MADE in the distribution. To remake these
 #		files, it will be necessary to install "pandoc", 
 #       "ghc" and "cabal-install" (all using brew on OSX),
-#		and then execute "cabal update| and "cabal install pandoc-types".
+#		and then execute "cabal update" and "cabal install pandoc-types".
 #
 #	make remove-doc
 #		Remove the man and html-man pages.

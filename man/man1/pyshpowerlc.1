@@ -1,0 +1,39 @@
+.TH "pyshpowerlc" "1" "2015\-04\-06" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH SHPowerLC
+.PP
+Compute the power of a complex function for a single spherical harmonic
+degree.
+.SH Usage
+.PP
+\f[C]power\f[] = pyshtools.SHPowerLC (\f[C]cilm\f[], \f[C]l\f[])
+.SH Returns
+.TP
+.B \f[C]power\f[] : float
+Power of the complex function for spherical harmonic degree \f[C]l\f[].
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]cilm\f[] : complex, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
+The complex spherical harmonics of the complex function.
+.RS
+.RE
+.TP
+.B \f[C]l\f[] : integer
+The spherical harmonic degree.
+This must be less than or equal to \f[C]lmaxin\f[].
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHPowerLC\f[] will calculate the power of a complex function
+expressed in complex spherical harmonics for a single spherical harmonic
+degree \f[C]l\f[].
+This is calculated as:
+.PP
+\f[C]power\ =\ Sum_{i=0}^1\ Sum_{m=0}^l\ |\ cilm[i,\ l,\ m]\ |**2\f[].
+.SH See also
+.PP
+shpowerdensitylc, shcrosspowerlc, shcrosspowerdensitylc,
+shpowerspectrumc, shpowerspectrumdensityc, shcrosspowerspectrumc,
+shcrosspowerspectrumdensityc

@@ -1,14 +1,14 @@
-.TH "shctor" "1" "2015\-04\-03" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "shctor" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH SHctor
 .PP
 Convert complex spherical harmonics to real form.
 .SH Usage
 .PP
-call subroutine SHctor (\f[C]ccilm\f[], \f[C]rcilm\f[], \f[C]degmax\f[],
+call SHctor (\f[C]ccilm\f[], \f[C]rcilm\f[], \f[C]degmax\f[],
 \f[C]convention\f[], \f[C]switchcs\f[])
 .SH Parameters
 .TP
-.B \f[C]ccilm\f[] : input, real*8, dimension (2, :, :)
+.B \f[C]ccilm\f[] : input, real*8, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
 The input complex spherical harmonic coefficients.
 \f[C]ccilm(1,:,:)\f[] and \f[C]ccilm(2,:,:)\f[] correspond to the real
 and complex part of the coefficients, respectively.
@@ -17,17 +17,15 @@ assumed to satisfy the relation \f[C]C_{l\-m}=(\-1)^m\ C_{lm}^*\f[].
 .RS
 .RE
 .TP
-.B \f[C]rcilm\f[] : output, real*8, dimension (2, :, :)
+.B \f[C]rcilm\f[] : output, real*8, dimension (2, \f[C]lmaxout\f[]+1, \f[C]lmaxout\f[]+1)
 The output real spherical harmonic coefficients.
 \f[C]rcilm(1,:,:)\f[] and \f[C]rcilm(2,:,:)\f[] correspond to the cosine
 and sine terms, respectively.
 .RS
 .RE
 .TP
-.B \f[C]degmax\f[] : input, integer, optional
+.B \f[C]degmax\f[] : input, integer, optional, default = min(\f[C]lmaxin\f[], \f[C]lmaxout\f[])
 The maximum degree of the output coefficients.
-By default, the dimension of the output coefficients will be the
-smallest of \f[C]rcilm\f[] and \f[C]ccilm\f[].
 .RS
 .RE
 .TP

@@ -1053,8 +1053,8 @@
         real*8, dimension(T_d0,T_d1,T_d2),intent(in) :: T
         integer, intent(in) :: lmax
         real*8, dimension(admit_d0),intent(out) :: admit
-        real*8, dimension(corr_d0),intent(out) :: corr
         real*8, optional,dimension(admit_error_d0),intent(out) :: admit_error
+        real*8, dimension(corr_d0),intent(out) :: corr
         integer, intent(in) :: G_d0
         integer, intent(in) :: G_d1
         integer, intent(in) :: G_d2

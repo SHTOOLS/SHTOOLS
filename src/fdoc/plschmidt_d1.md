@@ -4,7 +4,7 @@ Compute all the Schmidt-normalized Legendre polynomials and first derivatives.
 
 # Usage
 
-call subroutine PlSchmidt_d1 (`p`, `dp`, `lmax`, `z`)
+call PlSchmidt_d1 (`p`, `dp`, `lmax`, `z`)
 
 # Parameters
 

@@ -4,7 +4,7 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients sa
 
 # Usage
 
-call subroutine MakeGridGLQC (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`)
+call MakeGridGLQC (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`)
 
 # Parameters
 

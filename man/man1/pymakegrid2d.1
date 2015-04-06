@@ -1,4 +1,4 @@
-.TH "pymakegrid2d" "1" "2015\-03\-31" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "pymakegrid2d" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH MakeGrid2D
 .PP
 Create a 2D cylindrical map of arbitrary grid spacing from a set of
@@ -20,7 +20,7 @@ coordinates of (90 N, 0 E) and (90 S, 360 E), respectively.
 .RE
 .SH Parameters
 .TP
-.B \f[C]cilm\f[] : float, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+.B \f[C]cilm\f[] : float, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
 The real spherical harmonic coefficients to be expanded in the space
 domain.
 The coefficients \f[C]C1lm\f[] and \f[C]C2lm\f[] refer to the cosine
@@ -34,7 +34,7 @@ The latitudinal and longitudinal spacing of \f[C]grid\f[].
 .RS
 .RE
 .TP
-.B \f[C]lmax\f[] :integer, optional, default = shape(\f[C]cilm\f[],1)\-1
+.B \f[C]lmax\f[] :integer, optional, default = \f[C]lmaxin\f[]
 The maximum spherical harmonic degree of the coefficients \f[C]cilm\f[]
 used when calculating the grid.
 .RS

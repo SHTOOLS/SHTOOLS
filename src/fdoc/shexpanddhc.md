@@ -4,7 +4,7 @@ Expand an equally sampled or equally spaced complex grid into complex spherical 
 
 # Usage
 
-call subroutine SHExpandDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
+call SHExpandDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
 
 # Parameters
 

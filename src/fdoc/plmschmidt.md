@@ -4,7 +4,7 @@ Compute all the Schmidt semi-normalized associated Legendre functions.
 
 # Usage
 
-call subroutine PlmSchmidt (`p`, `lmax`, `z`, `csphase`, `cnorm`)
+call PlmSchmidt (`p`, `lmax`, `z`, `csphase`, `cnorm`)
 
 # Parameters
 

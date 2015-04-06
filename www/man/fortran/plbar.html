@@ -32,16 +32,16 @@
 <h1 id="plbar">PlBar</h1>
 <p>Compute all the 4-pi (geodesy) normalized Legendre polynomials.</p>
 <h1 id="usage">Usage</h1>
-<p>call subroutine plbar (p, lmax, z )</p>
+<p>call PlBar (p, lmax, z )</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
-<dt><code>p</code> : output, real*8, dimension (<code>lmax</code>+1)</dt>
+<dt><code>p</code> : output, real/*8, dimension (<code>lmax</code>+1)</dt>
 <dd>An array of geodesy-normalized Legendre polynomials up to degree <code>lmax</code>. Degree <code>l</code> corresponds to array index <code>l+1</code>.
 </dd>
 <dt><code>lmax</code> : input, integer</dt>
 <dd>The maximum degree of the Legendre polynomials to be computed.
 </dd>
-<dt><code>z</code> : input, real*8</dt>
+<dt><code>z</code> : input, real/*8</dt>
 <dd>The argument of the Legendre polynomial.
 </dd>
 </dl>

@@ -1,0 +1,37 @@
+.TH "pyshpowerl" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH SHPowerL
+.PP
+Compute the power of a real function for a single spherical harmonic
+degree.
+.SH Usage
+.PP
+\f[C]power\f[] = pyshtools.SHPowerL (\f[C]cilm\f[], \f[C]l\f[])
+.SH Returns
+.TP
+.B \f[C]power\f[] : float
+Power of the function for a single spherical harmonic degree \f[C]l\f[].
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]cilm\f[] : float, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
+The spherical harmonic coefficients of the function.
+.RS
+.RE
+.TP
+.B \f[C]l\f[] : integer
+The spherical harmonic degree.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHPowerL\f[] will calculate the power of a function expressed in
+real spherical harmonics for a single degree \f[C]l\f[].
+This is explicitly calculated as:
+.PP
+\f[C]power\ =\ Sum_{i=0}^1\ Sum_{m=0}^l\ cilm[i,\ l,\ m]**2\f[] .
+.SH See also
+.PP
+shpowerdensityl, shcrosspowerl, shcrosspowerdensityl, shpowerspectrum,
+shpowerspectrumdensity, shcrosspowerspectrum,
+shcrosspowerspectrumdensity, shadmitcorr

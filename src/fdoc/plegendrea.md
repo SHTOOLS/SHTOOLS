@@ -4,7 +4,7 @@ Compute all the unnormalized associated Legendre functions.
 
 # Usage
 
-call subroutine PLegendreA (`p`, `lmax`, `z`, `csphase`)
+call PLegendreA (`p`, `lmax`, `z`, `csphase`)
 
 # Parameters
 

@@ -1,0 +1,37 @@
+.TH "pyshpowerspectrumdensityc" "1" "2015\-04\-06" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH SHPowerSpectrumDensityC
+.PP
+Compute the power spectral density of a complex function.
+.SH Usage
+.PP
+\f[C]pspectrum\f[] = pyshtools.SHPowerSpectrumDensityC (\f[C]cilm\f[],
+[\f[C]lmax\f[]])
+.SH Returns
+.TP
+.B \f[C]pspectrum\f[] : float, dimension (\f[C]lmax\f[]+1)
+The power spectral density of the function.
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]cilm\f[] : complex, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
+The complex function expressed in complex spherical harmonics.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : optional, integer, default = \f[C]lmaxin\f[]
+The maximum spherical harmonic degree of the power spectral density.
+This must be less than or equal to \f[C]lmaxin\f[].
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHPowerSpectrumDensityC\f[] will calculate the power spectral
+density of a complex function expressed in complex spherical harmonics.
+For a given spherical harmonic degree \f[C]l\f[], this is calculated as:
+.PP
+\f[C]pspectrum(l)\ =\ Sum_{i=0}^1\ Sum_{m=0}^l\ |\ cilm[i,\ l,\ m]\ |**2\ /\ (2l\ +\ 1)\f[].
+.SH See also
+.PP
+shpowerlc, shpowerdensitylc, shcrosspowerlc, shcrosspowerdensitylc,
+shpowerspectrumc, shcrosspowerspectrumc, shcrosspowerspectrumdensityc

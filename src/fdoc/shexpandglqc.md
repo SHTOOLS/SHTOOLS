@@ -4,7 +4,7 @@ Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical h
 
 # Usage
 
-call subroutine SHExpandGLQC (`cilm`, `lmax`, `gridglq`, `w`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`)
+call SHExpandGLQC (`cilm`, `lmax`, `gridglq`, `w`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`)
 
 # Parameters
 

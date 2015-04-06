@@ -4,7 +4,7 @@ Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature
 
 # Usage
 
-call subroutine GLQGridCoord (`latglq`, `longlq`, `lmax`, `nlat`, `nlong`)
+call GLQGridCoord (`latglq`, `longlq`, `lmax`, `nlat`, `nlong`)
 
 # Parameters
 

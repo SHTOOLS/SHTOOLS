@@ -4,7 +4,7 @@ Compute all the 4-pi (geodesy) normalized associated Legendre functions.
 
 # Usage
 
-call subroutine PlmBar (`p`, `lmax`, `z`, `csphase`, `cnorm`)
+call PlmBar (`p`, `lmax`, `z`, `csphase`, `cnorm`)
 
 # Parameters
 

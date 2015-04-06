@@ -932,15 +932,15 @@ python module _SHTOOLS ! in
             integer :: SHFindLWin
         end function SHFindLWin
 
-        subroutine SHAdmitCorr(G,T,lmax,admit,corr,admit_error,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0) ! in PythonWrapper.f95
+        subroutine SHAdmitCorr(G,T,lmax,admit,admit_error,corr,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0) ! in PythonWrapper.f95
             fortranname pyshadmitcorr
             use shtools, only: SHAdmitCorr
             real*8 dimension(G_d0,G_d1,G_d2),intent(in) :: G
             real*8 dimension(T_d0,T_d1,T_d2),intent(in) :: T
             integer, optional,intent(in),depend(G_d1,T_d1) :: lmax = min(G_d1,T_d1)-1
             real*8 dimension(admit_d0),intent(out) :: admit
+            real*8, dimension(admit_error_d0),intent(out) :: admit_error
             real*8 dimension(corr_d0),intent(out) :: corr
-            real*8, optional,dimension(admit_error_d0),intent(out) :: admit_error
             integer, optional,intent(in),check(shape(G,0)==G_d0),depend(G),intent(hide) :: G_d0=shape(G,0)
             integer, optional,intent(in),check(shape(G,1)==G_d1),depend(G),intent(hide) :: G_d1=shape(G,1)
             integer, optional,intent(in),check(shape(G,2)==G_d2),depend(G),intent(hide) :: G_d2=shape(G,2)

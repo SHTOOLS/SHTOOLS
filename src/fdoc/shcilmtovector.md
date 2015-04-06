@@ -4,7 +4,7 @@ Convert a three-dimensional array of real spherical harmonic coefficients to a 1
 
 # Usage
 
-call subroutine SHCilmToVector (`cilm`, `vector`, [`lmax`])
+call SHCilmToVector (`cilm`, `vector`, [`lmax`])
 
 # Parameters
 

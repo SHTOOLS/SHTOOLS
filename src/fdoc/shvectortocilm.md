@@ -4,7 +4,7 @@ Convert a 1-dimensional indexed vector of real spherical harmonic coefficients t
 
 # Usage
 
-call subroutine SHVectorToCilm (`vector`, `cilm`, `lmax`)
+call SHVectorToCilm (`vector`, `cilm`, `lmax`)
 
 # Parameters
 

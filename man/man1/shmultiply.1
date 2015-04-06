@@ -1,13 +1,13 @@
-.TH "shmultiply" "1" "2015\-03\-31" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "shmultiply" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH SHMultiply
 .PP
 Multiply two functions and determine the spherical harmonic coefficients
 of the resulting function.
 .SH Usage
 .PP
-call subroutine SHMultiply (\f[C]shout\f[], \f[C]sh1\f[],
-\f[C]lmax1\f[], \f[C]sh2\f[], \f[C]lmax2\f[], \f[C]precomp\f[],
-\f[C]norm\f[], \f[C]csphase\f[])
+call SHMultiply (\f[C]shout\f[], \f[C]sh1\f[], \f[C]lmax1\f[],
+\f[C]sh2\f[], \f[C]lmax2\f[], \f[C]precomp\f[], \f[C]norm\f[],
+\f[C]csphase\f[])
 .SH Parameters
 .TP
 .B \f[C]shout\f[] : output, real*8, dimension (2, \f[C]lmax1\f[]+\f[C]lmax2\f[]+1, \f[C]lmax1\f[]+\f[C]lmax2\f[]+1)

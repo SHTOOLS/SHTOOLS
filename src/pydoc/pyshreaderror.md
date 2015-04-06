@@ -25,7 +25,7 @@ Read spherical harmonic coefficients and associated errors from an ascii-formatt
 `lmaxin` : integer
 :   This spherical harmonic degree controls the dimension of the output array `cilm`. The coefficients between `lmax+1` and `lmaxin` will be set to zero.
 
-`skip` : integer, optional
+`skip` : integer, optional, default = 0
 :   The number of lines to skip before parsing `filename`.
 
 # Description

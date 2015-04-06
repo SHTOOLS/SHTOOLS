@@ -8,14 +8,14 @@ call SHCilmToCindex (`cilm`, `cindex`, `degmax`)
 
 # Parameters
 
-`cilm` : input, real\*8, dimension (2, :, :)
+`cilm` : input, real\*8, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input spherical harmonic coefficients. `cilm(1,:,:)` and `cilm(2,:,:)` correspond to either the real and imaginary components, or cosine and sine coefficients, respectively.
 	
-`cindex` : output, real\*8, dimension (2, :)
-:   The indexed output spherical harmonic coefficients. The second dimension of this array must be greater than `(lmax+1)*(lmax+2)/2` where `lmax` is the maximum degree of `cilm`.
+`cindex` : output, real\*8, dimension (2, (`degmax`+1)\*(`degmax`+2)/2)
+:   The indexed output spherical harmonic coefficients.
 
-`degmax` : input, integer, optional
-:   The maximum degree of the output coefficients. By default, the entire array `cilm` will be converted.
+`degmax` : input, integer, optional, default = `lmaxin`
+:   The maximum degree of the output coefficients. 
 
 # Description
 

@@ -32,17 +32,17 @@
 <h1 id="shctor">SHctor</h1>
 <p>Convert complex spherical harmonics to real form.</p>
 <h1 id="usage">Usage</h1>
-<p>call subroutine SHctor (<code>ccilm</code>, <code>rcilm</code>, <code>degmax</code>, <code>convention</code>, <code>switchcs</code>)</p>
+<p>call SHctor (<code>ccilm</code>, <code>rcilm</code>, <code>degmax</code>, <code>convention</code>, <code>switchcs</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
-<dt><code>ccilm</code> : input, real*8, dimension (2, :, :)</dt>
+<dt><code>ccilm</code> : input, real*8, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
 <dd>The input complex spherical harmonic coefficients. <code>ccilm(1,:,:)</code> and <code>ccilm(2,:,:)</code> correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are input; the negative orders are assumed to satisfy the relation <code>C_{l-m}=(-1)^m C_{lm}^*</code>.
 </dd>
-<dt><code>rcilm</code> : output, real*8, dimension (2, :, :)</dt>
+<dt><code>rcilm</code> : output, real*8, dimension (2, <code>lmaxout</code>+1, <code>lmaxout</code>+1)</dt>
 <dd>The output real spherical harmonic coefficients. <code>rcilm(1,:,:)</code> and <code>rcilm(2,:,:)</code> correspond to the cosine and sine terms, respectively.
 </dd>
-<dt><code>degmax</code> : input, integer, optional</dt>
-<dd>The maximum degree of the output coefficients. By default, the dimension of the output coefficients will be the smallest of <code>rcilm</code> and <code>ccilm</code>.
+<dt><code>degmax</code> : input, integer, optional, default = min(<code>lmaxin</code>, <code>lmaxout</code>)</dt>
+<dd>The maximum degree of the output coefficients.
 </dd>
 <dt><code>convention</code> : input, integer, optional, default = 1</dt>
 <dd>If 1 (default), the input and output coefficients will have the same normalization. If 2, orthonormalized coefficients will be converted to real geodesy 4-pi form.

@@ -1,0 +1,45 @@
+.TH "pyshcrosspowerspectrumdensityc" "1" "2015\-04\-06" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.SH SHCrossPowerSpectrumDensityC
+.PP
+Compute the cross\-power spectral density of two complex functions.
+.SH Usage
+.PP
+\f[C]cspectrum\f[] = pyshtools.SHCrossPowerSpectrumDensityC
+(\f[C]cilm1\f[], \f[C]cilm2\f[], [\f[C]lmax\f[]])
+.SH Returns
+.TP
+.B \f[C]cspectrum\f[] : complex, dimension (\f[C]lmax\f[]+1)
+The cross\-power spectral density of the two complex functions.
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]cilm1\f[] : complex, dimension (2, \f[C]lmaxin1\f[]+1, \f[C]lmaxin1\f[]+1)
+The complex spherical harmonics of the first complex function.
+.RS
+.RE
+.TP
+.B \f[C]cilm2\f[] : complex, dimension (2, \f[C]lmaxin2\f[]+1, \f[C]lmaxin2\f[]+1)
+The complex spherical harmonics of the first complex function.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : optional, integer, default = min(\f[C]lmaxin1\f[], \f[C]lmaxin2\f[])
+The maximum spherical harmonic degree of the cross power spectral
+density.
+This must be less than or equal to the minimum of \f[C]lmaxin1\f[] and
+\f[C]lmaxin2\f[].
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHCrossPowerSpectrumDensityC\f[] will calculate the cross\-power
+spectral density of two complex functions expressed in complex spherical
+harmonics.
+For a given spherical harmonic degree \f[C]l\f[], this is calculated as:
+.PP
+\f[C]cspectrum(l)\ =\ Sum_{i=0}^1\ Sum_{m=0}^l\ cilm1[i,\ l,\ m]\ *\ conjg[cilm2[i,\ l,\ m]]\ /\ (2l\ +\ 1)\f[].
+.SH See also
+.PP
+shpowerlc, shpowerdensitylc, shcrosspowerlc, shcrosspowerdensitylc,
+shpowerspectrumc, shpowerspectrumdensityc, shcrosspowerspectrumc

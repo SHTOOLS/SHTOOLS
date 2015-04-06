@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Global spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+<h1 id="shpowerspectrumdensity">SHPowerSpectrumDensity</h1>
+<p>Compute the power spectral density of a real function.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHPowerSpectrumDensity (<code>cilm</code>, <code>lmax</code>, <code>pspectrum</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cilm</code> : input, real*8, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The real function expressed in real spherical harmonics.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The maximum spherical harmonic degree used in calculating the power spectrum. This must be less than or equal to <code>lmaxin</code>.
+</dd>
+<dt><code>pspectrum</code> : output, real*8, dimension (<code>lmax</code>+1)</dt>
+<dd>The power spectral density of the function.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHPowerSpectrumDensity</code> will calculate the power spectral density of a function expressed in real spherical harmonics. For a given spherical harmonic degree <code>l</code>, this is explicitly calculated as:</p>
+<p><code>pspectrum(l) = Sum_{i=1}^2 Sum_{m=0}^l cilm(i, l+1, m+1)**2 / (2l + 1)</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shpowerl.html">shpowerl</a>, <a href="shpowerdensityl.html">shpowerdensityl</a>, <a href="shcrosspowerl.html">shcrosspowerl</a>, <a href="shcrosspowerdensityl.html">shcrosspowerdensityl</a>, <a href="shpowerspectrum.html">shpowerspectrum</a>, <a href="shcrosspowerspectrum.html">shcrosspowerspectrum</a>, <a href="shcrosspowerspectrumdensity.html">shcrosspowerspectrumdensity</a>, <a href="shadmitcorr.html">shadmitcorr</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>
