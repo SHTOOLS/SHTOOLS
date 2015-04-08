@@ -165,6 +165,31 @@
         endif
     end subroutine pyCilmPlusDH
 
+    subroutine pyCilmMinusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1&
+                              ,cilm_d0,cilm_d1,cilm_d2) 
+        use shtools, only: CilmMinus
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, intent(in) :: rho
+        integer, intent(in) :: sampling
+        integer, optional,intent(in) :: n
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        if (sampling == 1) then
+        	call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n)
+        else 
+        	call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n)
+        endif
+    end subroutine pyCilmMinusDH
+
     subroutine pyCilmPlusGLQ(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,gridin_d0,gridin_d1&
                               ,cilm_d0,cilm_d1,cilm_d2,zero_d0,w_d0) 
         use shtools, only: CilmPlus
@@ -188,6 +213,30 @@
         integer, intent(in) :: w_d0
         call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,1,w=w,zero=zero)
     end subroutine pyCilmPlusGLQ
+
+    subroutine pyCilmMinusGLQ(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero,gridin_d0,gridin_d1&
+                              ,cilm_d0,cilm_d1,cilm_d2,zero_d0,w_d0) 
+        use shtools, only: CilmMinus
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, intent(in) :: rho
+        integer, intent(in) :: gridtype
+        real*8, optional,dimension(w_d0),intent(in) :: w
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,1,w=w,zero=zero)
+    end subroutine pyCilmMinusGLQ
 
     subroutine pyCilmPlusRhoHDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1&
                                   ,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1) 

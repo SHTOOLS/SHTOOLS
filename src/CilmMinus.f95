@@ -1,4 +1,4 @@
-subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx, n, dref)
+subroutine CilmMinus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx, n, dref)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 !	This routine will compute the potential coefficients associated
@@ -11,52 +11,42 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 !	Calling Parameters
 !		IN
 !			gridin:		Input grid to be transformed to spherical
-!					harmonics. 
+!					    harmonics. 
 !			lmax:		Maximum spherical harmonic degree to compute. For gridtype 3 and 4,
-!					this must be less than or equal to N/2 - 1. 
+!					    this must be less than or equal to N/2 - 1. 
 !			nmax:		Order of expansion.
 !			mass:		Mass of planet.
 !			rho:		density of the relief.
 !			gridtype	1 = Gauss-Legendre quadrature grid corresponding to LMAX.
-!					2 = N by N Driscoll and Healy grid corresponding to LMAX.
-!					3 = N by 2N Driscoll and Healy grid corresponding to LMAX.
-!					(4 = 2D Cartesian using MakeGrid2D is not implemented).
+!					    2 = N by N Driscoll and Healy grid corresponding to LMAX.
+!					    3 = N by 2N Driscoll and Healy grid corresponding to LMAX.
+!					    (4 = 2D Cartesian using MakeGrid2D is not implemented).
 !		OUT
 !			cilm:		Output spherical harmonic coefficients with dimensions (2, lmax+1, lmax+1).
-!			d:	 	The radius that the coefficients are referenced
-!					to. This parameter corresponds to the degree zero term of the data.
+!			d:	 	    The radius that the coefficients are referenced
+!					    to. This parameter corresponds to the degree zero term of the data.
 !		OPTIONAL
-!			w:		Gauss-Legendre points used in the integrations of dimension lmax+1.
+!			w:		    Gauss-Legendre points used in the integrations of dimension lmax+1.
 !			zero:		Array of dimension lmax+1 that contains the latitudinal
-!					gridpoints used in the Gauss-Legendre quadrature integration
-!					scheme. Only needed when PLX is not included.
-!					(Determined from a call to SHGLQ).
+!					    gridpoints used in the Gauss-Legendre quadrature integration
+!					    scheme. Only needed when PLX is not included.
+!					    (Determined from a call to SHGLQ).
 !			plx:		Input array of Associated Legendre Polnomials computed
-!					at the Gauss points (determined from a call to
-!					SHGLQ). If this is not included, then the optional
-!					array zero MUST be inlcuded.
-!			N:		Number of latitude points in the Driscoll and Healy grid. Required for Gridtype 2 and 3
+!					    at the Gauss points (determined from a call to
+!					    SHGLQ). If this is not included, then the optional
+!					    array zero MUST be inlcuded.
+!			N:		    Number of latitude points in the Driscoll and Healy grid. Required for Gridtype 2 and 3
 !			dref:		The reference radius used to be used when calculating the spherical
-!					harmonic coefficients. If not specified, this will be set equal to the 
-!					mean radius of GRIDIN.
+!					    harmonic coefficients. If not specified, this will be set equal to the 
+!					    mean radius of GRIDIN.
 !
 !	All units assumed to be SI.
 !
 !	Dependencies:		NGLQSH, SHExpandGLQ, SHExpandDH
 !
-!	Written by Mark Wieczorek 2003
-!		September 3, 2005. Modifed so that the array plx is now optional.
-!		April 2009. Added the option to use N by N and N by 2N Driscoll and Healy (1994) grids. 
-!			GRIDTYPE must now be specified, and W is now defined as an optional parameter.
-!			Added the optional parameter DREF, which sets the reference radius of the expansion.
-!		April 2012. Modified to calculate GRID**k before sending in to the subroutine call in order to improve
-!			memory management
-!		November 2, 2012. Modified the way in which the grid was scaled before cacluating the spherical
-!			harmonic transform.
-!		Jan 2013. Modified FACT so that it returned a real*8 number, and not INTEGER. The integer
-!			would overflow for powers beyond about 13.
+!	Written by Mark Wieczorek 2015
 !
-!	Copyright (c) 2005-2012, Mark A. Wieczorek
+!	Copyright (c) 2015, Mark A. Wieczorek
 !	All rights reserved.
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -76,38 +66,38 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 	pi = acos(-1.0d0)
 		
 	if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. size(cilm(1,1,:)) < lmax+1) then
-		print*, "Error --- CilmPlus"
+		print*, "Error --- CilmMinus"
 		print*, "CILM must be dimensioned as (2, LMAX+1, LMAX+1) where LMAX is ", lmax
 		print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), size(cilm(1,1,:))
 		stop
 	endif
 	
 	if (gridtype == 4) then
-		print*, "Error --- CilmPlus"
+		print*, "Error --- CilmMinus"
 		print*, "GRIDTYPE 4 (Cartesian obtained from MakeGrid2D) is not allowed."
 		stop	
 		
 	elseif (gridtype == 1) then
 		if (present(n)) then
-			print*, "Error --- CilmPlus"
+			print*, "Error --- CilmMinus"
 			print*, "N can not be present when using GLQ grids."
 			stop
 		endif
 		
 		if (present(w) .and. present(zero) .and. present(plx)) then
-			print*, "Error --- CilmPlus"
+			print*, "Error --- CilmMinus"
 			print*, "For GLQ grids, either W and ZERO or W and PLX must be present, but not all three."
 			stop
 		elseif (present(w) .and. present(zero)) then
 			if (size(w) < lmax + 1) then
-				print*, "Error --- CilmPlus"
+				print*, "Error --- CilmMinus"
 				print*, "W must be dimensioned as (LMAX+1) where LMAX is ", lmax
 				print*, "Input dimension is ", size(w)
 				stop
 			endif
 			
 			if (size(zero) < lmax + 1) then
-				print*, "Error --- CilmPlus"
+				print*, "Error --- CilmMinus"
 				print*, "ZERO must be dimensioned as (LMAX+1) where LMAX is ", lmax
 				print*, "Input dimension is ", size(zero)
 				stop
@@ -115,49 +105,49 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 			
 		elseif (present(plx) .and. present(w)) then
 			if (size(w) < lmax + 1) then
-				print*, "Error --- CilmPlus"
+				print*, "Error --- CilmMinus"
 				print*, "W must be dimensioned as (LMAX+1) where LMAX is ", lmax
 				print*, "Input dimension is ", size(w)
 				stop
 			endif
 
 			if (size(plx(:,1)) < lmax+1 .or. size(plx(1,:)) < (lmax+1)*(lmax+2)/2) then
-				print*, "Error --- CilmPlus"
+				print*, "Error --- CilmMinus"
 				print*, "PLX must be dimensioned as (LMAX+1, (LMAX+1)*(LMAX+2)/2) where LMAX is ", lmax
 				print*, "Input dimension is ", size(plx(:,1)), size(plx(1,:))
 				stop
 			endif
 			
 		else
-			print*, "Error --- CilmPlus"
+			print*, "Error --- CilmMinus"
 			print*, "For GLQ grids, either W and ZERO or W and PLX must be present"
 			stop
 		endif
 		
 	elseif (gridtype == 2) then
 		if (present(w) .or. present(zero) .or. present(plx)) then
-			print*, "Error --- CilmPlus"
+			print*, "Error --- CilmMinus"
 			print*, "W, ZERO and PLX can not be present for Driscoll-Healy grids."
 			stop
 		elseif (.not.present(N)) then
-			print*, "Error --- CilmPlus"
+			print*, "Error --- CilmMinus"
 			print*, "N must be present when GRIDTYPE is 2 or 3."
 			stop
 		endif
 	
 	elseif (gridtype == 3) then
 		if (present(w) .or. present(zero) .or. present(plx)) then
-			print*, "Error --- CilmPlus"
+			print*, "Error --- CilmMinus"
 			print*, "W, ZERO and PLX can not be present for Driscoll-Healy grids."
 			stop
 		elseif (.not.present(N)) then
-			print*, "Error --- CilmPlus"
+			print*, "Error --- CilmMinus"
 			print*, "N must be present when GRIDTYPE is 2 or 3."
 			stop
 		endif
 		
 	else
-		print*, "Error --- CilmPlus"
+		print*, "Error --- CilmMinus"
 		print*, "GRIDTYPE must be 1 (GLQ), 2 (NxN) or 3 (Nx2N)"
 		print*, "Input value is ", gridtype
 		stop
@@ -171,7 +161,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 		nlong = N
 		lmax_dh = N/2 - 1
 		if (lmax > lmax_dh) then
-			print*, "Error --- CilmPlus"
+			print*, "Error --- CilmMinus"
 			print*, "For Driscoll-Healy grids, LMAX must be less than or equal to N/2 -1, where N is ", N
 			print*, "Input value of LMAX is ", lmax
 			stop
@@ -181,7 +171,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 		nlong = 2*N
 		lmax_dh = N/2 - 1
 		if (lmax > lmax_dh) then
-			print*, "Error --- CilmPlus"
+			print*, "Error --- CilmMinus"
 			print*, "For Driscoll-Healy grids, LMAX must be less than or equal to N/2 -1, where N is ", N
 			print*, "Input value of LMAX is ", lmax
 			stop
@@ -189,7 +179,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 	endif
 		
 	if (size(gridin(1,:)) < nlong .or. size(gridin(:,1)) < nlat) then
-		print*, "Error --- CilmPlus"
+		print*, "Error --- CilmMinus"
 		if (gridtype == 2) then
 			print*, "GRIDIN must be dimensioned as (LMAX+1, 2*LMAX+1) where LMAX is ", lmax
 			print*, "Input dimension is ", size(gridin(1,:)), size(gridin(:,1))
@@ -208,7 +198,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 	allocate(cilmn(2, lmax+1, lmax+1), stat=astat(1))
 	allocate(grid(nlat, nlong), stat=astat(2))
 	if (astat(1) /= 0 .or. astat(2) /= 0) then
-		print*, "Error --- CilmPlus"
+		print*, "Error --- CilmMinus"
 		print*, "Problem allocating arrays CILMN and GRID", astat(1), astat(2)
 		stop
 	endif
@@ -257,7 +247,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 	scalef = maxval(abs(grid(1:nlat,1:nlong)))
 	grid(1:nlat, 1:nlong) = grid(1:nlat, 1:nlong) / scalef
 	
-	do k=2, nmax, 1
+	do k=2, nmax
 		grid(1:nlat,1:nlong) = grid(1:nlat,1:nlong) * ((gridin(1:nlat,1:nlong)-d)/scalef)
 		select case(gridtype)
 			case(1)
@@ -277,7 +267,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 		do l = 0, lmax
 			prod = 4*pi*rho*(d**3)/mass * (scalef/d)**k
 			do j=2, k, 1
-				prod = prod * (l+4-j)
+				prod = prod * (l+j-3)
 			enddo
 			prod = prod/( dble(2*l+1) * dble(fact(k)) )
 			
@@ -316,5 +306,5 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, p
 			
 		end function fact
 
-end subroutine CilmPlus
+end subroutine CilmMinus
 

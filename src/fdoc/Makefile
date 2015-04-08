@@ -40,7 +40,7 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
     shadmitcorr.md shconfidence.md shpowerlc.md shpowerdensitylc.md shcrosspowerlc.md \
     shcrosspowerdensitylc.md shpowerspectrumc.md shpowerspectrumdensityc.md \
     shcrosspowerspectrumc.md shcrosspowerspectrumdensityc.md
-# cilmplus.pod  computedg82.pod computedm.pod \
+# cilmplus.pod  cilmminus.pod computedg82.pod computedm.pod \
 	 djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
 	hilm.pod makecirclecoord.pod makegeoidgrid.pod makemaggriddh.pod \
 	   preglq.pod randomn.pod randomgaussian.pod shbias.pod shbiask.pod  \
@@ -64,7 +64,7 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_
     shcrosspowerspectrumdensity.1 shadmitcorr.1 shconfidence.1 shpowerlc.1 \
     shpowerdensitylc.1 shcrosspowerlc.1 shcrosspowerdensitylc.1 shpowerspectrumc.1 \
     shpowerspectrumdensityc.1 shcrosspowerspectrumc.1 shcrosspowerspectrumdensityc.1)
-#cilmplus.1  computedg82.1 computedm.1 \
+#cilmplus.1  cilmminus.1 computedg82.1 computedm.1 \
 	 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
 	makecirclecoord.1 makegeoidgrid.1  makemaggriddh.1 shglq.1 preglq.1  \
 	randomn.1 randomgaussian.1 shbias.1 shbiask.1  shfindlwin.1 \
@@ -112,7 +112,7 @@ HTMLFILES_rotations =
 # djpi2.html shrotatecoef.html shrotaterealcoef.html
 
 HTMLFILES_gravmag = 
-# cilmplus.html hilm.html makegeoidgrid.html \
+# cilmplus.html cilmminus.html hilm.html makegeoidgrid.html \
 	makemaggriddh.html wl.html wlcurv.html makegravgriddh.html \
 	shmagpowerl.html shmagpowerspectrum.html cilmplusrhoh.html hilmrhoh.html \
 	normalgravity.html makegravgradgriddh.html

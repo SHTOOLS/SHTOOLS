@@ -42,7 +42,7 @@ MDFILES = pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pyplon.md \
     pyshconfidence.md pyshpowerlc.md pyshpowerdensitylc.md pyshcrosspowerlc.md \
     pyshcrosspowerdensitylc.md pyshpowerspectrumc.md pyshpowerspectrumdensityc.md \
     pyshcrosspowerspectrumc.md pyshcrosspowerspectrumdensityc.md
-#pycilmplusdh.pod pycilmplusglq.pod pycomputedg82.pod pycomputedm.pod \
+#pycilmplusdh.pod pycilmplusglq.pod pycilmminusdh.pod pycilmminusglq.pod pycomputedg82.pod pycomputedm.pod \
 	 pydjpi2.pod pyeigvalsym.pod pyeigvalvecsym.pod pyeigvalvecsymtri.pod \
 	pyhilmdh.pod pyhilmglq.pod pymakecirclecoord.pod pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
 	pymakegeoidgrid2d.pod pymakemaggriddh.pod pypreglq.pod \
@@ -53,7 +53,7 @@ MDFILES = pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pyplon.md \
 	pywigner3j.pod pyshsjkpg.pod pyshsjkpg0.pod pysphericalcapcoef.pod pyshmtdebias.pod \
 	pymakegravgriddh.pod  pyshmagpowerl.pod pyshmagpowerspectrum.pod  pyshbiasadmitcorr.pod   \
 	 pycomputedmap.pod pyshreturntapers.pod pycurve2mask.pod pymakeellipsecoord.pod \
-	pycilmplusrhohdh.pod pycilmplusglq.pod pyhilmrhohdh.pod pyhilmrhohglq.pod pynormalgravity.pod \
+	pycilmplusrhohdh.pod pyhilmrhohdh.pod pyhilmrhohglq.pod pynormalgravity.pod \
 	pymakegravgradgriddh.pod 
 
 MANFILES = $(addprefix $(MANDIR)/, pyplmbar.1 pyplmbar_d1.1 pyplbar.1 pyplbar_d1.1 \
@@ -70,7 +70,7 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmbar.1 pyplmbar_d1.1 pyplbar.1 pyplbar_d1
     pyshadmitcorr.1 pyshconfidence.1 pyshpowerlc.1 pyshpowerdensitylc.1 \
     pyshcrosspowerlc.1 pyshcrosspowerdensitylc.1 pyshpowerspectrumc.1 \
     pyshpowerspectrumdensityc.1 pyshcrosspowerspectrumc.1 pyshcrosspowerspectrumdensityc.1)
-#pycilmplusdh.1 pycilmplusglq.1 pycomputedg82.1 pycomputedm.1 \
+#pycilmplusdh.1 pycilmplusglq.1 pycilmminusdh.1 pycilmminusglq.1 pycomputedg82.1 pycomputedm.1 \
 	 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
 	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
 	  pymakemaggriddh.1  pypreglq.1 pyrandomn.1 pyrandomgaussian.1 \
@@ -118,7 +118,7 @@ HTMLFILES_rotations =
 #pydjpi2.html pyshrotatecoef.html pyshrotaterealcoef.html
 
 HTMLFILES_gravmag = 
-#pycilmplusdh.html pycilmplusglq.html pyhilmdh.html pyhilmglq.html pymakegeoidgriddh.html \
+#pycilmplusdh.html pycilmplusglq.html pycilmminusdh.html pycilmminusglq.html pyhilmdh.html pyhilmglq.html pymakegeoidgriddh.html \
 	pymakegeoidgridglq.html pymakegeoidgrid2d.html pymakemaggriddh.html pywl.html pywlcurv.html pymakegravgriddh.html \
 	pyshmagpowerl.html pyshmagpowerspectrum.html pycilmplusrhohdh.html pycilmplusrhohglq.html pyhilmrhohdh.html \
 	pyhilmrhohglq.html pynormalgravity.html pymakegravgradgriddh.html

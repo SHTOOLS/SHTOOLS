@@ -68,13 +68,6 @@ def test_MultitaperSE():
     admit, corr, dadmit, dcorr = shtools.SHLocalizedAdmitCorr(tapers, torders, coeffs1, coeffs2)
     print admit
 
-    print '\n---- testing ComputeD0 ----'
-    theta0_deg = 20.
-    theta0 = np.radians(theta0_deg)
-    lmax = 10
-    D0 = shtools.ComputeD0(lmax, theta0)
-    print D0[0, :3]
-
     print '\n---- testing ComputeDm ----'
     theta0_deg = 20.
     theta0 = np.radians(theta0_deg)

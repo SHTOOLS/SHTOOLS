@@ -21,88 +21,96 @@ module SHTOOLS
 		subroutine PlmBar(p, lmax, z, csphase, cnorm)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:)
-       			real*8, intent(in) ::	z
-       			integer, intent(in), optional :: csphase, cnorm
+       		real*8, intent(in) ::	z
+       		integer, intent(in), optional :: csphase, cnorm
        		end subroutine PlmBar
        		
 		subroutine PlmBar_d1(p, dp, lmax, z, csphase, cnorm)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:), dp(:)
-       			real*8, intent(in) ::	z
-       			integer, intent(in), optional :: csphase, cnorm
+       		real*8, intent(in) ::	z
+       		integer, intent(in), optional :: csphase, cnorm
 		end subroutine PlmBar_d1
        		
-       		subroutine PlBar(p, lmax, z)
+       	subroutine PlBar(p, lmax, z)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:)
-       			real*8, intent(in) ::	z
-       		end subroutine PlBar
+       		real*8, intent(in) ::	z
+       	end subroutine PlBar
        		
-       		subroutine PlBar_d1(p, dp, lmax, z)
+       	subroutine PlBar_d1(p, dp, lmax, z)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:), dp(:)
-       			real*8, intent(in) ::	z
-       		end subroutine PlBar_d1
+       		real*8, intent(in) ::	z
+       	end subroutine PlBar_d1
        		
-       		subroutine PlmSchmidt(p,lmax,z, csphase, cnorm)
+       	subroutine PlmSchmidt(p,lmax,z, csphase, cnorm)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:)
-      		 	real*8, intent(in) ::	z
-      		 	integer, intent(in), optional :: csphase, cnorm
-      		end subroutine PlmSchmidt
+      		real*8, intent(in) ::	z
+      		integer, intent(in), optional :: csphase, cnorm
+      	end subroutine PlmSchmidt
       		
-      		subroutine PlSchmidt(p,lmax,z)
+      	subroutine PlSchmidt(p,lmax,z)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:)
-      		 	real*8, intent(in) ::	z
-      		end subroutine PlSchmidt
+      		real*8, intent(in) ::	z
+      	end subroutine PlSchmidt
       		
-      		subroutine PlmSchmidt_d1(p, dp, lmax, z, csphase, cnorm)
+      	subroutine PlmSchmidt_d1(p, dp, lmax, z, csphase, cnorm)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:), dp(:)
-      		 	real*8, intent(in) ::	z
-      		 	integer, intent(in), optional :: csphase, cnorm
-      		end subroutine PlmSchmidt_d1
+      		real*8, intent(in) ::	z
+      		integer, intent(in), optional :: csphase, cnorm
+      	end subroutine PlmSchmidt_d1
       		
-      		subroutine PlSchmidt_d1(p, dp, lmax, z)
+      	subroutine PlSchmidt_d1(p, dp, lmax, z)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:), dp(:)
-      		 	real*8, intent(in) ::	z
-      		end subroutine PlSchmidt_d1
+      		real*8, intent(in) ::	z
+      	end subroutine PlSchmidt_d1
       		
-      		subroutine PLegendre(p,lmax,z)
+      	subroutine PLegendre(p,lmax,z)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:)
-       			real*8, intent(in) ::	z
-       		end subroutine PLegendre
+       		real*8, intent(in) ::	z
+       	end subroutine PLegendre
        		
-       		subroutine PLegendreA(p,lmax,z, csphase)
+       	subroutine PLegendreA(p,lmax,z, csphase)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:)
-       			real*8, intent(in) ::	z
-       			integer, intent(in), optional :: csphase
-       		end subroutine PLegendreA
+       		real*8, intent(in) ::	z
+       		integer, intent(in), optional :: csphase
+       	end subroutine PLegendreA
        		
-      		subroutine PLegendre_d1(p, dp, lmax, z)
+      	subroutine PLegendre_d1(p, dp, lmax, z)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:), dp(:)
-       			real*8, intent(in) ::	z
-       		end subroutine PLegendre_d1
+       		real*8, intent(in) ::	z
+       	end subroutine PLegendre_d1
        		
-       		subroutine PLegendreA_d1(p, dp, lmax, z, csphase)
+       	subroutine PLegendreA_d1(p, dp, lmax, z, csphase)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:), dp(:)
-       			real*8, intent(in) ::	z
+       		real*8, intent(in) ::	z
 			integer, intent(in), optional :: csphase
-       		end subroutine PLegendreA_d1
+       	end subroutine PLegendreA_d1
        	
-       		subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx, n, dref)
+       	subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx, n, dref)
 			real*8, intent(in) :: 	gridin(:,:), mass, rho
 			real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
 			real*8, intent(out) :: 	cilm(:,:,:), d
 			integer, intent(in) :: 	lmax, nmax, gridtype
 			integer, intent(in), optional :: n
 		end subroutine CilmPlus
+
+       	subroutine CilmMinus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx, n, dref)
+			real*8, intent(in) :: 	gridin(:,:), mass, rho
+			real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
+			real*8, intent(out) :: 	cilm(:,:,:), d
+			integer, intent(in) :: 	lmax, nmax, gridtype
+			integer, intent(in), optional :: n
+		end subroutine CilmMinus
 		
 	 	subroutine CilmPlusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx, n, dref)
 			real*8, intent(in) :: 	gridin(:,:), mass, rho(:,:)
@@ -505,30 +513,30 @@ module SHTOOLS
 		subroutine PlmON(p, lmax, z, csphase, cnorm)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:)
-       			real*8, intent(in) ::	z
-       			integer, intent(in), optional :: csphase, cnorm
-       		end subroutine PlmON
+       		real*8, intent(in) ::	z
+       		integer, intent(in), optional :: csphase, cnorm
+       	end subroutine PlmON
        		
-       		subroutine PlON(p, lmax, z)
+       	subroutine PlON(p, lmax, z)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:)
-       			real*8, intent(in) ::	z
-       		end subroutine PlON
+       		real*8, intent(in) ::	z
+       	end subroutine PlON
 
 		subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:), dp(:)
-       			real*8, intent(in) ::	z
-       			integer, intent(in), optional :: csphase, cnorm
-       		end subroutine PlmON_d1
+       		real*8, intent(in) ::	z
+       		integer, intent(in), optional :: csphase, cnorm
+       	end subroutine PlmON_d1
 
 		subroutine PlON_d1(p, dp, lmax, z)
 			integer, intent(in) ::	lmax
 			real*8, intent(out) ::	p(:), dp(:)
-       			real*8, intent(in) ::	z
+       		real*8, intent(in) ::	z
        		end subroutine PlON_d1
        		
-       		subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum)
+       	subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum)
 			real*8, intent(in) ::	lat, lon, theta0
 			real*8, intent(out) :: coord(:,:)
 			real*8, intent(in), optional ::	cinterval
@@ -596,8 +604,8 @@ module SHTOOLS
 		end subroutine SHMagPowerSpectrum
 		
 		subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
-     			complex*16, intent(in) ::	grid(:,:)
-     			complex*16, intent(out) ::	cilm(:,:,:)
+     		complex*16, intent(in) ::	grid(:,:)
+     		complex*16, intent(out) ::	cilm(:,:,:)
 			integer, intent(in) ::	n
 			integer, intent(out) ::	lmax
 			integer, intent(in), optional :: norm, sampling, csphase, lmax_calc

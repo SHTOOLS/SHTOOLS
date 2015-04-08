@@ -40,7 +40,7 @@ MAKE = make
 
 PROG =	../lib/libSHTOOLS.a
 
-SRCS0 =	CilmPlus.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
+SRCS0 =	CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
 	djpi2.f95 FFTW3.f95 Hilm.f95 MakeGrid2D.f95 \
 	GLQGridCoord.f95 MakeGridPoint.f95 \
 	PlanetsConstants.f95 PlBar.f95 PlBar_d1.f95 \
@@ -60,7 +60,7 @@ SRCS0 =	CilmPlus.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
 	ComputeDMap.f95 SHReturnTapersMap.f95 Curve2Mask.f95 MakeEllipseCoord.f95 \
 	CilmPlusRhoH.f95 HilmRhoH.f95 NormalGravity.f95
 
-OBJS0 =	CilmPlus.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o \
+OBJS0 =	CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o \
 	FFTW3.o Hilm.o MakeGrid2D.o GLQGridCoord.o \
 	MakeGridPoint.o PlanetsConstants.o PlBar.o PlBar_d1.o \
 	PLegendre.o PLegendreA.o PLegendreA_d1.o PlmBar.o PlmBar_d1.o \
@@ -196,6 +196,7 @@ clean:
 	
 
 CilmPlus.o: SHTOOLS.o
+CilmMinus.o: SHTOOLS.o
 ComputeDm.o: SHTOOLS.o
 Hilm.o: SHTOOLS.o
 MakeGrid2D.o: SHTOOLS.o

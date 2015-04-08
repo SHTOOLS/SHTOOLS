@@ -270,21 +270,21 @@ python: getflags
 	@echo 
 
 install: getflags
-	mkdir -p $(SYSPYPATH)
-	cp -r pyshtools/ $(SYSPYPATH)/pyshtools/
-	mkdir -p $(SYSLIBPATH)
+	mkdir -pv $(SYSPYPATH)
+	cp -R pyshtools $(SYSPYPATH)/
+	mkdir -pv $(SYSLIBPATH)
 	cp $(LIBDIR)/libSHTOOLS.a $(SYSLIBPATH)/libSHTOOLS.a
-	mkdir -p $(SYSMODPATH)
+	mkdir -pv $(SYSMODPATH)
 	cp $(INCDIR)/fftw3.mod $(SYSMODPATH)/fftw3.mod
 	cp $(INCDIR)/planetsconstants.mod $(SYSMODPATH)/planetsconstants.mod
 	cp $(INCDIR)/shtools.mod $(SYSMODPATH)/shtools.mod
-	mkdir -p $(SYSSHAREPATH)/shtools
-	cp -r examples/ $(SYSSHAREPATH)/shtools/examples/
-	mkdir -p $(SYSSHAREPATH)/man/man1
-	cp -r man/man1/ $(SYSSHAREPATH)/man/man1/
-	mkdir -p $(SYSDOCPATH)/shtools
+	mkdir -pv $(SYSSHAREPATH)/shtools
+	cp -R examples $(SYSSHAREPATH)/shtools/
+	mkdir -pv $(SYSSHAREPATH)/man/man1
+	cp -R man/man1 $(SYSSHAREPATH)/
+	mkdir -pv $(SYSDOCPATH)/shtools
 	cp index.html $(SYSDOCPATH)/shtools/index.html
-	cp -r www/ $(SYSDOCPATH)/shtools/www/
+	cp -R www $(SYSDOCPATH)/shtools/
 	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/Makefile" > "temp.txt"
 	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
 	cp temp2.txt "/usr/local/share/shtools/examples/Makefile"
