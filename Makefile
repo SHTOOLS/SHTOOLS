@@ -49,6 +49,9 @@
 #		an underscore appended to them in the source files in order to 
 #		use FFTW and LAPACK libraries with conflicting underscore 
 #		conventions.
+#	
+#	make install-fortran
+#		Install only fortram 95 component of SHTOOLS.
 #
 #	make python
 #		Compile the python wrapper with the f2py compiler. This should be 
@@ -78,7 +81,7 @@
 #		Create the man and html-man pages from input POD files.
 #		These are PRE-MADE in the distribution. To remake these
 #		files, it will be necessary to install "pandoc", 
-#       "ghc" and "cabal-install" (all using brew on OSX),
+#		"ghc" and "cabal-install" (all using brew on OSX),
 #		and then execute "cabal update" and "cabal install pandoc-types".
 #
 #	make remove-doc
@@ -112,7 +115,7 @@ PEXDIR = examples/python
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
-SYSMODPATH = /usr/local/include
+SYSMODPATH = /usr/local/include/shtools
 SYSLIBPATH = /usr/local/lib
 SYSPYPATH = /usr/local/lib/python2.7/site-packages
 SYSSHAREPATH =/usr/local/share
@@ -218,7 +221,6 @@ fortran: getflags
 	@echo Compile your Fortran code with the following flags:
 	@echo
 	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 	
@@ -231,7 +233,6 @@ fortran2: getflags
 	@echo Compile your Fortran code with the following flags:
 	@echo
 	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
@@ -244,7 +245,6 @@ fortran3: getflags
 	@echo Compile your Fortran code with the following flags:
 	@echo
 	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
@@ -270,14 +270,15 @@ python: getflags
 	@echo 
 
 install: getflags
+	-rm -r $(SYSMODPATH)/fftw3.mod
+	-rm -r $(SYSMODPATH)/planetsconstants.mod
+	-rm -r $(SYSMODPATH)/shtools.mod
 	mkdir -pv $(SYSPYPATH)
 	cp -R pyshtools $(SYSPYPATH)/
 	mkdir -pv $(SYSLIBPATH)
 	cp $(LIBDIR)/libSHTOOLS.a $(SYSLIBPATH)/libSHTOOLS.a
 	mkdir -pv $(SYSMODPATH)
-	cp $(INCDIR)/fftw3.mod $(SYSMODPATH)/fftw3.mod
-	cp $(INCDIR)/planetsconstants.mod $(SYSMODPATH)/planetsconstants.mod
-	cp $(INCDIR)/shtools.mod $(SYSMODPATH)/shtools.mod
+	-cp $(INCDIR)/*.mod $(SYSMODPATH)/
 	mkdir -pv $(SYSSHAREPATH)/shtools
 	cp -R examples $(SYSSHAREPATH)/shtools/
 	mkdir -pv $(SYSSHAREPATH)/man/man1
@@ -317,6 +318,35 @@ uninstall:
 	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 
+install-fortran: getflags
+	-rm -r $(SYSMODPATH)/fftw3.mod
+	-rm -r $(SYSMODPATH)/planetsconstants.mod
+	-rm -r $(SYSMODPATH)/shtools.mod
+	mkdir -pv $(SYSLIBPATH)
+	cp $(LIBDIR)/libSHTOOLS.a $(SYSLIBPATH)/libSHTOOLS.a
+	mkdir -pv $(SYSMODPATH)
+	cp $(INCDIR)/*.mod $(SYSMODPATH)/
+	mkdir -pv $(SYSSHAREPATH)/shtools
+	cp -R examples $(SYSSHAREPATH)/shtools/
+	mkdir -pv $(SYSSHAREPATH)/man/man1
+	cp -R man/man1 $(SYSSHAREPATH)/
+	mkdir -pv $(SYSDOCPATH)/shtools
+	cp index.html $(SYSDOCPATH)/shtools/index.html
+	cp -R www $(SYSDOCPATH)/shtools/
+	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/Makefile" > "temp.txt"
+	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
+	cp temp2.txt "/usr/local/share/shtools/examples/Makefile"
+	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/fortran/Makefile" > "temp.txt"
+	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
+	cp temp2.txt "$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
+	rm temp.txt
+	rm temp2.txt
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo Compile your Fortran code with the following flags:
+	@echo
+	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo 
 
 getflags:
 ifeq ($(F95),f95)
