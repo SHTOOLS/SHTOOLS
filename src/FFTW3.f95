@@ -1,12 +1,12 @@
 module FFTW3
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!-------------------------------------------------------------------------------
 !
 !	This must be included in any routine that uses FFTW (version 3.3.3).
 !
-!	Copyright (c) 2012, Mark A. Wieczorek
+!	Copyright (c) 2015, Mark A. Wieczorek
 !	All rights reserved.
 !
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!-------------------------------------------------------------------------------
       INTEGER FFTW_R2HC
       PARAMETER (FFTW_R2HC=0)
       INTEGER FFTW_HC2R
@@ -81,4 +81,3 @@ module FFTW3
       PARAMETER (FFTW_ALLOW_PRUNING=1048576)
 
 end module FFTW3
-
