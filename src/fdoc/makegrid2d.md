@@ -4,7 +4,7 @@ Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical ha
 
 # Usage
 
-call subroutine MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `csphase`, `f`, `a`, `north`, `south`, `east`, `west`, `dealloc`)
+call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `csphase`, `f`, `a`, `north`, `south`, `east`, `west`, `dealloc`)
 
 # Parameters
 

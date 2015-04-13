@@ -4,7 +4,7 @@ Precompute weights, nodes, and associated Legendre functions used in the Gauss-L
 
 # Usage
 
-call subroutine SHGLQ (`lmax`, `zero`, `w`, `plx`, `norm`, `csphase`, `cnorm`)
+call SHGLQ (`lmax`, `zero`, `w`, `plx`, `norm`, `csphase`, `cnorm`)
 
 # Parameters
 

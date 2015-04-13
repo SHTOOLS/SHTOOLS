@@ -4,7 +4,7 @@ Create a 2D map from a set of spherical harmonic coefficients that conforms with
 
 # Usage
 
-call subroutine MakeGridDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
+call MakeGridDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
 
 # Parameters
 

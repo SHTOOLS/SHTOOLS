@@ -1,13 +1,13 @@
-.TH "shexpandlsq" "1" "2015\-03\-31" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "shexpandlsq" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH SHExpandLSQ
 .PP
 Expand a set of irregularly sampled data points into spherical harmonics
 using a least squares inversion.
 .SH Usage
 .PP
-call subroutine SHExpandLSQ (\f[C]cilm\f[], \f[C]d\f[], \f[C]lat\f[],
-\f[C]lon\f[], \f[C]nmax\f[], \f[C]lmax\f[], \f[C]norm\f[],
-\f[C]chi2\f[], \f[C]csphase\f[])
+call SHExpandLSQ (\f[C]cilm\f[], \f[C]d\f[], \f[C]lat\f[], \f[C]lon\f[],
+\f[C]nmax\f[], \f[C]lmax\f[], \f[C]norm\f[], \f[C]chi2\f[],
+\f[C]csphase\f[])
 .SH Parameters
 .TP
 .B \f[C]cilm\f[] : output, real*8, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)

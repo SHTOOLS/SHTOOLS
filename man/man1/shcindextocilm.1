@@ -1,23 +1,19 @@
-.TH "shcindextocilm" "1" "2015\-04\-02" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "shcindextocilm" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH SHCindexToCilm
 .PP
 Convert a two\-dimensional indexed array of spherical harmonic
 coefficients to a three\-dimensional array.
 .SH Usage
 .PP
-call subroutine SHCindexToCilm (\f[C]cindex\f[], \f[C]cilm\f[],
-\f[C]degmax\f[])
+call SHCindexToCilm (\f[C]cindex\f[], \f[C]cilm\f[], \f[C]degmax\f[])
 .SH Parameters
 .TP
-.B \f[C]cindex\f[] : input, real*8, dimension (2, :)
+.B \f[C]cindex\f[] : input, real*8, dimension (2, (\f[C]lmaxin\f[]+1)*(\f[C]lmaxin\f[]+2)/2)
 The indexed spherical harmonic coefficients.
-The second dimension of this array must be greater than
-\f[C](lmax+1)*(lmax+2)/2\f[] where \f[C]lmax\f[] is the maximum degree
-of \f[C]cilm\f[].
 .RS
 .RE
 .TP
-.B \f[C]cilm\f[] : output, real*8, dimension (2, :, :)
+.B \f[C]cilm\f[] : output, real*8, dimension (2, \f[C]degmax\f[]+1, \f[C]degmax\f[]+1)
 The input spherical harmonic coefficients.
 \f[C]cilm(1,:,:)\f[] and \f[C]cilm(2,:,:)\f[] correspond to either the
 real and imaginary components, or cosine and sine coefficients,
@@ -25,9 +21,8 @@ respectively.
 .RS
 .RE
 .TP
-.B \f[C]degmax\f[] : input, integer, optional
+.B \f[C]degmax\f[] : input, integer, optional, default = \f[C]lmaxin\f[]
 The maximum degree of the output coefficients.
-By default, the entire array \f[C]cilm\f[] will be converted.
 .RS
 .RE
 .SH Description

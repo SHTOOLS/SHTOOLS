@@ -28,7 +28,7 @@ Read spherical harmonic coefficients from an ascii-formatted file with a header 
 `nhead` : integer 
 :   Number of values to read from the file's initial header line.
 
-`skip` : integer, optional
+`skip` : integer, optional, default = 0
 :   The number of lines to skip before parsing `filename`.
 
 # Description

@@ -4,7 +4,7 @@ Compute all the unnormalized associated Legendre functions and first derivatives
 
 # Usage
 
-call subroutine PLegendreA_d1 (`p`, `dp`, `lmax`, `z`, `csphase`)
+call PLegendreA_d1 (`p`, `dp`, `lmax`, `z`, `csphase`)
 
 # Parameters
 

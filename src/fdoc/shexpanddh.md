@@ -4,7 +4,7 @@ Expand an equally sampled or equally spaced grid into spherical harmonics using 
 
 # Usage
 
-call subroutine SHExpandDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
+call SHExpandDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
 
 # Parameters
 

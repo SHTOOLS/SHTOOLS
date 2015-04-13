@@ -4,7 +4,7 @@ Read spherical harmonic coefficients from a JPL ascii-formatted file.
 
 # Usage
 
-call subroutine SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`)
+call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`)
 
 # Parameters
 

@@ -56,11 +56,6 @@ def test_SHStorage():
     print '\nrecomputed coeffs:'
     print coeffs_recomp
 
-    print '\n---- testing YilmIndex ----'
-    i, l, m = 1, 3, 2
-    ind = shtools.YilmIndex(i, l, m)
-    print 'index for i,l,m = {:d},{:d},{:d}: {:d}'.format(i, l, m, ind)
-
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

@@ -4,7 +4,7 @@ Create a 2D map from a set of spherical harmonic coefficients sampled on the Gau
 
 # Usage
 
-call subroutine MakeGridGLQ (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`)
+call MakeGridGLQ (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`)
 
 # Parameters
 

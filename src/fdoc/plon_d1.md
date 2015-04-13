@@ -4,7 +4,7 @@ Compute all the orthonormalized Legendre polynomials and first derivatives.
 
 # Usage
 
-call subroutine PlON_d1 (`p`, `dp`, `lmax`, `z`)
+call PlON_d1 (`p`, `dp`, `lmax`, `z`)
 
 # Parameters
 

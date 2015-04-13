@@ -4,7 +4,7 @@ Multiply two functions and determine the spherical harmonic coefficients of the 
 
 # Usage
 
-call subroutine SHMultiply (`shout`, `sh1`, `lmax1`, `sh2`, `lmax2`, `precomp`, `norm`, `csphase`)
+call SHMultiply (`shout`, `sh1`, `lmax1`, `sh2`, `lmax2`, `precomp`, `norm`, `csphase`)
 
 # Parameters
 

@@ -4,7 +4,7 @@ Compute all the unnormalized Legendre polynomials.
 
 # Usage
 
-call subroutine PLegendre (`p`, `lmax`, `z`)
+call PLegendre (`p`, `lmax`, `z`)
 
 # Parameters
 

@@ -11,7 +11,7 @@ subroutine SHCilmToVector(cilm, vector, lmax)
 !			lmax	Maximum spherical harmonic degree of the input coefficients
 !		OUT
 !			vector	1D vector of ordered spherical harmonic coefficients with
-!				dimension (lmax+1)**2. The ordering is described in YilmIndex.
+!				dimension (lmax+1)**2. The ordering is described in YilmIndexVector.
 !
 !
 !	Written by Mark Wieczorek (August 2009)
@@ -74,7 +74,7 @@ subroutine SHVectorToCilm(vector, cilm, lmax)
 !	Calling Parameters
 !		IN
 !			vector	1D vector of ordered spherical harmonic coefficients with
-!				dimension (lmax+1)**2. The ordering is described in YilmIndex.
+!				dimension (lmax+1)**2. The ordering is described in YilmIndexVector.
 !			lmax	Maximum spherical harmonic degree of the input coefficients
 !		OUT
 !			cilm	Output spherical harmonic coefficients with dimension

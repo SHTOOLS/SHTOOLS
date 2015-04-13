@@ -4,7 +4,7 @@ Compute all the Schmidt-normalized Legendre polynomials.
 
 # Usage
 
-call subroutine PlSchmidt (`p`, `lmax`, `z`)
+call PlSchmidt (`p`, `lmax`, `z`)
 
 # Parameters
 

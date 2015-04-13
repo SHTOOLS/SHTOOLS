@@ -4,7 +4,7 @@ Compute all the orthonormalized associated Legendre functions and first derivati
 
 # Usage
 
-call subroutine PlmON_d1 (`p`, `dp`, `lmax`, `z`, `csphase`, `cnorm`)
+call PlmON_d1 (`p`, `dp`, `lmax`, `z`, `csphase`, `cnorm`)
 
 # Parameters
 

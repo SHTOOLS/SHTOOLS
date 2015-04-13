@@ -1,13 +1,13 @@
-.TH "shread2" "1" "2015\-04\-02" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "shread2" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
 .SH SHRead2
 .PP
 Read spherical harmonic coefficients from a CHAMP or GRACE\-like
 ascii\-formatted file.
 .SH Usage
 .PP
-call subroutine SHRead2 (\f[C]filename\f[], \f[C]cilm\f[],
-\f[C]lmax\f[], \f[C]gm\f[], \f[C]r0_pot\f[], \f[C]error\f[],
-\f[C]dot\f[], \f[C]doystart\f[], \f[C]doyend\f[], \f[C]epoch\f[])
+call SHRead2 (\f[C]filename\f[], \f[C]cilm\f[], \f[C]lmax\f[],
+\f[C]gm\f[], \f[C]r0_pot\f[], \f[C]error\f[], \f[C]dot\f[],
+\f[C]doystart\f[], \f[C]doyend\f[], \f[C]epoch\f[])
 .SH Parameters
 .TP
 .B \f[C]filename\f[] : input, character(*)
@@ -42,7 +42,7 @@ The errors corresponding to the spherical harmonic coefficients
 .RS
 .RE
 .TP
-.B \f[C]dot\f[] : output, real*8, optional, dimension (2, :, :)
+.B \f[C]dot\f[] : output, real*8, optional, dimension (2, \f[C]lmaxout\f[]+1, \f[C]lmaxout\f[]+1)
 The time derivatives of the spherical harmonic coefficients.
 The dimension of this array can be smaller than \f[C]lmax+1\f[].
 .RS

@@ -4,7 +4,7 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 
 # Usage
 
-call subroutine SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `csphase`)
+call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `csphase`)
 
 # Parameters
 

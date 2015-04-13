@@ -6,7 +6,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, sampling, 
 !	matrix is sampled according to the Driscoll and Healy sampling theorem, and possesses a value 
 !	of 1 inside of R, and 0 elsewhere. Returned tapers and eigenvalues are ordered from the largest
 !	to smallest eigenvalue, and the spectral coefficients are packed into a 1D column vector
-!	according to the scheme described in YilmIndex.
+!	according to the scheme described in YilmIndexVector.
 !
 !	The elements Dij are calculated approximately using spherical harmonic transforms.
 !	The effective bandwidth of the grid DH_MASK should in general be larger than LMAX by about a factor 
@@ -30,7 +30,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, sampling, 
 !			ntapers		Number of tapers and eigenvalues to output
 !		OUT
 !			Tapers		Column vectors contain the spherical harmonic coefficients, packed according
-!					to the scheme described in YilmIndex. The dimension of this array is 
+!					to the scheme described in YilmIndexVector. The dimension of this array is 
 !					(lmax+1)**2 by (lmax+1)**2, or (lmax+1)**2 by NTapers if NTapers is present.
 !			Eigenvalues	A 1-dimensional vector containing the eigenvalues corresponding to the columns
 !					of Tapers, dimensioned as (lmax+1)**2.

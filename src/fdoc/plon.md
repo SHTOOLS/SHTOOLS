@@ -4,7 +4,7 @@ Compute all the orthonormalized Legendre polynomials.
 
 # Usage
 
-call subroutine PlON (`p`, `lmax`, `z`)
+call PlON (`p`, `lmax`, `z`)
 
 # Parameters
 

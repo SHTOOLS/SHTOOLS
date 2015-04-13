@@ -4,20 +4,20 @@ Compute all the 4-pi (geodesy) normalized Legendre polynomials and first derivat
 
 # Usage
 
-call subroutine plbar_d1 (`p`, `dp`, `lmax`, `z`)
+call PlBar_d1 (`p`, `dp`, `lmax`, `z`)
 
 # Parameters
 
-`p` : output, real*8, dimension (`lmax`+1)
+`p` : output, real\*8, dimension (`lmax`+1)
 :   An array of 4-pi (geodesy) normalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l+1`.
 	
-`dp` : output, real*8, dimension (`lmax`+1)
+`dp` : output, real\*8, dimension (`lmax`+1)
 :   An array of the first derivatives of the 4-pi (geodesy) normalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l+1`.
 
 `lmax` : input, integer
 :   The maximum degree of the Legendre polynomials to be computed.
 
-`z` : input, real*8
+`z` : input, real\*8
 :   The argument of the Legendre polynomial.
 
 # Description

@@ -5,10 +5,10 @@
 #		appropriate locations.
 #
 #	make install-man
-#		Make man pages from POD files.
+#		Make man pages from markdown source files.
 #	
 #	make install-html
-#		Make html-man pages from the previously created man pages.
+#		Make html-man pages from markdown source files.
 #
 #	make clean
 #		Remove the man and html-man pages in the LOCAL directory.
@@ -27,36 +27,31 @@ PDHTMLFLAGS = --base-header-level=1
 MANDIR = ../../man/man1
 WWWDIR = ../../www/man/fortran
 
-MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d1.pod \
+MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d1.md \
     plon.md plmon.md plmon_d1.md plon_d1.md plmschmidt.md plschmidt.md plmschmidt_d1.md \
     plschmidt_d1.md plegendrea.md plegendrea_d1.md plegendre.md plegendre_d1.md \
     plmindex.md shexpanddh.md makegriddh.md shexpanddhc.md makegriddhc.md shglq.md \
     glqgridcoord.md shexpandglq.md makegridglq.md shexpandglqc.md makegridglqc.md \
     shexpandlsq.md makegrid2d.md makegridpoint.md shmultiply.md shread.md  shread2.md \
-    shreadjpl.md shcilmtocindex.md shcindextocilm.md shcilmtovector.md shvectortocilm.md
-# cilmplus.pod computed0.pod computedg82.pod computedm.pod \
+    shreadjpl.md shcilmtocindex.md shcindextocilm.md shcilmtovector.md shvectortocilm.md \
+    yilmindexvector.md shrtoc.md shctor.md shpowerl.md shpowerdensityl.md \
+    shcrosspowerl.md shcrosspowerdensityl.md shpowerspectrum.md \
+    shpowerspectrumdensity.md shcrosspowerspectrum.md shcrosspowerspectrumdensity.md \
+    shadmitcorr.md shconfidence.md shpowerlc.md shpowerdensitylc.md shcrosspowerlc.md \
+    shcrosspowerdensitylc.md shpowerspectrumc.md shpowerspectrumdensityc.md \
+    shcrosspowerspectrumc.md shcrosspowerspectrumdensityc.md shmultitaperse.md \
+    shmultitapercse.md
+# cilmplus.pod  cilmminus.pod computedg82.pod computedm.pod \
 	 djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
-	hilm.pod makecirclecoord.pod makegeoidgrid.pod \
-	   makemaggriddh.pod \
-	   preglq.pod  \
-	 randomn.pod randomgaussian.pod \
-	shadmitcorr.pod shbias.pod shbiask.pod shrtoc.pod \
-	shctor.pod    \
-	   shfindlwin.pod \
-	shlocalizedadmitcorr.pod shmtvaropt.pod shmtvaropt0.pod  \
-	wl.pod wl_curv.pod shmultitapercse.pod shmultitaperse.pod shpowerl.pod \
-	shpowerdensityl.pod shcrosspowerdensityl.pod shpowerspectrum.pod \
-	shpowerspectrumdensity.pod shcrosspowerspectrum.pod shcrosspowerspectrumdensity.pod \
-	shcrosspowerl.pod   \
+	hilm.pod makecirclecoord.pod makegeoidgrid.pod makemaggriddh.pod \
+	   preglq.pod randomn.pod randomgaussian.pod shbias.pod shbiask.pod  \
+	   shfindlwin.pod shlocalizedadmitcorr.pod shmtvaropt.pod  \
+	wl.pod wl_curv.pod    \
 	shreturntapers.pod shreturntapersm.pod shrotatecoef.pod shrotaterealcoef.pod \
 	wigner3j.pod shsjkpg.pod shsjkpg0.pod sphericalcapcoef.pod shmtdebias.pod \
-	makegravgriddh.pod shconfidence.pod shmagpowerl.pod shmagpowerspectrum.pod \
-	    shpowerlc.pod \
-	shpowerdensitylc.pod shcrosspowerdensitylc.pod shpowerspectrumc.pod \
-	shpowerspectrumdensityc.pod shcrosspowerspectrumc.pod shcrosspowerspectrumdensityc.pod \
-	shcrosspowerlc.pod shbiasadmitcorr.pod   \
-	yilmindex.pod computedmap.pod shreturntapers.pod curve2mask.pod makeellipsecoord.pod \
-	cilmplusrhoh.pod hilmrhoh.pod normalgravity.pod makegravgradgriddh.pod
+	makegravgriddh.pod  shmagpowerl.pod shmagpowerspectrum.pod shbiasadmitcorr.pod   \
+	 computedmap.pod shreturntapers.pod curve2mask.pod makeellipsecoord.pod \
+	cilmplusrhoh.pod cilmminusrhoh.pod hilmrhoh.pod normalgravity.pod makegravgradgriddh.pod
 
 MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_d1.1 \
     plbar.1 plbar_d1.1 plon.1 plmon.1 plmon_d1.1 plon_d1.1 plmschmidt.1 plschmidt.1 \
@@ -64,26 +59,22 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_
     plmindex.1 shexpanddh.1 makegriddh.1 shexpanddhc.1 makegriddhc.1 glqgridcoord.1 \
     shexpandglq.1 makegridglq.1 shexpandglqc.1 makegridglqc.1 shexpandlsq.1 makegrid2d.1 \
     makegridpoint.1 shmultiply.1 shread.1 shread2.1 shreadjpl.1 shcilmtocindex.1 \
-    shcindextocilm.1 shcilmtovector.1 shvectortocilm.1)
-#cilmplus.1 computed0.1 computedg82.1 computedm.1 \
+    shcindextocilm.1 shcilmtovector.1 shvectortocilm.1 yilmindexvector.1 shrtoc.1 \
+    shctor.1 shpowerl.1 shpowerdensityl.1 shcrosspowerl.1 shcrosspowerdensityl.1 \
+    shpowerspectrum.1 shpowerspectrumdensity.1 shcrosspowerspectrum.1 \
+    shcrosspowerspectrumdensity.1 shadmitcorr.1 shconfidence.1 shpowerlc.1 \
+    shpowerdensitylc.1 shcrosspowerlc.1 shcrosspowerdensitylc.1 shpowerspectrumc.1 \
+    shpowerspectrumdensityc.1 shcrosspowerspectrumc.1 shcrosspowerspectrumdensityc.1\
+    shmultitaperse.1 shmultitapercse.1)
+#cilmplus.1  cilmminus.1 computedg82.1 computedm.1 \
 	 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
-	makecirclecoord.1 makegeoidgrid.1    \
-	  makemaggriddh.1 shglq.1 \
-	   preglq.1  \
-	randomn.1 randomgaussian.1 \
-	shadmitcorr.1 shbias.1 shbiask.1 shrtoc.1 shctor.1   \
-	   shfindlwin.1 \
-	shlocalizedadmitcorr.1 shmtvaropt.1 shmtvaropt0.1  wl.1 wlcurv.1 \
-	shmultitapercse.1 shmultitaperse.1 shpowerl.1 shpowerdensityl.1 shcrosspowerdensityl.1 \
-	shpowerspectrum.1 shpowerspectrumdensity.1 shcrosspowerspectrum.1 \
-	shcrosspowerspectrumdensity.1 shcrosspowerl.1    \
+	makecirclecoord.1 makegeoidgrid.1  makemaggriddh.1 shglq.1 preglq.1  \
+	randomn.1 randomgaussian.1 shbias.1 shbiask.1  shfindlwin.1 \
+	shlocalizedadmitcorr.1 shmtvaropt.1  wl.1 wlcurv.1   \
 	shreturntapers.1 shreturntapersm.1 shrotatecoef.1 shrotaterealcoef.1 \
 	wigner3j.1 shsjkpg.1 shsjkpg0.1 sphericalcapcoef.1 shmtdebias.1 makegravgriddh.1 \
-	shconfidence.1 shmagpowerl.1 shmagpowerspectrum.1   \
-	  shpowerlc.1 shpowerdensitylc.1 shcrosspowerdensitylc.1 \
-	shpowerspectrumc.1 shpowerspectrumdensityc.1 shcrosspowerspectrumc.1 shcrosspowerspectrumdensityc.1 \
-	shcrosspowerlc.1 shbiasadmitcorr.1   yilmindex.1 \
-	computedmap.1 shreturntapersmap.1 curve2mask.1 makeellipsecoord.1 cilmplusrhoh.1 \
+	 shmagpowerl.1 shmagpowerspectrum.1 shbiasadmitcorr.1    \
+	computedmap.1 shreturntapersmap.1 curve2mask.1 makeellipsecoord.1 cilmplusrhoh.1 cilmminusrhoh.1\
 	hilmrhoh.1 normalgravity.1 makegravgradgriddh.1
 
 HTMLFILES_modules = $(addprefix $(WWWDIR)/, planetsconstants.html )
@@ -99,24 +90,23 @@ HTMLFILES_transformations = $(addprefix $(WWWDIR)/, shexpanddh.html makegriddh.h
 	makegrid2d.html makegridpoint.html shmultiply.html )
 
 HTMLFILES_io = $(addprefix $(WWWDIR)/, shread.html shread2.html shreadjpl.html \
-    shcilmtocindex.html shcindextocilm.html shcilmtovector.html shvectortocilm.html)
-#    \
- 	shrtoc.html shctor.html   \
- 	  yilmindex.html
-	
-HTMLFILES_gspectra = 
-# shadmitcorr.html shpowerl.html \
-	shpowerdensityl.html shcrosspowerdensityl.html shpowerspectrum.html \
-	shpowerspectrumdensity.html shcrosspowerspectrum.html shcrosspowerspectrumdensity.html \
-	shcrosspowerl.html shconfidence.html shpowerlc.html shpowerdensitylc.html \
-	shcrosspowerdensitylc.html shpowerspectrumc.html shpowerspectrumdensityc.html \
-	shcrosspowerspectrumc.html shcrosspowerspectrumdensityc.html shcrosspowerlc.html
+    shcilmtocindex.html shcindextocilm.html shcilmtovector.html shvectortocilm.html \
+    yilmindexvector.html shrtoc.html shctor.html )
+    
+HTMLFILES_gspectra = $(addprefix $(WWWDIR)/, shpowerl.html shpowerdensityl.html \
+	shcrosspowerl.html shcrosspowerdensityl.html shpowerspectrum.html \
+	shpowerspectrumdensity.html shcrosspowerspectrum.html \
+	shcrosspowerspectrumdensity.html shadmitcorr.html shconfidence.html \
+	shpowerlc.html shpowerdensitylc.html shcrosspowerlc.html shcrosspowerdensitylc.html \
+	shpowerspectrumc.html shpowerspectrumdensityc.html shcrosspowerspectrumc.html \
+	shcrosspowerspectrumdensityc.html )
 
-HTMLFILES_localized = 
-# computed0.html computedg82.html computedm.html \
+HTMLFILES_localized = $(addprefix $(WWWDIR)/, shmultitaperse.html \
+	shmultitapercse.html)
+# computedg82.html computedm.html \
 	shbias.html shbiask.html shfindlwin.html \
-	shlocalizedadmitcorr.html shmtvaropt.html shmtvaropt0.html shmultitapercse.html \
-	shmultitaperse.html shreturntapers.html shreturntapersm.html shsjkpg.html \
+	shlocalizedadmitcorr.html shmtvaropt.html  \
+	 shreturntapers.html shreturntapersm.html shsjkpg.html \
 	shsjkpg0.html sphericalcapcoef.html shmtdebias.html shbiasadmitcorr.html \
 	computedmap.html shreturntapersmap.html curve2mask.html
 
@@ -124,9 +114,9 @@ HTMLFILES_rotations =
 # djpi2.html shrotatecoef.html shrotaterealcoef.html
 
 HTMLFILES_gravmag = 
-# cilmplus.html hilm.html makegeoidgrid.html \
+# cilmplus.html cilmminus.html hilm.html makegeoidgrid.html \
 	makemaggriddh.html wl.html wlcurv.html makegravgriddh.html \
-	shmagpowerl.html shmagpowerspectrum.html cilmplusrhoh.html hilmrhoh.html \
+	shmagpowerl.html shmagpowerspectrum.html cilmplusrhoh.html cilmminusrhoh.html hilmrhoh.html \
 	normalgravity.html makegravgradgriddh.html
 
 HTMLFILES_other =  
@@ -207,7 +197,7 @@ uninstall:
 
 
 .SUFFIXES: $(SUFFIXES)  .md .html .1
-	
+
 $(MANDIR)/%.1 : %.md
 	printf "%% $(basename $<)(1) SHTOOLS $(VERSION) | SHTOOLS $(VERSION)\n%%\n\%% %s" > temp.md
 	stat -t "%F" -f "%Sm" $< >> temp.md

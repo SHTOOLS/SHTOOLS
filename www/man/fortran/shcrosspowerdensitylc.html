@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Global spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+<h1 id="shcrosspowerdensitylc">SHCrossPowerDensityLC</h1>
+<p>Compute the cross-power spectral density of two complex functions for a single spherical harmonic degree.</p>
+<h1 id="usage">Usage</h1>
+<p><code>cpsd</code> = SHCrossPowerDensityLC (<code>cilm1</code>, <code>cilm2</code>, <code>l</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cpsd</code> : output, complex*16</dt>
+<dd>The cross-power spectral density of the two complex functions for spherical harmonic degree <code>l</code>.
+</dd>
+<dt><code>cilm1</code> : input, complex*16, dimension (2, <code>lmaxin1</code>+1, <code>lmaxin1</code>+1)</dt>
+<dd>The first complex function expressed in complex spherical harmonics.
+</dd>
+<dt><code>cilm2</code> : input, complex*16, dimension (2, <code>lmaxin2</code>+1, <code>lmaxin2</code>+1)</dt>
+<dd>The second complex function expressed in complex spherical harmonics.
+</dd>
+<dt><code>l</code> : input, integer</dt>
+<dd>The spherical harmonic degree. This must be less than or equal to the minimum of <code>lmaxin1</code> and <code>lmaxin2</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHCrossPowerDensityLC</code> will calculate the cross-power spectral density of two complex functions expressed in complex spherical harmonics for a single spherical harmonic degree <code>l</code>. This is calculated as:</p>
+<p><code>cpsd = Sum_{i=1}^2 Sum_{m=0}^l cilm1(i, l+1, m+1) * conjg[cilm2(i, l+1, m+1)] / (2l + 1)</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shpowerlc.html">shpowerlc</a>, <a href="shpowerdensitylc.html">shpowerdensitylc</a>, <a href="shcrosspowerlc.html">shcrosspowerlc</a>, <a href="shpowerspectrumc.html">shpowerspectrumc</a>, <a href="shpowerspectrumdensityc.html">shpowerspectrumdensityc</a>, <a href="shcrosspowerspectrumc.html">shcrosspowerspectrumc</a>, <a href="shcrosspowerspectrumdensityc.html">shcrosspowerspectrumdensityc</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>
