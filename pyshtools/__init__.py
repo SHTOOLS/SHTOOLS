@@ -7,6 +7,7 @@ or    https://github.com/SHTOOLS/SHTOOLS
 The python wrapper was written by: Matthias Meschede, Mark Wieczorek, 2014
 """
 
+__version__ = '3.0'
 
 def load_documentation():
     """
@@ -43,4 +44,4 @@ constant = _constant.planetsconstants
 from ._SHTOOLS import *
 
 # import class interface into namespace
-from .classes import SHCoeffs, SHGrid
+from .classes import SHCoeffs, SHGrid, SHWindow
