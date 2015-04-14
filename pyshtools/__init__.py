@@ -45,3 +45,7 @@ from ._SHTOOLS import *
 
 # import class interface into namespace
 from .classes import SHCoeffs, SHGrid, SHWindow
+
+#---- some miniature python functions: ----
+#def PlmIndex(l,m):
+#    return (l*(l+1))/2 + m + 1

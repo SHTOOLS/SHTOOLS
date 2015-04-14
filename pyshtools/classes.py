@@ -26,8 +26,6 @@ import matplotlib.pyplot as plt
 
 from _SHTOOLS import *
 
-import ipdb
-
 #===============================================================================
 #=========== COEFFICIENT CLASSES ===============================================
 #===============================================================================
@@ -246,7 +244,7 @@ class SHComplexCoefficients(SHCoeffs):
 
     def __init__(self, coeffs):
         self.coeffs = coeffs
-        self.lmax = coeffs.shape[1] - 1
+        self.lmax   = coeffs.shape[1] - 1
 
     def make_real(self, convention=1, switchcs=0):
         """converts the complex coefficient class to the real harmonic coefficient class"""
@@ -430,18 +428,27 @@ class SHWindow(object):
         print("use one of the following constructors: [...]")
 
     @classmethod
-    def cap(self, lmax, nwins, theta, clat=0., clon=0., degrees=True):
+    def from_cap(self, lmax, nwins, theta, clat=0., clon=0., degrees=True):
         """
         constructs a spherical cap window
         """
-        self.lmax  = lmax
-        self.nwins = nwins
         if degrees:
             theta = np.radians(theta)
         tapers, eigenvalues, taper_order = SHReturnTapers(theta, lmax)
-        return SHSymmetricWindow(tapers,eigenvalues,taper_order)
+        return SHSymmetricWindow(tapers,eigenvalues,taper_order,clat=clat,clon=clon)
+
+    @classmethod
+    def from_mask(self, lmax, nwins, dh_mask, sampling=1):
+        """
+        constructs optimal window functions in a masked region (needs dh grid)
+        """
+        tapers, eigenvalues = SHReturnTapersMap(dh_mask, lmax, sampling=sampling, Ntapers=nwins)
+        return SHAsymmetricWindow(tapers,eigenvalues)
 
     def plot(self,nwins,show=True):
+        """
+        plots the best concentrated spherical harmonics taper functions
+        """
         #setup figure and axes ...
         maxcolumns = 5
         ncolumns = min(maxcolumns,nwins)
@@ -469,6 +476,9 @@ class SHWindow(object):
             plt.show()
 
     def info(self):
+        """
+        print meta information about the tapers
+        """
         self._info()
 
 class SHSymmetricWindow(SHWindow):
@@ -480,14 +490,17 @@ class SHSymmetricWindow(SHWindow):
     def istype(kind):
         return kind == 'Symmetric'
 
-    def __init__(self,tapers, eigenvalues, orders):
-        self.tapers      = tapers
-        self.eigenvalues = eigenvalues
-        self.order       = orders
+    def __init__(self,tapers, eigenvalues, orders, clat=0., clon =0.):
+        self.clat,self.clon = clat,clon    #center of cap window
+        self.nl, self.nwins = tapers.shape #nl: number of degrees, nwins: number of windows
+        self.lmax           = self.nl - 1  #lmax: maximum degree
+        self.tapers         = tapers       #tapers[nl,nwins]: ith window coefs with m=orders[iwin]
+        self.eigenvalues    = eigenvalues  #concentration factor of the ith taper
+        self.orders         = orders      #order m of the ith taper
 
     def _coeffs(self,itaper):
-        taperm = self.order[itaper]
-        coeffs = np.zeros( (2, self.lmax+1, self.lmax+1) )
+        taperm = self.orders[itaper]
+        coeffs = np.zeros( (2, self.nl, self.nl) )
         if taperm<0:
             coeffs[1,:,abs(taperm)] = self.tapers[:,itaper]
         else:
@@ -495,7 +508,7 @@ class SHSymmetricWindow(SHWindow):
         return coeffs
 
     def _info(self):
-        print('Cap taper with {:d} tapers'.format(self.nwins))
+        print('Cap window with {:d} tapers'.format(self.nwins))
 
 class SHAsymmetricWindow(SHWindow):
     """
@@ -507,11 +520,14 @@ class SHAsymmetricWindow(SHWindow):
         return kind == 'Asymmetric'
 
     def __init__(self,tapers,eigenvalues):
-        self.lmax   = lmax
-        self.nwins  = nwins
+        ncoeffs,self.nwins = tapers.shape
+        self.nl = np.sqrt(ncoeffs).astype(int)
+        self.lmax = self.nl-1
+        self.tapers = tapers
+        self.eigenvalues = eigenvalues
 
-    def _coeffs(self,nwins):
+    def _coeffs(self,itaper):
         return SHVectorToCilm(self.tapers[:,itaper],self.lmax)
 
     def _info(self):
-        print('Asymmetric taper with {:d} tapers'.format(self.nwins))
+        print('Asymmetric window with {:d} tapers'.format(self.nwins))
