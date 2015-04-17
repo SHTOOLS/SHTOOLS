@@ -47,5 +47,5 @@ from ._SHTOOLS import *
 from .classes import SHCoeffs, SHGrid, SHWindow
 
 #---- some miniature python functions: ----
-#def PlmIndex(l,m):
-#    return (l*(l+1))/2 + m + 1
+def PlmIndex(l,m):
+    return (l*(l+1))/2 + m

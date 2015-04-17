@@ -1,21 +1,14 @@
 python module _SHTOOLS
 !-------------------------------------------------------------------------------
 !
-!   Python wrappers of the SHTOOLS Fortran 95 routines. The definitions of 
-!   how the fortran functions are actually called are found in PythonWrapper.f95.
+!   Python signature file for the SHTOOLS Fortran 95 routines. The 
+!   definitions of how the fortran functions are actually called are found in 
+!   the wrapper file PythonWrapper.f95.
 !
 !   Note: The context of this file is case sensitive. 
 !
 !-------------------------------------------------------------------------------
     interface
- 
-        function PlmIndex(l,m)
-            fortranname pyplmindex
-            use shtools, only: PlmIndex
-            integer, intent(in)  :: l
-            integer, intent(in)  :: m
-            integer, intent(out) :: PlmIndex
-        end function PlmIndex
    
         subroutine PlmBar(p,lmax,z,csphase,cnorm,p_d0)
             fortranname pyplmbar
