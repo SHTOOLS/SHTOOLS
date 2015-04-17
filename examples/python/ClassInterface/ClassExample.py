@@ -27,7 +27,6 @@ mpl.rcParams.update(style_shtools)
 def main():
     example2()
 
-
 def example1():
     # generate random spherical harmonics coefficients with a given
     # power spectrum and plot its bandspectrum
@@ -47,7 +46,6 @@ def example1():
     grid2 = coeffs.expand(kind='DH1')
     grid2.plot_rawdata()
 
-
 def example2():
     # generate random spherical harmonics coefficients with a given
     # power spectrum and plot its bandspectrum
@@ -64,6 +62,7 @@ def example2():
 
     grid2 = coeffs.expand(kind='DH1')
     grid2.plot_rawdata()
+
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

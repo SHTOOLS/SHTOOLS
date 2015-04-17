@@ -1,12 +1,3 @@
-    function pyPlmIndex(l,m) 
-        use shtools, only: PlmIndex
-        implicit none
-        integer, intent(in) :: l
-        integer, intent(in) :: m
-        integer :: pyPlmIndex
-        pyPlmIndex = PlmIndex(l,m)
-    end function pyPlmIndex
-    
     subroutine pyPlmBar(p,lmax,z,csphase,cnorm,p_d0) 
         use shtools, only: PlmBar
         implicit none

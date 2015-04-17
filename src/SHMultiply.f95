@@ -57,7 +57,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
 
 	if (size(sh1(:,1,1)) < 2 .or. size(sh1(1,:,1)) < lmax1+1 .or. size(sh1(1,1,:)) < lmax1+1) then
 		print*, "Error --- SHMultiply"
-		print*, "SHI must be dimensioned as (2, LMAX1+1, LMAX1+1) where LMAX1 is", lmax1
+		print*, "SH1 must be dimensioned as (2, LMAX1+1, LMAX1+1) where LMAX1 is", lmax1
 		print*, "Input array is dimensioned ", size(sh1(:,1,1)),  size(sh1(1,:,1)), size(sh1(1,1,:)) 
 		stop
 	elseif (size(sh2(:,1,1)) < 2 .or. size(sh2(1,:,1)) < lmax2+1 .or. size(sh2(1,1,:)) < lmax2+1) then
@@ -96,7 +96,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
      	
 	if (present(norm)) then
 		if (norm > 4 .or. norm < 1) then
-			print*, "Error - SHExpandGLQ"
+			print*, "Error - SHMultiply"
 			print*, "Parameter NORM must be 1 (geodesy), 2 (Schmidt), 3 (unnormalized), or 4 (orthonormalized)."
 			print*, "Input value is ", norm
 			stop

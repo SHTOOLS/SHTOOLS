@@ -26,7 +26,6 @@ import matplotlib.pyplot as plt
 
 from _SHTOOLS import *
 
-
 #===============================================================================
 #=========== COEFFICIENT CLASSES ===============================================
 #===============================================================================
@@ -245,7 +244,7 @@ class SHComplexCoefficients(SHCoeffs):
 
     def __init__(self, coeffs):
         self.coeffs = coeffs
-        self.lmax = coeffs.shape[1] - 1
+        self.lmax   = coeffs.shape[1] - 1
 
     def make_real(self, convention=1, switchcs=0):
         """converts the complex coefficient class to the real harmonic coefficient class"""
@@ -417,3 +416,118 @@ class GLQGrid(SHGrid):
         ax.set_xlabel('longitude index')
         ax.set_ylabel('latitude  index')
         fig.tight_layout(pad=0.5)
+
+
+#==== SPHERICAL HARMONICS WINDOW FUNCTION CLASS ====
+class SHWindow(object):
+    """
+    This class contains collections of spherical harmonics windows that
+    provide spectral estimates about a specific region
+    """
+    def __init__(self):
+        print("use one of the following constructors: [...]")
+
+    @classmethod
+    def from_cap(self, lmax, nwins, theta, clat=0., clon=0., degrees=True):
+        """
+        constructs a spherical cap window
+        """
+        if degrees:
+            theta = np.radians(theta)
+        tapers, eigenvalues, taper_order = SHReturnTapers(theta, lmax)
+        return SHSymmetricWindow(tapers,eigenvalues,taper_order,clat=clat,clon=clon)
+
+    @classmethod
+    def from_mask(self, lmax, nwins, dh_mask, sampling=1):
+        """
+        constructs optimal window functions in a masked region (needs dh grid)
+        """
+        tapers, eigenvalues = SHReturnTapersMap(dh_mask, lmax, sampling=sampling, Ntapers=nwins)
+        return SHAsymmetricWindow(tapers,eigenvalues)
+
+    def plot(self,nwins,show=True):
+        """
+        plots the best concentrated spherical harmonics taper functions
+        """
+        #setup figure and axes ...
+        maxcolumns = 5
+        ncolumns = min(maxcolumns,nwins)
+        nrows    = np.ceil(nwins/ncolumns).astype(int)
+        figsize  = ncolumns * 1.2, nrows * 1.2 + 0.5
+        fig, axes = plt.subplots(nrows, ncolumns, figsize=figsize)
+        for ax in axes[:-1,:].flatten():
+            for xlabel_i in ax.get_xticklabels():
+                xlabel_i.set_visible(False)
+        for ax in axes[:,1:].flatten():
+            for ylabel_i in ax.get_yticklabels():
+                ylabel_i.set_visible(False)
+
+        #loop through tapers and plot them
+        for itaper in range( min(self.nwins, nwins) ):
+            evalue = self.eigenvalues[itaper]
+            coeffs = self._coeffs(itaper)
+            ax = axes.flatten()[itaper]
+            grid = MakeGridDH(coeffs)
+            ax.imshow(grid)
+            ax.set_title('concentration: {:2.2f}'.format(evalue))
+        fig.tight_layout(pad=0.5)
+
+        if show:
+            plt.show()
+
+    def info(self):
+        """
+        print meta information about the tapers
+        """
+        self._info()
+
+class SHSymmetricWindow(SHWindow):
+    """
+    This class saves a symmetric spherical window function. It needs to
+    save only the m=0 coefficients
+    """
+    @staticmethod
+    def istype(kind):
+        return kind == 'Symmetric'
+
+    def __init__(self,tapers, eigenvalues, orders, clat=0., clon =0.):
+        self.clat,self.clon = clat,clon    #center of cap window
+        self.nl, self.nwins = tapers.shape #nl: number of degrees, nwins: number of windows
+        self.lmax           = self.nl - 1  #lmax: maximum degree
+        self.tapers         = tapers       #tapers[nl,nwins]: ith window coefs with m=orders[iwin]
+        self.eigenvalues    = eigenvalues  #concentration factor of the ith taper
+        self.orders         = orders      #order m of the ith taper
+
+    def _coeffs(self,itaper):
+        taperm = self.orders[itaper]
+        coeffs = np.zeros( (2, self.nl, self.nl) )
+        if taperm<0:
+            coeffs[1,:,abs(taperm)] = self.tapers[:,itaper]
+        else:
+            coeffs[0,:,abs(taperm)] = self.tapers[:,itaper]
+        return coeffs
+
+    def _info(self):
+        print('Cap window with {:d} tapers'.format(self.nwins))
+
+class SHAsymmetricWindow(SHWindow):
+    """
+    This class saves a asymmetric spherical window function and is much like a
+    set of real sherical harmonics. It could maybe be merged at some point...
+    """
+    @staticmethod
+    def istype(kind):
+        return kind == 'Asymmetric'
+
+    def __init__(self,tapers,eigenvalues):
+        ncoeffs,self.nwins = tapers.shape
+        self.nl = np.sqrt(ncoeffs).astype(int)
+        self.lmax = self.nl-1
+        self.tapers = tapers
+        self.eigenvalues = eigenvalues
+
+    def _coeffs(self,itaper):
+        return SHVectorToCilm(self.tapers[:,itaper],self.lmax)
+
+    def _info(self):
+        print('Asymmetric window with {:d} tapers'.format(self.nwins))
