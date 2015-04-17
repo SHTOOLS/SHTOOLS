@@ -65,7 +65,9 @@ def test_MultitaperSE():
     print 'total power:', np.sum(localpower)
 
     print '\n---- testing SHLocalizedAdmitCorr ----'
-    admit, corr, dadmit, dcorr = shtools.SHLocalizedAdmitCorr(tapers, torders, coeffs1, coeffs2)
+    lat = 90.
+    lon = 0.
+    admit, corr, dadmit, dcorr = shtools.SHLocalizedAdmitCorr(tapers, torders, coeffs1, coeffs2, lat, lon)
     print admit
 
     print '\n---- testing ComputeDm ----'

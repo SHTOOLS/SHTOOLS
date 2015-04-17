@@ -1050,15 +1050,15 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
             real*8 dimension(g_d0,g_d1,g_d2),intent(in) :: g
             real*8 dimension(t_d0,t_d1,t_d2),intent(in) :: t
-            integer, optional,intent(in),depend(t_d1) :: lmax = t_d1-1
+            integer, optional,intent(in),depend(t_d1) :: lmax = min(t_d1-1, g_d1-1)
             real*8 dimension(admit_d0),intent(out) :: admit
             real*8 dimension(corr_d0),intent(out),depend(corr_d0) :: corr
             integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
-            real*8, optional,dimension(admit_error_d0),intent(out) :: admit_error
-            real*8, optional,dimension(corr_error_d0),intent(out) :: corr_error
+            real*8, dimension(admit_error_d0),intent(out) :: admit_error
+            real*8, dimension(corr_error_d0),intent(out) :: corr_error
             real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
-            real*8, optional,intent(in) :: lat = 0.0
-            real*8, optional,intent(in) :: lon = 0.0
+            real*8, intent(in) :: lat
+            real*8, intent(in) :: lon
             integer, optional,intent(in) :: mtdef = 1
             integer, optional,intent(in) :: k1linsig = -1
             integer, optional,intent(in),check(tapers_d0>0),depend(tapers),intent(hide) :: tapers_d0=shape(tapers,0)

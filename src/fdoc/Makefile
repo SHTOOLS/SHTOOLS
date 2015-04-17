@@ -40,12 +40,12 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
     shadmitcorr.md shconfidence.md shpowerlc.md shpowerdensitylc.md shcrosspowerlc.md \
     shcrosspowerdensitylc.md shpowerspectrumc.md shpowerspectrumdensityc.md \
     shcrosspowerspectrumc.md shcrosspowerspectrumdensityc.md shmultitaperse.md \
-    shmultitapercse.md
+    shmultitapercse.md shlocalizedadmitcorr.md
 # cilmplus.pod  cilmminus.pod computedg82.pod computedm.pod \
 	 djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
 	hilm.pod makecirclecoord.pod makegeoidgrid.pod makemaggriddh.pod \
 	   preglq.pod randomn.pod randomgaussian.pod shbias.pod shbiask.pod  \
-	   shfindlwin.pod shlocalizedadmitcorr.pod shmtvaropt.pod  \
+	   shfindlwin.pod  shmtvaropt.pod  \
 	wl.pod wl_curv.pod    \
 	shreturntapers.pod shreturntapersm.pod shrotatecoef.pod shrotaterealcoef.pod \
 	wigner3j.pod shsjkpg.pod shsjkpg0.pod sphericalcapcoef.pod shmtdebias.pod \
@@ -65,12 +65,12 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_
     shcrosspowerspectrumdensity.1 shadmitcorr.1 shconfidence.1 shpowerlc.1 \
     shpowerdensitylc.1 shcrosspowerlc.1 shcrosspowerdensitylc.1 shpowerspectrumc.1 \
     shpowerspectrumdensityc.1 shcrosspowerspectrumc.1 shcrosspowerspectrumdensityc.1\
-    shmultitaperse.1 shmultitapercse.1)
+    shmultitaperse.1 shmultitapercse.1 shlocalizedadmitcorr.1)
 #cilmplus.1  cilmminus.1 computedg82.1 computedm.1 \
 	 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
 	makecirclecoord.1 makegeoidgrid.1  makemaggriddh.1 shglq.1 preglq.1  \
 	randomn.1 randomgaussian.1 shbias.1 shbiask.1  shfindlwin.1 \
-	shlocalizedadmitcorr.1 shmtvaropt.1  wl.1 wlcurv.1   \
+	 shmtvaropt.1  wl.1 wlcurv.1   \
 	shreturntapers.1 shreturntapersm.1 shrotatecoef.1 shrotaterealcoef.1 \
 	wigner3j.1 shsjkpg.1 shsjkpg0.1 sphericalcapcoef.1 shmtdebias.1 makegravgriddh.1 \
 	 shmagpowerl.1 shmagpowerspectrum.1 shbiasadmitcorr.1    \
@@ -102,10 +102,10 @@ HTMLFILES_gspectra = $(addprefix $(WWWDIR)/, shpowerl.html shpowerdensityl.html 
 	shcrosspowerspectrumdensityc.html )
 
 HTMLFILES_localized = $(addprefix $(WWWDIR)/, shmultitaperse.html \
-	shmultitapercse.html)
+	shmultitapercse.html shlocalizedadmitcorr.html)
 # computedg82.html computedm.html \
 	shbias.html shbiask.html shfindlwin.html \
-	shlocalizedadmitcorr.html shmtvaropt.html  \
+	 shmtvaropt.html  \
 	 shreturntapers.html shreturntapersm.html shsjkpg.html \
 	shsjkpg0.html sphericalcapcoef.html shmtdebias.html shbiasadmitcorr.html \
 	computedmap.html shreturntapersmap.html curve2mask.html
