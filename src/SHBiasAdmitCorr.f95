@@ -2,9 +2,9 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
                             corr, mtdef, taper_wt)
 !-------------------------------------------------------------------------------
 !
-!   This subroutine will take as input the three global (unbiassed) cross-power 
+!   This subroutine will take as input the three global (unbiased) cross-power 
 !   spectra of two functions G and T (Sgt, Sgg, and Stt), bias these using the 
-!   first K localization windows, and then calculated the expected biassed 
+!   first K localization windows, and then calculated the expected biased 
 !   admittance (Sgt/Stt) and correlation (Sgt/sqrt(Sgg Stt)) spectra. Two 
 !   manners of calculating the localized admittance and correlation are possible
 !   according to the optional parameter MTDEF. In one case, the multitaper 
@@ -33,9 +33,9 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
 !                       estimations.
 !
 !       OUTPUT
-!           admit       Biassed admittance between the localized G and T: 
+!           admit       Biased admittance between the localized G and T: 
 !                       Sgt/Stt. 
-!           corr        Biassed correlation of the two functions: 
+!           corr        Biased correlation of the two functions: 
 !                       Sgt / sqrt(Sgg Stt).
 !
 !       OPTIONAL (IN)
@@ -152,7 +152,7 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
     
     !---------------------------------------------------------------------------
     !
-    !   Calculate baissed cross-power spectra and biassed admittances and 
+    !   Calculate baissed cross-power spectra and biased admittances and 
     !   correlations.
     !
     !---------------------------------------------------------------------------

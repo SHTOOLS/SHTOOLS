@@ -17,7 +17,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg)
 !                       incspectra is assumed to be zero.
 !
 !       OUT 
-!           outcspectra Biassed estimate of the windowed 
+!           outcspectra Biased estimate of the windowed 
 !                       power spectra. Maximum degree calculated is equal
 !                       to lwin + ldata, or the dimension of outcspectra.
 !
@@ -79,7 +79,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg)
     
     !---------------------------------------------------------------------------
     !
-    !   Calculate the biassed power spectrum
+    !   Calculate the biased power spectrum
     !
     !---------------------------------------------------------------------------
     if (present(save_cg)) then

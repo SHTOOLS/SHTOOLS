@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="shreturntapers">SHReturnTapers</h1>
+<p>Calculate the eigenfunctions of the spherical-cap concentration problem.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHReturnTapers (<code>theta0</code>, <code>lmax</code>, <code>tapers</code>, <code>eigenvalues</code>, <code>taper_order</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>theta0</code> : input, real*8</dt>
+<dd>The angular radius of the spherical cap in radians.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The spherical harmonic bandwidth of the localization windows.
+</dd>
+<dt><code>tapers</code> : output, real*8, dimension (<code>lmax</code>+1, (<code>lmax</code>+1)**2)</dt>
+<dd>The spherical harmonic coefficients of the <code>(lmax+1)**2</code> localization windows. Each column contains the coefficients of a single window that possesses non-zero coefficients for the single angular order specified in <code>taper_order</code>. The first and last rows of each column correspond to spherical harmonic degrees 0 and <code>lmax</code>, respectively, and the columns are arranged from best to worst concentrated.
+</dd>
+<dt><code>eigenvalues</code> : output, real*8, dimension ((<code>lmax</code>+1)**2)</dt>
+<dd>The concentration factors of the localization windows.
+</dd>
+<dt><code>taper_order</code> : output, integer, dimension ((<code>lmax</code>+1)**2)</dt>
+<dd>The angular order of the non-zero spherical harmonic coefficients in each column of <code>tapers</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHReturnTapers</code> will calculate the eigenfunctions (i.e., localization windows) of the spherical-cap concentration problem. Each column of the matrix <code>tapers</code> contains the spherical harmonic coefficients of a single window and the corresponding concentration factor is given in the array <code>eigenvalues</code>. Each window has non-zero coefficients for only a single angular order that is specified in <code>taper_order</code>: all other spherical harmonic coefficients for a given window are identically zero. The columns of <code>tapers</code> are ordered from best to worst concentrated, and the first and last rows of each column correspond to spherical harmonic degrees 0 and <code>lmax</code>, respectively. The localization windows are normalized such that they have unit power.</p>
+<h1 id="references">References</h1>
+<p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, Geophys. J. Int., 162, 655-675.</p>
+<p>Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shreturntapersm.html">shreturntapersm</a>, <a href="computedg82.html">computedg82</a>, <a href="computedm.html">computedm</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

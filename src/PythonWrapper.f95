@@ -1138,7 +1138,7 @@
         call EigValVecSym(ain,n,eig,evec,ul=ul,K=K)
     end subroutine pyEigValVecSym
 
-    subroutine pySHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,shannon, &
+    subroutine pySHReturnTapersM(theta0,lmax,m,tapers,eigenvalues, &
                                     tapers_d0,tapers_d1,eigenvalues_d0) 
         use shtools, only: SHReturnTapersM
         implicit none
@@ -1147,11 +1147,10 @@
         integer, intent(in) :: m
         real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
         real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        real*8, optional,intent(out) :: shannon
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: eigenvalues_d0
-        call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,shannon=shannon)
+        call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues)
     end subroutine pySHReturnTapersM
 
     subroutine pyEigValSym(ain,n,eval,ul,ain_d0,ain_d1,eval_d0) 

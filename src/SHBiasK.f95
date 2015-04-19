@@ -36,7 +36,7 @@ subroutine SHBiasK(tapers, lwin, numk, incspectra, ldata, outcspectra, &
 !                       memory for these terms will be deallocated.
 !
 !       OUT 
-!           outcspectra Biassed estimate of the windowed power spectra. Maximum
+!           outcspectra Biased estimate of the windowed power spectra. Maximum
 !                       degree calculated is equal to lwin + ldata, or the 
 !                       dimension of outspectra.
 !
@@ -112,7 +112,7 @@ subroutine SHBiasK(tapers, lwin, numk, incspectra, ldata, outcspectra, &
     
     !---------------------------------------------------------------------------
     !
-    !   Calculate the biassed power spectrum
+    !   Calculate the biased power spectrum
     !
     !---------------------------------------------------------------------------
     if (present(save_cg)) then

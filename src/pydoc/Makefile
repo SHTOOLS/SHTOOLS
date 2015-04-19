@@ -42,18 +42,19 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pypl
     pyshconfidence.md pyshpowerlc.md pyshpowerdensitylc.md pyshcrosspowerlc.md \
     pyshcrosspowerdensitylc.md pyshpowerspectrumc.md pyshpowerspectrumdensityc.md \
     pyshcrosspowerspectrumc.md pyshcrosspowerspectrumdensityc.md pyshmultitaperse.md \
-    pyshmultitapercse.md pyshlocalizedadmitcorr.md
-#pycilmplusdh.pod pycilmplusglq.pod pycilmminusdh.pod pycilmminusglq.pod pycomputedg82.pod pycomputedm.pod \
+    pyshmultitapercse.md pyshlocalizedadmitcorr.md pyshreturntapers.md pyshreturntapersm.md \
+    pycomputedm.md pycomputedg82.md pyshfindlwin.md pyshbiask.md pyshbiasadmitcorr.md
+#pycilmplusdh.pod pycilmplusglq.pod pycilmminusdh.pod pycilmminusglq.pod   \
 	 pydjpi2.pod pyeigvalsym.pod pyeigvalvecsym.pod pyeigvalvecsymtri.pod \
 	pyhilmdh.pod pyhilmglq.pod pymakecirclecoord.pod pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
 	pymakegeoidgrid2d.pod pymakemaggriddh.pod pypreglq.pod \
-	 pyrandomn.pod pyrandomgaussian.pod pyshbias.pod pyshbiask.pod   pyshfindlwin.pod \
+	 pyrandomn.pod pyrandomgaussian.pod pyshbias.pod     \
 	 pyshmtvaropt.pod   \
 	pywl.pod pywl_curv.pod    \
-	 pyshreturntapers.pod pyshreturntapersm.pod pyshrotatecoef.pod pyshrotaterealcoef.pod \
-	pywigner3j.pod pyshsjkpg.pod pyshsjkpg0.pod pysphericalcapcoef.pod pyshmtdebias.pod \
-	pymakegravgriddh.pod  pyshmagpowerl.pod pyshmagpowerspectrum.pod  pyshbiasadmitcorr.pod   \
-	 pycomputedmap.pod pyshreturntapers.pod pycurve2mask.pod pymakeellipsecoord.pod \
+	   pyshrotatecoef.pod pyshrotaterealcoef.pod \
+	pywigner3j.pod pyshsjkpg.pod  pysphericalcapcoef.pod pyshmtdebias.pod \
+	pymakegravgriddh.pod  pyshmagpowerl.pod pyshmagpowerspectrum.pod     \
+	 pycomputedmap.pod pycurve2mask.pod pymakeellipsecoord.pod \
 	pycilmplusrhohdh.pod pycilmminusrhohdh.pod pycilmplusrhohglq.pod pycilmminusrhohglq.pod pyhilmrhohdh.pod pyhilmrhohglq.pod pynormalgravity.pod \
 	pymakegravgradgriddh.pod 
 
@@ -71,16 +72,18 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 pyplbar
     pyshadmitcorr.1 pyshconfidence.1 pyshpowerlc.1 pyshpowerdensitylc.1 \
     pyshcrosspowerlc.1 pyshcrosspowerdensitylc.1 pyshpowerspectrumc.1 \
     pyshpowerspectrumdensityc.1 pyshcrosspowerspectrumc.1 pyshcrosspowerspectrumdensityc.1 \
-    pyshmultitaperse.1 pyshmultitapercse.1 pyshlocalizedadmitcorr.1)
-#pycilmplusdh.1 pycilmplusglq.1 pycilmminusdh.1 pycilmminusglq.1 pycomputedg82.1 pycomputedm.1 \
+    pyshmultitaperse.1 pyshmultitapercse.1 pyshlocalizedadmitcorr.1 pyshreturntapers.1 \
+    pyshreturntapersm.1 pycomputedm.1 pycomputedg82.1 pyshfindlwin.1 pyshbiask.1 \
+    pyshbiasadmitcorr.1)
+#pycilmplusdh.1 pycilmplusglq.1 pycilmminusdh.1 pycilmminusglq.1   \
 	 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
 	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
 	  pymakemaggriddh.1  pypreglq.1 pyrandomn.1 pyrandomgaussian.1 \
-	 pyshbias.1 pyshbiask.1   pyshfindlwin.1 \
+	 pyshbias.1     \
 	 pyshmtvaropt.1   pywl.1 pywlcurv.1     \
-	pyshreturntapers.1 pyshreturntapersm.1 pyshrotatecoef.1 pyshrotaterealcoef.1 \
-	pywigner3j.1 pyshsjkpg.1 pyshsjkpg0.1 pysphericalcapcoef.1 pyshmtdebias.1 pymakegravgriddh.1 \
-	 pyshmagpowerl.1 pyshmagpowerspectrum.1  pyshbiasadmitcorr.1    \
+	  pyshrotatecoef.1 pyshrotaterealcoef.1 \
+	pywigner3j.1 pyshsjkpg.1  pysphericalcapcoef.1 pyshmtdebias.1 pymakegravgriddh.1 \
+	 pyshmagpowerl.1 pyshmagpowerspectrum.1      \
 	pycomputedmap.1 pyshreturntapersmap.1 pycurve2mask.1 pymakeellipsecoord.1 pycilmplusrhohdh.1  pycilmminusrhohdh.1 pycilmplusrhohglq.1 pycilmminusrhohglq.1 \
 	pyhilmrhohdh.1 pyhilmrhohglq.1 pynormalgravity.1 pymakegravgradgriddh.1 
 
@@ -108,12 +111,13 @@ HTMLFILES_gspectra = $(addprefix $(WWWDIR)/, pyshpowerl.html pyshpowerdensityl.h
 	pyshcrosspowerspectrumc.html pyshcrosspowerspectrumdensityc.html)
 
 HTMLFILES_localized = $(addprefix $(WWWDIR)/, pyshmultitaperse.html \
-	pyshmultitapercse.html pyshlocalizedadmitcorr.html)
-#pycomputedg82.html pycomputedm.html \
-	pyshbias.html pyshbiask.html pyshfindlwin.html \
+	pyshmultitapercse.html pyshlocalizedadmitcorr.html pyshreturntapers.html \
+	pyshreturntapersm.html pycomputedm.html pycomputedg82.html pyshfindlwin.html \
+	pyshbiask.html pyshbiasadmitcorr.html)
+#  pyshbias.html   \
 	 pyshmtvaropt.html   \
-	 pyshreturntapers.html pyshreturntapersm.html pyshsjkpg.html \
-	pyshsjkpg0.html pysphericalcapcoef.html pyshmtdebias.html pyshbiasadmitcorr.html \
+	  pyshsjkpg.html \
+	 pysphericalcapcoef.html pyshmtdebias.html  \
 	pycomputedmap.html pyshreturntapersmap.html pycurve2mask.html
 
 HTMLFILES_rotations = 

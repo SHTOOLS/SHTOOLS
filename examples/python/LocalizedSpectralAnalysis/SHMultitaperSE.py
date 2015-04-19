@@ -33,7 +33,7 @@ def test_MultitaperSE():
     orderM = 2
     print 'creating spherical cap tapers with:',
     print 'size {:1.0f}deg, bandwidth {:d}, order {:d}'.format(theta0_deg, lmax, orderM)
-    tapers, concentrations, shannon = shtools.SHReturnTapersM(theta0, lmax, orderM)
+    tapers, concentrations = shtools.SHReturnTapersM(theta0, lmax, orderM)
     print 'first 3 taper concentrations:'
     print concentrations[:3]
 
