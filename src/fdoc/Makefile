@@ -41,7 +41,8 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
     shcrosspowerdensitylc.md shpowerspectrumc.md shpowerspectrumdensityc.md \
     shcrosspowerspectrumc.md shcrosspowerspectrumdensityc.md shmultitaperse.md \
     shmultitapercse.md shlocalizedadmitcorr.md shreturntapers.md shreturntapersm.md \
-    computedm.md computedg82.md shfindlwin.md shbiask.md shbiasadmitcorr.md
+    computedm.md computedg82.md shfindlwin.md shbiask.md shbiasadmitcorr.md \
+    shmtdebias.md
 # cilmplus.pod  cilmminus.pod   \
 	 djpi2.pod eigvalsym.pod eigvalvecsym.pod eigvalvecsymtri.pod \
 	hilm.pod makecirclecoord.pod makegeoidgrid.pod makemaggriddh.pod \
@@ -49,7 +50,7 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
 	     shmtvaropt.pod  \
 	wl.pod wl_curv.pod    \
 	  shrotatecoef.pod shrotaterealcoef.pod \
-	wigner3j.pod shsjkpg.pod shsjkpg0.pod sphericalcapcoef.pod shmtdebias.pod \
+	wigner3j.pod shsjkpg.pod shsjkpg0.pod sphericalcapcoef.pod  \
 	makegravgriddh.pod  shmagpowerl.pod shmagpowerspectrum.pod    \
 	 computedmap.pod shreturntapers.pod curve2mask.pod makeellipsecoord.pod \
 	cilmplusrhoh.pod cilmminusrhoh.pod hilmrhoh.pod normalgravity.pod makegravgradgriddh.pod
@@ -67,14 +68,15 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_
     shpowerdensitylc.1 shcrosspowerlc.1 shcrosspowerdensitylc.1 shpowerspectrumc.1 \
     shpowerspectrumdensityc.1 shcrosspowerspectrumc.1 shcrosspowerspectrumdensityc.1 \
     shmultitaperse.1 shmultitapercse.1 shlocalizedadmitcorr.1 shreturntapers.1 \
-    shreturntapersm.1 computedm.1 computedg82.1 shfindlwin.1 shbiask.1 shbiasadmitcorr.1)
+    shreturntapersm.1 computedm.1 computedg82.1 shfindlwin.1 shbiask.1 shbiasadmitcorr.1 \
+    shmtdebias.1)
 #cilmplus.1  cilmminus.1   \
 	 djpi2.1 eigvalsym.1 eigvalvecsym.1 eigvalvecsymtri.1 hilm.1 \
 	makecirclecoord.1 makegeoidgrid.1  makemaggriddh.1 shglq.1 preglq.1  \
 	randomn.1 randomgaussian.1 shbias.1    \
 	 shmtvaropt.1  wl.1 wlcurv.1   \
 	  shrotatecoef.1 shrotaterealcoef.1 \
-	wigner3j.1 shsjkpg.1 shsjkpg0.1 sphericalcapcoef.1 shmtdebias.1 makegravgriddh.1 \
+	wigner3j.1 shsjkpg.1 shsjkpg0.1 sphericalcapcoef.1  makegravgriddh.1 \
 	 shmagpowerl.1 shmagpowerspectrum.1     \
 	computedmap.1 shreturntapersmap.1 curve2mask.1 makeellipsecoord.1 cilmplusrhoh.1 cilmminusrhoh.1\
 	hilmrhoh.1 normalgravity.1 makegravgradgriddh.1
@@ -106,11 +108,11 @@ HTMLFILES_gspectra = $(addprefix $(WWWDIR)/, shpowerl.html shpowerdensityl.html 
 HTMLFILES_localized = $(addprefix $(WWWDIR)/, shmultitaperse.html \
 	shmultitapercse.html shlocalizedadmitcorr.html shreturntapers.html \
 	shreturntapersm.html computedm.html computedg82.html shfindlwin.html \
-	shbiask.html shbiasadmitcorr.html)
+	shbiask.html shbiasadmitcorr.html shmtdebias.html)
 #  shbias.html   \
 	 shmtvaropt.html  \
 	 shreturntapersm.html shsjkpg.html \
-	shsjkpg0.html sphericalcapcoef.html shmtdebias.html  \
+	shsjkpg0.html sphericalcapcoef.html   \
 	computedmap.html shreturntapersmap.html curve2mask.html
 
 HTMLFILES_rotations = 

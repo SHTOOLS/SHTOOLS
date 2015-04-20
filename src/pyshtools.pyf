@@ -1496,7 +1496,7 @@ python module _SHTOOLS
             integer intent(in) :: nl
             real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
             integer, optional,intent(in),intent(hide) :: mtdebias_d0 = 2
-            integer, optional,intent(in),depend(lmax),intent(hide) :: mtdebias_d1 = lmax+1
+            integer, optional,intent(in),depend(lmid_d0),intent(hide) :: mtdebias_d1 = lmid_d0
             integer, optional,intent(in),depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
             integer, optional,intent(in),depend(mtspectra),intent(hide) :: mtspectra_d0=shape(mtspectra,0)
             integer, optional,intent(in),depend(mtspectra),intent(hide) :: mtspectra_d1=shape(mtspectra,1)
