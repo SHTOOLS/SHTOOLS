@@ -98,11 +98,11 @@ OBJSFFTW1 = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o SHGLQ.o \
 	SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \
 	MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o
 
-SRCSFFTW2 = MakeGridDH2.f95 MakeGridDHC2.f95 MakeGridGLQ2.f95 MakeGridGLQC2.f95 SHGLQ2.f95 \
+SRCSFFTW2 = MakeGridDH2.f95 MakeGridDHC2.f95 MakeGridGLQ2.f95 MakeGridGLQC2.f95 \
 	SHExpandDH2.f95 SHExpandDHC2.f95 SHExpandGLQ2.f95 SHExpandGLQC2.f95 \
 	MakeGravGradGridDH2.f95 MakeGravGridDH2.f95 MakeMagGridDH2.f95
 	
-OBJSFFTW2 = MakeGridDH2.o MakeGridDHC2.o MakeGridGLQ2.o MakeGridGLQC2.o SHGLQ2.o \
+OBJSFFTW2 = MakeGridDH2.o MakeGridDHC2.o MakeGridGLQ2.o MakeGridGLQC2.o \
 	SHExpandDH2.o SHExpandDHC2.o SHExpandGLQ2.o SHExpandGLQC2.o \
 	MakeGravGradGridDH2.o MakeGravGridDH2.o MakeMagGridDH2.o
 
@@ -211,7 +211,6 @@ MakeGridDHC.o: FFTW3.o SHTOOLS.o
 MakeGridDHC2.o: FFTW3.o SHTOOLS.o
 MakeGridPoint.o: SHTOOLS.o
 SHGLQ.o: SHTOOLS.o
-SHGLQ2.o: SHTOOLS.o
 SHAdmitCorr.o: SHTOOLS.o
 SHBias.o: SHTOOLS.o
 SHBiasK.o: SHTOOLS.o

@@ -13,7 +13,7 @@ integer function YilmIndexVector(i, l, m)
 !
 !	This mapping is given by the function:
 !
-!		YilmIndex = 1 + l**2 + (i-1)*l + m
+!		YilmIndex = l**2 + (i-1)*l + m + 1
 !
 !	Copyright (c) 2015, Mark A. Wieczorek
 !	All rights reserved.
@@ -28,6 +28,7 @@ integer function YilmIndexVector(i, l, m)
 		print*, "I must be 1 (for cosine terms) or 2 (for sine terms)."
 		print*, "I = ", i
 		stop
+		
 	end if
 	
 	if (l < 0) then
@@ -35,6 +36,7 @@ integer function YilmIndexVector(i, l, m)
 		print*, "L must be positive."
 		print*, "L = ", l
 		stop
+		
 	end if
 	
 	if (m < 0 .or. m > l) then
@@ -43,6 +45,7 @@ integer function YilmIndexVector(i, l, m)
 		print*, "M = ", m
 		print*, "L = ", l
 		stop
+		
 	end if
 	
 	if (m == 0 .and. i == 2) then
@@ -51,6 +54,7 @@ integer function YilmIndexVector(i, l, m)
 		print*, "I = ", i
 		print*, "M = ", m
 		stop
+		
 	end if
 	
 	yilmindexvector = l**2 + (i-1)*l + m + 1

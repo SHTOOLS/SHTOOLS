@@ -44,7 +44,7 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pypl
     pyshcrosspowerspectrumc.md pyshcrosspowerspectrumdensityc.md pyshmultitaperse.md \
     pyshmultitapercse.md pyshlocalizedadmitcorr.md pyshreturntapers.md pyshreturntapersm.md \
     pycomputedm.md pycomputedg82.md pyshfindlwin.md pyshbiask.md pyshbiasadmitcorr.md \
-    pyshmtdebias.md
+    pyshmtdebias.md pyyilmindexvector.md
 #pycilmplusdh.pod pycilmplusglq.pod pycilmminusdh.pod pycilmminusglq.pod   \
 	 pydjpi2.pod pyeigvalsym.pod pyeigvalvecsym.pod pyeigvalvecsymtri.pod \
 	pyhilmdh.pod pyhilmglq.pod pymakecirclecoord.pod pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
@@ -75,7 +75,7 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 pyplbar
     pyshpowerspectrumdensityc.1 pyshcrosspowerspectrumc.1 pyshcrosspowerspectrumdensityc.1 \
     pyshmultitaperse.1 pyshmultitapercse.1 pyshlocalizedadmitcorr.1 pyshreturntapers.1 \
     pyshreturntapersm.1 pycomputedm.1 pycomputedg82.1 pyshfindlwin.1 pyshbiask.1 \
-    pyshbiasadmitcorr.1 pyshmtdebias.1)
+    pyshbiasadmitcorr.1 pyshmtdebias.1 pyyilmindexvector.1)
 #pycilmplusdh.1 pycilmplusglq.1 pycilmminusdh.1 pycilmminusglq.1   \
 	 pydjpi2.1 pyeigvalsym.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 pyhilmdh.1 pyhilmglq.1 \
 	pymakecirclecoord.1 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
@@ -101,7 +101,7 @@ HTMLFILES_transformations = $(addprefix $(WWWDIR)/, pyshexpanddh.html pymakegrid
 HTMLFILES_io = $(addprefix $(WWWDIR)/, pyshread.html pyshreaderror.html pyshreadh.html \
     pyshreaderrorh.html pyshread2.html pyshread2error.html pyshreadjpl.html \
     pyshreadjplerror.html pyshcilmtocindex.html pyshcindextocilm.html pyshcilmtovector.html \
-    pyshvectortocilm.html pyshrtoc.html pyshctor.html)
+    pyshvectortocilm.html pyshrtoc.html pyshctor.html pyyilmindexvector.html)
  	  
 HTMLFILES_gspectra = $(addprefix $(WWWDIR)/, pyshpowerl.html pyshpowerdensityl.html \
 	pyshcrosspowerl.html pyshcrosspowerdensityl.html pyshpowerspectrum.html \
