@@ -1733,8 +1733,7 @@
     end function pySHSjkPG
 
     subroutine pySHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt, &
-                            var_unit,weight_opt,unweighted_covar,nocross, &
-                            unweighted_covar_d0,unweighted_covar_d1, &
+                            var_unit,weight_opt,nocross, &
                             taper_order_d0,weight_opt_d0,weight_opt_d1, &
                             var_unit_d0,var_opt_d0,Sff_d0,tapers_d0,tapers_d1) 
         use shtools, only: SHMTVarOpt
@@ -1748,10 +1747,7 @@
         real*8, dimension(var_opt_d0),intent(out) :: var_opt
         real*8, dimension(var_unit_d0),intent(out) :: var_unit
         real*8, optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
-        real*8, optional,dimension(unweighted_covar_d0,unweighted_covar_d1),intent(out) :: unweighted_covar
         integer, optional,intent(in) :: nocross
-        integer, intent(in) :: unweighted_covar_d0
-        integer, intent(in) :: unweighted_covar_d1
         integer, intent(in) :: taper_order_d0
         integer, intent(in) :: weight_opt_d0
         integer, intent(in) :: weight_opt_d1
@@ -1761,8 +1757,7 @@
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
         call SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit, &
-                        weight_opt=weight_opt, &
-                        unweighted_covar=unweighted_covar,nocross=nocross)
+                        weight_opt=weight_opt,nocross=nocross)
     end subroutine pySHMTVarOpt
 
     subroutine pySHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n, &

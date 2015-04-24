@@ -1,0 +1,115 @@
+.TH "shsjkpg" "1" "2015\-04\-22" "Fortran 95" "SHTOOLS 3.0"
+.SH SHSjkPG
+.PP
+Calculate the expectation of the product of two functions, each
+multiplied by a different data taper, for a given spherical harmonic
+degree and two different angular orders.
+.SH Usage
+.PP
+\f[C]value\f[] = SHSjkPG (\f[C]incspectra\f[], \f[C]l\f[], \f[C]m\f[],
+\f[C]mprime\f[], \f[C]hj_real\f[], \f[C]hk_real\f[], \f[C]mj\f[],
+\f[C]mk\f[], \f[C]lwin\f[], \f[C]hkcc\f[])
+.SH Parameters
+.TP
+.B \f[C]value\f[] : output, complex*16
+The expectation of the product of two functions, each multiplied by a
+different data taper, for a given spherical harmonic degree and two
+different angular orders.
+.RS
+.RE
+.TP
+.B \f[C]incspectra\f[] : input, real*8, dimension (\f[C]l\f[]+\f[C]lwin\f[]+1)
+The global cross\-power spectrum of \f[C]f\f[] and \f[C]g\f[].
+.RS
+.RE
+.TP
+.B \f[C]l\f[] : input, integer
+The spherical harmonic degree for which to calculate the expectation.
+.RS
+.RE
+.TP
+.B \f[C]m\f[] : input, integer
+The angular order of the first localized function, \f[C]Phi\f[].
+.RS
+.RE
+.TP
+.B \f[C]mprime\f[] : input, integer
+The angular order of the second localized function, \f[C]Gamma\f[].
+.RS
+.RE
+.TP
+.B \f[C]hj_real\f[] : input, real*8, dimension (\f[C]lwin\f[]+1)
+The real spherical harmonic coefficients of angular order \f[C]mj\f[]
+used to localize the first function \f[C]f\f[].
+These are obtained by a call to \f[C]SHReturnTapers\f[].
+.RS
+.RE
+.TP
+.B \f[C]hk_real\f[] : input, real*8, dimension (\f[C]lwin\f[]+1)
+The real spherical harmonic coefficients of angular order \f[C]mk\f[]
+used to localize the second function \f[C]g\f[].
+These are obtained by a call to \f[C]SHReturnTapers\f[].
+.RS
+.RE
+.TP
+.B \f[C]mj\f[] : input, integer
+The angular order of the window coefficients \f[C]hj_real\f[].
+.RS
+.RE
+.TP
+.B \f[C]mk\f[] : input, integer
+The angular order of the window coefficients \f[C]hk_real\f[].
+.RS
+.RE
+.TP
+.B \f[C]lwin\f[] : input, integer
+the spherical harmonic bandwidth of the localizing windows
+\f[C]hj_real\f[] and \f[C]hk_real\f[].
+.RS
+.RE
+.TP
+.B \f[C]hkcc\f[] : input, integer
+If 1, the function described in the \f[C]description\f[] will be
+calculated as is.
+If 2, the second localized function \f[C]Gamma\f[] will not have its
+complex conjugate taken.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHSjkPG\f[] will calculate the expectation of two functions
+(\f[C]f\f[] and \f[C]g\f[]), each localized by a different data taper
+that is a solution of the spherical cap concentration problem, for a
+given spherical harmonic degree and two different angular orders.
+As described in Wieczorek and Simons (2007), this is the function
+.IP
+.nf
+\f[C]
+\ \ /\ \ \ \ m(j)\ \ \ \ \ \ \ mprime(k)*\ \\
+\ |\ \ Phi\ \ \ \ \ \ Gamma\ \ \ \ \ \ \ \ \ \ \ \ |
+\ \ \\\ \ \ \ l\ \ \ \ \ \ \ \ \ \ l\ \ \ \ \ \ \ \ \ \ /
+\f[]
+.fi
+.PP
+The global cross\-power spectrum of \f[C]f\f[] and \f[C]g\f[] is input
+as \f[C]incspectra\f[], and the real coefficients of the two data tapers
+of angular order \f[C]mj\f[] and \f[C]mk\f[] (obtained by a call to
+\f[C]SHReturnTapers\f[]) are specified by \f[C]hj_real\f[] and
+\f[C]hk_real\f[].
+If \f[C]hkcc\f[] is set to 1, then the above function is calculated as
+is.
+However, if this is set to 2, then the complex conjugate of the second
+localized function is not taken.
+.SH References
+.PP
+Wieczorek, M.
+A.
+and F.
+J.
+Simons, Minimum\-variance multitaper spectral estimation on the sphere,
+J.
+Fourier Anal.
+Appl., 13, doi:10.1007/s00041\-006\-6904\-1, 665\-692, 2007.
+.SH See also
+.PP
+shreturntapers, shmtvaropt

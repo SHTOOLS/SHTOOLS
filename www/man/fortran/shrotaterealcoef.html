@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS -  Spherical harmonic rotations</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
+<h1 id="shrotaterealcoef">SHRotateRealCoef</h1>
+<p>Determine the spherical harmonic coefficients of a real function rotated by three Euler angles.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHRotateRealCoef (<code>cilmrot</code>, <code>cilm</code>, <code>lmax</code>, <code>x</code>, <code>dj</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cilmrot</code> : output, real*8, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The spherical harmonic coefficients of the rotated function, normalized for use with the geodesy 4-pi spherical harmonics.
+</dd>
+<dt><code>cilm</code> : input, real*8, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The input real spherical harmonic coefficients. The coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention.
+</dd>
+<dt><code>x</code> : input, real*8, dimension(3)</dt>
+<dd>The three Euler angles, alpha, beta, and gamma.
+</dd>
+<dt><code>dj</code> : input, real*8, dimension (<code>lmax</code>+1, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The rotation matrix <code>dj(pi/2)</code>, obtained from a call to <code>djpi2</code>.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The maximum spherical harmonic degree of the input and output coefficients.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHRotateRealCoef</code> will take the real spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in <code>x</code>, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention. The input rotation matrix <code>dj</code> is computed by a call to <code>djpi2</code>.</p>
+<p>The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.</p>
+<p><code>Scheme A:</code></p>
+<ol style="list-style-type: upper-roman">
+<li>Rotation about the z axis by alpha.</li>
+<li>Rotation about the new y axis by beta.</li>
+<li>Rotation about the new z axis by gamma.</li>
+</ol>
+<p><code>Scheme B:</code></p>
+<ol style="list-style-type: upper-roman">
+<li>Rotation about the z axis by gamma.</li>
+<li>Rotation about the initial y axis by beta.</li>
+<li>Rotation about the initial z axis by alpha.</li>
+</ol>
+<p>The rotations can further be viewed either as a rotation of the coordinate system or the physical body. For a rotation of the coordinate system without rotation of the physical body, use</p>
+<p><code>x(alpha, beta, gamma)</code>.</p>
+<p>For a rotation of the physical body without rotation of the coordinate system, use</p>
+<p><code>x(-gamma, -beta, -alpha)</code>.</p>
+<p>To perform the inverse transform of <code>x(alpha, beta, gamma)</code>, use <code>x(-gamma, -beta, -alpha)</code>.</p>
+<p>Note that this routine uses the &quot;y convention&quot;, where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the &quot;x convention&quot;, where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be <code>alpha_y=alpha_x-pi/2</code>, <code>beta_x=beta_y</code>, and <code>gamma_y=gamma_x+pi/2</code>.</p>
+<p>This routine first converts the real coefficients to complex form using <code>SHrtoc</code>. Then the coefficients are converted to indexed form using <code>SHCilmToCindex</code>, these are sent to <code>SHRotateCoef</code>, the result if converted back to <code>cilm</code> complex form using <code>SHCindexToCilm</code>, and these are finally converted back to real form using <code>SHctor</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="djpi2.html">djpi2</a>, <a href="shrotatecoef.html">shrotatecoef</a>, <a href="shctor.html">shctor</a>, <a href="shrtoc.html">shrtoc</a>, <a href="shcilmtocindex.html">shcilmtocindex</a>, <a href="shcindextocilm.html">shcindextocilm</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

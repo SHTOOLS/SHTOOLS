@@ -1,0 +1,109 @@
+.TH "shrotatecoef" "1" "2015\-04\-23" "Fortran 95" "SHTOOLS 3.0"
+.SH SHRotateCoef
+.PP
+Determine the spherical harmonic coefficients of a complex function
+rotated by three Euler angles.
+.SH Usage
+.PP
+call SHRotateCoef (\f[C]x\f[], \f[C]coef\f[], \f[C]rcoef\f[],
+\f[C]dj\f[], \f[C]lmax\f[])
+.SH Parameters
+.TP
+.B \f[C]x\f[] : input, real*8, dimension(3)
+The three Euler angles, alpha, beta, and gamma.
+.RS
+.RE
+.TP
+.B \f[C]coef\f[] : input, real*8, dimension (2, (\f[C]lmax\f[]+1)*(\f[C]lmax\f[]+2)/2)
+The input complex spherical harmonic coefficients.
+This is an indexed array where the real and complex components are given
+by \f[C]coef(1,:)\f[] and \f[C]coef(2,:)\f[], respectively.
+The functions \f[C]SHCilmToCindex\f[] and \f[C]SHCindexToCilm\f[] are
+used to convert to and from indexed and \f[C]cilm(2,:,:)\f[] form.
+The coefficients must correspond to unit\-normalized spherical harmonics
+that possess the Condon\-Shortley phase convention.
+.RS
+.RE
+.TP
+.B \f[C]rcoef\f[] : output, real*8, dimension (2, (\f[C]lmax\f[]+1)*(\f[C]lmax\f[]+2)/2)
+The spherical harmonic coefficients of the rotated function in indexed
+form.
+.RS
+.RE
+.TP
+.B \f[C]dj\f[] : input, real*8, dimension (\f[C]lmax\f[]+1, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+The rotation matrix \f[C]dj(pi/2)\f[] obtained from a call to
+\f[C]djpi2\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum spherical harmonic degree of the input and output
+coefficients.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHRotateCoef\f[] will take the complex spherical harmonic
+coefficients of a function, rotate it according to the three Euler
+anlges in \f[C]x\f[], and output the spherical harmonic coefficients of
+the rotated function.
+The input and output coefficients are in an indexed form that can be
+converted to and from \f[C]cilm(2,:,:)\f[] form by using the functions
+\f[C]SHCilmToCindex\f[] and \f[C]SHCindexToCilm\f[].
+The coefficients must correspond to unit\-normalized spherical harmonics
+that possess the Condon\-Shortley phase convention.
+Real spherical harmonics can be converted to and from complex form using
+\f[C]SHrtoc\f[] and \f[C]SHctor\f[].
+The input rotation matrix \f[C]dj\f[] is computed by a call to
+\f[C]djpi2\f[].
+.PP
+The rotation of a coordinate system or body can be viewed in two
+complementary ways involving three successive rotations.
+Both methods have the same initial and final configurations, and the
+angles listed in both schemes are the same.
+.PP
+\f[C]Scheme\ A:\f[]
+.IP "  (I)" 6
+Rotation about the z axis by alpha.
+.IP " (II)" 6
+Rotation about the new y axis by beta.
+.IP "(III)" 6
+Rotation about the new z axis by gamma.
+.PP
+\f[C]Scheme\ B:\f[]
+.IP "  (I)" 6
+Rotation about the z axis by gamma.
+.IP " (II)" 6
+Rotation about the initial y axis by beta.
+.IP "(III)" 6
+Rotation about the initial z axis by alpha.
+.PP
+The rotations can further be viewed either as a rotation of the
+coordinate system or the physical body.
+For a rotation of the coordinate system without rotation of the physical
+body, use
+.PP
+\f[C]x(alpha,\ beta,\ gamma)\f[].
+.PP
+For a rotation of the physical body without rotation of the coordinate
+system, use
+.PP
+\f[C]x(\-gamma,\ \-beta,\ \-alpha)\f[].
+.PP
+To perform the inverse transform of \f[C]x(alpha,\ beta,\ gamma)\f[],
+use \f[C]x(\-gamma,\ \-beta,\ \-alpha)\f[].
+.PP
+Note that this routine uses the "y convention", where the second
+rotation is with respect to the new y axis.
+If alpha, beta, and gamma were orginally defined in terms of the "x
+convention", where the second rotation was with respect to the newx
+axis, the Euler angles according to the y convention would be
+\f[C]alpha_y=alpha_x\-pi/2\f[], \f[C]beta_x=beta_y\f[], and
+\f[C]gamma_y=gamma_x+pi/2\f[].
+.PP
+This routine is based upon code originally written by Guy Masters, which
+was then subsequently modified by Mark Simons and myself.
+.SH See also
+.PP
+djpi2, shrotaterealcoef, shctor, shrtoc, shcilmtocindex, shcindextocilm

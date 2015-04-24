@@ -127,7 +127,6 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
     !   eignevalues and vectors from greatest to least.
     !
     !---------------------------------------------------------------------------
-    
     abstol = 0.0d0
     
     call dstegr('v','a', n, d, e, vl, vu, il, iu, abstol, m,  w, &

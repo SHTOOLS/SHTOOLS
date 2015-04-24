@@ -1,0 +1,146 @@
+.TH "pywigner3j" "1" "2015\-04\-24" "Python" "SHTOOLS 3.0"
+.SH Wigner3j
+.PP
+Compute the Wigner\-3j symbols for all allowable values of J.
+.SH Usage
+.PP
+\f[C]w3j\f[], \f[C]jmin\f[], \f[C]jmax\f[] = pyshtools.Wigner3j
+(\f[C]j2\f[], \f[C]j3\f[], \f[C]m1\f[], \f[C]m2\f[], \f[C]m3\f[])
+.SH Returns
+.TP
+.B \f[C]w3j\f[] : float, dimension (\f[C]j2\f[]+\f[C]j3\f[]+1)
+An array of the Wigner\-3j symbols evaluated for all allowable values of
+\f[C]j\f[].
+The minimum and maximum values of \f[C]j\f[] are given by \f[C]jmin\f[]
+and \f[C]jmax\f[].
+.RS
+.RE
+.TP
+.B \f[C]jmin\f[] : integer
+The minimum value of \f[C]j\f[] in the array \f[C]w3j\f[].
+This corresponds to the first element of \f[C]w3j\f[].
+.RS
+.RE
+.TP
+.B \f[C]jmax\f[] : integer
+The maximum value of \f[C]j\f[] in the array \f[C]w3j\f[].
+This corresponds to the last non\-zero element of \f[C]w3j\f[].
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]j2\f[] : integer
+A positive integer.
+.RS
+.RE
+.TP
+.B \f[C]j3\f[] : integer
+A positive integer.
+.RS
+.RE
+.TP
+.B \f[C]m1\f[] : integer
+An integer.
+.RS
+.RE
+.TP
+.B \f[C]m2\f[] : integer
+An integer.
+.RS
+.RE
+.TP
+.B \f[C]m3\f[] : integer
+An integer.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]Wigner3j\f[] will calculate the Wigner 3J symbols
+.IP
+.nf
+\f[C]
+/\ j\ \ j2\ j3\ \\\ 
+\\\ m1\ m2\ m3\ /\ 
+\f[]
+.fi
+.PP
+for all allowable values of \f[C]j\f[].
+The returned values in the array \f[C]w3j\f[] are calculated only for
+the limits
+.PP
+\f[C]jmin\ =\ max(|j2\-j3|,\ m1|)\f[] and
+.PP
+\f[C]jmax\ =\ j2\ +\ j3\f[].
+.PP
+To be non\-zero, \f[C]m1+m2+m3\f[] must equal 0.
+It is assumed that all \f[C]j\f[]s and \f[C]m\f[]s are integers.
+Returned values have a relative error less than ~1.d\-8 when \f[C]j2\f[]
+and \f[C]j3\f[] are less than about 100 (see below).
+In practice, this routine is probably usable up to about 165.
+.PP
+The employed algorithm is based upon the stable non\-linear recurrence
+relations of Luscombe and Luban (1998) for the "non classical" regions
+near \f[C]jmin\ and\ jmax\f[].
+The direction of the iteration starts from low values of \f[C]j\f[] to
+high values, but when \f[C]abs(w3j(j+2)/w3j(j))\f[] is less than one,
+the iteration will restart from high to low values.
+For the classical region, the standard three term recursion relationship
+is used (e.g., Schulten and Gordon 1975).
+As this three term recursion can lead to overflows, the values are
+rescaled by a factor "scalef" whenever the absolute value of the 3j
+coefficient becomes greater than unity.
+More efficient algorithms probably exist for specific cases (for
+instance, when all Ms are zero).
+.PP
+The results of this routine have been verified against the same routine
+run in quadruple precision.
+For 1.e7 acceptable random values of \f[C]j2\f[], \f[C]j3\f[],
+\f[C]m2\f[], and \f[C]m3\f[] between \-200 and 200, the relative error
+was calculated only for those 3j coefficients that had an absolute value
+greater than 1.d\-17 (values smaller than this are for all practical
+purposed zero, and can be heavily affected by machine roundoff errors or
+underflow).
+853 combinations of parameters were found to have relative errors
+greater than 1.d\-8.
+Here I list the minimum value of \f[C]max(j2,j3)\f[] for different
+ranges of error, as well as the number of times this error occurred:
+.IP
+.nf
+\f[C]
+max(j2,j3)\ =\ 103:\ 1.d\-7\ <\ error\ <=1.d\-8\ ;\ Number\ of\ occurrences\ =\ 483
+max(j2,j3)\ =\ 116:\ 1.d\-6\ <\ error\ <=\ 1.d\-7\ ;\ Number\ of\ occurrences\ =\ 240
+max(j2,j3)\ =\ 165:\ 1.d\-5\ <\ error\ <=\ 1.d\-6\ ;\ Number\ of\ occurrences\ =\ 93
+max(j2,j3)\ =\ 167:\ 1.d\-4\ <\ error\ <=\ 1.d\-5\ ;\ Number\ of\ occurrences\ =\ 36
+\f[]
+.fi
+.PP
+Many times, the large relative errors occur when the 3j coefficient
+changes sign and is very close to zero (i.e., adjacent values are about
+1.e7 times greater in magnitude).
+Thus, if one does not need to know highly accurate values of the 3j
+coefficients when they are almost zero (i.e., ~1.e\-10) then this
+routine is probably usable up to about 160.
+.PP
+These results have also been verified for parameter values less than 100
+using a code based on the algorith of de Blanc (1987), which was
+originally coded by Olav van Genabeek, and modified by M.
+Fang.
+(This code was run in quadruple precision and only calculates one
+coefficient for each call.) Maximum relative errors between the two
+routines were less than 1.d\-8 for a large number of values (again, only
+3j coefficients greater than 1.d\-17 were considered here).
+.SH References
+.PP
+Luscombe, J.
+J., and M.
+Luban, Simplified recursive algorithm for Wigner 3j and 6j symbols,
+Phys.
+Rev.
+E, 57, 7274\-7277, 1998.
+.PP
+Schulten, K., and R.
+G.
+Gordon, Exact recursive evaluation of 3j\-coefficients and
+6j\-coefficients for quantum\-mechanical coupling of angular momenta, J.
+Math.
+Phys., 16, 1961\-1970, 1975.

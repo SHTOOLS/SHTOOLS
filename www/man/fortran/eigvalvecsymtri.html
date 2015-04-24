@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Miscellaneous routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../other.html" class="dir">Other</a></p>
+<h1 id="eigvalvecsymtri">EigValVecSymTri</h1>
+<p>Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix.</p>
+<h1 id="usage">Usage</h1>
+<p>call EigValVecSymTri (<code>ain</code>, <code>n</code>, <code>eval</code>, <code>evec</code>, <code>ul</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>ain</code> : input, real*8, dimension (<code>n</code>, <code>n</code>)</dt>
+<dd>The input real symmetric tridiagonal matrix.
+</dd>
+<dt><code>n</code> : input, integer</dt>
+<dd>The rank of the matrix <code>ain</code>.
+</dd>
+<dt><code>eval</code> : output, real*8, dimension (<code>n</code>)</dt>
+<dd>The eigenvalues of <code>ain</code>, sorted from largest to smallest.
+</dd>
+<dt><code>evec</code> : output, real*8, dimension (<code>n</code>, <code>n</code>)</dt>
+<dd>The eigenvectors of <code>ain</code>, sorted from largest to smallest eigenvalues. The sign of the first element of each eigenvector is chosen to be positive.
+</dd>
+<dt><code>ul</code> : optional, input, character, default = <code>L</code></dt>
+<dd>If <code>U</code> then the upper portion of the matrix <code>ain</code> will be used. If <code>L</code> then the lower portion of the matrix <code>ain</code> will be used (default).
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>EigValVecSymTri</code> will calculate the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix. By default, only the lower portion of the matrix is used, but this can be changed by the optional argument <code>ul</code>. The eigenvalues and eigenvectors are sorted from largest to smallest eigenvalues, and the sign of the first element of each eigenvector is chosen to be positive. This routine factors the matrix <code>ain</code> using the LAPACK routine <code>DSTEGR</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="eigvalsym.html">eigvalsym</a>, <a href="eigvalvecsym.html">eigvalvecsym</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../other.html" class="dir">Other</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

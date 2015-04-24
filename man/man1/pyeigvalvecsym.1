@@ -1,0 +1,66 @@
+.TH "pyeigvalvecsym" "1" "2015\-04\-24" "Python" "SHTOOLS 3.0"
+.SH EigValVecSym
+.PP
+Compute the eigenvalues and eigenvectors of a real symmetric matrix.
+.SH Usage
+.PP
+\f[C]eval\f[], \f[C]evec\f[] = pyshtools.EigValVecSym (\f[C]ain\f[],
+[\f[C]n\f[], \f[C]ul\f[], \f[C]k\f[]])
+.SH Returns
+.TP
+.B \f[C]eval\f[] : float, dimension (\f[C]k\f[])
+The eigenvalues of \f[C]ain\f[], sorted from largest to smallest.
+.RS
+.RE
+.TP
+.B \f[C]evec\f[] : float, dimension (\f[C]n\f[], \f[C]k\f[])
+The eigenvectors of \f[C]ain\f[], sorted from largest to smallest
+eigenvalues.
+The sign of the first element of each eigenvector is chosen to be
+positive.
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]ain\f[] : float, dimension (\f[C]nin\f[], \f[C]nin\f[])
+The input real symmetric matrix.
+By default, only the upper portion of the matrix is used.
+.RS
+.RE
+.TP
+.B \f[C]n\f[] : optional, integer, default = \f[C]nin\f[]
+The rank of the matrix \f[C]ain\f[].
+.RS
+.RE
+.TP
+.B \f[C]ul\f[] : optional, character, default = \f[C]U\f[]
+If \f[C]U\f[] then the upper portion of the matrix \f[C]ain\f[] will be
+used (default).
+If \f[C]L\f[] then the lower portion of the matrix \f[C]ain\f[] will be
+used.
+.RS
+.RE
+.TP
+.B \f[C]k\f[] : optional, integer, optional, default = \f[C]nin\f[]
+The number of largest eigenvalues and corresponding eigenvectors to be
+output.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]EigValVecSym\f[] will calculate the eigenvalues and eigenvectors of
+a real symmetric matrix.
+By default, only the upper portion of the matrix is used, but this can
+be changed by the optional argument \f[C]ul\f[].
+The eigenvalues and eigenvectors are sorted from largest to smallest
+eigenvalues.
+If the optional parameter \f[C]k\f[] is specified, then only the
+\f[C]k\f[] largest eigenvalues and their corresponding eigenvectors will
+be output.
+.PP
+The matrix \f[C]ain\f[] is first factorized into a tridiagonal matrix
+using the LAPACK routine \f[C]DSYTRD\f[], and then the eigenvalues are
+calculated by calls to \f[C]DSTEGR\f[] and \f[C]DORMTR\f[].
+.SH See also
+.PP
+eigvalsym, eigvalvecsymtri

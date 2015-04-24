@@ -1,0 +1,33 @@
+.TH "sphericalcapcoef" "1" "2015\-04\-23" "Fortran 95" "SHTOOLS 3.0"
+.SH SphericalCapCoef
+.PP
+Calculate the spherical harmonic coefficients of a spherical cap.
+.SH Usage
+.PP
+call SphericalCapCoef (\f[C]coef\f[], \f[C]theta\f[], \f[C]lmax\f[])
+.SH Parameters
+.TP
+.B \f[C]coef\f[] : output, real*8, dimension(\f[C]lmaxin\f[]+1)
+The zonal spherical harmonic coefficients of a spherical cap centered
+over the north pole.
+.RS
+.RE
+.TP
+.B \f[C]theta\f[] : input, real*8
+The angular radius of the spherical cap in radians.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : optional, input, integer, default = \f[C]lmaxin\f[]
+The maximum spherical harmonic degree to calculate the spherical
+harmonic coefficients.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SphericalCapCoef\f[] will calculate the spherical harmonic
+coefficients of a spherical cap centered over the north pole.
+The zonal coefficients, returned in the array \f[C]coef\f[], are
+normalized such that the degree\-0 term is 1, and are to be used with
+either the geodesy 4\-pi normalized or orthonormalized spherical
+harmonics.
