@@ -46,14 +46,13 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pypl
 	pycomputedmap.md pycurve2mask.md pyshbias.md pysphericalcapcoef.md pydjpi2.md \
 	pyshrotatecoef.md pyshrotaterealcoef.md pymakecirclecoord.md pymakeellipsecoord.md \
 	pyrandomn.md pyrandomgaussian.md pypreglq.md pyeigvalvecsym.md pyeigvalvecsymtri.md \
-	pyeigvalsym.md pywigner3j.md
+	pyeigvalsym.md pywigner3j.md pymakegravgriddh.md pymakegravgradgriddh.md \
+	pymakegeoidgriddh.md
 #pycilmplusdh.pod pycilmplusglq.pod pycilmminusdh.pod pycilmminusglq.pod   \
-	pyhilmdh.pod pyhilmglq.pod	pymakegeoidgriddh.pod pymakegeoidgridglq.pod \
-	pymakegeoidgrid2d.pod pymakemaggriddh.pod  \
-	pywl.pod pywl_curv.pod 		 \
-	pymakegravgriddh.pod  pyshmagpowerl.pod pyshmagpowerspectrum.pod \
-	pycilmplusrhohdh.pod pycilmminusrhohdh.pod pycilmplusrhohglq.pod pycilmminusrhohglq.pod pyhilmrhohdh.pod pyhilmrhohglq.pod pynormalgravity.pod \
-	pymakegravgradgriddh.pod 
+	pyhilmdh.pod pyhilmglq.pod pymakemaggriddh.pod	\
+	pywl.pod pywl_curv.pod		 \
+	  pyshmagpowerl.pod pyshmagpowerspectrum.pod \
+	pycilmplusrhohdh.pod pycilmminusrhohdh.pod pycilmplusrhohglq.pod pycilmminusrhohglq.pod pyhilmrhohdh.pod pyhilmrhohglq.pod pynormalgravity.pod 
 
 MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 pyplbar.1 pyplbar_d1.1 \
 	pyplon.1 pyplmon.1 pyplmon_d1.1 pyplon_d1.1 pyplmschmidt.1 pyplschmidt.1 pyplmschmidt_d1.1 \
@@ -75,16 +74,14 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 pyplbar
 	pyshreturntapersmap.1 pycomputedmap.1 pycurve2mask.1 pyshbias.1 pysphericalcapcoef.1 \
 	pydjpi2.1 pyshrotatecoef.1 pyshrotaterealcoef.1 pymakecirclecoord.1 pymakeellipsecoord.1\
 	pyrandomn.1 pyrandomgaussian.1 pypreglq.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 \
-	pyeigvalsym.1 pywigner3j.1)
+	pyeigvalsym.1 pywigner3j.1 pymakegravgriddh.1 pymakegravgradgriddh.1 pymakegeoidgriddh.1)
 #pycilmplusdh.1 pycilmplusglq.1 pycilmminusdh.1 pycilmminusglq.1   \
 		  pyhilmdh.1 pyhilmglq.1 \
-	 pymakegeoidgriddh.1 pymakegeoidgridglq.1 pymakegeoidgrid2d.1 \
 	  pymakemaggriddh.1				\
-		pywl.1 pywlcurv.1 \
-		 pymakegravgriddh.1 \
+		pywl.1 pywlcurv.1  \
 	 pyshmagpowerl.1 pyshmagpowerspectrum.1		 \
 		   pycilmplusrhohdh.1	 pycilmminusrhohdh.1 pycilmplusrhohglq.1 pycilmminusrhohglq.1 \
-	pyhilmrhohdh.1 pyhilmrhohglq.1 pynormalgravity.1 pymakegravgradgriddh.1 
+	pyhilmrhohdh.1 pyhilmrhohglq.1 pynormalgravity.1  
 
 HTMLFILES_legendre =  $(addprefix $(WWWDIR)/, pyplmindex.html pyplmbar.html pyplmbar_d1.html pyplbar.html \
 	pyplbar_d1.html pyplon.html pyplmon.html pyplmon_d1.html pyplon_d1.html pyplmschmidt.html \
@@ -119,11 +116,12 @@ HTMLFILES_localized = $(addprefix $(WWWDIR)/, pyshmultitaperse.html \
 HTMLFILES_rotations = $(addprefix $(WWWDIR)/, pydjpi2.html pyshrotatecoef.html \
 	pyshrotaterealcoef.html)
 
-HTMLFILES_gravmag = 
-#pycilmplusdh.html pycilmplusglq.html pycilmminusdh.html pycilmminusglq.html pyhilmdh.html pyhilmglq.html pymakegeoidgriddh.html \
-	pymakegeoidgridglq.html pymakegeoidgrid2d.html pymakemaggriddh.html pywl.html pywlcurv.html pymakegravgriddh.html \
+HTMLFILES_gravmag = $(addprefix $(WWWDIR)/, pymakegravgriddh.html pymakegravgradgriddh.html \
+	pymakegeoidgriddh.html )
+#pycilmplusdh.html pycilmplusglq.html pycilmminusdh.html pycilmminusglq.html pyhilmdh.html pyhilmglq.html \
+	pymakemaggriddh.html pywl.html pywlcurv.html	 \
 	pyshmagpowerl.html pyshmagpowerspectrum.html pycilmplusrhohdh.html pycilmplusrhohglq.html pycilmminusrhohdh.html pycilmminusrhohglq.html pyhilmrhohdh.html \
-	pyhilmrhohglq.html pynormalgravity.html pymakegravgradgriddh.html
+	pyhilmrhohglq.html pynormalgravity.html 
 
 HTMLFILES_other =  $(addprefix $(WWWDIR)/, pymakecirclecoord.html pymakeellipsecoord.html \
 	 pyrandomn.html pyrandomgaussian.html pypreglq.html pyeigvalvecsym.html \

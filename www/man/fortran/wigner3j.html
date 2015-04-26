@@ -62,18 +62,14 @@
 </dl>
 <h1 id="description">Description</h1>
 <p><code>Wigner3j</code> will calculate the Wigner 3J symbols</p>
-<pre><code>/ j  j2 j3 \ 
-\ m1 m2 m3 / </code></pre>
+<p><code>/ j  j2 j3 \</code><br /><code>\ m1 m2 m3 /</code></p>
 <p>for all allowable values of <code>j</code>. The returned values in the array <code>w3j</code> are calculated only for the limits</p>
-<p><code>jmin = max(|j2-j3|, m1|)</code> and</p>
+<p><code>jmin = max(|j2-j3|, |m1|)</code> and</p>
 <p><code>jmax = j2 + j3</code>.</p>
 <p>To be non-zero, <code>m1+m2+m3</code> must equal 0. It is assumed that all <code>j</code>s and <code>m</code>s are integers. Returned values have a relative error less than ~1.d-8 when <code>j2</code> and <code>j3</code> are less than about 100 (see below). In practice, this routine is probably usable up to about 165.</p>
 <p>The employed algorithm is based upon the stable non-linear recurrence relations of Luscombe and Luban (1998) for the &quot;non classical&quot; regions near <code>jmin and jmax</code>. The direction of the iteration starts from low values of <code>j</code> to high values, but when <code>abs(w3j(j+2)/w3j(j))</code> is less than one, the iteration will restart from high to low values. For the classical region, the standard three term recursion relationship is used (e.g., Schulten and Gordon 1975). As this three term recursion can lead to overflows, the values are rescaled by a factor &quot;scalef&quot; whenever the absolute value of the 3j coefficient becomes greater than unity. More efficient algorithms probably exist for specific cases (for instance, when all Ms are zero).</p>
 <p>The results of this routine have been verified against the same routine run in quadruple precision. For 1.e7 acceptable random values of <code>j2</code>, <code>j3</code>, <code>m2</code>, and <code>m3</code> between -200 and 200, the relative error was calculated only for those 3j coefficients that had an absolute value greater than 1.d-17 (values smaller than this are for all practical purposed zero, and can be heavily affected by machine roundoff errors or underflow). 853 combinations of parameters were found to have relative errors greater than 1.d-8. Here I list the minimum value of <code>max(j2,j3)</code> for different ranges of error, as well as the number of times this error occurred:</p>
-<pre><code>max(j2,j3) = 103: 1.d-7 &lt; error &lt;=1.d-8 ; Number of occurrences = 483
-max(j2,j3) = 116: 1.d-6 &lt; error &lt;= 1.d-7 ; Number of occurrences = 240
-max(j2,j3) = 165: 1.d-5 &lt; error &lt;= 1.d-6 ; Number of occurrences = 93
-max(j2,j3) = 167: 1.d-4 &lt; error &lt;= 1.d-5 ; Number of occurrences = 36</code></pre>
+<p><code>max(j2,j3) = 103: 1.d-7 &lt; error &lt;=1.d-8 ; Number of occurrences = 483</code><br /><code>max(j2,j3) = 116: 1.d-6 &lt; error &lt;= 1.d-7 ; Number of occurrences = 240</code><br /><code>max(j2,j3) = 165: 1.d-5 &lt; error &lt;= 1.d-6 ; Number of occurrences = 93</code><br /><code>max(j2,j3) = 167: 1.d-4 &lt; error &lt;= 1.d-5 ; Number of occurrences = 36</code></p>
 <p>Many times, the large relative errors occur when the 3j coefficient changes sign and is very close to zero (i.e., adjacent values are about 1.e7 times greater in magnitude). Thus, if one does not need to know highly accurate values of the 3j coefficients when they are almost zero (i.e., ~1.e-10) then this routine is probably usable up to about 160.</p>
 <p>These results have also been verified for parameter values less than 100 using a code based on the algorith of de Blanc (1987), which was originally coded by Olav van Genabeek, and modified by M. Fang. (This code was run in quadruple precision and only calculates one coefficient for each call.) Maximum relative errors between the two routines were less than 1.d-8 for a large number of values (again, only 3j coefficients greater than 1.d-17 were considered here).</p>
 <h1 id="references">References</h1>

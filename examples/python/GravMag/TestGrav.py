@@ -46,7 +46,7 @@ def TestMakeGravGrid():
     plt.imshow(geoid)
     fig_map.savefig('MarsGeoid.png')
 
-    rad, theta, phi, total, pot = shtools.MakeGravGridDH(clm, gm, r0, lmax=719, a=shtools.constant.a_mars, f=shtools.constant.f_mars, lmax_calc=85, omega=shtools.constant.omega_mars, normal_gravity=1)
+    rad, theta, phi, total = shtools.MakeGravGridDH(clm, gm, r0, lmax=719, a=shtools.constant.a_mars, f=shtools.constant.f_mars, lmax_calc=85, omega=shtools.constant.omega_mars, normal_gravity=1)
     fig, axes = plt.subplots(2, 2)
 
     for num, vv, s in ((0, rad, "$g_{r}$"), (1, theta, "$g_{\theta}$"), (2, phi, "$g_{\phi}$"), (3, total, "Gravity disturbance")):

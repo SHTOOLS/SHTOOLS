@@ -1291,30 +1291,6 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(cilm_d1),intent(hide) :: dot_d1=cilm_d1
             integer, optional,intent(in),depend(cilm_d2),intent(hide) :: dot_d2=cilm_d1
         end subroutine SHRead2Error
-
-        subroutine MakeGeoidGridGLQ(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,order,nlat,nlong,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
-            fortranname pymakegeoidgridglq
-            use shtools, only: MakeGeoidGrid
-            real*8 dimension(geoid_d0,geoid_d1),intent(out) :: geoid
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer,optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1 - 1
-            real*8 intent(in) :: r0pot
-            real*8 intent(in) :: GM
-            real*8 intent(in) :: PotRef
-            real*8, optional,intent(in) :: omega = 0.0
-            real*8, optional,intent(in) :: r = r0pot
-            integer, optional,intent(in) :: order = 2
-            integer intent(hide) :: nlat
-            integer intent(hide) :: nlong
-            integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
-            real*8, optional,intent(in) :: a = r
-            real*8, optional,intent(in) :: f = 0.0
-            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
-            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
-            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
-            integer optional,intent(in),intent(hide),depend(lmax) :: geoid_d0 = lmax+1
-            integer optional,intent(in),intent(hide),depend(lmax) :: geoid_d1 = 2*lmax + 1
-        end subroutine MakeGeoidGridGLQ
         
         subroutine MakeGeoidGridDH(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,sampling,order,nlat,nlong,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
             fortranname pymakegeoidgriddh
@@ -1340,31 +1316,6 @@ python module _SHTOOLS
             integer optional,intent(in),intent(hide),depend(lmax) :: geoid_d0 = 2*(lmax+1)
             integer optional,intent(in),intent(hide),depend(geoid_d0) :: geoid_d1 = sampling*geoid_d0
         end subroutine MakeGeoidGridDH
-
-        subroutine MakeGeoidGrid2D(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,order,nlat,nlong,interval,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
-            fortranname pymakegeoidgrid2d
-            use shtools, only: MakeGeoidGrid
-            real*8 dimension(geoid_d0,geoid_d1),intent(out) :: geoid
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer,optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1 - 1
-            real*8 intent(in) :: r0pot
-            real*8 intent(in) :: GM
-            real*8 intent(in) :: PotRef
-            real*8, optional,intent(in) :: omega = 0.0
-            real*8, optional,intent(in) :: r = r0pot
-            integer, optional,intent(in) :: order = 2
-            integer intent(hide) :: nlat
-            integer intent(hide) :: nlong
-            real*8, intent(in) :: interval
-            integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
-            real*8, optional,intent(in) :: a = r
-            real*8, optional,intent(in) :: f = 0.0
-            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
-            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
-            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
-            integer optional,intent(in),intent(hide),depend(interval) :: geoid_d0 = (int)(180.0/interval) + 1
-            integer optional,intent(in),intent(hide),depend(interval) :: geoid_d1 = (int)(360.0/interval) + 1
-        end subroutine MakeGeoidGrid2D
 
         subroutine PlmON(p,lmax,z,csphase,cnorm,p_d0)
             fortranname pyplmon
@@ -1502,7 +1453,7 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax,nl),intent(hide) :: lmid_d0 = (int)ceil( (float)(lmax+1)/(float)nl )
         end subroutine SHMTDebias
 
-        subroutine MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,omega,normal_gravity,pot,phi_d0,phi_d1,total_d0,total_d1,pot_d0,pot_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1)
+        subroutine MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,omega,normal_gravity,phi_d0,phi_d1,total_d0,total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1)
             fortranname pymakegravgriddh
             use shtools, only: MakeGravGridDH
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
@@ -1520,13 +1471,10 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
             real*8, optional,intent(in) :: omega = 0.0
             integer, optional,intent(in) :: normal_gravity = 1
-            real*8, dimension(pot_d0,pot_d1),intent(out) :: pot
             integer intent(in),intent(hide),depend(lmax) :: phi_d0 = 2*(lmax+1)
             integer intent(in),intent(hide),depend(sampling,phi_d0) :: phi_d1 = sampling*phi_d0
             integer intent(in),intent(hide),depend(phi_d0) :: total_d0 = phi_d0
             integer intent(in),intent(hide),depend(phi_d1) :: total_d1 = phi_d1
-            integer intent(in),intent(hide),depend(phi_d0) :: pot_d0 = phi_d0
-            integer intent(in),intent(hide),depend(phi_d1) :: pot_d1 = phi_d1
             integer intent(in),intent(hide),depend(phi_d0) :: rad_d0 = phi_d0
             integer intent(in),intent(hide),depend(phi_d1) :: rad_d1 = phi_d1
             integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
@@ -1880,8 +1828,8 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
             real*8 intent(in) :: gm
             real*8 intent(in) :: r0
-            real*8 intent(in) :: a
-            real*8 intent(in) :: f
+            real*8 optional,intent(in) :: a=r0
+            real*8 optional,intent(in) :: f=0
             real*8 dimension(vxx_d0,vxx_d1),intent(out) :: vxx
             real*8 dimension(vyy_d0,vyy_d1),intent(out) :: vyy
             real*8 dimension(vzz_d0,vzz_d1),intent(out) :: vzz

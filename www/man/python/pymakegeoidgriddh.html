@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Gravity and magnetics routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pygravmag.html" class="dir">Gravity and Magnetics</a></p>
+<h1 id="makegeoidgriddh">MakeGeoidGridDH</h1>
+<p>Create a global map of the geoid.</p>
+<h1 id="usage">Usage</h1>
+<p><code>geoid</code> = pyshtools.MakeGeoidGridDH (<code>cilm</code>, <code>r0</code>, <code>gm</code>, <code>potref</code>, [<code>lmax</code> <code>omega</code>, <code>r</code>, <code>order</code>, <code>lmax_calc</code>, <code>a</code>, <code>f</code>])</p>
+<h1 id="returns">Returns</h1>
+<dl>
+<dt><code>geoid</code> : float, dimension (<code>2lmax+2</code>, <code>sampling</code>*2<code>lmax+2</code>)</dt>
+<dd>A global grid of the height to the potential <code>potref</code> above a flattened ellipsoid or equatorial radius <code>a</code> and flattening <code>f</code>.
+</dd>
+</dl>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential referenced to a spherical interface of radius <code>r0</code>.
+</dd>
+<dt><code>r0</code> : float</dt>
+<dd>The reference radius of the spherical harmonic coefficients.
+</dd>
+<dt><code>gm</code> : float</dt>
+<dd>The product of the gravitational constant and mass of the planet.
+</dd>
+<dt><code>potref</code> : float</dt>
+<dd>The value of the potential on the chosen geoid, in SI units.
+</dd>
+<dt><code>lmax</code> : optional, integer, default = <code>lmaxin</code></dt>
+<dd>The maximum spherical harmonic degree of the gravitational-potential coefficients. This determines the number of latitudinal and longitudinal samples.
+</dd>
+<dt><code>omega</code> : optional, float, default = 0</dt>
+<dd>The angular rotation rate of the planet.
+</dd>
+<dt><code>r</code> : optional, float, default = <code>r0</code></dt>
+<dd>The radius of the reference sphere that the Taylor expansion of the potential is performed on.
+</dd>
+<dt><code>order</code> : optional, integer, default = 2</dt>
+<dd>The order of the Taylor series expansion of the potential about the reference radius <code>r</code>. This can be either 1, 2, or 3.
+</dd>
+<dt><code>lmax_calc</code> : optional, integer, default = <code>lmax</code></dt>
+<dd>The maximum degree used in evaluating the spherical harmonic coefficients. This must be less than or equal to <code>lmax</code>.
+</dd>
+<dt><code>a</code> : optional, float, default = <code>r0</code></dt>
+<dd>The semi-major axis of the flattened ellipsoid that the output grid <code>geoid</code> is referenced to. The optional parameter <code>f</code> must also be specified.
+</dd>
+<dt><code>f</code> : optional, float, default = 0</dt>
+<dd>The flattening <code>(R_equator-R_pole)/R_equator</code> of the reference ellipsoid. The optional parameter <code>a</code> (i.e., <code>R_equator</code>) must be specified.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>MakeGeoidGrid</code> will create a global map of the geoid, accurate to either first, second, or third order, using the method described in Wieczorek (2007; equation 19-20). The algorithm expands the potential in a Taylor series on a spherical interface of radius <code>r</code>, and computes the height above this interface to the potential <code>potref</code> exactly from the linear, quadratic, or cubic equation at each grid point. If the optional parameters <code>a</code> and <code>f</code> are specified, the geoid height will be referenced to a flattened ellipsoid with semi-major axis <code>a</code> and flattening <code>f</code>. The pseudo-rotational potential is explicitly accounted for by specifying the angular rotation rate <code>omega</code> of the planet.</p>
+<p>It should be noted that this geoid calculation is only strictly exact when the radius <code>r</code> lies above the maximum radius of the planet. Furthermore, the geoid is only strictly valid when it lies above the surface of the planet (it is necessary to know the density structure of the planet when calculating the potential below the surface).</p>
+<p>The default is to calculate grids for use in the Driscoll and Healy routines that are equally spaced (<code>n</code> by <code>2n</code>), but this can be changed to calculate equally sampled grids (<code>n</code> by <code>n</code>) by setting the optional argument <code>sampling</code> to 1. This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase.</p>
+<h1 id="references">References</h1>
+<p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
+<p>Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, 2007.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="pymakegrid2d.html">makegrid2d</a>, <a href="pymakegridglq.html">makegridglq</a>, <a href="pymakegriddh.html">makegriddh</a>, <a href="pymakegravgriddh.html">makegravgriddh</a>, <a href="pymakegravgradgriddh.html">makegravgradgriddh</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pygravmag.html" class="dir">Gravity and Magnetics</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

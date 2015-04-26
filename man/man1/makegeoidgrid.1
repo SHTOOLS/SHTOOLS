@@ -1,0 +1,167 @@
+.TH "makegeoidgrid" "1" "2015\-04\-26" "Fortran 95" "SHTOOLS 3.0"
+.SH MakeGeoidGrid
+.PP
+Create a global map of the geoid.
+.SH Usage
+.PP
+call MakeGeoidGrid (\f[C]geoid\f[], \f[C]cilm\f[], \f[C]lmax\f[],
+\f[C]r0\f[], \f[C]gm\f[], \f[C]potref\f[], \f[C]omega\f[], \f[C]r\f[],
+\f[C]gridtype\f[], \f[C]order\f[], \f[C]nlat\f[], \f[C]nlong\f[],
+\f[C]interval\f[], \f[C]lmax_calc\f[], \f[C]a\f[], \f[C]f\f[])
+.SH Parameters
+.TP
+.B \f[C]geoid\f[] : output, real*8, dimension(\f[C]nlat\f[], \f[C]nlong\f[])
+A global grid of the height to the potential \f[C]potref\f[] above a
+sphere of radius \f[C]r\f[] (or above a flattened ellipsoid if both
+\f[C]a\f[] and \f[C]f\f[] are specified).
+The number of latitude and longitude points depends upon
+\f[C]gridtype\f[]: (1) \f[C]lmax+1\f[] by \f[C]2lmax+1\f[], (2)
+\f[C]2lmax+2\f[] by \f[C]2lmax+2\f[], (3) \f[C]2lmax+2\f[] by
+\f[C]4lmax+4\f[], or (4) \f[C]180/interval+1\f[] by
+\f[C]360/interval+1\f[].
+.RS
+.RE
+.TP
+.B \f[C]cilm\f[] : input, real*8, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+The real spherical harmonic coefficients (geodesy normalized) of the
+gravitational potential referenced to a spherical interface of radius
+\f[C]r0pot\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum spherical harmonic degree of the gravitational\-potential
+coefficients.
+For \f[C]gridtype\f[]s 1, 2 and 3, this determines the number of
+latitudinal and longitudinal samples.
+.RS
+.RE
+.TP
+.B \f[C]r0\f[] : input, real*8
+The reference radius of the spherical harmonic coefficients.
+.RS
+.RE
+.TP
+.B \f[C]gm\f[] : input, real*8
+The product of the gravitational constant and mass of the planet.
+.RS
+.RE
+.TP
+.B \f[C]potref\f[] : input, real*8
+The value of the potential on the chosen geoid, in SI units.
+.RS
+.RE
+.TP
+.B \f[C]omega\f[] : input, real*8
+The angular rotation rate of the planet.
+.RS
+.RE
+.TP
+.B \f[C]r\f[] : input, real*8
+The radius of the reference sphere that the Taylor expansion of the
+potential is performed on.
+If \f[C]a\f[] and \f[C]f\f[] are not specified, the geoid height will be
+referenced to this spherical interface.
+.RS
+.RE
+.TP
+.B \f[C]gridtype\f[] : input, integer
+The output grid is (1) a Gauss\-Legendre quadrature grid whose grid
+nodes are determined by \f[C]lmax\f[], (2) an equally sampled \f[C]n\f[]
+by \f[C]n\f[] grid used with the Driscoll and Healy (1994) sampling
+theorem, (3) ar a similar \f[C]n\f[] by 2\f[C]n\f[] grid that is
+oversampled in longitude, or (4) a 2D Cartesian grid with latitudinal
+and longitudinal spacing given by \f[C]interval\f[].
+.RS
+.RE
+.TP
+.B \f[C]order\f[] : input, integer
+The order of the Taylor series expansion of the potential about the
+reference radius \f[C]r\f[].
+This can be either 1, 2, or 3.
+.RS
+.RE
+.TP
+.B \f[C]nlat\f[] : output, integer
+The number of latitudinal samples.
+.RS
+.RE
+.TP
+.B \f[C]nlong\f[] : output, integer
+The number of longitudinal samples.
+.RS
+.RE
+.TP
+.B \f[C]interval\f[]: optional, input, real*8
+The latitudinal and longitudinal spacing of the output grid when
+\f[C]gridtype\f[] is 4.
+.RS
+.RE
+.TP
+.B \f[C]lmax_calc\f[] : optional, input, integer
+The maximum degree used in evaluating the spherical harmonic
+coefficients.
+This must be less than or equal to \f[C]lmax\f[].
+.RS
+.RE
+.TP
+.B \f[C]a\f[] : optional, input, real*8, default = \f[C]r0\f[]
+The semi\-major axis of the flattened ellipsoid that the output grid
+\f[C]geoid\f[] is referenced to.
+The optional parameter \f[C]f\f[] must also be specified.
+.RS
+.RE
+.TP
+.B \f[C]f\f[] : optional, input, real*8, default = 0
+The flattening \f[C](R_equator\-R_pole)/R_equator\f[] of the reference
+ellipsoid.
+The optional parameter \f[C]a\f[] (i.e., \f[C]R_equator\f[]) must be
+specified.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]MakeGeoidGrid\f[] will create a global map of the geoid, accurate
+to either first, second, or third order, using the method described in
+Wieczorek (2007; equation 19\-20).
+The algorithm expands the potential in a Taylor series on a spherical
+interface of radius \f[C]r\f[], and computes the height above this
+interface to the potential \f[C]potref\f[] exactly from the linear,
+quadratic, or cubic equation at each grid point.
+If the optional parameters \f[C]a\f[] and \f[C]f\f[] are specified, the
+geoid height will be referenced to a flattened ellipsoid with
+semi\-major axis \f[C]a\f[] and flattening \f[C]f\f[].
+The pseudo\-rotational potential is explicitly accounted for by
+specifying the angular rotation rate \f[C]omega\f[] of the planet.
+.PP
+It should be noted that this geoid calculation is only strictly exact
+when the radius \f[C]r\f[] lies above the maximum radius of the planet.
+Furthermore, the geoid is only strictly valid when it lies above the
+surface of the planet (it is necessary to know the density structure of
+the planet when calculating the potential below the surface).
+.PP
+The geoid can be computed on one of four different grids: (1) a
+Gauss\-Legendre quadrature grid (see \f[C]MakeGridGLQ\f[]), (2) A
+\f[C]n\f[] by \f[C]n\f[] equally sampled grid (see \f[C]MakeGridDH\f[]),
+(3) an \f[C]n\f[] by 2\f[C]n\f[] equally spaced grid (see
+\f[C]MakeGridDH\f[]), or (4) A 2D Cartesian grid (see
+\f[C]MakeGrid2D\f[]).
+This routine uses geodesy 4\-pi normalized spherical harmonics that
+exclude the Condon\-Shortley phase.
+This can not be modified.
+.SH References
+.PP
+Driscoll, J.R.
+and D.M.
+Healy, Computing Fourier transforms and convolutions on the 2\-sphere,
+Adv.
+Appl.
+Math., 15, 202\-250, 1994.
+.PP
+Wieczorek, M.
+A.
+Gravity and topography of the terrestrial planets, Treatise on
+Geophysics, 10, 165\-206, 2007.
+.SH See also
+.PP
+makegrid2d, makegridglq, makegriddh, makegravgriddh, makegravgradgriddh

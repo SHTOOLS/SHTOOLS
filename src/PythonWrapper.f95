@@ -1792,8 +1792,8 @@
     end subroutine pySHMTDebias
 
     subroutine pyMakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n, &
-                                sampling,lmax_calc,omega,normal_gravity,pot, &
-                                phi_d0,phi_d1,total_d0,total_d1,pot_d0,pot_d1, &
+                                sampling,lmax_calc,omega,normal_gravity, &
+                                phi_d0,phi_d1,total_d0,total_d1, &
                                 rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2, &
                                 theta_d0,theta_d1) 
         use shtools, only: MakeGravGridDH
@@ -1813,13 +1813,10 @@
         integer, optional,intent(in) :: lmax_calc
         real*8, optional,intent(in) :: omega
         integer, optional,intent(in) :: normal_gravity
-        real*8, optional,dimension(pot_d0,pot_d1),intent(out) :: pot
         integer, intent(in) :: phi_d0
         integer, intent(in) :: phi_d1
         integer, intent(in) :: total_d0
         integer, intent(in) :: total_d1
-        integer, intent(in) :: pot_d0
-        integer, intent(in) :: pot_d1
         integer, intent(in) :: rad_d0
         integer, intent(in) :: rad_d1
         integer, intent(in) :: cilm_d0
@@ -1829,7 +1826,7 @@
         integer, intent(in) :: theta_d1
         call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n, &
                 sampling=sampling,lmax_calc=lmax_calc,omega=omega, &
-                normal_gravity=normal_gravity,pot=pot)
+                normal_gravity=normal_gravity)
     end subroutine pyMakeGravGridDH
 
     function pyNormalGravity(geocentric_lat,gm,omega,a,b) 
