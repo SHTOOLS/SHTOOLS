@@ -16,10 +16,10 @@ Compute all the 4-pi (geodesy) normalized Legendre polynomials and first derivat
 
 # Parameters
 
-`lmax` : input, integer
+`lmax` : integer
 :   The maximum degree of the Legendre polynomials to be computed.
 
-`z` : input, float
+`z` : float
 :   The argument of the Legendre polynomial.
 
 # Description

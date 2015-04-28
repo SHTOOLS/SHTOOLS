@@ -190,54 +190,6 @@
         endif
     end subroutine pyCilmMinusDH
 
-    subroutine pyCilmPlusGLQ(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w,zero, &
-                    gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0,w_d0) 
-        use shtools, only: CilmPlus
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(out) :: d
-        real*8, intent(in) :: rho
-        integer, intent(in) :: gridtype
-        real*8, optional,dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, intent(in) :: gridin_d0
-        integer, intent(in) :: gridin_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,1,w=w,zero=zero)
-    end subroutine pyCilmPlusGLQ
-
-    subroutine pyCilmMinusGLQ(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w, &
-            zero,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0,w_d0) 
-        use shtools, only: CilmMinus
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(out) :: d
-        real*8, intent(in) :: rho
-        integer, intent(in) :: gridtype
-        real*8, optional,dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, intent(in) :: gridin_d0
-        integer, intent(in) :: gridin_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,1,w=w,zero=zero)
-    end subroutine pyCilmMinusGLQ
-
     subroutine pyCilmPlusRhoHDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
                 gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1) 
         use shtools, only: CilmPlusRhoH
@@ -265,34 +217,6 @@
         endif
     end subroutine pyCilmPlusRhoHDH
     
-    subroutine pyCilmPlusRhoHGLQ(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w, &
-                        zero,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2, &
-                        zero_d0,w_d0,rho_d0,rho_d1) 
-        use shtools, only: CilmPlusRhoH
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(out) :: d
-        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer, intent(in) :: gridtype
-        real*8, optional,dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, intent(in) :: gridin_d0
-        integer, intent(in) :: gridin_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        integer, intent(in) :: rho_d0
-        integer, intent(in) :: rho_d1
-        call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype, &
-                            w=w,zero=zero)
-    end subroutine pyCilmPlusRhoHGLQ
-
     subroutine pyCilmMinusRhoHDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
                 gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1) 
         use shtools, only: CilmMinusRhoH
@@ -320,38 +244,10 @@
         endif
     end subroutine pyCilmMinusRhoHDH
     
-    subroutine pyCilmMinusRhoHGLQ(cilm,gridin,lmax,nmax,mass,d,rho,gridtype, &
-                        w,zero,gridin_d0,gridin_d1,cilm_d0,cilm_d1, &
-                        cilm_d2,zero_d0,w_d0,rho_d0,rho_d1) 
-        use shtools, only: CilmMinusRhoH
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(out) :: d
-        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer, intent(in) :: gridtype
-        real*8, optional,dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, intent(in) :: gridin_d0
-        integer, intent(in) :: gridin_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        integer, intent(in) :: rho_d0
-        integer, intent(in) :: rho_d1
-        call CilmMinusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype, &
-                            w=w,zero=zero)
-    end subroutine pyCilmMinusRhoHGLQ
-
-    subroutine pyHilmDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling, &
+    subroutine pyBAtoHilmDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling, &
                         filter_type,filter_deg,lmax_calc,ba_d0,ba_d1,ba_d2, &
                         griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2) 
-        use shtools, only: Hilm
+        use shtools, only: BAtoHilm
         implicit none
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
@@ -374,59 +270,21 @@
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
         if (sampling == 1) then
-            call Hilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2, &
+            call BAtoHilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2, &
                         filter_type=filter_type,filter_deg=filter_deg, &
                         lmax_calc=lmax_calc)
         else
-            call Hilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3, &
+            call BAtoHilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3, &
                         filter_type=filter_type,filter_deg=filter_deg, &
                         lmax_calc=lmax_calc)
         endif   
-    end subroutine pyHilmDH
+    end subroutine pyBAtoHilmDH
     
-    subroutine pyHilmGLQ(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w,plx, &
-                        zero,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1, &
-                        ba_d2,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2, &
-                        zero_d0,w_d0,plx_d0,plx_d1) 
-        use shtools, only: Hilm
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
-        real*8, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(in) :: r0
-        real*8, intent(in) :: rho
-        integer, intent(in) :: gridtype
-        real*8, optional,dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, optional,intent(in) :: filter_type
-        integer, optional,intent(in) :: filter_deg
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: ba_d0
-        integer, intent(in) :: ba_d1
-        integer, intent(in) :: ba_d2
-        integer, intent(in) :: gridglq_d0
-        integer, intent(in) :: gridglq_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        integer, intent(in) :: plx_d0
-        integer, intent(in) :: plx_d1
-        call Hilm(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w=w,plx=plx, &
-                    zero=zero,filter_type=filter_type,filter_deg=filter_deg, &
-                    lmax_calc=lmax_calc)
-    end subroutine pyHilmGLQ
-
-    subroutine pyHilmRhoHDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling, &
+    subroutine pyBAtoHilmRhoHDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling, &
                             filter_type,filter_deg,lmax_calc,ba_d0,ba_d1, &
                             ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2, &
                             rho_d0,rho_d1) 
-        use shtools, only: HilmRhoH
+        use shtools, only: BAtoHilmRhoH
         implicit none
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
@@ -451,52 +309,15 @@
         integer, intent(in) :: rho_d0
         integer, intent(in) :: rho_d1
         if (sampling == 1) then
-            call HilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2,&
+            call BAtoHilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2,&
                 filter_type=filter_type,filter_deg=filter_deg, &
                 lmax_calc=lmax_calc)
         else
-            call HilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3,&
+            call BAtoHilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3,&
                 filter_type=filter_type,filter_deg=filter_deg, &
                 lmax_calc=lmax_calc)
         endif
-    end subroutine pyHilmRhoHDH
-
-    subroutine pyHilmRhoHGLQ(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w, &
-                            zero,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1, &
-                            ba_d2,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1, &
-                            cilm_d2,zero_d0,w_d0,rho_d0,rho_d1) 
-        use shtools, only: HilmRhoH
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
-        real*8, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(in) :: r0
-        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer, intent(in) :: gridtype
-        real*8, optional,dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, optional,intent(in) :: filter_type
-        integer, optional,intent(in) :: filter_deg
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: ba_d0
-        integer, intent(in) :: ba_d1
-        integer, intent(in) :: ba_d2
-        integer, intent(in) :: gridglq_d0
-        integer, intent(in) :: gridglq_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        integer, intent(in) :: rho_d0
-        integer, intent(in) :: rho_d1
-        call HilmRhoH(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w=w, &
-                    zero=zero,filter_type=filter_type,filter_deg=filter_deg, &
-                    lmax_calc=lmax_calc)
-    end subroutine pyHilmRhoHGLQ
+    end subroutine pyBAtoHilmRhoHDH
 
     subroutine pyMakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f, &
                             a,north,south,east,west,dealloc,cilm_d0,cilm_d1, &
@@ -689,10 +510,10 @@
     end subroutine pySHReadErrorH
 
     subroutine pyMakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid, &
-                        total_grid,n,sampling,lmax_calc,pot_grid,total_grid_d0, &
+                        total_grid,n,sampling,lmax_calc,total_grid_d0, &
                         total_grid_d1,cilm_d0,cilm_d1,cilm_d2,rad_grid_d0, &
                         rad_grid_d1,theta_grid_d0,theta_grid_d1,phi_grid_d0, &
-                        phi_grid_d1,pot_grid_d0,pot_grid_d1) 
+                        phi_grid_d1) 
         use shtools, only: MakeMagGridDH
         implicit none
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
@@ -707,7 +528,6 @@
         integer, intent(out) :: n
         integer, optional,intent(in) :: sampling
         integer, optional,intent(in) :: lmax_calc
-        real*8, optional,dimension(pot_grid_d0,pot_grid_d1),intent(out) :: pot_grid
         integer, intent(in) :: total_grid_d0
         integer, intent(in) :: total_grid_d1
         integer, intent(in) :: cilm_d0
@@ -719,11 +539,8 @@
         integer, intent(in) :: theta_grid_d1
         integer, intent(in) :: phi_grid_d0
         integer, intent(in) :: phi_grid_d1
-        integer, intent(in) :: pot_grid_d0
-        integer, intent(in) :: pot_grid_d1
         call MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid, &
-                total_grid,n,sampling=sampling,lmax_calc=lmax_calc, &
-                pot_grid=pot_grid)
+                total_grid,n,sampling=sampling,lmax_calc=lmax_calc)
     end subroutine pyMakeMagGridDH
 
     function pySHPowerL(c,l,c_d0,c_d1,c_d2) 
@@ -1027,27 +844,27 @@
                                         csphase=csphase,dealloc=dealloc)
     end function pyMakeGridPoint
 
-    function pyWl(l,half,r,d) 
-        use shtools, only: Wl
+    function pyDownContFilterMA(l,half,r,d) 
+        use shtools, only: DownContFilterMA
         implicit none
         integer, intent(in) :: l
         integer, intent(in) :: half
         real*8, intent(in) :: r
         real*8, intent(in) :: d
-        real*8 :: pyWl
-        pyWl=Wl(l,half,r,d)
-    end function pyWl
+        real*8 :: pyDownContFilterMA
+        pyDownContFilterMA=DownContFilterMA(l,half,r,d)
+    end function pyDownContFilterMA
 
-    function pyWlCurv(l,half,r,d) 
-        use shtools, only: WlCurv
+    function pyDownContFilterMC(l,half,r,d) 
+        use shtools, only: DownContFilterMC
         implicit none
         integer, intent(in) :: l
         integer, intent(in) :: half
         real*8, intent(in) :: r
         real*8, intent(in) :: d
-        real*8 :: pyWlCurv
-        pyWlCurv=WlCurv(l,half,r,d)
-    end function pyWlCurv
+        real*8 :: pyDownContFilterMC
+        pyDownContFilterMC=DownContFilterMC(l,half,r,d)
+    end function pyDownContFilterMC
 
     subroutine pySHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm,chi2,csphase, &
                             d_d0,lon_d0,cilm_d0,cilm_d1,cilm_d2,lat_d0) 
@@ -1199,24 +1016,24 @@
         call SHAdmitCorr(G,T,lmax,admit,corr,admit_error=admit_error)
     end subroutine pySHAdmitCorr
 
-    subroutine pySHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t, &
-                            lmax,admit,corr,K,admit_error,corr_error,taper_wt, &
+    subroutine pySHLocalizedAdmitCorr(g,t,tapers,taper_order,k,lat,lon,lwin, &
+                            lmax,admit,corr,admit_error,corr_error,taper_wt, &
                             mtdef,k1linsig,taper_order_d0,g_d0,g_d1,g_d2, &
                             taper_wt_d0,corr_error_d0,admit_d0,admit_error_d0, &
                             corr_d0,tapers_d0,tapers_d1,t_d0,t_d1,t_d2) 
         use shtools, only: SHLocalizedAdmitCorr
         implicit none
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, dimension(taper_order_d0),intent(in) :: taper_order
-        integer, intent(in) :: lwin
-        real*8, intent(in) :: lat
-        real*8, intent(in) :: lon
         real*8, dimension(g_d0,g_d1,g_d2),intent(in) :: g
         real*8, dimension(t_d0,t_d1,t_d2),intent(in) :: t
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, dimension(taper_order_d0),intent(in) :: taper_order
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: lon
+        integer, intent(in) :: lwin
         integer, intent(in) :: lmax
         real*8, dimension(admit_d0),intent(out) :: admit
         real*8, dimension(corr_d0),intent(out) :: corr
-        integer, intent(in) :: K
+        integer, intent(in) :: k
         real*8, optional,dimension(admit_error_d0),intent(out) :: admit_error
         real*8, optional,dimension(corr_error_d0),intent(out) :: corr_error
         real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
@@ -1540,34 +1357,6 @@
         call SHRead2(filename,cilm,lmax,gm,r0_pot,error=error,dot=dot, &
                         doystart=doystart,doyend=doyend,epoch=epoch)
     end subroutine pySHRead2Error
-
-    subroutine pyMakeGeoidGridGLQ(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r, &
-                            order,nlat,nlong,lmax_calc,a,f,cilm_d0,cilm_d1, &
-                            cilm_d2,geoid_d0,geoid_d1) 
-        use shtools, only: MakeGeoidGrid
-        implicit none
-        real*8, dimension(geoid_d0,geoid_d1),intent(out) :: geoid
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        real*8, intent(in) :: r0pot
-        real*8, intent(in) :: GM
-        real*8, intent(in) :: PotRef
-        real*8, intent(in) :: omega
-        real*8, intent(in) :: r
-        integer, intent(in) :: order
-        integer, intent(out) :: nlat
-        integer, intent(out) :: nlong
-        integer, optional,intent(in) :: lmax_calc
-        real*8, optional,intent(in) :: a
-        real*8, optional,intent(in) :: f
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: geoid_d0
-        integer, intent(in) :: geoid_d1
-        call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,1,order, &
-                            nlat,nlong,lmax_calc=lmax_calc,a=a,f=f)
-    end subroutine pyMakeGeoidGridGLQ
     
     subroutine pyMakeGeoidGridDH(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r, &
                             sampling,order,nlat,nlong,lmax_calc,a,f,cilm_d0, &

@@ -36,7 +36,7 @@ The JPL ascii-formatted file is organized as follows:
 
 - Comment lines starting with "#".
 - `gm` (if a gravitational potential file)
-- A list of `J_l`, which is `-cilm(1,l+1,1)`.
+- A list of `J_l`, which is `-cilm[0,l,0]`.
 - A list of the cosine and sine terms.
 - The errors of the above (starting at step 2).
 

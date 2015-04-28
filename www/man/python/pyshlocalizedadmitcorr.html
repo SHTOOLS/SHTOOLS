@@ -32,7 +32,7 @@
 <h1 id="shlocalizedadmitcorr">SHLocalizedAdmitCorr</h1>
 <p>Calculate the localized admittance and correlation spectra of two functions at a given location using spherical cap localization windows.</p>
 <h1 id="usage">Usage</h1>
-<p><code>admit</code>, <code>corr</code>, <code>admit_error</code>, <code>corr_error</code> = pyshtools.SHLocalizedAdmitCorr (<code>tapers</code>, <code>taper_order</code>, <code>gilm</code>, <code>tilm</code>, <code>lat</code>, <code>lon</code>, [<code>lwin</code>, <code>lmax</code>, <code>k</code>, <code>taper_wt</code>, <code>mtdef</code>, <code>k1linsig</code>])</p>
+<p><code>admit</code>, <code>corr</code>, <code>admit_error</code>, <code>corr_error</code> = pyshtools.SHLocalizedAdmitCorr (<code>gilm</code>, <code>tilm</code>, <code>tapers</code>, <code>taper_order</code>, <code>lat</code>, <code>lon</code>, [<code>k</code>, <code>lwin</code>, <code>lmax</code>, <code>taper_wt</code>, <code>mtdef</code>, <code>k1linsig</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>admit</code> : float, dimension (<code>lmax</code>-<code>lwin</code>+1)</dt>
@@ -50,17 +50,17 @@
 </dl>
 <h1 id="parameters">Parameters</h1>
 <dl>
-<dt><code>tapers</code> : float, dimension (<code>lwinin</code>+1, <code>kin</code>)</dt>
-<dd>A matrix of spherical cap localization functions obtained from <code>SHReturnTapers</code> or <code>SHReturnTapersM</code>.
-</dd>
-<dt><code>taper_order</code> : integer, dimension (<code>kin</code>)</dt>
-<dd>The angular order of the windowing coefficients in <code>tapers</code>.
-</dd>
 <dt><code>gilm</code> : float, dimension (2, <code>lmaxgin</code>+1, <code>lmaxgin</code>+1)</dt>
 <dd>The spherical harmonic coefficients of the function G.
 </dd>
 <dt><code>tilm</code> : float, dimension (2, <code>lmaxtin</code>+1, <code>lmaxtin</code>+1)</dt>
 <dd>The spherical harmonic coefficients of the function T.
+</dd>
+<dt><code>tapers</code> : float, dimension (<code>lwinin</code>+1, <code>kin</code>)</dt>
+<dd>A matrix of spherical cap localization functions obtained from <code>SHReturnTapers</code> or <code>SHReturnTapersM</code>.
+</dd>
+<dt><code>taper_order</code> : integer, dimension (<code>kin</code>)</dt>
+<dd>The angular order of the windowing coefficients in <code>tapers</code>.
 </dd>
 <dt><code>lat</code> : float</dt>
 <dd>The latitude of the localized analysis in degrees.
@@ -68,14 +68,14 @@
 <dt><code>lon</code> : float</dt>
 <dd>The longitude of the localized analysis in degrees.
 </dd>
+<dt><code>k</code> : optional, integer, default = <code>kin</code></dt>
+<dd>The number of tapers to be used in the multitaper spectral analysis.
+</dd>
 <dt><code>lwin</code> : optional, integer, default = <code>lwinin</code></dt>
 <dd>The spherical harmonic bandwidth of the localizing windows.
 </dd>
 <dt><code>lmax</code> : optional, integer, default = min(<code>lmaxgin</code>, <code>lmaxtin</code>)</dt>
 <dd>The maximum spherical harmonic degree of the input functions corresponding to <code>gilm</code> and <code>tilm</code>.
-</dd>
-<dt><code>k</code> : optional, integer, default = <code>kin</code></dt>
-<dd>The number of tapers to be used in the multitaper spectral analysis.
 </dd>
 <dt><code>taper_wt</code> : optional, float, dimension (<code>k</code>), default = -1 (not used)</dt>
 <dd>The weights to be applied to the spectral estimates when calculating the admittance, correlation, and their associated errors. This must sum to unity. The default value specifies that taper weights will not be used.
@@ -93,13 +93,13 @@
 <p>If the optional parameter <code>k1linsig</code> is specified, and only a single taper is being used, the uncertainty in the admittance function will be calculated by assuming the two sets of coefficients are related by a linear degree-dependent transfer function and that the lack of correlation is a result of uncorrelated noise.</p>
 <p>When <code>mtdef</code> is 1, by default, the multitaper spectral estimates are calculated as an unweighted average of the individual tapered estimates. However, if the optional argument <code>taper_wt</code> is specified, a weighted average will be employed using the weights in this array. Minimum variance optimal weights can be obtained from the routines <code>SHMTVarOpt</code> if the form of the underlying global power spectrum is known. Taper weights can not be used when <code>mtdef</code> is 2</p>
 <p>This routine assumes that the input functions and tapers are expressed using geodesy 4-pi normalized spherical harmonic functions that exclude the Condon-Shortley phase factor of (-1)^m.</p>
-<h1 id="see-also">See also</h1>
-<p><a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshreturntapersm.html">shreturntapersm</a>, <a href="pyshmultitaperse.html">shmultitaperse</a>, <a href="pyshmultitapercse.html">shmultitapercse</a></p>
 <h1 id="references">References</h1>
 <p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.</p>
 <p>Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on the sphere, SIAM Review, 48, 504-536, doi:10.1137/S0036144504445765, 2006.</p>
 <p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, Geophys. J. Int., 162, 655-675, 2005.</p>
 <p>Simons, M., S. C. Solomon and B. H. Hager, Localization of gravity and topography: constrains on the tectonics and mantle dynamics of Venus, Geophys. J. Int., 131, 24-44, 1997.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshreturntapersm.html">shreturntapersm</a>, <a href="pyshmultitaperse.html">shmultitaperse</a>, <a href="pyshmultitapercse.html">shmultitapercse</a></p>
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>

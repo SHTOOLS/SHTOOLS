@@ -41,7 +41,7 @@ MAKE = make
 PROG =	../lib/libSHTOOLS.a
 
 SRCS0 =	CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
-	djpi2.f95 FFTW3.f95 Hilm.f95 MakeGrid2D.f95 \
+	djpi2.f95 FFTW3.f95 BAtoHilm.f95 MakeGrid2D.f95 \
 	GLQGridCoord.f95 MakeGridPoint.f95 \
 	PlanetsConstants.f95 PlBar.f95 PlBar_d1.f95 \
 	PLegendre.f95 PLegendreA.f95 PLegendreA_d1.f95 PlmBar.f95 \
@@ -52,16 +52,16 @@ SRCS0 =	CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
 	SHMultiTaperCSE.f95 SHMultiTaperSE.f95 SHPowerSpectra.f95 SHRead.f95 \
 	SHReadJPL.f95 SHReturnTapersM.f95 SHRotateCoef.f95 \
 	SHRotateRealCoef.f95 SHTOOLS.f95 SphericalCapCoef.f95 \
-	Wigner3j.f95 wl.f95 SHRead2.f95 MakeGeoidGrid.f95 \
+	Wigner3j.f95 DownContFilter.f95 SHRead2.f95 MakeGeoidGrid.f95 \
 	MakeCircleCoord.f95  \
 	SHReturnTapers.f95 SHSjkPG.f95 PlON.f95 PlON_d1.f95 \
 	PlmON.f95 PlmON_d1.f95 SHConfidence.f95 SHMagPowerSpectra.f95 \
 	SHPowerSpectraC.f95 SHBiasAdmitCorr.f95 SHCimToVector.f95 YilmIndexVector.f95 \
 	ComputeDMap.f95 SHReturnTapersMap.f95 Curve2Mask.f95 MakeEllipseCoord.f95 \
-	CilmPlusRhoH.f95 CilmMinusRhoH.f95 HilmRhoH.f95 NormalGravity.f95
+	CilmPlusRhoH.f95 CilmMinusRhoH.f95 BAtoHilmRhoH.f95 NormalGravity.f95
 
 OBJS0 =	CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o \
-	FFTW3.o Hilm.o MakeGrid2D.o GLQGridCoord.o \
+	FFTW3.o BAtoHilm.o MakeGrid2D.o GLQGridCoord.o \
 	MakeGridPoint.o PlanetsConstants.o PlBar.o PlBar_d1.o \
 	PLegendre.o PLegendreA.o PLegendreA_d1.o PlmBar.o PlmBar_d1.o \
 	PlmIndex.o PlmSchmidt.o PlmSchmidt_d1.o PlSchmidt.o PlSchmidt_d1.o \
@@ -70,13 +70,13 @@ OBJS0 =	CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o \
 	SHMultiply.o SHMultiTaperCSE.o SHMultiTaperSE.o SHPowerSpectra.o \
 	SHRead.o SHReadJPL.o SHReturnTapersM.o SHRotateCoef.o \
 	SHRotateRealCoef.o SHTOOLS.o SphericalCapCoef.o Wigner3j.o \
-	wl.o SHRead2.o MakeGeoidGrid.o  \
+	DownContFilter.o SHRead2.o MakeGeoidGrid.o  \
 	MakeCircleCoord.o SHReturnTapers.o SHSjkPG.o \
 	PlON.o PlON_d1.o PlmON.o PlmON_d1.o \
 	SHConfidence.o SHMagPowerSpectra.o \
 	SHPowerSpectraC.o SHBiasAdmitCorr.o SHCilmToVector.o \
 	YilmIndexVector.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o MakeEllipseCoord.o \
-	CilmPlusRhoH.o CilmMinusRhoH.o HilmRhoH.o NormalGravity.o
+	CilmPlusRhoH.o CilmMinusRhoH.o BAtoHilmRhoH.o NormalGravity.o
 	
 SRCSLAPACK1 = EigValSym.f95 EigValVecSym.f95 EigValVecSymTri.f95 SHExpandLSQ.f95 SHMTDebias.f95  \
 	SHMTVarOpt.f95
@@ -198,7 +198,7 @@ clean:
 CilmPlus.o: SHTOOLS.o
 CilmMinus.o: SHTOOLS.o
 ComputeDm.o: SHTOOLS.o
-Hilm.o: SHTOOLS.o
+BAtoHilm.o: SHTOOLS.o
 MakeGrid2D.o: SHTOOLS.o
 GLQGridCoord.o: SHTOOLS.o
 MakeGridGLQ.o: FFTW3.o SHTOOLS.o
@@ -254,7 +254,7 @@ ComputeDMap.o : SHTOOLS.o
 SHReturnTapersMap.o : SHTOOLS.o
 CilmPlusRhoH.o : SHTOOLS.o
 CilmMinusRhoH.o : SHTOOLS.o
-HilmRhoH.o : SHTOOLS.o
+BAtoHilmRhoH.o : SHTOOLS.o
 MakeGravGradGridDH.o : FFTW3.o
 MakeGravGradGridDH2.o : FFTW3.o
 

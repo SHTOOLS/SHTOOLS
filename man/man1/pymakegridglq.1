@@ -1,4 +1,4 @@
-.TH "pymakegridglq" "1" "2015\-03\-30" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "pymakegridglq" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
 .SH MakeGridGLQ
 .PP
 Create a 2D map from a set of spherical harmonic coefficients sampled on
@@ -23,7 +23,7 @@ considered is the minimum of \f[C]lmax\f[], \f[C]lmaxin\f[] or
 \f[C]lmax_calc\f[] (if specified).
 The coefficients \f[C]C1lm\f[] and \f[C]C2lm\f[] refer to the "cosine"
 (\f[C]Clm\f[]) and "sine" (\f[C]Slm\f[]) coefficients, respectively,
-with \f[C]Clm=cilm(1,l+1,m+1)\f[] and \f[C]Slm=cilm(2,l+1,m+1)\f[].
+with \f[C]Clm=cilm[0,l,m]\f[] and \f[C]Slm=cilm[1,l,m]\f[].
 .RS
 .RE
 .TP

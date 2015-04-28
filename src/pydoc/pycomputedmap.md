@@ -41,7 +41,7 @@ where
 
 `F = Ylm dh_mask`.
 
-The function `F` is in general not a polynomial, and thus the coefficients `Dl'm'` should not be expected to be exact. For this reason, the effective spherical harmonic degree of the input mask (`L=n/2-1`) should be greater than `lmax`. The exact value of `n` should be chosen such that further increases in `n` do not alter the returned eigenvalues. The routine prints out the fractional area of the mask computed in the pixel domain divided by `D(1,1)` (the fractional area computed by the spherical harmonic transforms), and the ratio of the two should be close to 1. Experience suggests that `l` should be about 5 times `lmax`.
+The function `F` is in general not a polynomial, and thus the coefficients `Dl'm'` should not be expected to be exact. For this reason, the effective spherical harmonic degree of the input mask (`L=n/2-1`) should be greater than `lmax`. The exact value of `n` should be chosen such that further increases in `n` do not alter the returned eigenvalues. The routine prints out the fractional area of the mask computed in the pixel domain divided by `D(0,0)` (the fractional area computed by the spherical harmonic transforms), and the ratio of the two should be close to 1. Experience suggests that `l` should be about 5 times `lmax`.
 
 # References
 

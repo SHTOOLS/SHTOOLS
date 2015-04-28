@@ -1,31 +1,33 @@
-.TH "pyyilmindexvector" "1" "2015\-04\-21" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "pyyilmindexvector" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
 .SH YilmIndexVector
 .PP
 Compute the index of an 1D array of spherical harmonic coefficients
 corresponding to \f[C]i\f[], \f[C]l\f[], and \f[C]m\f[].
 .SH Usage
 .PP
-\f[C]index\f[] = YilmIndex (\f[C]i\f[], \f[C]l\f[], \f[C]m\f[])
-.SH Parameters
+\f[C]index\f[] = pyshtools.YilmIndex (\f[C]i\f[], \f[C]l\f[],
+\f[C]m\f[])
+.SH Returns
 .TP
-.B \f[C]index\f[] : output, integer
+.B \f[C]index\f[] : integer
 Index of an 1D array of spherical harmonic coefficients corresponding to
 \f[C]i\f[], \f[C]l\f[], and \f[C]m\f[].
 .RS
 .RE
+.SH Parameters
 .TP
-.B \f[C]i\f[] : input, integer
-1 corresponds to the cosine coefficient \f[C]cilm(1,:,:)\f[], and 2
-corresponds to the sine coefficient \f[C]cilm(2,:,:)\f[].
+.B \f[C]i\f[] : integer
+1 corresponds to the cosine coefficient \f[C]cilm[0,:,:]\f[], and 2
+corresponds to the sine coefficient \f[C]cilm[1,:,:]\f[].
 .RS
 .RE
 .TP
-.B \f[C]l\f[] : input, integer
+.B \f[C]l\f[] : integer
 The spherical harmonic degree.
 .RS
 .RE
 .TP
-.B \f[C]m\f[] : input, integer
+.B \f[C]m\f[] : integer
 The angular order.
 .RS
 .RE

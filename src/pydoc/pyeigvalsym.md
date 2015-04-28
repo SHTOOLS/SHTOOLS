@@ -19,7 +19,7 @@ Compute the eigenvalues of a real symmetric matrix.
 `n` : optional, integer, default = `nin`
 :   The rank of the matrix `ain`.
 
-`ul` : optional, input, character, default = `U`
+`ul` : optional, character, default = `U`
 :   If `U` then the upper portion of the matrix `ain` will be used (default). If `L` then the lower portion of the matrix `ain` will be used.
 
 # Description

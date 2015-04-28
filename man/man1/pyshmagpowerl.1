@@ -1,0 +1,51 @@
+.TH "pyshmagpowerl" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
+.SH SHMagPowerL
+.PP
+Compute the power of the magnetic field for a single degree \f[C]l\f[]
+given the Schmidt seminormalized magnetic potential spherical harmonic
+coefficients.
+.SH Usage
+.PP
+\f[C]power\f[] = pyshtools.SHMagPowerL (\f[C]c\f[], \f[C]a\f[],
+\f[C]l\f[], [\f[C]r\f[]])
+.SH Returns
+.TP
+.B \f[C]power\f[] : float
+The power at degree \f[C]l\f[]
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]c\f[] : float, dimension (2, l+1, l+1)
+The Schmidt seminormalized spherical harmonic coefficients of the
+magnetic potential.
+.RS
+.RE
+.TP
+.B \f[C]a\f[] : float
+The reference radius of the magnetic potential spherical harmonic
+coefficients.
+.RS
+.RE
+.TP
+.B \f[C]l\f[] : integer
+The spherical harmonic degree for which the power will be calculated.
+.RS
+.RE
+.TP
+.B \f[C]r\f[] : optional, float
+The radius to evaluate the magnetic field.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHMagPowerL\f[] will calculate the power of the magnetic field at
+radius \f[C]r\f[] for a single degree \f[C]l\f[] given the magnetic
+potential Schmidt seminormalized spherical harmonic coefficients
+\f[C]c\f[] evaluated at radius \f[C]a\f[].
+This is explicitly calculated as:
+.PP
+\f[C]S(l)\ =\ (l+1)\ (a/r)**(2l+4)\ Sum_{m=0}^l\ [\ c[0,l,m]**2\ +\ c[1,l,m)**2\ ].\f[]
+.SH See also
+.PP
+shmagpowerspectrum

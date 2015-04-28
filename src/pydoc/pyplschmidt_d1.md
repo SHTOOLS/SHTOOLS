@@ -4,7 +4,7 @@ Compute all the Schmidt-normalized Legendre polynomials and first derivatives.
 
 # Usage
 
-`p`, `dp` = call pyshtools.PlSchmidt_d1 (`lmax`, `z`)
+`p`, `dp` = pyshtools.PlSchmidt_d1 (`lmax`, `z`)
 
 `p` : float, dimension (`lmax`+1)
 :   An array of Schmidt-normalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`.

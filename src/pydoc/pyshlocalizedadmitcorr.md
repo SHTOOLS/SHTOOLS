@@ -4,7 +4,7 @@ Calculate the localized admittance and correlation spectra of two functions at a
 
 # Usage
 
-`admit`, `corr`, `admit_error`, `corr_error` = pyshtools.SHLocalizedAdmitCorr (`tapers`, `taper_order`, `gilm`, `tilm`, `lat`, `lon`, [`lwin`, `lmax`, `k`, `taper_wt`, `mtdef`, `k1linsig`])
+`admit`, `corr`, `admit_error`, `corr_error` = pyshtools.SHLocalizedAdmitCorr (`gilm`, `tilm`, `tapers`, `taper_order`, `lat`, `lon`, [`k`, `lwin`, `lmax`, `taper_wt`, `mtdef`, `k1linsig`])
 
 # Returns
 
@@ -22,17 +22,17 @@ Calculate the localized admittance and correlation spectra of two functions at a
 
 # Parameters
 
-`tapers` : float, dimension (`lwinin`+1, `kin`)
-:   A matrix of spherical cap localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
-
-`taper_order` : integer, dimension (`kin`)
-:   The angular order of the windowing coefficients in `tapers`.
-
 `gilm` : float, dimension (2, `lmaxgin`+1, `lmaxgin`+1)
 :   The spherical harmonic coefficients of the function G.
 
 `tilm` : float, dimension (2, `lmaxtin`+1, `lmaxtin`+1)
 :   The spherical harmonic coefficients of the function T.
+
+`tapers` : float, dimension (`lwinin`+1, `kin`)
+:   A matrix of spherical cap localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
+
+`taper_order` : integer, dimension (`kin`)
+:   The angular order of the windowing coefficients in `tapers`.
 
 `lat` : float
 :   The latitude of the localized analysis in degrees.
@@ -40,14 +40,14 @@ Calculate the localized admittance and correlation spectra of two functions at a
 `lon` : float
 :   The longitude of the localized analysis in degrees.
 
+`k` : optional, integer, default = `kin`
+:   The number of tapers to be used in the multitaper spectral analysis.
+
 `lwin` : optional, integer, default = `lwinin`
 :   The spherical harmonic bandwidth of the localizing windows.
 
 `lmax` : optional, integer, default = min(`lmaxgin`, `lmaxtin`)
 :   The maximum spherical harmonic degree of the input functions corresponding to `gilm` and `tilm`.
-
-`k` : optional, integer, default = `kin`
-:   The number of tapers to be used in the multitaper spectral analysis.
 
 `taper_wt` : optional, float, dimension (`k`), default = -1 (not used)
 :   The weights to be applied to the spectral estimates when calculating the admittance, correlation, and their associated errors. This must sum to unity. The default value specifies that taper weights will not be used.
@@ -70,10 +70,6 @@ When `mtdef` is 1, by default, the multitaper spectral estimates are calculated 
 
 This routine assumes that the input functions and tapers are expressed using geodesy 4-pi normalized spherical harmonic functions that exclude the  Condon-Shortley phase factor of (-1)^m.
 
-# See also
-
-[shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html)
-
 # References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
@@ -84,3 +80,8 @@ Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere,
 Geophys. J. Int., 162, 655-675, 2005.
 
 Simons, M., S. C. Solomon and B. H. Hager, Localization of gravity and topography: constrains on the tectonics and mantle dynamics of Venus, Geophys. J. Int., 131, 24-44, 1997.
+
+# See also
+
+[shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html)
+

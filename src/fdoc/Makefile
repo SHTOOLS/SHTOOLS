@@ -44,13 +44,10 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
 	curve2mask.md shbias.md sphericalcapcoef.md djpi2.md shrotatecoef.md \
 	shrotaterealcoef.md makecirclecoord.md makeellipsecoord.md randomn.pod \
 	randomgaussian.md preglq.md eigvalvecsym.md eigvalvecsymtri.md eigvalsym.md \
-	wigner3j.md makegravgriddh.md makegravgradgriddh.md makegeoidgrid.md
-# cilmplus.pod	cilmminus.pod	\
-	hilm.pod  makemaggriddh.pod \
-	wl.pod wl_curv.pod	  \
-		shmagpowerl.pod shmagpowerspectrum.pod	  \
-	  shreturntapers.pod   \
-	cilmplusrhoh.pod cilmminusrhoh.pod hilmrhoh.pod normalgravity.pod 
+	wigner3j.md makegravgriddh.md makegravgradgriddh.md makegeoidgrid.md cilmplus.md \
+	cilmminus.md cilmplusrhoh.md cilmminusrhoh.md batohilm.md batohilmrhoh.md \
+	downcontfilterma.md downcontfiltermc.md normalgravity.md makemaggriddh.md \
+	shmagpowerspectrum.md shmagpowerl.md
 
 MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_d1.1 \
 	plbar.1 plbar_d1.1 plon.1 plmon.1 plmon_d1.1 plon_d1.1 plmschmidt.1 plschmidt.1 \
@@ -70,14 +67,9 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_
 	shbias.1 sphericalcapcoef.1 djpi2.1 shrotatecoef.1 shrotaterealcoef.1 \
 	makecirclecoord.1 makeellipsecoord.1 randomn.1 randomgaussian.1 preglq.1 \
 	eigvalvecsym.1 eigvalvecsymtri.1 eigvalsym.1 wigner3j.1 makegravgriddh.1 \
-	makegravgradgriddh.1 makegeoidgrid.1)
-#cilmplus.1	 cilmminus.1   \
-		 hilm.1 \
-	   makemaggriddh.1 shglq.1	 \
-		wl.1 wlcurv.1	\
-	 shmagpowerl.1 shmagpowerspectrum.1		\
-	   cilmplusrhoh.1 cilmminusrhoh.1\
-	hilmrhoh.1 normalgravity.1 
+	makegravgradgriddh.1 makegeoidgrid.1 cilmplus.1 cilmminus.1 cilmplusrhoh.1 \
+	cilmminusrhoh.1 batohilm.1 batohilmrhoh.1 downcontfilterma.1 downcontfiltermc.1 \
+	normalgravity.1 makemaggriddh.1 shmagpowerspectrum.1 shmagpowerl.1)
 
 HTMLFILES_modules = $(addprefix $(WWWDIR)/, planetsconstants.html )
 
@@ -114,11 +106,9 @@ HTMLFILES_rotations = $(addprefix $(WWWDIR)/, djpi2.html shrotatecoef.html \
 	shrotaterealcoef.html)
 
 HTMLFILES_gravmag = $(addprefix $(WWWDIR)/, makegravgriddh.html makegravgradgriddh.html \
-	makegeoidgrid.html)
-# cilmplus.html cilmminus.html hilm.html  \
-	makemaggriddh.html wl.html wlcurv.html	\
-	shmagpowerl.html shmagpowerspectrum.html cilmplusrhoh.html cilmminusrhoh.html hilmrhoh.html \
-	normalgravity.html 
+	makegeoidgrid.html cilmplus.html cilmminus.html cilmplusrhoh.html cilmminusrhoh.html \
+	batohilm.html batohilmrhoh.html downcontfilterma.html downcontfiltermc.html \
+	normalgravity.html makemaggriddh.html shmagpowerspectrum.html shmagpowerl.html)
 
 HTMLFILES_other = $(addprefix $(WWWDIR)/, makecirclecoord.html makeellipsecoord.html \
 	randomn.html randomgaussian.html preglq.html eigvalvecsym.html eigvalvecsymtri.html \

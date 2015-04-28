@@ -4,7 +4,7 @@ Evaluate a function expressed in spherical harmonics at a single point.
 
 # Usage
 
-`value` = MakeGridPoint (`cilm`, `lmax`, `lat`, `lon`, [`norm`, `csphase`, `dealloc`])
+`value` = pyshtools.MakeGridPoint (`cilm`, `lmax`, `lat`, `lon`, [`norm`, `csphase`, `dealloc`])
 
 # Returns 
 

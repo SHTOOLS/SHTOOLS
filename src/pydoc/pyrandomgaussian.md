@@ -4,7 +4,7 @@ Return a pseudo-Gaussian deviate of zero mean and unit variance.
 
 # Usage
 
-`rg`, `seed` = RandomGaussian (`seed`)
+`rg`, `seed` = pyshtools.RandomGaussian (`seed`)
 
 # Returns
 

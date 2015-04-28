@@ -42,7 +42,7 @@
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
-<dd>The real spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of <code>lmax</code>, <code>lmaxin</code> or <code>lmax_calc</code> (if specified). The coefficients <code>C1lm</code> and <code>C2lm</code> refer to the &quot;cosine&quot; (<code>Clm</code>) and &quot;sine&quot; (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm(1,l+1,m+1)</code> and <code>Slm=cilm(2,l+1,m+1)</code>.
+<dd>The real spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of <code>lmax</code>, <code>lmaxin</code> or <code>lmax_calc</code> (if specified). The coefficients <code>C1lm</code> and <code>C2lm</code> refer to the &quot;cosine&quot; (<code>Clm</code>) and &quot;sine&quot; (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm[0,l,m]</code> and <code>Slm=cilm[1,l,m]</code>.
 </dd>
 <dt><code>zero</code> : float, dimension (<code>lmax</code>+1)</dt>
 <dd>The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to <code>SHGLQ</code>.

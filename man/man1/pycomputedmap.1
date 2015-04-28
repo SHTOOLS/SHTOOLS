@@ -1,4 +1,4 @@
-.TH "pycomputedmap" "1" "2015\-04\-23" "Python" "SHTOOLS 3.0"
+.TH "pycomputedmap" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
 .SH ComputeDMap
 .PP
 Compute the space\-concentration kernel of an arbitrary mask on the
@@ -80,7 +80,7 @@ mask (\f[C]L=n/2\-1\f[]) should be greater than \f[C]lmax\f[].
 The exact value of \f[C]n\f[] should be chosen such that further
 increases in \f[C]n\f[] do not alter the returned eigenvalues.
 The routine prints out the fractional area of the mask computed in the
-pixel domain divided by \f[C]D(1,1)\f[] (the fractional area computed by
+pixel domain divided by \f[C]D(0,0)\f[] (the fractional area computed by
 the spherical harmonic transforms), and the ratio of the two should be
 close to 1.
 Experience suggests that \f[C]l\f[] should be about 5 times

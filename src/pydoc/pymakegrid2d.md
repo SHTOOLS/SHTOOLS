@@ -14,7 +14,7 @@ Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical ha
 # Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
-:   The real spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. 
+:   The real spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm[0,l,m]` and `Slm=cilm[1,l,m]`. 
 
 `interval` : float
 :   The latitudinal and longitudinal spacing of `grid`.

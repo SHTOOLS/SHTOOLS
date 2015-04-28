@@ -8,7 +8,7 @@ Given a set of latitude and longitude coordinates representing a closed curve, o
 
 # Returns
 
-`dh_mask` : output, integer, dimension (`n`, `n`\*`sampling`)
+`dh_mask` : integer, dimension (`n`, `n`\*`sampling`)
 :   A Driscoll and Healy (1994) sampled grid describing the concentration region R. All elements on output will either be 1 (for inside the concentration region) or 0 (for outside R).
 
 # Parameters

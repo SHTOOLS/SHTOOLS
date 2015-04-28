@@ -32,19 +32,22 @@
 <h1 id="yilmindexvector">YilmIndexVector</h1>
 <p>Compute the index of an 1D array of spherical harmonic coefficients corresponding to <code>i</code>, <code>l</code>, and <code>m</code>.</p>
 <h1 id="usage">Usage</h1>
-<p><code>index</code> = YilmIndex (<code>i</code>, <code>l</code>, <code>m</code>)</p>
-<h1 id="parameters">Parameters</h1>
+<p><code>index</code> = pyshtools.YilmIndex (<code>i</code>, <code>l</code>, <code>m</code>)</p>
+<h1 id="returns">Returns</h1>
 <dl>
-<dt><code>index</code> : output, integer</dt>
+<dt><code>index</code> : integer</dt>
 <dd>Index of an 1D array of spherical harmonic coefficients corresponding to <code>i</code>, <code>l</code>, and <code>m</code>.
 </dd>
-<dt><code>i</code> : input, integer</dt>
-<dd>1 corresponds to the cosine coefficient <code>cilm(1,:,:)</code>, and 2 corresponds to the sine coefficient <code>cilm(2,:,:)</code>.
+</dl>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>i</code> : integer</dt>
+<dd>1 corresponds to the cosine coefficient <code>cilm[0,:,:]</code>, and 2 corresponds to the sine coefficient <code>cilm[1,:,:]</code>.
 </dd>
-<dt><code>l</code> : input, integer</dt>
+<dt><code>l</code> : integer</dt>
 <dd>The spherical harmonic degree.
 </dd>
-<dt><code>m</code> : input, integer</dt>
+<dt><code>m</code> : integer</dt>
 <dd>The angular order.
 </dd>
 </dl>

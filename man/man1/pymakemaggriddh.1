@@ -1,0 +1,126 @@
+.TH "pymakemaggriddh" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
+.SH MakeMagGridDH
+.PP
+Create 2D cylindrical maps on a flattened ellipsoid of all three vector
+components of the magnetic field, the magnitude of the magnetic field,
+and the magnetic potential.
+.SH Usage
+.PP
+\f[C]rad\f[], \f[C]theta\f[], \f[C]phi\f[], \f[C]total\f[] =
+pyshtools.MakeMagGridDH (\f[C]cilm\f[], \f[C]r0\f[], [\f[C]lmax\f[],
+\f[C]a\f[], \f[C]f\f[], \f[C]sampling\f[], \f[C]lmaxcalc\f[]])
+.SH Returns
+.TP
+.B \f[C]rad\f[] : float, dimension(2*\f[C]lmax\f[]+2, \f[C]sampling\f[]*(2*\f[C]lmax\f[]+2))
+A 2D equally sampled (\f[C]n\f[] by \f[C]n\f[]) or equally spaced
+(\f[C]n\f[] by 2\f[C]n\f[]) grid of the radial component of the magnetic
+field corresponding to the input spherical harmonic coefficients
+\f[C]cilm\f[].
+The first latitudinal band corresponds to 90 N, the latitudinal band for
+90 S is not included, and the latitudinal sampling interval is
+180/\f[C]n\f[] degrees.
+The first longitudinal band is 0 E, the longitudinal band for 360 E is
+not included, and the longitudinal sampling interval is 360/\f[C]n\f[]
+for an equally sampled and 180/\f[C]n\f[] for an equally spaced grid,
+respectively.
+.RS
+.RE
+.TP
+.B \f[C]theta\f[] : float, dimension(2*\f[C]lmax\f[]+2, \f[C]sampling\f[]*(2*\f[C]lmax\f[]+2))
+A 2D equally sampled or equally spaced grid of the theta component of
+the magnetic field.
+.RS
+.RE
+.TP
+.B \f[C]phi\f[] : float, dimension(2*\f[C]lmax\f[]+2, \f[C]sampling\f[]*(2*\f[C]lmax\f[]+2))
+A 2D equally sampled or equally spaced grid of the phi component of the
+magnetic field.
+.RS
+.RE
+.TP
+.B \f[C]total\f[] : float, dimension(2*\f[C]lmax\f[]+2, \f[C]sampling\f[]*(2*\f[C]lmax\f[]+2))
+A 2D equally sampled or equally spaced grid of the total magnetic field
+strength.
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]cilm\f[] : float, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
+The real Schmidt semi\-normalized spherical harmonic coefficients to be
+expanded in the space domain.
+The coefficients \f[C]C1lm\f[] and \f[C]C2lm\f[] refer to the cosine
+(\f[C]Clm\f[]) and sine (\f[C]Slm\f[]) coefficients, respectively, with
+\f[C]Clm=cilm[0,l,m]\f[] and \f[C]Slm=cilm[1,l,m]\f[].
+Alternatively, \f[C]C1lm\f[] and \f[C]C2lm\f[] correspond to the
+positive and negative order coefficients, respectively.
+.RS
+.RE
+.TP
+.B \f[C]r0\f[] : float
+The reference radius of the spherical harmonic coefficients.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : optional, integer, default = \f[C]lamxin\f[]
+The maximum spherical harmonic degree of the coefficients \f[C]cilm\f[].
+This determines the number of samples of the output grids,
+\f[C]n=2*lmax+2\f[], and the latitudinal sampling interval,
+\f[C]90/(lmax+1)\f[].
+.RS
+.RE
+.TP
+.B \f[C]a\f[] : optional, float, default = \f[C]r0\f[]
+The semi\-major axis of the flattened ellipsoid on which the field is
+computed.
+.RS
+.RE
+.TP
+.B \f[C]f\f[] : optional, float, default = 0
+The flattening of the reference ellipsoid: i.e.,
+\f[C]F=(R_equator\-R_pole)/R_equator\f[].
+.RS
+.RE
+.TP
+.B \f[C]sampling\f[] : optional, integer, default = 2
+If 1 the output grids are equally sampled (\f[C]n\f[] by \f[C]n\f[]).
+If 2, the grids are equally spaced (\f[C]n\f[] by 2\f[C]n\f[]).
+.RS
+.RE
+.TP
+.B \f[C]lmaxcalc\f[] : optional, integer, default = \f[C]lmax\f[]
+The maximum spherical harmonic degree used in evaluating the functions.
+This must be less than or equal to \f[C]lmax\f[].
+.RS
+.RE
+.SH Description
+.PP
+\f[C]MakeMagGridDH\f[] will create 2\-dimensional cylindrical maps from
+the spherical harmonic coefficients \f[C]cilm\f[] of all three
+components of the magnetic field, the total field strength, and the
+magnetic potential.
+The magnetic potential is given by
+.PP
+\f[C]V\ =\ R0\ Sum_{l=1}^LMAX\ (R0/r)^{l+1}\ Sum_{m=\-l}^l\ C_{lm}\ Y_{lm}\f[]
+.PP
+and the magnetic field is
+.PP
+\f[C]B\ =\ \-\ Grad\ V\f[].
+.PP
+The coefficients are referenced to a radius \f[C]r0\f[], and the
+function is computed on a flattened ellipsoid with semi\-major axis
+\f[C]a\f[] (i.e., the mean equatorial radius) and flattening \f[C]f\f[].
+.PP
+The default is to calculate grids for use in the Driscoll and Healy
+routines that are equally sampled (\f[C]n\f[] by \f[C]n\f[]), but this
+can be changed to calculate equally spaced grids (\f[C]n\f[] by
+2\f[C]n\f[]) by setting the optional argument \f[C]sampling\f[] to 2.
+The input value of \f[C]lmax\f[] determines the number of samples,
+\f[C]n=2lmax+2\f[], and the latitudinal sampling interval,
+\f[C]90/(lmax+1)\f[].
+The first latitudinal band of the grid corresponds to 90 N, the
+latitudinal band for 90 S is not calculated, and the latitudinal
+sampling interval is 180/\f[C]n\f[] degrees.
+The first longitudinal band is 0 E, the longitudinal band for 360 E is
+not calculated, and the longitudinal sampling interval is 360/\f[C]n\f[]
+for equally sampled and 180/\f[C]n\f[] for equally spaced grids,
+respectively.

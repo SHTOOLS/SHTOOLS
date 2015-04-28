@@ -4,20 +4,23 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 
 # Usage
 
-`index` =  YilmIndex (`i`, `l`, `m`)
+`index` =  pyshtools.YilmIndex (`i`, `l`, `m`)
+
+# Returns
+
+`index` : integer 
+:   Index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`.
+
 
 # Parameters
 
-`index` : output, integer 
-:   Index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`.
+`i` : integer
+:   1 corresponds to the cosine coefficient `cilm[0,:,:]`, and 2 corresponds to the sine coefficient `cilm[1,:,:]`.
 
-`i` : input, integer
-:   1 corresponds to the cosine coefficient `cilm(1,:,:)`, and 2 corresponds to the sine coefficient `cilm(2,:,:)`.
-
-`l` : input, integer
+`l` : integer
 :   The spherical harmonic degree.
 	
-`m` : input, integer
+`m` : integer
 :   The angular order.
 
 # Description

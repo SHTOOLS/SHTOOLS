@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """
 This script builds the python documentation from the function signature and the
-".pod" files that document the Fortran library. The processed documentation is
-saved as ascii text files which are loaded on runtime and replace the __doc__
-string of the f2py wrapped functions.
+customized markdown files. The processed documentation is saved as ascii text 
+files which are loaded on runtime and replace the __doc__ string of the f2py 
+wrapped functions.
 """
 
 import sys
@@ -18,14 +18,9 @@ import _constant
 def main():
     #---- input/output folders ----
     libfolder = os.path.abspath(sys.argv[1])
-    poddocfolder = os.path.join(libfolder, 'src/pydoc')
     mddocfolder = os.path.join(libfolder, 'src/pydoc')
     pydocfolder = os.path.join(libfolder, 'pyshtools/doc')
-    print '---- searching documentation in folder: {} ----'.format(poddocfolder)
-
-    #---- pod file search patterns ----
-    redescr = re.compile('DESCRIPTION(.*?)=head1 ARGUMENTS', re.DOTALL)
-    renotes = re.compile('NOTES(.*?)=head1', re.DOTALL)
+    print '---- searching documentation in folder: {} ----'.format(mddocfolder)
 
     #---- md file search patterns ----
     retail = re.compile('# See (.*)', re.DOTALL)
@@ -85,37 +80,6 @@ def main():
                             docstring += textwrap.fill(tmp[i], width=80, replace_whitespace=False) + '\n'
 
                     #---- save combined docstring in the pydoc folder--
-                    fname_pydoc = os.path.join(pydocfolder, name.lower() + '.doc')
-                    pydocfile = open(fname_pydoc, 'w')
-                    pydocfile.write(docstring)
-                    pydocfile.close()
-
-                else:
-                    # delete this after converted all doc files from pod to md!!!!
-                    #-- process and load documentation from different sources --
-                    # get and process f2py generated call signature:
-                    callsign = process_f2pydoc(func.__doc__)
-                    signature = 'SIGNATURE\n---------\n' + callsign
-                    # read pod file documentation:
-                    fname_poddoc = os.path.join(poddocfolder, name.lower() + '.pod')
-                    podfile = open(fname_poddoc, 'r')
-                    podstring = podfile.read()
-                    match = redescr.search(podstring)
-                    if match is None:
-                        description = '\nDESCRIPTION\n-----------\nDOCUMENTATION NOT AVAILABLE'
-                    else:
-                        poddoc = process_pod(match.group(1))
-                        description = '\nDESCRIPTION\n-----------' + poddoc
-                    match = renotes.search(podstring)
-                    if match is None:
-                        notes = ''
-                    else:
-                        poddoc = process_pod(match.group(1))
-                        notes = '\nNOTES\n-----' + poddoc
-                    podfile.close()
-                    # combine docstring:
-                    docstring = signature + description + notes
-                    #-- save combined docstring in the pydoc folder--
                     fname_pydoc = os.path.join(pydocfolder, name.lower() + '.doc')
                     pydocfile = open(fname_pydoc, 'w')
                     pydocfile.write(docstring)
@@ -205,19 +169,6 @@ def process_f2pydoc(f2pydoc):
     processed_signature = '\n--'.join(docparts)
 
     return processed_signature
-
-#===== PROCESS POD DOCUMENTATION ====
-
-
-def process_pod(string):
-    """This function removes some of the pod language commands to get, for example, bold text."""
-    while True:
-        match = re.search('I<(\w+)>', string)
-        if match:
-            string = re.sub(match.group(0), match.group(1), string)
-        else:
-            break
-    return string
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-.TH "pymakegravgriddh" "1" "2015\-04\-26" "Python" "SHTOOLS 3.0"
+.TH "pymakegravgriddh" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
 .SH MakeGravGridDH
 .PP
 Create 2D cylindrical maps on a flattened and rotating ellipsoid of all
@@ -7,9 +7,9 @@ gravitational potential.
 .SH Usage
 .PP
 \f[C]rad\f[], \f[C]theta\f[], \f[C]phi\f[], \f[C]total\f[] =
-MakeGravGridDH (\f[C]cilm\f[], \f[C]gm\f[], \f[C]r0\f[], [\f[C]a\f[],
-\f[C]f\f[], \f[C]lmax\f[], \f[C]sampling\f[], \f[C]lmax_calc\f[],
-\f[C]omega\f[], \f[C]normal_gravity\f[]])
+pyshtools.MakeGravGridDH (\f[C]cilm\f[], \f[C]gm\f[], \f[C]r0\f[],
+[\f[C]a\f[], \f[C]f\f[], \f[C]lmax\f[], \f[C]sampling\f[],
+\f[C]lmax_calc\f[], \f[C]omega\f[], \f[C]normal_gravity\f[]])
 .SH Returns
 .TP
 .B \f[C]rad\f[] : float, dimension (2*\f[C]lmax\f[]+2, \f[C]sampling\f[]*(2*\f[C]lmax\f[]+2))

@@ -73,17 +73,17 @@ def TestCrustalThickness():
             moho_c[:, l, :l + 1] = ba[:, l, :l + 1] * mass * (2 * l + 1) * ((r0 / d)**l) \
                 / (4.0 * np.pi * (rho_m - rho_c) * d**2)
         elif filter_type == 1:
-            moho_c[:, l, :l + 1] = wl(l, half, r0, d) * ba[:, l, :l + 1] * mass * (2 * l + 1) * \
+            moho_c[:, l, :l + 1] = DownContFilterMA(l, half, r0, d) * ba[:, l, :l + 1] * mass * (2 * l + 1) * \
                 ((r0 / d)**l) / (4.0 * np.pi * (rho_m - rho_c) * d**2)
         else:
-            moho_c[:, l, :l + 1] = wlcurv(l, half, r0, d) * ba[:, l, :l + 1] * mass * (2 * l + 1) *\
+            moho_c[:, l, :l + 1] = DownContFilterMC(l, half, r0, d) * ba[:, l, :l + 1] * mass * (2 * l + 1) *\
                 ((r0 / d)**l) / (4.0 * np.pi * (rho_m - rho_c) * d**2)
 
     moho_grid3 = shtools.MakeGridDH(moho_c, lmax=lmax, sampling=2, lmax_calc=degmax)
     print "Maximum Crustal thickness (km) = ", (topo_grid - moho_grid3).max() / 1.e3
     print "Minimum Crustal thickness (km) = ", (topo_grid - moho_grid3).min() / 1.e3
 
-    moho_c = shtools.HilmDH(ba, moho_grid3, nmax, mass, r0, (rho_m - rho_c), lmax=lmax,
+    moho_c = shtools.BAtoHilmDH(ba, moho_grid3, nmax, mass, r0, (rho_m - rho_c), lmax=lmax,
                             filter_type=filter_type, filter_deg=half, lmax_calc=degmax)
 
     moho_grid2 = shtools.MakeGridDH(moho_c, lmax=lmax, sampling=2, lmax_calc=degmax)
@@ -113,7 +113,7 @@ def TestCrustalThickness():
         iter += 1
         print "Iteration ", iter
 
-        moho_c = shtools.HilmDH(ba, moho_grid2, nmax, mass, r0, rho_m - rho_c, lmax=lmax,
+        moho_c = shtools.BAtoHilmDH(ba, moho_grid2, nmax, mass, r0, rho_m - rho_c, lmax=lmax,
                                 filter_type=filter_type, filter_deg=half, lmax_calc=degmax)
 
         moho_grid = shtools.MakeGridDH(moho_c, lmax=lmax, sampling=2, lmax_calc=degmax)

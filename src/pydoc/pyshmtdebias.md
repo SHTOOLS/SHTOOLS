@@ -41,7 +41,7 @@ Invert for the global power spectrum given a multitaper spectrum estimate formed
 
 `SHMTDebias` will invert for the global power spectrum given a localized multitaper spectrum estimate formed from spherical cap localization windows. This linear inverse problem is inherently underdetermined, and in order to achive a unique solution it is assumed that the global spectrum is constant in bins of width `nl`, and that the global power spectrum is constant for degrees greater than `lmax`. In practice `nl` should be increased until the global power spectrum is everywhere positive (negative values would be unphysical) and the variances are reasonable. Further details can be found in Wieczorek and Simons (2007).
 
-This set of linear equations is solved using the method of singular value decomposition as outlined in Press et al. (1992, pp. 670-672). Each value of the multitaper spectrum estimate `mtspectra(1,:)`, as well as the corresponding rows of the transformation matrix, is divided by the uncertainties of the estimate `mtspectra(2,:)`. The solution and uncertainty are given by eqs 15.4.17 and 15.4.19 of Press et al. (1992, p. 671), respectively.
+This set of linear equations is solved using the method of singular value decomposition as outlined in Press et al. (1992, pp. 670-672). Each value of the multitaper spectrum estimate `mtspectra[0,:]`, as well as the corresponding rows of the transformation matrix, is divided by the uncertainties of the estimate `mtspectra[1,:]`. The solution and uncertainty are given by eqs 15.4.17 and 15.4.19 of Press et al. (1992, p. 671), respectively.
 
 If `taper_wt` is not specified, the weights will all be assumed to be equal to `1/K`.
 

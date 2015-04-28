@@ -1,16 +1,17 @@
 program MarsCrustalThickness
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!-------------------------------------------------------------------------------
 !
 !	This program will compute the relief along the crust-mantle interface that
 !	is needed to explain the martian gravity field. This crustal thickness model 
 !	is "anchored" by chosing a minimum crustal thickness.
 !	
 !	In this program, the maximum spherical harmonic degree that is used
-!	when calculating the relief raised to the nth power is the input spherical harmonic 
-!	degree. This is not entirely correct, as the relief raised to the nth power generates
-!	a spherical harmonic field up to lmax*n. However, as it is also not correct to assume
-!	that the topo and gravity field are bandlimited with a maximum spherical harmonic degree
-!	of lmax, this approximation is probably ok, espeically considering that the iterations
+!	when calculating the relief raised to the nth power is the input spherical 
+!   harmonic degree. This is not entirely correct, as the relief raised to the 
+!   nth power generates a spherical harmonic field up to lmax*n. However, as it 
+!   is also not correct to assume that the topo and gravity field are 
+!   bandlimited with a maximum spherical harmonic degree of lmax, this 
+!   approximation is probably ok, espeically considering that the iterations
 !	are filtered.
 !
 !	In order to improve stability when iterating for the Moho relief, the following iterative
@@ -19,15 +20,13 @@ program MarsCrustalThickness
 !		h3 = (h2+h1)/2
 !		h4 = f(h3)
 !
-!	where "h" represents the moho relife, and "f" represents the SHTOOLS funcion "Hilm".
+!	where "h" represents the moho relife, and "f" represents the SHTOOLS 
+!   funcion "BAtoHilm".
 !
-!	Written by Mark Wieczorek 2012.
-!
-!	Copyright (c) 2012, Mark A. Wieczorek
+!	Copyright (c) 2015, Mark A. Wieczorek
 !	All rights reserved.
 !
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+!-------------------------------------------------------------------------------
 	use SHTOOLS
 	use PLANETSCONSTANTS
 
@@ -35,12 +34,13 @@ program MarsCrustalThickness
 	real*8 :: 	r0, mass, rho_crust, rho_mantle, pi, gm, thinnest(2), &
 			d, t0, delta, delta_max, thick_delta, param(8), grav, &
 			r_grav, interval, rref, timein, timeout, max_thick, min_thick
-	real*8, allocatable ::	topo_grid(:,:), moho_grid(:,:), moho_grid2(:,:), moho_grid3(:,:), &
-			temp_grid(:,:), topo_c(:,:,:), moho_c(:,:,:), bc(:,:,:), ba(:,:,:), &
-			cilm(:,:,:), pot(:,:,:), misfit(:,:,:)
+	real*8, allocatable ::	topo_grid(:,:), moho_grid(:,:), moho_grid2(:,:), &
+	        moho_grid3(:,:), temp_grid(:,:), topo_c(:,:,:), moho_c(:,:,:), &
+	        bc(:,:,:), ba(:,:,:), cilm(:,:,:), pot(:,:,:), misfit(:,:,:)
 	integer ::	l, m, lmax, i, nmax, nlat, nlong, gridtype, astat(12), n_out, &
 			iter, j, r1, lmaxp, lmaxt, filter_type, half, degmax, sampling
-	character*120 ::	grav_file, moho_out, thick_grid_out, topo_file, misfit_file
+	character*120 ::	grav_file, moho_out, thick_grid_out, topo_file, &
+	        misfit_file
 
 	print*,  "rho_crust (kg/m3) > "
 	read(*,*) rho_crust
@@ -191,10 +191,10 @@ program MarsCrustalThickness
 				moho_c(1:2,l+1,1:l+1) = ba(1:2,l+1,1:l+1) * mass * dble(2*l+1) * ((r0/d)**l) &
 				/(4.0d0*pi*(rho_mantle-rho_crust)*d**2)
 			elseif (filter_type == 1) then
-				moho_c(1:2,l+1,1:l+1) = wl(l, half, r0, d) * ba(1:2,l+1,1:l+1) * mass * dble(2*l+1) * ((r0/d)**l) &
+				moho_c(1:2,l+1,1:l+1) = downcontfilterma(l, half, r0, d) * ba(1:2,l+1,1:l+1) * mass * dble(2*l+1) * ((r0/d)**l) &
 				/(4.0d0*pi*(rho_mantle-rho_crust)*d**2)
 			elseif (filter_type == 2) then
-				moho_c(1:2,l+1,1:l+1) = wlcurv(l, half, r0, d) * ba(1:2,l+1,1:l+1) * mass * dble(2*l+1) * ((r0/d)**l) &
+				moho_c(1:2,l+1,1:l+1) = downcontfiltermc(l, half, r0, d) * ba(1:2,l+1,1:l+1) * mass * dble(2*l+1) * ((r0/d)**l) &
 				/(4.0d0*pi*(rho_mantle-rho_crust)*d**2)
 			endif
 		enddo
@@ -208,10 +208,10 @@ program MarsCrustalThickness
 
 		! second iteration
 		if (filter_type == 0) then
-			call Hilm(moho_c, ba, moho_grid3, lmax, nmax, mass, r0, rho_mantle-rho_crust, gridtype, &
+			call BAtoHilm(moho_c, ba, moho_grid3, lmax, nmax, mass, r0, rho_mantle-rho_crust, gridtype, &
 				lmax_calc = degmax)
 		else
-			call Hilm(moho_c, ba, moho_grid3, lmax, nmax, mass, r0, rho_mantle-rho_crust, gridtype, &
+			call BAtoHilm(moho_c, ba, moho_grid3, lmax, nmax, mass, r0, rho_mantle-rho_crust, gridtype, &
 				filter_type=filter_type, filter_deg=half, lmax_calc = degmax)
 		endif
 		call MakeGridDH(moho_grid2, n_out, moho_c, lmax, norm = 1, sampling = sampling, csphase = 1, lmax_calc = degmax)
@@ -251,10 +251,10 @@ program MarsCrustalThickness
 			print*, "Iteration ", iter
 
 			if (filter_type == 0) then
-				call Hilm(moho_c, ba, moho_grid2, lmax, nmax, mass, r0, rho_mantle-rho_crust, gridtype, &
+				call BAtoHilm(moho_c, ba, moho_grid2, lmax, nmax, mass, r0, rho_mantle-rho_crust, gridtype, &
 					lmax_calc = degmax)
 			else
-				call Hilm(moho_c, ba, moho_grid2, lmax, nmax, mass, r0, rho_mantle-rho_crust, gridtype, &
+				call BAtoHilm(moho_c, ba, moho_grid2, lmax, nmax, mass, r0, rho_mantle-rho_crust, gridtype, &
 					filter_type=filter_type, filter_deg=half, lmax_calc = degmax)
 			endif
 			call MakeGridDH(moho_grid, n_out, moho_c, lmax, norm = 1, sampling = sampling, csphase = 1, lmax_calc = degmax)
@@ -371,4 +371,3 @@ program MarsCrustalThickness
 	print*, "time (sec) = ", timeout-timein
 
 end program MarsCrustalThickness
-

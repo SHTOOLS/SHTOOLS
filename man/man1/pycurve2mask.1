@@ -1,4 +1,4 @@
-.TH "pycurve2mask" "1" "2015\-04\-23" "Python" "SHTOOLS 3.0"
+.TH "pycurve2mask" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
 .SH Curve2Mask
 .PP
 Given a set of latitude and longitude coordinates representing a closed
@@ -9,7 +9,7 @@ curve, output a gridded binary mask.
 \f[C]np\f[], [\f[C]nprofile\f[], \f[C]sampling\f[]])
 .SH Returns
 .TP
-.B \f[C]dh_mask\f[] : output, integer, dimension (\f[C]n\f[], \f[C]n\f[]*\f[C]sampling\f[])
+.B \f[C]dh_mask\f[] : integer, dimension (\f[C]n\f[], \f[C]n\f[]*\f[C]sampling\f[])
 A Driscoll and Healy (1994) sampled grid describing the concentration
 region R.
 All elements on output will either be 1 (for inside the concentration

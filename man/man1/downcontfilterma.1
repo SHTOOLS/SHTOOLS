@@ -1,0 +1,57 @@
+.TH "downcontfilterma" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
+.SH DownContFilterMA
+.PP
+Compute the minimum\-amplitude downward continuation filter of Wieczorek
+and Phillips (1998).
+.SH Usage
+.PP
+\f[C]wl\f[] = DownContFilterMa (\f[C]l\f[], \f[C]half\f[], \f[C]r\f[],
+\f[C]d\f[])
+.SH Parameters
+.TP
+.B \f[C]wl\f[] : output, real*8
+The amplitude of the downward continuation filter.
+.RS
+.RE
+.TP
+.B \f[C]l\f[] : input, integer
+The spherical harmonic degree.
+.RS
+.RE
+.TP
+.B \f[C]half\f[] : input, integer
+The spherical harmonic degree where the filter is equal to 0.5.
+.RS
+.RE
+.TP
+.B \f[C]r\f[] : input, real*8
+The reference radius of the gravitational field.
+.RS
+.RE
+.TP
+.B \f[C]d\f[] : input, real*8
+The radius of the surface to downward continue to.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]DownContFilterMA\f[] will calculate the downward continuation
+filter of Wieczorek and Phillips (1998; eq.
+19) for a given spherical harmonic degree \f[C]l\f[].
+The input parameters include \f[C]half\f[], which is the degree where
+the filter is equal to 0.5, and \f[C]r\f[] and \f[C]d\f[], which are the
+reference radius of the gravitational field and the radius of the
+surface to downward continue to, respectively.
+.SH References
+.PP
+Wieczorek, M.
+A.
+and R.
+J.
+Phillips, Potential anomalies on a sphere: applications to the thickness
+of the lunar crust, J.
+Geophys.
+Res., 103, 1715\-1724, 1998.
+.SH See also
+.PP
+downcontfiltermc, batohilm batohilmrhoh
