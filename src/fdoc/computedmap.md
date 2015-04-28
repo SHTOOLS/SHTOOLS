@@ -20,7 +20,7 @@ call ComputeDMap (`dij`, `dh_mask`, `n`, `lmax`, `sampling`)
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the matrix `dij`.
 
-`sampling` : input, integer, optional, default = 1
+`sampling` : input, optional, integer, default = 1
 :   For 1 (default), `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples. 
 
 # Description

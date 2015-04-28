@@ -23,7 +23,7 @@ call EigValVecSym (`ain`, `n`, `eval`, `evec`, `ul`, `k`)
 `ul` : input, character, optional, default = `U`
 :   If `U` then the upper portion of the matrix `ain` will be used (default). If `L` then the lower portion of the matrix `ain` will be used.
 
-`k` : input, integer, optional, default = `n`
+`k` : input, optional, integer, default = `n`
 :   The number of largest eigenvalues and corresponding eigenvectors to be output.
 
 # Description

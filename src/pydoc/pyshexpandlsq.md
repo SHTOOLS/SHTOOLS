@@ -28,10 +28,10 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 `lmax` : integer
 :   The maximum spherical harmonic degree of the output coefficients `cilm`.
 	
-`norm` : integer, optional, default = 1
+`norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
 # Description

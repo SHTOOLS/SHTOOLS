@@ -1,4 +1,4 @@
-.TH "pyshrtoc" "1" "2015\-04\-03" "Python" "SHTOOLS 3.1"
+.TH "pyshrtoc" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
 .SH SHrtoc
 .PP
 Convert real spherical harmonics to complex form.
@@ -25,12 +25,12 @@ and sine terms, respectively.
 .RS
 .RE
 .TP
-.B \f[C]lmax\f[] : integer, optional, default = \f[C]lmaxin\f[]
+.B \f[C]lmax\f[] : optional, integer, default = \f[C]lmaxin\f[]
 The maximum degree of the output coefficients.
 .RS
 .RE
 .TP
-.B \f[C]convention\f[] : integer, optional, default = 1
+.B \f[C]convention\f[] : optional, integer, default = 1
 If 1 (default), the input and output coefficients will have the same
 normalization.
 If 2, real geodesy 4\-pi coefficients will be converted to complex
@@ -38,7 +38,7 @@ orthonormal form.
 .RS
 .RE
 .TP
-.B \f[C]swtichcs\f[] : integer, optional, default = 0
+.B \f[C]swtichcs\f[] : optional, integer default = 0
 If 0 (default), the input and output coefficients will possess the same
 Condon\-Shortley phase convention.
 If 1, the input coefficients will first be multiplied by (\-1)^m.

@@ -38,7 +38,7 @@ call SHAdmitCorr (`sgt`, `sgg`, `stt`, `lmax`, `tapers`, `lwin`, `k`, `admit`, `
 `mtdef` : optional, input, integer, default = 1
 :   (1) Calculate the biased multitaper cross-power spectra first, and use these to calculate the final admittance and correlation spectra. 2: Calculate an admittance and correlation spectrum using each individual taper, and then average these to get the final admittance and correlation spectra.
 
-`taper_wt` : input, real\*8, optional, dimension (`k`)
+`taper_wt` : input, optional, real\*8, dimension (`k`)
 :   The weights to apply to each individual windowed spectral estimate. The weights must sum to unity and are obtained from `SHMTVarOpt`.
 
 # Description

@@ -16,7 +16,7 @@ Convert a three-dimensional array of real spherical harmonic coefficients to a 1
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input real spherical harmonic coefficients.
 	
-`lmax` : integer, optional, default = `lmaxin`
+`lmax` : optional, integer, default = `lmaxin`
 :   The maximum degree of the output coefficients to convert.
 
 # Description

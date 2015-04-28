@@ -26,13 +26,13 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the output coefficients `cilm`.
 	
-`norm` : input, integer, optional, default = 1
+`norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`chi2` : output, real\*8, optional
+`chi2` : output, optional, real\*8
 :   The residual sum of squares misfit for an overdetermined inversion.
 
-`csphase` : input, integer, optional, default = 1
+`csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
 # Description

@@ -1,4 +1,4 @@
-.TH "shexpandglq" "1" "2015\-04\-07" "Fortran 95" "SHTOOLS 3.1"
+.TH "shexpandglq" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
 .SH SHExpandGLQ
 .PP
 Expand a 2D grid sampled on the Gauss\-Legendre quadrature nodes into
@@ -41,7 +41,7 @@ These are obtained from a call to \f[C]SHGLQ\f[].
 .RS
 .RE
 .TP
-.B \f[C]plx\f[] : input, real*8, optional, dimension (\f[C]lmax\f[]+1, (\f[C]lmax\f[]+1)*(\f[C]lmax\f[]+2)/2)
+.B \f[C]plx\f[] : input, optional, real*8, dimension (\f[C]lmax\f[]+1, (\f[C]lmax\f[]+1)*(\f[C]lmax\f[]+2)/2)
 An array of the associated Legendre functions calculated at the
 Gauss\-Legendre quadrature nodes.
 These are determined from a call to \f[C]SHGLQ\f[].
@@ -49,28 +49,28 @@ Either \f[C]plx\f[] or \f[C]zero\f[] must be present, but not both.
 .RS
 .RE
 .TP
-.B \f[C]zero\f[] : input, real*8, optional, dimension (\f[C]lmax\f[]+1)
+.B \f[C]zero\f[] : input, optional, real*8, dimension (\f[C]lmax\f[]+1)
 The nodes used in the Gauss\-Legendre quadrature over latitude,
 calculated by a call to \f[C]SHGLQ\f[].
 Either \f[C]plx\f[] or \f[C]zero\f[] must be present, but not both.
 .RS
 .RE
 .TP
-.B \f[C]norm\f[] : input, integer, optional, default = 1
+.B \f[C]norm\f[] : input, optional, integer, default = 1
 1 (default) = Geodesy 4\-pi normalized harmonics; 2 = Schmidt
 semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
 harmonics.
 .RS
 .RE
 .TP
-.B \f[C]csphase\f[] : input, integer, optional, default = 1
+.B \f[C]csphase\f[] : input, optional, integer, default = 1
 1 (default) = do not apply the Condon\-Shortley phase factor to the
 associated Legendre functions; \-1 = append the Condon\-Shortley phase
 factor of (\-1)^m to the associated Legendre functions.
 .RS
 .RE
 .TP
-.B \f[C]lmax_calc\f[] : input, integer, optional, default = \f[C]lmax\f[]
+.B \f[C]lmax_calc\f[] : input, optional, integer, default = \f[C]lmax\f[]
 The maximum spherical harmonic degree calculated in the spherical
 harmonic expansion.
 .RS

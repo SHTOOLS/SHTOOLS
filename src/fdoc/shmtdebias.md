@@ -35,7 +35,7 @@ call SHMTDebias (`mtdebias`, `mtspectra`, `lmax`, `tapers`, `lwin`, `k`, `nl`, `
 `n` : output, integer
 :   The number of bins used in `mtdebias` and `lmid`.
 
-`taper_wt` : input, real\*8, optional, dimension (`k`)
+`taper_wt` : input, optional, real\*8, dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 	
 # Description

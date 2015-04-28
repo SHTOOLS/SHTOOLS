@@ -1,4 +1,4 @@
-.TH "pymakegriddhc" "1" "2015\-03\-30" "Python" "SHTOOLS 3.1"
+.TH "pymakegriddhc" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
 .SH MakeGridDHC
 .PP
 Create a 2D complex map from a set of complex spherical harmonic
@@ -34,34 +34,34 @@ and negative order of \f[C]m\f[], respectively, with
 .RS
 .RE
 .TP
-.B \f[C]lmax\f[] : integer, optional, default = \f[C]lmaxin\f[]
+.B \f[C]lmax\f[] : optional, integer, default = \f[C]lmaxin\f[]
 The maximum spherical harmonic degree of the function.
 This determines the number of samples \f[C]n\f[].
 .RS
 .RE
 .TP
-.B \f[C]norm\f[] : integer, optional, default = 1
+.B \f[C]norm\f[] : optional, integer, default = 1
 1 (default) = Geodesy 4\-pi normalized harmonics; 2 = Schmidt
 semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
 harmonics.
 .RS
 .RE
 .TP
-.B \f[C]sampling\f[] : integer, optional, default = 1
+.B \f[C]sampling\f[] : optional, integer, default = 1
 If 1 (default) the input grid is equally sampled (\f[C]n\f[] by
 \f[C]n\f[]).
 If 2, the grid is equally spaced (\f[C]n\f[] by \f[C]2n\f[]).
 .RS
 .RE
 .TP
-.B \f[C]csphase\f[] : integer, optional, default = 1
+.B \f[C]csphase\f[] : optional, integer, default = 1
 1 (default) = do not apply the Condon\-Shortley phase factor to the
 associated Legendre functions; \-1 = append the Condon\-Shortley phase
 factor of (\-1)^m to the associated Legendre functions.
 .RS
 .RE
 .TP
-.B \f[C]lmax_calc\f[] : integer, optional, default = \f[C]lmax\f[]
+.B \f[C]lmax_calc\f[] : optional, integer, default = \f[C]lmax\f[]
 The maximum spherical harmonic degree used in evaluating the function.
 This must be less than or equal to \f[C]lmax\f[].
 .RS

@@ -22,10 +22,10 @@ Compute all the Schmidt semi-normalized associated Legendre functions and first 
 `z` : float
 :   The argument of the associated Legendre functions.
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the Condon-Shortley phase of (-1)^m will be appended to the associated Legendre functions.
 
-`cnorm` : integer, optional, default = 0
+`cnorm` : optional, integer, default = 0
 :   If 1, the complex normalization of the associated Legendre functions will be used. The default is to use the real normalization.
 
 # Description

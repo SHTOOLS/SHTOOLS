@@ -26,31 +26,31 @@ call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `c
 `nlong` : output, integer
 :   The number of longitudinal samples. Both 0 and 360 E are included.
 	
-`norm` : input, integer, optional, default = 1
+`norm` : input, optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : input, integer, optional, default = 1
+`csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`f` : input, real\*8, optional
+`f` : input, optional, real\*8
 :   The flattening of the reference ellipoid that is subtracted from the function. This is given by (`R_equator-R_pole)/R_equator`. The semi-major axis `a` (i.e., `R_equator`) must be specified for this calculation.
 
-`a` : input, real\*8, optional
+`a` : input, optional, real\*8
 :   The semi-major axis of the reference ellispoid that is subtracted from the function. The flattening `f` must be specified for this calculation.
 
 `north` : input, real*8, optional, default = 90
 :   The maximum latitude of the output raster grid, in degrees. The default is 90 degrees.
 
-`south` : input, real\*8, optional, default = -90
+`south` : input, optional, real\*8, default = -90
 :   The minimum latitude of the output raster grid, in degrees. The default is -90 degrees.
 
-`east` : input, real\*8, optional, default = 360
+`east` : input, optional, real\*8, default = 360
 :   The maximum longitude of the output raster grid, in degrees. The default is 360 degrees.
 
-`west` : input, real\*8, optional, default = 0
+`west` : input, optional, real\*8, default = 0
 :   The minimum longitude of the output raster grid, in degrees. The default is 0 degrees.
 
-`dealloc` : input, integer, optional, default = 0
+`dealloc` : input, optional, integer, default = 0
 :   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
 
 # Description

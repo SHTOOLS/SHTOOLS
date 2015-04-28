@@ -16,7 +16,7 @@ Convert a three-dimensional array of spherical harmonic coefficients to a two-di
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input spherical harmonic coefficients. `cilm[0,:,:]` and `cilm[1,:,:]` correspond to either the real and imaginary components, or cosine and sine coefficients, respectively.
 
-`lmax` : integer, optional, default = `lmaxin`
+`lmax` : optional, integer, default = `lmaxin`
 :   Maximum degree of input spherical harmonics to convert.
 	
 # Description

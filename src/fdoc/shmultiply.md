@@ -23,13 +23,13 @@ call SHMultiply (`shout`, `sh1`, `lmax1`, `sh2`, `lmax2`, `precomp`, `norm`, `cs
 `lmax2` : input, integer
 :   The maximum spherical harmonic degree used in evaluting `sh2`.
 
-`precomp` : input, integer, optional, default = 0
+`precomp` : input, optional, integer, default = 0
 :   If 1, the array of Legendre functions `plx` will be precomputed on the Gauss-Legendre quadrature nodes.
 	
-`norm` : input, integer, optional, default = 1
+`norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : input, integer, optional, default = 1
+`csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
 # Description

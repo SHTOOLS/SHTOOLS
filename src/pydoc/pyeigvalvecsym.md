@@ -25,7 +25,7 @@ Compute the eigenvalues and eigenvectors of a real symmetric matrix.
 `ul` : optional, character, default = `U`
 :   If `U` then the upper portion of the matrix `ain` will be used (default). If `L` then the lower portion of the matrix `ain` will be used.
 
-`k` : optional, integer, optional, default = `nin`
+`k` : optional, optional, integer, default = `nin`
 :   The number of largest eigenvalues and corresponding eigenvectors to be output.
 
 # Description

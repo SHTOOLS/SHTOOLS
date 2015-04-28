@@ -23,19 +23,19 @@ call SHRead2 (`filename`, `cilm`, `lmax`, `gm`, `r0_pot`, `error`, `dot`, `doyst
 `r0_pot` : output, real\*8
 :   The reference radius of the potential coefficients.
 
-`error` : output, real\*8, optional, dimension (2, `lmax`+1, `lmax`+1)
+`error` : output, optional, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The errors corresponding to the spherical harmonic coefficients `cilm`.
 
-`dot` : output, real\*8, optional, dimension (2, `lmaxout`+1, `lmaxout`+1)
+`dot` : output, optional, real\*8, dimension (2, `lmaxout`+1, `lmaxout`+1)
 :   The time derivatives of the spherical harmonic coefficients. The dimension of this array can be smaller than `lmax+1`.
 
-`doystart` : output, real\*8, optional
+`doystart` : output, optional, real\*8
 :   The starting time of the solution.
 
-`doyend` : output, real\*8, optional
+`doyend` : output, optional, real\*8
 :   The ending time of the solution
 
-`epoch` : output, real\*8, optional
+`epoch` : output, optional, real\*8
 :   The epoch time for the time derivates.
 
 # Description

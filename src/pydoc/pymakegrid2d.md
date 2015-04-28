@@ -19,34 +19,34 @@ Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical ha
 `interval` : float
 :   The latitudinal and longitudinal spacing of `grid`.
 		
-`lmax` :integer, optional, default = `lmaxin`
+`lmax` :optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree of the coefficients `cilm` used when calculating the grid.
 
-`norm` : integer, optional, default = 1
+`norm` : optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`f` : float, optional, default = 0
+`f` : optional, float, default = 0
 :   The flattening of the reference ellipoid that is subtracted from the function. This is given by (`R_equator-R_pole)/R_equator`.
 
-`a` : float, optional, default = 0
+`a` : optional, float, default = 0
 :   The semi-major axis of the reference ellispoid that is subtracted from the function.
 
-`north` : float, optional, default = 90
+`north` : optional, float, default = 90
 :   The maximum latitude of the output raster grid, in degrees. The default is 90 degrees.
 
-`south` : float, optional, default = -90
+`south` : optional, float, default = -90
 :   The minimum latitude of the output raster grid, in degrees. The default is -90 degrees.
 
-`east` : float, optional, default = 360
+`east` : optional, float, default = 360
 :   The maximum longitude of the output raster grid, in degrees. The default is 360 degrees.
 
-`west` : float, optional, default = 0
+`west` : optional, float, default = 0
 :   The minimum longitude of the output raster grid, in degrees. The default is 0 degrees.
 
-`dealloc` : integer, optional, default = 0
+`dealloc` : optional, integer, default = 0
 :   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
 
 # Description

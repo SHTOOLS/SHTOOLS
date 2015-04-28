@@ -14,7 +14,7 @@ call SHCilmToCindex (`cilm`, `cindex`, `degmax`)
 `cindex` : output, real\*8, dimension (2, (`degmax`+1)\*(`degmax`+2)/2)
 :   The indexed output spherical harmonic coefficients.
 
-`degmax` : input, integer, optional, default = `lmaxin`
+`degmax` : input, optional, integer, default = `lmaxin`
 :   The maximum degree of the output coefficients. 
 
 # Description

@@ -41,13 +41,13 @@
 <dt><code>ccilm</code> : output, real*8, dimension (2, <code>lmaxout</code>+1, <code>lmaxout</code>+1)</dt>
 <dd>The output complex spherical harmonic coefficients. <code>ccilm(1,:,:)</code> and <code>ccilm(2,:,:)</code> correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are output; the negative orders can be calculated from the relation <code>C_{l-m}=(-1)^m C_{lm}^*</code>.
 </dd>
-<dt><code>degmax</code> : input, integer, optional, default = min(<code>lmaxin</code>, <code>lmaxout</code>)</dt>
+<dt><code>degmax</code> : input, optional, integer, default = min(<code>lmaxin</code>, <code>lmaxout</code>)</dt>
 <dd>The maximum degree of the output coefficients.
 </dd>
-<dt><code>convention</code> : input, integer, optional, default = 1</dt>
+<dt><code>convention</code> : input, optional, integer, default = 1</dt>
 <dd>If 1 (default), the input and output coefficients will have the same normalization. If 2, real geodesy 4-pi coefficients will be converted to complex orthonormal form.
 </dd>
-<dt><code>swtichcs</code> : input, integer, optional, default = 0</dt>
+<dt><code>swtichcs</code> : input, optional, integer, default = 0</dt>
 <dd>If 0 (default), the input and output coefficients will possess the same Condon-Shortley phase convention. If 1, the input coefficients will first be multiplied by (-1)^m.
 </dd>
 </dl>

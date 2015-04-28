@@ -16,7 +16,7 @@ Convert a 1-dimensional indexed vector of real spherical harmonic coefficients t
 `vector` : float, dimension ( (`lmaxin`+1)\*\*2 )
 :   The input 1-D indexed array of real spherical harmonic coefficients. 
 
-`lmax` : integer, optional, default = `lmaxin`
+`lmax` : optional, optional, default = `lmaxin`
 :   The maximum degree of the output coefficients.
 
 # Description

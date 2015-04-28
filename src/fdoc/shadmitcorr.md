@@ -23,7 +23,7 @@ call SHAdmitCorr (`gilm`, `tilm`, `lmax`, `admit`, `corr`, `admit_error`)
 `corr` : output, real\*8, dimension (`lmax`+1)
 :   The degree correlation function, which is equal to `Sgt/sqrt(Sgg Stt)`.
 
-`admit_error` : output, real\*8, optional, dimension (`lmax`+1)
+`admit_error` : output, optional, real\*8, dimension (`lmax`+1)
 :   The uncertainty of the admittance function, assuming that `gilm` and `tilm` are related by a linear isotropic transfer function, and that the lack of correlation is a result of uncorrelated noise.
 
 # Description

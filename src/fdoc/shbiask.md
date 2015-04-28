@@ -26,7 +26,7 @@ call SHBiasK (`tapers`, `lwin`, `numk`, `incspectra`, `ldata`, `outcspectra`, `t
 `outcspectra` : output, real\*8, dimension (`ldata`+`lwin`+1)
 :   The expectation of the multitaper localized power spectrum.
 
-`taper_wt` : input, real\*8, optional, dimension (`numk`)
+`taper_wt` : input, optional, real\*8, dimension (`numk`)
 :   The weights to apply to each individual windowed specral estimate. The weights must sum to unity and are obtained from `SHMTVarOpt`.
 
 `save_cg` : input, optional, integer, default = 0

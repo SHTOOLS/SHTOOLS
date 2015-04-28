@@ -22,13 +22,13 @@ Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical h
 `zero` : float, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.
 	
-`norm` : integer, optional, default = 1
+`norm` : optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`lmax_calc` : integer, optional, default = `lmax`
+`lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree calculated in the spherical harmonic expansion.
 
 # Description

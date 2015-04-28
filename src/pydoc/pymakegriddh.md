@@ -16,19 +16,19 @@ Create a 2D map from a set of spherical harmonic coefficients using the Driscoll
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `cilm[0,l,m]` and `cilm[1,l,m]` refer to the "cosine" (`Clm`) and "sine" (`Slm`) coefficients, respectively.
 
-`lmax` : integer, optional, default = `lmaxin`
+`lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree of the function, which determines the sampling of the output grid.
     
-`norm` : integer, optional, default = 1
+`norm` : optional, integer, default = 1
 :   1 = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics;  4 = orthonormal harmonics.
 
-`sampling` : integer, optional, default = 1
+`sampling` : optional, integer, default = 1
 :   If 1, the output grid contains the same number of samples in latitude as in longitude. If 2, the grid is equally spaced in degrees, having twice as many samples in longitude as latitude.
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   1 = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`lmax_calc` : integer, optional, default = `lmax`
+`lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the  function. This must be less than or equal to `lmax`, and does not affect the number of samples of the output grid.
 
 # Description

@@ -17,19 +17,19 @@ call MakeGridGLQC (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, 
 `lmax` : input, integer
 :   The maximum spherical harmonic bandwidth of the function. This determines the sampling nodes and dimensions of the output grid.
 
-`plx` : input, real\*8, optional, dimension (`lmax`+1, (`lmax`+1)*(`lmax`+2)/2)
+`plx` : input, optional, real\*8, dimension (`lmax`+1, (`lmax`+1)*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the Gauss-Legendre quadrature nodes. These are determined from a call to `SHGLQ` with the option `cnorm=1`. Either `plx` or `zero` must be present, but not both.
 	
-`zero` : input, real\*8, optional, dimension (`lmax`+1)
+`zero` : input, optional, real\*8, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.  Either `plx` or `zero` must be present, but not both.
 	
-`norm` : input, integer, optional, default = 1
+`norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : input, integer, optional, default = 1
+`csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`lmax_calc` : input, integer, optional, default = `lmax`
+`lmax_calc` : input, optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
 
 # Description

@@ -32,22 +32,22 @@ call SHMultiTaperSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `taper_order`, `lmaxt
 `k` : input, integer
 :   The number of tapers to be utilized in performing the multitaper spectral analysis.
 
-`alpha` : input, real\*8, optional, dimension(3)
+`alpha` : input, optional, real\*8, dimension(3)
 :   The Euler rotation angles used in rotating the windowing functions. `alpha(1) = 0`, `alpha(2) = -(90-lat)*pi/180`, `alpha(3) = -lon*pi/180`. Either `alpha` or `lat` and `lon` can be specified, but not both. If none of these are specified, the window functions will not be rotated, and the spectral analysis will be centered at the north pole.
 
-`lat` : input, real\*8, optional
+`lat` : input, optional, real\*8
 :   The latitude in degrees of the localized analysis. Either `alpha` or `lat` and `lon` can be specified but not both. If none of these are specified, the window functions will not be rotated, and the spectral analysis will be centered at the north pole.
 
-`lon` : input, real\*8, optional
+`lon` : input, optional, real\*8
 :   The longitude in degrees of the localized analysis. Either `alpha` or `lat` and `lon` can be specified, but not both. If none of these are specified, the window functions will not be rotated, and the spectral analysis will be centered at the north pole.
 
-`taper_wt` : input, real\*8, optional, dimension (`k`)
+`taper_wt` : input, optional, real\*8, dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates and standard error. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 	
-`norm` : input, integer, optional, default = 1
+`norm` : input, optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : input, integer, optional, default = 1
+`csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
 # Description

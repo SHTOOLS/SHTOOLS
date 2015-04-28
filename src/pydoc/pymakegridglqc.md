@@ -19,16 +19,16 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients sa
 `zero` : float, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.
 	
-`lmax` : integer, optional, default = `lmaxin`
+`lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic bandwidth of the function. This determines the sampling nodes and dimensions of the output grid.
 	
-`norm` : integer, optional, default = 1
+`norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`lmax_calc` : integer, optional, default = `lmax`
+`lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
 
 # Description

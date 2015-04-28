@@ -20,16 +20,16 @@ call SHExpandDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `
 `lmax` : output, integer
 :   The maximum spherical harmonic bandwidth of the input grid, which is `n/2-1`. If the optional parameter `lmax_calc` is not specified, this corresponds to the maximum spherical harmonic degree of the output coefficients `cilm`.
 
-`norm` : input, integer, optional, default = 1
+`norm` : input, optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`sampling` : input, integer, optional, default = 1
+`sampling` : input, optional, integer, default = 1
 :   If 1 (default) the input grid is equally sampled (`n` by `n`). If 2, the grid is equally spaced (`n` by `2n`).
 
-`csphase` : input, integer, optional, default = 1
+`csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`lmax_calc` : input, integer, optional, default = `lmax`
+`lmax_calc` : input, optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree calculated in the spherical harmonic expansion.
 
 # Description

@@ -16,7 +16,7 @@ Convert a two-dimensional indexed array of spherical harmonic coefficients to a 
 `cindex` : float, dimension (2, (`lmaxin`+1)\*(`lmaxin`+2)/2)
 :   The indexed spherical harmonic coefficients.
 
-`lmax` : integer, optional, default = `lmaxin`
+`lmax` : optional, integer, default = `lmaxin`
 :   The maximum degree of the output coefficients to convert.
 
 # Description

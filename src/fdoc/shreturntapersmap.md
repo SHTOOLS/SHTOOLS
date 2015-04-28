@@ -26,7 +26,7 @@ call SHReturnTapersMap (`tapers`, `eigenvalues`, `dh_mask`, `n`, `lmax`, `sampli
 `sampling` : input, integer, default = 1
 :   For 1 (default), `dh_mask` has `n x n` samples. For 2, `dh_mask` has `n x 2n` samples. 
 
-`ntapers` : input, integer, optional, default = (`lmax`+1)\*\*2
+`ntapers` : input, optional, integer, default = (`lmax`+1)\*\*2
 :   The number of best concentrated eigenvalues and corresponding eigenfunctions to return in `tapers` and `eigenvalues`. The default value is to return all tapers.
 
 # Description

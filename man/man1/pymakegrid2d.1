@@ -34,64 +34,64 @@ The latitudinal and longitudinal spacing of \f[C]grid\f[].
 .RS
 .RE
 .TP
-.B \f[C]lmax\f[] :integer, optional, default = \f[C]lmaxin\f[]
+.B \f[C]lmax\f[] :optional, integer, default = \f[C]lmaxin\f[]
 The maximum spherical harmonic degree of the coefficients \f[C]cilm\f[]
 used when calculating the grid.
 .RS
 .RE
 .TP
-.B \f[C]norm\f[] : integer, optional, default = 1
+.B \f[C]norm\f[] : optional, integer, default = 1
 1 (default) = 4\-pi (geodesy) normalized harmonics; 2 = Schmidt
 semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
 harmonics.
 .RS
 .RE
 .TP
-.B \f[C]csphase\f[] : integer, optional, default = 1
+.B \f[C]csphase\f[] : optional, integer, default = 1
 1 (default) = do not apply the Condon\-Shortley phase factor to the
 associated Legendre functions; \-1 = append the Condon\-Shortley phase
 factor of (\-1)^m to the associated Legendre functions.
 .RS
 .RE
 .TP
-.B \f[C]f\f[] : float, optional, default = 0
+.B \f[C]f\f[] : optional, float, default = 0
 The flattening of the reference ellipoid that is subtracted from the
 function.
 This is given by (\f[C]R_equator\-R_pole)/R_equator\f[].
 .RS
 .RE
 .TP
-.B \f[C]a\f[] : float, optional, default = 0
+.B \f[C]a\f[] : optional, float, default = 0
 The semi\-major axis of the reference ellispoid that is subtracted from
 the function.
 .RS
 .RE
 .TP
-.B \f[C]north\f[] : float, optional, default = 90
+.B \f[C]north\f[] : optional, float, default = 90
 The maximum latitude of the output raster grid, in degrees.
 The default is 90 degrees.
 .RS
 .RE
 .TP
-.B \f[C]south\f[] : float, optional, default = \-90
+.B \f[C]south\f[] : optional, float, default = \-90
 The minimum latitude of the output raster grid, in degrees.
 The default is \-90 degrees.
 .RS
 .RE
 .TP
-.B \f[C]east\f[] : float, optional, default = 360
+.B \f[C]east\f[] : optional, float, default = 360
 The maximum longitude of the output raster grid, in degrees.
 The default is 360 degrees.
 .RS
 .RE
 .TP
-.B \f[C]west\f[] : float, optional, default = 0
+.B \f[C]west\f[] : optional, float, default = 0
 The minimum longitude of the output raster grid, in degrees.
 The default is 0 degrees.
 .RS
 .RE
 .TP
-.B \f[C]dealloc\f[] : integer, optional, default = 0
+.B \f[C]dealloc\f[] : optional, integer, default = 0
 0 (default) = Save variables used in the external Legendre function
 calls.
 (1) Deallocate this memory at the end of the funcion call.

@@ -16,7 +16,7 @@ Compute the power spectrum of a real function.
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The function expressed in real spherical harmonics.
 	
-`lmax` : integer, optional, default = `lmaxin`
+`lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree used in calculating the power spectrum. This must be less than or equal to `lmaxin`.
 
 # Description

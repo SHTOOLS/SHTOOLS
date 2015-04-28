@@ -38,21 +38,21 @@ The longitude of the point in DEGREES.
 .RS
 .RE
 .TP
-.B \f[C]norm\f[] : integer, optional, default = 1
+.B \f[C]norm\f[] : optional, integer, default = 1
 1 (default) = Geodesy 4\-pi normalized harmonics; 2 = Schmidt
 semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
 harmonics.
 .RS
 .RE
 .TP
-.B \f[C]csphase\f[] : integer, optional, default = 1
+.B \f[C]csphase\f[] : optional, integer, default = 1
 1 (default) = do not apply the Condon\-Shortley phase factor to the
 associated Legendre functions; \-1 = append the Condon\-Shortley phase
 factor of (\-1)^m to the associated Legendre functions.
 .RS
 .RE
 .TP
-.B \f[C]dealloc\f[] : integer, optional, default = 0
+.B \f[C]dealloc\f[] : optional, integer, default = 0
 0 (default) = Save variables used in the external Legendre function
 calls.
 (1) Deallocate this memory at the end of the funcion call.

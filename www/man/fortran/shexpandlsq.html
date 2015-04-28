@@ -53,13 +53,13 @@
 <dt><code>lmax</code> : input, integer</dt>
 <dd>The maximum spherical harmonic degree of the output coefficients <code>cilm</code>.
 </dd>
-<dt><code>norm</code> : input, integer, optional, default = 1</dt>
+<dt><code>norm</code> : input, optional, integer, default = 1</dt>
 <dd>1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 </dd>
-<dt><code>chi2</code> : output, real*8, optional</dt>
+<dt><code>chi2</code> : output, optional, real*8</dt>
 <dd>The residual sum of squares misfit for an overdetermined inversion.
 </dd>
-<dt><code>csphase</code> : input, integer, optional, default = 1</dt>
+<dt><code>csphase</code> : input, optional, integer, default = 1</dt>
 <dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 </dd>
 </dl>

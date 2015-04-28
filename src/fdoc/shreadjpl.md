@@ -17,10 +17,10 @@ call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`)
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of `cilm`.
 
-`error` : output, real\*8, optional, dimension (2, `lmax`+1, `lmax`+1)
+`error` : output, optional, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The errors corresponding to the spherical harmonic coefficients `cilm`.
 
-`gm` : output, real\*8, optional, dimension(2)
+`gm` : output, optional, real\*8, dimension(2)
 :   The mass-gravitational constant and error.
 
 `formatstring` : input character*6, optional, default = "E19.12"

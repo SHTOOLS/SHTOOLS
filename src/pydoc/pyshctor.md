@@ -16,13 +16,13 @@ Convert complex spherical harmonics to real form.
 `ccilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input complex spherical harmonic coefficients. `ccilm[0,:,:]` and `ccilm[1,:,:]` correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are input; the negative orders are assumed to satisfy the relation `C_{l-m}=(-1)^m C_{lm}^*`.
 
-`lmax` : integer, optional, default = `lmaxin`
+`lmax` : optional, integer, default = `lmaxin`
 :   The maximum degree of the output coefficients.
 
-`convention` : integer, optional, default = 1
+`convention` : optional, integer, default = 1
 :   If 1 (default), the input and output coefficients will have the same normalization. If 2, orthonormalized coefficients will be converted to real geodesy 4-pi form.
 
-`swtichcs` : integer, optional, default = 0
+`swtichcs` : optional, integer, default = 0
 :   If 0 (default), the input and output coefficients will possess the same Condon-Shortley phase convention. If 1, the input coefficients will first be multiplied by (-1)^m.
 
 # Description

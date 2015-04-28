@@ -1,4 +1,4 @@
-.TH "shread" "1" "2015\-04\-07" "Fortran 95" "SHTOOLS 3.1"
+.TH "shread" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
 .SH SHRead
 .PP
 Read spherical harmonic coefficients from an ascii\-formatted file.
@@ -26,18 +26,18 @@ This is the minimum of the maximum spherical harmonic degree of
 .RS
 .RE
 .TP
-.B \f[C]skip\f[] : input, integer, optional
+.B \f[C]skip\f[] : input, optional, integer
 The number of lines to skip before parsing \f[C]filename\f[].
 .RS
 .RE
 .TP
-.B \f[C]header\f[] : output, real*8, optional dimension (\f[C]n\f[])
+.B \f[C]header\f[] : output, optional, real*8 dimension (\f[C]n\f[])
 A vector containing the first \f[C]n\f[] numbers in the first line of
 the file (following any skipped lines).
 .RS
 .RE
 .TP
-.B \f[C]error\f[] : output, real*8, optional dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+.B \f[C]error\f[] : output, optional, real*8 dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
 The errors corresponding to the spherical harmonic coefficients
 \f[C]cilm\f[].
 .RS
