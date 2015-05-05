@@ -53,7 +53,7 @@ SRCS0 =	CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
 	SHReadJPL.f95 SHReturnTapersM.f95 SHRotateCoef.f95 \
 	SHRotateRealCoef.f95 SHTOOLS.f95 SphericalCapCoef.f95 \
 	Wigner3j.f95 wl.f95 SHRead2.f95 MakeGeoidGrid.f95 \
-	MakeCircleCoord.f95  \
+	MakeCircleCoord.f95 SHMTCouplingMatrix.f95 \
 	SHReturnTapers.f95 SHSjkPG.f95 PlON.f95 PlON_d1.f95 \
 	PlmON.f95 PlmON_d1.f95 SHConfidence.f95 SHMagPowerSpectra.f95 \
 	SHPowerSpectraC.f95 SHBiasAdmitCorr.f95 SHCimToVector.f95 YilmIndexVector.f95 \
@@ -71,7 +71,7 @@ OBJS0 =	CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o \
 	SHRead.o SHReadJPL.o SHReturnTapersM.o SHRotateCoef.o \
 	SHRotateRealCoef.o SHTOOLS.o SphericalCapCoef.o Wigner3j.o \
 	wl.o SHRead2.o MakeGeoidGrid.o  \
-	MakeCircleCoord.o SHReturnTapers.o SHSjkPG.o \
+	MakeCircleCoord.o SHMTCouplingMatrix.o SHReturnTapers.o SHSjkPG.o \
 	PlON.o PlON_d1.o PlmON.o PlmON_d1.o \
 	SHConfidence.o SHMagPowerSpectra.o \
 	SHPowerSpectraC.o SHBiasAdmitCorr.o SHCilmToVector.o \
@@ -245,6 +245,7 @@ PlmSchmidt.o : SHTOOLS.o
 PlmSchmidt_d1.o : SHTOOLS.o
 PlmON.0 : SHTOOLS.o
 PlmON_d1.o : SHTOOLS.o
+SHMTCouplingMatrix.o : SHTOOLS.o
 SHMTDebias.o : SHTOOLS.o
 SHMTDebias2.o : SHTOOLS.o
 MakeGravGridDH.o : SHTOOLS.o

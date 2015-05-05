@@ -1490,6 +1490,22 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers),intent(hide) :: tapers_d1=shape(tapers,1)
         end subroutine SHMTVarOpt
 
+        subroutine SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt, Mmt_d0, Mmt_d1, tapers_d0, tapers_d1, taper_wt_d0)
+            fortranname pyshmtcouplingmatrix
+            use shtools, only: SHMTCouplingMatrix
+            real*8, dimension(Mmt_d0,Mmt_d1), intent(out) :: Mmt
+            integer, intent(in)  :: lmax
+            integer, optional, intent(in), depend(tapers_d1) :: k    = tapers_d1
+            integer, optional, intent(in), depend(tapers_d0) :: lwin = tapers_d0-1
+            real*8,  intent(in) :: tapers(tapers_d0,tapers_d1)
+            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
+            integer, optional,depend(lmax),intent(hide)      :: Mmt_d0     = lmax+1
+            integer, optional,depend(lmax,lwin),intent(hide) :: Mmt_d1     = lmax+lwin+1
+            integer, optional,depend(tapers),intent(hide)    :: tapers_d0  = shape(tapers,0)
+            integer, optional,depend(tapers),intent(hide)    :: tapers_d1  = shape(tapers,1)
+            integer, optional,depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
+        end subroutine
+
         subroutine SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n,taper_wt,mtdebias_d0,mtdebias_d1,taper_wt_d0,mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1,lmid_d0)
             fortranname pyshmtdebias
             use shtools, only: SHMTDebias

@@ -1775,6 +1775,26 @@
                         unweighted_covar=unweighted_covar,nocross=nocross)
     end subroutine pySHMTVarOpt
 
+    subroutine pySHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt, &
+                        Mmt_d0, Mmt_d1, tapers_d0, tapers_d1, taper_wt_d0)
+        use shtools, only: SHMTCouplingMatrix
+        implicit none
+        integer, intent(in) :: lmax, k, lwin
+        real*8, intent(out) :: Mmt(Mmt_d0,Mmt_d1)
+        real*8, intent(in) ::  tapers(tapers_d0,tapers_d1)
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, intent(in) :: Mmt_d0
+        integer, intent(in) :: Mmt_d1
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: taper_wt_d0
+        if (taper_wt(1) < 0.d0) then
+            call SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k)
+        else
+            call SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt=taper_wt)
+        endif
+    end subroutine
+
     subroutine pySHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n, &
                         taper_wt,mtdebias_d0,mtdebias_d1,taper_wt_d0, &
                         mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1,lmid_d0) 

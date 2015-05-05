@@ -360,6 +360,7 @@ endif
 ifeq ($(F95),gfortran)
 # Default gfortran flags
 F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
+#F95FLAGS ?= -m64 -fPIC -O0 -g -fbacktrace -ffast-math
 # -march=native
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)

@@ -472,8 +472,26 @@ class SHWindow(object):
             ax.set_title('concentration: {:2.2f}'.format(evalue))
         fig.tight_layout(pad=0.5)
 
-        if show:
-            plt.show()
+        if show: plt.show()
+
+    def get_couplingmatrix(self,nwins):
+        #store sqrt of taper power in 'tapers' array:
+        if nwins>self.nwins: nwins = self.nwins
+        tapers = np.zeros( (self.nl, nwins) )
+        for itaper in range(nwins):
+            tapers[:,itaper] = np.sqrt(SHPowerSpectrum(self._coeffs(itaper)))
+
+        #compute coupling matrix of summed tapers:
+        SHMTCouplingMatrix()
+
+    def plot_couplingmatrix(self,nwins,show=True):
+        """plots the window's coupling strength"""
+        fig = plt.figure()
+        ax  = fig.add_subplot(111)
+        coupling_matrix = self._coupling_matrix(nwins)
+        ax.imshow(coupling_matrix)
+
+        if show: plt.show()
 
     def info(self):
         """

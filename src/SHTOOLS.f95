@@ -579,7 +579,14 @@ module SHTOOLS
             real*8, intent(out), optional ::    weight_opt(:,:), unweighted_covar(:,:)
             integer, intent(in), optional ::    nocross
         end subroutine SHMTVarOpt
-        
+
+        subroutine SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt)
+            integer, intent(in) :: lmax, k, lwin
+            real*8, intent(out) :: Mmt(:,:)
+            real*8, intent(in), optional :: taper_wt(:)
+            real*8, intent(in)  :: tapers(:,:)
+        end subroutine
+
         subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, &
                                 lmid, n, taper_wt)
             real*8, intent(out) ::  mtdebias(:,:), lmid(:)
