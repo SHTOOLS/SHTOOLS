@@ -50,19 +50,19 @@
 <dt><code>r0_pot</code> : output, real*8</dt>
 <dd>The reference radius of the potential coefficients.
 </dd>
-<dt><code>error</code> : output, real*8, optional, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dt><code>error</code> : output, optional, real*8, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
 <dd>The errors corresponding to the spherical harmonic coefficients <code>cilm</code>.
 </dd>
-<dt><code>dot</code> : output, real*8, optional, dimension (2, <code>lmaxout</code>+1, <code>lmaxout</code>+1)</dt>
+<dt><code>dot</code> : output, optional, real*8, dimension (2, <code>lmaxout</code>+1, <code>lmaxout</code>+1)</dt>
 <dd>The time derivatives of the spherical harmonic coefficients. The dimension of this array can be smaller than <code>lmax+1</code>.
 </dd>
-<dt><code>doystart</code> : output, real*8, optional</dt>
+<dt><code>doystart</code> : output, optional, real*8</dt>
 <dd>The starting time of the solution.
 </dd>
-<dt><code>doyend</code> : output, real*8, optional</dt>
+<dt><code>doyend</code> : output, optional, real*8</dt>
 <dd>The ending time of the solution
 </dd>
-<dt><code>epoch</code> : output, real*8, optional</dt>
+<dt><code>epoch</code> : output, optional, real*8</dt>
 <dd>The epoch time for the time derivates.
 </dd>
 </dl>

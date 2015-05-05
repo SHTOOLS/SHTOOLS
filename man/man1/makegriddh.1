@@ -1,4 +1,4 @@
-.TH "makegriddh" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "makegriddh" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
 .SH MakeGridDH
 .PP
 Create a 2D map from a set of spherical harmonic coefficients that
@@ -45,28 +45,28 @@ This determines the number of samples \f[C]n\f[].
 .RS
 .RE
 .TP
-.B \f[C]norm\f[] : input, integer, optional, default = 1
+.B \f[C]norm\f[] : input, optional, integer, default = 1
 1 (default) = 4\-pi (geodesy) normalized harmonics; 2 = Schmidt
 semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
 harmonics.
 .RS
 .RE
 .TP
-.B \f[C]sampling\f[] : input, integer, optional, default = 1
+.B \f[C]sampling\f[] : input, optional, integer, default = 1
 If 1 (default) the input grid is equally sampled (\f[C]n\f[] by
 \f[C]n\f[]).
 If 2, the grid is equally spaced (\f[C]n\f[] by 2\f[C]n\f[]).
 .RS
 .RE
 .TP
-.B \f[C]csphase\f[] : input, integer, optional, default = 1
+.B \f[C]csphase\f[] : input, optional, integer, default = 1
 1 (default) = do not apply the Condon\-Shortley phase factor to the
 associated Legendre functions; \-1 = append the Condon\-Shortley phase
 factor of (\-1)^m to the associated Legendre functions.
 .RS
 .RE
 .TP
-.B \f[C]lmax_calc\f[] : input, integer, optional, default = \f[C]lmax\f[]
+.B \f[C]lmax_calc\f[] : input, optional, integer, default = \f[C]lmax\f[]
 The maximum spherical harmonic degree used in evaluating the function.
 This must be less than or equal to \f[C]lmax\f[].
 .RS

@@ -1,0 +1,65 @@
+.TH "eigvalvecsym" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
+.SH EigValVecSym
+.PP
+Compute the eigenvalues and eigenvectors of a real symmetric matrix.
+.SH Usage
+.PP
+call EigValVecSym (\f[C]ain\f[], \f[C]n\f[], \f[C]eval\f[],
+\f[C]evec\f[], \f[C]ul\f[], \f[C]k\f[])
+.SH Parameters
+.TP
+.B \f[C]ain\f[] : input, real*8, dimension (\f[C]n\f[], \f[C]n\f[])
+The input real symmetric matrix.
+By default, only the upper portion of the matrix is used.
+.RS
+.RE
+.TP
+.B \f[C]n\f[] : input, integer
+The rank of the matrix \f[C]ain\f[].
+.RS
+.RE
+.TP
+.B \f[C]eval\f[] : output, real*8, dimension (\f[C]k\f[])
+The eigenvalues of \f[C]ain\f[], sorted from largest to smallest.
+.RS
+.RE
+.TP
+.B \f[C]evec\f[] : output, real*8, dimension (\f[C]n\f[], \f[C]k\f[])
+The eigenvectors of \f[C]ain\f[], sorted from largest to smallest
+eigenvalues.
+The sign of the first element of each eigenvector is chosen to be
+positive.
+.RS
+.RE
+.TP
+.B \f[C]ul\f[] : input, character, optional, default = \f[C]U\f[]
+If \f[C]U\f[] then the upper portion of the matrix \f[C]ain\f[] will be
+used (default).
+If \f[C]L\f[] then the lower portion of the matrix \f[C]ain\f[] will be
+used.
+.RS
+.RE
+.TP
+.B \f[C]k\f[] : input, optional, integer, default = \f[C]n\f[]
+The number of largest eigenvalues and corresponding eigenvectors to be
+output.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]EigValVecSym\f[] will calculate the eigenvalues and eigenvectors of
+a real symmetric matrix.
+By default, only the upper portion of the matrix is used, but this can
+be changed by the optional argument \f[C]ul\f[].
+The eigenvalues and eigenvectors are sorted from largest to smallest
+eigenvalues.
+If the optional parameter \f[C]k\f[] is specified, then only the
+\f[C]k\f[] largest eigenvalues and their corresponding eigenvectors will
+be output.
+.PP
+The matrix \f[C]ain\f[] is first factorized into a tridiagonal matrix
+using the LAPACK routine \f[C]DSYTRD\f[], and then the eigenvalues are
+calculated by calls to \f[C]DSTEGR\f[] and \f[C]DORMTR\f[].
+.SH See also
+.PP
+eigvalsym, eigvalvecsymtri

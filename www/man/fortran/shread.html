@@ -44,13 +44,13 @@
 <dt><code>lmax</code> : output, integer</dt>
 <dd>The maximum spherical harmonic degree of <code>cilm</code>. This is the minimum of the maximum spherical harmonic degree of <code>filename</code> and the dimension of <code>cilm</code>-1.
 </dd>
-<dt><code>skip</code> : input, integer, optional</dt>
+<dt><code>skip</code> : input, optional, integer</dt>
 <dd>The number of lines to skip before parsing <code>filename</code>.
 </dd>
-<dt><code>header</code> : output, real*8, optional dimension (<code>n</code>)</dt>
+<dt><code>header</code> : output, optional, real*8 dimension (<code>n</code>)</dt>
 <dd>A vector containing the first <code>n</code> numbers in the first line of the file (following any skipped lines).
 </dd>
-<dt><code>error</code> : output, real*8, optional dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dt><code>error</code> : output, optional, real*8 dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
 <dd>The errors corresponding to the spherical harmonic coefficients <code>cilm</code>.
 </dd>
 </dl>

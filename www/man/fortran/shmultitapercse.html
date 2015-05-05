@@ -65,22 +65,22 @@
 <dt><code>k</code> : input, integer</dt>
 <dd>The number of tapers to be utilized in performing the multitaper spectral analysis.
 </dd>
-<dt><code>alpha</code> : input, real*8, optional, dimension (3)</dt>
+<dt><code>alpha</code> : input, optional, real*8, dimension (3)</dt>
 <dd>The Euler rotation angles used in rotating the windowing functions. <code>alpha(1)=0</code>, <code>alpha(2)=-(90-lat)*pi/180</code>, <code>alpha(3)=-lon*pi/180</code>. Either <code>alpha</code> or <code>lat</code> and <code>lon</code> can be specified, but not both. If none of these are specified, the spectral analysis will be centered at the north pole.
 </dd>
-<dt><code>lat</code> : input, real*8, optional</dt>
+<dt><code>lat</code> : input, optional, real*8</dt>
 <dd>The latitude in degrees of the localized analysis. Either <code>alpha</code> or <code>lat</code> and <code>lon</code> can be specified but not both. If none of these are specified, the spectral analysis will be centered at the north pole.
 </dd>
-<dt><code>lon</code> : input, real*8, optional</dt>
+<dt><code>lon</code> : input, optional, real*8</dt>
 <dd>The longitude in degrees of the localized analysis. Either <code>alpha</code> or <code>lat</code> and <code>lon</code> can be specified, but not both. If none of these are specified, the spectral analysis will be centered at the north pole.
 </dd>
-<dt><code>taper_wt</code> : input, real*8, optional, dimension (<code>k</code>)</dt>
+<dt><code>taper_wt</code> : input, optional, real*8, dimension (<code>k</code>)</dt>
 <dd>The weights used in calculating the multitaper spectral estimates and standard error. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine <code>SHMTVarOpt</code>.
 </dd>
-<dt><code>norm</code> : input, integer, optional, default = 1</dt>
+<dt><code>norm</code> : input, optional, integer, default = 1</dt>
 <dd>1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 </dd>
-<dt><code>csphase</code> : input, integer, optional, default = 1</dt>
+<dt><code>csphase</code> : input, optional, integer, default = 1</dt>
 <dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 </dd>
 </dl>

@@ -231,7 +231,6 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     !   Calculate localized power spectra
     !
     !---------------------------------------------------------------------------
-    
     if (present(alpha) .or. (present(lat) .and. present(lon)) ) then
         call djpi2(dj, lmaxt)   ! Create rotation matrix used in the 
                                 ! rotation routine.

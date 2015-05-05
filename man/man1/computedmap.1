@@ -1,0 +1,102 @@
+.TH "computedmap" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
+.SH ComputeDMap
+.PP
+Compute the space\-concentration kernel of an arbitrary mask on the
+sphere.
+.SH Usage
+.PP
+call ComputeDMap (\f[C]dij\f[], \f[C]dh_mask\f[], \f[C]n\f[],
+\f[C]lmax\f[], \f[C]sampling\f[])
+.SH Parameters
+.TP
+.B \f[C]dij\f[] : output, real*8, dimension ( (\f[C]lmax\f[]+1)**2, (\f[C]lmax\f[]+1)**2 )
+The space\-concentration kernel corresponding to the mask dh_mask.
+.RS
+.RE
+.TP
+.B \f[C]dh_mask\f[] : input, integer, dimension (\f[C]n\f[], \f[C]sampling\f[]*\f[C]n\f[])
+A Driscoll and Healy (1994) sampled grid describing the concentration
+region R.
+All elements should either be 1 (for inside the concentration region) or
+0 (for outside R).
+.RS
+.RE
+.TP
+.B \f[C]n\f[] : input, integer
+The number of latitudinal samples in \f[C]dh_mask\f[].
+The effective spherical harmonic bandwidth of this grid is
+\f[C]L=n/2\-1\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The maximum spherical harmonic degree of the matrix \f[C]dij\f[].
+.RS
+.RE
+.TP
+.B \f[C]sampling\f[] : input, optional, integer, default = 1
+For 1 (default), \f[C]dh_mask\f[] has \f[C]n\f[] x \f[C]n\f[] samples.
+For 2, \f[C]dh_mask\f[] has \f[C]n\f[] x \f[C]2n\f[] samples.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]ComputeDMap\f[] will calculate the space\-concentration kernel for
+a generic mask defined on the sphere.
+The input mask \f[C]dh_mask\f[] must be sampled according to the
+Driscoll and Healy (1994) sampling theorem with \f[C]n\f[] samples in
+latitude, and possess a value of 1 inside the concentration region, and
+0 elsewhere.
+\f[C]dh_mask\f[] can either possess \f[C]n\f[] samples in longitude
+(\f[C]sampling=1\f[]) or \f[C]2n\f[] samples in longitude
+(\f[C]sampling=2\f[]).
+Given the approximate way in which the elements of \f[C]dij\f[] are
+calculated (see below), \f[C]sampling=2\f[] should be preferred.
+\f[C]dij\f[] is symmetric, and the elements are ordered according to the
+scheme described in \f[C]YilmIndexVector\f[].
+See Simons et al.
+(2006) for further details.
+.PP
+The elements of DIJ are explicitly given by
+.PP
+\f[C]Dlm,l\[aq]m\[aq]\ =\ 1/(4pi)\ Integral_R\ Ylm\ Yl\[aq]m\[aq]\ dOmega\f[],
+.PP
+where \f[C]R\f[] is the concentration region.
+In this routine, all values of \f[C]l\[aq]m\[aq]\f[] are calculated in a
+single spherical harmonic transform for a given value of \f[C]lm\f[]
+according to
+.PP
+\f[C]Dl\[aq]m\[aq]\ =\ 1/(4pi)\ Integral_Omega\ F\ Yl\[aq]m\[aq]\ dOmega\f[].
+.PP
+where
+.PP
+\f[C]F\ =\ Ylm\ dh_mask\f[].
+.PP
+The function \f[C]F\f[] is in general not a polynomial, and thus the
+coefficients \f[C]Dl\[aq]m\[aq]\f[] should not be expected to be exact.
+For this reason, the effective spherical harmonic degree of the input
+mask (\f[C]L=n/2\-1\f[]) should be greater than \f[C]lmax\f[].
+The exact value of \f[C]n\f[] should be chosen such that further
+increases in \f[C]n\f[] do not alter the returned eigenvalues.
+The routine prints out the fractional area of the mask computed in the
+pixel domain divided by \f[C]D(1,1)\f[] (the fractional area computed by
+the spherical harmonic transforms), and the ratio of the two should be
+close to 1.
+Experience suggests that \f[C]l\f[] should be about 5 times
+\f[C]lmax\f[].
+.SH References
+.PP
+Driscoll, J.R.
+and D.M.
+Healy, Computing Fourier transforms and convolutions on the 2\-sphere,
+Adv.
+Appl.
+Math., 15, 202\-250, 1994.
+.PP
+Simons, F.J., F.A.
+Dahlen, and M.A.
+Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48,
+504\-536, 2006.
+.SH See also
+.PP
+shreturntapersmap, yilmindexvector

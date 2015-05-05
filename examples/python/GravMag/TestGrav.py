@@ -46,7 +46,7 @@ def TestMakeGravGrid():
     plt.imshow(geoid)
     fig_map.savefig('MarsGeoid.png')
 
-    rad, theta, phi, total, pot = shtools.MakeGravGridDH(clm, gm, r0, lmax=719, a=shtools.constant.a_mars, f=shtools.constant.f_mars, lmax_calc=85, omega=shtools.constant.omega_mars, normal_gravity=1)
+    rad, theta, phi, total = shtools.MakeGravGridDH(clm, gm, r0, lmax=719, a=shtools.constant.a_mars, f=shtools.constant.f_mars, lmax_calc=85, omega=shtools.constant.omega_mars, normal_gravity=1)
     fig, axes = plt.subplots(2, 2)
 
     for num, vv, s in ((0, rad, "$g_{r}$"), (1, theta, "$g_{\theta}$"), (2, phi, "$g_{\phi}$"), (3, total, "Gravity disturbance")):
@@ -86,7 +86,7 @@ def TestGravGrad():
     a = 1.0
     f = 0.0
 
-    vxx, vyy, vzz, vxy, vxz, vyz = shtools.MakeGravGradGridDH(clm, gm, r0, a, f)
+    vxx, vyy, vzz, vxy, vxz, vyz = shtools.MakeGravGradGridDH(clm, gm, r0, a=a, f=f)
 
     print "Maximum Trace(Vxx+Vyy+Vzz) = ", np.max(vxx + vyy + vzz)
     print "Minimum Trace(Vxx+Vyy+Vzz) = ", np.min(vxx + vyy + vzz)
@@ -113,8 +113,8 @@ def TestFilter():
     wlcurv = np.zeros(len(deglist) + 1)
 
     for l in deglist:
-        wl[l] = shtools.Wl(l, half, r, d)
-        wlcurv[l] = shtools.WlCurv(l, half, r, d)
+        wl[l] = shtools.DownContFilterMA(l, half, r, d)
+        wlcurv[l] = shtools.DownContFilterMC(l, half, r, d)
 
     fig = plt.figure()
     plt.plot(deglist, wl[1:], 'b-', label='Minimum amplitude')
@@ -132,7 +132,7 @@ def TestMakeMagGrid():
     r0 = header[0] * 1.e3
     a = shtools.constant.r_mars + 145.0e3  # radius to evaluate the field
 
-    rad, theta, phi, total, pot = shtools.MakeMagGridDH(clm, r0, lmax=719, a=a, f=shtools.constant.f_mars, lmax_calc=90)
+    rad, theta, phi, total = shtools.MakeMagGridDH(clm, r0, lmax=719, a=a, f=shtools.constant.f_mars, lmax_calc=90)
     fig, axes = plt.subplots(2, 2)
 
     for num, vv, s in ((0, rad, "$B_{r}$"), (1, theta, "$B_{\theta}$"), (2, phi, "$B_{\phi}$"), (3, total, "$|B|$")):

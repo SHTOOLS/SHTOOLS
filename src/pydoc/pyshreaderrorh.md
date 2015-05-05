@@ -31,7 +31,7 @@ Read spherical harmonic coefficients and associated errors from an ascii-formatt
 `nhead` : integer 
 :   Number of values to read from the file's initial header line.
 
-`skip` : integer, optional, default = 0
+`skip` : optional, integer, default = 0
 :   The number of lines to skip before parsing `filename`.
 
 # Description
@@ -40,7 +40,7 @@ Read spherical harmonic coefficients and associated errors from an ascii-formatt
 
 The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree `l` and angular order `m` according to the format
 
-`l, m, cilm(1,l+1,m+1), cilm(2,l+1,m+1)`
+`l, m, cilm[0,l,m], cilm[1,l,m]`
 
 The ordering of the file is explcitly given by
 

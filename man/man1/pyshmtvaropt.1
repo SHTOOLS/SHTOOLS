@@ -1,0 +1,102 @@
+.TH "pyshmtvaropt" "1" "2015\-04\-27" "Python" "SHTOOLS 3.1"
+.SH SHMTVarOpt
+.PP
+Calculate the minimum variance and corresponding optimal weights of a
+localized multitaper spectral estimate.
+.SH Usage
+.PP
+\f[C]var_opt\f[], \f[C]var_unit\f[], \f[C]weight_opt\f[] =
+pyshtools.SHMTVarOpt (\f[C]l\f[], \f[C]tapers\f[], \f[C]taper_order\f[],
+\f[C]sff\f[], [\f[C]lwin\f[], \f[C]kmax\f[], \f[C]nocross\f[]])
+.SH Returns
+.TP
+.B \f[C]var_opt\f[] : float, dimension (\f[C]kmax\f[])
+The minimum variance of the multitaper spectral estimate for degree
+\f[C]l\f[] using 1 through \f[C]kmax\f[] tapers.
+.RS
+.RE
+.TP
+.B \f[C]var_unit\f[] : float, dimension (\f[C]kmax\f[])
+The variance of the multitaper spectral estimate using equal weights for
+degree \f[C]l\f[] using 1 through \f[C]kmax\f[] tapers.
+.RS
+.RE
+.TP
+.B \f[C]weight_opt\f[] : float, dimension (\f[C]kmax\f[], \f[C]kmax\f[])
+The optimal weights (in columns) that minimize the multitaper spectral
+estimate\[aq]s variance using 1 through \f[C]kmax\f[] tapers.
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]l\f[] : integer
+The angular degree to determine the minimum variance and optimal
+weights.
+.RS
+.RE
+.TP
+.B \f[C]tapers\f[] : float, dimension (\f[C]lwinin\f[]+1, \f[C]kmaxin\f[])
+A matrix of localization functions obtained from \f[C]SHReturnTapers\f[]
+or \f[C]SHReturnTapersM\f[].
+.RS
+.RE
+.TP
+.B \f[C]taper_order\f[] : integer, dimension (\f[C]kmaxin\f[])
+The angular order of the windowing coefficients in TAPERS.
+If this matrix was created using \f[C]SHReturnTapersM\f[], then this
+array must be composed of zeros.
+.RS
+.RE
+.TP
+.B \f[C]sff\f[] : float, dimension (\f[C]l\f[]+\f[C]lwinin\f[]+1)
+The global unwindowed power spectrum of the function to be localized.
+.RS
+.RE
+.TP
+.B \f[C]lwin\f[] : optional, integer, default = \f[C]lwinin\f[]
+The spherical harmonic bandwidth of the localizing windows.
+.RS
+.RE
+.TP
+.B \f[C]kmax\f[] : optional, integer, default = \f[C]kmaxin\f[]
+The maximum number of tapers to be used when calculating the minimum
+variance and optimal weights.
+.RS
+.RE
+.TP
+.B \f[C]nocross\f[] : optional, integer, default = 0
+If 1, only the diagonal terms of the covariance matrix Fij will be
+computed.
+If 0, all terms will be computed.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHMTVarOpt\f[] will determine the minimum variance that can be
+achieved by a weighted multitaper spectral analysis, as is described by
+Wieczorek and Simons (2007).
+The minimum variance is output as a function of the number of tapers
+utilized, from 1 to a maximum of \f[C]kmax\f[], and the corresponding
+variance using equal weights is output for comparison.
+The windowing functions are assumed to be solutions to the
+spherical\-cap concentration problem, as determined by a call to
+\f[C]SHReturnTapers\f[] or \f[C]SHReturnTapersM\f[].
+The minimum variance and weights are dependent upon the form of the
+global unwindowed power spectrum, \f[C]Sff\f[].
+.PP
+If the optional argument \f[C]nocross\f[] is set to 1, then only the
+diagnonal terms of \f[C]Fij\f[] will be computed.
+.SH References
+.PP
+Wieczorek, M.
+A.
+and F.
+J.
+Simons, Minimum\-variance multitaper spectral estimation on the sphere,
+J.
+Fourier Anal.
+Appl., 13, doi:10.1007/s00041\-006\-6904\-1, 665\-692, 2007.
+.SH See also
+.PP
+shreturntapers, shreturntapersm, shmultitaperse, shmultitapercse;
+shlocalizedadmitcorr, shbiasadmitcorr, shbiask, shmtdebias

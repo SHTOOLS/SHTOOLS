@@ -7,7 +7,7 @@ or    https://github.com/SHTOOLS/SHTOOLS
 The python wrapper was written by: Matthias Meschede, Mark Wieczorek, 2014
 """
 
-__version__ = '3.0'
+__version__ = '3.1'
 
 def load_documentation():
     """
@@ -47,5 +47,9 @@ from ._SHTOOLS import *
 from .classes import SHCoeffs, SHGrid, SHWindow
 
 #---- some miniature python functions: ----
-#def PlmIndex(l,m):
-#    return (l*(l+1))/2 + m + 1
+def PlmIndex(l,m):
+    return (l*(l+1))/2 + m
+
+def YilmIndexVector(l,m):
+    return l**2 + (i-1)*l + m
+

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="shlocalizedadmitcorr">SHLocalizedAdmitCorr</h1>
+<p>Calculate the localized admittance and correlation spectra of two functions at a given location using spherical cap localization windows.</p>
+<h1 id="usage">Usage</h1>
+<p><code>admit</code>, <code>corr</code>, <code>admit_error</code>, <code>corr_error</code> = pyshtools.SHLocalizedAdmitCorr (<code>gilm</code>, <code>tilm</code>, <code>tapers</code>, <code>taper_order</code>, <code>lat</code>, <code>lon</code>, [<code>k</code>, <code>lwin</code>, <code>lmax</code>, <code>taper_wt</code>, <code>mtdef</code>, <code>k1linsig</code>])</p>
+<h1 id="returns">Returns</h1>
+<dl>
+<dt><code>admit</code> : float, dimension (<code>lmax</code>-<code>lwin</code>+1)</dt>
+<dd>The admittance function, which is equal to <code>Sgt/Stt</code>.
+</dd>
+<dt><code>corr</code> : float, dimension (<code>lmax</code>-<code>lwin</code>+1)</dt>
+<dd>The degree correlation function, which is equal to <code>Sgt/sqrt(Sgg Stt)</code>.
+</dd>
+<dt><code>admit_error</code> : float, dimension (<code>lmax</code>-<code>lwin</code>+1)</dt>
+<dd>The standard error of the admittance function.
+</dd>
+<dt><code>corr_error</code> : float, dimension (<code>lmax</code>-<code>lwin</code>+1)</dt>
+<dd>The standard error of the degree correlation function.
+</dd>
+</dl>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>gilm</code> : float, dimension (2, <code>lmaxgin</code>+1, <code>lmaxgin</code>+1)</dt>
+<dd>The spherical harmonic coefficients of the function G.
+</dd>
+<dt><code>tilm</code> : float, dimension (2, <code>lmaxtin</code>+1, <code>lmaxtin</code>+1)</dt>
+<dd>The spherical harmonic coefficients of the function T.
+</dd>
+<dt><code>tapers</code> : float, dimension (<code>lwinin</code>+1, <code>kin</code>)</dt>
+<dd>A matrix of spherical cap localization functions obtained from <code>SHReturnTapers</code> or <code>SHReturnTapersM</code>.
+</dd>
+<dt><code>taper_order</code> : integer, dimension (<code>kin</code>)</dt>
+<dd>The angular order of the windowing coefficients in <code>tapers</code>.
+</dd>
+<dt><code>lat</code> : float</dt>
+<dd>The latitude of the localized analysis in degrees.
+</dd>
+<dt><code>lon</code> : float</dt>
+<dd>The longitude of the localized analysis in degrees.
+</dd>
+<dt><code>k</code> : optional, integer, default = <code>kin</code></dt>
+<dd>The number of tapers to be used in the multitaper spectral analysis.
+</dd>
+<dt><code>lwin</code> : optional, integer, default = <code>lwinin</code></dt>
+<dd>The spherical harmonic bandwidth of the localizing windows.
+</dd>
+<dt><code>lmax</code> : optional, integer, default = min(<code>lmaxgin</code>, <code>lmaxtin</code>)</dt>
+<dd>The maximum spherical harmonic degree of the input functions corresponding to <code>gilm</code> and <code>tilm</code>.
+</dd>
+<dt><code>taper_wt</code> : optional, float, dimension (<code>k</code>), default = -1 (not used)</dt>
+<dd>The weights to be applied to the spectral estimates when calculating the admittance, correlation, and their associated errors. This must sum to unity. The default value specifies that taper weights will not be used.
+</dd>
+<dt><code>mtdef</code> : optional, integer, default = 1</dt>
+<dd>1 (default): Calculate the multitaper spectral estimates Sgt, Sgg and Stt first, and then use these to calculate the admittance and correlation functions. 2: Calculate admittance and correlation spectra using each individual taper, and then average these to obtain the multitaper admittance and correlation functions.
+</dd>
+<dt><code>k1linsig</code> : optional, integer, default = -1</dt>
+<dd>If equal to one, and only a single taper is being used, the errors in the admittance function will be calculated by assuming that the coefficients of <code>gilm</code> and <code>tilm</code> are related by a linear degree-dependent transfer function and that the lack of correlation is a result of uncorrelated noise. This is the square root of eq. 33 of Simons et al. 1997. The default value specifies that this is not set.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHLocalizedAdmitCorr</code> will calculate the localized admittance and degree correlation spectra of two functions at a given location. The windowing functions are solutions to the spherical-cap concentration problem (as calculated by <code>SHReturnTapers</code> or <code>SHReturnTapersM</code>), of which the best <code>k</code> concentrated tapers are utilized. If <code>k</code> is greater than 1, then estimates of the standard error for the admittance and correlation will be returned in the optional arrays <code>admit_error</code> and <code>corr_error</code>. The symmetry axis of the localizing windows are rotated to the coordinates (<code>lat</code>, <code>lon</code>) before performing the windowing operation.</p>
+<p>The admittance is defined as <code>Sgt/Stt</code>, where <code>Sgt</code> is the localized cross-power spectrum of two functions <code>G</code> and <code>T</code> expressed in spherical harmonics. The localized degree-correlation spectrum is defined as <code>Sgt/sqrt(Sgg Stt)</code>, which can possess values between -1 and 1. Two methods are available for calculating the multitaper admittance and correlation functions. When <code>mtdef</code> is 1 (default), the multitaper estimates and errors of Sgt, Stt, and Sgg are calculated by calls to <code>SHMultiTaperSE</code> and <code>SHMultiTaperCSE</code>, and these results are then used to calculate the final admittance and correlation functions. When <code>mtdef</code> is 2, the admitance and correlation are calculated invidivually for each individual taper, and these results are then averaged.</p>
+<p>If the optional parameter <code>k1linsig</code> is specified, and only a single taper is being used, the uncertainty in the admittance function will be calculated by assuming the two sets of coefficients are related by a linear degree-dependent transfer function and that the lack of correlation is a result of uncorrelated noise.</p>
+<p>When <code>mtdef</code> is 1, by default, the multitaper spectral estimates are calculated as an unweighted average of the individual tapered estimates. However, if the optional argument <code>taper_wt</code> is specified, a weighted average will be employed using the weights in this array. Minimum variance optimal weights can be obtained from the routines <code>SHMTVarOpt</code> if the form of the underlying global power spectrum is known. Taper weights can not be used when <code>mtdef</code> is 2</p>
+<p>This routine assumes that the input functions and tapers are expressed using geodesy 4-pi normalized spherical harmonic functions that exclude the Condon-Shortley phase factor of (-1)^m.</p>
+<h1 id="references">References</h1>
+<p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.</p>
+<p>Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on the sphere, SIAM Review, 48, 504-536, doi:10.1137/S0036144504445765, 2006.</p>
+<p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, Geophys. J. Int., 162, 655-675, 2005.</p>
+<p>Simons, M., S. C. Solomon and B. H. Hager, Localization of gravity and topography: constrains on the tectonics and mantle dynamics of Venus, Geophys. J. Int., 131, 24-44, 1997.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshreturntapersm.html">shreturntapersm</a>, <a href="pyshmultitaperse.html">shmultitaperse</a>, <a href="pyshmultitapercse.html">shmultitapercse</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+.TH "pycomputedg82" "1" "2015\-04\-20" "Python" "SHTOOLS 3.1"
+.SH ComputeDG82
+.PP
+Compute the tridiagonal matrix of Grunbaum et al.
+(1982) that commutes with the space\-concentration kernel of a spherical
+cap.
+.SH Usage
+.PP
+\f[C]dg82\f[] = pyshtools.ComputeDG82 (\f[C]lmax\f[], \f[C]m\f[],
+\f[C]theta0\f[])
+.SH Returns
+.TP
+.B \f[C]dg82\f[] : float, dimension (\f[C]lmax\f[]\-abs(\f[C]m\f[])+1, \f[C]lmax\f[]\-abs(\f[C]m\f[])+1)
+The tridiagonal matrix of Grunbaum et al.
+(1982) that commutes with the space\-concentration kernel of order M of
+a spherical cap.
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]lmax\f[] : integer
+The spherical harmonic bandwidth of the windows.
+.RS
+.RE
+.TP
+.B \f[C]m\f[] : integer
+The angular order of the concentration problem.
+.RS
+.RE
+.TP
+.B \f[C]theta0\f[] : float
+The angular radius of the spherical cap in radians.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]ComputeDG82\f[] will calculate the tridiagonal matrix of Grunbaum
+et al.
+(1982) that commutes with the space\-concentration kernel of order
+\f[C]m\f[] of a spherical cap.
+The eigenfunctions of this matrix correspond to a family of orthogonal
+windowing functions, and the eigenvalues correspond to the window\[aq]s
+concentration factor (i.e., the power of the window within
+\f[C]theta0\f[] divided by the total power of the function).
+It is assumed that the employed spherical harmonic functions are
+normalized to the same value for all degrees and angular orders, which
+is the case for both the geodesy 4\-pi and orthonormalized harmonics.
+The returned matrix is symmetric, and the first element corresponds to
+(abs(\f[C]m\f[]), abs(\f[C]m\f[])) as the values for elements less than
+this are identically zero.
+.SH References
+.PP
+Grunbaum, F.A., L.
+Longhi, and M.
+Perlstadt, Differential operators commuting with finite convolution
+integral operators: some non\-abelian examples, SIAM J.
+Appl.
+Math., 42, 941\-955, 1982.
+.PP
+Simons, F.J., F.A.
+Dahlen, and M.A.
+Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48,
+504\-536, 2006.
+.SH See also
+.PP
+computedm, shreturntapers, shreturntapersm

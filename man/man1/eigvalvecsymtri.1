@@ -1,0 +1,55 @@
+.TH "eigvalvecsymtri" "1" "2015\-04\-24" "Fortran 95" "SHTOOLS 3.1"
+.SH EigValVecSymTri
+.PP
+Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal
+matrix.
+.SH Usage
+.PP
+call EigValVecSymTri (\f[C]ain\f[], \f[C]n\f[], \f[C]eval\f[],
+\f[C]evec\f[], \f[C]ul\f[])
+.SH Parameters
+.TP
+.B \f[C]ain\f[] : input, real*8, dimension (\f[C]n\f[], \f[C]n\f[])
+The input real symmetric tridiagonal matrix.
+.RS
+.RE
+.TP
+.B \f[C]n\f[] : input, integer
+The rank of the matrix \f[C]ain\f[].
+.RS
+.RE
+.TP
+.B \f[C]eval\f[] : output, real*8, dimension (\f[C]n\f[])
+The eigenvalues of \f[C]ain\f[], sorted from largest to smallest.
+.RS
+.RE
+.TP
+.B \f[C]evec\f[] : output, real*8, dimension (\f[C]n\f[], \f[C]n\f[])
+The eigenvectors of \f[C]ain\f[], sorted from largest to smallest
+eigenvalues.
+The sign of the first element of each eigenvector is chosen to be
+positive.
+.RS
+.RE
+.TP
+.B \f[C]ul\f[] : optional, input, character, default = \f[C]L\f[]
+If \f[C]U\f[] then the upper portion of the matrix \f[C]ain\f[] will be
+used.
+If \f[C]L\f[] then the lower portion of the matrix \f[C]ain\f[] will be
+used (default).
+.RS
+.RE
+.SH Description
+.PP
+\f[C]EigValVecSymTri\f[] will calculate the eigenvalues and eigenvectors
+of a real symmetric tridiagonal matrix.
+By default, only the lower portion of the matrix is used, but this can
+be changed by the optional argument \f[C]ul\f[].
+The eigenvalues and eigenvectors are sorted from largest to smallest
+eigenvalues, and the sign of the first element of each eigenvector is
+chosen to be positive.
+This routine factors the matrix \f[C]ain\f[] using the LAPACK routine
+\f[C]DSTEGR\f[].
+.SH See also
+.PP
+eigvalsym, eigvalvecsym

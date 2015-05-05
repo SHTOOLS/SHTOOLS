@@ -42,21 +42,21 @@
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
-<dd>The real spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of <code>lmax</code>, <code>lmaxin</code> or <code>lmax_calc</code> (if specified). The coefficients <code>C1lm</code> and <code>C2lm</code> refer to the &quot;cosine&quot; (<code>Clm</code>) and &quot;sine&quot; (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm(1,l+1,m+1)</code> and <code>Slm=cilm(2,l+1,m+1)</code>.
+<dd>The real spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of <code>lmax</code>, <code>lmaxin</code> or <code>lmax_calc</code> (if specified). The coefficients <code>C1lm</code> and <code>C2lm</code> refer to the &quot;cosine&quot; (<code>Clm</code>) and &quot;sine&quot; (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm[0,l,m]</code> and <code>Slm=cilm[1,l,m]</code>.
 </dd>
 <dt><code>zero</code> : float, dimension (<code>lmax</code>+1)</dt>
 <dd>The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to <code>SHGLQ</code>.
 </dd>
-<dt><code>lmax</code> : integer, optional, default = <code>lamxin</code></dt>
+<dt><code>lmax</code> : optional, integer, default = <code>lamxin</code></dt>
 <dd>The maximum spherical harmonic bandwidth of the function. This determines the sampling nodes of the dimensions of the output grid.
 </dd>
-<dt><code>norm</code> : integer, optional, default = 1</dt>
+<dt><code>norm</code> : optional, integer, default = 1</dt>
 <dd>1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 </dd>
-<dt><code>csphase</code> : integer, optional, default = 1</dt>
+<dt><code>csphase</code> : optional, integer, default = 1</dt>
 <dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 </dd>
-<dt><code>lmax_calc</code> : integer, optional, default = <code>lmax</code></dt>
+<dt><code>lmax_calc</code> : optional, integer, default = <code>lmax</code></dt>
 <dd>The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to <code>lmax</code>.
 </dd>
 </dl>

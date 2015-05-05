@@ -1,0 +1,122 @@
+.TH "shmtdebias" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
+.SH SHMTDebias
+.PP
+Invert for the global power spectrum given a multitaper spectrum
+estimate formed with spherical cap localization windows.
+.SH Usage
+.PP
+call SHMTDebias (\f[C]mtdebias\f[], \f[C]mtspectra\f[], \f[C]lmax\f[],
+\f[C]tapers\f[], \f[C]lwin\f[], \f[C]k\f[], \f[C]nl\f[], \f[C]lmid\f[],
+\f[C]n\f[], \f[C]taper_wt\f[])
+.SH Parameters
+.TP
+.B \f[C]mtdebias\f[] : output, real*8, dimension (2, ceiling((\f[C]lmax\f[]+1)/\f[C]nl\f[]))
+The global power spectrum (column 1) and uncertainty (column 2).
+The midpoints of the N spherical harmonic bins are given in
+\f[C]lmid\f[].
+.RS
+.RE
+.TP
+.B \f[C]mtspectra\f[] : input, real*8, dimension (2, \f[C]lmax\f[]+1)
+The localized multitaper spectrum estimate and uncertainty, obtained
+from a routine such as \f[C]SHMultitaperCSE\f[] or
+\f[C]SHMultitaperSE\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The spherical harmonic bandwidth of the localized multitaper spectrum
+estimates.
+.RS
+.RE
+.TP
+.B \f[C]tapers\f[] : input, real*8, dimension (\f[C]lmaxt\f[]+1, \f[C]k\f[])
+An array of the K windowing functions, arranged in columns, obtained
+from a call to \f[C]SHReturnTapers\f[].
+.RS
+.RE
+.TP
+.B \f[C]lwin\f[] : input, integer
+The spherical harmonic bandwidth of the windowing functions in the array
+\f[C]tapers\f[].
+.RS
+.RE
+.TP
+.B \f[C]k\f[] : input, integer
+The number of tapers utilized in the multitaper spectral analysis.
+.RS
+.RE
+.TP
+.B \f[C]nl\f[] : input, integer
+The global power spectrum is assumed to be constant within bins of
+spherical harmonic wdith \f[C]nl\f[].
+In addition, the global power spectrum will be assumed to be constant
+beyond \f[C]lmax\f[].
+.RS
+.RE
+.TP
+.B \f[C]lmid\f[] : output, real*8, dimension ((\f[C]lmax\f[]+1)/\f[C]nl\f[]+1)
+The midpoints of the spherical harmonic bins for which the global power
+spectrum is constant.
+.RS
+.RE
+.TP
+.B \f[C]n\f[] : output, integer
+The number of bins used in \f[C]mtdebias\f[] and \f[C]lmid\f[].
+.RS
+.RE
+.TP
+.B \f[C]taper_wt\f[] : input, optional, real*8, dimension (\f[C]k\f[])
+The weights used in calculating the multitaper spectral estimates.
+Optimal values of the weights (for a known global power spectrum) can be
+obtained from the routine \f[C]SHMTVarOpt\f[].
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHMTDebias\f[] will invert for the global power spectrum given a
+localized multitaper spectrum estimate formed from spherical cap
+localization windows.
+This linear inverse problem is inherently underdetermined, and in order
+to achive a unique solution it is assumed that the global spectrum is
+constant in bins of width \f[C]nl\f[], and that the global power
+spectrum is constant for degrees greater than \f[C]lmax\f[].
+In practice \f[C]nl\f[] should be increased until the global power
+spectrum is everywhere positive (negative values would be unphysical)
+and the variances are reasonable.
+Further details can be found in Wieczorek and Simons (2007).
+.PP
+This set of linear equations is solved using the method of singular
+value decomposition as outlined in Press et al.
+(1992, pp.
+670\-672).
+Each value of the multitaper spectrum estimate \f[C]mtspectra(1,:)\f[],
+as well as the corresponding rows of the transformation matrix, is
+divided by the uncertainties of the estimate \f[C]mtspectra(2,:)\f[].
+The solution and uncertainty are given by eqs 15.4.17 and 15.4.19 of
+Press et al.
+(1992, p.
+671), respectively.
+.PP
+If \f[C]taper_wt\f[] is not specified, the weights will all be assumed
+to be equal to \f[C]1/K\f[].
+.SH References
+.PP
+Press, W.H., S.A.
+Teukolsky, W.T.
+Vetterling, and B.P.
+Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing,
+2nd ed., Cambridge Univ.
+Press, Cambridge, UK, 1992.
+.PP
+Wieczorek, M.
+A.
+and F.
+J.
+Simons, Minimum\-variance multitaper spectral estimation on the sphere,
+J.
+Fourier Anal.
+Appl., 13, 665\-692, doi:10.1007/s00041\-006\-6904\-1, 2007.
+.SH See also
+.PP
+shmultitaperse, shmultitapercse, shreturntapers, shmtvaropt

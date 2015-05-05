@@ -14,7 +14,7 @@ call SHCindexToCilm (`cindex`, `cilm`, `degmax`)
 `cilm` : output, real\*8, dimension (2, `degmax`+1, `degmax`+1)
 :   The input spherical harmonic coefficients. `cilm(1,:,:)` and `cilm(2,:,:)` correspond to either the real and imaginary components, or cosine and sine coefficients, respectively.
 
-`degmax` : input, integer, optional, default = `lmaxin`
+`degmax` : input, optional, integer, default = `lmaxin`
 :   The maximum degree of the output coefficients. 
 
 # Description

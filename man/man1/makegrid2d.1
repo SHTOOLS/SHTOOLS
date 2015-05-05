@@ -1,4 +1,4 @@
-.TH "makegrid2d" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "makegrid2d" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
 .SH MakeGrid2D
 .PP
 Create a 2D cylindrical map of arbitrary grid spacing from a set of
@@ -51,21 +51,21 @@ Both 0 and 360 E are included.
 .RS
 .RE
 .TP
-.B \f[C]norm\f[] : input, integer, optional, default = 1
+.B \f[C]norm\f[] : input, optional, integer, default = 1
 1 (default) = 4\-pi (geodesy) normalized harmonics; 2 = Schmidt
 semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
 harmonics.
 .RS
 .RE
 .TP
-.B \f[C]csphase\f[] : input, integer, optional, default = 1
+.B \f[C]csphase\f[] : input, optional, integer, default = 1
 1 (default) = do not apply the Condon\-Shortley phase factor to the
 associated Legendre functions; \-1 = append the Condon\-Shortley phase
 factor of (\-1)^m to the associated Legendre functions.
 .RS
 .RE
 .TP
-.B \f[C]f\f[] : input, real*8, optional
+.B \f[C]f\f[] : input, optional, real*8
 The flattening of the reference ellipoid that is subtracted from the
 function.
 This is given by (\f[C]R_equator\-R_pole)/R_equator\f[].
@@ -74,7 +74,7 @@ specified for this calculation.
 .RS
 .RE
 .TP
-.B \f[C]a\f[] : input, real*8, optional
+.B \f[C]a\f[] : input, optional, real*8
 The semi\-major axis of the reference ellispoid that is subtracted from
 the function.
 The flattening \f[C]f\f[] must be specified for this calculation.
@@ -87,25 +87,25 @@ The default is 90 degrees.
 .RS
 .RE
 .TP
-.B \f[C]south\f[] : input, real*8, optional, default = \-90
+.B \f[C]south\f[] : input, optional, real*8, default = \-90
 The minimum latitude of the output raster grid, in degrees.
 The default is \-90 degrees.
 .RS
 .RE
 .TP
-.B \f[C]east\f[] : input, real*8, optional, default = 360
+.B \f[C]east\f[] : input, optional, real*8, default = 360
 The maximum longitude of the output raster grid, in degrees.
 The default is 360 degrees.
 .RS
 .RE
 .TP
-.B \f[C]west\f[] : input, real*8, optional, default = 0
+.B \f[C]west\f[] : input, optional, real*8, default = 0
 The minimum longitude of the output raster grid, in degrees.
 The default is 0 degrees.
 .RS
 .RE
 .TP
-.B \f[C]dealloc\f[] : input, integer, optional, default = 0
+.B \f[C]dealloc\f[] : input, optional, integer, default = 0
 0 (default) = Save variables used in the external Legendre function
 calls.
 (1) Deallocate this memory at the end of the funcion call.

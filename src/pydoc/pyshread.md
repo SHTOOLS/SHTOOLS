@@ -22,7 +22,7 @@ Read spherical harmonic coefficients from an ascii-formatted file.
 `lmaxin` : integer
 :   This spherical harmonic degree controls the dimension of the output array `cilm`. The coefficients between `lmax+1` and `lmaxin` will be set to zero.
 
-`skip` : integer, optional, default = 0
+`skip` : optional, integer, default = 0
 :   The number of lines to skip before parsing `filename`.
 
 # Description
@@ -31,7 +31,7 @@ Read spherical harmonic coefficients from an ascii-formatted file.
 
 The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree `l` and angular order `m` according to the format
 
-`l, m, cilm(1,l+1,m+1), cilm(2,l+1,m+1)`
+`l, m, cilm[0,l,m], cilm[1,l,m]`
 
 The ordering of the file is explcitly given by
 

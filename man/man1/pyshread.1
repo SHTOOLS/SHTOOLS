@@ -1,4 +1,4 @@
-.TH "pyshread" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "pyshread" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
 .SH SHRead
 .PP
 Read spherical harmonic coefficients from an ascii\-formatted file.
@@ -37,7 +37,7 @@ to zero.
 .RS
 .RE
 .TP
-.B \f[C]skip\f[] : integer, optional, default = 0
+.B \f[C]skip\f[] : optional, integer, default = 0
 The number of lines to skip before parsing \f[C]filename\f[].
 .RS
 .RE
@@ -55,7 +55,7 @@ The spherical harmonic coefficients in the file are assumed to be
 ordered by increasing degree \f[C]l\f[] and angular order \f[C]m\f[]
 according to the format
 .PP
-\f[C]l,\ m,\ cilm(1,l+1,m+1),\ cilm(2,l+1,m+1)\f[]
+\f[C]l,\ m,\ cilm[0,l,m],\ cilm[1,l,m]\f[]
 .PP
 The ordering of the file is explcitly given by
 .PP

@@ -1,0 +1,189 @@
+.TH "batohilm" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
+.SH BAtoHilm
+.PP
+Calculate iteratively the relief along an interface of constant density
+contrast that corresponds to a given Bouguer anomaly using the algorithm
+of Wieczorek and Phillips (1998).
+.SH Usage
+.PP
+call BAtoHilm (\f[C]cilm\f[], \f[C]ba\f[], \f[C]grid\f[], \f[C]lmax\f[],
+\f[C]nmax\f[], \f[C]mass\f[], \f[C]r0\f[], \f[C]rho\f[],
+\f[C]gridtype\f[], \f[C]w\f[], \f[C]plx\f[], \f[C]zero\f[],
+\f[C]filtertype\f[], \f[C]filterdeg\f[], \f[C]lmaxcalc\f[])
+.SH Parameters
+.TP
+.B \f[C]cilm\f[] : output, real*8, dimension (2, \f[C]lmaxcalc\f[]+1, \f[C]lmaxcalc\f[]+1)
+An estimate of the real spherical harmonic coefficients (geodesy
+normalized) of relief along an interface with density contrast
+\f[C]rho\f[] that satisfies the Bouguer anomaly \f[C]ba\f[].
+The degree zero term corresponds to the mean radius of the relief.
+.RS
+.RE
+.TP
+.B \f[C]ba\f[] : input, real*8, dimension (2, \f[C]lmaxcalc\f[]+1, \f[C]lmaxcalc\f[]+1)
+The real spherical harmonic coefficients of the Bouguer anomaly
+referenced to a spherical interface \f[C]r0\f[].
+.RS
+.RE
+.TP
+.B \f[C]grid\f[] : input, real*8, dimension (\f[C]lmax\f[]+1, 2*\f[C]lmax\f[]+1) for \f[C]gridtype\f[] 1, (2*\f[C]lmax\f[]+2, 2*\f[C]lmax\f[]+2) for \f[C]gridtype\f[] 2, (2*\f[C]lmax\f[]+2, 4*\f[C]lmax\f[]+4) for \f[C]gridtype\f[] 3
+The initial estimate for the radii of the interface evaluated on a grid
+corresponding to a function of maximum spherical harmonic degree
+\f[C]lmax\f[].
+This is calculated by a call to either \f[C]MakeGridGLQ\f[] or
+\f[C]MakeGridDH\f[].
+This grid must contain the degree\-0 average radius of the interface.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The spherical harmonic bandwidth of the input relief \f[C]grid\f[],
+which determines the dimensions of \f[C]grid\f[].
+If \f[C]lmaxcalc\f[] is not set, this determines also the maximum
+spherical harmonic degree of the output spherical harmonic coefficients
+of the relief and the input spherical harmonics of the Bouguer anomaly.
+.RS
+.RE
+.TP
+.B \f[C]nmax\f[] : input, integer
+The maximum order used in the Taylor\-series expansion used in
+calculating the potential coefficients.
+.RS
+.RE
+.TP
+.B \f[C]mass\f[] : input, real*8
+The mass of the planet in kg.
+.RS
+.RE
+.TP
+.B \f[C]r0\f[] : input, real*8
+The reference radius of the Bouguer anomaly \f[C]ba\f[].
+.RS
+.RE
+.TP
+.B \f[C]rho\f[] : input, real*8
+The density contrast of the relief in kg/m^3.
+.RS
+.RE
+.TP
+.B \f[C]gridtype\f[] : input, integer
+1 = Gauss\-Legendre grids, calculated using \f[C]SHGLQ\f[] and
+\f[C]MakeGridGLQ\f[].
+2 = Equally sampled Driscoll\-Healy grids, \f[C]n\f[] by \f[C]n\f[],
+calculated using \f[C]MakeGridDH\f[].
+3 = Equally spaced Driscoll\-Healy grids, \f[C]n\f[] by 2\f[C]n\f[],
+calculated using \f[C]MakeGridDH\f[].
+.RS
+.RE
+.TP
+.B \f[C]w\f[] : optional, input, real*8, dimension (\f[C]lmax\f[]+1)
+The weights used in the Gauss\-Legendre quadrature.
+These are calculated from a call to \f[C]SHGLQ\f[].
+If present, one of \f[C]plx\f[] or \f[C]zero\f[] must also be present.
+.RS
+.RE
+.TP
+.B \f[C]plx\f[] : optional, input, real*8, dimension (\f[C]lmax\f[]+1, (\f[C]lmax\f[]+1)*(\f[C]lmax\f[]+2)/2)
+An array of the associated Legendre functions calculated at the nodes
+used in the Gauss\-Legendre quadrature.
+These are determined from a call to \f[C]SHGLQ\f[].
+.RS
+.RE
+.TP
+.B \f[C]zero\f[] : optional, input, real*8, dimension (\f[C]lmax\f[]+1)
+The nodes used in the Gauss\-Legendre quadrature over latitude,
+calculated by a call to \f[C]SHGLQ\f[].
+.RS
+.RE
+.TP
+.B \f[C]filtertype\f[] : optional, input, integer, default = 0
+Apply a filter when calculating the relief in order to minimize the
+destabilizing effects of downward continuation which amplify
+uncertainties in the Bouguer anomaly.
+If 0, no filtering is applied.
+If 1, use the minimum amplitude filter \f[C]DownContFilterMA\f[].
+If 2, use the minimum curvature filter \f[C]DownContFilterMC\f[].
+.RS
+.RE
+.TP
+.B \f[C]filterdeg\f[] : optional, input, integer
+The spherical harmonic degree for which the filter is 0.5.
+.RS
+.RE
+.TP
+.B \f[C]lmaxcalc\f[] : optional, input, integer, default = \f[C]lmax\f[]
+The maximum degree that will be calculated in the spherical harmonic
+expansions.
+.RS
+.RE
+.SH Description
+.PP
+I\f[C]BAtoHilm\f[] is used to solve iteratively for the relief along an
+interface that corresponds to a given Bouguer anomaly.
+This is equation 18 of Wieczorek and Phillips (1998) which implicitly
+takes into consideration the finite\-amplitude correction.
+Each iteration takes as input a guess for the relief (specified by
+\f[C]grid\f[]) and outputs the iteratively improved spherical harmonic
+coefficients of this relief.
+These coefficients can then be re\-expanded and re\-input into this
+routine as the next guess.
+For the initial guess, it is often sufficient to use the relief
+predicted using the first\-order "mass sheet" approximation.
+The input relief \f[C]grid\f[] can be of one of three type specified by
+\f[C]gridtype\f[]: 1 for Gauss\-Legendre grids, 2 for equally sampled
+Driscoll\-Healy grids (\f[C]n\f[] by \f[C]n\f[]), and 3 for equally
+spaced Driscoll\-Healy grid (\f[C]n\f[] by 2\f[C]n\f[]).
+.PP
+If the algorithm does not converge, one might want to try damping the
+initial estimate.
+Alternatively, iterations of the following form have proven successfulin
+in damping oscilations between successive iterations:
+.PP
+\f[C]h3\ =\ (h2+h1)/2\f[]
+.PD 0
+.P
+.PD
+\f[C]h4\ =\ f(h3)\f[]
+.PP
+It is important to understand that as an intermediate step, this routine
+calculates the spherical harmonic coefficients of the relief raised to
+the nth power, i.e., grid**n.
+As such, if the input function is bandlimited to degree \f[C]L\f[], the
+resulting function will thus be bandlimited to degree \f[C]L*nmax\f[].
+This subroutine implicitly assumes that \f[C]lmax\f[] is greater than or
+equal to \f[C]L*nmax\f[].
+If this is not the case, aliasing will occur.
+In practice, for accurate results, it is found that \f[C]lmax\f[] needs
+only to be about twice the size of \f[C]L\f[], though this should be
+verified for each application.
+Thus, if the input function is considered to be bandlimited to degree
+\f[C]L\f[], the function should be evaluated on a grid corresponding to
+a maximum degree of about \f[C]2L\f[].
+.PP
+If the input grid is evaluated on the Gauss\-Legendre points, it is
+necessary to specify the optional parameters \f[C]w\f[]
+and\f[C]zero\f[], or \f[C]w\f[] and \f[C]plx\f[], which are calculated
+by a call to \f[C]SHGLQ\f[].
+If memory is not an issue, the algorithm can be speeded up by inputing
+the optional array \f[C]plx\f[] of precomputed associated Legendre
+functions on the Gauss\-Legendre nodes.
+If \f[C]plx\f[] is not specified, then it is necessary to input the
+optional array \f[C]zero\f[] that contains the latitudinal
+Gauss\-Legendre quadrature nodes.
+.PP
+This routine uses geodesy 4\-pi normalized spherical harmonics that
+exclude the Condon\-Shortley phase.
+.SH References
+.PP
+Wieczorek, M.
+A.
+and R.
+J.
+Phillips, Potential anomalies on a sphere: applications to the thickness
+of the lunar crust, J.
+Geophys.
+Res., 103, 1715\-1724, 1998.
+.SH See also
+.PP
+batohilmrhoh, cilmplus, cilmplusrhoh, shexpandglq, makegridglq, shglq,
+shexpanddh, makegriddh, glqgridcoord, downcontfilterma, downcontfiltermc

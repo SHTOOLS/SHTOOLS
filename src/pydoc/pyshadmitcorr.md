@@ -25,7 +25,7 @@ Calculate the admittance and correlation spectra of two real functions.
 `tilm` : float, dimension (2, `lmaxt`+1, `lmaxt`+1)
 :   The real spherical harmonic coefficients of the function `T`.
 
-`lmax` : integer, optional, default = min(`lmaxg`, `lmaxt`)
+`lmax` : optional, integer, default = min(`lmaxg`, `lmaxt`)
 :   The maximum spherical harmonic degree that will be calculated for the admittance and correlation spectra. This must be less than or equal to the minimum of `lmaxg` and `lmaxt`.
 
 # Description

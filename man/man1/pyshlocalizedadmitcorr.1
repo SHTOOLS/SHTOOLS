@@ -1,0 +1,200 @@
+.TH "pyshlocalizedadmitcorr" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
+.SH SHLocalizedAdmitCorr
+.PP
+Calculate the localized admittance and correlation spectra of two
+functions at a given location using spherical cap localization windows.
+.SH Usage
+.PP
+\f[C]admit\f[], \f[C]corr\f[], \f[C]admit_error\f[], \f[C]corr_error\f[]
+= pyshtools.SHLocalizedAdmitCorr (\f[C]gilm\f[], \f[C]tilm\f[],
+\f[C]tapers\f[], \f[C]taper_order\f[], \f[C]lat\f[], \f[C]lon\f[],
+[\f[C]k\f[], \f[C]lwin\f[], \f[C]lmax\f[], \f[C]taper_wt\f[],
+\f[C]mtdef\f[], \f[C]k1linsig\f[]])
+.SH Returns
+.TP
+.B \f[C]admit\f[] : float, dimension (\f[C]lmax\f[]\-\f[C]lwin\f[]+1)
+The admittance function, which is equal to \f[C]Sgt/Stt\f[].
+.RS
+.RE
+.TP
+.B \f[C]corr\f[] : float, dimension (\f[C]lmax\f[]\-\f[C]lwin\f[]+1)
+The degree correlation function, which is equal to
+\f[C]Sgt/sqrt(Sgg\ Stt)\f[].
+.RS
+.RE
+.TP
+.B \f[C]admit_error\f[] : float, dimension (\f[C]lmax\f[]\-\f[C]lwin\f[]+1)
+The standard error of the admittance function.
+.RS
+.RE
+.TP
+.B \f[C]corr_error\f[] : float, dimension (\f[C]lmax\f[]\-\f[C]lwin\f[]+1)
+The standard error of the degree correlation function.
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]gilm\f[] : float, dimension (2, \f[C]lmaxgin\f[]+1, \f[C]lmaxgin\f[]+1)
+The spherical harmonic coefficients of the function G.
+.RS
+.RE
+.TP
+.B \f[C]tilm\f[] : float, dimension (2, \f[C]lmaxtin\f[]+1, \f[C]lmaxtin\f[]+1)
+The spherical harmonic coefficients of the function T.
+.RS
+.RE
+.TP
+.B \f[C]tapers\f[] : float, dimension (\f[C]lwinin\f[]+1, \f[C]kin\f[])
+A matrix of spherical cap localization functions obtained from
+\f[C]SHReturnTapers\f[] or \f[C]SHReturnTapersM\f[].
+.RS
+.RE
+.TP
+.B \f[C]taper_order\f[] : integer, dimension (\f[C]kin\f[])
+The angular order of the windowing coefficients in \f[C]tapers\f[].
+.RS
+.RE
+.TP
+.B \f[C]lat\f[] : float
+The latitude of the localized analysis in degrees.
+.RS
+.RE
+.TP
+.B \f[C]lon\f[] : float
+The longitude of the localized analysis in degrees.
+.RS
+.RE
+.TP
+.B \f[C]k\f[] : optional, integer, default = \f[C]kin\f[]
+The number of tapers to be used in the multitaper spectral analysis.
+.RS
+.RE
+.TP
+.B \f[C]lwin\f[] : optional, integer, default = \f[C]lwinin\f[]
+The spherical harmonic bandwidth of the localizing windows.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : optional, integer, default = min(\f[C]lmaxgin\f[], \f[C]lmaxtin\f[])
+The maximum spherical harmonic degree of the input functions
+corresponding to \f[C]gilm\f[] and \f[C]tilm\f[].
+.RS
+.RE
+.TP
+.B \f[C]taper_wt\f[] : optional, float, dimension (\f[C]k\f[]), default = \-1 (not used)
+The weights to be applied to the spectral estimates when calculating the
+admittance, correlation, and their associated errors.
+This must sum to unity.
+The default value specifies that taper weights will not be used.
+.RS
+.RE
+.TP
+.B \f[C]mtdef\f[] : optional, integer, default = 1
+1 (default): Calculate the multitaper spectral estimates Sgt, Sgg and
+Stt first, and then use these to calculate the admittance and
+correlation functions.
+2: Calculate admittance and correlation spectra using each individual
+taper, and then average these to obtain the multitaper admittance and
+correlation functions.
+.RS
+.RE
+.TP
+.B \f[C]k1linsig\f[] : optional, integer, default = \-1
+If equal to one, and only a single taper is being used, the errors in
+the admittance function will be calculated by assuming that the
+coefficients of \f[C]gilm\f[] and \f[C]tilm\f[] are related by a linear
+degree\-dependent transfer function and that the lack of correlation is
+a result of uncorrelated noise.
+This is the square root of eq.
+33 of Simons et al.
+1997.
+The default value specifies that this is not set.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHLocalizedAdmitCorr\f[] will calculate the localized admittance
+and degree correlation spectra of two functions at a given location.
+The windowing functions are solutions to the spherical\-cap
+concentration problem (as calculated by \f[C]SHReturnTapers\f[] or
+\f[C]SHReturnTapersM\f[]), of which the best \f[C]k\f[] concentrated
+tapers are utilized.
+If \f[C]k\f[] is greater than 1, then estimates of the standard error
+for the admittance and correlation will be returned in the optional
+arrays \f[C]admit_error\f[] and \f[C]corr_error\f[].
+The symmetry axis of the localizing windows are rotated to the
+coordinates (\f[C]lat\f[], \f[C]lon\f[]) before performing the windowing
+operation.
+.PP
+The admittance is defined as \f[C]Sgt/Stt\f[], where \f[C]Sgt\f[] is the
+localized cross\-power spectrum of two functions \f[C]G\f[] and
+\f[C]T\f[] expressed in spherical harmonics.
+The localized degree\-correlation spectrum is defined as
+\f[C]Sgt/sqrt(Sgg\ Stt)\f[], which can possess values between \-1 and 1.
+Two methods are available for calculating the multitaper admittance and
+correlation functions.
+When \f[C]mtdef\f[] is 1 (default), the multitaper estimates and errors
+of Sgt, Stt, and Sgg are calculated by calls to \f[C]SHMultiTaperSE\f[]
+and \f[C]SHMultiTaperCSE\f[], and these results are then used to
+calculate the final admittance and correlation functions.
+When \f[C]mtdef\f[] is 2, the admitance and correlation are calculated
+invidivually for each individual taper, and these results are then
+averaged.
+.PP
+If the optional parameter \f[C]k1linsig\f[] is specified, and only a
+single taper is being used, the uncertainty in the admittance function
+will be calculated by assuming the two sets of coefficients are related
+by a linear degree\-dependent transfer function and that the lack of
+correlation is a result of uncorrelated noise.
+.PP
+When \f[C]mtdef\f[] is 1, by default, the multitaper spectral estimates
+are calculated as an unweighted average of the individual tapered
+estimates.
+However, if the optional argument \f[C]taper_wt\f[] is specified, a
+weighted average will be employed using the weights in this array.
+Minimum variance optimal weights can be obtained from the routines
+\f[C]SHMTVarOpt\f[] if the form of the underlying global power spectrum
+is known.
+Taper weights can not be used when \f[C]mtdef\f[] is 2
+.PP
+This routine assumes that the input functions and tapers are expressed
+using geodesy 4\-pi normalized spherical harmonic functions that exclude
+the Condon\-Shortley phase factor of (\-1)^m.
+.SH References
+.PP
+Wieczorek, M.
+A.
+and F.
+J.
+Simons, Minimum\-variance multitaper spectral estimation on the sphere,
+J.
+Fourier Anal.
+Appl., 13, doi:10.1007/s00041\-006\-6904\-1, 665\-692, 2007.
+.PP
+Simons, F.
+J., F.
+A.
+Dahlen and M.
+A.
+Wieczorek, Spatiospectral concentration on the sphere, SIAM Review, 48,
+504\-536, doi:10.1137/S0036144504445765, 2006.
+.PP
+Wieczorek, M.
+A.
+and F.
+J.
+Simons, Localized spectral analysis on the sphere, Geophys.
+J.
+Int., 162, 655\-675, 2005.
+.PP
+Simons, M., S.
+C.
+Solomon and B.
+H.
+Hager, Localization of gravity and topography: constrains on the
+tectonics and mantle dynamics of Venus, Geophys.
+J.
+Int., 131, 24\-44, 1997.
+.SH See also
+.PP
+shreturntapers, shreturntapersm, shmultitaperse, shmultitapercse

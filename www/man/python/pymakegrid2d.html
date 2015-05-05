@@ -42,39 +42,39 @@
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
-<dd>The real spherical harmonic coefficients to be expanded in the space domain. The coefficients <code>C1lm</code> and <code>C2lm</code> refer to the cosine (<code>Clm</code>) and sine (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm(1,l+1,m+1)</code> and <code>Slm=cilm(2,l+1,m+1)</code>.
+<dd>The real spherical harmonic coefficients to be expanded in the space domain. The coefficients <code>C1lm</code> and <code>C2lm</code> refer to the cosine (<code>Clm</code>) and sine (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm[0,l,m]</code> and <code>Slm=cilm[1,l,m]</code>.
 </dd>
 <dt><code>interval</code> : float</dt>
 <dd>The latitudinal and longitudinal spacing of <code>grid</code>.
 </dd>
-<dt><code>lmax</code> :integer, optional, default = <code>lmaxin</code></dt>
+<dt><code>lmax</code> :optional, integer, default = <code>lmaxin</code></dt>
 <dd>The maximum spherical harmonic degree of the coefficients <code>cilm</code> used when calculating the grid.
 </dd>
-<dt><code>norm</code> : integer, optional, default = 1</dt>
+<dt><code>norm</code> : optional, integer, default = 1</dt>
 <dd>1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 </dd>
-<dt><code>csphase</code> : integer, optional, default = 1</dt>
+<dt><code>csphase</code> : optional, integer, default = 1</dt>
 <dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 </dd>
-<dt><code>f</code> : float, optional, default = 0</dt>
+<dt><code>f</code> : optional, float, default = 0</dt>
 <dd>The flattening of the reference ellipoid that is subtracted from the function. This is given by (<code>R_equator-R_pole)/R_equator</code>.
 </dd>
-<dt><code>a</code> : float, optional, default = 0</dt>
+<dt><code>a</code> : optional, float, default = 0</dt>
 <dd>The semi-major axis of the reference ellispoid that is subtracted from the function.
 </dd>
-<dt><code>north</code> : float, optional, default = 90</dt>
+<dt><code>north</code> : optional, float, default = 90</dt>
 <dd>The maximum latitude of the output raster grid, in degrees. The default is 90 degrees.
 </dd>
-<dt><code>south</code> : float, optional, default = -90</dt>
+<dt><code>south</code> : optional, float, default = -90</dt>
 <dd>The minimum latitude of the output raster grid, in degrees. The default is -90 degrees.
 </dd>
-<dt><code>east</code> : float, optional, default = 360</dt>
+<dt><code>east</code> : optional, float, default = 360</dt>
 <dd>The maximum longitude of the output raster grid, in degrees. The default is 360 degrees.
 </dd>
-<dt><code>west</code> : float, optional, default = 0</dt>
+<dt><code>west</code> : optional, float, default = 0</dt>
 <dd>The minimum longitude of the output raster grid, in degrees. The default is 0 degrees.
 </dd>
-<dt><code>dealloc</code> : integer, optional, default = 0</dt>
+<dt><code>dealloc</code> : optional, integer, default = 0</dt>
 <dd>0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
 </dd>
 </dl>

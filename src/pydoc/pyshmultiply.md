@@ -25,10 +25,10 @@ Multiply two functions and determine the spherical harmonic coefficients of the 
 `lmax2` : integer
 :   The maximum spherical harmonic degree used in evaluting `sh2`.
 
-`norm` : integer, optional, default = 1
+`norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
 # Description

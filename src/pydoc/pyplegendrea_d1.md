@@ -22,7 +22,7 @@ Compute all the unnormalized associated Legendre functions and first derivatives
 `z` : float
 :   The argument of the associated Legendre functions.
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the Condon-Shortley phase of (-1)^m will be appended to the associated Legendre functions.
 
 # Description

@@ -1,5 +1,5 @@
 integer function YilmIndexVector(i, l, m)
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!-------------------------------------------------------------------------------
 !
 !	This function will give the index in a 1-dimensional array of the spherical 
 !	harmonic coefficient corresponding to the element Cilm. The elements of the 
@@ -13,31 +13,31 @@ integer function YilmIndexVector(i, l, m)
 !
 !	This mapping is given by the function:
 !
-!		YilmIndex = 1 + l**2 + (i-1)*l + m
-!	
+!		YilmIndex = l**2 + (i-1)*l + m + 1
 !
-!	Written by Mark Wieczorek (August 2009)
-!
-!	Copyright (c) 2009, Mark A. Wieczorek
+!	Copyright (c) 2015, Mark A. Wieczorek
 !	All rights reserved.
 !
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!-------------------------------------------------------------------------------
 	implicit none
-	integer, intent(in) ::	i, l, m
+	
+	integer, intent(in) ::i, l, m
 	
 	if (i /= 1 .and. i /= 2) then
 		print*, "Error --- YilmIndexVector"
 		print*, "I must be 1 (for cosine terms) or 2 (for sine terms)."
 		print*, "I = ", i
 		stop
-	endif
+		
+	end if
 	
 	if (l < 0) then
 		print*, "Error --- YilmIndexVector"
 		print*, "L must be positive."
 		print*, "L = ", l
 		stop
-	endif
+		
+	end if
 	
 	if (m < 0 .or. m > l) then
 		print*, "Error --- YilmIndexVector"
@@ -45,7 +45,8 @@ integer function YilmIndexVector(i, l, m)
 		print*, "M = ", m
 		print*, "L = ", l
 		stop
-	endif
+		
+	end if
 	
 	if (m == 0 .and. i == 2) then
 		print*, "Error --- YilmIndexVector"
@@ -53,7 +54,8 @@ integer function YilmIndexVector(i, l, m)
 		print*, "I = ", i
 		print*, "M = ", m
 		stop
-	endif
+		
+	end if
 	
 	yilmindexvector = l**2 + (i-1)*l + m + 1
 	

@@ -17,10 +17,10 @@ call PlmBar (`p`, `lmax`, `z`, `csphase`, `cnorm`)
 `z` : input, real*8
 :   The argument of the associated Legendre functions.
 
-`csphase` : input, integer, optional
+`csphase` : input, optional, integer
 :   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the Condon-Shortley phase of (-1)^m will be appended to the associated Legendre functions.
 
-`cnorm` : input, integer, optional
+`cnorm` : input, optional, integer
 :   If 1, the complex normalization of the associated Legendre functions will be used. The default is to use the real normalization.
 
 # Description

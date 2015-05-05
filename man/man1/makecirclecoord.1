@@ -1,0 +1,56 @@
+.TH "makecirclecoord" "1" "2015\-04\-23" "Fortran 95" "SHTOOLS 3.1"
+.SH MakeCircleCoord
+.PP
+Compute the coordinates of a circle placed at a given latitude and
+longitude.
+.SH Usage
+.PP
+call MakeCircleCoord (\f[C]coord\f[], \f[C]lat\f[], \f[C]lon\f[],
+\f[C]theta0\f[], \f[C]cinterval\f[], \f[C]cnum\f[])
+.SH Parameters
+.TP
+.B \f[C]coord\f[] : output, real*8, dimension(360/\f[C]cinterval\f[], 2)
+The latitude (:,1) and longitude (:,2) coordinates of the circle in
+degrees.
+If not specified, \f[C]cintervaL\f[] is assumed to 1.
+.RS
+.RE
+.TP
+.B \f[C]lat\f[] : input, real*8
+The latitude of the center of the circle in degrees.
+.RS
+.RE
+.TP
+.B \f[C]lon\f[] : input, real*8
+The longitude of the center of the circle in degrees.
+.RS
+.RE
+.TP
+.B \f[C]theta0\f[] : input, real*8
+The angular radius of the circle in degrees.
+.RS
+.RE
+.TP
+.B \f[C]cinterval\f[] : optional, input, real*8, default = 1
+Angular spacing in degrees of the output latitude and longitude points.
+If not present, the default is 1.
+.RS
+.RE
+.TP
+.B \f[C]cnum\f[] : optional, output, integer
+Number of elements in the output arrays.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]MakeCircleCoord\f[] will calculate the latitude and longitude
+coordinates of a circle of angular radius \f[C]theta0\f[] placed on a
+sphere at position (\f[C]lat\f[], \f[C]lon\f[]).
+This is useful for plotting circles on geographic maps.
+The first index in the output vectors corresponds to the point directly
+north of the cirlce origin, and subsequent points are arranged in a
+clockwise manner.
+Input and output units are in degrees.
+.SH See also
+.PP
+makeellipsecoord

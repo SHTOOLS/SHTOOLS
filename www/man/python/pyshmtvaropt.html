@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="shmtvaropt">SHMTVarOpt</h1>
+<p>Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.</p>
+<h1 id="usage">Usage</h1>
+<p><code>var_opt</code>, <code>var_unit</code>, <code>weight_opt</code> = pyshtools.SHMTVarOpt (<code>l</code>, <code>tapers</code>, <code>taper_order</code>, <code>sff</code>, [<code>lwin</code>, <code>kmax</code>, <code>nocross</code>])</p>
+<h1 id="returns">Returns</h1>
+<dl>
+<dt><code>var_opt</code> : float, dimension (<code>kmax</code>)</dt>
+<dd>The minimum variance of the multitaper spectral estimate for degree <code>l</code> using 1 through <code>kmax</code> tapers.
+</dd>
+<dt><code>var_unit</code> : float, dimension (<code>kmax</code>)</dt>
+<dd>The variance of the multitaper spectral estimate using equal weights for degree <code>l</code> using 1 through <code>kmax</code> tapers.
+</dd>
+<dt><code>weight_opt</code> : float, dimension (<code>kmax</code>, <code>kmax</code>)</dt>
+<dd>The optimal weights (in columns) that minimize the multitaper spectral estimate's variance using 1 through <code>kmax</code> tapers.
+</dd>
+</dl>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>l</code> : integer</dt>
+<dd>The angular degree to determine the minimum variance and optimal weights.
+</dd>
+<dt><code>tapers</code> : float, dimension (<code>lwinin</code>+1, <code>kmaxin</code>)</dt>
+<dd>A matrix of localization functions obtained from <code>SHReturnTapers</code> or <code>SHReturnTapersM</code>.
+</dd>
+<dt><code>taper_order</code> : integer, dimension (<code>kmaxin</code>)</dt>
+<dd>The angular order of the windowing coefficients in TAPERS. If this matrix was created using <code>SHReturnTapersM</code>, then this array must be composed of zeros.
+</dd>
+<dt><code>sff</code> : float, dimension (<code>l</code>+<code>lwinin</code>+1)</dt>
+<dd>The global unwindowed power spectrum of the function to be localized.
+</dd>
+<dt><code>lwin</code> : optional, integer, default = <code>lwinin</code></dt>
+<dd>The spherical harmonic bandwidth of the localizing windows.
+</dd>
+<dt><code>kmax</code> : optional, integer, default = <code>kmaxin</code></dt>
+<dd>The maximum number of tapers to be used when calculating the minimum variance and optimal weights.
+</dd>
+<dt><code>nocross</code> : optional, integer, default = 0</dt>
+<dd>If 1, only the diagonal terms of the covariance matrix Fij will be computed. If 0, all terms will be computed.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHMTVarOpt</code> will determine the minimum variance that can be achieved by a weighted multitaper spectral analysis, as is described by Wieczorek and Simons (2007). The minimum variance is output as a function of the number of tapers utilized, from 1 to a maximum of <code>kmax</code>, and the corresponding variance using equal weights is output for comparison. The windowing functions are assumed to be solutions to the spherical-cap concentration problem, as determined by a call to <code>SHReturnTapers</code> or <code>SHReturnTapersM</code>. The minimum variance and weights are dependent upon the form of the global unwindowed power spectrum, <code>Sff</code>.</p>
+<p>If the optional argument <code>nocross</code> is set to 1, then only the diagnonal terms of <code>Fij</code> will be computed.</p>
+<h1 id="references">References</h1>
+<p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshreturntapersm.html">shreturntapersm</a>, <a href="pyshmultitaperse.html">shmultitaperse</a>, <a href="pyshmultitapercse.html">shmultitapercse</a>; <a href="pyshlocalizedadmitcorr.html">shlocalizedadmitcorr</a>, <a href="pyshbiasadmitcorr.html">shbiasadmitcorr</a>, <a href="pyshbiask.html">shbiask</a>, <a href="pyshmtdebias.html">shmtdebias</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

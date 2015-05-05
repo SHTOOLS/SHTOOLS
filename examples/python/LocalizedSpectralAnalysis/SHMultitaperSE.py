@@ -32,28 +32,28 @@ def test_MultitaperSE():
     lmax = 10
     orderM = 2
     print 'creating spherical cap tapers with:',
-    print 'size {:1.0f}deg, bandwidth {:d}, order {:d}'.format(theta0_deg, lmax, orderM)
-    tapers, concentrations, shannon = shtools.SHReturnTapersM(theta0, lmax, orderM)
+    print 'size {:1.0f} deg, bandwidth {:d}, order {:d}'.format(theta0_deg, lmax, orderM)
+    tapers, concentrations = shtools.SHReturnTapersM(theta0, lmax, orderM)
     print 'first 3 taper concentrations:'
     print concentrations[:3]
 
     print '\n---- testing SHReturnTapers ----'
     theta0_deg = 20.
     theta0 = np.radians(theta0_deg)
-    lmax = 10
+    lmax = 20
     print 'creating spherical cap tapers of',
-    print 'size {:1.0f}deg with bandwidth {:d}'.format(theta0_deg, lmax)
+    print 'size {:1.0f} deg with bandwidth {:d}'.format(theta0_deg, lmax)
     tapers, concentrations, taperorder = shtools.SHReturnTapers(theta0, lmax)
-    print 'first 3 taper concentrations:'
-    print concentrations[:3]
+    print 'first 10 taper concentrations:'
+    print concentrations[:10]
 
     print '\n---- testing SHMultiTaperSE ----'
     lmax = 80
     ntapers = 3
-    tapers = tapers[:, :ntapers]
+    tapersk = tapers[:, :ntapers]
     torders = taperorder[:ntapers]
     coeffs = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
-    localpower, localpower_sd = shtools.SHMultiTaperSE(coeffs, tapers, torders)
+    localpower, localpower_sd = shtools.SHMultiTaperSE(coeffs, tapersk, torders)
     print 'total power:', np.sum(localpower)
 
     print '\n---- testing SHMultiTaperCSE ----'
@@ -61,11 +61,14 @@ def test_MultitaperSE():
     ntapers = 3
     coeffs1 = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
     coeffs2 = 0.5 * (coeffs1 + np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1))
-    localpower, localpower_sd = shtools.SHMultiTaperCSE(coeffs1, coeffs2, tapers, torders)
+    localpower, localpower_sd = shtools.SHMultiTaperCSE(coeffs1, coeffs2, tapersk, torders)
     print 'total power:', np.sum(localpower)
 
     print '\n---- testing SHLocalizedAdmitCorr ----'
-    admit, corr, dadmit, dcorr = shtools.SHLocalizedAdmitCorr(tapers, torders, coeffs1, coeffs2)
+    lat = 90.
+    lon = 0.
+    k = 3
+    admit, corr, dadmit, dcorr = shtools.SHLocalizedAdmitCorr(coeffs1, coeffs2, tapers, taperorder, k, lat, lon)
     print admit
 
     print '\n---- testing ComputeDm ----'
@@ -115,16 +118,14 @@ def test_MultitaperSE():
     print corr
 
     print '\n---- testing SHMTDebias ----'
-    print 'THIS FUNCTION THROWS AN ERROR'
-    print '(uncomment in file to see it)'
-    #lmax = 80
-    #lwin,ntapers = tapers.shape
-    #mtspectra = np.zeros( (2,lmax+lwin-1) )
-    #mtspectra[0] = power_biased
-    #mtspectra[1] = 1e-1*power_biased
-    # print mtspectra.shape
-    #mtdebias,lmid = shtools.SHMTDebias(mtspectra,tapers[:,:2],nl=2*lwin)
-    # print mtdebias
+    lmax = 80
+    lwin,ntapers = tapers.shape
+    mtspectra = np.zeros( (2,lmax+lwin-1) )
+    mtspectra[0] = power_biased
+    mtspectra[1] = 1e-1*power_biased
+    print mtspectra.shape
+    mtdebias,lmid = shtools.SHMTDebias(mtspectra,tapers[:,:2],nl=2*lwin)
+    print mtdebias
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

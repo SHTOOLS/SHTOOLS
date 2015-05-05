@@ -50,14 +50,14 @@
 <dt><code>lmaxin</code> : integer</dt>
 <dd>This spherical harmonic degree controls the dimension of the output array <code>cilm</code>. The coefficients between <code>lmax+1</code> and <code>lmaxin</code> will be set to zero.
 </dd>
-<dt><code>skip</code> : integer, optional, default = 0</dt>
+<dt><code>skip</code> : optional, integer, default = 0</dt>
 <dd>The number of lines to skip before parsing <code>filename</code>.
 </dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHRead</code> will read spherical harmonic coefficients from an ascii-formatted file into an array <code>cilm</code>. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array <code>cilm</code>-1 and the maximum degree of the coefficients in the file. If the optional array <code>skip</code> is specified, parsing of the file will commence after the first <code>skip</code> lines.</p>
 <p>The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree <code>l</code> and angular order <code>m</code> according to the format</p>
-<p><code>l, m, cilm(1,l+1,m+1), cilm(2,l+1,m+1)</code></p>
+<p><code>l, m, cilm[0,l,m], cilm[1,l,m]</code></p>
 <p>The ordering of the file is explcitly given by</p>
 <p><code>l, 0 / l, 1 / l, 2 /l, ... / l, m / l+1, 0 / l+1, 1 / ...</code></p>
 <p>The first spherical harmonic degree of the filename does not have to be 0; this is determined from the first element after the <code>skip</code> and <code>header</code> lines.</p>

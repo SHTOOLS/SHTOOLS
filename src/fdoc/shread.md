@@ -17,13 +17,13 @@ call SHRead (`filename`, `cilm`, `lmax`, `skip`, `header`, `error`)
 `lmax` : output, integer
 :   The maximum spherical harmonic degree of `cilm`. This is the minimum of the maximum spherical harmonic degree of `filename` and the dimension of `cilm`-1.
 
-`skip` : input, integer, optional
+`skip` : input, optional, integer
 :   The number of lines to skip before parsing `filename`.
 
-`header` : output, real\*8, optional dimension (`n`)
+`header` : output, optional, real\*8 dimension (`n`)
 :   A vector containing the first `n` numbers in the first line of the file (following any skipped lines). 
 
-`error` : output, real\*8, optional dimension (2, `lmax`+1, `lmax`+1)
+`error` : output, optional, real\*8 dimension (2, `lmax`+1, `lmax`+1)
 :   The errors corresponding to the spherical harmonic coefficients `cilm`.
 
 # Description

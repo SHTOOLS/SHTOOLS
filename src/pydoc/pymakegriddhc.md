@@ -16,19 +16,19 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients th
 `cilm` : complex, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex spherical harmonic coefficients of the function.  The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm[0,l,m]` and `Cl,-m=cilm[1,l,m)]`.
 	
-`lmax` : integer, optional, default = `lmaxin`
+`lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree of the function. This determines the number of samples `n`.
 	
-`norm` : integer, optional, default = 1
+`norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`sampling` : integer, optional, default = 1
+`sampling` : optional, integer, default = 1
 :   If 1 (default) the input grid is equally sampled (`n` by `n`). If 2, the grid is equally spaced (`n` by `2n`).
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`lmax_calc` : integer, optional, default = `lmax`
+`lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
 
 # Description

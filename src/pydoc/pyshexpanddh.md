@@ -16,16 +16,16 @@ Expand an equally sampled or equally spaced grid into spherical harmonics using 
 `griddh` : float, dimension (`n`, `n`) or (`n`, 2\*`n`)
 :   A 2D equally sampled (default) or equally spaced grid that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitude band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally and 180/`n` for an equally spaced grid, respectively.
 
-`norm` : integer, optional, default = 1
+`norm` : optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`sampling` : integer, optional, default = 1
+`sampling` : optional, integer, default = 1
 :   If 1 (default) the input grid is equally sampled (`n` by `n`). If 2, the grid is equally spaced (`n` by `2n`).
 
-`csphase` : integer, optional, default = 1
+`csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`lmax_calc` : integer, optional, default = `n`/2-1
+`lmax_calc` : optional, integer, default = `n`/2-1
 :   The maximum spherical harmonic degree calculated in the spherical harmonic expansion.
 
 # Description

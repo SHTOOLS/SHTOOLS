@@ -1,4 +1,4 @@
-.TH "shread2" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "shread2" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
 .SH SHRead2
 .PP
 Read spherical harmonic coefficients from a CHAMP or GRACE\-like
@@ -36,29 +36,29 @@ The reference radius of the potential coefficients.
 .RS
 .RE
 .TP
-.B \f[C]error\f[] : output, real*8, optional, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
+.B \f[C]error\f[] : output, optional, real*8, dimension (2, \f[C]lmax\f[]+1, \f[C]lmax\f[]+1)
 The errors corresponding to the spherical harmonic coefficients
 \f[C]cilm\f[].
 .RS
 .RE
 .TP
-.B \f[C]dot\f[] : output, real*8, optional, dimension (2, \f[C]lmaxout\f[]+1, \f[C]lmaxout\f[]+1)
+.B \f[C]dot\f[] : output, optional, real*8, dimension (2, \f[C]lmaxout\f[]+1, \f[C]lmaxout\f[]+1)
 The time derivatives of the spherical harmonic coefficients.
 The dimension of this array can be smaller than \f[C]lmax+1\f[].
 .RS
 .RE
 .TP
-.B \f[C]doystart\f[] : output, real*8, optional
+.B \f[C]doystart\f[] : output, optional, real*8
 The starting time of the solution.
 .RS
 .RE
 .TP
-.B \f[C]doyend\f[] : output, real*8, optional
+.B \f[C]doyend\f[] : output, optional, real*8
 The ending time of the solution
 .RS
 .RE
 .TP
-.B \f[C]epoch\f[] : output, real*8, optional
+.B \f[C]epoch\f[] : output, optional, real*8
 The epoch time for the time derivates.
 .RS
 .RE

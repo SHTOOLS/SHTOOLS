@@ -1,4 +1,4 @@
-.TH "shexpandlsq" "1" "2015\-04\-05" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "shexpandlsq" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
 .SH SHExpandLSQ
 .PP
 Expand a set of irregularly sampled data points into spherical harmonics
@@ -45,19 +45,19 @@ The maximum spherical harmonic degree of the output coefficients
 .RS
 .RE
 .TP
-.B \f[C]norm\f[] : input, integer, optional, default = 1
+.B \f[C]norm\f[] : input, optional, integer, default = 1
 1 (default) = Geodesy 4\-pi normalized harmonics; 2 = Schmidt
 semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
 harmonics.
 .RS
 .RE
 .TP
-.B \f[C]chi2\f[] : output, real*8, optional
+.B \f[C]chi2\f[] : output, optional, real*8
 The residual sum of squares misfit for an overdetermined inversion.
 .RS
 .RE
 .TP
-.B \f[C]csphase\f[] : input, integer, optional, default = 1
+.B \f[C]csphase\f[] : input, optional, integer, default = 1
 1 (default) = do not apply the Condon\-Shortley phase factor to the
 associated Legendre functions; \-1 = append the Condon\-Shortley phase
 factor of (\-1)^m to the associated Legendre functions.

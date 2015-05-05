@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="shbias">SHBias</h1>
+<p>Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHBias (<code>shh</code>, <code>lwin</code>, <code>incspectra</code>, <code>ldata</code>, <code>outcspectra</code>, <code>save_cg</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>shh</code> : input, real*8, dimension (<code>lwin</code>+1)</dt>
+<dd>The power spectrum of the localizing window.
+</dd>
+<dt><code>lwin</code> : input, integer</dt>
+<dd>The spherical harmonic bandwidth of the localizing window.
+</dd>
+<dt><code>incspectra</code> : input, real*8, dimension (<code>ldata</code>+1)</dt>
+<dd>The global unwindowed (cross-)power spectrum.
+</dd>
+<dt><code>ldata</code> : input, integer</dt>
+<dd>The maximum degree of the global unwindowed power spectrum.
+</dd>
+<dt><code>outcspectra</code> : output, real*8, dimension (<code>ldata</code>+<code>lwin</code>)</dt>
+<dd>The expectation of the localized (cross-)power spectrum.
+</dd>
+<dt><code>save_cg</code> : optional, input, integer, default = 0</dt>
+<dd>If set equal to 1, the Clebsch-Gordon coefficients will be precomputed and saved for future use (if <code>lwin</code> or <code>ldata</code> change, this will be recomputed). To deallocate the saved memory, set this parameter equal to -1. If set equal to 0 (default), the Clebsch-Gordon coefficients will be recomputed for each call.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHBias</code> will calculate the (cross-)power spectrum expectation of a function multiplied by a localizing window. This is given by equation 35 of Wieczorek and Simons (2005) and equation 2.11 of Wieczorek and Simons (2007),</p>
+<p><code>&lt;SFG&gt; = Sum_{j=0}^L Shh Sum_{i=|l-j|}^{|l+j|} Sfg (C_{j0i0}^{l0})^2</code></p>
+<p>where <code>&lt;SFG&gt;</code> is the expectation of the localized (cross-)power spectrum, <code>Shh</code> is the power spectrum of the window bandlimited to degree <code>L</code>, <code>Sfg</code> is the global unwindowed (cross-)power spectrum, and <code>C</code> is a Clebsch-Gordan coefficient. The Clebsch-Gordan coefficients are calculated using a simple relationship to the Wigner 3-j symbols. The maximum calculated degree of the windowed power spectrum expectation corresponds to the smaller of (<code>ldata+lwin</code>) and <code>size(outcspectra)-1</code>. It is implicitly assumed that the power spectrum of <code>inspectrum</code> is zero beyond degree <code>ldata.</code></p>
+<p>If this routine is to be called several times using the same values of <code>lwin</code> and <code>ldata</code>, then the Clebsch-Gordon coefficients can be precomputed and saved by setting the optional parameter <code>save_cg</code> equal to 1. To deallocate the saved memory, which is a matrix of size (<code>lwin+ldata,lwin,2*lwin+ldata+1</code>), set <code>save_cg</code> equal to -1.</p>
+<h1 id="references">References</h1>
+<p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.</p>
+<p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on a sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shpowerspectra.html">shpowerspectra</a>,[shcrosspowerspectra)[shcrosspowerspectra.html), <a href="wigner3j.html">wigner3j</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersm.html">shreturntapersm</a>, <a href="shbiasadmitcorr.html">shbiasadmitcorr</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

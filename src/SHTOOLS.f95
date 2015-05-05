@@ -130,23 +130,23 @@ module SHTOOLS
             integer, intent(in), optional :: n
         end subroutine CilmMinusRhoH
 
-        subroutine Hilm(cilm, ba, gridglq, lmax, nmax, mass, r0, rho, &
+        subroutine BAtoHilm(cilm, ba, gridglq, lmax, nmax, mass, r0, rho, &
                     gridtype, w, plx, zero, filter_type, filter_deg, lmax_calc)
             real*8, intent(out) ::  cilm(:,:,:)
             real*8, intent(in) ::   ba(:,:,:), gridglq(:,:), mass, r0, rho
             real*8, intent(in), optional :: plx(:,:), zero(:), w(:)
             integer, intent(in) ::  lmax, nmax, gridtype
             integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
-        end subroutine Hilm
+        end subroutine BAtoHilm
         
-        subroutine HilmRhoH(cilm, ba, gridglq, lmax, nmax, mass, r0, &
+        subroutine BAtoHilmRhoH(cilm, ba, gridglq, lmax, nmax, mass, r0, &
                 rho, gridtype, w, plx, zero, filter_type, filter_deg, lmax_calc)
             real*8, intent(out) ::  cilm(:,:,:)
             real*8, intent(in) ::   ba(:,:,:), gridglq(:,:), mass, r0, rho(:,:)
             real*8, intent(in), optional :: plx(:,:), zero(:), w(:)
             integer, intent(in) ::  lmax, nmax, gridtype
             integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
-        end subroutine HilmRhoH
+        end subroutine BAtoHilmRhoH
         
         subroutine MakeGrid2d(grid, cilm, lmax, interval, nlat, nlong, &
                         norm, csphase, f, a, north, south, east, west, dealloc)
@@ -341,15 +341,15 @@ module SHTOOLS
             integer, intent(in), optional :: norm, csphase, dealloc
         end function MakeGridPoint
         
-        real*8 function Wl(l, half, r, d)
+        real*8 function DownContFilterMA(l, half, r, d)
             integer, intent(in) ::  l, half
             real*8, intent(in) ::   r, d
-        end function Wl
+        end function DownContFilterMA
         
-        real*8 function WlCurv(l, half, r, d)
+        real*8 function DownContFilterMC(l, half, r, d)
             integer, intent(in) ::  l, half
             real*8, intent(in) ::  r, d
-        end function WlCurv
+        end function DownContFilterMC
         
         subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, &
                                 chi2, csphase)

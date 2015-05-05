@@ -1,0 +1,93 @@
+.TH "pyshbias" "1" "2015\-04\-23" "Python" "SHTOOLS 3.1"
+.SH SHBias
+.PP
+Calculate the (cross\-)power spectrum expectation of a windowed function
+from its global spectrum.
+.SH Usage
+.PP
+\f[C]outcspectra\f[] = pyshtools.SHBias (\f[C]shh\f[],
+\f[C]incspectra\f[], [\f[C]ldata\f[], \f[C]lwin\f[], \f[C]save_cg\f[]])
+.SH Returns
+.TP
+.B \f[C]outcspectra\f[] : float, dimension (\f[C]ldata\f[]+\f[C]lwin\f[])
+The expectation of the localized (cross\-)power spectrum.
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]shh\f[] : float, dimension (\f[C]lwinin\f[]+1)
+The power spectrum of the localizing window.
+.RS
+.RE
+.TP
+.B \f[C]incspectra\f[] : float, dimension (\f[C]ldatain\f[]+1)
+The global unwindowed (cross\-)power spectrum.
+.RS
+.RE
+.TP
+.B \f[C]ldata\f[] : optional, integer, default = \f[C]ldatain\f[]
+The maximum degree of the global unwindowed power spectrum.
+.RS
+.RE
+.TP
+.B \f[C]lwin\f[] : optional, integer, default = \f[C]lwinin\f[]
+The spherical harmonic bandwidth of the localizing window.
+.RS
+.RE
+.TP
+.B \f[C]save_cg\f[] : optional, integer, default = 0
+If set equal to 1, the Clebsch\-Gordon coefficients will be precomputed
+and saved for future use (if \f[C]lwin\f[] or \f[C]ldata\f[] change,
+this will be recomputed).
+To deallocate the saved memory, set this parameter equal to \-1.
+If set equal to 0 (default), the Clebsch\-Gordon coefficients will be
+recomputed for each call.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHBias\f[] will calculate the (cross\-)power spectrum expectation
+of a function multiplied by a localizing window.
+This is given by equation 35 of Wieczorek and Simons (2005) and equation
+2.11 of Wieczorek and Simons (2007),
+.PP
+\f[C]<SFG>\ =\ Sum_{j=0}^L\ Shh\ Sum_{i=|l\-j|}^{|l+j|}\ Sfg\ (C_{j0i0}^{l0})^2\f[]
+.PP
+where \f[C]<SFG>\f[] is the expectation of the localized (cross\-)power
+spectrum, \f[C]Shh\f[] is the power spectrum of the window bandlimited
+to degree \f[C]L\f[], \f[C]Sfg\f[] is the global unwindowed
+(cross\-)power spectrum, and \f[C]C\f[] is a Clebsch\-Gordan
+coefficient.
+The Clebsch\-Gordan coefficients are calculated using a simple
+relationship to the Wigner 3\-j symbols.
+It is implicitly assumed that the power spectrum of \f[C]inspectrum\f[]
+is zero beyond degree \f[C]ldata.\f[]
+.PP
+If this routine is to be called several times using the same values of
+\f[C]lwin\f[] and \f[C]ldata\f[], then the Clebsch\-Gordon coefficients
+can be precomputed and saved by setting the optional parameter
+\f[C]save_cg\f[] equal to 1.
+To deallocate the saved memory, which is a matrix of size
+(\f[C]lwin+ldata,lwin,2*lwin+ldata+1\f[]), set \f[C]save_cg\f[] equal to
+\-1.
+.SH References
+.PP
+Wieczorek, M.
+A.
+and F.
+J.
+Simons, Localized spectral analysis on the sphere, Geophys.
+J.
+Int., 162, 655\-675, doi:10.1111/j.1365\-246X.2005.02687.x, 2005.
+.PP
+Wieczorek, M.
+A.
+and F.
+J.
+Simons, Minimum\-variance multitaper spectral estimation on a sphere, J.
+Fourier Anal.
+Appl., 13, 665\-692, doi:10.1007/s00041\-006\-6904\-1, 2007.
+.SH See also
+.PP
+shpowerspectra,shcrosspowerspectra, wigner3j, shreturntapers,
+shreturntapersm, shbiasadmitcorr

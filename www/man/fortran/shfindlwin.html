@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="shfindlwin">SHFindLWin</h1>
+<p>Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor.</p>
+<h1 id="usage">Usage</h1>
+<p><code>lwin</code> = SHFindLWin (<code>theta0</code>, <code>m</code>, <code>alpha</code>, <code>taper_number</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>lwin</code> : output, integer</dt>
+<dd>The spherical harmonic bandwidth
+</dd>
+<dt><code>theta0</code> : input, real*8</dt>
+<dd>The angular radius of the spherical cap in radians.
+</dd>
+<dt><code>m</code> : input, integer</dt>
+<dd>The angular order of the taper.
+</dd>
+<dt><code>alpha</code> : input, real*8</dt>
+<dd>The desired concentration factor of the window. This must lie between 0 and 1.
+</dd>
+<dt><code>taper_number</code> : optional, input, integer, default = 1</dt>
+<dd>The taper number corresponding to the angular order <code>m</code>. The default is to use the first taper.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHFindLWin</code> will determine the spherical harmonic bandwidth that is required for a window of the spherical-cap concentration problem to achive a certain concentration factor. By default, the first taper corresponding to the angular order <code>m</code> will be used, but this can be modified by specifying the optional argument <code>taper_number</code>.</p>
+<h1 id="references">References</h1>
+<p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, Geophys. J. Int., 162, 655-675.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="computedg82.html">computedg82</a>, <a href="computedm.html">computedm</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersm.html">shreturntapersm</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

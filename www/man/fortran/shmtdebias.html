@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="shmtdebias">SHMTDebias</h1>
+<p>Invert for the global power spectrum given a multitaper spectrum estimate formed with spherical cap localization windows.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHMTDebias (<code>mtdebias</code>, <code>mtspectra</code>, <code>lmax</code>, <code>tapers</code>, <code>lwin</code>, <code>k</code>, <code>nl</code>, <code>lmid</code>, <code>n</code>, <code>taper_wt</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>mtdebias</code> : output, real*8, dimension (2, ceiling((<code>lmax</code>+1)/<code>nl</code>))</dt>
+<dd>The global power spectrum (column 1) and uncertainty (column 2). The midpoints of the N spherical harmonic bins are given in <code>lmid</code>.
+</dd>
+<dt><code>mtspectra</code> : input, real*8, dimension (2, <code>lmax</code>+1)</dt>
+<dd>The localized multitaper spectrum estimate and uncertainty, obtained from a routine such as <code>SHMultitaperCSE</code> or <code>SHMultitaperSE</code>.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The spherical harmonic bandwidth of the localized multitaper spectrum estimates.
+</dd>
+<dt><code>tapers</code> : input, real*8, dimension (<code>lmaxt</code>+1, <code>k</code>)</dt>
+<dd>An array of the K windowing functions, arranged in columns, obtained from a call to <code>SHReturnTapers</code>.
+</dd>
+<dt><code>lwin</code> : input, integer</dt>
+<dd>The spherical harmonic bandwidth of the windowing functions in the array <code>tapers</code>.
+</dd>
+<dt><code>k</code> : input, integer</dt>
+<dd>The number of tapers utilized in the multitaper spectral analysis.
+</dd>
+<dt><code>nl</code> : input, integer</dt>
+<dd>The global power spectrum is assumed to be constant within bins of spherical harmonic wdith <code>nl</code>. In addition, the global power spectrum will be assumed to be constant beyond <code>lmax</code>.
+</dd>
+<dt><code>lmid</code> : output, real*8, dimension ((<code>lmax</code>+1)/<code>nl</code>+1)</dt>
+<dd>The midpoints of the spherical harmonic bins for which the global power spectrum is constant.
+</dd>
+<dt><code>n</code> : output, integer</dt>
+<dd>The number of bins used in <code>mtdebias</code> and <code>lmid</code>.
+</dd>
+<dt><code>taper_wt</code> : input, optional, real*8, dimension (<code>k</code>)</dt>
+<dd>The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine <code>SHMTVarOpt</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHMTDebias</code> will invert for the global power spectrum given a localized multitaper spectrum estimate formed from spherical cap localization windows. This linear inverse problem is inherently underdetermined, and in order to achive a unique solution it is assumed that the global spectrum is constant in bins of width <code>nl</code>, and that the global power spectrum is constant for degrees greater than <code>lmax</code>. In practice <code>nl</code> should be increased until the global power spectrum is everywhere positive (negative values would be unphysical) and the variances are reasonable. Further details can be found in Wieczorek and Simons (2007).</p>
+<p>This set of linear equations is solved using the method of singular value decomposition as outlined in Press et al. (1992, pp. 670-672). Each value of the multitaper spectrum estimate <code>mtspectra(1,:)</code>, as well as the corresponding rows of the transformation matrix, is divided by the uncertainties of the estimate <code>mtspectra(2,:)</code>. The solution and uncertainty are given by eqs 15.4.17 and 15.4.19 of Press et al. (1992, p. 671), respectively.</p>
+<p>If <code>taper_wt</code> is not specified, the weights will all be assumed to be equal to <code>1/K</code>.</p>
+<h1 id="references">References</h1>
+<p>Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.</p>
+<p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shmultitaperse.html">shmultitaperse</a>, <a href="shmultitapercse.html">shmultitapercse</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shmtvaropt.html">shmtvaropt</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

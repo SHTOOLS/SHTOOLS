@@ -1,4 +1,4 @@
-.TH "pymakegridglq" "1" "2015\-03\-30" "SHTOOLS 3.0" "SHTOOLS 3.0"
+.TH "pymakegridglq" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
 .SH MakeGridGLQ
 .PP
 Create a 2D map from a set of spherical harmonic coefficients sampled on
@@ -23,7 +23,7 @@ considered is the minimum of \f[C]lmax\f[], \f[C]lmaxin\f[] or
 \f[C]lmax_calc\f[] (if specified).
 The coefficients \f[C]C1lm\f[] and \f[C]C2lm\f[] refer to the "cosine"
 (\f[C]Clm\f[]) and "sine" (\f[C]Slm\f[]) coefficients, respectively,
-with \f[C]Clm=cilm(1,l+1,m+1)\f[] and \f[C]Slm=cilm(2,l+1,m+1)\f[].
+with \f[C]Clm=cilm[0,l,m]\f[] and \f[C]Slm=cilm[1,l,m]\f[].
 .RS
 .RE
 .TP
@@ -33,27 +33,27 @@ calculated by a call to \f[C]SHGLQ\f[].
 .RS
 .RE
 .TP
-.B \f[C]lmax\f[] : integer, optional, default = \f[C]lamxin\f[]
+.B \f[C]lmax\f[] : optional, integer, default = \f[C]lamxin\f[]
 The maximum spherical harmonic bandwidth of the function.
 This determines the sampling nodes of the dimensions of the output grid.
 .RS
 .RE
 .TP
-.B \f[C]norm\f[] : integer, optional, default = 1
+.B \f[C]norm\f[] : optional, integer, default = 1
 1 (default) = Geodesy 4\-pi normalized harmonics; 2 = Schmidt
 semi\-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal
 harmonics.
 .RS
 .RE
 .TP
-.B \f[C]csphase\f[] : integer, optional, default = 1
+.B \f[C]csphase\f[] : optional, integer, default = 1
 1 (default) = do not apply the Condon\-Shortley phase factor to the
 associated Legendre functions; \-1 = append the Condon\-Shortley phase
 factor of (\-1)^m to the associated Legendre functions.
 .RS
 .RE
 .TP
-.B \f[C]lmax_calc\f[] : integer, optional, default = \f[C]lmax\f[]
+.B \f[C]lmax_calc\f[] : optional, integer, default = \f[C]lmax\f[]
 The maximum spherical harmonic degree used in evaluating the function.
 This must be less than or equal to \f[C]lmax\f[].
 .RS

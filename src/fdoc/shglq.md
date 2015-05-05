@@ -17,16 +17,16 @@ call SHGLQ (`lmax`, `zero`, `w`, `plx`, `norm`, `csphase`, `cnorm`)
 `w` : output, real\*8, dimension (`lmax`+1)
 :   The weights used in the Gauss-Legendre quadrature over latitude, determined from a call to `PreGLQ`.
 
-`plx` : output, real\*8, optional, dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
+`plx` : output, optional, real\*8, dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the nodes used in the Gauss-Legendre quadrature. 
 	
-`norm` : input, integer, optional, default = 1
+`norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : input, integer, optional, default = 1
+`csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`cnorm` : input, integer, optional, default = 0
+`cnorm` : input, optional, integer, default = 0
 :   If 0 (default), the real normalization of the associated Legendre functions will be used. If 1, the complex normalization of the associated Legendre functions will be used.
 
 # Description

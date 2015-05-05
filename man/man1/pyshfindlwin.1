@@ -1,0 +1,58 @@
+.TH "pyshfindlwin" "1" "2015\-04\-20" "Python" "SHTOOLS 3.1"
+.SH SHFindLWin
+.PP
+Determine the spherical\-harmonic bandwidth that is necessary to achieve
+a certain concentration factor.
+.SH Usage
+.PP
+\f[C]lwin\f[] = pyshtools.SHFindLWin (\f[C]theta0\f[], \f[C]m\f[],
+\f[C]alpha\f[], [\f[C]taper_number\f[]])
+.SH Returns
+.TP
+.B \f[C]lwin\f[] : integer
+The spherical harmonic bandwidth
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]theta0\f[] : float
+The angular radius of the spherical cap in radians.
+.RS
+.RE
+.TP
+.B \f[C]m\f[] : integer
+The angular order of the taper.
+.RS
+.RE
+.TP
+.B \f[C]alpha\f[] : float
+The desired concentration factor of the window.
+This must lie between 0 and 1.
+.RS
+.RE
+.TP
+.B \f[C]taper_number\f[] : optional, integer, default = 1
+The taper number corresponding to the angular order \f[C]m\f[].
+The default is to use the first taper.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]SHFindLWin\f[] will determine the spherical harmonic bandwidth that
+is required for a window of the spherical\-cap concentration problem to
+achive a certain concentration factor.
+By default, the first taper corresponding to the angular order
+\f[C]m\f[] will be used, but this can be modified by specifying the
+optional argument \f[C]taper_number\f[].
+.SH References
+.PP
+Wieczorek, M.
+A.
+and F.
+J.
+Simons, Localized spectral analysis on the sphere, Geophys.
+J.
+Int., 162, 655\-675.
+.SH See also
+.PP
+computedg82, computedm, shreturntapers, shreturntapersm

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Gravity and magnetics routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pygravmag.html" class="dir">Gravity and Magnetics</a></p>
+<h1 id="makemaggriddh">MakeMagGridDH</h1>
+<p>Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential.</p>
+<h1 id="usage">Usage</h1>
+<p><code>rad</code>, <code>theta</code>, <code>phi</code>, <code>total</code> = pyshtools.MakeMagGridDH (<code>cilm</code>, <code>r0</code>, [<code>lmax</code>, <code>a</code>, <code>f</code>, <code>sampling</code>, <code>lmaxcalc</code>])</p>
+<h1 id="returns">Returns</h1>
+<dl>
+<dt><code>rad</code> : float, dimension(2*<code>lmax</code>+2, <code>sampling</code>*(2*<code>lmax</code>+2))</dt>
+<dd>A 2D equally sampled (<code>n</code> by <code>n</code>) or equally spaced (<code>n</code> by 2<code>n</code>) grid of the radial component of the magnetic field corresponding to the input spherical harmonic coefficients <code>cilm</code>. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/<code>n</code> degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/<code>n</code> for an equally sampled and 180/<code>n</code> for an equally spaced grid, respectively.
+</dd>
+<dt><code>theta</code> : float, dimension(2*<code>lmax</code>+2, <code>sampling</code>*(2*<code>lmax</code>+2))</dt>
+<dd>A 2D equally sampled or equally spaced grid of the theta component of the magnetic field.
+</dd>
+<dt><code>phi</code> : float, dimension(2*<code>lmax</code>+2, <code>sampling</code>*(2*<code>lmax</code>+2))</dt>
+<dd>A 2D equally sampled or equally spaced grid of the phi component of the magnetic field.
+</dd>
+<dt><code>total</code> : float, dimension(2*<code>lmax</code>+2, <code>sampling</code>*(2*<code>lmax</code>+2))</dt>
+<dd>A 2D equally sampled or equally spaced grid of the total magnetic field strength.
+</dd>
+</dl>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The real Schmidt semi-normalized spherical harmonic coefficients to be expanded in the space domain. The coefficients <code>C1lm</code> and <code>C2lm</code> refer to the cosine (<code>Clm</code>) and sine (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm[0,l,m]</code> and <code>Slm=cilm[1,l,m]</code>. Alternatively, <code>C1lm</code> and <code>C2lm</code> correspond to the positive and negative order coefficients, respectively.
+</dd>
+<dt><code>r0</code> : float</dt>
+<dd>The reference radius of the spherical harmonic coefficients.
+</dd>
+<dt><code>lmax</code> : optional, integer, default = <code>lamxin</code></dt>
+<dd>The maximum spherical harmonic degree of the coefficients <code>cilm</code>. This determines the number of samples of the output grids, <code>n=2*lmax+2</code>, and the latitudinal sampling interval, <code>90/(lmax+1)</code>.
+</dd>
+<dt><code>a</code> : optional, float, default = <code>r0</code></dt>
+<dd>The semi-major axis of the flattened ellipsoid on which the field is computed.
+</dd>
+<dt><code>f</code> : optional, float, default = 0</dt>
+<dd>The flattening of the reference ellipsoid: i.e., <code>F=(R_equator-R_pole)/R_equator</code>.
+</dd>
+<dt><code>sampling</code> : optional, integer, default = 2</dt>
+<dd>If 1 the output grids are equally sampled (<code>n</code> by <code>n</code>). If 2, the grids are equally spaced (<code>n</code> by 2<code>n</code>).
+</dd>
+<dt><code>lmaxcalc</code> : optional, integer, default = <code>lmax</code></dt>
+<dd>The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to <code>lmax</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>MakeMagGridDH</code> will create 2-dimensional cylindrical maps from the spherical harmonic coefficients <code>cilm</code> of all three components of the magnetic field, the total field strength, and the magnetic potential. The magnetic potential is given by</p>
+<p><code>V = R0 Sum_{l=1}^LMAX (R0/r)^{l+1} Sum_{m=-l}^l C_{lm} Y_{lm}</code></p>
+<p>and the magnetic field is</p>
+<p><code>B = - Grad V</code>.</p>
+<p>The coefficients are referenced to a radius <code>r0</code>, and the function is computed on a flattened ellipsoid with semi-major axis <code>a</code> (i.e., the mean equatorial radius) and flattening <code>f</code>.</p>
+<p>The default is to calculate grids for use in the Driscoll and Healy routines that are equally sampled (<code>n</code> by <code>n</code>), but this can be changed to calculate equally spaced grids (<code>n</code> by 2<code>n</code>) by setting the optional argument <code>sampling</code> to 2. The input value of <code>lmax</code> determines the number of samples, <code>n=2lmax+2</code>, and the latitudinal sampling interval, <code>90/(lmax+1)</code>. The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/<code>n</code> degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/<code>n</code> for equally sampled and 180/<code>n</code> for equally spaced grids, respectively.</p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pygravmag.html" class="dir">Gravity and Magnetics</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+.TH "pymakegeoidgriddh" "1" "2015\-04\-27" "Python" "SHTOOLS 3.1"
+.SH MakeGeoidGridDH
+.PP
+Create a global map of the geoid.
+.SH Usage
+.PP
+\f[C]geoid\f[] = pyshtools.MakeGeoidGridDH (\f[C]cilm\f[], \f[C]r0\f[],
+\f[C]gm\f[], \f[C]potref\f[], [\f[C]lmax\f[] \f[C]omega\f[], \f[C]r\f[],
+\f[C]order\f[], \f[C]lmax_calc\f[], \f[C]a\f[], \f[C]f\f[]])
+.SH Returns
+.TP
+.B \f[C]geoid\f[] : float, dimension (\f[C]2lmax+2\f[], \f[C]sampling\f[]*2\f[C]lmax+2\f[])
+A global grid of the height to the potential \f[C]potref\f[] above a
+flattened ellipsoid or equatorial radius \f[C]a\f[] and flattening
+\f[C]f\f[].
+.RS
+.RE
+.SH Parameters
+.TP
+.B \f[C]cilm\f[] : float, dimension (2, \f[C]lmaxin\f[]+1, \f[C]lmaxin\f[]+1)
+The real spherical harmonic coefficients (geodesy normalized) of the
+gravitational potential referenced to a spherical interface of radius
+\f[C]r0\f[].
+.RS
+.RE
+.TP
+.B \f[C]r0\f[] : float
+The reference radius of the spherical harmonic coefficients.
+.RS
+.RE
+.TP
+.B \f[C]gm\f[] : float
+The product of the gravitational constant and mass of the planet.
+.RS
+.RE
+.TP
+.B \f[C]potref\f[] : float
+The value of the potential on the chosen geoid, in SI units.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : optional, integer, default = \f[C]lmaxin\f[]
+The maximum spherical harmonic degree of the gravitational\-potential
+coefficients.
+This determines the number of latitudinal and longitudinal samples.
+.RS
+.RE
+.TP
+.B \f[C]omega\f[] : optional, float, default = 0
+The angular rotation rate of the planet.
+.RS
+.RE
+.TP
+.B \f[C]r\f[] : optional, float, default = \f[C]r0\f[]
+The radius of the reference sphere that the Taylor expansion of the
+potential is performed on.
+.RS
+.RE
+.TP
+.B \f[C]order\f[] : optional, integer, default = 2
+The order of the Taylor series expansion of the potential about the
+reference radius \f[C]r\f[].
+This can be either 1, 2, or 3.
+.RS
+.RE
+.TP
+.B \f[C]lmax_calc\f[] : optional, integer, default = \f[C]lmax\f[]
+The maximum degree used in evaluating the spherical harmonic
+coefficients.
+This must be less than or equal to \f[C]lmax\f[].
+.RS
+.RE
+.TP
+.B \f[C]a\f[] : optional, float, default = \f[C]r0\f[]
+The semi\-major axis of the flattened ellipsoid that the output grid
+\f[C]geoid\f[] is referenced to.
+The optional parameter \f[C]f\f[] must also be specified.
+.RS
+.RE
+.TP
+.B \f[C]f\f[] : optional, float, default = 0
+The flattening \f[C](R_equator\-R_pole)/R_equator\f[] of the reference
+ellipsoid.
+The optional parameter \f[C]a\f[] (i.e., \f[C]R_equator\f[]) must be
+specified.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]MakeGeoidGrid\f[] will create a global map of the geoid, accurate
+to either first, second, or third order, using the method described in
+Wieczorek (2007; equation 19\-20).
+The algorithm expands the potential in a Taylor series on a spherical
+interface of radius \f[C]r\f[], and computes the height above this
+interface to the potential \f[C]potref\f[] exactly from the linear,
+quadratic, or cubic equation at each grid point.
+If the optional parameters \f[C]a\f[] and \f[C]f\f[] are specified, the
+geoid height will be referenced to a flattened ellipsoid with
+semi\-major axis \f[C]a\f[] and flattening \f[C]f\f[].
+The pseudo\-rotational potential is explicitly accounted for by
+specifying the angular rotation rate \f[C]omega\f[] of the planet.
+.PP
+It should be noted that this geoid calculation is only strictly exact
+when the radius \f[C]r\f[] lies above the maximum radius of the planet.
+Furthermore, the geoid is only strictly valid when it lies above the
+surface of the planet (it is necessary to know the density structure of
+the planet when calculating the potential below the surface).
+.PP
+The default is to calculate grids for use in the Driscoll and Healy
+routines that are equally spaced (\f[C]n\f[] by \f[C]2n\f[]), but this
+can be changed to calculate equally sampled grids (\f[C]n\f[] by
+\f[C]n\f[]) by setting the optional argument \f[C]sampling\f[] to 1.
+This routine uses geodesy 4\-pi normalized spherical harmonics that
+exclude the Condon\-Shortley phase.
+.SH References
+.PP
+Driscoll, J.R.
+and D.M.
+Healy, Computing Fourier transforms and convolutions on the 2\-sphere,
+Adv.
+Appl.
+Math., 15, 202\-250, 1994.
+.PP
+Wieczorek, M.
+A.
+Gravity and topography of the terrestrial planets, Treatise on
+Geophysics, 10, 165\-206, 2007.
+.SH See also
+.PP
+makegrid2d, makegridglq, makegriddh, makegravgriddh, makegravgradgriddh

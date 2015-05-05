@@ -14,13 +14,13 @@ call SHctor (`ccilm`, `rcilm`, `degmax`, `convention`, `switchcs`)
 `rcilm` : output, real\*8, dimension (2, `lmaxout`+1, `lmaxout`+1)
 :   The output real spherical harmonic coefficients. `rcilm(1,:,:)` and `rcilm(2,:,:)` correspond to the cosine and sine terms, respectively.
 
-`degmax` : input, integer, optional, default = min(`lmaxin`, `lmaxout`)
+`degmax` : input, optional, integer, default = min(`lmaxin`, `lmaxout`)
 :   The maximum degree of the output coefficients.
 
-`convention` : input, integer, optional, default = 1
+`convention` : input, optional, integer, default = 1
 :   If 1 (default), the input and output coefficients will have the same normalization. If 2, orthonormalized coefficients will be converted to real geodesy 4-pi form.
 
-`swtichcs` : input, integer, optional, default = 0
+`swtichcs` : input, optional, integer, default = 0
 :   If 0 (default), the input and output coefficients will possess the same Condon-Shortley phase convention. If 1, the input coefficients will first be multiplied by (-1)^m.
 
 # Description

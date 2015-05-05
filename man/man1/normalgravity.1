@@ -1,0 +1,64 @@
+.TH "normalgravity" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
+.SH NormalGravity
+.PP
+Calculate the normal gravity on a flattened ellipsoid in geocentric
+coordinates using the formula of Somigliana.
+.SH Usage
+.PP
+\f[C]value\f[] = NormalGravity (\f[C]geocentriclat\f[], \f[C]gm\f[],
+\f[C]omega\f[], \f[C]a\f[], \f[C]b\f[])
+.SH Parameters
+.TP
+.B \f[C]value\f[] : output, real*8
+The normal gravity in SI units.
+.RS
+.RE
+.TP
+.B \f[C]geocentriclat\f[]: input, real*8
+Geocentric latitude in degrees.
+.RS
+.RE
+.TP
+.B \f[C]gm\f[] : input, real*8
+The gravitational constant multiplied by the mass of the planet.
+.RS
+.RE
+.TP
+.B \f[C]omega\f[] : input, real*8
+The angular rotation rate of the planet.
+.RS
+.RE
+.TP
+.B \f[C]a\f[] : input, real*8
+The semi\-major axis of the flattened ellipsoid on which the normal
+gravity is computed.
+.RS
+.RE
+.TP
+.B \f[C]b\f[] : input, real*8
+The semi\-minor axis of the flattened ellipsoid on which the normal
+gravity is computed.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]NormalGravity\f[] will calculate the magnitude of the predicted
+gravity (in m/s^2) on a flattened ellipsoid using Somigliana\[aq]s
+formula.
+The latitude is input in geocentric coordinates in degrees, which is
+later converted to geodetic coordinates in the routine for use with
+Somigliana\[aq]s formula.
+Other input parameters include \f[C]gm\f[], the product of the
+gravitational constant and the planet\[aq]s mass, and the semi\-major
+and semi\-minor axes of the planet, \f[C]a\f[] and \f[C]b\f[],
+respectively.
+For further details, see sections 2.7 and 2.8 of Physical Geodesy
+(Hofmann\-Wellenhof and Moritz).
+.SH References
+.PP
+Hofmann\-Wellenhof B, and H.
+Moritz, "Physical Geodesy," second edition, Springer, Wien, 403 pp.,
+2006.
+.SH See also
+.PP
+makegravgrid2d, makegravgriddh, makegeoidgrid
