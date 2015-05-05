@@ -22,6 +22,7 @@ Matthias Meschede and Mark Wieczorek, 2015
 """
 
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 from _SHTOOLS import *
@@ -474,22 +475,29 @@ class SHWindow(object):
 
         if show: plt.show()
 
-    def get_couplingmatrix(self,nwins):
+    def get_couplingmatrix(self,lmax,nwins):
+        """returns the coupling matrix of the first nwins tapers"""
         #store sqrt of taper power in 'tapers' array:
         if nwins>self.nwins: nwins = self.nwins
         tapers = np.zeros( (self.nl, nwins) )
         for itaper in range(nwins):
             tapers[:,itaper] = np.sqrt(SHPowerSpectrum(self._coeffs(itaper)))
 
-        #compute coupling matrix of summed tapers:
-        SHMTCouplingMatrix()
+        #compute coupling matrix of the first nwins tapers:
+        coupling_matrix = SHMTCouplingMatrix(lmax,tapers[:,:nwins])
+        return coupling_matrix
 
-    def plot_couplingmatrix(self,nwins,show=True):
+    def plot_couplingmatrix(self,lmax,nwins,show=True):
         """plots the window's coupling strength"""
-        fig = plt.figure()
+        figsize = mpl.rcParams['figure.figsize']
+        figsize[0] = figsize[1]
+        fig = plt.figure(figsize=figsize)
         ax  = fig.add_subplot(111)
-        coupling_matrix = self._coupling_matrix(nwins)
+        coupling_matrix = self.get_couplingmatrix(lmax,nwins)
         ax.imshow(coupling_matrix)
+        ax.set_xlabel('output power')
+        ax.set_ylabel('input power')
+        fig.tight_layout(pad=0.1)
 
         if show: plt.show()
 

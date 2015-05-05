@@ -35,7 +35,8 @@ def example1():
     theta = 25.
     cap = SHWindow.from_cap(lmax,nwins,theta)
     cap.info()
-    cap.plot(20)
+    cap.plot(20,show=False)
+    cap.plot_couplingmatrix(100,5)
 
 #==== EXAMPLES ====
 def example2():
@@ -48,7 +49,8 @@ def example2():
     print(dh_mask.shape)
     region = SHWindow.from_mask(lmax, nwins, dh_mask, sampling=2)
     region.info()
-    region.plot(nwins)
+    region.plot(nwins,show=False)
+    region.plot_couplingmatrix(100,5)
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
