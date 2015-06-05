@@ -22,12 +22,9 @@ mpl.rcParams.update(style_shtools)
 
 
 def main():
-    test_LocalizationWindows()
-    # test_LocalizationBias()
-    # test_Other()
+    test_CouplingMatrix()
 
-
-def test_LocalizationWindows():
+def test_CouplingMatrix():
     print '\n---- testing SHMTCouplingMatrix ----'
     lmax  = 30
     lwin = 10

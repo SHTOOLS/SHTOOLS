@@ -51,10 +51,10 @@ class SHCoeffs(object):
 
     #---- factory methods:
     @classmethod
-    def from_array(self, array, kind='real'):
+    def from_array(self, array, kind='real', normalization='4pi'):
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(array)
+                return cls(array,normalization='4pi')
 
     @classmethod
     def from_random(self, power, kind='real'):
@@ -100,11 +100,12 @@ class SHCoeffs(object):
         return self._powerperdegree() * ls * np.log(bandwidth)
 
     #---- conversions ----
-    def get_coeffs(self, normalization='4pi'):
+    def get_coeffs(self, normalization='4pi', kind='real'):
         """
         returns complex or real, raw spherical harmonics coefficients 
         in different normalizations
         """
+        coeffs = self._coeffs(kind)
         raise NotImplementedError('Not yet implemented')
 
     #---- rotation ----
@@ -188,7 +189,7 @@ class SHRealCoefficients(SHCoeffs):
     def istype(kind):
         return kind == 'real'
 
-    def __init__(self, coeffs):
+    def __init__(self, coeffs, normalization='4pi'):
         #---- create mask to filter out m<=l ----
         lmax = coeffs.shape[1] - 1
         mask = np.zeros(2 * (lmax + 1) * (lmax + 1), dtype=np.bool).reshape(2, lmax + 1, lmax + 1)
@@ -197,7 +198,7 @@ class SHRealCoefficients(SHCoeffs):
             mask[:, l, :l + 1] = True
         mask[1, :, 0] = False
 
-        self.lmax = lmax
+        self.lmax   = lmax
         self.coeffs = np.copy(coeffs)
         self.coeffs[np.invert(mask)] = 0.
 
@@ -209,6 +210,13 @@ class SHRealCoefficients(SHCoeffs):
     def _powerperdegree(self):
         """-> use powerperdegree instead of _powerperdegree"""
         return SHPowerSpectrum(self.coeffs)
+
+    def _get_coeffs(self,kind='real', convention=1, swithchcs=0):
+        """-> use get_coeffs instead of _get_coeffs"""
+        if kind=='real': 
+            return self.coeffs
+        elif kind=='complex':
+            return SHrtoc(self.coeffs, convention=convention, switchcs=switchcs)
 
     def _rotate(self, angles, dj_matrix=None):
         """-> use rotate instead of _rotate"""
@@ -243,7 +251,7 @@ class SHComplexCoefficients(SHCoeffs):
     def istype(kind):
         return kind == 'complex'
 
-    def __init__(self, coeffs):
+    def __init__(self, coeffs, normalization='4pi'):
         self.coeffs = coeffs
         self.lmax   = coeffs.shape[1] - 1
 
@@ -252,9 +260,12 @@ class SHComplexCoefficients(SHCoeffs):
         complex_coeffs = SHctor(self.coeffs, convention=convention, switchcs=switchcs)
         return SHCoeffs.from_array(complex_coeffs, kind='real')
 
-    def _powerperdegree():
+    def _powerperdegree(self):
         """-> use powerperdegree instead of _powerperdegree"""
         return SHCPowerSpectrum(self.coeffs)
+
+    def _get_coeffs(self):
+        raise NotImplementedError('get_coeffs not yet implemented for complex coefficients')
 
     def _rotate(self, angles, dj_matrix=None):
         """-> use rotate instead of _rotate"""
@@ -322,7 +333,6 @@ class SHGrid(object):
 
 #---- implementation of the Driscoll and Healy Grid class ----
 class DHGrid(SHGrid):
-
     """
     Driscoll and Healy Grid (publication?)
     """
@@ -370,7 +380,6 @@ class DHGrid(SHGrid):
 
 
 class GLQGrid(SHGrid):
-
     """
     Gauss Legendre Class
     """
@@ -475,6 +484,13 @@ class SHWindow(object):
 
         if show: plt.show()
 
+    def get_spectrum(self, shcoeffs, nwins):
+        """Returns the regional spherical harmonics spectrum"""
+        for itaper in range(nwins):
+            tapercoeffs = self._coeffs(itaper)
+            modelcoeffs = shcoeffs.get_coeffs(normalization='4pi',kind='real')
+            coeffs = SHMultiply(tapercoeffs,modelcoeffs)
+
     def get_couplingmatrix(self,lmax,nwins):
         """returns the coupling matrix of the first nwins tapers"""
         #store sqrt of taper power in 'tapers' array:
@@ -502,9 +518,7 @@ class SHWindow(object):
         if show: plt.show()
 
     def info(self):
-        """
-        print meta information about the tapers
-        """
+        """print meta information about the tapers"""
         self._info()
 
 class SHSymmetricWindow(SHWindow):
