@@ -78,7 +78,7 @@
 #		Detele all compiled python tests
 #
 #	make doc
-#		Create the man and html-man pages from input POD files.
+#		Create the man and html-man pages from input Markdown files.
 #		These are PRE-MADE in the distribution. To remake these
 #		files, it will be necessary to install "pandoc", 
 #		"ghc" and "cabal-install" (all using brew on OSX),
@@ -329,7 +329,7 @@ install-fortran: getflags
 	mkdir -pv $(SYSSHAREPATH)/shtools
 	cp -R examples $(SYSSHAREPATH)/shtools/
 	mkdir -pv $(SYSSHAREPATH)/man/man1
-	cp -R man/man1 $(SYSSHAREPATH)/
+	cp -R man/man1/ $(SYSSHAREPATH)/man/man1/
 	mkdir -pv $(SYSDOCPATH)/shtools
 	cp index.html $(SYSDOCPATH)/shtools/index.html
 	cp -R www $(SYSDOCPATH)/shtools/
