@@ -63,7 +63,7 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 if kind == 'real':
                     coeffs = np.random.normal(size=2 * nl * nl).reshape(2, nl, nl)
-                    coeffs *= np.sqrt(power.reshape(1, lmax+1, 1))
+                    coeffs *= np.sqrt(power.reshape(1, nl, 1))
                 elif kind == 'complex':
                     coeffs = np.random.normal(loc=0., scale=1., size=2 * nl * nl ) + \
                         1j * np.random.normal(loc=0., scale=1., size=2 * nl * nl )
@@ -140,7 +140,7 @@ class SHCoeffs(object):
         return grid
 
     #---- plotting routines ----
-    def plot_powerperdegree(self, loglog=True, show=True):
+    def plot_powerperdegree(self, loglog=True, show=True, fname=None):
         """
         plots the power per degree spectrum. This is in particular useful to
         analyze global isotropic power at a certain wavelength.
@@ -158,8 +158,10 @@ class SHCoeffs(object):
             ax.plot(ls[1:], power[1:], label='power per degree l')
         if show:
             plt.show()
+        if fname is not None:
+            fig.savefig(fname)
 
-    def plot_powerperband(self, bandwidth=2, show=True):
+    def plot_powerperband(self, bandwidth=2, show=True, fname=None):
         """
         plots the power per log_{bandwidth}(degree) spectrum. This is in
         particular useful to analyze local heterogeneity strength.
@@ -174,8 +176,11 @@ class SHCoeffs(object):
         ax.set_yscale('log', basey=bandwidth)
         ax.grid(True, which='both')
         ax.plot(ls[1:], power[1:], label='power per degree l')
+        fig.tight_layout(pad=0.1)
         if show:
             plt.show()
+        if fname is not None:
+            fig.savefig(fname)
 
 
 #================== REAL SPHERICAL HARMONICS ================
@@ -322,10 +327,12 @@ class SHGrid(object):
         return self._get_lats()
 
     #---- plotting routines ----
-    def plot_rawdata(self, show=True):
-        self._plot_rawdata()
+    def plot_rawdata(self, show=True, fname=None):
+        fig,ax = self._plot_rawdata()
         if show:
             plt.show()
+        if fname is not None:
+            fig.savefig(fname)
 
     def expand(self):
         return self._expand()
@@ -375,6 +382,7 @@ class DHGrid(SHGrid):
         ax.set_xlabel('longitude')
         ax.set_ylabel('latitude')
         fig.tight_layout(pad=0.5)
+        return fig,ax
 
 #---- implementation of the Gauss-Legendre Grid class ----
 
@@ -426,6 +434,7 @@ class GLQGrid(SHGrid):
         ax.set_xlabel('longitude index')
         ax.set_ylabel('latitude  index')
         fig.tight_layout(pad=0.5)
+        return fig,ax
 
 
 #==== SPHERICAL HARMONICS WINDOW FUNCTION CLASS ====
@@ -455,7 +464,7 @@ class SHWindow(object):
         tapers, eigenvalues = SHReturnTapersMap(dh_mask, lmax, sampling=sampling, Ntapers=nwins)
         return SHAsymmetricWindow(tapers,eigenvalues)
 
-    def plot(self,nwins,show=True):
+    def plot(self,nwins,show=True,fname=None):
         """
         plots the best concentrated spherical harmonics taper functions
         """
@@ -483,6 +492,9 @@ class SHWindow(object):
         fig.tight_layout(pad=0.5)
 
         if show: plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+
 
     def get_spectrum(self, shcoeffs, nwins):
         """Returns the regional spherical harmonics spectrum"""
@@ -503,7 +515,7 @@ class SHWindow(object):
         coupling_matrix = SHMTCouplingMatrix(lmax,tapers[:,:nwins])
         return coupling_matrix
 
-    def plot_couplingmatrix(self,lmax,nwins,show=True):
+    def plot_couplingmatrix(self,lmax,nwins,show=True,fname=None):
         """plots the window's coupling strength"""
         figsize = mpl.rcParams['figure.figsize']
         figsize[0] = figsize[1]
@@ -516,6 +528,8 @@ class SHWindow(object):
         fig.tight_layout(pad=0.1)
 
         if show: plt.show()
+        if fname is not None:
+            fig.savefig(fname)
 
     def info(self):
         """print meta information about the tapers"""

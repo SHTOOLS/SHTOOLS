@@ -25,6 +25,7 @@ mpl.rcParams.update(style_shtools)
 #==== MAIN FUNCTION ====
 
 def main():
+    example1()
     example2()
 
 #==== EXAMPLES ====
@@ -35,8 +36,8 @@ def example1():
     theta = 25.
     cap = SHWindow.from_cap(lmax,nwins,theta)
     cap.info()
-    cap.plot(20,show=False)
-    cap.plot_couplingmatrix(30,5)
+    cap.plot(20,show=False,fname='cap_tapers.png')
+    cap.plot_couplingmatrix(30,5,show=False,fname='cap_coupling.png')
 
 #==== EXAMPLES ====
 def example2():
@@ -49,8 +50,8 @@ def example2():
     print(dh_mask.shape)
     region = SHWindow.from_mask(lmax, nwins, dh_mask, sampling=2)
     region.info()
-    region.plot(nwins,show=False)
-    region.plot_couplingmatrix(30,5)
+    region.plot(nwins,show=False,fname='continent_tapers.png')
+    region.plot_couplingmatrix(30,5,show=False,fname='continent_coupling.png')
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

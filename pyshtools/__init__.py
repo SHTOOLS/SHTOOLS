@@ -9,6 +9,14 @@ The python wrapper was written by: Matthias Meschede, Mark Wieczorek, 2014
 
 __version__ = '3.1'
 
+#---- some miniature python functions: ----
+def PlmIndex(l,m):
+    return (l*(l+1))/2 + m
+
+def YilmIndexVector(l,m):
+    return l**2 + (i-1)*l + m
+
+#---- load docstring functions ----
 def load_documentation():
     """
     Fills the modules __doc__ strings with a useful documentation that was
@@ -45,11 +53,4 @@ from ._SHTOOLS import *
 
 # import class interface into namespace
 from .classes import SHCoeffs, SHGrid, SHWindow
-
-#---- some miniature python functions: ----
-def PlmIndex(l,m):
-    return (l*(l+1))/2 + m
-
-def YilmIndexVector(l,m):
-    return l**2 + (i-1)*l + m
 
