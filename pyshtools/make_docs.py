@@ -22,14 +22,6 @@ def main():
     pydocfolder = os.path.join(libfolder, 'pyshtools/doc')
     print '---- searching documentation in folder: {} ----'.format(mddocfolder)
 
-    #---- md file search patterns ----
-    retail = re.compile('# See (.*)', re.DOTALL)
-    reh2 = re.compile('## (.*?)\n', re.DOTALL)
-    reh1 = re.compile('\A# (.*?)\n', re.DOTALL)
-    reh1b = re.compile('\n# (.*?)\n', re.DOTALL)
-    recode = re.compile('`(.*?)`', re.DOTALL)
-    restaresc = re.compile(r'(\\\*)', re.DOTALL)
-    #rebold = re.compile('(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
 
     #---- loop through the f2py _SHTOOLS functions and make docstrings ----
     for name, func in _SHTOOLS.__dict__.items():
@@ -39,46 +31,7 @@ def main():
                 # read md file documentation:
                 fname_mddoc = os.path.join(mddocfolder, 'py' + name.lower() + '.md')
                 if (os.path.isfile(fname_mddoc)):
-                    mdfile = open(fname_mddoc, 'r')
-                    mdstring = mdfile.read()
-
-                    match = retail.search(mdstring)
-                    if match != None:
-                        #    mdstring = re.sub(match.group(0),'',mdstring) doesn't work. don't know why
-                        mdstring = string.replace(mdstring, match.group(0), '')
-
-                    match = reh1.search(mdstring)
-                    while match != None:
-                        mdstring = re.sub(match.group(0), match.group(1) + '\n' + len(match.group(1)) * '-' + '\n', mdstring)
-                        match = reh1.search(mdstring)
-
-                    match = reh1b.search(mdstring)
-                    while match != None:
-                        mdstring = re.sub(match.group(0), '\n' + match.group(1) + '\n' + len(match.group(1)) * '-' + '\n', mdstring)
-                        match = reh1b.search(mdstring)
-
-                    match = recode.search(mdstring)
-                    while match != None:
-                        #    mdstring = re.sub(match.group(0),match.group(1),mdstring) doesn't work. don't know why
-                        mdstring = string.replace(mdstring, match.group(0), match.group(1))
-                        match = recode.search(mdstring)
-
-                    match = restaresc.search(mdstring)
-                    while match != None:
-                        mdstring = string.replace(mdstring, match.group(0), '*')
-                        match = recode.search(mdstring)
-
-                    # wrap each line of the string individually.
-                    docstring = ''
-                    tmp = mdstring.splitlines(True)
-                    for i in range(0, len(tmp)):
-                        if tmp[i][0:4] == ':   ':
-                            docstring += textwrap.fill(tmp[i][4:], width=80,
-                                                       replace_whitespace=False, initial_indent='    ',
-                                                       subsequent_indent='    ') + '\n'
-                        else:
-                            docstring += textwrap.fill(tmp[i], width=80, replace_whitespace=False) + '\n'
-
+                    docstring = process_mddoc(fname_mddoc)
                     #---- save combined docstring in the pydoc folder--
                     fname_pydoc = os.path.join(pydocfolder, name.lower() + '.doc')
                     pydocfile = open(fname_pydoc, 'w')
@@ -88,29 +41,29 @@ def main():
             except IOError, msg:
                 print msg
 
+    #---- loop through functions that are defined in python ----
+    pyfunctions = ['PlmIndex','YilmIndexVector']
+    for name in pyfunctions:
+        try:
+            #---- process and load documentation
+            # read md file documentation:
+            fname_mddoc = os.path.join(mddocfolder, 'py' + name.lower() + '.md')
+            docstring = process_mddoc(fname_mddoc)
+            #---- save combined docstring in the pydoc folder--
+            fname_pydoc = os.path.join(pydocfolder, name.lower() + '.doc')
+            pydocfile = open(fname_pydoc, 'w')
+            pydocfile.write(docstring)
+            pydocfile.close()
+
+        except IOError, msg:
+            print msg
+
     #---- loop through the f2py constants and make docstrings ----
     for name, value in _constant.planetsconstants.__dict__.items():
         try:
             #---- read md file documentation:
             fname_mddoc = os.path.join(mddocfolder, 'constant_' + name.lower() + '.md')
-            mdfile = open(fname_mddoc, 'r')
-            mdstring = mdfile.read()
-
-            match = reh1.search(mdstring)
-            while match != None:
-                mdstring = re.sub(match.group(0), match.group(1) + '\n' + len(match.group(1)) * '=' + '\n', mdstring)
-                match = reh1.search(mdstring)
-
-            match = reh2.search(mdstring)
-            while match != None:
-                mdstring = re.sub(match.group(0), match.group(1) + '\n' + len(match.group(1)) * '-' + '\n', mdstring)
-                match = reh2.search(mdstring)
-
-            # wrap each line of the string individually.
-            docstring = ''
-            tmp = mdstring.splitlines(True)
-            for i in range(0, len(tmp)):
-                docstring += textwrap.fill(tmp[i], width=80, replace_whitespace=False) + '\n'
+            docstring = process_mddoc(fname_mddoc)
 
             #-- save docstring in the pydoc folder--
             fname_pydoc = os.path.join(pydocfolder, 'constant_' + name.lower() + '.doc')
@@ -121,9 +74,67 @@ def main():
         except IOError, msg:
             print msg
 
+#===== PROCESS MD DOCUMENTATION FILE ====
+def process_mddoc(fname_mddoc):
+    #---- md file search patterns ----
+    retail = re.compile('# See (.*)', re.DOTALL)
+    reh2 = re.compile('## (.*?)\n', re.DOTALL)
+    reh1 = re.compile('\A# (.*?)\n', re.DOTALL)
+    reh1b = re.compile('\n# (.*?)\n', re.DOTALL)
+    recode = re.compile('`(.*?)`', re.DOTALL)
+    restaresc = re.compile(r'(\\\*)', re.DOTALL)
+    #rebold = re.compile('(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
+
+    #---- open md file and search for patterns ----
+    mdfile = open(fname_mddoc, 'r')
+    mdstring = mdfile.read()
+    mdfile.close()
+
+    match = retail.search(mdstring)
+    if match != None:
+        #    mdstring = re.sub(match.group(0),'',mdstring) doesn't work. don't know why
+        mdstring = string.replace(mdstring, match.group(0), '')
+
+    match = reh1.search(mdstring)
+    while match != None:
+        mdstring = re.sub(match.group(0), match.group(1) + '\n' + len(match.group(1)) * '-' + '\n', mdstring)
+        match = reh1.search(mdstring)
+
+    match = reh1b.search(mdstring)
+    while match != None:
+        mdstring = re.sub(match.group(0), '\n' + match.group(1) + '\n' + len(match.group(1)) * '-' + '\n', mdstring)
+        match = reh1b.search(mdstring)
+
+    match = reh2.search(mdstring)
+    while match != None:
+        mdstring = re.sub(match.group(0), match.group(1) + '\n' + len(match.group(1)) * '-' + '\n', mdstring)
+        match = reh2.search(mdstring)
+
+    match = recode.search(mdstring)
+    while match != None:
+        #    mdstring = re.sub(match.group(0),match.group(1),mdstring) doesn't work. don't know why
+        mdstring = string.replace(mdstring, match.group(0), match.group(1))
+        match = recode.search(mdstring)
+
+    match = restaresc.search(mdstring)
+    while match != None:
+        mdstring = string.replace(mdstring, match.group(0), '*')
+        match = recode.search(mdstring)
+
+    #---- combine into docstring ----
+    docstring = ''
+    tmp = mdstring.splitlines(True)
+    for i in range(0, len(tmp)):
+        if tmp[i][0:4] == ':   ':
+            docstring += textwrap.fill(tmp[i][4:], width=80,
+                                       replace_whitespace=False, initial_indent='    ',
+                                       subsequent_indent='    ') + '\n'
+        else:
+            docstring += textwrap.fill(tmp[i], width=80, replace_whitespace=False) + '\n'
+
+    return docstring
+
 #===== PROCESS F2PY DOCUMENTATION ====
-
-
 def process_f2pydoc(f2pydoc):
     """
     this function replace all optional _d0 arguments with their default values

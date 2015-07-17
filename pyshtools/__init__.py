@@ -24,8 +24,12 @@ def load_documentation():
     """
 
     import os
-    # from . import _SHTOOLS,  _constant
     from . import _SHTOOLS
+
+    # bind python functions to SHTOOLS
+    _SHTOOLS.PlmIndex = PlmIndex
+    _SHTOOLS.YilmIndexVector = YilmIndexVector
+
     print('Loading SHTOOLS documentation')
     pydocfolder = os.path.abspath(os.path.join(os.path.dirname(__file__), 'doc'))
     for name, func in _SHTOOLS.__dict__.items():
