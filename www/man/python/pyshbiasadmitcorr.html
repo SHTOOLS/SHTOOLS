@@ -66,7 +66,9 @@
 <dd>The number of localizing windows to use. Only the first <code>k</code> columns of <code>tapers</code> will be employed, which corresponds to the <code>k</code> best-concentrated localizing windows.
 </dd>
 <dt><code>mtdef</code> : optional, integer, default = 1</dt>
-<dd>(1) Calculate the biased multitaper cross-power spectra first, and use these to calculate the final admittance and correlation spectra. 2: Calculate an admittance and correlation spectrum using each individual taper, and then average these to get the final admittance and correlation spectra.
+<dd><ol style="list-style-type: decimal">
+<li>Calculate the biased multitaper cross-power spectra first, and use these to calculate the final admittance and correlation spectra. 2: Calculate an admittance and correlation spectrum using each individual taper, and then average these to get the final admittance and correlation spectra.</li>
+</ol>
 </dd>
 <dt><code>taper_wt</code> : optional, float, dimension (<code>k</code>), default = -1</dt>
 <dd>The weights to apply to each individual windowed spectral estimate. The weights must sum to unity and are obtained from <code>SHMTVarOpt</code>. The default specifies that taper weights are not used.

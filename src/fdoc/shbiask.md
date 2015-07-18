@@ -49,4 +49,4 @@ Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.
 
 # See also
 
-[shbias](shbias.html), [shmtvaropt](shmtvaropt.html), [shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [shmtvaropt](shmtvaropt.html), [shbiasadmitcorr](shbiasadmitcorr.html)
+[shbias](shbias.html), [shmtvaropt](shmtvaropt.html), [shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [shmtvaropt](shmtvaropt.html), [shbiasadmitcorr](shbiasadmitcorr.html), [shmtcouplingmatrix](shmtcouplingmatrix.html)

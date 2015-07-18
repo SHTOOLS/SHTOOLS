@@ -54,4 +54,4 @@ Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimati
 
 # See also
 
-[shmultitaperse](shmultitaperse.html), [shmultitapercse](shmultitapercse.html), [shreturntapers](shreturntapers.html), [shmtvaropt](shmtvaropt.html)
+[shmultitaperse](shmultitaperse.html), [shmultitapercse](shmultitapercse.html), [shreturntapers](shreturntapers.html), [shmtvaropt](shmtvaropt.html),  [shmtcouplingmatrix](shmtcouplingmatrix.html)

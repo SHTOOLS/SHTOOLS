@@ -581,10 +581,10 @@ module SHTOOLS
         end subroutine SHMTVarOpt
 
         subroutine SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt)
-            integer, intent(in) :: lmax, k, lwin
             real*8, intent(out) :: Mmt(:,:)
-            real*8, intent(in), optional :: taper_wt(:)
             real*8, intent(in)  :: tapers(:,:)
+            real*8, intent(in), optional :: taper_wt(:)
+            integer, intent(in) :: lmax, k, lwin       
         end subroutine
 
         subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, &
