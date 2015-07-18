@@ -55,75 +55,75 @@
 		</tr>
 	
 		<tr>
-		<td class="left"><tt>SHCoeffs.from_array()</tt></td> 
+		<td class="left"><tt>x = SHCoeffs.from_array()</tt></td> 
 		<td class="right">Initialize using coefficients from an array.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHCoeffs.from_random()</tt></td> 
-		<td class="right">Initialize using random coefficients with a given power spectrum.</td>
+		<td class="left"><tt>x = SHCoeffs.from_random()</tt></td> 
+		<td class="right">Initialize using random coefficients with a prescribed power spectrum.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHCoeffs.from_file()</tt></td> 
+		<td class="left"><tt>x = SHCoeffs.from_file()</tt></td> 
 		<td class="right">Initialize using coefficients from a file.</td>
 		</tr>
 		
 		<tr>
-		<td class="head">Functions</td> 
+		<td class="head">Class methods</td> 
 		</tr>
 	
 		<tr>
-		<td class="left"><tt>SHCoeffs.get_degrees()</tt></td> 
+		<td class="left"><tt>x.get_degrees()</tt></td> 
 		<td class="right">Return the array <tt>[0,...,lmax]</tt> that contains the ordered degrees <tt>l</tt>.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHCoeffs.get_powerperdegree()</tt></td> 
+		<td class="left"><tt>x.get_powerperdegree()</tt></td> 
 		<td class="right">Return the power per degree spectrum.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>SHCoeffs.get_powerperband()</tt></td> 
+		<td class="left"><tt>x.get_powerperband()</tt></td> 
 		<td class="right">Return the power per log<sub>bandwidth</sub> spectrum.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>SHCoeffs.get_coeffs()</tt></td> 
+		<td class="left"><tt>x.get_coeffs()</tt></td> 
 		<td class="right">Return complex or real spherical harmonics coefficients in different normalizations.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHCoeffs.rotate()</tt></td> 
+		<td class="left"><tt>x.rotate()</tt></td> 
 		<td class="right">Rotate the spherical harmonics coefficients by
         <tt>[alpha, beta, gamma]</tt>.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHCoeffs.expand()</tt></td> 
-		<td class="right">Expand the coefficients to a spherical grid. Available grid types: <br>
+		<td class="left"><tt>x.expand()</tt></td> 
+		<td class="right">Evaluate the coefficients on a spherical grid. Available grid types: <br>
 		<tt>kind ='DH1'</tt>: equidistant lat/lon grid with <tt>nlat=nlon</tt><br>
 		<tt>kind ='DH2'</tt>: equidistant lat/lon grid with <tt>2*nlat=nlon</tt><br>
 		<tt>kind ='GLQ'</tt>: Gauss Legendre Grid</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>SHCoeffs.plot_powerperdegree()</tt></td> 
+		<td class="left"><tt>x.plot_powerperdegree()</tt></td> 
 		<td class="right">Plot the power per degree spectrum.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHCoeffs.plot_powerperband()</tt></td> 
+		<td class="left"><tt>x.plot_powerperband()</tt></td> 
 		<td class="right">Plot the power per log<sub>bandwidth</sub>(degree) spectrum.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHCoeffs.make_complex()</tt></td> 
+		<td class="left"><tt>x.make_complex()</tt></td> 
 		<td class="right">Convert the real coefficient class to the complex harmonic coefficient class.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHCoeffs.make_real()</tt></td> 
+		<td class="left"><tt>x.make_real()</tt></td> 
 		<td class="right">Convert the complex coefficient class to the real harmonic coefficient class.</td>
 		</tr>
 		
@@ -154,36 +154,36 @@
 		</tr>
 	
 		<tr>
-		<td class="left"><tt>SHGrid.from_array()</tt></td> 
+		<td class="left"><tt>x = SHGrid.from_array()</tt></td> 
 		<td class="right">Initialize using an array.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHGrid.from_file()</tt></td> 
+		<td class="left"><tt>x = SHGrid.from_file()</tt></td> 
 		<td class="right">Initialize using an array from a file.</td>
 		</tr>
 		
 		<tr>
-		<td class="head">Functions</td> 
+		<td class="head">Methods</td> 
 		</tr>
 	
 		<tr>
-		<td class="left"><tt>SHGrid.get_lats()</tt></td> 
+		<td class="left"><tt>x.get_lats()</tt></td> 
 		<td class="right">Return a vector containing the latitude of each row in the grid.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHGrid.get_lons()</tt></td> 
+		<td class="left"><tt>x.get_lons()</tt></td> 
 		<td class="right">Return a vector containing the longitude of each column in the grid.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHGrid.plot_rawdata()</tt></td> 
+		<td class="left"><tt>x.plot_rawdata()</tt></td> 
 		<td class="right">Plot the grid using a two dimensional cylindrical projection.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHGrid.expand()</tt></td> 
+		<td class="left"><tt>x.expand()</tt></td> 
 		<td class="right">Expand the gridded data into spherical harmonics.</td>
 		</tr>
 		
@@ -206,7 +206,7 @@
 		
 		<tr>
 		<td class="left"><tt>AsymmetricWindow</tt></td> 
-		<td class="right">Class for windows with arbitrary concentration domains.</td>
+		<td class="right">Class for windows concentrated in an arbitrary domain.</td>
 		</tr>
 		
 		<tr>
@@ -214,41 +214,41 @@
 		</tr>
 	
 		<tr>
-		<td class="left"><tt>SHWindow.from_cap()</tt></td> 
+		<td class="left"><tt>x = SHWindow.from_cap()</tt></td> 
 		<td class="right">Construct windows concentrated with a spherical cap.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHWindow.from_mask()</tt></td> 
+		<td class="left"><tt>x = SHWindow.from_mask()</tt></td> 
 		<td class="right">Construct windows concentrated with an arbitrary region.</td>
 		</tr>
 		
 		<tr>
-		<td class="head">Functions</td> 
+		<td class="head">Methods</td> 
 		</tr>
 	
 		<tr>
-		<td class="left"><tt>SHWindow.plot()</tt></td> 
+		<td class="left"><tt>x.plot()</tt></td> 
 		<td class="right">Plot the best concentrated windows.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHWindow.get_spectrum()</tt></td> 
+		<td class="left"><tt>x.get_spectrum()</tt></td> 
 		<td class="right">Return the power spectrum of the localization windows.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHWindow.get_couplingmatrix()</tt></td> 
+		<td class="left"><tt>x.get_couplingmatrix()</tt></td> 
 		<td class="right">Return the coupling matrix of the first <tt>nwin</tt> tapers.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHWindow.plot_couplingmatrix()</tt></td> 
+		<td class="left"><tt>x.plot_couplingmatrix()</tt></td> 
 		<td class="right">Plot the coupling strength of the localization windows.</td>
 		</tr>
 		
 <tr>
-		<td class="left"><tt>SHWindow.info()</tt></td> 
+		<td class="left"><tt>x.info()</tt></td> 
 		<td class="right">Print meta information about the tapers.</td>
 		</tr>
 		

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-This script tests the gravity and magnetics routines. 
+This script creates a crustal thickness map of Mars. 
 """
 
 # standard imports:

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 """
-This script tests the conversions between real and complex spherical harmonics
-coefficients
+This script tests the rotation of spherical harmonic coefficients
 """
 
 # standard imports:
