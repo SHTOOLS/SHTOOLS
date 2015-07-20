@@ -61,52 +61,52 @@ all: getflags
 	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQC
 	
 run-fortran-tests:
-	 @echo MARS CRUSTAL THICKNESS
+	 @echo MARS-CRUSTAL-THICKNESS
 	 cd MarsCrustalThickness ; ./MarsCrustalThickness < input.txt
 	 @echo
-	 @echo TEST CILMPLUS
+	 @echo TEST-CILMPLUS
 	 cd SHCilmPlus ; ./TestCilmPlus
 	 @echo
-	 @echo TEST EXPANDDH
+	 @echo TEST-EXPANDDH
 	 cd SHExpandDH ; ./TestExpandDH
 	 @echo
-	 @echo TEST SHEXPANDLSQ
+	 @echo TEST-SHEXPANDLSQ
 	 cd SHExpandLSQ ; ./TestSHExpandLSQ < input.txt
 	 @echo
-	 @echo LOCALIZEDADMITCORR
+	 @echo LOCALIZED-ADMIT-CORR
 	 cd SHLocalizedAdmitCorr ; ./LocalizedAdmitCorr < input.txt
 	 @echo
 	 @echo SHMAG
 	 cd SHMag ; ./SHMag
 	 @echo
-	 @echo TEST SHROTATE
+	 @echo TEST-SHROTATE
 	 cd SHRotate ; ./TestSHRotate < input.txt
 	 @echo
 	 @echo "*** The following 8 timing and accuracy tests will take about an hour to complete ***"
 	 @echo "*** If you are impatient, press Control-C to exit ***"
 	 @echo
-	 @echo TIMING ACCURACY GLQ
+	 @echo TIMING-ACCURACY-GLQ
 	 cd TimingAccuracy ; ./TimingAccuracyGLQ < input1 > output1
 	 @echo
-	 @echo TIMING ACCURACY GLQ
+	 @echo TIMING-ACCURACY-GLQ
 	 cd TimingAccuracy ; ./TimingAccuracyGLQ < input2 > output2
 	 @echo
-	 @echo TIMING ACCURACY DH
+	 @echo TIMING-ACCURACY-DH
 	 cd TimingAccuracy ; ./TimingAccuracyDH < input3 > output3
 	 @echo
-	 @echo TIMING ACCURACY DH
+	 @echo TIMING-ACCURACY-DH
 	 cd TimingAccuracy ; ./TimingAccuracyDH < input4 > output4
 	 @echo
-	 @echo TIMING ACCURACY DHC
+	 @echo TIMING-ACCURACY-DHC
 	 cd TimingAccuracy ; ./TimingAccuracyDHC < input5 > output5
 	 @echo
-	 @echo TIMING ACCURACY DHC
+	 @echo TIMING-ACCURACY-DHC
 	 cd TimingAccuracy ; ./TimingAccuracyDHC < input6 > output6
 	 @echo
-	 @echo TIMING ACCURACY GLQC
+	 @echo TIMING-ACCURACY-GLQC
 	 cd TimingAccuracy ; ./TimingAccuracyGLQC < input7 > output7
 	 @echo
-	 @echo TIMING ACCURACY GLQC
+	 @echo TIMING-ACCURACY-GLQC
 	 cd TimingAccuracy ; ./TimingAccuracyGLQC < input8 > output8
 
 getflags:
