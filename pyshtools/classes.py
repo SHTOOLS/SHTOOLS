@@ -31,10 +31,10 @@ from _SHTOOLS import *
 #=========== COEFFICIENT CLASSES ===============================================
 #===============================================================================
 
-
 class SHCoeffs(object):
 
     """
+    EXPERIMENTAL:
     Spherical Harmonics Coefficient class. Coefficients can be initialized
     using one of the constructor methods:
 
@@ -301,6 +301,7 @@ class SHComplexCoefficients(SHCoeffs):
 class SHGrid(object):
 
     """
+    EXPERIMENTAL:
     Spherical Grid Class that can deal with spatial data on the sphere that is
     defined on different grids. Can be constructed from:
 
@@ -440,6 +441,7 @@ class GLQGrid(SHGrid):
 #==== SPHERICAL HARMONICS WINDOW FUNCTION CLASS ====
 class SHWindow(object):
     """
+    EXPERIMENTAL:
     This class contains collections of spherical harmonics windows that
     provide spectral estimates about a specific region
     """
