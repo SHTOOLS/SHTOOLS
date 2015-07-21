@@ -85,7 +85,7 @@ Program TimingAccuracyGLQC
 		endif
 		
 		call cpu_time(timein(1))
-		call PreCompute(lmax, zero(1:lmax+1), w(1:lmax+1))
+		call SHGLQ(lmax, zero(1:lmax+1), w(1:lmax+1))
 		call cpu_time(timeout(1))
 						
 		call cpu_time(timein(2))	

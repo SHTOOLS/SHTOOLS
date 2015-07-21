@@ -28,119 +28,46 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHREAD(1)</B>                         SHTOOLS 3.0                        <B>SHREAD(1)</B>
-
-
-</PRE>
-<H2 class="man">SHRead</H2 class="man"><PRE>
-       SHRead - Read spherical harmonic coefficients from an ASCII file.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHRead ( FILENAME, CILM, LMAX, SKIP, HEADER, ERROR )
-
-           CHARACTER(*)        FILENAME
-
-           REAL*8              CILM(2, LMAX+1, LMAX+1)
-
-           INTEGER             LMAX
-
-           INTEGER, OPTIONAL   SKIP
-
-           REAL*8, OPTIONAL    <B>HEADER()</B>, ERROR(2, LMAX+1, LMAX+1)
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHRead</B> will read spherical harmonic coefficients from an ASCII file
-       into an array CILM. The maximum spherical harmonic degree that is read
-       is determined by the minimum of the dimension of the input array CILM -
-       1 and the maximum degree of the coefficients in the file. If the
-       optional array SKIP is specified, parsing of the file will commence
-       after the first SKIP lines. If the optional array HEADER is specified,
-       then the first N elements after the skipped lines will be output, where
-       N is the length of the array HEADER.
-
-       The spherical harmonic coefficients in the file are assumed to be
-       ordered by increasing degree L and angular order M according to the
-       format
-
-       L, M, CILM(1, L+1, M+1), CILM(2, L+1, M+1).
-
-       The actual delimeters are unimportant. If the optional array ERROR is
-       specified, then the error for each coefficient will be read according
-       to the format
-
-       L, M, CILM(1, L+1, M+1), CILM(2, L+1, M+1), ERROR(1, L+1, M+1),
-       ERROR(2, L+1, M+1).
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       FILENAME  (input) CHARACTER(*)
-
-                 The ASCII filename containing the spherical harmonic
-                 coefficients.
-
-       CILM      (output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
-
-                 The spherical harmonic coefficients contained in FILENAME.
-
-       LMAX      (output) INTEGER
-
-                 The maximum spherical harmonic degree of CILM. This is the
-                 minimum of the maximum spherical harmonic degree of FILENAME
-                 and the dimension of CILM - 1.
-
-       SKIP      (input) INTEGER, OPTIONAL
-
-                 The number of lines to skip before parsing FILENAME.
-
-       HEADER    (output) REAL*8, OPTIONAL DIMENSION (N)
-
-                 A vector containing the first N numbers in the first line of
-                 the file (following any skipped lines).
-
-       ERROR     (output) REAL*8, OPTIONAL DIMENSION (2, LMAX+1, LMAX+1)
-
-                 The errors corresponding to the spherical harmonic
-                 coefficients CILM.
-
-
-</PRE>
-<H2 class="man">NOTES</H2 class="man"><PRE>
-       The first spherical harmonic degree of the filename does not have to be
-       0; this is determined from the first element after the SKIP and HEADER
-       lines.
-
-       The ordering of the file is explcitly given by
-
-       l, 0 / l, 1 / l, 2 /l, ... / l, m / l+1, 0 / l+1, 1 / ...
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shreadjpl(1)</B>, <B>shreadgrace(1)</B>, <B>shreadchamp(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                         <B>SHREAD(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+<h1 id="shread">SHRead</h1>
+<p>Read spherical harmonic coefficients from an ascii-formatted file.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHRead (<code>filename</code>, <code>cilm</code>, <code>lmax</code>, <code>skip</code>, <code>header</code>, <code>error</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>filename</code> : input, character(:)</dt>
+<dd>The filename of the ascii file containing the spherical harmonic coefficients.
+</dd>
+<dt><code>cilm</code> : output, real*8, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The spherical harmonic coefficients contained in <code>filename</code>.
+</dd>
+<dt><code>lmax</code> : output, integer</dt>
+<dd>The maximum spherical harmonic degree of <code>cilm</code>. This is the minimum of the maximum spherical harmonic degree of <code>filename</code> and the dimension of <code>cilm</code>-1.
+</dd>
+<dt><code>skip</code> : input, optional, integer</dt>
+<dd>The number of lines to skip before parsing <code>filename</code>.
+</dd>
+<dt><code>header</code> : output, optional, real*8 dimension (<code>n</code>)</dt>
+<dd>A vector containing the first <code>n</code> numbers in the first line of the file (following any skipped lines).
+</dd>
+<dt><code>error</code> : output, optional, real*8 dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The errors corresponding to the spherical harmonic coefficients <code>cilm</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHRead</code> will read spherical harmonic coefficients from an ascii-formatted file into an array <code>cilm</code>. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array <code>cilm</code>-1 and the maximum degree of the coefficients in the file. If the optional array <code>skip</code> is specified, parsing of the file will commence after the first <code>skip</code> lines. If the optional array <code>header</code> is specified, then the first <code>n</code> elements after the skipped lines will be output, where <code>n</code> is the length of the array <code>header</code>.</p>
+<p>The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree <code>l</code> and angular order <code>m</code> according to the format</p>
+<p><code>l, m, cilm(1,l+1,m+1), cilm(2,l+1,m+1)</code></p>
+<p>The actual delimeters (commas, spaces, or tabs) are unimportant. If the optional array <code>error</code> is specified, then the error for each coefficient will be read according to the format</p>
+<p><code>l, m, cilm(1,l+1,m+1), cilm(2,l+1,m+1), error(1,l+1,m+1), error(2,l+1,m+1)</code></p>
+<p>The ordering of the file is explcitly given by</p>
+<p><code>l, 0 / l, 1 / l, 2 /l, ... / l, m / l+1, 0 / l+1, 1 / ...</code></p>
+<p>The first spherical harmonic degree of the filename does not have to be 0; this is determined from the first element after the <code>skip</code> and <code>header</code> lines.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shread2.html">shread2</a>, <a href="shreadjpl.html">shreadjpl</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

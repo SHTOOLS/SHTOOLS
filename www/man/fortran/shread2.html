@@ -28,133 +28,58 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHREAD2(1)</B>                        SHTOOLS 3.0                       <B>SHREAD2(1)</B>
-
-
-</PRE>
-<H2 class="man">SHRead2</H2 class="man"><PRE>
-       SHRead2 -     Read spherical harmonic coefficients from a CHAMP or
-                     GRACE-like ASCII file.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHRead2 ( FILENAME, CILM, LMAX, GM, R0_POT, ERROR, DOT,
-                            DOYSTART, DOYEND, EPOCH )
-
-           CHARACTER(*)          FILENAME
-
-           REAL*8                CILM(2, LMAX+1, LMAX+1), GM, R0_POT
-
-           INTEGER               LMAX
-
-           REAL*8, OPTIONAL      ERROR(2, LMAX+1, LMAX+1), DOT(2, :, :),
-                                 DOYSTART, DOYEND, EPOCH
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHRead2</B> will read spherical harmonic coefficients from a CHAMP or
-       GRACE-like ASCII formatted file into an array CILM. The errors and time
-       derivatives associated with the coefficients will be read if the
-       optional arrays ERROR and DOT are specified, respectively. The staring
-       and ending date of the solution are specified by the optional
-       parameters DOYSTART and DOYEND, and the epoch of the time derivates is
-       specified by the optional parameter EPOCH. The maximum spherical
-       harmonic degree is read from the file, and the file does not need to be
-       ordered by angular degree or order.
-
-       This routine does not read and output all parameters in the file.
-       Records that are read (and at least partially output) include: EARTH,
-       GGM, SHM, GRCOF2, GRDOTA, CALSDV, gfc, gfct, and dot. Comments
-       specified by the record CMMNT will be print out to the screen, as will
-       the record names that are not currently implemented.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       FILENAME      (input) CHARACTER(*)
-
-                     The ASCII filename containing the spherical harmonic
-                     coefficients.
-
-       CILM          (output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
-
-                     The spherical harmonic coefficients contained in
-                     FILENAME.
-
-       LMAX          (output) INTEGER
-
-                     The maximum spherical harmonic degree of CILM.
-
-       GM            (output) REAL*8
-
-                     The mass-gravitational constant.
-
-       R0_POT        (output) REAL*8
-
-                     The reference radius of the potential coefficients.
-
-       ERROR         (output) REAL*8, OPTIONAL, DIMENSION (2, LMAX+1, LMAX+1)
-
-                     The errors corresponding to the spherical harmonic
-                     coefficients CILM.
-
-       DOT           (output) REAL*8, OPTIONAL, DIMENSION (2, :, :)
-
-                     The time derivatives of the spherical harmonic
-                     coefficients. The dimension of this array can be smaller
-                     than LMAX+1.
-
-       DOYSTART      (output) REAL*8, OPTIONAL
-
-                     The starting time of the solution.
-
-       DOYEND        (output) REAL*8, OPTIONAL
-
-                     The ending time of the solution
-
-       EPOCH         (output) REAL*8, OPTIONAL
-
-                     The EPOCH time for the time derivates.
-
-
-</PRE>
-<H2 class="man">NOTES</H2 class="man"><PRE>
-       Each line of the file starts with a character string describing what
-       follows.
-
-       1. "EARTH" or "GGM": GM, R0_POT
-
-       2. "SHM": Maximum spherical harmonic degree of file.
-
-       3. "GRCOF2", "CALSDV", or "gfc": spherical harmonic coefficients,
-       formatted as (l, m, clm, slm) or (l, m, clm, slm, clm_error,
-       slm_error).
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shread(1)</B>, <B>shreadgrace(1)</B>, <B>shreadjpl(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2015-03-05                        <B>SHREAD2(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+<h1 id="shread2">SHRead2</h1>
+<p>Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHRead2 (<code>filename</code>, <code>cilm</code>, <code>lmax</code>, <code>gm</code>, <code>r0_pot</code>, <code>error</code>, <code>dot</code>, <code>doystart</code>, <code>doyend</code>, <code>epoch</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>filename</code> : input, character(*)</dt>
+<dd>The ascii-formatted filename containing the spherical harmonic coefficients.
+</dd>
+<dt><code>cilm</code> : output, real*8, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The spherical harmonic coefficients contained in <code>filename</code>.
+</dd>
+<dt><code>lmax</code> : output, integer</dt>
+<dd>The maximum spherical harmonic degree of <code>cilm</code>.
+</dd>
+<dt><code>gm</code> : output, real*8</dt>
+<dd>The mass-gravitational constant.
+</dd>
+<dt><code>r0_pot</code> : output, real*8</dt>
+<dd>The reference radius of the potential coefficients.
+</dd>
+<dt><code>error</code> : output, optional, real*8, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The errors corresponding to the spherical harmonic coefficients <code>cilm</code>.
+</dd>
+<dt><code>dot</code> : output, optional, real*8, dimension (2, <code>lmaxout</code>+1, <code>lmaxout</code>+1)</dt>
+<dd>The time derivatives of the spherical harmonic coefficients. The dimension of this array can be smaller than <code>lmax+1</code>.
+</dd>
+<dt><code>doystart</code> : output, optional, real*8</dt>
+<dd>The starting time of the solution.
+</dd>
+<dt><code>doyend</code> : output, optional, real*8</dt>
+<dd>The ending time of the solution
+</dd>
+<dt><code>epoch</code> : output, optional, real*8</dt>
+<dd>The epoch time for the time derivates.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHRead2</code> will read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file into an array <code>cilm</code>. The errors and time derivatives associated with the coefficients will be read if the optional arrays <code>error</code> and <code>dot</code> are specified, respectively. The staring and ending date of the solution are specified by the optional parameters <code>doystart</code> and <code>doyend</code>, and the epoch of the time derivates is specified by the optional parameter <code>epoch</code>. The maximum spherical harmonic degree is read from the file, and the file does not need to be ordered by angular degree or order.</p>
+<p>This routine does not read and output all parameters in the file. Records that are read (and at least partially output) include: <code>EARTH</code>, <code>GGM</code>, <code>SHM</code>, <code>GRCOF2</code>, <code>GRDOTA</code>, <code>CALSDV</code>, <code>gfc</code>, <code>gfct</code>, and <code>dot</code>. Comments specified by the record <code>CMMNT</code> will be print out to the screen, as will the record names that are not currently implemented.</p>
+<p>Each line of the file starts with a character string describing what follows.</p>
+<ul>
+<li><code>EARTH</code> or <code>GGM</code>: <code>GM</code>, <code>R0_POT</code></li>
+<li><code>SHM</code>: Maximum spherical harmonic degree of file.</li>
+<li><code>GRCOF2</code>, <code>CALSDV</code>, or <code>gfc</code>: spherical harmonic coefficients, formatted as (<code>l</code>, <code>m</code>, <code>clm</code>, <code>slm</code>) or (<code>l</code>, <code>m</code>, <code>clm</code>, <code>slm</code>, <code>clm_error</code>, <code>slm_error</code>).</li>
+</ul>
+<h1 id="see-also">See also</h1>
+<p><a href="shread.html">shread</a>, <a href="shreadjpl.html">shreadjpl</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

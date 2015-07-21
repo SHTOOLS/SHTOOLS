@@ -28,90 +28,41 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>NORMALGRAVITY(1)</B>                  SHTOOLS 3.0                 <B>NORMALGRAVITY(1)</B>
-
-
-</PRE>
-<H2 class="man">NormalGravity</H2 class="man"><PRE>
-       NormalGravity -  Calculate the normal gravity on a flattened ellipsoid
-                        in geocentric coordinates using the formula of
-                        Somigliana.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       FUNCTION NormalGravity ( GEOCENTRIC_LAT, GM, OMEGA, A, B )
-
-           REAL*8             GEOCENTRIC_LAT, GM, OMEGA, A, B
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>NormalGravity</B> will calculate the magnitude of the predicted gravity (in
-       m/s^2) on a flattened ellipsoid using Somigliana's formula. The
-       latitude is input in geocentric coordinates in degrees, which is later
-       converted to geodetic coordinates in the routine for use with
-       Somigliana's formula. Other input parameters include GM, the product of
-       the gravitational constant and the planet's mass, and the semi-major
-       and semi-minor axes of the planet, A and B, respectively. For further
-       details, see sections 2.7 and 2.8 of Physical Geodesy (Hofmann-
-       Wellenhof and Moritz).
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       RAD        (input) REAL*8, GEOCENTRIC_LAT
-
-                  Geocentric latitude in degrees.
-
-       GM         (input) REAL*8
-
-                  The gravitational constant multiplied by the mass of the
-                  planet.
-
-       OMEGA      (input) REAL*8
-
-                  The angular rotation rate of the planet.
-
-       A          (input) REAL*8
-
-                  The semi-major axis of the flattened ellipsoid on which the
-                  normal gravity is computed.
-
-       B          (input) REAL*8
-
-                  The semi-minor axis of the flattened ellipsoid on which the
-                  normal gravity is computed.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>makegravgrid2d(1)</B>, <B>makegravgriddh(1)</B>, <B>makegeoidgrid(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Hofmann-Wellenhof B, and H. Moritz, "Physical Geodesy," second edition,
-       Springer, Wien, 403 pp., 2006.
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                  <B>NORMALGRAVITY(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+<h1 id="normalgravity">NormalGravity</h1>
+<p>Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana.</p>
+<h1 id="usage">Usage</h1>
+<p><code>value</code> = NormalGravity (<code>geocentriclat</code>, <code>gm</code>, <code>omega</code>, <code>a</code>, <code>b</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>value</code> : output, real*8</dt>
+<dd>The normal gravity in SI units.
+</dd>
+<dt><code>geocentriclat</code>: input, real*8</dt>
+<dd>Geocentric latitude in degrees.
+</dd>
+<dt><code>gm</code> : input, real*8</dt>
+<dd>The gravitational constant multiplied by the mass of the planet.
+</dd>
+<dt><code>omega</code> : input, real*8</dt>
+<dd>The angular rotation rate of the planet.
+</dd>
+<dt><code>a</code> : input, real*8</dt>
+<dd>The semi-major axis of the flattened ellipsoid on which the normal gravity is computed.
+</dd>
+<dt><code>b</code> : input, real*8</dt>
+<dd>The semi-minor axis of the flattened ellipsoid on which the normal gravity is computed.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>NormalGravity</code> will calculate the magnitude of the predicted gravity (in m/s^2) on a flattened ellipsoid using Somigliana's formula. The latitude is input in geocentric coordinates in degrees, which is later converted to geodetic coordinates in the routine for use with Somigliana's formula. Other input parameters include <code>gm</code>, the product of the gravitational constant and the planet's mass, and the semi-major and semi-minor axes of the planet, <code>a</code> and <code>b</code>, respectively. For further details, see sections 2.7 and 2.8 of Physical Geodesy (Hofmann-Wellenhof and Moritz).</p>
+<h1 id="references">References</h1>
+<p>Hofmann-Wellenhof B, and H. Moritz, &quot;Physical Geodesy,&quot; second edition, Springer, Wien, 403 pp., 2006.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="makegravgrid2d.html">makegravgrid2d</a>, <a href="makegravgriddh.html">makegravgriddh</a>, <a href="makegeoidgrid.html">makegeoidgrid</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

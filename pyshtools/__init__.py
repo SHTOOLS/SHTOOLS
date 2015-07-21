@@ -1,37 +1,60 @@
 """
 Python Wrapper for the SHTOOLS library by Mark Wieczorek
 
-Authors: Matthias Meschede, Mark Wieczorek, 2014
+see   http://shtools.ipgp.fr/
+or    https://github.com/SHTOOLS/SHTOOLS
+
+The python wrapper was written by: Matthias Meschede, Mark Wieczorek, 2014
 """
 
+__version__ = '3.1'
+
+#---- some miniature python functions: ----
+def PlmIndex(l,m):
+    return (l*(l+1))/2 + m
+
+def YilmIndexVector(l,m):
+    return l**2 + (i-1)*l + m
+
+#---- load docstring functions ----
 def load_documentation():
     """
-    Load the pyshtools documentation into memory
+    Fills the modules __doc__ strings with a useful documentation that was
+    generated at compile time
     """
 
     import os
     from . import _SHTOOLS
-    print('loading shtools documentation')
+
+    # bind python functions to SHTOOLS
+    _SHTOOLS.PlmIndex = PlmIndex
+    _SHTOOLS.YilmIndexVector = YilmIndexVector
+
+    print('Loading SHTOOLS documentation')
     pydocfolder = os.path.abspath(os.path.join(os.path.dirname(__file__), 'doc'))
-    for name,func in _SHTOOLS.__dict__.items():
+    for name, func in _SHTOOLS.__dict__.items():
         if callable(func):
             try:
-                path = os.path.join(pydocfolder,name.lower()+'.doc')
+                path = os.path.join(pydocfolder, name.lower() + '.doc')
 
                 pydocfile = open(path)
                 pydoc = pydocfile.read()
                 pydocfile.close()
 
-                func.__doc__ = pydoc 
+                func.__doc__ = pydoc
             except IOError as msg:
                 print(msg)
 
-#load documentation
-import __main__ as main
+# load documentation that was generated at compile time (.doc files)
 load_documentation()
 
-#import into main namespace
+# import planetary constants into module namespace
 from . import _constant
 constant = _constant.planetsconstants
 
-from _SHTOOLS import *
+# import all functions into module namespace
+from ._SHTOOLS import *
+
+# import class interface into namespace
+from .classes import SHCoeffs, SHGrid, SHWindow
+

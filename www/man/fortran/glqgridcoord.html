@@ -28,82 +28,36 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>GLQGRIDCOORD(1)</B>                   SHTOOLS 3.0                  <B>GLQGRIDCOORD(1)</B>
-
-
-</PRE>
-<H2 class="man">GLQGridCoord</H2 class="man"><PRE>
-       GLQGridCoord - Compute the latitude and longitude coordinates used in
-                      Gauss-Legendre quadrature grids.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE GLQGridCoord ( LATGLQ, LONGLQ, LMAX, NLAT, NLONG )
-
-           REAL*8    LATGLQ(LMAX+1), LONGLQ(2*LMAX+1)
-
-           INTEGER   LMAX, NLAT, NLONG
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>GLQGridCoord</B> will compute the latitude and longitude coordinates that
-       are used in Gauss-Legendre quadrature grids for performing spherical
-       harmonic transforms and reconstructions. The latitudinal nodes
-       correspond to the zeros of the Legendre polynomial of degree LMAX+1,
-       and the longitudinal nodes are equally spaced with an interval of
-       360/(2*LMAX+1) degrees.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       LATGLQ    (output) REAL*8, DIMENSION (LMAX+1)
-
-                 The latitude coordinates of a grid, corresponding to the
-                 indices (:,1), in DEGREES.
-
-       LONGLQ    (output) REAL*8, DIMENSION (2*LMAX+1)
-
-                 The longitude coordinates of a grid, corresponding to the
-                 indices (1,:), in DEGREES. The first node is 0 E.
-
-       LMAX      (input) INTEGER
-
-                 The maximum spherical harmonic degree that will be integrated
-                 exactly by Gauss-Legendre quadrature.
-
-       NLAT      (output) INTEGER
-
-                 The number of samples in latitude.
-
-       NLONG     (output) INTEGER
-
-                 The number of samples in longitude.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shexpandglq(1)</B>, <B>makegridglq(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                   <B>GLQGRIDCOORD(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+<h1 id="glqgridcoord">GLQGridCoord</h1>
+<p>Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids.</p>
+<h1 id="usage">Usage</h1>
+<p>call GLQGridCoord (<code>latglq</code>, <code>longlq</code>, <code>lmax</code>, <code>nlat</code>, <code>nlong</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>latglq</code> : output, real*8, dimension (<code>lmax</code>+1)</dt>
+<dd>The latitude coordinates of a grid, corresponding to the indices (:,1), in DEGREES.
+</dd>
+<dt><code>longlq</code> : output, real*8, dimension (2*<code>lmax</code>+1)</dt>
+<dd>The longitude coordinates of a grid, corresponding to the indices (1,:), in DEGREES. The first node is 0 E.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The maximum spherical harmonic degree that will be integrated exactly by Gauss-Legendre quadrature.
+</dd>
+<dt><code>nlat</code> : output, integer</dt>
+<dd>The number of samples in latitude.
+</dd>
+<dt><code>nlong</code> : output, integer</dt>
+<dd>The number of samples in longitude.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>GLQGridCoord</code> will compute the latitude and longitude coordinates that are used in Gauss-Legendre quadrature grids for performing spherical harmonic transforms and reconstructions. The latitudinal nodes correspond to the zeros of the Legendre polynomial of degree <code>lmax+1</code>, and the longitudinal nodes are equally spaced with an interval of <code>360/(2*lmax+1)</code> degrees.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shglq.html">shglq</a>, <a href="shexpandglq.html">shexpandglq</a>, <a href="makegridglq.html">makegridglq</a>, <a href="shexpandglqc.html">shexpandglqc</a>, <a href="makegridglqc.html">makegridglqc</a>, <a href="preglq.html">preglq</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

@@ -28,84 +28,33 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../other.html" class="dir">Other</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>EIGVALSYM(1)</B>                      SHTOOLS 3.0                     <B>EIGVALSYM(1)</B>
-
-
-</PRE>
-<H2 class="man">EigValSym</H2 class="man"><PRE>
-       EigValSym -  Compute the eigenvalues of a real symmetric matrix.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE EigValSym ( AIN, N, EVAL, UL )
-
-           REAL*8                AIN(N, N), EVAL(N)
-
-           INTEGER               N
-
-           CHARACTER, OPTIONAL   UL
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>EigValSym</B> will calculate the eigenvalues of a real symmetric matrix. By
-       default, only the upper portion of the matrix is used, but this can be
-       changed by the optional argument UL. The eigenvalues are sorted from
-       largest to smallest.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       AIN       (input) REAL*8, DIMENSION (N, N)
-
-                 The input real symmetric matrix. By default, only the upper
-                 portion of the matrix is used.
-
-       N         (input) INTEGER
-
-                 The rank of the matrix AIN.
-
-       EVAL      (output) REAL*8, DIMENSION (N)
-
-                 The eigenvalues of AIN, sorted from largest to smallest.
-
-       UL        (input) CHARACTER, OPTIONAL
-
-                 If "U" then the upper portion of the matrix AIN will be used
-                 (default). If "L" then the lower portion of the matrix AIN
-                 will be used.
-
-
-</PRE>
-<H2 class="man">NOTES</H2 class="man"><PRE>
-       This routine requires the matrix algebra packages BLAS and LAPACK which
-       are available at &lt;http://www.netlib.org/lapack/&gt; and
-       &lt;http://www.netlib.org/blas/&gt;, respectively.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>lapack(1)</B>, <B>blas(1)</B>, <B>eigvalvecsym(1)</B>, <B>eigvalvecsymtri(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                      <B>EIGVALSYM(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../other.html" class="dir">Other</a></p>
+<h1 id="eigvalsym">EigValSym</h1>
+<p>Compute the eigenvalues of a real symmetric matrix.</p>
+<h1 id="usage">Usage</h1>
+<p>call EigValSym (<code>ain</code>, <code>n</code>, <code>eval</code>, <code>ul</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>ain</code> : input, real*8, dimension (<code>n</code>, <code>n</code>)</dt>
+<dd>The input real symmetric matrix. By default, only the upper portion of the matrix is used.
+</dd>
+<dt><code>n</code> : input, integer</dt>
+<dd>The rank of the matrix <code>ain</code>.
+</dd>
+<dt><code>eval</code> : output, real*8, dimension (<code>n</code>)</dt>
+<dd>The eigenvalues of <code>ain</code>, sorted from largest to smallest.
+</dd>
+<dt><code>ul</code> : optional, input, character, default = <code>U</code></dt>
+<dd>If <code>U</code> then the upper portion of the matrix <code>ain</code> will be used (default). If <code>L</code> then the lower portion of the matrix <code>ain</code> will be used.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>EigValSym</code> will calculate the eigenvalues of a real symmetric matrix. By default, only the upper portion of the matrix is used, but this can be changed by the optional argument <code>ul</code>. The eigenvalues are sorted from largest to smallest. The matrix <code>ain</code> is first factorized into a tridiagonal matrix using the LAPACK routine <code>DSYTRD</code>, and then the eigenvalues are calculated by a call to <code>DSTEGR</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="eigvalvecsym.html">eigvalvecsym</a>, <a href="eigvalvecsymtri.html">eigvalvecsymtri</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../other.html" class="dir">Other</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../other.html" class="dir">Other</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

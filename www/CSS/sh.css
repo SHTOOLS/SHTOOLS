@@ -22,7 +22,7 @@ H1,H2,H3,H4,P,UL,DL,OL
 
 H1
 {
-	font-size: 18pt;
+	font-size: 17pt;
 	padding-top: 0pt;
 }
 
@@ -79,6 +79,18 @@ DIV.main
 	margin-right: auto;
 	color: black;
 }
+
+TABLE.pyclass
+{
+	width: 810px;
+	border: 0px;
+	margin-right: 35pt;
+	margin-left: 33pt;
+}
+TABLE.pyclass TD.head {padding-top: 15px; font-weight: bold;}
+TABLE.pyclass TD.left {vertical-align: top; width:300px;}
+TABLE.pyclass TD.right {vertical-align: top}
+
 
 TABLE.main
 {
@@ -223,6 +235,7 @@ A.invisible:visited
 .underline { text-decoration: underline; }
 .imgcenter {display:block; margin-left:auto; margin-right:auto;margin-top:30px;}
 .extramarginbot {margin-bottom:40px;}
+.extramargintop {margin-top:40px;}
 .normalfont {font-family: Arial, 'Helvetica neue', Helvetica, sans-serif;}
 
 P.centeredimage

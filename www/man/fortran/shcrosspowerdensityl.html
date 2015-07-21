@@ -28,73 +28,34 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHCROSSPOWERDENSITYL(1)</B>           SHTOOLS 3.0          <B>SHCROSSPOWERDENSITYL(1)</B>
-
-
-</PRE>
-<H2 class="man">SHCrossPowerDensityL</H2 class="man"><PRE>
-       SHCrossPowerDensityL - Compute the spectral cross-power density of two
-                              real functions for a single degree L.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       REAL*8 FUNCTION SHCrossPowerDensityL ( C1, C2, L )
-
-           REAL*8    C1(2, L+1, L+1), C2(2, L+1, L+1)
-
-           INTEGER   L
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHCrossPowerDensityL</B> will calculate the spectral cross-power density of
-       two functions expressed in real spherical harmonics for a single degree
-       L. This is explicitly calculated as:
-
-       Sum_{i=1}^2 Sum_{m=0}^L C1(i, L+1, m+1) * C2(i, L+1, m+1) / (2L + 1).
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       C1        (input) REAL*8, DIMENSION (2, L+1, L+1)
-
-                 The first function expressed in real spherical harmonics.
-
-       C2        (input) REAL*8, DIMENSION (2, L+1, L+1)
-
-                 The second function expressed in real spherical harmonics.
-
-       L         (input) INTEGER
-
-                 The spherical harmonic degree for which the cross power
-                 density will be calculated.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shpowerl(1)</B>, <B>shpowerdensityl(1)</B>, <B>shcrosspowerl(1)</B>, <B>shpowerspectrum(1)</B>,
-       <B>shpowerspectrumdensity(1)</B>, <B>shcrosspowerspectrum(1)</B>,
-       <B>shcrosspowerspectrumdensity(1)</B>, <B>shadmitcorr(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12           <B>SHCROSSPOWERDENSITYL(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+<h1 id="shcrosspowerdensityl">SHCrossPowerDensityL</h1>
+<p>Compute the cross-power spectral density of two real functions for a single spherical harmonic degree.</p>
+<h1 id="usage">Usage</h1>
+<p><code>cpsd</code> = SHCrossPowerDensityL (<code>cilm1</code>, <code>cilm2</code>, <code>l</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cpsd</code> : output, real*8</dt>
+<dd>Cross-power spectral density of the two real functions for spherical harmonic degree <code>l</code>.
+</dd>
+<dt><code>cilm1</code> : input, real*8, dimension (2, <code>lmaxin1</code>+1, <code>lmaxin1</code>+1)</dt>
+<dd>The spherical harmonic coefficients of the first real function.
+</dd>
+<dt><code>cilm2</code> : input, real*8, dimension (2, <code>lmaxin2</code>+1, <code>lmaxin2</code>+1)</dt>
+<dd>The spherical harmonic coefficients of the second real function.
+</dd>
+<dt><code>l</code> : input, integer</dt>
+<dd>The spherical harmonic degree. This must be less than or equal to the minimum of <code>lmaxin1</code> and <code>lmaxin2</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHCrossPowerDensityL</code> will calculate the cross-power spectral density of two real functions expressed in real spherical harmonics for a single spherical harmonic degree <code>l</code>. This is explicitly calculated as:</p>
+<p><code>cpsd = Sum_{i=1}^2 Sum_{m=0}^l cilm1(i, l+1, m+1) * cilm2(i, l+1, m+1) / (2l + 1)</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shpowerl.html">shpowerl</a>, <a href="shpowerdensityl.html">shpowerdensityl</a>, <a href="shcrosspowerl.html">shcrosspowerl</a>, <a href="shpowerspectrum.html">shpowerspectrum</a>, <a href="shpowerspectrumdensity.html">shpowerspectrumdensity</a>, <a href="shcrosspowerspectrum.html">shcrosspowerspectrum</a>, <a href="shcrosspowerspectrumdensity.html">shcrosspowerspectrumdensity</a>, <a href="shadmitcorr.html">shadmitcorr</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

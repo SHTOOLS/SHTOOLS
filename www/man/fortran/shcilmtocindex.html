@@ -28,78 +28,30 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHCILMTOCINDEX(1)</B>                 SHTOOLS 3.0                <B>SHCILMTOCINDEX(1)</B>
-
-
-</PRE>
-<H2 class="man">SHCilmToCindex</H2 class="man"><PRE>
-       SHCilmToCindex - Convert a three-dimensional array of spherical
-                        harmonic coefficients to a two-dimensional indexed
-                        array.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHCilmToCindex ( CILM, CINDEX, DEGMAX )
-
-           REAL*8              CILM(2, *, *), CINDEX(2, *)
-
-           INTEGER, OPTIONAL   DEGMAX
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHCilmToCindex</B> will convert a three-dimensional array of spherical
-       harmonic coefficients to a two-dimensional indexed array.  The degree L
-       and order M corresponds to the index L*(L+1)/2+M+1. The default is to
-       convert the entire array CILM, but a subset of this array can be
-       converted by specifying the optional argument DEGMAX.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       CILM         (input) REAL*8, DIMENSION (2, *, *)
-
-                    The input spherical harmonic coefficients. CILM(1, *, *)
-                    and CILM(2, *, *) correspond to either the real and
-                    imaginary components, or cosine and sine coefficients,
-                    respectively.
-
-       CINDEX       (output) REAL*8, DIMENSION (2, *)
-
-                    The indexed output spherical harmonic coefficients. The
-                    second dimension of this array must be greater than
-                    (LMAX+1)*(LMAX+2)/2 where LMAX is the maximum degree of
-                    CILM.
-
-       DEGMAX       (input) INTEGER, OPTIONAL
-
-                    The maximum degree of the output coefficients. By default,
-                    the entire array CCILM will be converted.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shctor(1)</B>, <B>shrtoc(1)</B>, <B>shcindextocilm(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-11-05                 <B>SHCILMTOCINDEX(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+<h1 id="shcilmtocindex">SHCilmToCindex</h1>
+<p>Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHCilmToCindex (<code>cilm</code>, <code>cindex</code>, <code>degmax</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cilm</code> : input, real*8, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The input spherical harmonic coefficients. <code>cilm(1,:,:)</code> and <code>cilm(2,:,:)</code> correspond to either the real and imaginary components, or cosine and sine coefficients, respectively.
+</dd>
+<dt><code>cindex</code> : output, real*8, dimension (2, (<code>degmax</code>+1)*(<code>degmax</code>+2)/2)</dt>
+<dd>The indexed output spherical harmonic coefficients.
+</dd>
+<dt><code>degmax</code> : input, optional, integer, default = <code>lmaxin</code></dt>
+<dd>The maximum degree of the output coefficients.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHCilmToCindex</code> will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array. The degree <code>l</code> and order <code>m</code> corresponds to the index <code>l*(l+1)/2+m+1</code>. The default is to convert the entire array <code>cilm</code>, but a subset of this array can be converted by specifying the optional argument <code>degmax</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shcindextocilm.html">shcindextocilm</a>, <a href="pyshcindextovector.html">shcindextovector</a>, <a href="pyshvectortocilm.html">shvectortocilm</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

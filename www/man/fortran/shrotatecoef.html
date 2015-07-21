@@ -28,139 +28,56 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHROTATECOEF(1)</B>                   SHTOOLS 3.0                  <B>SHROTATECOEF(1)</B>
-
-
-</PRE>
-<H2 class="man">SHRotateCoef</H2 class="man"><PRE>
-       SHRotateCoef - Determine the spherical harmonic coefficients of a
-                      complex function rotated by three Euler angles.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHRotateCoef ( X, COEF, RCOEF, DJ, LMAX )
-
-           REAL*8    <B>X(3)</B>, COEF(2, (LMAX+1)*(LMAX+2)/2),
-                     RCOEF(2, (LMAX+1)*(LMAX+2)/2), DJ(LMAX+1, LMAX+1, LMAX+1)
-
-           INTEGER   LMAX
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHRotateCoef</B> will take the complex spherical harmonic coefficients of a
-       function, rotate it according to the three Euler anlges in X, and
-       output the spherical harmonic coefficients of the rotated function. The
-       input and output coefficients are in an indexed form that can be
-       converted to and from CILM(2,:,:) form by using the functions
-       <B>SHCilmToCindex</B> and <B>SHCindexToCilm</B>. The coefficients MUST correspond to
-       unit-normalized spherical harmonics that possess the Condon-Shortley
-       phase convention. Real spherical harmonics can be converted to and from
-       complex form using <B>SHrtoc</B> and <B>SHctor</B>. The input rotation matrix DJ is
-       computed by a call to <B>DJPi2</B>.
-
-       The rotation of a coordinate system or body can be viewed in two
-       complementary ways involving three successive rotations. Both methods
-       have the same initial and final configurations, and the angles listed
-       in both schemes are the same.
-
-       Scheme A:   (I) Rotation about the z axis by alpha.
-
-                   (II) Rotation about the new y axis by beta.
-
-                   (III) Rotation about the new z axis by gamma.
-
-       Scheme B:   (I) Rotation about the z axis by gamma.
-
-                   (II) Rotation about the initial y axis by beta.
-
-                   (III) Rotation about the initial z axis by alpha.
-
-       The rotations can further be viewed either as a rotation of the
-       coordinate system or the physical body. For a rotation of the
-       coordinate system without rotation of the physical body, use
-
-                   X(alpha, beta, gamma).
-
-       For a rotation of the physical body without rotation of the coordinate
-       system, use
-
-                   X(-gamma, -beta, -alpha).
-
-       To perform the inverse transform of X(alpha, beta, gamma), use
-       X(-gamma, -beta, -alpha).
-
-       Note that this routine uses the "y convention", where the second
-       rotation is with respect to the new y axis. If alpha, beta, and gamma
-       were orginally defined in terms of the "x convention", where the second
-       rotation was with respect to the newx axis, the Euler angles according
-       to the y convention would be alpha_y = alpha_x - pi/2, beta_x = beta_y,
-       and gamma_y = gamma_x + pi/2.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       X            (input) REAL*8, DIMENSION(3 )
-
-                    The three Euler angles, alpha, beta, and gamma.
-
-       COEF         (input) REAL*8, DIMENSION (2, (LMAX+1)*(LMAX+2)/2)
-
-                    The input complex spherical harmonic coefficients. This is
-                    an indexed array where the real and complex components are
-                    given by COEF(1,:) and COEF(2,:), respectively. The
-                    functions <B>SHCilmToCindex</B> and <B>SHCindexToCilm</B> are used to
-                    convert to and from indexed and CILM(2,:,:) form. The
-                    coefficients must correspond to unit-normalized spherical
-                    harmonics that possess the Condon-Shortley phase
-                    convention.
-
-       RCOEF        (output) REAL*8, DIMENSION (2, (LMAX+1)*(LMAX+2)/2)
-
-                    The spherical harmonic coefficients of the rotated
-                    function in indexed form.
-
-       DJ           (input) REAL*8, DIMENSION (LMAX+1, LMAX+1, LMAX+1)
-
-                    The rotation matrix DJ(pi/2), obtained from a call to
-                    <B>DJPi2</B>.
-
-       LMAX         (input) INTEGER, OPTIONAL
-
-                    The maximum spherical harmonic degree of the input and
-                    output coefficients.
-
-
-</PRE>
-<H2 class="man">NOTES</H2 class="man"><PRE>
-       This routine is based upon code originally written by Guy Masters,
-       which was then subsequently modified by Mark Simons and myself.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>djpi2(1)</B>, <B>shrotaterealcoef(1)</B>, <B>shctor(1)</B>, <B>shrtoc(1)</B>, <B>shcilmtocindex(1)</B>,
-       <B>shcindextocilm(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                   <B>SHROTATECOEF(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
+<h1 id="shrotatecoef">SHRotateCoef</h1>
+<p>Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHRotateCoef (<code>x</code>, <code>coef</code>, <code>rcoef</code>, <code>dj</code>, <code>lmax</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>x</code> : input, real*8, dimension(3)</dt>
+<dd>The three Euler angles, alpha, beta, and gamma.
+</dd>
+<dt><code>coef</code> : input, real*8, dimension (2, (<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
+<dd>The input complex spherical harmonic coefficients. This is an indexed array where the real and complex components are given by <code>coef(1,:)</code> and <code>coef(2,:)</code>, respectively. The functions <code>SHCilmToCindex</code> and <code>SHCindexToCilm</code> are used to convert to and from indexed and <code>cilm(2,:,:)</code> form. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention.
+</dd>
+<dt><code>rcoef</code> : output, real*8, dimension (2, (<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
+<dd>The spherical harmonic coefficients of the rotated function in indexed form.
+</dd>
+<dt><code>dj</code> : input, real*8, dimension (<code>lmax</code>+1, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The rotation matrix <code>dj(pi/2)</code> obtained from a call to <code>djpi2</code>.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The maximum spherical harmonic degree of the input and output coefficients.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHRotateCoef</code> will take the complex spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in <code>x</code>, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients are in an indexed form that can be converted to and from <code>cilm(2,:,:)</code> form by using the functions <code>SHCilmToCindex</code> and <code>SHCindexToCilm</code>. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention. Real spherical harmonics can be converted to and from complex form using <code>SHrtoc</code> and <code>SHctor</code>. The input rotation matrix <code>dj</code> is computed by a call to <code>djpi2</code>.</p>
+<p>The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.</p>
+<p><code>Scheme A:</code></p>
+<ol style="list-style-type: upper-roman">
+<li>Rotation about the z axis by alpha.</li>
+<li>Rotation about the new y axis by beta.</li>
+<li>Rotation about the new z axis by gamma.</li>
+</ol>
+<p><code>Scheme B:</code></p>
+<ol style="list-style-type: upper-roman">
+<li>Rotation about the z axis by gamma.</li>
+<li>Rotation about the initial y axis by beta.</li>
+<li>Rotation about the initial z axis by alpha.</li>
+</ol>
+<p>The rotations can further be viewed either as a rotation of the coordinate system or the physical body. For a rotation of the coordinate system without rotation of the physical body, use</p>
+<p><code>x(alpha, beta, gamma)</code>.</p>
+<p>For a rotation of the physical body without rotation of the coordinate system, use</p>
+<p><code>x(-gamma, -beta, -alpha)</code>.</p>
+<p>To perform the inverse transform of <code>x(alpha, beta, gamma)</code>, use <code>x(-gamma, -beta, -alpha)</code>.</p>
+<p>Note that this routine uses the &quot;y convention&quot;, where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the &quot;x convention&quot;, where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be <code>alpha_y=alpha_x-pi/2</code>, <code>beta_x=beta_y</code>, and <code>gamma_y=gamma_x+pi/2</code>.</p>
+<p>This routine is based upon code originally written by Guy Masters, which was then subsequently modified by Mark Simons and myself.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="djpi2.html">djpi2</a>, <a href="shrotaterealcoef.html">shrotaterealcoef</a>, <a href="shctor.html">shctor</a>, <a href="shrtoc.html">shrtoc</a>, <a href="shcilmtocindex.html">shcilmtocindex</a>, <a href="shcindextocilm.html">shcindextocilm</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

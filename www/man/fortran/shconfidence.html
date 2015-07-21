@@ -28,73 +28,32 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHCONFIDENCE(1)</B>                   SHTOOLS 3.0                  <B>SHCONFIDENCE(1)</B>
-
-
-</PRE>
-<H2 class="man">SHConfidence</H2 class="man"><PRE>
-       SHConfidence -  Compute the probability that two sets of spherical
-       harmonic coefficients are correlated at a given degree and for a given
-       correlation coefficient.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       REAL*8 FUNCTION SHConfidence ( L, CORR )
-
-           INTEGER   L
-
-           REAL*8    CORR
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHConfidence</B> will calculate the probability (between 0 and 1) that two
-       sets of spherical harmonic coefficients are linearly correlated at a
-       given degree and for a given correlation coefficient at that degree.
-       This is calculated using equation A7 from Pauer et al. (2006).
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       L         (input) INTEGER
-
-                 The spherical harmonic degree to consider.
-
-       CORR      (input) REAL*8
-
-                 The correlation coefficient of the two data sets at degree L.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shadmitcorr(1)</B>, <B>shpowerspectrum(1)</B>, <B>shcrosspowerspectrum(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Pauer, M, K. Fleming, and O. Cadek, Modeling the dynamic component of
-       the geoid and topography of Venus, J. Geophys. Res., 111, E11012,
-       doi:10.1029/2005JE002511, 2006.
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                   <B>SHCONFIDENCE(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+<h1 id="shconfidence">SHConfidence</h1>
+<p>Compute the probability that two functions are correlated at a given spherical harmonic degree for a given correlation coefficient.</p>
+<h1 id="usage">Usage</h1>
+<p><code>prob</code> = SHConfidence (<code>l</code>, <code>corr</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>prob</code> : output, real*8</dt>
+<dd>Probability that two functions expressed in spherical coefficients with spectral correlation <code>corr</code> are correlated at degree <code>l</code>.
+</dd>
+<dt><code>l</code> : input, integer</dt>
+<dd>The spherical harmonic degree.
+</dd>
+<dt><code>corr</code> : input, real*8</dt>
+<dd>The correlation coefficient of the two data sets at degree <code>l</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHConfidence</code> will calculate the probability (between 0 and 1) that two sets of spherical harmonic coefficients with spectral correlation <code>corr</code> are linearly correlated at a given degree. This is calculated using equation A7 from Pauer et al. (2006).</p>
+<h1 id="references">References</h1>
+<p>Pauer, M, K. Fleming, and O. Cadek, Modeling the dynamic component of the geoid and topography of Venus, J. Geophys. Res., 111, E11012, doi:10.1029/2005JE002511, 2006.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shadmitcorr.html">shadmitcorr</a>, <a href="shpowerspectrum.html">shpowerspectrum</a>, <a href="shcrosspowerspectrum.html">shcrosspowerspectrum</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

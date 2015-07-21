@@ -28,83 +28,38 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHFINDLWIN(1)</B>                     SHTOOLS 3.0                    <B>SHFINDLWIN(1)</B>
-
-
-</PRE>
-<H2 class="man">SHFindLWin</H2 class="man"><PRE>
-       SHFindLWin - Determine the spherical-harmonic bandwidth that is
-                    necessary to achieve a certain concentration factor.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       INTEGER FUNCTION SHFindLWin ( THETA0, M, ALPHA, TAPER_NUMBER )
-
-           REAL*8              THETA0, ALPHA
-
-           INTEGER             M
-
-           INTEGER, OPTIONAL   TAPER_NUMBER
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHFindLWin</B> will determine the spherical harmonic bandwidth that is
-       required for a window of the spherical-cap concentration problem to
-       achive a certain concentration factor. By default, the first taper
-       corresponding to the angular order M will be used, but this can be
-       modified by specifying the optional argument TAPER_NUMBER.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       THETA0         The angular radius of the spherical cap in RADIANS.
-
-       M              (input) INTEGER
-
-                      The angular order of the taper.
-
-       ALPHA          (input) REAL*8
-
-                      The desired concentration factor of the window. This
-                      must lie between 0 and 1.
-
-       TAPER_NUMBER   (input) INTEGER, OPTIONAL
-
-                      The taper number corresponding to the angular order M.
-                      The default is to use the first taper.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>computed0(1)</B>, <B>computedg82(1)</B>, <B>computedm(1)</B>, <B>shreturntapers(1)</B>,
-       <B>shreturntapersm(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the
-       sphere, <B>Geophys.</B> <B>J.</B> <B>Int.</B>, 162, 655-675.
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                     <B>SHFINDLWIN(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="shfindlwin">SHFindLWin</h1>
+<p>Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor.</p>
+<h1 id="usage">Usage</h1>
+<p><code>lwin</code> = SHFindLWin (<code>theta0</code>, <code>m</code>, <code>alpha</code>, <code>taper_number</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>lwin</code> : output, integer</dt>
+<dd>The spherical harmonic bandwidth
+</dd>
+<dt><code>theta0</code> : input, real*8</dt>
+<dd>The angular radius of the spherical cap in radians.
+</dd>
+<dt><code>m</code> : input, integer</dt>
+<dd>The angular order of the taper.
+</dd>
+<dt><code>alpha</code> : input, real*8</dt>
+<dd>The desired concentration factor of the window. This must lie between 0 and 1.
+</dd>
+<dt><code>taper_number</code> : optional, input, integer, default = 1</dt>
+<dd>The taper number corresponding to the angular order <code>m</code>. The default is to use the first taper.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHFindLWin</code> will determine the spherical harmonic bandwidth that is required for a window of the spherical-cap concentration problem to achive a certain concentration factor. By default, the first taper corresponding to the angular order <code>m</code> will be used, but this can be modified by specifying the optional argument <code>taper_number</code>.</p>
+<h1 id="references">References</h1>
+<p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, Geophys. J. Int., 162, 655-675.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="computedg82.html">computedg82</a>, <a href="computedm.html">computedm</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersm.html">shreturntapersm</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

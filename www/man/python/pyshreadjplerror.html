@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Spherical harmonic I/O and storage routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyio.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+<h1 id="shreadjpl">SHReadJPL</h1>
+<p>Read spherical harmonic coefficients from a JPL ascii-formatted file.</p>
+<h1 id="usage">Usage</h1>
+<p><code>cilm</code>, <code>error</code>, <code>lmax</code>, <code>gm</code> = pyshtools.SHReadJPL (<code>filename</code>, <code>lmaxin</code>, [<code>formatstring</code>])</p>
+<h1 id="returns">Returns</h1>
+<dl>
+<dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The spherical harmonic coefficients contained in <code>filename</code>.
+</dd>
+<dt><code>error</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The uncertainties associated with the spherical harmonic coefficients contained in <code>filename</code>.
+</dd>
+<dt><code>lmax</code> : integer</dt>
+<dd>The maximum spherical harmonic degree of <code>cilm</code>.
+</dd>
+<dt><code>gm</code> : float, dimension(2)</dt>
+<dd>The mass-gravitational constant and error.
+</dd>
+</dl>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>filename</code> : character(*)</dt>
+<dd>The filename of the JPL ascii-formatted spherical harmonic coefficients.
+</dd>
+<dt><code>lmaxin</code> : integer</dt>
+<dd>This spherical harmonic degree controls the dimension of the output array <code>cilm</code>. The coefficients between <code>lmax+1</code> and <code>lmaxin</code> will be set to zero.
+</dd>
+<dt><code>formatstring</code> : character*6, optional, default = &quot;E19.12&quot;</dt>
+<dd>The format string used to read the elements of <code>cilm</code> and <code>error</code>. The default is &quot;E19.12&quot;.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHReadJPL</code> will read spherical harmonic coefficients from a JPL ascii formatted file into an array <code>cilm</code>. The real numbers are assumed to be formated with the specifier <code>E19.12</code>, but this can be changed by specifiying the optional string <code>formatstring</code>.</p>
+<p>The JPL ascii-formatted file is organized as follows:</p>
+<ul>
+<li>Comment lines starting with &quot;#&quot;.</li>
+<li><code>gm</code> (if a gravitational potential file)</li>
+<li>A list of <code>J_l</code>, which is <code>-cilm[0,l,0]</code>.</li>
+<li>A list of the cosine and sine terms.</li>
+<li>The errors of the above (starting at step 2).</li>
+</ul>
+<h1 id="see-also">See also</h1>
+<p><a href="pyshread.html">shread</a>, <a href="pyshread2.html">shread2</a>, <a href="pyshreadjpl.html">shreadjpl</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyio.html" class="dir">Spherical Harmonic I/O</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

@@ -28,74 +28,28 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SPHERICALCAPCOEF(1)</B>               SHTOOLS 3.0              <B>SPHERICALCAPCOEF(1)</B>
-
-
-</PRE>
-<H2 class="man">SphericalCapCoef</H2 class="man"><PRE>
-       SphericalCapCoef - Calculate the spherical harmonic coefficients of a
-                          spherical cap.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SphericalCapCoef ( COEF, THETA, LMAX )
-
-           REAL*8              COEF(*), THETA
-
-           INTEGER, OPTIONAL   LMAX
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SphericalCapCoef</B> will calculate the spherical harmonic coefficients of
-       a spherical cap centered over the north pole. The zonal coefficients,
-       returned in the array COEF, are normalized such that the degree-0 term
-       is 1, and are to be used with either the geodesy 4-pi normalized or
-       orthonormalized spherical harmonics.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       COEF      (output) REAL*8, DIMENSION(*)
-
-                 The zonal spherical harmonic coefficients of a spherical cap
-                 centered over the north pole. The coefficients are calculated
-                 up to spherical harmonic degree LMAX, if present, or the
-                 dimension of the input array - 1. The coefficients are to be
-                 used with either the geodesy 4-pi normalized or
-                 orthonormalized spherical harmonics
-
-       THETA     (input) REAL*8
-
-                 The angular radius of the spherical cap in RADIANS.
-
-       LMAX      (input) INTEGER, OPTIONAL
-
-                 The maximum spherical harmonic degree to calculate the
-                 spherical harmonic coefficients.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12               <B>SPHERICALCAPCOEF(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="sphericalcapcoef">SphericalCapCoef</h1>
+<p>Calculate the spherical harmonic coefficients of a spherical cap.</p>
+<h1 id="usage">Usage</h1>
+<p>call SphericalCapCoef (<code>coef</code>, <code>theta</code>, <code>lmax</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>coef</code> : output, real*8, dimension(<code>lmaxin</code>+1)</dt>
+<dd>The zonal spherical harmonic coefficients of a spherical cap centered over the north pole.
+</dd>
+<dt><code>theta</code> : input, real*8</dt>
+<dd>The angular radius of the spherical cap in radians.
+</dd>
+<dt><code>lmax</code> : optional, input, integer, default = <code>lmaxin</code></dt>
+<dd>The maximum spherical harmonic degree to calculate the spherical harmonic coefficients.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SphericalCapCoef</code> will calculate the spherical harmonic coefficients of a spherical cap centered over the north pole. The zonal coefficients, returned in the array <code>coef</code>, are normalized such that the degree-0 term is 1, and are to be used with either the geodesy 4-pi normalized or orthonormalized spherical harmonics.</p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

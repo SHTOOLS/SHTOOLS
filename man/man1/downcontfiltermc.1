@@ -1,0 +1,75 @@
+.TH "downcontfiltermc" "1" "2015\-04\-28" "Fortran 95" "SHTOOLS 3.1"
+.SH DownContFilterMC
+.PP
+Calculate a minimum\-curvature downward continuation filter for a given
+spherical harmonic degree.
+.SH Usage
+.PP
+\f[C]wl\f[] = DownContFilterMC (\f[C]l\f[], \f[C]half\f[], \f[C]r\f[],
+\f[C]d\f[])
+.SH Parameters
+.TP
+.B \f[C]wl\f[] : output, real*8
+The amplitude of the downward continuation filter.
+.RS
+.RE
+.TP
+.B \f[C]l\f[] : input, integer
+The spherical harmonic degree.
+.RS
+.RE
+.TP
+.B \f[C]half\f[] : input, integer
+The spherical harmonic degree where the filter is equal to 0.5.
+.RS
+.RE
+.TP
+.B \f[C]r\f[] : input, real*8
+The reference radius of the gravitational field.
+.RS
+.RE
+.TP
+.B \f[C]d\f[] : input, real*8
+The radius of the surface to downward continue to.
+.RS
+.RE
+.SH Description
+.PP
+\f[C]DownContFilterMC\f[] will calculate a minimum\-curvature downward
+continuation filter for a given spherical harmonic degree \f[C]l\f[].
+The input parameters include \f[C]half\f[], which is the degree where
+the filter is equal to 0.5, and \f[C]r\f[] and \f[C]d\f[], which are the
+reference radius of the gravitational field and the radius of the
+surface to downward continue to, respectively.
+.PP
+A simple analytic expression exists for the downward continuation
+filter, following the methodology of Wieczorek and Phillips (1998), only
+when taking the first, third, fifth, and so on, derivatives of their
+equation 17.
+For this minimum\-curvature filter, which corresponds to the second
+derivative, the form has simply been generalized using the solutions of
+the odd derivatives.
+This may or may not turn out to be exact.
+In any case, the form of this filter is numerically very similar to the
+Cartesian minimum\-curvature filter of Phipps Morgan and Blackman
+(1993).
+.SH References
+.PP
+Phipps Morgan, J., and D.
+K.
+Blackman, Inversion of combined gravity and bathymetry data for crustal
+structure: A prescription for downward continuation, Earth Planet.
+Sci.
+Lett., 119, 167\-179, 1993.
+.PP
+Wieczorek, M.
+A.
+and R.
+J.
+Phillips, Potential anomalies on a sphere: applications to the thickness
+of the lunar crust, J.
+Geophys.
+Res., 103, 1715\-1724, 1998.
+.SH See also
+.PP
+downcontfilterma, batohilm batohilmrhoh

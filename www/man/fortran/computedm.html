@@ -28,84 +28,35 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>COMPUTEDM(1)</B>                      SHTOOLS 3.0                     <B>COMPUTEDM(1)</B>
-
-
-</PRE>
-<H2 class="man">ComputeDM</H2 class="man"><PRE>
-       ComputeDM -  Compute the space-concentration kernel of a spherical cap.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE ComputeDM ( D0, LMAX, M, THETA0 )
-
-           REAL*8    D0(LMAX+1, LMAX+1), THETA0
-
-           INTEGER   LMAX, M
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>ComputeDM</B> will calculate the space-concentration kernel of angular
-       order M for the spherical-cap concentration problem. The eigenfunctions
-       of this matrix correspond to a family of orthogonal windowing
-       functions, and the eigenvalues correspond to the window's concentration
-       factor (i.e., the power of the window within THETA0 divided by the
-       total power of the function). It is implicitly assumed that the
-       employed spherical harmonic functions are normalized to the same value
-       for all degrees and angular orders, which is the case for both the
-       geodesy 4-pi and orthonormalized harmonics. This kernel is symmetric
-       and is computed exactly by Gauss-Legendre quadrature.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       DM        (output) REAL*8, DIMENSION (LMAX+1, LMAX+1)
-
-                 The space-concentration kernel or angular order M.
-
-       LMAX      (input) INTEGER
-
-                 The spherical harmonic bandwidth of the windows.
-
-       M         (input) INTEGER
-
-                 The angular order of the concentration problem.
-
-       THETA0    (input) REAL*8
-
-                 The angular radius of the spherical cap in RADIANS.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>computedg82(1)</B>, <B>computed0(1)</B>, <B>shreturntapers(1)</B>, <B>shreturntapersm(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral
-       concentration on a sphere, <B>SIAM</B> <B>Review</B>, 48, 504-536, 2006.
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                      <B>COMPUTEDM(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="computedm">ComputeDM</h1>
+<p>Compute the space-concentration kernel of a spherical cap.</p>
+<h1 id="usage">Usage</h1>
+<p>call ComputeDM (<code>dm</code>, <code>lmax</code>, <code>m</code>, <code>theta0</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>dm</code> : output, real*8, dimension (<code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The space-concentration kernel or angular order <code>m</code>.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The spherical harmonic bandwidth of the windows.
+</dd>
+<dt><code>m</code> : input, integer</dt>
+<dd>The angular order of the concentration problem.
+</dd>
+<dt><code>theta0</code> : input, real*8</dt>
+<dd>The angular radius of the spherical cap in radians.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>ComputeDM</code> will calculate the space-concentration kernel of angular order <code>m</code> for the spherical-cap concentration problem. The eigenfunctions of this matrix correspond to a family of orthogonal windowing functions, and the eigenvalues correspond to the window's concentration factor (i.e., the power of the window within <code>theta0</code> divided by the total power of the function). It is assumed that the employed spherical harmonic functions are normalized to the same value for all degrees and angular orders, which is the case for both the geodesy 4-pi and orthonormalized harmonics. This kernel is symmetric and is computed exactly by Gauss-Legendre quadrature.</p>
+<h1 id="references">References</h1>
+<p>Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="computedg82.html">computedg82</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersm.html">shreturntapersm</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

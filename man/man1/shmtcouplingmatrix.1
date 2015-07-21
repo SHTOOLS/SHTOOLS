@@ -1,0 +1,74 @@
+.TH "shmtcouplingmatrix" "1" "2015\-07\-18" "Fortran 95" "SHTOOLS 3.1"
+.SH SHMTCouplingMatrix
+.PP
+This routine returns the multitaper coupling matrix for a given set of
+spherical\-cap localization windows.
+This matrix relates the global power spectrum to the expectation of the
+localized multitaper spectrum.
+.SH Usage
+.PP
+call SHMTCouplingMatrix (\f[C]mmt\f[], \f[C]lmax\f[],\f[C]tapers\f[],
+\f[C]lwin\f[], \f[C]k\f[], \f[C]taper_wt\f[])
+.SH Parameters
+.TP
+.B \f[C]mmt\f[] : output, real*8, dimension (\f[C]lmax\f[]+1,\f[C]lmax\f[]+\f[C]lwin\f[]+1)
+The multitaper coupling matrix that relates the global power spectrum to
+the expectation of the localized multitaper spectrum.
+.RS
+.RE
+.TP
+.B \f[C]lmax\f[] : input, integer
+The spherical harmonic bandwidth of the global power spectrum.
+.RS
+.RE
+.TP
+.B \f[C]tapers\f[] : input, real*8, dimension (\f[C]lwin\f[]+1, \f[C]k\f[])
+An array of the k windowing functions, arranged in columns, obtained
+from a call to \f[C]SHReturnTapers\f[].
+.RS
+.RE
+.TP
+.B \f[C]lwin\f[] : input, integer
+The spherical harmonic bandwidth of the windowing functions in the array
+\f[C]tapers\f[].
+.RS
+.RE
+.TP
+.B \f[C]k\f[] : input, integer
+The number of tapers utilized in the multitaper spectral analysis.
+.RS
+.RE
+.TP
+.B \f[C]taper_wt\f[] : input, optional, real*8, dimension (\f[C]k\f[])
+The weights used in calculating the multitaper spectral estimates.
+Optimal values of the weights (for a known global power spectrum) can be
+obtained from the routine \f[C]SHMTVarOpt\f[].
+.RS
+.RE
+.SH Description
+.TP
+.B \f[C]SHMTCouplingMatrix\f[] returns the multitaper coupling matrix that relates the global power spectrum (assumed to be stationary) to the expectation of the localized multitaper spectrum. This is given by eqs 4.5 and 4.6 in Wieczorek and Simons (2007):
+\f[C]<\ S_{Phi\ Phi}^(mt)\ >\ =\ M^(mt)\ S_{ff}\f[]
+.RS
+.RE
+.TP
+.B where \f[C]S_{Phi\ Phi}\f[] is a vector containing the \f[C]lmax+lwin+1\f[] localized multitaper power spectral estiamtes, \f[C]S_{ff}\f[] is a vector of the global power spectrum up to degree \f[C]lmax\f[], and \f[C]<\ ...\ >\f[] is the expectation operator. The coupling matrix is given explicitly by
+\f[C]M_{ij}\ =\ Sum_{l=0}^L\ Sum_{k=1}^K\ a_k\ S_{hh}^{k}(l)\ [\ C_{l0j0}^{i0}\ ]^2\f[]
+.RS
+.RE
+.PP
+where \f[C]a_k\f[] are the taper weights, \f[C]S_{hh}\f[] is the power
+of the window, and \f[C]C\f[] is a Clebsch\-Gordon coefficient.
+.SH References
+.PP
+Wieczorek, M.
+A.
+and F.
+J.
+Simons, Minimum\-variance multitaper spectral estimation on the sphere,
+J.
+Fourier Anal.
+Appl., 13, 665\-692, doi:10.1007/s00041\-006\-6904\-1, 2007.
+.SH See also
+.PP
+shmultitaperse, shmultitapercse, shreturntapers, shmtvaropt, shmtdebias

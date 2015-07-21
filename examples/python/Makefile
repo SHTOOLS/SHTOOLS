@@ -19,6 +19,8 @@ MAKE = make
 .PHONY: all clean
 
 all:
+	cd ClassInterface ; $(PYTHON) ./ClassExample.py
+	cd ClassInterface ; $(PYTHON) ./WindowExample.py
 	cd GlobalSpectralAnalysis ; $(PYTHON) ./SHComplexSpectralAnalysis.py
 	cd GlobalSpectralAnalysis ; $(PYTHON) ./SHRealSpectralAnalysis.py
 	cd IOStorageConversions ; $(PYTHON) ./SHConversions.py
@@ -36,6 +38,7 @@ all:
 	cd TimingAccuracy ; $(PYTHON) ./TimingAccuracyGLQC.py
 
 clean:
+	-rm -f ClassInterface/*.pyc
 	-rm -f GlobalSpectralAnalysis/*.pyc
 	-rm -f GlobalSpectralAnalysis/*.png
 	-rm -f IOStorageConversions/*.pyc
@@ -52,5 +55,3 @@ clean:
 	-rm -f GravMag/*.png
 	-rm -f Other/*.pyc
 	-rm -f Other/*.png
-
-

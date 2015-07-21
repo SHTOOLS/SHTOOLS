@@ -28,131 +28,43 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>PLMSCHMIDT_D1(1)</B>                  SHTOOLS 3.0                 <B>PLMSCHMIDT_D1(1)</B>
-
-
-</PRE>
-<H2 class="man">PlmSchmidt_d1</H2 class="man"><PRE>
-       PlmSchmidt_d1 - Compute all the Schmidt semi-normalized associated
-                       Legendre functions and first derivatives.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE PlmSchmidt_d1 ( P, DP, LMAX, Z, CSPHASE, CNORM )
-
-           REAL*8              P((LMAX+1)*(LMAX+2)/2),
-                               DP((LMAX+1)*(LMAX+2)/2), Z
-
-           INTEGER             LMAX
-
-           INTEGER, OPTIONAL   CSPHASE, CNORM
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>PlmSchmidt</B><B>_</B><B>d1</B> will calculate all of the Schmidt-normalized associated
-       Legendre functions and first derivatives up to degree LMAX for a given
-       argument. These are calculated using a standard three-term recursion
-       formula, and in order to prevent overflows, the scaling approach of
-       Holmes and Featherstone (2002) is utilized. These functions are
-       accurate to about degree 2800. The index of the array corresponding to
-       a given degree L and angular order M can be computed by a call to
-       <B>PlmIndex</B>.
-
-       The integral of the squared Legendre functions over the interval [-1,
-       1] is 2 * (2 - delta(0,m))/(2L+1), where delta is the Kronecker delta
-       function. If the optional parameter CNORM is set equal to 1, the
-       complex normalization will be used where the integral of the squared
-       Legendre functions over the interval [-1, 1] is 2/(2L+1). The default
-       is to exclude the Condon-Shortley phase, but this can be modified by
-       setting the optional argument CSPHASE to -1. Note that the derivative
-       of the Legendre functions is calculated with respect to its arguement
-       Z, and not latitude or colatitude. If Z=cos(theta), where theta is the
-       colatitude, then it is only necessary to multiply DP by -sin(theta) to
-       obtain the derivative with respect to theta.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       P         (output) REAL*8, DIMENSION ((LMAX+1)*(LMAX+2)/2)
-
-                 An array of Schmidt-normalized associated Legendre functions
-                 up to degree LMAX. The index corresponds to L*(L+1)/2 + M +
-                 1, which can be calculated by a call to <B>PlmIndex</B>.
-
-       DP        (output) REAL*8, DIMENSION ((LMAX+1)*(LMAX+2)/2)
-
-                 An array of the first derivatives of the Schmidt-normalized
-                 associated Legendre functions up to degree LMAX. The index
-                 corresponds to L*(L+1)/2 + M + 1, which can be calculated by
-                 a call to <B>PlmIndex</B>.
-
-       LMAX      (input) INTEGER
-
-                 The maximum degree of the associated Legendre functions to be
-                 computed. If LMAX is -1, allocated memory will be deallocated
-                 (see notes below).
-
-       Z         (input) REAL*8
-
-                 The argument of the associated Legendre functions.
-
-       CSPHASE   (input) INTEGER, OPTIONAL
-
-                 If 1 (default), the Condon-Shortley phase will be excluded.
-                 If -1, the Condon-Shortley phase of (-1)^m will be appended
-                 to the associated Legendre functions.
-
-       CNORM     (input) INTEGER, OPTIONAL
-
-                 If 1, the complex normalization of the associated Legendre
-                 functions will be used. The default is to use the real
-                 normalization.
-
-
-</PRE>
-<H2 class="man">NOTES</H2 class="man"><PRE>
-       This routine saves the three-term recursion factors and square roots of
-       the integers the first time being called. If subsequent calls possess
-       the same value of LMAX, these will not be recomputed. If you wish to
-       deallocate this memory, which is an array of length (LMAX+1)*(LMAX+2),
-       recall this routine with LMAX=-1.
-
-
-</PRE>
-<H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Holmes, S. A., and W. E. Featherstone, A unified approach to the
-       Clenshaw summation and the recursive computation of very high degree
-       and order normalised associated Legendre functions, <B>J.</B> <B>Geodesy</B>, 76,
-       279- 299, 2002.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>plbar(1)</B>, <B>plbar_d1(1)</B>, <B>plmbar(1)</B>, <B>plmbar_d1(1)</B>, <B>plon(1)</B>, <B>plon_d1(1)</B>,
-       <B>plmon(1)</B>, <B>plmon_d1(1)</B>, <B>plschmidt(1)</B>, <B>plmschmidt(1)</B>, <B>plmschmidt_d1(1)</B>,
-       <B>plegendre(1)</B>, <B>plegendre_d1(1)</B>, <B>plegendrea(1)</B>, <B>plegendrea_d1(1)</B>,
-       <B>plmindex(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                  <B>PLMSCHMIDT_D1(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>
+<h1 id="plmschmidt_d1">PlmSchmidt_d1</h1>
+<p>Compute all the Schmidt semi-normalized associated Legendre functions and first derivatives.</p>
+<h1 id="usage">Usage</h1>
+<p>call PlmSchmidt_d1 (<code>p</code>, <code>dp</code>, <code>lmax</code>, <code>z</code>, <code>csphase</code>, <code>cnorm</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>p</code> : output, real*8, dimension ((<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
+<dd>An array of Schmidt-normalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.
+</dd>
+<dt><code>dp</code> : output, real*8, dimension ((<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
+<dd>An array of the first derivatives of the Schmidt-normalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The maximum degree of the associated Legendre functions to be computed. If <code>lmax</code> is -1, allocated memory will be deallocated.
+</dd>
+<dt><code>z</code> : input, real*8</dt>
+<dd>The argument of the associated Legendre functions.
+</dd>
+<dt><code>csphase</code> : input, optional, integer, default = 1</dt>
+<dd>If 1 (default), the Condon-Shortley phase will be excluded. If -1, the Condon-Shortley phase of (-1)^m will be appended to the associated Legendre functions.
+</dd>
+<dt><code>cnorm</code> : input, optional, integer, default = 0</dt>
+<dd>If 1, the complex normalization of the associated Legendre functions will be used. The default is to use the real normalization.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>PlmSchmidt_d1</code> will calculate all of the Schmidt-normalized associated Legendre functions and first derivatives up to degree <code>lmax</code> for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree <code>l</code> and angular order <code>m</code> corresponds to <code>l*(l+1)/2+m+1</code>, which can be calculated by a call to <code>PlmIndex</code>.</p>
+<p>The integral of the squared Legendre functions over the interval [-1, 1] is <code>2*(2-delta(0,m))/(2l+1)</code>, where delta is the Kronecker delta function. If the optional parameter <code>cnorm</code> is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is <code>2/(2l+1)</code>. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument <code>csphase</code> to -1. Note that the derivative of the Legendre functions is calculated with respect to its arguement <code>z</code>, and not latitude or colatitude. If <code>z=cos(theta)</code>, where <code>theta</code> is the colatitude, then it is only necessary to multiply <code>dp</code> by <code>-sin(theta)</code> to obtain the derivative with respect to <code>theta</code>.</p>
+<p>This routine saves the three-term recursion factors and square roots of the integers the first time being called. If subsequent calls possess the same value of <code>lmax</code>, these will not be recomputed. If you wish to deallocate this memory, which is an array of length <code>(lmax+1)*(lmax+2)</code>, recall this routine with <code>lmax</code>=-1.</p>
+<h1 id="references">References</h1>
+<p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, 2002.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="plbar.html"><code>plbar</code></a>, <a href="plbar_d1.html"><code>plbar_d1</code></a>, <a href="plmbar.html"><code>plmbar</code></a>, <a href="plmbar_d1.html"><code>plmbar_d1</code></a>, <a href="plon.html"><code>plon</code></a>, <a href="plon_d1.html"><code>plon_d1</code></a>, <a href="plmon.html"><code>plmon</code></a>, <a href="plmon_d1.html"><code>plmon_d1</code></a>, <a href="plschmidt.html"><code>plschmidt</code></a>, <a href="plmschmidt.html"><code>plmschmidt</code></a>, <a href="plmschmidt_d1.html"><code>plmschmidt_d1</code></a>, <a href="plegendre.html"><code>plegendre</code></a>, <a href="plegendre_d1.html"><code>plegendre_d1</code></a>, <a href="plegendrea.html"><code>plegendrea</code></a>, <a href="plegendrea_d1.html"><code>plegendrea_d1</code></a>, <a href="plmindex.html"><code>plmindex</code></a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../legendre.html" class="dir">Legendre Functions</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

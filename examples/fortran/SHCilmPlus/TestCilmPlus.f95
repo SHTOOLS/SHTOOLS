@@ -123,9 +123,9 @@ program TestCilmPlus
 	print*, "Precomputing data structures..."
 	
 	if (precomputeplx == 1) then
-		call PreCompute(lmax, zero, w, plx = plx)
+		call SHGLQ(lmax, zero, w, plx = plx)
 	else	
-		call PreCompute(lmax, zero, w)
+		call SHGLQ(lmax, zero, w)
 	endif
 
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -241,11 +241,11 @@ program TestCilmPlus
 	
 	print*, "Computing gravity coefficients..."
 	if (precomputeplx == 1) then
-		call PreCompute(lmaxn, zeron, wn, plx = plxn)
+		call SHGLQ(lmaxn, zeron, wn, plx = plxn)
 		call MakeGridGLQ(gridglq, cilm, lmaxn, plx = plxn)
 		call CilmPlus(c1ilm, gridglq, lmaxn, nmax, mass, d, rho, gridtype = 1, w = wn, plx = plxn)
 	else
-		call PreCompute(lmaxn, zeron, wn)
+		call SHGLQ(lmaxn, zeron, wn)
 		call MakeGridGLQ(gridglq, cilm, lmaxn, zero = zeron)
 		call CilmPlus(c1ilm, gridglq, lmaxn, nmax, mass, d, rho, gridtype = 1, w = wn, zero = zeron)
 	endif
@@ -294,11 +294,11 @@ program TestCilmPlus
 		nlongn = 2*lmaxn + 1	
 		
 		if (precomputeplx == 1) then
-			call PreCompute(lmaxn, zeron, wn, plx = plxn)
+			call SHGLQ(lmaxn, zeron, wn, plx = plxn)
 			call MakeGridGLQ(gridglq, cilm, lmaxn, plx = plxn)
 			call CilmPlus(c2ilm, gridglq, lmaxn, nmax, mass, d, rho, gridtype = 1, w = wn, plx = plxn)
 		else
-			call PreCompute(lmaxn, zeron, wn)
+			call SHGLQ(lmaxn, zeron, wn)
 			call MakeGridGLQ(gridglq, cilm, lmaxn, zero = zeron)
 			call CilmPlus(c2ilm, gridglq, lmaxn, nmax, mass, d, rho, gridtype = 1, w = wn, zero = zeron)
 		endif

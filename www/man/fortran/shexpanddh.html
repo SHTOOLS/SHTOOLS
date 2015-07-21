@@ -28,168 +28,50 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHEXPANDDH(1)</B>                     SHTOOLS 3.0                    <B>SHEXPANDDH(1)</B>
-
-
-</PRE>
-<H2 class="man">SHExpandDH</H2 class="man"><PRE>
-       SHExpandDH - Expand an equally sampled or equally spaced grid into
-                    spherical harmonics using Driscoll and Healy's (1994)
-                    sampling theorem.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHExpandDH ( GRIDDH, N, CILM, LMAX, NORM, SAMPLING, CSPHASE,
-                               LMAX_CALC )
-
-           REAL*8             GRIDDH(N, N) <B>or</B> GRIDDH(N, 2*N),
-                              CILM(2, N/2, N/2) <B>or</B>
-                              CILM(2, LMAX_CALC+1, LMAX_CALC+1)
-
-           INTEGER            N, LMAX
-
-           INTEGER, OPTIONAL  NORM, SAMPLING, CSPHASE, LMAX_CALC
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHExpandDH</B> will expand an equally sampled (N by N) or equally spaced
-       grid (N by 2N) into spherical harmonics using the sampling theorem of
-       Driscoll and Healy (1994). The number of latitudinal samples, N, must
-       be even, and the transform is exact if the function is bandlimited to
-       spherical harmonic degree N/2 - 1. The inverse transform is given by
-       the routine <B>MakeGridDH</B>. If the optional parameter LMAX_CALC is
-       specified, the spherical harmonic coefficients will only be calculated
-       to this degree instead of N/2 - 1. The algorithm is based on performing
-       FFTs in longitude and then integrating over latitude using an exact
-       quadrature rule.
-
-       The default is to use an input grid that is equally sampled (N by N),
-       but this can be changed to use an equally spaced grid (N by 2N) by the
-       optional argument SAMPLING.  When using an equally spaced grid, the
-       Fourier components corresponding to degrees greater than N/2 - 1 are
-       simply discarded; this is done to prevent aliasing that would occur if
-       an equally sampled grid was constructed from an equally spaced grid by
-       discarding every other column of the input grid. The first latitudinal
-       band of both grids corresponds to 90 N, the latitudinal band for 90 S
-       is not included, and the latitudinal sampling interval is 180/N
-       degrees. The first longitudinal band is 0 E, the longitudinal band for
-       360 E is not included, and the longitudinal sampling interval is 360/N
-       for equally sampled and 180/N for equally spaced grids, respectively.
-
-       The employed spherical harmonic normalization and Condon-Shortley phase
-       convention can be set by the optional arguments NORM and CSPHASE; if
-       not set, the default is to use geodesy 4-pi normalized harmonics that
-       exclude the Condon-Shortley phase of (-1)^m.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       GRIDDH     (input) REAL*8, DIMENSION (N, N) <B>or</B> (N, 2*N)
-
-                  A 2D equally sampled (default) or equally spaced grid that
-                  conforms to the sampling theorem of Driscoll and Healy
-                  (1994). The first latitudinal band corresponds to 90 N, the
-                  latitudinal band for 90 S is not included, and the
-                  latitudinal sampling interval is 180/N degrees. The first
-                  longitudinal band is 0 E, the longitude band for 360 E is
-                  not included, and the longitudinal sampling interval is
-                  360/N for an equally and 180/N for an equally spaced grid,
-                  respectively.
-
-       N          (input) INTEGER
-
-                  The number of samples in latitude of GRIDDH. If SAMPLING is
-                  1 (default) then the number of samples in longitude is N. If
-                  SAMPLING is 2 then the number of longitudinal samples is
-                  2*N. N must be even.
-
-       CILM       (output) REAL*8, DIMENSION (2, N/2, N/2) <B>or</B>
-                  (2, LMAX_CALC+1, LMAX_CALC+1)
-
-                  The real spherical harmonic coefficients of the function.
-                  These will be exact if the function is bandlimited to degree
-                  LMAX = N/2 - 1. The coefficients C1lm and C2lm refer to the
-                  "cosine" (Clm) and "sine" (Slm) coefficients, respectively,
-                  with Clm = CILM(1, l+1, m+1) and Slm = CILM(2, l+1, m+1).
-                  Alternatively, C1lm and C2lm correspond to the positive and
-                  negative order coefficients, respectively.
-
-       LMAX       (output) INTEGER
-
-                  The maximum spherical harmonic bandwidth of the input grid,
-                  which is N/2 - 1. If the optional parameter LMAX_CALC is not
-                  specified, this corresponds to the maximum spherical
-                  harmonic degree of the output coefficients CILM.
-
-       NORM       (input) INTEGER, OPTIONAL
-
-                  1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt
-                  semi-normalized harmonics; 3 = unnormalized harmonics; 4 =
-                  orthonormal harmonics.
-
-       SAMPLING   (input) INTEGER, OPTIONAL
-
-                  If 1 (default) the input grid is equally sampled (N by N).
-                  If 2, the grid is equally spaced (N by 2*N).
-
-       CSPHASE    (input) INTEGER, OPTIONAL
-
-                  1 (default) = do not apply the Condon-Shortley phase factor
-                  to the associated Legendre functions; -1 = append the
-                  Condon-Shortley phase factor of (-1)^m to the associated
-                  Legendre functions.
-
-       LMAX_CALC  (input) INTEGER, OPTIONAL
-
-                  The maximum spherical harmonic degree calculated in the
-                  spherical harmonic expansion.
-
-
-</PRE>
-<H2 class="man">NOTES</H2 class="man"><PRE>
-       The normalized legendre functions are calculated in this routine using
-       the scaling algorithm of Holmes and Featherstone (2002), which are
-       accurate to about degree 2800. In contrast, the unnormalized functions
-       are only accurate to about degree 15. This routine takes into account
-       the symmetry of the associated Legendre functions about the equator in
-       order to reduce computational time.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>makegriddh(1)</B>, <B>dhaj(1)</B>, <B>shexpandglq(1)</B>, <B>makegridglq(1)</B>, <B>SHExpandLSQ(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and
-       convolutions on the 2-sphere, <B>Adv.</B> <B>Appl.</B> <B>Math.</B>, 15, 202-250, 1994.
-
-       Holmes, S. A., and W. E. Featherstone, A unified approach to the
-       Clenshaw summation and the recursive computation of very high degree
-       and order normalised associated Legendre functions, <B>J.</B> <B>Geodesy</B>, 76,
-       279- 299, 2002.
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                     <B>SHEXPANDDH(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+<h1 id="shexpanddh">SHExpandDH</h1>
+<p>Expand an equally sampled or equally spaced grid into spherical harmonics using Driscoll and Healy's (1994) sampling theorem.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHExpandDH (<code>griddh</code>, <code>n</code>, <code>cilm</code>, <code>lmax</code>, <code>norm</code>, <code>sampling</code>, <code>csphase</code>, <code>lmax_calc</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>griddh</code> : input, real*8, dimension (<code>n</code>, <code>n</code>) or (<code>n</code>, 2*<code>n</code>)</dt>
+<dd>A 2D equally sampled (default) or equally spaced grid that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/<code>n</code> degrees. The first longitudinal band is 0 E, the longitude band for 360 E is not included, and the longitudinal sampling interval is 360/<code>n</code> for an equally and 180/<code>n</code> for an equally spaced grid, respectively.
+</dd>
+<dt><code>n</code> : input, integer</dt>
+<dd>The number of samples in latitude of <code>griddh</code>. If <code>sampling</code> is 1 (default) then the number of samples in longitude is <code>n</code>. If <code>sampling</code> is 2 then the number of longitudinal samples is <code>2n</code>. <code>n</code> must be even.
+</dd>
+<dt><code>cilm</code> : output, real*8, dimension (2, <code>n</code>/2, <code>n</code>/2) or (2, <code>lmax_calc</code>+1, <code>lmax_calc</code>+1)</dt>
+<dd>The real spherical harmonic coefficients of the function. These will be exact if the function is bandlimited to degree <code>lmax=n/2-1</code>. The coefficients <code>c1lm</code> and <code>c2lm</code> refer to the cosine (<code>clm</code>) and sine (<code>slm</code>) coefficients, respectively, with <code>clm=cilm(1,l+1,m+1)</code> and <code>slm=cilm(2,l+1,m+1)</code>.
+</dd>
+<dt><code>lmax</code> : output, integer</dt>
+<dd>The maximum spherical harmonic bandwidth of the input grid, which is <code>n/2-1</code>. If the optional parameter <code>lmax_calc</code> is not specified, this corresponds to the maximum spherical harmonic degree of the output coefficients <code>cilm</code>.
+</dd>
+<dt><code>norm</code> : input, optional, integer, default = 1</dt>
+<dd>1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+</dd>
+<dt><code>sampling</code> : input, optional, integer, default = 1</dt>
+<dd>If 1 (default) the input grid is equally sampled (<code>n</code> by <code>n</code>). If 2, the grid is equally spaced (<code>n</code> by <code>2n</code>).
+</dd>
+<dt><code>csphase</code> : input, optional, integer, default = 1</dt>
+<dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+</dd>
+<dt><code>lmax_calc</code> : input, optional, integer, default = <code>lmax</code></dt>
+<dd>The maximum spherical harmonic degree calculated in the spherical harmonic expansion.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHExpandDH</code> will expand an equally sampled (<code>n</code> by <code>n</code>) or equally spaced grid (<code>n</code> by <code>2n</code>) into spherical harmonics using the sampling theorem of Driscoll and Healy (1994). The number of latitudinal samples, <code>n</code>, must be even, and the transform is exact if the function is bandlimited to spherical harmonic degree <code>n/2-1</code>. The inverse transform is given by the routine <code>MakeGridDH</code>. If the optional parameter <code>lmax_calc</code> is specified, the spherical harmonic coefficients will only be calculated to this degree instead of <code>n/2-1</code>. The algorithm is based on performing FFTs in longitude and then integrating over latitude using an exact quadrature rule.</p>
+<p>The default is to use an input grid that is equally sampled (<code>n</code> by <code>n</code>), but this can be changed to use an equally spaced grid (<code>n</code> by <code>2n</code>) by the optional argument <code>sampling</code>. When using an equally spaced grid, the Fourier components corresponding to degrees greater than <code>n/2-1</code> are simply discarded; this is done to prevent aliasing that would occur if an equally sampled grid was constructed from an equally spaced grid by discarding every other column of the input grid.</p>
+<p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code>norm</code> and <code>csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. The normalized legendre functions are calculated in this routine using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15.</p>
+<h1 id="references">References</h1>
+<p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
+<p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="makegriddh.html"><code>makegriddh</code></a>, <a href="makegriddhc.html"><code>makegriddhc</code></a>, <a href="shexpanddhc.html"><code>shexpanddhc</code></a>, <a href="makegridglq.html"><code>makegridglq</code></a>, <a href="shexpandglq.html"><code>shexpandglq</code></a>, <a href="makegridglqc.html"><code>makegridglqc</code></a>, <a href="shexpandglqc.html"><code>shexpandglqc</code></a>, <a href="shexpandlsq.html"><code>shexpandlsq</code></a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

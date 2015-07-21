@@ -30,10 +30,14 @@ SHTOOLS can be used in any Fortran 95 or Python program. The base SHTOOLS softwa
 
 ### How do I install SHTOOLS? ###
 
-The most recent release of SHTOOLS can be downloaded from this link on [GitHub](https://github.com/SHTOOLS/SHTOOLS/releases). Installation of SHTOOLS can be as simple as executing the following commands in a unix terminal:
+The most recent release of SHTOOLS can be downloaded from this link on [GitHub](https://github.com/SHTOOLS/SHTOOLS/releases). Installation of SHTOOLS can be as simple as executing the following command in a unix terminal:
 
     make
-    make python
+    
+To run the Fortran 95 and Python tests, enter
+
+    make fortran-tests
+    make python-tests
 
 More information can be found on the GitHub [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki) and in the SHTOOLS [documentation](www/documentation.html). Keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
 

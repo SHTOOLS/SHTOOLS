@@ -28,75 +28,34 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHCROSSPOWERDENSITYLC(1)</B>          SHTOOLS 3.0         <B>SHCROSSPOWERDENSITYLC(1)</B>
-
-
-</PRE>
-<H2 class="man">SHCrossPowerDensityLC</H2 class="man"><PRE>
-       SHCrossPowerDensityLC - Compute the spectral cross-power density of two
-                               complex functions for a single degree L.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       COMPLEX*16 FUNCTION SHCrossPowerDensityLC ( C1, C2, L )
-
-           COMPLEX*16    C1(2, L+1, L+1), C2(2, L+1, L+1)
-
-           INTEGER       L
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHCrossPowerDensityLC</B> will calculate the spectral cross-power density
-       of two functions expressed in complex spherical harmonics for a single
-       degree L. This is explicitly calculated as:
-
-       Sum_{i=1}^2 Sum_{m=0}^L C1(i, L+1, m+1) * conjg[C2(i, L+1, m+1)] / (2L
-       + 1).
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       C1        (input) COMPLEX*16, DIMENSION (2, L+1, L+1)
-
-                 The first function expressed in complex spherical harmonics.
-
-       C2        (input) COMPLEX*16, DIMENSION (2, L+1, L+1)
-
-                 The second function expressed in complex spherical harmonics.
-
-       L         (input) INTEGER
-
-                 The spherical harmonic degree for which the cross power
-                 density will be calculated.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shpowerlc(1)</B>, <B>shpowerdensitylc(1)</B>, <B>shcrosspowerlc(1)</B>,
-       <B>shpowerspectrumc(1)</B>, <B>shpowerspectrumdensityc(1)</B>,
-       <B>shcrosspowerspectrumc(1)</B>, <B>shcrosspowerspectrumdensityc(1)</B>,
-       <B>shadmitcorr(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12          <B>SHCROSSPOWERDENSITYLC(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+<h1 id="shcrosspowerdensitylc">SHCrossPowerDensityLC</h1>
+<p>Compute the cross-power spectral density of two complex functions for a single spherical harmonic degree.</p>
+<h1 id="usage">Usage</h1>
+<p><code>cpsd</code> = SHCrossPowerDensityLC (<code>cilm1</code>, <code>cilm2</code>, <code>l</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cpsd</code> : output, complex*16</dt>
+<dd>The cross-power spectral density of the two complex functions for spherical harmonic degree <code>l</code>.
+</dd>
+<dt><code>cilm1</code> : input, complex*16, dimension (2, <code>lmaxin1</code>+1, <code>lmaxin1</code>+1)</dt>
+<dd>The first complex function expressed in complex spherical harmonics.
+</dd>
+<dt><code>cilm2</code> : input, complex*16, dimension (2, <code>lmaxin2</code>+1, <code>lmaxin2</code>+1)</dt>
+<dd>The second complex function expressed in complex spherical harmonics.
+</dd>
+<dt><code>l</code> : input, integer</dt>
+<dd>The spherical harmonic degree. This must be less than or equal to the minimum of <code>lmaxin1</code> and <code>lmaxin2</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHCrossPowerDensityLC</code> will calculate the cross-power spectral density of two complex functions expressed in complex spherical harmonics for a single spherical harmonic degree <code>l</code>. This is calculated as:</p>
+<p><code>cpsd = Sum_{i=1}^2 Sum_{m=0}^l cilm1(i, l+1, m+1) * conjg[cilm2(i, l+1, m+1)] / (2l + 1)</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shpowerlc.html">shpowerlc</a>, <a href="shpowerdensitylc.html">shpowerdensitylc</a>, <a href="shcrosspowerlc.html">shcrosspowerlc</a>, <a href="shpowerspectrumc.html">shpowerspectrumc</a>, <a href="shpowerspectrumdensityc.html">shpowerspectrumdensityc</a>, <a href="shcrosspowerspectrumc.html">shcrosspowerspectrumc</a>, <a href="shcrosspowerspectrumdensityc.html">shcrosspowerspectrumdensityc</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

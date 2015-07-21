@@ -28,118 +28,49 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHEXPANDLSQ(1)</B>                    SHTOOLS 3.0                   <B>SHEXPANDLSQ(1)</B>
-
-
-</PRE>
-<H2 class="man">SHExpandLSQ</H2 class="man"><PRE>
-       SHExpandLSQ - Expand a set of irregularly sampled data points into
-                     spherical harmonics using a least squares inversion.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHExpandLSQ ( CILM, D, LAT, LON, NMAX, LMAX, NORM, CHI2,
-                                CSPHASE )
-
-           REAL*8             CILM(2, LMAX+1, LMAX+1), D(NMAX), LAT(NMAX),
-                              LON(NMAX)
-
-           INTEGER            NMAX, LMAX
-
-           INTEGER, OPTIONAL  NORM, CHI2, CSPHASE
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHExpandLSQ</B> will expand a set of irregularly sampled data points into
-       spherical harmonics by a least squares inversion. When there are more
-       data points than spherical harmonic coefficients (i.e., NMAX &gt;
-       (LMAX+1)**2), the solution of the overdetermined system will be
-       determined. If there are more coefficients than data points, then the
-       solution of the underdetermined system that minimizes the solution norm
-       will be determined. See the LAPACK documentation concerning DGELS for
-       further information.
-
-       The employed spherical harmonic normalization and Condon-Shortley phase
-       convention can be set by the optional arguments NORM and CSPHASE; if
-       not set, the default is to use geodesy 4-pi normalized harmonics that
-       exclude the Condon-Shortley phase of (-1)^m.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       CILM       (output) REAL*8, DIMENSION (2, LMAX+1, LMAX+1)
-
-                  The real spherical harmonic coefficients of the function.
-                  The coefficients C1lm and C2lm refer to the "cosine" (Clm)
-                  and "sine" (Slm) coefficients, respectively, with Clm =
-                  CILM(1, l+1, m+1) and Slm = CILM(2, l+1, m+1).
-                  Alternatively, C1lm and C2lm correspond to the positive and
-                  negative order coefficients, respectively.
-
-       D          (input) REAL*8, DIMENSION (NMAX)
-
-                  The value of the function at the coordinates (LAT, LON).
-
-       LAT        (input) REAL*8, DIMENSION (NMAX)
-
-                  The latitude in DEGREES corresponding to the value in D.
-
-       LON        (input) REAL*8, DIMENSION (NMAX)
-
-                  The longitude in DEGREES corresponding to the value in D.
-
-       NMAX       (input) INTEGER
-
-                  The number of data points.
-
-       LMAX       (input) INTEGER
-
-                  The maximum spherical harmonic degree of the output
-                  coefficients CILM.
-
-       NORM       (input) INTEGER, OPTIONAL
-
-                  1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt
-                  semi-normalized harmonics; 3 = unnormalized harmonics; 4 =
-                  orthonormal harmonics.
-
-       CHI2       (output) REAL*8, OPTIONAL
-
-                  The residual sum of squares misfit for an overdetermined
-                  inversion.
-
-       CSPHASE    (input) INTEGER, OPTIONAL
-
-                  1 (default) = do not apply the Condon-Shortley phase factor
-                  to the associated Legendre functions; -1 = append the
-                  Condon-Shortley phase factor of (-1)^m to the associated
-                  Legendre functions.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>dgels(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                    <B>SHEXPANDLSQ(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+<h1 id="shexpandlsq">SHExpandLSQ</h1>
+<p>Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHExpandLSQ (<code>cilm</code>, <code>d</code>, <code>lat</code>, <code>lon</code>, <code>nmax</code>, <code>lmax</code>, <code>norm</code>, <code>chi2</code>, <code>csphase</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cilm</code> : output, real*8, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The real spherical harmonic coefficients of the function. The coefficients <code>C1lm</code> and <code>C2lm</code> refer to the cosine (<code>Clm</code>) and sine (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm(1,l+1,m+1)</code> and <code>Slm=cilm(2,l+1,m+1)</code>.
+</dd>
+<dt><code>d</code> : input, real*8, dimension (<code>nmax</code>)</dt>
+<dd>The value of the function at the coordinates (<code>lat</code>, <code>lon</code>).
+</dd>
+<dt><code>lat</code> : input, real*8, dimension (<code>nmax</code>)</dt>
+<dd>The latitude in DEGREES corresponding to the value in <code>d</code>.
+</dd>
+<dt><code>lon</code> : input, real*8, dimension (<code>nmax</code>)</dt>
+<dd>The longitude in DEGREES corresponding to the value in <code>d</code>.
+</dd>
+<dt><code>nmax</code> : input, integer</dt>
+<dd>The number of data points.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The maximum spherical harmonic degree of the output coefficients <code>cilm</code>.
+</dd>
+<dt><code>norm</code> : input, optional, integer, default = 1</dt>
+<dd>1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+</dd>
+<dt><code>chi2</code> : output, optional, real*8</dt>
+<dd>The residual sum of squares misfit for an overdetermined inversion.
+</dd>
+<dt><code>csphase</code> : input, optional, integer, default = 1</dt>
+<dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHExpandLSQ</code> will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When there are more data points than spherical harmonic coefficients (i.e., <code>nmax&gt;(lmax+1)**2</code>), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. See the LAPACK documentation concerning DGELS for further information.</p>
+<p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code>norm</code> and <code>csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="makegriddh.html"><code>makegriddh</code></a>, <a href="shexpanddh.html"><code>shexpanddh</code></a>, <a href="makegriddhc.html"><code>makegriddhc</code></a>, <a href="shexpanddhc.html"><code>shexpanddhc</code></a>, <a href="makegridglq.html"><code>makegridglq</code></a>, <a href="shexpandglq.html"><code>shexpandglq</code></a>, <a href="makegridglqc.html"><code>makegridglqc</code></a>, <a href="shexpandglqc.html"><code>shexpandglqc</code></a>, <code>dgels(1)</code></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

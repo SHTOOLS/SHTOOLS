@@ -28,72 +28,28 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>DJPI2(1)</B>                          SHTOOLS 3.0                         <B>DJPI2(1)</B>
-
-
-</PRE>
-<H2 class="man">djpi2</H2 class="man"><PRE>
-       djpi2 -  Compute the rotation matrix d(pi/2) used in rotating data
-                expressed in spherical harmonics.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE djpi2 ( DJ, LMAX )
-
-           REAL*8    DJ(LMAX+1, LMAX+1, LMAX+1)
-
-           INTEGER   LMAX
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>djpi2</B> will calculate the rotation matrix d_{mM}^j (pi/2) that is used
-       in rotating spherical harmonics in the routines <B>SHRotateRealCoef</B> and
-       <B>SHRotateCoef</B>.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       DJ        (output) REAL*8, DIMENSION (LMAX+1, LMAX+1, LMAX+1)
-
-                 The rotation matrix dj(pi/2).
-
-       LMAX      (input) INTEGER
-
-                 The maximum spherical harmonic degree of the spherical
-                 harmonic rotation.
-
-
-</PRE>
-<H2 class="man">NOTES</H2 class="man"><PRE>
-       This routine is based on code originally written by Guy Masters,
-       subsequently modified by Mark Simons, and finally turned into f95 code
-       by myself.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shrotatecoef(1)</B>, <B>shrotaterealcoef(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2015-02-25                          <B>DJPI2(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
+<h1 id="djpi2">djpi2</h1>
+<p>Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical harmonics.</p>
+<h1 id="usage">Usage</h1>
+<p>call djpi2 (<code>dj</code>, <code>lmax</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>dj</code> : output, real*8, dimension (<code>lmax</code>+1, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
+<dd>The rotation matrix dj(pi/2).
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The maximum spherical harmonic degree of the spherical harmonic rotation.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>djpi2</code> will calculate the rotation matrix <code>d_{mM}^j (pi/2)</code> that is used in rotating spherical harmonics in the routines <code>SHRotateRealCoef</code> and <code>SHRotateCoef</code>.</p>
+<p>This routine is based on code originally written by Guy Masters, subsequently modified by Mark Simons, and finally turned into f95 code by myself.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shrotatecoef.html">shrotatecoef</a>, <a href="shrotaterealcoef.html">shrotaterealcoef</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../rotations.html" class="dir">Spherical Harmonic Rotations</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

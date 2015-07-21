@@ -34,26 +34,14 @@
 
 	<h1>Using SHTOOLS with Python</h1>
 		
-	<p class="nomarginbot">To access the SHTOOLS routines from Python, it is necessary that the main SHTOOLS directory be in the Python search path. This can be accomplished in one of two ways. First, the location of the SHTOOLS main directory could be added to the system PYTHONPATH by using the command</p>
-	
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>setenv PYTHONPATH = "myshtoolsfolder"</tt></p>
-   	</blockquote>
-   	
-   	<p class="nomarginbot">in a C-shell, or by using the command</p>
-   	
-   	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>export PYTHONPATH="myshtoolsfolder"</tt></p>
-   	</blockquote>
-		
-	<p class="nomarginbot">in a bash shell. <tt>"myshtoolsfolder"</tt> is the root directory of the SHTOOLS directory, typically <tt>/usr/local/shtools</tt>. Alternatively, one could add the SHTOOLS directory to the search path from within Python by entering</p>
+	<p class="nomarginbot">To access the SHTOOLS routines from Python, it is necessary that the <tt>pyshtools</tt> directory be in the Python search path. From within Python, enter</p>
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>import sys<br>
-		sys.path.append('/myshtoolsfolder')</tt></p>
+		sys.path.append('/path-to-pyshtools')</tt></p>
    	</blockquote>
 	
-	<p>After entering the Python environment, it is then only necessary to execute the statement</p>
+	<p>where <tt>/path-to-pyshtools</tt> should be <tt>/usr/local/lib/python2.7/site-packages</tt> after a full installation. After setting the path, it is then only necessary to execute the statement</p>
 		
 		<blockquote class="small">
 			<p class="nomargintop nomarginbot"><tt>import pyshtools as shtools </tt></p>

@@ -28,134 +28,46 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHRETURNTAPERSMAP(1)</B>              SHTOOLS 3.0             <B>SHRETURNTAPERSMAP(1)</B>
-
-
-</PRE>
-<H2 class="man">SHReturnTapersMap</H2 class="man"><PRE>
-       SHReturnTapersMap - Calculate the eigenfunctions and eigenvalues of the
-                           space-concentration problem for an arbitrary
-                           region.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHReturnTapersMap ( TAPERS, EIGENVALUES, DH_MASK, N, LMAX,
-                                      SAMPLING, NTAPERS )
-
-           REAL*8              TAPERS ( (LMAX+1)**2, (LMAX+1)**2 ) or
-                               ( (LMAX+1)**2, NTAPERS ),
-                               EIGENVALUES( LMAX+1 ) or (NTAPERS)
-
-           INTEGER             DH_MASK (N, N) or (N, 2*N), N, LMAX
-
-           INTEGER, OPTIONAL   SAMPLING, NTAPERS
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHReturnTapersMap</B> will calculate the eigenfunctions (i.e., localization
-       windows) of the space-concentration problem for an arbitrary
-       concentration region specified in DH_MASK (see Simons et al. (2006) for
-       further details). The input mask DH_MASK must be sampled according to
-       the Driscoll and Healy (1994) sampling theorem with N samples in
-       latitude, and possess a value of 1 inside the concentration region, and
-       0 elsewhere. DH_MASK can either possess N samples in longitude
-       (SAMPLING=1) or 2*N samples in longitude (SAMPLING=2). Given the
-       approximate way in which the elements of the space-concentration kernel
-       are calculated (see <B>ComputeDMap</B> for details), SAMPLING=2 should be
-       preferred. Furthermore, the effective spherical harmonic bandwidth
-       (L=N/2-1) of the grid DH_MASK determines the accuracy of the results,
-       and experience shows that this should be about 4 times larger than
-       LMAX.
-
-       The spherical harmonic coefficients of each window are given in the
-       columns of TAPERS, and the corresponding concentration factors are
-       given in EIGENVAULES. The spherical harmonic coefficients are ordered
-       according to the scheme described in <B>YilmIndex</B>, which can be converted
-       to matrix form using <B>SHVectorToCilm</B>, and the columns of TAPERS are
-       ordered from best to worst concentrated. The localization windows are
-       normalized such that they have unit power. If the optional parameter
-       NTAPERS is specified, then only the NTAPERS largest eigenvalues and
-       corresponding eigenfunctions will be calculated and returned.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       TAPERS        (input) REAL*8 DIMENSION ( (LMAX+1)**2, (LMAX+1)**2 ) or
-                     ( (LMAX+1)**2, NTAPERS )
-
-                     The spherical harmonic coefficients of the tapers,
-                     arranged in columns, from best to worst concentrated. The
-                     spherical harmonic coefficients in each column are
-                     indexed according to the scheme described in <B>YilmIndex</B>.
-
-       EIGENVALUES   (input) REAL*8 DIMENSION ( (LMAX+1)**2 ) or ( NTAPERS )
-
-                     The concentration factor for each localization window
-                     specified in the columns of TAPERS.
-
-       DH_MASK       (input) INTEGER, DIMENSION (N, N) or DIMENSION (N, 2*N)
-
-                     A Driscoll and Healy (1994) sampled grid describing the
-                     concentration region R. All elements should either be 1
-                     (for inside the concentration region) or 0 (for outside
-                     R).
-
-       N             (input) INTEGER
-
-                     The number of latitudinal samples in DH_MASK. The
-                     effective spherical harmonic bandwidth of this grid is L
-                     = N/2 - 1.
-
-       LMAX          (input) INTEGER
-
-                     The spherical harmonic bandwidth of the localization
-                     windows.
-
-       SAMPLING      (input) INTEGER
-
-                     For 1 (default), DH_MASK has N x N samples. For 2,
-                     DH_MASK has N x 2N samples.
-
-       NTAPERS       (input) INTEGER, OPTIONAL
-
-                     The number of best concentrated eigenvalues and
-                     corresponding eigenfunctions to return in TAPERS and
-                     EIGENVALUES.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>computedmap(1)</B>, <B>yilmindex(1)</B>, <B>shvectortocilm(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and
-       convolutions on the 2-sphere, <B>Adv.</B> <B>Appl.</B> <B>Math.</B>, 15, 202-250, 1994.
-
-       Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral
-       concentration on a sphere, <B>SIAM</B> <B>Review</B>, 48, 504-536, 2006.
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-11-10              <B>SHRETURNTAPERSMAP(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="shreturntapersmap">SHReturnTapersMap</h1>
+<p>Calculate the eigenfunctions and eigenvalues of the space-concentration problem for an arbitrary region.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHReturnTapersMap (<code>tapers</code>, <code>eigenvalues</code>, <code>dh_mask</code>, <code>n</code>, <code>lmax</code>, <code>sampling</code>, <code>ntapers</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>tapers</code> : input, real*8, dimension ((<code>lmax</code>+1)**2, <code>ntapers</code>)</dt>
+<dd>The spherical harmonic coefficients of the tapers, arranged in columns, from best to worst concentrated. The spherical harmonic coefficients in each column are indexed according to the scheme described in <code>YilmIndexVector</code>.
+</dd>
+<dt><code>eigenvalues</code> : input, real*8, dimension (<code>ntapers</code>)</dt>
+<dd>The concentration factor for each localization window specified in the columns of <code>tapers</code>.
+</dd>
+<dt><code>dh_mask</code> : input, integer, dimension (<code>n</code>, <code>n</code>*<code>sampling</code>)</dt>
+<dd>A Driscoll and Healy (1994) sampled grid describing the concentration region R. All elements should either be 1 (for inside the concentration region) or 0 (for outside R).
+</dd>
+<dt><code>n</code> : input, integer</dt>
+<dd>The number of latitudinal samples in <code>dh_mask</code>. The effective spherical harmonic bandwidth of this grid is <code>L=n/2-1</code>.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The spherical harmonic bandwidth of the localization windows.
+</dd>
+<dt><code>sampling</code> : input, integer, default = 1</dt>
+<dd>For 1 (default), <code>dh_mask</code> has <code>n x n</code> samples. For 2, <code>dh_mask</code> has <code>n x 2n</code> samples.
+</dd>
+<dt><code>ntapers</code> : input, optional, integer, default = (<code>lmax</code>+1)**2</dt>
+<dd>The number of best concentrated eigenvalues and corresponding eigenfunctions to return in <code>tapers</code> and <code>eigenvalues</code>. The default value is to return all tapers.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHReturnTapersMap</code> will calculate the eigenfunctions (i.e., localization windows) of the space-concentration problem for an arbitrary concentration region specified in <code>dh_mask</code> (see Simons et al. (2006) for further details). The input mask <code>dh_mask</code> must be sampled according to the Driscoll and Healy (1994) sampling theorem with <code>n</code> samples in latitude, and possess a value of 1 inside the concentration region, and 0 elsewhere. <code>dh_mask</code> can either possess <code>n</code> samples in longitude (<code>sampling=1</code>) or <code>2n</code> samples in longitude (<code>sampling=2</code>). Given the approximate way in which the elements of the space-concentration kernel are calculated (see <code>ComputeDMap</code> for details), <code>sampling=2</code> should be preferred. The effective spherical harmonic bandwidth (L=N/2-1) of the grid <code>dh_mask</code> determines the accuracy of the results, and experience shows that this should be about 4 times larger than <code>lmax</code>.</p>
+<p>The spherical harmonic coefficients of each window are given in the columns of <code>tapers</code>, and the corresponding concentration factors are given in <code>eigenvaules</code>. The spherical harmonic coefficients are ordered according to the scheme described in <code>YilmIndexVector</code>, which can be converted to matrix form using <code>SHVectorToCilm</code>, and the columns of <code>tapers</code> are ordered from best to worst concentrated. The localization windows are normalized such that they have unit power. If the optional parameter <code>ntapers</code> is specified, then only the <code>ntapers</code> largest eigenvalues and corresponding eigenfunctions will be calculated and returned.</p>
+<h1 id="references">References</h1>
+<p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
+<p>Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="computedmap.html">computedmap</a>, <a href="yilmindexvector.html">yilmindexvector</a>, <a href="shvectortocilm.html">shvectortocilm</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

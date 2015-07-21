@@ -28,94 +28,36 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>COMPUTEDG82(1)</B>                    SHTOOLS 3.0                   <B>COMPUTEDG82(1)</B>
-
-
-</PRE>
-<H2 class="man">ComputeDG82</H2 class="man"><PRE>
-       ComputeDG82 -  Compute the tridiagonal matrix of Grunbaum et al. (1982)
-                      that commutes with the space-concentration kernel of a
-                      spherical cap.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE ComputeDG82 ( DG82, LMAX, M, THETA0 )
-
-           REAL*8    D0(LMAX-ABS(M)+1, LMAX-ABS(M)+1), THETA0
-
-           INTEGER   LMAX, M
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>ComputeDG82</B> will calculate the tridiagonal matrix of Grunbaum et al.
-       (1982) that commutes with the space-concentration kernel of order M of
-       a spherical cap. The eigenfunctions of this matrix correspond to a
-       family of orthogonal windowing functions, and the eigenvalues
-       correspond to the window's concentration factor (i.e., the power of the
-       window within THETA0 divided by the total power of the function). It is
-       implicitly assumed that the employed spherical harmonic functions are
-       normalized to the same value for all degrees and angular orders, which
-       is the case for both the geodesy 4-pi and orthonormalized harmonics.
-       The returned matrix is symmetric, and the first element corresponds to
-       (abs(M), abs(M)) as the values for elements less than this are
-       identically zero.
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       D0        (output) REAL*8, DIMENSION (LMAX-ABS(M)+1, LMAX-ABS(M)+1)
-
-                 The tridiagonal matrix of Grunbaum et al. (1982) that
-                 commutes with the space-concentration kernel of order M of a
-                 spherical cap.
-
-       LMAX      (input) INTEGER
-
-                 The spherical harmonic bandwidth of the windows.
-
-       M         (input) INTEGER
-
-                 The angular order of the concentration problem.
-
-       THETA0    (input) REAL*8
-
-                 The angular radius of the spherical cap in RADIANS.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>computed0(1)</B>, <B>computedm(1)</B>, <B>shreturntapers(1)</B>, <B>shreturntapersm(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">REFERENCES</H2 class="man"><PRE>
-       Grunbaum, F.A., L. Longhi, and M. Perlstadt, Differential operators
-       commuting with finite convolution integral operators: some non-abelian
-       examples, <B>SIAM</B> <B>J.</B> <B>Appl.</B> <B>Math.</B>, 42, 941-955, 1982.
-
-       Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral
-       concentration on a sphere, <B>SIAM</B> <B>Review</B>, 48, 504-536, 2006.
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12                    <B>COMPUTEDG82(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="computedg82">ComputeDG82</h1>
+<p>Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of a spherical cap.</p>
+<h1 id="usage">Usage</h1>
+<p>call ComputeDG82 (<code>dg82</code>, <code>lmax</code>, <code>m</code>, <code>theta0</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>dg82</code> : output, real*8, dimension (<code>lmax</code>-abs(<code>m</code>)+1, <code>lmax</code>-abs(<code>m</code>)+1)</dt>
+<dd>The tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of order M of a spherical cap.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The spherical harmonic bandwidth of the windows.
+</dd>
+<dt><code>m</code> : input, integer</dt>
+<dd>The angular order of the concentration problem.
+</dd>
+<dt><code>theta0</code> : input, real*8</dt>
+<dd>The angular radius of the spherical cap in radians.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>ComputeDG82</code> will calculate the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of order <code>m</code> of a spherical cap. The eigenfunctions of this matrix correspond to a family of orthogonal windowing functions, and the eigenvalues correspond to the window's concentration factor (i.e., the power of the window within <code>theta0</code> divided by the total power of the function). It is assumed that the employed spherical harmonic functions are normalized to the same value for all degrees and angular orders, which is the case for both the geodesy 4-pi and orthonormalized harmonics. The returned matrix is symmetric, and the first element corresponds to (abs(<code>m</code>), abs(<code>m</code>)) as the values for elements less than this are identically zero.</p>
+<h1 id="references">References</h1>
+<p>Grunbaum, F.A., L. Longhi, and M. Perlstadt, Differential operators commuting with finite convolution integral operators: some non-abelian examples, SIAM J. Appl. Math., 42, 941-955, 1982.</p>
+<p>Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="computedm.html">computedm</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersm.html">shreturntapersm</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

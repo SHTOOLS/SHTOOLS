@@ -28,70 +28,31 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHPOWERDENSITYLC(1)</B>               SHTOOLS 3.0              <B>SHPOWERDENSITYLC(1)</B>
-
-
-</PRE>
-<H2 class="man">SHPowerDensityLC</H2 class="man"><PRE>
-       SHPowerDensityLC - Compute the power spectral density of a complex
-                          function for a single degree L.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       REAL*8 FUNCTION SHPowerDensityLC ( C, L )
-
-           COMPLEX*16    C(2, L+1, L+1)
-
-           INTEGER       L
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHPowerLC</B> will calculate the power spectral density of a function
-       expressed in complex spherical harmonics for a single degree L. This is
-       explicitly calculated as:
-
-       Sum_{i=1}^2 Sum_{m=0}^L | C(i, L+1, m+1) |**2 / (2L + 1) .
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       C         (input) COMPLEX*16, DIMENSION (2, L+1, L+1)
-
-                 The function expressed in complex spherical harmonics.
-
-       L         (input) INTEGER
-
-                 The spherical harmonic degree for which the power spectral
-                 density will be calculated.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shpowerlc(1)</B>, <B>shcrosspowerlc(1)</B>, <B>shcrosspowerdensitylc(1)</B>,
-       <B>shpowerspectrumc(1)</B>, <B>shpowerspectrumdensityc(1)</B>,
-       <B>shcrosspowerspectrumc(1)</B>, <B>shcrosspowerspectrumdensityc(1)</B>,
-       <B>shadmitcorr(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12               <B>SHPOWERDENSITYLC(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+<h1 id="shpowerdensitylc">SHPowerDensityLC</h1>
+<p>Compute the power spectral density of a complex function for a single spherical harmonic degree.</p>
+<h1 id="usage">Usage</h1>
+<p><code>psd</code> = SHPowerDensityLC (<code>cilm</code>, <code>l</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>psd</code> : output, real*8</dt>
+<dd>Power spectral density of the complex function for spherical harmonic degree <code>l</code>.
+</dd>
+<dt><code>cilm</code> : input, complex*16, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The complex function expressed in complex spherical harmonics.
+</dd>
+<dt><code>l</code> : input, integer</dt>
+<dd>The spherical harmonic degree. This must be less than or equal to <code>lmaxin</code>.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHPowerDensityLC</code> will calculate the power spectral density of a complex function expressed in complex spherical harmonics for a single spherical harmonic degree <code>l</code>. This is calculated as:</p>
+<p><code>psd = Sum_{i=1}^2 Sum_{m=0}^l | cilm(i, l+1, m+1) |**2 / (2l + 1)</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shpowerlc.html">shpowerlc</a>, <a href="shcrosspowerlc.html">shcrosspowerlc</a>, <a href="shcrosspowerdensitylc.html">shcrosspowerdensitylc</a>, <a href="shpowerspectrumc.html">shpowerspectrumc</a>, <a href="shpowerspectrumdensityc.html">shpowerspectrumdensityc</a>, <a href="shcrosspowerspectrumc.html">shcrosspowerspectrumc</a>, <a href="shcrosspowerspectrumdensityc.html">shcrosspowerspectrumdensityc</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>

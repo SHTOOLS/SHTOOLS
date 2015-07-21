@@ -28,76 +28,31 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
-<PRE>
-<!-- Manpage converted by man2html 3.0.1 -->
-<B>SHPOWERSPECTRUMDENSITYC(1)</B>        SHTOOLS 3.0       <B>SHPOWERSPECTRUMDENSITYC(1)</B>
-
-
-</PRE>
-<H2 class="man">SHPowerSpectrumDensityC</H2 class="man"><PRE>
-       SHPowerSpectrumDensityC - Compute the power spectral density of a
-                                 complex function.
-
-
-</PRE>
-<H2 class="man">SYNOPSIS</H2 class="man"><PRE>
-       SUBROUTINE SHPowerSpectrumDensityC ( C, LMAX, SPECTRUM )
-
-           COMPLEX*16    C(2, LMAX+1, LMAX+1)
-
-           REAL*8        SPECTRUM(LMAX+1)
-
-           INTEGER       LMAX
-
-
-</PRE>
-<H2 class="man">DESCRIPTION</H2 class="man"><PRE>
-       <B>SHPowerSpectrumDensityC</B> will calculate the power spectral density of a
-       function expressed in complex spherical harmonics. For a given degree
-       L, this is explicitly calculated as:
-
-       Sum_{i=1}^2 Sum_{m=0}^L | C(i, L+1, m+1) |**2 / (2L + 1).
-
-
-</PRE>
-<H2 class="man">ARGUMENTS</H2 class="man"><PRE>
-       C         (input) COMPLEX*16, DIMENSION (2, LMAX+1, LMAX+1)
-
-                 The function expressed in complex spherical harmonics.
-
-       LMAX      (input) INTEGER
-
-                 The maximum spherical harmonic degree to calculate the power
-                 spectral density.
-
-       SPECTRUM  (output) REAL*8, DIMENSION (LMAX+1)
-
-                 The power spectral density of the function.
-
-
-</PRE>
-<H2 class="man">SEE ALSO</H2 class="man"><PRE>
-       <B>shpowerlc(1)</B>, <B>shpowerdensitylc(1)</B>, <B>shcrosspowerlc(1)</B>,
-       <B>shcrosspowerdensitylc(1)</B>, <B>shpowerspectrumc(1)</B>,
-       <B>shcrosspowerspectrumc(1)</B>, <B>shcrosspowerspectrumdensityc(1)</B>,
-       <B>shadmitcorr(1)</B>
-
-       &lt;http://shtools.ipgp.fr/&gt;
-
-
-</PRE>
-<H2 class="man">COPYRIGHT AND LICENSE</H2 class="man"><PRE>
-       Copyright 2012 by Mark Wieczorek &lt;wieczor@ipgp.fr&gt;.
-
-       This is free software; you can distribute and modify it under the terms
-       of the revised BSD license.
-
-SHTOOLS 3.0                       2014-09-12        <B>SHPOWERSPECTRUMDENSITYC(1)</B>
-</PRE>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+<h1 id="shpowerspectrumdensityc">SHPowerSpectrumDensityC</h1>
+<p>Compute the power spectral density of a complex function.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHPowerSpectrumDensityC (<code>cilm</code>, <code>lmax</code>, <code>pspectrum</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cilm</code> : input, complex*16, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The complex function expressed in complex spherical harmonics.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The maximum spherical harmonic degree of the power spectral density. This must be less than or equal to <code>lmaxin</code>.
+</dd>
+<dt><code>pspectrum</code> : output, real*8, dimension (<code>lmax</code>+1)</dt>
+<dd>The power spectral density of the function.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHPowerSpectrumDensityC</code> will calculate the power spectral density of a complex function expressed in complex spherical harmonics. For a given spherical harmonic degree <code>l</code>, this is calculated as:</p>
+<p><code>pspectrum(l) = Sum_{i=1}^2 Sum_{m=0}^l | cilm(i, l+1, m+1) |**2 / (2l + 1)</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shpowerlc.html">shpowerlc</a>, <a href="shpowerdensitylc.html">shpowerdensitylc</a>, <a href="shcrosspowerlc.html">shcrosspowerlc</a>, <a href="shcrosspowerdensitylc.html">shcrosspowerdensitylc</a>, <a href="shpowerspectrumc.html">shpowerspectrumc</a>, <a href="shcrosspowerspectrumc.html">shcrosspowerspectrumc</a>, <a href="shcrosspowerspectrumdensityc.html">shcrosspowerspectrumdensityc</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gspectra.html" class="dir">Global Spectral Analysis</a></p>
 
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>
