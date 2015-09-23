@@ -1,4 +1,4 @@
-.TH "pycurve2mask" "1" "2015\-04\-28" "Python" "SHTOOLS 3.1"
+.TH "pycurve2mask" "1" "2015\-09\-23" "Python" "SHTOOLS 3.1"
 .SH Curve2Mask
 .PP
 Given a set of latitude and longitude coordinates representing a closed
@@ -6,7 +6,8 @@ curve, output a gridded binary mask.
 .SH Usage
 .PP
 \f[C]mask_dh\f[] = pyshtools.Curve2Mask (\f[C]n\f[], \f[C]profile\f[],
-\f[C]np\f[], [\f[C]nprofile\f[], \f[C]sampling\f[]])
+\f[C]np\f[], [\f[C]nprofile\f[], \f[C]sampling\f[],
+\f[C]centralmeridian\f[]])
 .SH Returns
 .TP
 .B \f[C]dh_mask\f[] : integer, dimension (\f[C]n\f[], \f[C]n\f[]*\f[C]sampling\f[])
@@ -46,6 +47,13 @@ The number of coordinates in the curve \f[C]profile\f[].
 .B \f[C]sampling\f[] : optional, integer, default = 1
 For 1, \f[C]dh_mask\f[] has \f[C]n\f[] x \f[C]n\f[] samples.
 For 2, \f[C]dh_mask\f[] has \f[C]n\f[] x \f[C]2n\f[] samples.
+.RS
+.RE
+.TP
+.B \f[C]centralmeridian\f[] : optional, integer, default = 0
+If 1, the curve is assumed to pass through the central meridian: passing
+from < 360 degrees to > 0 degrees.
+The curve makes a complete circle about the planet in longitude.
 .RS
 .RE
 .SH Description

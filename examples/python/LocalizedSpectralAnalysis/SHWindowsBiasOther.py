@@ -60,8 +60,8 @@ def test_LocalizationWindows():
     maskarea = np.sum(dhmask * weights[:, None] * dlat**2)
     globearea = 4 * np.pi * (180 / np.pi)**2
     print 'mask covers {:2.2f}%% of the globe'.format(100 * maskarea / globearea)
-    # plt.imshow(dhmask)
-    # plt.show()
+    #fig = plt.imshow(dhmask)
+	#plt.show()
 
     print '\n---- testing ComputeDMap ----'
     nlat = 180

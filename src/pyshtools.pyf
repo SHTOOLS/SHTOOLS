@@ -1652,7 +1652,7 @@ python module _SHTOOLS
             integer intent(in),depend(Ntapers),intent(hide) :: eigenvalues_d0 = Ntapers
         end subroutine SHReturnTapersMap
 
-        subroutine Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
+        subroutine Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,centralmeridian,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
             fortranname pycurve2mask
             use shtools, only: Curve2Mask
             integer dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
@@ -1661,6 +1661,7 @@ python module _SHTOOLS
             real*8 dimension(profile_d0,profile_d1),intent(in) :: profile
             integer,optional,intent(in),depend(profile_d0) :: nprofile = profile_d0
             integer intent(in):: NP
+            integer, optional, intent(in) :: centralmeridian = 0
             integer, optional,intent(in),check(shape(profile,0)==profile_d0),depend(profile),intent(hide) :: profile_d0=shape(profile,0)
             integer, optional,intent(in),check(shape(profile,1)==profile_d1),depend(profile),intent(hide) :: profile_d1=shape(profile,1)
             integer, optional,intent(in),depend(n),intent(hide) :: dhgrid_d0 = n

@@ -749,10 +749,12 @@ module SHTOOLS
             integer, intent(in), optional ::    sampling, Ntapers
         end subroutine SHReturnTapersMap
         
-        subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP)
+        subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
+        						centralmeridian)
             integer, intent(out) :: dhgrid(:,:)
             real*8, intent(in) ::   profile(:,:)
             integer, intent(in) ::  n, sampling, nprofile, np
+            integer, intent(in), optional :: centralmeridian
         end subroutine Curve2Mask
         
         subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
