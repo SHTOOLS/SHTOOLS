@@ -994,7 +994,7 @@
         pySHFindLWin=SHFindLWin(theta0,m,alpha,taper_number=taper_number)
     end function pySHFindLWin
 
-    subroutine pySHAdmitCorr(G,T,lmax,admit,corr,admit_error,G_d0,G_d1,G_d2, &
+    subroutine pySHAdmitCorr(G,T,lmax,admit,admit_error,corr,G_d0,G_d1,G_d2, &
                                 admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0) 
         use shtools, only: SHAdmitCorr
         implicit none
