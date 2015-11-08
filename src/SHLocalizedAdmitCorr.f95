@@ -99,6 +99,8 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
                             shloc_t(:,:,:)   
     real*8, allocatable, save :: dj(:,:,:)
 
+!$OMP   threadprivate(first, lwin_last, dj)
+
     phase = 1
     norm = 1
 

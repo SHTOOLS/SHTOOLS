@@ -59,6 +59,8 @@ subroutine SHBiasK(tapers, lwin, numk, incspectra, ldata, outcspectra, &
     real*8 :: wig(2*lwin+ldata+1)
     real*8, allocatable, save :: cg2(:,:,:)
     
+!$OMP   threadprivate(cg2)
+
     lmax = ldata + lwin
     outcspectra = 0.0d0
     

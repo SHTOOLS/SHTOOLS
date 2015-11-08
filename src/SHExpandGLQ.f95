@@ -81,6 +81,8 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     integer, save :: lmax_old = 0, norm_old = 0
     integer*1 :: phase
 
+!$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
+
     if (present(lmax_calc)) then
         if (lmax_calc > lmax) then
             print*, "Error --- SHExpandGLQ"

@@ -24,7 +24,7 @@
 #
 #######################################################################
 
-F95 = f95
+F95 = gfortran
 
 SHELL=/bin/tcsh
 
@@ -37,8 +37,24 @@ RLIBFLAGS =
 LDFLAGS = -s
 MAKE = make
 
+LIBNAME = SHTOOLS
+PROG =	../lib/lib$(LIBNAME).a
 
-PROG =	../lib/libSHTOOLS.a
+ifeq ($(F95),f95)
+# Default Absoft Pro Fortran flags
+F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=11 # -march=host
+else ifeq ($(F95),g95)
+# Default g95 flags.
+F95FLAGS ?= -O3 -fno-second-underscore 
+else ifeq ($(F95),gfortran)
+# Default gfortran flags
+F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
+else ifeq ($(F95),ifort)
+# Default intel fortran flags
+F95FLAGS ?= -m64 -free -O3 -Tf
+else ifeq ($(origin F95FLAGS), undefined)
+F95FLAGS = -m64 -O3
+endif
 
 SRCS0 =	CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
 	djpi2.f95 FFTW3.f95 BAtoHilm.f95 MakeGrid2D.f95 \
@@ -122,11 +138,11 @@ ifeq ($(MAKECMDGOALS),all3)
 	OBJS = $(OBJS0) $(OBJSLAPACK1) $(OBJSFFTW2)
 endif
 
-all: $(PROG) getflags
+all: $(PROG)
 
-all2: $(PROG) getflags
+all2: $(PROG)
 
-all3: $(PROG) getflags
+all3: $(PROG)
 
 $(PROG): $(OBJS) 
 	@echo
@@ -148,34 +164,7 @@ $(PROG): $(OBJS)
 	@echo
 	@echo ARCHIVE SUCCESSFULLY CREATED
 	
-	
-getflags:
-ifeq ($(F95),f95)
-# Default Absoft Pro Fortran flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic # -march=host
-endif
-
-ifeq ($(F95),g95)
-# Default g95 flags. 64 BIT is not implemented!
-F95FLAGS ?= -m64 -O3 -fno-second-underscore 
-endif
-
-ifeq ($(F95),gfortran)
-# Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3
-endif
-
-ifeq ($(F95),ifort)
-# Default intel fortran flags
-F95FLAGS ?= -m64 -free -O3 -Tf
-endif
-
-ifeq ($(origin F95FLAGS), undefined)
-F95FLAGS = -m64 -O3
-endif
-
-
-.PHONY: clean getflags
+.PHONY: clean
 
 clean:
 	-rm -f $(PROG)

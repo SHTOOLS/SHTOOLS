@@ -87,6 +87,8 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     integer, save :: lmax_old = 0, norm_old = 0
     integer*1 :: phase
 
+!$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
+
     if (size(cilm(:,1,1)) < 2) then
         print*, "Error --- MakeGridGLQC"
         print*, "CILM must be dimensioned as (2, *, *)."

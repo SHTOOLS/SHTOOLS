@@ -1,4 +1,4 @@
-######################################################################
+################################################################################
 #
 #	make all
 #		Compile example programs and tests in their directories.
@@ -11,7 +11,7 @@
 #
 #	Written by Mark Wieczorek (June 2012).
 #
-#######################################################################
+################################################################################
 
 F95 = gfortran
 
@@ -21,6 +21,8 @@ BLAS = -lblas
 
 LIBPATH = ../../lib
 MODPATH = ../../modules/
+
+LIBNAME = SHTOOLS
 
 SHELL=/bin/tcsh
 MAKE = make
@@ -34,31 +36,31 @@ all: getflags
 	@echo -------------------------------------------------------------------------------------------------------
 	@echo Compiling example and test suite code in SHTOOLS/examples/fortran with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo -------------------------------------------------------------------------------------------------------
 	@echo
 	
-	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o MarsCrustalThickness/MarsCrustalThickness
+	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o MarsCrustalThickness/MarsCrustalThickness
 	
-	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHCilmPlus/TestCilmPlus
+	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHCilmPlus/TestCilmPlus
 	
-	$(F95) SHExpandDH/TestExpandDH.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandDH/TestExpandDH
+	$(F95) SHExpandDH/TestExpandDH.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandDH/TestExpandDH
 	
-	$(F95) SHExpandLSQ/TestSHExpandLSQ.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandLSQ/TestSHExpandLSQ
+	$(F95) SHExpandLSQ/TestSHExpandLSQ.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandLSQ/TestSHExpandLSQ
 	
-	$(F95) SHLocalizedAdmitCorr/LocalizedAdmitCorr.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHLocalizedAdmitCorr/LocalizedAdmitCorr
+	$(F95) SHLocalizedAdmitCorr/LocalizedAdmitCorr.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHLocalizedAdmitCorr/LocalizedAdmitCorr
 	
-	$(F95) SHMag/SHMag.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHMag/SHMag
+	$(F95) SHMag/SHMag.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHMag/SHMag
 	
-	$(F95) SHRotate/TestSHRotate.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o SHRotate/TestSHRotate
+	$(F95) SHRotate/TestSHRotate.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHRotate/TestSHRotate
 	
-	$(F95) TimingAccuracy/TimingAccuracyDH.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDH
+	$(F95) TimingAccuracy/TimingAccuracyDH.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDH
 	
-	$(F95) TimingAccuracy/TimingAccuracyDHC.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDHC
+	$(F95) TimingAccuracy/TimingAccuracyDHC.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDHC
 	
-	$(F95) TimingAccuracy/TimingAccuracyGLQ.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQ
+	$(F95) TimingAccuracy/TimingAccuracyGLQ.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQ
 	
-	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQC
+	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQC
 	
 run-fortran-tests:
 	 @echo MARS-CRUSTAL-THICKNESS

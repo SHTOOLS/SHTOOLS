@@ -1,4 +1,4 @@
-###################################################################################
+################################################################################
 #
 #	make fortran-tests
 #		Compile and run example programs and test suite. Optional parameters 
@@ -16,9 +16,7 @@
 #
 #	Written by Mark Wieczorek (March 2015).
 #
-#####################################################################################
-
-VERSION = 3.0
+################################################################################
 
 F95 = gfortran
 PYTHON = python
@@ -34,44 +32,32 @@ MODPATH = ../../modules
 FEXDIR = fortran
 PEXDIR = python
 
+LIBNAME = SHTOOLS
 
-.PHONY: fortran-tests run-python-tests clean-fortran-tests clean-python-tests
-
-getflags:
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic
+F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=11
 #-march=host
-endif
-
-ifeq ($(F95),gfortran)
+else ifeq ($(F95),gfortran)
 # Default gfortran flags
-#F95FLAGS ?= -m64 -fPIC -O3 # -march=native
-F95FLAGS ?= -m64 -fPIC -O3 # -march=native  # -ggdb
-endif
-
-ifeq ($(F95),ifort)
+F95FLAGS ?= -m64 -fPIC -O3 -ffast-math # -march=native
+else ifeq ($(F95),ifort)
 # Default intel fortran flags
 F95FLAGS ?= -m64 -free -O3 -Tf
-endif
-
-ifeq ($(F95),g95)
+else ifeq ($(F95),g95)
 # Default g95 flags.
-F95FLAGS ?= -O3 -fno-second-underscore 
-endif
-
-ifeq ($(F95),pgf90)
+F95FLAGS ?= -O3 -fno-second-underscore  
+else ifeq ($(F95),pgf90)
 # Default pgf90 flags
 F95FLAGS ?= -fast 
-endif
-
-ifeq ($(origin F95FLAGS), undefined)
+else ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
 endif
 
+.PHONY: fortran-tests run-python-tests clean-fortran-tests clean-python-tests
 
-fortran-tests: getflags
-	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" MODPATH=$(MODPATH) LIBPATH=$(LIBPATH) FFTW=$(FFTW) LAPACK=$(LAPACK) BLAS=$(BLAS)
+fortran-tests:
+	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" MODPATH=$(MODPATH) LIBPATH=$(LIBPATH) LIBNAME=$(LIBNAME) FFTW=$(FFTW) LAPACK=$(LAPACK) BLAS=$(BLAS)
 	@echo
 	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
 	@echo

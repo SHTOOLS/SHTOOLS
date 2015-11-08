@@ -46,6 +46,8 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg)
     real*8 :: wig(2*lwin+ldata+1)
     real*8, allocatable, save :: cg2(:,:,:)
     
+!$OMP   threadprivate(cg2)
+    
     lmax = ldata + lwin
     outcspectra = 0.0d0
     

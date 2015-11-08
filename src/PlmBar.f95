@@ -62,13 +62,15 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm)
     
     integer, intent(in) :: lmax
     real*8, intent(out) :: p(:)
-        real*8, intent(in) :: z
-        integer, intent(in), optional :: csphase, cnorm
-        real*8 :: pmm, rescalem, u, scalef
-        real*8, save, allocatable :: f1(:), f2(:), sqr(:)
-        integer :: k, kstart, m, l, astat(3)
-        integer, save :: lmax_old  = 0
-        integer*1 :: phase
+    real*8, intent(in) :: z
+    integer, intent(in), optional :: csphase, cnorm
+    real*8 :: pmm, rescalem, u, scalef
+    real*8, save, allocatable :: f1(:), f2(:), sqr(:)
+    integer :: k, kstart, m, l, astat(3)
+    integer, save :: lmax_old  = 0
+    integer*1 :: phase
+
+!$OMP    threadprivate(f1, f2, sqr, lmax_old)
 
     if (lmax == -1) then
         if (allocated (sqr)) deallocate (sqr)

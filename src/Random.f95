@@ -9,6 +9,9 @@ real*8 function RandomN(idum)
 !   initialize; thereafter, do not alter idum except to reinitialize. The period
 !   of this generator is about 3.1 10^18.
 !
+!   NOTE:   When used within an OpenMP parallet construct, a different seed must
+!           be used for each thread.
+!
 !   Taken from numerical recipes, f90
 !
 !   Copyright (c) 2015, Mark A. Wieczorek
@@ -23,6 +26,8 @@ real*8 function RandomN(idum)
                                 one = 1, param1 = 888889999, param2 = 777755555
     real*8, save :: am
     integer(K4B), save :: ix = -1, iy = -1, k
+
+!$OMP   threadprivate(am, ix, iy, k)
 
     if (idum <= 0 .or.iy < 0) then  ! Initialize.
         am = nearest(1.0,-1.0) / IM
@@ -54,6 +59,9 @@ real*8 function RandomGaussian(idum)
 !   normal distribution with standard deviation sigma,
 !   multiply this function by sigma.
 !
+!   NOTE:   When used within an OpenMP parallet construct, a different seed must
+!           be used for each thread.
+!
 !   Taken from numerical recipes f77.
 !
 !   Copyright (c) 2015, Mark A. Wieczorek
@@ -68,6 +76,8 @@ real*8 function RandomGaussian(idum)
     real*8, save :: gset
     external RandomN
     logical, save :: gaus_stored = .false.
+    
+!$OMP   threadprivate(gset, gaus_stored)
     
     if (idum < 0) gaus_stored = .false.     ! Reinitialize.
     
