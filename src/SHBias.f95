@@ -122,7 +122,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg)
             
             cg2 = 0.0d0
             
-            do l  =0, lmax
+            do l = 0, lmax
                 do j = 0, lwin
                     call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
                     cg2(l+1,j+1,1:imax-imin+1) = (2.0d0*l+1.0d0) &
@@ -133,7 +133,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg)
         end if
         
         do l = 0, min(lmax, size(outcspectra)-1)
-            do j  =0, lwin    
+            do j = 0, lwin    
                 imin = abs(j-l)
                 imax = j+l
                 
@@ -148,7 +148,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg)
     
     else
         do l = 0, min(lmax, size(outcspectra)-1)
-            do j  =0, lwin
+            do j = 0, lwin
                 call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
                 
                 do i = imin, min(imax, ldata), 2                              

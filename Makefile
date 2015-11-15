@@ -138,7 +138,7 @@ SYSDOCPATH = /usr/local/share/doc
 
 ifeq ($(F95),f95)
 # Default Absoft f95 flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=11
+F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
 #-march=host
 MODFLAG = -p $(MODPATH)
 SYSMODFLAG = -p $(SYSMODPATH)
