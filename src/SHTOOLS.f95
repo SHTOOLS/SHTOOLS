@@ -380,12 +380,12 @@ module SHTOOLS
             integer, intent(in), optional ::  lmax
         end subroutine SphericalCapCoef
         
-        subroutine EigValVecSym(ain, n, eig, evec, ul, K)
+        subroutine EigValVecSym(ain, n, eig, evec, ul, k)
             real*8, intent(in) ::   ain(:,:)
             integer, intent(in) ::  n
             real*8, intent(out) ::  eig(:), evec(:,:)
             character, intent(in), optional ::  ul
-            integer, intent(in), optional ::    K
+            integer, intent(in), optional ::    k
         end subroutine EigValVecSym
         
         subroutine SHReturnTapersM(theta0, lmax, m, tapers, &
@@ -417,10 +417,10 @@ module SHTOOLS
         end subroutine SHAdmitCorr
                 
         subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, &
-                                g, t, lmax, admit, corr, K, admit_error, &
+                                g, t, lmax, admit, corr, k, admit_error, &
                                 corr_error, taper_wt, mtdef, k1linsig)
             real*8, intent(in) ::   tapers(:,:), lat, lon, g(:,:,:), t(:,:,:)
-            integer, intent(in) ::  lwin, lmax, K, taper_order(:)
+            integer, intent(in) ::  lwin, lmax, k, taper_order(:)
             real*8, intent(out) ::  admit(:), corr(:)
             real*8, intent(out), optional ::    admit_error(:), corr_error(:)
             integer, intent(in), optional ::    mtdef, k1linsig
@@ -467,30 +467,30 @@ module SHTOOLS
             integer, intent(in), optional :: save_cg
         end subroutine SHBias
         
-        subroutine SHBiasK(tapers, lwin, numk, incspectra, ldata, &
+        subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, &
                             outcspectra, taper_wt, save_cg)
             real*8, intent(in) ::   tapers(:,:), incspectra(:)
             real*8, intent(out) ::  outcspectra(:)
-            integer, intent(in) ::  lwin, ldata, numk
+            integer, intent(in) ::  lwin, ldata, k
             real*8, intent(in), optional :: taper_wt(:)
             integer, intent(in), optional :: save_cg
         end subroutine SHBiasK
                 
         subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, &
-                        lmaxt, K, alpha, lat, lon, taper_wt, norm, csphase)
+                        lmaxt, k, alpha, lat, lon, taper_wt, norm, csphase)
             real*8, intent(out) ::  mtse(:), sd(:)
             real*8, intent(in) ::   sh(:,:,:), tapers(:,:)
-            integer, intent(in) ::  lmax, lmaxt, K, taper_order(:)
+            integer, intent(in) ::  lmax, lmaxt, k, taper_order(:)
             real*8, intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
             integer, intent(in), optional :: csphase, norm
         end subroutine SHMultiTaperSE
         
         subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
-                                    taper_order, lmaxt, K, alpha, lat, lon, &
+                                    taper_order, lmaxt, k, alpha, lat, lon, &
                                     taper_wt, norm, csphase)
             real*8, intent(out) ::  mtse(:), sd(:)
             real*8, intent(in) ::   sh1(:,:,:), sh2(:,:,:), tapers(:,:)
-            integer, intent(in) ::  lmax1, lmax2, lmaxt, K, taper_order(:)
+            integer, intent(in) ::  lmax1, lmax2, lmaxt, k, taper_order(:)
             real*8, intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
             integer, intent(in), optional ::    csphase, norm
         end subroutine SHMultiTaperCSE
@@ -587,12 +587,12 @@ module SHTOOLS
             integer, intent(in) :: lmax, k, lwin       
         end subroutine
 
-        subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, &
+        subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, k, nl, &
                                 lmid, n, taper_wt)
             real*8, intent(out) ::  mtdebias(:,:), lmid(:)
             real*8, intent(in) :: mtspectra(:,:), tapers(:,:)
             real*8, intent(in), optional :: taper_wt(:)
-            integer, intent(in) :: lmax, K, lwin, nl
+            integer, intent(in) :: lmax, k, lwin, nl
             integer, intent(out) :: n
         end subroutine SHMTDebias
         
@@ -711,10 +711,10 @@ module SHTOOLS
             complex*16, intent(out) ::  cspectra(:)
         end subroutine SHCrossPowerSpectrumDensityC
 
-        subroutine SHBiasAdmitCorr(sgt, sgg, stt, lmax, tapers, lwin, K, &
+        subroutine SHBiasAdmitCorr(sgt, sgg, stt, lmax, tapers, lwin, k, &
                                     admit, corr, mtdef, taper_wt)
             real*8, intent(in) ::   sgt(:), sgg(:), stt(:), tapers(:,:)
-            integer, intent(in) ::  lmax, lwin, K
+            integer, intent(in) ::  lmax, lwin, k
             real*8, intent(out) ::  admit(:), corr(:)
             integer, intent(in), optional ::    mtdef
             real*8, intent(in), optional :: taper_wt(:)

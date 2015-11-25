@@ -808,7 +808,7 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax),intent(hide) :: coef_d0 = lmax+1
         end subroutine SphericalCapCoef
 
-        subroutine EigValVecSym(ain,n,eig,evec,ul,K,evec_d0,evec_d1,ain_d0,ain_d1,eig_d0)
+        subroutine EigValVecSym(ain,n,eig,evec,ul,k,evec_d0,evec_d1,ain_d0,ain_d1,eig_d0)
             fortranname pyeigvalvecsym
             use shtools, only: EigValVecSym
             real*8 dimension(ain_d0,ain_d1),intent(in) :: ain
@@ -816,12 +816,12 @@ python module _SHTOOLS
             real*8 dimension(eig_d0),intent(out) :: eig
             real*8 dimension(evec_d0,evec_d1),intent(out) :: evec
             character, optional,intent(in) :: ul = "U"
-            integer, optional,intent(in),depend(n) :: K = n
+            integer, optional,intent(in),depend(n) :: k = n
             integer intent(in),intent(hide),depend(ain_d0) :: evec_d0 = ain_d0
             integer intent(in),intent(hide),depend(ain_d1) :: evec_d1 = ain_d1
             integer, optional,intent(in),check(shape(ain,0)==ain_d0),depend(ain),intent(hide) :: ain_d0=shape(ain,0)
             integer, optional,intent(in),check(shape(ain,1)==ain_d1),depend(ain),intent(hide) :: ain_d1=shape(ain,1)
-            integer intent(in),depend(K),intent(hide) :: eig_d0 = K
+            integer intent(in),depend(k),intent(hide) :: eig_d0 = k
         end subroutine EigValVecSym
 
         subroutine SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,tapers_d0,tapers_d1,eigenvalues_d0)
@@ -886,7 +886,7 @@ python module _SHTOOLS
             real*8 dimension(t_d0,t_d1,t_d2),intent(in) :: t
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer dimension(taper_order_d0),intent(in) :: taper_order
-            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
+            integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             real*8, intent(in) :: lat
             real*8, intent(in) :: lon
             integer,optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
@@ -982,12 +982,12 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin
         end subroutine SHBias
 
-        subroutine SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
+        subroutine SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
             fortranname pyshbiask
             use shtools, only: SHBiasK
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer, optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
-            integer, optional,intent(in),depend(tapers_d1) :: numk = tapers_d1
+            integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             real*8 dimension(incspectra_d0),intent(in) :: incspectra
             integer, optional,intent(in),depend(incspectra_d0) :: ldata = incspectra_d0-1
             real*8 dimension(outcspectra_d0),intent(out) :: outcspectra
@@ -1000,7 +1000,7 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin
         end subroutine SHBiasK
 
-        subroutine SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K,lat,lon,taper_wt,norm,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,tapers_d0,tapers_d1,mtse_d0,sd_d0)
+        subroutine SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,k,lat,lon,taper_wt,norm,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,tapers_d0,tapers_d1,mtse_d0,sd_d0)
             fortranname pyshmultitaperse
             use shtools, only: SHMultiTaperSE
             real*8 dimension(mtse_d0),intent(out) :: mtse
@@ -1010,7 +1010,7 @@ python module _SHTOOLS
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer dimension(taper_order_d0),intent(in) :: taper_order
             integer, optional,intent(in),depend(tapers_d0) :: lmaxt = tapers_d0-1
-            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
+            integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             real*8,  optional,intent(in) :: lat = 0.0
             real*8,  optional,intent(in) :: lon = 0.0
             real*8,  optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
@@ -1027,7 +1027,7 @@ python module _SHTOOLS
             integer, optional,intent(in),check(sd_d0>0),depend(lmax,lmaxt),intent(hide) :: sd_d0 = lmax-lmaxt+1
         end subroutine SHMultiTaperSE
 
-        subroutine SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,K,lat,lon,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_order_d0,taper_wt_d0,tapers_d0,tapers_d1,sd_d0,mtse_d0)
+        subroutine SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,k,lat,lon,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_order_d0,taper_wt_d0,tapers_d0,tapers_d1,sd_d0,mtse_d0)
             fortranname pyshmultitapercse
             use shtools, only: SHMultiTaperCSE
             real*8 dimension(mtse_d0),intent(out) :: mtse
@@ -1039,7 +1039,7 @@ python module _SHTOOLS
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer dimension(taper_order_d0),intent(in) :: taper_order
             integer, optional,intent(in),depend(tapers_d0) :: lmaxt = tapers_d0-1
-            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
+            integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             real*8, optional,intent(in) :: lat = 0.0
             real*8, optional,intent(in) :: lon = 0.0
             real*8,  optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
@@ -1291,7 +1291,7 @@ python module _SHTOOLS
             integer, optional,depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
         end subroutine
 
-        subroutine SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n,taper_wt,mtdebias_d0,mtdebias_d1,taper_wt_d0,mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1,lmid_d0)
+        subroutine SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n,taper_wt,mtdebias_d0,mtdebias_d1,taper_wt_d0,mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1,lmid_d0)
             fortranname pyshmtdebias
             use shtools, only: SHMTDebias
             real*8 dimension(mtdebias_d0,mtdebias_d1),intent(out) :: mtdebias
@@ -1301,7 +1301,7 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(mtspectra_d1) :: lmax = mtspectra_d1-1
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer, optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
-            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
+            integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             integer intent(in) :: nl
             real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
             integer, optional,intent(in),intent(hide) :: mtdebias_d0 = 2
@@ -1573,7 +1573,7 @@ python module _SHTOOLS
             integer, optioanl,intent(in),depend(lmax),intent(hide) :: cspectra_d0 = lmax+1
         end subroutine SHCrossPowerSpectrumDensityC
 
-        subroutine SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr,mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0,admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0)
+        subroutine SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr,mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0,admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0)
             fortranname pyshbiasadmitcorr
             use shtools, only: SHBiasAdmitCorr
             real*8 dimension(admit_d0),intent(out) :: admit
@@ -1584,7 +1584,7 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(sgt_d0) :: lmax = sgt_d0-1
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer, optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
-            integer, optional,intent(in),depend(tapers_d1) :: K = tapers_d1
+            integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             integer, optional,intent(in) :: mtdef = 1
             real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
             integer, optional,intent(in),depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
