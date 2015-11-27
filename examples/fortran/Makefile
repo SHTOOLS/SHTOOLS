@@ -24,7 +24,7 @@ MODPATH = ../../modules/
 
 LIBNAME = SHTOOLS
 
-SHELL=/bin/tcsh
+SHELL=/bin/sh
 MAKE = make
 
 .PHONY: all getflags clean run-fortran-tests

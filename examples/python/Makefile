@@ -12,7 +12,7 @@
 
 PYTHON = python
 
-SHELL=/bin/tcsh
+SHELL=/bin/sh
 
 MAKE = make
 

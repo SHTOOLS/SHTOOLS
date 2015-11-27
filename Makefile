@@ -117,7 +117,7 @@ FFTW = -lfftw3
 LAPACK = -llapack 
 BLAS = -lblas
 
-SHELL = /bin/tcsh
+SHELL = /bin/sh
 MAKE = make
 FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc

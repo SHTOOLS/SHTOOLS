@@ -39,6 +39,7 @@
 		<li>Added the optional argument <tt>centralmeridian</tt> to <tt>Curve2Mask</tt> that accounts for cases where the curve makes a complete circle in longitude about the planet.</li>
 		<li>Fixed in bug in the python implementation where the outputs <tt>error</tt> and <tt>corr</tt> of <tt>SHAdmitCorr</tt> were switched.</li>
 		<li>Added OpenMP support. When compiling with <tt>make fortran-mp</tt>, <tt>make fortran2-mp</tt>, or <tt>make fortran3-mp</tt>, saved variables in the subroutines are defined as being <tt>threadprivate</tt>.</li>
+		<li>Optimized performance of the routines <tt>SHMultiTaperSE</tt>, <tt>SHMultiTaperCSE</tt>, and <tt>SHLocalizedAdmitCorr</tt>.</li>
 	</ul>
 	
 	<h2>Version 3.1 (July 21, 2015)</h2>

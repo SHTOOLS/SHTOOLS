@@ -26,7 +26,7 @@
 
 F95 = gfortran
 
-SHELL=/bin/tcsh
+SHELL=/bin/sh
 
 LIBTOOL = libtool
 LIBTOOLFLAGS = -static

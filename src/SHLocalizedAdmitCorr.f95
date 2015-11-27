@@ -70,16 +70,17 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 !       between -1 and 1. To obtain the "coherence" (which is also sometimes 
 !       referred to as the "coherence squared"), just square this number.
 !
-!   Dependencies:   SHMultitaperSE, SHMultiTaperCSE, CSPHASE_DEFAULT,  djpi2, 
-!                   SHRotateRealCoef, SHMultiply, SHCrossPowerSpectrum, 
-!                   SHPowerSpectrum
+!   Dependencies:   CSPHASE_DEFAULT,  djpi2, SHRotateRealCoef, 
+!					SHCrossPowerSpectrum, SHPowerSpectrum, MakeGridGLQ, SHGLQ, 
+!					SHExpandGLQ
 !
 !   Copyright (c) 2015, Mark A. Wieczorek
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
-    use SHTOOLS, only:  djpi2, SHRotateRealCoef, SHMultiply, &
-                        SHCrossPowerSpectrum, SHPowerSpectrum
+    use SHTOOLS, only:  djpi2, SHRotateRealCoef, &
+                        SHCrossPowerSpectrum, SHPowerSpectrum, MakeGridGLQ, &
+                        SHGLQ, SHExpandGLQ
             
     implicit none
 
@@ -89,17 +90,18 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     real*8, intent(out), optional :: admit_error(:), corr_error(:)
     integer, intent(in), optional :: mtdef, k1linsig
     real*8, intent(in), optional :: taper_wt(:)
-    integer :: lmaxwin, l, def, astat(5), phase, norm, i
-    integer, save ::  first = 1, lwin_last = 0
+    integer :: lmaxwin, l, def, astat(9), phase, norm, i, nlat, nlong
+    integer, save :: first = 1, lmaxwin_last = -1, lwin_last = -1
     real*8 ::  pi, g_power(2,lwin+lmax+1), t_power(2,lwin+lmax+1), &
                 gt_power(2,lwin+lmax+1), x(3), sgt(lmax-lwin+1, K), &
                 sgg(lmax-lwin+1, K), stt(lmax-lwin+1, K), &
                 admit_k(lmax-lwin+1, K), corr_k(lmax-lwin+1, K), factor
     real*8, allocatable :: shwin(:,:,:), shwinrot(:,:,:), shloc_g(:,:,:), &
-                            shloc_t(:,:,:)   
-    real*8, allocatable, save :: dj(:,:,:)
+                            shloc_t(:,:,:), gridtglq(:,:), gridgglq(:,:), &
+                            gridwinglq(:,:), temp(:,:)   
+    real*8, allocatable, save :: dj(:,:,:), zero(:), w(:)
 
-!$OMP   threadprivate(first, lwin_last, dj)
+!$OMP   threadprivate(first, lmaxwin_last, lwin_last, dj)
 
     phase = 1
     norm = 1
@@ -258,16 +260,22 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
         
     if (first == 1) then
         lwin_last = lwin
+        lmaxwin_last = lmaxwin
         first = 0
+ 
+        allocate (zero(lmaxwin+1), stat = astat(1))
+        allocate (w(lmaxwin+1), stat = astat(2))
+        allocate (dj(lwin+1,lwin+1,lwin+1), stat = astat(3))
         
-        allocate (dj(lwin+1,lwin+1,lwin+1), stat = astat(1))
-        
-        if (astat(1) /= 0) then
+        if (sum(astat(1:3)) /= 0) then
             print*, "Error --- SHLocalizedAdmitCorr"
-            print*, "Problem allocating array DJ", astat(1)
+            print*, "Problem allocating arrays ZERO, W and DJ", &
+            		astat(1), astat(2), astat(3)
             stop
             
         end if
+        
+        call SHGLQ(lmaxwin, zero, w, csphase = phase, norm = 1)
         
         dj = 0.0d0
         
@@ -294,19 +302,53 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
         
     end if
     
+    if (lmaxwin /= lmaxwin_last) then
+        lmaxwin_last = lmaxwin
+        
+        deallocate (zero)
+        deallocate (w)
+        allocate (zero(lmaxwin+1), stat = astat(1))
+        allocate (w(lmaxwin+1), stat = astat(2))
+        
+        if (sum(astat(1:2)) /= 0) then
+            print*, "Error --- SHLocalizedAdmitCorr"
+            print*, "Problem allocating arrays ZERO and W", astat(1), astat(2)
+            stop
+            
+        end if
+        
+        call SHGLQ(lmaxwin, zero, w, csphase = phase, norm = 1)
+        
+    end if
+
+    nlat = lmax+lwin+1
+    nlong = 2*(lmax+lwin)+1
+    
     allocate (shwin(2,lwin+1,lwin+1), stat = astat(1))
     allocate (shwinrot(2,lwin+1,lwin+1), stat = astat(2))
     allocate (shloc_g(2, lmaxwin+1, lmaxwin+1), stat= astat(3))
     allocate (shloc_t(2, lmaxwin+1, lmaxwin+1), stat= astat(4))
+    allocate (gridtglq(nlat,nlong), stat = astat(5))
+    allocate (gridgglq(nlat,nlong), stat = astat(6))
+    allocate (gridwinglq(nlat,nlong), stat = astat(7))    
+    allocate (temp(nlat,nlong), stat = astat(8))    
         
-    if (sum(astat(1:4)) /= 0) then
+    if (sum(astat(1:8)) /= 0) then
         print*, "Error --- SHLocalizedAdmitCorr"
-        print*, "Problem allocating arrays SHWIN, SHWINROT, SHLOC_G, SHLOC_T", &
-            astat(1), astat(2), astat(3), astat(4)
+        print*, "Problem allocating arrays SHWIN, SHWINROT, SHLOC_G, " // &
+        	"SHLOC_T, GRIDTGLQ, GRIDGGLQ, GRIDWINGLQ, and TEMP", &
+            astat(1), astat(2), astat(3), astat(4), astat(5), astat(6), &
+            astat(7), astat(8)
         stop
         
     endif
-        
+
+    call MakeGridGLQ(gridtglq, t(1:2,1:lmax+1, 1:lmax+1), &
+        lmaxwin, zero = zero, csphase = phase, norm = 1)
+
+    call MakeGridGLQ(gridgglq, g(1:2,1:lmax+1, 1:lmax+1), &
+        lmaxwin, zero = zero, csphase = phase, norm = 1)
+
     if (def == 1) then
         do i = 1, K
             shwin = 0.0d0
@@ -320,11 +362,21 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
             end if
             
             call SHRotateRealCoef(shwinrot, shwin, lwin, x, dj)
+ 
+     		call MakeGridGLQ(gridwinglq, shwinrot(1:2,1:lwin+1, 1:lwin+1), &
+        		lmaxwin, zero = zero, csphase = phase, norm = 1)     
+        		
+        	temp(1:nlat,1:nlong) = gridtglq(1:nlat,1:nlong) &
+                            * gridwinglq(1:nlat,1:nlong)   
+                            
+    		call SHExpandGLQ(shloc_t, lmaxwin, temp, w, zero = zero, &
+                            csphase = phase, norm = 1)
         
-            call SHMultiply(shloc_g, g, lmax, shwinrot, lwin, &
-                            csphase = phase, norm = norm)
-            call SHMultiply(shloc_t, t, lmax, shwinrot, lwin, &
-                            csphase = phase, norm = norm)
+        	temp(1:nlat,1:nlong) = gridgglq(1:nlat,1:nlong) &
+                            * gridwinglq(1:nlat,1:nlong) 
+
+    		call SHExpandGLQ(shloc_g, lmaxwin, temp, w, zero = zero, &
+                            csphase = phase, norm = 1)
             
             call SHCrossPowerSpectrum(shloc_g, shloc_t, lmax-lwin, sgt(:,i))
             call SHPowerSpectrum(shloc_g, lmax-lwin, sgg(:,i))
@@ -456,11 +508,21 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
             end if
         
             call SHRotateRealCoef(shwinrot, shwin, lwin, x, dj)
+
+     		call MakeGridGLQ(gridwinglq, shwinrot(1:2,1:lwin+1, 1:lwin+1), &
+        		lmaxwin, zero = zero, csphase = phase, norm = 1)     
+        		
+        	temp(1:nlat,1:nlong) = gridtglq(1:nlat,1:nlong) &
+                            * gridwinglq(1:nlat,1:nlong)   
+                            
+    		call SHExpandGLQ(shloc_t, lmaxwin, temp, w, zero = zero, &
+                            csphase = phase, norm = 1)
         
-            call SHMultiply(shloc_g, g, lmax, shwinrot, lwin, &
-                            csphase = phase, norm=norm)
-            call SHMultiply(shloc_t, t, lmax, shwinrot, lwin, &
-                            csphase = phase, norm=norm)
+        	temp(1:nlat,1:nlong) = gridgglq(1:nlat,1:nlong) &
+                            * gridwinglq(1:nlat,1:nlong) 
+
+    		call SHExpandGLQ(shloc_g, lmaxwin, temp, w, zero = zero, &
+                            csphase = phase, norm = 1)
             
             call SHCrossPowerSpectrum(shloc_g, shloc_t, lmax-lwin, sgt(:,i))
             call SHPowerSpectrum(shloc_g, lmax-lwin, sgg(:,i))
@@ -529,5 +591,9 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     deallocate (shwinrot)
     deallocate (shloc_g)
     deallocate (shloc_t)
+    deallocate (gridtglq)
+    deallocate (gridgglq)
+    deallocate (gridwinglq)
+    deallocate (temp)
     
 end subroutine SHLocalizedAdmitCorr
