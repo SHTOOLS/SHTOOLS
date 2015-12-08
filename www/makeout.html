@@ -1,0 +1,950 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Make output</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<meta name="description" content="Example output from a sucessful make of SHTOOLS.">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
+				<td><a href="faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+		
+	<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="compilation.html" class="dir">Compilation Instructions</a>
+</p>
+	
+	<h1>Make Output</h1>
+	
+	<h2>make</h2>
+
+	<blockquote><p class="smaller smallerlineheight nomargin"><tt>
+make -C src -f Makefile all F95=gfortran F95FLAGS="-m64 -fPIC -O3"<br>
+gfortran -c -m64 -fPIC -O3  SHTOOLS.f95<br>
+gfortran -c -m64 -fPIC -O3  CilmPlus.f95<br>
+gfortran -c -m64 -fPIC -O3  ComputeD0.f95<br>
+gfortran -c -m64 -fPIC -O3  ComputeDG82.f95<br>
+gfortran -c -m64 -fPIC -O3  ComputeDm.f95<br>
+gfortran -c -m64 -fPIC -O3  DHaj.f95<br>
+gfortran -c -m64 -fPIC -O3  djpi2.f95<br>
+gfortran -c -m64 -fPIC -O3  FFTW3.f95<br>
+gfortran -c -m64 -fPIC -O3  Hilm.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeGrid2D.f95<br>
+gfortran -c -m64 -fPIC -O3  GLQGridCoord.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeGridPoint.f95<br>
+gfortran -c -m64 -fPIC -O3  PlanetsConstants.f95<br>
+gfortran -c -m64 -fPIC -O3  PlBar.f95<br>
+gfortran -c -m64 -fPIC -O3  PlBar_d1.f95<br>
+gfortran -c -m64 -fPIC -O3  PLegendre.f95<br>
+gfortran -c -m64 -fPIC -O3  PLegendreA.f95<br>
+gfortran -c -m64 -fPIC -O3  PLegendreA_d1.f95<br>
+gfortran -c -m64 -fPIC -O3  PlmBar.f95<br>
+gfortran -c -m64 -fPIC -O3  PlmBar_d1.f95<br>
+gfortran -c -m64 -fPIC -O3  PlmIndex.f95<br>
+gfortran -c -m64 -fPIC -O3  PlmSchmidt.f95<br>
+gfortran -c -m64 -fPIC -O3  PlmSchmidt_d1.f95<br>
+gfortran -c -m64 -fPIC -O3  PlSchmidt.f95<br>
+gfortran -c -m64 -fPIC -O3  PlSchmidt_d1.f95<br>
+gfortran -c -m64 -fPIC -O3  PreGLQ.f95<br>
+gfortran -c -m64 -fPIC -O3  Random.f95<br>
+gfortran -c -m64 -fPIC -O3  SHAdmitCorr.f95<br>
+gfortran -c -m64 -fPIC -O3  SHBias.f95<br>
+gfortran -c -m64 -fPIC -O3  SHBiasK.f95<br>
+gfortran -c -m64 -fPIC -O3  SHConvertCoef.f95<br>
+gfortran -c -m64 -fPIC -O3  SHFindLWin.f95<br>
+gfortran -c -m64 -fPIC -O3  SHLocalizedAdmitCorr.f95<br>
+gfortran -c -m64 -fPIC -O3  SHMultiply.f95<br>
+gfortran -c -m64 -fPIC -O3  SHMultiTaperCSE.f95<br>
+gfortran -c -m64 -fPIC -O3  SHMultiTaperSE.f95<br>
+gfortran -c -m64 -fPIC -O3  SHPowerSpectra.f95<br>
+gfortran -c -m64 -fPIC -O3  SHRead.f95<br>
+gfortran -c -m64 -fPIC -O3  SHReadJPL.f95<br>
+gfortran -c -m64 -fPIC -O3  SHReturnTapersM.f95<br>
+gfortran -c -m64 -fPIC -O3  SHRotateCoef.f95<br>
+gfortran -c -m64 -fPIC -O3  SHRotateRealCoef.f95<br>
+gfortran -c -m64 -fPIC -O3  SphericalCapCoef.f95<br>
+gfortran -c -m64 -fPIC -O3  Wigner3j.f95<br>
+gfortran -c -m64 -fPIC -O3  wl.f95<br>
+gfortran -c -m64 -fPIC -O3  SHRead2.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeGeoidGrid.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeCircleCoord.f95<br>
+gfortran -c -m64 -fPIC -O3  SHSjkPG0.f95<br>
+gfortran -c -m64 -fPIC -O3  SHReturnTapers.f95<br>
+gfortran -c -m64 -fPIC -O3  SHSjkPG.f95<br>
+gfortran -c -m64 -fPIC -O3  PlON.f95<br>
+gfortran -c -m64 -fPIC -O3  PlON_d1.f95<br>
+gfortran -c -m64 -fPIC -O3  PlmON.f95<br>
+gfortran -c -m64 -fPIC -O3  PlmON_d1.f95<br>
+gfortran -c -m64 -fPIC -O3  SHConfidence.f95<br>
+gfortran -c -m64 -fPIC -O3  SHMagPowerSpectra.f95<br>
+gfortran -c -m64 -fPIC -O3  SHPowerSpectraC.f95<br>
+gfortran -c -m64 -fPIC -O3  SHBiasAdmitCorr.f95<br>
+gfortran -c -m64 -fPIC -O3  SHCilmToVector.f95<br>
+gfortran -c -m64 -fPIC -O3  YilmIndex.f95<br>
+gfortran -c -m64 -fPIC -O3  ComputeDMap.f95<br>
+gfortran -c -m64 -fPIC -O3  SHReturnTapersMap.f95<br>
+gfortran -c -m64 -fPIC -O3  Curve2Mask.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeEllipseCoord.f95<br>
+gfortran -c -m64 -fPIC -O3  CilmPlusRhoH.f95<br>
+gfortran -c -m64 -fPIC -O3  HilmRhoH.f95<br>
+gfortran -c -m64 -fPIC -O3  NormalGravity.f95<br>
+gfortran -c -m64 -fPIC -O3  EigValSym.f95<br>
+gfortran -c -m64 -fPIC -O3  EigValVecSym.f95<br>
+gfortran -c -m64 -fPIC -O3  EigValVecSymTri.f95<br>
+gfortran -c -m64 -fPIC -O3  SHExpandLSQ.f95<br>
+gfortran -c -m64 -fPIC -O3  SHMTDebias.f95<br>
+gfortran -c -m64 -fPIC -O3  SHMTVarOpt0.f95<br>
+gfortran -c -m64 -fPIC -O3  SHMTVarOpt.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeGridDH.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeGridDHC.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeGridGLQ.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeGridGLQC.f95<br>
+gfortran -c -m64 -fPIC -O3  SHGLQ.f95<br>
+gfortran -c -m64 -fPIC -O3  SHExpandDH.f95<br>
+gfortran -c -m64 -fPIC -O3  SHExpandDHC.f95<br>
+gfortran -c -m64 -fPIC -O3  SHExpandGLQ.f95<br>
+gfortran -c -m64 -fPIC -O3  SHExpandGLQC.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeGravGradGridDH.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeGravGridDH.f95<br>
+gfortran -c -m64 -fPIC -O3  MakeMagGridDH.f95<br>
+<br>
+COMPILATION OF SOURCE FILES SUCCESSFUL.<br>
+<br>
+ar -r ../lib/libSHTOOLS.a CilmPlus.o ComputeD0.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o FFTW3.o Hilm.o MakeGrid2D.o GLQGridCoord.o MakeGridPoint.o PlanetsConstants.o PlBar.o PlBar_d1.o PLegendre.o PLegendreA.o PLegendreA_d1.o PlmBar.o PlmBar_d1.o PlmIndex.o PlmSchmidt.o PlmSchmidt_d1.o PlSchmidt.o PlSchmidt_d1.o PreGLQ.o Random.o SHAdmitCorr.o SHBias.o SHBiasK.o SHConvertCoef.o SHFindLWin.o SHLocalizedAdmitCorr.o SHMultiply.o SHMultiTaperCSE.o SHMultiTaperSE.o SHPowerSpectra.o SHRead.o SHReadJPL.o SHReturnTapersM.o SHRotateCoef.o SHRotateRealCoef.o SHTOOLS.o SphericalCapCoef.o Wigner3j.o wl.o SHRead2.o MakeGeoidGrid.o MakeCircleCoord.o SHSjkPG0.o SHReturnTapers.o SHSjkPG.o PlON.o PlON_d1.o PlmON.o PlmON_d1.o SHConfidence.o SHMagPowerSpectra.o SHPowerSpectraC.o SHBiasAdmitCorr.o SHCilmToVector.o YilmIndex.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o MakeEllipseCoord.o CilmPlusRhoH.o HilmRhoH.o NormalGravity.o EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o SHMTDebias.o SHMTVarOpt0.o SHMTVarOpt.o MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o SHGLQ.o SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o<br>
+ar: creating archive ../lib/libSHTOOLS.a<br>
+/opt/local/bin/ranlib: file: ../lib/libSHTOOLS.a(FFTW3.o) has no symbols<br>
+/opt/local/bin/ranlib: file: ../lib/libSHTOOLS.a(PlanetsConstants.o) has no symbols<br>
+/opt/local/bin/ranlib: file: ../lib/libSHTOOLS.a(SHTOOLS.o) has no symbols<br>
+<br>
+ranlib  ../lib/libSHTOOLS.a <br>
+ranlib: file: ../lib/libSHTOOLS.a(FFTW3.o) has no symbols<br>
+ranlib: file: ../lib/libSHTOOLS.a(PlanetsConstants.o) has no symbols<br>
+ranlib: file: ../lib/libSHTOOLS.a(SHTOOLS.o) has no symbols<br>
+<br>
+CREATION OF STATIC LIBRARY SUCCESSFUL.<br>
+<br>
+LIBRARY AND MODULE FILES MOVED TO ../lib and ../modules<br>
+<br>
+ARCHIVE SUCCESSFULLY CREATED<br>
+<br>
+MAKE SUCCESSFUL!<br>
+<br>
+-------------------------------------------------------------------------------------------<br>
+Compile your code with the following flags:<br>
+<br>
+gfortran -Imodpath -m64 -fPIC -O3 -Llibpath -lSHTOOLS -lfftw3 -lm<br>
+<br>
+where modpath and libpath are replaced with their respective paths.<br>
+-------------------------------------------------------------------------------------------<br>
+</tt></p>
+</blockquote>
+
+<h2>make python-wrapper</h2>
+
+	<pre><p class="smaller smallerlineheight nomargin"><tt>
+make -C src -f Makefile all F95=gfortran F95FLAGS="-m64 -fPIC -O3 "
+make[1]: Nothing to be done for `all'.
+
+MAKE SUCCESSFUL!
+
+---------------------------------------------------------------------------------------------------
+Compile your code with the following flags:
+
+gfortran -Imodpath -m64 -fPIC -O3 -Llibpath -lSHTOOLS -lfftw3 -lm
+
+where modpath and libpath are replaced with their respective paths.
+---------------------------------------------------------------------------------------------------
+
+f2py -Imodules -Llib --f90flags="-m64 -fPIC" \
+	    -c src/pyshtools.pyf src/PythonWrapper.f95\
+	    -lSHTOOLS -lfftw3 -lm -llapack -lblas	
+running build
+running config_cc
+unifing config_cc, config, build_clib, build_ext, build commands --compiler options
+running config_fc
+unifing config_fc, config, build_clib, build_ext, build commands --fcompiler options
+running build_src
+build_src
+building extension "_SHTOOLS" sources
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src
+f2py options: []
+f2py: src/pyshtools.pyf
+Reading fortran codes...
+	Reading file 'src/pyshtools.pyf' (format:free)
+Post-processing...
+	Block: _SHTOOLS
+			Block: PlmBar
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlmBar
+get_useparameters: no module shtools info used by PlmBar
+			Block: PlmBar_d1
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlmBar_d1
+get_useparameters: no module shtools info used by PlmBar_d1
+			Block: PlBar
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlBar
+get_useparameters: no module shtools info used by PlBar
+			Block: PlBar_d1
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlBar_d1
+get_useparameters: no module shtools info used by PlBar_d1
+			Block: PlmSchmidt
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlmSchmidt
+get_useparameters: no module shtools info used by PlmSchmidt
+			Block: PlSchmidt
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlSchmidt
+get_useparameters: no module shtools info used by PlSchmidt
+			Block: PlmSchmidt_d1
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlmSchmidt_d1
+get_useparameters: no module shtools info used by PlmSchmidt_d1
+			Block: PlSchmidt_d1
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlSchmidt_d1
+get_useparameters: no module shtools info used by PlSchmidt_d1
+			Block: PLegendre
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PLegendre
+get_useparameters: no module shtools info used by PLegendre
+			Block: PLegendreA
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PLegendreA
+get_useparameters: no module shtools info used by PLegendreA
+			Block: PLegendre_d1
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PLegendre_d1
+get_useparameters: no module shtools info used by PLegendre_d1
+			Block: PLegendreA_d1
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PLegendreA_d1
+get_useparameters: no module shtools info used by PLegendreA_d1
+			Block: CilmPlus
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:CilmPlus
+get_useparameters: no module shtools info used by CilmPlus
+			Block: CilmPlusRhoH
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:CilmPlusRhoH
+get_useparameters: no module shtools info used by CilmPlusRhoH
+			Block: Hilm
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:Hilm
+get_useparameters: no module shtools info used by Hilm
+			Block: HilmRhoH
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:HilmRhoH
+get_useparameters: no module shtools info used by HilmRhoH
+			Block: MakeGrid2D
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeGrid2D
+get_useparameters: no module shtools info used by MakeGrid2D
+			Block: GLQGridCoord
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:GLQGridCoord
+get_useparameters: no module shtools info used by GLQGridCoord
+			Block: MakeGridGLQ
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeGridGLQ
+get_useparameters: no module shtools info used by MakeGridGLQ
+			Block: SHExpandGLQ
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHExpandGLQ
+get_useparameters: no module shtools info used by SHExpandGLQ
+			Block: SHGLQ
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHGLQ
+get_useparameters: no module shtools info used by SHGLQ
+			Block: PreGLQ
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PreGLQ
+get_useparameters: no module shtools info used by PreGLQ
+			Block: NGLQ
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:NGLQ
+get_useparameters: no module shtools info used by NGLQ
+			Block: NGLQSH
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:NGLQSH
+get_useparameters: no module shtools info used by NGLQSH
+			Block: NGLQSHN
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:NGLQSHN
+get_useparameters: no module shtools info used by NGLQSHN
+			Block: SHRead
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHRead
+get_useparameters: no module shtools info used by SHRead
+			Block: MakeMagGridDH
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeMagGridDH
+get_useparameters: no module shtools info used by MakeMagGridDH
+			Block: SHPowerL
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHPowerL
+get_useparameters: no module shtools info used by SHPowerL
+			Block: SHPowerDensityL
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHPowerDensityL
+get_useparameters: no module shtools info used by SHPowerDensityL
+			Block: SHCrossPowerL
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCrossPowerL
+get_useparameters: no module shtools info used by SHCrossPowerL
+			Block: SHCrossPowerDensityL
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCrossPowerDensityL
+get_useparameters: no module shtools info used by SHCrossPowerDensityL
+			Block: SHPowerSpectrum
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHPowerSpectrum
+get_useparameters: no module shtools info used by SHPowerSpectrum
+			Block: SHPowerSpectrumDensity
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHPowerSpectrumDensity
+get_useparameters: no module shtools info used by SHPowerSpectrumDensity
+			Block: SHCrossPowerSpectrum
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCrossPowerSpectrum
+get_useparameters: no module shtools info used by SHCrossPowerSpectrum
+			Block: SHCrossPowerSpectrumDensity
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCrossPowerSpectrumDensity
+get_useparameters: no module shtools info used by SHCrossPowerSpectrumDensity
+			Block: djpi2
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:djpi2
+get_useparameters: no module shtools info used by djpi2
+			Block: SHrtoc
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHrtoc
+get_useparameters: no module shtools info used by SHrtoc
+			Block: SHctor
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHctor
+get_useparameters: no module shtools info used by SHctor
+			Block: SHCilmToCindex
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCilmToCindex
+get_useparameters: no module shtools info used by SHCilmToCindex
+			Block: SHCindexToCilm
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCindexToCilm
+get_useparameters: no module shtools info used by SHCindexToCilm
+			Block: SHRotateCoef
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHRotateCoef
+get_useparameters: no module shtools info used by SHRotateCoef
+			Block: SHRotateRealCoef
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHRotateRealCoef
+get_useparameters: no module shtools info used by SHRotateRealCoef
+			Block: DHaj
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:DHaj
+get_useparameters: no module shtools info used by DHaj
+			Block: SHExpandDH
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHExpandDH
+get_useparameters: no module shtools info used by SHExpandDH
+			Block: MakeGridDH
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeGridDH
+get_useparameters: no module shtools info used by MakeGridDH
+			Block: MakeGridPoint
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeGridPoint
+get_useparameters: no module shtools info used by MakeGridPoint
+			Block: Wl
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:Wl
+get_useparameters: no module shtools info used by Wl
+			Block: WlCurv
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:WlCurv
+get_useparameters: no module shtools info used by WlCurv
+			Block: SHExpandLSQ
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHExpandLSQ
+get_useparameters: no module shtools info used by SHExpandLSQ
+			Block: SHMultiply
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHMultiply
+get_useparameters: no module shtools info used by SHMultiply
+			Block: ComputeD0
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:ComputeD0
+get_useparameters: no module shtools info used by ComputeD0
+			Block: ComputeDm
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:ComputeDm
+get_useparameters: no module shtools info used by ComputeDm
+			Block: SphericalCapCoef
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SphericalCapCoef
+get_useparameters: no module shtools info used by SphericalCapCoef
+			Block: EigValVecSym
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:EigValVecSym
+get_useparameters: no module shtools info used by EigValVecSym
+			Block: SHReturnTapersM
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHReturnTapersM
+get_useparameters: no module shtools info used by SHReturnTapersM
+			Block: EigValSym
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:EigValSym
+get_useparameters: no module shtools info used by EigValSym
+			Block: SHFindLWin
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHFindLWin
+get_useparameters: no module shtools info used by SHFindLWin
+			Block: SHAdmitCorr
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHAdmitCorr
+get_useparameters: no module shtools info used by SHAdmitCorr
+			Block: SHLocalizedAdmitCorr
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHLocalizedAdmitCorr
+get_useparameters: no module shtools info used by SHLocalizedAdmitCorr
+			Block: EigValVecSymTri
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:EigValVecSymTri
+get_useparameters: no module shtools info used by EigValVecSymTri
+			Block: ComputeDG82
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:ComputeDG82
+get_useparameters: no module shtools info used by ComputeDG82
+			Block: PlmIndex
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlmIndex
+get_useparameters: no module shtools info used by PlmIndex
+			Block: RandomN
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:RandomN
+get_useparameters: no module shtools info used by RandomN
+			Block: RandomGaussian
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:RandomGaussian
+get_useparameters: no module shtools info used by RandomGaussian
+			Block: Wigner3j
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:Wigner3j
+get_useparameters: no module shtools info used by Wigner3j
+			Block: SHBias
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHBias
+get_useparameters: no module shtools info used by SHBias
+			Block: SHBiasK
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHBiasK
+get_useparameters: no module shtools info used by SHBiasK
+			Block: SHSjkPG0
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHSjkPG0
+get_useparameters: no module shtools info used by SHSjkPG0
+			Block: SHMTVarOpt0
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHMTVarOpt0
+get_useparameters: no module shtools info used by SHMTVarOpt0
+			Block: SHMultiTaperSE
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHMultiTaperSE
+get_useparameters: no module shtools info used by SHMultiTaperSE
+			Block: SHMultiTaperCSE
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHMultiTaperCSE
+get_useparameters: no module shtools info used by SHMultiTaperCSE
+			Block: SHReadJPL
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHReadJPL
+get_useparameters: no module shtools info used by SHReadJPL
+			Block: SHRead2
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHRead2
+get_useparameters: no module shtools info used by SHRead2
+			Block: MakeGeoidGrid
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeGeoidGrid
+get_useparameters: no module shtools info used by MakeGeoidGrid
+			Block: PlmON
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlmON
+get_useparameters: no module shtools info used by PlmON
+			Block: PlON
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlON
+get_useparameters: no module shtools info used by PlON
+			Block: PlmON_d1
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlmON_d1
+get_useparameters: no module shtools info used by PlmON_d1
+			Block: PlON_d1
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:PlON_d1
+get_useparameters: no module shtools info used by PlON_d1
+			Block: MakeCircleCoord
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeCircleCoord
+get_useparameters: no module shtools info used by MakeCircleCoord
+			Block: SHReturnTapers
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHReturnTapers
+get_useparameters: no module shtools info used by SHReturnTapers
+			Block: SHSjkPG
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHSjkPG
+get_useparameters: no module shtools info used by SHSjkPG
+			Block: SHMTVarOpt
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHMTVarOpt
+get_useparameters: no module shtools info used by SHMTVarOpt
+			Block: SHMTDebias
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHMTDebias
+get_useparameters: no module shtools info used by SHMTDebias
+			Block: MakeGravGridDH
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeGravGridDH
+get_useparameters: no module shtools info used by MakeGravGridDH
+			Block: NormalGravity
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:NormalGravity
+get_useparameters: no module shtools info used by NormalGravity
+			Block: SHConfidence
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHConfidence
+get_useparameters: no module shtools info used by SHConfidence
+			Block: SHMagPowerL
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHMagPowerL
+get_useparameters: no module shtools info used by SHMagPowerL
+			Block: SHMagPowerSpectrum
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHMagPowerSpectrum
+get_useparameters: no module shtools info used by SHMagPowerSpectrum
+			Block: SHExpandDHC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHExpandDHC
+get_useparameters: no module shtools info used by SHExpandDHC
+			Block: MakeGridDHC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeGridDHC
+get_useparameters: no module shtools info used by MakeGridDHC
+			Block: MakeGridGLQC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeGridGLQC
+get_useparameters: no module shtools info used by MakeGridGLQC
+			Block: SHExpandGLQC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHExpandGLQC
+get_useparameters: no module shtools info used by SHExpandGLQC
+			Block: SHPowerLC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHPowerLC
+get_useparameters: no module shtools info used by SHPowerLC
+			Block: SHPowerDensityLC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHPowerDensityLC
+get_useparameters: no module shtools info used by SHPowerDensityLC
+			Block: SHCrossPowerLC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCrossPowerLC
+get_useparameters: no module shtools info used by SHCrossPowerLC
+			Block: SHCrossPowerDensityLC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCrossPowerDensityLC
+get_useparameters: no module shtools info used by SHCrossPowerDensityLC
+			Block: SHPowerSpectrumC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHPowerSpectrumC
+get_useparameters: no module shtools info used by SHPowerSpectrumC
+			Block: SHPowerSpectrumDensityC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHPowerSpectrumDensityC
+get_useparameters: no module shtools info used by SHPowerSpectrumDensityC
+			Block: SHCrossPowerSpectrumC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCrossPowerSpectrumC
+get_useparameters: no module shtools info used by SHCrossPowerSpectrumC
+			Block: SHCrossPowerSpectrumDensityC
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCrossPowerSpectrumDensityC
+get_useparameters: no module shtools info used by SHCrossPowerSpectrumDensityC
+			Block: SHBiasAdmitCorr
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHBiasAdmitCorr
+get_useparameters: no module shtools info used by SHBiasAdmitCorr
+			Block: SHCilmToVector
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHCilmToVector
+get_useparameters: no module shtools info used by SHCilmToVector
+			Block: SHVectorToCilm
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHVectorToCilm
+get_useparameters: no module shtools info used by SHVectorToCilm
+			Block: YilmIndex
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:YilmIndex
+get_useparameters: no module shtools info used by YilmIndex
+			Block: ComputeDMap
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:ComputeDMap
+get_useparameters: no module shtools info used by ComputeDMap
+			Block: SHReturnTapersMap
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:SHReturnTapersMap
+get_useparameters: no module shtools info used by SHReturnTapersMap
+			Block: Curve2Mask
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:Curve2Mask
+get_useparameters: no module shtools info used by Curve2Mask
+			Block: MakeEllipseCoord
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeEllipseCoord
+get_useparameters: no module shtools info used by MakeEllipseCoord
+			Block: MakeGravGradGridDH
+In: src/pyshtools.pyf:_SHTOOLS:unknown_interface:MakeGravGradGridDH
+get_useparameters: no module shtools info used by MakeGravGradGridDH
+Post-processing (stage 2)...
+Building modules...
+	Building module "_SHTOOLS"...
+		Constructing wrapper function "PlmBar"...
+		  p = PlmBar(lmax,z,[csphase,cnorm])
+		Constructing wrapper function "PlmBar_d1"...
+		  p,dp = PlmBar_d1(lmax,z,[csphase,cnorm])
+		Constructing wrapper function "PlBar"...
+		  p = PlBar(lmax,z)
+		Constructing wrapper function "PlBar_d1"...
+		  p,dp = PlBar_d1(lmax,z)
+		Constructing wrapper function "PlmSchmidt"...
+		  p = PlmSchmidt(lmax,z,[csphase,cnorm])
+		Constructing wrapper function "PlSchmidt"...
+		  p = PlSchmidt(lmax,z)
+		Constructing wrapper function "PlmSchmidt_d1"...
+		  p,dp = PlmSchmidt_d1(lmax,z,[csphase,cnorm])
+		Constructing wrapper function "PlSchmidt_d1"...
+		  p,dp = PlSchmidt_d1(lmax,z)
+		Constructing wrapper function "PLegendre"...
+		  p = PLegendre(lmax,z,[p_d0])
+		Constructing wrapper function "PLegendreA"...
+		  p = PLegendreA(lmax,z,[csphase])
+		Constructing wrapper function "PLegendre_d1"...
+		  p,dp = PLegendre_d1(lmax,z)
+		Constructing wrapper function "PLegendreA_d1"...
+		  p,dp = PLegendreA_d1(lmax,z,[csphase])
+		Constructing wrapper function "CilmPlus"...
+		  cilm,d = CilmPlus(gridin,lmax,nmax,mass,rho,gridtype,cilm_d0,cilm_d1,cilm_d2,[w,zero,plx,n,dref,gridin_d0,gridin_d1,plx_d0,plx_d1,zero_d0,w_d0])
+		Constructing wrapper function "CilmPlusRhoH"...
+		  cilm,d = CilmPlusRhoH(gridin,lmax,nmax,mass,rho,gridtype,cilm_d0,cilm_d1,cilm_d2,[w,zero,plx,n,dref,gridin_d0,gridin_d1,plx_d0,plx_d1,zero_d0,w_d0,rho_d0,rho_d1])
+		Constructing wrapper function "Hilm"...
+		  cilm = Hilm(ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,cilm_d0,cilm_d1,cilm_d2,[w,plx,zero,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1,ba_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0,plx_d0,plx_d1])
+		Constructing wrapper function "HilmRhoH"...
+		  cilm = HilmRhoH(ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,cilm_d0,cilm_d1,cilm_d2,[w,plx,zero,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1,ba_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0,rho_d0,rho_d1,plx_d0,plx_d1])
+		Constructing wrapper function "MakeGrid2D"...
+		  grid = MakeGrid2D(cilm,[lmax,interval,norm,csphase,f,a,north,south,east,west,dealloc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1])
+		Constructing wrapper function "GLQGridCoord"...
+		  latglq,longlq,nlat,nlong = GLQGridCoord(lmax,[latglq_d0,longlq_d0])
+		Constructing wrapper function "MakeGridGLQ"...
+		  gridglq = MakeGridGLQ(cilm,zero,[lmax,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0])
+		Constructing wrapper function "SHExpandGLQ"...
+		  cilm = SHExpandGLQ(gridglq,w,zero,[lmax,norm,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0])
+		Constructing wrapper function "SHGLQ"...
+		  zero,w = SHGLQ(lmax,[zero_d0,w_d0])
+		Constructing wrapper function "PreGLQ"...
+		  zero,w = PreGLQ(x1,x2,n,[zero_d0,w_d0])
+		Creating wrapper for Fortran function "NGLQ"("pynglq")...
+		Constructing wrapper function "NGLQ"...
+		  NGLQ = NGLQ(degree)
+		Creating wrapper for Fortran function "NGLQSH"("pynglqsh")...
+		Constructing wrapper function "NGLQSH"...
+		  NGLQSH = NGLQSH(degree)
+		Creating wrapper for Fortran function "NGLQSHN"("pynglqshn")...
+		Constructing wrapper function "NGLQSHN"...
+		  NGLQSHN = NGLQSHN(degree,n)
+		Constructing wrapper function "SHRead"...
+		  cilm,lmax = SHRead(filename,lmax_in,[skip,cilm_d0,cilm_d1,cilm_d2])
+		Constructing wrapper function "MakeMagGridDH"...
+		  rad_grid,theta_grid,phi_grid,total_grid,n,pot_grid = MakeMagGridDH(cilm,lmax,r0,a,f,total_grid_d0,total_grid_d1,rad_grid_d0,rad_grid_d1,theta_grid_d0,theta_grid_d1,phi_grid_d0,phi_grid_d1,pot_grid_d0,pot_grid_d1,[sampling,lmax_calc,cilm_d0,cilm_d1,cilm_d2])
+		Creating wrapper for Fortran function "SHPowerL"("pyshpowerl")...
+		Constructing wrapper function "SHPowerL"...
+		  SHPowerL = SHPowerL(c,l,[c_d0,c_d1,c_d2])
+		Creating wrapper for Fortran function "SHPowerDensityL"("pyshpowerdensityl")...
+		Constructing wrapper function "SHPowerDensityL"...
+		  SHPowerDensityL = SHPowerDensityL(c,l,[c_d0,c_d1,c_d2])
+		Creating wrapper for Fortran function "SHCrossPowerL"("pyshcrosspowerl")...
+		Constructing wrapper function "SHCrossPowerL"...
+		  SHCrossPowerL = SHCrossPowerL(c1,c2,l,[c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2])
+		Creating wrapper for Fortran function "SHCrossPowerDensityL"("pyshcrosspowerdensityl")...
+		Constructing wrapper function "SHCrossPowerDensityL"...
+		  SHCrossPowerDensityL = SHCrossPowerDensityL(c1,c2,l,[c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2])
+		Constructing wrapper function "SHPowerSpectrum"...
+		  spectra = SHPowerSpectrum(c,[lmax,c_d0,c_d1,c_d2,spectra_d0])
+		Constructing wrapper function "SHPowerSpectrumDensity"...
+		  spectra = SHPowerSpectrumDensity(c,[lmax,c_d0,c_d1,c_d2,spectra_d0])
+		Constructing wrapper function "SHCrossPowerSpectrum"...
+		  cspectra = SHCrossPowerSpectrum(c1,c2,[lmax,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0])
+		Constructing wrapper function "SHCrossPowerSpectrumDensity"...
+		  cspectra = SHCrossPowerSpectrumDensity(c1,c2,[lmax,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0])
+		Constructing wrapper function "djpi2"...
+		  dj = djpi2(lmax,[dj_d0,dj_d1,dj_d2])
+		Constructing wrapper function "SHrtoc"...
+		  ccilm = SHrtoc(rcilm,[degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2])
+		Constructing wrapper function "SHctor"...
+		  rcilm = SHctor(ccilm,[degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2])
+		Constructing wrapper function "SHCilmToCindex"...
+		  cindex = SHCilmToCindex(cilm,[degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2])
+		Constructing wrapper function "SHCindexToCilm"...
+		  cilm = SHCindexToCilm(cindex,[degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2])
+		Constructing wrapper function "SHRotateCoef"...
+		  rcof = SHRotateCoef(x,cof,dj,[lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1])
+		Constructing wrapper function "SHRotateRealCoef"...
+		  cilmrot = SHRotateRealCoef(cilm,x,dj,[lmax,x_d0,dj_d0,dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2,cilmrot_d0,cilmrot_d1,cilmrot_d2])
+		Constructing wrapper function "DHaj"...
+		  aj = DHaj(n,[aj_d0])
+		Constructing wrapper function "SHExpandDH"...
+		  cilm = SHExpandDH(grid,[n,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1])
+		Constructing wrapper function "MakeGridDH"...
+		  griddh = MakeGridDH(cilm,[lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1])
+		Creating wrapper for Fortran function "MakeGridPoint"("pymakegridpoint")...
+		Constructing wrapper function "MakeGridPoint"...
+		  MakeGridPoint = MakeGridPoint(cilm,lat,longitude,[lmax,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2])
+		Creating wrapper for Fortran function "Wl"("pywl")...
+		Constructing wrapper function "Wl"...
+		  Wl = Wl(l,half,r,d)
+		Creating wrapper for Fortran function "WlCurv"("pywlcurv")...
+		Constructing wrapper function "WlCurv"...
+		  WlCurv = WlCurv(l,half,r,d)
+		Constructing wrapper function "SHExpandLSQ"...
+		  cilm,chi2 = SHExpandLSQ(d,lat,lon,lmax,[nmax,norm,csphase,d_d0,lon_d0,cilm_d0,cilm_d1,cilm_d2,lat_d0])
+		Constructing wrapper function "SHMultiply"...
+		  shout = SHMultiply(sh1,sh2,[lmax1,lmax2,precomp,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,shout_d0,shout_d1,shout_d2])
+		Constructing wrapper function "ComputeD0"...
+		  D0 = ComputeD0(lmax,theta0,[D0_d0,D0_d1])
+		Constructing wrapper function "ComputeDm"...
+		  dllm = ComputeDm(lmax,m,theta0,[dllm_d0,dllm_d1])
+		Constructing wrapper function "SphericalCapCoef"...
+		  coef = SphericalCapCoef(theta,lmax,[coef_d0])
+		Constructing wrapper function "EigValVecSym"...
+		  eig,evec = EigValVecSym(ain,n,evec_d0,evec_d1,eig_d0,[ul,K,ain_d0,ain_d1])
+		Constructing wrapper function "SHReturnTapersM"...
+		  tapers,eigenvalues,shannon = SHReturnTapersM(theta0,lmax,m,[tapers_d0,tapers_d1,eigenvalues_d0])
+		Constructing wrapper function "EigValSym"...
+		  eval = EigValSym(ain,n,eval_d0,[ul,ain_d0,ain_d1])
+		Creating wrapper for Fortran function "SHFindLWin"("pyshfindlwin")...
+		Constructing wrapper function "SHFindLWin"...
+		  SHFindLWin = SHFindLWin(theta0,m,alpha,[taper_number])
+		Constructing wrapper function "SHAdmitCorr"...
+		  admit,corr,admit_error = SHAdmitCorr(G,T,[lmax,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0])
+		Constructing wrapper function "SHLocalizedAdmitCorr"...
+		  admit,corr,admit_error,corr_error = SHLocalizedAdmitCorr(tapers,taper_order,g,t,[lwin,lat,lon,lmax,K,taper_wt,mtdef,k1linsig,taper_order_d0,g_d0,g_d1,g_d2,taper_wt_d0,corr_error_d0,admit_d0,admit_error_d0,corr_d0,tapers_d0,tapers_d1,t_d0,t_d1,t_d2])
+		Constructing wrapper function "EigValVecSymTri"...
+		  eig,evec = EigValVecSymTri(ain,n,evec_d0,evec_d1,eig_d0,[ul,ain_d0,ain_d1])
+		Constructing wrapper function "ComputeDG82"...
+		  dG82 = ComputeDG82(lmax,m,theta0,[dG82_d0,dG82_d1])
+		Creating wrapper for Fortran function "PlmIndex"("pyplmindex")...
+		Constructing wrapper function "PlmIndex"...
+		  PlmIndex = PlmIndex(l,m)
+		Creating wrapper for Fortran function "RandomN"("pyrandomn")...
+		Constructing wrapper function "RandomN"...
+		  RandomN = RandomN(idum)
+		Creating wrapper for Fortran function "RandomGaussian"("pyrandomgaussian")...
+		Constructing wrapper function "RandomGaussian"...
+		  RandomGaussian = RandomGaussian(idum)
+		Constructing wrapper function "Wigner3j"...
+		  w3j,jmin,jmax = Wigner3j(j2,j3,m1,m2,m3,w3j_d0)
+		Constructing wrapper function "SHBias"...
+		  outcspectra = SHBias(Shh,incspectra,[lwin,ldata,save_cg,Shh_d0,incspectra_d0,outcspectra_d0])
+		Constructing wrapper function "SHBiasK"...
+		  outcspectra = SHBiasK(tapers,incspectra,[lwin,numk,ldata,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0])
+		Creating wrapper for Fortran function "SHSjkPG0"("pyshsjkpg0")...
+		Constructing wrapper function "SHSjkPG0"...
+		  SHSjkPG0 = SHSjkPG0(incspectra,j,k,l,m,evec,lwin,[evec_d0,evec_d1,incspectra_d0])
+		Constructing wrapper function "SHMTVarOpt0"...
+		  var_opt,var_unit,weight_opt,unweighted_covar = SHMTVarOpt0(l,tapers,lwin,kmax,Sff,unweighted_covar_d0,unweighted_covar_d1,var_unit_d0,weight_opt_d0,weight_opt_d1,var_opt_d0,[nocross,Sff_d0,tapers_d0,tapers_d1])
+		Constructing wrapper function "SHMultiTaperSE"...
+		  mtse,sd = SHMultiTaperSE(sh,tapers,taper_order,[lmax,lmaxt,K,alpha,lat,lon,taper_wt,norm,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,alpha_d0,tapers_d0,tapers_d1,mtse_d0,sd_d0])
+		Constructing wrapper function "SHMultiTaperCSE"...
+		  mtse,sd = SHMultiTaperCSE(sh1,sh2,tapers,taper_order,[lmax1,lmax2,lmaxt,K,alpha,lat,lon,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_order_d0,taper_wt_d0,tapers_d0,tapers_d1,alpha_d0,sd_d0,mtse_d0])
+		Constructing wrapper function "SHReadJPL"...
+		  cilm,error,gm = SHReadJPL(filename,lmax,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2,[formatstring])
+		Constructing wrapper function "SHRead2"...
+		  cilm,lmax,gm,r0_pot,error,dot,doystart,doyend,epoch = SHRead2(filename,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2)
+		Constructing wrapper function "MakeGeoidGrid"...
+		  geoid,nlat,nlong = MakeGeoidGrid(cilm,lmax,r0pot,GM,PotRef,omega,r,gridtype,order,geoid_d0,geoid_d1,[interval,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2])
+		Constructing wrapper function "PlmON"...
+		  p = PlmON(lmax,z,[csphase,cnorm])
+		Constructing wrapper function "PlON"...
+		  p = PlON(lmax,z)
+		Constructing wrapper function "PlmON_d1"...
+		  p,dp = PlmON_d1(lmax,z,[csphase,cnorm])
+		Constructing wrapper function "PlON_d1"...
+		  p,dp = PlON_d1(lmax,z)
+		Constructing wrapper function "MakeCircleCoord"...
+		  coord,cnum = MakeCircleCoord(lat,lon,theta0,coord_d0,coord_d1,[cinterval])
+		Constructing wrapper function "SHReturnTapers"...
+		  tapers,eigenvalues,taper_order = SHReturnTapers(theta0,lmax,[eigenvalues_d0,tapers_d0,tapers_d1,taper_order_d0])
+		Creating wrapper for Fortran function "SHSjkPG"("pyshsjkpg")...
+		Constructing wrapper function "SHSjkPG"...
+		  SHSjkPG = SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,[hk_real_d0,incspectra_d0,hj_real_d0])
+		Constructing wrapper function "SHMTVarOpt"...
+		  var_opt,var_unit,weight_opt,unweighted_covar = SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,unweighted_covar_d0,unweighted_covar_d1,weight_opt_d0,weight_opt_d1,var_unit_d0,var_opt_d0,[nocross,taper_order_d0,Sff_d0,tapers_d0,tapers_d1])
+		Constructing wrapper function "SHMTDebias"...
+		  mtdebias,lmid,n = SHMTDebias(mtspectra,lmax,tapers,lwin,K,nl,mtdebias_d0,mtdebias_d1,lmid_d0,[taper_wt,taper_wt_d0,mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1])
+		Constructing wrapper function "MakeGravGridDH"...
+		  rad,theta,phi,total,n,pot = MakeGravGridDH(cilm,lmax,gm,r0,a,f,phi_d0,phi_d1,total_d0,total_d1,pot_d0,pot_d1,rad_d0,rad_d1,theta_d0,theta_d1,[sampling,lmax_calc,omega,normal_gravity,cilm_d0,cilm_d1,cilm_d2])
+		Creating wrapper for Fortran function "NormalGravity"("pynormalgravity")...
+		Constructing wrapper function "NormalGravity"...
+		  NormalGravity = NormalGravity(geocentric_lat,gm,omega,a,b)
+		Creating wrapper for Fortran function "SHConfidence"("pyshconfidence")...
+		Constructing wrapper function "SHConfidence"...
+		  SHConfidence = SHConfidence(l_conf,r)
+		Creating wrapper for Fortran function "SHMagPowerL"("pyshmagpowerl")...
+		Constructing wrapper function "SHMagPowerL"...
+		  SHMagPowerL = SHMagPowerL(c,a,r,l,[c_d0,c_d1,c_d2])
+		Constructing wrapper function "SHMagPowerSpectrum"...
+		  spectra = SHMagPowerSpectrum(c,a,r,lmax,spectra_d0,[c_d0,c_d1,c_d2])
+		Constructing wrapper function "SHExpandDHC"...
+		  cilm = SHExpandDHC(grid,[n,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1])
+		Constructing wrapper function "MakeGridDHC"...
+		  griddh = MakeGridDHC(cilm,[lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1])
+		Constructing wrapper function "MakeGridGLQC"...
+		  gridglq = MakeGridGLQC(cilm,zero,[lmax,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0])
+		Constructing wrapper function "SHExpandGLQC"...
+		  cilm = SHExpandGLQC(gridglq,w,zero,[lmax,norm,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0])
+		Creating wrapper for Fortran function "SHPowerLC"("pyshpowerlc")...
+		Constructing wrapper function "SHPowerLC"...
+		  SHPowerLC = SHPowerLC(c,l,[c_d0,c_d1,c_d2])
+		Creating wrapper for Fortran function "SHPowerDensityLC"("pyshpowerdensitylc")...
+		Constructing wrapper function "SHPowerDensityLC"...
+		  SHPowerDensityLC = SHPowerDensityLC(c,l,[c_d0,c_d1,c_d2])
+		Creating wrapper for Fortran function "SHCrossPowerLC"("pyshcrosspowerlc")...
+		Constructing wrapper function "SHCrossPowerLC"...
+		  SHCrossPowerLC = SHCrossPowerLC(c1,c2,l,[c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2])
+		Creating wrapper for Fortran function "SHCrossPowerDensityLC"("pyshcrosspowerdensitylc")...
+		Constructing wrapper function "SHCrossPowerDensityLC"...
+		  SHCrossPowerDensityLC = SHCrossPowerDensityLC(c1,c2,l,[c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2])
+		Constructing wrapper function "SHPowerSpectrumC"...
+		  spectra = SHPowerSpectrumC(c,[lmax,c_d0,c_d1,c_d2,spectra_d0])
+		Constructing wrapper function "SHPowerSpectrumDensityC"...
+		  spectra = SHPowerSpectrumDensityC(c,[lmax,c_d0,c_d1,c_d2,spectra_d0])
+		Constructing wrapper function "SHCrossPowerSpectrumC"...
+		  cspectra = SHCrossPowerSpectrumC(c1,c2,[lmax,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0])
+		Constructing wrapper function "SHCrossPowerSpectrumDensityC"...
+		  cspectra = SHCrossPowerSpectrumDensityC(c1,c2,[lmax,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0])
+		Constructing wrapper function "SHBiasAdmitCorr"...
+		  admit,corr = SHBiasAdmitCorr(sgt,sgg,stt,tapers,admit_d0,corr_d0,[lmax,lwin,K,mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0,tapers_d0,tapers_d1,sgg_d0])
+		Constructing wrapper function "SHCilmToVector"...
+		  vector = SHCilmToVector(cilm,[lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2])
+		Constructing wrapper function "SHVectorToCilm"...
+		  cilm = SHVectorToCilm(vector,[lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2])
+		Creating wrapper for Fortran function "YilmIndex"("pyyilmindex")...
+		Constructing wrapper function "YilmIndex"...
+		  YilmIndex = YilmIndex(i,l,m)
+		Constructing wrapper function "ComputeDMap"...
+		  Dij = ComputeDMap(dh_mask,lmax,[n_dh,sampling,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1])
+		Constructing wrapper function "SHReturnTapersMap"...
+		  tapers,eigenvalues = SHReturnTapersMap(dh_mask,lmax,[n_dh,sampling,Ntapers,dh_mask_d0,dh_mask_d1,tapers_d0,tapers_d1,eigenvalues_d0])
+		Constructing wrapper function "Curve2Mask"...
+		  dhgrid = Curve2Mask(n,profile,NP,[sampling,nprofile,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1])
+		Constructing wrapper function "MakeEllipseCoord"...
+		  coord,cnum = MakeEllipseCoord(lat,lon,dec,A_theta,B_theta,coord_d0,coord_d1,[cinterval])
+		Constructing wrapper function "MakeGravGradGridDH"...
+		  vxx,vyy,vzz,vxy,vxz,vyz,n = MakeGravGradGridDH(cilm,gm,r0,a,f,[lmax,sampling,lmax_calc,vyz_d0,vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1])
+	Wrote C/API module "_SHTOOLS" to file "/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src/_SHTOOLSmodule.c"
+	Fortran 77 wrappers are saved to "/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src/_SHTOOLS-f2pywrappers.f"
+  adding '/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/fortranobject.c' to sources.
+  adding '/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7' to include_dirs.
+copying /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/f2py/src/fortranobject.c -> /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7
+copying /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/f2py/src/fortranobject.h -> /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7
+  adding '/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src/_SHTOOLS-f2pywrappers.f' to sources.
+build_src: building npy-pkg config files
+running build_ext
+customize UnixCCompiler
+customize UnixCCompiler using build_ext
+customize Gnu95FCompiler
+Found executable /opt/local/bin/gfortran
+customize Gnu95FCompiler
+customize Gnu95FCompiler using build_ext
+building '_SHTOOLS' extension
+compiling C sources
+C compiler: /usr/bin/clang -fno-strict-aliasing -fno-common -dynamic -pipe -Os -fwrapv -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes
+
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders/qd
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src
+compile options: '-Imodules -I/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7 -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7 -c'
+clang: /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src/_SHTOOLSmodule.c
+In file included from /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src/_SHTOOLSmodule.c:18:
+In file included from /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/fortranobject.h:13:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:4:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:17:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1804:
+/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:15:2: warning: "Using deprecated NumPy API, disable it by "          "#defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-W#warnings]
+#warning "Using deprecated NumPy API, disable it by " \
+ ^
+/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src/_SHTOOLSmodule.c:222:12: warning: unused function 'f2py_size' [-Wunused-function]
+static int f2py_size(PyArrayObject* var, ...)
+           ^
+2 warnings generated.
+clang: /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/fortranobject.c
+In file included from /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/fortranobject.c:2:
+In file included from /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/fortranobject.h:13:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:4:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:17:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1804:
+/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:15:2: warning: "Using deprecated NumPy API, disable it by "          "#defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-W#warnings]
+#warning "Using deprecated NumPy API, disable it by " \
+ ^
+1 warning generated.
+compiling Fortran sources
+Fortran f77 compiler: /opt/local/bin/gfortran -Wall -g -ffixed-form -fno-second-underscore -fPIC -O3 -funroll-loops
+Fortran f90 compiler: /opt/local/bin/gfortran -m64 -fPIC -fPIC -O3 -funroll-loops
+Fortran fix compiler: /opt/local/bin/gfortran -Wall -g -ffixed-form -fno-second-underscore -m64 -fPIC -fPIC -O3 -funroll-loops
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src
+compile options: '-Imodules -I/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7 -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7 -c'
+gfortran:f90: src/PythonWrapper.f95
+gfortran:f77: /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src/_SHTOOLS-f2pywrappers.f
+/opt/local/bin/gfortran -Wall -g -Wall -g -undefined dynamic_lookup -bundle /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src/_SHTOOLSmodule.o /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/fortranobject.o /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src/PythonWrapper.o /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41/src.macosx-10.9-x86_64-2.7/src/_SHTOOLS-f2pywrappers.o -Llib -L/opt/local/lib/gcc49/gcc/x86_64-apple-darwin13/4.9.2 -lSHTOOLS -lfftw3 -lm -llapack -lblas -lgfortran -o ./_SHTOOLS.so
+Removing build directory /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpiOsx41
+f2py --f90flags="-Wtabs" -c src/PlanetsConstants.f95 -m _constants
+running build
+running config_cc
+unifing config_cc, config, build_clib, build_ext, build commands --compiler options
+running config_fc
+unifing config_fc, config, build_clib, build_ext, build commands --fcompiler options
+running build_src
+build_src
+building extension "_constants" sources
+f2py options: []
+f2py:> /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/_constantsmodule.c
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7
+Reading fortran codes...
+	Reading file 'src/PlanetsConstants.f95' (format:free)
+Post-processing...
+	Block: _constants
+			Block: planetsconstants
+Post-processing (stage 2)...
+	Block: _constants
+		Block: unknown_interface
+			Block: planetsconstants
+Building modules...
+	Building module "_constants"...
+		Constructing F90 module support for "planetsconstants"...
+		  Variables: r0_pot_mars r0_pot_moon g0_venus mass_mars gm_venus omega_mars mass_venus gm_earth gm_moon r_mars gm_mars a_moon c_moi_moon omega_mercury_orbit rho_bar_mars gamma_moi_moon r_moon b_mars wgs84_omega wgs84_r3 f_mars wgs84_gma mass_earth g0_moon mu0_constant r_mercury r0_pot_venus mass_moon beta_moi_moon g0_mars rho_bar_moon a_mars pi_constant w0_mars omega_moon wgs84_u0 omega_venus g0_mercury r0_pot_earth rho_bar_venus i_moi_moon r0_pot_mercury mass_mercury grav_constant wgs84_b wgs84_a r_venus omega_mercury_spin wgs84_f rho_bar_mercury wgs84_gm gm_mercury
+	Wrote C/API module "_constants" to file "/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/_constantsmodule.c"
+	Fortran 90 wrappers are saved to "/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/_constants-f2pywrappers2.f90"
+  adding '/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/fortranobject.c' to sources.
+  adding '/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7' to include_dirs.
+copying /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/f2py/src/fortranobject.c -> /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7
+copying /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/f2py/src/fortranobject.h -> /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7
+  adding '/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/_constants-f2pywrappers2.f90' to sources.
+build_src: building npy-pkg config files
+running build_ext
+customize UnixCCompiler
+customize UnixCCompiler using build_ext
+customize Gnu95FCompiler
+Found executable /opt/local/bin/gfortran
+customize Gnu95FCompiler
+customize Gnu95FCompiler using build_ext
+building '_constants' extension
+compiling C sources
+C compiler: /usr/bin/clang -fno-strict-aliasing -fno-common -dynamic -pipe -Os -fwrapv -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes
+
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var/folders
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var/folders/qd
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7
+compile options: '-I/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7 -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7 -c'
+clang: /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/_constantsmodule.c
+In file included from /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/_constantsmodule.c:17:
+In file included from /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/fortranobject.h:13:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:4:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:17:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1804:
+/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:15:2: warning: "Using deprecated NumPy API, disable it by "          "#defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-W#warnings]
+#warning "Using deprecated NumPy API, disable it by " \
+ ^
+1 warning generated.
+clang: /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/fortranobject.c
+In file included from /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/fortranobject.c:2:
+In file included from /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/fortranobject.h:13:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:4:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:17:
+In file included from /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1804:
+/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:15:2: warning: "Using deprecated NumPy API, disable it by "          "#defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-W#warnings]
+#warning "Using deprecated NumPy API, disable it by " \
+ ^
+1 warning generated.
+compiling Fortran 90 module sources
+Fortran f77 compiler: /opt/local/bin/gfortran -Wall -g -ffixed-form -fno-second-underscore -fPIC -O3 -funroll-loops
+Fortran f90 compiler: /opt/local/bin/gfortran -Wtabs -fPIC -O3 -funroll-loops
+Fortran fix compiler: /opt/local/bin/gfortran -Wall -g -ffixed-form -fno-second-underscore -Wtabs -fPIC -O3 -funroll-loops
+creating /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src
+compile options: '-I/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7 -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7 -c'
+extra options: '-J/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/ -I/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/'
+gfortran:f90: src/PlanetsConstants.f95
+compiling Fortran sources
+Fortran f77 compiler: /opt/local/bin/gfortran -Wall -g -ffixed-form -fno-second-underscore -fPIC -O3 -funroll-loops
+Fortran f90 compiler: /opt/local/bin/gfortran -Wtabs -fPIC -O3 -funroll-loops
+Fortran fix compiler: /opt/local/bin/gfortran -Wall -g -ffixed-form -fno-second-underscore -Wtabs -fPIC -O3 -funroll-loops
+compile options: '-I/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7 -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include -I/opt/local/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7 -c'
+extra options: '-J/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/ -I/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/'
+gfortran:f90: /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/_constants-f2pywrappers2.f90
+/opt/local/bin/gfortran -Wall -g -Wall -g -undefined dynamic_lookup -bundle /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/_constantsmodule.o /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/fortranobject.o /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src/PlanetsConstants.o /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda/src.macosx-10.9-x86_64-2.7/_constants-f2pywrappers2.o -L/opt/local/lib/gcc49/gcc/x86_64-apple-darwin13/4.9.2 -lgfortran -o ./_constants.so
+Removing build directory /var/folders/qd/38kc3kmh8xj0b8001s7g0mtr0000gn/T/tmpG1EYda
+mv _SHTOOLS.so pyshtools/.
+mv _constants.so pyshtools/.
+mkdir -p pyshtools/doc
+./pyshtools/make_docs.py .
+---- searching documentation in folder: /Users/lunokhod/SphericalHarmonics/shtools-git/src/doc ----
+
+MAKE SUCCESSFUL!
+
+-----------------------------------------------------------------------------------------------
+import shtools into Python with:
+
+import shtools
+-----------------------------------------------------------------------------------------------
+</tt></p>
+</pre>
+
+	<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="compilation.html" class="dir">Compilation Instructions</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

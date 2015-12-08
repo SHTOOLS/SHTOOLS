@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Miscellaneous routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../other.html" class="dir">Other</a></p>
+<h1 id="preglq">PreGLQ</h1>
+<p>Calculate the weights and nodes used in integrating a function by Gauss-Legendre quadrature.</p>
+<h1 id="usage">Usage</h1>
+<p>call PreGLQ (<code>lower</code>, <code>upper</code>, <code>n</code>, <code>zero</code>, <code>w</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>lower</code> : input, real*8</dt>
+<dd>The lower bound of the integration.
+</dd>
+<dt><code>upper</code> : input, real*8</dt>
+<dd>The upper bound of the integration.
+</dd>
+<dt><code>n</code> : input, integer</dt>
+<dd>The number of integration points to use. This will integrate exactly a polynomial of degree <code>2n-1</code>.
+</dd>
+<dt><code>zero</code> : output, real*8, dimension (<code>n</code>)</dt>
+<dd>The zeros used in the Gauss-Legendre quadrature.
+</dd>
+<dt><code>w</code> : output, real*8, dimension (<code>n</code>)</dt>
+<dd>The weights used in the Gauss-Legendre quadrature.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>PreGLQ</code> will calculate the weights and zeros used to integrate a function using Gauss-Legendre quadrature. For <code>n</code> quadrature points, the integration will be exact if the function is a polynomial of degree <code>2n-1</code>, or less. The quadrature nodes correspond to the zeros of the Legendre polynomial of degree <code>n</code>. The number of quadrature points required to integrate a polynomial of degree <code>L</code> is <code>ceiling((L+1)/2)</code>.</p>
+<p>To integrate a function between the bounds <code>lower</code> and <code>upper</code> it is only necessary to calculate the sum of the function evaluated at the nodes <code>zero</code> multiplied by the weights.</p>
+<p>This is a slightly modified version of the algorithm that was published in NUMERICAL RECIPES.</p>
+<h1 id="references">References</h1>
+<p>Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shglq.html">shglq</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../other.html" class="dir">Other</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

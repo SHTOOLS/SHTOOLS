@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Spherical harmonic I/O and storage routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyio.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+<h1 id="shcilmtocindex">SHCilmToCindex</h1>
+<p>Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.</p>
+<h1 id="usage">Usage</h1>
+<p><code>cindex</code> = pyshtools.SHCilmToCindex (<code>cilm</code>, [<code>lmax</code>])</p>
+<h1 id="returns">Returns</h1>
+<dl>
+<dt><code>cindex</code> : float, dimension (2, (<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
+<dd>The indexed output spherical harmonic coefficients.
+</dd>
+</dl>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The input spherical harmonic coefficients. <code>cilm[0,:,:]</code> and <code>cilm[1,:,:]</code> correspond to either the real and imaginary components, or cosine and sine coefficients, respectively.
+</dd>
+<dt><code>lmax</code> : optional, integer, default = <code>lmaxin</code></dt>
+<dd>Maximum degree of input spherical harmonics to convert.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHCilmToCindex</code> will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array. The degree <code>l</code> and order <code>m</code> corresponds to the index <code>l*(l+1)/2+m</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="pyshcindextocilm.html">shcindextocilm</a>, <a href="pyshcilmtovector.html">shcilmtovector</a>, <a href="pyshvectortocilm.html">shvectortocilm</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyio.html" class="dir">Spherical Harmonic I/O</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

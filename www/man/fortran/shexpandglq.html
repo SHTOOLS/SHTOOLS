@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Spherical harmonic transformations</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+<h1 id="shexpandglq">SHExpandGLQ</h1>
+<p>Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHExpandGLQ (<code>cilm</code>, <code>lmax</code>, <code>gridglq</code>, <code>w</code>, <code>plx</code>, <code>zero</code>, <code>norm</code>, <code>csphase</code>, <code>lmax_calc</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>cilm</code> : output, real*8, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1) or (2, <code>lmax_calc</code>+1, <code>lmax_calc</code>+1)</dt>
+<dd>The real spherical harmonic coefficients of the function. The coefficients <code>C1lm</code> and <code>C2lm</code> refer to the &quot;cosine&quot; (<code>Clm</code>) and &quot;sine&quot; (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm(1,l+1,m+1)</code> and <code>Slm=cilm(2,l+1,m+1)</code>.
+</dd>
+<dt><code>lmax</code> : input, integer</dt>
+<dd>The spherical harmonic bandwidth of the grid. If <code>lmax_calc</code> is not specified, this also corresponds to the maximum spherical harmonic degree of the coefficients <code>cilm</code>.
+</dd>
+<dt><code>gridglq</code> : input, real*8, dimension (<code>lmax</code>+1, 2*<code>lmax</code>+1)</dt>
+<dd>A 2D grid of data sampled on the Gauss-Legendre quadrature nodes. The latitudinal nodes correspond to the zeros of the Legendre polynomial of degree LMAX+1, and the longitudinal nodes are equally spaced with an interval of <code>360/(2*lmax+1)</code> degrees. See also <code>GLQGridCoord</code>.
+</dd>
+<dt><code>w</code> : input, real*8, dimension (<code>lmax</code>+1)</dt>
+<dd>The Gauss-Legendre quadrature weights used in the integration over latitude. These are obtained from a call to <code>SHGLQ</code>.
+</dd>
+<dt><code>plx</code> : input, optional, real*8, dimension (<code>lmax</code>+1, (<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
+<dd>An array of the associated Legendre functions calculated at the Gauss-Legendre quadrature nodes. These are determined from a call to <code>SHGLQ</code>. Either <code>plx</code> or <code>zero</code> must be present, but not both.
+</dd>
+<dt><code>zero</code> : input, optional, real*8, dimension (<code>lmax</code>+1)</dt>
+<dd>The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to <code>SHGLQ</code>. Either <code>plx</code> or <code>zero</code> must be present, but not both.
+</dd>
+<dt><code>norm</code> : input, optional, integer, default = 1</dt>
+<dd>1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+</dd>
+<dt><code>csphase</code> : input, optional, integer, default = 1</dt>
+<dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+</dd>
+<dt><code>lmax_calc</code> : input, optional, integer, default = <code>lmax</code></dt>
+<dd>The maximum spherical harmonic degree calculated in the spherical harmonic expansion.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHExpandGLQ</code> will expand a 2-dimensional grid of data sampled on the Gauss-Legendre quadrature nodes into spherical harmonics. This is the inverse of the routine <code>MakeGridGLQ</code>. The latitudinal nodes of the input grid correspond to the zeros of the Legendre polynomial of degree <code>lmax+1</code>, and the longitudinal nodes are equally spaced with an interval of <code>360/(2*lmax+1)</code> degrees. It is implicitly assumed that the function is bandlimited to degree <code>lmax</code>. If the optional parameter <code>lmax_calc</code> is specified, the spherical harmonic coefficients will be calculated up to this degree, instead of <code>lmax</code>.</p>
+<p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code>norm</code> and <code>csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. The normalized legendre functions are calculated in this routine using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are only accurate to about degree 15.</p>
+<p>The spherical harmonic transformation may be speeded up by precomputing the Legendre functions on the Gauss-Legendre quadrature nodes in the routine <code>SHGLQ</code>. However, given that this array contains on the order of <code>lmax</code>**3 entries, this is only feasible for moderate values of <code>lmax</code>.</p>
+<h1 id="references">References</h1>
+<p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, 2002.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="makegridglq.html"><code>makegridglq</code></a>, <a href="shexpandglqc.html"><code>shexpandglqc</code></a>, <a href="makegridglqc.html"><code>makegridglqc</code></a>, <a href="shexpanddh.html"><code>shexpanddh</code></a>, <a href="makegriddh.html"><code>makegriddh</code></a>, <a href="shexpanddhc.html"><code>shexpanddhc</code></a>, <a href="makegriddhc.html"><code>makegriddhc</code></a>, <a href="shexpandlsq.html"><code>shexpandlsq</code></a>, <a href="glqgridcoord.html"><code>glqgridcoord</code></a>, <a href="shglq.html"><code>shglq</code></a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

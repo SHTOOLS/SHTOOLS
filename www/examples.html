@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Examples</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<meta name="description" content="Example programs using SHTOOLS">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
+				<td><a href="faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> </p>
+		
+				
+	<table class="main">
+		<tbody>
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Fortran 95 example programs found in <tt>examples/fortran</tt></p></td>
+		</tr>
+		
+		<tr>		
+		<td class="left"><a name="cilmplus"></a><tt>SHCilmPlus</tt></td>
+		<td class="right">Demonstration of how to expand spherical harmonic files into gridded maps using the GLQ routines, and how to compute the gravity field resulting from finite amplitude surface relief.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a name="expanddh"></a><tt>SHExpandDH</tt></td>
+		<td>Demonstration of how to expand a grid that is equally sampled in latitude and longitude into spherical harmonics using the sampling theorem of <i>Driscoll and Healy</i> (1994).</td>
+		</tr>	
+
+		<tr>
+		<td class="left"><a name="expandlsq"></a><tt>SHExpandLSQ</tt></td>
+		<td>Demonstration of how to expand a set of irregularly sampled data points in latitude and longitude into spherical harmonics by use of a least squares inversion.
+		</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a name="shmag"></a><tt>SHMag</tt></td>
+		<td>Demonstration of how to expand scalar magnetic potential spherical harmonic coefficients into their three vector components and total field.
+		</td>
+		</tr>	
+
+		<tr>
+		<td class="left"><a name="marscrust"></a><tt>MarsCrustalThickness</tt></td>
+		<td>Demonstration of how compute a crustal thickness map of Mars.
+		</td>
+		</tr>	
+
+		<tr>
+		<td class="left"><a name="shrotate"></a><tt>SHRotate</tt></td>
+		<td>Demonstration of how to determine the spherical harmonic coefficients for a body that is rotated with respect to its initial configuration.
+		</td>
+		</tr>		
+		
+		<tr>
+		<td class="left"><a name="localized"></a><tt>SHLocalizedAdmitCorr</tt></td>
+		<td>Demonstration of how to calculate localized admittance and correlation spectra for a given set of gravity and topography spherical harmonic coefficients.
+		</td>
+		</tr>	
+
+		<tr>
+		<td class="left"><a name="timing"></a><tt>TimingAccuracy</tt></td>
+		<td>Test programs that calculate the time required to perform the GLQ and DH spherical harmonic transforms and reconstructions and the accuracy of these operations.
+		</td>
+		</tr>
+		
+		<tr>	
+		<td colspan=2>
+		<p class="nomargin headbox2">Python example and test programs found in <tt>examples/python</tt></p></td>
+		</tr>
+		
+		<tr>
+		<td class="left"><tt><b>ClassInterface/</b></tt></td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a></a><tt>ClassExample.py</tt></td>
+		<td class="right">Test the python class interfaces <tt>SHCoeffs</tt> and <tt>SHGrid</tt>.</td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>WindowExample.py</tt></td>
+		<td class="right">Test the python class interface <tt>SHWindow</tt>.</td>
+		</tr>
+			
+	    <tr>
+		<td class="left"><tt><b>TestLegendre/</b></tt></td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>TestLegendre.py</tt></td>
+		<td class="right">Test and plot all geodesy normalized Legendre functions.</td>
+		</tr>
+			
+	    <tr>
+		<td class="left"><tt><b>IOStorageConversions/</b></tt></td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>SHConversions.py</tt></td>
+		<td class="right">Test the conversions between real and complex spherical harmonics coefficients.</td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>SHStorage.py</tt></td>
+		<td class="right">Test the conversions between different storage representations of spherical harmonic coefficients.</td>
+		</tr>
+
+	    <tr>
+		<td class="left"><tt><b>GlobalSpectralAnalysis/</b></tt></td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>SHComplexSpectralAnalysis.py</tt></td>
+		<td class="right">Test functions to compute different power spectra from complex coefficients.</td>
+		</tr>
+		
+		<tr>
+		<td class="left"><a></a><tt>SHRealSpectralAnalysis.py</tt></td>
+		<td class="right">Test the different spherical harmonics transforms using Mars topography.</td>
+		</tr>
+
+	    <tr>
+		<td class="left"><tt><b>SHRotations/</b></tt></td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>SHRotations.py</tt></td>
+		<td class="right">Test the rotation of spherical harmonic coefficients.</td>
+		</tr>
+
+	    <tr>
+		<td class="left"><tt><b>LocalizedSpectralAnalysis/</b></tt></td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>SHMTCouplingMatrix.py</tt></td>
+		<td class="right">Test the <tt>SHMTCouplingMatrix</tt> routine.</td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>SHMultitaperSE.py</tt></td>
+		<td class="right">Test the localized spectral analysis routines.</td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>SHWindowsBiasOther.py</tt></td>
+		<td class="right">Test other routines related to localized spectral analysis.</td>
+		</tr>
+
+	    <tr>
+		<td class="left"><tt><b>GravMag/</b></tt></td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>TestGrav.py</tt></td>
+		<td class="right">Test the gravity and magnetics routines.</td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>TestCT.py</tt></td>
+		<td class="right">Example routine that computes the crustal thickness of Mars.</td>
+		</tr>
+
+	    <tr>
+		<td class="left"><tt><b>TimingAccuracy/</b></tt></td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>TimingAccuracyDH.py</tt></td>
+		<td class="right">Perform timing and accuracy tests using real <i>Driscoll and Healy</i> (1994) transforms and reconstructions.</td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>TimingAccuracyDHC.py</tt></td>
+		<td class="right">Perform timing and accuracy tests using complex <i>Driscoll and Healy</i> (1994) transforms and reconstructions.</td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>TimingAccuracyGLQ.py</tt></td>
+		<td class="right">Perform timing and accuracy tests using real Gauss-Legendre transforms and reconstructions.</td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>TimingAccuracyGLQC.py</tt></td>
+		<td class="right">Perform timing and accuracy tests using complex Gauss-Legendre transforms and reconstructions.</td>
+		</tr>
+
+	    <tr>
+		<td class="left"><tt><b>Other/</b></tt></td>
+		</tr>
+
+        <tr>
+		<td class="left"><a></a><tt>TestOther.py</tt></td>
+		<td class="right">Test a variety of other routines.</td>
+		</tr>
+
+		</tbody>
+	</table>
+		
+	<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> </p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

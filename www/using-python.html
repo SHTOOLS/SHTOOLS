@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Using</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<meta name="description" content="How to call SHTOOLS routines from Python.">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
+				<td><a href="faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+		
+	<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> >  <a href="documentation.html" class="dir">Documentation</a></p>
+
+	<h1>Using SHTOOLS with Python</h1>
+		
+	<p class="nomarginbot">To access the SHTOOLS routines from Python, it is necessary that the <tt>pyshtools</tt> directory be in the Python search path. From within Python, enter</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>import sys<br>
+		sys.path.append('/path-to-pyshtools')</tt></p>
+   	</blockquote>
+	
+	<p>where <tt>/path-to-pyshtools</tt> should be <tt>/usr/local/lib/python2.7/site-packages</tt> after a full installation. After setting the path, it is then only necessary to execute the statement</p>
+		
+		<blockquote class="small">
+			<p class="nomargintop nomarginbot"><tt>import pyshtools as shtools </tt></p>
+		</blockquote>
+
+	<p>to load the routines and documentation. If you are using <a href="http://ipython.org/">iPython</a>, which adds improved functionality to Python, the available <tt>shtools</tt> routines can be explored by typing</p>
+	
+	<blockquote class="small">
+			<p class="nomargintop nomarginbot"><tt>shtools.[tab]</tt></p>
+	</blockquote>
+	
+	<p>where <tt>[tab]</tt> is the tab key.</p>
+	
+	<p>To explore the list of predefined constants used by SHTOOLS, enter</p>
+	
+		<blockquote class="small">
+			<p class="nomargintop nomarginbot"><tt>shtools.constant.[tab]</tt></p>
+	</blockquote>
+	
+	<h2>Documentation</h2>
+	
+	<p>To read the documentation of a routine in iPython, such as <tt>PlmBar</tt>, enter</p>
+	
+		<blockquote class="small">
+			<p class="nomargintop nomarginbot"><tt>shtools.PlmBar?</tt></p>
+	</blockquote>
+	
+	<p>Documentation for the Python functions used in SHTOOLS can also be accessed by their unix man pages, appending <tt>py</tt> to the name and using all lower case letters. As an example, to access the <tt>MakeGridDH</tt> man page, use</p>
+	
+	<blockquote>
+	<p>
+	<tt>man pymakegriddh</tt></p>
+	</blockquote>
+
+	<p>Alternatively, the man pages can be accessed from the <a href="documentation.html">documentation</a> link on this web site.</p>
+	
+	<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> >  <a href="documentation.html" class="dir">Documentation</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

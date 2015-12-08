@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+<h1 id="shsjkpg">SHSjkPG</h1>
+<p>Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.</p>
+<h1 id="usage">Usage</h1>
+<p><code>value</code> = SHSjkPG (<code>incspectra</code>, <code>l</code>, <code>m</code>, <code>mprime</code>, <code>hj_real</code>, <code>hk_real</code>, <code>mj</code>, <code>mk</code>, <code>lwin</code>, <code>hkcc</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>value</code> : output, complex*16</dt>
+<dd>The expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.
+</dd>
+<dt><code>incspectra</code> : input, real*8, dimension (<code>l</code>+<code>lwin</code>+1)</dt>
+<dd>The global cross-power spectrum of <code>f</code> and <code>g</code>.
+</dd>
+<dt><code>l</code> : input, integer</dt>
+<dd>The spherical harmonic degree for which to calculate the expectation.
+</dd>
+<dt><code>m</code> : input, integer</dt>
+<dd>The angular order of the first localized function, <code>Phi</code>.
+</dd>
+<dt><code>mprime</code> : input, integer</dt>
+<dd>The angular order of the second localized function, <code>Gamma</code>.
+</dd>
+<dt><code>hj_real</code> : input, real*8, dimension (<code>lwin</code>+1)</dt>
+<dd>The real spherical harmonic coefficients of angular order <code>mj</code> used to localize the first function <code>f</code>. These are obtained by a call to <code>SHReturnTapers</code>.
+</dd>
+<dt><code>hk_real</code> : input, real*8, dimension (<code>lwin</code>+1)</dt>
+<dd>The real spherical harmonic coefficients of angular order <code>mk</code> used to localize the second function <code>g</code>. These are obtained by a call to <code>SHReturnTapers</code>.
+</dd>
+<dt><code>mj</code> : input, integer</dt>
+<dd>The angular order of the window coefficients <code>hj_real</code>.
+</dd>
+<dt><code>mk</code> : input, integer</dt>
+<dd>The angular order of the window coefficients <code>hk_real</code>.
+</dd>
+<dt><code>lwin</code> : input, integer</dt>
+<dd>the spherical harmonic bandwidth of the localizing windows <code>hj_real</code> and <code>hk_real</code>.
+</dd>
+<dt><code>hkcc</code> : input, integer</dt>
+<dd>If 1, the function described in the <code>description</code> will be calculated as is. If 2, the second localized function <code>Gamma</code> will not have its complex conjugate taken.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHSjkPG</code> will calculate the expectation of two functions (<code>f</code> and <code>g</code>), each localized by a different data taper that is a solution of the spherical cap concentration problem, for a given spherical harmonic degree and two different angular orders. As described in Wieczorek and Simons (2007), this is the function</p>
+<pre><code>  /    m(j)       mprime(k)* \
+ |  Phi      Gamma            |
+  \    l          l          /</code></pre>
+<p>The global cross-power spectrum of <code>f</code> and <code>g</code> is input as <code>incspectra</code>, and the real coefficients of the two data tapers of angular order <code>mj</code> and <code>mk</code> (obtained by a call to <code>SHReturnTapers</code>) are specified by <code>hj_real</code> and <code>hk_real</code>. If <code>hkcc</code> is set to 1, then the above function is calculated as is. However, if this is set to 2, then the complex conjugate of the second localized function is not taken.</p>
+<h1 id="references">References</h1>
+<p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shreturntapers.html">shreturntapers</a>, <a href="shmtvaropt.html">shmtvaropt</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

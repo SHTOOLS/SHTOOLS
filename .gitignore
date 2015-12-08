@@ -1,0 +1,15 @@
+*.a
+*.mod
+*.o
+*.pyc
+*.so
+Makefile
+README.md
+VERSION
+LICENSE
+pyshtools/
+examples/
+lib/
+modules/
+man/
+src/

@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+        
+<html>
+
+<head>
+	<title>SHTOOLS - Installation Instructions</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<meta name="description" content="Instructions on how to install the SHTOOLS Fortran 95 and Python software archive.">
+</head>
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>	
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
+				<td><a href="faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+		
+	<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a>
+	</p>
+
+	<h1>Installation Instructions</h1>
+	
+	<h2>1. Use a package manager</h2>
+	
+	<p>The easiest way to install SHTOOLS is by using a package manager. The following options are currently available:</p>
+	
+	<h3>OSX (Homebrew)</h3>
+	<p class="nomarginbot">If <a href="http://brew.sh">brew</a> is already installed, it is only necessary to enter the following commands in the terminal:</p>
+		<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>brew tap shtools/shtools</tt><br>
+		<tt>brew install shtools</tt></p>
+	</blockquote>
+    
+	<h2>2. Manual installation</h2>
+
+	<p class="nomarginbot">Before installing SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main SHTOOLS directory:</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">To compile and run the Fortran 95 and Python test suites and examples, use</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make fortran-tests</tt><br>
+		<tt>make python-tests</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">To delete the compiled archive, module files, object files, and test suite executables, use</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make clean</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">The default Fortran 95 compiler is set to <tt>gfortran</tt> (which is part of the <a href="http://gcc.gnu.org/"><tt>gcc</tt></a> suite), but if desired, a different compiler and compiler options can be specified by using</p>
+	
+<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make F95="MyCompiler" F95FLAGS="MyCompilerFlags"</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">where "<tt>MyCompiler</tt>" and "<tt>MyCompilerFlags</tt>" are to be replaced by the compiler name and options, respectively. Other options that can be set are</p>
+	
+	<blockquote class="small normalfont">
+		<p class="nomargintop nomarginbot"><tt>F2PY : </tt>Name (including path) of the <tt>f2py</tt> executable<br>
+		<tt>PYTHON : </tt>Name (including path) of the <tt>python</tt> executable<br>
+		<tt>FFTW : </tt>Name and path of the FFTW3 library of the form "<tt>-Lpath -lfftw3</tt>"<br>
+		<tt>LAPACK : </tt>Name and path of the LAPACK library of the form "<tt>-Lpath -llapack</tt>"<br>
+		<tt>BLAS : </tt>Name and path of the BLAS library of the form "<tt>-Lpath -lblas</tt>"<br></p>
+	</blockquote>
+	
+	<p>Successful compilation will create the library file <tt>libSHTOOLS.a</tt> in the directory <tt>lib</tt>, will place a few compiled module files in the directory <tt>modules</tt>, and will create a few <tt>.so</tt> files in the directory <tt>pyshtools</tt>. The resulting output should look something like <a href="makeout.html">this</a>. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using <tt>make clean</tt>.</p>
+	
+	<p>To make all files available at a system level, run</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make install</tt></p>
+	</blockquote>
+	
+	<p>This will move the compiled SHTOOLS files to the standard locations in <tt>/usr/local</tt>:</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>/usr/local/lib/python2.7/site-packages/pyshtools (python module)<br>
+ /usr/local/lib (libSHTOOLS.a)<br>
+ /usr/local/include/shtools (fftw3.mod, planetsconstants.mod, shtools.mod)<br>
+ /usr/local/share/shtools/examples (example files)<br>
+ /usr/local/share/man/man1 (man pages)<br>
+ /usr/local/share/doc/shtools/index.html (web documentation)</tt></p>
+	</blockquote>
+	
+	<p>To remove all SHTOOLS files from <tt>/usr/local</tt>, use</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make uninstall</tt></p>
+	</blockquote>
+	
+	<p>To access the unix man pages, it will be necessary to add <tt>/usr/local/share/man</tt> to your man path.</p>
+	
+
+	<h3>2.1 Compiler flags and optimization</h3>
+	
+	<p>Default compiler options are specified in the main <tt>Makefile</tt> for a few common compilers (Absoft <tt>f95</tt>, <tt>gfortran</tt>, <tt>g95</tt>, and <tt>ifort</tt>). If it is necessary to change these, consider the following guidelines:</p>
+	
+	<p class="nomarginbot">One should always use some form of optimization when compiling SHTOOLS, such as by specifying the option</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-O3</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">Performance will likely be increased by 10s of percent by specifying the compiler to target the host architecture</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-march=host</tt>  (f95)</p>
+		<p class="nomargintop nomarginbot"><tt>-march=native</tt>  (gfortran)</p>
+	</blockquote>
+	
+	<p class="nomarginbot">and to use fast math</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-speed_math=11</tt>  (f95)</p>
+		<p class="nomargintop nomarginbot"><tt>-ffast-math</tt>  (gfortran)</p>
+	</blockquote>
+	
+	<p>The biggest difficulty in compiling SHTOOLS is setting the compiler flags so that the external subroutine names are in a format that is compatible with the FFTW and LAPACK libraries. In general, it is necessary to ensure that the SHTOOLS subroutine names are in lower case and have the right number of underscores appended to them.</p>
+	
+	<p class="nomarginbot">For Absoft ProFortran, this is achieved by setting</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-YEXT_NAMES=LCS -YEXT_SFX=_</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">For <tt>g95</tt>, it will be necessary to use either</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-fno-second-underscore</tt> (most likely)</p>
+	</blockquote>
+	
+	<p class="nomarginbot">or </p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-fno-underscoring</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">For <tt>gfortran</tt>, it is generally not necessary to use any special flags, though it could arise that either </p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-fno-underscoring</tt></p>
+	</blockquote>
+	
+	<p class="nomarginbot">or</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-fsecond-underscore</tt></p>
+	</blockquote>
+	
+	<p>might be necessary.</p>
+	
+	<p class="nomarginbot">For the Intel Fortran compiler <tt>ifort</tt>, it will be necessary to use</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-free -Tf</tt></p>
+	</blockquote>
+	
+	<p>in order that the compiler recognizes files with the extension .f95 as fortran 95 files. In this case, the f95 file should come directly after the option <tt>-Tf</tt>.</p>
+
+	<p class="nomarginbot">Setting the right compiler flags is more complicated when the FFTW and LAPACK libraries have different naming and underscoring conventions. In order to accommodate this case, underscores have been added explicitly to LAPACK and FFTW subroutine names in an alternative set of source files. In order to compile SHTOOLS with underscores appended explicitly to LAPACK routine names, use</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make all2</tt></p>
+	</blockquote>
+
+	<p class="nomarginbot">In order to compile SHTOOLS with underscores appended explicitly to FFTW routine names, use</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make all3</tt></p>
+	</blockquote>
+	
+	<p>For both cases, compiler flags should be set so that underscores are not appended to routine names. See the <a href="faq.html">FAQ</a> for further information.</p>
+	
+	<p class="nomarginbot">To generate 64 bit code, use the compiler option</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>-m64</tt></p>
+	</blockquote>
+	
+	<p>For this case, it will be necessary to use 64-bit compiled FFTW and LAPACK libraries.</p>
+		
+	<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a>
+	</p>
+	
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>

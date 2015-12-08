@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Spherical harmonic I/O and storage routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+    	
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
+<h1 id="shrtoc">SHrtoc</h1>
+<p>Convert real spherical harmonics to complex form.</p>
+<h1 id="usage">Usage</h1>
+<p>call SHrtoc (<code>rcilm</code>, <code>ccilm</code>, <code>degmax</code>, <code>convention</code>, <code>switchcs</code>)</p>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>rcilm</code> : input, real*8, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The input real spherical harmonic coefficients. <code>rcilm(1,:,:)</code> and <code>rcilm(2,:,:)</code> correspond to the cosine and sine terms, respectively.
+</dd>
+<dt><code>ccilm</code> : output, real*8, dimension (2, <code>lmaxout</code>+1, <code>lmaxout</code>+1)</dt>
+<dd>The output complex spherical harmonic coefficients. <code>ccilm(1,:,:)</code> and <code>ccilm(2,:,:)</code> correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are output; the negative orders can be calculated from the relation <code>C_{l-m}=(-1)^m C_{lm}^*</code>.
+</dd>
+<dt><code>degmax</code> : input, optional, integer, default = min(<code>lmaxin</code>, <code>lmaxout</code>)</dt>
+<dd>The maximum degree of the output coefficients.
+</dd>
+<dt><code>convention</code> : input, optional, integer, default = 1</dt>
+<dd>If 1 (default), the input and output coefficients will have the same normalization. If 2, real geodesy 4-pi coefficients will be converted to complex orthonormal form.
+</dd>
+<dt><code>swtichcs</code> : input, optional, integer, default = 0</dt>
+<dd>If 0 (default), the input and output coefficients will possess the same Condon-Shortley phase convention. If 1, the input coefficients will first be multiplied by (-1)^m.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHrtoc</code> will convert real spherical harmonics to complex form. By default, the dimension of the output array is the minimum of <code>rcilm</code> and <code>ccilm</code>, though this can be changed by specifying the optional parameter <code>degmax</code>. The normalization of the input and output coefficients are by default the same, but if the optional argument <code>convention</code> is set to 2, this routine will convert from geodesy 4-pi normalized coefficients to orthonormalized coefficients. The Condon-Shortley phase convention between the input an output coefficients can be modified by the optional argument <code>switchs</code>.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="shctor.html">shctor</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
+
+	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
+			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html>
