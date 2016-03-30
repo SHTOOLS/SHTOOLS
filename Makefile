@@ -113,7 +113,9 @@ F95 = gfortran
 F2PY = f2py
 PYTHON = python
 
-FFTW = -lfftw3
+SYSLIBPATH = /usr/local/lib
+
+FFTW = -L$(SYSLIBPATH) -lfftw3
 LAPACK = -llapack 
 BLAS = -lblas
 
@@ -131,7 +133,6 @@ LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
 SYSMODPATH = /usr/local/include/shtools
-SYSLIBPATH = /usr/local/lib
 SYSPYPATH = /usr/local/lib/python2.7/site-packages
 SYSSHAREPATH =/usr/local/share
 SYSDOCPATH = /usr/local/share/doc
@@ -463,7 +464,7 @@ clean:
 	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN TESTS, COMPILED PYTHON FILES AND TESTS
 
 fortran-tests:
-	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW=$(FFTW) LAPACK=$(LAPACK) BLAS=$(BLAS)
+	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
 	@echo
@@ -472,7 +473,7 @@ fortran-tests:
 	@echo RAN ALL FORTRAN EXAMPLE AND TESTS
 
 fortran-tests-mp:
-	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW=$(FFTW) LAPACK=$(LAPACK) BLAS=$(BLAS)
+	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
 	@echo

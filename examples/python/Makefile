@@ -19,8 +19,8 @@ MAKE = make
 .PHONY: all clean
 
 all:
-	cd ClassInterface ; $(PYTHON) ./ClassExample.py
-	cd ClassInterface ; $(PYTHON) ./WindowExample.py
+#	cd ClassInterface ; $(PYTHON) ./ClassExample.py
+#	cd ClassInterface ; $(PYTHON) ./WindowExample.py
 	cd GlobalSpectralAnalysis ; $(PYTHON) ./SHComplexSpectralAnalysis.py
 	cd GlobalSpectralAnalysis ; $(PYTHON) ./SHRealSpectralAnalysis.py
 	cd IOStorageConversions ; $(PYTHON) ./SHConversions.py

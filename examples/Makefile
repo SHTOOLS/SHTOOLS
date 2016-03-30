@@ -57,7 +57,7 @@ endif
 .PHONY: fortran-tests run-python-tests clean-fortran-tests clean-python-tests
 
 fortran-tests:
-	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" MODPATH=$(MODPATH) LIBPATH=$(LIBPATH) LIBNAME=$(LIBNAME) FFTW=$(FFTW) LAPACK=$(LAPACK) BLAS=$(BLAS)
+	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" MODPATH=$(MODPATH) LIBPATH=$(LIBPATH) LIBNAME=$(LIBNAME) FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
 	@echo
