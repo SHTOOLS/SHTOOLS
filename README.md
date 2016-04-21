@@ -34,7 +34,7 @@ The most recent release of SHTOOLS can be downloaded from this link on [GitHub](
 
     make
     
-To run the Fortran 95 and Python tests, use
+To run the Fortran 95 and Python tests, enter
 
     make fortran-tests
     make python-tests

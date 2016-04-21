@@ -21,7 +21,7 @@ integer function YilmIndexVector(i, l, m)
 !-------------------------------------------------------------------------------
 	implicit none
 	
-	integer, intent(in) ::i, l, m
+	integer, intent(in) :: i, l, m
 	
 	if (i /= 1 .and. i /= 2) then
 		print*, "Error --- YilmIndexVector"

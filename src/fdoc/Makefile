@@ -18,7 +18,7 @@
 #
 ################################################################################
 
-SHELL=/bin/tcsh
+SHELL=/bin/sh
 
 PANDOC = pandoc
 PDHTMLFLAGS = --base-header-level=1

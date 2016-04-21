@@ -114,6 +114,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     integer*1, save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0
     logical :: calcu
+
+!$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
     
     n = 2 * lmax + 2
     

@@ -6,8 +6,10 @@
 #	
 #		make, make all		: install both the fortran and python components
 #		make fortran		: install the fortan components
-#		make python			: install the python components	   
+#		make fortran-mp		: install the fortan OpenMP components
+#		make python			: install the python components
 #		make fortran-tests	: compile and run the fortran test/example suite
+#		make fortran-tests-mp	: compile and run the fortran test/example suite with OpenMp support
 #		make python-tests	: run the python test/example suite
 #		make install		: place the compiled libraries and docs in /usr/local
 #		make uninstall		: remove files copied to /usr/local
@@ -15,14 +17,16 @@
 #
 #	In some cases, where there are underscore problems when linking to the 
 #	LAPACK, BLAS, and FFTW3 libraries, it might be necessary to use
-#	make all2 or make all3 instead of make all. ALL OF THE OTHER
-#	MAKES LISTED BELOW ARE FOR DEVELOPERS ONLY.
+#	make all2 or make all3 instead of make all (or make fortran2, fortran3,
+#	fortran2-mp, fortran3-mp). ALL OF THE OTHER MAKES LISTED BELOW ARE 
+#	FOR DEVELOPERS ONLY.
 #
 #	This Makefile accepts the following optional arguments that can be passed
 #	using the syntax : make F95="name of f95 compile"
 #	
 #		F95			: Name and path of the fortran-95 compiler
 #		F95FLAGS	: Fortran-95 compiler flags
+#		OPENMPFLAGS	: Fortran-95 OpenMP compiler flags
 #		F2PY		: Name (including path) of the f2py executable
 #		PYTHON		: Name (including path) of the python executable
 #		FFTW		: Name and path of the FFTW3 library of the form "-Lpath -lfftw3"
@@ -49,6 +53,15 @@
 #		an underscore appended to them in the source files in order to 
 #		use FFTW and LAPACK libraries with conflicting underscore 
 #		conventions.
+#	
+#	make fortran-mp
+#		Compile only the fortran 95 component of the archive with OpenMP support.
+#	
+#	make fortran2-mp
+#		Variant of make fortran-mp following the same rules as make fortran2.
+#	
+#	make fortran3-mp
+#		Variant of make fortran-mp following the same rules as make fortran3.
 #	
 #	make install-fortran
 #		Install only fortram 95 component of SHTOOLS.
@@ -92,17 +105,21 @@
 #
 #####################################################################################
 
-VERSION = 3.1
+VERSION = 3.2
+LIBNAME = SHTOOLS
+LIBNAMEMP = SHTOOLS-mp
 
 F95 = gfortran
 F2PY = f2py
 PYTHON = python
 
-FFTW = -lfftw3
+SYSLIBPATH = /usr/local/lib
+
+FFTW = -L$(SYSLIBPATH) -lfftw3
 LAPACK = -llapack 
 BLAS = -lblas
 
-SHELL = /bin/tcsh
+SHELL = /bin/sh
 MAKE = make
 FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc
@@ -116,23 +133,61 @@ LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
 SYSMODPATH = /usr/local/include/shtools
-SYSLIBPATH = /usr/local/lib
 SYSPYPATH = /usr/local/lib/python2.7/site-packages
 SYSSHAREPATH =/usr/local/share
 SYSDOCPATH = /usr/local/share/doc
 
-.PHONY: all all2 all3 fortran fortran2 fortran3 python install doc remove-doc clean\
-	getflags fortran-tests clean-fortran-tests run-fortran-tests run-python-tests\
-	install uninstall
+ifeq ($(F95),f95)
+# Default Absoft f95 flags
+F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
+#-march=host
+MODFLAG = -p $(MODPATH)
+SYSMODFLAG = -p $(SYSMODPATH)
+OPENMPFLAGS ?= -openmp
+else ifeq ($(F95),gfortran)
+# Default gfortran flags
+F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
+# -march=native
+MODFLAG = -I$(MODPATH)
+SYSMODFLAG = -I$(SYSMODPATH)
+OPENMPFLAGS ?= -fopenmp
+else ifeq ($(F95),ifort)
+# Default intel fortran flags
+F95FLAGS ?= -m64 -free -O3 -Tf
+MODFLAG = -I$(MODPATH)
+SYSMODFLAG = -I$(SYSMODPATH)
+OPENMPFLAGS ?=
+else ifeq ($(F95),g95)
+# Default g95 flags.
+F95FLAGS ?= -O3 -fno-second-underscore
+MODFLAG = -I$(MODPATH)
+SYSMODFLAG = -I$(SYSMODPATH)
+OPENMPFLAGS ?=
+else ifeq ($(F95),pgf90)
+# Default pgf90 flags
+F95FLAGS ?= -fast 
+MODFLAG = -Imodpath
+SYSMODFLAG = -Imodpath
+OPENMPFLAGS ?=
+else ifeq ($(origin F95FLAGS), undefined)
+F95FLAGS = -m64 -O3
+MODFLAG = -I$(MODPATH)
+SYSMODFLAG = -I$(SYSMODPATH)
+OPENMPFLAGS ?=
+endif
 
-all: getflags
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
+.PHONY: all all2 all3 fortran fortran2 fortran3 python install doc remove-doc clean\
+	fortran-tests clean-fortran-tests run-fortran-tests run-python-tests\
+	install uninstall fortran-mp fortran2-mp fortran3-mp
+
+all:
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
 	@echo
 	@echo MAKE OF FORTRAN COMPONENT SUCCESSFUL!
 	@echo
 	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _SHTOOLS.so pyshtools/.
 	mv _constant.so pyshtools/.
@@ -144,7 +199,7 @@ all: getflags
 	@echo -----------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
 	@echo import shtools into Python with:
 	@echo
@@ -154,14 +209,14 @@ all: getflags
 	@echo --------------------------------------------------------------------------------------------
 	@echo
 
-all2: getflags
-	$(MAKE) -C $(SRCDIR) -f Makefile all2 F95=$(F95) F95FLAGS="$(F95FLAGS)"
+all2:
+	$(MAKE) -C $(SRCDIR) -f Makefile all2 F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
 	@echo
 	@echo MAKE OF FORTRAN COMPONENT SUCCESSFUL!
 	@echo
 	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _SHTOOLS.so pyshtools/.
 	mv _constant.so pyshtools/.
@@ -173,7 +228,7 @@ all2: getflags
 	@echo ------------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
 	@echo import shtools into Python with:
 	@echo
@@ -183,14 +238,14 @@ all2: getflags
 	@echo -------------------------------------------------------------------------------------------
 	@echo	
 	
-all3: getflags
-	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS)"
+all3:
+	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
 	@echo
 	@echo MAKE OF FORTRAN COMPONENT SUCCESSFUL!
 	@echo 
 	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _SHTOOLS.so pyshtools/.
 	mv _constant.so pyshtools/.
@@ -202,7 +257,7 @@ all3: getflags
 	@echo ---------------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
 	@echo import shtools into Python with:
 	@echo
@@ -212,46 +267,82 @@ all3: getflags
 	@echo ----------------------------------------------------------------------------------------------
 	@echo
 
-fortran: getflags
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)"
+fortran:
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo
-	
-fortran2: getflags
-	$(MAKE) -C $(SRCDIR) -f Makefile all2 F95=$(F95) F95FLAGS="$(F95FLAGS)"
-	@echo
-	@echo MAKE SUCCESSFUL!
-	@echo
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo Compile your Fortran code with the following flags:
-	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
-fortran3: getflags
-	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS)"
+fortran2:
+	$(MAKE) -C $(SRCDIR) -f Makefile all2 F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo
+
+fortran3:
+	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
+	@echo
+	@echo MAKE SUCCESSFUL!
+	@echo
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo Compile your Fortran code with the following flags:
+	@echo
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
-python: getflags
+fortran-mp:
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)"
+	@echo
+	@echo MAKE SUCCESSFUL!
+	@echo
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo Compile your Fortran code with the following flags:
+	@echo
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) $(OPENMPFLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo
+
+fortran2-mp:
+	$(MAKE) -C $(SRCDIR) -f Makefile all2 F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)"
+	@echo
+	@echo MAKE SUCCESSFUL!
+	@echo
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo Compile your Fortran code with the following flags:
+	@echo
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) $(OPENMPFLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo
+
+fortran3-mp:
+	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)"
+	@echo
+	@echo MAKE SUCCESSFUL!
+	@echo
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo Compile your Fortran code with the following flags:
+	@echo
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) $(OPENMPFLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo 
+
+python:
 	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _SHTOOLS.so pyshtools/.
 	mv _constant.so pyshtools/.
@@ -269,14 +360,14 @@ python: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
-install: getflags
+install:
 	-rm -r $(SYSMODPATH)/fftw3.mod
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
 	mkdir -pv $(SYSPYPATH)
 	cp -R pyshtools $(SYSPYPATH)/
 	mkdir -pv $(SYSLIBPATH)
-	cp $(LIBDIR)/libSHTOOLS.a $(SYSLIBPATH)/libSHTOOLS.a
+	cp $(LIBDIR)/lib$(LIBNAME).a $(SYSLIBPATH)/lib$(LIBNAME).a
 	mkdir -pv $(SYSMODPATH)
 	-cp $(INCDIR)/*.mod $(SYSMODPATH)/
 	mkdir -pv $(SYSSHAREPATH)/shtools
@@ -297,7 +388,7 @@ install: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
-	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo
 	@echo import shtools into Python with:
 	@echo
@@ -308,7 +399,7 @@ install: getflags
 
 uninstall:
 	-rm -r $(SYSPYPATH)/pyshtools/
-	-rm -r $(SYSLIBPATH)/libSHTOOLS.a
+	-rm -r $(SYSLIBPATH)/lib$(LIBNAME).a
 	-rm -r $(SYSMODPATH)/fftw3.mod
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
@@ -318,12 +409,12 @@ uninstall:
 	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 
-install-fortran: getflags
+install-fortran:
 	-rm -r $(SYSMODPATH)/fftw3.mod
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
 	mkdir -pv $(SYSLIBPATH)
-	cp $(LIBDIR)/libSHTOOLS.a $(SYSLIBPATH)/libSHTOOLS.a
+	cp $(LIBDIR)/lib$(LIBNAME).a $(SYSLIBPATH)/lib$(LIBNAME).a
 	mkdir -pv $(SYSMODPATH)
 	cp $(INCDIR)/*.mod $(SYSMODPATH)/
 	mkdir -pv $(SYSSHAREPATH)/shtools
@@ -344,55 +435,9 @@ install-fortran: getflags
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
-	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -lSHTOOLS $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
-
-getflags:
-ifeq ($(F95),f95)
-# Default Absoft f95 flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=11
-#-march=host
-MODFLAG = -p $(MODPATH)
-SYSMODFLAG = -p $(SYSMODPATH)
-endif
-
-ifeq ($(F95),gfortran)
-# Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
-#F95FLAGS ?= -m64 -fPIC -O0 -g -fbacktrace -ffast-math
-# -march=native
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-endif
-
-ifeq ($(F95),ifort)
-# Default intel fortran flags
-F95FLAGS ?= -m64 -free -O3 -Tf
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-endif
-
-ifeq ($(F95),g95)
-# Default g95 flags.
-F95FLAGS ?= -O3 -fno-second-underscore 
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-endif
-
-ifeq ($(F95),pgf90)
-# Default pgf90 flags
-F95FLAGS ?= -fast 
-MODFLAG = -Imodpath
-SYSMODFLAG = -Imodpath
-endif
-
-ifeq ($(origin F95FLAGS), undefined)
-F95FLAGS = -m64 -O3
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-endif
-
 
 doc: 
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
@@ -408,6 +453,8 @@ remove-doc:
 
 clean:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
+	-rm -f lib/lib$(LIBNAME).a
+	-rm -f lib/lib$(LIBNAMEMP).a
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
 	-rm -rf pyshtools/doc
@@ -416,8 +463,17 @@ clean:
 	@echo
 	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN TESTS, COMPILED PYTHON FILES AND TESTS
 
-fortran-tests: getflags
-	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" FFTW=$(FFTW) LAPACK=$(LAPACK) BLAS=$(BLAS)
+fortran-tests:
+	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@echo
+	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
+	@echo
+	$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests
+	@echo
+	@echo RAN ALL FORTRAN EXAMPLE AND TESTS
+
+fortran-tests-mp:
+	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
 	@echo

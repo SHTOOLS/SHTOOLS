@@ -1,4 +1,4 @@
-.TH "pyshbiask" "1" "2015\-07\-18" "Python" "SHTOOLS 3.1"
+.TH "pyshbiask" "1" "2015\-11\-25" "Python" "SHTOOLS 3.2"
 .SH SHBiasK
 .PP
 Calculate the multitaper (cross\-)power spectrum expectation of function
@@ -6,7 +6,7 @@ localized by spherical cap windows.
 .SH Usage
 .PP
 \f[C]outcspectra\f[] = pyshtools.SHBiasK (\f[C]tapers\f[],
-\f[C]incspectra\f[], [\f[C]lwin\f[], \f[C]numk\f[], \f[C]ldata\f[],
+\f[C]incspectra\f[], [\f[C]lwin\f[], \f[C]k\f[], \f[C]ldata\f[],
 \f[C]taper_wt\f[], \f[C]save_cg\f[]])
 .SH Returns
 .TP
@@ -16,7 +16,7 @@ The expectation of the multitaper localized power spectrum.
 .RE
 .SH Parameters
 .TP
-.B \f[C]tapers\f[] : float, dimension (\f[C]lwinin\f[]+1, \f[C]numkin\f[])
+.B \f[C]tapers\f[] : float, dimension (\f[C]lwinin\f[]+1, \f[C]kin\f[])
 The spherical coefficients of the localizing windows.
 Each column corresponds to the non\-zero coefficients of a single
 angular order.
@@ -37,11 +37,10 @@ The spherical harmonic bandwidth of the localizing windows.
 .RS
 .RE
 .TP
-.B \f[C]numk\f[] : optional, integer, default = \f[C]numkin\f[]
+.B \f[C]k\f[] : optional, integer, default = \f[C]kin\f[]
 The number of localizing windows to use.
-Only the first \f[C]numk\f[] columns of \f[C]tapers\f[] will be
-employed, which corresponds to the best\-concentrated localizing
-windows.
+Only the first \f[C]k\f[] columns of \f[C]tapers\f[] will be employed,
+which corresponds to the best\-concentrated localizing windows.
 .RS
 .RE
 .TP
@@ -50,7 +49,7 @@ The maximum degree of the global unwindowed power spectrum.
 .RS
 .RE
 .TP
-.B \f[C]taper_wt\f[] : optional, float, dimension (\f[C]numkin\f[]), default = \-1
+.B \f[C]taper_wt\f[] : optional, float, dimension (\f[C]kin\f[]), default = \-1
 The weights to apply to each individual windowed specral estimate.
 The weights must sum to unity and are obtained from \f[C]SHMTVarOpt\f[].
 The default specifies that taper weights are not used.
@@ -69,7 +68,7 @@ recomputed for each call.
 .SH Description
 .PP
 \f[C]SHBiasK\f[] will calculate the multitaper (cross\-)power spectrum
-expectation of a function multiplied by the \f[C]numk\f[]
+expectation of a function multiplied by the \f[C]k\f[]
 best\-concentrated localizing windows.
 This is given by equation 36 of Wieczorek and Simons (2005) (see also
 eq.

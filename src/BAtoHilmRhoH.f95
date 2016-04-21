@@ -1,4 +1,4 @@
-subroutine BAtoHilmRhoH(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
+subroutine BAtoHilmRhoH(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w,&
                      plx, zero, filter_type, filter_deg, lmax_calc)
 !-------------------------------------------------------------------------------
 !
@@ -26,7 +26,7 @@ subroutine BAtoHilmRhoH(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, 
 !                       to LMAX. 2 = N by N Driscoll and Healy grid 
 !                       corresponding to LMAX. 3 = N by 2N Driscoll and Healy 
 !                       grid corresponding to LMAX.
-
+!
 !       OUT
 !           cilm        Estimate of Moho relief spherical harmonic coefficients, 
 !                       with dimensions (2, lmax+1, lmax+1).
