@@ -89,7 +89,7 @@ Program LocalizedAdmitCorr
 	theta0 = theta0*pi/180.0d0
 			
 	print*, "Create localization window using"	
-	print*, "(1) Desired concentration factor (alpha^2)"	
+	print*, "(1) Desired concentration factor, alpha"	
 	print*, "(2) Desired (approximate) Shannon number; (Lwin+1) Theta0 / pi)"	
 	print*, "(3) Desired Spectral bandwidth (Lwin)"	
 	read(*,*) option1		
