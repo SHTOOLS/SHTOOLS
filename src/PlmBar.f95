@@ -122,6 +122,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm)
             
     scalef = 1.0d-280
     
+!$omp critical (PlmBar_init)
     if (lmax > lmax_old) then
         if (allocated (sqr)) deallocate (sqr)
         if (allocated (f1)) deallocate (f1)
@@ -177,6 +178,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm)
         lmax_old = lmax
     
     end if
+!$omp end critical (PlmBar_init)
     
     !---------------------------------------------------------------------------
     !   
