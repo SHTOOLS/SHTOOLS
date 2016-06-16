@@ -323,7 +323,7 @@ python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 
 python3: pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
 	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py .
+	$(PYTHON3) ./pyshtools/make_docs.py .
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
