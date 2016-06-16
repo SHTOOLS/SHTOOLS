@@ -39,7 +39,7 @@ def main():
                     pydocfile.write(docstring)
                     pydocfile.close()
 
-            except IOError, msg:
+            except IOError as msg:
                 print(msg)
 
     #---- loop through functions that are defined in python ----
@@ -56,7 +56,7 @@ def main():
             pydocfile.write(docstring)
             pydocfile.close()
 
-        except IOError, msg:
+        except IOError as msg:
             print(msg)
 
     #---- loop through the f2py constants and make docstrings ----
@@ -72,7 +72,7 @@ def main():
             pydocfile.write(docstring)
             pydocfile.close()
 
-        except IOError, msg:
+        except IOError as msg:
             print(msg)
 
 #===== PROCESS MD DOCUMENTATION FILE ====
