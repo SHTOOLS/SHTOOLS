@@ -2,6 +2,7 @@
 """
 This script tests other routines related to localized spectral analyses
 """
+from __future__ import print_function
 
 # standard imports:
 import os
@@ -28,21 +29,21 @@ def main():
 
 def test_LocalizationWindows():
 
-    print '\n---- testing SphericalCapCoef ----'
+    print('\n---- testing SphericalCapCoef ----')
     lmax = 15
     theta = 50.
-    print 'generating {:2.1f} degrees cap:'.format(theta)
+    print('generating {:2.1f} degrees cap:'.format(theta))
     coeffsm0 = shtools.SphericalCapCoef(np.radians(theta), lmax)
-    print coeffsm0
+    print(coeffsm0)
 
-    print '\n---- testing SHBias ----'
+    print('\n---- testing SHBias ----')
     winpower = coeffsm0**2
     ldata = 20
     globalpower = np.random.rand(ldata)
     localpower = shtools.SHBias(winpower, globalpower)
-    print localpower[:min(ldata, 20)]
+    print(localpower[:min(ldata, 20)])
 
-    print '\n---- testing Curve2Mask ----'
+    print('\n---- testing Curve2Mask ----')
     # defines lat/lon square (bug!?)
     nlat = 100
     dlat = 180. / nlat
@@ -59,12 +60,12 @@ def test_LocalizationWindows():
     weights = 2 * np.sin(np.radians(thetas))
     maskarea = np.sum(dhmask * weights[:, None] * dlat**2)
     globearea = 4 * np.pi * (180 / np.pi)**2
-    print 'mask covers {:2.2f}%% of the globe'.format(100 * maskarea / globearea)
+    print('mask covers {:2.2f}%% of the globe'.format(100 * maskarea / globearea))
     fig = plt.figure()
     plt.imshow(dhmask)
     fig.savefig('mask.png')
 
-    print '\n---- testing ComputeDMap ----'
+    print('\n---- testing ComputeDMap ----')
     nlat = 180
     lmax = 20
     dlat = 180. / nlat
@@ -72,13 +73,13 @@ def test_LocalizationWindows():
     lons = np.linspace(0. + dlat, 360. - dlat / 2., nlat)
     latgrid, longrid = np.meshgrid(lats, lons, indexing='ij')
     dh_mask = np.logical_and(5. < latgrid, latgrid < 20.)
-    print 'dij matrix[0,:lmax={:d}]:'.format(lmax)
+    print('dij matrix[0,:lmax={:d}]:'.format(lmax))
     dij_matrix = shtools.ComputeDMap(dh_mask, lmax)
-    print dij_matrix[0, :lmax]
+    print(dij_matrix[0, :lmax])
 
-    print '\n---- testing SHReturnTapersMap ----'
+    print('\n---- testing SHReturnTapersMap ----')
     tapers, evalues = shtools.SHReturnTapersMap(dh_mask, lmax, Ntapers=1)
-    print 'best taper concentration: {:2.2f}'.format(evalues[0])
+    print('best taper concentration: {:2.2f}'.format(evalues[0]))
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

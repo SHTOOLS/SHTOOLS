@@ -3,6 +3,7 @@
 This script is a python version of TimingAccuracy. We use some numpy functions
 to simplify the creation of random coefficients.
 """
+from __future__ import print_function
 
 import os
 import sys
@@ -37,14 +38,14 @@ def TimingAccuracyDH():
     mask[1, :, 0] = False
 
     #---- create Gaussian powerlaw coefficients ----
-    print 'creating {:d} random coefficients'.format(2 * (maxdeg + 1) * (maxdeg + 1))
+    print('creating {:d} random coefficients'.format(2 * (maxdeg + 1) * (maxdeg + 1)))
     random_numbers = np.random.normal(loc=0., scale=1., size=2 * (maxdeg + 1) * (maxdeg + 1))
     cilm = random_numbers.reshape(2, maxdeg + 1, maxdeg + 1)
     cilm[:, 1:, :] *= np.sqrt((ls[1:]**beta) / (2. * ls[1:] + 1.))[None, :, None]
 
     #---- time spherical harmonics transform for lmax set to increasing powers of 2 ----
     lmax = 2
-    print 'lmax    maxerror    rms         tinverse    tforward'
+    print('lmax    maxerror    rms         tinverse    tforward')
     while lmax <= maxdeg:
         # trim coefficients to lmax
         cilm_trim = cilm[:, :lmax + 1, :lmax + 1]
@@ -67,8 +68,8 @@ def TimingAccuracyDH():
         maxerr = np.sqrt(err.max())
         rmserr = np.mean(err)
 
-        print '{:4d}    {:1.2e}    {:1.2e}    {:1.1e}s    {:1.1e}s'.\
-            format(lmax, maxerr, rmserr, tinverse, tforward)
+        print('{:4d}    {:1.2e}    {:1.2e}    {:1.1e}s    {:1.1e}s'.format(
+            lmax, maxerr, rmserr, tinverse, tforward))
         lmax = lmax * 2
 
 #==== EXECUTE SCRIPT ====

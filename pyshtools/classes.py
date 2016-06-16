@@ -21,7 +21,7 @@ The following three classes will be implemented:
 Matthias Meschede and Mark Wieczorek, 2015
 """
 
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 
 import numpy as np
 import matplotlib as mpl

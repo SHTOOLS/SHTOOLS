@@ -2,6 +2,8 @@
 Contains configuration parameters for matplotlib.
 """
 
+from __future__ import print_function
+
 #---- some typical sizes for an A4 text document ----
 pt2inch = 1.0 / 72.27
 textwidth_pt = 504.0

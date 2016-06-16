@@ -6,6 +6,7 @@ their structure is only known by the Fortran compiler and can not be directly
 exposed to C. It is possible that newer f2py versions can handle assumed array
 shapes using a similar procedure.
 """
+from __future__ import print_function
 
 #==== IMPORTS ====
 from numpy.f2py import crackfortran
@@ -20,30 +21,30 @@ def main():
     fname_wrapper = 'PythonWrapper.f95'
     outfile = open(fname_wrapper, 'w')
 
-    print 'now cracking Fortran file SHTOOLS.f95 using f2py function...'
+    print('now cracking Fortran file SHTOOLS.f95 using f2py function...')
     crackfortran.verbose = False
     crackfortran.dolowercase = False
     cracked_shtools = crackfortran.crackfortran(fname_fortran)
 
-    print 'decending through shtools module tree...'
+    print('decending through shtools module tree...')
     module = cracked_shtools[0]
     interface_old = module['body'][0]
     interface_new = deepcopy(interface_old)
     for subroutine in interface_new['body']:
         modify_subroutine(subroutine)
 
-    print 'create interface string...'
+    print('create interface string...')
     wrapper = crackfortran.crack2fortran(interface_new)
     wrapperlines = wrapper.split('\n')
 
-    print 'add implicit none statements'
+    print('add implicit none statements')
     # search for the indices of 'use shtools,' to insert 'implicit none' after
     iusestatement = [iline for iline, line in enumerate(wrapperlines) if 'use shtools,' in line]
     assert len(iusestatement) == len(interface_new['body']), 'number of subroutines don\'t match'
     for iline in iusestatement[::-1]:
         wrapperlines.insert(iline + 1, 2 * crackfortran.tabchar + 'implicit none')
 
-    print 'add shtools subroutine calls...'
+    print('add shtools subroutine calls...')
     # search for the indices of 'end subroutine'
     iendsubroutine = [iline for iline, line in enumerate(wrapperlines)
                       if 'end subroutine' in line or 'end function' in line]
@@ -65,7 +66,7 @@ def main():
         wrapperlines.insert(iline + 1, '')
         wrapperlines.insert(iline, newline)
 
-    print 'writing wrapper to file %s' % fname_wrapper
+    print('writing wrapper to file %s' % fname_wrapper)
     for iline, line in enumerate(wrapperlines):
         try:
             firstword = line.split()[0]
@@ -93,14 +94,14 @@ def main():
             outfile.write(newline + '\n')
 
     outfile.close()
-    print '\n==== ALL DONE ====\n'
+    print('\n==== ALL DONE ====\n')
 
 #==== FUNCTIONS ====
 
 
 def modify_subroutine(subroutine):
     """loops through variables of a subroutine and modifies them"""
-    # print '\n----',subroutine['name'],'----'
+    # print('\n----',subroutine['name'],'----')
 
     #-- use original function from shtools:
     subroutine['use'] = {'shtools': {'map': {subroutine['name']: subroutine['name']}, 'only': 1}}
@@ -111,11 +112,11 @@ def modify_subroutine(subroutine):
         if varname == subroutine['name']:
             subroutine['vars']['py' + varname] = subroutine['vars'].pop(varname)
             varname = 'py' + varname
-            # print 'prefix added:',varname
+            # print('prefix added:',varname)
         #-- change assumed to explicit:
         if has_assumed_shape(varattribs):
             make_explicit(subroutine, varname, varattribs)
-            # print 'assumed shape variable modified to:',varname,varattribs['dimension']
+            # print('assumed shape variable modified to:',varname,varattribs['dimension'])
 
     #-- add py prefix to subroutine:
     subroutine['name'] = 'py' + subroutine['name']

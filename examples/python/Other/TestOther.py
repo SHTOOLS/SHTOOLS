@@ -2,6 +2,7 @@
 """
 This script tests the gravity and magnetics routines. 
 """
+from __future__ import print_function
 
 # standard imports:
 import os
@@ -53,28 +54,28 @@ def TestEig():
     eig, vec = shtools.EigValVecSym(a)
     eig2 = shtools.EigValSym(a)
     eigtri, vectri = shtools.EigValVecSymTri(a)
-    print "Symmetric matrix"
-    print a
-    print "Eigenvalues (three different routines)"
-    print eig
-    print eig2
-    print eigtri
-    print "Eigenvectors (two different routines)"
-    print vec
-    print vectri
+    print("Symmetric matrix")
+    print(a)
+    print("Eigenvalues (three different routines)")
+    print(eig)
+    print(eig2)
+    print(eigtri)
+    print("Eigenvectors (two different routines)")
+    print(vec)
+    print(vectri)
 
 
 def TestWigner():
     w3j, jmin, jmax = shtools.Wigner3j(4, 2, 0, 0, 0)
-    print "< J, 4, 2 / 0, 0, 0 >"
-    print "jmin = ", jmin
-    print "jmax = ", jmax
-    print w3j
+    print("< J, 4, 2 / 0, 0, 0 >")
+    print("jmin = ", jmin)
+    print("jmax = ", jmax)
+    print(w3j)
     w3j, jmin, jmax = shtools.Wigner3j(10, 14, -1, -4, 5)
-    print "< J, 10, 14 / -1, -4, 5 >"
-    print "jmin = ", jmin
-    print "jmax = ", jmax
-    print w3j
+    print("< J, 10, 14 / -1, -4, 5 >")
+    print("jmin = ", jmin)
+    print("jmax = ", jmax)
+    print(w3j)
 
 
 def TestRandom():

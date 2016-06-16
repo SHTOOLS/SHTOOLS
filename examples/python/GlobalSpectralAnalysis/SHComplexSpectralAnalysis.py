@@ -2,6 +2,7 @@
 """
 This script tests functions to compute different Power Spectra from complex SH coefficients
 """
+from __future__ import print_function
 
 # standard imports:
 import os
@@ -36,10 +37,10 @@ def test_ComplexSpectralAnalysis():
         mask[:, l, :l + 1] = True
     mask[1, :, 0] = False
 
-    print 'creating {:d} random coefficients'.format(2 * (lmax + 1) * (lmax + 1))
+    print('creating {:d} random coefficients'.format(2 * (lmax + 1) * (lmax + 1)))
 
-    print '\n---- testing SHPower/DensityLC, SHPowerSpectrum/DensityC ----'
-    print 'generating normal distributed complex coefficients with variance 1...'
+    print('\n---- testing SHPower/DensityLC, SHPowerSpectrum/DensityC ----')
+    print('generating normal distributed complex coefficients with variance 1...')
     coeffs1 = np.random.normal( loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1) ) + \
         1j * np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1))
     coeffs1 = coeffs1.reshape(2, lmax + 1, lmax + 1)
@@ -47,16 +48,16 @@ def test_ComplexSpectralAnalysis():
 
     spec1 = np.array([shtools.SHPowerLC(coeffs1, l) for l in ls])
     spec2 = shtools.SHPowerSpectrumC(coeffs1)
-    print 'tot power computed with SHPowerL={:2.2f}'.format(np.sum(spec1))
-    print 'tot power computed with SHPowerSpectrum={:2.2f}'.format(np.sum(spec2))
+    print('tot power computed with SHPowerL={:2.2f}'.format(np.sum(spec1)))
+    print('tot power computed with SHPowerSpectrum={:2.2f}'.format(np.sum(spec2)))
 
     spec1 = np.array([shtools.SHPowerDensityLC(coeffs1, l) for l in ls])
     spec2 = shtools.SHPowerSpectrumDensityC(coeffs1)
-    print 'tot power computed with SHPowerDensityL={:2.2f}'.format(np.sum(spec1 * (2 * ls + 1)))
-    print 'tot power computed with SHPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1)))
+    print('tot power computed with SHPowerDensityL={:2.2f}'.format(np.sum(spec1 * (2 * ls + 1))))
+    print('tot power computed with SHPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1))))
 
-    print '\n---- testing SHCrossPower/DensityLC, SHCrossCrossPowerSpectrum/DensityC ----'
-    print 'generating two sets of normal distributed complex coefficients with variance 1...'
+    print('\n---- testing SHCrossPower/DensityLC, SHCrossCrossPowerSpectrum/DensityC ----')
+    print('generating two sets of normal distributed complex coefficients with variance 1...')
     coeffs2 = np.random.normal( loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1) ) + \
         1j * np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1))
     coeffs2 = coeffs2.reshape(2, lmax + 1, lmax + 1)
@@ -64,13 +65,13 @@ def test_ComplexSpectralAnalysis():
 
     spec1 = np.array([shtools.SHCrossPowerLC(coeffs1, coeffs2, l) for l in ls])
     spec2 = shtools.SHCrossPowerSpectrumC(coeffs1, coeffs2)
-    print 'tot cpower computed with SHCrossPowerL={:2.2f}'.format(np.sum(spec1))
-    print 'tot cpower computed with SHCrossPowerSpectrum={:2.2f}'.format(np.sum(spec2))
+    print('tot cpower computed with SHCrossPowerL={:2.2f}'.format(np.sum(spec1)))
+    print('tot cpower computed with SHCrossPowerSpectrum={:2.2f}'.format(np.sum(spec2)))
 
     spec1 = np.array([shtools.SHCrossPowerDensityLC(coeffs1, coeffs2, l) for l in ls])
     spec2 = shtools.SHCrossPowerSpectrumDensityC(coeffs1, coeffs2)
-    print 'tot cpower computed with SHCrossPowerDensityL={:2.2f}'.format(np.sum(spec1 * (2 * ls + 1)))
-    print 'tot cpower computed with SHCrossPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1)))
+    print('tot cpower computed with SHCrossPowerDensityL={:2.2f}'.format(np.sum(spec1 * (2 * ls + 1))))
+    print('tot cpower computed with SHCrossPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1))))
 
 #==== PLOT POWER SPECTRA ====
 
@@ -108,7 +109,7 @@ def example():
 
     fig_map.savefig('SHCtopography_mars.png')
     fig_spectrum.savefig('SHCspectrum_mars.png')
-    print 'mars topography and spectrum saved'
+    print('mars topography and spectrum saved')
 
     # plt.show()
 

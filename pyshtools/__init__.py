@@ -7,7 +7,7 @@ or    https://github.com/SHTOOLS/SHTOOLS
 The python wrapper was written by: Matthias Meschede, Mark Wieczorek, 2014
 """
 
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 
 __version__ = '3.1'
 

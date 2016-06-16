@@ -5,6 +5,7 @@ customized markdown files. The processed documentation is saved as ascii text
 files which are loaded on runtime and replace the __doc__ string of the f2py 
 wrapped functions.
 """
+from __future__ import print_function
 
 import sys
 import os
@@ -20,7 +21,7 @@ def main():
     libfolder = os.path.abspath(sys.argv[1])
     mddocfolder = os.path.join(libfolder, 'src/pydoc')
     pydocfolder = os.path.join(libfolder, 'pyshtools/doc')
-    print '---- searching documentation in folder: {} ----'.format(mddocfolder)
+    print('---- searching documentation in folder: {} ----'.format(mddocfolder))
 
 
     #---- loop through the f2py _SHTOOLS functions and make docstrings ----
@@ -39,7 +40,7 @@ def main():
                     pydocfile.close()
 
             except IOError, msg:
-                print msg
+                print(msg)
 
     #---- loop through functions that are defined in python ----
     pyfunctions = ['PlmIndex','YilmIndexVector']
@@ -56,7 +57,7 @@ def main():
             pydocfile.close()
 
         except IOError, msg:
-            print msg
+            print(msg)
 
     #---- loop through the f2py constants and make docstrings ----
     for name, value in _constant.planetsconstants.__dict__.items():
@@ -72,7 +73,7 @@ def main():
             pydocfile.close()
 
         except IOError, msg:
-            print msg
+            print(msg)
 
 #===== PROCESS MD DOCUMENTATION FILE ====
 def process_mddoc(fname_mddoc):
@@ -153,7 +154,7 @@ def process_f2pydoc(f2pydoc):
     elif len(docparts) == 3:
         doc_has_optionals = False
     else:
-        print '-- uninterpretable f2py documentation --'
+        print('-- uninterpretable f2py documentation --')
         return f2pydoc
 
     #---- replace arguments with _d suffix with empty string in function signature (remove them):
