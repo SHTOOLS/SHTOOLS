@@ -177,94 +177,14 @@ endif
 
 .PHONY: all all2 all3 fortran fortran2 fortran3 python install doc remove-doc clean\
 	fortran-tests clean-fortran-tests run-fortran-tests run-python-tests\
-	install-fortran uninstall fortran-mp fortran2-mp fortran3-mp
+	install-fortran install-python uninstall fortran-mp fortran2-mp fortran3-mp
 
-all:
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
-	@echo
-	@echo MAKE OF FORTRAN COMPONENT SUCCESSFUL!
-	@echo
-	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
-		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _SHTOOLS.so pyshtools/.
-	mv _constant.so pyshtools/.
-	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py .
-	@echo
-	@echo MAKE OF PYTHON COMPONENT SUCCESSFUL!
-	@echo 
-	@echo -----------------------------------------------------------------------------------------
-	@echo Compile your Fortran code with the following flags:
-	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo
-	@echo import shtools into Python with:
-	@echo
-	@echo import sys
-	@echo sys.path.append\(\'$(PYPATH)\'\)
-	@echo import pyshtools as shtools
-	@echo --------------------------------------------------------------------------------------------
-	@echo
 
-all2:
-	$(MAKE) -C $(SRCDIR) -f Makefile all2 F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
-	@echo
-	@echo MAKE OF FORTRAN COMPONENT SUCCESSFUL!
-	@echo
-	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
-		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _SHTOOLS.so pyshtools/.
-	mv _constant.so pyshtools/.
-	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py .
-	@echo
-	@echo MAKE OF PYTHON COMPONENT SUCCESSFUL!
-	@echo
-	@echo ------------------------------------------------------------------------------------------
-	@echo Compile your Fortran code with the following flags:
-	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo
-	@echo import shtools into Python with:
-	@echo
-	@echo import sys
-	@echo sys.path.append\(\'$(PYPATH)\'\)
-	@echo import pyshtools as shtools
-	@echo -------------------------------------------------------------------------------------------
-	@echo	
-	
-all3:
-	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
-	@echo
-	@echo MAKE OF FORTRAN COMPONENT SUCCESSFUL!
-	@echo 
-	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
-		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _SHTOOLS.so pyshtools/.
-	mv _constant.so pyshtools/.
-	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py .
-	@echo
-	@echo MAKE OF PYTHON COMPONENT SUCCESSFUL!
-	@echo 
-	@echo ---------------------------------------------------------------------------------------------
-	@echo Compile your Fortran code with the following flags:
-	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo
-	@echo import shtools into Python with:
-	@echo
-	@echo import sys
-	@echo sys.path.append\(\'$(PYPATH)\'\)
-	@echo import pyshtools as shtools
-	@echo ----------------------------------------------------------------------------------------------
-	@echo
+all: fortran python
+
+all2: fortran2 python
+
+all3: fortran3 python
 
 fortran:
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
@@ -338,13 +258,7 @@ fortran3-mp:
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
-python:
-	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
-		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _SHTOOLS.so pyshtools/.
-	mv _constant.so pyshtools/.
+python: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	mkdir -p pyshtools/doc
 	./pyshtools/make_docs.py .
 	@echo
@@ -359,36 +273,22 @@ python:
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
-install:
-	-rm -r $(SYSMODPATH)/fftw3.mod
-	-rm -r $(SYSMODPATH)/planetsconstants.mod
-	-rm -r $(SYSMODPATH)/shtools.mod
+pyshtools/_SHTOOLS.so: $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 $(LIBDIR)/lib$(LIBNAME).a
+	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
+		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
+		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
+	mv _SHTOOLS.so pyshtools/.
+
+pyshtools/_constant.so: $(SRCDIR)/PlanetsConstants.f95
+	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
+	mv _constant.so pyshtools/.
+
+install: install-fortran install-python
+
+install-python: python
 	mkdir -pv $(SYSPYPATH)
 	cp -R pyshtools $(SYSPYPATH)/
-	mkdir -pv $(SYSLIBPATH)
-	cp $(LIBDIR)/lib$(LIBNAME).a $(SYSLIBPATH)/lib$(LIBNAME).a
-	mkdir -pv $(SYSMODPATH)
-	-cp $(INCDIR)/*.mod $(SYSMODPATH)/
-	mkdir -pv $(SYSSHAREPATH)/shtools
-	cp -R examples $(SYSSHAREPATH)/shtools/
-	mkdir -pv $(SYSSHAREPATH)/man/man1
-	cp -R man/man1 $(SYSSHAREPATH)/man
-	mkdir -pv $(SYSDOCPATH)/shtools
-	cp index.html $(SYSDOCPATH)/shtools/index.html
-	cp -R www $(SYSDOCPATH)/shtools/
-	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/Makefile" > "temp.txt"
-	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
-	cp temp2.txt "/usr/local/share/shtools/examples/Makefile"
-	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/fortran/Makefile" > "temp.txt"
-	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
-	cp temp2.txt "$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
-	rm temp.txt
-	rm temp2.txt
 	@echo ---------------------------------------------------------------------------------------------------
-	@echo Compile your Fortran code with the following flags:
-	@echo
-	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo
 	@echo import shtools into Python with:
 	@echo
 	@echo import sys
@@ -408,7 +308,7 @@ uninstall:
 	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 
-install-fortran:
+install-fortran: fortran
 	-rm -r $(SYSMODPATH)/fftw3.mod
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
@@ -450,19 +350,19 @@ remove-doc:
 	@echo
 	@echo REMOVED MAN AND HTML-MAN FILES
 
-clean:
+clean: clean-libs clean-fortran-tests clean-python-tests
+
+clean-libs:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
 	-rm -f lib/lib$(LIBNAME).a
 	-rm -f lib/lib$(LIBNAMEMP).a
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
 	-rm -rf pyshtools/doc
-	-$(MAKE) -C $(FEXDIR) -f Makefile clean
-	-$(MAKE) -C $(PEXDIR) -f Makefile clean
 	@echo
-	@echo REMOVED LIB, MODULE, OBJECT FILES, FORTRAN TESTS, COMPILED PYTHON FILES AND TESTS
+	@echo REMOVED LIB, MODULE, OBJECT FILES, COMPILED PYTHON FILES AND TESTS
 
-fortran-tests:
+fortran-tests: fortran
 	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
@@ -471,7 +371,7 @@ fortran-tests:
 	@echo
 	@echo RAN ALL FORTRAN EXAMPLE AND TESTS
 
-fortran-tests-mp:
+fortran-tests-mp: fortran-mp
 	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
@@ -480,7 +380,7 @@ fortran-tests-mp:
 	@echo
 	@echo RAN ALL FORTRAN EXAMPLE AND TESTS
 
-run-fortran-tests:
+run-fortran-tests: fortran
 	$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests
 	@echo
 	@echo RAN ALL FORTRAN EXAMPLE AND TESTS
@@ -490,7 +390,7 @@ clean-fortran-tests:
 	@echo
 	@echo REMOVED FORTRAN TEST SUITE EXECUTABLES AND FILES
 
-python-tests:
+python-tests: python
 	$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON)
 	@echo
 	@echo RAN ALL PYTHON TESTS

@@ -29,38 +29,26 @@ SHELL=/bin/sh
 .PHONY: all clean run-fortran-tests
 
 
-all:
-	@echo
-	@echo -------------------------------------------------------------------------------------------------------
-	@echo Compiling example and test suite code in SHTOOLS/examples/fortran with the following flags:
-	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo -------------------------------------------------------------------------------------------------------
-	@echo
-	
-	$(F95) MarsCrustalThickness/MarsCrustalThickness.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o MarsCrustalThickness/MarsCrustalThickness
-	
-	$(F95) SHCilmPlus/TestCilmPlus.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHCilmPlus/TestCilmPlus
-	
-	$(F95) SHExpandDH/TestExpandDH.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandDH/TestExpandDH
-	
-	$(F95) SHExpandLSQ/TestSHExpandLSQ.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHExpandLSQ/TestSHExpandLSQ
-	
-	$(F95) SHLocalizedAdmitCorr/LocalizedAdmitCorr.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHLocalizedAdmitCorr/LocalizedAdmitCorr
-	
-	$(F95) SHMag/SHMag.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHMag/SHMag
-	
-	$(F95) SHRotate/TestSHRotate.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o SHRotate/TestSHRotate
-	
-	$(F95) TimingAccuracy/TimingAccuracyDH.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDH
-	
-	$(F95) TimingAccuracy/TimingAccuracyDHC.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyDHC
-	
-	$(F95) TimingAccuracy/TimingAccuracyGLQ.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQ
-	
-	$(F95) TimingAccuracy/TimingAccuracyGLQC.f95 $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o TimingAccuracy/TimingAccuracyGLQC
-	
-run-fortran-tests:
+EXAMPLES = \
+	MarsCrustalThickness/MarsCrustalThickness \
+	SHCilmPlus/TestCilmPlus \
+	SHExpandDH/TestExpandDH \
+	SHExpandLSQ/TestSHExpandLSQ \
+	SHLocalizedAdmitCorr/LocalizedAdmitCorr \
+	SHMag/SHMag \
+	SHRotate/TestSHRotate \
+	TimingAccuracy/TimingAccuracyDH \
+	TimingAccuracy/TimingAccuracyDHC \
+	TimingAccuracy/TimingAccuracyGLQ \
+	TimingAccuracy/TimingAccuracyGLQC
+
+
+all: $(EXAMPLES)
+
+%: %.f95 $(LIBPATH)/lib$(LIBNAME).a
+	$(F95) $< $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o $@
+
+run-fortran-tests: $(EXAMPLES)
 	 @echo MARS-CRUSTAL-THICKNESS
 	 cd MarsCrustalThickness ; ./MarsCrustalThickness < input.txt
 	 @echo
@@ -141,29 +129,11 @@ endif
 
 
 clean:
-	-rm -f MarsCrustalThickness/MarsCrustalThickness
-	-rm -f MarsCrustalThickness/*.sh
-	-rm -f MarsCrustalThickness/*.dat
-	-rm -f SHCilmPlus/TestCilmPlus
-	-rm -f SHCilmPlus/*.dat
-	-rm -f SHExpandDH/TestExpandDH
-	-rm -f SHExpandLSQ/TestSHExpandLSQ
-	-rm -f SHLocalizedAdmitCorr/LocalizedAdmitCorr
-	-rm -f SHLocalizedAdmitCorr/*.dat
-	-rm -f SHMag/SHMag
-	-rm -f SHMag/*.dat
-	-rm -f SHRotate/TestSHRotate
-	-rm -f SHRotate/*.sh
-	-rm -f SHRotate/*.dat
-	-rm -f TimingAccuracy/TimingAccuracyDH
-	-rm -f TimingAccuracy/TimingAccuracyDHC
-	-rm -f TimingAccuracy/TimingAccuracyGLQ
-	-rm -f TimingAccuracy/TimingAccuracyGLQC
+	-rm -f $(EXAMPLES)
+	-rm -f $(addsuffix *.sh, $(dir $(EXAMPLES)))
+	-rm -f $(addsuffix *.dat, $(dir $(EXAMPLES)))
 	-rm -f TimingAccuracy/output*
 	-rm -f TimingAccuracy/*.maxerror
 	-rm -f TimingAccuracy/*.rmserror
 	-rm -f TimingAccuracy/*.timef
 	-rm -f TimingAccuracy/*.timei
-	
-
-
