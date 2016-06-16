@@ -11,7 +11,6 @@ import sys
 import os
 import re
 import textwrap
-import string
 import _SHTOOLS
 import _constant
 
@@ -94,7 +93,7 @@ def process_mddoc(fname_mddoc):
     match = retail.search(mdstring)
     if match != None:
         #    mdstring = re.sub(match.group(0),'',mdstring) doesn't work. don't know why
-        mdstring = string.replace(mdstring, match.group(0), '')
+        mdstring = mdstring.replace(match.group(0), '')
 
     match = reh1.search(mdstring)
     while match != None:
@@ -114,12 +113,12 @@ def process_mddoc(fname_mddoc):
     match = recode.search(mdstring)
     while match != None:
         #    mdstring = re.sub(match.group(0),match.group(1),mdstring) doesn't work. don't know why
-        mdstring = string.replace(mdstring, match.group(0), match.group(1))
+        mdstring = mdstring.replace(match.group(0), match.group(1))
         match = recode.search(mdstring)
 
     match = restaresc.search(mdstring)
     while match != None:
-        mdstring = string.replace(mdstring, match.group(0), '*')
+        mdstring = mdstring.replace(match.group(0), '*')
         match = recode.search(mdstring)
 
     #---- combine into docstring ----
