@@ -14,8 +14,6 @@ PYTHON = python
 
 SHELL=/bin/sh
 
-MAKE = make
-
 .PHONY: all clean
 
 all:

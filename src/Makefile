@@ -35,7 +35,6 @@ ARFLAGS = -r
 RLIB = ranlib
 RLIBFLAGS =
 LDFLAGS = -s
-MAKE = make
 
 LIBNAME = SHTOOLS
 PROG =	../lib/lib$(LIBNAME).a

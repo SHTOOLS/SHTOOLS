@@ -26,7 +26,6 @@ LAPACK = -llapack
 BLAS = -lblas
 
 SHELL  = /bin/sh
-MAKE   = make
 LIBPATH = ../../lib
 MODPATH = ../../modules
 FEXDIR = fortran

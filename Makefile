@@ -120,7 +120,6 @@ LAPACK = -llapack
 BLAS = -lblas
 
 SHELL = /bin/sh
-MAKE = make
 FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc
 SRCDIR = src

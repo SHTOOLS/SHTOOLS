@@ -25,7 +25,6 @@ MODPATH = ../../modules/
 LIBNAME = SHTOOLS
 
 SHELL=/bin/sh
-MAKE = make
 
 .PHONY: all clean run-fortran-tests
 
