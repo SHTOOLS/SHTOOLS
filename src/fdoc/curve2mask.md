@@ -4,7 +4,7 @@ Given a set of latitude and longitude coordinates representing a closed curve, o
 
 # Usage
 
-call Curve2Mask (`mask_dh`, `n`, `sampling`, `profile`, `nprofile`, `np`)
+call Curve2Mask (`mask_dh`, `n`, `sampling`, `profile`, `nprofile`, `np`, `centralmeridian`)
 
 # Parameters
 
@@ -25,6 +25,9 @@ call Curve2Mask (`mask_dh`, `n`, `sampling`, `profile`, `nprofile`, `np`)
 
 `np` : input, integer
 :   The value of the returned mask at the North pole (90N, 0E). If the North pole is outside of the concentration region, set this to 0; if it is inside the concentration region, set this to 1.
+
+`centralmeridian` : input, optional, integer, default = 0
+:   If 1, the curve is assumed to pass through the central meridian: passing from < 360 degrees to > 0 degrees. The curve makes a complete circle about the planet in longitude.
 
 # Description
 

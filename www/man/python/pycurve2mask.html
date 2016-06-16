@@ -32,7 +32,7 @@
 <h1 id="curve2mask">Curve2Mask</h1>
 <p>Given a set of latitude and longitude coordinates representing a closed curve, output a gridded binary mask.</p>
 <h1 id="usage">Usage</h1>
-<p><code>mask_dh</code> = pyshtools.Curve2Mask (<code>n</code>, <code>profile</code>, <code>np</code>, [<code>nprofile</code>, <code>sampling</code>])</p>
+<p><code>mask_dh</code> = pyshtools.Curve2Mask (<code>n</code>, <code>profile</code>, <code>np</code>, [<code>nprofile</code>, <code>sampling</code>, <code>centralmeridian</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>dh_mask</code> : integer, dimension (<code>n</code>, <code>n</code>*<code>sampling</code>)</dt>
@@ -56,6 +56,9 @@
 <dt><code>sampling</code> : optional, integer, default = 1</dt>
 <dd>For 1, <code>dh_mask</code> has <code>n</code> x <code>n</code> samples. For 2, <code>dh_mask</code> has <code>n</code> x <code>2n</code> samples.
 </dd>
+<dt><code>centralmeridian</code> : optional, integer, default = 0</dt>
+<dd>If 1, the curve is assumed to pass through the central meridian: passing from &lt; 360 degrees to &gt; 0 degrees. The curve makes a complete circle about the planet in longitude.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>Curve2Mask</code> will take a list of latitude and longitude coordinates that represent a single closed curve, and output a mask <code>mask_dh</code> that contains 1s and 0s where the grid nodes are inside and outside of the curve, respectively. <code>mask_dh</code> must be sampled according to the Driscoll and Healy (1994) sampling theorem with <code>n</code> samples in latitude, and either possess <code>n</code> samples in longitude (<code>sampling=1</code>) or <code>2n</code> samples in longitude (<code>sampling=2</code>). It is necessary to specify a single point as being inside or outside of the curve, and for this the value at the North pole (90N, 0E) must be specified as either 0 or 1.</p>
@@ -73,7 +76,7 @@
 		<tr>
 			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
 			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
-			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>

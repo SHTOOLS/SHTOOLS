@@ -83,6 +83,8 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     integer*1, save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer*1 :: phase
+
+!$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
     
     n = 2 * lmax + 2
     

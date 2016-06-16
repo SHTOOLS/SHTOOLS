@@ -31,7 +31,7 @@
 		</tbody>
 	</table>
 		
-	<p class="center"><i>The current version of SHTOOLS is 3.1 (released July 21, 2015)</i></p>
+	<p class="center"><i>The current version of SHTOOLS is 3.2 (released June 20, 2016)</i></p>
 		
 	<h1>What is SHTOOLS?</h1>
 		
@@ -52,6 +52,8 @@
 
 		<li>Routines are included for performing localized multitaper spectral analyses.</li>
 
+		<li>It is OpenMP compatible and OpenMP thread-safe.</li>
+		
 		<li>Routines are included for performing standard gravity and magnetic field calculations, such as computation of the geoid and the determination of the potential associated with finite-amplitude topography.</li>
 
 		<li>The routines are fast. Spherical harmonic transforms and reconstructions take on the order of 1 second for bandwidths less than 600 and about 3 minutes for bandwidths close to 2800.</li>
@@ -74,6 +76,13 @@
 		<tt>make python-tests</tt><br>
 	</blockquote>
 
+	<p>To compile the OpenMP version of the fortran routines, enter</p>
+	
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot">
+		<tt>make fortran-mp</tt><br>
+	</blockquote>
+
 
 	<p>More information can be found on the GitHub <a href="https://github.com/SHTOOLS/SHTOOLS/wiki">wiki</a> and in the SHTOOLS <a href="www/documentation.html">documentation</a>. Keep up to date by following SHTOOLS on <a href="https://twitter.com/SH_tools">Twitter</a>.</p>
 
@@ -91,7 +100,7 @@
 		<tr>
 			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
 			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
-			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>

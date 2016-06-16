@@ -937,7 +937,7 @@
         call SphericalCapCoef(coef,theta,lmax=lmax)
     end subroutine pySphericalCapCoef
 
-    subroutine pyEigValVecSym(ain,n,eig,evec,ul,K,evec_d0,evec_d1,ain_d0, &
+    subroutine pyEigValVecSym(ain,n,eig,evec,ul,k,evec_d0,evec_d1,ain_d0, &
                                 ain_d1,eig_d0) 
         use shtools, only: EigValVecSym
         implicit none
@@ -946,13 +946,13 @@
         real*8, dimension(eig_d0),intent(out) :: eig
         real*8, dimension(evec_d0,evec_d1),intent(out) :: evec
         character, optional,intent(in) :: ul
-        integer, optional,intent(in) :: K
+        integer, optional,intent(in) :: k
         integer, intent(in) :: evec_d0
         integer, intent(in) :: evec_d1
         integer, intent(in) :: ain_d0
         integer, intent(in) :: ain_d1
         integer, intent(in) :: eig_d0
-        call EigValVecSym(ain,n,eig,evec,ul=ul,K=K)
+        call EigValVecSym(ain,n,eig,evec,ul=ul,k=k)
     end subroutine pyEigValVecSym
 
     subroutine pySHReturnTapersM(theta0,lmax,m,tapers,eigenvalues, &
@@ -994,7 +994,7 @@
         pySHFindLWin=SHFindLWin(theta0,m,alpha,taper_number=taper_number)
     end function pySHFindLWin
 
-    subroutine pySHAdmitCorr(G,T,lmax,admit,corr,admit_error,G_d0,G_d1,G_d2, &
+    subroutine pySHAdmitCorr(G,T,lmax,admit,admit_error,corr,G_d0,G_d1,G_d2, &
                                 admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0) 
         use shtools, only: SHAdmitCorr
         implicit none
@@ -1056,21 +1056,21 @@
         if(taper_wt(1) < 0.d0) then
             if (k1linsig<0) then
                 call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t, &
-                    lmax,admit,corr,K,admit_error=admit_error, &
+                    lmax,admit,corr,k,admit_error=admit_error, &
                     corr_error=corr_error,mtdef=mtdef)
             else
                 call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t, &
-                    lmax,admit,corr,K,admit_error=admit_error, &
+                    lmax,admit,corr,k,admit_error=admit_error, &
                     corr_error=corr_error,mtdef=mtdef,k1linsig=k1linsig)
             endif
         else
             if (k1linsig<0) then
                 call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t, &
-                    lmax,admit,corr,K,admit_error=admit_error, &
+                    lmax,admit,corr,k,admit_error=admit_error, &
                     corr_error=corr_error,taper_wt=taper_wt,mtdef=mtdef)
             else
                 call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t, &
-                    lmax,admit,corr,K,admit_error=admit_error, &
+                    lmax,admit,corr,k,admit_error=admit_error, &
                     corr_error=corr_error,taper_wt=taper_wt,mtdef=mtdef,&
                     k1linsig=k1linsig)
             endif
@@ -1154,14 +1154,14 @@
         call SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg=save_cg)
     end subroutine pySHBias
 
-    subroutine pySHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra, &
+    subroutine pySHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra, &
                             taper_wt,save_cg,taper_wt_d0,tapers_d0, &
                             tapers_d1,incspectra_d0,outcspectra_d0) 
         use shtools, only: SHBiasK
         implicit none
         real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
         integer, intent(in) :: lwin
-        integer, intent(in) :: numk
+        integer, intent(in) :: k
         real*8, dimension(incspectra_d0),intent(in) :: incspectra
         integer, intent(in) :: ldata
         real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
@@ -1173,15 +1173,15 @@
         integer, intent(in) :: incspectra_d0
         integer, intent(in) :: outcspectra_d0
         if (taper_wt(1) < 0.d0) then
-            call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra, &
+            call SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra, &
                         save_cg=save_cg)
         else
-            call SHBiasK(tapers,lwin,numk,incspectra,ldata,outcspectra, &
+            call SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra, &
                             taper_wt=taper_wt,save_cg=save_cg)
         endif
     end subroutine pySHBiasK
 
-    subroutine pySHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,K, &
+    subroutine pySHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,k, &
                                 lat,lon,taper_wt,norm,csphase, &
                                 taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2, &
                                 tapers_d0,tapers_d1,mtse_d0,sd_d0) 
@@ -1194,7 +1194,7 @@
         real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
         integer, dimension(taper_order_d0),intent(in) :: taper_order
         integer, intent(in) :: lmaxt
-        integer, intent(in) :: K
+        integer, intent(in) :: k
         real*8, optional,intent(in) :: lat
         real*8, optional,intent(in) :: lon
         real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
@@ -1211,18 +1211,18 @@
         integer, intent(in) :: sd_d0
         if (taper_wt(1) < 0.d0) then
             call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order, &
-                        lmaxt,K,lat=lat,lon=lon,norm=norm,csphase=csphase)
+                        lmaxt,k,lat=lat,lon=lon,norm=norm,csphase=csphase)
             
         else
             call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt, &
-                        K,lat=lat,lon=lon,taper_wt=taper_wt,norm=norm, &
+                        k,lat=lat,lon=lon,taper_wt=taper_wt,norm=norm, &
                         csphase=csphase)
 
         endif
     end subroutine pySHMultiTaperSE
 
     subroutine pySHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
-                        taper_order,lmaxt,K,lat,lon,taper_wt,norm, &
+                        taper_order,lmaxt,k,lat,lon,taper_wt,norm, &
                         csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2, &
                         taper_order_d0,taper_wt_d0,tapers_d0,tapers_d1, &
                         sd_d0,mtse_d0) 
@@ -1237,7 +1237,7 @@
         real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
         integer, dimension(taper_order_d0),intent(in) :: taper_order
         integer, intent(in) :: lmaxt
-        integer, intent(in) :: K
+        integer, intent(in) :: k
         real*8, optional,intent(in) :: lat
         real*8, optional,intent(in) :: lon
         real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
@@ -1257,12 +1257,12 @@
         integer, intent(in) :: mtse_d0
         if(taper_wt(1) < 0.d0) then
             call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
-                    taper_order,lmaxt,K,lat=lat,lon=lon,norm=norm, &
+                    taper_order,lmaxt,k,lat=lat,lon=lon,norm=norm, &
                     csphase=csphase)
             
         else
             call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
-                    taper_order,lmaxt,K,lat=lat,lon=lon,taper_wt=taper_wt, &
+                    taper_order,lmaxt,k,lat=lat,lon=lon,taper_wt=taper_wt, &
                     norm=norm,csphase=csphase)
 
         endif
@@ -1569,7 +1569,7 @@
         endif
     end subroutine
 
-    subroutine pySHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n, &
+    subroutine pySHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n, &
                         taper_wt,mtdebias_d0,mtdebias_d1,taper_wt_d0, &
                         mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1,lmid_d0) 
         use shtools, only: SHMTDebias
@@ -1579,7 +1579,7 @@
         integer, intent(in) :: lmax
         real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
         integer, intent(in) :: lwin
-        integer, intent(in) :: K
+        integer, intent(in) :: k
         integer, intent(in) :: nl
         real*8, dimension(lmid_d0),intent(out) :: lmid
         integer, intent(out) :: n
@@ -1593,9 +1593,9 @@
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: lmid_d0
         if (taper_wt(1) < 0.d0) then
-            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n)
+            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n)
         else
-            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,K,nl,lmid,n, &
+            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n, &
                         taper_wt=taper_wt)
         endif
     end subroutine pySHMTDebias
@@ -1896,7 +1896,7 @@
         call SHCrossPowerSpectrumDensityC(c1,c2,lmax,cspectra)
     end subroutine pySHCrossPowerSpectrumDensityC
 
-    subroutine pySHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr, &
+    subroutine pySHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr, &
                                     mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0, &
                                     admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0) 
         use shtools, only: SHBiasAdmitCorr
@@ -1907,7 +1907,7 @@
         integer, intent(in) :: lmax
         real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
         integer, intent(in) :: lwin
-        integer, intent(in) :: K
+        integer, intent(in) :: k
         real*8, dimension(admit_d0),intent(out) :: admit
         real*8, dimension(corr_d0),intent(out) :: corr
         integer, optional,intent(in) :: mtdef
@@ -1921,10 +1921,10 @@
         integer, intent(in) :: corr_d0
         integer, intent(in) :: sgg_d0
         if (taper_wt(1) < 0.d0) then
-            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr, &
+            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr, &
                                 mtdef=mtdef)
         else
-            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,K,admit,corr, &
+            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr, &
                                 mtdef=mtdef,taper_wt=taper_wt)
         endif
     end subroutine pySHBiasAdmitCorr
@@ -1994,8 +1994,9 @@
                                 sampling=sampling,Ntapers=Ntapers)
     end subroutine pySHReturnTapersMap
 
-    subroutine pyCurve2Mask(dhgrid,n,sampling,profile,nprofile,NP,profile_d0, &
-                            profile_d1,dhgrid_d0,dhgrid_d1) 
+    subroutine pyCurve2Mask(dhgrid,n,sampling,profile,nprofile,NP,&
+    						centralmeridian,profile_d0,profile_d1,dhgrid_d0,&
+    						dhgrid_d1) 
         use shtools, only: Curve2Mask
         implicit none
         integer, dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
@@ -2004,11 +2005,13 @@
         real*8, dimension(profile_d0,profile_d1),intent(in) :: profile
         integer, intent(in) :: nprofile
         integer, intent(in) :: NP
+        integer, optional, intent(in) :: centralmeridian
         integer, intent(in) :: profile_d0
         integer, intent(in) :: profile_d1
         integer, intent(in) :: dhgrid_d0
         integer, intent(in) :: dhgrid_d1
-        call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP)
+        call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,&
+        				centralmeridian=centralmeridian)
     end subroutine pyCurve2Mask
 
     subroutine pyMakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval, &

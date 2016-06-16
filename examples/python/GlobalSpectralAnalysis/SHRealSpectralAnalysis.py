@@ -67,7 +67,7 @@ def test_RealSpectralAnalysis():
     print 'tot cpower computed with SHCrossPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1)))
 
     print '\n---- testing SHAdmitCorr and SHConfidence ----'
-    admit, corr, dadmit = shtools.SHAdmitCorr(coeffs1, coeffs2)
+    admit, dadmit, corr = shtools.SHAdmitCorr(coeffs1, coeffs2)
     confidence = np.array([shtools.SHConfidence(l, corr[l]) for l in ls])
     print 'admittance:', admit
     print 'admittance error:', dadmit

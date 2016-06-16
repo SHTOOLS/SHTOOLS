@@ -72,7 +72,7 @@ subroutine CilmPlusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
     integer, intent(in) :: lmax, nmax, gridtype
     integer, intent(in), optional :: n
     real*8 :: prod, pi, scalef
-    real*8, allocatable :: cilmn(:, :, :), grid(:, :)
+    real*8, allocatable :: cilmn(:,:,:), grid(:,:)
     integer :: j, l, k, nlat, nlong, astat(2), lmax_dh
 
     pi = acos(-1.0d0)

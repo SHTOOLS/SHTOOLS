@@ -8,24 +8,25 @@ import os
 import sys
 import time
 import numpy as np
+import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools as shtools
 
+import IPython
+
+
 #==== MAIN FUNCTION ====
-
-
 def main():
     TimingAccuracyDH()
 
+
 #==== TEST FUNCTIONS ====
-
-
 def TimingAccuracyDH():
     #---- input parameters ----
     maxdeg = 2800
     ls = np.arange(maxdeg + 1)
-    sampling = 1
+    sampling = 2
     beta = -1.5
 
     #---- create mask to filter out m<=l ----
@@ -62,7 +63,7 @@ def TimingAccuracyDH():
         tforward = tend - tstart
 
         # compute error
-        err = ((cilm_trim[mask_trim] - cilm2_trim[mask_trim]) / cilm_trim[mask_trim])**2
+        err = ((cilm_trim[mask_trim] - cilm2_trim[mask_trim]) / (cilm_trim[mask_trim])**2 + 1e-20)
         maxerr = np.sqrt(err.max())
         rmserr = np.mean(err)
 

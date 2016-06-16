@@ -87,3 +87,13 @@ examples/python/GravMag/Mars_Grav.png
 examples/python/GravMag/Mars_Mag.png
 examples/python/GravMag/Mars_MagPowerSpectrum.png
 examples/python/GravMag/Mars_CrustalThicknes.png
+examples/python/ClassInterface/DHGrid.png
+examples/python/ClassInterface/DHGrid_rotated.png
+examples/python/ClassInterface/DHGrid_unrotated.png
+examples/python/ClassInterface/GLQGrid.png
+examples/python/ClassInterface/cap_coupling.png
+examples/python/ClassInterface/cap_tapers.png
+examples/python/ClassInterface/continent_coupling.png
+examples/python/ClassInterface/continent_tapers.png
+examples/python/ClassInterface/power.png
+examples/python/LocalizedSpectralAnalysis/mask.png

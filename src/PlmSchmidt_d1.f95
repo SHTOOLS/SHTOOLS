@@ -74,6 +74,8 @@ subroutine PlmSchmidt_d1(p, dp, lmax, z, csphase, cnorm)
     integer :: k, kstart, m, l, sdim, astat(3)
     integer, save :: lmax_old = 0
     integer*1 :: phase
+
+!$OMP    threadprivate(f1, f2, sqr, lmax_old)
         
     if (lmax == -1) then
         if (allocated (sqr)) deallocate (sqr)

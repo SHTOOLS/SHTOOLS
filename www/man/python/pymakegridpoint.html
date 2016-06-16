@@ -32,7 +32,7 @@
 <h1 id="makegridpoint">MakeGridPoint</h1>
 <p>Evaluate a function expressed in spherical harmonics at a single point.</p>
 <h1 id="usage">Usage</h1>
-<p><code>value</code> = pyshtools.MakeGridPoint (<code>cilm</code>, <code>lmax</code>, <code>lat</code>, <code>lon</code>, [<code>norm</code>, <code>csphase</code>, <code>dealloc</code>])</p>
+<p><code>value</code> = pyshtools.MakeGridPoint (<code>cilm</code>, <code>lat</code>, <code>lon</code>, [<code>lmax</code>, <code>norm</code>, <code>csphase</code>, <code>dealloc</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>value</code> : float</dt>
@@ -44,14 +44,14 @@
 <dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
 <dd>The real spherical harmonic coefficients of the function. The coefficients <code>C0lm</code> and <code>C1lm</code> refer to the cosine (<code>Clm</code>) and sine (<code>Slm</code>) coefficients, respectively, with <code>Clm=cilm[0,1,m]</code> and <code>Slm=cilm[1,l,m]</code>.
 </dd>
-<dt><code>lmax</code> : integer</dt>
-<dd>The maximum spherical harmonic degree used in evaluating the function.
-</dd>
 <dt><code>lat</code> : float</dt>
 <dd>The latitude of the point in DEGREES.
 </dd>
 <dt><code>lon</code> : float</dt>
 <dd>The longitude of the point in DEGREES.
+</dd>
+<dt><code>lmax</code> : optional, integer, default = <code>lmaxin</code></dt>
+<dd>The maximum spherical harmonic degree used in evaluating the function.
 </dd>
 <dt><code>norm</code> : optional, integer, default = 1</dt>
 <dd>1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
@@ -76,7 +76,7 @@
 		<tr>
 			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
 			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
-			<td class="c3">&copy; 2015 <a href="http://www.ipgp.fr/~wieczor">Mark Wieczorek</a></td>
+			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>

@@ -50,8 +50,10 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
     integer, intent(in), optional :: precomp, norm, csphase
     integer ::  lmaxout, phase, mnorm, astat(2), nlat, nlong
     real*8, allocatable, save :: zero(:), w(:)
-    integer, save :: first = 1, lmaxout_last = 0
+    integer, save :: first = 1, lmaxout_last = -1
     real*8, allocatable :: grid1glq(:,:), grid2glq(:,:), plx(:,:)
+
+!$OMP   threadprivate(zero, w, first, lmaxout_last)
 
     if (size(sh1(:,1,1)) < 2 .or. size(sh1(1,:,1)) < lmax1+1 .or. &
             size(sh1(1,1,:)) < lmax1+1) then
