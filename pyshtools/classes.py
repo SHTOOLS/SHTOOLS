@@ -21,11 +21,13 @@ The following three classes will be implemented:
 Matthias Meschede and Mark Wieczorek, 2015
 """
 
+from __future__ import absolute_import
+
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from _SHTOOLS import *
+from ._SHTOOLS import *
 
 #===============================================================================
 #=========== COEFFICIENT CLASSES ===============================================
