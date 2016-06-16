@@ -3,7 +3,7 @@
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
-from __future__ import division, print_function
+from __future__ import absolute_import, division, print_function
 
 # standard imports:
 import os

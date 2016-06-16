@@ -2,7 +2,7 @@
 """
 This script tests the localized spectral analysis routines
 """
-from __future__ import division, print_function
+from __future__ import absolute_import, division, print_function
 
 # standard imports:
 import os

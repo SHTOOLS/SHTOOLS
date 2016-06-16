@@ -2,7 +2,7 @@
 """
 This script tests functions to compute different Power Spectra from complex SH coefficients
 """
-from __future__ import division, print_function
+from __future__ import absolute_import, division, print_function
 
 # standard imports:
 import os
