@@ -2,7 +2,7 @@
 """
 This script tests the rotation of spherical harmonic coefficients
 """
-from __future__ import print_function
+from __future__ import division, print_function
 
 # standard imports:
 import os
@@ -53,7 +53,7 @@ def test_SHRotations():
     print('\n---- testing SHRotateCoef ----')
     print('generating normal distributed complex coefficients with variance 1...')
     ccoeffs = np.random.normal(loc=0., scale=1., size=(lmax + 1) * (lmax + 2))
-    ccoeffs = ccoeffs.reshape(2, (lmax + 1) * (lmax + 2) / 2)
+    ccoeffs = ccoeffs.reshape(2, (lmax + 1) * (lmax + 2) // 2)
     ccoeffs_rot = shtools.SHRotateCoef(angles, ccoeffs, dj_matrix)
     print(ccoeffs_rot)
 

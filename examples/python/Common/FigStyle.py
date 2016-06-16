@@ -2,7 +2,7 @@
 Contains configuration parameters for matplotlib.
 """
 
-from __future__ import print_function
+from __future__ import division, print_function
 
 #---- some typical sizes for an A4 text document ----
 pt2inch = 1.0 / 72.27

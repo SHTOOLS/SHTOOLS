@@ -2,7 +2,7 @@
 """
 This script tests the different Spherical Harmonics Transforms on the Mars topography data set
 """
-from __future__ import print_function
+from __future__ import division, print_function
 
 # standard imports:
 import os

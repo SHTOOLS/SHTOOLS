@@ -3,7 +3,7 @@
 This script is a python version of TimingAccuracyDHC. We use numpy functions to
 simplify the creation of random coefficients.
 """
-from __future__ import print_function
+from __future__ import division, print_function
 
 import os
 import sys

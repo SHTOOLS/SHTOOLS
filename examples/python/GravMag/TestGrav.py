@@ -2,7 +2,7 @@
 """
 This script tests the gravity and magnetics routines. 
 """
-from __future__ import print_function
+from __future__ import division, print_function
 
 # standard imports:
 import os
