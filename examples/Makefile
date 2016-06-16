@@ -34,6 +34,8 @@ PEXDIR = python
 
 LIBNAME = SHTOOLS
 
+.PHONY: fortran-tests run-python-tests clean-fortran-tests clean-python-tests
+
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags
 F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=11

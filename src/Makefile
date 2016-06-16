@@ -164,7 +164,7 @@ $(PROG): $(OBJS)
 	@echo
 	@echo ARCHIVE SUCCESSFULLY CREATED
 	
-.PHONY: clean
+.PHONY: clean all all2 all3
 
 clean:
 	-rm -f $(PROG)

@@ -27,11 +27,10 @@ LIBNAME = SHTOOLS
 SHELL=/bin/sh
 MAKE = make
 
-.PHONY: all getflags clean run-fortran-tests
+.PHONY: all clean run-fortran-tests
 
 
-all: getflags
-
+all:
 	@echo
 	@echo -------------------------------------------------------------------------------------------------------
 	@echo Compiling example and test suite code in SHTOOLS/examples/fortran with the following flags:
@@ -110,8 +109,6 @@ run-fortran-tests:
 	 @echo
 	 @echo TIMING-ACCURACY-GLQC
 	 cd TimingAccuracy ; ./TimingAccuracyGLQC < input8 > output8
-
-getflags:
 
 ifeq ($(F95),f95)
 F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic

@@ -178,7 +178,7 @@ endif
 
 .PHONY: all all2 all3 fortran fortran2 fortran3 python install doc remove-doc clean\
 	fortran-tests clean-fortran-tests run-fortran-tests run-python-tests\
-	install uninstall fortran-mp fortran2-mp fortran3-mp
+	install-fortran uninstall fortran-mp fortran2-mp fortran3-mp
 
 all:
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
