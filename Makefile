@@ -359,8 +359,8 @@ pyshtools/_constant$(PY3EXT): $(SRCDIR)/PlanetsConstants.f95
 install: install-fortran install-python
 
 install-python2: python2
-	mkdir -pv $(SYSPYPATH)
-	cp -R pyshtools $(SYSPYPATH)/
+	mkdir -pv $(SYSPYPATH)/pyshtools
+	cp -R $(filter-out %$(PY3EXT), $(wildcard pyshtools/*)) $(SYSPYPATH)/pyshtools/
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo import shtools into Python 2 with:
 	@echo
@@ -370,8 +370,9 @@ install-python2: python2
 	@echo ---------------------------------------------------------------------------------------------------
 
 install-python3: python3
-	mkdir -pv $(SYSPY3PATH)
-	cp -R pyshtools $(SYSPY3PATH)/
+	mkdir -pv $(SYSPY3PATH)/pyshtools
+	cp -R $(filter-out %.so, $(wildcard pyshtools/*)) $(SYSPY3PATH)/pyshtools/
+	cp -R $(filter %$(PY3EXT), $(wildcard pyshtools/*)) $(SYSPY3PATH)/pyshtools/
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo import shtools into Python 3 with:
 	@echo
