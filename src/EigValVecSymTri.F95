@@ -49,6 +49,9 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
     real*8, allocatable ::  z(:,:)
     integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, &
                 iwork(nbl*n), i, astat
+#ifdef LAPACK_UNDERSCORE
+#define dstegr dstegr_
+#endif
     external dstegr
 
     if (size(ain(:,1)) < n .or. size(ain(1,:)) < n) then

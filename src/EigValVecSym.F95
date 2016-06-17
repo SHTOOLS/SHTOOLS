@@ -63,8 +63,13 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
     real*8, allocatable ::  a(:,:), z(:,:)
     integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
                 i, astat(2)
-    external dsytrd_, dstegr_, dormtr_
-    
+#ifdef LAPACK_UNDERSCORE
+#define dsytrd dsytrd_
+#define dstegr dstegr_
+#define dormtr dormtr_
+#endif
+    external dsytrd, dstegr, dormtr
+
     if (size(ain(:,1)) < n .or. size(ain(1,:)) < n) then
         print*, "Error --- EigValVecSym"
         print*, "AIN must be dimensioned as (N, N) where N is ", n
@@ -145,7 +150,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
     !
     !---------------------------------------------------------------------------
 
-    call dsytrd_(uplo, n, a, n, d, e(1:n-1), tau, work, lwork, info)
+    call dsytrd(uplo, n, a, n, d, e(1:n-1), tau, work, lwork, info)
 
     if (info /= 0) then
         print*, "Error --- EigValVecSym"
@@ -171,10 +176,10 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
     abstol = 0.0d0
     
     if (present(K)) then
-        call dstegr_('v','I', n, d, e, vl, vu, n-K+1, n, abstol, m,  w, &
+        call dstegr('v','I', n, d, e, vl, vu, n-K+1, n, abstol, m,  w, &
                     z, n, isuppz, work, lwork, iwork, liwork, info)
     else
-        call dstegr_('v','I', n, d, e, vl, vu, il, iu, abstol, m,  w, &
+        call dstegr('v','I', n, d, e, vl, vu, il, iu, abstol, m,  w, &
                     z, n, isuppz, work, lwork, iwork, liwork, info)
     end if
     
@@ -210,7 +215,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
     !
     !---------------------------------------------------------------------------
     
-    call dormtr_('L', uplo, 'N', n, n, a, n, tau, z, n, work, lwork, info)
+    call dormtr('L', uplo, 'N', n, n, a, n, tau, z, n, work, lwork, info)
 
     if (info /= 0) then
         print*, "Error --- EigValVecSym"

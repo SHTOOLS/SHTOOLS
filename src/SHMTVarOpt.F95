@@ -61,6 +61,9 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
                 work((kmax+1)*nb)
     integer ::  i,j, m, mp, k, ipiv(kmax+1), info, lwork
     complex*16 :: temp1
+#ifdef LAPACK_UNDERSCORE
+#define DSYSV DSYSV_
+#endif
     external :: DSYSV
 
     if (size(Sff) < l+lwin + 1) then

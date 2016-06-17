@@ -51,7 +51,11 @@ subroutine EigValSym(ain, n, eval, ul)
     real*8, allocatable ::  a(:,:), z(:,:)
     integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
                 i, astat(2)
-    external    dsytrd_, dstegr_
+#ifdef LAPACK_UNDERSCORE
+#define dsytrd dsytrd_
+#define dstegr dstegr_
+#endif
+    external    dsytrd, dstegr
     
     if (size(ain(:,1)) < n .or. size(ain(1,:)) < n) then
         print*, "Error --- EigValSym"
@@ -94,7 +98,7 @@ subroutine EigValSym(ain, n, eval, ul)
     !
     !---------------------------------------------------------------------------
 
-    call dsytrd_(uplo, n, a, n, d, e(1:n-1), tau, work, lwork, info)
+    call dsytrd(uplo, n, a, n, d, e(1:n-1), tau, work, lwork, info)
 
     if (info /= 0) then
         print*, "Error --- EigValSym"
@@ -118,7 +122,7 @@ subroutine EigValSym(ain, n, eval, ul)
     
     abstol = 0.0d0
     
-    call dstegr_('n','a', n, d, e, vl, vu, il, iu, abstol, m,  w, &
+    call dstegr('n','a', n, d, e, vl, vu, il, iu, abstol, m,  w, &
                 z, n, isuppz, work, lwork, iwork, liwork, info)
 
     if (info /= 0) then
