@@ -19,7 +19,6 @@ from copy import deepcopy
 def main():
     fname_fortran = 'SHTOOLS.f95'
     fname_wrapper = 'PythonWrapper.f95'
-    outfile = open(fname_wrapper, 'w')
 
     print('now cracking Fortran file SHTOOLS.f95 using f2py function...')
     crackfortran.verbose = False
@@ -79,21 +78,22 @@ def main():
         except IndexError:
             pass
 
-    for line in wrapperlines[4:-5]:
-        line = line.replace('! in SHTOOLS.f95:SHTOOLS:unknown_interface', '')
-        if len(line) <= 100:
-            outfile.write(line + '\n')
-        else:
-            elems = line.split(',')
-            newline = elems[0]
-            for elem in elems[1:]:
-                if len(newline) > 100:
-                    outfile.write(newline + '&\n')
-                    newline = ' ' * len(elems[0])
-                newline += ',' + elem
-            outfile.write(newline + '\n')
+    with open(fname_wrapper, 'w') as outfile:
+        for line in wrapperlines[4:-5]:
+            line = line.replace('! in SHTOOLS.f95:SHTOOLS:unknown_interface',
+                                '')
+            if len(line) <= 100:
+                outfile.write(line + '\n')
+            else:
+                elems = line.split(',')
+                newline = elems[0]
+                for elem in elems[1:]:
+                    if len(newline) > 100:
+                        outfile.write(newline + '&\n')
+                        newline = ' ' * len(elems[0])
+                    newline += ',' + elem
+                outfile.write(newline + '\n')
 
-    outfile.close()
     print('\n==== ALL DONE ====\n')
 
 #==== FUNCTIONS ====

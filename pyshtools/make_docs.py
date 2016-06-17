@@ -34,9 +34,8 @@ def main():
                     docstring = process_mddoc(fname_mddoc)
                     #---- save combined docstring in the pydoc folder--
                     fname_pydoc = os.path.join(pydocfolder, name.lower() + '.doc')
-                    pydocfile = open(fname_pydoc, 'w')
-                    pydocfile.write(docstring)
-                    pydocfile.close()
+                    with open(fname_pydoc, 'w') as pydocfile:
+                        pydocfile.write(docstring)
 
             except IOError as msg:
                 print(msg)
@@ -51,9 +50,8 @@ def main():
             docstring = process_mddoc(fname_mddoc)
             #---- save combined docstring in the pydoc folder--
             fname_pydoc = os.path.join(pydocfolder, name.lower() + '.doc')
-            pydocfile = open(fname_pydoc, 'w')
-            pydocfile.write(docstring)
-            pydocfile.close()
+            with open(fname_pydoc, 'w') as pydocfile:
+                pydocfile.write(docstring)
 
         except IOError as msg:
             print(msg)
@@ -67,9 +65,8 @@ def main():
 
             #-- save docstring in the pydoc folder--
             fname_pydoc = os.path.join(pydocfolder, 'constant_' + name.lower() + '.doc')
-            pydocfile = open(fname_pydoc, 'w')
-            pydocfile.write(docstring)
-            pydocfile.close()
+            with open(fname_pydoc, 'w') as pydocfile:
+                pydocfile.write(docstring)
 
         except IOError as msg:
             print(msg)
@@ -86,9 +83,8 @@ def process_mddoc(fname_mddoc):
     #rebold = re.compile('(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
 
     #---- open md file and search for patterns ----
-    mdfile = open(fname_mddoc, 'r')
-    mdstring = mdfile.read()
-    mdfile.close()
+    with open(fname_mddoc, 'r') as mdfile:
+        mdstring = mdfile.read()
 
     match = retail.search(mdstring)
     if match != None:
