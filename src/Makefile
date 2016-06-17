@@ -176,10 +176,7 @@ clean:
 	-rm -f ../modules/*.mod
 
 
-.SUFFIXES: $(SUFFIXES) .f95 
-
-
-.f95.o:
+%.o: %.f95
 	$(F95) -c $(F95FLAGS) $<
 	
 
