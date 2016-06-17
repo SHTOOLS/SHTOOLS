@@ -121,7 +121,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     integer, save :: lmax_old = 0
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
-    
+
     n = 2 * lmax+2
     
     if (present(sampling)) then
