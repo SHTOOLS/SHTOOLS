@@ -30,7 +30,7 @@ def main():
 def test_SHConversions():
     print('---- testing SHrtoc and SHctor ----')
     lmax = 10
-    coeffs1 = np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
+    coeffs1 = np.random.normal(loc=0., scale=1., size=(2, lmax + 1, lmax + 1))
     mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
     for l in np.arange(lmax + 1):
         mask[:, l, :l + 1] = True
@@ -53,7 +53,8 @@ def example():
     coeffs2_buf = shtools.SHrtoc(coeffs1, convention=1, switchcs=0)
     coeffs2[0, :, :].real = coeffs2_buf[0, :, :]
     coeffs2[0, :, :].imag = coeffs2_buf[1, :, :]
-    coeffs2[1] = coeffs2[0].conjugate() * ((-1)**np.arange(lmax + 1)).reshape(1, 1, lmax + 1)
+    coeffs2[1] = (coeffs2[0].conjugate() *
+                  ((-1)**np.arange(lmax + 1))[np.newaxis, :])
 
     #--- compute and plot grid ---
     grid1 = shtools.MakeGridDH(coeffs1, lmax, csphase=-1)

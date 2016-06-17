@@ -19,14 +19,14 @@ typical imports
 creating coefficient array
 --------------------------
 >> lmax = 80
->> coeffs = np.random.normal(size=2*(lmax+1)*(lmax+1)).reshape(2,lmax+1,lmax+1)
+>> coeffs = np.random.normal(size=(2, lmax + 1, lmax + 1))
 or
 >> coeffs = np.zeros( (2,lmax+1,lmax+1) )
 
 forward and inverse spherical harmonic transforms
 -------------------------------------------------
 >> grid = shtools.MakeGridDH(coeffs)
->> coeffs = phtools.SHExpandDH(grid)
+>> coeffs = shtools.SHExpandDH(grid)
 
 
 KNOWN ISSUES

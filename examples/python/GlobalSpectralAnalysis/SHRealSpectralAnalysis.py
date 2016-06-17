@@ -39,7 +39,7 @@ def test_RealSpectralAnalysis():
 
     print('\n---- testing SHPower/DensityL, SHPowerSpectrum/Density ----')
     print('generating normal distributed coefficients with variance 1...')
-    coeffs1 = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
+    coeffs1 = np.random.normal(size=(2, lmax + 1, lmax + 1))
     coeffs1[np.invert(mask)] = 0.
 
     spec1 = np.array([shtools.SHPowerL(coeffs1, l) for l in ls])
@@ -54,7 +54,7 @@ def test_RealSpectralAnalysis():
 
     print('\n---- testing SHCrossCrossPower/DensityL, SHCrossCrossPowerSpectrum/Density ----')
     print('generating two sets of normal distributed coefficients with variance 1...')
-    coeffs2 = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
+    coeffs2 = np.random.normal(size=(2, lmax + 1, lmax + 1))
     coeffs2[np.invert(mask)] = 0.
 
     spec1 = np.array([shtools.SHCrossPowerL(coeffs1, coeffs2, l) for l in ls])

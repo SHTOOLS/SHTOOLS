@@ -64,13 +64,14 @@ class SHCoeffs(object):
         for cls in self.__subclasses__():
             if cls.istype(kind):
                 if kind == 'real':
-                    coeffs = np.random.normal(size=2 * nl * nl).reshape(2, nl, nl)
-                    coeffs *= np.sqrt(power.reshape(1, nl, 1))
+                    coeffs = np.random.normal(size=(2, nl, nl))
+                    coeffs *= np.sqrt(power)[np.newaxis, :, np.newaxis]
                 elif kind == 'complex':
-                    coeffs = np.random.normal(loc=0., scale=1., size=2 * nl * nl ) + \
-                        1j * np.random.normal(loc=0., scale=1., size=2 * nl * nl )
-                    coeffs = coeffs1.reshape(2, nl, nl)
-                    coeffs *= np.sqrt(power.reshape(1, nl, 1))
+                    coeffs = (np.random.normal(loc=0., scale=1.,
+                                               size=(2, nl, nl)) +
+                              1j * np.random.normal(loc=0., scale=1.,
+                                                    size=(2, nl, nl)))
+                    coeffs *= np.sqrt(power)[np.newaxis, :, np.newaxis]
                 else:
                     raise ValueError("kind='{:s}' should be 'real' or 'complex'".format(str(kind)))
                 return cls(coeffs)
@@ -199,7 +200,7 @@ class SHRealCoefficients(SHCoeffs):
     def __init__(self, coeffs, normalization='4pi'):
         #---- create mask to filter out m<=l ----
         lmax = coeffs.shape[1] - 1
-        mask = np.zeros(2 * (lmax + 1) * (lmax + 1), dtype=np.bool).reshape(2, lmax + 1, lmax + 1)
+        mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
         mask[0, 0, 0] = True
         for l in np.arange(lmax + 1):
             mask[:, l, :l + 1] = True
