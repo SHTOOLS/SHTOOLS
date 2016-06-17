@@ -78,7 +78,12 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 !-------------------------------------------------------------------------------
     use fftw3
     use shtools, only: dhaj, csphase_default
-        
+#ifdef FFTW3_UNDERSCORE
+#define dfftw_plan_dft_r2c_1d dfftw_plan_dft_r2c_1d_
+#define dfftw_execute dfftw_execute_
+#define dfftw_destroy_plan dfftw_destroy_plan_
+#endif
+
     implicit none
     
     real*8, intent(in) :: grid(:,:)

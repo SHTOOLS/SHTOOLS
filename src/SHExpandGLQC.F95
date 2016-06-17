@@ -64,7 +64,12 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 !-------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: NGLQSH, CSPHASE_DEFAULT
-    
+#ifdef FFTW3_UNDERSCORE
+#define dfftw_plan_dft_1d dfftw_plan_dft_1d_
+#define dfftw_execute dfftw_execute_
+#define dfftw_destroy_plan dfftw_destroy_plan_
+#endif
+
     implicit none
     
     real*8, intent(in) :: w(:)
@@ -353,7 +358,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     !   Create generic plan for grid.
     !
     !---------------------------------------------------------------------------
-    call dfftw_plan_dft_1d_(plan, nlong, gridl(1:nlong), cc(1:nlong), &
+    call dfftw_plan_dft_1d(plan, nlong, gridl(1:nlong), cc(1:nlong), &
                     FFTW_FORWARD, FFTW_MEASURE)
     
     !---------------------------------------------------------------------------
@@ -370,7 +375,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
         do i = 1, nlat
         
             gridl(1:nlong) = gridglq(i,1:nlong)
-            call dfftw_execute_(plan)   ! take fourier transform
+            call dfftw_execute(plan)   ! take fourier transform
             fcoef1(1:nlong) = 2 * cc(1:nlong) * w(i) * pi / dble(nlong)
             
             k = 0
@@ -399,7 +404,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
             ! This latitude is the equator; z=0, u=1
             
                 gridl(1:nlong) = gridglq(i,1:nlong)
-                call dfftw_execute_(plan)   ! take fourier transform
+                call dfftw_execute(plan)   ! take fourier transform
                 fcoef1(1:nlong) = 2 * w(i) * pi * cc(1:nlong) / dble(nlong)
                 
                 u = 1.0d0
@@ -490,13 +495,13 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 u = sqrt( (1.0d0-z) * (1.0d0+z) )
                 
                 gridl(1:nlong) = gridglq(i,1:nlong)
-                call dfftw_execute_(plan)            
+                call dfftw_execute(plan)            
                 fcoef1(1:nlong) = 2 * w(i) * pi * cc(1:nlong) / dble(nlong)
                 
                 i_s = nlat + 1 - i  ! point symmetric about the equator
                 
                 gridl(1:nlong) = gridglq(i_s,1:nlong)
-                call dfftw_execute_(plan)            
+                call dfftw_execute(plan)            
                 fcoef2(1:nlong) = 2 * w(i_s) * pi * cc(1:nlong) / dble(nlong)
 
                 select case (lnorm)
@@ -621,7 +626,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     
     end if
     
-    call dfftw_destroy_plan_(plan) 
+    call dfftw_destroy_plan(plan) 
     
     !---------------------------------------------------------------------------
     !

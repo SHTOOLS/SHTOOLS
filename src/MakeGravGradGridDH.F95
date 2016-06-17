@@ -92,7 +92,12 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !
 !-------------------------------------------------------------------------------
     use FFTW3
-    
+#ifdef FFTW3_UNDERSCORE
+#define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
+#define dfftw_execute dfftw_execute_
+#define dfftw_destroy_plan dfftw_destroy_plan_
+#endif
+
     implicit none
     
     real*8, intent(in) :: cilm(:,:,:), gm, r0, a, f
@@ -318,7 +323,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     !   
     !---------------------------------------------------------------------------
     
-    call dfftw_plan_dft_c2r_1d_(plan, nlong, coef(1:nlong/2+1), grid(1:nlong), &
+    call dfftw_plan_dft_c2r_1d(plan, nlong, coef(1:nlong/2+1), grid(1:nlong), &
                                 FFTW_MEASURE)
 
     i_eq = n/2 + 1  ! Index correspondong to zero latitude
@@ -808,7 +813,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             
         end if       
         
-        call dfftw_execute_(plan)    ! take fourier transform
+        call dfftw_execute(plan)    ! take fourier transform
         vzz(i,1:nlong) = grid(1:nlong)
                                 
         if (i == 1) then
@@ -830,7 +835,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if 
                   
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vxx(i,1:nlong) = grid(1:nlong)
                     
             ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -846,7 +851,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if       
             
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vyy(i,1:nlong) = grid(1:nlong)
                     
             ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -861,7 +866,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
                    
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vxy(i,1:nlong) = grid(1:nlong)
                     
             ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -875,7 +880,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
                   
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vxz(i,1:nlong) = grid(1:nlong)
                     
             ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -889,7 +894,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if       
             
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vyz(i,1:nlong) = grid(1:nlong) 
         
         end if
@@ -905,7 +910,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if       
             
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vzz(i_s,1:nlong) = grid(1:nlong) 
 
             ! Vxx = 1/r Vr + 1/r^2 Vtt
@@ -919,7 +924,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if       
             
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vxx(i_s,1:nlong) = grid(1:nlong)
                     
             ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -935,7 +940,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if       
             
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vyy(i_s,1:nlong) = grid(1:nlong)
                     
             ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -950,7 +955,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if       
             
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vxy(i_s,1:nlong) = grid(1:nlong)
                     
             ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -964,7 +969,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if       
             
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vxz(i_s,1:nlong) = grid(1:nlong)
                     
             ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -978,7 +983,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if       
             
-            call dfftw_execute_(plan)    ! take fourier transform
+            call dfftw_execute(plan)    ! take fourier transform
             vyz(i_s,1:nlong) = grid(1:nlong) 
         
         end if
@@ -1252,7 +1257,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if 
           
-    call dfftw_execute_(plan)    ! take fourier transform
+    call dfftw_execute(plan)    ! take fourier transform
     vzz(i_eq,1:nlong) = grid(1:nlong)
                                 
     ! Vxx = 1/r Vr + 1/r^2 Vtt
@@ -1265,7 +1270,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
            
-    call dfftw_execute_(plan)    ! take fourier transform
+    call dfftw_execute(plan)    ! take fourier transform
     vxx(i_eq,1:nlong) = grid(1:nlong)
                     
     ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -1279,7 +1284,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if 
           
-    call dfftw_execute_(plan)    ! take fourier transform
+    call dfftw_execute(plan)    ! take fourier transform
     vyy(i_eq,1:nlong) = grid(1:nlong)
                     
     ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -1292,7 +1297,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if       
     
-    call dfftw_execute_(plan)    ! take fourier transform
+    call dfftw_execute(plan)    ! take fourier transform
     vxy(i_eq,1:nlong) = grid(1:nlong)
                     
     ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -1306,7 +1311,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         endif
     end if
           
-    call dfftw_execute_(plan)    ! take fourier transform
+    call dfftw_execute(plan)    ! take fourier transform
     vxz(i_eq,1:nlong) = grid(1:nlong)
                     
     ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -1320,9 +1325,9 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
         
-    call dfftw_execute_(plan)    ! take fourier transform
+    call dfftw_execute(plan)    ! take fourier transform
     vyz(i_eq,1:nlong) = grid(1:nlong)
                     
-    call dfftw_destroy_plan_(plan)
+    call dfftw_destroy_plan(plan)
                 
 end subroutine MakeGravGradGridDH

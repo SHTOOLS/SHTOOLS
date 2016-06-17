@@ -99,37 +99,30 @@ SRCSLAPACK = EigValSym.F95 EigValVecSym.F95 EigValVecSymTri.F95 SHExpandLSQ.F95 
 OBJSLAPACK = EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o SHMTDebias.o \
 	SHMTVarOpt.o
 
-SRCSFFTW1 = MakeGridDH.f95 MakeGridDHC.f95 MakeGridGLQ.f95 MakeGridGLQC.f95 \
-	SHExpandDH.f95 SHExpandDHC.f95 SHExpandGLQ.f95 SHExpandGLQC.f95 \
-	MakeGravGradGridDH.f95 MakeGravGridDH.f95 MakeMagGridDH.f95
+SRCSFFTW = MakeGridDH.F95 MakeGridDHC.F95 MakeGridGLQ.F95 MakeGridGLQC.F95 \
+	SHExpandDH.F95 SHExpandDHC.F95 SHExpandGLQ.F95 SHExpandGLQC.F95 \
+	MakeGravGradGridDH.F95 MakeGravGridDH.F95 MakeMagGridDH.F95
 	
-OBJSFFTW1 = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
+OBJSFFTW = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
 	SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \
 	MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o
 
-SRCSFFTW2 = MakeGridDH2.f95 MakeGridDHC2.f95 MakeGridGLQ2.f95 MakeGridGLQC2.f95 \
-	SHExpandDH2.f95 SHExpandDHC2.f95 SHExpandGLQ2.f95 SHExpandGLQC2.f95 \
-	MakeGravGradGridDH2.f95 MakeGravGridDH2.f95 MakeMagGridDH2.f95
-	
-OBJSFFTW2 = MakeGridDH2.o MakeGridDHC2.o MakeGridGLQ2.o MakeGridGLQC2.o \
-	SHExpandDH2.o SHExpandDHC2.o SHExpandGLQ2.o SHExpandGLQC2.o \
-	MakeGravGradGridDH2.o MakeGravGridDH2.o MakeMagGridDH2.o
-
 
 ifeq ($(MAKECMDGOALS),all)
-	SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW1)
-	OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW1)
+	SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
+	OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
 endif
 
 ifeq ($(MAKECMDGOALS),all2)
-	SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW1)
-	OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW1)
+	SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
+	OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
 	LAPACK_FLAGS = -DLAPACK_UNDERSCORE
 endif
 
 ifeq ($(MAKECMDGOALS),all3)
-	SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW2)
-	OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW2)
+	SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
+	OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
+	FFTW3_FLAGS = -DFFTW3_UNDERSCORE
 endif
 
 all: $(PROG)
@@ -164,8 +157,7 @@ clean:
 	-rm -f $(PROG)
 	-rm -f $(OBJS0) 
 	-rm -f $(OBJSLAPACK)
-	-rm -f $(OBJSFFTW1) 
-	-rm -f $(OBJSFFTW2) 
+	-rm -f $(OBJSFFTW)
 	-rm -f *.mod 
 	-rm -f ../modules/*.mod
 
@@ -173,7 +165,7 @@ clean:
 %.o: %.f95
 	$(F95) -c $(F95FLAGS) $<
 %.o: %.F95
-	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $<
+	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $(FFTW3_FLAGS) $<
 
 
 CilmPlus.o: SHTOOLS.o
