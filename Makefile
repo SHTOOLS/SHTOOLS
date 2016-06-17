@@ -444,6 +444,7 @@ clean-libs:
 	-rm -f lib/lib$(LIBNAMEMP).a
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
+	-rm -rf pyshtools/__pycache__/
 	-rm -rf pyshtools/doc
 	@echo
 	@echo REMOVED LIB, MODULE, OBJECT FILES, COMPILED PYTHON FILES AND TESTS

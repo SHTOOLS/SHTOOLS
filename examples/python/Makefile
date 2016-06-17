@@ -49,5 +49,7 @@ $(foreach example,$(EXAMPLES),$(eval $(call run-example,$(example))))
 all: $(addsuffix .phony, $(EXAMPLES))
 
 clean:
+	-rm -rf Common/*.pyc Common/__pycache__/
 	-rm -f $(addsuffix *.pyc, $(dir $(EXAMPLES)))
+	-rm -rf $(addsuffix __pycache__, $(dir $(EXAMPLES)))
 	-rm -f $(addsuffix *.png, $(dir $(EXAMPLES)))
