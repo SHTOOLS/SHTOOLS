@@ -10,7 +10,7 @@ subroutine EigValSym(ain, n, eval, ul)
 !           Ain     Input symmetric matrix. By default, only the
 !                   upper portion is used.
 !           n       Order of the matrix Ain.
-! 
+!
 !       OUT
 !           eval    Vector of length n of the eigenvalues of Ain.
 !
@@ -18,7 +18,8 @@ subroutine EigValSym(ain, n, eval, ul)
 !           uplo    Use the upper 'U' or lower 'L' portion of the 
 !                   input symmetric matrix.
 !
-!   The eigenvalues and eigenvectors are determined by reducing the matrix to
+!   The eigenvalues and eigenvectors are determined by reducing the
+!   matrix to
 !
 !       A = Z L Z = Q (S L S') Q' 
 !
@@ -58,7 +59,7 @@ subroutine EigValSym(ain, n, eval, ul)
         print*, "Input array is dimensioned as ", size(ain(:,1)), size(ain(1,:))
         stop
         
-    else if(size(eval) < n) then
+    else if (size(eval) < n) then
         print*, "Error --- EigValSym"
         print*, "EVAL must be dimensioned as (N) where N is ", n
         print*, "Input array is dimensioned as ", size(eval)
@@ -122,7 +123,8 @@ subroutine EigValSym(ain, n, eval, ul)
 
     if (info /= 0) then
         print*, "Error --- EigValSym"
-        print*, "Problem determining eigenvalues and eigenvectors of tridiagonal matrix."
+        print*, "Problem determining eigenvalues and eigenvectors of " // &
+                "tridiagonal matrix."
         if (info == 1) print*, "Internal error  in  DLARRE"
         if (info == 2) print*, "Internal error in DLARRV"
         stop
@@ -148,7 +150,7 @@ subroutine EigValSym(ain, n, eval, ul)
         eval(i) = w(n+1-i)
     end do
     
-    deallocate (a)
-    deallocate (z)
+    deallocate(a)
+    deallocate(z)
 
 end subroutine EigValSym

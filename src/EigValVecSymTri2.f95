@@ -46,11 +46,11 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
     character, intent(in), optional :: ul
     integer, parameter :: nb = 80, nbl = 10
     real*8 :: d(n), e(n), work(nb*n), vl, vu, abstol, w(n)
-    real*8, allocatable :: z(:,:)
-    integer :: lwork, info, il, iu, m, isuppz(2*n), liwork, &
+    real*8, allocatable ::  z(:,:)
+    integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, &
                 iwork(nbl*n), i, astat
     external dstegr_
-    
+
     if (size(ain(:,1)) < n .or. size(ain(1,:)) < n) then
         print*, "Error --- EigValVecSymTri"
         print*, "AIN must be dimensioned as (N, N) where N is ", n
@@ -62,7 +62,7 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
         print*, "EIG must be dimensioned as (N) where N is ", n
         print*, "Input array is dimensioned as ", size(eig)
         stop
-        
+
     else if (size(evec(:,1)) < n .or. size(evec(1,:)) < n) then
         print*, "Error --- EigValVecSymTri"
         print*, "EVEC must be dimensioned as (N, N) where N is ", n
@@ -79,7 +79,7 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
         print*, "Problem allocating arrays Z", astat
         stop
     end if
-    
+
     lwork = nb * n
     liwork = nbl * n
     
@@ -126,7 +126,6 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
     !   eignevalues and vectors from greatest to least.
     !
     !---------------------------------------------------------------------------
-    
     abstol = 0.0d0
     
     call dstegr_('v','a', n, d, e, vl, vu, il, iu, abstol, m,  w, &
@@ -134,8 +133,8 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
     
     if (info /= 0) then
         print*, "Error --- EigValVecSymTri"
-        print*, "Problem determining eigenvalues and eigenvectors of " // &
-                "tridiagonal matrix."
+        print*, "Problem determining eigenvalues and eigenvectors " // &
+                "of tridiagonal matrix."
         if (info == 1) print*, "Internal error in DLARRE"
         if (info == 2) print*, "Internal error in DLARRV"
         stop

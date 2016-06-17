@@ -47,10 +47,10 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
     integer, parameter :: nb = 80, nbl = 10
     real*8 :: d(n), e(n), work(nb*n), vl, vu, abstol, w(n)
     real*8, allocatable ::  z(:,:)
-    integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
-                i, astat
-    external    dstegr
-     
+    integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, &
+                iwork(nbl*n), i, astat
+    external dstegr
+
     if (size(ain(:,1)) < n .or. size(ain(1,:)) < n) then
         print*, "Error --- EigValVecSymTri"
         print*, "AIN must be dimensioned as (N, N) where N is ", n
@@ -75,11 +75,11 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
     allocate (z(n, n), stat = astat)
     
     if (astat /= 0) then
-        print*, "Error --- EigValVecSymTri2"
+        print*, "Error --- EigValVecSymTri"
         print*, "Problem allocating arrays Z", astat
         stop
     end if
-      
+
     lwork = nb * n
     liwork = nbl * n
     
@@ -93,7 +93,6 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul)
             do i = 2, n, 1
                 d(i) = ain(i,i)
                 e(i-1) = ain(i-1, i)
-                
             end do
             
         else if (ul =="L" .or. ul == "l") then

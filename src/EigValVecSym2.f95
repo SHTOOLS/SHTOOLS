@@ -19,7 +19,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
 !           evec    Matrix of dimension n of the eigenvectors of Ain.
 !
 !       OPTIONAL
-!           ul      Use the upper 'U' or lower 'L' portion of the 
+!           ul      Use the upper 'U' or lower 'L' portion of the
 !                   input symmetric matrix.
 !           K       The K largest eigenvalues and corresponding eigenvectors
 !                   to calculate and output.
@@ -39,6 +39,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
 !
 !       The eigenvalues of A correspond to the L (which is a diagonal), and the
 !       eigenvectors correspond to Z = Q S.
+!
 !   2.  The sign convention for the eigenvalues might want to be changed.
 !       For instance, IMSL chooses the sign such that the value with 
 !       max(abs(evec)) is positive.
@@ -60,7 +61,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
     character :: uplo
     real*8 :: d(n), e(n), tau(n-1), work(nb*n), vl, vu, abstol, w(n)
     real*8, allocatable ::  a(:,:), z(:,:)
-    integer :: lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
+    integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
                 i, astat(2)
     external dsytrd_, dstegr_, dormtr_
     
@@ -74,7 +75,8 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
     if (present(K)) then
         if (K > n .or. K < 1) then
             print*, "Error --- EigValVecSym"
-            print*, "The number of eigenvalues to output must be between 0 and N."
+            print*, "The number of eigenvalues to output must " // &
+                    "be between 0 and N."
             print*, "N = ", n
             print*, "K = ", k
             stop
@@ -123,7 +125,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
         print*, "Problem allocating arrays A and Z", astat(1), astat(2)
         stop
     end if
- 
+
     lwork = nb * n
     liwork = nbl * n
     
@@ -178,8 +180,8 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
     
     if (info /= 0) then
         print*, "Error --- EigValVecSym"
-        print*, "Problem determining eigenvalues and eigenvectors of " // &
-                "tridiagonal matrix."
+        print*, "Problem determining eigenvalues and eigenvectors " // &
+                "of tridiagonal matrix."
         if (info == 1) print*, "Internal error in DLARRE"
         if (info == 2) print*, "Internal error in DLARRV"
         print*, "DSTEGR info = ", info
@@ -219,7 +221,8 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
     else
         if (work(1) > dble(lwork)) then
             print*, "Warning --- EigValVecSym"
-            print*, "Consider changing value of nb to ", work(1)/n, " and recompile."
+            print*, "Consider changing value of nb to ", work(1)/n, &
+                    " and recompile."
         end if
         
     end if
@@ -234,7 +237,6 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
         do i = 1, n
             eig(i) = w(n+1-i)
             evec(1:n,i) = z(1:n,n+1-i)
-            
         end do
         
     end if

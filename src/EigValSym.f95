@@ -18,7 +18,7 @@ subroutine EigValSym(ain, n, eval, ul)
 !           uplo    Use the upper 'U' or lower 'L' portion of the 
 !                   input symmetric matrix.
 !
-!   The eigenvalues and eigenvectors are determined by reducing the 
+!   The eigenvalues and eigenvectors are determined by reducing the
 !   matrix to
 !
 !       A = Z L Z = Q (S L S') Q' 
@@ -46,7 +46,7 @@ subroutine EigValSym(ain, n, eval, ul)
     real*8, intent(out) ::  eval(:)
     character, intent(in), optional :: ul
     integer, parameter ::   nb = 80, nbl = 10
-    character ::    uplo
+    character :: uplo
     real*8 ::   d(n), e(n), tau(n-1), work(nb*n), vl, vu, abstol, w(n)
     real*8, allocatable ::  a(:,:), z(:,:)
     integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
@@ -134,7 +134,7 @@ subroutine EigValSym(ain, n, eval, ul)
             print*, "Warning --- EigValSym"
             print*, "Consider changing value of nb to ", work(1)/n, &
                     " and recompile the SHTOOLS archive."
-        endif
+        end if
         
         if (iwork(1) > liwork ) then
             print*, "Warning --- Eigsym"
