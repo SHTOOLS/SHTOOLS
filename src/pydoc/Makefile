@@ -190,7 +190,7 @@ uninstall:
 	
 
 $(MANDIR)/%.1 : %.md
-	printf "%% $(basename $<)(1) Python | SHTOOLS $(VERSION)\n%%\n\%% %s" > temp.md
+	printf "%% $(basename $<)(1) Python | SHTOOLS $(VERSION)\n%%\n%% %s" > temp.md
 	stat -t "%F" -f "%Sm" $< >> temp.md
 	cat $< >> temp.md
 	$(PANDOC) -s -t man temp.md -o $@ --filter delink.hs

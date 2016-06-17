@@ -132,7 +132,7 @@ PEXDIR = examples/python
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
-SYSMODPATH = /usr/local/include/shtools
+SYSMODPATH = /usr/local/include
 SYSPYPATH = /usr/local/lib/python2.7/site-packages
 SYSSHAREPATH =/usr/local/share
 SYSDOCPATH = /usr/local/share/doc
@@ -373,7 +373,7 @@ install:
 	mkdir -pv $(SYSSHAREPATH)/shtools
 	cp -R examples $(SYSSHAREPATH)/shtools/
 	mkdir -pv $(SYSSHAREPATH)/man/man1
-	cp -R man/man1 $(SYSSHAREPATH)/
+	cp -R man/man1 $(SYSSHAREPATH)/man
 	mkdir -pv $(SYSDOCPATH)/shtools
 	cp index.html $(SYSDOCPATH)/shtools/index.html
 	cp -R www $(SYSDOCPATH)/shtools/
