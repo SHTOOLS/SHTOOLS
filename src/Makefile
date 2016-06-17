@@ -3,20 +3,6 @@
 #	make all
 #		Compile program in the current directory. 
 #
-#	make all2
-#		Variant of make all. LAPACK subroutine names have
-#		an underscore appended to them in the source code in order to use 
-#		FFTW and LAPACK libraries with conflicting underscore conventions. 
-# 		The default is to use "f95".
-#
-#	make all3
-#		Variant of make all. FFTW subroutine names have
-#		an underscore appended to them in the source code in order to use 
-#		FFTW and LAPACK libraries with conflicting underscore conventions. 
-# 		The default is to use "f95".
-#
-#       make python-wrapper
-#
 #	make clean
 #		Remove the lib and module files in the LOCAL directory.
 #
@@ -107,29 +93,11 @@ OBJSFFTW = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
 	SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \
 	MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o
 
+SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
+OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
 
-ifeq ($(MAKECMDGOALS),all)
-	SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
-	OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
-endif
-
-ifeq ($(MAKECMDGOALS),all2)
-	SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
-	OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
-	LAPACK_FLAGS = -DLAPACK_UNDERSCORE
-endif
-
-ifeq ($(MAKECMDGOALS),all3)
-	SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
-	OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
-	FFTW3_FLAGS = -DFFTW3_UNDERSCORE
-endif
 
 all: $(PROG)
-
-all2: $(PROG)
-
-all3: $(PROG)
 
 $(PROG): $(OBJS) 
 	@echo
@@ -151,7 +119,7 @@ $(PROG): $(OBJS)
 	@echo
 	@echo ARCHIVE SUCCESSFULLY CREATED
 	
-.PHONY: clean all all2 all3
+.PHONY: clean all
 
 clean:
 	-rm -f $(PROG)
