@@ -26,13 +26,14 @@ LAPACK = -llapack
 BLAS = -lblas
 
 SHELL  = /bin/sh
-MAKE   = make
 LIBPATH = ../../lib
 MODPATH = ../../modules
 FEXDIR = fortran
 PEXDIR = python
 
 LIBNAME = SHTOOLS
+
+.PHONY: fortran-tests run-python-tests clean-fortran-tests clean-python-tests
 
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags

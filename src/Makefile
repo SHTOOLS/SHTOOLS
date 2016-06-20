@@ -35,7 +35,6 @@ ARFLAGS = -r
 RLIB = ranlib
 RLIBFLAGS =
 LDFLAGS = -s
-MAKE = make
 
 LIBNAME = SHTOOLS
 PROG =	../lib/lib$(LIBNAME).a
@@ -164,7 +163,7 @@ $(PROG): $(OBJS)
 	@echo
 	@echo ARCHIVE SUCCESSFULLY CREATED
 	
-.PHONY: clean
+.PHONY: clean all all2 all3
 
 clean:
 	-rm -f $(PROG)
