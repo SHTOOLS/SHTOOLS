@@ -3,6 +3,7 @@
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
+from __future__ import absolute_import, division, print_function
 
 # standard imports:
 import os
@@ -36,25 +37,25 @@ def test_SHStorage():
     coeffs = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
     coeffs[np.invert(mask)] = 0.
 
-    print '\n---- testing SHCilmToCindex and SHCindexToCilm ----'
+    print('\n---- testing SHCilmToCindex and SHCindexToCilm ----')
     coeffs_indexed = shtools.SHCilmToCindex(coeffs)
     coeffs_recomp = shtools.SHCindexToCilm(coeffs_indexed)
-    print 'input coeffs (l={:d}):'.format(lmax)
-    print coeffs
-    print 'indexed coeffs:'
-    print coeffs_indexed
-    print 'recomputed coeffs:'
-    print coeffs_recomp
+    print('input coeffs (l={:d}):'.format(lmax))
+    print(coeffs)
+    print('indexed coeffs:')
+    print(coeffs_indexed)
+    print('recomputed coeffs:')
+    print(coeffs_recomp)
 
-    print '\n---- testing SHCilmToVector and SHVectorToCilm ----'
+    print('\n---- testing SHCilmToVector and SHVectorToCilm ----')
     coeffs_indexed = shtools.SHCilmToVector(coeffs)
     coeffs_recomp = shtools.SHVectorToCilm(coeffs_indexed)
-    print '\ninput coeffs (l={:d}):'.format(lmax)
-    print coeffs
-    print '\nindexed coeffs:'
-    print coeffs_indexed
-    print '\nrecomputed coeffs:'
-    print coeffs_recomp
+    print('\ninput coeffs (l={:d}):'.format(lmax))
+    print(coeffs)
+    print('\nindexed coeffs:')
+    print(coeffs_indexed)
+    print('\nrecomputed coeffs:')
+    print(coeffs_recomp)
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

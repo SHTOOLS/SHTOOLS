@@ -3,6 +3,7 @@
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
+from __future__ import absolute_import, division, print_function
 
 # standard imports:
 import os
@@ -27,7 +28,7 @@ def main():
 
 
 def test_SHConversions():
-    print '---- testing SHrtoc and SHctor ----'
+    print('---- testing SHrtoc and SHctor ----')
     lmax = 10
     coeffs1 = np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
     mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
@@ -37,11 +38,11 @@ def test_SHConversions():
     coeffs2 = shtools.SHrtoc(coeffs1)
     coeffs3 = shtools.SHctor(coeffs2)
     error = np.sqrt(np.sum((coeffs3[mask] - coeffs1[mask])**2))
-    print 'error after real to complex to real conversion: ', error
+    print('error after real to complex to real conversion: ', error)
 
 
 def example():
-    print '---- SHrtoc example ----'
+    print('---- SHrtoc example ----')
     #--- input data filename ---
     infile = '../../ExampleDataFiles/MarsTopo719.shape'
     coeffs1, lmax = shtools.SHRead(infile, 719)
@@ -71,7 +72,7 @@ def example():
 
     fig.tight_layout(pad=1)
     fig.savefig('topography_mars.png')
-    print 'mars topography plotted and saved to file'
+    print('mars topography plotted and saved to file')
 
     # plt.show()
 

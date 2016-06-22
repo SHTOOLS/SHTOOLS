@@ -2,6 +2,7 @@
 """
 This script tests the rotation of spherical harmonic coefficients
 """
+from __future__ import absolute_import, division, print_function
 
 # standard imports:
 import os
@@ -37,24 +38,24 @@ def test_SHRotations():
 
     angles = np.radians([alpha, beta, gamma])
 
-    print '\n---- testing djpi2 ----'
-    print 'computing rotation matrix for Euler angles: ({:2.2f},{:2.2f},{:2.2f})'\
-        .format(alpha, beta, gamma)
+    print('\n---- testing djpi2 ----')
+    print('computing rotation matrix for Euler angles: ({:2.2f},{:2.2f},{:2.2f})'\
+        .format(alpha, beta, gamma))
     dj_matrix = shtools.djpi2(lmax)
 
-    print '\n---- testing SHRotateRealCoef ----'
-    print 'generating normal distributed complex coefficients with variance 1...'
+    print('\n---- testing SHRotateRealCoef ----')
+    print('generating normal distributed complex coefficients with variance 1...')
     rcoeffs = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
     rcoeffs[np.invert(mask)] = 0.
     rcoeffs_rot = shtools.SHRotateRealCoef(rcoeffs, angles, dj_matrix)
-    print rcoeffs_rot
+    print(rcoeffs_rot)
 
-    print '\n---- testing SHRotateCoef ----'
-    print 'generating normal distributed complex coefficients with variance 1...'
+    print('\n---- testing SHRotateCoef ----')
+    print('generating normal distributed complex coefficients with variance 1...')
     ccoeffs = np.random.normal(loc=0., scale=1., size=(lmax + 1) * (lmax + 2))
-    ccoeffs = ccoeffs.reshape(2, (lmax + 1) * (lmax + 2) / 2)
+    ccoeffs = ccoeffs.reshape(2, (lmax + 1) * (lmax + 2) // 2)
     ccoeffs_rot = shtools.SHRotateCoef(angles, ccoeffs, dj_matrix)
-    print ccoeffs_rot
+    print(ccoeffs_rot)
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

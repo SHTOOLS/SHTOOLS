@@ -2,6 +2,7 @@
 """
 This script tests the different Spherical Harmonics Transforms on the Mars topography data set
 """
+from __future__ import absolute_import, division, print_function
 
 # standard imports:
 import os
@@ -36,43 +37,43 @@ def test_RealSpectralAnalysis():
         mask[:, l, :l + 1] = True
     mask[1, :, 0] = False
 
-    print '\n---- testing SHPower/DensityL, SHPowerSpectrum/Density ----'
-    print 'generating normal distributed coefficients with variance 1...'
+    print('\n---- testing SHPower/DensityL, SHPowerSpectrum/Density ----')
+    print('generating normal distributed coefficients with variance 1...')
     coeffs1 = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
     coeffs1[np.invert(mask)] = 0.
 
     spec1 = np.array([shtools.SHPowerL(coeffs1, l) for l in ls])
     spec2 = shtools.SHPowerSpectrum(coeffs1)
-    print 'tot power computed with SHPowerL={:2.2f}'.format(np.sum(spec1))
-    print 'tot power computed with SHPowerSpectrum={:2.2f}'.format(np.sum(spec2))
+    print('tot power computed with SHPowerL={:2.2f}'.format(np.sum(spec1)))
+    print('tot power computed with SHPowerSpectrum={:2.2f}'.format(np.sum(spec2)))
 
     spec1 = np.array([shtools.SHPowerDensityL(coeffs1, l) for l in ls])
     spec2 = shtools.SHPowerSpectrumDensity(coeffs1)
-    print 'tot power computed with SHPowerDensityL={:2.2f}'.format(np.sum(spec1 * (2 * ls + 1)))
-    print 'tot power computed with SHPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1)))
+    print('tot power computed with SHPowerDensityL={:2.2f}'.format(np.sum(spec1 * (2 * ls + 1))))
+    print('tot power computed with SHPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1))))
 
-    print '\n---- testing SHCrossCrossPower/DensityL, SHCrossCrossPowerSpectrum/Density ----'
-    print 'generating two sets of normal distributed coefficients with variance 1...'
+    print('\n---- testing SHCrossCrossPower/DensityL, SHCrossCrossPowerSpectrum/Density ----')
+    print('generating two sets of normal distributed coefficients with variance 1...')
     coeffs2 = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
     coeffs2[np.invert(mask)] = 0.
 
     spec1 = np.array([shtools.SHCrossPowerL(coeffs1, coeffs2, l) for l in ls])
     spec2 = shtools.SHCrossPowerSpectrum(coeffs1, coeffs2)
-    print 'tot cpower computed with SHCrossPowerL={:2.2f}'.format(np.sum(spec1))
-    print 'tot cpower computed with SHCrossPowerSpectrum={:2.2f}'.format(np.sum(spec2))
+    print('tot cpower computed with SHCrossPowerL={:2.2f}'.format(np.sum(spec1)))
+    print('tot cpower computed with SHCrossPowerSpectrum={:2.2f}'.format(np.sum(spec2)))
 
     spec1 = np.array([shtools.SHCrossPowerDensityL(coeffs1, coeffs2, l) for l in ls])
     spec2 = shtools.SHCrossPowerSpectrumDensity(coeffs1, coeffs2)
-    print 'tot cpower computed with SHCrossPowerDensityL={:2.2f}'.format(np.sum(spec1 * (2 * ls + 1)))
-    print 'tot cpower computed with SHCrossPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1)))
+    print('tot cpower computed with SHCrossPowerDensityL={:2.2f}'.format(np.sum(spec1 * (2 * ls + 1))))
+    print('tot cpower computed with SHCrossPowerSpectrumDensity={:2.2f}'.format(np.sum(spec2 * (2 * ls + 1))))
 
-    print '\n---- testing SHAdmitCorr and SHConfidence ----'
+    print('\n---- testing SHAdmitCorr and SHConfidence ----')
     admit, dadmit, corr = shtools.SHAdmitCorr(coeffs1, coeffs2)
     confidence = np.array([shtools.SHConfidence(l, corr[l]) for l in ls])
-    print 'admittance:', admit
-    print 'admittance error:', dadmit
-    print 'correlation:', corr
-    print 'confidence:', confidence
+    print('admittance:', admit)
+    print('admittance error:', dadmit)
+    print('correlation:', corr)
+    print('confidence:', confidence)
 
 #==== PLOT POWER SPECTRA ====
 
@@ -110,7 +111,7 @@ def example():
 
     fig_map.savefig('SHRtopography_mars.png')
     fig_spectrum.savefig('SHRspectrum_mars.png')
-    print 'mars topography and spectrum saved'
+    print('mars topography and spectrum saved')
 
     # plt.show()
 

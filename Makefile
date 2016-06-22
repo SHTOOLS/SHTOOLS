@@ -4,13 +4,17 @@
 #
 #	The normal user should only have to use the following commands
 #	
-#		make, make all		: install both the fortran and python components
+#		make, make all		: install both the fortran and python 2 components
 #		make fortran		: install the fortan components
 #		make fortran-mp		: install the fortan OpenMP components
 #		make python			: install the python components
+#		make python2		: install the python 2 components
+#		make python3		: install the python 3 components
 #		make fortran-tests	: compile and run the fortran test/example suite
 #		make fortran-tests-mp	: compile and run the fortran test/example suite with OpenMp support
 #		make python-tests	: run the python test/example suite
+#		make python2-tests	: run the python 2 test/example suite
+#		make python3-tests	: run the python 3 test/example suite
 #		make install		: place the compiled libraries and docs in /usr/local
 #		make uninstall		: remove files copied to /usr/local
 #		make clean			: return the folder to its original state
@@ -28,7 +32,9 @@
 #		F95FLAGS	: Fortran-95 compiler flags
 #		OPENMPFLAGS	: Fortran-95 OpenMP compiler flags
 #		F2PY		: Name (including path) of the f2py executable
+#		F2PY3		: Name (including path) of the f2py3 executable
 #		PYTHON		: Name (including path) of the python executable
+#		PYTHON3		: Name (including path) of the python3 executable
 #		FFTW		: Name and path of the FFTW3 library of the form "-Lpath -lfftw3"
 #		LAPACK		: Name and path of the LAPACK library of the form "-Lpath -llapack"
 #		BLAS		: Name and path of the BLAS library of the form "-Lpath -lblas"
@@ -68,6 +74,18 @@
 #
 #	make python
 #		Compile the python wrapper with the f2py compiler. This should be 
+#		after the Fortran files are compiled. The variable PYTHON_VERSION will
+#		determine which wrapper to build. If set to "all", then both 2 and 3
+#		will be created. If set to either 2 or 3, then only a wrapper for the
+#		specified version is built. You can also build for one or the other
+#		directly with the python2 or python3 targets below.
+#
+#	make python2
+#		Compile the python 2 wrapper with the f2py compiler. This should be
+#		after the Fortran files are compiled.
+#
+#	make python3
+#		Compile the python 3 wrapper with the f2py3 compiler. This should be
 #		after the Fortran files are compiled.
 #
 #	make clean
@@ -86,6 +104,12 @@
 #
 #	make python-tests
 #		Run all python tests
+#
+#	make python2-tests
+#		Run all python 2 tests
+#
+#	make python3-tests
+#		Run all python 3 tests
 #
 #	make clean-python-tests
 #		Detele all compiled python tests
@@ -111,7 +135,10 @@ LIBNAMEMP = SHTOOLS-mp
 
 F95 = gfortran
 F2PY = f2py
+F2PY3 = f2py3
 PYTHON = python
+PYTHON3 = python3
+PYTHON_VERSION = all
 
 SYSLIBPATH = /usr/local/lib
 
@@ -132,7 +159,9 @@ LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
 SYSMODPATH = /usr/local/include
-SYSPYPATH = /usr/local/lib/python2.7/site-packages
+SYSPYPATH = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_path("platlib"))')
+SYSPY3PATH := $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_path("platlib"))')
+PY3EXT := $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_config_var("SO"))')
 SYSSHAREPATH =/usr/local/share
 SYSDOCPATH = /usr/local/share/doc
 
@@ -175,9 +204,9 @@ SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?=
 endif
 
-.PHONY: all all2 all3 fortran fortran2 fortran3 python install doc remove-doc clean\
-	fortran-tests clean-fortran-tests run-fortran-tests run-python-tests\
-	install-fortran install-python uninstall fortran-mp fortran2-mp fortran3-mp
+.PHONY: all all2 all3 fortran fortran2 fortran3 python python2 python3 install doc remove-doc clean\
+	fortran-tests clean-fortran-tests run-fortran-tests run-python-tests run-python2-tests run-python3-tests\
+	install-fortran install-python install-python2 install-python3 uninstall fortran-mp fortran2-mp fortran3-mp
 
 
 all: fortran python
@@ -258,20 +287,54 @@ fortran3-mp:
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo 
 
-python: pyshtools/_SHTOOLS.so pyshtools/_constant.so
+ifeq ($(PYTHON_VERSION),all)
+python: python2 python3
+install-python: install-python2 install-python3
+python-tests: python2-tests python3-tests
+clean-python-tests: clean-python2-tests clean-python3-tests
+else ifeq ($(PYTHON_VERSION),2)
+python: python2
+install-python: install-python2
+python-tests: python2-tests
+clean-python-tests: clean-python2-tests
+else ifeq ($(PYTHON_VERSION),3)
+python: python3
+install-python: install-python3
+python-tests: python3-tests
+clean-python-tests: clean-python3-tests
+else
+$(error $(PYTHON_VERSION) is unsupported.)
+endif
+
+python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	mkdir -p pyshtools/doc
 	./pyshtools/make_docs.py .
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
 	@echo ---------------------------------------------------------------------------------------------------
-	@echo import shtools into Python with:
+	@echo import shtools into Python 2 with:
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(PYPATH)\'\)
 	@echo import pyshtools as shtools
 	@echo ---------------------------------------------------------------------------------------------------
-	@echo 
+	@echo
+
+python3: pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
+	mkdir -p pyshtools/doc
+	$(PYTHON3) ./pyshtools/make_docs.py .
+	@echo
+	@echo MAKE SUCCESSFUL!
+	@echo
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo import shtools into Python 3 with:
+	@echo
+	@echo import sys
+	@echo sys.path.append\(\'$(PYPATH)\'\)
+	@echo import pyshtools as shtools
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo
 
 pyshtools/_SHTOOLS.so: $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 $(LIBDIR)/lib$(LIBNAME).a
 	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
@@ -283,21 +346,44 @@ pyshtools/_constant.so: $(SRCDIR)/PlanetsConstants.f95
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _constant.so pyshtools/.
 
+pyshtools/_SHTOOLS$(PY3EXT): $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 $(LIBDIR)/lib$(LIBNAME).a
+	$(F2PY3) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
+		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
+		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
+	mv _SHTOOLS$(PY3EXT) pyshtools/.
+
+pyshtools/_constant$(PY3EXT): $(SRCDIR)/PlanetsConstants.f95
+	$(F2PY3) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
+	mv _constant$(PY3EXT) pyshtools/.
+
 install: install-fortran install-python
 
-install-python: python
-	mkdir -pv $(SYSPYPATH)
-	cp -R pyshtools $(SYSPYPATH)/
+install-python2: python2
+	mkdir -pv $(SYSPYPATH)/pyshtools
+	cp -R $(filter-out %$(PY3EXT), $(wildcard pyshtools/*)) $(SYSPYPATH)/pyshtools/
 	@echo ---------------------------------------------------------------------------------------------------
-	@echo import shtools into Python with:
+	@echo import shtools into Python 2 with:
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(SYSPYPATH)\'\)
 	@echo import pyshtools as shtools
 	@echo ---------------------------------------------------------------------------------------------------
 
+install-python3: python3
+	mkdir -pv $(SYSPY3PATH)/pyshtools
+	cp -R $(filter-out %.so, $(wildcard pyshtools/*)) $(SYSPY3PATH)/pyshtools/
+	cp -R $(filter %$(PY3EXT), $(wildcard pyshtools/*)) $(SYSPY3PATH)/pyshtools/
+	@echo ---------------------------------------------------------------------------------------------------
+	@echo import shtools into Python 3 with:
+	@echo
+	@echo import sys
+	@echo sys.path.append\(\'$(SYSPY3PATH)\'\)
+	@echo import pyshtools as shtools
+	@echo ---------------------------------------------------------------------------------------------------
+
 uninstall:
 	-rm -r $(SYSPYPATH)/pyshtools/
+	-rm -r $(SYSPY3PATH)/pyshtools/
 	-rm -r $(SYSLIBPATH)/lib$(LIBNAME).a
 	-rm -r $(SYSMODPATH)/fftw3.mod
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
@@ -358,6 +444,7 @@ clean-libs:
 	-rm -f lib/lib$(LIBNAMEMP).a
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
+	-rm -rf pyshtools/__pycache__/
 	-rm -rf pyshtools/doc
 	@echo
 	@echo REMOVED LIB, MODULE, OBJECT FILES, COMPILED PYTHON FILES AND TESTS
@@ -390,13 +477,22 @@ clean-fortran-tests:
 	@echo
 	@echo REMOVED FORTRAN TEST SUITE EXECUTABLES AND FILES
 
-python-tests: python
+python2-tests: python2
 	$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON)
 	@echo
 	@echo RAN ALL PYTHON TESTS
 
-clean-python-tests:
+python3-tests: python3
+	$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON3)
+	@echo
+	@echo RAN ALL PYTHON 3 TESTS
+
+clean-python2-tests:
 	$(MAKE) -C $(PEXDIR) -f Makefile clean
 	@echo
 	@echo REMOVED PYTHON TEST SUITE EXECUTABLES AND FILES
 
+clean-python3-tests:
+	$(MAKE) -C $(PEXDIR) -f Makefile clean
+	@echo
+	@echo REMOVED PYTHON TEST SUITE EXECUTABLES AND FILES

@@ -2,6 +2,7 @@
 """
 This script tests the gravity and magnetics routines. 
 """
+from __future__ import absolute_import, division, print_function
 
 # standard imports:
 import os
@@ -38,7 +39,7 @@ def TestMakeGravGrid():
     r0 = header[0] * 1.e3
     gm = header[1] * 1.e9
     clm[0, 0, 0] = 1.0
-    print gm, r0
+    print(gm, r0)
 
     geoid = shtools.MakeGeoidGridDH(clm, r0, gm, shtools.constant.w0_mars, a=shtools.constant.a_mars, f=shtools.constant.f_mars, omega=shtools.constant.omega_mars)
     geoid = geoid / 1.e3  # convert to meters
@@ -88,8 +89,8 @@ def TestGravGrad():
 
     vxx, vyy, vzz, vxy, vxz, vyz = shtools.MakeGravGradGridDH(clm, gm, r0, a=a, f=f)
 
-    print "Maximum Trace(Vxx+Vyy+Vzz) = ", np.max(vxx + vyy + vzz)
-    print "Minimum Trace(Vxx+Vyy+Vzz) = ", np.min(vxx + vyy + vzz)
+    print("Maximum Trace(Vxx+Vyy+Vzz) = ", np.max(vxx + vyy + vzz))
+    print("Minimum Trace(Vxx+Vyy+Vzz) = ", np.min(vxx + vyy + vzz))
 
     fig, axes = plt.subplots(2, 3)
     fig.suptitle("Gravity gradient tensor", fontsize=10)
@@ -149,7 +150,7 @@ def TestMakeMagGrid():
     ls = np.arange(lmax + 1)
     pspectrum = shtools.SHMagPowerSpectrum(clm, r0)
     pspectrum2 = np.array([shtools.SHMagPowerL(clm, r0, l) for l in range(0, lmax + 1)])
-    print "Minimum and maximum difference in spectra = ", (pspectrum - pspectrum2).min(), (pspectrum - pspectrum2).max()
+    print("Minimum and maximum difference in spectra = ", (pspectrum - pspectrum2).min(), (pspectrum - pspectrum2).max())
 
     fig_spectrum, ax = plt.subplots(1, 1)
     ax.set_xscale('linear')

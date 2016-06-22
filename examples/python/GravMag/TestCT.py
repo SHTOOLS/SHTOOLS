@@ -2,6 +2,7 @@
 """
 This script creates a crustal thickness map of Mars. 
 """
+from __future__ import absolute_import, division, print_function
 
 # standard imports:
 import os
@@ -46,20 +47,20 @@ def TestCrustalThickness():
     gm = header[1] * 1.e9
     mass = gm / shtools.constant.grav_constant
     r_grav = header[0] * 1.e3
-    print r_grav, gm, mass, lmaxp
+    print(r_grav, gm, mass, lmaxp)
 
     topofile = '../../ExampleDataFiles/MarsTopo719.shape'
     hlm, lmaxt = shtools.SHRead(topofile, 719)
     r0 = hlm[0, 0, 0]
     d = r0 - 45.217409924028445e3
-    print r0, lmaxt
+    print(r0, lmaxt)
 
     for l in range(2, lmaxp + 1):
         pot[:, l, :l + 1] = pot[:, l, :l + 1] * (r_grav / r0)**l
 
     topo_grid = shtools.MakeGridDH(hlm, lmax=lmax, sampling=2, lmax_calc=degmax)
-    print "Maximum radius (km) = ", topo_grid.max() / 1.e3
-    print "Minimum radius (km) = ", topo_grid.min() / 1.e3
+    print("Maximum radius (km) = ", topo_grid.max() / 1.e3)
+    print("Minimum radius (km) = ", topo_grid.min() / 1.e3)
 
     bc, r0 = shtools.CilmPlusDH(topo_grid, nmax, mass, rho_c, lmax=degmax)
 
@@ -80,55 +81,55 @@ def TestCrustalThickness():
                 ((r0 / d)**l) / (4.0 * np.pi * (rho_m - rho_c) * d**2)
 
     moho_grid3 = shtools.MakeGridDH(moho_c, lmax=lmax, sampling=2, lmax_calc=degmax)
-    print "Maximum Crustal thickness (km) = ", (topo_grid - moho_grid3).max() / 1.e3
-    print "Minimum Crustal thickness (km) = ", (topo_grid - moho_grid3).min() / 1.e3
+    print("Maximum Crustal thickness (km) = ", (topo_grid - moho_grid3).max() / 1.e3)
+    print("Minimum Crustal thickness (km) = ", (topo_grid - moho_grid3).min() / 1.e3)
 
     moho_c = shtools.BAtoHilmDH(ba, moho_grid3, nmax, mass, r0, (rho_m - rho_c), lmax=lmax,
                             filter_type=filter_type, filter_deg=half, lmax_calc=degmax)
 
     moho_grid2 = shtools.MakeGridDH(moho_c, lmax=lmax, sampling=2, lmax_calc=degmax)
-    print "Delta (km) = ", abs(moho_grid3 - moho_grid2).max() / 1.e3
+    print("Delta (km) = ", abs(moho_grid3 - moho_grid2).max() / 1.e3)
 
     temp_grid = topo_grid - moho_grid2
-    print "Maximum Crustal thickness (km) = ", temp_grid.max() / 1.e3
-    print "Minimum Crustal thickness (km) = ", temp_grid.min() / 1.e3
+    print("Maximum Crustal thickness (km) = ", temp_grid.max() / 1.e3)
+    print("Minimum Crustal thickness (km) = ", temp_grid.min() / 1.e3)
 
     iter = 0
     delta = 1.0e9
 
     while delta > delta_max:
         iter += 1
-        print "Iteration ", iter
+        print("Iteration ", iter)
 
         moho_grid = (moho_grid2 + moho_grid3) / 2.0
-        print "Delta (km) = ", abs(moho_grid - moho_grid2).max() / 1.e3
+        print("Delta (km) = ", abs(moho_grid - moho_grid2).max() / 1.e3)
 
         temp_grid = topo_grid - moho_grid
-        print "Maximum Crustal thickness (km) = ", temp_grid.max() / 1.e3
-        print "Minimum Crustal thickness (km) = ", temp_grid.min() / 1.e3
+        print("Maximum Crustal thickness (km) = ", temp_grid.max() / 1.e3)
+        print("Minimum Crustal thickness (km) = ", temp_grid.min() / 1.e3)
 
         moho_grid3 = moho_grid2
         moho_grid2 = moho_grid
 
         iter += 1
-        print "Iteration ", iter
+        print("Iteration ", iter)
 
         moho_c = shtools.BAtoHilmDH(ba, moho_grid2, nmax, mass, r0, rho_m - rho_c, lmax=lmax,
                                 filter_type=filter_type, filter_deg=half, lmax_calc=degmax)
 
         moho_grid = shtools.MakeGridDH(moho_c, lmax=lmax, sampling=2, lmax_calc=degmax)
         delta = abs(moho_grid - moho_grid2).max()
-        print "Delta (km) = ", delta / 1.e3
+        print("Delta (km) = ", delta / 1.e3)
 
         temp_grid = topo_grid - moho_grid
-        print "Maximum Crustal thickness (km) = ", temp_grid.max() / 1.e3
-        print "Minimum Crustal thickness (km) = ", temp_grid.min() / 1.e3
+        print("Maximum Crustal thickness (km) = ", temp_grid.max() / 1.e3)
+        print("Minimum Crustal thickness (km) = ", temp_grid.min() / 1.e3)
 
         moho_grid3 = moho_grid2
         moho_grid2 = moho_grid
 
         if temp_grid.max() > 100.e3:
-            print "Not converging"
+            print("Not converging")
             exit(1)
 
     fig_map = plt.figure()
