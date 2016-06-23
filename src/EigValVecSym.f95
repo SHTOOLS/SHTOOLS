@@ -13,15 +13,16 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
 !           Ain     Input symmetric matrix. By default, only the
 !                   upper portion is used.
 !           n       Order of the matrix Ain.
+!
 !       OUT
 !           eig     Vector of length n of the eigenvalues of Ain.
 !           evec    Matrix of dimension n of the eigenvectors of Ain.
 !
 !       OPTIONAL
-!           ul  Use the upper 'U' or lower 'L' portion of the 
-!               input symmetric matrix.
-!           K   The K largest eigenvalues and corresponding eigenvectors
-!               to calculate and output.
+!           ul      Use the upper 'U' or lower 'L' portion of the
+!                   input symmetric matrix.
+!           K       The K largest eigenvalues and corresponding eigenvectors
+!                   to calculate and output.
 !
 !   Notes:
 !       
@@ -79,7 +80,6 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
             print*, "N = ", n
             print*, "K = ", k
             stop
-            
         end if
         
         if (size(eig) < K) then
@@ -88,7 +88,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
             print*, "Input array is dimensioned as ", size(eig)
             stop
             
-        else if(size(evec(:,1)) < n .or. size(evec(1,:)) < K) then
+        else if (size(evec(:,1)) < n .or. size(evec(1,:)) < K) then
             print*, "Error --- EigValVecSym"
             print*, "EVEC must be dimensioned as (N, K)."
             print*, "N = ", n
@@ -192,7 +192,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
             print*, "Warning --- EigValVecSym"
             print*, "Consider changing value of nb to ", work(1)/n, &
                     " and recompile SHTOOLS archive."
-        endif
+        end if
         
         if (iwork(1) > liwork) then
             print*, "Warning --- EigValVecSym"
@@ -228,7 +228,6 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K)
     end if
 
     if (present(k)) then
-    
         do i = n-K+1, n
             eig(i-n+k) = w(n+1-i)
             evec(1:n,i-n+k) = z(1:n,n+1-i)

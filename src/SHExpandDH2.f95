@@ -98,7 +98,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
     integer*1 :: phase
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
-    
+
     lmax = n/2 - 1  
     
     if (present(lmax_calc)) then

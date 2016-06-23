@@ -63,7 +63,7 @@ SRCS0 =	CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 ComputeDm.f95 DHaj.f95 \
 	PlmBar_d1.f95 PlmIndex.f95 PlmSchmidt.f95 PlmSchmidt_d1.f95 \
 	PlSchmidt.f95 PlSchmidt_d1.f95 PreGLQ.f95 Random.f95 \
 	SHAdmitCorr.f95 SHBias.f95 SHBiasK.f95 SHConvertCoef.f95 \
-	SHFindLWin.f95 SHLocalizedAdmitCorr.f95 SHMultiply.f95 \
+	SHFindLWin.f95 SHGLQ.f95 SHLocalizedAdmitCorr.f95 SHMultiply.f95 \
 	SHMultiTaperCSE.f95 SHMultiTaperSE.f95 SHPowerSpectra.f95 SHRead.f95 \
 	SHReadJPL.f95 SHReturnTapersM.f95 SHRotateCoef.f95 \
 	SHRotateRealCoef.f95 SHTOOLS.f95 SphericalCapCoef.f95 \
@@ -81,7 +81,7 @@ OBJS0 =	CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o \
 	PLegendre.o PLegendreA.o PLegendreA_d1.o PlmBar.o PlmBar_d1.o \
 	PlmIndex.o PlmSchmidt.o PlmSchmidt_d1.o PlSchmidt.o PlSchmidt_d1.o \
 	PreGLQ.o Random.o SHAdmitCorr.o SHBias.o SHBiasK.o SHConvertCoef.o  \
-	SHFindLWin.o SHLocalizedAdmitCorr.o  \
+	SHFindLWin.o SHGLQ.o SHLocalizedAdmitCorr.o  \
 	SHMultiply.o SHMultiTaperCSE.o SHMultiTaperSE.o SHPowerSpectra.o \
 	SHRead.o SHReadJPL.o SHReturnTapersM.o SHRotateCoef.o \
 	SHRotateRealCoef.o SHTOOLS.o SphericalCapCoef.o Wigner3j.o \
@@ -105,11 +105,11 @@ SRCSLAPACK2 = EigValSym2.f95 EigValVecSym2.f95 EigValVecSymTri2.f95 SHExpandLSQ2
 OBJSLAPACK2 = EigValSym2.o EigValVecSym2.o EigValVecSymTri2.o SHExpandLSQ2.o SHMTDebias2.o \
 	SHMTVarOpt2.o
 	
-SRCSFFTW1 = MakeGridDH.f95 MakeGridDHC.f95 MakeGridGLQ.f95 MakeGridGLQC.f95 SHGLQ.f95 \
+SRCSFFTW1 = MakeGridDH.f95 MakeGridDHC.f95 MakeGridGLQ.f95 MakeGridGLQC.f95 \
 	SHExpandDH.f95 SHExpandDHC.f95 SHExpandGLQ.f95 SHExpandGLQC.f95 \
 	MakeGravGradGridDH.f95 MakeGravGridDH.f95 MakeMagGridDH.f95
 	
-OBJSFFTW1 = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o SHGLQ.o \
+OBJSFFTW1 = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
 	SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \
 	MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o
 

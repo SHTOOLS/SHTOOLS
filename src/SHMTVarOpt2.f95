@@ -60,9 +60,9 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
     real*8 :: Fij(kmax, kmax), ww(kmax), bb(kmax+1), MM(kmax+1, kmax+1), &
                 work((kmax+1)*nb)
     integer ::  i,j, m, mp, k, ipiv(kmax+1), info, lwork
-    external :: DSYSV
     complex*16 :: temp1
-    
+    external :: DSYSV_
+
     if (size(Sff) < l+lwin + 1) then
         print*, "Error --- SHMTVarOpt"
         print*, "Sff must be dimensioned (L+LWIN+1) where L and LWIN are ", &

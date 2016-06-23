@@ -29,6 +29,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
     integer :: i, j, l, wmin, wmax, nstart, nstop, info, lwork, m, astat(5), &
                iwork(8*(lmax+lwin+1))
     real*8, allocatable :: work(:), Mmt(:,:), a(:,:), vt(:,:), uu(:,:)
+    external :: dgesdd
 
     n = ceiling( dble(lmax+1)/dble(nl) )
     m = lmax+1

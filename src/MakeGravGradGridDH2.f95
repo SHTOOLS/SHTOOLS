@@ -119,8 +119,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer*1, save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0
- 
-!$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)   
+
+!$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
 
     n = 2 * lmax+2
     
