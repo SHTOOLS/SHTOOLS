@@ -29,7 +29,7 @@ def TimingAccuracyGLQC():
     beta = -1.5
 
     #---- create mask to filter out m<=l ----
-    mask = np.zeros(2 * (maxdeg + 1) * (maxdeg + 1), dtype=np.bool).reshape(2, maxdeg + 1, maxdeg + 1)
+    mask = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=np.bool)
     mask[0, 0, 0] = True
     for l in ls:
         mask[:, l, :l + 1] = True
@@ -37,13 +37,11 @@ def TimingAccuracyGLQC():
 
     #---- create Gaussian powerlaw coefficients ----
     print('creating {:d} random coefficients'.format(2 * (maxdeg + 1) * (maxdeg + 1)))
-    cilm = np.zeros((2, (maxdeg + 1), (maxdeg + 1)), dtype=np.complex)
-
-    random_numbers = np.random.normal(loc=0., scale=1., size=2 * (maxdeg + 1) * (maxdeg + 1))
-    cilm.imag = random_numbers.reshape(2, maxdeg + 1, maxdeg + 1)
-
-    random_numbers = np.random.normal(loc=0., scale=1., size=2 * (maxdeg + 1) * (maxdeg + 1))
-    cilm.real = random_numbers.reshape(2, maxdeg + 1, maxdeg + 1)
+    cilm = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=np.complex)
+    cilm.imag = np.random.normal(loc=0., scale=1.,
+                                 size=(2, maxdeg + 1, maxdeg + 1))
+    cilm.real = np.random.normal(loc=0., scale=1.,
+                                 size=(2, maxdeg + 1, maxdeg + 1))
 
     cilm[:, 1:, :] *= np.sqrt((ls[1:]**beta) / (2. * ls[1:] + 1.))[None, :, None]
     cilm[np.invert(mask)] = 0.

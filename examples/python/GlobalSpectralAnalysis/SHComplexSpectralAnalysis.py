@@ -41,9 +41,10 @@ def test_ComplexSpectralAnalysis():
 
     print('\n---- testing SHPower/DensityLC, SHPowerSpectrum/DensityC ----')
     print('generating normal distributed complex coefficients with variance 1...')
-    coeffs1 = np.random.normal( loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1) ) + \
-        1j * np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1))
-    coeffs1 = coeffs1.reshape(2, lmax + 1, lmax + 1)
+    coeffs1 = (np.random.normal(loc=0., scale=1.,
+                                size=(2, lmax + 1, lmax + 1)) +
+               1j * np.random.normal(loc=0., scale=1.,
+                                     size=(2, lmax + 1, lmax + 1)))
     coeffs1[np.invert(mask)] = 0.
 
     spec1 = np.array([shtools.SHPowerLC(coeffs1, l) for l in ls])
@@ -58,9 +59,10 @@ def test_ComplexSpectralAnalysis():
 
     print('\n---- testing SHCrossPower/DensityLC, SHCrossCrossPowerSpectrum/DensityC ----')
     print('generating two sets of normal distributed complex coefficients with variance 1...')
-    coeffs2 = np.random.normal( loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1) ) + \
-        1j * np.random.normal(loc=0., scale=1., size=2 * (lmax + 1) * (lmax + 1))
-    coeffs2 = coeffs2.reshape(2, lmax + 1, lmax + 1)
+    coeffs2 = (np.random.normal(loc=0., scale=1.,
+                                size=(2, lmax + 1, lmax + 1)) +
+               1j * np.random.normal(loc=0., scale=1.,
+                                     size=(2, lmax + 1, lmax + 1)))
     coeffs2[np.invert(mask)] = 0.
 
     spec1 = np.array([shtools.SHCrossPowerLC(coeffs1, coeffs2, l) for l in ls])

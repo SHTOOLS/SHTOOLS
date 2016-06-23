@@ -52,15 +52,15 @@ def test_MultitaperSE():
     ntapers = 3
     tapersk = tapers[:, :ntapers]
     torders = taperorder[:ntapers]
-    coeffs = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
+    coeffs = np.random.normal(size=(2, lmax + 1, lmax + 1))
     localpower, localpower_sd = shtools.SHMultiTaperSE(coeffs, tapersk, torders)
     print('total power:', np.sum(localpower))
 
     print('\n---- testing SHMultiTaperCSE ----')
     lmax = 80
     ntapers = 3
-    coeffs1 = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
-    coeffs2 = 0.5 * (coeffs1 + np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1))
+    coeffs1 = np.random.normal(size=(2, lmax + 1, lmax + 1))
+    coeffs2 = 0.5 * (coeffs1 + np.random.normal(size=(2, lmax + 1, lmax + 1)))
     localpower, localpower_sd = shtools.SHMultiTaperCSE(coeffs1, coeffs2, tapersk, torders)
     print('total power:', np.sum(localpower))
 

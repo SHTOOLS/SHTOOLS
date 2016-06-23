@@ -45,15 +45,15 @@ def test_SHRotations():
 
     print('\n---- testing SHRotateRealCoef ----')
     print('generating normal distributed complex coefficients with variance 1...')
-    rcoeffs = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
+    rcoeffs = np.random.normal(size=(2, lmax + 1, lmax + 1))
     rcoeffs[np.invert(mask)] = 0.
     rcoeffs_rot = shtools.SHRotateRealCoef(rcoeffs, angles, dj_matrix)
     print(rcoeffs_rot)
 
     print('\n---- testing SHRotateCoef ----')
     print('generating normal distributed complex coefficients with variance 1...')
-    ccoeffs = np.random.normal(loc=0., scale=1., size=(lmax + 1) * (lmax + 2))
-    ccoeffs = ccoeffs.reshape(2, (lmax + 1) * (lmax + 2) // 2)
+    ccoeffs = np.random.normal(loc=0., scale=1.,
+                               size=(2, (lmax + 1) * (lmax + 2) // 2))
     ccoeffs_rot = shtools.SHRotateCoef(angles, ccoeffs, dj_matrix)
     print(ccoeffs_rot)
 

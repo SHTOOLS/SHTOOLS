@@ -34,7 +34,7 @@ def test_SHStorage():
         mask[:, l, :l + 1] = True
     mask[1, :, 0] = False
     #---- creating random coefficients ----
-    coeffs = np.random.normal(size=2 * (lmax + 1) * (lmax + 1)).reshape(2, lmax + 1, lmax + 1)
+    coeffs = np.random.normal(size=(2, lmax + 1, lmax + 1))
     coeffs[np.invert(mask)] = 0.
 
     print('\n---- testing SHCilmToCindex and SHCindexToCilm ----')
