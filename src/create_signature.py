@@ -17,7 +17,6 @@ from numpy.f2py import crackfortran
 def main():
     fname_wrapper = 'PythonWrapper.f95'
     fname_signature = 'pyshtools.pyf'
-    outfile = open(fname_signature, 'w')
 
     print('now cracking Fortran file SHTOOLS.f95 using f2py function...')
     crackfortran.verbose = False
@@ -34,8 +33,8 @@ def main():
               'body': interface, 'externals': [], 'interfaced': [],
               'vars': {}}
     out = crackfortran.crack2fortran(module)
-    outfile.write(out)
-    outfile.close()
+    with open(fname_signature, 'w') as outfile:
+        outfile.write(out)
 
 #==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

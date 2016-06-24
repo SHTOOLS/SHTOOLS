@@ -39,9 +39,8 @@ def load_documentation():
             try:
                 path = os.path.join(pydocfolder, name.lower() + '.doc')
 
-                pydocfile = open(path)
-                pydoc = pydocfile.read()
-                pydocfile.close()
+                with open(path) as pydocfile:
+                    pydoc = pydocfile.read()
 
                 func.__doc__ = pydoc
             except IOError as msg:
