@@ -1450,7 +1450,7 @@ python module _SHTOOLS
             use shtools, only: SHExpandGLQC
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             complex*16 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-            real*8 dimension(w_d0),intent(in),depend(w_d0) :: w
+            real*8 dimension(w_d0),intent(in) :: w
             real*8, dimension(zero_d0),intent(in) :: zero
             integer, intent(hide),depend(gridglq_d0) :: lmax=gridglq_d0-1
             integer, optional,intent(in) :: norm = 1
