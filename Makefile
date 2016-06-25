@@ -382,6 +382,7 @@ clean-libs:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
 	-rm -f lib/lib$(LIBNAME).a
 	-rm -f lib/lib$(LIBNAMEMP).a
+	-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
 	-rm -rf pyshtools/__pycache__/
