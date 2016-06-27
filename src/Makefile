@@ -3,20 +3,6 @@
 #	make all
 #		Compile program in the current directory. 
 #
-#	make all2
-#		Variant of make all. LAPACK subroutine names have
-#		an underscore appended to them in the source code in order to use 
-#		FFTW and LAPACK libraries with conflicting underscore conventions. 
-# 		The default is to use "f95".
-#
-#	make all3
-#		Variant of make all. FFTW subroutine names have
-#		an underscore appended to them in the source code in order to use 
-#		FFTW and LAPACK libraries with conflicting underscore conventions. 
-# 		The default is to use "f95".
-#
-#       make python-wrapper
-#
 #	make clean
 #		Remove the lib and module files in the LOCAL directory.
 #
@@ -93,55 +79,25 @@ OBJS0 =	CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o DHaj.o djpi2.o \
 	YilmIndexVector.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o MakeEllipseCoord.o \
 	CilmPlusRhoH.o CilmMinusRhoH.o BAtoHilmRhoH.o NormalGravity.o
 	
-SRCSLAPACK1 = EigValSym.f95 EigValVecSym.f95 EigValVecSymTri.f95 SHExpandLSQ.f95 SHMTDebias.f95  \
-	SHMTVarOpt.f95
-	
-OBJSLAPACK1 = EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o SHMTDebias.o \
+SRCSLAPACK = EigValSym.F95 EigValVecSym.F95 EigValVecSymTri.F95 SHExpandLSQ.F95 SHMTDebias.F95 \
+	SHMTVarOpt.F95
+
+OBJSLAPACK = EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o SHMTDebias.o \
 	SHMTVarOpt.o
 
-SRCSLAPACK2 = EigValSym2.f95 EigValVecSym2.f95 EigValVecSymTri2.f95 SHExpandLSQ2.f95 SHMTDebias2.f950 \
-	SHMTVarOpt2.f95
-
-OBJSLAPACK2 = EigValSym2.o EigValVecSym2.o EigValVecSymTri2.o SHExpandLSQ2.o SHMTDebias2.o \
-	SHMTVarOpt2.o
+SRCSFFTW = MakeGridDH.F95 MakeGridDHC.F95 MakeGridGLQ.F95 MakeGridGLQC.F95 \
+	SHExpandDH.F95 SHExpandDHC.F95 SHExpandGLQ.F95 SHExpandGLQC.F95 \
+	MakeGravGradGridDH.F95 MakeGravGridDH.F95 MakeMagGridDH.F95
 	
-SRCSFFTW1 = MakeGridDH.f95 MakeGridDHC.f95 MakeGridGLQ.f95 MakeGridGLQC.f95 \
-	SHExpandDH.f95 SHExpandDHC.f95 SHExpandGLQ.f95 SHExpandGLQC.f95 \
-	MakeGravGradGridDH.f95 MakeGravGridDH.f95 MakeMagGridDH.f95
-	
-OBJSFFTW1 = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
+OBJSFFTW = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
 	SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \
 	MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o
 
-SRCSFFTW2 = MakeGridDH2.f95 MakeGridDHC2.f95 MakeGridGLQ2.f95 MakeGridGLQC2.f95 \
-	SHExpandDH2.f95 SHExpandDHC2.f95 SHExpandGLQ2.f95 SHExpandGLQC2.f95 \
-	MakeGravGradGridDH2.f95 MakeGravGridDH2.f95 MakeMagGridDH2.f95
-	
-OBJSFFTW2 = MakeGridDH2.o MakeGridDHC2.o MakeGridGLQ2.o MakeGridGLQC2.o \
-	SHExpandDH2.o SHExpandDHC2.o SHExpandGLQ2.o SHExpandGLQC2.o \
-	MakeGravGradGridDH2.o MakeGravGridDH2.o MakeMagGridDH2.o
+SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
+OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
 
-
-ifeq ($(MAKECMDGOALS),all)
-	SRCS = $(SRCS0) $(SRCSLAPACK1) $(SRCSFFTW1)
-	OBJS = $(OBJS0) $(OBJSLAPACK1) $(OBJSFFTW1)
-endif
-
-ifeq ($(MAKECMDGOALS),all2)
-	SRCS = $(SRCS0) $(SRCSLAPACK2) $(SRCSFFTW1)
-	OBJS = $(OBJS0) $(OBJSLAPACK2) $(OBJSFFTW1)
-endif
-
-ifeq ($(MAKECMDGOALS),all3)
-	SRCS = $(SRCS0) $(SRCSLAPACK1) $(SRCSFFTW2)
-	OBJS = $(OBJS0) $(OBJSLAPACK1) $(OBJSFFTW2)
-endif
 
 all: $(PROG)
-
-all2: $(PROG)
-
-all3: $(PROG)
 
 $(PROG): $(OBJS) 
 	@echo
@@ -163,25 +119,22 @@ $(PROG): $(OBJS)
 	@echo
 	@echo ARCHIVE SUCCESSFULLY CREATED
 	
-.PHONY: clean all all2 all3
+.PHONY: clean all
 
 clean:
 	-rm -f $(PROG)
 	-rm -f $(OBJS0) 
-	-rm -f $(OBJSLAPACK1) 
-	-rm -f $(OBJSLAPACK2) 
-	-rm -f $(OBJSFFTW1) 
-	-rm -f $(OBJSFFTW2) 
+	-rm -f $(OBJSLAPACK)
+	-rm -f $(OBJSFFTW)
 	-rm -f *.mod 
 	-rm -f ../modules/*.mod
 
 
-.SUFFIXES: $(SUFFIXES) .f95 
-
-
-.f95.o:
+%.o: %.f95
 	$(F95) -c $(F95FLAGS) $<
-	
+%.o: %.F95
+	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $(FFTW3_FLAGS) $<
+
 
 CilmPlus.o: SHTOOLS.o
 CilmMinus.o: SHTOOLS.o

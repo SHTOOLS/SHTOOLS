@@ -29,7 +29,10 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
     integer :: i, j, l, wmin, wmax, nstart, nstop, info, lwork, m, astat(5), &
                iwork(8*(lmax+lwin+1))
     real*8, allocatable :: work(:), Mmt(:,:), a(:,:), vt(:,:), uu(:,:)
-    external :: dgesdd_
+#ifdef LAPACK_UNDERSCORE
+#define dgesdd dgesdd_
+#endif
+    external :: dgesdd
 
     n = ceiling( dble(lmax+1)/dble(nl) )
     m = lmax+1
@@ -177,7 +180,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
     !   Do least squares inversion by SVD
     !
     !---------------------------------------------------------------------------
-    call dgesdd_('a', m, n, a, m, ss, uu, m, vt, lmax+lwin+1, work, &
+    call dgesdd('a', m, n, a, m, ss, uu, m, vt, lmax+lwin+1, work, &
                     lwork, iwork, info)
     
     if (info /= 0) then

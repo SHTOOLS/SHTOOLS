@@ -20,10 +20,9 @@
 #		make clean			: return the folder to its original state
 #
 #	In some cases, where there are underscore problems when linking to the 
-#	LAPACK, BLAS, and FFTW3 libraries, it might be necessary to use
-#	make all2 or make all3 instead of make all (or make fortran2, fortran3,
-#	fortran2-mp, fortran3-mp). ALL OF THE OTHER MAKES LISTED BELOW ARE 
-#	FOR DEVELOPERS ONLY.
+#	LAPACK, BLAS, and FFTW3 libraries, it might be necessary to set
+#	LAPACK_UNDERSCORE=1 or FFTW3_UNDERSCORE=1. ALL OF THE OTHER MAKES LISTED
+#	BELOW ARE FOR DEVELOPERS ONLY.
 #
 #	This Makefile accepts the following optional arguments that can be passed
 #	using the syntax : make F95="name of f95 compile"
@@ -48,26 +47,8 @@
 #	make fortran
 #		Compile only the fortran 95 component of the archive.
 #
-#	make fortran2
-#		Variant of make all: LAPACK subroutine names have
-#		an underscore appended to them in the source files in order to 
-#		use FFTW and LAPACK libraries with conflicting underscore 
-#		conventions.
-#
-#	make fortran3
-#		Variant of make all: FFTW subroutine names have
-#		an underscore appended to them in the source files in order to 
-#		use FFTW and LAPACK libraries with conflicting underscore 
-#		conventions.
-#	
 #	make fortran-mp
 #		Compile only the fortran 95 component of the archive with OpenMP support.
-#	
-#	make fortran2-mp
-#		Variant of make fortran-mp following the same rules as make fortran2.
-#	
-#	make fortran3-mp
-#		Variant of make fortran-mp following the same rules as make fortran3.
 #	
 #	make install-fortran
 #		Install only fortram 95 component of SHTOOLS.
@@ -143,7 +124,9 @@ PYTHON_VERSION = all
 SYSLIBPATH = /usr/local/lib
 
 FFTW = -L$(SYSLIBPATH) -lfftw3
+FFTW_UNDERSCORE = 0
 LAPACK = -llapack 
+LAPACK_UNDERSCORE = 0
 BLAS = -lblas
 
 SHELL = /bin/sh
@@ -204,19 +187,24 @@ SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?=
 endif
 
-.PHONY: all all2 all3 fortran fortran2 fortran3 python python2 python3 install doc remove-doc clean\
+ifeq ($(LAPACK_UNDERSCORE),1)
+LAPACK_FLAGS = -DLAPACK_UNDERSCORE
+endif
+
+ifeq ($(FFTW3_UNDERSCORE),1)
+FFTW3_FLAGS = -DFFTW3_UNDERSCORE
+endif
+
+
+.PHONY: all fortran python python2 python3 install doc remove-doc clean\
 	fortran-tests clean-fortran-tests run-fortran-tests run-python-tests run-python2-tests run-python3-tests\
-	install-fortran install-python install-python2 install-python3 uninstall fortran-mp fortran2-mp fortran3-mp
+	install-fortran install-python install-python2 install-python3 uninstall fortran-mp
 
 
 all: fortran python
 
-all2: fortran2 python
-
-all3: fortran3 python
-
 fortran:
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
@@ -226,33 +214,9 @@ fortran:
 	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
-
-fortran2:
-	$(MAKE) -C $(SRCDIR) -f Makefile all2 F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
-	@echo
-	@echo MAKE SUCCESSFUL!
-	@echo
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo Compile your Fortran code with the following flags:
-	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo
-
-fortran3:
-	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)"
-	@echo
-	@echo MAKE SUCCESSFUL!
-	@echo
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo Compile your Fortran code with the following flags:
-	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo 
 
 fortran-mp:
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
@@ -262,30 +226,6 @@ fortran-mp:
 	@echo $(F95) $(MODFLAG) $(F95FLAGS) $(OPENMPFLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
-
-fortran2-mp:
-	$(MAKE) -C $(SRCDIR) -f Makefile all2 F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)"
-	@echo
-	@echo MAKE SUCCESSFUL!
-	@echo
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo Compile your Fortran code with the following flags:
-	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) $(OPENMPFLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo
-
-fortran3-mp:
-	$(MAKE) -C $(SRCDIR) -f Makefile all3 F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)"
-	@echo
-	@echo MAKE SUCCESSFUL!
-	@echo
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo Compile your Fortran code with the following flags:
-	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) $(OPENMPFLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
-	@echo ---------------------------------------------------------------------------------------------------
-	@echo 
 
 ifeq ($(PYTHON_VERSION),all)
 python: python2 python3
@@ -442,6 +382,7 @@ clean-libs:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
 	-rm -f lib/lib$(LIBNAME).a
 	-rm -f lib/lib$(LIBNAMEMP).a
+	-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
 	-rm -rf pyshtools/__pycache__/

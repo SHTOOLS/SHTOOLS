@@ -64,7 +64,10 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, csphase)
     integer :: ncoef, i, l, m, ind1, ind2, info, lwork, opt1, phase, astat(4)
     real*8 :: pi, lonr
     real*8, allocatable :: mm(:), gg(:, :), p(:), work(:)
-    external :: dgels_
+#ifdef LAPACK_UNDERSCORE
+#define dgels dgels_
+#endif
+    external :: dgels
 
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 &
             .or. size(cilm(1,1,:)) < lmax+1) then
@@ -215,7 +218,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, csphase)
     !   using LAPACK routine DGELS.
     !
     !---------------------------------------------------------------------------
-    call dgels_('N', nmax, ncoef, 1, gg, nmax, mm, max((lmax+1)**2, nmax), &
+    call dgels('N', nmax, ncoef, 1, gg, nmax, mm, max((lmax+1)**2, nmax), &
                 work, lwork, info)
         
     if (info /= 0) then

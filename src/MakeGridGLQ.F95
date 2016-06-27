@@ -67,7 +67,12 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc)
 !-------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: NGLQSH, CSPHASE_DEFAULT
-    
+#ifdef FFTW3_UNDERSCORE
+#define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
+#define dfftw_execute dfftw_execute_
+#define dfftw_destroy_plan dfftw_destroy_plan_
+#endif
+
     implicit none
     
     real*8, intent(in) :: cilm(:,:,:)

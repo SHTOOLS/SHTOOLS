@@ -1,5 +1,5 @@
-subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
-                        lmax_calc)
+subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
+                        csphase, lmax_calc)
 !-------------------------------------------------------------------------------
 !
 !   Given the Spherical Harmonic coefficients CILM, this subroutine
@@ -23,6 +23,11 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !   90 degees latitude is ultimately downweighted to zero, so this point does 
 !   not contribute to the spherical harmonic coefficients.
 !
+!   The complex spherical harmonics are output in the array cilm. Cilm(1,,) 
+!   contains the positive m term, wheras cilm(2,,) contains the negative m term.
+!   The negative order Legendre functions are calculated making use of the 
+!   identity Y_{lm}^* = (-1)^m Y_{l,-m}.
+!
 !   Calling Parameters
 !
 !       IN
@@ -34,8 +39,9 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !       OUT
 !           griddh      Gridded data of the spherical harmonic
 !                       coefficients CILM with dimensions (2*LMAX+2 , 2*LMAX+2). 
-!           n           Number of samples in the grid, always even, which 
-!                       is 2*(LMAX+2).
+!           n           Number of samples in the grid, always even, which is 
+!                       2*(LMAX+2).
+!
 !       OPTIONAL (IN)
 !           norm        Normalization to be used when calculating Legendre 
 !                       functions
@@ -60,24 +66,29 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !
 !   Dependencies:   FFTW3, CSPHASE_DEFAULT
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2008-2015, Mark A. Wieczorek
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: CSPHASE_DEFAULT
-    
+#ifdef FFTW3_UNDERSCORE
+#define dfftw_plan_dft_1d dfftw_plan_dft_1d_
+#define dfftw_execute dfftw_execute_
+#define dfftw_destroy_plan dfftw_destroy_plan_
+#endif
+
     implicit none
     
-    real*8, intent(in) :: cilm(:,:,:)
-    real*8, intent(out) :: griddh(:,:)
+    complex*16, intent(in) :: cilm(:,:,:)
+    complex*16, intent(out) :: griddh(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: n
     integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
     integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, nlong
-    real*8 :: grid(4*lmax+4), pi, theta, coef0, scalef, rescalem, u, p, pmm, &
-              pm1, pm2, z, coef0s, tempr
-    complex*16 :: coef(2*lmax+3), coefs(2*lmax+3), tempc
+    real*8 ::  pi, theta, scalef, rescalem, u, p, pmm, &
+            pm1, pm2, z
+    complex*16 :: coef(4*lmax+4), coefs(4*lmax+4), tempc, grid(4*lmax+4)
     integer*8 :: plan
     real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer*1, save, allocatable :: fsymsign(:,:)
@@ -90,7 +101,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     
     if (present(sampling)) then
         if (sampling /= 1 .and. sampling /=2) then
-            print*, "Error --- MakeGridDH"
+            print*, "Error --- MakeGridDHC"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
             print*, "Input value is ", sampling
@@ -99,7 +110,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     end if
     
     if (size(cilm(:,1,1)) < 2) then
-        print*, "Error --- MakeGridDH"
+        print*, "Error --- MakeGridDHC"
         print*, "CILM must be dimensioned as (2, *, *)."
         print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), &
                 size(cilm(1,1,:))
@@ -109,7 +120,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     if (present(sampling)) then
         if (sampling == 1) then
             if (size(griddh(:,1)) < n .or. size(griddh(1,:)) < n) then
-                print*, "Error --- MakeGridDH"
+                print*, "Error --- MakeGridDHC"
                 print*, "GRIDDH must be dimensioned as (N, N) where N is ", n
                 print*, "Input dimension is ", size(griddh(:,1)), &
                         size(griddh(1,:))
@@ -118,7 +129,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
             
         else if (sampling ==2) then
             if (size(griddh(:,1)) < n .or. size(griddh(1,:)) < 2*n) then
-                print*, "Error --- MakeGriddDH"
+                print*, "Error --- MakeGriddDHC"
                 print*, "GRIDDH must be dimensioned as (N, 2*N) where N is ", n
                 print*, "Input dimension is ", size(griddh(:,1)), &
                         size(griddh(1,:))
@@ -128,7 +139,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         
     else
         if (size(griddh(:,1)) < n .or. size(griddh(1,:)) < n) then
-            print*, "Error --- MakeGridDH"
+            print*, "Error --- MakeGridDHC"
             print*, "GRIDDH must be dimensioned as (N, N) where N is ", n
             print*, "Input dimension is ", size(griddh(:,1)), size(griddh(1,:))
             stop
@@ -138,7 +149,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         
     if (present(norm)) then
         if (norm > 4 .or. norm < 1) then
-            print*, "Error --- MakeGridDH"
+            print*, "Error --- MakeGridDHC"
             print*, "Parameter NORM must be 1 (geodesy), 2 (Schmidt), " // &
                     "3 (unnormalized), or 4 (orthonormalized)."
             print*, "Input value is ", norm
@@ -153,20 +164,21 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     end if
     
     if (present(csphase)) then
-            if (csphase /= -1 .and. csphase /= 1) then
-                print*, "Error --- MakeGridDH"
-                print*, "CSPHASE must be 1 (exclude) or -1 (include)"
-                print*, "Input valuse is ", csphase
-                stop
-                
-            else
-                phase = csphase
-                
-            endif
-        else
-            phase = CSPHASE_DEFAULT
+        if (csphase /= -1 .and. csphase /= 1) then
+            print*, "Error --- MakeGridDHC"
+            print*, "CSPHASE must be 1 (exclude) or -1 (include)"
+            print*, "Input valuse is ", csphase
+            stop
             
-        endif
+        else
+            phase = csphase
+            
+        end if
+        
+    else
+        phase = CSPHASE_DEFAULT
+        
+    end if
 
     pi = acos(-1.0d0)
     
@@ -174,7 +186,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     
     if (present(lmax_calc)) then
         if (lmax_calc > lmax) then
-            print*, "Error --- MakeGridDH"
+            print*, "Error --- MakeGridDHC"
             print*, "LMAX_CALC must be less than or equal to LMAX."
             print*, "LMAX = ", lmax
             print*, "LMAX_CALC = ", lmax_calc
@@ -197,8 +209,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         else
             nlong = 2 * n
             
-        end if
-        
+        endif
     else
         nlong = n
         
@@ -209,21 +220,19 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     !   Calculate recursion constants used in computing the Legendre polynomials
     !
     !---------------------------------------------------------------------------
-    
     if (lmax_comp /= lmax_old .or. lnorm /= norm_old) then
-        
         if (allocated (sqr)) deallocate (sqr)
         if (allocated (ff1)) deallocate (ff1)
         if (allocated (ff2)) deallocate (ff2)
         if (allocated (fsymsign)) deallocate (fsymsign)
         
-        allocate (sqr(2 * lmax_comp +1 ), stat=astat(1))
+        allocate (sqr(2*lmax_comp+1), stat=astat(1))
         allocate (ff1(lmax_comp+1,lmax_comp+1), stat=astat(2))
         allocate (ff2(lmax_comp+1,lmax_comp+1), stat=astat(3))
         allocate (fsymsign(lmax_comp+1,lmax_comp+1), stat=astat(4))
         
         if (sum(astat(1:4)) /= 0) then
-            print*, "MakeGridDH --- Error"
+            print*, "MakeGridDHC --- Error"
             print*, "Problem allocating arrays SQR, FF1, FF2, or FSYMSIGN", &
                     astat(1), astat(2), astat(3), astat(4)
             stop
@@ -231,8 +240,8 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         
         !-----------------------------------------------------------------------
         !
-        !   Calculate signs used for symmetry of Legendre functions about 
-        !   equator
+        !   Calculate signs used for symmetry of Legendre functions 
+        !   about equator.
         !
         !-----------------------------------------------------------------------
         do l = 0, lmax_comp, 1
@@ -268,10 +277,8 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         !   is assumed to be zero.
         !
         !-----------------------------------------------------------------------
-        select case (lnorm)
-        
+        select case(lnorm)
             case (1,4)
-    
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
                     ff2(2,1) = 0.0d0
@@ -283,9 +290,9 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                     
                     do m = 1, l-2, 1
                         ff1(l+1,m+1) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) &
-                                        / sqr(l-m)
+                                    / sqr(l-m)
                         ff2(l+1,m+1) = sqr(2*l+1) * sqr(l-m-1) * sqr(l+m-1) &
-                                        / sqr(2*l-3) / sqr(l+m) / sqr(l-m) 
+                                    / sqr(2*l-3) / sqr(l+m) / sqr(l-m) 
                     end do
                     
                     ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
@@ -294,7 +301,6 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                 end do
             
             case (2)
-            
                 if (lmax_comp /= 0) then
                     ff1(2,1) = 1.0d0
                     ff2(2,1) = 0.0d0
@@ -307,7 +313,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                     do m = 1, l-2, 1
                         ff1(l+1,m+1) = dble(2*l-1) / sqr(l+m) / sqr(l-m)
                         ff2(l+1,m+1) = sqr(l-m-1) * sqr(l+m-1) / sqr(l+m) &
-                                        / sqr(l-m)
+                                    / sqr(l-m)
                     end do
                     
                     ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
@@ -316,8 +322,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                 end do
             
             case (3)
-        
-                do l = 1, lmax_comp, 1
+                do l  =1, lmax_comp, 1
                     ff1(l+1,1) = dble(2*l-1) / dble(l)
                     ff2(l+1,1) = dble(l-1) / dble(l)
                     
@@ -339,10 +344,9 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     !
     !   Do special case of lmax_comp = 0
     !
-    !--------------------------------------------------------------------------- 
+    !---------------------------------------------------------------------------
     if (lmax_comp == 0) then
-    
-        select case (lnorm)
+        select case(lnorm)
             case (1,2,3); pm2 = 1.0d0
             case (4); pm2 = 1.0d0 / sqrt(4.0d0 * pi)
         end select
@@ -350,8 +354,10 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         if (present(sampling)) then
             if (sampling == 1) then
                 griddh(1:n, 1:n) = cilm(1,1,1) * pm2
+                
             else
                 griddh(1:n, 1:2*n) = cilm(1,1,1) * pm2
+                
             end if
             
         else
@@ -369,52 +375,49 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     !   
     !---------------------------------------------------------------------------
     
-    call dfftw_plan_dft_c2r_1d_(plan, nlong, coef(1:nlong/2+1), grid(1:nlong), &
-                                FFTW_MEASURE)
+    call dfftw_plan_dft_1d(plan, nlong, coef(1:nlong), grid(1:nlong), &
+                            FFTW_BACKWARD, FFTW_MEASURE)
 
     i_eq = n/2 + 1  ! Index correspondong to zero latitude
 
     do i = 1, i_eq - 1, 1
-    
         i_s = 2*i_eq -i
     
         theta = pi * dble(i-1) / dble(n)
         z = cos(theta)
         u = sqrt( (1.0d0-z) * (1.0d0+z) )
 
-        coef(1:lmax+1) = dcmplx(0.0d0,0.0d0)
-        coef0 = 0.0d0
-        coefs(1:lmax+1) = dcmplx(0.0d0,0.0d0)
-        coef0s = 0.0d0
+        coef(1:nlong) = dcmplx(0.0d0,0.0d0)
+        coefs(1:nlong) = dcmplx(0.0d0,0.0d0)
         
         select case (lnorm)
             case (1,2,3); pm2 = 1.0d0
-            case (4); pm2 = 1.0d0 / sqrt(4.0d0 * pi)
+            case (4); pm2 = 1.0d0 / sqrt(4*pi)
         end select
 
-        tempr =  cilm(1,1,1) * pm2
-        coef0 = coef0 + tempr
-        coef0s = coef0s + tempr     ! fsymsign is always 1 for l=m=0
+        tempc =  cilm(1,1,1) * pm2
+        coef(1) = coef(1) + tempc
+        coefs(1) = coefs(1) + tempc     ! fsymsign is always 1 for l=m=0
                 
         pm1 =  ff1(2,1) * z * pm2
-        tempr = cilm(1,2,1) * pm1
-        coef0 = coef0 + tempr
-        coef0s = coef0s - tempr     ! fsymsign = -1
+        tempc = cilm(1,2,1) * pm1
+        coef(1) = coef(1) + tempc
+        coefs(1) = coefs(1) - tempc     ! fsymsign = -1
                 
         do l = 2, lmax_comp, 1
             l1 = l+1
             p = ff1(l1,1) * z * pm1 - ff2(l1,1) * pm2
-            tempr = cilm(1,l1,1) * p
-            coef0 = coef0 + tempr
-            coef0s = coef0s + tempr * fsymsign(l1,1)
+            tempc = cilm(1,l1,1) * p
+            coef(1) = coef(1) + tempc
+            coefs(1) = coefs(1) + tempc * fsymsign(l1,1)
             pm2 = pm1
             pm1 = p
         end do
                 
         select case (lnorm)
-            case (1,2);  pmm = sqr(2) * scalef
+            case (1,2);  pmm = scalef
             case (3);    pmm = scalef
-            case (4);    pmm = sqr(2) * scalef / sqrt(4.0d0 * pi)
+            case (4);    pmm = scalef / sqrt(4*pi)
         end select
                 
         rescalem = 1.0d0/scalef
@@ -431,20 +434,26 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                     pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
                     pm2 = pmm / sqr(2*m+1)
                 case (3)
-                    pmm = phase * pmm * dble(2*m-1)
+                    pmm = phase * pmm * (2*m-1)
                     pm2 = pmm
             end select
             
-            tempc = dcmplx(cilm(1,m1,m1), - cilm(2,m1,m1)) * pm2
+            tempc = cilm(1,m1,m1) * pm2
             coef(m1) = coef(m1) + tempc
             coefs(m1) = coefs(m1) + tempc
+            tempc = cilm(2,m1,m1) * pm2
+            coef(nlong-(m-1)) = coef(nlong-(m-1)) + tempc
+            coefs(nlong-(m-1)) = coefs(nlong-(m-1)) + tempc
             ! fsymsign = 1
                                         
             pm1 = z * ff1(m1+1,m1) * pm2
                     
-            tempc = dcmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1)) * pm1
+            tempc = cilm(1,m1+1,m1) * pm1
             coef(m1) = coef(m1) + tempc 
             coefs(m1) = coefs(m1) - tempc
+            tempc = cilm(2,m1+1,m1) * pm1
+            coef(nlong-(m-1)) = coef(nlong-(m-1)) + tempc   
+            coefs(nlong-(m-1)) = coefs(nlong-(m-1)) - tempc
             ! fsymsign = -1
                     
             do l = m + 2, lmax_comp, 1
@@ -452,94 +461,83 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                 p = z * ff1(l1,m1) * pm1 - ff2(l1,m1) * pm2
                 pm2 = pm1
                 pm1 = p
-                tempc = dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) * p
+                tempc = cilm(1,l1,m1) * p
                 coef(m1) = coef(m1) + tempc
                 coefs(m1) = coefs(m1) + tempc * fsymsign(l1,m1)
+                tempc = cilm(2,l1,m1) * p
+                coef(nlong-(m-1)) = coef(nlong-(m-1)) + tempc
+                coefs(nlong-(m-1)) = coefs(nlong-(m-1)) + tempc &
+                                    * fsymsign(l1,m1) 
             end do
                     
             coef(m1) = coef(m1) * rescalem
             coefs(m1) = coefs(m1) * rescalem
+            coef(nlong-(m-1)) = coef(nlong-(m-1)) * rescalem * ((-1)**mod(m,2))
+            coefs(nlong-(m-1)) = coefs(nlong-(m-1)) * &
+                                rescalem * ((-1)**mod(m,2))
                     
         end do           
                                 
         rescalem = rescalem * u
                 
         select case(lnorm)
-            case(1,4)
+            case (1,4)
                 pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) &
                         * rescalem
             case(2)
                 pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
             case(3)
-                pmm = phase * pmm * dble(2*lmax_comp-1) * rescalem
+                pmm = phase * pmm * (2*lmax_comp-1) * rescalem
         end select
                     
-        tempc = dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                        - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm
+        tempc = cilm(1,lmax_comp+1,lmax_comp+1) * pmm
         coef(lmax_comp+1) = coef(lmax_comp+1) + tempc
         coefs(lmax_comp+1) = coefs(lmax_comp+1) + tempc
+        tempc = cilm(2,lmax_comp+1,lmax_comp+1) * pmm * ((-1)**mod(lmax_comp,2))
+        coef(nlong-(lmax_comp-1)) = coef(nlong-(lmax_comp-1)) + tempc
+        coefs(nlong-(lmax_comp-1)) = coefs(nlong-(lmax_comp-1)) + tempc
         ! fsymsign = 1
-        
-        coef(1) = dcmplx(coef0,0.0d0)
-        coef(2:lmax+1) = coef(2:lmax+1)/2.0d0
-        
-        if (present(sampling)) then
-            if (sampling == 2) then
-                coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0) 
-            end if
-        end if
                         
-        call dfftw_execute_(plan)    ! take fourier transform
+        call dfftw_execute(plan)    ! take fourier transform
         griddh(i,1:nlong) = grid(1:nlong)
                 
         if (i /= 1) then    ! don't compute value for south pole.
-            coef(1) = dcmplx(coef0s,0.0d0)
-            coef(2:lmax+1) = coefs(2:lmax+1)/2.0d0
-        
-            if (present(sampling)) then
-                if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0) 
-                end if
-            end if
-                
-            call dfftw_execute_(plan)    ! take fourier transform
+            coef(1:nlong) = coefs(1:nlong)
+            call dfftw_execute(plan)    ! take fourier transform
             griddh(i_s,1:nlong) = grid(1:nlong)
-            
         end if
             
     end do
     
     ! Finally, do equator
-    
     z = 0.0d0
     u = 1.0d0
 
-    coef(1:lmax+1) = dcmplx(0.0d0,0.0d0)
-    coef0 = 0.0d0
+    coef(1:nlong) = dcmplx(0.0d0,0.0d0)
     
-    select case(lnorm)
+    select case (lnorm)
         case (1,2,3); pm2 = 1.0d0
-        case (4); pm2 = 1.0d0 / sqrt(4.0d0 * pi)
+        case (4); pm2 = 1.0d0 / sqrt(4*pi)
     end select
     
-    coef0 = coef0 + cilm(1,1,1) * pm2
+    coef(1) = coef(1) + cilm(1,1,1) * pm2
                 
     do l = 2, lmax_comp, 2
         l1 = l+1
         p = - ff2(l1,1) * pm2
         pm2 = p
-        coef0 = coef0 + cilm(1,l1,1) * p
+        coef(1) = coef(1) + cilm(1,l1,1) * p
     end do
                 
     select case (lnorm)
-        case (1,2);  pmm = sqr(2) * scalef
+        case (1,2);  pmm = scalef
         case (3);    pmm = scalef
-        case (4);    pmm = sqr(2) * scalef / sqrt(4.0d0 * pi)
+        case (4);    pmm = scalef / sqrt(4*pi)
     end select
                 
     rescalem = 1.0d0/scalef
             
-    do m = 1, lmax_comp-1, 1   
+    do m = 1, lmax_comp-1, 1     
         m1 = m + 1
                     
         select case (lnorm)
@@ -550,49 +548,44 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                 pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
                 pm2 = pmm / sqr(2*m+1)
             case (3)
-                pmm = phase * pmm * dble(2*m-1)
+                pmm = phase * pmm * (2*m-1)
                 pm2 = pmm
         end select
                     
-        coef(m1) = coef(m1) + dcmplx(cilm(1,m1,m1), &
-                    - cilm(2,m1,m1)) * pm2
+        coef(m1) = coef(m1) + cilm(1,m1,m1) * pm2
+        coef(nlong-(m-1)) = coef(nlong-(m-1)) + cilm(2,m1,m1) * pm2 
                     
         do l = m + 2, lmax_comp, 2
             l1 = l+1
             p = - ff2(l1,m1) * pm2
-            coef(m1) = coef(m1) + dcmplx(cilm(1,l1,m1), &
-                    - cilm(2,l1,m1)) * p
+            coef(m1) = coef(m1) + cilm(1,l1,m1) * p
+            coef(nlong-(m-1)) = coef(nlong-(m-1)) + cilm(2,l1,m1) * p 
             pm2 = p
         end do
+        
+        coef(m1) = coef(m1) * rescalem
+        coef(nlong-(m-1)) = coef(nlong-(m-1)) * rescalem * ((-1)**mod(m,2))
                     
     end do           
                 
-    select case (lnorm)
-        case (1,4)
-            pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp)
-        case (2)
-            pmm = phase * pmm / sqr(2*lmax_comp)
-        case (3)
-            pmm = phase * pmm * dble(2*lmax_comp-1)
+    select case(lnorm)
+        case(1,4)
+            pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
+        case(2)
+            pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
+        case(3)
+            pmm = phase * pmm * (2*lmax_comp-1) * rescalem
     end select
                     
-    coef(lmax_comp+1) = coef(lmax_comp+1) + &
-                        dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                        - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm
-        
-    coef(1) = dcmplx(coef0,0.0d0)
-    coef(2:lmax+1) = coef(2:lmax+1) * rescalem / 2.0d0
+    coef(lmax_comp+1) = coef(lmax_comp+1) + cilm(1,lmax_comp+1,lmax_comp+1) &
+                            * pmm
+    coef(nlong-(lmax_comp-1)) = coef(nlong-(lmax_comp-1)) &
+            + cilm(2,lmax_comp+1,lmax_comp+1) * pmm * ((-1)**mod(lmax_comp,2))
     
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0) 
-        end if
-    end if
-    
-    call dfftw_execute_(plan)    ! take fourier transform
+    call dfftw_execute(plan)    ! take fourier transform
                 
     griddh(i_eq,1:nlong) = grid(1:nlong)
 
-    call dfftw_destroy_plan_(plan)
+    call dfftw_destroy_plan(plan)
                 
-end subroutine MakeGridDH
+end subroutine MakeGridDHC
