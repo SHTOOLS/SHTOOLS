@@ -16,31 +16,38 @@ SHTOOLS is extremely versatile:
 
 * One can choose to use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup> with the associated Legendre functions.
 
-* The spherical harmonic transforms are proven to be accurate to approximately degree 2800, corresponding to a spatial resolution of better than 4 arc minutes.
+* The spherical harmonic transforms are accurate to approximately degree 2800, corresponding to a spatial resolution of better than 4 arc minutes.
 
+* The fortran routines are OpenMP compatible and OpenMP thread-safe.
+	
 * Routines are included for performing localized multitaper spectral analyses.
 
 * Routines are included for performing standard gravity and magnetic field calculations, such as computation of the geoid and the determination of the potential associated with finite-amplitude topography.
 
 * The routines are fast. Spherical harmonic transforms and reconstructions take on the order of 1 second for bandwidths less than 600 and about 3 minutes for bandwidths close to 2800.
 		
-### How do I use SHTOOLS? ###
-
-SHTOOLS can be used in any Fortran 95 or Python program. The base SHTOOLS software is written in Fortran 95, and Python wrappers allow simple access to all fortran-compiled routines. SHTOOLS makes use of the freely available Fourier transform package [FFTW](http://www.fftw.org) and the linear algebra packages [LAPACK](http://www.netlib.org/lapack/) and [BLAS](http://www.netlib.org/blas/).
-
 ### How do I install SHTOOLS? ###
 
-The most recent release of SHTOOLS can be downloaded from this link on [GitHub](https://github.com/SHTOOLS/SHTOOLS/releases). Installation of SHTOOLS can be as simple as executing the following command in a unix terminal:
+The most recent release of SHTOOLS can be downloaded from [GitHub](https://github.com/SHTOOLS/SHTOOLS/releases).  Installation of SHTOOLS can be as simple as executing the following command in a unix terminal
 
     make
     
-To run the Fortran 95 and Python tests, enter
+To compile the OpenMP version of the fortran routines, enter<
+	
+	make fortran-mp
+    
+The Fortran 95 and Python test suites can be run by entering
 
     make fortran-tests
-    make python-tests
+    make python2-tests
+    make python3-tests
 
-More information can be found on the GitHub [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki) and in the SHTOOLS [documentation](www/documentation.html). Keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
+Full installation instructions can be found [here](www/install.html), and additional information can be found on the GitHub [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki). You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
+
+### How do I use SHTOOLS? ###
+
+SHTOOLS can be invoked in any Fortran 95, Python 2, or Python 3 program. The base SHTOOLS software is written in Fortran 95, and Python wrappers allow simple access to all fortran-compiled routines. SHTOOLS makes use of the freely available Fourier transform package [FFTW](http://www.fftw.org) and the linear algebra packages [LAPACK](http://www.netlib.org/lapack/) and [BLAS](http://www.netlib.org/blas/).
 
 ### How much does it cost? ###
 
-The SHTOOLS software package is entirely free and open source. Two free Fortran 95 compilers exist ([gfortran](http://gcc.gnu.org/) and [g95](http://www.g95.org/)), and [Python](https://www.python.org/) is readily available. SHTOOLS can be modified and distributed according to the revised BSD license.
+The SHTOOLS software package is entirely free and open source. SHTOOLS can be modified and distributed according to the revised BSD license.

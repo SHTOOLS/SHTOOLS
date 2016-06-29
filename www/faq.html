@@ -50,14 +50,14 @@
 			<li><a href="#g11">Can I donate?</a></li>
 		</ul>
 			
-		<p class="headbox">Compiling Problems</p>
+		<p class="headbox">Fortran Compiling Problems</p>
 		
 		<ul>
 			<li><a href="#c1">SHTOOLS won't compile on my computer.</a></li>
 			<li><a href="#c2">Can I compile SHTOOLS with Fortran 77?</a></li>
 		</ul>
 		
-		<p class="headbox">Linking Problems</p>
+		<p class="headbox">Fortran Linking Problems</p>
 		<ul>
 			<li><a href="#l1">Linking fails because of "Undefined symbols".</a></li>
 			<li><a href="#l2">Linking fails because e_wsfe, z_abs, c_sqrt, s_cmp, etc., are undefined.</a></li>
@@ -67,7 +67,7 @@
 			<li><a href="#l5">Linking fails because SHTOOLS routines are undefined.</a></li>
 		</ul>
 		
-		<p class="headbox">Runtime Problems</p>
+		<p class="headbox">Fortran Runtime Problems</p>
 		
 		<ul>
 			<li><a href="#r1">I get a "segmentation fault" when running a program that links to the SHTOOLS library.</a></li>
@@ -80,20 +80,23 @@
 
 	<h2><a name="g1"></a>Who maintains SHTOOLS?</h2>
 	
-	<p>This software package was created in 2004 by <a href="https://github.com/MarkWieczorek">Mark Wieczorek</a>, who is the lead Fortran developer. As of version 3.0, <a href="https://github.com/MatthiasMeschede">Matthias Meschede</a> is the lead Python developer. We can be contacted at the <a href="https://github.com/SHTOOLS">SHTOOLS GitHub organization page</a>. </p>
+	<p>This software package was created in 2004 by <a href="https://github.com/MarkWieczorek">Mark Wieczorek</a>, who is the lead Fortran 95 developer. As of version 3.0, <a href="https://github.com/MatthiasMeschede">Matthias Meschede</a> is the lead Python developer. We can be contacted at the <a href="https://github.com/SHTOOLS">SHTOOLS GitHub organization page</a>. </p>
 
 	<h2><a name="g2"></a>I have a question.</h2>
 	
-	<p>Before sending us an email, please (1) read the page <a href="compilation.html">Compilation Instructions</a>, (2) read the sections <a href="using-f95.html">Using SHTOOLS with Fortran 95</a>, and <a href="using-python.html">Python</a>, (3) read this FAQ, (4) ensure that you are using the current version of SHTOOLS, (5) perform a <tt>make clean</tt> and recompile SHTOOLS, and finally (6) consult the <a href="https://github.com/SHTOOLS/SHTOOLS/issues">SHTOOLS issues at GitHub</a>. </p>
+	<p>Before contacting us, first (1) read the page <a href="compilation.html">Compilation Instructions</a>, (2) read the sections <a href="using-f95.html">Using SHTOOLS with Fortran 95</a> and <a href="using-python.html">Python</a>, (3) read this FAQ, (4) ensure that you are using the current version of SHTOOLS, (5) perform a <tt>make clean</tt> and recompile SHTOOLS, and finally (6) consult the <a href="https://github.com/SHTOOLS/SHTOOLS/issues">SHTOOLS issues at GitHub</a>. </p>
+	
+	<p>If at this point your problem is not resolved, for most cases we would prefer that you open an issue on <a href="https://github.com/SHTOOLS/SHTOOLS/issues">GitHub</a>. You can also contact the developers by email.</p>
 	
 	<h2><a name="g2b"></a>I have a suggestion.</h2>
 	
-	<p>We often make improvements based on user suggestions. Nevertheless, please realize that we are both very busy and that we are not paid to develop or maintain this archive.</p>
-	
+	<p>We often make improvements based on user suggestions. Nevertheless, please realize that the developers are very busy and that we are not paid to develop or maintain this archive. We suggest that you open an issue on GitHub describing your suggestion, and we will then flag the issue as a future enhancement.</p>
+		
 	<h2><a name="g3"></a>I would like to contribute.</h2>
 	
 	<p>The easiest way to contribute to developing SHTOOLS is by GitHub. Start by forking the SHTOOLS repo into your GitHub account, and then clone this repo on your local computer. Commit changes to your personal repo, and when you think that your changes are ready to be incorporated into the main code, make a pull request.</p>
-	
+
+	<p>Another way to contribute is by filing GitHub issues when you find a bug, and to respond to open issues if you have an answer.</p>	
 	
 	<h2><a name="g4"></a>Can I use the SHTOOLS library with C, F77, and Matlab?</h2>
 	
@@ -102,7 +105,7 @@
 
 	<h2><a name="g6"></a>How do I cite SHTOOLS in a publication?</h2>
 	
-	<p>SHTOOLS has a DOI (digital object identifier) at <a href="http://zenodo.org/">Zenodo</a>. The suggested way to cite SHTOOLS is given on the <a href="http://zenodo.org/record/12158#.VOxX4ULDKkY">Zenodo SHTOOLS page</a>, as well as on the <a href="https://github.com/SHTOOLS/SHTOOLS/releases">GitHub SHTOOLS release page</a>.</p>
+	<p>SHTOOLS has a DOI (digital object identifier) at <a href="http://zenodo.org/">Zenodo</a>. The suggested way to cite SHTOOLS is given on the <a href="https://github.com/SHTOOLS/SHTOOLS/releases">GitHub SHTOOLS release page</a>.</p>
 	
 	<p>If you are using a routine that is based on a published algorithm, then you should reference the appropriate publication that is cited in the man pages.</p>
 	
@@ -125,7 +128,7 @@
 	
 	<h2><A name="g10"></a>How do I make images with the output from SHTOOLS?</h2>
 	
-	<p>If you are using the Fortran version of SHTOOLS, the output is typically in the form of an ASCII raster file. Any standard graphics package, such as MATLAB, should be able to read these files. An alternative is to use the free unix-based command line software <a href="http://gmt.soest.hawaii.edu/">GMT</a>.</p> 
+	<p>If you are using the Fortran version of SHTOOLS, the output is typically in the form of an ASCII raster file. Any standard graphics package, such as MATLAB, should be able to read these files. An alternative is to use the free unix-based command line software <a href="http://gmt.soest.hawaii.edu/">GMT</a>.</p>
 	
 	<p>If you are using the Python version of SHTOOLS, the output can be visualized by use of the <tt>matplotlib</tt> package.</p>
 	
@@ -138,7 +141,7 @@
 	
 	<h2><a name="c1"></a>SHTOOLS won't compile on my computer.</h2>
 	
-	<p class="nomarginbot">If the command <tt>make all</tt> (or <tt>make all2</tt> or <tt>make all3</tt>) results in compilation errors</p>
+	<p class="nomarginbot">If the command <tt>make fortran</tt> (or <tt>make fortran-mp</tt>) results in compilation errors</p>
 	
 	<ol>
 		<li> Verify that you have the latest release of SHTOOLS.</li>
@@ -161,25 +164,25 @@
 	<blockquote class="small"><p><tt>
 	ld: Undefined symbols:<br>
 	_dgels<br>
-	../../lib/libSHTOOLS2.0.a(SHExpandLSQ.o) reference to undefined _dgels<br>
+	../../lib/libSHTOOLS.a(SHExpandLSQ.o) reference to undefined _dgels<br>
 	link failed.</tt></p>
 	</blockquote>
 
-	<p class="nomarginbot">If the linker is correctly finding the LAPACK and FFTW libraries, the most likely cause of this is that the subroutine names in the SHTOOLS, LAPACK, and FFTW libraries are not exactly the same. If SHTOOLS is able to link to the FFTW library correctly, try rebuilding SHTOOLS using</p>
+	<p class="nomarginbot">If the linker is correctly finding the LAPACK and FFTW libraries, the most likely cause of this is that the subroutine names in the SHTOOLS, LAPACK, and FFTW libraries are not exactly the same. If SHTOOLS is able to link to the FFTW library correctly, but not LAPACK, try rebuilding SHTOOLS using</p>
 
 	<blockquote class="small"><p><tt>
 		make clean<br>
-		make all2</tt></p>
+		make fortran LAPACK_UNDERSCORE=1</tt></p>
 	</blockquote>
 	
 	<p class="nomarginbot">If a similar problem is arising with the FFTW libraries, use</p>
 	
 	<blockquote class="small"><p><tt>
 		make clean<br>
-		make all3</tt></p>
+		make fortran FFTW_UNDERSCORE=1</tt></p>
 	</blockquote>
 
-	<p>These commands will compile an alterative set of source files that appends explicitly underscores to either the LAPACK of FFTW subroutine names. These alternative files have "2" appended to their names in the directory <tt>src</tt>. If you get similar link errors, but with an added underscore, this probably means that the linker can't find the LAPACK library. See also <a href="#l4">How do I know if I need to append underscores to external function and subroutine names?</a></p>
+	<p>These commands will compile SHTOOLS source files that append explicitly underscores to either the LAPACK of FFTW subroutine names. If you get similar link errors, but with an added underscore, this probably means that the linker can't find the LAPACK library. See also <a href="#l4">How do I know if I need to append underscores to external function and subroutine names?</a></p>
 	
 	
 	<h2><a name="l2"></a>Linking fails because e_wsfe, z_abs, c_sqrt, s_cmp, etc., are undefined.</h2>
@@ -221,7 +224,7 @@
 	<p class="nomarginbot">For some compilers, the location of the source file following the compiler name is important. When this is the case, if the source file is not in its correct position, you could receive link errors that resemble the following:</p>
 	
 	<blockquote class="small"><p>
-	gfortran -L../lib -lSHTOOLS2.8 TimingAccuracy/TimingAccuracyGLQC.f95 -I../modules/ -L../lib -lfftw3 -lm -m64 -O3 -o TimingAccuracy/TimingAccuracyGLQC<br>
+	gfortran -L../lib -lSHTOOLS TimingAccuracy/TimingAccuracyGLQC.f95 -I../modules/ -L../lib -lfftw3 -lm -m64 -O3 -o TimingAccuracy/TimingAccuracyGLQC<br>
 /tmp/cchgdOpg.o: In function `MAIN__':<br>
 TimingAccuracyGLQC.f95:(.text+0x5b3): undefined reference to `randomgaussian_'<br>
 TimingAccuracyGLQC.f95:(.text+0xb9b): undefined reference to `shglq_'<br>
@@ -260,10 +263,10 @@ collect2: error: ld returned 1 exit status<br></p>
 	
 	<p>When making libraries such as SHTOOLS, LAPACK and FFTW, some compilers by default add trailing underscores to external function and subroutine names. If the function and subroutine names in the SHTOOLS library do not correspond exactly to what is in the LAPACK and FFTW libraries, the linker will not be able to resolve all of the symbols, and you will receive a linker "undefined symbols" error. Most compilers have options that allows you to "modify" the name of the subroutine and function name by specifying arguments such as "fold external function names to lower case", "do not append trailing underscores to external function names", and so on.</p>
 	
-	<p class="nomarginbot">If you are certain that you have correctly installed the FFTW, LAPACK and BLAS libraries, and that the linker can indeed find them, then it is quite possible that a linking problem is related to a trailing underscore being present in the external library, but not in the function and subroutine names in the SHTOOLS library (or vice versa). It is simple to inspect these libraries to determine the underscoring convections. For instance, the unix command "display name list"</p>
+	<p class="nomarginbot">If you are certain that you have installed correctly the FFTW, LAPACK and BLAS libraries, and that the linker can indeed find them, then it is quite possible that a linking problem is related to a trailing underscore being present in the external library, but not in the function and subroutine names in the SHTOOLS library (or vice versa). It is simple to inspect these libraries to determine the underscoring convections. For instance, the unix command "display name list"</p>
 	
 	<blockquote class="small"><p>
-	<tt> nm -j libSHTOOLS2.8.a | grep makegridglq</tt></p>
+	<tt> nm -j libSHTOOLS.a | grep makegridglq</tt></p>
 	</blockquote>
 	
 	<p class="nomarginbot">yields</p>
@@ -314,9 +317,7 @@ collect2: error: ld returned 1 exit status<br></p>
 	_dfftw_plan_dft_r2c_1d</tt></p>
 	 </blockquote>
 
-	<p>indicating that trailing underscores were not appended to the FFTW subroutine names. It is this discrepancy between the FFTW and LAPACK libraries that could make it difficult to link to both simultaneously. </p>
-	
-	<p>It is for this reason that three different makes are possible: <tt>make all</tt>, <tt>make all2</tt> and <tt>make all3</tt>. The first uses source code where the external function names do not contain underscores, the second uses source code where trailing underscores are appended only to the LAPACK subroutine names, and the third uses source code where trailing underscores are appended only to the FFTW subroutine names.</p> 
+	<p>indicating that trailing underscores were not appended to the FFTW subroutine names. It is this discrepancy between the FFTW and LAPACK libraries that could make it difficult to link to both simultaneously. To resolve this issue, see <a href="#l1">Linking fails because of "Undefined symbols"</a>.</p>
 
 	<h2><a name="l5"></a>Linking fails because SHTOOLS routines are undefined.</h2>
 	
@@ -355,11 +356,11 @@ collect2: error: ld returned 1 exit status<br></p>
 		<li>Use a debugger to find out where the error is occurring.</li>
 	</ol>
 	
-	<p>If this all fails, then let us know which routine is involved, as well as the error message you encounter. Any debugging that is done on your part will help greatly in finding the problem. Be aware that we am not being paid to solve your problems.</p>
+	<p>If this all fails, then let us know which routine is involved, as well as the error message you encounter. Any debugging that is done on your part will help greatly in finding the problem. Be aware that we are not being paid to solve your problems.</p>
 	
 	<h2><a name="r3"></a>How do I specify "optional" parameters in functions and subroutines?</h2>
 	
-	<p> In fortran 95, this can be specified in one of two ways. First, if there is only one possible optional parameter, it is only necessary to include (or exclude) it at the end of the list of arguments. In contrast, if more than one optional parameter is allowed, it is necessary to use the syntax <tt>OPTIONALVARIABLENAME=variable</tt> at the end of the list of calling arguments. It is strongly suggested that you always directly specify the name of the optional parameter, because it is quite possible that additional optional parameters will be added at a later date.</p>
+	<p> In Fortran 95, this can be specified in one of two ways. First, if there is only one possible optional parameter, it is only necessary to include (or exclude) it at the end of the list of arguments. In contrast, if more than one optional parameter is allowed, it is necessary to use the syntax <tt>OPTIONALVARIABLENAME=variable</tt> at the end of the list of calling arguments. It is strongly suggested that you always directly specify the name of the optional parameter, because it is quite possible that additional optional parameters will be added at a later date.</p>
 
 	<h2><a name="r4"></a>The LAPACK routine DSTEGR crashes with an arithmetic exception.</h2>
 	

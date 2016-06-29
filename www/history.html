@@ -34,6 +34,16 @@
 
 	<h1>Version History</h1>
 
+	<h2>Version 3.3 (beta)</h2>
+	<ul>
+		<li>Added full support for Python 3.</li>
+		<li>Makefiles were extensively modified to simplify the fortran and python builds: <tt>make all2</tt> and <tt>make all3</tt> were removed and replaced by flags that make use of the precompiler to resolve underscore problems; <tt>make install</tt> now places compiled module files in <tt>/usr/local/includes</tt>.</li>
+		<li>Makefiles were improved to minimize problems when installing both <tt>fortran</tt> and <tt>fortran-mp</tt> components. When making the latter, all object and module files in the directory <tt>src</tt> are first deleted.</li>
+		<li>Minor modifications to the python example scripts.</li>
+		<li>Minor bug fix to the scripts that create the unix <tt>man</tt> documentation.</li>
+		
+	</ul>
+
 	<h2>Version 3.2 (June 20, 2016)</h2>
 	<ul>
 		<li>Added the optional argument <tt>centralmeridian</tt> to <tt>Curve2Mask</tt> that accounts for cases where the curve makes a complete circle in longitude about the planet.</li>
