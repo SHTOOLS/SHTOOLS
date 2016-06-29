@@ -119,17 +119,20 @@ $(PROG): $(OBJS)
 	@echo
 	@echo ARCHIVE SUCCESSFULLY CREATED
 	
-.PHONY: clean all
+.PHONY: clean clean-obs-mod clean-prog-mod all
 
-clean:
-	-rm -f $(PROG)
+clean: clean-obs-mod clean-prog-mod
+
+clean-obs-mod:
 	-rm -f $(OBJS0) 
 	-rm -f $(OBJSLAPACK)
 	-rm -f $(OBJSFFTW)
 	-rm -f *.mod 
+
+clean-prog-mod:
+	-rm -f $(PROG)
 	-rm -f ../modules/*.mod
-
-
+	
 %.o: %.f95
 	$(F95) -c $(F95FLAGS) $<
 %.o: %.F95

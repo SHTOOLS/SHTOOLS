@@ -4,15 +4,15 @@
 #
 #	The normal user should only have to use the following commands
 #	
-#		make, make all		: install both the fortran and python 2 components
+#		make (all)			: install the fortran, python 2, and python 3 components
 #		make fortran		: install the fortan components
 #		make fortran-mp		: install the fortan OpenMP components
-#		make python			: install the python components
+#		make python			: install the python components (versions determined by PYTHON_VERSION)
 #		make python2		: install the python 2 components
 #		make python3		: install the python 3 components
 #		make fortran-tests	: compile and run the fortran test/example suite
 #		make fortran-tests-mp	: compile and run the fortran test/example suite with OpenMp support
-#		make python-tests	: run the python test/example suite
+#		make python-tests	: run the python test/example suite (versions determined by PYTHON_VERSION)
 #		make python2-tests	: run the python 2 test/example suite
 #		make python3-tests	: run the python 3 test/example suite
 #		make install		: place the compiled libraries and docs in /usr/local
@@ -20,20 +20,23 @@
 #		make clean			: return the folder to its original state
 #
 #	In some cases, where there are underscore problems when linking to the 
-#	LAPACK, BLAS, and FFTW3 libraries, it might be necessary to set
-#	LAPACK_UNDERSCORE=1 or FFTW3_UNDERSCORE=1. ALL OF THE OTHER MAKES LISTED
-#	BELOW ARE FOR DEVELOPERS ONLY.
+#	LAPACK, BLAS, and FFTW3 libraries, it might be necessary to set one of
+#
+#		LAPACK_UNDERSCORE=1
+#		FFTW3_UNDERSCORE=1
+#
+#	ALL OF THE OTHER MAKES LISTED BELOW ARE FOR DEVELOPERS ONLY.
 #
 #	This Makefile accepts the following optional arguments that can be passed
-#	using the syntax : make F95="name of f95 compile"
+#	using the syntax : make NAME="options"
 #	
 #		F95			: Name and path of the fortran-95 compiler
 #		F95FLAGS	: Fortran-95 compiler flags
 #		OPENMPFLAGS	: Fortran-95 OpenMP compiler flags
-#		F2PY		: Name (including path) of the f2py executable
-#		F2PY3		: Name (including path) of the f2py3 executable
-#		PYTHON		: Name (including path) of the python executable
-#		PYTHON3		: Name (including path) of the python3 executable
+#		F2PY		: Name (including path) of the Python 2 f2py executable
+#		F2PY3		: Name (including path) of the Python 3 f2py executable
+#		PYTHON		: Name (including path) of the Python 2 executable
+#		PYTHON3		: Name (including path) of the Python 3 executable
 #		FFTW		: Name and path of the FFTW3 library of the form "-Lpath -lfftw3"
 #		LAPACK		: Name and path of the LAPACK library of the form "-Lpath -llapack"
 #		BLAS		: Name and path of the BLAS library of the form "-Lpath -lblas"
@@ -42,32 +45,30 @@
 #	LIST OF ALL SUPPORTED MAKE TARGETS
 #
 #	make, make all
-#		Compile fortran and python programs in the current directory.
+#		Compile the Fortran 95, Python 2, and Python 3 components the current directory.
 #
 #	make fortran
-#		Compile only the fortran 95 component of the archive.
+#		Compile only the Fortran 95 component of the archive.
 #
 #	make fortran-mp
 #		Compile only the fortran 95 component of the archive with OpenMP support.
 #	
 #	make install-fortran
-#		Install only fortram 95 component of SHTOOLS.
+#		Install only the fortran 95 component of SHTOOLS.
 #
 #	make python
-#		Compile the python wrapper with the f2py compiler. This should be 
+#		Compile the python wrapper with the f2py compiler. This should be done
 #		after the Fortran files are compiled. The variable PYTHON_VERSION will
-#		determine which wrapper to build. If set to "all", then both 2 and 3
-#		will be created. If set to either 2 or 3, then only a wrapper for the
-#		specified version is built. You can also build for one or the other
-#		directly with the python2 or python3 targets below.
+#		determine which wrapper to build. If set to "all", then both Python 
+#		versions2 and 3 will be created. If set to either 2 or 3, then only a 
+#		wrapper for the specified version is built. You can also build for one 
+#		or the other directly with the python2 or python3 targets below.
 #
 #	make python2
-#		Compile the python 2 wrapper with the f2py compiler. This should be
-#		after the Fortran files are compiled.
+#		Compile the python 2 wrapper with the f2py compiler.
 #
 #	make python3
-#		Compile the python 3 wrapper with the f2py3 compiler. This should be
-#		after the Fortran files are compiled.
+#		Compile the python 3 wrapper with the f2py3 compiler.
 #
 #	make clean
 #		Remove the compiled lib, module, object, and Python files. Also removes 
@@ -84,13 +85,14 @@
 #		Delete compiled test suite programs.
 #
 #	make python-tests
-#		Run all python tests
+#		Run all python tests, where the variable PYTHON_VERSION determines 
+#		which versions to run.
 #
 #	make python2-tests
-#		Run all python 2 tests
+#		Run all python 2 tests.
 #
 #	make python3-tests
-#		Run all python 3 tests
+#		Run all python 3 tests.
 #
 #	make clean-python-tests
 #		Detele all compiled python tests
@@ -104,9 +106,6 @@
 #
 #	make remove-doc
 #		Remove the man and html-man pages.
-#
-#
-#	Written by Mark Wieczorek (March 2015).
 #
 #####################################################################################
 
@@ -216,7 +215,10 @@ fortran:
 	@echo
 
 fortran-mp:
+# Delete .o files before and after compiling with OpenMP to avoid issues with "fortran" build.
+	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
+	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
@@ -325,6 +327,7 @@ uninstall:
 	-rm -r $(SYSPYPATH)/pyshtools/
 	-rm -r $(SYSPY3PATH)/pyshtools/
 	-rm -r $(SYSLIBPATH)/lib$(LIBNAME).a
+	-rm -r $(SYSLIBPATH)/lib$(LIBNAMEMP).a
 	-rm -r $(SYSMODPATH)/fftw3.mod
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
@@ -340,6 +343,7 @@ install-fortran: fortran
 	-rm -r $(SYSMODPATH)/shtools.mod
 	mkdir -pv $(SYSLIBPATH)
 	cp $(LIBDIR)/lib$(LIBNAME).a $(SYSLIBPATH)/lib$(LIBNAME).a
+	-cp $(LIBDIR)/lib$(LIBNAMEMP).a $(SYSLIBPATH)/lib$(LIBNAMEMP).a
 	mkdir -pv $(SYSMODPATH)
 	cp $(INCDIR)/*.mod $(SYSMODPATH)/
 	mkdir -pv $(SYSSHAREPATH)/shtools
