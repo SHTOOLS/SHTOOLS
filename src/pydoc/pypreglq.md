@@ -25,7 +25,6 @@ Calculate the weights and nodes used in integrating a function by Gauss-Legendre
 `n` : integer
 :   The number of integration points to use. This will integrate exactly a polynomial of degree `2n-1`.
 
-
 # Description
 
 `PreGLQ` will calculate the weights and zeros used to integrate a function using Gauss-Legendre quadrature. For `n` quadrature points, the integration will be exact if the function is a polynomial of degree `2n-1`, or less. The quadrature nodes correspond to the zeros of the Legendre polynomial of degree `n`. The number of quadrature points required to integrate a polynomial of degree `L` is `ceiling((L+1)/2)`.

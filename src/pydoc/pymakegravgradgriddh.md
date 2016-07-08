@@ -56,14 +56,14 @@ Create 2D cylindrical maps on a flattened ellipsoid of the components of the gra
 
 `MakeGravGradGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm`, equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) in latitude and longitude, for six components of the gravity "gradient" tensor (all using geocentric coordinates):
 
-`(Vxx,	Vxy,	Vxz)`  
-`(Vyx,	Vyy,	Vyz)`  
-`(Vzx,	Vzy,	Vzz)`  
-	
+`(Vxx, Vxy, Vxz)`  
+`(Vyx, Vyy, Vyz)`  
+`(Vzx, Vzy, Vzz)`  
+
 The reference frame is north-oriented, where `x` points north, `y` points west, and `z` points upward (all tangent or perpendicular to a sphere of radius r). The gravitational potential is defined as
 
 `V = GM/r Sum_{l=0}^lmax (r0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}`, 
-	
+
 where `r0` is the reference radius of the spherical harmonic coefficients `Clm`, and the gravitational acceleration is
 
 `B = Grad V`.

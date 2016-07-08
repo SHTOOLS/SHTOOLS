@@ -11,7 +11,6 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 `index` : integer 
 :   Index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`.
 
-
 # Parameters
 
 `i` : integer
@@ -19,7 +18,7 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 
 `l` : integer
 :   The spherical harmonic degree.
-	
+
 `m` : integer
 :   The angular order.
 

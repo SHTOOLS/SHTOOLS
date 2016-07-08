@@ -4,7 +4,7 @@ Mean radius of the Moon.
 
 ## Value
 
-1737151.198265080 m 
+1737151.198265080 m
 
 ## Reference
 

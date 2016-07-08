@@ -18,7 +18,7 @@ Convert a three-dimensional array of spherical harmonic coefficients to a two-di
 
 `lmax` : optional, integer, default = `lmaxin`
 :   Maximum degree of input spherical harmonics to convert.
-	
+
 # Description
 
 `SHCilmToCindex` will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.  The degree `l` and order `m` corresponds to the index `l*(l+1)/2+m`.

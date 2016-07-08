@@ -21,7 +21,7 @@ Compute the space-concentration kernel of an arbitrary mask on the sphere.
 
 `n` : optional, integer, default = `nin`
 :   The number of latitudinal samples in `dh_mask`. The effective spherical harmonic bandwidth of this grid is `L=n/2-1`.
-	
+
 `sampling` : optional, integer, default determined by dimensions of `dh_mask`
 :   For 1, `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples. 
 

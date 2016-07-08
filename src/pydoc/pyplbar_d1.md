@@ -10,7 +10,7 @@ Compute all the 4-pi (geodesy) normalized Legendre polynomials and first derivat
 
 `p` : float, dimension (`lmax`+1)
 :   An array of 4-pi (geodesy) normalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`.
-	
+
 `dp` : float, dimension (`lmax`+1)
 :   An array of the first derivatives of the 4-pi (geodesy) normalized Legendre polynomials up to degree `lmax`.
 

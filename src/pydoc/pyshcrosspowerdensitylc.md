@@ -1,4 +1,4 @@
-# SHCrossPowerDensityLC 
+# SHCrossPowerDensityLC
 
 Compute the cross-power spectral density of two complex functions for a single spherical harmonic degree.
 
@@ -18,7 +18,7 @@ Compute the cross-power spectral density of two complex functions for a single s
 
 `cilm2` : complex, dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The second complex function expressed in complex spherical harmonics.
-	
+
 `l` : integer
 :   The spherical harmonic degree. This must be less than or equal to the minimum of `lmaxin1` and `lmaxin2`.
 
@@ -28,6 +28,6 @@ Compute the cross-power spectral density of two complex functions for a single s
 
 `cpsd = Sum_{i=0}^1 Sum_{m=0}^l cilm1[i, l, m] * conjg[cilm2[i, l, m]] / (2l + 1)`.
 
-# See also 
+# See also
 
 [shpowerlc](pyshpowerlc.html), [shpowerdensitylc](pyshpowerdensitylc.html), [shcrosspowerlc](pyshcrosspowerlc.html), [shpowerspectrumc](pyshpowerspectrumc.html), [shpowerspectrumdensityc](pyshpowerspectrumdensityc.html), [shcrosspowerspectrumc](pyshcrosspowerspectrumc.html), [shcrosspowerspectrumdensityc](pyshcrosspowerspectrumdensityc.html)

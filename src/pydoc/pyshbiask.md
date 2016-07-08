@@ -24,7 +24,7 @@ Calculate the multitaper (cross-)power spectrum expectation of function localize
 
 `k` : optional, integer, default = `kin`
 :   The number of localizing windows to use. Only the first `k` columns of `tapers` will be employed, which corresponds to the best-concentrated localizing windows.
-	
+
 `ldata` : optional, integer, default = `ldatain`
 :   The maximum degree of the global unwindowed power spectrum.
 

@@ -12,7 +12,7 @@ Compute the coordinates of an ellipse placed at a given latitude and longitude.
 :   The latitude [:,0] and longitude [:,1] coordinates of the ellipse in degrees.
 
 # Parameters
-	
+
 `lat` : float
 :   The latitude of the center of the ellipse in degrees.
 

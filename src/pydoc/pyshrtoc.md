@@ -15,7 +15,7 @@ Convert real spherical harmonics to complex form.
 
 `rcilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input real spherical harmonic coefficients. `rcilm[0,:,:]` and `rcilm[1,:,:]` correspond to the cosine and sine terms, respectively.
-	
+
 `lmax` : optional, integer, default = `lmaxin`
 :   The maximum degree of the output coefficients.
 

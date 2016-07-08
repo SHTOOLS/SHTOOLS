@@ -24,7 +24,7 @@ Calculate the gravitational potential exterior to relief referenced to a spheric
 
 `mass` : float
 :   The mass of the planet in kg.
-	
+
 `rho` : float
 :   The density contrast of the relief in kg/m^3.
 

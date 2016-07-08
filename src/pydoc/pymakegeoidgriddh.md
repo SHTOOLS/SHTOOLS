@@ -15,7 +15,7 @@ Create a global map of the geoid.
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential referenced to a spherical interface of radius `r0`.
-	
+
 `r0` : float
 :   The reference radius of the spherical harmonic coefficients.
 

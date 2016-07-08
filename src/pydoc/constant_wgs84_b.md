@@ -4,7 +4,7 @@ The semi-minor axis of the WGS84 ellipsoid.
 
 ## Value
 
-6356752.31420 m 
+6356752.31420 m
 
 ## Reference
 

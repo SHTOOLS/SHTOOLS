@@ -1,5 +1,5 @@
 # SHMultiply
- 
+
 Multiply two functions and determine the spherical harmonic coefficients of the resulting function.
 
 # Usage
@@ -12,7 +12,7 @@ Multiply two functions and determine the spherical harmonic coefficients of the 
 :   The real spherical harmonic coefficients corresponding to the multiplication of `sh1` and `sh2` in the space domain.
 
 # Parameters
-	
+
 `sh1` : float, dimension (2, `lmax1in`+1, `lmax1in`+1)
 :   The spherical harmonic coefficients of the first function.
 

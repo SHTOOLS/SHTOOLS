@@ -18,10 +18,10 @@ Compute the eigenvalues and eigenvectors of a real symmetric matrix.
 
 `ain` : float, dimension (`nin`, `nin`)
 :   The input real symmetric matrix. By default, only the upper portion of the matrix is used.
-	
+
 `n` : optional, integer, default = `nin`
 :   The rank of the matrix `ain`.
-	
+
 `ul` : optional, character, default = `U`
 :   If `U` then the upper portion of the matrix `ain` will be used (default). If `L` then the lower portion of the matrix `ain` will be used.
 

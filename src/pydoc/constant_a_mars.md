@@ -4,7 +4,7 @@ Semi-major axis radius of Mars.
 
 ## Value
 
-3395.42800e3 m 
+3395.42800e3 m
 
 ## Reference
 

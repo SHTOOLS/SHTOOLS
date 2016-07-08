@@ -4,7 +4,7 @@ Reference radius used for the spherical harmonic gravity solutions for Mercury.
 
 ## Value
 
-2440.e3 m 
+2440.e3 m
 
 ## Reference
 

@@ -18,7 +18,7 @@ Invert for the global power spectrum given a multitaper spectrum estimate formed
 
 `mtspectra` : float, dimension (2, `lmaxin`+1)
 :   The localized multitaper spectrum estimate and uncertainty, obtained from a routine such as `SHMultitaperCSE` or `SHMultitaperSE`.
-	
+
 `tapers` : float, dimension (`lwinin`+1, `kin`)
 :   An array of the K windowing functions, arranged in columns, obtained from a call to `SHReturnTapers`. 
 
@@ -36,7 +36,7 @@ Invert for the global power spectrum given a multitaper spectrum estimate formed
 
 `taper_wt` : optional, float, dimension (`kin`)
 :   The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
-	
+
 # Description
 
 `SHMTDebias` will invert for the global power spectrum given a localized multitaper spectrum estimate formed from spherical cap localization windows. This linear inverse problem is inherently underdetermined, and in order to achive a unique solution it is assumed that the global spectrum is constant in bins of width `nl`, and that the global power spectrum is constant for degrees greater than `lmax`. In practice `nl` should be increased until the global power spectrum is everywhere positive (negative values would be unphysical) and the variances are reasonable. Further details can be found in Wieczorek and Simons (2007).

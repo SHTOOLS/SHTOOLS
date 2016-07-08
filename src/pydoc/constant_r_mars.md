@@ -4,7 +4,7 @@ Average radius of Mars.
 
 ## Value
 
-3389500.12207057 m 
+3389500.12207057 m
 
 ## Reference
 

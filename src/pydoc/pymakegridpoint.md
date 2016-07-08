@@ -6,7 +6,7 @@ Evaluate a function expressed in spherical harmonics at a single point.
 
 `value` = pyshtools.MakeGridPoint (`cilm`, `lat`, `lon`, [`lmax`, `norm`, `csphase`, `dealloc`])
 
-# Returns 
+# Returns
 
 `value` : float
 :   Value of the function at (`lat`, `lon`). 
@@ -15,7 +15,7 @@ Evaluate a function expressed in spherical harmonics at a single point.
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `C0lm` and `C1lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm[0,1,m]` and `Slm=cilm[1,l,m]`. 
-	
+
 `lat` : float 
 :   The latitude of the point in DEGREES.
 
@@ -24,7 +24,7 @@ Evaluate a function expressed in spherical harmonics at a single point.
 
 `lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree used in evaluating the function.
-	
+
 `norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 

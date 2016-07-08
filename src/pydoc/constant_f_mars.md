@@ -2,7 +2,7 @@
 
 Topographic flattening of Mars.
 
-## Value 
+## Value
 
 0.0052276178
 

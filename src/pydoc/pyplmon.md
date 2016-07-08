@@ -12,7 +12,7 @@ Compute all the orthonormalized associated Legendre functions.
 :   An array of orthonormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m`.
 
 # Parameters
-	
+
 `lmax` : integer
 :   The maximum degree of the associated Legendre functions to be computed. If `lmax` is -1, allocated memory will be deallocated.
 

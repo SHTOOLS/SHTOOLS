@@ -4,7 +4,7 @@ The radius of a sphere corresponding to Earth's volume.
 
 ## Value
 
-6371000.7900 m 
+6371000.7900 m
 
 ## Reference
 

@@ -1,4 +1,4 @@
-# SHAdmitCorr 
+# SHAdmitCorr
 
 Calculate the admittance and correlation spectra of two real functions.
 

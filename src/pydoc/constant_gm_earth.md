@@ -4,7 +4,7 @@ Gravitational constant times the mass of the Earth.
 
 ## Value
 
-398.600441510^12 m3 s-2
+398.6004415 10^12 m3 s-2
 
 ## Reference
 

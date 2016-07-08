@@ -24,7 +24,7 @@ Compute the power of the magnetic field for a single degree `l` given the Schmid
 
 `r` : optional, float
 :   The radius to evaluate the magnetic field.
-	
+
 # Description
 
 `SHMagPowerL` will calculate the power of the magnetic field at radius `r` for a single degree `l` given the magnetic potential Schmidt seminormalized spherical harmonic coefficients `c` evaluated at radius `a`. This is explicitly calculated as:

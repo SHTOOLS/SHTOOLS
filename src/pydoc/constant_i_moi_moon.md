@@ -1,4 +1,4 @@
-# i_moi_moon 
+# i_moi_moon
 
 Average moment of inertia of the Moon, using R=1738 km.
 

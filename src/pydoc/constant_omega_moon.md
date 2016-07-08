@@ -2,9 +2,9 @@
 
 Angular rotation rate of the Moon.
 
-## Value 
+## Value
 
-2.0 *pi_constant / 27.3215820 / 24 / 60 / 60 s-1
+2.0 * pi_constant / 27.3215820 / 24 / 60 / 60 s-1
 
 ## Reference
 

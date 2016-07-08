@@ -1,10 +1,10 @@
-# r_venus 
+# r_venus
 
 Mean radius of Venus.
 
 ## Value
 
-6051.877e3 m 
+6051.877e3 m
 
 ## Reference
 

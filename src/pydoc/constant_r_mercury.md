@@ -4,7 +4,7 @@ Average radius of Mercury.
 
 ## Value
 
-2439.3717480908799e+03 m 
+2439.3717480908799e+03 m
 
 ## Reference
 

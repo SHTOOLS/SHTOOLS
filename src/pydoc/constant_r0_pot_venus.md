@@ -1,10 +1,10 @@
-# r0_pot_venus 
+# r0_pot_venus
 
 Reference radius of the gravitational-potential models of Venus.
 
 ## Value
 
-6051.0e3 m 
+6051.0e3 m
 
 ## Reference
 

@@ -18,7 +18,7 @@ Compute the cross-power spectral density of two real functions.
 
 `cilm2` : float, dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The second function expressed in real spherical harmonics.
-	
+
 `lmax` : optional, integer, default = min(`lmaxin1`, `lmaxin2`)
 :   The maximum spherical harmonic degree to calculate the cross-power spectral density. This must be less than or equal to the minimum of `lmaxin1` and `lmaxin2`.
 

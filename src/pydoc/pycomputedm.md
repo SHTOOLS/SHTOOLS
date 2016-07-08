@@ -15,7 +15,7 @@ Compute the space-concentration kernel of a spherical cap.
 
 `lmax` : integer
 :   The spherical harmonic bandwidth of the windows.
-	
+
 `m` : integer
 :   The angular order of the concentration problem.
 

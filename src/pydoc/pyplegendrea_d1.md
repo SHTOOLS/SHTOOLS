@@ -6,11 +6,11 @@ Compute all the unnormalized associated Legendre functions and first derivatives
 
 `p`, `dp` = pyshtools.PLegendreA_d1 (`lmax`, `z`, [`csphase`])
 
-# Returns 
+# Returns
 
 `p` : float, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of unnormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m`.
-	
+
 `dp` : float, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the first derivatives of the unnormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m`.
 

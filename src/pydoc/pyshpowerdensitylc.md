@@ -1,4 +1,4 @@
-# SHPowerDensityLC 
+# SHPowerDensityLC
 
 Compute the power spectral density of a complex function for a single spherical harmonic degree.
 
@@ -15,7 +15,7 @@ Compute the power spectral density of a complex function for a single spherical 
 
 `cilm` : complex, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex function expressed in complex spherical harmonics.
-	
+
 `l` : integer
 :   The spherical harmonic degree. This must be less than or equal to `lmaxin`
 

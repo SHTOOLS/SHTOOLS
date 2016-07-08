@@ -42,16 +42,16 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 
 `lmaxcalc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to `lmax`.
-	
+
 # Description
 
 `MakeMagGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm` of all three components of the magnetic field, the total field strength, and the magnetic potential. The magnetic potential is given by
 
-`V = R0 Sum_{l=1}^LMAX (R0/r)^{l+1} Sum_{m=-l}^l C_{lm} Y_{lm}`   
+`V = R0 Sum_{l=1}^LMAX (R0/r)^{l+1} Sum_{m=-l}^l C_{lm} Y_{lm}`
 
 and the magnetic field is
 
-`B = - Grad V`.  
+`B = - Grad V`.
 
 The coefficients are referenced to a radius `r0`, and the function is computed on a flattened ellipsoid with semi-major axis `a` (i.e., the mean equatorial radius) and flattening `f`.
 

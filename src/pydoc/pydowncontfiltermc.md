@@ -15,7 +15,7 @@ Calculate a minimum-curvature downward continuation filter for a given spherical
 
 `l` : integer
 :   The spherical harmonic degree.
-	
+
 `half` : integer
 :   The spherical harmonic degree where the filter is equal to 0.5.
 

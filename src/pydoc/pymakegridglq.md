@@ -18,10 +18,10 @@ Create a 2D map from a set of spherical harmonic coefficients sampled on the Gau
 
 `zero` : float, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.
-	
+
 `lmax` : optional, integer, default = `lamxin`
 :   The maximum spherical harmonic bandwidth of the function. This determines the sampling nodes of the dimensions of the output grid.
-	
+
 `norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 

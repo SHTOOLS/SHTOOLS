@@ -12,7 +12,7 @@ Given a set of latitude and longitude coordinates representing a closed curve, o
 :   A Driscoll and Healy (1994) sampled grid describing the concentration region R. All elements on output will either be 1 (for inside the concentration region) or 0 (for outside R).
 
 # Parameters
-	
+
 `n` : integer
 :   The number of latitudinal samples in `dh_mask`. The effective spherical harmonic bandwidth of this grid is `L=n/2-1`.
 

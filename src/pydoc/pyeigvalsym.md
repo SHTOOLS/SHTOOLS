@@ -15,7 +15,7 @@ Compute the eigenvalues of a real symmetric matrix.
 
 `ain` : float, dimension (`nin`, `nin`)
 :   The input real symmetric matrix. By default, only the upper portion of the matrix is used.
-	
+
 `n` : optional, integer, default = `nin`
 :   The rank of the matrix `ain`.
 

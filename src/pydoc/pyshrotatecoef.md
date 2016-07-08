@@ -15,7 +15,7 @@ Determine the spherical harmonic coefficients of a complex function rotated by t
 
 `x` : float, dimension(3)
 :   The three Euler angles, alpha, beta, and gamma.
-	
+
 `coef` : float, dimension (2, (`lmaxin`+1)\*(`lmaxin`+2)/2)
 :   The input complex spherical harmonic coefficients. This is an indexed array where the real and complex components are given by `coef[0,:]` and `coef[1,:]`, respectively. The functions `SHCilmToCindex` and `SHCindexToCilm` are used to convert to and from indexed and `cilm[:,:,:]` form. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention.
 
@@ -31,13 +31,13 @@ Determine the spherical harmonic coefficients of a complex function rotated by t
 
 The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.
 
-`Scheme A:` 
+`Scheme A:`
 
 (I) Rotation about the z axis by alpha.
 (II) Rotation about the new y axis by beta.
 (III) Rotation about the new z axis by gamma.
 
-`Scheme B:`	
+`Scheme B:`
 
 (I) Rotation about the z axis by gamma.
 (II) Rotation about the initial y axis by beta.
@@ -45,7 +45,7 @@ The rotation of a coordinate system or body can be viewed in two complementary w
 
 The rotations can further be viewed either as a rotation of the coordinate system or the physical body. For a rotation of the coordinate system without rotation of the physical body, use 
 
-`x(alpha, beta, gamma)`. 
+`x(alpha, beta, gamma)`.
 
 For a rotation of the physical body without rotation of the coordinate system, use 
 

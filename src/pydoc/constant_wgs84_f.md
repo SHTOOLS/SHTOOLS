@@ -4,7 +4,7 @@ The flattening of the WGS84 ellipsoid.
 
 ## Value
 
-1 /298.2572235630
+1 / 298.2572235630
 
 ## Reference
 

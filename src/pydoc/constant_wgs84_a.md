@@ -4,7 +4,7 @@ The semi-major axis of the WGS84 ellipsoid.
 
 ## Value
 
-6378137.0 m 
+6378137.0 m
 
 ## Reference
 

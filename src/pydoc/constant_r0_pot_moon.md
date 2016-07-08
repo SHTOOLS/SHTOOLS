@@ -4,7 +4,7 @@ Reference radius of the lunar gravitational-potential models.
 
 ## Value
 
-1738.e3 m 
+1738.e3 m
 
 ## References
 

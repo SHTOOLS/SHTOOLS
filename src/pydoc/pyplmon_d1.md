@@ -10,7 +10,7 @@ Compute all the orthonormalized associated Legendre functions and first derivati
 
 `p` : float, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of orthonormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m`.
-	
+
 `dp` : float, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the first derivatives of the orthonormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m`.
 

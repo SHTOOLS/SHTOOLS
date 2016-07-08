@@ -27,7 +27,7 @@ Calculate the gravitational potential interior to relief with lateral variations
 
 `mass` : float
 :   The mass of the planet in kg.
-	
+
 `lmax` : optional, integer, default = `n/2-1`
 :   The maximum spherical harmonic degree of the output spherical harmonic coefficients. `lmax` must be less than or equal to `n/2-1`. 
 

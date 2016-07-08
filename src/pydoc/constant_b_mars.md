@@ -4,7 +4,7 @@ Semi-minor axis radius of Mars.
 
 ## Value
 
-3377.6780e3 m 
+3377.6780e3 m
 
 ## Reference
 

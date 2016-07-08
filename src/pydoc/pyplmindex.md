@@ -15,7 +15,7 @@ Compute the index of a array of Legendre functions corresponding to degree `l` a
 
 `l` : integer
 :   The spherical harmonic degree.
-	
+
 `m` : integer
 :   The angular order.
 

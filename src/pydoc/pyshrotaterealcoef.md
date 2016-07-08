@@ -10,7 +10,7 @@ Determine the spherical harmonic coefficients of a real function rotated by thre
 
 `cilmrot` : float, dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the rotated function, normalized for use with the geodesy 4-pi spherical harmonics.
-	
+
 # Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
@@ -31,7 +31,7 @@ Determine the spherical harmonic coefficients of a real function rotated by thre
 
 The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.
 
-`Scheme A:` 
+`Scheme A:`
 
 (I) Rotation about the z axis by alpha.
 (II) Rotation about the new y axis by beta.
@@ -45,7 +45,7 @@ The rotation of a coordinate system or body can be viewed in two complementary w
 
 The rotations can further be viewed either as a rotation of the coordinate system or the physical body. For a rotation of the coordinate system without rotation of the physical body, use 
 
-`x(alpha, beta, gamma)`. 
+`x(alpha, beta, gamma)`.
 
 For a rotation of the physical body without rotation of the coordinate system, use 
 

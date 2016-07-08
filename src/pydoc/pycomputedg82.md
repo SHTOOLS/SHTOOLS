@@ -18,7 +18,7 @@ Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the 
 
 `m` : integer
 :   The angular order of the concentration problem.
-	
+
 `theta0` : float
 :   The angular radius of the spherical cap in radians.
 

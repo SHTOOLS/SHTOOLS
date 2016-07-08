@@ -1,4 +1,4 @@
-# SHGLQ 
+# SHGLQ
 
 Precompute the weights and nodes used in the Gauss-Legendre quadrature based spherical harmonics routines.
 
@@ -6,7 +6,7 @@ Precompute the weights and nodes used in the Gauss-Legendre quadrature based sph
 
 `zero`, `w` = pyshtools.SHGLQ (`lmax`)
 
-# Returns 
+# Returns
 
 `zero` : float, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, determined from a call to `PreGLQ`.

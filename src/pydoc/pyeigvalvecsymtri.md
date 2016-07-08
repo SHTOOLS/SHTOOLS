@@ -1,4 +1,4 @@
-# EigValVecSymTri  
+# EigValVecSymTri
 
 Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix.
 
@@ -18,10 +18,10 @@ Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix.
 
 `ain` : float, dimension (`nin`, `nin`)
 :   The input real symmetric tridiagonal matrix. 
-	
+
 `n` : optional, integer, default = `nin`
 :   The rank of the matrix `ain`.
-	
+
 `ul` : optional, character, default = `L`
 :   If `U` then the upper portion of the matrix `ain` will be used. If `L` then the lower portion of the matrix `ain` will be used (default).
 

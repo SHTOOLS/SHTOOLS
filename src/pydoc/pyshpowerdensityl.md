@@ -15,7 +15,7 @@ Compute the power spectral density of a real function for a single spherical har
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The function expressed in real spherical harmonics.
-	
+
 `l` : integer
 :   The spherical harmonic degree. 
 

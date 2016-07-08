@@ -14,7 +14,7 @@ Compute all the 4-pi (geodesy) normalized associated Legendre functions and firs
 `dp` :  float, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the first derivatives of the geodesy-normalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m`.
 
-# Parameters 
+# Parameters
 
 `lmax` : integer
 :   The maximum degree of the associated Legendre functions to be computed. If `lmax` is -1, allocated memory will be deallocated.

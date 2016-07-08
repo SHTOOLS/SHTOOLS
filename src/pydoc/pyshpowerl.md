@@ -1,4 +1,4 @@
-# SHPowerL  
+# SHPowerL
 
 Compute the power of a real function for a single spherical harmonic degree.
 
@@ -15,7 +15,7 @@ Compute the power of a real function for a single spherical harmonic degree.
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The spherical harmonic coefficients of the function.
-	
+
 `l` : integer
 :   The spherical harmonic degree.
 

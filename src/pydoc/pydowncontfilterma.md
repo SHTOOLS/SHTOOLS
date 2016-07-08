@@ -15,7 +15,7 @@ Compute the minimum-amplitude downward continuation filter of Wieczorek and Phil
 
 `l` : integer
 :   The spherical harmonic degree.
-	
+
 `half` : integer
 :   The spherical harmonic degree where the filter is equal to 0.5.
 
@@ -33,6 +33,6 @@ Compute the minimum-amplitude downward continuation filter of Wieczorek and Phil
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
 
-# See also 
+# See also
 
 [downcontfiltermc](pydowncontfiltermc.html), [batohilmdh](pybatohilmdh.html) [batohilmrhohdh](pybatohilmrhohdh.html)

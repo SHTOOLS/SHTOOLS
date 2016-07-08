@@ -12,7 +12,7 @@ Compute all the Schmidt-normalized Legendre polynomials.
 :   An array of Schmidt-normalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`.
 
 # Parameters
-	
+
 `lmax` : integer
 :   The maximum degree of the Legendre polynomials to be computed.
 

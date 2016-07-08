@@ -4,7 +4,7 @@ Reference radius of the terrestrial gravitational-potential models.
 
 ## Value
 
-6378136.30 m 
+6378136.30 m
 
 ## Reference
 

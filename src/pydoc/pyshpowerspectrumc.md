@@ -15,7 +15,7 @@ Compute the power spectrum of a complex function.
 
 `cilm` : complex, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex function expressed in complex spherical harmonics.
-	
+
 `lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree of the power spectrum. This must be less than or equal to `lmaxin`.
 

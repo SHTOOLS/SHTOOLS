@@ -6,7 +6,7 @@ Calculate the (cross-)power spectrum expectation of a windowed function from its
 
 `outcspectra` = pyshtools.SHBias (`shh`, `incspectra`, [`ldata`, `lwin`, `save_cg`])
 
-# Returns 
+# Returns
 
 `outcspectra` : float, dimension (`ldata`+`lwin`)
 :   The expectation of the localized (cross-)power spectrum.
@@ -24,7 +24,7 @@ Calculate the (cross-)power spectrum expectation of a windowed function from its
 
 `lwin` : optional, integer, default = `lwinin`
 :   The spherical harmonic bandwidth of the localizing window.
-	
+
 `save_cg` : optional, integer, default = 0
 :   If set equal to 1, the Clebsch-Gordon coefficients will be precomputed and saved for future use (if `lwin` or `ldata` change, this will be recomputed). To deallocate the saved memory, set this parameter equal to -1. If set equal to 0 (default), the Clebsch-Gordon coefficients will be recomputed for each call.
 

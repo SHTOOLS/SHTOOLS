@@ -18,16 +18,16 @@ Calculate iteratively the relief along an interface with lateral density variati
 
 `grid` : float, dimension (2\*`lmaxin`+2, `sampling`\*(2\*`lmaxin`+2)) 
 :   The initial estimate for the radii of the interface evaluated on a grid corresponding to a function of maximum spherical harmonic degree `lmaxin`. This is calculated by a call to `MakeGridDH` and must contain the degree-0 average radius of the interface.
-	
+
 `nmax` : integer
 :   The maximum order used in the Taylor-series expansion used in calculating the potential coefficients.
-	
+
 `mass` : float
 :   The mass of the planet in kg.
-	
+
 `r0` : float
 :   The reference radius of the Bouguer anomaly `ba`.
-	
+
 `rho` : float, dimension (2\*`lmaxin`+2, `sampling`\*(2\*`lmaxin`+2)) 
 :   The density contrast of the relief in kg/m^3, with the same dimensions as `grid`.
 

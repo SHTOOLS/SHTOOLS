@@ -15,7 +15,7 @@ Compute the power of a complex function for a single spherical harmonic degree.
 
 `cilm` : complex, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex spherical harmonics of the complex function.
-	
+
 `l` : integer
 :   The spherical harmonic degree. This must be less than or equal to `lmaxin`.
 

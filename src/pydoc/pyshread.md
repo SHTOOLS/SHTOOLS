@@ -18,7 +18,7 @@ Read spherical harmonic coefficients from an ascii-formatted file.
 
 `filename` : character(:)
 :   The filename of the ascii file containing the spherical harmonic coefficients.
-	
+
 `lmaxin` : integer
 :   This spherical harmonic degree controls the dimension of the output array `cilm`. The coefficients between `lmax+1` and `lmaxin` will be set to zero.
 

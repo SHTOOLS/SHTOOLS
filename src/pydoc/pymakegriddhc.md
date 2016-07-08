@@ -1,4 +1,4 @@
-# MakeGridDHC 
+# MakeGridDHC
 
 Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with Driscoll and Healy's (1994) sampling theorem.
 
@@ -15,10 +15,10 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients th
 
 `cilm` : complex, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex spherical harmonic coefficients of the function.  The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm[0,l,m]` and `Cl,-m=cilm[1,l,m)]`.
-	
+
 `lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree of the function. This determines the number of samples `n`.
-	
+
 `norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 

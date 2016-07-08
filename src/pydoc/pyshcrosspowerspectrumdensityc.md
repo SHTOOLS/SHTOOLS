@@ -1,4 +1,4 @@
-# SHCrossPowerSpectrumDensityC 
+# SHCrossPowerSpectrumDensityC
 
 Compute the cross-power spectral density of two complex functions.
 
@@ -18,7 +18,7 @@ Compute the cross-power spectral density of two complex functions.
 
 `cilm2` : complex, dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The complex spherical harmonics of the first complex function.
-	
+
 `lmax` : optional, integer, default = min(`lmaxin1`, `lmaxin2`)
 :   The maximum spherical harmonic degree of the cross power spectral density. This must be less than or equal to the minimum of `lmaxin1` and `lmaxin2`.
 

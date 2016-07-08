@@ -10,7 +10,7 @@ Compute all the unnormalized Legendre polynomials and first derivatives.
 
 `p` : float, dimension (`lmax`+1)
 :   An array of unnormalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`.
-	
+
 `dp` : float, dimension (`lmax`+1)
 :   An array of the first derivatives of the unnormalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`.
 

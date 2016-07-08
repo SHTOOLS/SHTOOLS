@@ -18,7 +18,7 @@ Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical ha
 
 `interval` : float
 :   The latitudinal and longitudinal spacing of `grid`.
-		
+
 `lmax` :optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree of the coefficients `cilm` used when calculating the grid.
 

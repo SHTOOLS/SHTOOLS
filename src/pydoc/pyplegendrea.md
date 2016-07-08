@@ -12,7 +12,7 @@ Compute all the unnormalized associated Legendre functions.
 :   An array of unnormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m`.
 
 # Parameters
-	
+
 `lmax` : integer
 :   The maximum degree of the associated Legendre functions to be computed.
 

@@ -27,7 +27,7 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 
 `lmax` : integer
 :   The maximum spherical harmonic degree of the output coefficients `cilm`.
-	
+
 `norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 

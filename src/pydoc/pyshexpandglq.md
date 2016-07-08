@@ -18,10 +18,10 @@ Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical h
 
 `w` : float, dimension (`lmax`+1)
 :   The Gauss-Legendre quadrature weights used in the integration over latitude. These are obtained from a call to `SHGLQ`.
-	
+
 `zero` : float, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.
-	
+
 `norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 

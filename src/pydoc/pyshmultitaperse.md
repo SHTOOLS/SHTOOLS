@@ -15,7 +15,7 @@ Perform a localized multitaper spectral analysis using spherical cap windows.
 :   The standard error of the localized multitaper power spectral estimates.
 
 # Parameters
-	
+
 `sh` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The spherical harmonic coefficients of the function to be localized.
 
@@ -42,7 +42,7 @@ Perform a localized multitaper spectral analysis using spherical cap windows.
 
 `taper_wt` : optional, float, dimension (`kin`), default = -1
 :   The weights used in calculating the multitaper spectral estimates and standard error. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`. The default value specifies not to use `taper_wt`.
-	
+
 `norm` : optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 

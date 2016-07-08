@@ -15,7 +15,7 @@ Perform a localized multitaper cross-spectral analysis using spherical cap windo
 :   The standard error of the localized multitaper cross-power spectral estimates. `lmax` is the smaller of `lmax1` and `lmax2`.
 
 # Parameters
-	
+
 `sh1` : float, dimension (2, `lmax1in`+1, `lmax1in`+1)
 :   The spherical harmonic coefficients of the first function.
 
@@ -48,7 +48,7 @@ Perform a localized multitaper cross-spectral analysis using spherical cap windo
 
 `taper_wt` : optional, float, dimension (`kin`), default = -1
 :   The weights used in calculating the multitaper spectral estimates and standard error. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`. The default value specifies not to use `taper_wt`.
-	
+
 `norm` : optional, intger, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
