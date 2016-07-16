@@ -12,18 +12,16 @@ python module _SHTOOLS
    
         subroutine PlmBar(p,lmax,z,csphase,cnorm,p_d0)
             fortranname pyplmbar
-            use shtools, only: PlmBar
             real*8 dimension(p_d0),intent(out) :: p
             integer intent(in) :: lmax
             real*8 intent(in) :: z
             integer, optional,intent(in) :: csphase = 1
-            integer, optional,intent(in) :: cnorm   = 0
+            integer, optional,intent(in) :: cnorm = 0
             integer, intent(hide),depend(lmax) :: p_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PlmBar
 
         subroutine PlmBar_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
             fortranname pyplmbar_d1
-            use shtools, only: PlmBar_d1
             real*8, dimension(p_d0),intent(out) :: p
             real*8, dimension(dp_d0),intent(out) :: dp
             integer, intent(in) :: lmax
@@ -36,7 +34,6 @@ python module _SHTOOLS
 
         subroutine PlBar(p,lmax,z,p_d0)
             fortranname pyplbar
-            use shtools, only: PlBar
             real*8, dimension(p_d0),intent(out) :: p
             integer, intent(in) :: lmax
             real*8, intent(in) :: z
@@ -45,7 +42,6 @@ python module _SHTOOLS
 
         subroutine PlBar_d1(p,dp,lmax,z,p_d0,dp_d0)
             fortranname pyplbar_d1
-            use shtools, only: PlBar_d1
             real*8 dimension(p_d0),intent(out) :: p
             real*8 dimension(dp_d0),intent(out):: dp
             integer intent(in) :: lmax
@@ -56,7 +52,6 @@ python module _SHTOOLS
 
         subroutine PlmSchmidt(p,lmax,z,csphase,cnorm,p_d0)
             fortranname pyplmschmidt
-            use shtools, only: PlmSchmidt
             real*8 dimension(p_d0),intent(out) :: p
             integer intent(in) :: lmax
             real*8 intent(in) :: z
@@ -67,7 +62,6 @@ python module _SHTOOLS
 
         subroutine PlSchmidt(p,lmax,z,p_d0)
             fortranname pyplschmidt
-            use shtools, only: PlSchmidt
             real*8 dimension(p_d0),intent(out) :: p
             integer intent(in) :: lmax
             real*8 intent(in) :: z
@@ -76,7 +70,6 @@ python module _SHTOOLS
 
         subroutine PlmSchmidt_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
             fortranname pyplmschmidt_d1
-            use shtools, only: PlmSchmidt_d1
             real*8 dimension(p_d0),intent(out):: p
             real*8 dimension(dp_d0),intent(out) :: dp
             integer intent(in) :: lmax
@@ -89,7 +82,6 @@ python module _SHTOOLS
 
         subroutine PlSchmidt_d1(p,dp,lmax,z,p_d0,dp_d0)
             fortranname pyplschmidt_d1
-            use shtools, only: PlSchmidt_d1
             real*8 dimension(p_d0),intent(out) :: p
             real*8 dimension(dp_d0),intent(out) :: dp
             integer intent(in) :: lmax
@@ -100,7 +92,6 @@ python module _SHTOOLS
 
         subroutine PLegendre(p,lmax,z,p_d0)
             fortranname pyplegendre
-            use shtools, only: PLegendre
             real*8 dimension(p_d0),intent(out) :: p
             integer intent(in) :: lmax
             real*8 intent(in) :: z
@@ -109,7 +100,6 @@ python module _SHTOOLS
 
         subroutine PLegendreA(p,lmax,z,csphase,p_d0)
             fortranname pyplegendrea
-            use shtools, only: PLegendreA
             real*8 dimension(p_d0),intent(out) :: p
             integer intent(in) :: lmax
             real*8 intent(in) :: z
@@ -119,30 +109,27 @@ python module _SHTOOLS
 
         subroutine PLegendre_d1(p,dp,lmax,z,p_d0,dp_d0)
             fortranname pyplegendre_d1
-            use shtools, only: PLegendre_d1
             real*8 dimension(p_d0),intent(out) :: p
             real*8 dimension(dp_d0),intent(out) :: dp
             integer intent(in) :: lmax
             real*8 intent(in) :: z
-            integer intent(hide),depend(lmax) :: p_d0  = lmax+1
+            integer intent(hide),depend(lmax) :: p_d0 = lmax+1
             integer intent(hide),depend(lmax) :: dp_d0 = lmax+1
         end subroutine PLegendre_d1
 
         subroutine PLegendreA_d1(p,dp,lmax,z,csphase,p_d0,dp_d0)
             fortranname pyplegendrea_d1
-            use shtools, only: PLegendreA_d1
             real*8 dimension(p_d0),intent(out) :: p
             real*8 dimension(dp_d0),intent(out) :: dp
             integer intent(in) :: lmax
             real*8 intent(in) :: z
             integer, optional,intent(in) :: csphase = 1
             integer intent(hide),depend(lmax) :: p_d0 = (lmax+1)*(lmax+2)/2
-            integer intent(hide),depend(lmax) :: dp_d0= (lmax+1)*(lmax+2)/2
+            integer intent(hide),depend(lmax) :: dp_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PLegendreA_d1
 
         subroutine CilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
             fortranname pycilmplusdh
-            use shtools, only: CilmPlus
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(gridin_d0,gridin_d1),intent(in) :: gridin
             integer,optional,intent(in),depend(n) :: lmax = n/2 - 1
@@ -161,7 +148,6 @@ python module _SHTOOLS
 
         subroutine CilmMinusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
             fortranname pycilmminusdh
-            use shtools, only: CilmPlus
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(gridin_d0,gridin_d1),intent(in) :: gridin
             integer,optional,intent(in),depend(n) :: lmax = n/2 - 1
@@ -180,7 +166,6 @@ python module _SHTOOLS
 
         subroutine CilmPlusRhoHDH(cilm,gridin,rho,lmax,nmax,mass,d,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
             fortranname pycilmplusrhohdh
-            use shtools, only: CilmPlusRhoH
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(gridin_d0,gridin_d1),intent(in) :: gridin
             real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
@@ -201,7 +186,6 @@ python module _SHTOOLS
 
         subroutine CilmMinusRhoHDH(cilm,gridin,rho,lmax,nmax,mass,d,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
             fortranname pycilmminusrhohdh
-            use shtools, only: CilmMinusRhoH
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(gridin_d0,gridin_d1),intent(in) :: gridin
             real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
@@ -222,7 +206,6 @@ python module _SHTOOLS
 
         subroutine BAtoHilmDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2)
             fortranname pybatohilmdh
-            use shtools, only: BAtoHilm
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(griddh_d0,griddh_d1),intent(in) :: griddh
@@ -247,7 +230,6 @@ python module _SHTOOLS
 
         subroutine BAtoHilmRhoHDH(cilm,ba,griddh,rho,lmax,nmax,mass,r0,sampling,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
             fortranname pybatohilmrhohdh
-            use shtools, only: BAtoHilmRhoH
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
             real*8 dimension(griddh_d0,griddh_d1),intent(in) :: griddh
@@ -274,7 +256,6 @@ python module _SHTOOLS
 
         subroutine MakeGrid2D(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west,dealloc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
             fortranname pymakegrid2d
-            use shtools, only: MakeGrid2d
             real*8 dimension(grid_d0,grid_d1),intent(out) :: grid
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
@@ -299,7 +280,6 @@ python module _SHTOOLS
 
         subroutine GLQGridCoord(latglq,longlq,lmax,nlat,nlong,latglq_d0,longlq_d0)
             fortranname pyglqgridcoord
-            use shtools, only: GLQGridCoord
             real*8 dimension(latglq_d0),intent(out) :: latglq
             real*8 dimension(longlq_d0),intent(out) :: longlq
             integer intent(in) :: lmax
@@ -311,7 +291,6 @@ python module _SHTOOLS
 
         subroutine MakeGridGLQ(gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
             fortranname pymakegridglq
-            use shtools, only: MakeGridGLQ
             real*8 dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer, optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
@@ -329,7 +308,6 @@ python module _SHTOOLS
 
         subroutine SHExpandGLQ(cilm,lmax,gridglq,w,zero,norm,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0)
             fortranname pyshexpandglq
-            use shtools, only: SHExpandGLQ
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out), :: cilm
             integer, intent(hide),depend(gridglq_d0) :: lmax=gridglq_d0-1
             real*8 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
@@ -349,7 +327,6 @@ python module _SHTOOLS
 
         subroutine SHGLQ(lmax,zero,w,zero_d0,w_d0)
             fortranname pyshglq
-            use shtools, only: SHGLQ
             integer intent(in) :: lmax
             real*8 dimension(zero_d0),intent(out):: zero
             real*8 dimension(w_d0),intent(out) :: w
@@ -359,7 +336,6 @@ python module _SHTOOLS
 
         subroutine PreGLQ(x1,x2,n,zero,w,zero_d0,w_d0)
             fortranname pypreglq
-            use shtools, only: PreGLQ
             real*8 intent(in) :: x1
             real*8 intent(in) :: x2
             integer intent(in) :: n
@@ -371,7 +347,6 @@ python module _SHTOOLS
 
         subroutine SHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2)
             fortranname pyshread
-            use shtools, only: SHRead
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer intent(out) :: lmax
@@ -384,7 +359,6 @@ python module _SHTOOLS
         
         subroutine SHReadH(filename,cilm,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2)
             fortranname pyshreadh
-            use shtools, only: SHRead
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer intent(out) :: lmax
@@ -399,7 +373,6 @@ python module _SHTOOLS
 
         subroutine SHReadError(filename,cilm,error,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
             fortranname pyshreaderror
-            use shtools, only: SHRead
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(error_d0,error_d1,error_d2),intent(out) :: error
@@ -416,7 +389,6 @@ python module _SHTOOLS
 
         subroutine SHReadErrorH(filename,cilm,error,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
             fortranname pyshreaderrorh
-            use shtools, only: SHRead
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(error_d0,error_d1,error_d2),intent(out) :: error
@@ -435,7 +407,6 @@ python module _SHTOOLS
 
         subroutine MakeMagGridDH(cilm,lmax,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,total_d0,total_d1,cilm_d0,cilm_d1,cilm_d2,rad_d0,rad_d1,theta_d0,theta_d1,phi_d0,phi_d1)
             fortranname pymakemaggriddh
-            use shtools, only: MakeMagGridDH
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1 -1
             real*8 intent(in) :: r0
@@ -463,7 +434,6 @@ python module _SHTOOLS
 
         function SHPowerL(c,l,c_d0,c_d1,c_d2)
             fortranname pyshpowerl
-            use shtools, only: SHPowerL
             real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             integer intent(in) :: l
             integer, optional,intent(in),depend(c),intent(hide) :: c_d0=shape(c,0)
@@ -474,7 +444,6 @@ python module _SHTOOLS
 
         function SHPowerDensityL(c,l,c_d0,c_d1,c_d2)
             fortranname pyshpowerdensityl
-            use shtools, only: SHPowerDensityL
             real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             integer intent(in) :: l
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
@@ -485,7 +454,6 @@ python module _SHTOOLS
 
         function SHCrossPowerL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
             fortranname pyshcrosspowerl
-            use shtools, only: SHCrossPowerL
             real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
             integer intent(in) :: l
@@ -500,7 +468,6 @@ python module _SHTOOLS
 
         function SHCrossPowerDensityL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
             fortranname pyshcrosspowerdensityl
-            use shtools, only: SHCrossPowerDensityL
             real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
             integer intent(in) :: l
@@ -515,7 +482,6 @@ python module _SHTOOLS
 
         subroutine SHPowerSpectrum(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
             fortranname pyshpowerspectrum
-            use shtools, only: SHPowerSpectrum
             real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             integer, optional,intent(in),depend(c) :: lmax = shape(c,1)-1
             real*8 dimension(spectra_d0),intent(out) :: spectra
@@ -527,7 +493,6 @@ python module _SHTOOLS
 
         subroutine SHPowerSpectrumDensity(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
             fortranname pyshpowerspectrumdensity
-            use shtools, only: SHPowerSpectrumDensity
             real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             integer, optional,intent(in),depend(c) :: lmax = shape(c,1)-1
             real*8 dimension(spectra_d0),intent(out) :: spectra
@@ -539,7 +504,6 @@ python module _SHTOOLS
 
         subroutine SHCrossPowerSpectrum(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
             fortranname pyshcrosspowerspectrum
-            use shtools, only: SHCrossPowerSpectrum
             real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
             integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
@@ -555,7 +519,6 @@ python module _SHTOOLS
 
         subroutine SHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
             fortranname pyshcrosspowerspectrumdensity
-            use shtools, only: SHCrossPowerSpectrumDensity
             real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
             integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
@@ -571,7 +534,6 @@ python module _SHTOOLS
 
         subroutine djpi2(dj,lmax,dj_d0,dj_d1,dj_d2)
             fortranname pydjpi2
-            use shtools, only: djpi2
             real*8 dimension(dj_d0,dj_d1,dj_d2),intent(out) :: dj
             integer intent(in) :: lmax
             integer, optional,intent(in),depend(lmax),intent(hide) :: dj_d0 = lmax+1
@@ -581,7 +543,6 @@ python module _SHTOOLS
 
         subroutine SHrtoc(rcilm,ccilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
             fortranname pyshrtoc
-            use shtools, only: SHrtoc
             real*8 dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
             real*8 dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
             integer, optional,intent(in),depend(rcilm_d1) :: degmax = rcilm_d1-1
@@ -597,7 +558,6 @@ python module _SHTOOLS
 
         subroutine SHctor(ccilm,rcilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
             fortranname pyshctor
-            use shtools, only: SHctor
             real*8 dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
             real*8 dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
             integer, optional,intent(in),depend(ccilm_d1) :: degmax = ccilm_d1-1
@@ -613,7 +573,6 @@ python module _SHTOOLS
 
         subroutine SHCilmToCindex(cilm,cindex,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2)
             fortranname pyshcilmtocindex
-            use shtools, only: SHCilmToCindex
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             real*8 dimension(cindex_d0,cindex_d1),intent(out) :: cindex
             integer, optional,intent(in),depend(cilm_d1) :: degmax = cilm_d1-1
@@ -626,7 +585,6 @@ python module _SHTOOLS
 
         subroutine SHCindexToCilm(cindex,cilm,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2)
             fortranname pyshcindextocilm
-            use shtools, only: SHCindexToCilm
             real*8 dimension(cindex_d0,cindex_d1),intent(in) :: cindex
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer, optional,intent(in),depend(cindex_d1) :: degmax = (-3+sqrt(1+8*cindex_d1))/2
@@ -639,7 +597,6 @@ python module _SHTOOLS
 
         subroutine SHRotateCoef(x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1)
             fortranname pyshrotatecoef
-            use shtools, only: SHRotateCoef
             real*8 dimension(3),intent(in) :: x
             real*8 dimension(cof_d0,cof_d1),intent(in) :: cof
             real*8 dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
@@ -656,7 +613,6 @@ python module _SHTOOLS
 
         subroutine SHRotateRealCoef(cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2,cilmrot_d0,cilmrot_d1,cilmrot_d2)
             fortranname pyshrotaterealcoef
-            use shtools, only: SHRotateRealCoef
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             real*8 dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out) :: cilmrot
             integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
@@ -676,7 +632,6 @@ python module _SHTOOLS
 
         subroutine SHExpandDH(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
             fortranname pyshexpanddh
-            use shtools, only: SHExpandDH
             real*8 dimension(grid_d0,grid_d1),intent(in) :: grid
             integer, intent(hide),depend(grid_d0) :: n=grid_d0
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
@@ -694,7 +649,6 @@ python module _SHTOOLS
 
         subroutine MakeGridDH(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
             fortranname pymakegriddh
-            use shtools, only: MakeGridDH
             real*8 dimension(griddh_d0,griddh_d1),intent(out) :: griddh
             integer, intent(hide) :: n
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
@@ -712,7 +666,6 @@ python module _SHTOOLS
 
         function MakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2)
             fortranname pymakegridpoint
-            use shtools, only: MakeGridPoint
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
             real*8 intent(in) :: lat
@@ -728,7 +681,6 @@ python module _SHTOOLS
 
         function DownContFilterMA(l,half,r,d)
             fortranname pydowncontfilterma
-            use shtools, only: DownContFilterMA
             integer intent(in) :: l
             integer intent(in) :: half
             real*8 intent(in) :: r
@@ -738,7 +690,6 @@ python module _SHTOOLS
 
         function DownContFilterMC(l,half,r,d)
             fortranname pydowncontfiltermc
-            use shtools, only: DownContFilterMC
             integer intent(in) :: l
             integer intent(in) :: half
             real*8 intent(in) :: r
@@ -748,7 +699,6 @@ python module _SHTOOLS
 
         subroutine SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm,chi2,csphase,d_d0,lon_d0,cilm_d0,cilm_d1,cilm_d2,lat_d0)
             fortranname pyshexpandlsq
-            use shtools, only: SHExpandLSQ
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 intent(out) :: chi2
             real*8 dimension(d_d0),intent(in) :: d
@@ -768,7 +718,6 @@ python module _SHTOOLS
 
         subroutine SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,shout_d0,shout_d1,shout_d2)
             fortranname pyshmultiply
-            use shtools, only: SHMultiply
             real*8 dimension(shout_d0,shout_d1,shout_d2),intent(out) :: shout
             real*8 dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
             integer, optional,intent(in),depend(sh1_d1) :: lmax1 = sh1_d1-1
@@ -790,7 +739,6 @@ python module _SHTOOLS
 
         subroutine ComputeDm(dllm,lmax,m,theta0,dllm_d0,dllm_d1)
             fortranname pycomputedm
-            use shtools, only: ComputeDm
             real*8 dimension(dllm_d0,dllm_d1),intent(out) :: dllm
             integer intent(in) :: lmax
             integer intent(in) :: m
@@ -801,7 +749,6 @@ python module _SHTOOLS
 
         subroutine SphericalCapCoef(coef,theta,lmax,coef_d0)
             fortranname pysphericalcapcoef
-            use shtools, only: SphericalCapCoef
             real*8 dimension(coef_d0),intent(out) :: coef
             real*8 intent(in) :: theta
             integer intent(in) :: lmax
@@ -810,7 +757,6 @@ python module _SHTOOLS
 
         subroutine EigValVecSym(ain,n,eig,evec,ul,k,evec_d0,evec_d1,ain_d0,ain_d1,eig_d0)
             fortranname pyeigvalvecsym
-            use shtools, only: EigValVecSym
             real*8 dimension(ain_d0,ain_d1),intent(in) :: ain
             integer,optional,intent(in),depend(ain_d0) :: n = ain_d0
             real*8 dimension(eig_d0),intent(out) :: eig
@@ -826,7 +772,6 @@ python module _SHTOOLS
 
         subroutine SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,tapers_d0,tapers_d1,eigenvalues_d0)
             fortranname pyshreturntapersm
-            use shtools, only: SHReturnTapersM
             real*8 intent(in) :: theta0
             integer intent(in) :: lmax
             integer intent(in) :: m
@@ -839,7 +784,6 @@ python module _SHTOOLS
 
         subroutine EigValSym(ain,n,eval,ul,ain_d0,ain_d1,eval_d0)
             fortranname pyeigvalsym
-            use shtools, only: EigValSym
             real*8 dimension(ain_d0,ain_d1),intent(in) :: ain
             integer,optional,intent(in) :: n = ain_d0
             real*8 dimension(eval_d0),intent(out) :: eval
@@ -851,7 +795,6 @@ python module _SHTOOLS
 
         function SHFindLWin(theta0,m,alpha,taper_number)
             fortranname pyshfindlwin
-            use shtools, only: SHFindLWin
             real*8 intent(in) :: theta0
             integer intent(in) :: m
             real*8 intent(in) :: alpha
@@ -861,7 +804,6 @@ python module _SHTOOLS
 
         subroutine SHAdmitCorr(G,T,lmax,admit,admit_error,corr,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0)
             fortranname pyshadmitcorr
-            use shtools, only: SHAdmitCorr
             real*8 dimension(G_d0,G_d1,G_d2),intent(in) :: G
             real*8 dimension(T_d0,T_d1,T_d2),intent(in) :: T
             integer, optional,intent(in),depend(G_d1,T_d1) :: lmax = min(G_d1,T_d1)-1
@@ -881,7 +823,6 @@ python module _SHTOOLS
 
         subroutine SHLocalizedAdmitCorr(g,t,tapers,taper_order,k,lat,lon,lwin,lmax,admit,corr,admit_error,corr_error,taper_wt,mtdef,k1linsig,taper_order_d0,g_d0,g_d1,g_d2,taper_wt_d0,corr_error_d0,admit_d0,admit_error_d0,corr_d0,tapers_d0,tapers_d1,t_d0,t_d1,t_d2)
             fortranname pyshlocalizedadmitcorr
-            use shtools, only: SHLocalizedAdmitCorr
             real*8 dimension(g_d0,g_d1,g_d2),intent(in) :: g
             real*8 dimension(t_d0,t_d1,t_d2),intent(in) :: t
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
@@ -916,7 +857,6 @@ python module _SHTOOLS
 
         subroutine EigValVecSymTri(ain,n,eig,evec,ul,ain_d0,ain_d1,evec_d0,evec_d1,eig_d0)
             fortranname pyeigvalvecsymtri
-            use shtools, only: EigValVecSymTri
             real*8 dimension(ain_d0,ain_d1),intent(in) :: ain
             integer,option,intent(in),depend(ain_d0) :: n = ain_d0
             real*8 dimension(eig_d0),intent(out) :: eig
@@ -931,7 +871,6 @@ python module _SHTOOLS
 
         subroutine ComputeDG82(dG82,lmax,m,theta0,dG82_d0,dG82_d1)
             fortranname pycomputedg82
-            use shtools, only: ComputeDG82
             real*8 dimension(dG82_d0,dG82_d1),intent(out) :: dG82
             integer intent(in) :: lmax
             integer intent(in) :: m
@@ -942,21 +881,18 @@ python module _SHTOOLS
 
         function RandomN(idum)
             fortranname pyrandomn
-            use shtools, only: RandomN
             integer(kind=4) intent(in,out) :: idum
             real*8 :: RandomN
         end function RandomN
 
         function RandomGaussian(idum)
             fortranname pyrandomgaussian
-            use shtools, only: RandomGaussian
             integer(kind=4) intent(in,out) :: idum
             real*8 :: RandomGaussian
         end function RandomGaussian
 
         subroutine Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0)
             fortranname pywigner3j
-            use shtools, only: Wigner3j
             real*8 dimension(w3j_d0),intent(out) :: w3j
             integer intent(out) :: jmin
             integer intent(out) :: jmax
@@ -970,7 +906,6 @@ python module _SHTOOLS
 
         subroutine SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg,Shh_d0,incspectra_d0,outcspectra_d0)
             fortranname pyshbias
-            use shtools, only: SHBias
             real*8 dimension(Shh_d0),intent(in) :: Shh
             integer, optional,intent(in),depend(Shh_d0) :: lwin = Shh_d0-1
             real*8 dimension(incspectra_d0),intent(in) :: incspectra
@@ -984,7 +919,6 @@ python module _SHTOOLS
 
         subroutine SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
             fortranname pyshbiask
-            use shtools, only: SHBiasK
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer, optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
             integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
@@ -1002,7 +936,6 @@ python module _SHTOOLS
 
         subroutine SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,k,lat,lon,taper_wt,norm,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,tapers_d0,tapers_d1,mtse_d0,sd_d0)
             fortranname pyshmultitaperse
-            use shtools, only: SHMultiTaperSE
             real*8 dimension(mtse_d0),intent(out) :: mtse
             real*8 dimension(sd_d0),intent(out) :: sd
             real*8 dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
@@ -1029,7 +962,6 @@ python module _SHTOOLS
 
         subroutine SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,k,lat,lon,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_order_d0,taper_wt_d0,tapers_d0,tapers_d1,sd_d0,mtse_d0)
             fortranname pyshmultitapercse
-            use shtools, only: SHMultiTaperCSE
             real*8 dimension(mtse_d0),intent(out) :: mtse
             real*8 dimension(sd_d0),intent(out) :: sd
             real*8 dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
@@ -1055,13 +987,12 @@ python module _SHTOOLS
             integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
             integer, optional,intent(in),check(tapers_d0>0),depend(tapers),intent(hide) :: tapers_d0=shape(tapers,0)
             integer, optional,intent(in),check(tapers_d1>0),depend(tapers),intent(hide) :: tapers_d1=shape(tapers,1)
-            integer, optional,intent(in),check(sd_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: sd_d0 =  min(lmax1,lmax2)-lmaxt+1
+            integer, optional,intent(in),check(sd_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: sd_d0 = min(lmax1,lmax2)-lmaxt+1
             integer, optional,intent(in),check(mtse_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
         end subroutine SHMultiTaperCSE
 
         subroutine SHReadJPL(filename,cilm,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2)
             fortranname pyshreadjpl
-            use shtools, only: SHReadJPL
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer intent(out) :: lmax
@@ -1075,7 +1006,6 @@ python module _SHTOOLS
 
         subroutine SHReadJPLError(filename,cilm,error,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
             fortranname pyshreadjplerror
-            use shtools, only: SHReadJPL
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
@@ -1093,7 +1023,6 @@ python module _SHTOOLS
 
         subroutine SHRead2(filename,cilm,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,dot_d0,dot_d1,dot_d2)
             fortranname pyshread2
-            use shtools, only: SHRead2
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer intent(out) :: lmax
@@ -1114,7 +1043,6 @@ python module _SHTOOLS
 
         subroutine SHRead2Error(filename,cilm,error,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2)
             fortranname pyshread2error
-            use shtools, only: SHRead2
             character*(*) intent(in) :: filename
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
@@ -1139,7 +1067,6 @@ python module _SHTOOLS
         
         subroutine MakeGeoidGridDH(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,sampling,order,nlat,nlong,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
             fortranname pymakegeoidgriddh
-            use shtools, only: MakeGeoidGrid
             real*8 dimension(geoid_d0,geoid_d1),intent(out) :: geoid
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer,optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1 - 1
@@ -1164,7 +1091,6 @@ python module _SHTOOLS
 
         subroutine PlmON(p,lmax,z,csphase,cnorm,p_d0)
             fortranname pyplmon
-            use shtools, only: PlmON
             real*8 dimension(p_d0),intent(out) :: p
             integer intent(in) :: lmax
             real*8 intent(in) :: z
@@ -1175,7 +1101,6 @@ python module _SHTOOLS
 
         subroutine PlON(p,lmax,z,p_d0)
             fortranname pyplon
-            use shtools, only: PlON
             real*8 dimension(p_d0),intent(out) :: p
             integer intent(in) :: lmax
             real*8 intent(in) :: z
@@ -1184,31 +1109,28 @@ python module _SHTOOLS
 
         subroutine PlmON_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
             fortranname pyplmon_d1
-            use shtools, only: PlmON_d1
             real*8 dimension(p_d0),intent(out) :: p
             real*8 dimension(dp_d0),intent(out) :: dp
             integer intent(in) :: lmax
             real*8 intent(in) :: z
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in) :: cnorm = 0
-            integer intent(hide),depend(lmax) :: p_d0  = (lmax+1)*(lmax+2)/2
+            integer intent(hide),depend(lmax) :: p_d0 = (lmax+1)*(lmax+2)/2
             integer intent(hide),depend(lmax) :: dp_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PlmON_d1
 
         subroutine PlON_d1(p,dp,lmax,z,p_d0,dp_d0)
             fortranname pyplon_d1
-            use shtools, only: PlON_d1
             real*8 dimension(p_d0),intent(out) :: p
             real*8 dimension(dp_d0),intent(out) :: dp
             integer intent(in) :: lmax
             real*8 intent(in) :: z
-            integer intent(hide),depend(lmax) :: p_d0  = lmax+1
+            integer intent(hide),depend(lmax) :: p_d0 = lmax+1
             integer intent(hide),depend(lmax) :: dp_d0 = lmax+1
         end subroutine PlON_d1
 
         subroutine MakeCircleCoord(coord,lat,lon,theta0,cinterval,cnum,coord_d0,coord_d1)
             fortranname pymakecirclecoord
-            use shtools, only: MakeCircleCoord
             real*8 dimension(coord_d0,coord_d1),intent(out) :: coord
             real*8 intent(in) :: lat
             real*8 intent(in) :: lon
@@ -1221,7 +1143,6 @@ python module _SHTOOLS
 
         subroutine SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,eigenvalues_d0,tapers_d0,tapers_d1,taper_order_d0)
             fortranname pyshreturntapers
-            use shtools, only: SHReturnTapers
             real*8 intent(in) :: theta0
             integer intent(in) :: lmax
             real*8 dimension(tapers_d0,tapers_d1),intent(out) :: tapers
@@ -1235,7 +1156,6 @@ python module _SHTOOLS
 
         function SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,hk_real_d0,incspectra_d0,hj_real_d0)
             fortranname pyshsjkpg
-            use shtools, only: SHSjkPG
             real*8 dimension(incspectra_d0),intent(in) :: incspectra
             integer intent(in) :: l
             integer intent(in) :: m
@@ -1254,7 +1174,6 @@ python module _SHTOOLS
 
         subroutine SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit,weight_opt,nocross,taper_order_d0,weight_opt_d0,weight_opt_d1,var_unit_d0,var_opt_d0,Sff_d0,tapers_d0,tapers_d1)
             fortranname pyshmtvaropt
-            use shtools, only: SHMTVarOpt
             integer intent(in) :: l
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer dimension(taper_order_d0),intent(in) :: taper_order
@@ -1277,23 +1196,21 @@ python module _SHTOOLS
 
         subroutine SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt, Mmt_d0, Mmt_d1, tapers_d0, tapers_d1, taper_wt_d0)
             fortranname pyshmtcouplingmatrix
-            use shtools, only: SHMTCouplingMatrix
             real*8, dimension(Mmt_d0,Mmt_d1), intent(out) :: Mmt
             integer, intent(in)  :: lmax
-            integer, optional, intent(in), depend(tapers_d1) :: k    = tapers_d1
+            integer, optional, intent(in), depend(tapers_d1) :: k = tapers_d1
             integer, optional, intent(in), depend(tapers_d0) :: lwin = tapers_d0-1
             real*8,  intent(in) :: tapers(tapers_d0,tapers_d1)
             real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
-            integer, optional,depend(lmax),intent(hide)      :: Mmt_d0     = lmax+1
-            integer, optional,depend(lmax,lwin),intent(hide) :: Mmt_d1     = lmax+lwin+1
-            integer, optional,depend(tapers),intent(hide)    :: tapers_d0  = shape(tapers,0)
-            integer, optional,depend(tapers),intent(hide)    :: tapers_d1  = shape(tapers,1)
+            integer, optional,depend(lmax),intent(hide)      :: Mmt_d0 = lmax+1
+            integer, optional,depend(lmax,lwin),intent(hide) :: Mmt_d1 = lmax+lwin+1
+            integer, optional,depend(tapers),intent(hide)    :: tapers_d0 = shape(tapers,0)
+            integer, optional,depend(tapers),intent(hide)    :: tapers_d1 = shape(tapers,1)
             integer, optional,depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
         end subroutine
 
         subroutine SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n,taper_wt,mtdebias_d0,mtdebias_d1,taper_wt_d0,mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1,lmid_d0)
             fortranname pyshmtdebias
-            use shtools, only: SHMTDebias
             real*8 dimension(mtdebias_d0,mtdebias_d1),intent(out) :: mtdebias
             real*8 dimension(lmid_d0),intent(out) :: lmid
             integer intent(hide) :: n
@@ -1316,7 +1233,6 @@ python module _SHTOOLS
 
         subroutine MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,omega,normal_gravity,phi_d0,phi_d1,total_d0,total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1)
             fortranname pymakegravgriddh
-            use shtools, only: MakeGravGridDH
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer,optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
             real*8 intent(in) :: gm
@@ -1347,7 +1263,6 @@ python module _SHTOOLS
 
         function NormalGravity(geocentric_lat,gm,omega,a,b)
             fortranname pynormalgravity
-            use shtools, only: NormalGravity
             real*8 intent(in) :: geocentric_lat
             real*8 intent(in) :: gm
             real*8 intent(in) :: omega
@@ -1358,7 +1273,6 @@ python module _SHTOOLS
 
         function SHConfidence(l_conf,r)
             fortranname pyshconfidence
-            use shtools, only: SHConfidence
             integer intent(in) :: l_conf
             real*8 intent(in) :: r
             real*8 :: SHConfidence
@@ -1366,7 +1280,6 @@ python module _SHTOOLS
 
         function SHMagPowerL(c,a,r,l,c_d0,c_d1,c_d2)
             fortranname pyshmagpowerl
-            use shtools, only: SHMagPowerL
             real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             real*8 intent(in) :: a
             real*8, optional,intent(in),depend(a) :: r = a
@@ -1379,7 +1292,6 @@ python module _SHTOOLS
 
         subroutine SHMagPowerSpectrum(c,a,r,lmax,spectrum,c_d0,c_d1,c_d2,spectrum_d0)
             fortranname pyshmagpowerspectrum
-            use shtools, only: SHMagPowerSpectrum
             real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             real*8 intent(in) :: a
             real*8, optional,intent(in) :: r = a
@@ -1393,7 +1305,6 @@ python module _SHTOOLS
 
         subroutine SHExpandDHC(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
             fortranname pyshexpanddhc
-            use shtools, only: SHExpandDHC
             complex*16 dimension(grid_d0,grid_d1),intent(in) :: grid
             integer, intent(hide),depend(grid_d0) :: n=grid_d0
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
@@ -1411,7 +1322,6 @@ python module _SHTOOLS
 
         subroutine MakeGridDHC(griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
             fortranname pymakegriddhc
-            use shtools, only: MakeGridDHC
             complex*16 dimension(griddh_d0,griddh_d1),intent(out) :: griddh
             integer intent(hide) :: n
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
@@ -1429,7 +1339,6 @@ python module _SHTOOLS
 
         subroutine MakeGridGLQC(gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
             fortranname pymakegridglqc
-            use shtools, only: MakeGridGLQC
             complex*16 dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
@@ -1447,7 +1356,6 @@ python module _SHTOOLS
 
         subroutine SHExpandGLQC(cilm,lmax,gridglq,w,zero,norm,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0)
             fortranname pyshexpandglqc
-            use shtools, only: SHExpandGLQC
             complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             complex*16 dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
             real*8 dimension(w_d0),intent(in) :: w
@@ -1467,7 +1375,6 @@ python module _SHTOOLS
 
         function SHPowerLC(c,l,c_d0,c_d1,c_d2)
             fortranname pyshpowerlc
-            use shtools, only: SHPowerLC
             complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             integer intent(in) :: l
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
@@ -1478,7 +1385,6 @@ python module _SHTOOLS
 
         function SHPowerDensityLC(c,l,c_d0,c_d1,c_d2)
             fortranname pyshpowerdensitylc
-            use shtools, only: SHPowerDensityLC
             complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             integer intent(in) :: l
             integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
@@ -1489,7 +1395,6 @@ python module _SHTOOLS
 
         function SHCrossPowerLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
             fortranname pyshcrosspowerlc
-            use shtools, only: SHCrossPowerLC
             complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
             integer intent(in) :: l
@@ -1504,7 +1409,6 @@ python module _SHTOOLS
 
         function SHCrossPowerDensityLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
             fortranname pyshcrosspowerdensitylc
-            use shtools, only: SHCrossPowerDensityLC
             complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
             integer intent(in) :: l
@@ -1519,7 +1423,6 @@ python module _SHTOOLS
 
         subroutine SHPowerSpectrumC(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
             fortranname pyshpowerspectrumc
-            use shtools, only: SHPowerSpectrumC
             complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             integer, optional,intent(in),depend(c_d1) :: lmax = c_d1-1
             real*8 dimension(spectra_d0),intent(out) :: spectra
@@ -1531,7 +1434,6 @@ python module _SHTOOLS
 
         subroutine SHPowerSpectrumDensityC(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
             fortranname pyshpowerspectrumdensityc
-            use shtools, only: SHPowerSpectrumDensityC
             complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
             integer, optional,intent(in),depend(c_d1) :: lmax = c_d1-1
             real*8 dimension(spectra_d0),intent(out) :: spectra
@@ -1543,7 +1445,6 @@ python module _SHTOOLS
 
         subroutine SHCrossPowerSpectrumC(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
             fortranname pyshcrosspowerspectrumc
-            use shtools, only: SHCrossPowerSpectrumC
             complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
             integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
@@ -1559,7 +1460,6 @@ python module _SHTOOLS
 
         subroutine SHCrossPowerSpectrumDensityC(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
             fortranname pyshcrosspowerspectrumdensityc
-            use shtools, only: SHCrossPowerSpectrumDensityC
             complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
             complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
             integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
@@ -1575,7 +1475,6 @@ python module _SHTOOLS
 
         subroutine SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr,mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0,admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0)
             fortranname pyshbiasadmitcorr
-            use shtools, only: SHBiasAdmitCorr
             real*8 dimension(admit_d0),intent(out) :: admit
             real*8 dimension(corr_d0),intent(out) :: corr
             real*8 dimension(sgt_d0),intent(in) :: sgt
@@ -1593,13 +1492,12 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(tapers),intent(hide) :: tapers_d0=shape(tapers,0)
             integer, optional,intent(in),depend(tapers),intent(hide) :: tapers_d1=shape(tapers,1)
             integer, optional,intent(in),depend(sgg),intent(hide) :: sgg_d0=len(sgg)
-            integer, optional,intent(in),depend(lmax,lwin),intent(hide) :: corr_d0  = lmax-lwin+1
+            integer, optional,intent(in),depend(lmax,lwin),intent(hide) :: corr_d0 = lmax-lwin+1
             integer, optional,intent(in),depend(lmax,lwin),intent(hide) :: admit_d0 = lmax-lwin+1
         end subroutine SHBiasAdmitCorr
 
         subroutine SHCilmToVector(cilm,vector,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2)
             fortranname pyshcilmtovector
-            use shtools, only: SHCilmToVector
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             real*8 dimension(vector_d0),intent(out) :: vector
             integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
@@ -1611,7 +1509,6 @@ python module _SHTOOLS
 
         subroutine SHVectorToCilm(vector,cilm,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2)
             fortranname pyshvectortocilm
-            use shtools, only: SHVectorToCilm
             real*8 dimension(vector_d0),intent(in) :: vector
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer optional,intent(in),depend(vector_d0) :: lmax = sqrt(vector_d0)-1
@@ -1623,7 +1520,6 @@ python module _SHTOOLS
 
         subroutine ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1)
             fortranname pycomputedmap
-            use shtools, only: ComputeDMap
             real*8 dimension(Dij_d0,Dij_d1),intent(out) :: Dij
             integer dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
             integer, optional,intent(in),depend(dh_mask_d0) :: n_dh = dh_mask_d0
@@ -1637,7 +1533,6 @@ python module _SHTOOLS
 
         subroutine SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,Ntapers,dh_mask_d0,dh_mask_d1,tapers_d0,tapers_d1,eigenvalues_d0)
             fortranname pyshreturntapersmap
-            use shtools, only: SHReturnTapersMap
             real*8 dimension(tapers_d0,tapers_d1),intent(out) :: tapers
             real*8 dimension(eigenvalues_d0),intent(out) :: eigenvalues
             integer dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
@@ -1654,7 +1549,6 @@ python module _SHTOOLS
 
         subroutine Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,centralmeridian,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
             fortranname pycurve2mask
-            use shtools, only: Curve2Mask
             integer dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
             integer intent(in) :: n
             integer, optional,intent(in) :: sampling = 1
@@ -1670,7 +1564,6 @@ python module _SHTOOLS
 
         subroutine MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval,cnum,coord_d0,coord_d1)
             fortranname pymakeellipsecoord
-            use shtools, only: MakeEllipseCoord
             real*8 dimension(coord_d0,coord_d1),intent(out) :: coord
             real*8 intent(in) :: lat
             real*8 intent(in) :: lon
@@ -1685,7 +1578,6 @@ python module _SHTOOLS
 
         subroutine MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc,vyz_d0,vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1)
             fortranname pymakegravgradgriddh
-            use shtools, only: MakeGravGradGridDH
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer, optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
             real*8 intent(in) :: gm

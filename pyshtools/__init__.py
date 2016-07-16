@@ -81,7 +81,7 @@ def _load_documentation():
     _SHTOOLS.PlmIndex = PlmIndex
     _SHTOOLS.YilmIndexVector = YilmIndexVector
 
-    print('Loading SHTOOLS documentation')
+    print('Loading SHTOOLS -- version', __version__)
     pydocfolder = os.path.abspath(os.path.join(os.path.dirname(__file__), 'doc'))
     for name, func in _SHTOOLS.__dict__.items():
         if callable(func):
