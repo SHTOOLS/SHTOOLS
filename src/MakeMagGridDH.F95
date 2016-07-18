@@ -104,7 +104,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, phi_grid, &
     integer*1, save, allocatable :: fsymsign(:,:)
     integer, save ::  lmax_old = 0
     logical :: calcu
-
+    external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
     
     n = 2 * lmax + 2

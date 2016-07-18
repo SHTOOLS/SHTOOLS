@@ -91,7 +91,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     integer*1, save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer*1 :: phase
-
+    external :: dfftw_plan_dft_1d, dfftw_execute, dfftw_destroy_plan
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
 
     if (size(cilm(:,1,1)) < 2) then

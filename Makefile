@@ -353,9 +353,6 @@ install-fortran: fortran
 	mkdir -pv $(SYSDOCPATH)/shtools
 	cp index.html $(SYSDOCPATH)/shtools/index.html
 	cp -R www $(SYSDOCPATH)/shtools/
-	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/Makefile" > "temp.txt"
-	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
-	cp temp2.txt "/usr/local/share/shtools/examples/Makefile"
 	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/fortran/Makefile" > "temp.txt"
 	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
 	cp temp2.txt "$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"

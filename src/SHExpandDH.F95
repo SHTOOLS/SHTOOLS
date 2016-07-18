@@ -101,7 +101,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
     integer*1, save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer*1 :: phase
-
+    external :: dfftw_plan_dft_r2c_1d, dfftw_execute, dfftw_destroy_plan
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 
     lmax = n/2 - 1  
