@@ -348,49 +348,49 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             
         end if
 
-        coefr(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefr(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefr0 = 0.0d0
-        coefrs(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefrs(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefrs0 = 0.0d0
         
-        coefrr(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefrr(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefrr0 = 0.0d0
-        coefrrs(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefrrs(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefrrs0 = 0.0d0
         
-        coeft(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coeft(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coeft0 = 0.0d0
-        coefts(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefts(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefts0 = 0.0d0
         
-        coeftp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coeftp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coeftp0 = 0.0d0
-        coeftps(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coeftps(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coeftps0 = 0.0d0
         
-        coefp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefp0 = 0.0d0
-        coefps(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefps(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefps0 = 0.0d0
         
-        coefrt(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefrt(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefrt0 = 0.0d0
-        coefrts(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefrts(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefrts0 = 0.0d0
         
-        coefrp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefrp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefrp0 = 0.0d0
-        coefrps(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefrps(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefrps0 = 0.0d0
         
-        coefpp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefpp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefpp0 = 0.0d0
-        coefpps(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefpps(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefpps0 = 0.0d0
         
-        coeftt(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coeftt(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coeftt0 = 0.0d0
-        coeftts(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coeftts(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coeftts0 = 0.0d0
                 
         pm2 = 1.0d0
@@ -998,31 +998,31 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     u = 1.0d0
     lat = 0.0d0
 
-    coefr(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coefr(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coefr0 = 0.0d0
         
-    coefrr(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coefrr(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coefrr0 = 0.0d0
         
-    coeft(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coeft(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coeft0 = 0.0d0
         
-    coeftp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coeftp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coeftp0 = 0.0d0
         
-    coefp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coefp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coefp0 = 0.0d0
         
-    coefrt(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coefrt(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coefrt0 = 0.0d0
         
-    coefrp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coefrp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coefrp0 = 0.0d0
 
-    coefpp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coefpp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coefpp0 = 0.0d0
         
-    coeftt(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coeftt(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coeftt0 = 0.0d0
                 
     pm2 = 1.0d0

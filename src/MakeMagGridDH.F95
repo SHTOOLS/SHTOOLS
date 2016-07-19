@@ -354,25 +354,25 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, phi_grid, &
             
         end if
 
-        coefr(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefr(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefr0 = 0.0d0
-        coefrs(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefrs(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefrs0 = 0.0d0
         
-        coeft(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coeft(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coeft0 = 0.0d0
-        coefts(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefts(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefts0 = 0.0d0
         
-        coefp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefp0 = 0.0d0
-        coefps(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefps(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefps0 = 0.0d0
         
         if (calcu) then
-            coefu(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+            coefu(1:lmax+2) = dcmplx(0.0d0,0.0d0)
             coefu0 = 0.0d0
-            coefus(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+            coefus(1:lmax+2) = dcmplx(0.0d0,0.0d0)
             coefus0 = 0.0d0
         end if
         
@@ -690,18 +690,18 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, phi_grid, &
     z = 0.0d0
     u = 1.0d0
 
-    coefr(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coefr(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coefr0 = 0.0d0
     
     if (calcu) then
-        coefu(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefu(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coefu0 = 0.0d0
     end if
         
-    coeft(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coeft(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coeft0 = 0.0d0
         
-    coefp(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coefp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coefp0 = 0.0d0
         
     pm2 = 1.0d0

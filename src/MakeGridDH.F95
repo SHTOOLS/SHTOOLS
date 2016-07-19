@@ -387,9 +387,10 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         z = cos(theta)
         u = sqrt( (1.0d0-z) * (1.0d0+z) )
 
-        coef(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coef(1:lmax+2) = dcmplx(0.0d0,0.0d0)    ! lmax+2 is included in the 
+                                                ! input array to FFTW
         coef0 = 0.0d0
-        coefs(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+        coefs(1:lmax+2) = dcmplx(0.0d0,0.0d0)
         coef0s = 0.0d0
         
         select case (lnorm)
@@ -519,7 +520,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     z = 0.0d0
     u = 1.0d0
 
-    coef(1:lmax+1) = dcmplx(0.0d0,0.0d0)
+    coef(1:lmax+2) = dcmplx(0.0d0,0.0d0)
     coef0 = 0.0d0
     
     select case(lnorm)
