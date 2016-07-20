@@ -30,7 +30,7 @@ __version__ = '3.3-beta'
 def PlmIndex(l,m):
     return (l * (l + 1)) // 2 + m
 
-def YilmIndexVector(l,m):
+def YilmIndexVector(i,l,m):
     return l**2 + (i-1)*l + m
 
 #-----------------------------------------------------------------------
