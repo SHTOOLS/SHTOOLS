@@ -62,8 +62,8 @@ metadata = dict(
     author='Mark Wieczorek, Matthias Meschede et al.',
     license='BSD',
     platforms='OS Independent',
-    packages=['pyshtools'],
-    package_data={'pyshtools': ['doc/*.doc', '*.so']},
+    packages=find_packages(),
+    package_data={'': ['doc/*.doc', '*.so']},
     include_package_data = True,
     classifiers = CLASSIFIERS,
 )
