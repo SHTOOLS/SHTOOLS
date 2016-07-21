@@ -14,7 +14,7 @@ real*8 function DownContFilterMA(l, half, r, d)
 !
 !   Dependencies:   None
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ real*8 function DownContFilterMC(l, half, r, d)
 !   Note: This filter is analogous to (and numerically very similar to) 
 !       the minimum curvature filter in Phipps Morgan and Blackman (1993)
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

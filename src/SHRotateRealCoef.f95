@@ -52,7 +52,7 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj)
 !   angles and signs give the expected results. Some people define the angle 
 !   beta as a rotation with respect to the x axis.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

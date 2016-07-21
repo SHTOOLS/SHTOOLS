@@ -31,7 +31,7 @@ subroutine PlON_d1(p, dp, lmax, z)
 !           At z = 1, Pl(1) = 1, and P'l(1) = l (l+1) / 2   (Boyd 2001)
 !           At z = -1 Pl(-1) = (-1)**l, and P'l(-1) = (-1)**(l-1) l (l+1) / 2
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

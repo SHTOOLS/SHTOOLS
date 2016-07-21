@@ -85,7 +85,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !
 !   Dependencies:   FFTW3, NormalGravity
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

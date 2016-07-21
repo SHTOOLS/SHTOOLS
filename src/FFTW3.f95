@@ -1,10 +1,10 @@
 module FFTW3
 !-------------------------------------------------------------------------------
 !
-!	This must be included in any routine that uses FFTW (version 3.3.3).
+!   This must be included in any routine that uses FFTW (version 3.3.3).
 !
-!	Copyright (c) 2015, Mark A. Wieczorek
-!	All rights reserved.
+!   Copyright (c) 2016, SHTOOLS
+!   All rights reserved.
 !
 !-------------------------------------------------------------------------------
       INTEGER FFTW_R2HC

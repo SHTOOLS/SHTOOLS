@@ -55,7 +55,7 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
 !   Dependencies:   SHPowerSpectrum, SHRotateRealCoef, djpi2, 
 !                   CSPHASE_DEFAULT, MakeGridGLQ, SHGLQ, SHExpandGLQ
 !
-!   Copyright (c) 2009, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -212,9 +212,9 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
     if (sum(astat(1:7)) /= 0) then
         print*, "Error --- SHMultiTaperSE"
         print*, "Problem allocating arrays SHWIN, SHLOC, DJ, " // &
-        		 "SHWINROT, GRID1GLQ, GRIDWINGLQ and TEMP", &
-        		 	astat(1), astat(2), astat(3), astat(4), astat(5), & 
-        		 	astat(6), astat(7)
+                 "SHWINROT, GRID1GLQ, GRIDWINGLQ and TEMP", &
+                    astat(1), astat(2), astat(3), astat(4), astat(5), & 
+                    astat(6), astat(7)
         stop
     end if
     
@@ -287,13 +287,13 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
             
         end if
 
-    	call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
-        		lmaxmul, zero = zero, csphase = phase, norm = mnorm)     
-        		
+        call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
+                lmaxmul, zero = zero, csphase = phase, norm = mnorm)     
+                
         temp(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
                             * gridwinglq(1:nlat,1:nlong)   
                             
-    	call SHExpandGLQ(shloc, lmaxmul, temp, w, zero = zero, &
+        call SHExpandGLQ(shloc, lmaxmul, temp, w, zero = zero, &
                             csphase = phase, norm = mnorm)
         
         call SHPowerSpectrum(shloc, lmax-lmaxt, se(:,i))

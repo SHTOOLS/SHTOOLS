@@ -71,10 +71,10 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 !       referred to as the "coherence squared"), just square this number.
 !
 !   Dependencies:   CSPHASE_DEFAULT,  djpi2, SHRotateRealCoef, 
-!					SHCrossPowerSpectrum, SHPowerSpectrum, MakeGridGLQ, SHGLQ, 
-!					SHExpandGLQ
+!                   SHCrossPowerSpectrum, SHPowerSpectrum, MakeGridGLQ, SHGLQ, 
+!                   SHExpandGLQ
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -270,7 +270,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
         if (sum(astat(1:3)) /= 0) then
             print*, "Error --- SHLocalizedAdmitCorr"
             print*, "Problem allocating arrays ZERO, W and DJ", &
-            		astat(1), astat(2), astat(3)
+                    astat(1), astat(2), astat(3)
             stop
             
         end if
@@ -336,7 +336,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     if (sum(astat(1:8)) /= 0) then
         print*, "Error --- SHLocalizedAdmitCorr"
         print*, "Problem allocating arrays SHWIN, SHWINROT, SHLOC_G, " // &
-        	"SHLOC_T, GRIDTGLQ, GRIDGGLQ, GRIDWINGLQ, and TEMP", &
+            "SHLOC_T, GRIDTGLQ, GRIDGGLQ, GRIDWINGLQ, and TEMP", &
             astat(1), astat(2), astat(3), astat(4), astat(5), astat(6), &
             astat(7), astat(8)
         stop
@@ -363,19 +363,19 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
             
             call SHRotateRealCoef(shwinrot, shwin, lwin, x, dj)
  
-     		call MakeGridGLQ(gridwinglq, shwinrot(1:2,1:lwin+1, 1:lwin+1), &
-        		lmaxwin, zero = zero, csphase = phase, norm = 1)     
-        		
-        	temp(1:nlat,1:nlong) = gridtglq(1:nlat,1:nlong) &
+            call MakeGridGLQ(gridwinglq, shwinrot(1:2,1:lwin+1, 1:lwin+1), &
+                lmaxwin, zero = zero, csphase = phase, norm = 1)     
+                
+            temp(1:nlat,1:nlong) = gridtglq(1:nlat,1:nlong) &
                             * gridwinglq(1:nlat,1:nlong)   
                             
-    		call SHExpandGLQ(shloc_t, lmaxwin, temp, w, zero = zero, &
+            call SHExpandGLQ(shloc_t, lmaxwin, temp, w, zero = zero, &
                             csphase = phase, norm = 1)
         
-        	temp(1:nlat,1:nlong) = gridgglq(1:nlat,1:nlong) &
+            temp(1:nlat,1:nlong) = gridgglq(1:nlat,1:nlong) &
                             * gridwinglq(1:nlat,1:nlong) 
 
-    		call SHExpandGLQ(shloc_g, lmaxwin, temp, w, zero = zero, &
+            call SHExpandGLQ(shloc_g, lmaxwin, temp, w, zero = zero, &
                             csphase = phase, norm = 1)
             
             call SHCrossPowerSpectrum(shloc_g, shloc_t, lmax-lwin, sgt(:,i))
@@ -509,19 +509,19 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
         
             call SHRotateRealCoef(shwinrot, shwin, lwin, x, dj)
 
-     		call MakeGridGLQ(gridwinglq, shwinrot(1:2,1:lwin+1, 1:lwin+1), &
-        		lmaxwin, zero = zero, csphase = phase, norm = 1)     
-        		
-        	temp(1:nlat,1:nlong) = gridtglq(1:nlat,1:nlong) &
+            call MakeGridGLQ(gridwinglq, shwinrot(1:2,1:lwin+1, 1:lwin+1), &
+                lmaxwin, zero = zero, csphase = phase, norm = 1)     
+                
+            temp(1:nlat,1:nlong) = gridtglq(1:nlat,1:nlong) &
                             * gridwinglq(1:nlat,1:nlong)   
                             
-    		call SHExpandGLQ(shloc_t, lmaxwin, temp, w, zero = zero, &
+            call SHExpandGLQ(shloc_t, lmaxwin, temp, w, zero = zero, &
                             csphase = phase, norm = 1)
         
-        	temp(1:nlat,1:nlong) = gridgglq(1:nlat,1:nlong) &
+            temp(1:nlat,1:nlong) = gridgglq(1:nlat,1:nlong) &
                             * gridwinglq(1:nlat,1:nlong) 
 
-    		call SHExpandGLQ(shloc_g, lmaxwin, temp, w, zero = zero, &
+            call SHExpandGLQ(shloc_g, lmaxwin, temp, w, zero = zero, &
                             csphase = phase, norm = 1)
             
             call SHCrossPowerSpectrum(shloc_g, shloc_t, lmax-lwin, sgt(:,i))

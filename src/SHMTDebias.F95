@@ -12,7 +12,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
 !   The inverse problem is solved by SVD as described in Numerical 
 !   Recipes (pp. 670-672)
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !   
 !-------------------------------------------------------------------------------

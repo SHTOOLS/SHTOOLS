@@ -77,7 +77,7 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 !
 !   Dependencies:       DHaj, FFTW3, CSPHASE_DEFAULT
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

@@ -53,7 +53,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, &
 !
 !   Dependencies:       NGLQSH, SHExpandGLQ, SHExpandDH
 !
-!   Copyright (c) 2005-2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

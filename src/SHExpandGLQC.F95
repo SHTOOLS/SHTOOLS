@@ -58,7 +58,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 !
 !   Dependencies:   FFTW3, NGLQSH, CSPHASE_DEFAULT
 !
-!   Copyright (c) 2008-2012, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

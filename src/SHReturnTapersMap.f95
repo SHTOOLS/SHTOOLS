@@ -49,7 +49,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
 !                       corresponding to the columns of Tapers, dimensioned as 
 !                       (lmax+1)**2.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

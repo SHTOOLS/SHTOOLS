@@ -60,9 +60,7 @@ subroutine PlmBar_d1(p, dp, lmax, z, csphase, cnorm)
 !
 !   Dependencies:   CSPHASE_DEFAULT
 !
-!   Written by Mark Wieczorek September 25, 2005.
-!
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

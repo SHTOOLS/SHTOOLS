@@ -30,7 +30,7 @@ subroutine PlSchmidt_d1(p, dp, lmax, z)
 !
 !   Dependencies:   None
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

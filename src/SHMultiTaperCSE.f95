@@ -57,7 +57,7 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 !   Dependencies:   SHCrossPowerSpectrum, SHRotateRealCoef, djpi2, 
 !                   CSPHASE_DEFAULT, MakeGridGLQ, SHGLQ, SHExpandGLQ
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -309,19 +309,19 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
             
         end if
 
-    	call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
-        		lmaxmul, zero = zero, csphase = phase, norm = mnorm)     
-        		
+        call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
+                lmaxmul, zero = zero, csphase = phase, norm = mnorm)     
+                
         temp(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
                             * gridwinglq(1:nlat,1:nlong)   
                             
-    	call SHExpandGLQ(shloc1, lmaxmul, temp, w, zero = zero, &
+        call SHExpandGLQ(shloc1, lmaxmul, temp, w, zero = zero, &
                             csphase = phase, norm = mnorm)
         
         temp(1:nlat,1:nlong) = grid2glq(1:nlat,1:nlong) &
                             * gridwinglq(1:nlat,1:nlong) 
 
-    	call SHExpandGLQ(shloc2, lmaxmul, temp, w, zero = zero, &
+        call SHExpandGLQ(shloc2, lmaxmul, temp, w, zero = zero, &
                             csphase = phase, norm = mnorm)
         
         call SHCrossPowerSpectrum(shloc1, shloc2, lmax-lmaxt, se(:,i))

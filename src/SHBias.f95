@@ -30,7 +30,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg)
 !
 !   Dependencies: Wigner3j
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------         

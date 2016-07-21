@@ -14,7 +14,7 @@ real*8 function RandomN(idum)
 !
 !   Taken from numerical recipes, f90
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ real*8 function RandomGaussian(idum)
 !
 !   Taken from numerical recipes f77.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

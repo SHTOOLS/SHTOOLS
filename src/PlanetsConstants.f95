@@ -4,7 +4,7 @@ module PlanetsConstants
 !   Constants related to the planets that are useful for gravity and topography
 !   analyses.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

@@ -33,7 +33,7 @@ real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 !           degree of the input file, then this file will be ZERO PADDED!
 !           (i.e., those degrees after lmax are assumed to be zero).
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

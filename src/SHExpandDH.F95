@@ -72,7 +72,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
 !
 !   Dependencies:       dhaj, fftw3, csphase_default
 !   
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

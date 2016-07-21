@@ -41,7 +41,7 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon)
 !
 !   Dependencies: LAPACK, BLAS, ComputeDG82, EigValVecSymTri, PreGLQ, PlmBar
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

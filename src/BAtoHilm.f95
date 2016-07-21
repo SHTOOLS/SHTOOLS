@@ -57,7 +57,7 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
 !   Dependencies:       NGLQSH, SHExpandGLQ, SHExpandDH, DownContFilterMA,
 !                       DownContFilterMC
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

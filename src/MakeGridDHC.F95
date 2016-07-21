@@ -66,7 +66,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 !
 !   Dependencies:   FFTW3, CSPHASE_DEFAULT
 !
-!   Copyright (c) 2008-2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

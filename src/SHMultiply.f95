@@ -36,7 +36,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
 !
 !   Dependencies:   SHGLQ, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

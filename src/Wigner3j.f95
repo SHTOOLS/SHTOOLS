@@ -76,7 +76,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3)
 !
 !   Dependencies: None
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

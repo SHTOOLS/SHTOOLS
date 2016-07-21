@@ -26,7 +26,7 @@ subroutine PreGLQ(x1, x2, n, zero, w)
 !
 !   Dependencies:   None
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

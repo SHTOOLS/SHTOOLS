@@ -29,7 +29,7 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
 !
 !   Dependencies: Wigner3j.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

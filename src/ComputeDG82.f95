@@ -23,7 +23,7 @@ subroutine ComputeDG82(DG82, lmax, m, theta0)
 !
 !   Dependencies:   none
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

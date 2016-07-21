@@ -57,7 +57,7 @@ subroutine PlmSchmidt_d1(p, dp, lmax, z, csphase, cnorm)
 !
 !   Dependencies:   CSPHASE_DEFAULT
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

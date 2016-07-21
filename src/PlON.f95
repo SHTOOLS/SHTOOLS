@@ -21,7 +21,7 @@ subroutine PlON(p, lmax, z)
 !   2.  The integral of PlBar**2 over all space on the sphere is 1. 
 !       The integral of PlBar**2 over (-1,1) is 1/2pi.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

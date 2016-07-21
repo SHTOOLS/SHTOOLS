@@ -6,7 +6,7 @@ real*8 function NormalGravity(geocentric_lat, GM, omega, a, b)
 !   This is taken from Physical Geodesy (Hofmann-Wellenhof and Moritz, 
 !   sec. ed.), sections 2.7 and 2.8.
 !
-!   Copyright 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

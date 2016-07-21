@@ -42,7 +42,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
 !
 !   Dependencies: Wigner3j
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------      
