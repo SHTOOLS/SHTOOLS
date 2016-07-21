@@ -15,7 +15,7 @@ subroutine DHaj(n, aj)
 !       OUT
 !           aj  Vector of length n containing the weights.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

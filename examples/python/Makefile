@@ -6,8 +6,6 @@
 #	make clean
 #		Remove compiled Python files and output.
 #
-#	Written by Mark Wieczorek (March 2015).
-#
 #######################################################################
 
 PYTHON = python

@@ -87,7 +87,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !
 !   Dependencies:   FFTW3
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer*1, save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0
-
+    external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
 
     n = 2 * lmax+2

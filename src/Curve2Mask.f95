@@ -17,17 +17,17 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, centralmeridia
 !                       Healy sampled grid.
 !           sampling    1 sets the number of longitude bands equal to 1, 
 !                       whereas 2 sets the number to twice that of n.
-!			centralmeridian		If 1, the curve is assumed to pass through the 
-!								central meridian: passing from < 360 degrees
-!								to > 0 degrees. The curve makes a complete 
-!								circle about the planet in longitude. default
-!								is zero.
+!           centralmeridian     If 1, the curve is assumed to pass through the 
+!                               central meridian: passing from < 360 degrees
+!                               to > 0 degrees. The curve makes a complete 
+!                               circle about the planet in longitude. default
+!                               is zero.
 !
 !       OUT
 !           dhgrid      A Driscoll and Healy sampled grid specifiying whether 
 !                       the point is in the curve (1), or outside of it (0).
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -93,14 +93,14 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, centralmeridia
     end if
     
     if (present(centralmeridian)) then
-    	if (centralmeridian /= 0 .and. centralmeridian /= 1) then
-    		 print*, "Error --- Curve2Mask"
-    		 print*, "CENTRALMERIDIAN must be either 0 or 1."
-    		 print*, "Input value is ", centralmeridian
-    	endif
-    	cm = centralmeridian
-    else	
-    	cm = 0
+        if (centralmeridian /= 0 .and. centralmeridian /= 1) then
+             print*, "Error --- Curve2Mask"
+             print*, "CENTRALMERIDIAN must be either 0 or 1."
+             print*, "Input value is ", centralmeridian
+        endif
+        cm = centralmeridian
+    else    
+        cm = 0
     endif
     
     !---------------------------------------------------------------------------
@@ -150,40 +150,40 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, centralmeridia
         end do
         
         ! do first and last points
-    	if (cm == 0) then
+        if (cm == 0) then
     
-        	if (profile(nprofile,2) <= lon .and. profile(1,2) > lon) then
-            	numcross = numcross + 1
+            if (profile(nprofile,2) <= lon .and. profile(1,2) > lon) then
+                numcross = numcross + 1
             
-            	if (numcross > maxcross) then
-                	print*, "Error --- Curve2Mask"
-                	print*, "Internal variable MAXCROSS needs to be increased."
-                	print*, "MAXCROSS = ", maxcross
-                	stop
-            	end if
+                if (numcross > maxcross) then
+                    print*, "Error --- Curve2Mask"
+                    print*, "Internal variable MAXCROSS needs to be increased."
+                    print*, "MAXCROSS = ", maxcross
+                    stop
+                end if
             
-            	cross(numcross) = profile(nprofile,1) + &
-                    	(profile(1,1)-profile(nprofile,1)) / &
-                    	(profile(1,2)-profile(nprofile,2)) * &
-                    	(lon - profile(nprofile,2))
+                cross(numcross) = profile(nprofile,1) + &
+                        (profile(1,1)-profile(nprofile,1)) / &
+                        (profile(1,2)-profile(nprofile,2)) * &
+                        (lon - profile(nprofile,2))
                     
-        	else if (profile(nprofile,2) > lon .and. profile(1,2) <= lon) then
-            	numcross = numcross + 1
+            else if (profile(nprofile,2) > lon .and. profile(1,2) <= lon) then
+                numcross = numcross + 1
             
-            	if (numcross > maxcross) then
-                	print*, "Error --- Curve2Mask"
-                	print*, "Internal variable MAXCROSS needs to be increased."
-                	print*, "MAXCROSS = ", maxcross
-                	stop
-            	end if
+                if (numcross > maxcross) then
+                    print*, "Error --- Curve2Mask"
+                    print*, "Internal variable MAXCROSS needs to be increased."
+                    print*, "MAXCROSS = ", maxcross
+                    stop
+                end if
             
-            	cross(numcross) = profile(1,1) + &
-                    	(profile(nprofile,1)-profile(1,1)) / &
-                    	(profile(nprofile,2)-profile(1,2)) * (lon - profile(1,2))
+                cross(numcross) = profile(1,1) + &
+                        (profile(nprofile,1)-profile(1,1)) / &
+                        (profile(nprofile,2)-profile(1,2)) * (lon - profile(1,2))
                     
-        	end if
-        	
-		end if
+            end if
+            
+        end if
 
         if (numcross > 0) then  ! sort crossings by decreasing latitude
             do k = 1, numcross

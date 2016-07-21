@@ -19,16 +19,15 @@ import IPython
 
 #==== MAIN FUNCTION ====
 def main():
-    TimingAccuracyDH()
-
+    TimingAccuracyDH(2)
 
 #==== TEST FUNCTIONS ====
-def TimingAccuracyDH():
+def TimingAccuracyDH(sampling=1):
     #---- input parameters ----
     maxdeg = 2800
     ls = np.arange(maxdeg + 1)
-    sampling = 2
     beta = -1.5
+    print('Driscoll-Healy (real) sampling =', sampling)
 
     #---- create mask to filter out m<=l ----
     mask = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=np.bool)
@@ -63,9 +62,9 @@ def TimingAccuracyDH():
         tforward = tend - tstart
 
         # compute error
-        err = ((cilm_trim[mask_trim] - cilm2_trim[mask_trim]) / (cilm_trim[mask_trim])**2 + 1e-20)
-        maxerr = np.sqrt(err.max())
-        rmserr = np.mean(err)
+        err = np.abs(cilm_trim[mask_trim] - cilm2_trim[mask_trim]) / np.abs(cilm_trim[mask_trim])
+        maxerr = err.max()
+        rmserr = np.mean(err**2)
 
         print('{:4d}    {:1.2e}    {:1.2e}    {:1.1e}s    {:1.1e}s'.format(
             lmax, maxerr, rmserr, tinverse, tforward))

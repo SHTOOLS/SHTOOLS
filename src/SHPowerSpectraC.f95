@@ -13,7 +13,7 @@ real*8 function SHPowerLC(c, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ real*8 function SHPowerDensityLC(c, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ complex*16 function SHCrossPowerLC(c1, c2, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -183,7 +183,7 @@ complex*16 function SHCrossPowerDensityLC(c1, c2, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -250,7 +250,7 @@ subroutine SHPowerSpectrumC(c, lmax, spectra)
 !           spectra     Array of length (lmax+1) containing the power
 !                       spectra of c.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -318,7 +318,7 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra)
 !           spectra     Array of length (lmax+1) containing the power
 !                       spectra density of c.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -391,7 +391,7 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra)
 !           cspectra    Array of length (lmax+1) containing the complex cross 
 !                       power spectra of c.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -472,7 +472,7 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra)
 !           cspectra    Array of length (lmax+1) containing the complex cross 
 !                       power spectral density of c.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

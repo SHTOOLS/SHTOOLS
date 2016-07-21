@@ -18,7 +18,7 @@ real*8 function SHConfidence(l_conf, r)
 !       OUTPUT
 !           cl          The confidence level.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

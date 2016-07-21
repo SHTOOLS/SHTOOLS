@@ -16,7 +16,7 @@ subroutine SHCilmToVector(cilm, vector, lmax)
 !                   dimension (lmax+1)**2. The ordering is described in 
 !                   YilmIndexVector.
 !
-!   Copyright (c) 2009, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ subroutine SHVectorToCilm(vector, cilm, lmax)
 !           cilm    Output spherical harmonic coefficients with dimension
 !                   cilm(2, lmax+1, lmax+1).
 !
-!   Copyright (c) 2009, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

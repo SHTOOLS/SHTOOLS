@@ -30,7 +30,7 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs)
 !           switchcs    If 1, Change between different Condon-Shortley phase 
 !                       conventions. If 0, use consistent phase convention.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -195,7 +195,7 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs)
 !           switchcs    If 1, Change between different Condon-Shortley phase 
 !                       conventions. If 0, use consistent phase convention.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -346,7 +346,7 @@ subroutine SHCilmToCindex(cilm, cindex, degmax)
 !           cindex  Array of indexed spherical harmonic coefficnets with 
 !                   dimensions (2, (lmax+1)*(lmax+2)/2).
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -430,7 +430,7 @@ subroutine SHCindexToCilm(cindex, cilm, degmax)
 !           cilm    Array of spherical harmonic coefficients with dimensions 
 !                   (2, lmax+1, lmax+1).
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

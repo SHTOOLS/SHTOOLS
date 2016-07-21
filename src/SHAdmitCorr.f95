@@ -55,7 +55,7 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error)
 !
 !   Dependencies: SHPowerSpectrum, SHCrossPowerSpectrum
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

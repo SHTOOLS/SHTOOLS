@@ -25,7 +25,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 !           doy2        Ending date of the gravity solution.
 !           epoch       Epochal date for the time derivatives.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

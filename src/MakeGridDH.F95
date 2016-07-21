@@ -60,7 +60,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !
 !   Dependencies:   FFTW3, CSPHASE_DEFAULT
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     integer*1, save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer*1 :: phase
-
+    external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
     
     n = 2 * lmax + 2
@@ -158,20 +158,20 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     end if
     
     if (present(csphase)) then
-            if (csphase /= -1 .and. csphase /= 1) then
-                print*, "Error --- MakeGridDH"
-                print*, "CSPHASE must be 1 (exclude) or -1 (include)"
-                print*, "Input valuse is ", csphase
-                stop
-                
-            else
-                phase = csphase
-                
-            endif
+        if (csphase /= -1 .and. csphase /= 1) then
+            print*, "Error --- MakeGridDH"
+            print*, "CSPHASE must be 1 (exclude) or -1 (include)"
+            print*, "Input valuse is ", csphase
+            stop
+           
         else
-            phase = CSPHASE_DEFAULT
+            phase = csphase
             
         endif
+    else
+        phase = CSPHASE_DEFAULT
+        
+    endif
 
     pi = acos(-1.0d0)
     

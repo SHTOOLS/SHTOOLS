@@ -5,7 +5,7 @@ module SHTOOLS
 !   used in the archive SHTOOLS. These are necessary in order to use
 !   implicitly shaped arrays with most subroutines.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -750,7 +750,7 @@ module SHTOOLS
         end subroutine SHReturnTapersMap
         
         subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
-        						centralmeridian)
+                                centralmeridian)
             integer, intent(out) :: dhgrid(:,:)
             real*8, intent(in) ::   profile(:,:)
             integer, intent(in) ::  n, sampling, nprofile, np

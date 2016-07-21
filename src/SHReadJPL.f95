@@ -28,7 +28,7 @@ subroutine SHReadJPL(filename, cilm, lmax, error, gm, formatstring)
 !                           for the numbers of the spherical harmonic 
 !                           coefficients.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

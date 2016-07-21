@@ -34,7 +34,7 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order)
 !   Dependencies: LAPACK, BLAS, ComputeDG82, EigValVecSymTri, PreGLQ, 
 !                 PlmBar, PlmIndex
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

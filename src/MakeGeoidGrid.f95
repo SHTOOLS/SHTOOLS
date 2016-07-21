@@ -59,7 +59,7 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 !           
 !   Dependencies :  MakeGrid2D, MakeGridGLQ, MakeGridDH, NGLQSH, SHGLQ
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

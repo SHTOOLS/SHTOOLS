@@ -28,7 +28,7 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error)
 !           error       Error of the spherical harmonic coefficients, assumed 
 !                       to in the format (l, m, c1lm, c2lm, error1lm, error2lm).
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

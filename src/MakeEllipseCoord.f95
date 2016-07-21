@@ -27,7 +27,7 @@ subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
 !
 !   Dependencies: None
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

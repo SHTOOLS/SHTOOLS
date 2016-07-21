@@ -19,7 +19,7 @@ subroutine ComputeDm(dllm, lmax, m, theta0)
 !       OUT
 !           dllm        Symmetric kernel of size lmax+1 by lmax+1.
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------- 

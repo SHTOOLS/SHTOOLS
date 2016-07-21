@@ -39,7 +39,7 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm)
 !   Dependencies:   PreGLQ, NGLQSH, PlmBar, PlmSchmidt, PLegendreA, PlmON, 
 !                   CSPHASE_DEFAULT, PlmIndex
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

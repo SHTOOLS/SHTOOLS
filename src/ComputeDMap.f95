@@ -53,7 +53,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
 !                       to YilmINDEX. Dimesions of Dij are 
 !                       ((lmax+1)**2, (lmax+1)**2).
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

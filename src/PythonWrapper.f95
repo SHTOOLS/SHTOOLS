@@ -1995,8 +1995,8 @@
     end subroutine pySHReturnTapersMap
 
     subroutine pyCurve2Mask(dhgrid,n,sampling,profile,nprofile,NP,&
-    						centralmeridian,profile_d0,profile_d1,dhgrid_d0,&
-    						dhgrid_d1) 
+                            centralmeridian,profile_d0,profile_d1,dhgrid_d0,&
+                            dhgrid_d1) 
         use shtools, only: Curve2Mask
         implicit none
         integer, dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
@@ -2011,7 +2011,7 @@
         integer, intent(in) :: dhgrid_d0
         integer, intent(in) :: dhgrid_d1
         call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,&
-        				centralmeridian=centralmeridian)
+                        centralmeridian=centralmeridian)
     end subroutine pyCurve2Mask
 
     subroutine pyMakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval, &

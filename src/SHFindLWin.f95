@@ -21,7 +21,7 @@ integer function SHFindLWin(theta0, m, alpha, taper_number)
 !
 !   Dependencies: LAPACK, BLAS, ComputeDm, EigValSym
 !
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

@@ -6,8 +6,6 @@
 #	make clean
 #		Remove the lib and module files in the LOCAL directory.
 #
-#	Written by Mark Wieczorek (July 2006).
-#
 #######################################################################
 
 F95 = gfortran

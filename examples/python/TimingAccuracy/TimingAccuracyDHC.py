@@ -14,21 +14,17 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools as shtools
 
 #==== MAIN FUNCTION ====
-
-
 def main():
-    TimingAccuracyDHC()
+    TimingAccuracyDHC(2)
 
 #==== TEST FUNCTIONS ====
-
-
-def TimingAccuracyDHC():
+def TimingAccuracyDHC(sampling=1):
     #---- input parameters ----
     maxdeg = 2800
     ls = np.arange(maxdeg + 1)
-    sampling = 1
     beta = -1.5
-
+    print('Driscoll-Healy (complex), sampling =', sampling)
+    
     #---- create mask to filter out m<=l ----
     mask = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=np.bool)
     mask[0, 0, 0] = True

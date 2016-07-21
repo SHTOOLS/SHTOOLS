@@ -9,8 +9,6 @@
 # 	make clean
 #		Delete the compile executibles.
 #
-#	Written by Mark Wieczorek (June 2012).
-#
 ################################################################################
 
 F95 = gfortran

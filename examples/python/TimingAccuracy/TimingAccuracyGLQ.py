@@ -14,19 +14,17 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools as shtools
 
 #==== MAIN FUNCTION ====
-
-
 def main():
     TimingAccuracyGLQ()
 
 #==== TEST FUNCTIONS ====
-
 
 def TimingAccuracyGLQ():
     #---- input parameters ----
     maxdeg = 2800
     ls = np.arange(maxdeg + 1)
     beta = -1.5
+    print('Driscoll-Healy (real)')
 
     #---- create mask to filter out m<=l ----
     mask = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=np.bool)

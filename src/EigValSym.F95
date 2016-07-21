@@ -35,7 +35,7 @@ subroutine EigValSym(ain, n, eval, ul)
 !       
 !   Dependencies: LAPACK, BLAS
 !
-!   Copyright (c) 2015 Mark A. Wieczorek
+!   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
