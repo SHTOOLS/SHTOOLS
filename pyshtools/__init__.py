@@ -90,14 +90,6 @@ def _load_documentation():
     """
     import os
 
-    # import _SHTOOLS functions to add documentation
-    # the _SHTOOLS functions are later imported into
-    # the main namespace
-
-    # bind Python functions to _SHTOOLS
-    _SHTOOLS.PlmIndex = PlmIndex
-    _SHTOOLS.YilmIndexVector = YilmIndexVector
-
     print('Loading SHTOOLS -- version', __version__)
     pydocfolder = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                   'doc'))
@@ -127,11 +119,12 @@ def _load_documentation():
             print(msg)
 
 
-# --- Import all functions into pyshtools namespace ----
-from ._SHTOOLS import *  # NOQA
+#---- Bind Python functions to _SHTOOLS ----
+_SHTOOLS.PlmIndex = PlmIndex
+_SHTOOLS.YilmIndexVector = YilmIndexVector
 
-# --- Import planetary constants into pyshtools namespace ----
-from . import _constant  # NOQA
+#---- Import planetary constants into pyshtools namespace ----
+from . import _constant
 
 constant = _ConstantClass()
 
@@ -143,9 +136,7 @@ _load_documentation()
 
 # ---- Define __all__ for use with 'from pyshtools import *' ----
 __all__ = ['_ndarrayinfo', '_ConstantClass', 'constant', 'classes']
-__all__ += ['SHCoeffs', 'SHRealCoefficients', 'SHComplexCoefficients',
-            'SHGrid', 'DHGrid', 'GLQGrid', 'SHWindow', 'SHSymmetricWindow',
-            'SHAsymmetricWindow']
+__all__ += ['SHCoeffs', 'SHGrid', 'SHWindow']
 
 
 for _name, _func in _SHTOOLS.__dict__.items():

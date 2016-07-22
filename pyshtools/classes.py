@@ -1,10 +1,11 @@
 """
-This file contains some classes that facilitate in particular the interactive
-examination of spherical data with shtools. Subclasses are used to handle
-different internal data types and superclasses are used to implement interface
+pyshtools defines several classes that facilitate the interactive
+examination of geographical gridded data and their associated 
+spherical harmonic coefficients. Subclasses are used to handle different 
+internal data types and superclasses are used to implement interface
 functions and the documentation.
 
-The following three classes will be implemented:
+The following classes and subclasses are defined:
 
     SHCoeffs
         SHRealCoefficients
@@ -14,11 +15,9 @@ The following three classes will be implemented:
         DHGrid
         GLQGrid
 
-    SHWindow (not yet implemented)
+    SHWindow
         SymmetricWindow
         AsymmetricWindow
-
-Matthias Meschede and Mark Wieczorek, 2015
 """
 
 from __future__ import absolute_import, division, print_function
@@ -30,36 +29,39 @@ import matplotlib.pyplot as plt
 from ._SHTOOLS import *
 
 #===============================================================================
-#=========== COEFFICIENT CLASSES ===============================================
+#=========    COEFFICIENT CLASSES    ===========================================
 #===============================================================================
 
 class SHCoeffs(object):
-
     """
-    EXPERIMENTAL:
     Spherical Harmonics Coefficient class. Coefficients can be initialized
-    using one of the constructor methods:
+    using one of the three constructor methods:
 
-    >> SHCoeffs.from_array( np.zeros(2*(lmax+1)*(lmax+1)) )
-    >> SHCoeffs.from_random( np.exp(-ls**2) )
-    >> SHCoeffs.from_file( 'fname.dat' )
+    >> x = SHCoeffs.from_array( np.zeros( (2, lmax+1, lmax+1) ) )
+    >> x = SHCoeffs.from_random( np.exp(-ls**2) )
+    >> x = SHCoeffs.from_file( 'fname.dat' )
     """
 
     def __init__(self):
-        print('use one of the following methods to initialize sh-coefficients:\n\n' +
-              '>> SHCoeffs.from_array(...)\n' +
-              '>> SHCoeffs.from_random(...)\n' +
-              '>> SHCoeffs.from_file(...)')
+        pass
 
     #---- factory methods:
     @classmethod
-    def from_array(self, array, kind='real', normalization='4pi'):
+    def from_array(self, coeffs, kind='real', normalization='4pi', csphase=False):
+        """"
+        Initialize the spherical harmonic coefficients of the object
+        using an input array dimensioned as (2, lmax+1, lmax+1).
+        """
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(array,normalization='4pi')
+                return cls(coeffs, normalization=normalization, csphase=csphase)
 
     @classmethod
-    def from_random(self, power, kind='real'):
+    def from_random(self, power, kind='real', normalization='4pi', csphase=False):
+        """"
+        Initialize the spherical harmonic coefficients of the object
+        using Gaussian random variables with a given input power spectrum.
+        """
         nl = len(power)
         for cls in self.__subclasses__():
             if cls.istype(kind):
@@ -73,49 +75,58 @@ class SHCoeffs(object):
                                                     size=(2, nl, nl)))
                     coeffs *= np.sqrt(power)[np.newaxis, :, np.newaxis]
                 else:
-                    raise ValueError("kind='{:s}' should be 'real' or 'complex'".format(str(kind)))
-                return cls(coeffs)
+                    raise ValueError("kind='{:s}': Should be 'real' or 'complex'".format(str(kind)))
+                return cls(coeffs, normalization=normalization, csphase=csphase)
 
     @classmethod
-    def from_file(self, fname, lmax, format='shtools'):
+    def from_file(self, fname, lmax, format='shtools', kind='real', normalization='4pi', csphase=False):
         """
-        reads coefficients from a spherical harmonics file.
+        Initialize the spherical harmonic coefficients of the object
+        by reading the coefficients from a specified file name.
         """
-        coeffs, lmax = SHRead(fname, lmax)
+        if format == 'shtools' and kind == 'real':
+            coeffs, lmax = SHRead(fname, lmax)
+        else:
+            raise NotImplementedError('Not yet implemented')
+            
         lmax = coeffs.shape[1] - 1
 
         for cls in self.__subclasses__():
-            if format == 'shtools' and cls.istype('real'):
-                return cls(coeffs)
+            if cls.istype(kind):
+                return cls(coeffs, normalization=normalization, csphase=csphase)
 
     #---- extracting data ----
     def get_degrees(self):
-        """returns the array [0,...,lmax] that contains the degrees l"""
+        """Return an array listing the spherical harmonic degrees from 0 to lmax."""
         return np.arange(self.lmax + 1)
 
     def get_powerperdegree(self):
-        """returns the power per degree l spectrum"""
+        """Return the power per degree l spectrum."""
         return self._powerperdegree()
 
     def get_powerperband(self, bandwidth):
-        """returns the power per log_{bandwidth} l spectrum"""
+        """Return the power per log_{bandwidth} l spectrum"""
         ls = self.get_degrees()
         return self._powerperdegree() * ls * np.log(bandwidth)
 
     #---- conversions ----
     def get_coeffs(self, normalization='4pi', kind='real'):
         """
-        returns complex or real, raw spherical harmonics coefficients 
-        in different normalizations
+        Return complex or real spherical harmonics coefficients 
+        in a different normalization.
         """
+        # add output kind and output normalization parameters. 
+        # get input values from input class.
+        # consider renaming this to "convert" and use only for converting between 
+        # normalizations (make_complex and make_real already exist)
         coeffs = self._coeffs(kind)
         raise NotImplementedError('Not yet implemented')
 
     #---- rotation ----
     def rotate(self, alpha, beta, gamma, degrees=True):
         """
-        rotates the spherical harmonics coefficients by
-        alpha, beta, gamma
+        Rotate the spherical harmonics coefficients by
+        the Euler angles alpha, beta, gamma.
         """
         if degrees:
             angles = np.radians([alpha, beta, gamma])
@@ -126,11 +137,11 @@ class SHCoeffs(object):
     #---- expansion ----
     def expand(self, **kwargs):
         """
-        expands the coefficients to a spherical grid. 
+        Evaluate the coefficients on a spherical grid. 
         Available grid types:
-           kind ='DH1': equidistant lat/lon grid with   nlat=nlon
-           kind ='DH2': equidistant lat/lon grid with 2*nlat=nlon
-           kind ='GLQ': Gauss Legendre Grid
+           kind = 'DH1' or 'DH': equisampled lat/lon grid with nlat=nlon
+           kind = 'DH2': equidistant lat/lon grid with nlon=2*nlat
+           kind = 'GLQ': Gauss Legendre quadrature grid
         """
         if kwargs['kind'] == 'DH1' or kwargs['kind'] == 'DH':
             grid = self._expandDH(sampling=1)
@@ -139,14 +150,13 @@ class SHCoeffs(object):
         elif kwargs['kind'] == 'GLQ':
             grid = self._expandGLQ()
         else:
-            raise NotImplementedError('grid type {:s} not implemented'.format(kind))
+            raise NotImplementedError('Grid type {:s} not implemented'.format(kind))
         return grid
 
     #---- plotting routines ----
     def plot_powerperdegree(self, loglog=True, show=True, fname=None):
         """
-        plots the power per degree spectrum. This is in particular useful to
-        analyze global isotropic power at a certain wavelength.
+        Plot the power per degree spectrum.
         """
         power = self.get_powerperdegree()
         ls = self.get_degrees()
@@ -166,8 +176,7 @@ class SHCoeffs(object):
 
     def plot_powerperband(self, bandwidth=2, show=True, fname=None):
         """
-        plots the power per log_{bandwidth}(degree) spectrum. This is in
-        particular useful to analyze local heterogeneity strength.
+        Plots the power per log_{bandwidth}(degree) spectrum.
         """
         power = self.get_powerperband(bandwidth)
         ls = self.get_degrees()
@@ -189,16 +198,16 @@ class SHCoeffs(object):
 #================== REAL SPHERICAL HARMONICS ================
 
 class SHRealCoefficients(SHCoeffs):
-
     """
-    Real Spherical Harmonics Coefficients class.
+    Real Spherical Harmonics Coefficient class.
     """
+    
     @staticmethod
     def istype(kind):
         return kind == 'real'
 
-    def __init__(self, coeffs, normalization='4pi'):
-        # ---- create mask to filter out m<=l ----
+    def __init__(self, coeffs, normalization='4pi', csphase=False):
+        #---- create mask to filter out m<=l ----
         lmax = coeffs.shape[1] - 1
         mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
         mask[0, 0, 0] = True
@@ -209,39 +218,47 @@ class SHRealCoefficients(SHCoeffs):
         self.lmax = lmax
         self.coeffs = np.copy(coeffs)
         self.coeffs[np.invert(mask)] = 0.
+        self.kind = 'real'
+        self.normalization = normalization
+        self.csphase = csphase
 
     def make_complex(self, convention=1, switchcs=0):
-        """converts the real coefficient class to the complex harmonic coefficient class"""
-        complex_coeffs = SHrtoc(self.coeffs, convention=convention,
-                                switchcs=switchcs)
+        """Convert the real coefficient class to the complex harmonic coefficient class."""
+        complex_coeffs = SHrtoc(self.coeffs, convention=convention, switchcs=switchcs)
         return SHCoeffs.from_array(complex_coeffs, kind='complex')
 
     def _powerperdegree(self):
-        """-> use powerperdegree instead of _powerperdegree"""
+        """Return the power per degree l spectrum."""
         return SHPowerSpectrum(self.coeffs)
 
     def _get_coeffs(self, kind='real', convention=1, swithchcs=0):
-        """-> use get_coeffs instead of _get_coeffs"""
-        if kind == 'real':
+        """
+        Return complex or real spherical harmonics coefficients 
+        in a different normalization.
+        """
+        if kind=='real': 
             return self.coeffs
-        elif kind == 'complex':
-            return SHrtoc(self.coeffs, convention=convention,
-                          switchcs=switchcs)
+             # need to account for switching normalizations
+        elif kind=='complex':
+            return SHrtoc(self.coeffs, convention=convention, switchcs=switchcs)
 
     def _rotate(self, angles, dj_matrix=None):
-        """-> use rotate instead of _rotate"""
+        """
+        Rotate the spherical harmonics coefficients by
+        the Euler angles alpha, beta, gamma.
+        """
         if dj_matrix is None:
             dj_matrix = djpi2(self.lmax + 1)
         self.coeffs = SHRotateRealCoef(self.coeffs, angles, dj_matrix)
 
     def _expandDH(self, sampling):
-        """-> use expand(kind='DH1') instead of _expandDH"""
+        """Evaluate the coefficients on a DH grid.""" 
         data = MakeGridDH(self.coeffs, sampling=sampling)
         grid = SHGrid.from_array(data, 'DH')
         return grid
 
     def _expandGLQ(self, zeros=None):
-        """-> use expand(kind='GLQ') instead of _expandGLQ"""
+        """Evaluate the coefficients on a GLQ grid.""" 
         if zeros is None:
             zeros, weights = SHGLQ(self.lmax)
         data = MakeGridGLQ(self.coeffs, zeros)
@@ -251,46 +268,61 @@ class SHRealCoefficients(SHCoeffs):
 
 #=============== COMPLEX SPHERICAL HARMONICS ================
 
-
 class SHComplexCoefficients(SHCoeffs):
-
     """
     Complex Spherical Harmonics Coefficients class.
     """
+
     @staticmethod
     def istype(kind):
         return kind == 'complex'
 
-    def __init__(self, coeffs, normalization='4pi'):
+    def __init__(self, coeffs, normalization='4pi', csphase=False):
+        #---- create mask to filter out m<=l ---- 
+        # not implemented
         self.coeffs = coeffs
-        self.lmax   = coeffs.shape[1] - 1
+        self.lmax = coeffs.shape[1] - 1
+        self.kind = 'complex'
+        self.normalization = normalization
+        self.csphase = csphase
 
     def make_real(self, convention=1, switchcs=0):
-        """converts the complex coefficient class to the real harmonic coefficient class"""
+        """Convert the complex coefficient class to the real harmonic coefficient class."""
         complex_coeffs = SHctor(self.coeffs, convention=convention, switchcs=switchcs)
         return SHCoeffs.from_array(complex_coeffs, kind='real')
 
     def _powerperdegree(self):
-        """-> use powerperdegree instead of _powerperdegree"""
+        """Return the power per degree l spectrum."""
         return SHCPowerSpectrum(self.coeffs)
 
-    def _get_coeffs(self):
-        raise NotImplementedError('get_coeffs not yet implemented for complex coefficients')
+    def _get_coeffs(self, kind='complex', convention=1, swithchcs=0)):
+         """
+        Return complex or real spherical harmonics coefficients 
+        in a different normalization.
+        """
+        if kind=='real': 
+            return SHctor(self.coeffs, convention=convention, switchcs=switchcs)
+        elif kind=='complex':
+            return self.coeffs
+            # need to account for switching normalizations
 
     def _rotate(self, angles, dj_matrix=None):
-        """-> use rotate instead of _rotate"""
+        """
+        Rotate the spherical harmonics coefficients by
+        the Euler angles alpha, beta, gamma.
+        """
         if dj_matrix is None:
             dj_matrix = djpi2(self.lmax + 1)
         self.coeffs = SHRotateRealCoef(self.coeffs, angles, dj_matrix)
 
     def _expandDH(self, sammpling):
-        """-> use expand(kind='DH1') instead of _expandDH"""
+        """Evaluate the coefficients on a DH grid."""
         data = MakeGridDHC(self.coeffs, sampling=sampling)
         grid = SHGrid.from_array(data)
         return grid
 
     def _expandGLQ(self, zeros=None):
-        """-> use expand(kind='GLQ') instead of _expandGLQ"""
+        """Evaluate the coefficients on a GLQ grid."""
         if zeros is None:
             zeros, weights = SHGLQ(self.lmax)
         data = MakeGridGLQ(self.coeffs, zeros)
@@ -301,7 +333,6 @@ class SHComplexCoefficients(SHCoeffs):
 #========================================================================
 #======      GRID CLASSES      ==========================================
 #========================================================================
-
 
 class SHGrid(object):
 
