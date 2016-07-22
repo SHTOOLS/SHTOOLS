@@ -47,8 +47,8 @@ class SHCoeffs(object):
 
     #---- factory methods:
     @classmethod
-    def from_array(self, coeffs, kind='real', normalization='4pi', csphase=False):
-        """"
+    def from_array(self, coeffs, kind='real', normalization='4pi', csphase=1):
+        """
         Initialize the spherical harmonic coefficients of the object
         using an input array dimensioned as (2, lmax+1, lmax+1).
         """
@@ -57,8 +57,8 @@ class SHCoeffs(object):
                 return cls(coeffs, normalization=normalization, csphase=csphase)
 
     @classmethod
-    def from_random(self, power, kind='real', normalization='4pi', csphase=False):
-        """"
+    def from_random(self, power, kind='real', normalization='4pi', csphase=1):
+        """
         Initialize the spherical harmonic coefficients of the object
         using Gaussian random variables with a given input power spectrum.
         """
@@ -79,7 +79,7 @@ class SHCoeffs(object):
                 return cls(coeffs, normalization=normalization, csphase=csphase)
 
     @classmethod
-    def from_file(self, fname, lmax, format='shtools', kind='real', normalization='4pi', csphase=False):
+    def from_file(self, fname, lmax, format='shtools', kind='real', normalization='4pi', csphase=1):
         """
         Initialize the spherical harmonic coefficients of the object
         by reading the coefficients from a specified file name.
@@ -87,7 +87,7 @@ class SHCoeffs(object):
         if format == 'shtools' and kind == 'real':
             coeffs, lmax = SHRead(fname, lmax)
         else:
-            raise NotImplementedError('Not yet implemented')
+            raise NotImplementedError("format='{:s}' and kind='{:s}' not yet implemented".format(str(format), str(kind)))
             
         lmax = coeffs.shape[1] - 1
 
@@ -110,7 +110,7 @@ class SHCoeffs(object):
         return self._powerperdegree() * ls * np.log(bandwidth)
 
     #---- conversions ----
-    def get_coeffs(self, normalization='4pi', kind='real'):
+    def get_coeffs(self, normalization='4pi', kind='real', csphase=1):
         """
         Return complex or real spherical harmonics coefficients 
         in a different normalization.
@@ -119,8 +119,7 @@ class SHCoeffs(object):
         # get input values from input class.
         # consider renaming this to "convert" and use only for converting between 
         # normalizations (make_complex and make_real already exist)
-        coeffs = self._coeffs(kind)
-        raise NotImplementedError('Not yet implemented')
+        coeffs = self._get_coeffs(kind, normalization=normalization, kind=kind, csphase=csphase)
 
     #---- rotation ----
     def rotate(self, alpha, beta, gamma, degrees=True):
@@ -206,7 +205,7 @@ class SHRealCoefficients(SHCoeffs):
     def istype(kind):
         return kind == 'real'
 
-    def __init__(self, coeffs, normalization='4pi', csphase=False):
+    def __init__(self, coeffs, normalization='4pi', csphase=1):
         #---- create mask to filter out m<=l ----
         lmax = coeffs.shape[1] - 1
         mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
@@ -231,7 +230,7 @@ class SHRealCoefficients(SHCoeffs):
         """Return the power per degree l spectrum."""
         return SHPowerSpectrum(self.coeffs)
 
-    def _get_coeffs(self, kind='real', convention=1, swithchcs=0):
+    def _get_coeffs(self, kind='real', convention=1, switchcs=0):
         """
         Return complex or real spherical harmonics coefficients 
         in a different normalization.
@@ -277,7 +276,7 @@ class SHComplexCoefficients(SHCoeffs):
     def istype(kind):
         return kind == 'complex'
 
-    def __init__(self, coeffs, normalization='4pi', csphase=False):
+    def __init__(self, coeffs, normalization='4pi', csphase=1):
         #---- create mask to filter out m<=l ---- 
         # not implemented
         self.coeffs = coeffs
@@ -295,12 +294,12 @@ class SHComplexCoefficients(SHCoeffs):
         """Return the power per degree l spectrum."""
         return SHCPowerSpectrum(self.coeffs)
 
-    def _get_coeffs(self, kind='complex', convention=1, swithchcs=0)):
-         """
+    def _get_coeffs(self, kind='complex', convention=1, switchcs=0):
+        """
         Return complex or real spherical harmonics coefficients 
         in a different normalization.
         """
-        if kind=='real': 
+        if kind == 'real': 
             return SHctor(self.coeffs, convention=convention, switchcs=switchcs)
         elif kind=='complex':
             return self.coeffs
@@ -335,19 +334,15 @@ class SHComplexCoefficients(SHCoeffs):
 #========================================================================
 
 class SHGrid(object):
-
     """
-    EXPERIMENTAL:
-    Spherical Grid Class that can deal with spatial data on the sphere that is
-    defined on different grids. Can be constructed from:
+    Grid Class for global gridded data on the sphere. Grids can be 
+    initialized from:
 
-    >> SphericalGrid.from_array(...)
-    >> SphericalGrid.from_file(...)
+    >> x = SHGrid.from_array(...)
+    >> x = SHGrid.from_file(.'fname.dat' )
     """
     def __init__():
-        print('use one of the following methods to initialize the grid:\n\n' +
-              '>> SphericalGrid.from_array(...)\n' +
-              '>> SphericalGrid.from_file(...)')
+        pass
 
     #---- constructors ----
     @classmethod
@@ -376,6 +371,9 @@ class SHGrid(object):
 
 
 #---- implementation of the Driscoll and Healy Grid class ----
+# need a way to determine if the grid is real or complex.
+# change kind = 'real' 'complex' and add grid ='glq' 'dh'?
+# use np.iscomplexobj(inputgrid)....
 class DHGrid(SHGrid):
     """
     Driscoll and Healy Grid (publication?)
@@ -394,6 +392,7 @@ class DHGrid(SHGrid):
             raise ValueError('input array with shape (nlat={:d},nlon={:d})\n' +
                              'it needs nlat=nlon or nlat=2*nlon'.format(self.nlat, self.nlon))
         self.data = array
+        self.kind = 'DH'
 
     def _getlats(self):
         dlat = 360. / self.nlat
@@ -437,6 +436,7 @@ class GLQGrid(SHGrid):
         #---- check if input is correct ----
         self.nlat, self.nlon = array.shape
         assert self.nlon - 1 == 2 * (self.nlat - 1), 'nlon should equal 2*nlat for GLQ grid'
+        self.kind = 'GLQ'
 
         #---- store data in class ----
         self.lmax = self.nlat - 1
@@ -445,7 +445,7 @@ class GLQGrid(SHGrid):
             self.zeros, weights = SHGLQ(self.lmax)
         else:
             self.zeros = zeros
-
+        
     def _getlats(self):
         """-> use getlats instead of _getlats"""
         lats = 90. - np.degrees(self.zeros)
