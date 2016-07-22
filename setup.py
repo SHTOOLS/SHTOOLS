@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import as _absolute_import
+from __future__ import division as _division
+from __future__ import print_function as _print_function
 import os
 import re
 
@@ -12,10 +15,12 @@ except:
 
 from setuptools import find_packages
 from numpy.distutils.core import setup, Extension
+from numpy.distutils.command.build import build
 from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
 from multiprocessing import cpu_count
 
+import ipdb
 
 def get_version():
     """Get version from git and VERSION file
@@ -47,26 +52,34 @@ def get_version():
     return version
 
 
-def configuration(parent_package="", top_path=None):
-    """
-    builds the Fortran library only. The python part is
-    built later.
-    """
-    # Ultimately, the Fortran part should be built by numpy as well such that
-    # the same libraries are used to build the fortran and python part
-    config = Configuration("", parent_package, top_path)
+# Custom Builder
+class SHTOOLS_build(build):
+    description = "builds python documentation"
 
-    # build Fortran library using the makefile
-    make_fortran = ['make', 'fortran']
+    def run(self):
+        # ipdb.set_trace()
+        # build Fortran library using the makefile
+        print('---- BUILDING FORTRAN ----')
+        make_fortran = ['make', 'fortran']
 
-    try:
-        make_fortran.append('-j%d' % cpu_count())
-    except:
-        pass
+        try:
+            make_fortran.append('-j%d' % cpu_count())
+        except:
+            pass
 
-    check_call(make_fortran)
+        print('---- BUILDING PYTHON ----')
+        check_call(make_fortran)
+        build.run(self)
 
-    return config
+        # build documentation
+        print('---- BUILDING DOCS ----')
+        docdir = os.path.join(self.build_lib, 'pyshtools', 'doc')
+        self.mkpath(docdir)
+        doc_builder = os.path.join(self.build_lib, 'pyshtools', 'make_docs.py')
+        doc_source = '.'
+        check_call(['python', doc_builder, doc_source, self.build_lib])
+
+        print('---- ALL DONE ----')
 
 
 CLASSIFIERS = [
@@ -107,14 +120,19 @@ INSTALL_REQUIRES = [
 F95FLAGS = ['-m64', '-fPIC', '-O3', '-ffast-math']
 #fftw3_libdir = '/usr/lib/x86_64-linux-gnu/'
 
-ext = Extension(name='pyshtools._SHTOOLS',
-                include_dirs=['modules'],
-                libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
-                library_dirs=['/usr/local/lib', 'lib'],
-                extra_link_args=F95FLAGS,
-                extra_compile_args=F95FLAGS,
-                sources=['src/pyshtools.pyf', 'src/PythonWrapper.f95'])
+ext1 = Extension(name='pyshtools._SHTOOLS',
+                 include_dirs=['modules'],
+                 libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
+                 library_dirs=['/usr/local/lib', 'lib'],
+                 extra_link_args=F95FLAGS,
+                 extra_compile_args=F95FLAGS,
+                 sources=['src/pyshtools.pyf', 'src/PythonWrapper.f95'])
 
+
+ext2 = Extension(name='pyshtools._constant',
+                 extra_link_args=F95FLAGS,
+                 extra_compile_args=F95FLAGS,
+                 sources=['src/PlanetsConstants.f95'])
 
 metadata = dict(
     name='pyshtools',
@@ -130,9 +148,9 @@ metadata = dict(
     packages=find_packages(),
     package_data={'': ['doc/*.doc', '*.so']},
     include_package_data=True,
-    configuration=configuration,
     classifiers=CLASSIFIERS,
-    ext_modules=[ext]
+    ext_modules=[ext1, ext2],
+    cmdclass={'build': SHTOOLS_build}
 )
 
 

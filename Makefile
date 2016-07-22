@@ -147,33 +147,33 @@ PY3EXT := $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_config_va
 SYSSHAREPATH =/usr/local/share
 SYSDOCPATH = /usr/local/share/doc
 
-ifeq ($(F95),f95)
+ifeq ($(F95), f95)
 # Default Absoft f95 flags
 F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
 #-march=host
 MODFLAG = -p $(MODPATH)
 SYSMODFLAG = -p $(SYSMODPATH)
 OPENMPFLAGS ?= -openmp
-else ifeq ($(F95),gfortran)
+else ifeq ($(F95), gfortran)
 # Default gfortran flags
 F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
 # -march=native
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?= -fopenmp
-else ifeq ($(F95),ifort)
+else ifeq ($(F95), ifort)
 # Default intel fortran flags
 F95FLAGS ?= -m64 -free -O3 -Tf
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?=
-else ifeq ($(F95),g95)
+else ifeq ($(F95), g95)
 # Default g95 flags.
 F95FLAGS ?= -O3 -fno-second-underscore
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?=
-else ifeq ($(F95),pgf90)
+else ifeq ($(F95), pgf90)
 # Default pgf90 flags
 F95FLAGS ?= -fast 
 MODFLAG = -Imodpath
@@ -250,7 +250,7 @@ endif
 
 python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py .
+	./pyshtools/make_docs.py . .
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
@@ -265,7 +265,7 @@ python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 
 python3: pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
 	mkdir -p pyshtools/doc
-	$(PYTHON3) ./pyshtools/make_docs.py .
+	$(PYTHON3) ./pyshtools/make_docs.py . .
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo

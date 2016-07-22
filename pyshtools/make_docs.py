@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """
 This script builds the python documentation from the function signature and the
-customized markdown files. The processed documentation is saved as ascii text 
-files which are loaded on runtime and replace the __doc__ string of the f2py 
+customized markdown files. The processed documentation is saved as ascii text
+files which are loaded on runtime and replace the __doc__ string of the f2py
 wrapped functions.
 """
 from __future__ import absolute_import, division, print_function
@@ -16,14 +16,14 @@ import _constant
 
 
 def main():
-    #---- input/output folders ----
-    libfolder = os.path.abspath(sys.argv[1])
-    mddocfolder = os.path.join(libfolder, 'src/pydoc')
-    pydocfolder = os.path.join(libfolder, 'pyshtools/doc')
-    print('---- searching documentation in folder: {} ----'.format(mddocfolder))
+    # ---- input/output folders ----
+    docfolder = os.path.abspath(sys.argv[1])
+    libfolder = os.path.abspath(sys.argv[2])
+    mddocfolder = os.path.join(docfolder, 'src', 'pydoc')
+    pydocfolder = os.path.join(libfolder, 'pyshtools', 'doc')
+    print('-- searching documentation in folder: {} --'.format(mddocfolder))
 
-
-    #---- loop through the f2py _SHTOOLS functions and make docstrings ----
+    # ---- loop through the f2py _SHTOOLS functions and make docstrings ----
     for name, func in _SHTOOLS.__dict__.items():
         if callable(func):
             try:
