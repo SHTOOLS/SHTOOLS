@@ -198,7 +198,7 @@ class SHRealCoefficients(SHCoeffs):
         return kind == 'real'
 
     def __init__(self, coeffs, normalization='4pi'):
-        #---- create mask to filter out m<=l ----
+        # ---- create mask to filter out m<=l ----
         lmax = coeffs.shape[1] - 1
         mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
         mask[0, 0, 0] = True
@@ -206,25 +206,27 @@ class SHRealCoefficients(SHCoeffs):
             mask[:, l, :l + 1] = True
         mask[1, :, 0] = False
 
-        self.lmax   = lmax
+        self.lmax = lmax
         self.coeffs = np.copy(coeffs)
         self.coeffs[np.invert(mask)] = 0.
 
     def make_complex(self, convention=1, switchcs=0):
         """converts the real coefficient class to the complex harmonic coefficient class"""
-        complex_coeffs = SHrtoc(self.coeffs, convention=convention, switchcs=switchcs)
+        complex_coeffs = SHrtoc(self.coeffs, convention=convention,
+                                switchcs=switchcs)
         return SHCoeffs.from_array(complex_coeffs, kind='complex')
 
     def _powerperdegree(self):
         """-> use powerperdegree instead of _powerperdegree"""
         return SHPowerSpectrum(self.coeffs)
 
-    def _get_coeffs(self,kind='real', convention=1, swithchcs=0):
+    def _get_coeffs(self, kind='real', convention=1, swithchcs=0):
         """-> use get_coeffs instead of _get_coeffs"""
-        if kind=='real': 
+        if kind == 'real':
             return self.coeffs
-        elif kind=='complex':
-            return SHrtoc(self.coeffs, convention=convention, switchcs=switchcs)
+        elif kind == 'complex':
+            return SHrtoc(self.coeffs, convention=convention,
+                          switchcs=switchcs)
 
     def _rotate(self, angles, dj_matrix=None):
         """-> use rotate instead of _rotate"""

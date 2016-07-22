@@ -55,7 +55,6 @@ class SHTOOLS_build(build):
     description = "builds python documentation"
 
     def run(self):
-        # ipdb.set_trace()
         # build Fortran library using the makefile
         print('---- BUILDING FORTRAN ----')
         make_fortran = ['make', 'fortran']
@@ -65,6 +64,7 @@ class SHTOOLS_build(build):
         except:
             pass
 
+        # build python module
         print('---- BUILDING PYTHON ----')
         check_call(make_fortran)
         build.run(self)
