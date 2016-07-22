@@ -20,7 +20,6 @@ from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
 from multiprocessing import cpu_count
 
-import ipdb
 
 def get_version():
     """Get version from git and VERSION file
