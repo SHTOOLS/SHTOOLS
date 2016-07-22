@@ -1,9 +1,12 @@
 
+import sys
 import os
 import re
-import glob
 from setuptools import setup, find_packages
-from subprocess import CalledProcessError, check_output
+from distutils.command.build import build as _build
+from subprocess import CalledProcessError, check_output, check_call
+from multiprocessing import cpu_count
+
 
 def get_version():
     """Get version from git and VERSION file
@@ -26,7 +29,7 @@ def get_version():
 
         # PEP440 compatibility
         if '-' in git_version:
-            #increase version by 0.1 if any new revision exists in repo
+            # increase version by 0.1 if any new revision exists in repo
             version = '{:.1f}'.format(float(version) + 0.1)
             git_revision = check_output(['git', 'rev-parse', 'HEAD'])
             git_revision = git_revision.strip().decode('ascii')
@@ -34,7 +37,31 @@ def get_version():
 
     return version
 
-CLASSIFIERS=[
+
+class build(_build):
+    description = "run make command from setup.py and than usual build"
+
+    def run(self):
+        make_fortran = ['make', 'fortran']
+
+        try:
+            make_fortran.append('-j%d' % cpu_count())
+        except:
+            pass
+
+        check_call(make_fortran)
+
+        if sys.version_info.major == 3:
+            make_python = ['make', 'python3']
+        else:
+            make_python = ['make', 'python2']
+
+        check_call(make_python)
+
+        _build.run(self)
+
+
+CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
     'Intended Audience :: Science/Research',
@@ -64,8 +91,11 @@ metadata = dict(
     platforms='OS Independent',
     packages=find_packages(),
     package_data={'': ['doc/*.doc', '*.so']},
-    include_package_data = True,
-    classifiers = CLASSIFIERS,
+    include_package_data=True,
+    cmdclass={
+        'build': build,
+    },
+    classifiers=CLASSIFIERS,
 )
 
 setup(**metadata)
