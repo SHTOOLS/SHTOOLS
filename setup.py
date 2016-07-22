@@ -16,7 +16,6 @@ except:
 from setuptools import find_packages
 from numpy.distutils.core import setup, Extension
 from numpy.distutils.command.build import build
-from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
 from multiprocessing import cpu_count
 
@@ -106,8 +105,6 @@ KEYWORDS = ['Spherical Harmonics', 'Wigner Symbols']
 INSTALL_REQUIRES = [
     'future>=0.12.4',
     'numpy>=1.0.0',
-    # 'scipy>=0.9.0',
-    # 'matplotlib>=1.1.0',
     'setuptools']
 
 # configure python extension to be compiled with f2py
@@ -117,7 +114,7 @@ INSTALL_REQUIRES = [
 #             'speed_math=10']
 # gfortran flags:
 F95FLAGS = ['-m64', '-fPIC', '-O3', '-ffast-math']
-#fftw3_libdir = '/usr/lib/x86_64-linux-gnu/'
+
 
 ext1 = Extension(name='pyshtools._SHTOOLS',
                  include_dirs=['modules'],
@@ -132,6 +129,7 @@ ext2 = Extension(name='pyshtools._constant',
                  extra_link_args=F95FLAGS,
                  extra_compile_args=F95FLAGS,
                  sources=['src/PlanetsConstants.f95'])
+
 
 metadata = dict(
     name='pyshtools',
