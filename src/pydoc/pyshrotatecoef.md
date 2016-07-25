@@ -14,7 +14,7 @@ Determine the spherical harmonic coefficients of a complex function rotated by t
 # Parameters
 
 `x` : float, dimension(3)
-:   The three Euler angles, alpha, beta, and gamma.
+:   The three Euler angles, alpha, beta, and gamma, in radians.
 
 `coef` : float, dimension (2, (`lmaxin`+1)\*(`lmaxin`+2)/2)
 :   The input complex spherical harmonic coefficients. This is an indexed array where the real and complex components are given by `coef[0,:]` and `coef[1,:]`, respectively. The functions `SHCilmToCindex` and `SHCindexToCilm` are used to convert to and from indexed and `cilm[:,:,:]` form. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention.

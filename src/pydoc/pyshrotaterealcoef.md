@@ -17,7 +17,7 @@ Determine the spherical harmonic coefficients of a real function rotated by thre
 :   The input real spherical harmonic coefficients. The coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention.
 
 `x` : float, dimension(3)
-:   The three Euler angles, alpha, beta, and gamma.
+:   The three Euler angles, alpha, beta, and gamma, in radians.
 
 `dj` : float, dimension (`lmaxin2`+1, `lmaxin2`+1, `lmaxin2`+1)
 :   The rotation matrix `dj(pi/2)`, obtained from a call to `djpi2`.
