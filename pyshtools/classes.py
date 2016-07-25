@@ -717,7 +717,7 @@ class DHRealGrid(SHGrid):
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
         cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase)
-        coeffs = SHCoeffs.from_array(cilm, kind='real',
+        coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase)
         return coeffs
@@ -798,7 +798,7 @@ class DHComplexGrid(SHGrid):
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
         cilm = _shtools.SHExpandDHC(self.data, norm=norm, csphase=csphase)
-        coeffs = SHCoeffs.from_array(cilm, kind='complex',
+        coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase)
         return coeffs
@@ -845,11 +845,11 @@ class GLQRealGrid(SHGrid):
                                      2*self.lmax+1)
                              )
 
-        if zeros is None and weights is None:
-            self.zeros, weights = _shtools.SHGLQ(self.lmax)
+        if zeros is None or weights is None:
+            self.zeros, self.weights = _shtools.SHGLQ(self.lmax)
         else:
             self.zeros = zeros
-            self.weights.weights
+            self.weights = weights
 
         self.data = array
         self.grid = 'GLQ'
@@ -868,16 +868,16 @@ class GLQRealGrid(SHGrid):
         Return a vector containing the longitudes (in degrees) of each column
         of the gridded data.
         """
-        lons = np.linspace(0., 360.-360./self.nlon, num=self.nlon)
+        lons = np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
     def _expand(self, normalization, csphase):
         """Expand the grid into real spherical harmonics."""
-        if normalization == '4pi':
+        if normalization.lower() == '4pi':
             norm = 1
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
+        elif normalization.lower() == 'schmidt':
             norm = 2
-        elif normalization == 'ortho':
+        elif normalization.lower() == 'ortho':
             norm = 4
         else:
             raise NotImplementedError(
@@ -885,8 +885,8 @@ class GLQRealGrid(SHGrid):
 
         cilm = _shtools.SHExpandGLQ(self.data, self.weights, self.zeros,
                                     norm=norm, csphase=csphase)
-        coeffs = SHCoeffs.from_array(cilm, kind='real',
-                                     normalization=normalization,
+        coeffs = SHCoeffs.from_array(cilm,
+                                     normalization=normalization.lower(),
                                      csphase=csphase)
         return coeffs
 
@@ -927,11 +927,11 @@ class GLQComplexGrid(SHGrid):
                                      2*self.lmax+1)
                              )
 
-        if zeros is None and weights is None:
-            self.zeros, weights = _shtools.SHGLQ(self.lmax)
+        if zeros is None or weights is None:
+            self.zeros, self.weights = _shtools.SHGLQ(self.lmax)
         else:
             self.zeros = zeros
-            self.weights.weights
+            self.weights = weights
 
         self.data = array
         self.grid = 'GLQ'
@@ -950,16 +950,16 @@ class GLQComplexGrid(SHGrid):
         Return a vector containing the longitudes (in degrees) of each column
         of the gridded data.
         """
-        lons = np.linspace(0., 360.-360./self.nlon, num=self.nlon)
+        lons = np.linspace(0., 360. - 360. / self.nlon, num=self.nlon)
         return lons
 
     def _expand(self, normalization, csphase):
         """Expand the grid into real spherical harmonics."""
-        if normalization == '4pi':
+        if normalization.lower() == '4pi':
             norm = 1
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
+        elif normalization.lower() == 'schmidt':
             norm = 2
-        elif normalization == 'ortho':
+        elif normalization.lower() == 'ortho':
             norm = 4
         else:
             raise NotImplementedError(
@@ -967,8 +967,8 @@ class GLQComplexGrid(SHGrid):
 
         cilm = _shtools.SHExpandGLQC(self.data, self.weights, self.zeros,
                                      norm=norm, csphase=csphase)
-        coeffs = SHCoeffs.from_array(cilm, kind='real',
-                                     normalization=normalization,
+        coeffs = SHCoeffs.from_array(cilm,
+                                     normalization=normalization.lower(),
                                      csphase=csphase)
         return coeffs
 
@@ -976,11 +976,11 @@ class GLQComplexGrid(SHGrid):
         """Plot the raw data using a simply cylindrical projection."""
 
         fig, ax = plt.subplots(2, 1)
-        ax.flat[0].imshow(self.data, origin='top')
+        ax.flat[0].imshow(self.data.real, origin='top')
         ax.flat[0].set_title('Gauss-Legendre Quadrature Grid (real component')
         ax.flat[0].set_xlabel('longitude index')
         ax.flat[0].set_ylabel('latitude index')
-        ax.flat[1].imshow(self.data, origin='top')
+        ax.flat[1].imshow(self.data.imag, origin='top')
         ax.flat[1].set_title('Gauss-Legendre Quadrature Grid ' +
                              '(imaginary component')
         ax.flat[1].set_xlabel('longitude index')
