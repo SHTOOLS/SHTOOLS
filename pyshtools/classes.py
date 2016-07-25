@@ -42,8 +42,8 @@ class SHCoeffs(object):
     Spherical Harmonics Coefficient class. Coefficients can be initialized
     using one of the three constructor methods:
 
-    >> x = SHCoeffs.from_array(np.zeros((2, lmax+1, lmax+1)))
-    >> x = SHCoeffs.from_random(np.exp(-ls**2))
+    >> x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
+    >> x = SHCoeffs.from_random(numpy.exp(-ls**2))
     >> x = SHCoeffs.from_file('fname.dat')
     """
 
@@ -388,7 +388,7 @@ class SHRealCoefficients(SHCoeffs):
         # as the unrotated coefficients.
         if self.normalization != '4pi' or csphase != 1:
             temp = SHCoeffs.from_array(coeffs, kind='real')
-            tempcoeffs = tempcoeffs.get_coeffs(
+            tempcoeffs = temp.get_coeffs(
                 normalization=self.normalization, csphase=self.csphase)
             return SHCoeffs.from_array(
                 tempcoeffs, normalization=self.normalization,
@@ -458,7 +458,7 @@ class SHComplexCoefficients(SHCoeffs):
         mask[1, :, 0] = False
 
         self.mask = mask
-        self.lmax = coeffs.shape[1] - 1
+        self.lmax = lmax
         self.coeffs = np.copy(coeffs)
         self.coeffs[np.invert(mask)] = 0.
         self.kind = 'complex'
@@ -482,16 +482,13 @@ class SHComplexCoefficients(SHCoeffs):
         """Return the power per degree l spectrum."""
         if self.normalization == '4pi':
             return _shtools.SHPowerSpectrumC(self.coeffs)
-
         elif self.normalization == 'schmidt':
             power = _shtools.SHPowerSpectrumC(self.coeffs)
-            for l in range(self.lmax + 1):
-                power[l] /= (2.0 * l + 1.0)
+            l = self.get_degrees()
+            power /= (2.0 * l + 1.0)
             return power
-
         elif self.normalization == 'ortho':
-            return _shtools.SHCPowerSpectrumC(self.coeffs) / (4.0 * np.pi)
-
+            return _shtools.SHPowerSpectrumC(self.coeffs) / (4.0 * np.pi)
         else:
             raise ValueError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
@@ -499,7 +496,7 @@ class SHComplexCoefficients(SHCoeffs):
 
     def _get_coeffs(self, output_normalization, output_csphase):
         """
-        Return complext spherical harmonics coefficients with a
+        Return complex spherical harmonics coefficients with a
         different normalization convention.
         """
         coeffs = np.copy(self.coeffs)
@@ -539,11 +536,10 @@ class SHComplexCoefficients(SHCoeffs):
         Rotate the coordinate system used to express the spherical
         harmonics coefficients by the Euler angles alpha, beta, gamma.
         """
+        raise NotImplementedError('Not implemented yet')
+        
         if dj_matrix is None:
             dj_matrix = _shtools.djpi2(self.lmax + 1)
-
-        raise NotImplementedError('Not implemented yet')
-        self.coeffs = _shtools.SHRotateRealCoef(self.coeffs, angles, dj_matrix)
 
     def _expandDH(self, sampling):
         """
@@ -566,7 +562,7 @@ class SHComplexCoefficients(SHCoeffs):
         return gridout
 
     def _expandGLQ(self, zeros):
-        """Evaluate the coefficients on a Gauss Legendre quadrature grid."""
+        """Evaluate the coefficients on a Gauss-Legendre quadrature grid."""
         if self.normalization == '4pi':
             norm = 1
         elif self.normalization == 'schmidt':
@@ -581,7 +577,7 @@ class SHComplexCoefficients(SHCoeffs):
             zeros, weights = _shtools.SHGLQ(self.lmax)
 
         data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
-                                    csphase=csphase)
+                                    csphase=self.csphase)
         gridout = SHGrid.from_array(data, grid='GLQ')
         return gridout
 
@@ -595,8 +591,8 @@ class SHGrid(object):
     Grid Class for global gridded data on the sphere. Grids can be
     initialized from:
 
-    >> x = SHGrid.from_array( numpy.ndarray )
-    >> x = SHGrid.from_file( 'fname.dat' )
+    >> x = SHGrid.from_array(numpy.array([...]))
+    >> x = SHGrid.from_file('fname.dat')
     """
 
     def __init__():
@@ -678,8 +674,7 @@ class DHRealGrid(SHGrid):
                              'number of latitudes: nlat = {:d}'
                              .format(self.nlat)
                              )
-
-        if self.nlat == 2 * self.nlon:
+        if self.nlon == 2 * self.nlat:
             self.sampling = 2
         elif self.nlat == self.nlon:
             self.sampling = 1
@@ -698,7 +693,7 @@ class DHRealGrid(SHGrid):
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
         """
-        lats = np.linspace(90., -90.+180./self.nlat, num=self.nlat)
+        lats = np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
     def _getlons(self):
@@ -706,16 +701,16 @@ class DHRealGrid(SHGrid):
         Return a vector containing the longitudes (in degrees) of each row
         of the gridded data.
         """
-        lons = np.linspace(0., 360.-360./self.nlon, num=self.nlon)
+        lons = np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
     def _expand(self, normalization, csphase):
         """Expand the grid into real spherical harmonics."""
-        if normalization == '4pi':
+        if normalization.lower() == '4pi':
             norm = 1
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
+        elif normalization.lower() == 'schmidt':
             norm = 2
-        elif normalization == 'ortho':
+        elif normalization.lower() == 'ortho':
             norm = 4
         else:
             raise NotImplementedError(
@@ -723,7 +718,7 @@ class DHRealGrid(SHGrid):
 
         cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase)
         coeffs = SHCoeffs.from_array(cilm, kind='real',
-                                     normalization=normalization,
+                                     normalization=normalization.lower(),
                                      csphase=csphase)
         return coeffs
 
@@ -760,8 +755,7 @@ class DHComplexGrid(SHGrid):
                              'number of latitudes: nlat = {:d}'
                              .format(self.nlat)
                              )
-
-        if self.nlat == 2 * self.nlon:
+        if self.nlon == 2 * self.nlat:
             self.sampling = 2
         elif self.nlat == self.nlon:
             self.sampling = 1
@@ -780,7 +774,7 @@ class DHComplexGrid(SHGrid):
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
         """
-        lats = np.linspace(90., -90.+180./self.nlat, num=self.nlat)
+        lats = np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
     def _getlons(self):
@@ -788,16 +782,16 @@ class DHComplexGrid(SHGrid):
         Return a vector containing the longitudes (in degrees) of each row
         of the gridded data.
         """
-        lons = np.linspace(0., 360.-360./self.nlon, num=self.nlon)
+        lons = np.linspace(0., 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
     def _expand(self, normalization, csphase):
         """Expand the grid into real spherical harmonics."""
-        if normalization == '4pi':
+        if normalization.lower() == '4pi':
             norm = 1
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
+        elif normalization.lower() == 'schmidt':
             norm = 2
-        elif normalization == 'ortho':
+        elif normalization.lower() == 'ortho':
             norm = 4
         else:
             raise NotImplementedError(
@@ -805,7 +799,7 @@ class DHComplexGrid(SHGrid):
 
         cilm = _shtools.SHExpandDHC(self.data, norm=norm, csphase=csphase)
         coeffs = SHCoeffs.from_array(cilm, kind='complex',
-                                     normalization=normalization,
+                                     normalization=normalization.lower(),
                                      csphase=csphase)
         return coeffs
 
@@ -830,7 +824,7 @@ class DHComplexGrid(SHGrid):
 
 class GLQRealGrid(SHGrid):
     """
-    Class for real Gauss Legendre Quadrature grids.
+    Class for real Gauss-Legendre Quadrature grids.
     """
     @staticmethod
     def istype(kind):
