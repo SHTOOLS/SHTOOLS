@@ -15,7 +15,8 @@ subroutine SHRotateCoef(x, cof, rcof, dj, lmax)
 !   Calling Parameters
 !
 !       IN
-!           x       Array of dimension 3 containing the three Euler angles.
+!           x       Array of dimension 3 containing the three Euler angles
+!                   in radians.
 !           dj      Roation matrix with dimension (lmax+1, lmax+1, lmax+1).
 !           cof     Indexed spherical harmonic coefficients with dimensions
 !                   (2, (lmax+1)*(lmax+2)/2).

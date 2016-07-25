@@ -15,7 +15,7 @@ call SHRotateRealCoef (`cilmrot`, `cilm`, `lmax`, `x`, `dj`)
 :   The input real spherical harmonic coefficients. The coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention.
 
 `x` : input, real\*8, dimension(3)
-:   The three Euler angles, alpha, beta, and gamma.
+:   The three Euler angles, alpha, beta, and gamma, in radians.
 
 `dj` : input, real\*8, dimension (`lmax`+1, `lmax`+1, `lmax`+1)
 :   The rotation matrix `dj(pi/2)`, obtained from a call to `djpi2`.
