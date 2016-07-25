@@ -30,7 +30,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from . import _SHTOOLS as shtools
+from . import _SHTOOLS as _shtools
 
 
 # =============================================================================
@@ -62,34 +62,70 @@ class SHCoeffs(object):
         else:
             kind = 'real'
 
+        if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
+            raise ValueError(
+                "The input normalization must be '4pi', 'ortho' " +
+                "or 'schmidt'. Provided value was '{:s}'"
+                .format(str(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be 1 or -1. Input value was {:d}"
+                .format(csphase)
+                )
+
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, normalization=normalization,
+                return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
 
     @classmethod
     def from_random(self, power, kind='real', normalization='4pi', csphase=1):
         """
         Initialize the spherical harmonic coefficients using Gaussian
-        random variables and for a given input power spectrum.
+        random variables and a given input power spectrum.
         """
+        if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
+            raise ValueError(
+                "The input normalization must be '4pi', 'ortho' " +
+                "or 'schmidt'. Provided value was '{:s}'"
+                .format(str(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be 1 or -1. Input value was {:d}"
+                .format(csphase)
+                )
+
+        if kind not in set(['real', 'complex']):
+            raise ValueError(
+                "kind must be 'real' or 'complex'. " +
+                "Input value was '{:s}'.".format(str(kind)))
+
         nl = len(power)
+        l = np.arange(nl)
+
+        if kind == 'real':
+            coeffs = np.random.normal(size=(2, nl, nl))
+        elif kind == 'complex':
+            coeffs = (np.random.normal(size=(2, nl, nl)) +
+                      1j * np.random.normal(size=(2, nl, nl)))
+
+        if normalization.lower() == '4pi':
+            coeffs *= np.sqrt(
+                power / (2.0 * l + 1.0))[np.newaxis, :, np.newaxis]
+        elif normalization.lower() == 'ortho':
+            coeffs *= np.sqrt(
+                4.0 * np.pi * power / (2.0 * l + 1.0)
+                )[np.newaxis, :, np.newaxis]
+        elif normalization.lower() == 'schmidt':
+            coeffs *= np.sqrt(power)[np.newaxis, :, np.newaxis]
+
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                if kind == 'real':
-                    coeffs = np.random.normal(size=(2, nl, nl))
-                    coeffs *= np.sqrt(power)[np.newaxis, :, np.newaxis]
-                elif kind == 'complex':
-                    coeffs = (np.random.normal(loc=0., scale=1.,
-                                               size=(2, nl, nl)) +
-                              1j * np.random.normal(loc=0., scale=1.,
-                                                    size=(2, nl, nl)))
-                    coeffs *= np.sqrt(power)[np.newaxis, :, np.newaxis]
-                else:
-                    raise ValueError(
-                        "kind='{:s}': Should be 'real' or 'complex'"
-                        .format(str(kind)))
-                return cls(coeffs, normalization=normalization,
+                return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
 
     @classmethod
@@ -99,9 +135,21 @@ class SHCoeffs(object):
         Initialize the spherical harmonic coefficients by reading the
         coefficients from a specified file.
         """
+        if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
+            raise ValueError(
+                "The input normalization must be '4pi', 'ortho' " +
+                "or 'schmidt'. Provided value was '{:s}'"
+                .format(str(normalization))
+                )
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be 1 or -1. Input value was {:d}"
+                .format(csphase)
+                )
+
         if format == 'shtools':
             if kind == 'real':
-                coeffs, lmax = shtools.SHRead(fname, lmax)
+                coeffs, lmax = _shtools.SHRead(fname, lmax)
             else:
                 raise NotImplementedError(
                     "kind='{:s}' not yet implemented".format(str(kind)))
@@ -111,7 +159,7 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, normalization=normalization,
+                return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
 
     # ---- Extract data ----
@@ -137,41 +185,56 @@ class SHCoeffs(object):
         Return spherical harmonics coefficients as an ndarray with
         a different normalization convention.
         """
-        return self._get_coeffs(normalization, csphase)
+        if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
+            raise ValueError(
+                "normalization must be '4pi', 'ortho' " +
+                "or 'schmidt'. Provided value was '{:s}'"
+                .format(str(output_normalization))
+                )
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be 1 or -1. Input value was {:d}"
+                .format(csphase)
+                )
+
+        return self._get_coeffs(
+            output_normalization=normalization.lower(),
+            output_csphase=csphase)
 
     # ---- Rotate the coordinate system ----
     def rotate(self, alpha, beta, gamma, degrees=True, dj_matrix=None):
         """
         Rotate the coordinate system used to express the spherical
-        harmonics coefficients by the Euler angles alpha, beta, gamma.
+        harmonics coefficients by the Euler angles alpha, beta, gamma,
+        and output as a new class instance.
         """
         if degrees:
             angles = np.radians([alpha, beta, gamma])
         else:
             angles = np.array([alpha, beta, gamma])
+
         self._rotate(angles, dj_matrix)
 
     # ---- Expand the coefficients onto a grid ----
-    def expand(self, grid='DH', normalization='4pi', csphase=1):
+    def expand(self, grid='DH'):
         """
         Evaluate the coefficients on a spherical grid.
-        Available grid types:
+        Available grid types are:
            grid = 'DH' or 'DH1': equisampled lat/lon grid with nlat=nlon
            grid = 'DH2': equidistant lat/lon grid with nlon=2*nlat
-           grid = 'GLQ': Gauss Legendre quadrature grid
+           grid = 'GLQ': Gauss-Legendre quadrature grid
         """
         if grid == 'DH' or grid == 'DH1':
-            gridout = self._expandDH(sampling=1, normalization=normalization,
-                                     csphase=csphase)
+            gridout = self._expandDH(sampling=1)
         elif grid == 'DH2':
-            gridout = self._expandDH(sampling=2, normalization=normalization,
-                                     csphase=csphase)
+            gridout = self._expandDH(sampling=2)
         elif grid == 'GLQ':
-            gridout = self._expandGLQ(zero=None, normalization=normalization,
-                                      csphase=csphase)
+            gridout = self._expandGLQ(zero=None)
         else:
-            raise NotImplementedError(
-                "grid='{:s}' not implemented".format(grid))
+            raise ValueError(
+                "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
+                "Input value was '{:s}'".format(grid))
+
         return gridout
 
     # ---- plotting routines ----
@@ -241,7 +304,7 @@ class SHRealCoefficients(SHCoeffs):
         self.coeffs = np.copy(coeffs)
         self.coeffs[np.invert(mask)] = 0.
         self.kind = 'real'
-        self.normalization = normalization
+        self.normalization = normalization.lower()
         self.csphase = csphase
 
     def make_complex(self, convention=1, switchcs=0):
@@ -251,43 +314,61 @@ class SHRealCoefficients(SHCoeffs):
         """
         raise NotImplementedError('Not implemented yet!')
 
-        complex_coeffs = shtools.SHrtoc(self.coeffs, convention=convention,
-                                        switchcs=switchcs)
+        complex_coeffs = _shtools.SHrtoc(self.coeffs, convention=convention,
+                                         switchcs=switchcs)
         # NOT DONE. THESE COEFFICIENTS ARE STILL REAL FLOATS!
 #        return SHCoeffs.from_array(complex_coeffs, kind='complex')
 
     def _powerperdegree(self):
         """Return the power per degree l spectrum."""
-        if normalization == '4pi':
-            return shtools.SHPowerSpectrum(self.coeffs)
-        elif normalization == 'ortho':
-            raise NotImplementedError('Not implemented yet!')
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
-            raise NotImplementedError('Not implemented yet!')
+        if self.normalization == '4pi':
+            return _shtools.SHPowerSpectrum(self.coeffs)
+        elif self.normalization == 'schmidt':
+            power = _shtools.SHPowerSpectrum(self.coeffs)
+            l = self.get_degrees()
+            power /= (2.0 * l + 1.0)
+            return power
+        elif self.normalization == 'ortho':
+            return _shtools.SHPowerSpectrum(self.coeffs) / (4.0 * np.pi)
         else:
-            raise NotImplementedError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'")
+            raise ValueError(
+                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
+                "Input value was '{:s}'".format(str(self.normalization)))
 
     def _get_coeffs(self, output_normalization, output_csphase):
         """
-        Return real spherical harmonics coefficients with a
+        Return real spherical harmonic coefficients with a
         different normalization convention.
         """
-        if output_normalization == self.normalization:
-            coeffs = np.copy(self.coeffs)
-        else:
-            raise NotImplementedError(
-                "output_normalization='{:s}' and " +
-                "input_normalization='{:s}' not yet implemented"
-                .format(str(output_normalization), str(self.normalization))
-                )
+        coeffs = np.copy(self.coeffs)
+
+        if self.normalization == output_normalization:
+            pass
+        elif (self.normalization == '4pi' and
+              output_normalization == 'schmidt'):
+            for l in self.get_degrees():
+                coeffs[:, l, :l+1] *= np.sqrt(2.0 * l + 1.0)
+        elif self.normalization == '4pi' and output_normalization == 'ortho':
+            coeffs *= np.sqrt(4.0 * np.pi)
+        elif (self.normalization == 'schmidt' and
+              output_normalization == '4pi'):
+            for l in self.get_degrees():
+                coeffs[:, l, :l+1] /= np.sqrt(2.0 * l + 1.0)
+        elif (self.normalization == 'schmidt' and
+              output_normalization == 'ortho'):
+            for l in self.get_degrees():
+                coeffs[:, l, :l+1] *= np.sqrt(4.0 * np.pi / (2.0 * l + 1.0))
+        elif self.normalization == 'ortho' and output_normalization == '4pi':
+            coeffs /= np.sqrt(4.0 * np.pi)
+        elif (self.normalization == 'ortho' and
+              output_normalization == 'schmidt'):
+            for l in self.get_degrees():
+                coeffs[:, l, :l+1] *= np.sqrt((2.0 * l + 1.0) / (4.0 * np.pi))
 
         if output_csphase != self.csphase:
-            raise NotImplementedError(
-                "output_csphase='{:d}' and " +
-                "input_csphase='{:d}' not yet implemented"
-                .format(output_csphase, self.csphase)
-                )
+            for m in self.get_degrees():
+                if m % 2 == 1:
+                    coeffs[:, :, m] = - coeffs[:, :, m]
 
         return coeffs
 
@@ -297,46 +378,61 @@ class SHRealCoefficients(SHCoeffs):
         harmonics coefficients by the Euler angles alpha, beta, gamma.
         """
         if dj_matrix is None:
-            dj_matrix = shtools.djpi2(self.lmax + 1)
-        self.coeffs = shtools.SHRotateRealCoef(self.coeffs, angles, dj_matrix)
+            dj_matrix = _shtools.djpi2(self.lmax + 1)
 
-    def _expandDH(self, sampling, normalization, csphase):
+        # The coefficients need to be 4pi normalized with csphase = 1
+        coeffs = _shtools.SHRotateRealCoef(
+            self.get_coeffs(normalization='4pi', csphase=1), angles, dj_matrix)
+
+        # Convert 4pi normalized coefficients to the same normalization
+        # as the unrotated coefficients.
+        if self.normalization != '4pi' or csphase != 1:
+            temp = SHCoeffs.from_array(coeffs, kind='real')
+            tempcoeffs = tempcoeffs.get_coeffs(
+                normalization=self.normalization, csphase=self.csphase)
+            return SHCoeffs.from_array(
+                tempcoeffs, normalization=self.normalization,
+                csphase=self.csphase)
+        else:
+            return SHCoeffs.from_array(coeffs)
+
+    def _expandDH(self, sampling):
         """
         Evaluate the coefficients on a Driscoll and Healy (1994)
         sampled grid.
         """
-        if normalization == '4pi':
+        if self.normalization == '4pi':
             norm = 1
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
+        elif self.normalization == 'schmidt':
             norm = 2
-        elif normalization == 'ortho':
+        elif self.normalization == 'ortho':
             norm = 4
         else:
-            raise NotImplementedError(
+            raise ValueError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
-        data = shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
-                                  csphase=csphase)
+        data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
+                                   csphase=self.csphase)
         gridout = SHGrid.from_array(data, grid='DH')
         return gridout
 
-    def _expandGLQ(self, zeros, normalization, csphase):
+    def _expandGLQ(self, zeros):
         """Evaluate the coefficients on a Gauss Legendre quadrature grid."""
-        if normalization == '4pi':
+        if self.normalization == '4pi':
             norm = 1
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
+        elif self.normalization == 'schmidt':
             norm = 2
-        elif normalization == 'ortho':
+        elif self.normalization == 'ortho':
             norm = 4
         else:
-            raise NotImplementedError(
+            raise ValueError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
         if zeros is None:
-            zeros, weights = shtools.SHGLQ(self.lmax)
+            zeros, weights = _shtools.SHGLQ(self.lmax)
 
-        data = shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
-                                   csphase=csphase)
+        data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
+                                    csphase=self.csphase)
         gridout = SHGrid.from_array(data, grid='GLQ')
         return gridout
 
@@ -366,7 +462,7 @@ class SHComplexCoefficients(SHCoeffs):
         self.coeffs = np.copy(coeffs)
         self.coeffs[np.invert(mask)] = 0.
         self.kind = 'complex'
-        self.normalization = normalization
+        self.normalization = normalization.lower()
         self.csphase = csphase
 
     def make_real(self, convention=1, switchcs=0):
@@ -378,40 +474,63 @@ class SHComplexCoefficients(SHCoeffs):
 
         # NOT CORRECT. ONLY WORKS IF THE GRID IS REAL!
         # First need to check that the grid is in fact real.
-        complex_coeffs = SHctor(self.coeffs, convention=convention,
-                                switchcs=switchcs)
+        complex_coeffs = _shtools.SHctor(self.coeffs, convention=convention,
+                                         switchcs=switchcs)
         return SHCoeffs.from_array(complex_coeffs, kind='real')
 
     def _powerperdegree(self):
         """Return the power per degree l spectrum."""
-        if normalization == '4pi':
-            return SHCPowerSpectrum(self.coeffs)
-        elif normalization == 'ortho':
-            raise NotImplementedError('Not implemented yet!')
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
-            raise NotImplementedError('Not implemented yet!')
+        if self.normalization == '4pi':
+            return _shtools.SHPowerSpectrumC(self.coeffs)
+
+        elif self.normalization == 'schmidt':
+            power = _shtools.SHPowerSpectrumC(self.coeffs)
+            for l in range(self.lmax + 1):
+                power[l] /= (2.0 * l + 1.0)
+            return power
+
+        elif self.normalization == 'ortho':
+            return _shtools.SHCPowerSpectrumC(self.coeffs) / (4.0 * np.pi)
+
         else:
-            raise NotImplementedError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'")
+            raise ValueError(
+                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
+                "Input value was '{:s}'".format(str(self.normalization)))
 
     def _get_coeffs(self, output_normalization, output_csphase):
         """
         Return complext spherical harmonics coefficients with a
         different normalization convention.
         """
-        if output_normalization == self.normalization:
-            coeffs = np.copy(self.coeffs)
-        else:
-            raise NotImplementedError(
-                "'output_normalization' = '{:s}' and " +
-                "'input_normalization' = '{:s}' not yet implemented"
-                .format(str(output_normalization), str(self.normalization)))
+        coeffs = np.copy(self.coeffs)
+
+        if self.normalization == output_normalization:
+            pass
+        elif (self.normalization == '4pi' and
+              output_normalization == 'schmidt'):
+            for l in self.get_degrees():
+                coeffs[:, l, :l+1] *= np.sqrt(2.0 * l + 1.0)
+        elif self.normalization == '4pi' and output_normalization == 'ortho':
+            coeffs *= np.sqrt(4.0 * np.pi)
+        elif (self.normalization == 'schmidt' and
+              output_normalization == '4pi'):
+            for l in self.get_degrees():
+                coeffs[:, l, :l+1] /= np.sqrt(2.0 * l + 1.0)
+        elif (self.normalization == 'schmidt' and
+              output_normalization == 'ortho'):
+            for l in self.get_degrees():
+                coeffs[:, l, :l+1] *= np.sqrt(4.0 * np.pi / (2.0 * l + 1.0))
+        elif self.normalization == 'ortho' and output_normalization == '4pi':
+            coeffs /= np.sqrt(4.0 * np.pi)
+        elif (self.normalization == 'ortho' and
+              output_normalization == 'schmidt'):
+            for l in self.get_degrees():
+                coeffs[:, l, :l+1] *= np.sqrt((2.0 * l + 1.0) / (4.0 * np.pi))
 
         if output_csphase != self.csphase:
-            raise NotImplementedError(
-                "'output_csphase' = '{:d}' and " +
-                "'input_csphase' = '{:d}' not yet implemented"
-                .format(output_csphase, self.csphase))
+            for m in self.get_degrees():
+                if m % 2 == 1:
+                    coeffs[:, :, m] = - coeffs[:, :, m]
 
         return coeffs
 
@@ -421,34 +540,36 @@ class SHComplexCoefficients(SHCoeffs):
         harmonics coefficients by the Euler angles alpha, beta, gamma.
         """
         if dj_matrix is None:
-            dj_matrix = shtools.djpi2(self.lmax + 1)
-        self.coeffs = shtools.SHRotateRealCoef(self.coeffs, angles, dj_matrix)
+            dj_matrix = _shtools.djpi2(self.lmax + 1)
 
-    def _expandDH(self, sampling, normalization, csphase):
+        raise NotImplementedError('Not implemented yet')
+        self.coeffs = _shtools.SHRotateRealCoef(self.coeffs, angles, dj_matrix)
+
+    def _expandDH(self, sampling):
         """
         Evaluate the coefficients on a Driscoll and Healy (1994)
         sampled grid.
         """
-        if normalization == '4pi':
+        if self.normalization == '4pi':
             norm = 1
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
+        elif self.normalization == 'schmidt':
             norm = 2
-        elif normalization == 'ortho':
+        elif self.normalization == 'ortho':
             norm = 4
         else:
             raise NotImplementedError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
-        data = shtools.MakeGridDHC(self.coeffs, sampling=sampling,
-                                   norm=norm, csphase=csphase)
+        data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
+                                    norm=norm, csphase=self.csphase)
         gridout = SHGrid.from_array(data, grid='DH')
         return gridout
 
-    def _expandGLQ(self, zeros, normalization, csphase):
+    def _expandGLQ(self, zeros):
         """Evaluate the coefficients on a Gauss Legendre quadrature grid."""
-        if normalization == '4pi':
+        if self.normalization == '4pi':
             norm = 1
-        elif normalization == 'schmidt' or normalization == 'Schmidt':
+        elif self.normalization == 'schmidt':
             norm = 2
         elif normalization == 'ortho':
             norm = 4
@@ -457,10 +578,10 @@ class SHComplexCoefficients(SHCoeffs):
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
         if zeros is None:
-            zeros, weights = shtools.SHGLQ(self.lmax)
+            zeros, weights = _shtools.SHGLQ(self.lmax)
 
-        data = shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
-                                   csphase=csphase)
+        data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
+                                    csphase=csphase)
         gridout = SHGrid.from_array(data, grid='GLQ')
         return gridout
 
@@ -530,9 +651,9 @@ class SHGrid(object):
         if fname is not None:
             fig.savefig(fname)
 
-    def expand(self, normalization='4pi', csphase=1):
+    def expand(self):
         """Expand the grid into spherical harmonics."""
-        return self._expand()
+        return self._expand(normalization='4pi', csphase=1)
 
 
 # ---- Real Driscoll and Healy grid class ----
@@ -600,7 +721,7 @@ class DHRealGrid(SHGrid):
             raise NotImplementedError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
-        cilm = shtools.SHExpandDH(self.data, norm=norm, csphase=csphase)
+        cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase)
         coeffs = SHCoeffs.from_array(cilm, kind='real',
                                      normalization=normalization,
                                      csphase=csphase)
@@ -613,6 +734,94 @@ class DHRealGrid(SHGrid):
         ax.set_title('Driscoll and Healy Grid')
         ax.set_xlabel('longitude')
         ax.set_ylabel('latitude')
+        fig.tight_layout(pad=0.5)
+        return fig, ax
+
+
+# ---- Complex Driscoll and Healy grid class ----
+
+class DHComplexGrid(SHGrid):
+    """
+    Class for complex Driscoll and Healy (1994) grids.
+    """
+    @staticmethod
+    def istype(kind):
+        return kind == 'complex'
+
+    @staticmethod
+    def isgrid(grid):
+        return grid == 'DH'
+
+    def __init__(self, array):
+        self.nlat, self.nlon = array.shape
+
+        if self.nlat % 2 != 0:
+            raise ValueError('Input arrays for DH grids must have an even ' +
+                             'number of latitudes: nlat = {:d}'
+                             .format(self.nlat)
+                             )
+
+        if self.nlat == 2 * self.nlon:
+            self.sampling = 2
+        elif self.nlat == self.nlon:
+            self.sampling = 1
+        else:
+            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n' +
+                             'but needs nlat=nlon or nlat=2*nlon'
+                             .format(self.nlat, self.nlon)
+                             )
+
+        self.data = array
+        self.grid = 'DH'
+        self.kind = 'complex'
+
+    def _getlats(self):
+        """
+        Return a vector containing the latitudes (in degrees) of each row
+        of the gridded data.
+        """
+        lats = np.linspace(90., -90.+180./self.nlat, num=self.nlat)
+        return lats
+
+    def _getlons(self):
+        """
+        Return a vector containing the longitudes (in degrees) of each row
+        of the gridded data.
+        """
+        lons = np.linspace(0., 360.-360./self.nlon, num=self.nlon)
+        return lons
+
+    def _expand(self, normalization, csphase):
+        """Expand the grid into real spherical harmonics."""
+        if normalization == '4pi':
+            norm = 1
+        elif normalization == 'schmidt' or normalization == 'Schmidt':
+            norm = 2
+        elif normalization == 'ortho':
+            norm = 4
+        else:
+            raise NotImplementedError(
+                "Normalization must be '4pi', 'ortho', or 'schmidt'")
+
+        cilm = _shtools.SHExpandDHC(self.data, norm=norm, csphase=csphase)
+        coeffs = SHCoeffs.from_array(cilm, kind='complex',
+                                     normalization=normalization,
+                                     csphase=csphase)
+        return coeffs
+
+    def _plot_rawdata(self):
+        """Plot the raw data using a simply cylindrical projection."""
+        fig, ax = plt.subplots(2, 1)
+        ax.flat[0].imshow(self.data.real, origin='top',
+                          extent=(0., 360., -90., 90.))
+        ax.flat[0].set_title('Driscoll and Healy Grid (real component)')
+        ax.flat[0].set_xlabel('longitude')
+        ax.flat[0].set_ylabel('latitude')
+        ax.flat[1].imshow(self.data.imag, origin='top',
+                          extent=(0., 360., -90., 90.))
+        ax.flat[1].set_title('Driscoll and Healy Grid (imaginary component)')
+        ax.flat[1].set_xlabel('longitude')
+        ax.flat[1].set_ylabel('latitude')
         fig.tight_layout(pad=0.5)
         return fig, ax
 
@@ -643,7 +852,7 @@ class GLQRealGrid(SHGrid):
                              )
 
         if zeros is None and weights is None:
-            self.zeros, weights = shtools.SHGLQ(self.lmax)
+            self.zeros, weights = _shtools.SHGLQ(self.lmax)
         else:
             self.zeros = zeros
             self.weights.weights
@@ -680,8 +889,8 @@ class GLQRealGrid(SHGrid):
             raise NotImplementedError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
-        cilm = shtools.SHExpandGLQ(self.data, self.weights, self.zeros,
-                                   norm=norm, csphase=csphase)
+        cilm = _shtools.SHExpandGLQ(self.data, self.weights, self.zeros,
+                                    norm=norm, csphase=csphase)
         coeffs = SHCoeffs.from_array(cilm, kind='real',
                                      normalization=normalization,
                                      csphase=csphase)
@@ -695,6 +904,93 @@ class GLQRealGrid(SHGrid):
         ax.set_title('Gauss-Legendre Quadrature Grid')
         ax.set_xlabel('longitude index')
         ax.set_ylabel('latitude index')
+        fig.tight_layout(pad=0.5)
+        return fig, ax
+
+
+# ---- Complex Gaus Legendre Quadrature grid class ----
+
+class GLQComplexGrid(SHGrid):
+    """
+    Class for complex Gauss Legendre Quadrature grids.
+    """
+    @staticmethod
+    def istype(kind):
+        return kind == 'complex'
+
+    @staticmethod
+    def isgrid(grid):
+        return grid == 'GLQ'
+
+    def __init__(self, array, zeros=None, weights=None):
+        self.nlat, self.nlon = array.shape
+        self.lmax = self.nlat - 1
+
+        if self.nlat != self.lmax + 1 or self.nlon != 2 * self.lmax + 1:
+            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n' +
+                             'but needs (nlat={:d}, {:d})'
+                             .format(self.nlat, self.nlon, self.lmax+1,
+                                     2*self.lmax+1)
+                             )
+
+        if zeros is None and weights is None:
+            self.zeros, weights = _shtools.SHGLQ(self.lmax)
+        else:
+            self.zeros = zeros
+            self.weights.weights
+
+        self.data = array
+        self.grid = 'GLQ'
+        self.kind = 'complex'
+
+    def _getlats(self):
+        """
+        Return a vector containing the latitudes (in degrees) of each row
+        of the gridded data.
+        """
+        lats = 90. - np.arccos(self.zeros) * 180. / np.pi
+        return lats
+
+    def _getlons(self):
+        """
+        Return a vector containing the longitudes (in degrees) of each column
+        of the gridded data.
+        """
+        lons = np.linspace(0., 360.-360./self.nlon, num=self.nlon)
+        return lons
+
+    def _expand(self, normalization, csphase):
+        """Expand the grid into real spherical harmonics."""
+        if normalization == '4pi':
+            norm = 1
+        elif normalization == 'schmidt' or normalization == 'Schmidt':
+            norm = 2
+        elif normalization == 'ortho':
+            norm = 4
+        else:
+            raise NotImplementedError(
+                "Normalization must be '4pi', 'ortho', or 'schmidt'")
+
+        cilm = _shtools.SHExpandGLQC(self.data, self.weights, self.zeros,
+                                     norm=norm, csphase=csphase)
+        coeffs = SHCoeffs.from_array(cilm, kind='real',
+                                     normalization=normalization,
+                                     csphase=csphase)
+        return coeffs
+
+    def _plot_rawdata(self):
+        """Plot the raw data using a simply cylindrical projection."""
+
+        fig, ax = plt.subplots(2, 1)
+        ax.flat[0].imshow(self.data, origin='top')
+        ax.flat[0].set_title('Gauss-Legendre Quadrature Grid (real component')
+        ax.flat[0].set_xlabel('longitude index')
+        ax.flat[0].set_ylabel('latitude index')
+        ax.flat[1].imshow(self.data, origin='top')
+        ax.flat[1].set_title('Gauss-Legendre Quadrature Grid ' +
+                             '(imaginary component')
+        ax.flat[1].set_xlabel('longitude index')
+        ax.flat[1].set_ylabel('latitude index')
         fig.tight_layout(pad=0.5)
         return fig, ax
 
@@ -718,17 +1014,17 @@ class SHWindow(object):
             theta = np.radians(theta)
 
         tapers, eigenvalues, taper_order = SHReturnTapers(theta, lmax)
-        return shtools.SHSymmetricWindow(tapers, eigenvalues, taper_order,
-                                         clat=clat, clon=clon)
+        return _shtools.SHSymmetricWindow(tapers, eigenvalues, taper_order,
+                                          clat=clat, clon=clon)
 
     @classmethod
     def from_mask(self, lmax, nwins, dh_mask, sampling=1):
         """
         constructs optimal window functions in a masked region (needs dh grid)
         """
-        tapers, eigenvalues = shtools.SHReturnTapersMap(dh_mask, lmax,
-            sampling=sampling, Ntapers=nwins)
-        return shtools.SHAsymmetricWindow(tapers, eigenvalues)
+        tapers, eigenvalues = _shtools.SHReturnTapersMap(
+            dh_mask, lmax, sampling=sampling, Ntapers=nwins)
+        return _shtools.SHAsymmetricWindow(tapers, eigenvalues)
 
     def plot(self, nwins, show=True, fname=None):
         """
@@ -767,7 +1063,7 @@ class SHWindow(object):
         for itaper in range(nwins):
             tapercoeffs = self._coeffs(itaper)
             modelcoeffs = shcoeffs.get_coeffs(normalization='4pi', kind='real')
-            coeffs = shtools.SHMultiply(tapercoeffs, modelcoeffs)
+            coeffs = _shtools.SHMultiply(tapercoeffs, modelcoeffs)
 
     def get_couplingmatrix(self, lmax, nwins):
         """returns the coupling matrix of the first nwins tapers"""
@@ -776,11 +1072,11 @@ class SHWindow(object):
             nwins = self.nwins
         tapers = np.zeros((self.nl, nwins))
         for itaper in range(nwins):
-            tapers[:, itaper] = np.sqrt(shtools.SHPowerSpectrum(
+            tapers[:, itaper] = np.sqrt(_shtools.SHPowerSpectrum(
                 self._coeffs(itaper)))
 
         # compute coupling matrix of the first nwins tapers:
-        coupling_matrix = shtools.SHMTCouplingMatrix(lmax, tapers[:, :nwins])
+        coupling_matrix = _shtools.SHMTCouplingMatrix(lmax, tapers[:, :nwins])
         return coupling_matrix
 
     def plot_couplingmatrix(self, lmax, nwins, show=True, fname=None):
@@ -814,13 +1110,19 @@ class SHSymmetricWindow(SHWindow):
     def istype(kind):
         return kind == 'Symmetric'
 
-    def __init__(self,tapers, eigenvalues, orders, clat=0., clon =0.):
-        self.clat, self.clon = clat, clon    # center of cap window
-        self.nl, self.nwins = tapers.shape  # nl: number of degrees, nwins: number of windows
-        self.lmax = self.nl - 1  # lmax: maximum degree
-        self.tapers = tapers     # tapers[nl,nwins]: ith window coefs with m=orders[iwin]
-        self.eigenvalues = eigenvalues  # concentration factor of the ith taper
-        self.orders = orders      # order m of the ith taper
+    def __init__(self, tapers, eigenvalues, orders, clat=0., clon=0.):
+        # center of cap window
+        self.clat, self.clon = clat, clon
+        # nl: number of degrees, nwins: number of windows
+        self.nl, self.nwins = tapers.shape
+        # lmax: maximum degree
+        self.lmax = self.nl - 1
+        # tapers[nl,nwins]: ith window coefs with m=orders[iwin]
+        self.tapers = tapers
+        # concentration factor of the ith taper
+        self.eigenvalues = eigenvalues
+        # order m of the ith taper
+        self.orders = orders
 
     def _coeffs(self, itaper):
         taperm = self.orders[itaper]
@@ -844,7 +1146,7 @@ class SHAsymmetricWindow(SHWindow):
     def istype(kind):
         return kind == 'Asymmetric'
 
-    def __init__(self,tapers, eigenvalues):
+    def __init__(self, tapers, eigenvalues):
         ncoeffs, self.nwins = tapers.shape
         self.nl = np.sqrt(ncoeffs).astype(int)
         self.lmax = self.nl-1
@@ -852,7 +1154,7 @@ class SHAsymmetricWindow(SHWindow):
         self.eigenvalues = eigenvalues
 
     def _coeffs(self, itaper):
-        return shtools.SHVectorToCilm(self.tapers[:, itaper], self.lmax)
+        return _shtools.SHVectorToCilm(self.tapers[:, itaper], self.lmax)
 
     def _info(self):
         print('Asymmetric window with {:d} tapers'.format(self.nwins))
