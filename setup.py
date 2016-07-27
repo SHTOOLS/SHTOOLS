@@ -7,17 +7,11 @@ from __future__ import print_function as _print_function
 import os
 import re
 
-try:
-    import numpy  # @UnusedImport # NOQA
-except:
-    msg = ("No module named numpy. Install numpy before SHTOOLS")
-    raise ImportError(msg)
-
-from setuptools import find_packages
-from numpy.distutils.core import setup, Extension
+from numpy.distutils.core import setup
 from numpy.distutils.command.build import build
+from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
+from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
-from multiprocessing import cpu_count
 
 
 def get_version():
@@ -56,17 +50,7 @@ class SHTOOLS_build(build):
 
     def run(self):
         # build Fortran library using the makefile
-        print('---- BUILDING FORTRAN ----')
-        make_fortran = ['make', 'fortran']
-
-        try:
-            make_fortran.append('-j%d' % cpu_count())
-        except:
-            pass
-
-        # build python module
-        print('---- BUILDING PYTHON ----')
-        check_call(make_fortran)
+        print('---- BUILDING ----')
         build.run(self)
 
         # build documentation
@@ -104,32 +88,66 @@ KEYWORDS = ['Spherical Harmonics', 'Wigner Symbols']
 
 INSTALL_REQUIRES = [
     'future>=0.12.4',
-    'numpy>=1.0.0',
-    'setuptools']
+    'numpy>=1.0.0']
 
 # configure python extension to be compiled with f2py
 
-# Absoft f95 flags:
-# F95FLAGS = ['m64', 'O3', 'YEXT_NAMES=LCS', 'YEXT_SFX=_', 'fpic',
-#             'speed_math=10']
-# gfortran flags:
-F95FLAGS = ['-m64', '-fPIC', '-O3', '-ffast-math']
+
+def get_compiler_flags():
+    compiler = get_default_fcompiler()
+    if compiler == 'absoft':
+        flags = ['-m64', '-O3', '-YEXT_NAMES=LCS', '-YEXT_SFX=_',
+                 '-fpic', '-speed_math=10']
+    elif compiler == 'gnu95':
+        flags = ['-m64', '-fPIC', '-O3', '-ffast-math']
+    elif compiler == 'intel':
+        flags = ['-m64', '-free', '-O3', '-Tf']
+    elif compiler == 'g95':
+        flags = ['-O3', '-fno-second-underscore']
+    elif compiler == 'pg':
+        flags = ['-fast']
+    else:
+        flags = ['-m64', '-O3']
+    return flags
 
 
-ext1 = Extension(name='pyshtools._SHTOOLS',
-                 include_dirs=['modules'],
-                 libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
-                 library_dirs=['/usr/local/lib', 'lib'],
-                 extra_link_args=F95FLAGS,
-                 extra_compile_args=F95FLAGS,
-                 sources=['src/pyshtools.pyf', 'src/PythonWrapper.f95'])
+def configuration(parent_package='', top_path=None):
+    config = Configuration('', parent_package, top_path)
 
+    F95FLAGS = get_compiler_flags()
 
-ext2 = Extension(name='pyshtools._constant',
-                 extra_link_args=F95FLAGS,
-                 extra_compile_args=F95FLAGS,
-                 sources=['src/PlanetsConstants.f95'])
+    kwargs = {}
+    kwargs['extra_compile_args'] = F95FLAGS
+    kwargs['f2py_options'] = ['--quiet']
 
+    # because numpy.distutils.fcompiler.FCompiler doesn't support .F95 extension
+    compiler = FCompiler(get_default_fcompiler())
+    compiler.src_extensions.append('.F95')
+    compiler.language_map['.F95'] = 'f90'
+
+    # collect all Fortran sources
+    files = os.listdir('src')
+    exclude_sources = ['PlanetsConstants.f95', 'PythonWrapper.f95']
+    sources = [os.path.join('src', file) for file in files
+               if file.lower().endswith('.f95') and file not in exclude_sources]
+
+    # Fortran compilation
+    config.add_library('SHTOOLS',
+                       sources=sources,
+                       **kwargs)
+
+    # SHTOOLS
+    config.add_extension('pyshtools._SHTOOLS',
+                         libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
+                         sources=['src/pyshtools.pyf', 'src/PythonWrapper.f95'],
+                         **kwargs)
+
+    # constants
+    config.add_extension('pyshtools._constant',
+                         sources=['src/PlanetsConstants.f95'],
+                         **kwargs)
+
+    return config
 
 metadata = dict(
     name='pyshtools',
@@ -142,11 +160,11 @@ metadata = dict(
     keywords=KEYWORDS,
     install_requires=INSTALL_REQUIRES,
     platforms='OS Independent',
-    packages=find_packages(),
-    package_data={'': ['doc/*.doc', '*.so']},
+    packages=['pyshtools'],
+    package_data={'': ['doc/*.doc']},
     include_package_data=True,
     classifiers=CLASSIFIERS,
-    ext_modules=[ext1, ext2],
+    configuration=configuration,
     cmdclass={'build': SHTOOLS_build}
 )
 
