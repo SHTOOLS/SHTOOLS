@@ -1585,8 +1585,8 @@ class SHWindow(object):
         if degrees:
             theta = np.radians(theta)
 
-        tapers, eigenvalues, taper_order = SHReturnTapers(theta, lmax)
-        return _shtools.SHSymmetricWindow(tapers, eigenvalues, taper_order,
+        tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(theta, lmax)
+        return SHSymmetricWindow(tapers, eigenvalues, taper_order,
                                           clat=clat, clon=clon)
 
     @classmethod
@@ -1596,7 +1596,7 @@ class SHWindow(object):
         """
         tapers, eigenvalues = _shtools.SHReturnTapersMap(
             dh_mask, lmax, sampling=sampling, Ntapers=nwins)
-        return _shtools.SHAsymmetricWindow(tapers, eigenvalues)
+        return SHAsymmetricWindow(tapers, eigenvalues)
 
     def plot(self, nwins, show=True, fname=None):
         """
@@ -1620,7 +1620,7 @@ class SHWindow(object):
             evalue = self.eigenvalues[itaper]
             coeffs = self._coeffs(itaper)
             ax = axes.flatten()[itaper]
-            grid = MakeGridDH(coeffs)
+            grid = _shtools.MakeGridDH(coeffs)
             ax.imshow(grid)
             ax.set_title('concentration: {:2.2f}'.format(evalue))
         fig.tight_layout(pad=0.5)

@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 # import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import SHWindow
+import pyshtools as shtools
 
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
@@ -33,7 +33,7 @@ def example1():
     lmax  = 20
     nwins = 20
     theta = 25.
-    cap = SHWindow.from_cap(lmax,nwins,theta)
+    cap = shtools.SHWindow.from_cap(lmax,nwins,theta)
     cap.info()
     cap.plot(20,show=False,fname='cap_tapers.png')
     cap.plot_couplingmatrix(30,5,show=False,fname='cap_coupling.png')
@@ -47,7 +47,7 @@ def example2():
     topo = np.loadtxt('topo.dat.gz')
     dh_mask = topo > 0.
     print(dh_mask.shape)
-    region = SHWindow.from_mask(lmax, nwins, dh_mask, sampling=2)
+    region = shtools.SHWindow.from_mask(lmax, nwins, dh_mask, sampling=2)
     region.info()
     region.plot(nwins,show=False,fname='continent_tapers.png')
     region.plot_couplingmatrix(30,5,show=False,fname='continent_coupling.png')
