@@ -28,9 +28,9 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
+import numpy as _np
+import matplotlib as _mpl
+import matplotlib.pyplot as _plt
 
 from . import _SHTOOLS as _shtools
 
@@ -589,7 +589,7 @@ class SHCoeffs(object):
         power = self.get_powerperdegree()
         ls = self.get_degrees()
 
-        fig, ax = plt.subplots(1, 1)
+        fig, ax = _plt.subplots(1, 1)
         ax.set_xlabel('degree l')
         ax.set_ylabel('power per degree')
         if loglog:
@@ -598,7 +598,7 @@ class SHCoeffs(object):
             ax.grid(True, which='both')
             ax.plot(ls[1:], power[1:], label='power per degree l')
         if show:
-            plt.show()
+            _plt.show()
         if fname is not None:
             fig.savefig(fname)
 
@@ -622,7 +622,7 @@ class SHCoeffs(object):
         power = self.get_powerperband(bandwidth)
         ls = self.get_degrees()
 
-        fig, ax = plt.subplots(1, 1)
+        fig, ax = _plt.subplots(1, 1)
         ax.set_xlabel('degree l')
         ax.set_ylabel('bandpower')
         ax.set_xscale('log', basex=bandwidth)
@@ -631,7 +631,7 @@ class SHCoeffs(object):
         ax.plot(ls[1:], power[1:], label='power per degree l')
         fig.tight_layout(pad=0.1)
         if show:
-            plt.show()
+            _plt.show()
         if fname is not None:
             fig.savefig(fname)
 
@@ -1169,7 +1169,7 @@ class SHGrid(object):
         """
         fig, ax = self._plot_rawdata()
         if show:
-            plt.show()
+            _plt.show()
         if fname is not None:
             fig.savefig(fname)
 
@@ -1291,7 +1291,7 @@ class DHRealGrid(SHGrid):
 
     def _plot_rawdata(self):
         """Plot the raw data using a simply cylindrical projection."""
-        fig, ax = plt.subplots(1, 1)
+        fig, ax = _plt.subplots(1, 1)
         ax.imshow(self.data, origin='top', extent=(0., 360., -90., 90.))
         ax.set_title('Driscoll and Healy Grid')
         ax.set_xlabel('longitude')
@@ -1377,7 +1377,7 @@ class DHComplexGrid(SHGrid):
 
     def _plot_rawdata(self):
         """Plot the raw data using a simply cylindrical projection."""
-        fig, ax = plt.subplots(2, 1)
+        fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='top',
                           extent=(0., 360., -90., 90.))
         ax.flat[0].set_title('Driscoll and Healy Grid (real component)')
@@ -1468,7 +1468,7 @@ class GLQRealGrid(SHGrid):
     def _plot_rawdata(self):
         """Plot the raw data using a simply cylindrical projection."""
 
-        fig, ax = plt.subplots(1, 1)
+        fig, ax = _plt.subplots(1, 1)
         ax.imshow(self.data, origin='top')
         ax.set_title('Gauss-Legendre Quadrature Grid')
         ax.set_xlabel('longitude index')
@@ -1553,7 +1553,7 @@ class GLQComplexGrid(SHGrid):
     def _plot_rawdata(self):
         """Plot the raw data using a simply cylindrical projection."""
 
-        fig, ax = plt.subplots(2, 1)
+        fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='top')
         ax.flat[0].set_title('Gauss-Legendre Quadrature Grid (real component)')
         ax.flat[0].set_xlabel('longitude index')
@@ -1607,7 +1607,7 @@ class SHWindow(object):
         ncolumns = min(maxcolumns, nwins)
         nrows = np.ceil(nwins / ncolumns).astype(int)
         figsize = ncolumns * 1.2, nrows * 1.2 + 0.5
-        fig, axes = plt.subplots(nrows, ncolumns, figsize=figsize)
+        fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
         for ax in axes[:-1, :].flatten():
             for xlabel_i in ax.get_xticklabels():
                 xlabel_i.set_visible(False)
@@ -1626,7 +1626,7 @@ class SHWindow(object):
         fig.tight_layout(pad=0.5)
 
         if show:
-            plt.show()
+            _plt.show()
         if fname is not None:
             fig.savefig(fname)
 
@@ -1653,9 +1653,9 @@ class SHWindow(object):
 
     def plot_couplingmatrix(self, lmax, nwins, show=True, fname=None):
         """plots the window's coupling strength"""
-        figsize = mpl.rcParams['figure.figsize']
+        figsize = _mpl.rcParams['figure.figsize']
         figsize[0] = figsize[1]
-        fig = plt.figure(figsize=figsize)
+        fig = _plt.figure(figsize=figsize)
         ax = fig.add_subplot(111)
         coupling_matrix = self.get_couplingmatrix(lmax, nwins)
         ax.imshow(coupling_matrix)
@@ -1664,7 +1664,7 @@ class SHWindow(object):
         fig.tight_layout(pad=0.1)
 
         if show:
-            plt.show()
+            _plt.show()
         if fname is not None:
             fig.savefig(fname)
 
