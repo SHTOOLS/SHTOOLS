@@ -6,9 +6,8 @@ from __future__ import division as _division
 from __future__ import print_function as _print_function
 import os
 import re
-import glob
 
-from numpy.distutils.core import setup, Extension
+from numpy.distutils.core import setup
 from numpy.distutils.command.build import build
 from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
 from numpy.distutils.misc_util import Configuration
