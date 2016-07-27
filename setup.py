@@ -7,16 +7,11 @@ from __future__ import print_function as _print_function
 import os
 import re
 
-try:
-    import numpy  # @UnusedImport # NOQA
-except:
-    msg = ("No module named numpy. Install numpy before SHTOOLS")
-    raise ImportError(msg)
-
 from setuptools import find_packages
 from numpy.distutils.core import setup, Extension
 from numpy.distutils.command.build import build
 from numpy.distutils.fcompiler import get_default_fcompiler
+from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
 from multiprocessing import cpu_count
 
@@ -129,23 +124,30 @@ def get_compiler_flags():
     return flags
 
 
-F95FLAGS = get_compiler_flags()
+def configuration(parent_package='', top_path=None):
+    config = Configuration('', parent_package, top_path)
 
+    F95FLAGS = get_compiler_flags()
 
-ext1 = Extension(name='pyshtools._SHTOOLS',
-                 include_dirs=['modules'],
-                 libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
-                 library_dirs=['/usr/local/lib', 'lib'],
-                 extra_link_args=F95FLAGS,
-                 extra_compile_args=F95FLAGS,
-                 sources=['src/pyshtools.pyf', 'src/PythonWrapper.f95'])
+    kwargs = {}
+    kwargs['extra_compile_args'] = F95FLAGS
+    kwargs['extra_link_args'] = F95FLAGS
+    kwargs['f2py_options'] = ['--quiet']
 
+    # SHTOOLS
+    config.add_extension('pyshtools._SHTOOLS',
+                         include_dirs=['modules'],
+                         libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
+                         library_dirs=['/usr/local/lib', 'lib'],
+                         sources=['src/pyshtools.pyf', 'src/PythonWrapper.f95'],
+                         **kwargs)
 
-ext2 = Extension(name='pyshtools._constant',
-                 extra_link_args=F95FLAGS,
-                 extra_compile_args=F95FLAGS,
-                 sources=['src/PlanetsConstants.f95'])
+    # constants
+    config.add_extension('pyshtools._constant',
+                         sources=['src/PlanetsConstants.f95'],
+                         **kwargs)
 
+    return config
 
 metadata = dict(
     name='pyshtools',
@@ -162,7 +164,7 @@ metadata = dict(
     package_data={'': ['doc/*.doc', '*.so']},
     include_package_data=True,
     classifiers=CLASSIFIERS,
-    ext_modules=[ext1, ext2],
+    configuration=configuration,
     cmdclass={'build': SHTOOLS_build}
 )
 
