@@ -317,8 +317,8 @@ python module _SHTOOLS
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
             integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d1 = lmax+1
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d2 = lmax+1
+            integer, optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d1 = lmax_calc+1
+            integer, optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d2 = lmax_calc+1
             integer, optional,intent(in),check(shape(gridglq,0)==gridglq_d0),depend(gridglq),intent(hide) :: gridglq_d0=shape(gridglq,0)
             integer, optional,intent(in),check(shape(gridglq,1)==gridglq_d1),depend(gridglq),intent(hide) :: gridglq_d1=shape(gridglq,1)
             integer, optional,intent(in),check(len(zero)>=zero_d0),depend(zero),intent(hide) :: zero_d0=len(zero)
@@ -641,8 +641,8 @@ python module _SHTOOLS
             integer, optional,intent(in) :: csphase=1
             integer, optional,intent(in),depend(n) :: lmax_calc=n/2-1
             integer, optional,intent(in),intent(hide) :: cilm_d0=2
-            integer, optional,intent(in),depend(n),intent(hide) :: cilm_d1=n/2
-            integer, optional,intent(in),depend(n),intent(hide) :: cilm_d2=n/2
+            integer, optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d1=lmax_calc+1
+            integer, optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d2=lmax_calc+1
             integer, optional,intent(in),check(shape(grid,0)==grid_d0),depend(grid),intent(hide) :: grid_d0=shape(grid,0)
             integer, optional,intent(in),check(shape(grid,1)==grid_d1),depend(grid),intent(hide) :: grid_d1=shape(grid,1)
         end subroutine SHExpandDH
@@ -1314,8 +1314,8 @@ python module _SHTOOLS
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in),depend(n) :: lmax_calc = n/2-1
             integer, optional,intent(in) :: cilm_d0=2
-            integer, optional,intent(in),depend(n),intent(hide) :: cilm_d1=n/2
-            integer, optional,intent(in),depend(n),intent(hide) :: cilm_d2=n/2
+            integer, optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d1=lmax_calc+1
+            integer, optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d2=lmax_calc+1
             integer, optional,intent(in),check(shape(grid,0)==grid_d0),depend(grid),intent(hide) :: grid_d0=shape(grid,0)
             integer, optional,intent(in),check(shape(grid,1)==grid_d1),depend(grid),intent(hide) :: grid_d1=shape(grid,1)
         end subroutine SHExpandDHC
@@ -1365,8 +1365,8 @@ python module _SHTOOLS
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
             integer, optional,intent(in) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d1 = lmax+1
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d2 = lmax+1
+            integer, optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d1 = lmax_calc+1
+            integer, optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d2 = lmax_calc+1
             integer, optional,intent(in),depend(gridglq),intent(hide) :: gridglq_d0=shape(gridglq,0)
             integer, optional,intent(in),depend(gridglq),intent(hide) :: gridglq_d1=shape(gridglq,1)
             integer, optional,intent(in),depend(zero),intent(hide) :: zero_d0=len(zero)
