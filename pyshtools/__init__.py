@@ -136,7 +136,7 @@ from . import _constant  # NOQA
 constant = _ConstantClass()
 
 for _name, _value in _constant.planetsconstants.__dict__.items():
-    constant._name = _value.view(_ndarrayinfo)
+    setattr(constant, _name, _value.view(_ndarrayinfo))
 
 # ---- Load documentation that was generated at compile time ----
 _load_documentation()
