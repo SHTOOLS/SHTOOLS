@@ -1,43 +1,15 @@
-"""
-pyshtools defines several classes that facilitate the interactive
-examination of geographical gridded data and their associated
-spherical harmonic coefficients. Subclasses are used to handle different
-internal data types and superclasses are used to implement interface
-functions and documentation.
-
-pyshtools class structure:
-
-    SHCoeffs
-        SHRealCoefficients
-        SHComplexCoefficients
-
-    SHGrid
-        DHRealGrid
-        DHComplexGrid
-        GLQRealGrid
-        GLQComplexGrid
-
-    SHWindow
-        SymmetricWindow
-        AsymmetricWindow
-
-For more information, see the documentation for the top level classes.
-"""
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
-import numpy as _np
-import matplotlib as _mpl
-import matplotlib.pyplot as _plt
-
-from . import _SHTOOLS as _shtools
-
-
 # =============================================================================
 # =========    COEFFICIENT CLASSES    =========================================
 # =============================================================================
+
+from __future__ import absolute_import, division, print_function
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+
+from .. import _SHTOOLS as shtools
+
 
 class SHCoeffs(object):
     """
@@ -128,7 +100,7 @@ class SHCoeffs(object):
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
         """
-        if np.iscomplexobj(coeffs):
+        if iscomplexobj(coeffs):
             kind = 'complex'
         else:
             kind = 'real'
@@ -291,7 +263,7 @@ class SHCoeffs(object):
 
         if format.lower() == 'shtools':
             if kind.lower() == 'real':
-                coeffs, lmax = _shtools.SHRead(fname, lmax, **kwargs)
+                coeffs, lmax = shtools.SHRead(fname, lmax, **kwargs)
             else:
                 raise NotImplementedError(
                     "kind={:s} not yet implemented".format(repr(kind)))
@@ -589,7 +561,7 @@ class SHCoeffs(object):
         power = self.get_powerperdegree()
         ls = self.get_degrees()
 
-        fig, ax = _plt.subplots(1, 1)
+        fig, ax = plt.subplots(1, 1)
         ax.set_xlabel('degree l')
         ax.set_ylabel('power per degree')
         if loglog:
@@ -598,7 +570,7 @@ class SHCoeffs(object):
             ax.grid(True, which='both')
             ax.plot(ls[1:], power[1:], label='power per degree l')
         if show:
-            _plt.show()
+            plt.show()
         if fname is not None:
             fig.savefig(fname)
 
@@ -622,7 +594,7 @@ class SHCoeffs(object):
         power = self.get_powerperband(bandwidth)
         ls = self.get_degrees()
 
-        fig, ax = _plt.subplots(1, 1)
+        fig, ax = plt.subplots(1, 1)
         ax.set_xlabel('degree l')
         ax.set_ylabel('bandpower')
         ax.set_xscale('log', basex=bandwidth)
@@ -631,14 +603,14 @@ class SHCoeffs(object):
         ax.plot(ls[1:], power[1:], label='power per degree l')
         fig.tight_layout(pad=0.1)
         if show:
-            _plt.show()
+            plt.show()
         if fname is not None:
             fig.savefig(fname)
 
 
 # ================== REAL SPHERICAL HARMONICS ================
 
-class SHRealCoefficients(SHCoeffs):
+class SHRealCoeffs(SHCoeffs):
     """
     Real Spherical Harmonics Coefficient class.
     """
@@ -675,8 +647,8 @@ class SHRealCoefficients(SHCoeffs):
 
         SHComplexCoeffsInstance = x.make_complex()
         """
-        rcomplex_coeffs = _shtools.SHrtoc(self.coeffs,
-                                          convention=1, switchcs=0)
+        rcomplex_coeffs = shtools.SHrtoc(self.coeffs,
+                                         convention=1, switchcs=0)
 
         # These coefficients are using real floats, and need to be
         # converted to complex form.
@@ -696,14 +668,14 @@ class SHRealCoefficients(SHCoeffs):
     def _powerperdegree(self):
         """Return the power per degree l spectrum."""
         if self.normalization == '4pi':
-            return _shtools.SHPowerSpectrum(self.coeffs)
+            return shtools.SHPowerSpectrum(self.coeffs)
         elif self.normalization == 'schmidt':
-            power = _shtools.SHPowerSpectrum(self.coeffs)
+            power = shtools.SHPowerSpectrum(self.coeffs)
             l = self.get_degrees()
             power /= (2.0 * l + 1.0)
             return power
         elif self.normalization == 'ortho':
-            return _shtools.SHPowerSpectrum(self.coeffs) / (4.0 * np.pi)
+            return shtools.SHPowerSpectrum(self.coeffs) / (4.0 * np.pi)
         else:
             raise ValueError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
@@ -752,10 +724,10 @@ class SHRealCoefficients(SHCoeffs):
         harmonics coefficients by the Euler angles alpha, beta, gamma.
         """
         if dj_matrix is None:
-            dj_matrix = _shtools.djpi2(self.lmax + 1)
+            dj_matrix = shtools.djpi2(self.lmax + 1)
 
         # The coefficients need to be 4pi normalized with csphase = 1
-        coeffs = _shtools.SHRotateRealCoef(
+        coeffs = shtools.SHRotateRealCoef(
             self.get_coeffs(normalization='4pi', csphase=1), angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
@@ -786,8 +758,8 @@ class SHRealCoefficients(SHCoeffs):
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
                 "Input value was {:s}".format(repr(self.normalization)))
 
-        data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
-                                   csphase=self.csphase, **kwargs)
+        data = shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
+                                  csphase=self.csphase, **kwargs)
         gridout = SHGrid.from_array(data, grid='DH')
         return gridout
 
@@ -805,17 +777,17 @@ class SHRealCoefficients(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
         if zeros is None:
-            zeros, weights = _shtools.SHGLQ(self.lmax)
+            zeros, weights = shtools.SHGLQ(self.lmax)
 
-        data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
-                                    csphase=self.csphase, **kwargs)
+        data = shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
+                                   csphase=self.csphase, **kwargs)
         gridout = SHGrid.from_array(data, grid='GLQ')
         return gridout
 
 
 # =============== COMPLEX SPHERICAL HARMONICS ================
 
-class SHComplexCoefficients(SHCoeffs):
+class SHComplexCoeffs(SHCoeffs):
     """
     Complex Spherical Harmonics Coefficients class.
     """
@@ -881,8 +853,8 @@ class SHComplexCoefficients(SHCoeffs):
         coeffs_rc = np.zeros((2, self.lmax + 1, self.lmax + 1))
         coeffs_rc[0, :, :] = self.coeffs[0, :, :].real
         coeffs_rc[1, :, :] = self.coeffs[0, :, :].imag
-        real_coeffs = _shtools.SHctor(coeffs_rc, convention=1,
-                                      switchcs=0)
+        real_coeffs = shtools.SHctor(coeffs_rc, convention=1,
+                                     switchcs=0)
         return SHCoeffs.from_array(real_coeffs,
                                    normalization=self.normalization,
                                    csphase=self.csphase)
@@ -890,14 +862,14 @@ class SHComplexCoefficients(SHCoeffs):
     def _powerperdegree(self):
         """Return the power per degree l spectrum."""
         if self.normalization == '4pi':
-            return _shtools.SHPowerSpectrumC(self.coeffs)
+            return shtools.SHPowerSpectrumC(self.coeffs)
         elif self.normalization == 'schmidt':
-            power = _shtools.SHPowerSpectrumC(self.coeffs)
+            power = shtools.SHPowerSpectrumC(self.coeffs)
             l = self.get_degrees()
             power /= (2.0 * l + 1.0)
             return power
         elif self.normalization == 'ortho':
-            return _shtools.SHPowerSpectrumC(self.coeffs) / (4.0 * np.pi)
+            return shtools.SHPowerSpectrumC(self.coeffs) / (4.0 * np.pi)
         else:
             raise ValueError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
@@ -952,22 +924,22 @@ class SHComplexCoefficients(SHCoeffs):
         # combined to make a complex grid, and the resultant is expanded
         # in complex spherical harmonics.
         if dj_matrix is None:
-            dj_matrix = _shtools.djpi2(self.lmax + 1)
+            dj_matrix = shtools.djpi2(self.lmax + 1)
 
         cgrid = self.expand(grid='DH')
         rgrid, igrid = cgrid.data.real, cgrid.data.imag
-        rgridcoeffs = _shtools.SHExpandDH(rgrid, norm=1, sampling=1, csphase=1)
-        igridcoeffs = _shtools.SHExpandDH(igrid, norm=1, sampling=1, csphase=1)
+        rgridcoeffs = shtools.SHExpandDH(rgrid, norm=1, sampling=1, csphase=1)
+        igridcoeffs = shtools.SHExpandDH(igrid, norm=1, sampling=1, csphase=1)
 
-        rgridcoeffs_rot = _shtools.SHRotateRealCoef(
+        rgridcoeffs_rot = shtools.SHRotateRealCoef(
             rgridcoeffs, angles, dj_matrix)
-        igridcoeffs_rot = _shtools.SHRotateRealCoef(
+        igridcoeffs_rot = shtools.SHRotateRealCoef(
             igridcoeffs, angles, dj_matrix)
 
-        rgrid_rot = _shtools.MakeGridDH(rgridcoeffs_rot, norm=1,
-                                        sampling=1, csphase=1)
-        igrid_rot = _shtools.MakeGridDH(igridcoeffs_rot, norm=1,
-                                        sampling=1, csphase=1)
+        rgrid_rot = shtools.MakeGridDH(rgridcoeffs_rot, norm=1,
+                                       sampling=1, csphase=1)
+        igrid_rot = shtools.MakeGridDH(igridcoeffs_rot, norm=1,
+                                       sampling=1, csphase=1)
         grid_rot = rgrid_rot + 1j * igrid_rot
 
         if self.normalization == '4pi':
@@ -980,8 +952,8 @@ class SHComplexCoefficients(SHCoeffs):
             raise ValueError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
-        coeffs_rot = _shtools.SHExpandDHC(grid_rot, norm=norm,
-                                          csphase=self.csphase)
+        coeffs_rot = shtools.SHExpandDHC(grid_rot, norm=norm,
+                                         csphase=self.csphase)
 
         return SHCoeffs.from_array(coeffs_rot,
                                    normalization=self.normalization,
@@ -1003,8 +975,8 @@ class SHComplexCoefficients(SHCoeffs):
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
                 "Input value was {:s}".format(repr(self.normalization)))
 
-        data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
-                                    norm=norm, csphase=self.csphase, **kwargs)
+        data = shtools.MakeGridDHC(self.coeffs, sampling=sampling,
+                                   norm=norm, csphase=self.csphase, **kwargs)
         gridout = SHGrid.from_array(data, grid='DH')
         return gridout
 
@@ -1022,711 +994,9 @@ class SHComplexCoefficients(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
         if zeros is None:
-            zeros, weights = _shtools.SHGLQ(self.lmax)
+            zeros, weights = shtools.SHGLQ(self.lmax)
 
-        data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
-                                     csphase=self.csphase, **kwargs)
+        data = shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
+                                    csphase=self.csphase, **kwargs)
         gridout = SHGrid.from_array(data, grid='GLQ')
         return gridout
-
-
-# ========================================================================
-# ======      GRID CLASSES      ==========================================
-# ========================================================================
-
-class SHGrid(object):
-    """
-    Grid Class for global gridded data on the sphere. Grids can be
-    initialized from:
-
-    >> x = SHGrid.from_array(array)
-    >> x = SHGrid.from_file('fname.dat')
-
-    The class instance defines the following class attributes:
-
-    data       : Gridded array of the data.
-    nlat, nlon : The number of latitude and longitude bands in the grid.
-    lmax       : The maximum spherical harmonic degree that can be resolved
-                 by the grid sampling.
-    sampling   : For Driscoll and Healy grids, the longitudinal sampling
-                 of the grid. Either nlong = nlat or nlong = 2 * nlat.
-    kind       : Either 'complex' or 'real' for the data type.
-    grid       : Either 'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-
-                 Legendre Quadrature grids.
-    zeros      : The cos(colatitude) nodes used with Gauss-Legendre
-                 Quadrature grids. Default is None.
-    weights    : The latitudinal weights used with Gauss-Legendre
-                 Quadrature grids. Default is None.
-
-    Each class instance provides the following methods:
-
-    get_lats()     : Return a vector containing the latitudes of each row
-                     of the gridded data.
-    get_lons()     : Return a vector containing the longitudes of each column
-                     of the gridded data.
-    expand()       : Expand the grid into spherical harmonics.
-    plot_rawdata() : Plot the raw data using a simple cylindrical projection.
-    """
-
-    def __init__():
-        pass
-
-    # ---- factory methods
-    @classmethod
-    def from_array(self, array, grid='DH'):
-        """
-        Initialize the grid of the class instance from an input array.
-
-        Usage
-        -----
-
-        x = SHGrid.from_array(array, [grid])
-
-        Parameters
-        ----------
-
-        array : numpy array of size (nlat, nlon)
-        grid : 'DH' (default) or 'GLQ' for Driscoll and Healy grids or Gauss
-                Legendre Quadrature grids, respectively.
-        """
-        if np.iscomplexobj(array):
-            kind = 'complex'
-        else:
-            kind = 'real'
-
-        if type(grid) != str:
-            raise ValueError('grid must be a string. ' +
-                             'Input type was {:s}'
-                             .format(str(type(grid))))
-
-        if grid.upper() not in set(['DH', 'GLQ']):
-            raise ValueError(
-                "grid must be 'DH' or 'GLQ'. Input value was {:s}."
-                .format(repr(grid))
-                )
-
-        for cls in self.__subclasses__():
-            if cls.istype(kind) and cls.isgrid(grid):
-                return cls(array)
-
-    @classmethod
-    def from_file(self, fname, kind='real', grid='DH'):
-        """Initialize the grid of the object from a file."""
-        raise NotImplementedError('Not implemented yet')
-
-    # ---- Extract grid properties ----
-    def get_lats(self):
-        """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
-
-        Usage
-        -----
-
-        lats = x.get_lats()
-
-        Returns
-        -------
-
-        lats : numpy array of size nlat containing the latitude (in degrees)
-               of each row of the gridded data.
-        """
-        return self._get_lats()
-
-    def get_lons(self):
-        """
-        Return a vector containing the longitudes (in degrees) of each
-        column of the gridded data.
-
-        Usage
-        -----
-
-        lons = x.get_lon()
-
-        Returns
-        -------
-
-        lons : numpy array of size nlon containing the longitude (in degrees)
-               of each column of the gridded data.
-        """
-        return self._get_lons()
-
-    # ---- Plotting routines ----
-    def plot_rawdata(self, show=True, fname=None):
-        """
-        Plot the raw data using a simple cylindrical projection.
-
-        Usage
-        -----
-
-        x.plot_rawdata([show, fname])
-
-        Parameters
-        ----------
-
-        show   : If True (default), plot the image to the screen.
-        fname  : If present, save the image to the file.
-        """
-        fig, ax = self._plot_rawdata()
-        if show:
-            _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-
-    def expand(self, normalization='4pi', csphase=1, **kwargs):
-        """
-        Expand the grid into spherical harmonics.
-
-        Usage
-        -----
-
-        SHCoeffsInstance = x.expand([normalization, csphase, lmax_calc])
-
-        Parameters
-        ----------
-
-        normalization : '4pi' (default), geodesy 4-pi normalized
-                      : 'ortho', orthonormalized
-                      : 'schmidt', Schmidt semi-normalized)
-        csphase       : 1  (default), exlcude the Condon-Shortley phase factor
-        lmax_calc     : maximum spherical harmonic degree to return.
-                        Default is x.lmax.
-        """
-        if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
-                             'Input type was {:s}'
-                             .format(str(type(normalization))))
-
-        if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
-            raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
-                .format(repr(normalization))
-                )
-
-        if csphase != 1 and csphase != -1:
-            raise ValueError(
-                "csphase must be either 1 or -1. Input value was {:s}."
-                .format(repr(csphase))
-                )
-
-        return self._expand(normalization=normalization, csphase=csphase,
-                            **kwargs)
-
-
-# ---- Real Driscoll and Healy grid class ----
-
-class DHRealGrid(SHGrid):
-    """
-    Class for real Driscoll and Healy (1994) grids.
-    """
-    @staticmethod
-    def istype(kind):
-        return kind == 'real'
-
-    @staticmethod
-    def isgrid(grid):
-        return grid == 'DH'
-
-    def __init__(self, array):
-        self.nlat, self.nlon = array.shape
-
-        if self.nlat % 2 != 0:
-            raise ValueError('Input arrays for DH grids must have an even ' +
-                             'number of latitudes: nlat = {:d}'
-                             .format(self.nlat)
-                             )
-        if self.nlon == 2 * self.nlat:
-            self.sampling = 2
-        elif self.nlat == self.nlon:
-            self.sampling = 1
-        else:
-            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n' +
-                             'but needs nlat=nlon or nlat=2*nlon'
-                             .format(self.nlat, self.nlon)
-                             )
-
-        self.lmax = int(self.nlat / 2 - 1)
-        self.data = array
-        self.grid = 'DH'
-        self.kind = 'real'
-
-    def _get_lats(self):
-        """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
-        """
-        lats = np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
-        return lats
-
-    def _get_lons(self):
-        """
-        Return a vector containing the longitudes (in degrees) of each row
-        of the gridded data.
-        """
-        lons = np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
-        return lons
-
-    def _expand(self, normalization, csphase, **kwargs):
-        """Expand the grid into real spherical harmonics."""
-        if normalization.lower() == '4pi':
-            norm = 1
-        elif normalization.lower() == 'schmidt':
-            norm = 2
-        elif normalization.lower() == 'ortho':
-            norm = 4
-        else:
-            raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
-                .format(repr(normalization))
-                )
-
-        cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase,
-                                   **kwargs)
-        coeffs = SHCoeffs.from_array(cilm,
-                                     normalization=normalization.lower(),
-                                     csphase=csphase)
-        return coeffs
-
-    def _plot_rawdata(self):
-        """Plot the raw data using a simply cylindrical projection."""
-        fig, ax = _plt.subplots(1, 1)
-        ax.imshow(self.data, origin='top', extent=(0., 360., -90., 90.))
-        ax.set_title('Driscoll and Healy Grid')
-        ax.set_xlabel('longitude')
-        ax.set_ylabel('latitude')
-        fig.tight_layout(pad=0.5)
-        return fig, ax
-
-
-# ---- Complex Driscoll and Healy grid class ----
-
-class DHComplexGrid(SHGrid):
-    """
-    Class for complex Driscoll and Healy (1994) grids.
-    """
-    @staticmethod
-    def istype(kind):
-        return kind == 'complex'
-
-    @staticmethod
-    def isgrid(grid):
-        return grid == 'DH'
-
-    def __init__(self, array):
-        self.nlat, self.nlon = array.shape
-
-        if self.nlat % 2 != 0:
-            raise ValueError('Input arrays for DH grids must have an even ' +
-                             'number of latitudes: nlat = {:d}'
-                             .format(self.nlat)
-                             )
-        if self.nlon == 2 * self.nlat:
-            self.sampling = 2
-        elif self.nlat == self.nlon:
-            self.sampling = 1
-        else:
-            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n' +
-                             'but needs nlat=nlon or nlat=2*nlon'
-                             .format(self.nlat, self.nlon)
-                             )
-
-        self.lmax = int(self.nlat / 2 - 1)
-        self.data = array
-        self.grid = 'DH'
-        self.kind = 'complex'
-
-    def _get_lats(self):
-        """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
-        """
-        lats = np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
-        return lats
-
-    def _get_lons(self):
-        """
-        Return a vector containing the longitudes (in degrees) of each row
-        of the gridded data.
-        """
-        lons = np.linspace(0., 360.0 - 360.0 / self.nlon, num=self.nlon)
-        return lons
-
-    def _expand(self, normalization, csphase, **kwargs):
-        """Expand the grid into real spherical harmonics."""
-        if normalization.lower() == '4pi':
-            norm = 1
-        elif normalization.lower() == 'schmidt':
-            norm = 2
-        elif normalization.lower() == 'ortho':
-            norm = 4
-        else:
-            raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
-                .format(repr(normalization))
-                )
-
-        cilm = _shtools.SHExpandDHC(self.data, norm=norm, csphase=csphase,
-                                    **kwargs)
-        coeffs = SHCoeffs.from_array(cilm,
-                                     normalization=normalization.lower(),
-                                     csphase=csphase)
-        return coeffs
-
-    def _plot_rawdata(self):
-        """Plot the raw data using a simply cylindrical projection."""
-        fig, ax = _plt.subplots(2, 1)
-        ax.flat[0].imshow(self.data.real, origin='top',
-                          extent=(0., 360., -90., 90.))
-        ax.flat[0].set_title('Driscoll and Healy Grid (real component)')
-        ax.flat[0].set_xlabel('longitude')
-        ax.flat[0].set_ylabel('latitude')
-        ax.flat[1].imshow(self.data.imag, origin='top',
-                          extent=(0., 360., -90., 90.))
-        ax.flat[1].set_title('Driscoll and Healy Grid (imaginary component)')
-        ax.flat[1].set_xlabel('longitude')
-        ax.flat[1].set_ylabel('latitude')
-        fig.tight_layout(pad=0.5)
-        return fig, ax
-
-
-# ---- Real Gaus Legendre Quadrature grid class ----
-
-class GLQRealGrid(SHGrid):
-    """
-    Class for real Gauss-Legendre Quadrature grids.
-    """
-    @staticmethod
-    def istype(kind):
-        return kind == 'real'
-
-    @staticmethod
-    def isgrid(grid):
-        return grid == 'GLQ'
-
-    def __init__(self, array, zeros=None, weights=None):
-        self.nlat, self.nlon = array.shape
-        self.lmax = self.nlat - 1
-
-        if self.nlat != self.lmax + 1 or self.nlon != 2 * self.lmax + 1:
-            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n' +
-                             'but needs (nlat={:d}, {:d})'
-                             .format(self.nlat, self.nlon, self.lmax+1,
-                                     2*self.lmax+1)
-                             )
-
-        if zeros is None or weights is None:
-            self.zeros, self.weights = _shtools.SHGLQ(self.lmax)
-        else:
-            self.zeros = zeros
-            self.weights = weights
-
-        self.data = array
-        self.grid = 'GLQ'
-        self.kind = 'real'
-
-    def _get_lats(self):
-        """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
-        """
-        lats = 90. - np.arccos(self.zeros) * 180. / np.pi
-        return lats
-
-    def _get_lons(self):
-        """
-        Return a vector containing the longitudes (in degrees) of each column
-        of the gridded data.
-        """
-        lons = np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
-        return lons
-
-    def _expand(self, normalization, csphase, **kwargs):
-        """Expand the grid into real spherical harmonics."""
-        if normalization.lower() == '4pi':
-            norm = 1
-        elif normalization.lower() == 'schmidt':
-            norm = 2
-        elif normalization.lower() == 'ortho':
-            norm = 4
-        else:
-            raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
-                .format(repr(normalization))
-                )
-
-        cilm = _shtools.SHExpandGLQ(self.data, self.weights, self.zeros,
-                                    norm=norm, csphase=csphase, **kwargs)
-        coeffs = SHCoeffs.from_array(cilm,
-                                     normalization=normalization.lower(),
-                                     csphase=csphase)
-        return coeffs
-
-    def _plot_rawdata(self):
-        """Plot the raw data using a simply cylindrical projection."""
-
-        fig, ax = _plt.subplots(1, 1)
-        ax.imshow(self.data, origin='top')
-        ax.set_title('Gauss-Legendre Quadrature Grid')
-        ax.set_xlabel('longitude index')
-        ax.set_ylabel('latitude index')
-        fig.tight_layout(pad=0.5)
-        return fig, ax
-
-
-# ---- Complex Gaus Legendre Quadrature grid class ----
-
-class GLQComplexGrid(SHGrid):
-    """
-    Class for complex Gauss Legendre Quadrature grids.
-    """
-    @staticmethod
-    def istype(kind):
-        return kind == 'complex'
-
-    @staticmethod
-    def isgrid(grid):
-        return grid == 'GLQ'
-
-    def __init__(self, array, zeros=None, weights=None):
-        self.nlat, self.nlon = array.shape
-        self.lmax = self.nlat - 1
-
-        if self.nlat != self.lmax + 1 or self.nlon != 2 * self.lmax + 1:
-            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n' +
-                             'but needs (nlat={:d}, {:d})'
-                             .format(self.nlat, self.nlon, self.lmax+1,
-                                     2*self.lmax+1)
-                             )
-
-        if zeros is None or weights is None:
-            self.zeros, self.weights = _shtools.SHGLQ(self.lmax)
-        else:
-            self.zeros = zeros
-            self.weights = weights
-
-        self.data = array
-        self.grid = 'GLQ'
-        self.kind = 'complex'
-
-    def _get_lats(self):
-        """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
-        """
-        lats = 90. - np.arccos(self.zeros) * 180. / np.pi
-        return lats
-
-    def _get_lons(self):
-        """
-        Return a vector containing the longitudes (in degrees) of each column
-        of the gridded data.
-        """
-        lons = np.linspace(0., 360. - 360. / self.nlon, num=self.nlon)
-        return lons
-
-    def _expand(self, normalization, csphase, **kwargs):
-        """Expand the grid into real spherical harmonics."""
-        if normalization.lower() == '4pi':
-            norm = 1
-        elif normalization.lower() == 'schmidt':
-            norm = 2
-        elif normalization.lower() == 'ortho':
-            norm = 4
-        else:
-            raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
-                .format(repr(normalization))
-                )
-
-        cilm = _shtools.SHExpandGLQC(self.data, self.weights, self.zeros,
-                                     norm=norm, csphase=csphase, **kwargs)
-        coeffs = SHCoeffs.from_array(cilm,
-                                     normalization=normalization.lower(),
-                                     csphase=csphase)
-        return coeffs
-
-    def _plot_rawdata(self):
-        """Plot the raw data using a simply cylindrical projection."""
-
-        fig, ax = _plt.subplots(2, 1)
-        ax.flat[0].imshow(self.data.real, origin='top')
-        ax.flat[0].set_title('Gauss-Legendre Quadrature Grid (real component)')
-        ax.flat[0].set_xlabel('longitude index')
-        ax.flat[0].set_ylabel('latitude index')
-        ax.flat[1].imshow(self.data.imag, origin='top')
-        ax.flat[1].set_title('Gauss-Legendre Quadrature Grid ' +
-                             '(imaginary component)')
-        ax.flat[1].set_xlabel('longitude index')
-        ax.flat[1].set_ylabel('latitude index')
-        fig.tight_layout(pad=0.5)
-        return fig, ax
-
-
-# ==== SPHERICAL HARMONICS WINDOW FUNCTION CLASS ====
-class SHWindow(object):
-    """
-    EXPERIMENTAL:
-    This class contains collections of spherical harmonics windows that
-    provide spectral estimates about a specific region
-    """
-    def __init__(self):
-        print("use one of the following constructors: [...]")
-
-    @classmethod
-    def from_cap(self, lmax, nwins, theta, clat=0., clon=0., degrees=True):
-        """
-        constructs a spherical cap window
-        """
-        if degrees:
-            theta = np.radians(theta)
-
-        tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(theta, lmax)
-        return SHSymmetricWindow(tapers, eigenvalues, taper_order,
-                                          clat=clat, clon=clon)
-
-    @classmethod
-    def from_mask(self, lmax, nwins, dh_mask, sampling=1):
-        """
-        constructs optimal window functions in a masked region (needs dh grid)
-        """
-        tapers, eigenvalues = _shtools.SHReturnTapersMap(
-            dh_mask, lmax, sampling=sampling, Ntapers=nwins)
-        return SHAsymmetricWindow(tapers, eigenvalues)
-
-    def plot(self, nwins, show=True, fname=None):
-        """
-        plots the best concentrated spherical harmonics taper functions
-        """
-        # ---- setup figure and axes
-        maxcolumns = 5
-        ncolumns = min(maxcolumns, nwins)
-        nrows = np.ceil(nwins / ncolumns).astype(int)
-        figsize = ncolumns * 1.2, nrows * 1.2 + 0.5
-        fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
-        for ax in axes[:-1, :].flatten():
-            for xlabel_i in ax.get_xticklabels():
-                xlabel_i.set_visible(False)
-        for ax in axes[:, 1:].flatten():
-            for ylabel_i in ax.get_yticklabels():
-                ylabel_i.set_visible(False)
-
-        # loop through tapers and plot them
-        for itaper in range(min(self.nwins, nwins)):
-            evalue = self.eigenvalues[itaper]
-            coeffs = self._coeffs(itaper)
-            ax = axes.flatten()[itaper]
-            grid = _shtools.MakeGridDH(coeffs)
-            ax.imshow(grid)
-            ax.set_title('concentration: {:2.2f}'.format(evalue))
-        fig.tight_layout(pad=0.5)
-
-        if show:
-            _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-
-    def get_spectrum(self, shcoeffs, nwins):
-        """Returns the regional spherical harmonics spectrum"""
-        for itaper in range(nwins):
-            tapercoeffs = self._coeffs(itaper)
-            modelcoeffs = shcoeffs.get_coeffs(normalization='4pi', kind='real')
-            coeffs = _shtools.SHMultiply(tapercoeffs, modelcoeffs)
-
-    def get_couplingmatrix(self, lmax, nwins):
-        """returns the coupling matrix of the first nwins tapers"""
-        # store sqrt of taper power in 'tapers' array:
-        if nwins > self.nwins:
-            nwins = self.nwins
-        tapers = np.zeros((self.nl, nwins))
-        for itaper in range(nwins):
-            tapers[:, itaper] = np.sqrt(_shtools.SHPowerSpectrum(
-                self._coeffs(itaper)))
-
-        # compute coupling matrix of the first nwins tapers:
-        coupling_matrix = _shtools.SHMTCouplingMatrix(lmax, tapers[:, :nwins])
-        return coupling_matrix
-
-    def plot_couplingmatrix(self, lmax, nwins, show=True, fname=None):
-        """plots the window's coupling strength"""
-        figsize = _mpl.rcParams['figure.figsize']
-        figsize[0] = figsize[1]
-        fig = _plt.figure(figsize=figsize)
-        ax = fig.add_subplot(111)
-        coupling_matrix = self.get_couplingmatrix(lmax, nwins)
-        ax.imshow(coupling_matrix)
-        ax.set_xlabel('output power')
-        ax.set_ylabel('input power')
-        fig.tight_layout(pad=0.1)
-
-        if show:
-            _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-
-    def info(self):
-        """print meta information about the tapers"""
-        self._info()
-
-
-class SHSymmetricWindow(SHWindow):
-    """
-    This class saves a symmetric spherical window function. It needs to
-    save only the m=0 coefficients
-    """
-    @staticmethod
-    def istype(kind):
-        return kind == 'Symmetric'
-
-    def __init__(self, tapers, eigenvalues, orders, clat=0., clon=0.):
-        # center of cap window
-        self.clat, self.clon = clat, clon
-        # nl: number of degrees, nwins: number of windows
-        self.nl, self.nwins = tapers.shape
-        # lmax: maximum degree
-        self.lmax = self.nl - 1
-        # tapers[nl,nwins]: ith window coefs with m=orders[iwin]
-        self.tapers = tapers
-        # concentration factor of the ith taper
-        self.eigenvalues = eigenvalues
-        # order m of the ith taper
-        self.orders = orders
-
-    def _coeffs(self, itaper):
-        taperm = self.orders[itaper]
-        coeffs = np.zeros((2, self.nl, self.nl))
-        if taperm < 0:
-            coeffs[1, :, abs(taperm)] = self.tapers[:, itaper]
-        else:
-            coeffs[0, :, abs(taperm)] = self.tapers[:, itaper]
-        return coeffs
-
-    def _info(self):
-        print('Cap window with {:d} tapers'.format(self.nwins))
-
-
-class SHAsymmetricWindow(SHWindow):
-    """
-    This class saves a asymmetric spherical window function and is much like a
-    set of real sherical harmonics. It could maybe be merged at some point...
-    """
-    @staticmethod
-    def istype(kind):
-        return kind == 'Asymmetric'
-
-    def __init__(self, tapers, eigenvalues):
-        ncoeffs, self.nwins = tapers.shape
-        self.nl = np.sqrt(ncoeffs).astype(int)
-        self.lmax = self.nl-1
-        self.tapers = tapers
-        self.eigenvalues = eigenvalues
-
-    def _coeffs(self, itaper):
-        return _shtools.SHVectorToCilm(self.tapers[:, itaper], self.lmax)
-
-    def _info(self):
-        print('Asymmetric window with {:d} tapers'.format(self.nwins))

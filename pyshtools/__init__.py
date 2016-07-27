@@ -37,7 +37,7 @@ from . import _constant
 from ._SHTOOLS import *
 
 # ---- Import classes into pyshtools namespace
-from .classes import SHCoeffs, SHGrid, SHWindow
+from .shclasses import SHCoeffs, SHGrid, SHWindow
 
 
 # ---------------------------------------------------------------------
@@ -109,8 +109,9 @@ for _name, _value in _constant.planetsconstants.__dict__.items():
 # ---- formatted text files.
 # ---------------------------------------------------------------------
 print('Loading SHTOOLS -- version', __version__)
+
 _pydocfolder = _os.path.abspath(_os.path.join(_os.path.dirname(__file__),
-                                             'doc'))
+                                              'doc'))
 
 for _name, _func in _SHTOOLS.__dict__.items():
     if callable(_func):
@@ -127,7 +128,7 @@ for _name, _func in _SHTOOLS.__dict__.items():
 for _name in _constant.planetsconstants.__dict__.keys():
     try:
         _path = _os.path.join(_pydocfolder, 'constant_' + _name.lower() +
-                             '.doc')
+                              '.doc')
 
         with open(_path) as _pydocfile:
             _pydoc = _pydocfile.read()
@@ -139,10 +140,8 @@ for _name in _constant.planetsconstants.__dict__.keys():
 
 
 # ---- Define __all__ for use with: from pyshtools import * ----
-__all__ = ['_ndarrayinfo', '_ConstantClass', 'constant', 'classes']
-__all__ += ['SHCoeffs', 'SHRealCoefficients', 'SHComplexCoefficients',
-            'SHGrid', 'DHGrid', 'GLQGrid', 'SHWindow', 'SHSymmetricWindow',
-            'SHAsymmetricWindow']
+__all__ = ['_ndarrayinfo', '_ConstantClass', 'constant', 'shclasses']
+__all__ += ['SHCoeffs', 'SHGrid', 'SHWindow']
 
 for _name, _func in _SHTOOLS.__dict__.items():
     if callable(_func):
