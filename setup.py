@@ -16,6 +16,7 @@ except:
 from setuptools import find_packages
 from numpy.distutils.core import setup, Extension
 from numpy.distutils.command.build import build
+from numpy.distutils.fcompiler import get_default_fcompiler
 from subprocess import CalledProcessError, check_output, check_call
 from multiprocessing import cpu_count
 
@@ -109,11 +110,26 @@ INSTALL_REQUIRES = [
 
 # configure python extension to be compiled with f2py
 
-# Absoft f95 flags:
-# F95FLAGS = ['m64', 'O3', 'YEXT_NAMES=LCS', 'YEXT_SFX=_', 'fpic',
-#             'speed_math=10']
-# gfortran flags:
-F95FLAGS = ['-m64', '-fPIC', '-O3', '-ffast-math']
+
+def get_compiler_flags():
+    compiler = get_default_fcompiler()
+    if compiler == 'absoft':
+        flags = ['-m64', '-O3', '-YEXT_NAMES=LCS', '-YEXT_SFX=_',
+                 '-fpic', '-speed_math=10']
+    elif compiler == 'gnu95':
+        flags = ['-m64', '-fPIC', '-O3', '-ffast-math']
+    elif compiler == 'intel':
+        flags = ['-m64', '-free', '-O3', '-Tf']
+    elif compiler == 'g95':
+        flags = ['-O3', '-fno-second-underscore']
+    elif compiler == 'pg':
+        flags = ['-fast']
+    else:
+        flags = ['-m64', '-O3']
+    return flags
+
+
+F95FLAGS = get_compiler_flags()
 
 
 ext1 = Extension(name='pyshtools._SHTOOLS',
