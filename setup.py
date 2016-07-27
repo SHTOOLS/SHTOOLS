@@ -6,14 +6,13 @@ from __future__ import division as _division
 from __future__ import print_function as _print_function
 import os
 import re
+import glob
 
-from setuptools import find_packages
 from numpy.distutils.core import setup, Extension
 from numpy.distutils.command.build import build
-from numpy.distutils.fcompiler import get_default_fcompiler
+from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
 from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
-from multiprocessing import cpu_count
 
 
 def get_version():
@@ -52,17 +51,7 @@ class SHTOOLS_build(build):
 
     def run(self):
         # build Fortran library using the makefile
-        print('---- BUILDING FORTRAN ----')
-        make_fortran = ['make', 'fortran']
-
-        try:
-            make_fortran.append('-j%d' % cpu_count())
-        except:
-            pass
-
-        # build python module
-        print('---- BUILDING PYTHON ----')
-        check_call(make_fortran)
+        print('---- BUILDING ----')
         build.run(self)
 
         # build documentation
@@ -100,8 +89,7 @@ KEYWORDS = ['Spherical Harmonics', 'Wigner Symbols']
 
 INSTALL_REQUIRES = [
     'future>=0.12.4',
-    'numpy>=1.0.0',
-    'setuptools']
+    'numpy>=1.0.0']
 
 # configure python extension to be compiled with f2py
 
@@ -131,14 +119,27 @@ def configuration(parent_package='', top_path=None):
 
     kwargs = {}
     kwargs['extra_compile_args'] = F95FLAGS
-    kwargs['extra_link_args'] = F95FLAGS
     kwargs['f2py_options'] = ['--quiet']
+
+    # because numpy.distutils.fcompiler.FCompiler doesn't support .F95 extension
+    compiler = FCompiler(get_default_fcompiler())
+    compiler.src_extensions.append('.F95')
+    compiler.language_map['.F95'] = 'f90'
+
+    # collect all Fortran sources
+    files = os.listdir('src')
+    exclude_sources = ['PlanetsConstants.f95', 'PythonWrapper.f95']
+    sources = [os.path.join('src', file) for file in files
+               if file.lower().endswith('.f95') and file not in exclude_sources]
+
+    # Fortran compilation
+    config.add_library('SHTOOLS',
+                       sources=sources,
+                       **kwargs)
 
     # SHTOOLS
     config.add_extension('pyshtools._SHTOOLS',
-                         include_dirs=['modules'],
                          libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
-                         library_dirs=['/usr/local/lib', 'lib'],
                          sources=['src/pyshtools.pyf', 'src/PythonWrapper.f95'],
                          **kwargs)
 
@@ -160,8 +161,8 @@ metadata = dict(
     keywords=KEYWORDS,
     install_requires=INSTALL_REQUIRES,
     platforms='OS Independent',
-    packages=find_packages(),
-    package_data={'': ['doc/*.doc', '*.so']},
+    packages=['pyshtools'],
+    package_data={'': ['doc/*.doc']},
     include_package_data=True,
     classifiers=CLASSIFIERS,
     configuration=configuration,
