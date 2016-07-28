@@ -32,229 +32,29 @@
 <p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="python-routines.html" class="dir">Python</a></p>
 
-	<h1 class="nomarginbot">SHCoeffs</h1>
-	
-	<table class="pyclass">
+	<h1>Classes</h1>
+
+	<table class="main">
 		<tbody>
 		<tr>
-		<td class="head">Subclasses</td> 
-		</tr>
-	
-		<tr>
-		<td class="left"><tt>SHRealCoefficients</tt></td> 
-		<td class="right">Real spherical harmonic coefficient class.</td>
+		<td class="left"><a href="pyshcoeffs.html"><tt>SHCoeffs</tt></a></td> 
+		<td class="right">Class for working with spherical harmonic coefficients.</td>
 		</tr>
 		
 		<tr>
-		<td class="left"><tt>SHComplexCoefficients</tt></td> 
-		<td class="right">Complex spherical harmonic coefficient class.</td>
-		</tr>
-		
-		<tr>
-		<td class="head">Initialization</td> 
-		</tr>
-	
-		<tr>
-		<td class="left"><tt>x = SHCoeffs.from_array()</tt></td> 
-		<td class="right">Initialize using coefficients from an array.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x = SHCoeffs.from_random()</tt></td> 
-		<td class="right">Initialize using random coefficients with a prescribed power spectrum.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x = SHCoeffs.from_file()</tt></td> 
-		<td class="right">Initialize using coefficients from a file.</td>
-		</tr>
-		
-		<tr>
-		<td class="head">Class methods</td> 
-		</tr>
-	
-		<tr>
-		<td class="left"><tt>x.get_degrees()</tt></td> 
-		<td class="right">Return the array <tt>[0,...,lmax]</tt> that contains the ordered degrees <tt>l</tt>.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.get_powerperdegree()</tt></td> 
-		<td class="right">Return the power per degree spectrum.</td>
+		<td class="left"><a href="pyshgrid.html"><tt>SHGrid</tt></a></td> 
+		<td class="right">Class for working with global gridded data.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>x.get_powerperband()</tt></td> 
-		<td class="right">Return the power per log<sub>bandwidth</sub> spectrum.</td>
+		<td class="left"><a href="pyshwindow.html"><tt>SHWindow</tt></a></td> 
+		<td class="right">Class for working with localization windows.</td>
 		</tr>
 
-		<tr>
-		<td class="left"><tt>x.get_coeffs()</tt></td> 
-		<td class="right">Return complex or real spherical harmonics coefficients in different normalizations.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.rotate()</tt></td> 
-		<td class="right">Rotate the spherical harmonics coefficients by
-        <tt>[alpha, beta, gamma]</tt>.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.expand()</tt></td> 
-		<td class="right">Evaluate the coefficients on a spherical grid. Available grid types: <br>
-		<tt>kind ='DH1'</tt>: equidistant lat/lon grid with <tt>nlat=nlon</tt><br>
-		<tt>kind ='DH2'</tt>: equidistant lat/lon grid with <tt>2*nlat=nlon</tt><br>
-		<tt>kind ='GLQ'</tt>: Gauss Legendre Grid</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>x.plot_powerperdegree()</tt></td> 
-		<td class="right">Plot the power per degree spectrum.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.plot_powerperband()</tt></td> 
-		<td class="right">Plot the power per log<sub>bandwidth</sub>(degree) spectrum.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.make_complex()</tt></td> 
-		<td class="right">Convert the real coefficient class to the complex harmonic coefficient class.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.make_real()</tt></td> 
-		<td class="right">Convert the complex coefficient class to the real harmonic coefficient class.</td>
-		</tr>
-		
 		</tbody>
 	</table>
-	
-	<h1 class="nomarginbot extramargintop">SHGrid</h1>
-	
-	<table class="pyclass">
-		<tbody>
 
-		<tr>
-		<td class="head">Subclasses</td> 
-		</tr>
-	
-		<tr>
-		<td class="left"><tt>DHGrid</tt></td> 
-		<td class="right">Class for <i>Driscoll and Healy</i> (1994) sampled grids.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>GLQGrid</tt></td> 
-		<td class="right">Class for Gauss-Legendre quadrature sampled grids.</td>
-		</tr>
-		
-		<tr>
-		<td class="head">Initialization</td> 
-		</tr>
-	
-		<tr>
-		<td class="left"><tt>x = SHGrid.from_array()</tt></td> 
-		<td class="right">Initialize using an array.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x = SHGrid.from_file()</tt></td> 
-		<td class="right">Initialize using an array from a file.</td>
-		</tr>
-		
-		<tr>
-		<td class="head">Methods</td> 
-		</tr>
-	
-		<tr>
-		<td class="left"><tt>x.get_lats()</tt></td> 
-		<td class="right">Return a vector containing the latitude of each row in the grid.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.get_lons()</tt></td> 
-		<td class="right">Return a vector containing the longitude of each column in the grid.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.plot_rawdata()</tt></td> 
-		<td class="right">Plot the grid using a two dimensional cylindrical projection.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.expand()</tt></td> 
-		<td class="right">Expand the gridded data into spherical harmonics.</td>
-		</tr>
-		
-		</tbody>
-	</table>
-	
-	<h1 class="nomarginbot extramargintop">SHWindow</h1>
-	
-	<table class="pyclass">
-		<tbody>
 
-		<tr>
-		<td class="head">Subclasses</td> 
-		</tr>
-	
-		<tr>
-		<td class="left"><tt>SymmetricWindow</tt></td> 
-		<td class="right">Class for windows concentrated within a spherical cap.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>AsymmetricWindow</tt></td> 
-		<td class="right">Class for windows concentrated in an arbitrary domain.</td>
-		</tr>
-		
-		<tr>
-		<td class="head">Initialization</td> 
-		</tr>
-	
-		<tr>
-		<td class="left"><tt>x = SHWindow.from_cap()</tt></td> 
-		<td class="right">Construct windows concentrated with a spherical cap.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x = SHWindow.from_mask()</tt></td> 
-		<td class="right">Construct windows concentrated with an arbitrary region.</td>
-		</tr>
-		
-		<tr>
-		<td class="head">Methods</td> 
-		</tr>
-	
-		<tr>
-		<td class="left"><tt>x.plot()</tt></td> 
-		<td class="right">Plot the best concentrated windows.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.get_spectrum()</tt></td> 
-		<td class="right">Return the power spectrum of the localization windows.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.get_couplingmatrix()</tt></td> 
-		<td class="right">Return the coupling matrix of the first <tt>nwin</tt> tapers.</td>
-		</tr>
-		
-		<tr>
-		<td class="left"><tt>x.plot_couplingmatrix()</tt></td> 
-		<td class="right">Plot the coupling strength of the localization windows.</td>
-		</tr>
-		
-<tr>
-		<td class="left"><tt>x.info()</tt></td> 
-		<td class="right">Print meta information about the tapers.</td>
-		</tr>
-		
-		</tbody>
-	</table>
-	
 <br>
 
 <p class="dir">

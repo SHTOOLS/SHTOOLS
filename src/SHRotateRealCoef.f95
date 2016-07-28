@@ -37,7 +37,7 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj)
 !       IN
 !           cilm        Real "geodesy" normalized spherical harmonic 
 !                       coefficients with dimension (2, lmax+1, lmax+1).
-!           x           Array or rotation angles.
+!           x           Array or rotation angles in radians.
 !           lmax        Maximum spherical harmonic degree.
 !           dj          Rotation matrix with dimension (lmax+1, lmax+1, lmax+1).
 !

@@ -14,7 +14,7 @@ Determine the spherical harmonic coefficients of a complex function rotated by t
 # Parameters
 
 `x` : float, dimension(3)
-:   The three Euler angles, alpha, beta, and gamma.
+:   The three Euler angles, alpha, beta, and gamma, in radians.
 
 `coef` : float, dimension (2, (`lmaxin`+1)\*(`lmaxin`+2)/2)
 :   The input complex spherical harmonic coefficients. This is an indexed array where the real and complex components are given by `coef[0,:]` and `coef[1,:]`, respectively. The functions `SHCilmToCindex` and `SHCindexToCilm` are used to convert to and from indexed and `cilm[:,:,:]` form. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention.
@@ -54,8 +54,6 @@ For a rotation of the physical body without rotation of the coordinate system, u
 To perform the inverse transform of `x(alpha, beta, gamma)`, use `x(-gamma, -beta, -alpha)`.
 
 Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the "x convention", where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be `alpha_y=alpha_x-pi/2`, `beta_x=beta_y`, and `gamma_y=gamma_x+pi/2`.
-
-This routine is based upon code originally written by Guy Masters, which was then subsequently modified by Mark Simons and myself.
 
 # See also
 

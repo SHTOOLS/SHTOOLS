@@ -250,7 +250,7 @@ endif
 
 python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	mkdir -p pyshtools/doc
-	./pyshtools/make_docs.py . .
+	$(PYTHON) ./pyshtools/make_docs.py .
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
