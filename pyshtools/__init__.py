@@ -127,8 +127,6 @@ def _load_documentation():
             print(msg)
 
 
-# --- Import all functions into pyshtools namespace ----
-from ._SHTOOLS import *  # NOQA
 
 # --- Import planetary constants into pyshtools namespace ----
 from . import _constant  # NOQA
@@ -148,6 +146,8 @@ __all__ += ['SHCoeffs', 'SHRealCoefficients', 'SHComplexCoefficients',
             'SHAsymmetricWindow']
 
 
+# --- Import all functions into pyshtools namespace ----
 for _name, _func in _SHTOOLS.__dict__.items():
     if callable(_func):
         __all__.append(_name)
+        globals()[_name] = _func
