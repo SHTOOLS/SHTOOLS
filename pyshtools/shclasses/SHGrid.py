@@ -9,7 +9,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 from .. import _SHTOOLS as shtools
-
+#from .SHCoeffs import SHCoeffs
 
 class SHGrid(object):
     """

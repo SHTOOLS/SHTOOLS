@@ -9,7 +9,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 from .. import _SHTOOLS as shtools
-
+from .SHGrid import SHGrid
 
 class SHCoeffs(object):
     """
@@ -100,7 +100,7 @@ class SHCoeffs(object):
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
         """
-        if iscomplexobj(coeffs):
+        if np.iscomplexobj(coeffs):
             kind = 'complex'
         else:
             kind = 'real'

@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 
 from .. import _SHTOOLS as shtools
 
-
 class SHWindow(object):
     """
     EXPERIMENTAL:
