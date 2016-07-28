@@ -54,7 +54,6 @@ class SHTOOLS_build(build):
 
     def run(self):
         """Build the Fortran library, all python extensions and the docs."""
-        # build Fortran library using the makefile
         print('---- BUILDING ----')
         build.run(self)
 
@@ -92,8 +91,8 @@ KEYWORDS = ['Spherical Harmonics', 'Wigner Symbols']
 
 
 INSTALL_REQUIRES = [
-    'future>=0.12.4',
-    'numpy>=1.0.0']
+    'future (>=0.12.4)',
+    'numpy (>=1.0.0)']
 
 # configure python extension to be compiled with f2py
 
@@ -177,11 +176,9 @@ metadata = dict(
     author='Mark Wieczorek, Matthias Meschede et al.',
     license='BSD',
     keywords=KEYWORDS,
-    install_requires=INSTALL_REQUIRES,
+    requires=INSTALL_REQUIRES,
     platforms='OS Independent',
     packages=['pyshtools', 'pyshtools.shclasses'],
-    package_data={'': ['doc/*.doc']},
-    include_package_data=True,
     classifiers=CLASSIFIERS,
     configuration=configuration,
     cmdclass={'build': SHTOOLS_build}
