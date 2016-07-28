@@ -203,6 +203,8 @@ endif
 all: fortran python
 
 fortran:
+	mkdir -pv lib
+	mkdir -pv modules
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
 	@echo
 	@echo MAKE SUCCESSFUL!
@@ -216,6 +218,8 @@ fortran:
 
 fortran-mp:
 # Delete .o files before and after compiling with OpenMP to avoid issues with "fortran" build.
+	mkdir -pv lib
+	mkdir -pv modules
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
@@ -248,7 +252,7 @@ else
 $(error $(PYTHON_VERSION) is unsupported.)
 endif
 
-python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
+python2: fortran pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	mkdir -p pyshtools/doc
 	$(PYTHON) ./pyshtools/make_docs.py . .
 	@echo
@@ -263,7 +267,7 @@ python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
-python3: pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
+python3: fortran pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
 	mkdir -p pyshtools/doc
 	$(PYTHON3) ./pyshtools/make_docs.py . .
 	@echo
@@ -381,8 +385,8 @@ clean: clean-libs clean-fortran-tests clean-python-tests
 
 clean-libs:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
-	-rm -f lib/lib$(LIBNAME).a
-	-rm -f lib/lib$(LIBNAMEMP).a
+	-rm -rf lib
+	-rm -rf modules
 	-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc

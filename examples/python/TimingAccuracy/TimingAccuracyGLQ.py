@@ -11,7 +11,7 @@ import time
 import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-import pyshtools.shtools as shtools
+from pyshtools import shtools
 
 #==== MAIN FUNCTION ====
 def main():
