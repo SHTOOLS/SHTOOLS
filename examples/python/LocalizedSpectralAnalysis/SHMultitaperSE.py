@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 # import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-import pyshtools as shtools
+import pyshtools.shtools as shtools
 
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))

@@ -250,7 +250,7 @@ endif
 
 python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	mkdir -p pyshtools/doc
-	$(PYTHON) ./pyshtools/make_docs.py .
+	$(PYTHON) ./pyshtools/make_docs.py . .
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
@@ -259,7 +259,7 @@ python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(PYPATH)\'\)
-	@echo import pyshtools as shtools
+	@echo import pyshtools
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
@@ -274,7 +274,7 @@ python3: pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(PYPATH)\'\)
-	@echo import pyshtools as shtools
+	@echo import pyshtools
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
@@ -308,7 +308,7 @@ install-python2: python2
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(SYSPYPATH)\'\)
-	@echo import pyshtools as shtools
+	@echo import pyshtools
 	@echo ---------------------------------------------------------------------------------------------------
 
 install-python3: python3
@@ -320,7 +320,7 @@ install-python3: python3
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(SYSPY3PATH)\'\)
-	@echo import pyshtools as shtools
+	@echo import pyshtools
 	@echo ---------------------------------------------------------------------------------------------------
 
 uninstall:
