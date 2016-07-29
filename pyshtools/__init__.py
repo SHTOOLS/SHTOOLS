@@ -7,8 +7,24 @@ perform spherical harmonic transforms and reconstructions, rotations
 of data expressed in spherical harmonics, and multitaper spectral
 analyses on the sphere.
 
-This module makes use of Python-wrapped Fortran 95 routines. For
-further information, consult the web documentation at
+This module imports the following classes and submodules into the
+main namespace:
+
+    SHCoeffs - A high level class for spherical harmonic coefficients.
+    SHGrid - A high level classes for global grids.
+    shclasses - All pyshtools classes and subclasses.
+    shtools - All pyshtools routines.
+    legendre - Legendre functions.
+    expand - Spherical harmonic expansion routines.
+    io - Spherical harmonic I/O, storage, and conversion routines.
+    spectralanalysis - Global spectral analysis routines.
+    localizedspectralanalysis - Localized spectral analysis routines.
+    rotate - Spherical harmonic rotation routines.
+    gravmag - Gravity and magnetics routines.
+    constant - pyshtools constants.
+    other - Other routines.
+
+For further information, consult the web documentation at
 
    http://shtools.ipgp.fr/
 
