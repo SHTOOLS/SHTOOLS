@@ -388,6 +388,8 @@ clean-libs:
 	-rm -rf lib
 	-rm -rf modules
 	-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
+	-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
+	-rm -f *.so
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
 	-rm -rf pyshtools/__pycache__/
