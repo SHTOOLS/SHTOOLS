@@ -28,15 +28,25 @@ import os as _os
 import numpy as _np
 
 # ---- Import all wrapped SHTOOLS functions into shtools submodule
+print('\npyshtools', __version__,
+      '-- Tools for working with spherical harmonics.')
 from . import _SHTOOLS as shtools
 
 # ---- Import classes into pyshtools namespace
+from . import shclasses
 from .shclasses import SHCoeffs, SHGrid, SHWindow
 
 # ---- Import shtools submodules ----
-from . import legendre, expand, io, spectralanalysis, localizedspectralanalysis
-from . import rotate, gravmag, other
-from .constant import constant
+from . import constant
+from . import legendre
+from . import expand
+from . import io
+from . import spectralanalysis
+from . import localizedspectralanalysis
+from . import rotate
+from . import gravmag
+from . import other
+
 
 # ---- Bind two new functions to the list of all shtools routines ----
 _SHTOOLS.PlmIndex = legendre.PlmIndex
@@ -49,8 +59,6 @@ _SHTOOLS.YilmIndexVector = io.YilmIndexVector
 # ---- are generated during intitial compilation of pyshtools from md
 # ---- formatted text files.
 # ---------------------------------------------------------------------
-print('Loading SHTOOLS -- version', __version__)
-
 _pydocfolder = _os.path.abspath(_os.path.join(_os.path.dirname(__file__),
                                               'doc'))
 
