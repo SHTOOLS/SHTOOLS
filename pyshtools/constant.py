@@ -1,5 +1,5 @@
 """
-pyshtools Constants.
+pyshtools constants.
 
 To view information about a pyshtools constant, use
 
@@ -18,8 +18,7 @@ from . import _constant
 
 # ---------------------------------------------------------------------
 # --- Define a subclass of numpy.ndarray that adds an info() method for
-# --- displaying documentation about a pyshtools constant. Then define
-# --- ConstantClass that holds these objects.
+# --- displaying documentation about a pyshtools constant.
 # ---------------------------------------------------------------------
 class ndarrayinfo(np.ndarray):
     """
@@ -47,16 +46,5 @@ class ndarrayinfo(np.ndarray):
         print(self._infostring, end='')
 
 
-class ConstantClass():
-    """
-    This class is filled with the pyshtools constants
-    To view information about a pyshtools constant, use
-
-    pyshtools.constant.constantname.info()
-    """
-    pass
-
-constant = ConstantClass()
-
 for _name, _value in _constant.planetsconstants.__dict__.items():
-    setattr(constant, _name, _value.view(ndarrayinfo))
+    globals()[_name] = _value.view(ndarrayinfo)
