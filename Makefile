@@ -387,6 +387,7 @@ clean-libs:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
 	-rm -rf lib
 	-rm -rf modules
+	-rm -rf NONE
 	-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
 	-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
 	-rm -f *.so
