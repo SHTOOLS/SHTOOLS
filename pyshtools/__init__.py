@@ -16,7 +16,7 @@ main namespace:
     shtools - All pyshtools routines.
     legendre - Legendre functions.
     expand - Spherical harmonic expansion routines.
-    io - Spherical harmonic I/O, storage, and conversion routines.
+    shio - Spherical harmonic I/O, storage, and conversion routines.
     spectralanalysis - Global spectral analysis routines.
     localizedspectralanalysis - Localized spectral analysis routines.
     rotate - Spherical harmonic rotation routines.
@@ -56,7 +56,7 @@ from .shclasses import SHCoeffs, SHGrid, SHWindow
 from . import constant
 from . import legendre
 from . import expand
-from . import io
+from . import shio
 from . import spectralanalysis
 from . import localizedspectralanalysis
 from . import rotate
@@ -66,7 +66,7 @@ from . import other
 
 # ---- Bind two new functions to the list of all shtools routines ----
 _SHTOOLS.PlmIndex = legendre.PlmIndex
-_SHTOOLS.YilmIndexVector = io.YilmIndexVector
+_SHTOOLS.YilmIndexVector = shio.YilmIndexVector
 
 
 # ---------------------------------------------------------------------
