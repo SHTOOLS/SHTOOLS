@@ -13,7 +13,8 @@ import matplotlib.pyplot as plt
 
 # import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-import pyshtools as shtools
+from pyshtools import shtools
+from pyshtools import constant
 
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
@@ -45,7 +46,7 @@ def TestCrustalThickness():
     gravfile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
     pot, lmaxp, header = shtools.SHReadH(gravfile, degmax, 2)
     gm = header[1] * 1.e9
-    mass = gm / shtools.constant.grav_constant
+    mass = gm / constant.grav_constant
     r_grav = header[0] * 1.e3
     print(r_grav, gm, mass, lmaxp)
 

@@ -7,8 +7,24 @@ perform spherical harmonic transforms and reconstructions, rotations
 of data expressed in spherical harmonics, and multitaper spectral
 analyses on the sphere.
 
-This module makes use of Python-wrapped Fortran 95 routines. For
-further information, consult the web documentation at
+This module imports the following classes and submodules into the
+main namespace:
+
+    SHCoeffs - A high level class for spherical harmonic coefficients.
+    SHGrid - A high level classes for global grids.
+    shclasses - All pyshtools classes and subclasses.
+    shtools - All pyshtools routines.
+    legendre - Legendre functions.
+    expand - Spherical harmonic expansion routines.
+    shio - Spherical harmonic I/O, storage, and conversion routines.
+    spectralanalysis - Global spectral analysis routines.
+    localizedspectralanalysis - Localized spectral analysis routines.
+    rotate - Spherical harmonic rotation routines.
+    gravmag - Gravity and magnetics routines.
+    constant - pyshtools constants.
+    other - Other routines.
+
+For further information, consult the web documentation at
 
    http://shtools.ipgp.fr/
 
@@ -27,76 +43,30 @@ __author__ = 'SHTOOLS developers'
 import os as _os
 import numpy as _np
 
-# ---- Import wrapped SHTOOLS functions into _SHTOOLS
-from . import _SHTOOLS
-
-# ---- Import SHTOOLS constants into _constant
-from . import _constant
+# ---- Import all wrapped SHTOOLS functions into shtools submodule
+print('\npyshtools', __version__,
+      '-- Tools for working with spherical harmonics.')
+from . import _SHTOOLS as shtools
 
 # ---- Import classes into pyshtools namespace
+from . import shclasses
 from .shclasses import SHCoeffs, SHGrid, SHWindow
 
-
-# ---------------------------------------------------------------------
-# --- Define two Python functions that replace their Fortran
-# --- equivalents that use different indexing conventions, then
-# --- bind these function to _SHTOOLS.
-# ---------------------------------------------------------------------
-def PlmIndex(l, m):
-    return (l * (l + 1)) // 2 + m
-
-
-def YilmIndexVector(i, l, m):
-    return l**2 + (i - 1) * l + m
-
-_SHTOOLS.PlmIndex = PlmIndex
-_SHTOOLS.YilmIndexVector = YilmIndexVector
+# ---- Import shtools submodules ----
+from . import constant
+from . import legendre
+from . import expand
+from . import shio
+from . import spectralanalysis
+from . import localizedspectralanalysis
+from . import rotate
+from . import gravmag
+from . import other
 
 
-# ---------------------------------------------------------------------
-# --- Define a subclass of numpy.ndarray that adds an info() method for
-# --- displaying documentation about a pyshtools constant. Then define
-# --- ConstantClass that holds these objects.
-# ---------------------------------------------------------------------
-class _ndarrayinfo(_np.ndarray):
-    """
-    To view information about a pyshtools constant, use
-
-    pyshtools.constant.constantname.info()
-    """
-    def __new__(cls, input_array, infostring=None):
-        # Input array is an already formed ndarray instance
-        obj = _np.asarray(input_array).view(cls)
-        obj._infostring = infostring
-        return obj
-
-    def __array_finalize__(self, obj):
-        if obj is None:
-            return
-        self._infostring = getattr(obj, '_infostring', None)
-
-    def info(self):
-        """
-        To view information about a pyshtools constant, use
-
-        pyshtools.constant.constantname.info()
-        """
-        print(self._infostring, end='')
-
-
-class _ConstantClass():
-    """
-    This class is filled with the pyshtools constants
-    To view information about a pyshtools constant, use
-
-    pyshtools.constant.constantname.info()
-    """
-    pass
-
-constant = _ConstantClass()
-
-for _name, _value in _constant.planetsconstants.__dict__.items():
-    setattr(constant, _name, _value.view(_ndarrayinfo))
+# ---- Bind two new functions to the list of all shtools routines ----
+_SHTOOLS.PlmIndex = legendre.PlmIndex
+_SHTOOLS.YilmIndexVector = shio.YilmIndexVector
 
 
 # ---------------------------------------------------------------------
@@ -105,8 +75,6 @@ for _name, _value in _constant.planetsconstants.__dict__.items():
 # ---- are generated during intitial compilation of pyshtools from md
 # ---- formatted text files.
 # ---------------------------------------------------------------------
-print('Loading SHTOOLS -- version', __version__)
-
 _pydocfolder = _os.path.abspath(_os.path.join(_os.path.dirname(__file__),
                                               'doc'))
 
@@ -137,11 +105,6 @@ for _name in _constant.planetsconstants.__dict__.keys():
 
 
 # ---- Define __all__ for use with: from pyshtools import * ----
-__all__ = ['_ndarrayinfo', '_ConstantClass', 'constant', 'shclasses']
-__all__ += ['SHCoeffs', 'SHGrid', 'SHWindow']
-
-# --- Import all functions into pyshtools namespace ----
-for _name, _func in _SHTOOLS.__dict__.items():
-    if callable(_func):
-        __all__.append(_name)
-        globals()[_name] = _func
+__all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
+           'legendre', 'expand', 'io', 'spectralanalysis',
+           'localizedspectralanalysis', 'rotate', 'gravmag', 'other']

@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 # import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-import pyshtools as shtools
+from pyshtools import shtools
 
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
@@ -63,6 +63,7 @@ def test_MultitaperSE():
     torders = taperorder[:ntapers]
     coeffs1 = np.random.normal(size=(2, lmax + 1, lmax + 1))
     coeffs2 = 0.5 * (coeffs1 + np.random.normal(size=(2, lmax + 1, lmax + 1)))
+    print(coeffs1.shape, coeffs2.shape, tapersk.shape)
     localpower, localpower_sd = shtools.SHMultiTaperCSE(coeffs1, coeffs2, tapersk, torders)
     print('total power:', np.sum(localpower))
 

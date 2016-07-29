@@ -967,7 +967,7 @@ python module _SHTOOLS
             real*8 dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
             integer, optional,intent(in),depend(sh1_d1) :: lmax1 = sh1_d1-1
             real*8 dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-            integer, optional,intent(in),depend(sh2_d1) :: lmax2 = sh2_d2-1
+            integer, optional,intent(in),depend(sh2_d1) :: lmax2 = sh2_d1-1
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer dimension(taper_order_d0),intent(in) :: taper_order
             integer, optional,intent(in),depend(tapers_d0) :: lmaxt = tapers_d0-1

@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-import pyshtools as shtools
+from pyshtools import shtools
 
 import IPython
 

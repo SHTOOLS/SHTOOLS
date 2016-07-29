@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 This script builds the python documentation from the function signature and the
 customized markdown files. The processed documentation is saved as ascii text
@@ -11,6 +10,7 @@ import sys
 import os
 import re
 import textwrap
+
 import _SHTOOLS
 import _constant
 

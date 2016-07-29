@@ -203,6 +203,8 @@ endif
 all: fortran python
 
 fortran:
+	mkdir -pv lib
+	mkdir -pv modules
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
 	@echo
 	@echo MAKE SUCCESSFUL!
@@ -216,6 +218,8 @@ fortran:
 
 fortran-mp:
 # Delete .o files before and after compiling with OpenMP to avoid issues with "fortran" build.
+	mkdir -pv lib
+	mkdir -pv modules
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
@@ -248,9 +252,9 @@ else
 $(error $(PYTHON_VERSION) is unsupported.)
 endif
 
-python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
+python2: fortran pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	mkdir -p pyshtools/doc
-	$(PYTHON) ./pyshtools/make_docs.py .
+	$(PYTHON) ./pyshtools/make_docs.py . .
 	@echo
 	@echo MAKE SUCCESSFUL!
 	@echo
@@ -259,11 +263,11 @@ python2: pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(PYPATH)\'\)
-	@echo import pyshtools as shtools
+	@echo import pyshtools
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
-python3: pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
+python3: fortran pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
 	mkdir -p pyshtools/doc
 	$(PYTHON3) ./pyshtools/make_docs.py . .
 	@echo
@@ -274,7 +278,7 @@ python3: pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(PYPATH)\'\)
-	@echo import pyshtools as shtools
+	@echo import pyshtools
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
@@ -308,7 +312,7 @@ install-python2: python2
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(SYSPYPATH)\'\)
-	@echo import pyshtools as shtools
+	@echo import pyshtools
 	@echo ---------------------------------------------------------------------------------------------------
 
 install-python3: python3
@@ -320,7 +324,7 @@ install-python3: python3
 	@echo
 	@echo import sys
 	@echo sys.path.append\(\'$(SYSPY3PATH)\'\)
-	@echo import pyshtools as shtools
+	@echo import pyshtools
 	@echo ---------------------------------------------------------------------------------------------------
 
 uninstall:
@@ -381,9 +385,12 @@ clean: clean-libs clean-fortran-tests clean-python-tests
 
 clean-libs:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
-	-rm -f lib/lib$(LIBNAME).a
-	-rm -f lib/lib$(LIBNAMEMP).a
+	-rm -rf lib
+	-rm -rf modules
+	-rm -rf NONE
 	-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
+	-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
+	-rm -f *.so
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
 	-rm -rf pyshtools/__pycache__/
