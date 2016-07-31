@@ -103,7 +103,13 @@ for _name in _constant.planetsconstants.__dict__.keys():
         print(msg)
 
 
+# ---- Rewrite shtools doc string ----
+shtools.__doc__ = (
+    'pyshtools submodule that includes all pyshtools routines, with the\n' +
+    'exception of shclasses.')
+
+
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
-           'legendre', 'expand', 'io', 'spectralanalysis',
+           'legendre', 'expand', 'shio', 'spectralanalysis',
            'localizedspectralanalysis', 'rotate', 'gravmag', 'other']
