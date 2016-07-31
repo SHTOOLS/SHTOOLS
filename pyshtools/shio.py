@@ -41,6 +41,10 @@ SHrtoc           Convert real spherical harmonics to complex form.
 SHctor           Convert complex spherical harmonics to real form.
 """
 
+from __future__ import absolute_import as _absolute_import
+from __future__ import division as _division
+from __future__ import print_function as _print_function
+
 from ._SHTOOLS import SHRead
 from ._SHTOOLS import SHReadH
 from ._SHTOOLS import SHReadError

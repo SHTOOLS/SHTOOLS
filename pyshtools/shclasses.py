@@ -24,13 +24,15 @@ pyshtools class structure:
 For more information, see the documentation for the top level classes.
 """
 
+from __future__ import absolute_import as _absolute_import
+from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-import numpy as np
+import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 
-from . import _SHTOOLS as shtools
+from . import _SHTOOLS as _shtools
 
 
 # =============================================================================
@@ -126,7 +128,7 @@ class SHCoeffs(object):
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
         """
-        if np.iscomplexobj(coeffs):
+        if _np.iscomplexobj(coeffs):
             kind = 'complex'
         else:
             kind = 'real'
@@ -200,23 +202,23 @@ class SHCoeffs(object):
                 "Input value was {:s}.".format(repr(kind)))
 
         nl = len(power)
-        l = np.arange(nl)
+        l = _np.arange(nl)
 
         if kind.lower() == 'real':
-            coeffs = np.random.normal(size=(2, nl, nl))
+            coeffs = _np.random.normal(size=(2, nl, nl))
         elif kind.lower() == 'complex':
-            coeffs = (np.random.normal(size=(2, nl, nl)) +
-                      1j * np.random.normal(size=(2, nl, nl)))
+            coeffs = (_np.random.normal(size=(2, nl, nl)) +
+                      1j * _np.random.normal(size=(2, nl, nl)))
 
         if normalization.lower() == '4pi':
-            coeffs *= np.sqrt(
-                power / (2.0 * l + 1.0))[np.newaxis, :, np.newaxis]
+            coeffs *= _np.sqrt(
+                power / (2.0 * l + 1.0))[_np.newaxis, :, _np.newaxis]
         elif normalization.lower() == 'ortho':
-            coeffs *= np.sqrt(
-                4.0 * np.pi * power / (2.0 * l + 1.0)
-                )[np.newaxis, :, np.newaxis]
+            coeffs *= _np.sqrt(
+                4.0 * _np.pi * power / (2.0 * l + 1.0)
+                )[_np.newaxis, :, _np.newaxis]
         elif normalization.lower() == 'schmidt':
-            coeffs *= np.sqrt(power)[np.newaxis, :, np.newaxis]
+            coeffs *= _np.sqrt(power)[_np.newaxis, :, _np.newaxis]
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
@@ -289,7 +291,7 @@ class SHCoeffs(object):
 
         if format.lower() == 'shtools':
             if kind.lower() == 'real':
-                coeffs, lmax = shtools.SHRead(fname, lmax, **kwargs)
+                coeffs, lmax = _shtools.SHRead(fname, lmax, **kwargs)
             else:
                 raise NotImplementedError(
                     "kind={:s} not yet implemented".format(repr(kind)))
@@ -318,7 +320,7 @@ class SHCoeffs(object):
 
         degrees : numpy ndarray of size (lmax+1).
         """
-        return np.arange(self.lmax + 1)
+        return _np.arange(self.lmax + 1)
 
     def get_powerperdegree(self):
         """
@@ -352,7 +354,7 @@ class SHCoeffs(object):
         power : numpy ndarray of size (lmax+1).
         """
         ls = self.get_degrees()
-        return self._powerperdegree() * ls * np.log(bandwidth)
+        return self._powerperdegree() * ls * _np.log(bandwidth)
 
     # ---- Return coefficients with a different normalization convention ----
     def get_coeffs(self, normalization='4pi', csphase=1):
@@ -468,9 +470,9 @@ class SHCoeffs(object):
         alpha_y=alpha_x-pi/2, beta_x=beta_y, and gamma_y=gamma_x+pi/2.
         """
         if degrees:
-            angles = np.radians([alpha, beta, gamma])
+            angles = _np.radians([alpha, beta, gamma])
         else:
-            angles = np.array([alpha, beta, gamma])
+            angles = _np.array([alpha, beta, gamma])
 
         rot = self._rotate(angles, dj_matrix)
         return rot
@@ -648,16 +650,16 @@ class SHRealCoeffs(SHCoeffs):
     def __init__(self, coeffs, normalization='4pi', csphase=1):
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
-        mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
+        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
         mask[0, 0, 0] = True
-        for l in np.arange(lmax + 1):
+        for l in _np.arange(lmax + 1):
             mask[:, l, :l + 1] = True
         mask[1, :, 0] = False
 
         self.mask = mask
         self.lmax = lmax
-        self.coeffs = np.copy(coeffs)
-        self.coeffs[np.invert(mask)] = 0.
+        self.coeffs = _np.copy(coeffs)
+        self.coeffs[_np.invert(mask)] = 0.
         self.kind = 'real'
         self.normalization = normalization
         self.csphase = csphase
@@ -673,13 +675,13 @@ class SHRealCoeffs(SHCoeffs):
 
         SHComplexCoeffsInstance = x.make_complex()
         """
-        rcomplex_coeffs = shtools.SHrtoc(self.coeffs,
-                                         convention=1, switchcs=0)
+        rcomplex_coeffs = _shtools.SHrtoc(self.coeffs,
+                                          convention=1, switchcs=0)
 
         # These coefficients are using real floats, and need to be
         # converted to complex form.
-        complex_coeffs = np.zeros((2, self.lmax+1, self.lmax+1),
-                                  dtype='complex')
+        complex_coeffs = _np.zeros((2, self.lmax+1, self.lmax+1),
+                                   dtype='complex')
         complex_coeffs[0, :, :] = (rcomplex_coeffs[0, :, :] + 1j *
                                    rcomplex_coeffs[1, :, :])
         complex_coeffs[1, :, :] = complex_coeffs[0, :, :].conjugate()
@@ -694,14 +696,14 @@ class SHRealCoeffs(SHCoeffs):
     def _powerperdegree(self):
         """Return the power per degree l spectrum."""
         if self.normalization == '4pi':
-            return shtools.SHPowerSpectrum(self.coeffs)
+            return _shtools.SHPowerSpectrum(self.coeffs)
         elif self.normalization == 'schmidt':
-            power = shtools.SHPowerSpectrum(self.coeffs)
+            power = _shtools.SHPowerSpectrum(self.coeffs)
             l = self.get_degrees()
             power /= (2.0 * l + 1.0)
             return power
         elif self.normalization == 'ortho':
-            return shtools.SHPowerSpectrum(self.coeffs) / (4.0 * np.pi)
+            return _shtools.SHPowerSpectrum(self.coeffs) / (4.0 * _np.pi)
         else:
             raise ValueError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
@@ -712,30 +714,31 @@ class SHRealCoeffs(SHCoeffs):
         Return real spherical harmonic coefficients with a
         different normalization convention.
         """
-        coeffs = np.copy(self.coeffs)
+        coeffs = _np.copy(self.coeffs)
 
         if self.normalization == output_normalization:
             pass
         elif (self.normalization == '4pi' and
               output_normalization == 'schmidt'):
             for l in self.get_degrees():
-                coeffs[:, l, :l+1] *= np.sqrt(2.0 * l + 1.0)
+                coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
         elif self.normalization == '4pi' and output_normalization == 'ortho':
-            coeffs *= np.sqrt(4.0 * np.pi)
+            coeffs *= _np.sqrt(4.0 * _np.pi)
         elif (self.normalization == 'schmidt' and
               output_normalization == '4pi'):
             for l in self.get_degrees():
-                coeffs[:, l, :l+1] /= np.sqrt(2.0 * l + 1.0)
+                coeffs[:, l, :l+1] /= _np.sqrt(2.0 * l + 1.0)
         elif (self.normalization == 'schmidt' and
               output_normalization == 'ortho'):
             for l in self.get_degrees():
-                coeffs[:, l, :l+1] *= np.sqrt(4.0 * np.pi / (2.0 * l + 1.0))
+                coeffs[:, l, :l+1] *= _np.sqrt(4.0 * _np.pi / (2.0 * l + 1.0))
         elif self.normalization == 'ortho' and output_normalization == '4pi':
-            coeffs /= np.sqrt(4.0 * np.pi)
+            coeffs /= _np.sqrt(4.0 * _np.pi)
         elif (self.normalization == 'ortho' and
               output_normalization == 'schmidt'):
             for l in self.get_degrees():
-                coeffs[:, l, :l+1] *= np.sqrt((2.0 * l + 1.0) / (4.0 * np.pi))
+                coeffs[:, l, :l+1] *= _np.sqrt((2.0 * l + 1.0) /
+                                               (4.0 * _np.pi))
 
         if output_csphase != self.csphase:
             for m in self.get_degrees():
@@ -750,10 +753,10 @@ class SHRealCoeffs(SHCoeffs):
         harmonics coefficients by the Euler angles alpha, beta, gamma.
         """
         if dj_matrix is None:
-            dj_matrix = shtools.djpi2(self.lmax + 1)
+            dj_matrix = _shtools.djpi2(self.lmax + 1)
 
         # The coefficients need to be 4pi normalized with csphase = 1
-        coeffs = shtools.SHRotateRealCoef(
+        coeffs = _shtools.SHRotateRealCoef(
             self.get_coeffs(normalization='4pi', csphase=1), angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
@@ -784,8 +787,8 @@ class SHRealCoeffs(SHCoeffs):
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
                 "Input value was {:s}".format(repr(self.normalization)))
 
-        data = shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
-                                  csphase=self.csphase, **kwargs)
+        data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
+                                   csphase=self.csphase, **kwargs)
         gridout = SHGrid.from_array(data, grid='DH')
         return gridout
 
@@ -803,10 +806,10 @@ class SHRealCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
         if zeros is None:
-            zeros, weights = shtools.SHGLQ(self.lmax)
+            zeros, weights = _shtools.SHGLQ(self.lmax)
 
-        data = shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
-                                   csphase=self.csphase, **kwargs)
+        data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
+                                    csphase=self.csphase, **kwargs)
         gridout = SHGrid.from_array(data, grid='GLQ')
         return gridout
 
@@ -825,16 +828,16 @@ class SHComplexCoeffs(SHCoeffs):
     def __init__(self, coeffs, normalization='4pi', csphase=1):
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
-        mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
+        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
         mask[0, 0, 0] = True
-        for l in np.arange(lmax + 1):
+        for l in _np.arange(lmax + 1):
             mask[:, l, :l + 1] = True
         mask[1, :, 0] = False
 
         self.mask = mask
         self.lmax = lmax
-        self.coeffs = np.copy(coeffs)
-        self.coeffs[np.invert(mask)] = 0.
+        self.coeffs = _np.copy(coeffs)
+        self.coeffs[_np.invert(mask)] = 0.
         self.kind = 'complex'
         self.normalization = normalization
         self.csphase = csphase
@@ -858,7 +861,7 @@ class SHComplexCoeffs(SHCoeffs):
                                    'to a real field. l = {:d}, m = 0: {:e}'
                                    .format(l, self.coeffs[0, l, 0]))
 
-            for m in np.arange(1, l + 1):
+            for m in _np.arange(1, l + 1):
                 if m % 2 == 1:
                     if (self.coeffs[0, l, m] != -
                             self.coeffs[1, l, m].conjugate()):
@@ -876,11 +879,11 @@ class SHComplexCoeffs(SHCoeffs):
                                            .format(l, m, self.coeffs[0, l, 0],
                                                    self.coeffs[1, l, 0]))
 
-        coeffs_rc = np.zeros((2, self.lmax + 1, self.lmax + 1))
+        coeffs_rc = _np.zeros((2, self.lmax + 1, self.lmax + 1))
         coeffs_rc[0, :, :] = self.coeffs[0, :, :].real
         coeffs_rc[1, :, :] = self.coeffs[0, :, :].imag
-        real_coeffs = shtools.SHctor(coeffs_rc, convention=1,
-                                     switchcs=0)
+        real_coeffs = _shtools.SHctor(coeffs_rc, convention=1,
+                                      switchcs=0)
         return SHCoeffs.from_array(real_coeffs,
                                    normalization=self.normalization,
                                    csphase=self.csphase)
@@ -888,14 +891,14 @@ class SHComplexCoeffs(SHCoeffs):
     def _powerperdegree(self):
         """Return the power per degree l spectrum."""
         if self.normalization == '4pi':
-            return shtools.SHPowerSpectrumC(self.coeffs)
+            return _shtools.SHPowerSpectrumC(self.coeffs)
         elif self.normalization == 'schmidt':
-            power = shtools.SHPowerSpectrumC(self.coeffs)
+            power = _shtools.SHPowerSpectrumC(self.coeffs)
             l = self.get_degrees()
             power /= (2.0 * l + 1.0)
             return power
         elif self.normalization == 'ortho':
-            return shtools.SHPowerSpectrumC(self.coeffs) / (4.0 * np.pi)
+            return _shtools.SHPowerSpectrumC(self.coeffs) / (4.0 * _np.pi)
         else:
             raise ValueError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
@@ -906,30 +909,31 @@ class SHComplexCoeffs(SHCoeffs):
         Return complex spherical harmonics coefficients with a
         different normalization convention.
         """
-        coeffs = np.copy(self.coeffs)
+        coeffs = _np.copy(self.coeffs)
 
         if self.normalization == output_normalization:
             pass
         elif (self.normalization == '4pi' and
               output_normalization == 'schmidt'):
             for l in self.get_degrees():
-                coeffs[:, l, :l+1] *= np.sqrt(2.0 * l + 1.0)
+                coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
         elif self.normalization == '4pi' and output_normalization == 'ortho':
-            coeffs *= np.sqrt(4.0 * np.pi)
+            coeffs *= _np.sqrt(4.0 * _np.pi)
         elif (self.normalization == 'schmidt' and
               output_normalization == '4pi'):
             for l in self.get_degrees():
-                coeffs[:, l, :l+1] /= np.sqrt(2.0 * l + 1.0)
+                coeffs[:, l, :l+1] /= _np.sqrt(2.0 * l + 1.0)
         elif (self.normalization == 'schmidt' and
               output_normalization == 'ortho'):
             for l in self.get_degrees():
-                coeffs[:, l, :l+1] *= np.sqrt(4.0 * np.pi / (2.0 * l + 1.0))
+                coeffs[:, l, :l+1] *= _np.sqrt(4.0 * _np.pi / (2.0 * l + 1.0))
         elif self.normalization == 'ortho' and output_normalization == '4pi':
-            coeffs /= np.sqrt(4.0 * np.pi)
+            coeffs /= _np.sqrt(4.0 * _np.pi)
         elif (self.normalization == 'ortho' and
               output_normalization == 'schmidt'):
             for l in self.get_degrees():
-                coeffs[:, l, :l+1] *= np.sqrt((2.0 * l + 1.0) / (4.0 * np.pi))
+                coeffs[:, l, :l+1] *= _np.sqrt((2.0 * l + 1.0) /
+                                               (4.0 * _np.pi))
 
         if output_csphase != self.csphase:
             for m in self.get_degrees():
@@ -950,22 +954,22 @@ class SHComplexCoeffs(SHCoeffs):
         # combined to make a complex grid, and the resultant is expanded
         # in complex spherical harmonics.
         if dj_matrix is None:
-            dj_matrix = shtools.djpi2(self.lmax + 1)
+            dj_matrix = _shtools.djpi2(self.lmax + 1)
 
         cgrid = self.expand(grid='DH')
         rgrid, igrid = cgrid.data.real, cgrid.data.imag
-        rgridcoeffs = shtools.SHExpandDH(rgrid, norm=1, sampling=1, csphase=1)
-        igridcoeffs = shtools.SHExpandDH(igrid, norm=1, sampling=1, csphase=1)
+        rgridcoeffs = _shtools.SHExpandDH(rgrid, norm=1, sampling=1, csphase=1)
+        igridcoeffs = _shtools.SHExpandDH(igrid, norm=1, sampling=1, csphase=1)
 
-        rgridcoeffs_rot = shtools.SHRotateRealCoef(
+        rgridcoeffs_rot = _shtools.SHRotateRealCoef(
             rgridcoeffs, angles, dj_matrix)
-        igridcoeffs_rot = shtools.SHRotateRealCoef(
+        igridcoeffs_rot = _shtools.SHRotateRealCoef(
             igridcoeffs, angles, dj_matrix)
 
-        rgrid_rot = shtools.MakeGridDH(rgridcoeffs_rot, norm=1,
-                                       sampling=1, csphase=1)
-        igrid_rot = shtools.MakeGridDH(igridcoeffs_rot, norm=1,
-                                       sampling=1, csphase=1)
+        rgrid_rot = _shtools.MakeGridDH(rgridcoeffs_rot, norm=1,
+                                        sampling=1, csphase=1)
+        igrid_rot = _shtools.MakeGridDH(igridcoeffs_rot, norm=1,
+                                        sampling=1, csphase=1)
         grid_rot = rgrid_rot + 1j * igrid_rot
 
         if self.normalization == '4pi':
@@ -978,8 +982,8 @@ class SHComplexCoeffs(SHCoeffs):
             raise ValueError(
                 "Normalization must be '4pi', 'ortho', or 'schmidt'")
 
-        coeffs_rot = shtools.SHExpandDHC(grid_rot, norm=norm,
-                                         csphase=self.csphase)
+        coeffs_rot = _shtools.SHExpandDHC(grid_rot, norm=norm,
+                                          csphase=self.csphase)
 
         return SHCoeffs.from_array(coeffs_rot,
                                    normalization=self.normalization,
@@ -1001,8 +1005,8 @@ class SHComplexCoeffs(SHCoeffs):
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
                 "Input value was {:s}".format(repr(self.normalization)))
 
-        data = shtools.MakeGridDHC(self.coeffs, sampling=sampling,
-                                   norm=norm, csphase=self.csphase, **kwargs)
+        data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
+                                    norm=norm, csphase=self.csphase, **kwargs)
         gridout = SHGrid.from_array(data, grid='DH')
         return gridout
 
@@ -1020,10 +1024,10 @@ class SHComplexCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
         if zeros is None:
-            zeros, weights = shtools.SHGLQ(self.lmax)
+            zeros, weights = _shtools.SHGLQ(self.lmax)
 
-        data = shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
-                                    csphase=self.csphase, **kwargs)
+        data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
+                                     csphase=self.csphase, **kwargs)
         gridout = SHGrid.from_array(data, grid='GLQ')
         return gridout
 
@@ -1087,7 +1091,7 @@ class SHGrid(object):
         grid : 'DH' (default) or 'GLQ' for Driscoll and Healy grids or Gauss
                 Legendre Quadrature grids, respectively.
         """
-        if np.iscomplexobj(array):
+        if _np.iscomplexobj(array):
             kind = 'complex'
         else:
             kind = 'real'
@@ -1254,7 +1258,7 @@ class DHRealGrid(SHGrid):
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
         """
-        lats = np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
+        lats = _np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
     def _get_lons(self):
@@ -1262,7 +1266,7 @@ class DHRealGrid(SHGrid):
         Return a vector containing the longitudes (in degrees) of each row
         of the gridded data.
         """
-        lons = np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
+        lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
     def _expand(self, normalization, csphase, **kwargs):
@@ -1280,8 +1284,8 @@ class DHRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = shtools.SHExpandDH(self.data, norm=norm, csphase=csphase,
-                                  **kwargs)
+        cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase,
+                                   **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase)
@@ -1340,7 +1344,7 @@ class DHComplexGrid(SHGrid):
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
         """
-        lats = np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
+        lats = _np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
     def _get_lons(self):
@@ -1348,7 +1352,7 @@ class DHComplexGrid(SHGrid):
         Return a vector containing the longitudes (in degrees) of each row
         of the gridded data.
         """
-        lons = np.linspace(0., 360.0 - 360.0 / self.nlon, num=self.nlon)
+        lons = _np.linspace(0., 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
     def _expand(self, normalization, csphase, **kwargs):
@@ -1366,8 +1370,8 @@ class DHComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = shtools.SHExpandDHC(self.data, norm=norm, csphase=csphase,
-                                   **kwargs)
+        cilm = _shtools.SHExpandDHC(self.data, norm=norm, csphase=csphase,
+                                    **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase)
@@ -1416,7 +1420,7 @@ class GLQRealGrid(SHGrid):
                              )
 
         if zeros is None or weights is None:
-            self.zeros, self.weights = shtools.SHGLQ(self.lmax)
+            self.zeros, self.weights = _shtools.SHGLQ(self.lmax)
         else:
             self.zeros = zeros
             self.weights = weights
@@ -1430,7 +1434,7 @@ class GLQRealGrid(SHGrid):
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
         """
-        lats = 90. - np.arccos(self.zeros) * 180. / np.pi
+        lats = 90. - _np.arccos(self.zeros) * 180. / _np.pi
         return lats
 
     def _get_lons(self):
@@ -1438,7 +1442,7 @@ class GLQRealGrid(SHGrid):
         Return a vector containing the longitudes (in degrees) of each column
         of the gridded data.
         """
-        lons = np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
+        lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
     def _expand(self, normalization, csphase, **kwargs):
@@ -1456,8 +1460,8 @@ class GLQRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = shtools.SHExpandGLQ(self.data, self.weights, self.zeros,
-                                   norm=norm, csphase=csphase, **kwargs)
+        cilm = _shtools.SHExpandGLQ(self.data, self.weights, self.zeros,
+                                    norm=norm, csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase)
@@ -1501,7 +1505,7 @@ class GLQComplexGrid(SHGrid):
                              )
 
         if zeros is None or weights is None:
-            self.zeros, self.weights = shtools.SHGLQ(self.lmax)
+            self.zeros, self.weights = _shtools.SHGLQ(self.lmax)
         else:
             self.zeros = zeros
             self.weights = weights
@@ -1515,7 +1519,7 @@ class GLQComplexGrid(SHGrid):
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
         """
-        lats = 90. - np.arccos(self.zeros) * 180. / np.pi
+        lats = 90. - _np.arccos(self.zeros) * 180. / _np.pi
         return lats
 
     def _get_lons(self):
@@ -1523,7 +1527,7 @@ class GLQComplexGrid(SHGrid):
         Return a vector containing the longitudes (in degrees) of each column
         of the gridded data.
         """
-        lons = np.linspace(0., 360. - 360. / self.nlon, num=self.nlon)
+        lons = _np.linspace(0., 360. - 360. / self.nlon, num=self.nlon)
         return lons
 
     def _expand(self, normalization, csphase, **kwargs):
@@ -1541,8 +1545,8 @@ class GLQComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = shtools.SHExpandGLQC(self.data, self.weights, self.zeros,
-                                    norm=norm, csphase=csphase, **kwargs)
+        cilm = _shtools.SHExpandGLQC(self.data, self.weights, self.zeros,
+                                     norm=norm, csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase)
@@ -1584,9 +1588,9 @@ class SHWindow(object):
         constructs a spherical cap window
         """
         if degrees:
-            theta = np.radians(theta)
+            theta = _np.radians(theta)
 
-        tapers, eigenvalues, taper_order = shtools.SHReturnTapers(theta, lmax)
+        tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(theta, lmax)
         return SHSymmetricWindow(tapers, eigenvalues, taper_order,
                                  clat=clat, clon=clon)
 
@@ -1595,7 +1599,7 @@ class SHWindow(object):
         """
         constructs optimal window functions in a masked region (needs dh grid)
         """
-        tapers, eigenvalues = shtools.SHReturnTapersMap(
+        tapers, eigenvalues = _shtools.SHReturnTapersMap(
             dh_mask, lmax, sampling=sampling, Ntapers=nwins)
         return SHAsymmetricWindow(tapers, eigenvalues)
 
@@ -1606,7 +1610,7 @@ class SHWindow(object):
         # ---- setup figure and axes
         maxcolumns = 5
         ncolumns = min(maxcolumns, nwins)
-        nrows = np.ceil(nwins / ncolumns).astype(int)
+        nrows = _np.ceil(nwins / ncolumns).astype(int)
         figsize = ncolumns * 1.2, nrows * 1.2 + 0.5
         fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
         for ax in axes[:-1, :].flatten():
@@ -1621,7 +1625,7 @@ class SHWindow(object):
             evalue = self.eigenvalues[itaper]
             coeffs = self._coeffs(itaper)
             ax = axes.flatten()[itaper]
-            grid = shtools.MakeGridDH(coeffs)
+            grid = _shtools.MakeGridDH(coeffs)
             ax.imshow(grid)
             ax.set_title('concentration: {:2.2f}'.format(evalue))
         fig.tight_layout(pad=0.5)
@@ -1636,20 +1640,20 @@ class SHWindow(object):
         for itaper in range(nwins):
             tapercoeffs = self._coeffs(itaper)
             modelcoeffs = shcoeffs.get_coeffs(normalization='4pi', kind='real')
-            coeffs = shtools.SHMultiply(tapercoeffs, modelcoeffs)
+            coeffs = _shtools.SHMultiply(tapercoeffs, modelcoeffs)
 
     def get_couplingmatrix(self, lmax, nwins):
         """returns the coupling matrix of the first nwins tapers"""
         # store sqrt of taper power in 'tapers' array:
         if nwins > self.nwins:
             nwins = self.nwins
-        tapers = np.zeros((self.nl, nwins))
+        tapers = _np.zeros((self.nl, nwins))
         for itaper in range(nwins):
-            tapers[:, itaper] = np.sqrt(shtools.SHPowerSpectrum(
+            tapers[:, itaper] = _np.sqrt(_shtools.SHPowerSpectrum(
                 self._coeffs(itaper)))
 
         # compute coupling matrix of the first nwins tapers:
-        coupling_matrix = shtools.SHMTCouplingMatrix(lmax, tapers[:, :nwins])
+        coupling_matrix = _shtools.SHMTCouplingMatrix(lmax, tapers[:, :nwins])
         return coupling_matrix
 
     def plot_couplingmatrix(self, lmax, nwins, show=True, fname=None):
@@ -1699,7 +1703,7 @@ class SHSymmetricWindow(SHWindow):
 
     def _coeffs(self, itaper):
         taperm = self.orders[itaper]
-        coeffs = np.zeros((2, self.nl, self.nl))
+        coeffs = _np.zeros((2, self.nl, self.nl))
         if taperm < 0:
             coeffs[1, :, abs(taperm)] = self.tapers[:, itaper]
         else:
@@ -1721,13 +1725,13 @@ class SHAsymmetricWindow(SHWindow):
 
     def __init__(self, tapers, eigenvalues):
         ncoeffs, self.nwins = tapers.shape
-        self.nl = np.sqrt(ncoeffs).astype(int)
+        self.nl = _np.sqrt(ncoeffs).astype(int)
         self.lmax = self.nl-1
         self.tapers = tapers
         self.eigenvalues = eigenvalues
 
     def _coeffs(self, itaper):
-        return shtools.SHVectorToCilm(self.tapers[:, itaper], self.lmax)
+        return _shtools.SHVectorToCilm(self.tapers[:, itaper], self.lmax)
 
     def _info(self):
         print('Asymmetric window with {:d} tapers'.format(self.nwins))
