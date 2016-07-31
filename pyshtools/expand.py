@@ -47,7 +47,17 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ._SHTOOLS import SHExpandDH, MakeGridDH, SHExpandDHC, MakeGridDHC
-from ._SHTOOLS import SHGLQ, SHExpandGLQ, MakeGridGLQ, SHExpandGLQC
-from ._SHTOOLS import MakeGridGLQC, GLQGridCoord, SHExpandLSQ, MakeGrid2D
-from ._SHTOOLS import MakeGridPoint, SHMultiply
+from ._SHTOOLS import SHExpandDH
+from ._SHTOOLS import MakeGridDH
+from ._SHTOOLS import SHExpandDHC
+from ._SHTOOLS import MakeGridDHC
+from ._SHTOOLS import SHGLQ
+from ._SHTOOLS import SHExpandGLQ
+from ._SHTOOLS import MakeGridGLQ
+from ._SHTOOLS import SHExpandGLQC
+from ._SHTOOLS import MakeGridGLQC
+from ._SHTOOLS import GLQGridCoord
+from ._SHTOOLS import SHExpandLSQ
+from ._SHTOOLS import MakeGrid2D
+from ._SHTOOLS import MakeGridPoint
+from ._SHTOOLS import SHMultiply

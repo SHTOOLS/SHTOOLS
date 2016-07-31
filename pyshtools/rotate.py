@@ -15,4 +15,6 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ._SHTOOLS import djpi2, SHRotateCoef, SHRotateRealCoef
+from ._SHTOOLS import djpi2
+from ._SHTOOLS import SHRotateCoef
+from ._SHTOOLS import SHRotateRealCoef

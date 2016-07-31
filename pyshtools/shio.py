@@ -45,10 +45,20 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ._SHTOOLS import SHRead, SHReadH, SHReadError, SHReadErrorH
-from ._SHTOOLS import SHRead2, SHRead2Error, SHReadJPL, SHReadJPLError
-from ._SHTOOLS import SHCilmToCindex, SHCindexToCilm, SHCilmToVector
-from ._SHTOOLS import SHVectorToCilm, SHrtoc, SHctor
+from ._SHTOOLS import SHRead
+from ._SHTOOLS import SHReadH
+from ._SHTOOLS import SHReadError
+from ._SHTOOLS import SHReadErrorH
+from ._SHTOOLS import SHRead2
+from ._SHTOOLS import SHRead2Error
+from ._SHTOOLS import SHReadJPL
+from ._SHTOOLS import SHReadJPLError
+from ._SHTOOLS import SHCilmToCindex
+from ._SHTOOLS import SHCindexToCilm
+from ._SHTOOLS import SHCilmToVector
+from ._SHTOOLS import SHVectorToCilm
+from ._SHTOOLS import SHrtoc
+from ._SHTOOLS import SHctor
 
 
 # ---------------------------------------------------------------------

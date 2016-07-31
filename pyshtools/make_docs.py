@@ -4,7 +4,9 @@ customized markdown files. The processed documentation is saved as ascii text
 files which are loaded on runtime and replace the __doc__ string of the f2py
 wrapped functions.
 """
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import as _absolute_import
+from __future__ import division as _division
+from __future__ import print_function as _print_function
 
 import sys
 import os
@@ -27,28 +29,31 @@ def main():
     for name, func in _SHTOOLS.__dict__.items():
         if callable(func):
             try:
-                #---- process and load documentation
-                # read md file documentation:
-                fname_mddoc = os.path.join(mddocfolder, 'py' + name.lower() + '.md')
+                # ---- process and load documentation ----
+                # ---- read md file documentation: ----
+                fname_mddoc = os.path.join(mddocfolder, 'py' +
+                                           name.lower() + '.md')
                 if (os.path.isfile(fname_mddoc)):
                     docstring = process_mddoc(fname_mddoc)
-                    #---- save combined docstring in the pydoc folder--
-                    fname_pydoc = os.path.join(pydocfolder, name.lower() + '.doc')
+                    # ---- save combined docstring in the pydoc folder ----
+                    fname_pydoc = os.path.join(pydocfolder, name.lower() +
+                                               '.doc')
                     with open(fname_pydoc, 'w') as pydocfile:
                         pydocfile.write(docstring)
 
             except IOError as msg:
                 print(msg)
 
-    #---- loop through functions that are defined in python ----
-    pyfunctions = ['PlmIndex','YilmIndexVector']
+    # ---- loop through functions that are defined in python ----
+    pyfunctions = ['PlmIndex', 'YilmIndexVector']
     for name in pyfunctions:
         try:
-            #---- process and load documentation
+            # ---- process and load documentation
             # read md file documentation:
-            fname_mddoc = os.path.join(mddocfolder, 'py' + name.lower() + '.md')
+            fname_mddoc = os.path.join(mddocfolder, 'py' + name.lower() +
+                                       '.md')
             docstring = process_mddoc(fname_mddoc)
-            #---- save combined docstring in the pydoc folder--
+            # ---- save combined docstring in the pydoc folder--
             fname_pydoc = os.path.join(pydocfolder, name.lower() + '.doc')
             with open(fname_pydoc, 'w') as pydocfile:
                 pydocfile.write(docstring)
@@ -56,88 +61,95 @@ def main():
         except IOError as msg:
             print(msg)
 
-    #---- loop through the f2py constants and make docstrings ----
+    # ---- loop through the f2py constants and make docstrings ----
     for name, value in _constant.planetsconstants.__dict__.items():
         try:
-            #---- read md file documentation:
-            fname_mddoc = os.path.join(mddocfolder, 'constant_' + name.lower() + '.md')
+            # ---- read md file documentation:
+            fname_mddoc = os.path.join(mddocfolder, 'constant_' +
+                                       name.lower() + '.md')
             docstring = process_mddoc(fname_mddoc)
 
-            #-- save docstring in the pydoc folder--
-            fname_pydoc = os.path.join(pydocfolder, 'constant_' + name.lower() + '.doc')
+            # ---- save docstring in the pydoc folder----
+            fname_pydoc = os.path.join(pydocfolder, 'constant_' +
+                                       name.lower() + '.doc')
             with open(fname_pydoc, 'w') as pydocfile:
                 pydocfile.write(docstring)
 
         except IOError as msg:
             print(msg)
 
-#===== PROCESS MD DOCUMENTATION FILE ====
+
+# ===== PROCESS MD DOCUMENTATION FILE ====
 def process_mddoc(fname_mddoc):
-    #---- md file search patterns ----
+    # ---- md file search patterns ----
     retail = re.compile('# See (.*)', re.DOTALL)
     reh2 = re.compile('## (.*?)\n', re.DOTALL)
     reh1 = re.compile('\A# (.*?)\n', re.DOTALL)
     reh1b = re.compile('\n# (.*?)\n', re.DOTALL)
     recode = re.compile('`(.*?)`', re.DOTALL)
     restaresc = re.compile(r'(\\\*)', re.DOTALL)
-    #rebold = re.compile('(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
+    # rebold = re.compile('(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
 
-    #---- open md file and search for patterns ----
+    # ---- open md file and search for patterns ----
     with open(fname_mddoc, 'r') as mdfile:
         mdstring = mdfile.read()
 
     match = retail.search(mdstring)
-    if match != None:
-        #    mdstring = re.sub(match.group(0),'',mdstring) doesn't work. don't know why
+    if match is not None:
         mdstring = mdstring.replace(match.group(0), '')
 
     match = reh1.search(mdstring)
-    while match != None:
-        mdstring = re.sub(match.group(0), match.group(1) + '\n' + len(match.group(1)) * '-' + '\n', mdstring)
+    while match is not None:
+        mdstring = re.sub(match.group(0), match.group(1) + '\n' +
+                          len(match.group(1)) * '-' + '\n', mdstring)
         match = reh1.search(mdstring)
 
     match = reh1b.search(mdstring)
-    while match != None:
-        mdstring = re.sub(match.group(0), '\n' + match.group(1) + '\n' + len(match.group(1)) * '-' + '\n', mdstring)
+    while match is not None:
+        mdstring = re.sub(match.group(0), '\n' + match.group(1) + '\n' +
+                          len(match.group(1)) * '-' + '\n', mdstring)
         match = reh1b.search(mdstring)
 
     match = reh2.search(mdstring)
-    while match != None:
-        mdstring = re.sub(match.group(0), match.group(1) + '\n' + len(match.group(1)) * '-' + '\n', mdstring)
+    while match is not None:
+        mdstring = re.sub(match.group(0), match.group(1) + '\n' +
+                          len(match.group(1)) * '-' + '\n', mdstring)
         match = reh2.search(mdstring)
 
     match = recode.search(mdstring)
-    while match != None:
-        #    mdstring = re.sub(match.group(0),match.group(1),mdstring) doesn't work. don't know why
+    while match is not None:
         mdstring = mdstring.replace(match.group(0), match.group(1))
         match = recode.search(mdstring)
 
     match = restaresc.search(mdstring)
-    while match != None:
+    while match is not None:
         mdstring = mdstring.replace(match.group(0), '*')
         match = recode.search(mdstring)
 
-    #---- combine into docstring ----
+    # ---- combine into docstring ----
     docstring = ''
     tmp = mdstring.splitlines(True)
     for i in range(0, len(tmp)):
         if tmp[i][0:4] == ':   ':
             docstring += textwrap.fill(tmp[i][4:], width=80,
-                                       replace_whitespace=False, initial_indent='    ',
+                                       replace_whitespace=False,
+                                       initial_indent='    ',
                                        subsequent_indent='    ') + '\n'
         else:
-            docstring += textwrap.fill(tmp[i], width=80, replace_whitespace=False) + '\n'
+            docstring += textwrap.fill(tmp[i], width=80,
+                                       replace_whitespace=False) + '\n'
 
     return docstring
 
-#===== PROCESS F2PY DOCUMENTATION ====
+
+# ===== PROCESS F2PY DOCUMENTATION ====
 def process_f2pydoc(f2pydoc):
     """
     this function replace all optional _d0 arguments with their default values
     in the function signature. These arguments are not intended to be used and
     signify merely the array dimensions of the associated argument.
     """
-    #---- split f2py document in its parts
+    # ---- split f2py document in its parts
     # 0=Call Signature
     # 1=Parameters
     # 2=Other (optional) Parameters (only if present)
@@ -152,10 +164,11 @@ def process_f2pydoc(f2pydoc):
         print('-- uninterpretable f2py documentation --')
         return f2pydoc
 
-    #---- replace arguments with _d suffix with empty string in function signature (remove them):
+    # ---- replace arguments with _d suffix with empty string in ----
+    # ---- function signature (remove them): ----
     docparts[0] = re.sub('[\[(,]\w+_d\d', '', docparts[0])
 
-    #---- replace _d arguments of the return arrays with their default value:
+    # ---- replace _d arguments of the return arrays with their default value:
     if doc_has_optionals:
 
         returnarray_dims = re.findall('[\[(,](\w+_d\d)', docparts[3])
@@ -163,20 +176,21 @@ def process_f2pydoc(f2pydoc):
             searchpattern = arg + ' : input.*\n.*Default: (.*)\n'
             match = re.search(searchpattern, docparts[2])
             if match:
-                default = match.group(1)  # this returns the value in brackets in the search pattern
+                default = match.group(1)
                 docparts[3] = re.sub(arg, default, docparts[3])
                 docparts[2] = re.sub(searchpattern, '', docparts[2])
 
-    #---- remove all optional _d# from optional argument list:
+    # ---- remove all optional _d# from optional argument list:
     if doc_has_optionals:
         searchpattern = '\w+_d\d : input.*\n.*Default: (.*)\n'
         docparts[2] = re.sub(searchpattern, '', docparts[2])
 
-    #---- combine doc parts to a single string
+    # ---- combine doc parts to a single string
     processed_signature = '\n--'.join(docparts)
 
     return processed_signature
 
-#==== EXECUTE SCRIPT ====
+
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()
