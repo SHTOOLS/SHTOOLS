@@ -46,15 +46,21 @@ SHCrossPowerSpectrumDensityC  Compute the cross-power spectral density of two
                               complex functions.
 """
 
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
-from ._SHTOOLS import SHPowerL, SHPowerDensityL, SHCrossPowerL
-from ._SHTOOLS import SHCrossPowerDensityL, SHPowerSpectrum
-from ._SHTOOLS import SHPowerSpectrumDensity, SHCrossPowerSpectrum
-from ._SHTOOLS import SHCrossPowerSpectrumDensity, SHAdmitCorr, SHConfidence
-from ._SHTOOLS import SHPowerLC, SHPowerDensityLC, SHCrossPowerLC
-from ._SHTOOLS import SHCrossPowerDensityLC, SHPowerSpectrumC
-from ._SHTOOLS import SHPowerSpectrumDensityC, SHCrossPowerSpectrumC
+from ._SHTOOLS import SHPowerL
+from ._SHTOOLS import SHPowerDensityL
+from ._SHTOOLS import SHCrossPowerL
+from ._SHTOOLS import SHCrossPowerDensityL
+from ._SHTOOLS import SHPowerSpectrum
+from ._SHTOOLS import SHPowerSpectrumDensity
+from ._SHTOOLS import SHCrossPowerSpectrum
+from ._SHTOOLS import SHCrossPowerSpectrumDensity
+from ._SHTOOLS import SHAdmitCorr
+from ._SHTOOLS import SHConfidence
+from ._SHTOOLS import SHPowerLC
+from ._SHTOOLS import SHPowerDensityLC
+from ._SHTOOLS import SHCrossPowerLC
+from ._SHTOOLS import SHCrossPowerDensityLC
+from ._SHTOOLS import SHPowerSpectrumC
+from ._SHTOOLS import SHPowerSpectrumDensityC
+from ._SHTOOLS import SHCrossPowerSpectrumC
 from ._SHTOOLS import SHCrossPowerSpectrumDensityC

@@ -56,13 +56,22 @@ SphericalCapCoef       Calculate the spherical harmonic coefficients of a
                        spherical cap.
 """
 
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
-from ._SHTOOLS import SHMultiTaperSE, SHMultiTaperCSE, SHLocalizedAdmitCorr
-from ._SHTOOLS import SHReturnTapers, SHReturnTapersM, ComputeDm, ComputeDG82
-from ._SHTOOLS import SHFindLWin, SHBiasK, SHMTCouplingMatrix, SHBiasAdmitCorr
-from ._SHTOOLS import SHMTDebias, SHMTVarOpt, SHSjkPG
-from ._SHTOOLS import SHReturnTapersMap, ComputeDMap, Curve2Mask, SHBias
+from ._SHTOOLS import SHMultiTaperSE
+from ._SHTOOLS import SHMultiTaperCSE
+from ._SHTOOLS import SHLocalizedAdmitCorr
+from ._SHTOOLS import SHReturnTapers
+from ._SHTOOLS import SHReturnTapersM
+from ._SHTOOLS import ComputeDm
+from ._SHTOOLS import ComputeDG82
+from ._SHTOOLS import SHFindLWin
+from ._SHTOOLS import SHBiasK
+from ._SHTOOLS import SHMTCouplingMatrix
+from ._SHTOOLS import SHBiasAdmitCorr
+from ._SHTOOLS import SHMTDebias
+from ._SHTOOLS import SHMTVarOpt
+from ._SHTOOLS import SHSjkPG
+from ._SHTOOLS import SHReturnTapersMap
+from ._SHTOOLS import ComputeDMap
+from ._SHTOOLS import Curve2Mask
+from ._SHTOOLS import SHBias
 from ._SHTOOLS import SphericalCapCoef

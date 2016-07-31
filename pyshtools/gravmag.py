@@ -56,12 +56,18 @@ SHMagPowerL         Compute the power of the magnetic field for a single
                     potential spherical harmonic coefficients.
 """
 
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
-from ._SHTOOLS import MakeGravGridDH, MakeGravGradGridDH, MakeGeoidGridDH
-from ._SHTOOLS import CilmPlusDH, CilmMinusDH, CilmPlusRhoHDH, CilmMinusRhoHDH
-from ._SHTOOLS import BAtoHilmDH, BAtoHilmRhoHDH, DownContFilterMA
-from ._SHTOOLS import DownContFilterMC, NormalGravity, MakeMagGridDH
-from ._SHTOOLS import SHMagPowerSpectrum, SHMagPowerL
+from ._SHTOOLS import MakeGravGridDH
+from ._SHTOOLS import MakeGravGradGridDH
+from ._SHTOOLS import MakeGeoidGridDH
+from ._SHTOOLS import CilmPlusDH
+from ._SHTOOLS import CilmMinusDH
+from ._SHTOOLS import CilmPlusRhoHDH
+from ._SHTOOLS import CilmMinusRhoHDH
+from ._SHTOOLS import BAtoHilmDH
+from ._SHTOOLS import BAtoHilmRhoHDH
+from ._SHTOOLS import DownContFilterMA
+from ._SHTOOLS import DownContFilterMC
+from ._SHTOOLS import NormalGravity
+from ._SHTOOLS import MakeMagGridDH
+from ._SHTOOLS import SHMagPowerSpectrum
+from ._SHTOOLS import SHMagPowerL

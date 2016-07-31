@@ -45,14 +45,22 @@ PlmIndex      Compute the index of an array of Legendre function corresponding
               to degree L and angular order M.
 """
 
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
-from ._SHTOOLS import PlmBar, PlmBar_d1, PlBar, PlBar_d1
-from ._SHTOOLS import PlmON, PlmON_d1, PlON, PlON_d1
-from ._SHTOOLS import PlmSchmidt, PlmSchmidt_d1, PlSchmidt, PlSchmidt_d1
-from ._SHTOOLS import PLegendreA, PLegendreA_d1, PLegendre, PLegendre_d1
+from ._SHTOOLS import PlmBar
+from ._SHTOOLS import PlmBar_d1
+from ._SHTOOLS import PlBar
+from ._SHTOOLS import PlBar_d1
+from ._SHTOOLS import PlmON
+from ._SHTOOLS import PlmON_d1
+from ._SHTOOLS import PlON
+from ._SHTOOLS import PlON_d1
+from ._SHTOOLS import PlmSchmidt
+from ._SHTOOLS import PlmSchmidt_d1
+from ._SHTOOLS import PlSchmidt
+from ._SHTOOLS import PlSchmidt_d1
+from ._SHTOOLS import PLegendreA
+from ._SHTOOLS import PLegendreA_d1
+from ._SHTOOLS import PLegendre
+from ._SHTOOLS import PLegendre_d1
 
 
 # ---------------------------------------------------------------------
@@ -60,4 +68,4 @@ from ._SHTOOLS import PLegendreA, PLegendreA_d1, PLegendre, PLegendre_d1
 # --- equivalent that uses different indexing conventions.
 # ---------------------------------------------------------------------
 def PlmIndex(l, m):
-    return (l * (l + 1)) // 2 + m
+    return int((l * (l + 1)) // 2) + m

@@ -22,10 +22,12 @@ EigValSym          Compute the eigenvalues of a real symmetric matrix.
 Wigner3j           Compute the Wigner-3j symbols for all allowable values of J.
 """
 
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
-from ._SHTOOLS import MakeCircleCoord, MakeEllipseCoord, RandomN
-from ._SHTOOLS import RandomGaussian, PreGLQ, EigValVecSym, EigValVecSymTri
-from ._SHTOOLS import EigValSym, Wigner3j
+from ._SHTOOLS import MakeCircleCoord
+from ._SHTOOLS import MakeEllipseCoord
+from ._SHTOOLS import RandomN
+from ._SHTOOLS import RandomGaussian
+from ._SHTOOLS import PreGLQ
+from ._SHTOOLS import EigValVecSym
+from ._SHTOOLS import EigValVecSymTri
+from ._SHTOOLS import EigValSym
+from ._SHTOOLS import Wigner3j

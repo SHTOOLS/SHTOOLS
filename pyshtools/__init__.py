@@ -12,6 +12,7 @@ main namespace:
 
     SHCoeffs - A high level class for spherical harmonic coefficients.
     SHGrid - A high level classes for global grids.
+    SHWindow - A high level classes for localization windows.
     shclasses - All pyshtools classes and subclasses.
     shtools - All pyshtools routines.
     legendre - Legendre functions.
@@ -33,8 +34,6 @@ and the GitHub project page at
    https://github.com/SHTOOLS/SHTOOLS
 """
 
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
 from __future__ import print_function as _print_function
 
 __version__ = '3.3-beta'
