@@ -72,4 +72,4 @@ from ._SHTOOLS import PLegendre_d1
 # --- equivalent that uses different indexing conventions.
 # ---------------------------------------------------------------------
 def PlmIndex(l, m):
-    return int((l * (l + 1)) // 2) + m
+    return (l * (l + 1)) // 2 + m
