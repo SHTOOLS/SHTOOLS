@@ -33,11 +33,11 @@ SHTOOLS is extremely versatile:
 The most recent release of SHTOOLS can be downloaded from [GitHub](https://github.com/SHTOOLS/SHTOOLS/releases).  Installation of SHTOOLS can be as simple as executing the following command in a unix terminal
 
     make
-    
-To compile the OpenMP version of the fortran routines, enter<
 
-	make fortran-mp
-    
+To compile the OpenMP version of the fortran routines, enter
+
+    make fortran-mp
+
 The Fortran 95 and Python test suites can be run by entering
 
     make fortran-tests

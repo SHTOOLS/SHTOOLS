@@ -18,8 +18,8 @@ pyshtools class structure:
         GLQComplexGrid
 
     SHWindow
-        SHSymmetricWindow
-        SHAsymmetricWindow
+        SHWindowCap
+        SHWindowMask
 
 For more information, see the documentation for the top level classes.
 """
@@ -1575,24 +1575,58 @@ class GLQComplexGrid(SHGrid):
 
 class SHWindow(object):
     """
-    EXPERIMENTAL:
-    This class contains collections of spherical harmonics windows that
-    provide spectral estimates about a specific region
+    Class for localization windows developed in spherical harmonics. The
+    windows can be initialized from:
+
+    >> x = SHWindow.from_cap(theta, lmax, clat, clon)
+    >> x = SHGrid.from_mask(array)
+
+    The class instance defines the following class attributes:
+
+    kind           : Either 'cap' or 'mask'.
+    tapers         : Array containing the spherical harmonic coefficients of
+                     the unrotated spherical cap windows.
+    coeffs         : Array of spherical harmonic coefficients of the rotated
+                     spherical cap or mask localization windows.
+    eigenvalues    : Concentration factors of the localization windows.
+    orders         : Angular orders of the localization windows (for spherical
+                     cap windows).
+    lmax           : Spherical harmonic bandwidth of the localization windows.
+    theta          : Angular radius of the spherical cap
+                     localization domain.
+    theta_degrees  : True (default) if theta is in degrees.
+    nwin           : Number of localization windows. Default = (lmax+1)**2
+    clat, clon     : Latitude and longitude (in degrees) for the center of the
+                     spherical cap localization windows.
+    coord_degrees  : True (default) if clat and clon are in degrees.
+
+    Each class instance provides the following methods:
+
+    get_coeffs(i)    : Return an array of the spherical harmonic coefficients
+                       for taper i, where i=0 is the best concentrated.
+                     
+    return_coeffs(i) : Return the spherical harmonic coefficients of taper i,
+                       where i=0 is the best concentrated, as a new SHCoeffs
+                       class instance.
+    expand()       : Expand the grid into spherical harmonics.
+    plot_rawdata() : Plot the raw data using a simple cylindrical projection.
     """
+
     def __init__(self):
         pass
 
     @classmethod
-    def from_cap(self, lmax, nwins, theta, clat=0., clon=0., degrees=True):
+    def from_cap(self, theta, lmax, clat=None, clon=None, nwin=None,
+                 theta_degrees=True, coord_degrees=True, dj_matrix=None):
         """
         constructs a spherical cap window
+        
         """
-        if degrees:
-            theta = _np.radians(theta)
 
         tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(theta, lmax)
-        return SHSymmetricWindow(tapers, eigenvalues, taper_order,
-                                 clat=clat, clon=clon)
+        return SHWindowCap(theta, tapers, eigenvalues, taper_order,
+                           clat, clon, nwin, theta_degrees, coord_degrees,
+                           dj_matrix)
 
     @classmethod
     def from_mask(self, lmax, nwins, dh_mask, sampling=1):
@@ -1673,10 +1707,97 @@ class SHWindow(object):
         if fname is not None:
             fig.savefig(fname)
 
-    def info(self):
-        """print meta information about the tapers"""
-        self._info()
 
+class SHWindowCap(SHWindow)
+    """
+    Class for localization windows concentrated within a spherical cap.
+    """
+    @staticmethod
+    def istype(kind):
+        return kind == 'cap'
+
+    def __init__(self, theta, tapers, eigenvalues, taper_order,
+                 clat, clon, nwin, theta_degrees, coord_degrees, dj_matrix):
+        self.kind = 'cap'
+        self.clat = clat
+        self.clon = clon
+        self.lmax = tapers.shape[0] - 1
+        self.theta_degrees = theta_degrees
+        self.coord_degrees = coord_degrees
+
+        if nwin is not None:
+            self.nwin = nwin
+        else:
+            self.nwin = tapers.shape[1]
+            
+        if self.nwin > (self.lmax + 1)**2:
+            raise ValueError('nwin must be less than or equal to ' + 
+                             '(lmax+1)**2. nwin={:s} and lmax={:s}.'
+                             .format(repr(self.nwin), repr(self.lmax)))
+
+        self.tapers = tapers[:,:nwin]
+        self.eigenvalues = eigenvalues[:nwin]
+        self.orders = orders[:nwin]
+
+        if clat is None and clon is None:
+            # ---- If the windows aren't rotated, don't store them as 
+            # ---- full spherical harmonic coefficients, as this is a 
+            # ---- huge waste of memory. These will be converted later
+            # ---- as needed.
+            coeffs = None
+            
+        else
+            # ---- Rotate center of windows to the given coordinates ----
+            # rewrite to use rotate function
+            self.coeffs = _np.zeros((nwin, 2, self.lmax+1, self.lmax+1))
+            
+            if coord_degrees:
+                angles = _np.radians(_np.array([0., -(90. - clat), -clon]))
+            else:
+                angles = _np.array([0., -(_np.pi/2. - clat), -clon])
+            
+            if dj_matrix is None:
+                dj_matrix = _shtools.djpi2(self.lmax + 1)
+
+            for i in range(self.nwin):
+                self.coeffs[i, :, :, :] = _shtools.SHRotateRealCoef(
+                    self._taper2coeffs(i), angles, dj_matrix)
+
+    def _taper2coeffs(self, itaper):
+    """
+    Return the spherical harmonic coefficients of taper i as an
+    array, where i=0 is the best concentrated.
+    """
+        taperm = self.orders[itaper]
+        coeffs = _np.zeros((2, self.lmax + 1, self.lmax + 1))
+        if taperm < 0:
+            coeffs[1, :, abs(taperm)] = self.tapers[:, itaper]
+        else:
+            coeffs[0, :, abs(taperm)] = self.tapers[:, itaper]
+        return coeffs
+
+    def _get_coeffs(self, itaper):
+    """
+    Return the spherical harmonic coefficients of taper i as an
+    array, where i=0 is the best concentrated.
+    """
+        if self.coeffs is None:
+            return self._taper2coeffs(itaper)
+        else:
+            return coeffs[itaper, :, :, :]
+    
+    def _return_tapers(self, itaper)
+    """
+    Return the spherical harmonic coefficients of taper i as an
+    array, where i=1 is the best concentrated, as a new class instance of
+    SHRealCoeffs.
+    """
+        return SHRealCoeffs(get_coeffs(itaper), normalization='4pi', csphase=1)
+
+    def _rotate(self, angles, djpi2)
+    """"Create a new set of coeffs by rotating the windows centered on the 
+    north pole to the 
+    """
 
 class SHSymmetricWindow(SHWindow):
     """
