@@ -4,11 +4,11 @@ This routine returns the multitaper coupling matrix for a given set of spherical
 
 # Usage
 
-`mmt` = SHMTCouplingMatrix (`lmax`, `tapers`, [`lwin`, `k`, `taper_wt`])
+`Mmt` = SHMTCouplingMatrix (`lmax`, `tapers`, [`lwin`, `k`, `taper_wt`])
 
 # Returns
 
-`mmt` : float, dimension (`lmax`+1, `lmax`+`lwin`+1)
+`Mmt` : float, dimension (`lmax`+1, `lmax`+`lwin`+1)
 :   The multitaper coupling matrix that relates the global power spectrum to the expectation of the localized multitaper spectrum.
 
 # Parameters
