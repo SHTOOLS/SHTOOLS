@@ -1,4 +1,6 @@
 """
+Class interface for SHTOOLS.
+
 pyshtools defines several classes that facilitate the interactive
 examination of geographical gridded data and their associated
 spherical harmonic coefficients. Subclasses are used to handle different
@@ -46,9 +48,9 @@ class SHCoeffs(object):
     The coefficients of this class can be initialized using one of the
     three constructor methods:
 
-    >> x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
-    >> x = SHCoeffs.from_random(powerspectrum[0:lmax+1])
-    >> x = SHCoeffs.from_file('fname.dat')
+    >>> x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
+    >>> x = SHCoeffs.from_random(powerspectrum[0:lmax+1])
+    >>> x = SHCoeffs.from_file('fname.dat')
 
     The normalization convention of the input coefficents is specified
     by the normalization and csphase parameters, which take the following
@@ -104,14 +106,17 @@ class SHCoeffs(object):
     """
 
     def __init__(self):
+        """Unused constructor of the super class."""
+        print('Initialize the class using one of the class methods:\n'
+              '>>> SHCoeffs.from_array?\n'
+              '>>> SHCoeffs.from_random?\n')
         pass
 
     # ---- factory methods:
     @classmethod
     def from_array(self, coeffs, normalization='4pi', csphase=1):
         """
-        Initialize the spherical harmonic coefficients of the class instance
-        from an input numpy array.
+        Initialize the coefficients from an input numpy array.
 
         Usage
         -----
@@ -159,8 +164,7 @@ class SHCoeffs(object):
     @classmethod
     def from_random(self, power, kind='real', normalization='4pi', csphase=1):
         """
-        Initialize the spherical harmonic coefficients of the class instance
-        using Gaussian random variables with a given power spectrum.
+        Initialize the coefficients using Gaussian random variables.
 
         Usage
         -----
@@ -229,8 +233,7 @@ class SHCoeffs(object):
     def from_file(self, fname, lmax, format='shtools', kind='real',
                   normalization='4pi', csphase=1, **kwargs):
         """
-        Initialize the spherical harmonic coefficients of the class instance
-        by reading the coefficients from a specified file.
+        Initialize the coefficients from input file.
 
         Usage
         -----
@@ -307,8 +310,7 @@ class SHCoeffs(object):
     # ---- Extract data ----
     def get_degrees(self):
         """
-        Return a numpy array listing the spherical harmonic degrees
-        from 0 to lmax.
+        Return a numpy array with the harmonic degrees from 0 to lmax.
 
         Usage
         -----
@@ -340,8 +342,7 @@ class SHCoeffs(object):
 
     def get_powerperband(self, bandwidth):
         """
-        Return a numpy array with the power per log_{bandwidth}(degree)
-        spectrum.
+        Return the power per log_{bandwidth}(degree) spectrum.
 
         Usage
         -----
@@ -359,8 +360,7 @@ class SHCoeffs(object):
     # ---- Return coefficients with a different normalization convention ----
     def get_coeffs(self, normalization='4pi', csphase=1):
         """
-        Return spherical harmonics coefficients as a numpy array with a
-        different normalization convention.
+        Return spherical harmonics coefficients as a numpy array.
 
         Usage
         -----
@@ -391,7 +391,7 @@ class SHCoeffs(object):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
                 "or 'schmidt'. Provided value was {:s}"
-                .format(repr(output_normalization))
+                .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
@@ -406,8 +406,7 @@ class SHCoeffs(object):
     # ---- Rotate the coordinate system ----
     def rotate(self, alpha, beta, gamma, degrees=True, dj_matrix=None):
         """
-        Rotate the body or coordinate system used to express the spherical
-        harmonic coefficients and output as a new class instance.
+        Rotate the coordinate return rotated Coefficient class.
 
         Usage
         -----
@@ -480,8 +479,7 @@ class SHCoeffs(object):
     # ---- Convert spherical harmonic coefficients to a different normalization
     def convert(self, normalization='4pi', csphase=1):
         """
-        Convert the spherical harmonic coefficients to a different
-        normalization convention, and return a new class instance.
+        Return coefficient class with a different normalization.
 
         Usage
         -----
@@ -639,15 +637,15 @@ class SHCoeffs(object):
 # ================== REAL SPHERICAL HARMONICS ================
 
 class SHRealCoeffs(SHCoeffs):
-    """
-    Real Spherical Harmonics Coefficient class.
-    """
+    """Real Spherical Harmonics Coefficient class."""
 
     @staticmethod
     def istype(kind):
+        """Test if class is Real or Complex."""
         return kind == 'real'
 
     def __init__(self, coeffs, normalization='4pi', csphase=1):
+        """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
         mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
@@ -666,9 +664,9 @@ class SHRealCoeffs(SHCoeffs):
 
     def make_complex(self):
         """
-        Convert the real spherical harmonic coefficient class to the complex
-        spherical harmonic coefficient class with the same normalization and
-        csphase conventions.
+        Convert real to the complex coefficient class.
+
+        Normalization and phase conventions are kept unchanged.
 
         Usage
         -----
@@ -1041,8 +1039,8 @@ class SHGrid(object):
     Grid Class for global gridded data on the sphere. Grids can be
     initialized from:
 
-    >> x = SHGrid.from_array(array)
-    >> x = SHGrid.from_file('fname.dat')
+    >>> x = SHGrid.from_array(array)
+    >>> x = SHGrid.from_file('fname.dat')
 
     The class instance defines the following class attributes:
 
@@ -1219,9 +1217,8 @@ class SHGrid(object):
 # ---- Real Driscoll and Healy grid class ----
 
 class DHRealGrid(SHGrid):
-    """
-    Class for real Driscoll and Healy (1994) grids.
-    """
+    """Class for real Driscoll and Healy (1994) grids."""
+
     @staticmethod
     def istype(kind):
         return kind == 'real'
@@ -1243,9 +1240,9 @@ class DHRealGrid(SHGrid):
         elif self.nlat == self.nlon:
             self.sampling = 1
         else:
-            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n' +
+            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n'
+                             .format(self.nlat, self.nlon) +
                              'but needs nlat=nlon or nlat=2*nlon'
-                             .format(self.nlat, self.nlon)
                              )
 
         self.lmax = int(self.nlat / 2 - 1)
@@ -1254,18 +1251,12 @@ class DHRealGrid(SHGrid):
         self.kind = 'real'
 
     def _get_lats(self):
-        """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
-        """
+        """Return the latitudes (in degrees) of the gridded data."""
         lats = _np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
     def _get_lons(self):
-        """
-        Return a vector containing the longitudes (in degrees) of each row
-        of the gridded data.
-        """
+        """Return the longitudes (in degrees) of the gridded data."""
         lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
@@ -1636,14 +1627,15 @@ class SHWindow(object):
             fig.savefig(fname)
 
     def get_spectrum(self, shcoeffs, nwins):
-        """Returns the regional spherical harmonics spectrum"""
+        """Returns the regional spherical harmonics spectrum."""
         for itaper in range(nwins):
             tapercoeffs = self._coeffs(itaper)
             modelcoeffs = shcoeffs.get_coeffs(normalization='4pi', kind='real')
             coeffs = _shtools.SHMultiply(tapercoeffs, modelcoeffs)
+        return coeffs
 
     def get_couplingmatrix(self, lmax, nwins):
-        """returns the coupling matrix of the first nwins tapers"""
+        """Return the coupling matrix of the first nwins tapers."""
         # store sqrt of taper power in 'tapers' array:
         if nwins > self.nwins:
             nwins = self.nwins
