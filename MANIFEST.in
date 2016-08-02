@@ -1,0 +1,7 @@
+include *
+
+recursive-include pyshtools
+
+recursive-include src
+
+global-exclude *.pyc

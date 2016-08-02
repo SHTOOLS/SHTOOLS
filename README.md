@@ -50,3 +50,7 @@ Full installation instructions can be found [here](www/install.html), and additi
 
 SHTOOLS can be invoked in any Fortran 95, Python 2, or Python 3 program. The base SHTOOLS software is written in Fortran 95, and Python wrappers allow simple access to all fortran-compiled routines. SHTOOLS is open source (revised BSD license) and makes use of the freely available Fourier transform package [FFTW](http://www.fftw.org) and the linear algebra packages [LAPACK](http://www.netlib.org/lapack/) and [BLAS](http://www.netlib.org/blas/).
 
+Python tutorials are available here:
+
+[tutorial 1](examples/notebooks/tutorial_1.ipynb)
+
