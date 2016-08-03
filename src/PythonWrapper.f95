@@ -1549,23 +1549,23 @@
                         weight_opt=weight_opt,nocross=nocross)
     end subroutine pySHMTVarOpt
 
-    subroutine pySHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt, &
-                        Mmt_d0, Mmt_d1, tapers_d0, tapers_d1, taper_wt_d0)
+    subroutine pySHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, taper_wt, &
+                        Mmt_d0, Mmt_d1, tapers_power_d0, tapers_power_d1, taper_wt_d0)
         use shtools, only: SHMTCouplingMatrix
         implicit none
         integer, intent(in) :: lmax, k, lwin
         real*8, intent(out) :: Mmt(Mmt_d0,Mmt_d1)
-        real*8, intent(in) ::  tapers(tapers_d0,tapers_d1)
+        real*8, intent(in) ::  tapers_power(tapers_power_d0,tapers_power_d1)
         real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer, intent(in) :: Mmt_d0
         integer, intent(in) :: Mmt_d1
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: tapers_power_d0
+        integer, intent(in) :: tapers_power_d1
         integer, intent(in) :: taper_wt_d0
         if (taper_wt(1) < 0.d0) then
-            call SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k)
+            call SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k)
         else
-            call SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt=taper_wt)
+            call SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, taper_wt=taper_wt)
         endif
     end subroutine
 
@@ -1974,7 +1974,7 @@
     end subroutine pyComputeDMap
 
     subroutine pySHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax, &
-                                    sampling,Ntapers,dh_mask_d0,dh_mask_d1, &
+                                    sampling,ntapers,dh_mask_d0,dh_mask_d1, &
                                     tapers_d0,tapers_d1,eigenvalues_d0) 
         use shtools, only: SHReturnTapersMap
         implicit none
@@ -1984,14 +1984,14 @@
         integer, intent(in) :: n_dh
         integer, intent(in), optional :: sampling
         integer, intent(in) :: lmax
-        integer, optional,intent(in) :: Ntapers
+        integer, optional,intent(in) :: ntapers
         integer, intent(in) :: dh_mask_d0
         integer, intent(in) :: dh_mask_d1
         integer, intent(in) :: tapers_d0
         integer, intent(in) :: tapers_d1
         integer, intent(in) :: eigenvalues_d0
         call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax, &
-                                sampling=sampling,Ntapers=Ntapers)
+                                sampling=sampling,ntapers=ntapers)
     end subroutine pySHReturnTapersMap
 
     subroutine pyCurve2Mask(dhgrid,n,sampling,profile,nprofile,NP,&

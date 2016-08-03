@@ -580,9 +580,9 @@ module SHTOOLS
             integer, intent(in), optional ::    nocross
         end subroutine SHMTVarOpt
 
-        subroutine SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt)
+        subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, taper_wt)
             real*8, intent(out) :: Mmt(:,:)
-            real*8, intent(in)  :: tapers(:,:)
+            real*8, intent(in)  :: tapers_power(:,:)
             real*8, intent(in), optional :: taper_wt(:)
             integer, intent(in) :: lmax, k, lwin       
         end subroutine
@@ -743,10 +743,10 @@ module SHTOOLS
         end subroutine ComputeDMap
         
         subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, &
-                                        lmax, sampling, Ntapers)
+                                        lmax, sampling, ntapers)
             real*8, intent(out) ::  tapers(:,:), eigenvalues(:)
             integer, intent(in) ::  dh_mask(:,:), n_dh, lmax
-            integer, intent(in), optional ::    sampling, Ntapers
+            integer, intent(in), optional ::    sampling, ntapers
         end subroutine SHReturnTapersMap
         
         subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &

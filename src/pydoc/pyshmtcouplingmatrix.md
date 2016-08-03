@@ -1,10 +1,9 @@
 # SHMTCouplingMatrix
 
-This routine returns the multitaper coupling matrix for a given set of spherical-cap localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum.
-
+This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum.
 # Usage
 
-`Mmt` = SHMTCouplingMatrix (`lmax`, `tapers`, [`lwin`, `k`, `taper_wt`])
+`Mmt` = SHMTCouplingMatrix (`lmax`, `tapers_power`, [`lwin`, `k`, `taper_wt`])
 
 # Returns
 
@@ -16,8 +15,8 @@ This routine returns the multitaper coupling matrix for a given set of spherical
 `lmax` : integer
 :   The spherical harmonic bandwidth of the global power spectrum.
 
-`tapers` : float, dimension (`lwinin`+1, `kin`)
-:   An array of the k windowing functions, arranged in columns, obtained from a call to `SHReturnTapers`. 
+`tapers_power` : float, dimension (`lwinin`+1, `kin`)
+:   An array of power spectra of the k windowing functions, arranged in columns.
 
 `lwin` : optional, integer, default = `lwinin`
 :   The spherical harmonic bandwidth of the windowing functions in the array `tapers`.
