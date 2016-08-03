@@ -60,7 +60,7 @@ class build(_build):
     def run(self):
         """Build the Fortran library, all python extensions and the docs."""
         print('---- BUILDING ----')
-        build.run(self)
+        _build.run(self)
 
         # build documentation
         print('---- BUILDING DOCS ----')
