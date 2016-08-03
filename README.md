@@ -52,5 +52,6 @@ SHTOOLS can be invoked in any Fortran 95, Python 2, or Python 3 program. The bas
 
 Python tutorials are available here:
 
-[tutorial 1](examples/notebooks/tutorial_1.ipynb)
-
+* [tutorial 1](examples/notebooks/tutorial_1.ipynb)
+* [tutorial 2](examples/notebooks/tutorial_2.ipynb)
+* [tutorial 3](examples/notebooks/tutorial_3.ipynb)
