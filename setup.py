@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Setup script for SHTOOLS."""
+
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
@@ -8,16 +10,19 @@ import os
 import re
 import sys
 import sysconfig
+import setuptools
 
 from numpy.distutils.core import setup
-from numpy.distutils.command.build import build
+from numpy.distutils.command.build import build as _build
+from numpy.distutils.command.install import install as _install
+from numpy.distutils.command.develop import develop as _develop
 from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
 from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
 
 
 def get_version():
-    """Get version from git and VERSION file
+    """Get version from git and VERSION file.
 
     Derived from: https://github.com/Changaco/version.py
     """
@@ -47,7 +52,7 @@ def get_version():
 
 
 # Custom Builder
-class SHTOOLS_build(build):
+class build(_build):
     """This overrides the standard build class to include the doc build."""
 
     description = "builds python documentation"
@@ -64,6 +69,41 @@ class SHTOOLS_build(build):
         doc_builder = os.path.join(self.build_lib, 'pyshtools', 'make_docs.py')
         doc_source = '.'
         check_call(['python', doc_builder, doc_source, self.build_lib])
+
+        print('---- ALL DONE ----')
+
+
+# Custom Installer
+class install(_install):
+    """This overrides the standard build class to include the doc build."""
+
+    description = "builds python documentation"
+
+    def run(self):
+        """Build the Fortran library, all python extensions and the docs."""
+        print('---- CUSTOM INSTALL ----')
+        _install.run(self)
+
+
+# Custom Installer
+class develop(_develop):
+    """This overrides the standard build class to include the doc build."""
+
+    description = "builds python documentation"
+
+    def run(self):
+        """Build the Fortran library, all python extensions and the docs."""
+        print('---- CUSTOM DEVELOP ----')
+        _develop.run(self)
+
+        # build documentation
+        print('---- BUILDING DOCS ----')
+        docdir = os.path.join(self.setup_path, 'pyshtools', 'doc')
+        self.mkpath(docdir)
+        doc_builder = os.path.join(self.setup_path, 'pyshtools',
+                                   'make_docs.py')
+        doc_source = '.'
+        check_call(['python', doc_builder, doc_source, self.setup_path])
 
         print('---- ALL DONE ----')
 
@@ -91,7 +131,6 @@ KEYWORDS = ['Spherical Harmonics', 'Wigner Symbols']
 
 
 INSTALL_REQUIRES = [
-    'future (>=0.12.4)',
     'numpy (>=1.0.0)']
 
 # configure python extension to be compiled with f2py
@@ -156,7 +195,8 @@ def configuration(parent_package='', top_path=None):
                          include_dirs=[libdir],
                          library_dirs=[libdir],
                          libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
-                         sources=['src/pyshtools.pyf', 'src/PythonWrapper.f95'],
+                         sources=['src/pyshtools.pyf',
+                                  'src/PythonWrapper.f95'],
                          **kwargs)
 
     # constants
@@ -181,7 +221,7 @@ metadata = dict(
     packages=['pyshtools'],
     classifiers=CLASSIFIERS,
     configuration=configuration,
-    cmdclass={'build': SHTOOLS_build}
+    cmdclass={'build': build, 'install': install, 'develop': develop}
 )
 
 
