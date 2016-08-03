@@ -599,6 +599,7 @@ class SHCoeffs(object):
             _plt.show()
         if fname is not None:
             fig.savefig(fname)
+        return fig, ax
 
     def plot_powerperband(self, bandwidth=2, show=True, fname=None):
         """
@@ -632,6 +633,7 @@ class SHCoeffs(object):
             _plt.show()
         if fname is not None:
             fig.savefig(fname)
+        return fig, ax
 
 
 # ================== REAL SPHERICAL HARMONICS ================
@@ -708,10 +710,7 @@ class SHRealCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
     def _get_coeffs(self, output_normalization, output_csphase):
-        """
-        Return real spherical harmonic coefficients with a
-        different normalization convention.
-        """
+        """Return coefficients with a different normalization convention."""
         coeffs = _np.copy(self.coeffs)
 
         if self.normalization == output_normalization:
@@ -746,10 +745,7 @@ class SHRealCoeffs(SHCoeffs):
         return coeffs
 
     def _rotate(self, angles, dj_matrix):
-        """
-        Rotate the coordinate system used to express the spherical
-        harmonics coefficients by the Euler angles alpha, beta, gamma.
-        """
+        """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if dj_matrix is None:
             dj_matrix = _shtools.djpi2(self.lmax + 1)
 
@@ -770,10 +766,7 @@ class SHRealCoeffs(SHCoeffs):
             return SHCoeffs.from_array(coeffs)
 
     def _expandDH(self, sampling, **kwargs):
-        """
-        Evaluate the coefficients on a Driscoll and Healy (1994)
-        sampled grid.
-        """
+        """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         if self.normalization == '4pi':
             norm = 1
         elif self.normalization == 'schmidt':
@@ -815,15 +808,15 @@ class SHRealCoeffs(SHCoeffs):
 # =============== COMPLEX SPHERICAL HARMONICS ================
 
 class SHComplexCoeffs(SHCoeffs):
-    """
-    Complex Spherical Harmonics Coefficients class.
-    """
+    """Complex Spherical Harmonics Coefficients class."""
 
     @staticmethod
     def istype(kind):
+        """Check if class has kind 'real' or 'complex'."""
         return kind == 'complex'
 
     def __init__(self, coeffs, normalization='4pi', csphase=1):
+        """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
         mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
@@ -842,8 +835,7 @@ class SHComplexCoeffs(SHCoeffs):
 
     def make_real(self):
         """
-        Convert the complex coefficient class to the real harmonic
-        coefficient class.
+        Convert the complex to the real harmonic coefficient class.
 
         Usage
         -----
@@ -903,10 +895,7 @@ class SHComplexCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
     def _get_coeffs(self, output_normalization, output_csphase):
-        """
-        Return complex spherical harmonics coefficients with a
-        different normalization convention.
-        """
+        """Return coefficients with a different normalization convention."""
         coeffs = _np.copy(self.coeffs)
 
         if self.normalization == output_normalization:
@@ -941,10 +930,7 @@ class SHComplexCoeffs(SHCoeffs):
         return coeffs
 
     def _rotate(self, angles, dj_matrix):
-        """
-        Rotate the coordinate system used to express the spherical
-        harmonics coefficients by the Euler angles alpha, beta, gamma.
-        """
+        """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         # Note that the current method is EXTREMELY inefficient. The complex
         # coefficients are expanded onto real and imaginary grids, each of
         # the two components are rotated separately as real data, they rotated
@@ -988,10 +974,7 @@ class SHComplexCoeffs(SHCoeffs):
                                    csphase=self.csphase)
 
     def _expandDH(self, sampling, **kwargs):
-        """
-        Evaluate the coefficients on a Driscoll and Healy (1994)
-        sampled grid.
-        """
+        """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         if self.normalization == '4pi':
             norm = 1
         elif self.normalization == 'schmidt':
@@ -1036,8 +1019,9 @@ class SHComplexCoeffs(SHCoeffs):
 
 class SHGrid(object):
     """
-    Grid Class for global gridded data on the sphere. Grids can be
-    initialized from:
+    Class for spatial gridded data on the sphere.
+
+    Grids can be initialized from:
 
     >>> x = SHGrid.from_array(array)
     >>> x = SHGrid.from_file('fname.dat')
@@ -1069,6 +1053,7 @@ class SHGrid(object):
     """
 
     def __init__():
+        """Use a constructor to intialize."""
         pass
 
     # ---- factory methods
@@ -1114,11 +1099,29 @@ class SHGrid(object):
         """Initialize the grid of the object from a file."""
         raise NotImplementedError('Not implemented yet')
 
+    # ---- operators ----
+    def __add__(self, grid):
+        """Add two similar grids."""
+        if self.grid == grid.grid and self.data.shape == grid.data.shape:
+            data = self.data + grid.data
+            return SHGrid.from_array(data, grid=self.grid)
+
+    def __mul__(self, grid):
+        """Multiply two similar grids."""
+        if self.grid == grid.grid and self.data.shape == grid.data.shape:
+            data = self.data * grid.data
+            return SHGrid.from_array(data, grid=self.grid)
+
+    def __sub__(self, grid):
+        """Subtract two similar grids."""
+        if self.grid == grid.grid and self.data.shape == grid.data.shape:
+            data = self.data * grid.data
+            return SHGrid.from_array(data, grid=self.grid)
+
     # ---- Extract grid properties ----
     def get_lats(self):
         """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
+        Return the latitudes (in degrees) of each row of the gridded data.
 
         Usage
         -----
@@ -1135,8 +1138,7 @@ class SHGrid(object):
 
     def get_lons(self):
         """
-        Return a vector containing the longitudes (in degrees) of each
-        column of the gridded data.
+        Return the longitudes (in degrees) of each column of the gridded data.
 
         Usage
         -----
@@ -1276,6 +1278,7 @@ class DHRealGrid(SHGrid):
                 )
 
         cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase,
+                                   sampling=self.sampling,
                                    **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
