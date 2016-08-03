@@ -69,6 +69,10 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, K, taper_wt)
         end do  
         
     else
+        ! Mmt(nl_in, nl_out)
+        ! i is the index of the input degree
+        ! j is the index of the output degree
+        ! l is the window index
         do i = 0, lmax
             do j = 0, lmax+lwin
                 call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
@@ -78,7 +82,7 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, K, taper_wt)
                     sum1 = sum1 + sum(tapers(l+1,1:K)**2) * w3j(l-wmin+1)**2
                 enddo
                 
-                Mmt(i+1,j+1) = sum1 * dble(2*i+1) / dble(K)
+                Mmt(i+1,j+1) = sum1 * dble(2*j+1) / dble(K)
                 
             end do
         end do  

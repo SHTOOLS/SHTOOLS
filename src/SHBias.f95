@@ -151,7 +151,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg)
             do j = 0, lwin
                 call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
                 
-                do i = imin, min(imax, ldata), 2                              
+                do i = imin, min(imax, ldata), 2
                     outcspectra(l+1) = outcspectra(l+1) + Shh(j+1) * &
                         incspectra(i+1) * (2.0d0*l+1.0d0) * wig(i-imin+1)**2
                 end do
