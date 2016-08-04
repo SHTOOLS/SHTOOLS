@@ -50,9 +50,10 @@ Full installation instructions can be found [here](www/install.html), and additi
 
 SHTOOLS can be invoked in any Fortran 95, Python 2, or Python 3 program. The base SHTOOLS software is written in Fortran 95, and Python wrappers allow simple access to all fortran-compiled routines. SHTOOLS is open source (revised BSD license) and makes use of the freely available Fourier transform package [FFTW](http://www.fftw.org) and the linear algebra packages [LAPACK](http://www.netlib.org/lapack/) and [BLAS](http://www.netlib.org/blas/).
 
-Python tutorials are available here:
+### Python tutorials
 
-* [tutorial 1](examples/notebooks/tutorial_1.ipynb)
-* [tutorial 2](examples/notebooks/tutorial_2.ipynb)
-* [tutorial 3](examples/notebooks/tutorial_3.ipynb)
-* [tutorial 4](examples/notebooks/tutorial_4.ipynb)
+* [tutorial 1: Simple Spherical Harmonics Expansions](examples/notebooks/tutorial_1.ipynb)
+* [tutorial 2: Localized Spectral Analysis on the Sphere](examples/notebooks/tutorial_2.ipynb)
+* [tutorial 3: The SHTOOLS Class Interface](examples/notebooks/tutorial_3.ipynb)
+* [tutorial 4: Spherical Harmonics Normalization and Parseval's theorem](examples/notebooks/tutorial_4.ipynb)
+* [tutorial 5: Multitaper Windows - Class Interface](examples/notebooks/tutorial_5.ipynb)
