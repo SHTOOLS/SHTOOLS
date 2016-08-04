@@ -55,3 +55,4 @@ Python tutorials are available here:
 * [tutorial 1](examples/notebooks/tutorial_1.ipynb)
 * [tutorial 2](examples/notebooks/tutorial_2.ipynb)
 * [tutorial 3](examples/notebooks/tutorial_3.ipynb)
+* [tutorial 4](examples/notebooks/tutorial_4.ipynb)
