@@ -359,7 +359,7 @@ class SHCoeffs(object):
         return self._powerperdegree() * ls * _np.log(bandwidth)
 
     # ---- Return coefficients with a different normalization convention ----
-    def get_coeffs(self, normalization='4pi', csphase=1):
+    def get_coeffs(self, normalization='4pi', csphase=1, lmax=None):
         """
         Return spherical harmonics coefficients as a numpy array with a
         different normalization convention.
@@ -367,7 +367,7 @@ class SHCoeffs(object):
         Usage
         -----
 
-        coeffs = x.get_coeffs([normalization, csphase])
+        coeffs = x.get_coeffs([normalization, csphase, lmax])
 
         Returns
         -------
@@ -383,6 +383,8 @@ class SHCoeffs(object):
                         coefficients, respectively.
         csphase       : Output Condon-Shortley phase convention: 1 (default)
                         to exlcude the phase factor, or -1 to include it.
+        lmax          : Maximum spherical harmonic degree to output.
+                        Default is x.lmax.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
@@ -401,9 +403,18 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        if lmax is not None:
+            if lmax > self.lmax:
+                raise ValueError('Output lmax is greater than the maximum ' +
+                                 'degree of the coefficients. ' +
+                                 'Output lmax = {:d}, lmax of coefficients ' +
+                                 '= {:d}'.format(lmax, self.lmax))
+        if lmax is None:
+            lmax = self.lmax
+
         return self._get_coeffs(
             output_normalization=normalization.lower(),
-            output_csphase=csphase)
+            output_csphase=csphase, lmax=lmax)
 
     # ---- Rotate the coordinate system ----
     def rotate(self, alpha, beta, gamma, degrees=True, dj_matrix=None):
@@ -480,7 +491,7 @@ class SHCoeffs(object):
         return rot
 
     # ---- Convert spherical harmonic coefficients to a different normalization
-    def convert(self, normalization='4pi', csphase=1):
+    def convert(self, normalization='4pi', csphase=1, lmax=None):
         """
         Convert the spherical harmonic coefficients to a different
         normalization convention, and return a new class instance.
@@ -488,7 +499,7 @@ class SHCoeffs(object):
         Usage
         -----
 
-        SHCoeffsInstance = x.convert([normalization, csphase])
+        SHCoeffsInstance = x.convert([normalization, csphase, lmax])
 
         Parameters
         ----------
@@ -499,6 +510,8 @@ class SHCoeffs(object):
                         coefficients, respectively.
         csphase       : Output Condon-Shortley phase convention: 1 (default)
                         to exlcude the phase factor, or -1 to include it.
+        lmax          : Maximum spherical harmonic degree to output.
+                        Default is x.lmax.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
@@ -518,7 +531,7 @@ class SHCoeffs(object):
                 )
 
         coeffs = self.get_coeffs(normalization=normalization.lower(),
-                                 csphase=csphase)
+                                 csphase=csphase, lmax=lmax)
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
                                    csphase=csphase)
@@ -648,8 +661,8 @@ class SHCoeffs(object):
         """
         print('kind = {:s}\nnormalization = {:s}\n'
               'csphase = {:d}\nlmax = {:d}'.format(
-                  repr(self.kind), self.lmax,
-                  repr(self.normalization), self.csphase))
+                  repr(self.kind), repr(self.normalization), self.csphase,
+                  self.lmax))
 
 
 # ================== REAL SPHERICAL HARMONICS ================
@@ -725,39 +738,40 @@ class SHRealCoeffs(SHCoeffs):
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
                 "Input value was {:s}".format(repr(self.normalization)))
 
-    def _get_coeffs(self, output_normalization, output_csphase):
+    def _get_coeffs(self, output_normalization, output_csphase, lmax):
         """
         Return real spherical harmonic coefficients with a
         different normalization convention.
         """
-        coeffs = _np.copy(self.coeffs)
+        coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        degrees = _np.arange(lmax + 1)
 
         if self.normalization == output_normalization:
             pass
         elif (self.normalization == '4pi' and
               output_normalization == 'schmidt'):
-            for l in self.get_degrees():
+            for l in degrees:
                 coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
         elif self.normalization == '4pi' and output_normalization == 'ortho':
             coeffs *= _np.sqrt(4.0 * _np.pi)
         elif (self.normalization == 'schmidt' and
               output_normalization == '4pi'):
-            for l in self.get_degrees():
+            for l in degrees:
                 coeffs[:, l, :l+1] /= _np.sqrt(2.0 * l + 1.0)
         elif (self.normalization == 'schmidt' and
               output_normalization == 'ortho'):
-            for l in self.get_degrees():
+            for l in degrees:
                 coeffs[:, l, :l+1] *= _np.sqrt(4.0 * _np.pi / (2.0 * l + 1.0))
         elif self.normalization == 'ortho' and output_normalization == '4pi':
             coeffs /= _np.sqrt(4.0 * _np.pi)
         elif (self.normalization == 'ortho' and
               output_normalization == 'schmidt'):
-            for l in self.get_degrees():
+            for l in degrees:
                 coeffs[:, l, :l+1] *= _np.sqrt((2.0 * l + 1.0) /
                                                (4.0 * _np.pi))
 
         if output_csphase != self.csphase:
-            for m in self.get_degrees():
+            for m in degrees:
                 if m % 2 == 1:
                     coeffs[:, :, m] = - coeffs[:, :, m]
 
@@ -920,39 +934,40 @@ class SHComplexCoeffs(SHCoeffs):
                 "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
                 "Input value was {:s}".format(repr(self.normalization)))
 
-    def _get_coeffs(self, output_normalization, output_csphase):
+    def _get_coeffs(self, output_normalization, output_csphase, lmax):
         """
         Return complex spherical harmonics coefficients with a
         different normalization convention.
         """
-        coeffs = _np.copy(self.coeffs)
+        coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        degrees = _np.arange(lmax + 1)
 
         if self.normalization == output_normalization:
             pass
         elif (self.normalization == '4pi' and
               output_normalization == 'schmidt'):
-            for l in self.get_degrees():
+            for l in degrees:
                 coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
         elif self.normalization == '4pi' and output_normalization == 'ortho':
             coeffs *= _np.sqrt(4.0 * _np.pi)
         elif (self.normalization == 'schmidt' and
               output_normalization == '4pi'):
-            for l in self.get_degrees():
+            for l in degrees:
                 coeffs[:, l, :l+1] /= _np.sqrt(2.0 * l + 1.0)
         elif (self.normalization == 'schmidt' and
               output_normalization == 'ortho'):
-            for l in self.get_degrees():
+            for l in degrees:
                 coeffs[:, l, :l+1] *= _np.sqrt(4.0 * _np.pi / (2.0 * l + 1.0))
         elif self.normalization == 'ortho' and output_normalization == '4pi':
             coeffs /= _np.sqrt(4.0 * _np.pi)
         elif (self.normalization == 'ortho' and
               output_normalization == 'schmidt'):
-            for l in self.get_degrees():
+            for l in degrees:
                 coeffs[:, l, :l+1] *= _np.sqrt((2.0 * l + 1.0) /
                                                (4.0 * _np.pi))
 
         if output_csphase != self.csphase:
-            for m in self.get_degrees():
+            for m in degrees:
                 if m % 2 == 1:
                     coeffs[:, :, m] = - coeffs[:, :, m]
 
@@ -1955,6 +1970,70 @@ class SHWindow(object):
 
         return gridout
 
+    def get_multitaperpowerspectrum(self, clm, k, **kwargs):
+        """"
+        Return the multitaper power spectrum estimate and uncertainty for the
+        input SHCoeffs class instance.
+
+        Usage
+        -----
+
+        mtse, sd = x.get_multitaperpowerspectrum(clm, k, [lmax, taper_wt, clat,
+                                                          clon, coord_degrees])
+
+        Parameters
+        ----------
+        mtse          : The localized multitaper power spectrum estimate.
+        sd            : The standard error of the localized multitaper power
+                        spectral estimates.
+        clm           : Input SHCoeffs class instance containing the spherical
+                        harmonic coefficients of the global field to analyze.
+        k             : The number of tapers to be utilized in performing the
+                        multitaper spectral analysis.
+        lmax          : The maximum spherical harmonic degree of clm to use.
+                        Default is clm.lmax.
+        taper_wt      : The weights used in calculating the multitaper spectral
+                        estimates and standard error. Default is None.
+        clat, clon    : Latitude and longitude of the center of the spherical-
+                        cap localization windows. Default is the north pole.
+        coord_degrees : True (default) if clat and clon are in degrees.
+        """
+        return self._get_multitaperpowerspectrum(clm, k, **kwargs)
+
+    def get_multitapercrosspowerspectrum(self, clm, slm, k, **kwargs):
+        """"
+        Return the multitaper cross power spectrum estimate and uncertainty
+        for two input SHCoeffs class instances.
+
+        Usage
+        -----
+
+        mtse, sd = x.get_multitapercrosspowerspectrum(
+                      clm, slm, k, [lmax, taper_wt, clat, clon, coord_degrees])
+
+        Parameters
+        ----------
+        mtse          : The localized multitaper power spectrum estimate.
+        sd            : The standard error of the localized multitaper power
+                        spectral estimates.
+        clm           : Input SHCoeffs class instance containing the spherical
+                        harmonic coefficients of the first global field to
+                        analyze.
+        slm           : Input SHCoeffs class instance containing the spherical
+                        harmonic coefficients of the second global field to
+                        analyze.
+        k             : The number of tapers to be utilized in performing the
+                        multitaper spectral analysis.
+        lmax          : The maximum spherical harmonic degree of clm to use.
+                        Default is clm.lmax.
+        taper_wt      : The weights used in calculating the multitaper spectral
+                        estimates and standard error. Default is None.
+        clat, clon    : Latitude and longitude of the center of the spherical-
+                        cap localization windows. Default is the north pole.
+        coord_degrees : True (default) if clat and clon are in degrees.
+        """
+        return self._get_multitapercrosspowerspectrum(clm, slm, k, **kwargs)
+
     def get_couplingmatrix(self, lmax, nwin=None, weights=None):
         """
         Return the coupling matrix of the first nwin tapers. This matrix
@@ -2128,7 +2207,7 @@ class SHWindowCap(SHWindow):
                         coord_degrees=self.coord_degrees,
                         dj_matrix=self.dj_matrix)
 
-    def _vector2coeffs(self, itaper):
+    def _taper2coeffs(self, itaper):
         """
         Return the spherical harmonic coefficients of the unrotated taper i
         as an array, where i = 0 is the best concentrated.
@@ -2148,9 +2227,9 @@ class SHWindowCap(SHWindow):
         array, where i = 0 is the best concentrated.
         """
         if self.coeffs is None:
-            coeffs = _np.copy(self._vector2coeffs(itaper))
+            coeffs = _np.copy(self._taper2coeffs(itaper))
         else:
-            coeffs = _np.copy(self.coeffs[itaper, :, :, :])
+            coeffs = _shtools.SHVectorToCilm(self.coeffs[itaper, :])
 
         if normalization == 'schmidt':
             for l in range(self.lmax + 1):
@@ -2192,9 +2271,11 @@ class SHWindowCap(SHWindow):
         This function will take the spherical-cap localization windows
         centered at the north pole (and saved in the attributes tapers and
         orders), rotate each function to the coordinate (clat, clon), and save
-        the spherical harmonic coefficients in the attribute coeffs.
+        the spherical harmonic coefficients in the attribute coeffs. Each
+        column of coeffs contains a single window, and is ordered according to
+        the convention in SHCilmToVector.
         """
-        self.coeffs = _np.zeros((self.nwin, 2, self.lmax + 1, self.lmax + 1))
+        self.coeffs = _np.zeros((self.nwin, (self.lmax + 1)**2))
         self.clat = clat
         self.clon = clon
         self.coord_degrees = coord_degrees
@@ -2212,8 +2293,16 @@ class SHWindowCap(SHWindow):
                 dj_matrix = self.dj_matrix
 
         for i in range(self.nwin):
-            self.coeffs[i, :, :, :] = _shtools.SHRotateRealCoef(
-                self._vector2coeffs(i), angles, dj_matrix)
+            if ((coord_degrees is True and clat == 90. and clon == 0.) or
+                    (coord_degrees is False and clat == _np.pi/2. and
+                     clon == 0.)):
+                coeffs = self._taper2coeffs(i)
+                self.coeffs[i, :] = _shtools.SHCilmToVector(coeffs)
+
+            else:
+                coeffs = _shtools.SHRotateRealCoef(self._taper2coeffs(i),
+                                                   angles, dj_matrix)
+                self.coeffs[i, :] = _shtools.SHCilmToVector(coeffs)
 
     def _get_couplingmatrix(self, lmax, nwin=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
@@ -2228,6 +2317,75 @@ class SHWindowCap(SHWindow):
         else:
             return _shtools.SHMTCouplingMatrix(lmax, self.tapers**2, k=nwin,
                                                taper_wt=self.weights)
+
+    def _get_multitaperpowerspectrum(self, clm, k, clat=None, clon=None,
+                                     coord_degrees=True, lmax=None,
+                                     taper_wt=None):
+        """
+        Return the multitaper power spectrum estimate and uncertainty for an
+        input SHCoeffs class instance.
+        """
+        if lmax is None:
+            lmax = clm.lmax
+
+        if (clat is None and clon is None and self.clat is None and
+                self.clon is None):
+            self.rotate(clat=90., clon=0., coord_degrees=True)
+        elif (clat == self.clat and clon == self.clon and
+                coord_degrees is self.coord_degrees):
+            pass
+        else:
+            if clat is None or clon is None:
+                raise ValueError('clat and clon must both be input. ' +
+                                 'clat = {:s}, clon = {:s}'
+                                 .format(repr(clat), repr(clon)))
+            else:
+                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees)
+
+        sh = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+
+        if taper_wt is None:
+            return _shtools.SHMultiTaperSE(sh, self.coeffs, lmax=lmax, k=k)
+        else:
+            return _shtools.SHMultiTaperSE(sh, self.coeffs, lmax=lmax,
+                                           k=k, taper_wt=taper_wt)
+
+    def _get_multitapercrosspowerspectrum(self, clm, slm, k, clat=None,
+                                          clon=None, coord_degrees=True,
+                                          lmax=None, taper_wt=None):
+        """
+        Return the multitaper cross-power spectrum estimate and uncertainty for
+        two input SHCoeffs class instances.
+        """
+        if lmax is None:
+            lmax = min(clm.lmax, slm.lmax)
+
+        if (clat is None and clon is None and self.clat is None and
+                self.clon is None):
+            self.rotate(clat=90., clon=0., coord_degrees=True)
+
+        elif (clat == self.clat and clon == self.clon and
+                coord_degrees is self.coord_degrees):
+            pass
+
+        else:
+            if clat is None or clon is None:
+                raise ValueError('clat and clon must both be input. ' +
+                                 'clat = {:s}, clon = {:s}'
+                                 .format(repr(clat), repr(clon)))
+            else:
+                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees)
+
+        sh1 = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh2 = slm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+
+        if taper_wt is None:
+            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
+                                                lmax=lmax, k=k)
+        else:
+            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
+                                                lmax=lmax, k=k,
+                                                taper_wt=taper_wt)
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
@@ -2323,6 +2481,44 @@ class SHWindowMask(SHWindow):
         else:
             return _shtools.SHMTCouplingMatrix(lmax, tapers_power, k=nwin,
                                                taper_wt=self.weights)
+
+    def _get_multitaperpowerspectrum(self, clm, k, lmax=None, taper_wt=None):
+        """
+        Return the multitaper power spectrum estimate and uncertainty for an
+        input SHCoeffs class instance.
+        """
+
+        if lmax is None:
+            lmax = clm.lmax
+
+        sh = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+
+        if taper_wt is None:
+            return _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax, k=k)
+        else:
+            return _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
+                                               k=k, taper_wt=taper_wt)
+
+    def _get_multitapercrosspowerspectrum(self, clm, slm, k, lmax=None,
+                                          taper_wt=None):
+        """
+        Return the multitaper cross-power spectrum estimate and uncertainty for
+        two input SHCoeffs class instances.
+        """
+
+        if lmax is None:
+            lmax = min(clm.lmax, slm.lmax)
+
+        sh1 = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh2 = slm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+
+        if taper_wt is None:
+            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
+                                                lmax=lmax, k=k)
+        else:
+            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
+                                                lmax=lmax, k=k,
+                                                taper_wt=taper_wt)
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""

@@ -46,8 +46,10 @@
 		<li>Added an <tt>info()</tt> method to shtools constants that prints an info string.</li>
 		<li>Add full support for the python classes <tt>SHCoeffs</tt> and <tt>SHGrid</tt>.</li>
 		<li>Change python wrapper so that the output arrays in the <tt>SHExpand</tt> routines correspond to the optional input variable <tt>lmax_calc</tt>.</li>
+		<li>Changed the primary input parameter of <tt>SHMTCouplingMatrix</tt> to be a matrix of power spectra of the localization windows instead of a matrix of spherical-harmonic coefficients of spherical-cap localization windows</li>.
+		<li>Added two fortran routines for performing multitaper spectral analyses when using windows generaged from a mask, <tt>SHMultiTaperMaskSE</tt> and <tt>SHMultiTaperCSE</tt>.</li>
 		<li>Created an SHTOOLS development fund, funded by bitcoin donations.</li>
-		
+
 	</ul>
 
 	<h2>Version 3.2 (June 20, 2016)</h2>

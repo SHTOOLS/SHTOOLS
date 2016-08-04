@@ -36,7 +36,7 @@
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>x</code> : input, real*8, dimension(3)</dt>
-<dd>The three Euler angles, alpha, beta, and gamma.
+<dd>The three Euler angles, alpha, beta, and gamma, in radians.
 </dd>
 <dt><code>coef</code> : input, real*8, dimension (2, (<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
 <dd>The input complex spherical harmonic coefficients. This is an indexed array where the real and complex components are given by <code>coef(1,:)</code> and <code>coef(2,:)</code>, respectively. The functions <code>SHCilmToCindex</code> and <code>SHCindexToCilm</code> are used to convert to and from indexed and <code>cilm(2,:,:)</code> form. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention.
@@ -72,7 +72,6 @@
 <p><code>x(-gamma, -beta, -alpha)</code>.</p>
 <p>To perform the inverse transform of <code>x(alpha, beta, gamma)</code>, use <code>x(-gamma, -beta, -alpha)</code>.</p>
 <p>Note that this routine uses the &quot;y convention&quot;, where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the &quot;x convention&quot;, where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be <code>alpha_y=alpha_x-pi/2</code>, <code>beta_x=beta_y</code>, and <code>gamma_y=gamma_x+pi/2</code>.</p>
-<p>This routine is based upon code originally written by Guy Masters, which was then subsequently modified by Mark Simons and myself.</p>
 <h1 id="see-also">See also</h1>
 <p><a href="djpi2.html">djpi2</a>, <a href="shrotaterealcoef.html">shrotaterealcoef</a>, <a href="shctor.html">shctor</a>, <a href="shrtoc.html">shrtoc</a>, <a href="shcilmtocindex.html">shcilmtocindex</a>, <a href="shcindextocilm.html">shcindextocilm</a></p>
 
