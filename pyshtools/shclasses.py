@@ -1641,18 +1641,20 @@ class GLQComplexGrid(SHGrid):
 
 class SHWindow(object):
     """
-    EXPERIMENTAL:
-    This class contains collections of spherical harmonics windows that
-    provide spectral estimates about a specific region
+    EXPERIMENTAL Window class.
+
+    This class contains collections of the coefficients of window functions.
+    The windows can provide spectral estimates about a certain region.
     """
+
     def __init__(self):
+        """Initialize with a factory method."""
         pass
 
+    # ---- factory methods:
     @classmethod
     def from_cap(self, lmax, nwins, theta, clat=0., clon=0., degrees=True):
-        """
-        constructs a spherical cap window
-        """
+        """Construct a spherical cap window."""
         if degrees:
             theta = _np.radians(theta)
 
@@ -1662,23 +1664,21 @@ class SHWindow(object):
 
     @classmethod
     def from_mask(self, lmax, nwins, dh_mask, sampling=1):
-        """
-        constructs optimal window functions in a masked region (needs dh grid)
-        """
+        """Construct window functions in a masked region (needs dh grid)."""
         tapers, eigenvalues = _shtools.SHReturnTapersMap(
             dh_mask, lmax, sampling=sampling, Ntapers=nwins)
         return SHAsymmetricWindow(tapers, eigenvalues)
 
+    # ---- plot methods:
     def plot(self, nwins, show=True, fname=None):
-        """
-        plots the best concentrated spherical harmonics taper functions
-        """
-        # ---- setup figure and axes
+        """Plot the best concentrated spherical harmonics taper functions."""
+        # setup figure and axes
         maxcolumns = 5
         ncolumns = min(maxcolumns, nwins)
         nrows = _np.ceil(nwins / ncolumns).astype(int)
-        figsize = ncolumns * 1.2, nrows * 1.2 + 0.5
+        figsize = ncolumns * 3.2, nrows * 2.2 + 0.5
         fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+        axes = axes.reshape(nrows, ncolumns)
         for ax in axes[:-1, :].flatten():
             for xlabel_i in ax.get_xticklabels():
                 xlabel_i.set_visible(False)
@@ -1692,7 +1692,7 @@ class SHWindow(object):
             coeffs = self._coeffs(itaper)
             ax = axes.flatten()[itaper]
             grid = _shtools.MakeGridDH(coeffs)
-            ax.imshow(grid)
+            ax.imshow(grid, cmap='viridis', aspect='auto')
             ax.set_title('concentration: {:2.2f}'.format(evalue))
         fig.tight_layout(pad=0.5)
 
@@ -1701,13 +1701,14 @@ class SHWindow(object):
         if fname is not None:
             fig.savefig(fname)
 
-    def get_spectrum(self, shcoeffs, nwins):
-        """Returns the regional spherical harmonics spectrum."""
-        for itaper in range(nwins):
-            tapercoeffs = self._coeffs(itaper)
-            modelcoeffs = shcoeffs.get_coeffs(normalization='4pi', kind='real')
-            coeffs = _shtools.SHMultiply(tapercoeffs, modelcoeffs)
-        return coeffs
+    # ---- spectral estimate methods:
+    def get_powerperdegree(self, nmax=None):
+        """Return the power per degree spectra of the windows."""
+        power = _np.empty((self.nwins, self.nl))
+        for itaper in range(self.nwins):
+            coeffs = self._coeffs(itaper)
+            power[itaper] = _shtools.SHPowerSpectrum(coeffs)
+        return power
 
     def get_couplingmatrix(self, lmax, nwins):
         """Return the coupling matrix of the first nwins tapers."""
@@ -1724,7 +1725,7 @@ class SHWindow(object):
         return coupling_matrix
 
     def plot_couplingmatrix(self, lmax, nwins, show=True, fname=None):
-        """plots the window's coupling strength"""
+        """Plot the window's coupling strength."""
         figsize = _mpl.rcParams['figure.figsize']
         figsize[0] = figsize[1]
         fig = _plt.figure(figsize=figsize)
@@ -1741,20 +1742,24 @@ class SHWindow(object):
             fig.savefig(fname)
 
     def info(self):
-        """print meta information about the tapers"""
+        """Print meta information about the tapers."""
         self._info()
 
 
 class SHSymmetricWindow(SHWindow):
     """
-    This class saves a symmetric spherical window function. It needs to
-    save only the m=0 coefficients
+    Class for Symmetric spherical windows class.
+
+    It needs to save only the m=0 coefficients
     """
+
     @staticmethod
     def istype(kind):
+        """Check if class corresponds to kind."""
         return kind == 'Symmetric'
 
     def __init__(self, tapers, eigenvalues, orders, clat=0., clon=0.):
+        """Initialize symmetric cap window."""
         # center of cap window
         self.clat, self.clon = clat, clon
         # nl: number of degrees, nwins: number of windows
@@ -1783,14 +1788,18 @@ class SHSymmetricWindow(SHWindow):
 
 class SHAsymmetricWindow(SHWindow):
     """
-    This class saves a asymmetric spherical window function and is much like a
-    set of real sherical harmonics. It could maybe be merged at some point...
+    Class for Asymmetric spherical window functions.
+
+    It is like a set of real sherical harmonic coefficients.
     """
+
     @staticmethod
     def istype(kind):
+        """Check if class corresponds to 'Symmetric' or 'Asymmetric'."""
         return kind == 'Asymmetric'
 
     def __init__(self, tapers, eigenvalues):
+        """Initialize asymmetric window class."""
         ncoeffs, self.nwins = tapers.shape
         self.nl = _np.sqrt(ncoeffs).astype(int)
         self.lmax = self.nl-1
