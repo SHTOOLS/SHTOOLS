@@ -3,13 +3,11 @@
 [![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.20920.svg)](http://dx.doi.org/10.5281/zenodo.20920)
 
-### What is SHTOOLS? ###
-
 SHTOOLS is a of Fortran 95 / Python library that can be used to perform
 spherical harmonic transforms and reconstructions, rotations of data expressed
 in spherical harmonics, and multitaper spectral analyses on the sphere.
 
-### What makes SHTOOLS different? ###
+### FEATURES ###
 
 SHTOOLS is extremely versatile:
 
@@ -42,7 +40,7 @@ SHTOOLS is extremely versatile:
   on the order of 1 second for bandwidths less than 600 and about 3 minutes for
   bandwidths close to 2800.
 
-### How do I install SHTOOLS? ###
+### INSTALL ###
 Install the requirements:
 
 ```bash
@@ -63,7 +61,7 @@ More installation instructions and options can be found in the
 [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki).
 
 
-### How do I use SHTOOLS? ###
+### HOW TO USE ###
 
 Check out the Python tutorial notebooks here:
 
