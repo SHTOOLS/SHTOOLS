@@ -114,6 +114,53 @@ class SHCoeffs(object):
 
     # ---- factory methods:
     @classmethod
+    def from_zeros(self, lmax, normalization='4pi', csphase=1, kind='real'):
+        """
+        Initialize class with zero from degree 0 to lmax.
+
+        Usage
+        -----
+
+        x = SHCoeffs.from_array(lmax, [normalization, csphase])
+
+        Parameters
+        ----------
+
+        lmax          : The highest harmonic degree l of the coefficients
+        normalization : '4pi' (default), 'ortho' or 'schmidt' for geodesy 4pi
+                        normalized, orthonormalized, or Schmidt semi-normalized
+                        coefficients, respectively.
+        csphase       : 1 (default) if the coefficients exclude the Condon-
+                        Shortley phase factor, or -1 if they include it.
+        """
+        if kind.lower() not in set(['real', 'complex']):
+            raise ValueError(
+                "Kind must be 'real' or 'complex'. " +
+                "Input value was {:s}."
+                .format(repr(kind))
+                )
+
+        if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
+            raise ValueError(
+                "The normalization must be '4pi', 'ortho' " +
+                "or 'schmidt'. Input value was {:s}."
+                .format(repr(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be either 1 or -1. Input value was {:s}."
+                .format(repr(csphase))
+                )
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind):
+                nl = lmax + 1
+                coeffs = _np.zeros((2, nl, nl))
+                return cls(coeffs, normalization=normalization.lower(),
+                           csphase=csphase)
+
+    @classmethod
     def from_array(self, coeffs, normalization='4pi', csphase=1):
         """
         Initialize the coefficients from an input numpy array.
@@ -356,6 +403,31 @@ class SHCoeffs(object):
         """
         ls = self.get_degrees()
         return self._powerperdegree() * ls * _np.log(bandwidth)
+
+    # ---- Set individual coefficient
+    def set_coeffs(self, values, ls, ms):
+        """
+        Set coefficients in-place to specified values.
+
+        Usage
+        -----
+
+        x.set_coeffs(values, ls, ms)
+
+        Parameters
+        ----------
+
+        values : one or several coefficient values
+        ls: the degree/s of the coefficients that should be set
+        ms: the order/s of the coefficients that should be set
+        """
+        # make sure that the type is correct
+        values = _np.array(values)
+        ls = _np.array(ls)
+        ms = _np.array(ms)
+
+        mneg_mask = (ms < 0).astype(_np.int)
+        self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- Return coefficients with a different normalization convention ----
     def get_coeffs(self, normalization='4pi', csphase=1):
