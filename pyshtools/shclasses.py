@@ -1257,6 +1257,110 @@ class SHGrid(object):
         """
         return self._get_lons()
 
+    def plot_3dsphere(self, show=True, fname=None):
+        """
+        Plot the raw data on a 3d sphere.
+
+        This routines becomes slow for large grids because it is based on
+        matplotlib3d.
+
+        Usage
+        -----
+
+        x.plot_3dsphere([show, fname])
+
+        Parameters
+        ----------
+
+        show   : If True (default), plot the image to the screen.
+        fname  : If present, save the image to the file.
+        """
+        from mpl_toolkits.mplot3d import Axes3D  # NOQA
+
+        nlat, nlon = self.nlat, self.nlon
+        cmap = _plt.get_cmap('RdBu_r')
+
+        if self.kind == 'real':
+            data = self.data
+        elif self.kind == 'complex':
+            data = _np.abs(self.data)
+        else:
+            raise ValueError('Grid has to be either real or complex, not {}'
+                             .format(self.kind))
+
+        lats = self.get_lats()
+        lons = self.get_lons()
+
+        if self.grid == 'DH':
+            # add south pole
+            lats_circular = _np.append(lats, [-90.])
+        elif self.grid == 'GLQ':
+            # add north and south pole
+            lats_circular = _np.hstack(([90.], lats, [-90.]))
+        lons_circular = _np.append(lons, [lons[0]])
+
+        nlats_circular = len(lats_circular)
+        nlons_circular = len(lons_circular)
+
+        sshape = nlats_circular, nlons_circular
+
+        # make uv sphere and store all points
+        u = _np.radians(lons_circular)
+        v = _np.radians(90. - lats_circular)
+
+        x = _np.sin(v)[:, None] * _np.cos(u)[None, :]
+        y = _np.sin(v)[:, None] * _np.sin(u)[None, :]
+        z = _np.cos(v)[:, None] * _np.ones_like(lons_circular)[None, :]
+
+        points = _np.vstack((x.flatten(), y.flatten(), z.flatten()))
+
+        # fill data for all points. 0 lon has to be repeated (circular mesh)
+        # and the south pole has to be added in the DH grid
+        if self.grid == 'DH':
+            magn_point = _np.zeros((nlat + 1, nlon + 1))
+            magn_point[:-1, :-1] = data
+            magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+            magn_point[:-1, -1] = data[:, 0]
+        if self.grid == 'GLQ':
+            magn_point = _np.zeros((nlat + 2, nlon + 1))
+            magn_point[1:-1, :-1] = data
+            magn_point[0, :] = _np.mean(data[0])  # not exact !
+            magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+            magn_point[1:-1, -1] = data[:, 0]
+
+        # compute face color, which is the average of all neighbour points
+        magn_face = 1./4. * (magn_point[1:, 1:] + magn_point[:-1, 1:] +
+                             magn_point[1:, :-1] + magn_point[:-1, :-1])
+
+        magnmax_face = _np.max(_np.abs(magn_face))
+        magnmax_point = _np.max(_np.abs(magn_point))
+
+        # compute colours and displace the points
+        norm = _plt.Normalize(-magnmax_face / 2., magnmax_face / 2., clip=True)
+        colors = cmap(norm(magn_face.flatten()))
+        colors = colors.reshape(nlats_circular - 1, nlons_circular - 1, 4)
+        points *= (1. + magn_point.flatten() / magnmax_point / 2.)
+        x = points[0].reshape(sshape)
+        y = points[1].reshape(sshape)
+        z = points[2].reshape(sshape)
+
+        # plot 3d radiation pattern
+        fig = _plt.figure(figsize=(10, 10))
+        ax3d = fig.add_subplot(1, 1, 1, projection='3d')
+        ax3d.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=colors)
+        ax3d.set(xlim=(-1.5, 1.5), ylim=(-1.5, 1.5), zlim=(-1.5, 1.5),
+                 xticks=[-1, 1], yticks=[-1, 1], zticks=[-1, 1])
+        ax3d.set_axis_off()
+        ax3d.view_init(elev=-20., azim=0.)
+
+        # show or save output
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+
+        return fig, ax3d
+
     # ---- Plotting routines ----
     def plot_rawdata(self, show=True, fname=None):
         """
