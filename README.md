@@ -14,10 +14,10 @@ SHTOOLS is extremely versatile:
 * wide range of supported spherical harmonic functions:
    * Real and complex
    * normalizations:
-    * Geodesy" 4&pi
-    * Schmidt semi-normalized,
-    * orthonormalized
-    * unnormalized
+     * Geodesy" 4&pi
+     * Schmidt semi-normalized,
+     * orthonormalized
+     * unnormalized
    * Condon-Shortley phase factor of (-1)<sup>m</sup>
 
 * Routines for global spectral analysis, spherical harmonic rotations,
