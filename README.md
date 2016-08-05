@@ -17,25 +17,18 @@ SHTOOLS is extremely versatile:
    * Condon-Shortley phase factor of (-1)<sup>m</sup>
 
 * Selected Applications / Routines:
-   * global spectral analysis
-     * spherical harmonic rotations
-     * Wigner3j symbols
-   * localized multitaper spectral analyses
-     * optimal window generation
-     * spherical harmonic coupling matrices
-   * standard gravity and magnetic field calculations
-     * computation of the geoid
-     * determination of the potential associated with finite-amplitude topography
+   * global spectral analysis, spherical harmonic rotations, Wigner3j symbols
+   * localized multitaper spectral analyses, optimal window generation, spherical harmonic coupling matrices
+   * standard gravity and magnetic field calculations, computation of the geoid,  finite-amplitude topography potential
 
-* Clean implementation:
-  * transforms are calculated by exact quadrature rules using either the sampling
-    theorem of *Driscoll and Healy* (1994) where data are equally sampled (or
+* Clean implementation of the transforms:
+  * exact quadrature rules using either the sampling theorem of *Driscoll and Healy* (1994) where data are equally sampled (or
     spaced) in latitude and longitude, or Gauss-Legendre quadrature.
 
   * accurate and fast to approximately degree 2800, corresponding to a spatial
-    resolution higher than 4 arc minutes. Spherical harmonic transforms and
-    reconstructions take on the order of 1 second for bandwidths less than 600
-    and about 3 minutes for bandwidths close to 2800. The Fortran routines are
+    resolution higher than 4 arc minutes. Transforms and reconstructions take
+    on the order of 1 second for bandwidths less than 600 and about 3 minutes
+    for bandwidths close to 2800 on standard machines. The Fortran routines are
     OpenMP compatible and OpenMP thread-safe.
 
 ### INSTALL ###
