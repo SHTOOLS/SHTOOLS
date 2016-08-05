@@ -9,8 +9,6 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
 
 ### FEATURES ###
 
-SHTOOLS is extremely versatile:
-
 * wide range of supported spherical harmonic functions:
    * Real and complex
    * different normalizations (Geodesy" 4&pi, Schmidt semi-normalized, orthonormalized, unnormalized)
