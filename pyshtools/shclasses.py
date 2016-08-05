@@ -2153,16 +2153,16 @@ class SHWindow(object):
         nwin    : The number of best concentrated localization window power
                   spectra to return.
         """
-        nl = self.tapers.shape[0]
+        nl = self.nl
 
         if itaper is None:
             if nwin is None:
                 nwin = self.nwin
             power = _np.zeros((nl, nwin))
 
-            for i in range(nwin):
-                coeffs = self.get_coeffs(i)
-                power[:, i] = _shtools.SHPowerSpectrum(coeffs)
+            for iwin in range(nwin):
+                coeffs = self.get_coeffs(iwin)
+                power[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
         else:
             power = _np.zeros((nl))
             coeffs = self.get_coeffs(itaper)
@@ -2170,7 +2170,7 @@ class SHWindow(object):
 
         return power
 
-    def get_couplingmatrix(self, lmax, nwin=None, weights=None):
+    def get_couplingmatrix(self, lmax, nwin=None, weights=None, mode='full'):
         """
         Return the coupling matrix of the first nwin tapers. This matrix
         relates the global power spectrum to the expectation of the localized
@@ -2189,6 +2189,19 @@ class SHWindow(object):
                   Default = x.nwin
         weights : Taper weights used with the multitaper spectral analyses.
                   Defaut is x.weights.
+        mode    : Can be one of the following:
+                  'full' (default): couples over the data bandlimit.
+                  Returns a biased spectrum with size lmax + lwin + 1. This
+                  assumes implicitely that the spectrum is zero for degrees
+                  l > lmax.
+                  'same': couples exactly to the data bandlimit.
+                  Returns a biased spectrum with size lmax + 1. This
+                  assumes implicitely that the spectrum is zero for degrees
+                  l > lmax.
+                  'valid': couples exactly to the data bandlimit.
+                  Returns a biased spectrum with size lmax - lwin + 1. This
+                  returns only the part of the biased spectrum that is not
+                  influenced by degrees with l > lmax.
         """
         if weights is not None:
             if nwin is not None:
@@ -2204,7 +2217,19 @@ class SHWindow(object):
                         'len(weights) = {:d}, nwin = {:d}'.format(len(weights),
                                                                   self.nwin))
 
-        return self._get_couplingmatrix(lmax, nwin=nwin, weights=weights)
+        if mode == 'full':
+            return self._get_couplingmatrix(lmax, nwin=nwin, weights=weights)
+        elif mode == 'same':
+            cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
+                                               weights=weights)
+            return cmatrix[:lmax+1, :]
+        elif mode == 'valid':
+            cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
+                                               weights=weights)
+            return cmatrix[:lmax - self.lmax+1, :]
+        else:
+            raise ValueError("mode has to be 'full', 'same' or 'valid', not "
+                             "{}".format(mode))
 
     def plot_windows(self, nwin, show=True, fname=None):
         """
@@ -2300,11 +2325,13 @@ class SHWindow(object):
         if fname is not None:
             fig.savefig(fname)
 
-    def plot_couplingmatrix(self, lmax, nwin=None, weights=None, show=True,
-                            fname=None):
+    def plot_couplingmatrix(self, lmax, nwin=None, weights=None, mode='full',
+                            show=True, fname=None):
         """
-        Plot the multitaper coupling matrix. This matrix relates the global
-        power spectrum to the expectation of the localized multitaper spectrum.
+        Plot the multitaper coupling matrix.
+
+        This matrix relates the global power spectrum to the expectation of
+        the localized multitaper spectrum.
 
         Usage
         -----
@@ -2321,20 +2348,35 @@ class SHWindow(object):
                   Defaut is x.weights.
         show    : If True (default), plot the image to the screen.
         fname   : If present, save the image to the file.
+        mode    : Can be one of the following:
+                  'full' (default): couples over the data bandlimit.
+                  Returns a biased spectrum with size lmax + lwin + 1. This
+                  assumes implicitely that the spectrum is zero for degrees
+                  l > lmax.
+                  'same': couples exactly to the data bandlimit.
+                  Returns a biased spectrum with size lmax + 1. This
+                  assumes implicitely that the spectrum is zero for degrees
+                  l > lmax.
+                  'valid': couples exactly to the data bandlimit.
+                  Returns a biased spectrum with size lmax - lwin + 1. This
+                  returns only the part of the biased spectrum that is not
+                  influenced by degrees with l > lmax.
         """
         figsize = _mpl.rcParams['figure.figsize']
         figsize[0] = figsize[1]
         fig = _plt.figure(figsize=figsize)
         ax = fig.add_subplot(111)
-        ax.imshow(self.get_couplingmatrix(lmax, nwin=nwin, weights=weights))
-        ax.set_xlabel('output power')
-        ax.set_ylabel('input power')
+        ax.imshow(self.get_couplingmatrix(lmax, nwin=nwin, weights=weights,
+                                          mode=mode), aspect='auto')
+        ax.set_xlabel('input power')  # matrix index 1 (columns)
+        ax.set_ylabel('output power')  # matrix index 0 (rows)
         fig.tight_layout(pad=0.1)
 
         if show:
             _plt.show()
         if fname is not None:
             fig.savefig(fname)
+        return fig, ax
 
     def info(self):
         """
@@ -2362,7 +2404,8 @@ class SHWindowCap(SHWindow):
         self.theta = theta
         self.clat = clat
         self.clon = clon
-        self.lmax = tapers.shape[0] - 1
+        self.nl = tapers.shape[0]
+        self.lmax = self.nl - 1
         self.theta_degrees = theta_degrees
         self.coord_degrees = coord_degrees
         self.dj_matrix = dj_matrix
@@ -2639,7 +2682,8 @@ class SHWindowMask(SHWindow):
 
     def __init__(self, tapers, eigenvalues, weights):
         self.kind = 'mask'
-        self.lmax = _np.sqrt(tapers.shape[0]).astype(int) - 1
+        self.nl = _np.sqrt(tapers.shape[0]).astype(int)
+        self.lmax = self.nl - 1
         self.weights = weights
         self.nwin = tapers.shape[1]
         self.tapers = tapers
