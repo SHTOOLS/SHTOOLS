@@ -38,16 +38,19 @@
 	<ul>
 		<li>Added full support for Python 3.</li>
 		<li>Fixed a critical, but rare, bug in <tt>MakeGridDH</tt>, <tt>MakeGravGridDH</tt>, <tt>MakeMagGridDH</tt>, and <tt>MakeGravGradGridDH</tt>. In these routines, the rows of the output grid are calculated by inverse Fourier transmforming a vector that depends upon the spherical harmonic coefficients. This vector, when using the complex-to-real FFTW routines, includes one element that corresponds to the coefficients with m=lmax+1. This element of the array was not properly initialized to zero in the Fortran code, and if the Fortran compiler did not explicitly zero all new arrays, this could have resulted in incorrect output. Given that this term is 1 index above the Nyquist frequency (m=lmax), if this element were not zero, each column of the grid would contain a component that oscillates from -1 to +1 (sclaed by the magnitude of the element). Even when this element was not initialized, a subsequent spherical harmonic expansion of the grid would usually give correct results.</li>
+		<li>Added a <tt>setup.py</tt> file for easy installation.</li>
 		<li>Makefiles were extensively modified to simplify the fortran and python builds: <tt>make all2</tt> and <tt>make all3</tt> were removed and replaced by flags that make use of the precompiler to resolve underscore problems; <tt>make install</tt> now places compiled module files in <tt>/usr/local/includes</tt>.</li>
 		<li>Makefiles were improved to minimize problems when installing both <tt>fortran</tt> and <tt>fortran-mp</tt> components. When making the latter, all object and module files in the directory <tt>src</tt> are first deleted.</li>
 		<li>The namespace of <tt>pyshtools</tt> was reorganized to list the routines by submodule name. A list of all routines is given in the submodule <tt>shtools</tt>.</li>
 		<li>Minor modifications to the python example scripts.</li>
 		<li>Minor bug fix to the scripts that create the unix <tt>man</tt> documentation.</li>
 		<li>Added an <tt>info()</tt> method to shtools constants that prints an info string.</li>
-		<li>Add full support for the python classes <tt>SHCoeffs</tt> and <tt>SHGrid</tt>.</li>
+		<li>Add full support for the python classes <tt>SHCoeffs</tt>, <tt>SHGrid</tt>, and <tt>SHWindow</tt>.</li>
 		<li>Change python wrapper so that the output arrays in the <tt>SHExpand</tt> routines correspond to the optional input variable <tt>lmax_calc</tt>.</li>
+		<li>Changed the primary input parameter of <tt>SHMTCouplingMatrix</tt> to be a matrix of power spectra of the localization windows instead of a matrix of spherical-harmonic coefficients of spherical-cap localization windows.</li>
+		<li>Added two fortran routines for performing multitaper spectral analyses when using windows generaged from a mask, <tt>SHMultiTaperMaskSE</tt> and <tt>SHMultiTaperCSE</tt>.</li>
 		<li>Created an SHTOOLS development fund, funded by bitcoin donations.</li>
-		
+
 	</ul>
 
 	<h2>Version 3.2 (June 20, 2016)</h2>

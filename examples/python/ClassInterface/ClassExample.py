@@ -8,12 +8,13 @@ from __future__ import absolute_import, division, print_function
 # standard imports:
 import os
 import sys
+
 import numpy as np
 import matplotlib as mpl
 
 # import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-import pyshtools as shtools
+import pyshtools
 
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
@@ -33,7 +34,7 @@ def example1():
     scale = 10
     power = 1. / (1. + (degrees / scale)**2)**2
 
-    coeffs = shtools.SHCoeffs.from_random(power)
+    coeffs = pyshtools.SHCoeffs.from_random(power)
     coeffs.plot_powerperband(show=False, fname='power.png')
 
     # expand coefficients into a spatial grid and plot it

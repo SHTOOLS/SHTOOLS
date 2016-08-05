@@ -30,12 +30,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>
 <h1 id="shmtcouplingmatrix">SHMTCouplingMatrix</h1>
-<p>This routine returns the multitaper coupling matrix for a given set of spherical-cap localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum.</p>
-<h1 id="usage">Usage</h1>
-<p><code>mmt</code> = SHMTCouplingMatrix (<code>lmax</code>, <code>tapers</code>, [<code>lwin</code>, <code>k</code>, <code>taper_wt</code>])</p>
+<p>This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum. # Usage</p>
+<p><code>Mmt</code> = SHMTCouplingMatrix (<code>lmax</code>, <code>tapers_power</code>, [<code>lwin</code>, <code>k</code>, <code>taper_wt</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
-<dt><code>mmt</code> : float, dimension (<code>lmax</code>+1, <code>lmax</code>+<code>lwin</code>+1)</dt>
+<dt><code>Mmt</code> : float, dimension (<code>lmax</code>+1, <code>lmax</code>+<code>lwin</code>+1)</dt>
 <dd>The multitaper coupling matrix that relates the global power spectrum to the expectation of the localized multitaper spectrum.
 </dd>
 </dl>
@@ -44,8 +43,8 @@
 <dt><code>lmax</code> : integer</dt>
 <dd>The spherical harmonic bandwidth of the global power spectrum.
 </dd>
-<dt><code>tapers</code> : float, dimension (<code>lwinin</code>+1, <code>kin</code>)</dt>
-<dd>An array of the k windowing functions, arranged in columns, obtained from a call to <code>SHReturnTapers</code>.
+<dt><code>tapers_power</code> : float, dimension (<code>lwinin</code>+1, <code>kin</code>)</dt>
+<dd>An array of power spectra of the k windowing functions, arranged in columns.
 </dd>
 <dt><code>lwin</code> : optional, integer, default = <code>lwinin</code></dt>
 <dd>The spherical harmonic bandwidth of the windowing functions in the array <code>tapers</code>.

@@ -1,10 +1,10 @@
 # SHMTCouplingMatrix
 
-This routine returns the multitaper coupling matrix for a given set of spherical-cap localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum.
+This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum.
 
 # Usage
 
-call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers`, `lwin`, `k`, `taper_wt`)
+call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers_power`, `lwin`, `k`, `taper_wt`)
 
 # Parameters
 
@@ -14,8 +14,8 @@ call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers`, `lwin`, `k`, `taper_wt`)
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of the global power spectrum.
 
-`tapers` : input, real\*8, dimension (`lwin`+1, `k`)
-:   An array of the k windowing functions, arranged in columns, obtained from a call to `SHReturnTapers`. 
+`tapers_power` : input, real\*8, dimension (`lwin`+1, `k`)
+:   An array of power spectra of the k windowing functions, arranged in columns.
 
 `lwin` : input, integer
 :   The spherical harmonic bandwidth of the windowing functions in the array `tapers`.
@@ -37,7 +37,6 @@ where `S_{Phi Phi}` is a vector containing the `lmax+lwin+1` localized multitape
 :   `M_{ij} = Sum_{l=0}^L Sum_{k=1}^K a_k S_{hh}^{k}(l) [ C_{l0j0}^{i0} ]^2`
 
 where `a_k` are the taper weights, `S_{hh}` is the power of the window, and `C` is a Clebsch-Gordon coefficient.
-
 
 # References
 
