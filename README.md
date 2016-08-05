@@ -12,30 +12,33 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
 SHTOOLS is extremely versatile:
 
 * wide range of supported spherical harmonic functions:
-   * Both real and complex spherical harmonics are supported.
-   * different normalizations: "Geodesy" 4&pi, Schmidt semi-normalized,
-     orthonormalized, unnormalized
+   * Real and complex
+   * normalizations:
+    * Geodesy" 4&pi
+    * Schmidt semi-normalized,
+    * orthonormalized
+    * unnormalized
    * Condon-Shortley phase factor of (-1)<sup>m</sup>
 
-* transforms are calculated by exact quadrature rules using either the sampling
-  theorem of *Driscoll and Healy* (1994) where data are equally sampled (or
-  spaced) in latitude and longitude, or Gauss-Legendre quadrature.
+* Routines for global spectral analysis, spherical harmonic rotations,
+  Wigner3j symbols
 
-* accurate to approximately degree 2800, corresponding to a spatial resolution
-  higher than 4 arc minutes.
-
-* OpenMP compatible and OpenMP thread-safe Fortran routines.
-
-* Routines for localized multitaper spectral analyses, spherical harmonic
-  coupling and rotations.
+* Routines for localized multitaper spectral analyses, optimal window
+  generation, spherical harmonic coupling matrices.
 
 * Routines for performing standard gravity and magnetic field calculations,
   such as computation of the geoid and the determination of the potential
   associated with finite-amplitude topography.
 
-* The routines are fast. Spherical harmonic transforms and reconstructions take
-  on the order of 1 second for bandwidths less than 600 and about 3 minutes for
-  bandwidths close to 2800.
+* transforms are calculated by exact quadrature rules using either the sampling
+  theorem of *Driscoll and Healy* (1994) where data are equally sampled (or
+  spaced) in latitude and longitude, or Gauss-Legendre quadrature.
+
+* accurate and fast to approximately degree 2800, corresponding to a spatial
+  resolution higher than 4 arc minutes. Spherical harmonic transforms and
+  reconstructions take on the order of 1 second for bandwidths less than 600
+  and about 3 minutes for bandwidths close to 2800. The Fortran routines are
+  OpenMP compatible and OpenMP thread-safe.
 
 ### INSTALL ###
 Install the requirements:
