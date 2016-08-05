@@ -8,6 +8,7 @@ include index.html
 graft examples/ExampleDataFiles
 recursive-include examples/fortran *.f95 input* Makefile
 recursive-include examples/python *.py Makefile
+recursive-include examples/notebooks *.ipynb
 include examples/python/ClassInterface/topo.dat.gz
 
 include pyshtools/README

@@ -1369,7 +1369,6 @@ class DHRealGrid(SHGrid):
 
 
 # ---- Complex Driscoll and Healy grid class ----
-
 class DHComplexGrid(SHGrid):
     """
     Class for complex Driscoll and Healy (1994) grids.
