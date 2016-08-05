@@ -34,18 +34,37 @@
 
 	<h1>Installation Instructions</h1>
 	
-	<h2>1. Use a package manager</h2>
-	
-	<p>The easiest way to install SHTOOLS is by using a package manager. The following options are currently available:</p>
-	
-	<h3>OSX (Homebrew)</h3>
+	<h2>1. Homebrew package manager (OSX)</h2>
 	<p class="nomarginbot">If <a href="http://brew.sh">brew</a> is already installed, it is only necessary to enter the following commands in the terminal:</p>
 		<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>brew tap shtools/shtools</tt><br>
 		<tt>brew install shtools</tt></p>
 	</blockquote>
-    
-	<h2>2. Manual installation</h2>
+
+	<h2>2. Python package installer: pip</h2>
+	<p class="nomarginbot">SHTOOLS can be installed using <tt>pip</tt>, but only if you have already downloaded the SHTOOLS repository from GitHub. To start, first make sure that you have the necessary dependencies installed. This can be done on most linux distributions using</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh</tt></p>
+	</blockquote>
+	<p class="nomarginbot">or with brew on OSX using</p>
+		<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>brew install fftw --with-fortran</tt></p>
+	</blockquote>
+	<p class="nomarginbot">Then, in the SHTOOLS main directory, execute</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>pip install .</tt></p>
+	</blockquote>
+	<p class="nomarginbot">which will install pyshtools in the system Python library. If you would like to install the files in the current working directory, so that you can easily edit the source files, and link them to the system Python directory, enter the following command instead:</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>pip install -e .</tt></p>
+	</blockquote>
+	<p class="nomarginbot">To uninstall pyshtools from your system directory, enter</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>pip uninstall pyshtools</tt></p>
+	</blockquote>
+	<p>Note that this will only install the Python version that corresponds to the version of <tt>pip</tt> being used. On some systems, it may be necessary to specify <tt>pip2.7</tt> or <tt>pip3.5</tt>.</p>
+	
+	<h2>3. Manual installation using make</h2>
 
 	<p class="nomarginbot">Before installing SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, the Fortran 95, Python 2, and Python 3 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main SHTOOLS directory:</p>
 	
@@ -132,9 +151,7 @@
 	
 	<p>To access the unix man pages, it will be necessary to add <tt>SYSSHAREPATH/man</tt> to your man path.</p>
 	
-	<h2>3. Compiler specific flags and optimizations</h2>
-	
-	<h3>3.1 Python</h3>
+	<h3>3.1 Python compiler specific flags</h3>
 	
 	<p>When compiling the python wrappers and running the python examples, it is important to use the correct versions of <tt>f2py</tt> and <tt>python</tt>. Most systems provide binaries that include the name of the python version, such as <tt>python2.7</tt>, <tt>python3.5</tt>, <tt>f2py2.7</tt> and <tt>f2py3.5</tt>. These binaries may or may not be linked to generic names such as <tt>python</tt> and <tt>f2py</tt>. If there are incompatibilities with your system's naming convention and those described above, it will be necessary to pass the optional arguments <tt>PYTHON</tt>, <tt>PYTHON3</tt>, <tt>F2PY</tt> and <tt>F2PY3</tt> to the <tt>Makefile</tt>.</p>
 	
@@ -146,7 +163,7 @@
 
 <p>This is necessary on OSX (using the brew installation), as installing both Python 2 and 3 will create only a single <tt>f2py</tt> that is overwritten by the last install.</p>
 	
-	<h3>3.2 Fortran</h3>
+	<h3>3.2 Fortran compiler specific flags and optimizations</h3>
 	
 	<p>Default compiler options are specified in the main <tt>Makefile</tt> for a few common compilers (<tt>gfortran</tt>, Absoft <tt>f95</tt>, <tt>g95</tt>, and <tt>ifort</tt>). If it is necessary to change these, consider the following guidelines.</p>
 	

@@ -381,7 +381,7 @@ remove-doc:
 	@echo
 	@echo REMOVED MAN AND HTML-MAN FILES
 
-clean: clean-libs clean-fortran-tests clean-python-tests
+clean: clean-fortran-tests clean-python-tests clean-libs
 
 clean-libs:
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean
@@ -389,14 +389,22 @@ clean-libs:
 	-rm -rf modules
 	-rm -rf NONE
 	-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
+	-rm -rf pyshtools/_SHTOOLS$(PY3EXT).dSYM/ pyshtools/_constant$(PY3EXT).dSYM/
 	-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
+	-rm -rf pyshtools/_SHTOOLS.so.dSYM/ pyshtools/_constant.so.dSYM/
 	-rm -f *.so
 	-rm -f pyshtools/*.so
 	-rm -f pyshtools/*.pyc
 	-rm -rf pyshtools/__pycache__/
 	-rm -rf pyshtools/doc
+	-rm -rf build
+	-rm -rf pyshtools.egg-info
+	-rm -f src/_SHTOOLS-f2pywrappers.f src/_SHTOOLSmodule.c
 	@echo
 	@echo REMOVED LIB, MODULE, OBJECT FILES, COMPILED PYTHON FILES AND TESTS
+	@echo
+	@echo \*\*\* If you installed pyshtools using \"pip install -e .\" you should
+	@echo \*\*\* also execute \"pip uninstall pyshtools\".
 
 fortran-tests: fortran
 	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
