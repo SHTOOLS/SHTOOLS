@@ -89,9 +89,8 @@ class SHCoeffs(object):
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonics coefficients and return a new
                             class instance.
-    convert()             : Convert the spherical harmonic coefficients to a
-                            different normalization and return a new class
-                            instance.
+    return_coeffs()       : Return the current class instance as a new instance
+                            using a different normalization convention.
     expand()              : Evaluate the coefficients on a spherical grid and
                             return a new SHGrid class instance.
     make_complex()        : Convert a real SHCoeffs class instance to a complex
@@ -491,15 +490,15 @@ class SHCoeffs(object):
         return rot
 
     # ---- Convert spherical harmonic coefficients to a different normalization
-    def convert(self, normalization='4pi', csphase=1, lmax=None):
+    def return_coeffs(self, normalization='4pi', csphase=1, lmax=None):
         """
-        Convert the spherical harmonic coefficients to a different
-        normalization convention, and return a new class instance.
+        Return the current class instance as a new instance using a different
+        normalization convention.
 
         Usage
         -----
 
-        SHCoeffsInstance = x.convert([normalization, csphase, lmax])
+        SHCoeffsInstance = x.return_coeffs([normalization, csphase, lmax])
 
         Parameters
         ----------
@@ -1643,8 +1642,8 @@ class SHWindow(object):
                       '4pi' normalized and do not use the Condon-Shortley phase
                       factor.
     eigenvalues     : Concentration factors of the localization windows.
-    orders          : For spherical cap windows, the angular orders for each of
-                      the localization windows.
+    orders          : The angular orders for each of the spherical cap
+                      localization windows.
     weights         : Taper weights used with the multitaper spectral analyses.
                       Defaut is None.
     lmax            : Spherical harmonic bandwidth of the localization windows.
@@ -1662,8 +1661,21 @@ class SHWindow(object):
                             coefficients for taper i, where i = 0 is the best
                             concentrated, optionally using a different
                             normalization convention.
+    get_degrees()         : Return an array containing the spherical harmonic
+                            degrees of the localization windows, from 0 to
+                            lmax.
+    get_powerperdegree()  : Return the power per degree spectra for one or more
+                            of the localization windows.
+    get_couplingmatrix()  : Return the coupling matrix of the first nwin
+                            localization windows.
     get_grid()            : Return as an array a grid of taper i, where i = 0
                             is the best concentrated window.
+    get_multitaperpowerspectrum()      : Return the multitaper power spectrum
+                                         estimate and uncertainty for the input
+                                         SHCoeffs class instance.
+    get_multitapercrosspowerspectrum() : Return the multitaper cross-power
+                                         spectrum estimate and uncertainty for
+                                         two input SHCoeffs class instances.
     return_coeffs()       : Return the spherical harmonic coefficients of taper
                             i, where i = 0 is the best concentrated, as a new
                             SHCoeffs class instance, optionally using a
@@ -1673,10 +1685,10 @@ class SHWindow(object):
     rotate()              : Rotate the spherical cap tapers, originally located
                             at the north pole, to clat and clon and save the
                             spherical harmonic coefficients in coeffs.
-    get_couplingmatrix()  : Return the coupling matrix of the first nwin
-                            localization windows.
     plot_windows()        : Plot the best concentrated localization windows
                             using a simple cylindrical projection.
+    plot_powerperdegree() : Plot the power spectra of the best concentrated
+                            localization windows.
     plot_couplingmatrix() : Plot the multitaper coupling matrix.
     info()                : Print a summary of the data stored in the SHWindow
                             instance.
@@ -1775,6 +1787,23 @@ class SHWindow(object):
         tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lmax,
                                                          ntapers=nwin)
         return SHWindowMask(tapers, eigenvalues, weights)
+
+    def get_degrees(self):
+        """
+        Return a numpy array listing the spherical harmonic degrees of the
+        localization windows from 0 to lmax.
+
+        Usage
+        -----
+
+        degrees = x.get_degrees()
+
+        Returns
+        -------
+
+        degrees : numpy ndarray of size (lmax+1).
+        """
+        return _np.arange(self.lmax + 1)
 
     def get_coeffs(self, itaper, normalization='4pi', csphase=1):
         """
@@ -1883,7 +1912,7 @@ class SHWindow(object):
         Usage
         -----
 
-        SHCoeffsInstance = x.convert(itaper, [normalization, csphase])
+        SHCoeffsInstance = x.return_coeffs(itaper, [normalization, csphase])
 
         Parameters
         ----------
@@ -2034,6 +2063,46 @@ class SHWindow(object):
         """
         return self._get_multitapercrosspowerspectrum(clm, slm, k, **kwargs)
 
+    def get_powerperdegree(self, itaper=None, nwin=None):
+        """
+        Return the power per degree spectra for one or more of the
+        localization windows.
+
+        Usage
+        -----
+
+        power = x.get_powerperdegree([itaper, nwin])
+
+        Parameters
+        ----------
+
+        power   : A matrix with each column containing the power spectrum
+                  of a localization window, and where the windows are arranged
+                  with increasing concentration factors. If itaper is set,
+                  only a single vector is returned, whereas if nwin is set, the
+                  first nwin spectra are returned.
+        itaper  : The taper number of the output power spectrum, where i = 0
+                  corresponds to the best concentrated taper.
+        nwin    : The number of best concentrated localization window power
+                  spectra to return.
+        """
+        nl = self.tapers.shape[0]
+
+        if itaper is None:
+            if nwin is None:
+                nwin = self.nwin
+            power = _np.zeros((nl, nwin))
+
+            for i in range(nwin):
+                coeffs = self.get_coeffs(i)
+                power[:, i] = _shtools.SHPowerSpectrum(coeffs)
+        else:
+            power = _np.zeros((nl))
+            coeffs = self.get_coeffs(itaper)
+            power = _shtools.SHPowerSpectrum(coeffs)
+
+        return power
+
     def get_couplingmatrix(self, lmax, nwin=None, weights=None):
         """
         Return the coupling matrix of the first nwin tapers. This matrix
@@ -2104,6 +2173,57 @@ class SHWindow(object):
             ax = axes.flatten()[itaper]
             ax.imshow(self.get_grid(itaper), origin='upper',
                       extent=(0., 360., -90., 90.))
+            ax.set_title('concentration: {:2.2f}'.format(evalue))
+
+        fig.tight_layout(pad=0.5)
+
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+
+    def plot_powerspectra(self, nwin, show=True, fname=None):
+        """
+        Plot the power spectra of the best-concentrated localization windows.
+
+        Usage
+        -----
+
+        x.plot_powerspectra(nwin, [show, fname])
+
+        Parameters
+        ----------
+
+        nwin   : The number of localization windows to plot.
+        show   : If True (default), plot the image to the screen.
+        fname  : If present, save the image to the file.
+        """
+        if nwin is None:
+            nwin = self.nwin
+
+        degrees = self.get_degrees()
+        power = self.get_powerperdegree()
+
+        maxcolumns = 5
+        ncolumns = min(maxcolumns, nwin)
+        nrows = _np.ceil(nwin / ncolumns).astype(int)
+        fig, axes = _plt.subplots(nrows, ncolumns)
+
+        for ax in axes[:-1, :].flatten():
+            for xlabel_i in ax.get_xticklabels():
+                xlabel_i.set_visible(False)
+        for ax in axes[:, 1:].flatten():
+            for ylabel_i in ax.get_yticklabels():
+                ylabel_i.set_visible(False)
+
+        for itaper in range(min(self.nwin, nwin)):
+            evalue = self.eigenvalues[itaper]
+            ax = axes.flatten()[itaper]
+            ax.set_xlabel('degree l')
+            ax.set_ylabel('power per degree')
+            ax.set_yscale('log')
+            ax.grid(True, which='both')
+            ax.plot(degrees[0:], power[0:, itaper])
             ax.set_title('concentration: {:2.2f}'.format(evalue))
 
         fig.tight_layout(pad=0.5)
@@ -2328,27 +2448,36 @@ class SHWindowCap(SHWindow):
         if lmax is None:
             lmax = clm.lmax
 
-        if (clat is None and clon is None and self.clat is None and
-                self.clon is None):
-            self.rotate(clat=90., clon=0., coord_degrees=True)
-        elif (clat == self.clat and clon == self.clon and
-                coord_degrees is self.coord_degrees):
+        if (clat is not None and clon is not None and clat == self.clat and
+                clon == self.clon and coord_degrees is self.coord_degrees):
+            # use the already stored coeffs
+            pass
+        elif (clat is None and clon is None) and \
+                (self.clat is not None and self.clon is not None):
+            # use the already stored coeffs
             pass
         else:
-            if clat is None or clon is None:
+            if clat is None:
+                clat = self.clat
+            if clon is None:
+                clon = self.clon
+            if (clat is None and clon is not None) or \
+                    (clat is not None and clon is None):
                 raise ValueError('clat and clon must both be input. ' +
                                  'clat = {:s}, clon = {:s}'
                                  .format(repr(clat), repr(clon)))
+            if clat is None and clon is None:
+                self.rotate(clat=90., clon=0., coord_degrees=True)
             else:
                 self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees)
 
         sh = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperSE(sh, self.coeffs, lmax=lmax, k=k)
+            return _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax, k=k)
         else:
-            return _shtools.SHMultiTaperSE(sh, self.coeffs, lmax=lmax,
-                                           k=k, taper_wt=taper_wt)
+            return _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax, k=k,
+                                               taper_wt=taper_wt)
 
     def _get_multitapercrosspowerspectrum(self, clm, slm, k, clat=None,
                                           clon=None, coord_degrees=True,
@@ -2360,31 +2489,38 @@ class SHWindowCap(SHWindow):
         if lmax is None:
             lmax = min(clm.lmax, slm.lmax)
 
-        if (clat is None and clon is None and self.clat is None and
-                self.clon is None):
-            self.rotate(clat=90., clon=0., coord_degrees=True)
-
-        elif (clat == self.clat and clon == self.clon and
-                coord_degrees is self.coord_degrees):
+        if (clat is not None and clon is not None and clat == self.clat and
+                clon == self.clon and coord_degrees is self.coord_degrees):
+            # use the already stored coeffs
             pass
-
+        elif (clat is None and clon is None) and \
+                (self.clat is not None and self.clon is not None):
+            # use the already stored coeffs
+            pass
         else:
-            if clat is None or clon is None:
+            if clat is None:
+                clat = self.clat
+            if clon is None:
+                clon = self.clon
+            if (clat is None and clon is not None) or \
+                    (clat is not None and clon is None):
                 raise ValueError('clat and clon must both be input. ' +
                                  'clat = {:s}, clon = {:s}'
                                  .format(repr(clat), repr(clon)))
+            if clat is None and clon is None:
+                self.rotate(clat=90., clon=0., coord_degrees=True)
             else:
-                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees)
+                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees)\
 
         sh1 = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
         sh2 = slm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
-                                                lmax=lmax, k=k)
+            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
+                                                lmax1=lmax, lmax2=lmax, k=k)
         else:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
-                                                lmax=lmax, k=k,
+            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
+                                                lmax1=lmax, lmax2=lmax, k=k,
                                                 taper_wt=taper_wt)
 
     def _info(self):

@@ -998,7 +998,7 @@ python module _SHTOOLS
             real*8 dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
             integer, optional,intent(in),depend(sh_d1) :: lmax = sh_d1-1
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer, optional,intent(in),depend(tapers_d0) :: lmaxt = tapers_d0-1
+            integer, optional,intent(in),depend(tapers_d0) :: lmaxt = sqrt(tapers_d0)-1
             integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             real*8,  optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
             integer, optional,intent(in) :: norm = 1
@@ -1022,7 +1022,7 @@ python module _SHTOOLS
             real*8 dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
             integer, optional,intent(in),depend(sh2_d1) :: lmax2 = sh2_d1-1
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer, optional,intent(in),depend(tapers_d0) :: lmaxt = tapers_d0-1
+            integer, optional,intent(in),depend(tapers_d0) :: lmaxt = sqrt(tapers_d0)-1
             integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             real*8,  optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
             integer, optional,intent(in) :: norm = 1
