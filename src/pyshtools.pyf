@@ -991,6 +991,55 @@ python module _SHTOOLS
             integer, optional,intent(in),check(mtse_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
         end subroutine SHMultiTaperCSE
 
+        subroutine SHMultiTaperMaskSE(mtse,sd,sh,lmax,tapers,lmaxt,k,taper_wt,norm,csphase,taper_wt_d0,sh_d0,sh_d1,sh_d2,tapers_d0,tapers_d1,mtse_d0,sd_d0)
+            fortranname pyshmultitapermaskse
+            real*8 dimension(mtse_d0),intent(out) :: mtse
+            real*8 dimension(sd_d0),intent(out) :: sd
+            real*8 dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
+            integer, optional,intent(in),depend(sh_d1) :: lmax = sh_d1-1
+            real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+            integer, optional,intent(in),depend(tapers_d0) :: lmaxt = sqrt(tapers_d0)-1
+            integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
+            real*8,  optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: csphase = 1
+            integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
+            integer, optional,intent(in),check(sh_d0>0),depend(sh),intent(hide) :: sh_d0=shape(sh,0)
+            integer, optional,intent(in),check(sh_d1>0),depend(sh),intent(hide) :: sh_d1=shape(sh,1)
+            integer, optional,intent(in),check(sh_d2>0),depend(sh),intent(hide) :: sh_d2=shape(sh,2)
+            integer, optional,intent(in),check(tapers_d0>0),depend(tapers),intent(hide) :: tapers_d0=shape(tapers,0)
+            integer, optional,intent(in),check(tapers_d1>0),depend(tapers),intent(hide) :: tapers_d1=shape(tapers,1)
+            integer, optional,intent(in),check(mtse_d0>0),depend(lmax,lmaxt),intent(hide) :: mtse_d0 = lmax - lmaxt+1
+            integer, optional,intent(in),check(sd_d0>0),depend(lmax,lmaxt),intent(hide) :: sd_d0 = lmax-lmaxt+1
+        end subroutine SHMultiTaperMaskSE
+
+        subroutine SHMultiTaperMaskCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,lmaxt,k,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_wt_d0,tapers_d0,tapers_d1,sd_d0,mtse_d0)
+            fortranname pyshmultitapermaskcse
+            real*8 dimension(mtse_d0),intent(out) :: mtse
+            real*8 dimension(sd_d0),intent(out) :: sd
+            real*8 dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
+            integer, optional,intent(in),depend(sh1_d1) :: lmax1 = sh1_d1-1
+            real*8 dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
+            integer, optional,intent(in),depend(sh2_d1) :: lmax2 = sh2_d1-1
+            real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+            integer, optional,intent(in),depend(tapers_d0) :: lmaxt = sqrt(tapers_d0)-1
+            integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
+            real*8,  optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: csphase = 1
+            integer, optional,intent(in),check(sh1_d0>0),depend(sh1),intent(hide) :: sh1_d0=shape(sh1,0)
+            integer, optional,intent(in),check(sh1_d1>0),depend(sh1),intent(hide) :: sh1_d1=shape(sh1,1)
+            integer, optional,intent(in),check(sh1_d2>0),depend(sh1),intent(hide) :: sh1_d2=shape(sh1,2)
+            integer, optional,intent(in),check(sh2_d0>0),depend(sh2),intent(hide) :: sh2_d0=shape(sh2,0)
+            integer, optional,intent(in),check(sh2_d1>0),depend(sh2),intent(hide) :: sh2_d1=shape(sh2,1)
+            integer, optional,intent(in),check(sh2_d2>0),depend(sh2),intent(hide) :: sh2_d2=shape(sh2,2)
+            integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
+            integer, optional,intent(in),check(tapers_d0>0),depend(tapers),intent(hide) :: tapers_d0=shape(tapers,0)
+            integer, optional,intent(in),check(tapers_d1>0),depend(tapers),intent(hide) :: tapers_d1=shape(tapers,1)
+            integer, optional,intent(in),check(sd_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: sd_d0 = min(lmax1,lmax2)-lmaxt+1
+            integer, optional,intent(in),check(mtse_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
+        end subroutine SHMultiTaperMaskCSE
+
         subroutine SHReadJPL(filename,cilm,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2)
             fortranname pyshreadjpl
             character*(*) intent(in) :: filename
@@ -1194,19 +1243,19 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers),intent(hide) :: tapers_d1=shape(tapers,1)
         end subroutine SHMTVarOpt
 
-        subroutine SHMTCouplingMatrix(Mmt, lmax, tapers, lwin, k, taper_wt, Mmt_d0, Mmt_d1, tapers_d0, tapers_d1, taper_wt_d0)
+        subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, taper_wt, Mmt_d0, Mmt_d1, tapers_power_d0, tapers_power_d1, taper_wt_d0)
             fortranname pyshmtcouplingmatrix
             real*8, dimension(Mmt_d0,Mmt_d1), intent(out) :: Mmt
             integer, intent(in)  :: lmax
-            integer, optional, intent(in), depend(tapers_d1) :: k = tapers_d1
-            integer, optional, intent(in), depend(tapers_d0) :: lwin = tapers_d0-1
-            real*8,  intent(in) :: tapers(tapers_d0,tapers_d1)
+            integer, optional, intent(in), depend(tapers_power_d1) :: k = tapers_power_d1
+            integer, optional, intent(in), depend(tapers_power_d0) :: lwin = tapers_power_d0-1
+            real*8,  intent(in) :: tapers_power(tapers_power_d0,tapers_power_d1)
             real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
             integer, optional,depend(lmax),intent(hide)      :: Mmt_d0 = lmax+1
             integer, optional,depend(lmax,lwin),intent(hide) :: Mmt_d1 = lmax+lwin+1
-            integer, optional,depend(tapers),intent(hide)    :: tapers_d0 = shape(tapers,0)
-            integer, optional,depend(tapers),intent(hide)    :: tapers_d1 = shape(tapers,1)
-            integer, optional,depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
+            integer, optional,depend(tapers_power),intent(hide)    :: tapers_power_d0 = shape(tapers_power,0)
+            integer, optional,depend(tapers_power),intent(hide)    :: tapers_power_d1 = shape(tapers_power,1)
+            integer, optional,depend(tapers_power_d1),intent(hide) :: taper_wt_d0=tapers_power_d1
         end subroutine
 
         subroutine SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n,taper_wt,mtdebias_d0,mtdebias_d1,taper_wt_d0,mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1,lmid_d0)
@@ -1531,20 +1580,20 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax),intent(hide) :: Dij_d1 = (lmax+1)*(lmax+1)
         end subroutine ComputeDMap
 
-        subroutine SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,Ntapers,dh_mask_d0,dh_mask_d1,tapers_d0,tapers_d1,eigenvalues_d0)
+        subroutine SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,ntapers,dh_mask_d0,dh_mask_d1,tapers_d0,tapers_d1,eigenvalues_d0)
             fortranname pyshreturntapersmap
             real*8 dimension(tapers_d0,tapers_d1),intent(out) :: tapers
             real*8 dimension(eigenvalues_d0),intent(out) :: eigenvalues
             integer dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
             integer, optional,intent(in),depend(dh_mask_d0) :: n_dh = dh_mask_d0
-            integer, optional,intent(in) :: sampling = dh_mask_d1 / dh_mask_d0
+            integer, optional,intent(in),depend(dh_mask_d1,dh_mask_d0) :: sampling = dh_mask_d1/dh_mask_d0
             integer intent(in) :: lmax
-            integer, optional,intent(in),depend(lmax) :: Ntapers = (lmax+1)*(lmax+1)
+            integer, optional,intent(in),depend(lmax) :: ntapers = (lmax+1)*(lmax+1)
             integer, optional,intent(in),check(shape(dh_mask,0)==dh_mask_d0),depend(dh_mask),intent(hide) :: dh_mask_d0=shape(dh_mask,0)
             integer, optional,intent(in),check(shape(dh_mask,1)==dh_mask_d1),depend(dh_mask),intent(hide) :: dh_mask_d1=shape(dh_mask,1)
             integer intent(in),depend(lmax),intent(hide) :: tapers_d0 = (lmax+1)*(lmax+1)
-            integer intent(in),depend(Ntapers),intent(hide) :: tapers_d1 = Ntapers
-            integer intent(in),depend(Ntapers),intent(hide) :: eigenvalues_d0 = Ntapers
+            integer intent(in),depend(ntapers),intent(hide) :: tapers_d1 = ntapers
+            integer intent(in),depend(ntapers),intent(hide) :: eigenvalues_d0 = ntapers
         end subroutine SHReturnTapersMap
 
         subroutine Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,centralmeridian,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
