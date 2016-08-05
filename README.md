@@ -11,11 +11,11 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
 
 * A wide range of supported spherical harmonic functions:
    * real and complex,
-   * different normalizations (Geodesy" 4&pi, Schmidt semi-normalized, orthonormalized, unnormalized),
+   * different normalizations (Geodesy 4&pi;, Schmidt semi-normalized, orthonormalized, unnormalized),
    * Condon-Shortley phase factor of (-1)<sup>m</sup>.
 
 * Selected applications and routines:
-   * global spectral analysis, spherical harmonic rotations, Wigner3j symbols,
+   * global spectral analysis, spherical harmonic rotations, Wigner 3j symbols,
    * localized multitaper spectral analyses, optimal window generation, spherical harmonic coupling matrices,
    * standard gravity and magnetic field calculations, computation of the geoid, finite-amplitude potential from topography.
 
@@ -25,47 +25,46 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
   * Accurate and fast to approximately degree 2800, corresponding to a spatial
     resolution higher than 4 arc minutes. Transforms and reconstructions take
     on the order of 1 second for bandwidths less than 600 and about 3 minutes
-    for bandwidths close to 2800 on standard machines. The Fortran routines are
+    for bandwidths close to 2800 on standard machines. The Fortran 95 routines are
     OpenMP compatible and OpenMP thread-safe.
 
 ### INSTALLATION ###
-OSX
+#### OSX ####
 
 ```
 brew tap shtools/shtools
 brew install shtools
 ```
 
-Linux
-
+#### Linux ####
+First, install the dependencies:
 ```bash
 sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 ```
 
-In the SHTOOLS folder type:
+Then, in the SHTOOLS folder downloaded from GitHub, enter:
 ```bash
 pip install .
 ```
 
-In case that you want an editable development installation type:
+If you want an editable development installation instead, use:
 ```bash
 pip install -v -e .
 ```
 
-Manually
-
+#### Manually using make ####
+To install the Fortran 95, Python 2 and Python 3 components, enter
 ```
 make
 ```
 
 To compile the OpenMP version of the fortran routines, use
-
 ```
 make fortran-mp
 ```
 
-More installation instructions and options can be found in the 
-[wiki](https://github.com/SHTOOLS/SHTOOLS/wiki) and [web documentation](https://shtools.ipgp.fr).
+More installation instructions and options can be found in the [web documentation](https://shtools.ipgp.fr) and GitHub 
+[wiki](https://github.com/SHTOOLS/SHTOOLS/wiki).
 
 
 ### HOW TO USE ###
@@ -83,10 +82,6 @@ To get started, check out the following Python tutorial notebooks:
 * [tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem](examples/notebooks/tutorial_4.ipynb)
 * [tutorial 5: Multitaper Spectral Estimation - SHWindows Class Interface](examples/notebooks/tutorial_5.ipynb)
 
-
-### References
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.20920.svg)](http://dx.doi.org/10.5281/zenodo.20920)
-
 ### Acknowledgments
 SHTOOLS is open source (revised BSD license) and makes use of the freely
 available Fourier transform package
@@ -95,3 +90,6 @@ available Fourier transform package
 [BLAS](http://www.netlib.org/blas/).
 
 You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
+
+### Citation ###
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.20920.svg)](http://dx.doi.org/10.5281/zenodo.20920)
