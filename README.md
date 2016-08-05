@@ -82,14 +82,14 @@ To get started, check out the following Python tutorial notebooks:
 * [tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem](examples/notebooks/tutorial_4.ipynb)
 * [tutorial 5: Multitaper Spectral Estimation - SHWindows Class Interface](examples/notebooks/tutorial_5.ipynb)
 
+You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
+
 ### ACKNOWLEDGMENTS ###
 SHTOOLS is open source (revised BSD license) and makes use of the freely
 available Fourier transform package
 [FFTW](http://www.fftw.org) and the linear algebra packages
 [LAPACK](http://www.netlib.org/lapack/) and
 [BLAS](http://www.netlib.org/blas/).
-
-You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
 
 ### CITATION ###
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.20920.svg)](http://dx.doi.org/10.5281/zenodo.20920)
