@@ -11,30 +11,27 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
 
 SHTOOLS is extremely versatile:
 
-* It can accommodate any standard normalization of the spherical harmonic
-  functions ("geodesy" 4&pi; normalized,  Schmidt semi-normalized,
-  orthonormalized, and unnormalized).
+* wide range of supported spherical harmonic functions:
+   * Both real and complex spherical harmonics are supported.
+   * different normalizations: "Geodesy" 4&pi, Schmidt semi-normalized,
+     orthonormalized, unnormalized
+   * Condon-Shortley phase factor of (-1)<sup>m</sup>
 
-* Both real and complex spherical harmonics are supported.
+* transforms are calculated by exact quadrature rules using either the sampling
+  theorem of *Driscoll and Healy* (1994) where data are equally sampled (or
+  spaced) in latitude and longitude, or Gauss-Legendre quadrature.
 
-* Spherical harmonic transforms are calculated by exact quadrature rules using
-  either the sampling theorem of *Driscoll and Healy* (1994) where data are
-  equally sampled (or spaced) in latitude and longitude, or Gauss-Legendre
-  quadrature.
+* accurate to approximately degree 2800, corresponding to a spatial resolution
+  higher than 4 arc minutes.
 
-* One can choose to use or exclude the Condon-Shortley phase factor of
-  (-1)<sup>m</sup> with the associated Legendre functions.
+* OpenMP compatible and OpenMP thread-safe Fortran routines.
 
-* The spherical harmonic transforms are accurate to approximately degree 2800,
-  corresponding to a spatial resolution of better than 4 arc minutes.
+* Routines for localized multitaper spectral analyses, spherical harmonic
+  coupling and rotations.
 
-* The fortran routines are OpenMP compatible and OpenMP thread-safe.
-
-* Routines are included for performing localized multitaper spectral analyses.
-
-* Routines are included for performing standard gravity and magnetic field
-  calculations, such as computation of the geoid and the determination of the
-  potential associated with finite-amplitude topography.
+* Routines for performing standard gravity and magnetic field calculations,
+  such as computation of the geoid and the determination of the potential
+  associated with finite-amplitude topography.
 
 * The routines are fast. Spherical harmonic transforms and reconstructions take
   on the order of 1 second for bandwidths less than 600 and about 3 minutes for
