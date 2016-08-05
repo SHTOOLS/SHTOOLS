@@ -45,7 +45,7 @@ def example2():
     lmax = 15
     nwins = 15
 
-    topo = np.loadtxt('topo.dat.gz')
+    topo = np.loadtxt('../../ExampleDataFiles/topo.dat.gz')
     dh_mask = topo > 0.
     print(dh_mask.shape)
     region = pyshtools.SHWindow.from_mask(dh_mask, lmax, nwins)

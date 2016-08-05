@@ -1,4 +1,6 @@
 """
+Class interface for SHTOOLS.
+
 pyshtools defines several classes that facilitate the interactive
 examination of geographical gridded data and their associated
 spherical harmonic coefficients. Subclasses are used to handle different
@@ -46,9 +48,9 @@ class SHCoeffs(object):
     The coefficients of this class can be initialized using one of the
     three constructor methods:
 
-    >> x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
-    >> x = SHCoeffs.from_random(powerspectrum[0:lmax+1])
-    >> x = SHCoeffs.from_file('fname.dat')
+    >>> x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
+    >>> x = SHCoeffs.from_random(powerspectrum[0:lmax+1])
+    >>> x = SHCoeffs.from_file('fname.dat')
 
     The normalization convention of the input coefficents is specified
     by the normalization and csphase parameters, which take the following
@@ -105,14 +107,64 @@ class SHCoeffs(object):
     """
 
     def __init__(self):
+        """Unused constructor of the super class."""
+        print('Initialize the class using one of the class methods:\n'
+              '>>> SHCoeffs.from_array?\n'
+              '>>> SHCoeffs.from_random?\n')
         pass
 
     # ---- factory methods:
     @classmethod
+    def from_zeros(self, lmax, normalization='4pi', csphase=1, kind='real'):
+        """
+        Initialize class with zero from degree 0 to lmax.
+
+        Usage
+        -----
+
+        x = SHCoeffs.from_array(lmax, [normalization, csphase])
+
+        Parameters
+        ----------
+
+        lmax          : The highest harmonic degree l of the coefficients
+        normalization : '4pi' (default), 'ortho' or 'schmidt' for geodesy 4pi
+                        normalized, orthonormalized, or Schmidt semi-normalized
+                        coefficients, respectively.
+        csphase       : 1 (default) if the coefficients exclude the Condon-
+                        Shortley phase factor, or -1 if they include it.
+        """
+        if kind.lower() not in set(['real', 'complex']):
+            raise ValueError(
+                "Kind must be 'real' or 'complex'. " +
+                "Input value was {:s}."
+                .format(repr(kind))
+                )
+
+        if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
+            raise ValueError(
+                "The normalization must be '4pi', 'ortho' " +
+                "or 'schmidt'. Input value was {:s}."
+                .format(repr(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be either 1 or -1. Input value was {:s}."
+                .format(repr(csphase))
+                )
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind):
+                nl = lmax + 1
+                coeffs = _np.zeros((2, nl, nl))
+                return cls(coeffs, normalization=normalization.lower(),
+                           csphase=csphase)
+
+    @classmethod
     def from_array(self, coeffs, normalization='4pi', csphase=1):
         """
-        Initialize the spherical harmonic coefficients of the class instance
-        from an input numpy array.
+        Initialize the coefficients from an input numpy array.
 
         Usage
         -----
@@ -160,8 +212,7 @@ class SHCoeffs(object):
     @classmethod
     def from_random(self, power, kind='real', normalization='4pi', csphase=1):
         """
-        Initialize the spherical harmonic coefficients of the class instance
-        using Gaussian random variables with a given power spectrum.
+        Initialize the coefficients using Gaussian random variables.
 
         Usage
         -----
@@ -230,8 +281,7 @@ class SHCoeffs(object):
     def from_file(self, fname, lmax, format='shtools', kind='real',
                   normalization='4pi', csphase=1, **kwargs):
         """
-        Initialize the spherical harmonic coefficients of the class instance
-        by reading the coefficients from a specified file.
+        Initialize the coefficients from input file.
 
         Usage
         -----
@@ -308,8 +358,7 @@ class SHCoeffs(object):
     # ---- Extract data ----
     def get_degrees(self):
         """
-        Return a numpy array listing the spherical harmonic degrees
-        from 0 to lmax.
+        Return a numpy array with the harmonic degrees from 0 to lmax.
 
         Usage
         -----
@@ -341,8 +390,7 @@ class SHCoeffs(object):
 
     def get_powerperband(self, bandwidth):
         """
-        Return a numpy array with the power per log_{bandwidth}(degree)
-        spectrum.
+        Return the power per log_{bandwidth}(degree) spectrum.
 
         Usage
         -----
@@ -357,11 +405,35 @@ class SHCoeffs(object):
         ls = self.get_degrees()
         return self._powerperdegree() * ls * _np.log(bandwidth)
 
+    # ---- Set individual coefficient
+    def set_coeffs(self, values, ls, ms):
+        """
+        Set coefficients in-place to specified values.
+
+        Usage
+        -----
+
+        x.set_coeffs(values, ls, ms)
+
+        Parameters
+        ----------
+
+        values : one or several coefficient values
+        ls: the degree/s of the coefficients that should be set
+        ms: the order/s of the coefficients that should be set
+        """
+        # make sure that the type is correct
+        values = _np.array(values)
+        ls = _np.array(ls)
+        ms = _np.array(ms)
+
+        mneg_mask = (ms < 0).astype(_np.int)
+        self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
+
     # ---- Return coefficients with a different normalization convention ----
     def get_coeffs(self, normalization='4pi', csphase=1, lmax=None):
         """
-        Return spherical harmonics coefficients as a numpy array with a
-        different normalization convention.
+        Return spherical harmonics coefficients as a numpy array.
 
         Usage
         -----
@@ -394,7 +466,7 @@ class SHCoeffs(object):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
                 "or 'schmidt'. Provided value was {:s}"
-                .format(repr(output_normalization))
+                .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
@@ -418,8 +490,7 @@ class SHCoeffs(object):
     # ---- Rotate the coordinate system ----
     def rotate(self, alpha, beta, gamma, degrees=True, dj_matrix=None):
         """
-        Rotate the body or coordinate system used to express the spherical
-        harmonic coefficients and output as a new class instance.
+        Rotate the coordinate return rotated Coefficient class.
 
         Usage
         -----
@@ -492,8 +563,7 @@ class SHCoeffs(object):
     # ---- Convert spherical harmonic coefficients to a different normalization
     def return_coeffs(self, normalization='4pi', csphase=1, lmax=None):
         """
-        Return the current class instance as a new instance using a different
-        normalization convention.
+        Return a class instance with a different normalization convention.
 
         Usage
         -----
@@ -615,6 +685,7 @@ class SHCoeffs(object):
             _plt.show()
         if fname is not None:
             fig.savefig(fname)
+        return fig, ax
 
     def plot_powerperband(self, bandwidth=2, show=True, fname=None):
         """
@@ -648,6 +719,7 @@ class SHCoeffs(object):
             _plt.show()
         if fname is not None:
             fig.savefig(fname)
+        return fig, ax
 
     def info(self):
         """
@@ -667,15 +739,15 @@ class SHCoeffs(object):
 # ================== REAL SPHERICAL HARMONICS ================
 
 class SHRealCoeffs(SHCoeffs):
-    """
-    Real Spherical Harmonics Coefficient class.
-    """
+    """Real Spherical Harmonics Coefficient class."""
 
     @staticmethod
     def istype(kind):
+        """Test if class is Real or Complex."""
         return kind == 'real'
 
     def __init__(self, coeffs, normalization='4pi', csphase=1):
+        """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
         mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
@@ -694,9 +766,9 @@ class SHRealCoeffs(SHCoeffs):
 
     def make_complex(self):
         """
-        Convert the real spherical harmonic coefficient class to the complex
-        spherical harmonic coefficient class with the same normalization and
-        csphase conventions.
+        Convert real to the complex coefficient class.
+
+        Normalization and phase conventions are kept unchanged.
 
         Usage
         -----
@@ -738,10 +810,7 @@ class SHRealCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
     def _get_coeffs(self, output_normalization, output_csphase, lmax):
-        """
-        Return real spherical harmonic coefficients with a
-        different normalization convention.
-        """
+        """Return coefficients with a different normalization convention."""
         coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
         degrees = _np.arange(lmax + 1)
 
@@ -777,10 +846,7 @@ class SHRealCoeffs(SHCoeffs):
         return coeffs
 
     def _rotate(self, angles, dj_matrix):
-        """
-        Rotate the coordinate system used to express the spherical
-        harmonics coefficients by the Euler angles alpha, beta, gamma.
-        """
+        """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if dj_matrix is None:
             dj_matrix = _shtools.djpi2(self.lmax + 1)
 
@@ -801,10 +867,7 @@ class SHRealCoeffs(SHCoeffs):
             return SHCoeffs.from_array(coeffs)
 
     def _expandDH(self, sampling, **kwargs):
-        """
-        Evaluate the coefficients on a Driscoll and Healy (1994)
-        sampled grid.
-        """
+        """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         if self.normalization == '4pi':
             norm = 1
         elif self.normalization == 'schmidt':
@@ -846,15 +909,15 @@ class SHRealCoeffs(SHCoeffs):
 # =============== COMPLEX SPHERICAL HARMONICS ================
 
 class SHComplexCoeffs(SHCoeffs):
-    """
-    Complex Spherical Harmonics Coefficients class.
-    """
+    """Complex Spherical Harmonics Coefficients class."""
 
     @staticmethod
     def istype(kind):
+        """Check if class has kind 'real' or 'complex'."""
         return kind == 'complex'
 
     def __init__(self, coeffs, normalization='4pi', csphase=1):
+        """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
         mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
@@ -873,8 +936,7 @@ class SHComplexCoeffs(SHCoeffs):
 
     def make_real(self):
         """
-        Convert the complex coefficient class to the real harmonic
-        coefficient class.
+        Convert the complex to the real harmonic coefficient class.
 
         Usage
         -----
@@ -934,10 +996,7 @@ class SHComplexCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
     def _get_coeffs(self, output_normalization, output_csphase, lmax):
-        """
-        Return complex spherical harmonics coefficients with a
-        different normalization convention.
-        """
+        """Return coefficients with a different normalization convention."""
         coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
         degrees = _np.arange(lmax + 1)
 
@@ -973,10 +1032,7 @@ class SHComplexCoeffs(SHCoeffs):
         return coeffs
 
     def _rotate(self, angles, dj_matrix):
-        """
-        Rotate the coordinate system used to express the spherical
-        harmonics coefficients by the Euler angles alpha, beta, gamma.
-        """
+        """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         # Note that the current method is EXTREMELY inefficient. The complex
         # coefficients are expanded onto real and imaginary grids, each of
         # the two components are rotated separately as real data, they rotated
@@ -1020,10 +1076,7 @@ class SHComplexCoeffs(SHCoeffs):
                                    csphase=self.csphase)
 
     def _expandDH(self, sampling, **kwargs):
-        """
-        Evaluate the coefficients on a Driscoll and Healy (1994)
-        sampled grid.
-        """
+        """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         if self.normalization == '4pi':
             norm = 1
         elif self.normalization == 'schmidt':
@@ -1068,11 +1121,12 @@ class SHComplexCoeffs(SHCoeffs):
 
 class SHGrid(object):
     """
-    Grid Class for global gridded data on the sphere. Grids can be
-    initialized from:
+    Class for spatial gridded data on the sphere.
 
-    >> x = SHGrid.from_array(array)
-    >> x = SHGrid.from_file('fname.dat')
+    Grids can be initialized from:
+
+    >>> x = SHGrid.from_array(array)
+    >>> x = SHGrid.from_file('fname.dat')
 
     The class instance defines the following class attributes:
 
@@ -1103,6 +1157,7 @@ class SHGrid(object):
     """
 
     def __init__():
+        """Use a constructor to intialize."""
         pass
 
     # ---- factory methods
@@ -1148,11 +1203,29 @@ class SHGrid(object):
         """Initialize the grid of the object from a file."""
         raise NotImplementedError('Not implemented yet')
 
+    # ---- operators ----
+    def __add__(self, grid):
+        """Add two similar grids."""
+        if self.grid == grid.grid and self.data.shape == grid.data.shape:
+            data = self.data + grid.data
+            return SHGrid.from_array(data, grid=self.grid)
+
+    def __mul__(self, grid):
+        """Multiply two similar grids."""
+        if self.grid == grid.grid and self.data.shape == grid.data.shape:
+            data = self.data * grid.data
+            return SHGrid.from_array(data, grid=self.grid)
+
+    def __sub__(self, grid):
+        """Subtract two similar grids."""
+        if self.grid == grid.grid and self.data.shape == grid.data.shape:
+            data = self.data * grid.data
+            return SHGrid.from_array(data, grid=self.grid)
+
     # ---- Extract grid properties ----
     def get_lats(self):
         """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
+        Return the latitudes (in degrees) of each row of the gridded data.
 
         Usage
         -----
@@ -1169,8 +1242,7 @@ class SHGrid(object):
 
     def get_lons(self):
         """
-        Return a vector containing the longitudes (in degrees) of each
-        column of the gridded data.
+        Return the longitudes (in degrees) of each column of the gridded data.
 
         Usage
         -----
@@ -1268,9 +1340,8 @@ class SHGrid(object):
 # ---- Real Driscoll and Healy grid class ----
 
 class DHRealGrid(SHGrid):
-    """
-    Class for real Driscoll and Healy (1994) grids.
-    """
+    """Class for real Driscoll and Healy (1994) grids."""
+
     @staticmethod
     def istype(kind):
         return kind == 'real'
@@ -1292,9 +1363,9 @@ class DHRealGrid(SHGrid):
         elif self.nlat == self.nlon:
             self.sampling = 1
         else:
-            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n' +
+            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n'
+                             .format(self.nlat, self.nlon) +
                              'but needs nlat=nlon or nlat=2*nlon'
-                             .format(self.nlat, self.nlon)
                              )
 
         self.lmax = int(self.nlat / 2 - 1)
@@ -1303,18 +1374,12 @@ class DHRealGrid(SHGrid):
         self.kind = 'real'
 
     def _get_lats(self):
-        """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
-        """
+        """Return the latitudes (in degrees) of the gridded data."""
         lats = _np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
     def _get_lons(self):
-        """
-        Return a vector containing the longitudes (in degrees) of each row
-        of the gridded data.
-        """
+        """Return the longitudes (in degrees) of the gridded data."""
         lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
@@ -1334,6 +1399,7 @@ class DHRealGrid(SHGrid):
                 )
 
         cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase,
+                                   sampling=self.sampling,
                                    **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
@@ -1695,8 +1761,10 @@ class SHWindow(object):
     """
 
     def __init__(self):
+        """Initialize with a factory method."""
         pass
 
+    # ---- factory methods:
     @classmethod
     def from_cap(self, theta, lmax, clat=None, clon=None, nwin=None,
                  theta_degrees=True, coord_degrees=True, dj_matrix=None,
@@ -2282,9 +2350,7 @@ class SHWindow(object):
 
 
 class SHWindowCap(SHWindow):
-    """
-    Class for localization windows concentrated within a spherical cap.
-    """
+    """Class for localization windows concentrated within a spherical cap."""
 
     @staticmethod
     def istype(kind):
