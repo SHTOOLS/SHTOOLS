@@ -82,6 +82,7 @@ To get started, check out the following Python tutorial notebooks:
 * [tutorial 3: The SHTOOLS Class Interface](examples/notebooks/tutorial_3.ipynb)
 * [tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem](examples/notebooks/tutorial_4.ipynb)
 * [tutorial 5: Multitaper Spectral Estimation - SHWindows Class Interface](examples/notebooks/tutorial_5.ipynb)
+* [tutorial 6: 3D Spherical Harmonic Plots](examples/notebooks/tutorial_6.ipynb)
 
 
 ### References

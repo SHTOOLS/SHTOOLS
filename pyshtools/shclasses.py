@@ -1257,7 +1257,7 @@ class SHGrid(object):
         """
         return self._get_lons()
 
-    def plot_3dsphere(self, show=True, fname=None):
+    def plot_3dsphere(self, show=True, fname=None, elevation=0, azimuth=0):
         """
         Plot the raw data on a 3d sphere.
 
@@ -1351,7 +1351,7 @@ class SHGrid(object):
         ax3d.set(xlim=(-1.5, 1.5), ylim=(-1.5, 1.5), zlim=(-1.5, 1.5),
                  xticks=[-1, 1], yticks=[-1, 1], zticks=[-1, 1])
         ax3d.set_axis_off()
-        ax3d.view_init(elev=-20., azim=0.)
+        ax3d.view_init(elev=elevation, azim=azimuth)
 
         # show or save output
         if show:
