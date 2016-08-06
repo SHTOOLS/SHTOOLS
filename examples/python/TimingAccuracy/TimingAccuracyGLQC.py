@@ -22,7 +22,7 @@ def TimingAccuracyGLQC():
     #---- input parameters ----
     maxdeg = 2800
     ls = np.arange(maxdeg + 1)
-    beta = -1.5
+    beta = 1.5
     print('Gauss-Legendre quadrature (complex)')
 
     #---- create mask to filter out m<=l ----
@@ -40,8 +40,10 @@ def TimingAccuracyGLQC():
     cilm.real = np.random.normal(loc=0., scale=1.,
                                  size=(2, maxdeg + 1, maxdeg + 1))
 
-    cilm[:, 1:, :] *= np.sqrt((ls[1:]**beta) / (2. * ls[1:] + 1.))[None, :, None]
-    cilm[np.invert(mask)] = 0.
+    old_power = shtools.SHPowerSpectrum(cilm)
+    new_power = 1. / (1. + ls)**beta  # initialize degrees > 0 to power-law
+    cilm[:, :, :] *= np.sqrt(new_power / old_power)[None, :, None]
+    cilm[~mask] = 0.
 
     #---- time spherical harmonics transform for lmax set to increasing powers of 2 ----
     lmax = 2
@@ -49,7 +51,6 @@ def TimingAccuracyGLQC():
     while lmax <= maxdeg:
         # trim coefficients to lmax
         cilm_trim = cilm[:, :lmax + 1, :lmax + 1]
-        mask_trim = mask[:, :lmax + 1, :lmax + 1]
 
         # precompute grid nodes and associated Legendre functions
         tstart = time.time()
@@ -70,9 +71,9 @@ def TimingAccuracyGLQC():
         tforward = tend - tstart
 
         # compute error
-        err = np.abs(cilm_trim[mask_trim] - cilm2_trim[mask_trim]) / np.abs(cilm_trim[mask_trim])
-        maxerr = err.max()
-        rmserr = np.mean(err**2)
+        err = np.abs(cilm_trim - cilm2_trim) / np.abs(cilm_trim)
+        maxerr = np.nanmax(err)
+        rmserr = np.nanmean(err**2)
 
         print('{:4d}    {:1.2e}    {:1.2e}    {:1.1e}s       {:1.1e}s    '
               '{:1.1e}s'.format(lmax, maxerr, rmserr, tprecompute, tinverse,

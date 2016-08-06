@@ -1,0 +1,58 @@
+language: c
+
+matrix:
+  include:
+    # do one build run with our minimum dependencies
+    # (or, well, at least the lowest version number that is available through
+    #  anaconda..)
+    - os: linux
+      env: PYTHON_VERSION=2.7
+    - os: linux
+      env: PYTHON_VERSION=3.5
+
+    - os: osx
+      env: PYTHON_VERSION=2.7
+    - os: osx
+      env: PYTHON_VERSION=3.5
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+       brew install liblapack-dev libblas-dev libfftw3-dev;
+    else
+       sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh;
+    fi
+
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      export OS="MacOSX";
+    else
+      export OS="Linux";
+    fi
+  - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda-latest-${OS}-x86_64.sh -O miniconda.sh;
+    else
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+
+  - conda create -q -n test-environment
+        python=$PYTHON_VERSION
+        numpy
+        scipy
+        matplotlib
+  - source activate test-environment
+  - pip install --no-deps .  
+
+script:
+  - mkdir empty
+  - cd empty
+  - python -c "import pyshtools"
+  - python ../examples/python/TimingAccuracy/TimingAccuracyDH.py
+
+notifications:
+    email: false
