@@ -44,5 +44,10 @@ install:
   - source activate test-environment
   - pip install --no-deps .  
 
+script:
+    mkdir empty
+    cd empty
+  - python -c "import pyshtools"
+
 notifications:
     email: false
