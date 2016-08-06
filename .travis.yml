@@ -10,7 +10,7 @@ install:
       - pip install numpy
       - pip install scipy
       - pip install matplotlib
-      - pip install http://github.com/MMesch/SHTOOLS/zipball/develop
+      - pip install .
 
 notifications:
     email: false
