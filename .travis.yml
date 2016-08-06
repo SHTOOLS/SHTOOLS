@@ -49,12 +49,10 @@ install:
   - pip install --no-deps .  
 
 script:
-  - ls 
   - mkdir empty
   - cd empty
-  - cd pwd
   - python -c "import pyshtools"
-  - python ../examples/python/GlobalSpectralAnalysis/TimingAccuracy/TimingAccuracyDH.py
+  - python ../examples/python/TimingAccuracy/TimingAccuracyDH.py
 
 notifications:
     email: false
