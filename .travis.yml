@@ -48,6 +48,7 @@ script:
   - mkdir empty
   - cd empty
   - python -c "import pyshtools"
+  - python ../examples/python/GlobalSpectralAnalysis/SHRealSpectralAnalysis.py
 
 notifications:
     email: false

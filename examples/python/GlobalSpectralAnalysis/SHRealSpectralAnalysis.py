@@ -11,8 +11,6 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-# import shtools:
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import shtools
 
 # set shtools plot style:
@@ -82,8 +80,9 @@ def example():
     """
     example that plots the power spectrum of Mars topography data
     """
-    #--- input data filename ---
-    infile = '../../ExampleDataFiles/MarsTopo719.shape'
+    # --- input data filename ---
+    infile = os.path.join(os.path.dirname(__file__),
+                          '../../ExampleDataFiles/MarsTopo719.shape')
     coeffs, lmax = shtools.SHRead(infile, 719)
     lmax = coeffs.shape[1] - 1
 
