@@ -16,7 +16,11 @@ matrix:
       env: PYTHON_VERSION=3.5
 
 before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      - brew install liblapack-dev libblas-dev libfftw3-dev
+    else
       - sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
+    fi
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
