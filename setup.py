@@ -38,7 +38,9 @@ def get_version():
         try:
             git_version = check_output(cmd.split()).decode().strip()[1:]
         except CalledProcessError:
-            raise RuntimeError('Unable to get version number from git tags')
+            print('Unable to get version number from git tags\n'
+                  'Setting to x.x')
+            git_version = 'x.x'
 
         # PEP440 compatibility
         if '-' in git_version:
