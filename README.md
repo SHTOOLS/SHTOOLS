@@ -29,38 +29,32 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
     OpenMP compatible and OpenMP thread-safe.
 
 ### INSTALLATION ###
-#### OSX ####
-
-```
-brew tap shtools/shtools
-brew install shtools
-```
-
-#### Linux ####
-First, install the dependencies:
+#### Requirements ####
+Linux:
 ```bash
 sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 ```
-
-Then, in the SHTOOLS folder downloaded from GitHub, enter:
+OSX:
 ```bash
-pip install .
+???
 ```
 
-If you want an editable development installation instead, use:
+##### Python Library #####
+Enter the SHTOOLS folder that contains the file ```setup.py```. Then execute one of the following commands:
+
 ```bash
-pip install -v -e .
+pip install .  # installs into the active python environment lib folder
+pip install -v -e .  # installs into the SHTOOLS/pyshtools folder and links to active python environment
 ```
 
-#### Manually using make ####
-To install the Fortran 95, Python 2 and Python 3 components, enter
+#### Fortran Library and Manual Installation ####
+To install the Fortran 95 library or compile the Python 2 and Python 3 components manually
+enter one of the following
 ```
-make
-```
-
-To compile the OpenMP version of the fortran routines, use
-```
-make fortran-mp
+make fortran
+make python2
+make python3
+make fortran-mp  # Open-MP Fortran routines
 ```
 
 More installation instructions and options can be found in the [web documentation](https://shtools.ipgp.fr) and GitHub 
