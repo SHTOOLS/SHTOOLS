@@ -18,8 +18,6 @@ matrix:
 before_install:
       - sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 
-sudo: false
-
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
