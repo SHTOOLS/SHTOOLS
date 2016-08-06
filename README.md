@@ -40,7 +40,7 @@ OSX:
 ```
 
 ##### Python Library #####
-Enter the SHTOOLS folder that contains the file ```setup.py```. Then execute one of the following commands:
+[Download](https://github.com/SHTOOLS/SHTOOLS/zipball/master) or clone the SHTOOLs repository. Enter the SHTOOLS folder that contains the file ```setup.py```. Then execute one of the following commands:
 
 ```bash
 pip install .  # installs into the active python environment lib folder
