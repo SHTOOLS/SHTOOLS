@@ -11,3 +11,6 @@ install:
       - pip install scipy
       - pip install matplotlib
       - pip install http://github.com/MMesch/SHTOOLS/zipball/develop
+
+notifications:
+    email: false
