@@ -36,15 +36,14 @@ sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 ```
 OSX:
 ```bash
-???
+brew install fftw --with-fortran
 ```
 
 ##### Python Library #####
-[Download](https://github.com/SHTOOLS/SHTOOLS/zipball/master) or clone the SHTOOLs repository. Enter the SHTOOLS folder that contains the file ```setup.py```. Then execute one of the following commands:
-
+[Download](https://github.com/SHTOOLS/SHTOOLS/zipball/master) or clone the SHTOOLS repository. Enter the SHTOOLS folder that contains the file ```setup.py```, and then execute one of the following commands:
 ```bash
 pip install .  # installs into the active python environment lib folder
-pip install -v -e .  # installs into the SHTOOLS/pyshtools folder and links to active python environment
+pip install -v -e .  # installs into the SHTOOLS/pyshtools folder and links to the active python environment
 ```
 
 #### Fortran Library and Manual Installation ####
@@ -55,6 +54,14 @@ make fortran
 make python2
 make python3
 make fortran-mp  # Open-MP Fortran routines
+```
+
+#### Brew package manager (OSX) ####
+
+To install the Fortran 95, Python 2, and Python 3 components using the [brew](http://brew.sh/) package manager, enter
+```
+brew tap shtools/shtools
+brew install shtools
 ```
 
 More installation instructions and options can be found in the [web documentation](https://shtools.ipgp.fr) and GitHub 
@@ -87,4 +94,4 @@ available Fourier transform package
 [BLAS](http://www.netlib.org/blas/).
 
 ### CITATION ###
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.20920.svg)](http://dx.doi.org/10.5281/zenodo.20920)
+Wieczorek, M. A., M. Meschede, I. Oshchepkov, E. Sales de Andrade (2016). SHTOOLS: Version 3.3. Zenodo. doi:[10.5281/zenodo.55790](http://dx.doi.org/10.5281/zenodo.20920).
