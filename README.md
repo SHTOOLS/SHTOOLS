@@ -39,7 +39,7 @@ OSX:
 brew install fftw --with-fortran
 ```
 
-##### Python Library #####
+#### Python Library ####
 [Download](https://github.com/SHTOOLS/SHTOOLS/zipball/master) or clone the SHTOOLS repository. Enter the SHTOOLS folder that contains the file ```setup.py```, and then execute one of the following commands:
 ```bash
 pip install .  # installs into the active python environment lib folder
