@@ -4,6 +4,7 @@
 *.pyc
 *.so
 *.so.dSYM/
+NONE/
 pyshtools/doc/
 examples/fortran/MarsCrustalThickness/MarsCrustalThickness
 examples/fortran/SHCilmPlus/TestCilmPlus
