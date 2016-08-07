@@ -1655,8 +1655,8 @@
         use shtools, only: SHMTCouplingMatrix
         implicit none
         integer, intent(in) :: lmax, k, lwin
-        real*8, intent(out) :: Mmt(Mmt_d0,Mmt_d1)
-        real*8, intent(in) ::  tapers_power(tapers_power_d0,tapers_power_d1)
+        real*8, intent(out) :: Mmt(Mmt_d0, Mmt_d1)
+        real*8, intent(in) ::  tapers_power(tapers_power_d0, tapers_power_d1)
         real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer, intent(in) :: Mmt_d0
         integer, intent(in) :: Mmt_d1

@@ -28,9 +28,9 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
     real*8 :: w3j(lwin+2*lmax+1), sum1
     integer :: i, j, l, wmin, wmax
 
-    if (size(Mmt(:,1)) < lmax+1 .or. size(Mmt(1,:)) < lmax+lwin+1) then
+    if  (size(Mmt(:,1)) < lmax+lwin+1 .or. size(Mmt(1,:)) < lmax+1) then
         print*, "Error --- SHMTCouplingMatrix"
-        print*, "MMT must be dimensioned as (LMAX+1, LMAX+LWIN+1) where "// &
+        print*, "MMT must be dimensioned as (LMAX+LWIN+1, LMAX+1) where "// &
                 "LMAX and LWIN are ", lmax, lwin
         print*, "Input array is dimensioned as ", size(Mmt(:,1)), size(Mmt(1,:))
         stop
@@ -62,8 +62,8 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
 
     if (present(taper_wt)) then
 
-        do i=0, lmax
-            do j=0, lmax+lwin
+        do i=0, lmax+lwin
+            do j=0, lmax
                 call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
                 sum1 = 0.0d0
 
@@ -79,8 +79,8 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
 
     else
 
-        do i = 0, lmax
-            do j = 0, lmax+lwin
+        do i = 0, lmax+lwin
+            do j = 0, lmax
                 call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
                 sum1 = 0.0d0
 

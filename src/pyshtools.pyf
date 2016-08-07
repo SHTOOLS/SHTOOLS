@@ -1251,8 +1251,8 @@ python module _SHTOOLS
             integer, optional, intent(in), depend(tapers_power_d0) :: lwin = tapers_power_d0-1
             real*8,  intent(in) :: tapers_power(tapers_power_d0,tapers_power_d1)
             real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
-            integer, optional,depend(lmax),intent(hide)      :: Mmt_d0 = lmax+1
-            integer, optional,depend(lmax,lwin),intent(hide) :: Mmt_d1 = lmax+lwin+1
+            integer, optional,depend(lmax,lwin),intent(hide)      :: Mmt_d0 = lmax+lwin+1
+            integer, optional,depend(lmax),intent(hide) :: Mmt_d1 = lmax+1
             integer, optional,depend(tapers_power),intent(hide)    :: tapers_power_d0 = shape(tapers_power,0)
             integer, optional,depend(tapers_power),intent(hide)    :: tapers_power_d1 = shape(tapers_power,1)
             integer, optional,depend(tapers_power_d1),intent(hide) :: taper_wt_d0=tapers_power_d1

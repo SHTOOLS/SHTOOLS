@@ -1257,6 +1257,110 @@ class SHGrid(object):
         """
         return self._get_lons()
 
+    def plot_3dsphere(self, show=True, fname=None, elevation=0, azimuth=0):
+        """
+        Plot the raw data on a 3d sphere.
+
+        This routines becomes slow for large grids because it is based on
+        matplotlib3d.
+
+        Usage
+        -----
+
+        x.plot_3dsphere([show, fname])
+
+        Parameters
+        ----------
+
+        show   : If True (default), plot the image to the screen.
+        fname  : If present, save the image to the file.
+        """
+        from mpl_toolkits.mplot3d import Axes3D  # NOQA
+
+        nlat, nlon = self.nlat, self.nlon
+        cmap = _plt.get_cmap('RdBu_r')
+
+        if self.kind == 'real':
+            data = self.data
+        elif self.kind == 'complex':
+            data = _np.abs(self.data)
+        else:
+            raise ValueError('Grid has to be either real or complex, not {}'
+                             .format(self.kind))
+
+        lats = self.get_lats()
+        lons = self.get_lons()
+
+        if self.grid == 'DH':
+            # add south pole
+            lats_circular = _np.append(lats, [-90.])
+        elif self.grid == 'GLQ':
+            # add north and south pole
+            lats_circular = _np.hstack(([90.], lats, [-90.]))
+        lons_circular = _np.append(lons, [lons[0]])
+
+        nlats_circular = len(lats_circular)
+        nlons_circular = len(lons_circular)
+
+        sshape = nlats_circular, nlons_circular
+
+        # make uv sphere and store all points
+        u = _np.radians(lons_circular)
+        v = _np.radians(90. - lats_circular)
+
+        x = _np.sin(v)[:, None] * _np.cos(u)[None, :]
+        y = _np.sin(v)[:, None] * _np.sin(u)[None, :]
+        z = _np.cos(v)[:, None] * _np.ones_like(lons_circular)[None, :]
+
+        points = _np.vstack((x.flatten(), y.flatten(), z.flatten()))
+
+        # fill data for all points. 0 lon has to be repeated (circular mesh)
+        # and the south pole has to be added in the DH grid
+        if self.grid == 'DH':
+            magn_point = _np.zeros((nlat + 1, nlon + 1))
+            magn_point[:-1, :-1] = data
+            magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+            magn_point[:-1, -1] = data[:, 0]
+        if self.grid == 'GLQ':
+            magn_point = _np.zeros((nlat + 2, nlon + 1))
+            magn_point[1:-1, :-1] = data
+            magn_point[0, :] = _np.mean(data[0])  # not exact !
+            magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+            magn_point[1:-1, -1] = data[:, 0]
+
+        # compute face color, which is the average of all neighbour points
+        magn_face = 1./4. * (magn_point[1:, 1:] + magn_point[:-1, 1:] +
+                             magn_point[1:, :-1] + magn_point[:-1, :-1])
+
+        magnmax_face = _np.max(_np.abs(magn_face))
+        magnmax_point = _np.max(_np.abs(magn_point))
+
+        # compute colours and displace the points
+        norm = _plt.Normalize(-magnmax_face / 2., magnmax_face / 2., clip=True)
+        colors = cmap(norm(magn_face.flatten()))
+        colors = colors.reshape(nlats_circular - 1, nlons_circular - 1, 4)
+        points *= (1. + magn_point.flatten() / magnmax_point / 2.)
+        x = points[0].reshape(sshape)
+        y = points[1].reshape(sshape)
+        z = points[2].reshape(sshape)
+
+        # plot 3d radiation pattern
+        fig = _plt.figure(figsize=(10, 10))
+        ax3d = fig.add_subplot(1, 1, 1, projection='3d')
+        ax3d.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=colors)
+        ax3d.set(xlim=(-1.5, 1.5), ylim=(-1.5, 1.5), zlim=(-1.5, 1.5),
+                 xticks=[-1, 1], yticks=[-1, 1], zticks=[-1, 1])
+        ax3d.set_axis_off()
+        ax3d.view_init(elev=elevation, azim=azimuth)
+
+        # show or save output
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+
+        return fig, ax3d
+
     # ---- Plotting routines ----
     def plot_rawdata(self, show=True, fname=None):
         """
@@ -2153,16 +2257,16 @@ class SHWindow(object):
         nwin    : The number of best concentrated localization window power
                   spectra to return.
         """
-        nl = self.tapers.shape[0]
+        nl = self.nl
 
         if itaper is None:
             if nwin is None:
                 nwin = self.nwin
             power = _np.zeros((nl, nwin))
 
-            for i in range(nwin):
-                coeffs = self.get_coeffs(i)
-                power[:, i] = _shtools.SHPowerSpectrum(coeffs)
+            for iwin in range(nwin):
+                coeffs = self.get_coeffs(iwin)
+                power[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
         else:
             power = _np.zeros((nl))
             coeffs = self.get_coeffs(itaper)
@@ -2170,7 +2274,7 @@ class SHWindow(object):
 
         return power
 
-    def get_couplingmatrix(self, lmax, nwin=None, weights=None):
+    def get_couplingmatrix(self, lmax, nwin=None, weights=None, mode='full'):
         """
         Return the coupling matrix of the first nwin tapers. This matrix
         relates the global power spectrum to the expectation of the localized
@@ -2189,6 +2293,19 @@ class SHWindow(object):
                   Default = x.nwin
         weights : Taper weights used with the multitaper spectral analyses.
                   Defaut is x.weights.
+        mode    : Can be one of the following:
+                  'full' (default): couples over the data bandlimit.
+                  Returns a biased spectrum with size lmax + lwin + 1. This
+                  assumes implicitely that the spectrum is zero for degrees
+                  l > lmax.
+                  'same': couples exactly to the data bandlimit.
+                  Returns a biased spectrum with size lmax + 1. This
+                  assumes implicitely that the spectrum is zero for degrees
+                  l > lmax.
+                  'valid': couples exactly to the data bandlimit.
+                  Returns a biased spectrum with size lmax - lwin + 1. This
+                  returns only the part of the biased spectrum that is not
+                  influenced by degrees with l > lmax.
         """
         if weights is not None:
             if nwin is not None:
@@ -2204,7 +2321,19 @@ class SHWindow(object):
                         'len(weights) = {:d}, nwin = {:d}'.format(len(weights),
                                                                   self.nwin))
 
-        return self._get_couplingmatrix(lmax, nwin=nwin, weights=weights)
+        if mode == 'full':
+            return self._get_couplingmatrix(lmax, nwin=nwin, weights=weights)
+        elif mode == 'same':
+            cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
+                                               weights=weights)
+            return cmatrix[:lmax+1, :]
+        elif mode == 'valid':
+            cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
+                                               weights=weights)
+            return cmatrix[:lmax - self.lmax+1, :]
+        else:
+            raise ValueError("mode has to be 'full', 'same' or 'valid', not "
+                             "{}".format(mode))
 
     def plot_windows(self, nwin, show=True, fname=None):
         """
@@ -2300,11 +2429,13 @@ class SHWindow(object):
         if fname is not None:
             fig.savefig(fname)
 
-    def plot_couplingmatrix(self, lmax, nwin=None, weights=None, show=True,
-                            fname=None):
+    def plot_couplingmatrix(self, lmax, nwin=None, weights=None, mode='full',
+                            show=True, fname=None):
         """
-        Plot the multitaper coupling matrix. This matrix relates the global
-        power spectrum to the expectation of the localized multitaper spectrum.
+        Plot the multitaper coupling matrix.
+
+        This matrix relates the global power spectrum to the expectation of
+        the localized multitaper spectrum.
 
         Usage
         -----
@@ -2321,20 +2452,35 @@ class SHWindow(object):
                   Defaut is x.weights.
         show    : If True (default), plot the image to the screen.
         fname   : If present, save the image to the file.
+        mode    : Can be one of the following:
+                  'full' (default): couples over the data bandlimit.
+                  Returns a biased spectrum with size lmax + lwin + 1. This
+                  assumes implicitely that the spectrum is zero for degrees
+                  l > lmax.
+                  'same': couples exactly to the data bandlimit.
+                  Returns a biased spectrum with size lmax + 1. This
+                  assumes implicitely that the spectrum is zero for degrees
+                  l > lmax.
+                  'valid': couples exactly to the data bandlimit.
+                  Returns a biased spectrum with size lmax - lwin + 1. This
+                  returns only the part of the biased spectrum that is not
+                  influenced by degrees with l > lmax.
         """
         figsize = _mpl.rcParams['figure.figsize']
         figsize[0] = figsize[1]
         fig = _plt.figure(figsize=figsize)
         ax = fig.add_subplot(111)
-        ax.imshow(self.get_couplingmatrix(lmax, nwin=nwin, weights=weights))
-        ax.set_xlabel('output power')
-        ax.set_ylabel('input power')
+        ax.imshow(self.get_couplingmatrix(lmax, nwin=nwin, weights=weights,
+                                          mode=mode), aspect='auto')
+        ax.set_xlabel('input power')  # matrix index 1 (columns)
+        ax.set_ylabel('output power')  # matrix index 0 (rows)
         fig.tight_layout(pad=0.1)
 
         if show:
             _plt.show()
         if fname is not None:
             fig.savefig(fname)
+        return fig, ax
 
     def info(self):
         """
@@ -2362,7 +2508,8 @@ class SHWindowCap(SHWindow):
         self.theta = theta
         self.clat = clat
         self.clon = clon
-        self.lmax = tapers.shape[0] - 1
+        self.nl = tapers.shape[0]
+        self.lmax = self.nl - 1
         self.theta_degrees = theta_degrees
         self.coord_degrees = coord_degrees
         self.dj_matrix = dj_matrix
@@ -2639,7 +2786,8 @@ class SHWindowMask(SHWindow):
 
     def __init__(self, tapers, eigenvalues, weights):
         self.kind = 'mask'
-        self.lmax = _np.sqrt(tapers.shape[0]).astype(int) - 1
+        self.nl = _np.sqrt(tapers.shape[0]).astype(int)
+        self.lmax = self.nl - 1
         self.weights = weights
         self.nwin = tapers.shape[1]
         self.tapers = tapers
