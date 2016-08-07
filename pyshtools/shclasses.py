@@ -1152,6 +1152,7 @@ class SHGrid(object):
                      of the gridded data.
     expand()       : Expand the grid into spherical harmonics.
     plot_rawdata() : Plot the raw data using a simple cylindrical projection.
+    plot_3dsphere  : Plot the raw data on a 3d sphere.
     info()         : Print a summary of the data stored in the SHGrid
                      instance.
     """
@@ -2257,7 +2258,7 @@ class SHWindow(object):
         nwin    : The number of best concentrated localization window power
                   spectra to return.
         """
-        nl = self.nl
+        nl = self.tapers.shape[0]
 
         if itaper is None:
             if nwin is None:
@@ -2283,7 +2284,7 @@ class SHWindow(object):
         Usage
         -----
 
-        Mmt = x.get_couplingmatrix(lmax, [nwin, weights])
+        Mmt = x.get_couplingmatrix(lmax, [nwin, weights, mode])
 
         Parameters
         ----------
@@ -2294,18 +2295,17 @@ class SHWindow(object):
         weights : Taper weights used with the multitaper spectral analyses.
                   Defaut is x.weights.
         mode    : Can be one of the following:
-                  'full' (default): couples over the data bandlimit.
-                  Returns a biased spectrum with size lmax + lwin + 1. This
-                  assumes implicitely that the spectrum is zero for degrees
-                  l > lmax.
-                  'same': couples exactly to the data bandlimit.
-                  Returns a biased spectrum with size lmax + 1. This
-                  assumes implicitely that the spectrum is zero for degrees
-                  l > lmax.
-                  'valid': couples exactly to the data bandlimit.
-                  Returns a biased spectrum with size lmax - lwin + 1. This
-                  returns only the part of the biased spectrum that is not
-                  influenced by degrees with l > lmax.
+                  'full' (default): couples over the data bandlimit. Returns a
+                  biased output spectrum with size lmax + lwin + 1. This
+                  assumes implicitly that the input spectrum is zero for
+                  degrees l > lmax.
+                  'same': couples exactly to the data bandlimit. Returns a
+                  biased output spectrum with size lmax + 1. This assumes
+                  implicitly that the spectrum is zero for degrees l > lmax.
+                  'valid': couples exactly to the data bandlimit. Returns a
+                  biased spectrum with size lmax - lwin + 1. This returns only
+                  the part of the biased spectrum that is not influenced by
+                  degrees with l > lmax.
         """
         if weights is not None:
             if nwin is not None:
@@ -2440,7 +2440,7 @@ class SHWindow(object):
         Usage
         -----
 
-        x.plot_couplingmatrix(lmax, [nwin, weights, show, fname])
+        x.plot_couplingmatrix(lmax, [nwin, weights, mode, show, fname])
 
         Parameters
         ----------
@@ -2453,18 +2453,17 @@ class SHWindow(object):
         show    : If True (default), plot the image to the screen.
         fname   : If present, save the image to the file.
         mode    : Can be one of the following:
-                  'full' (default): couples over the data bandlimit.
-                  Returns a biased spectrum with size lmax + lwin + 1. This
-                  assumes implicitely that the spectrum is zero for degrees
-                  l > lmax.
-                  'same': couples exactly to the data bandlimit.
-                  Returns a biased spectrum with size lmax + 1. This
-                  assumes implicitely that the spectrum is zero for degrees
-                  l > lmax.
-                  'valid': couples exactly to the data bandlimit.
-                  Returns a biased spectrum with size lmax - lwin + 1. This
-                  returns only the part of the biased spectrum that is not
-                  influenced by degrees with l > lmax.
+                  'full' (default): couples over the data bandlimit. Returns a
+                  biased output spectrum with size lmax + lwin + 1. This
+                  assumes implicitly that the input spectrum is zero for
+                  degrees l > lmax.
+                  'same': couples exactly to the data bandlimit. Returns a
+                  biased output spectrum with size lmax + 1. This assumes
+                  implicitly that the spectrum is zero for degrees l > lmax.
+                  'valid': couples exactly to the data bandlimit. Returns a
+                  biased spectrum with size lmax - lwin + 1. This returns only
+                  the part of the biased spectrum that is not influenced by
+                  degrees with l > lmax.
         """
         figsize = _mpl.rcParams['figure.figsize']
         figsize[0] = figsize[1]
@@ -2508,8 +2507,7 @@ class SHWindowCap(SHWindow):
         self.theta = theta
         self.clat = clat
         self.clon = clon
-        self.nl = tapers.shape[0]
-        self.lmax = self.nl - 1
+        self.lmax = tapers.shape[0] - 1
         self.theta_degrees = theta_degrees
         self.coord_degrees = coord_degrees
         self.dj_matrix = dj_matrix
@@ -2786,8 +2784,7 @@ class SHWindowMask(SHWindow):
 
     def __init__(self, tapers, eigenvalues, weights):
         self.kind = 'mask'
-        self.nl = _np.sqrt(tapers.shape[0]).astype(int)
-        self.lmax = self.nl - 1
+        self.lmax = _np.sqrt(tapers.shape[0]).astype(int) - 1
         self.weights = weights
         self.nwin = tapers.shape[1]
         self.tapers = tapers

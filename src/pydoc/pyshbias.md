@@ -34,7 +34,7 @@ Calculate the (cross-)power spectrum expectation of a windowed function from its
 
 `<SFG> = Sum_{j=0}^L Shh Sum_{i=|l-j|}^{|l+j|} Sfg (C_{j0i0}^{l0})^2`
 
-where `<SFG>` is the expectation of the localized (cross-)power spectrum, `Shh` is the power spectrum of the window bandlimited to degree `L`, `Sfg` is the global unwindowed (cross-)power spectrum, and `C` is a Clebsch-Gordan coefficient. The Clebsch-Gordan coefficients are calculated using a simple relationship to the Wigner 3-j symbols. It is implicitly assumed that the power spectrum of `inspectrum` is zero beyond degree `ldata.`
+where `<SFG>` is the expectation of the localized (cross-)power spectrum, `Shh` is the power spectrum of the window bandlimited to degree `L`, `Sfg` is the global unwindowed (cross-)power spectrum, and `C` is a Clebsch-Gordan coefficient. The Clebsch-Gordan coefficients are calculated using a simple relationship to the Wigner 3-j symbols. It is implicitly assumed that the power spectrum of `inspectrum` is zero beyond degree `ldata.` If this is not the case, the ouput power spectrum should be considered valid only for the degrees up to and including `ldata` - `lwin`.
 
 If this routine is to be called several times using the same values of `lwin` and `ldata`, then the Clebsch-Gordon coefficients can be precomputed and saved by setting the optional parameter `save_cg` equal to 1. To deallocate the saved memory, which is a matrix of size (`lwin+ldata,lwin,2*lwin+ldata+1`), set `save_cg` equal to -1.
 

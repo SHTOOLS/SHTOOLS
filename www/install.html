@@ -34,14 +34,9 @@
 
 	<h1>Installation Instructions</h1>
 	
-	<h2>1. Homebrew package manager (OSX)</h2>
-	<p class="nomarginbot">If <a href="http://brew.sh">brew</a> is already installed, it is only necessary to enter the following commands in the terminal:</p>
-		<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>brew tap shtools/shtools</tt><br>
-		<tt>brew install shtools</tt></p>
-	</blockquote>
+	<p>SHTOOLS can be installed in several ways. If you will be using only the Python components, it is recommended to install using the pip package manager. If you will be writing and compiling Fortran 95 code, it is recommended to use either the Brew package manager (on OSX), or to compile using the Makefile.
 
-	<h2>2. Python package installer: pip</h2>
+	<h2>1. Python package installer: pip</h2>
 	<p class="nomarginbot">SHTOOLS can be installed using <tt>pip</tt>, but only if you have already downloaded the SHTOOLS repository from GitHub. To start, first make sure that you have the necessary dependencies installed. This can be done on most linux distributions using</p>
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh</tt></p>
@@ -63,7 +58,14 @@
 		<p class="nomargintop nomarginbot"><tt>pip uninstall pyshtools</tt></p>
 	</blockquote>
 	<p>Note that this will only install the Python version that corresponds to the version of <tt>pip</tt> being used. On some systems, it may be necessary to specify <tt>pip2.7</tt> or <tt>pip3.5</tt>.</p>
-	
+
+	<h2>2. Homebrew package manager (OSX)</h2>
+	<p class="nomarginbot">If <a href="http://brew.sh">brew</a> is already installed, it is only necessary to enter the following commands in the terminal:</p>
+		<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>brew tap shtools/shtools</tt><br>
+		<tt>brew install shtools</tt></p>
+	</blockquote>
+
 	<h2>3. Manual installation using make</h2>
 
 	<p class="nomarginbot">Before installing SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, the Fortran 95, Python 2, and Python 3 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main SHTOOLS directory:</p>

@@ -7,8 +7,8 @@ This routine returns the multitaper coupling matrix for a given set of power spe
 
 # Returns
 
-`Mmt` : float, dimension (`lmax`+1, `lmax`+`lwin`+1)
-:   The multitaper coupling matrix that relates the global power spectrum to the expectation of the localized multitaper spectrum.
+`Mmt` : float, dimension (`lmax`+`lwin`+1, `lmax`+1)
+:   The full multitaper coupling matrix that relates the global power spectrum to the expectation of the localized multitaper spectrum.
 
 # Parameters
 
@@ -38,6 +38,8 @@ where `S_{Phi Phi}` is a vector containing the `lmax+lwin+1` localized multitape
 :   `M_{ij} = Sum_{l=0}^L Sum_{k=1}^K a_k S_{hh}^{k}(l) [ C_{l0j0}^{i0} ]^2`
 
 where `a_k` are the taper weights, `S_{hh}` is the power of the window, and `C` is a Clebsch-Gordon coefficient.
+
+Note that this routine returns the "full" coupling matrix of dimension (`lmax` + `lwin` + 1, `lmax` + 1). When multiplied by a global input power spectrum with bandwidth `lmax`, it returns the output power spectrum with a bandwidth of `lmax` + `lwin`. In doing so, it is implicitly assumed that input power spectrum is exactly zero for all degrees greater than lmax. If this is not the case, the ouput power spectrum should be considered valid only for the degrees up to and including `lmax` - `lwin`.
 
 # References
 

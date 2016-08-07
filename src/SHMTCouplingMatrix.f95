@@ -1,23 +1,31 @@
 subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
-!-------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 !
 !   This routine returns the multitaper coupling matrix, which relates the
 !   global input spectrum to the expectation of the localized multitaper
-!   spectrum. 
+!   spectrum.
 !
 !   < S_{Phi Phi}^(mt) > = M^(mt) S_{ff}
 !
 !   This is given by eqs 4.5 and 4.6 of Wieczorek and Simons (2007).
-!   The input tapers_power is a matrix containing the power spectra (in columns)
-!   of all the localization windows. When using spherical cap localization
-!   windows, this is simply
+!   The input tapers_power is a matrix containing the power spectra (in
+!   columns) of all the localization windows. When using spherical cap
+!   localization windows, this is simply
 !
 !   tapers_power[:,:] = tapers[:,:]**2
+!
+!   Note that this routine returns the "full" coupling matrix of dimension
+!   (lmax+lwin+1, lmax+1). When multiplied by a global input power spectrum
+!   with bandwidth lmax, it returns the output power spectrum with a bandwidth
+!   of lmax+lwin. In doing so, it is implicitly assumed that input power
+!   spectrum is exactly zero for all degrees greater than lmax. If this is not
+!   the case, the ouput power spectrum should be considered valid only
+!   for the degrees up to and including lmax-lwin.
 !
 !   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
-!-------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
     use SHTOOLS, only: wigner3j
 
     implicit none
@@ -54,11 +62,11 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
         endif
     endif
 
-    !---------------------------------------------------------------------------
+    !--------------------------------------------------------------------------
     !
     !   Compute coupling matrix, M^(mt)
     !
-    !---------------------------------------------------------------------------
+    !--------------------------------------------------------------------------
 
     if (present(taper_wt)) then
 
