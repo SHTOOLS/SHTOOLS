@@ -15,7 +15,7 @@
 <div class="main">
 
 	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
-    	
+
 	<table class="menu">
 		<tbody>
 			<tr>
@@ -60,7 +60,7 @@
 <h1 id="description">Description</h1>
 <p><code>SHBias</code> will calculate the (cross-)power spectrum expectation of a function multiplied by a localizing window. This is given by equation 35 of Wieczorek and Simons (2005) and equation 2.11 of Wieczorek and Simons (2007),</p>
 <p><code>&lt;SFG&gt; = Sum_{j=0}^L Shh Sum_{i=|l-j|}^{|l+j|} Sfg (C_{j0i0}^{l0})^2</code></p>
-<p>where <code>&lt;SFG&gt;</code> is the expectation of the localized (cross-)power spectrum, <code>Shh</code> is the power spectrum of the window bandlimited to degree <code>L</code>, <code>Sfg</code> is the global unwindowed (cross-)power spectrum, and <code>C</code> is a Clebsch-Gordan coefficient. The Clebsch-Gordan coefficients are calculated using a simple relationship to the Wigner 3-j symbols. It is implicitly assumed that the power spectrum of <code>inspectrum</code> is zero beyond degree <code>ldata.</code></p>
+<p>where <code>&lt;SFG&gt;</code> is the expectation of the localized (cross-)power spectrum, <code>Shh</code> is the power spectrum of the window bandlimited to degree <code>L</code>, <code>Sfg</code> is the global unwindowed (cross-)power spectrum, and <code>C</code> is a Clebsch-Gordan coefficient. The Clebsch-Gordan coefficients are calculated using a simple relationship to the Wigner 3-j symbols. It is implicitly assumed that the power spectrum of <code>inspectrum</code> is zero beyond degree <code>ldata.</code> If this is not the case, the ouput power spectrum should be considered valid only for the degrees up to and including <code>ldata</code> - <code>lwin</code>.</p>
 <p>If this routine is to be called several times using the same values of <code>lwin</code> and <code>ldata</code>, then the Clebsch-Gordon coefficients can be precomputed and saved by setting the optional parameter <code>save_cg</code> equal to 1. To deallocate the saved memory, which is a matrix of size (<code>lwin+ldata,lwin,2*lwin+ldata+1</code>), set <code>save_cg</code> equal to -1.</p>
 <h1 id="references">References</h1>
 <p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.</p>
@@ -80,7 +80,7 @@
 		</tr>
 	</tbody>
 	</table>
-	
+
 </div>
 
 </body>

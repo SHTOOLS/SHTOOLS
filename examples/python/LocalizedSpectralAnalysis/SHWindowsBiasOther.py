@@ -78,7 +78,7 @@ def test_LocalizationWindows():
     print(dij_matrix[0, :lmax])
 
     print('\n---- testing SHReturnTapersMap ----')
-    tapers, evalues = shtools.SHReturnTapersMap(dh_mask, lmax, Ntapers=1)
+    tapers, evalues = shtools.SHReturnTapersMap(dh_mask, lmax, ntapers=1)
     print('best taper concentration: {:2.2f}'.format(evalues[0]))
 
 #==== EXECUTE SCRIPT ====

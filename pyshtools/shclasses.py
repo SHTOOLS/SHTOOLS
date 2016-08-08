@@ -46,10 +46,11 @@ class SHCoeffs(object):
     Spherical Harmonics Coefficient class.
 
     The coefficients of this class can be initialized using one of the
-    three constructor methods:
+    four constructor methods:
 
     >>> x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
     >>> x = SHCoeffs.from_random(powerspectrum[0:lmax+1])
+    >>> x = SHCoeffs.from_zeros(lmax)
     >>> x = SHCoeffs.from_file('fname.dat')
 
     The normalization convention of the input coefficents is specified
@@ -88,6 +89,7 @@ class SHCoeffs(object):
                             spectrum.
     get_coeffs()          : Return an array of spherical harmonics coefficients
                             with a different normalization convention.
+    set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonics coefficients and return a new
                             class instance.
@@ -110,19 +112,21 @@ class SHCoeffs(object):
         """Unused constructor of the super class."""
         print('Initialize the class using one of the class methods:\n'
               '>>> SHCoeffs.from_array?\n'
-              '>>> SHCoeffs.from_random?\n')
-        pass
+              '>>> SHCoeffs.from_random?\n'
+              '>>> SHCoeffs.from_zeros?\n'
+              '>>> SHCoeffs.from_file?\n')
 
     # ---- factory methods:
     @classmethod
     def from_zeros(self, lmax, normalization='4pi', csphase=1, kind='real'):
         """
-        Initialize class with zero from degree 0 to lmax.
+        Initialize class with spherical harmonics set to zero from degree
+        0 to lmax.
 
         Usage
         -----
 
-        x = SHCoeffs.from_array(lmax, [normalization, csphase])
+        x = SHCoeffs.from_zeros(lmax, [normalization, csphase])
 
         Parameters
         ----------
@@ -133,6 +137,7 @@ class SHCoeffs(object):
                         coefficients, respectively.
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
+        kind          : 'real' (default) or 'complex' output coefficients.
         """
         if kind.lower() not in set(['real', 'complex']):
             raise ValueError(
@@ -154,10 +159,14 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        nl = lmax + 1
+        if kind.lower == 'real':
+            coeffs = _np.zeros((2, nl, nl))
+        else:
+            coeffs = _np.zeros((2, nl, nl), dtype=complex)
+
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                nl = lmax + 1
-                coeffs = _np.zeros((2, nl, nl))
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
 
@@ -418,9 +427,11 @@ class SHCoeffs(object):
         Parameters
         ----------
 
-        values : one or several coefficient values
-        ls: the degree/s of the coefficients that should be set
-        ms: the order/s of the coefficients that should be set
+        values : One or several coefficient values.
+        ls     : The degree/s of the coefficients that should be set.
+        ms     : The order/s of the coefficients that should be set. Positive
+                 and negative values correspond to the cosine and sine
+                 components, respectively.
         """
         # make sure that the type is correct
         values = _np.array(values)
@@ -1158,8 +1169,10 @@ class SHGrid(object):
     """
 
     def __init__():
-        """Use a constructor to intialize."""
-        pass
+        """Unused constructor of the super class."""
+        print('Initialize the class using one of the class methods:\n'
+              '>>> SHGrid.from_array?\n'
+              '>>> SHGrid.from_file?\n')
 
     # ---- factory methods
     @classmethod

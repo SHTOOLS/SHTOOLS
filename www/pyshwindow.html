@@ -17,7 +17,7 @@
 <div class="main">
 
 	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
-    	
+
 	<table class="menu">
 		<tbody>
 			<tr>
@@ -33,33 +33,33 @@
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="python-routines.html" class="dir">Python</a> > <a href="pyclasses.html" class="dir">Classes</a></p>
 
 	<h1 class="nomarginbot extramargintop">SHWindow</h1>
-	
+
 	<table class="pyclass">
 		<tbody>
 
 		<tr>
 		<td class="head">Subclasses</td> 
 		</tr>
-	
+
 		<tr>
 		<td class="left"><tt>SHWindowCap</tt></td> 
 		<td class="right">Class for windows concentrated within a spherical cap.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><tt>SHWindowMask</tt></td> 
 		<td class="right">Class for windows concentrated in an arbitrary domain.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="head">Initialization</td> 
 		</tr>
-	
+
 		<tr>
 		<td class="left"><tt>x = SHWindow.from_cap()</tt></td> 
 		<td class="right">Construct windows concentrated with a spherical cap.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><tt>x = SHWindow.from_mask()</tt></td> 
 		<td class="right">Construct windows concentrated with an arbitrary region.</td>
@@ -68,7 +68,7 @@
 		<tr>
 		<td class="head">Attributes</td> 
 		</tr>
-		
+
 		<tr>
 		<td class="left"><tt>kind</tt></td> 
 		<td class="right">Either <tt>'cap'</tt> or <tt>'mask'</tt>.</td>
@@ -132,17 +132,17 @@
 		<td class="left"><tt>get_coeffs()</tt></td> 
 		<td class="right">Return an array of the spherical harmonic coefficients for taper <tt>i</tt>, where <tt>i=0</tt> is the best concentrated, optionally using a different normalization convention.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><tt>get_degrees()</tt></td> 
 		<td class="right">Return an array containing the spherical harmonic degrees of the localization windows, from <tt>0</tt> to <tt>lmax</tt>.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><tt>get_powerperdegree()</tt></td> 
 		<td class="right">Return the power per degree spectra for one or more of the localization windows.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><tt>get_couplingmatrix()</tt></td> 
 		<td class="right">Return the coupling matrix of the first <tt>nwin</tt> tapers.</td>
@@ -197,7 +197,7 @@
 		<td class="left"><tt>info()</tt></td> 
 		<td class="right">Print a summary of the data stored in the <tt>SHWindow</tt> instance.</td>
 		</tr>
-		
+
 		</tbody>
 	</table>
 	
@@ -215,7 +215,7 @@
 		</tr>
 	</tbody>
 	</table>
-	
+
 </div>
 
 </body>

@@ -17,7 +17,7 @@
 <div class="main">
 
 	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
-    	
+
 	<table class="menu">
 		<tbody>
 			<tr>
@@ -33,135 +33,145 @@
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="python-routines.html" class="dir">Python</a> > <a href="pyclasses.html" class="dir">Classes</a></p>
 
 	<h1 class="nomarginbot">SHCoeffs</h1>
-	
+
 	<table class="pyclass">
 		<tbody>
 		<tr>
-		<td class="head">Subclasses</td> 
+		<td class="head">Subclasses</td>
 		</tr>
-	
+
 		<tr>
-		<td class="left"><tt>SHRealCoeffs</tt></td> 
+		<td class="left"><tt>SHRealCoeffs</tt></td>
 		<td class="right">Real spherical harmonic coefficient class.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="left"><tt>SHComplexCoeffs</tt></td> 
+		<td class="left"><tt>SHComplexCoeffs</tt></td>
 		<td class="right">Complex spherical harmonic coefficient class.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="head">Initialization</td> 
+		<td class="head">Initialization</td>
 		</tr>
-	
+
 		<tr>
-		<td class="left"><tt>x = SHCoeffs.from_array()</tt></td> 
+		<td class="left"><tt>x = SHCoeffs.from_array()</tt></td>
 		<td class="right">Initialize using coefficients from an array.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="left"><tt>x = SHCoeffs.from_random()</tt></td> 
+		<td class="left"><tt>x = SHCoeffs.from_random()</tt></td>
 		<td class="right">Initialize using random coefficients with a prescribed power spectrum.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="left"><tt>x = SHCoeffs.from_file()</tt></td> 
+		<td class="left"><tt>x = SHCoeffs.from_zeros()</tt></td>
+		<td class="right">Initialize with coefficients set to zero.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>x = SHCoeffs.from_file()</tt></td>
 		<td class="right">Initialize using coefficients from a file.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="head">Class attributes</td> 
+		<td class="head">Class attributes</td>
 		</tr>
-		
+
 		<tr>
-		<td class="left"><tt>lmax</tt></td> 
+		<td class="left"><tt>lmax</tt></td>
 		<td class="right">The maximum spherical harmonic degree of the coefficients.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="left"><tt>coeffs</tt></td> 
+		<td class="left"><tt>coeffs</tt></td>
 		<td class="right">The raw coefficients with the specified normalization and phase conventions.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>normalization</tt></td> 
+		<td class="left"><tt>normalization</tt></td>
 		<td class="right">The normalization of the coefficients: <tt>'4pi'</tt>, <tt>'ortho'</tt>, or <tt>'schmidt'</tt>.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>csphase</tt></td> 
-		<td class="right">Defines whether the Condon-Shortley phase is used (<tt>1</tt>) or not (<tt>-1<tt>).</td>
+		<td class="left"><tt>csphase</tt></td>
+		<td class="right">Defines whether the Condon-Shortley phase is used (<tt>1</tt>) or not (<tt>-1</tt>).</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>mask</tt></td> 
+		<td class="left"><tt>mask</tt></td>
 		<td class="right">A boolean mask that is <tt>True</tt> for the permissible values of degree <tt>l</tt> and order <tt>m</tt>.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="left"><tt>kind</tt></td> 
+		<td class="left"><tt>kind</tt></td>
 		<td class="right">The coefficient data type: either <tt>'complex'</tt> or <tt>'real'</tt>.</td>
 		</tr>
 
 		<tr>
-		<td class="head">Class methods</td> 
+		<td class="head">Class methods</td>
 		</tr>
-	
+
 		<tr>
-		<td class="left"><tt>get_degrees()</tt></td> 
+		<td class="left"><tt>get_degrees()</tt></td>
 		<td class="right">Return an array listing the spherical harmonic degrees from <tt>0</tt> to <tt>lmax</tt>.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="left"><tt>get_powerperdegree()</tt></td> 
+		<td class="left"><tt>get_powerperdegree()</tt></td>
 		<td class="right">Return an array with the power per degree spectrum.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>get_powerperband()</tt></td> 
+		<td class="left"><tt>get_powerperband()</tt></td>
 		<td class="right">Return an array with the power per log<sub>bandwidth</sub> spectrum.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>get_coeffs()</tt></td> 
+		<td class="left"><tt>get_coeffs()</tt></td>
 		<td class="right">Return an array of spherical harmonics coefficients with a different normalization convention.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>rotate()</tt></td> 
+		<td class="left"><tt>set_coeffs()</tt></td>
+		<td class="right">Set coefficients in-place to specified values.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>rotate()</tt></td>
 		<td class="right">Rotate the coordinate system used to express the spherical harmonics coefficients and return a new class instance.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>return_coeffs()</tt></td> 
+		<td class="left"><tt>return_coeffs()</tt></td>
 		<td class="right">Return the current class instance as a new instance using a different normalization convention.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>expand()</tt></td> 
+		<td class="left"><tt>expand()</tt></td>
 		<td class="right">Evaluate the coefficients on a spherical grid and return a new SHGrid class instance.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>make_complex()</tt></td> 
+		<td class="left"><tt>make_complex()</tt></td>
 		<td class="right">Convert a complex <tt>SHCoeffs</tt> class instance to a real class instance.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="left"><tt>make_real()</tt></td> 
+		<td class="left"><tt>make_real()</tt></td>
 		<td class="right">Convert a real <tt>SHCoeffs</tt> class instance to a complex class instance.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>plot_powerperdegree()</tt></td> 
+		<td class="left"><tt>plot_powerperdegree()</tt></td>
 		<td class="right">Plot the power per degree spectrum.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><tt>plot_powerperband()</tt></td> 
 		<td class="right">Plot the power per log<sub>bandwidth</sub>(degree) spectrum.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><tt>info()</tt></td> 
 		<td class="right">Print a summary of the data stored in the SHCoeffs instance.</td>
@@ -184,7 +194,7 @@
 		</tr>
 	</tbody>
 	</table>
-	
+
 </div>
 
 </body>

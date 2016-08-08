@@ -28,13 +28,13 @@
 			</tr>
 		</tbody>
 	</table>
-		
+
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="compilation.html" class="dir">Compilation Instructions</a>
 </p>
-	
+
 	<h1>Make Output</h1>
-	
+
 	<h2>Example output on OSX</h2>
 
 	<blockquote><p class="smaller smallerlineheight nomargin"><tt>
@@ -238,7 +238,7 @@ In file included from /usr/local/lib/python3.5/site-packages/numpy/core/include/
 #warning "Using deprecated NumPy API, disable it by " \<br>
  ^<br>
 /var/folders/9v/k2l3cpqs1wn56ktkr4l5zncr0000gn/T/tmpr7g1y8p1/src.macosx-10.11-x86_64-3.5/fortranobject.c:139:18: warning: comparison of integers of different signs: 'Py_ssize_t' (aka 'long') and 'unsigned long' [-Wsign-compare]<br>
-        if (size < sizeof(notalloc)) {<br>
+        if (size &lt; sizeof(notalloc)) {<br>
             ~~~~ ^ ~~~~~~~~~~~~~~~~
 2 warnings generated.<br>
 mv _SHTOOLS.cpython-35m-darwin.so pyshtools/.<br>
@@ -252,7 +252,7 @@ In file included from /usr/local/lib/python3.5/site-packages/numpy/core/include/
 #warning "Using deprecated NumPy API, disable it by " \<br>
  ^
 /var/folders/9v/k2l3cpqs1wn56ktkr4l5zncr0000gn/T/tmp89mt__sy/src.macosx-10.11-x86_64-3.5/fortranobject.c:139:18: warning: comparison of integers of different signs: 'Py_ssize_t' (aka 'long') and 'unsigned long' [-Wsign-compare]<br>
-        if (size < sizeof(notalloc)) {<br>
+        if (size &lt; sizeof(notalloc)) {<br>
             ~~~~ ^ ~~~~~~~~~~~~~~~~<br>
 2 warnings generated.<br>
 In file included from /var/folders/9v/k2l3cpqs1wn56ktkr4l5zncr0000gn/T/tmp89mt__sy/src.macosx-10.11-x86_64-3.5/_constantmodule.c:18:<br>
@@ -279,7 +279,7 @@ sys.path.append('/Users/lunokhod/SphericalHarmonics/shtools-git')<br>
 import pyshtools as shtools<br>
 -----------------------------------------------------------------------------------------------<br>
 </tt></p>
-</pre>
+</blockquote>
 
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="compilation.html" class="dir">Compilation Instructions</a></p>
@@ -293,7 +293,7 @@ import pyshtools as shtools<br>
 		</tr>
 	</tbody>
 	</table>
-	
+
 </div>
 
 </body>

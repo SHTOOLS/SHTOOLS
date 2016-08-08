@@ -11,8 +11,6 @@ recursive-include examples/python *.py Makefile
 recursive-include examples/notebooks *.ipynb
 include examples/python/ClassInterface/topo.dat.gz
 
-include pyshtools/README
-
 graft src/pydoc
 graft src/fdoc
 recursive-include src *.py

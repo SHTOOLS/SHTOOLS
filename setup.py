@@ -129,7 +129,8 @@ CLASSIFIERS = [
 ]
 
 
-KEYWORDS = ['Spherical Harmonics', 'Wigner Symbols']
+KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Wigner Symbols',
+            'Legendre Functions', 'Gravity Field', 'Magnetic Field']
 
 
 INSTALL_REQUIRES = [
@@ -215,7 +216,7 @@ metadata = dict(
     description='SHTOOLS - Tools for working with spherical harmonics',
     url='http://shtools.ipgp.fr',
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
-    author='Mark Wieczorek, Matthias Meschede et al.',
+    author='The SHTOOLS developers',
     license='BSD',
     keywords=KEYWORDS,
     requires=INSTALL_REQUIRES,
