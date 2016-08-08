@@ -4,14 +4,12 @@ This script tests other routines related to localized spectral analyses
 """
 from __future__ import absolute_import, division, print_function
 
-# standard imports:
 import os
 import sys
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-# import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import shtools
 
@@ -60,7 +58,8 @@ def test_LocalizationWindows():
     weights = 2 * np.sin(np.radians(thetas))
     maskarea = np.sum(dhmask * weights[:, None] * dlat**2)
     globearea = 4 * np.pi * (180 / np.pi)**2
-    print('mask covers {:2.2f}%% of the globe'.format(100 * maskarea / globearea))
+    print('mask covers {:2.2f}%% of the globe'
+          .format(100 * maskarea / globearea))
     fig = plt.figure()
     plt.imshow(dhmask)
     fig.savefig('mask.png')
@@ -81,6 +80,6 @@ def test_LocalizationWindows():
     tapers, evalues = shtools.SHReturnTapersMap(dh_mask, lmax, ntapers=1)
     print('best taper concentration: {:2.2f}'.format(evalues[0]))
 
-#==== EXECUTE SCRIPT ====
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

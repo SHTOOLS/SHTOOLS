@@ -4,14 +4,12 @@ This script tests the gravity and magnetics routines.
 """
 from __future__ import absolute_import, division, print_function
 
-# standard imports:
 import os
 import sys
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-# import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import shtools
 
@@ -20,8 +18,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
 mpl.rcParams.update(style_shtools)
 
-#==== MAIN FUNCTION ====
 
+# ==== MAIN FUNCTION ====
 
 def main():
     TestCircle()
@@ -29,8 +27,8 @@ def main():
     TestWigner()
     TestRandom()
 
-#==== TEST FUNCTIONS ====
 
+# ==== TEST FUNCTIONS ====
 
 def TestCircle():
     coord = shtools.MakeCircleCoord(30, 10, 30)
@@ -87,12 +85,13 @@ def TestRandom():
 
     seed = -1232
     first, nseed = shtools.RandomGaussian(seed)
-    list = np.array([shtools.RandomGaussian(nseed)[0] for x in range(0, 10000)])
+    list = np.array([shtools.RandomGaussian(nseed)[0]
+                     for x in range(0, 10000)])
     axes[1].hist(list, bins=100)
     axes[1].axis([-5., 5, 0, 400])
 
     fig.savefig('Histogram.png')
 
-#==== EXECUTE SCRIPT ====
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

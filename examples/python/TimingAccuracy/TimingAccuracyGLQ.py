@@ -13,11 +13,13 @@ import numpy as np
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import shtools
 
-#==== MAIN FUNCTION ====
+
+# ==== MAIN FUNCTION ====
 def main():
     TimingAccuracyGLQ()
 
-#==== TEST FUNCTIONS ====
+
+# ==== TEST FUNCTIONS ====
 
 def TimingAccuracyGLQ():
     # ---- input parameters ----
@@ -37,7 +39,8 @@ def TimingAccuracyGLQ():
     print('creating {:d} random coefficients'.format(2 * (maxdeg + 1) *
                                                      (maxdeg + 1)))
     cilm = np.random.normal(loc=0., scale=1., size=(2, maxdeg + 1, maxdeg + 1))
-    cilm[:, 1:, :] *= np.sqrt((ls[1:]**beta) / (2. * ls[1:] + 1.))[None, :, None]
+    cilm[:, 1:, :] *= np.sqrt((ls[1:]**beta) /
+                              (2. * ls[1:] + 1.))[None, :, None]
     old_power = shtools.SHPowerSpectrum(cilm)
     new_power = 1. / (1. + ls)**beta  # initialize degrees > 0 to power-law
     cilm[:, :, :] *= np.sqrt(new_power / old_power)[None, :, None]
@@ -58,13 +61,13 @@ def TimingAccuracyGLQ():
         tend = time.time()
         tprecompute = tend - tstart
 
-        #synthesis / inverse
+        # synthesis / inverse
         tstart = time.time()
         grid = shtools.MakeGridGLQ(cilm_trim, zeros)
         tend = time.time()
         tinverse = tend - tstart
 
-        #analysis / forward
+        # analysis / forward
         tstart = time.time()
         cilm2_trim = shtools.SHExpandGLQ(grid, weights, zeros)
         tend = time.time()
@@ -72,7 +75,7 @@ def TimingAccuracyGLQ():
 
         # compute error
         err = np.abs(cilm_trim[mask_trim] - cilm2_trim[mask_trim]) / \
-              np.abs(cilm_trim[mask_trim])
+            np.abs(cilm_trim[mask_trim])
         maxerr = err.max()
         rmserr = np.mean(err**2)
 
@@ -81,6 +84,6 @@ def TimingAccuracyGLQ():
                                 tforward))
         lmax = lmax * 2
 
-#==== EXECUTE SCRIPT ====
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

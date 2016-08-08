@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
-This script is a python version of TimingAccuracyGLQC. We use numpy functions to
-simplify the creation of random coefficients.
+This script is a python version of TimingAccuracyGLQC. We use numpy
+functions to simplify the creation of random coefficients.
 """
 from __future__ import absolute_import, division, print_function
 
@@ -13,11 +13,15 @@ import numpy as np
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import shtools
 
-#==== MAIN FUNCTION ====
+
+# ==== MAIN FUNCTION ====
+
 def main():
     TimingAccuracyGLQC()
 
-#==== TEST FUNCTIONS ====
+
+# ==== TEST FUNCTIONS ====
+
 def TimingAccuracyGLQC():
     # ---- input parameters ----
     maxdeg = 2800
@@ -61,13 +65,13 @@ def TimingAccuracyGLQC():
         tend = time.time()
         tprecompute = tend - tstart
 
-        #synthesis / inverse
+        # synthesis / inverse
         tstart = time.time()
         grid = shtools.MakeGridGLQC(cilm_trim, zeros)
         tend = time.time()
         tinverse = tend - tstart
 
-        #analysis / forward
+        # analysis / forward
         tstart = time.time()
         cilm2_trim = shtools.SHExpandGLQC(grid, weights, zeros)
         tend = time.time()
@@ -75,7 +79,7 @@ def TimingAccuracyGLQC():
 
         # compute error
         err = np.abs(cilm_trim[mask_trim] - cilm2_trim[mask_trim]) / \
-              np.abs(cilm_trim[mask_trim])
+            np.abs(cilm_trim[mask_trim])
         maxerr = err.max()
         rmserr = np.mean(err**2)
 
@@ -84,6 +88,6 @@ def TimingAccuracyGLQC():
                                 tforward))
         lmax = lmax * 2
 
-#==== EXECUTE SCRIPT ====
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

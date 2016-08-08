@@ -67,7 +67,7 @@ def TimingAccuracyDH(sampling=1):
 
         # compute error
         err = np.abs(cilm_trim[mask_trim] - cilm2_trim[mask_trim]) / \
-              np.abs(cilm_trim[mask_trim])
+            np.abs(cilm_trim[mask_trim])
         maxerr = err.max()
         rmserr = np.mean(err**2)
 

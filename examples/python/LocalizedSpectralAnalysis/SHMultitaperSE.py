@@ -32,7 +32,8 @@ def test_MultitaperSE():
     lmax = 10
     orderM = 2
     print('creating spherical cap tapers with:', end=' ')
-    print('size {:1.0f} deg, bandwidth {:d}, order {:d}'.format(theta0_deg, lmax, orderM))
+    print('size {:1.0f} deg, bandwidth {:d}, order {:d}'
+          .format(theta0_deg, lmax, orderM))
     tapers, concentrations = shtools.SHReturnTapersM(theta0, lmax, orderM)
     print('first 3 taper concentrations:')
     print(concentrations[:3])
@@ -53,7 +54,8 @@ def test_MultitaperSE():
     tapersk = tapers[:, :ntapers]
     torders = taperorder[:ntapers]
     coeffs = np.random.normal(size=(2, lmax + 1, lmax + 1))
-    localpower, localpower_sd = shtools.SHMultiTaperSE(coeffs, tapersk, torders)
+    localpower, localpower_sd = shtools.SHMultiTaperSE(coeffs, tapersk,
+                                                       torders)
     print('total power:', np.sum(localpower))
 
     print('\n---- testing SHMultiTaperCSE ----')
@@ -64,14 +66,16 @@ def test_MultitaperSE():
     coeffs1 = np.random.normal(size=(2, lmax + 1, lmax + 1))
     coeffs2 = 0.5 * (coeffs1 + np.random.normal(size=(2, lmax + 1, lmax + 1)))
     print(coeffs1.shape, coeffs2.shape, tapersk.shape)
-    localpower, localpower_sd = shtools.SHMultiTaperCSE(coeffs1, coeffs2, tapersk, torders)
+    localpower, localpower_sd = shtools.SHMultiTaperCSE(coeffs1, coeffs2,
+                                                        tapersk, torders)
     print('total power:', np.sum(localpower))
 
     print('\n---- testing SHLocalizedAdmitCorr ----')
     lat = 90.
     lon = 0.
     k = 3
-    admit, corr, dadmit, dcorr = shtools.SHLocalizedAdmitCorr(coeffs1, coeffs2, tapers, taperorder, k, lat, lon)
+    admit, corr, dadmit, dcorr = shtools.SHLocalizedAdmitCorr(
+        coeffs1, coeffs2, tapers, taperorder, k, lat, lon)
     print(admit)
 
     print('\n---- testing ComputeDm ----')
@@ -96,7 +100,8 @@ def test_MultitaperSE():
     m = 2
     ntapers = 3
     minconcentration = 0.8
-    lmax = shtools.SHFindLWin(theta0, m, minconcentration, taper_number=ntapers)
+    lmax = shtools.SHFindLWin(theta0, m, minconcentration,
+                              taper_number=ntapers)
     print(lmax)
 
     print('\n---- testing SHBiasK ----')
@@ -120,19 +125,6 @@ def test_MultitaperSE():
     admit, corr = shtools.SHBiasAdmitCorr(Sgt, Sgg, Stt, tapers[:, 2])
     print(corr)
 
-#
-#    This is not yet working!
-#
-#    print('\n---- testing SHMTDebias ----')
-#    lmax = 80
-#    lwin,ntapers = tapers.shape
-#    mtspectra = np.zeros( (2,lmax+lwin-1) )
-#    mtspectra[0] = power_biased
-#    mtspectra[1] = 1e-1*power_biased
-#    print(mtspectra.shape)
-#    mtdebias,lmid = shtools.SHMTDebias(mtspectra,tapers[:,:2],nl=2*lwin)
-#    print(mtdebias)
-
-#==== EXECUTE SCRIPT ====
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

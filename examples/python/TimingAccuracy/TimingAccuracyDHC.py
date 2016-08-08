@@ -13,11 +13,15 @@ import numpy as np
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import shtools
 
+
 # ==== MAIN FUNCTION ====
+
 def main():
     TimingAccuracyDHC(2)
 
+
 # ==== TEST FUNCTIONS ====
+
 def TimingAccuracyDHC(sampling=1):
     # ---- input parameters ----
     maxdeg = 2800
@@ -54,14 +58,14 @@ def TimingAccuracyDHC(sampling=1):
         # trim coefficients to lmax
         cilm_trim = cilm[:, :lmax + 1, :lmax + 1]
         mask_trim = mask[:, :lmax + 1, :lmax + 1]
-        
-        #synthesis / inverse
+
+        # synthesis / inverse
         tstart = time.time()
         grid = shtools.MakeGridDHC(cilm_trim, sampling=sampling)
         tend = time.time()
         tinverse = tend - tstart
 
-        #analysis / forward
+        # analysis / forward
         tstart = time.time()
         cilm2_trim = shtools.SHExpandDHC(grid, sampling=sampling)
         tend = time.time()
@@ -69,7 +73,7 @@ def TimingAccuracyDHC(sampling=1):
 
         # compute error
         err = np.abs(cilm_trim[mask_trim] - cilm2_trim[mask_trim]) / \
-              np.abs(cilm_trim[mask_trim])
+            np.abs(cilm_trim[mask_trim])
         maxerr = err.max()
         rmserr = np.mean(err**2)
 

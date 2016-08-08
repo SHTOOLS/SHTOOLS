@@ -5,14 +5,12 @@ coefficients
 """
 from __future__ import absolute_import, division, print_function
 
-# standard imports:
 import os
 import sys
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-# import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import shtools
 
@@ -43,12 +41,12 @@ def test_SHConversions():
 
 def example():
     print('---- SHrtoc example ----')
-    #--- input data filename ---
+    # --- input data filename ---
     infile = '../../ExampleDataFiles/MarsTopo719.shape'
     coeffs1, lmax = shtools.SHRead(infile, 719)
     coeffs1 = coeffs1[:, :lmax + 1, :lmax + 1]
 
-    #--- convert to complex coefficients, fill negative order coefficients ---
+    # --- convert to complex coefficients, fill negative order coefficients ---
     coeffs2 = np.empty((2, lmax + 1, lmax + 1), dtype=np.complex)
     coeffs2_buf = shtools.SHrtoc(coeffs1, convention=1, switchcs=0)
     coeffs2[0, :, :].real = coeffs2_buf[0, :, :]
@@ -56,7 +54,7 @@ def example():
     coeffs2[1] = (coeffs2[0].conjugate() *
                   ((-1)**np.arange(lmax + 1))[np.newaxis, :])
 
-    #--- compute and plot grid ---
+    # --- compute and plot grid ---
     grid1 = shtools.MakeGridDH(coeffs1, lmax, csphase=-1)
     grid2 = shtools.MakeGridDHC(coeffs2, lmax, csphase=-1)
 
@@ -77,6 +75,6 @@ def example():
 
     # plt.show()
 
-#==== EXECUTE SCRIPT ====
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

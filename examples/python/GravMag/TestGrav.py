@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 """
-This script tests the gravity and magnetics routines. 
+This script tests the gravity and magnetics routines.
 """
 from __future__ import absolute_import, division, print_function
 
-# standard imports:
 import os
 import sys
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-# import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import shtools
 from pyshtools import constant
@@ -21,8 +19,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
 mpl.rcParams.update(style_shtools)
 
-#==== MAIN FUNCTION ====
 
+# ==== MAIN FUNCTION ====
 
 def main():
     TestMakeGravGrid()
@@ -31,8 +29,8 @@ def main():
     TestFilter()
     TestMakeMagGrid()
 
-#==== TEST FUNCTIONS ====
 
+# ==== TEST FUNCTIONS ====
 
 def TestMakeGravGrid():
     infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
@@ -42,18 +40,25 @@ def TestMakeGravGrid():
     clm[0, 0, 0] = 1.0
     print(gm, r0)
 
-    geoid = shtools.MakeGeoidGridDH(clm, r0, gm, constant.w0_mars, a=constant.a_mars, f=constant.f_mars, omega=constant.omega_mars)
+    geoid = shtools.MakeGeoidGridDH(clm, r0, gm, constant.w0_mars,
+                                    a=constant.a_mars, f=constant.f_mars,
+                                    omega=constant.omega_mars)
     geoid = geoid / 1.e3  # convert to meters
     fig_map = plt.figure()
     plt.imshow(geoid)
     fig_map.savefig('MarsGeoid.png')
 
-    rad, theta, phi, total = shtools.MakeGravGridDH(clm, gm, r0, lmax=719, a=constant.a_mars, f=constant.f_mars, lmax_calc=85, omega=constant.omega_mars, normal_gravity=1)
+    rad, theta, phi, total = shtools.MakeGravGridDH(
+        clm, gm, r0, lmax=719, a=constant.a_mars, f=constant.f_mars,
+        lmax_calc=85, omega=constant.omega_mars, normal_gravity=1)
     fig, axes = plt.subplots(2, 2)
 
-    for num, vv, s in ((0, rad, "$g_{r}$"), (1, theta, "$g_{\theta}$"), (2, phi, "$g_{\phi}$"), (3, total, "Gravity disturbance")):
+    for num, vv, s in ((0, rad, "$g_{r}$"), (1, theta, "$g_{\theta}$"),
+                       (2, phi, "$g_{\phi}$"),
+                       (3, total, "Gravity disturbance")):
         if (num == 3):
-            axes.flat[num].imshow(vv * 1.e5, vmin=-400, vmax=550)  # Convert to mGals
+            axes.flat[num].imshow(vv * 1.e5, vmin=-400, vmax=550)
+            # Convert to mGals
         else:
             axes.flat[num].imshow(vv)
         axes.flat[num].set_title(s)
@@ -79,7 +84,7 @@ def TestNormalGravity():
 
 
 def TestGravGrad():
-    #---- input parameters ----
+    # ---- input parameters ----
     lmax = 100
     clm = np.zeros((2, lmax + 1, lmax + 1), dtype=float)
     clm[0, 2, 2] = 1.0
@@ -88,7 +93,8 @@ def TestGravGrad():
     a = 1.0
     f = 0.0
 
-    vxx, vyy, vzz, vxy, vxz, vyz = shtools.MakeGravGradGridDH(clm, gm, r0, a=a, f=f)
+    vxx, vyy, vzz, vxy, vxz, vyz = shtools.MakeGravGradGridDH(clm, gm, r0,
+                                                              a=a, f=f)
 
     print("Maximum Trace(Vxx+Vyy+Vzz) = ", np.max(vxx + vyy + vzz))
     print("Minimum Trace(Vxx+Vyy+Vzz) = ", np.min(vxx + vyy + vzz))
@@ -96,7 +102,8 @@ def TestGravGrad():
     fig, axes = plt.subplots(2, 3)
     fig.suptitle("Gravity gradient tensor", fontsize=10)
 
-    for num, vv, s in ((0, vxx, "$V_{xx}$"), (1, vyy, "$V_{yy}$"), (2, vzz, "$V_{zz}$"), (3, vxy, "$V_{xy}$"),
+    for num, vv, s in ((0, vxx, "$V_{xx}$"), (1, vyy, "$V_{yy}$"),
+                       (2, vzz, "$V_{zz}$"), (3, vxy, "$V_{xy}$"),
                        (4, vxz, "$V_{xz}$"), (5, vyz, "$V_{yz}$")):
         axes.flat[num].imshow(vv, vmin=-5, vmax=5)
         axes.flat[num].set_title(s)
@@ -134,10 +141,13 @@ def TestMakeMagGrid():
     r0 = header[0] * 1.e3
     a = constant.r_mars + 145.0e3  # radius to evaluate the field
 
-    rad, theta, phi, total = shtools.MakeMagGridDH(clm, r0, lmax=719, a=a, f=constant.f_mars, lmax_calc=90)
+    rad, theta, phi, total = shtools.MakeMagGridDH(clm, r0, lmax=719, a=a,
+                                                   f=constant.f_mars,
+                                                   lmax_calc=90)
     fig, axes = plt.subplots(2, 2)
 
-    for num, vv, s in ((0, rad, "$B_{r}$"), (1, theta, "$B_{\theta}$"), (2, phi, "$B_{\phi}$"), (3, total, "$|B|$")):
+    for num, vv, s in ((0, rad, "$B_{r}$"), (1, theta, "$B_{\theta}$"),
+                       (2, phi, "$B_{\phi}$"), (3, total, "$|B|$")):
         if (num == 3):
             axes.flat[num].imshow(vv, vmin=0, vmax=700)
         else:
@@ -150,8 +160,10 @@ def TestMakeMagGrid():
 
     ls = np.arange(lmax + 1)
     pspectrum = shtools.SHMagPowerSpectrum(clm, r0)
-    pspectrum2 = np.array([shtools.SHMagPowerL(clm, r0, l) for l in range(0, lmax + 1)])
-    print("Minimum and maximum difference in spectra = ", (pspectrum - pspectrum2).min(), (pspectrum - pspectrum2).max())
+    pspectrum2 = np.array([shtools.SHMagPowerL(clm, r0, l)
+                           for l in range(0, lmax + 1)])
+    print('Minimum and maximum difference in spectra = ',
+          (pspectrum - pspectrum2).min(), (pspectrum - pspectrum2).max())
 
     fig_spectrum, ax = plt.subplots(1, 1)
     ax.set_xscale('linear')
@@ -165,6 +177,6 @@ def TestMakeMagGrid():
 
     fig_spectrum.savefig('Mars_MagPowerSpectrum.png')
 
-#==== EXECUTE SCRIPT ====
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

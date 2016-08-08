@@ -13,7 +13,6 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-# import shtools:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 
@@ -22,13 +21,15 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
 mpl.rcParams.update(style_shtools)
 
-#==== MAIN FUNCTION ====
+
+# ==== MAIN FUNCTION ====
 
 def main():
     example1()
-    # example2()
+    example2()
 
-#==== EXAMPLES ====
+
+# ==== EXAMPLES ====
 def example1():
     # generate cap window
     lmax = 20
@@ -39,7 +40,8 @@ def example1():
     cap.plot_windows(20, show=False, fname='cap_tapers.png')
     cap.plot_couplingmatrix(30, nwin=5, show=False, fname='cap_coupling.png')
 
-#==== EXAMPLES ====
+
+# ==== EXAMPLES ====
 def example2():
     # generate cap window
     lmax = 15
@@ -50,9 +52,10 @@ def example2():
     print(dh_mask.shape)
     region = pyshtools.SHWindow.from_mask(dh_mask, lmax, nwins)
     region.info()
-    region.plot(nwins,show=False,fname='continent_tapers.png')
-    region.plot_couplingmatrix(30,5,show=False,fname='continent_coupling.png')
+    region.plot_windows(nwins, show=False, fname='continent_tapers.png')
+    region.plot_couplingmatrix(30, 5, show=False,
+                               fname='continent_coupling.png')
 
-#==== EXECUTE SCRIPT ====
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()
