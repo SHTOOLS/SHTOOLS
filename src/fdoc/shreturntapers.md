@@ -30,7 +30,7 @@ call SHReturnTapers (`theta0`, `lmax`, `tapers`, `eigenvalues`, `taper_order`)
 # References
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
-Geophys. J. Int., 162, 655-675.
+Geophys. J. Int., 162, 655-675, 2005.
 
 Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.
 

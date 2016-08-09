@@ -18,7 +18,7 @@ call djpi2 (`dj`, `lmax`)
 
 `djpi2` will calculate the rotation matrix `d_{mM}^j (pi/2)` that is used in rotating spherical harmonics in the routines `SHRotateRealCoef` and `SHRotateCoef`.
 
-This routine is based on code originally written by Guy Masters, subsequently modified by Mark Simons, and finally turned into f95 code by myself.
+This routine is based on code originally written by Guy Masters.
 
 # See also
 

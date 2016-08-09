@@ -27,9 +27,13 @@ Compute the power spectrum of the magnetic field given the Schmidt seminormalize
 
 # Description
 
-`SHMagPowerSpectrum` will calculate the power spectrum of the magnetic field at radius `r` given the magnetic potential Schmidt seminormalized spherical harmonic coefficients `c` evaluated at radius `a`. For a given degree `l`, this is explicitly calculated as:
+`SHMagPowerSpectrum` will calculate the power spectrum of the magnetic field at radius `r` given the magnetic potential Schmidt seminormalized spherical harmonic coefficients `c` evaluated at radius `a`. For a given degree `l`, this is explicitly calculated as (Lowes 1966):
 
-`S(l) = (l+1) (a/r)**(2l+4) Sum_{m=0}^l [ c[0,l,m]**2 + c[1,l,m]**2 ].`  
+`S(l) = (l+1) (a/r)**(2l+4) Sum_{m=0}^l [ c[0,l,m]**2 + c[1,l,m]**2 ].`
+
+# Reference
+
+Lowes, F. J., Mean-square values on sphere of spherical harmonic fields, J. Geophys. Res., 71(8), 2179, 1966.
 
 # See also
 
