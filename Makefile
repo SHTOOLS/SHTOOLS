@@ -195,9 +195,12 @@ FFTW3_FLAGS = -DFFTW3_UNDERSCORE
 endif
 
 
-.PHONY: all fortran python python2 python3 install doc remove-doc clean\
-	fortran-tests clean-fortran-tests run-fortran-tests run-python-tests run-python2-tests run-python3-tests\
-	install-fortran install-python install-python2 install-python3 uninstall fortran-mp
+.PHONY: all fortran python python2 python3 install doc remove-doc\
+	fortran-tests run-fortran-tests run-python-tests\
+	run-python2-tests run-python3-tests install-fortran install-python\
+	install-python2 install-python3 uninstall fortran-mp clean\
+	clean-fortran-tests clean-python-tests clean-python2 clean-python3\
+	clean-libs 
 
 
 all: fortran python
@@ -237,17 +240,14 @@ ifeq ($(PYTHON_VERSION),all)
 python: python2 python3
 install-python: install-python2 install-python3
 python-tests: python2-tests python3-tests
-clean-python-tests: clean-python2-tests clean-python3-tests
 else ifeq ($(PYTHON_VERSION),2)
 python: python2
 install-python: install-python2
 python-tests: python2-tests
-clean-python-tests: clean-python2-tests
 else ifeq ($(PYTHON_VERSION),3)
 python: python3
 install-python: install-python3
 python-tests: python3-tests
-clean-python-tests: clean-python3-tests
 else
 $(error $(PYTHON_VERSION) is unsupported.)
 endif
@@ -381,13 +381,30 @@ remove-doc:
 	@echo
 	@echo REMOVED MAN AND HTML-MAN FILES
 
-clean: clean-fortran-tests clean-python-tests clean-libs
+clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs 
 
-clean-libs:
-	-$(MAKE) -C $(SRCDIR) -f Makefile clean
-	-rm -rf lib
-	-rm -rf modules
-	-rm -rf NONE
+clean-fortran-tests:
+	$(MAKE) -C $(FEXDIR) -f Makefile clean
+	@echo
+	@echo REMOVED FORTRAN TEST SUITE EXECUTABLES AND FILES
+
+clean-python-tests:
+	$(MAKE) -C $(PEXDIR) -f Makefile clean
+	@echo
+	@echo REMOVED PYTHON TEST SUITE EXECUTABLES AND FILES
+
+clean-python2:
+	-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
+	-rm -rf pyshtools/_SHTOOLS.so.dSYM/ pyshtools/_constant.so.dSYM/
+	-rm -f *.so
+	-rm -f pyshtools/*.so
+	-rm -f pyshtools/*.pyc
+	-rm -rf pyshtools/__pycache__/
+	-rm -rf pyshtools/doc
+	@echo
+	@echo REMOVED PYTHON-2 FILES
+
+clean-python3:
 	-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
 	-rm -rf pyshtools/_SHTOOLS$(PY3EXT).dSYM/ pyshtools/_constant$(PY3EXT).dSYM/
 	-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
@@ -397,6 +414,14 @@ clean-libs:
 	-rm -f pyshtools/*.pyc
 	-rm -rf pyshtools/__pycache__/
 	-rm -rf pyshtools/doc
+	@echo
+	@echo REMOVED PYTHON-3 FILES
+
+clean-libs:
+	-$(MAKE) -C $(SRCDIR) -f Makefile clean
+	-rm -rf lib
+	-rm -rf modules
+	-rm -rf NONE
 	-rm -rf build
 	-rm -rf pyshtools.egg-info
 	-rm -f src/_SHTOOLS-f2pywrappers.f src/_SHTOOLSmodule.c
@@ -429,11 +454,6 @@ run-fortran-tests: fortran
 	@echo
 	@echo RAN ALL FORTRAN EXAMPLE AND TESTS
 
-clean-fortran-tests:
-	$(MAKE) -C $(FEXDIR) -f Makefile clean
-	@echo
-	@echo REMOVED FORTRAN TEST SUITE EXECUTABLES AND FILES
-
 python2-tests: python2
 	$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON)
 	@echo
@@ -443,13 +463,3 @@ python3-tests: python3
 	$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON3)
 	@echo
 	@echo RAN ALL PYTHON 3 TESTS
-
-clean-python2-tests:
-	$(MAKE) -C $(PEXDIR) -f Makefile clean
-	@echo
-	@echo REMOVED PYTHON TEST SUITE EXECUTABLES AND FILES
-
-clean-python3-tests:
-	$(MAKE) -C $(PEXDIR) -f Makefile clean
-	@echo
-	@echo REMOVED PYTHON TEST SUITE EXECUTABLES AND FILES
