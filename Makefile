@@ -381,7 +381,7 @@ remove-doc:
 	@echo
 	@echo REMOVED MAN AND HTML-MAN FILES
 
-clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs 
+clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs
 
 clean-fortran-tests:
 	$(MAKE) -C $(FEXDIR) -f Makefile clean
