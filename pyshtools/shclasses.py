@@ -1162,6 +1162,7 @@ class SHGrid(object):
                      of the gridded data.
     get_lons()     : Return a vector containing the longitudes of each column
                      of the gridded data.
+    get_grid()     : Return the raw gridded data as a numpy array.
     expand()       : Expand the grid into spherical harmonics.
     plot_rawdata() : Plot the raw data using a simple cylindrical projection.
     plot_3dsphere  : Plot the raw data on a 3d sphere.
@@ -1271,6 +1272,22 @@ class SHGrid(object):
                of each column of the gridded data.
         """
         return self._get_lons()
+
+    def get_grid(self):
+        """
+        Return the raw gridded data as a numpy array.
+
+        Usage
+        -----
+
+        grid = x.get_grid()
+
+        Returns
+        -------
+
+        grid : numpy array of the gridded data of size (nlat, nlon).
+        """
+        return self.data
 
     def plot_3dsphere(self, show=True, fname=None, elevation=0, azimuth=0):
         """
