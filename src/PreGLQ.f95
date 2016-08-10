@@ -156,7 +156,7 @@ integer function NGLQSH(degree)
         stop
     endif
     
-    nglqsh = degree + 1.0d0
+    nglqsh = degree + 1
 
 end function NGLQSH
 

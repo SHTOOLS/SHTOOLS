@@ -87,7 +87,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer*1, save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
-    integer*1 :: phase
+    integer :: phase
     external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
     
