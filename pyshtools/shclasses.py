@@ -268,8 +268,9 @@ class SHCoeffs(object):
         if kind.lower() == 'real':
             coeffs = _np.random.normal(size=(2, nl, nl))
         elif kind.lower() == 'complex':
+            # - need to divide by sqrt as there are two terms for each coeff.
             coeffs = (_np.random.normal(size=(2, nl, nl)) +
-                      1j * _np.random.normal(size=(2, nl, nl)))
+                      1j * _np.random.normal(size=(2, nl, nl))) / _np.sqrt(2.)
 
         if normalization.lower() == '4pi':
             coeffs *= _np.sqrt(
