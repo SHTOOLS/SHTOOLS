@@ -230,7 +230,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, csphase)
     end if
     
     if ( work(1) >  dble(lwork) ) then
-        opt1 = work(1) / min((lmax+1)**2, nmax) - 1
+        opt1 = int(work(1) / min((lmax+1)**2, nmax) - 1)
         print*, "Warning --- SHExpandLSQ"
         print*, "Consider changing parameter value of OPT to ", opt1, &
                 " and recompiling the SHTOOLS archive."

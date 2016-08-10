@@ -46,7 +46,7 @@ subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
         interval = 1.0d0
     end if
     
-    num = 360.0d0/interval
+    num = int(360.0d0/interval)
     
     if (present(cnum)) then
         cnum = num

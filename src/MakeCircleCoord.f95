@@ -58,7 +58,7 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum)
         interval = 1.0d0
     end if
     
-    num = 360.0d0/interval
+    num = int(360.0d0/interval)
     
     if (present(cnum)) then
         cnum = num
