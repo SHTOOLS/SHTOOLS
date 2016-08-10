@@ -123,8 +123,8 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
         
     end if
     
-    nlat = (latmax - latmin) / interval + 1
-    nlong = (longmax - longmin) / interval + 1
+    nlat = int((latmax - latmin) / interval + 1)
+    nlong = int((longmax - longmin) / interval + 1)
     
     if (present(norm)) then
         if (norm > 4 .or. norm < 1) then
