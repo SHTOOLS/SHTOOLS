@@ -5,7 +5,12 @@
 *.so
 *.so.dSYM/
 NONE/
+build/
 pyshtools/doc/
+examples/notebooks/.ipynb_checkpoints/
+pyshtools.egg-info/
+src/_SHTOOLS-f2pywrappers.f
+src/_SHTOOLSmodule.c
 examples/fortran/MarsCrustalThickness/MarsCrustalThickness
 examples/fortran/SHCilmPlus/TestCilmPlus
 examples/fortran/SHExpandDH/TestExpandDH

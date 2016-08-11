@@ -914,7 +914,7 @@ python module _SHTOOLS
             integer, optional,intent(in) :: save_cg = 0
             integer, optional,intent(in),check(Shh_d0>0),depend(Shh),intent(hide) :: Shh_d0=len(Shh)
             integer, optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra),intent(hide) :: incspectra_d0=len(incspectra)
-            integer, optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin
+            integer, optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin+1
         end subroutine SHBias
 
         subroutine SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
@@ -931,7 +931,7 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers),intent(hide) :: tapers_d0=shape(tapers,0)
             integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers),intent(hide) :: tapers_d1=shape(tapers,1)
             integer, optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra),intent(hide) :: incspectra_d0=len(incspectra)
-            integer, optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin
+            integer, optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin+1
         end subroutine SHBiasK
 
         subroutine SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,k,lat,lon,taper_wt,norm,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,tapers_d0,tapers_d1,mtse_d0,sd_d0)

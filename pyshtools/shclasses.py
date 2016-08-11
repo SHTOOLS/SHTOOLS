@@ -1414,6 +1414,7 @@ class SHGrid(object):
             _plt.show()
         if fname is not None:
             fig.savefig(fname)
+        return fig, ax
 
     def expand(self, normalization='4pi', csphase=1, **kwargs):
         """
@@ -1828,7 +1829,7 @@ class SHWindow(object):
     Class for spatio-spectral localization windows developed in spherical
     harmonics. The windows can be initialized from:
 
-    >>>  x = SHWindow.from_cap(theta, lmax, [clat, clon, nwin])
+    >>>  x = SHWindow.from_cap(theta, lwin, [clat, clon, nwin])
     >>>  x = SHWindow.from_mask(SHGrid)
 
     Each class instance defines the following class attributes:
@@ -1847,11 +1848,11 @@ class SHWindow(object):
                       localization windows.
     weights         : Taper weights used with the multitaper spectral analyses.
                       Defaut is None.
-    lmax            : Spherical harmonic bandwidth of the localization windows.
+    lwin            : Spherical harmonic bandwidth of the localization windows.
     theta           : Angular radius of the spherical cap localization domain
                       (default in degrees).
     theta_degrees   : True (default) if theta is in degrees.
-    nwin            : Number of localization windows. Default is (lmax + 1)**2
+    nwin            : Number of localization windows. Default is (lwin + 1)**2
     clat, clon      : Latitude and longitude of the center of the rotated
                       spherical cap localization windows (default in degrees).
     coord_degrees   : True (default) if clat and clon are in degrees.
@@ -1864,11 +1865,16 @@ class SHWindow(object):
                             normalization convention.
     get_degrees()         : Return an array containing the spherical harmonic
                             degrees of the localization windows, from 0 to
-                            lmax.
+                            lwin.
+    get_k()               : Return the number of windows that have
+                            concentration factors are greater or equal to a
+                            specified value.
     get_powerperdegree()  : Return the power per degree spectra for one or more
                             of the localization windows.
     get_couplingmatrix()  : Return the coupling matrix of the first nwin
                             localization windows.
+    get_biasedpowerspectrum : Calculate the multitaper (cross-)power spectrum
+                              expectation of a localized function.
     get_grid()            : Return as an array a grid of taper i, where i = 0
                             is the best concentrated window.
     get_multitaperpowerspectrum()      : Return the multitaper power spectrum
@@ -1901,7 +1907,7 @@ class SHWindow(object):
 
     # ---- factory methods:
     @classmethod
-    def from_cap(self, theta, lmax, clat=None, clon=None, nwin=None,
+    def from_cap(self, theta, lwin, clat=None, clon=None, nwin=None,
                  theta_degrees=True, coord_degrees=True, dj_matrix=None,
                  weights=None):
         """
@@ -1910,7 +1916,7 @@ class SHWindow(object):
         Usage
         -----
 
-        x = SHWindow.from_cap(theta, lmax, [clat, clon, nwin, theta_degrees,
+        x = SHWindow.from_cap(theta, lwin, [clat, clon, nwin, theta_degrees,
                                             coord_degrees, dj_matrix, weights])
 
         Parameters
@@ -1918,12 +1924,12 @@ class SHWindow(object):
 
         theta          : Angular radius of the spherical cap localization
                          domain (default in degrees).
-        lmax           : Spherical harmonic bandwidth of the localization
+        lwin           : Spherical harmonic bandwidth of the localization
                          windows.
         clat, clon     : Latitude and longitude of the center of the rotated
                          spherical cap localization windows (default in
                          degrees).
-        nwin           : Number of localization windows. Default = (lmax+1)**2
+        nwin           : Number of localization windows. Default = (lwin+1)**2
         theta_degrees  : True (default) if theta is in degrees.
         coord_degrees  : True (default) if clat and clon are in degrees.
         dj_matrix      : The djpi2 rotation matrix (default=None), computed
@@ -1934,17 +1940,17 @@ class SHWindow(object):
 
         if theta_degrees:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
-                theta, lmax)
+                _np.radians(theta), lwin)
         else:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
-                _np.radians(theta), lmax)
+                theta, lwin)
 
         return SHWindowCap(theta, tapers, eigenvalues, taper_order,
                            clat, clon, nwin, theta_degrees, coord_degrees,
                            dj_matrix, weights)
 
     @classmethod
-    def from_mask(self, dh_mask, lmax, nwin=None, weights=None):
+    def from_mask(self, dh_mask, lwin, nwin=None, weights=None):
         """
         Construct localization windows that are optimally concentrated within
         the region specified by a mask.
@@ -1952,7 +1958,7 @@ class SHWindow(object):
         Usage
         -----
 
-        x = SHWindow.from_mask(dh_mask, lmax, [nwin])
+        x = SHWindow.from_mask(dh_mask, lwin, [nwin])
 
         Parameters
         ----------
@@ -1962,20 +1968,20 @@ class SHWindow(object):
                    (for inside the concentration region) or 0 (for outside the
                    concentration region). The grid must have dimensions
                    nlon = nlat or nlon = 2 * nlat, where nlat is even.
-        lmax     : The spherical harmonic bandwidth of the localization
+        lwin     : The spherical harmonic bandwidth of the localization
                    windows.
         nwin     : The number of best concentrated eigenvalues and
-                   eigenfunctions to return. Default is (lmax + 1)**2.
+                   eigenfunctions to return. Default is (lwin + 1)**2.
         weights  : Taper weights used with the multitaper spectral analyses.
                    Default is None.
         """
         if nwin is None:
-            nwin = (lmax + 1)**2
+            nwin = (lwin + 1)**2
         else:
-            if nwin > (lmax + 1)**2:
+            if nwin > (lwin + 1)**2:
                 raise ValueError('nwin must be less than or equal to ' +
-                                 '(lmax + 1)**2. lmax = {:d} and nwin = {:d}'
-                                 .format(lmax, nwin))
+                                 '(lwin + 1)**2. lwin = {:d} and nwin = {:d}'
+                                 .format(lwin, nwin))
 
         if dh_mask.shape[0] % 2 != 0:
             raise ValueError('The number of latitude bands in dh_mask ' +
@@ -1987,14 +1993,14 @@ class SHWindow(object):
                              '(n, 2 * n). Input shape is ({:d}, {:d})'
                              .format(dh_mask.shape[0], dh_mask.shape[1]))
 
-        tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lmax,
+        tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
                                                          ntapers=nwin)
         return SHWindowMask(tapers, eigenvalues, weights)
 
     def get_degrees(self):
         """
         Return a numpy array listing the spherical harmonic degrees of the
-        localization windows from 0 to lmax.
+        localization windows from 0 to lwin.
 
         Usage
         -----
@@ -2004,9 +2010,33 @@ class SHWindow(object):
         Returns
         -------
 
-        degrees : numpy ndarray of size (lmax+1).
+        degrees : numpy ndarray of size (lwin+1).
         """
-        return _np.arange(self.lmax + 1)
+        return _np.arange(self.lwin + 1)
+
+    def get_k(self, alpha):
+        """
+        Return the number of localization windows that have concentration
+        factors greater or equal to alpha.
+
+        Usage
+        -----
+
+        k = x.get_k(alpha)
+
+        Returns
+        -------
+
+        k : The number of windows with concentration factors greater or equal
+            to alpha.
+
+        Parameters
+        ----------
+
+        alpha  : The concentration factor, which is the power of the window
+                 within the concentration region divided by the total power.
+        """
+        return len(self.eigenvalues[self.eigenvalues >= alpha])
 
     def get_coeffs(self, itaper, normalization='4pi', csphase=1):
         """
@@ -2021,7 +2051,7 @@ class SHWindow(object):
         Returns
         -------
 
-        coeffs : numpy ndarray of size (2, lmax + 1, lmax + 1).
+        coeffs : numpy ndarray of size (2, lwin + 1, lwin + 1).
 
         Parameters
         ----------
@@ -2095,7 +2125,7 @@ class SHWindow(object):
                                           norm=1, csphase=1)
         elif grid.upper() == 'GLQ':
             if zeros is None:
-                zeros, weights = _shtools.SHGLQ(self.lmax)
+                zeros, weights = _shtools.SHGLQ(self.lwin)
 
             gridout = _shtools.MakeGridGLQ(self.get_coeffs(itaper), zeros,
                                            norm=1, csphase=1)
@@ -2190,7 +2220,7 @@ class SHWindow(object):
                                      grid='DH')
         elif grid.upper() == 'GLQ':
             if zeros is None:
-                zeros, weights = _shtools.SHGLQ(self.lmax)
+                zeros, weights = _shtools.SHGLQ(self.lwin)
 
             return SHGrid.from_array(self.get_grid(itaper, grid=grid.upper(),
                                                    zeros=zeros),
@@ -2265,6 +2295,37 @@ class SHWindow(object):
         coord_degrees : True (default) if clat and clon are in degrees.
         """
         return self._get_multitapercrosspowerspectrum(clm, slm, k, **kwargs)
+
+    def get_biasedpowerspectrum(self, power, k, **kwargs):
+        """
+        Calculate the multitaper (cross-)power spectrum expectation of function
+        localized by spherical cap windows.
+
+        Usage
+        -----
+
+        outspectrum = x.get_biasedpowerspectrum(power, k, [taper_wt, save_cg,
+                                                           ldata])
+
+        Parameters
+        ----------
+
+        outspectrum  : The expectation of the windowed power spectrum.
+        power        : The global power spectrum.
+        k            : The number of best concentrated localization windows to
+                       use in constructing the windowed power spectrum.
+        taper_wt     : The weights used in calculating the multitaper spectral
+                       estimates and standard error. Default is None.
+        save_cg      : If set equal to 1, the Clebsch-Gordon coefficients will
+                       be precomputed and saved for future use. If set equal to
+                       0 (default), the Clebsch-Gordon coefficients will be
+                       recomputed for each call.
+        ldata        : The maximum degree of the global unwindowed power
+                       spectrum. Default is len(power) -1.
+        """
+
+        outspectrum = self._get_biasedpowerspectrum(power, k, **kwargs)
+        return outspectrum
 
     def get_powerperdegree(self, itaper=None, nwin=None):
         """
@@ -2408,6 +2469,7 @@ class SHWindow(object):
             _plt.show()
         if fname is not None:
             fig.savefig(fname)
+        return fig, axes
 
     def plot_powerspectra(self, nwin, show=True, fname=None):
         """
@@ -2425,16 +2487,16 @@ class SHWindow(object):
         show   : If True (default), plot the image to the screen.
         fname  : If present, save the image to the file.
         """
-        if nwin is None:
-            nwin = self.nwin
 
         degrees = self.get_degrees()
-        power = self.get_powerperdegree()
+        power = self.get_powerperdegree(nwin=nwin)
 
         maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
-        fig, axes = _plt.subplots(nrows, ncolumns)
+        figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
+
+        fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
 
         for ax in axes[:-1, :].flatten():
             for xlabel_i in ax.get_xticklabels():
@@ -2459,6 +2521,7 @@ class SHWindow(object):
             _plt.show()
         if fname is not None:
             fig.savefig(fname)
+        return fig, axes
 
     def plot_couplingmatrix(self, lmax, nwin=None, weights=None, mode='full',
                             show=True, fname=None):
@@ -2538,7 +2601,7 @@ class SHWindowCap(SHWindow):
         self.theta = theta
         self.clat = clat
         self.clon = clon
-        self.lmax = tapers.shape[0] - 1
+        self.lwin = tapers.shape[0] - 1
         self.theta_degrees = theta_degrees
         self.coord_degrees = coord_degrees
         self.dj_matrix = dj_matrix
@@ -2549,10 +2612,10 @@ class SHWindowCap(SHWindow):
         else:
             self.nwin = tapers.shape[1]
 
-        if self.nwin > (self.lmax + 1)**2:
+        if self.nwin > (self.lwin + 1)**2:
             raise ValueError('nwin must be less than or equal to ' +
-                             '(lmax+1)**2. nwin = {:s} and lmax = {:s}.'
-                             .format(repr(self.nwin), repr(self.lmax)))
+                             '(lwin+1)**2. nwin = {:s} and lwin = {:s}.'
+                             .format(repr(self.nwin), repr(self.lwin)))
 
         self.tapers = tapers[:, :self.nwin]
         self.eigenvalues = eigenvalues[:self.nwin]
@@ -2574,7 +2637,7 @@ class SHWindowCap(SHWindow):
         as an array, where i = 0 is the best concentrated.
         """
         taperm = self.orders[itaper]
-        coeffs = _np.zeros((2, self.lmax + 1, self.lmax + 1))
+        coeffs = _np.zeros((2, self.lwin + 1, self.lwin + 1))
         if taperm < 0:
             coeffs[1, :, abs(taperm)] = self.tapers[:, itaper]
         else:
@@ -2590,16 +2653,16 @@ class SHWindowCap(SHWindow):
         if self.coeffs is None:
             coeffs = _np.copy(self._taper2coeffs(itaper))
         else:
-            coeffs = _shtools.SHVectorToCilm(self.coeffs[itaper, :])
+            coeffs = _shtools.SHVectorToCilm(self.coeffs[:, itaper])
 
         if normalization == 'schmidt':
-            for l in range(self.lmax + 1):
+            for l in range(self.lwin + 1):
                 coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
         elif normalization == 'ortho':
             coeffs *= _np.sqrt(4.0 * _np.pi)
 
         if csphase == -1:
-            for m in range(self.lmax + 1):
+            for m in range(self.lwin + 1):
                 if m % 2 == 1:
                     coeffs[:, :, m] = - coeffs[:, :, m]
 
@@ -2636,7 +2699,7 @@ class SHWindowCap(SHWindow):
         column of coeffs contains a single window, and is ordered according to
         the convention in SHCilmToVector.
         """
-        self.coeffs = _np.zeros((self.nwin, (self.lmax + 1)**2))
+        self.coeffs = _np.zeros(((self.lwin + 1)**2, self.nwin))
         self.clat = clat
         self.clon = clon
         self.coord_degrees = coord_degrees
@@ -2648,7 +2711,7 @@ class SHWindowCap(SHWindow):
 
         if dj_matrix is None:
             if self.dj_matrix is None:
-                self.dj_matrix = _shtools.djpi2(self.lmax + 1)
+                self.dj_matrix = _shtools.djpi2(self.lwin + 1)
                 dj_matrix = self.dj_matrix
             else:
                 dj_matrix = self.dj_matrix
@@ -2658,12 +2721,12 @@ class SHWindowCap(SHWindow):
                     (coord_degrees is False and clat == _np.pi/2. and
                      clon == 0.)):
                 coeffs = self._taper2coeffs(i)
-                self.coeffs[i, :] = _shtools.SHCilmToVector(coeffs)
+                self.coeffs[:, i] = _shtools.SHCilmToVector(coeffs)
 
             else:
                 coeffs = _shtools.SHRotateRealCoef(self._taper2coeffs(i),
                                                    angles, dj_matrix)
-                self.coeffs[i, :] = _shtools.SHCilmToVector(coeffs)
+                self.coeffs[:, i] = _shtools.SHCilmToVector(coeffs)
 
     def _get_couplingmatrix(self, lmax, nwin=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
@@ -2764,6 +2827,14 @@ class SHWindowCap(SHWindow):
                                                 lmax1=lmax, lmax2=lmax, k=k,
                                                 taper_wt=taper_wt)
 
+    def _get_biasedpowerspectrum(self, power, k, **kwargs):
+        """
+        Calculate the multitaper (cross-)power spectrum expectation of function
+        localized by spherical cap windows.
+        """
+        outspectrum = _shtools.SHBiasK(self.tapers, power, k=k, **kwargs)
+        return outspectrum
+
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
         print('kind = {:s}\n'.format(repr(self.kind)), end='')
@@ -2773,7 +2844,7 @@ class SHWindowCap(SHWindow):
         else:
             print('theta = {:f} radians'.format(self.theta), end='')
 
-        print('lmax = {:d}\n'.format(self.lmax), end='')
+        print('lwin = {:d}\n'.format(self.lwin), end='')
         print('nwin = {:d}\n'.format(self.nwin), end='')
 
         if self.clat is not None:
@@ -2815,7 +2886,7 @@ class SHWindowMask(SHWindow):
 
     def __init__(self, tapers, eigenvalues, weights):
         self.kind = 'mask'
-        self.lmax = _np.sqrt(tapers.shape[0]).astype(int) - 1
+        self.lwin = _np.sqrt(tapers.shape[0]).astype(int) - 1
         self.weights = weights
         self.nwin = tapers.shape[1]
         self.tapers = tapers
@@ -2829,13 +2900,13 @@ class SHWindowMask(SHWindow):
         coeffs = _shtools.SHVectorToCilm(self.tapers[:, itaper])
 
         if normalization == 'schmidt':
-            for l in range(self.lmax + 1):
+            for l in range(self.lwin + 1):
                 coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
         elif normalization == 'ortho':
             coeffs *= _np.sqrt(4.0 * _np.pi)
 
         if csphase == -1:
-            for m in range(self.lmax + 1):
+            for m in range(self.lwin + 1):
                 if m % 2 == 1:
                     coeffs[:, :, m] = - coeffs[:, :, m]
 
@@ -2897,11 +2968,18 @@ class SHWindowMask(SHWindow):
                                                 lmax=lmax, k=k,
                                                 taper_wt=taper_wt)
 
+    def _get_biasedpowerspectrum(self, power, k, **kwargs):
+        """
+        Calculate the multitaper (cross-)power spectrum expectation of function
+        localized by arbitary windows.
+        """
+        raise NotImplementedError('Not implemented yet.')
+
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
         print('kind = {:s}\n'.format(repr(self.kind)), end='')
 
-        print('lmax = {:d}\n'.format(self.lmax), end='')
+        print('lwin = {:d}\n'.format(self.lwin), end='')
         print('nwin = {:d}\n'.format(self.nwin), end='')
 
         if self.weights is None:
