@@ -1,7 +1,7 @@
 ![LOGO](logo.png)
 
 [![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.20920.svg)](http://dx.doi.org/10.5281/zenodo.20920)
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.60010.svg)](http://dx.doi.org/10.5281/zenodo.60010)
 
 SHTOOLS is a Fortran 95 / Python library that can be used to perform
 spherical harmonic transforms and reconstructions, rotations of data expressed
