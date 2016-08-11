@@ -17,7 +17,7 @@
 <div class="main">
 
 	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
-    	
+
 	<table class="menu">
 		<tbody>
 			<tr>
@@ -28,84 +28,84 @@
 			</tr>
 		</tbody>
 	</table>
-		
+
 <p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="f95-routines.html" class="dir">Fortran 95</a></p>
 
 	<h1>Localized spectral analysis</h1>
-	
+
 	<table class="main">
 		<tbody>
 		<tr>
 		<td colspan=2>
 		<p class="nomargin headbox2">Multitaper spectral estimation (spherical cap domain)</p></td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/shmultitaperse.html"><tt>SHMultiTaperSE</tt></a></td> 
 		<td class="right">Perform a localized multitaper spectral analysis.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/shmultitapercse.html"><tt>SHMultiTaperCSE</tt></a></td> 
 		<td class="right">Perform a localized multitaper cross-spectral analysis.</td>
 		</tr>
-		
+
 		<tr>
-		<td class="left"><a href="man/fortran/shlocalizedadmitcorr.html"><tt>SHLocalizedAdmitCorr</tt></a></td> 
+		<td class="left"><a href="man/fortran/shlocalizedadmitcorr.html"><tt>SHLocalizedAdmitCorr</tt></a></td>
 		<td class="right">Calculate the localized admittance and correlation spectra of two functions at a given location.</td>
-		</tr>	
-		
+		</tr>
+
 		<tr>
 		<td class="left"><a href="man/fortran/shreturntapers.html"><tt>SHReturnTapers</tt></a></td> 
 		<td class="right">Calculate the eigenfunctions of the spherical-cap concentration problem.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/shreturntapersm.html"><tt>SHReturnTapersM</tt></a></td> 
 		<td class="right">Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order.</td>
 		</tr>
-				
+
 		<tr>
 		<td class="left"><a href="man/fortran/computedm.html"><tt>ComputeDm</tt></a></td> 
 		<td class="right">Compute the space-concentration kernel of a spherical cap.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/computedg82.html"><tt>ComputeDG82</tt></a></td> 
 		<td class="right">Compute the tridiagonal matrix of <i>Gr&uuml;nbaum et al.</i> (1982) that commutes with the space-concentration kernel of a spherical cap.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/shfindlwin.html"><tt>SHFindLWin</tt></a></td> 
 		<td class="right">Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/shbiask.html"><tt>SHBiasK</tt></a></td> 
 		<td class="right">Calculate the multitaper (cross-)power spectrum expectation of a windowed function.</td>
-		</tr>	
+		</tr>
 
 		<tr>
 		<td class="left"><a href="man/fortran/shmtcouplingmatrix.html"><tt>SHMTCouplingMatrix</tt></a></td> 
 		<td class="right">Calculate the multitaper coupling matrix for a given set of localization windows.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/shbiasadmitcorr.html"><tt>SHBiasAdmitCorr</tt></a></td> 
 		<td class="right">Calculate the expected multitaper admittance and correlation spectra associated with the input global cross-power spectra of two functions.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/shmtdebias.html"><tt>SHMTDebias</tt></a></td> 
 		<td class="right">Invert for the global power spectrum given a localized multitaper spectrum estimate.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/shmtvaropt.html"><tt>SHMTVarOpt</tt></a></td> 
 		<td class="right">Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.</td>
-		</tr>	
-				
+		</tr>
+
 		<tr>
 		<td class="left"><a href="man/fortran/shsjkpg.html"><tt>SHSjkPG</tt></a></td> 
 		<td class="right">Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.</td>
@@ -115,22 +115,32 @@
 		<td colspan=2>
 		<p class="nomargin headbox2">Localization windows (arbitrary domain)</p></td>
 		</tr>
-	
+
+		<tr>
+		<td class="left"><a href="man/fortran/shmultitapermaskse.html"><tt>SHMultiTaperMaskSE</tt></a></td> 
+		<td class="right">Perform a localized multitaper spectral analysis using arbitrary windows.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/fortran/shmultitapermaskcse.html"><tt>SHMultiTaperMaskCSE</tt></a></td>
+		<td class="right">Perform a localized multitaper cross-spectral analysis using arbitrary windows.</td>
+		</tr>
+
 		<tr>
 		<td class="left"><a href="man/fortran/shreturntapersmap.html"><tt>SHReturnTapersMap</tt></a></td> 
 		<td class="right">Calculate the eigenfunctions of the concentration problem for an arbitrary concentration region.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/computedmap.html"><tt>ComputeDMap</tt></a></td> 
 		<td class="right">Compute the space-concentration kernel of a mask defined on the sphere.</td>
 		</tr>
-		
+
 		<tr>
 		<td class="left"><a href="man/fortran/curve2mask.html"><tt>Curve2Mask</tt></a></td> 
 		<td class="right">Given a set of latitude and longitude coordinates representing a closed curve, output a gridded mask.
 		</td>
-		</tr>	
+		</tr>
 
 		<tr>
 		<td colspan=2>
@@ -140,8 +150,8 @@
 		<tr>
 		<td class="left"><a href="man/fortran/shbias.html"><tt>SHBias</tt></a></td> 
 		<td class="right">Calculate the (cross-)power spectrum expectation of a windowed function.</td>
-		</tr>	
-		
+		</tr>
+
 		<tr>
 		<td colspan=2>
 		<p class="nomargin headbox2">Other</p></td>
@@ -151,11 +161,11 @@
 		<td class="left"><a href="man/fortran/sphericalcapcoef.html"><tt>SphericalCapCoef</tt></a></td> 
 		<td class="right">Calculate the spherical harmonic coefficients of a spherical cap.
 		</td>
-		</tr>	
-	
+		</tr>
+
 		</tbody>
 	</table>
-			
+
 <br>
 
 <p class="dir">
@@ -170,7 +180,7 @@
 		</tr>
 	</tbody>
 	</table>
-	
+
 </div>
 
 </body>

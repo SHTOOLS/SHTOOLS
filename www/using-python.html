@@ -4,7 +4,7 @@
 <html>
 
 <head>
-	<title>SHTOOLS - Using</title>
+	<title>PYSHTOOLS - Using</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/sh.css">
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
@@ -17,7 +17,7 @@
 <div class="main">
 
 	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
-    	
+
 	<table class="menu">
 		<tbody>
 			<tr>
@@ -28,48 +28,67 @@
 			</tr>
 		</tbody>
 	</table>
-		
+
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> >  <a href="documentation.html" class="dir">Documentation</a></p>
 
-	<h1>Using SHTOOLS with Python</h1>
-		
+	<h1>Using SHTOOLS in Python</h1>
+
 	<p class="nomarginbot">To access the SHTOOLS routines from Python, it is necessary that the <tt>pyshtools</tt> directory be in the Python search path. From within Python, enter</p>
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>import sys<br>
 		sys.path.append('/path-to-pyshtools')</tt></p>
-   	</blockquote>
-	
-	<p>where <tt>/path-to-pyshtools</tt> should be <tt>/usr/local/lib/python2.7/site-packages</tt> after a full installation. After setting the path, it is then only necessary to execute the statement</p>
-		
+	</blockquote>
+
+	<p>where <tt>/path-to-pyshtools</tt> is the directory that contains the <tt>pyshtools</tt> directory. Typically, this is located in a place such as <tt>/usr/local/lib/python2.7/site-packages</tt>. After setting the path, it is then only necessary to execute the statement</p>
+
 		<blockquote class="small">
-			<p class="nomargintop nomarginbot"><tt>import pyshtools as shtools </tt></p>
+			<p class="nomargintop nomarginbot"><tt>import pyshtools</tt></p>
 		</blockquote>
 
-	<p>to load the routines and documentation. If you are using <a href="http://ipython.org/">iPython</a>, which adds improved functionality to Python, the available <tt>shtools</tt> routines can be explored by typing</p>
-	
+	<p>This will load the following classes and submodules into the <tt>pyshtools</tt> namespace:</p>
+
+	<ul>
+		<li><tt>SHCoeffs</tt> - A high level class for spherical harmonic coefficients.</li>
+		<li><tt>SHGrid</tt> - A high level classes for global grids.</li>
+		<li><tt>SHWindow</tt> - A high level classes for localization windows.</li>
+		<li><tt>shclasses</tt> - All pyshtools classes and subclasses.</li>
+		<li><tt>shtools</tt> - All <tt>pyshtools</tt> routines.</li>
+		<li><tt>legendre</tt> - Legendre functions.</li>
+		<li><tt>expand</tt> - Spherical harmonic expansion routines.</li>
+		<li><tt>shio</tt> - Spherical harmonic I/O, storage, and conversion routines.</li>
+		<li><tt>spectralanalysis</tt> - Global spectral analysis routines.</li>
+		<li><tt>localizedspectralanalysis</tt> - Localized spectral analysis routines.</li>
+		<li><tt>rotate</tt> - Spherical harmonic rotation routines.</li>
+		<li><tt>gravmag</tt> - Gravity and magnetics routines.</li>
+		<li><tt>constant</tt> - pyshtools constants.</li>
+		<li><tt>other</tt> - Other routines.</li>
+</ul>
+
+	<p>If you are using <a href="http://ipython.org/">iPython</a>, which adds improved functionality to Python, the available <tt>pyshtools</tt> routines can be explored by typing</p>
+
 	<blockquote class="small">
-			<p class="nomargintop nomarginbot"><tt>shtools.[tab]</tt></p>
+			<p class="nomargintop nomarginbot"><tt>pyshtools.[tab]</tt></p>
 	</blockquote>
-	
+
 	<p>where <tt>[tab]</tt> is the tab key.</p>
-	
-	<p>To explore the list of predefined constants used by SHTOOLS, enter</p>
-	
-		<blockquote class="small">
-			<p class="nomargintop nomarginbot"><tt>shtools.constant.[tab]</tt></p>
-	</blockquote>
-	
+
 	<h2>Documentation</h2>
-	
-	<p>To read the documentation of a routine in iPython, such as <tt>PlmBar</tt>, enter</p>
-	
+
+	<p>To read the documentation of a routine in iPython, such as <tt>MakeGridDH</tt>, enter</p>
+
 		<blockquote class="small">
-			<p class="nomargintop nomarginbot"><tt>shtools.PlmBar?</tt></p>
+			<p class="nomargintop nomarginbot"><tt>pyshtools.MakeGridDH?</tt></p>
 	</blockquote>
-	
-	<p>Documentation for the Python functions used in SHTOOLS can also be accessed by their unix man pages, appending <tt>py</tt> to the name and using all lower case letters. As an example, to access the <tt>MakeGridDH</tt> man page, use</p>
+
+	<p>To read the info string of an SHTOOLS constant, such as <tt>a_mars</tt>, enter</p>
+
+		<blockquote class="small">
+			<p class="nomargintop nomarginbot"><tt>pyshtools.constant.a_mars.info()</tt></p>
+	</blockquote>
+
+	<p>Documentation for the Python functions used in SHTOOLS can also be accessed by their unix man pages, appending <tt>py</tt> to the name and using all lower case letters. As an example, to access the python <tt>MakeGridDH</tt> man page, use</p>
 	
 	<blockquote>
 	<p>
@@ -77,7 +96,7 @@
 	</blockquote>
 
 	<p>Alternatively, the man pages can be accessed from the <a href="documentation.html">documentation</a> link on this web site.</p>
-	
+
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> >  <a href="documentation.html" class="dir">Documentation</a></p>
 
@@ -90,7 +109,7 @@
 		</tr>
 	</tbody>
 	</table>
-	
+
 </div>
 
 </body>

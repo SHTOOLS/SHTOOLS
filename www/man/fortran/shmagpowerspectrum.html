@@ -15,7 +15,7 @@
 <div class="main">
 
 	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
-    	
+
 	<table class="menu">
 		<tbody>
 			<tr>
@@ -52,8 +52,10 @@
 </dd>
 </dl>
 <h1 id="description">Description</h1>
-<p><code>SHMagPowerSpectrum</code> will calculate the power spectrum of the magnetic field at radius <code>r</code> given the magnetic potential Schmidt seminormalized spherical harmonic coefficients <code>c</code> evaluated at radius <code>a</code>. For a given degree <code>l</code>, this is explicitly calculated as:</p>
+<p><code>SHMagPowerSpectrum</code> will calculate the power spectrum of the magnetic field at radius <code>r</code> given the magnetic potential Schmidt seminormalized spherical harmonic coefficients <code>c</code> evaluated at radius <code>a</code>. For a given degree <code>l</code>, this is explicitly calculated as (Lowes 1966):</p>
 <p><code>S(l) = (l+1) (a/r)**(2l+4) Sum_{m=0}^l [ c(1, l+1, m+1)**2 + c(2, l+1, m+1)**2 ].</code></p>
+<h1 id="reference">Reference</h1>
+<p>Lowes, F. J., Mean-square values on sphere of spherical harmonic fields, J. Geophys. Res., 71(8), 2179, 1966.</p>
 <h1 id="see-also">See also</h1>
 <p><a href="shmagpowerl.html">shmagpowerl</a></p>
 
@@ -69,7 +71,7 @@
 		</tr>
 	</tbody>
 	</table>
-	
+
 </div>
 
 </body>

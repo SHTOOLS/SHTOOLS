@@ -16,7 +16,7 @@
 <div class="main">
 
 	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
-    	
+
 	<table class="menu">
 		<tbody>
 			<tr>
@@ -27,146 +27,191 @@
 			</tr>
 		</tbody>
 	</table>
-		
+
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a>
 	</p>
 
 	<h1>Installation Instructions</h1>
-	
-	<h2>1. Use a package manager</h2>
-	
-	<p>The easiest way to install SHTOOLS is by using a package manager. The following options are currently available:</p>
-	
-	<h3>OSX (Homebrew)</h3>
+
+	<p>SHTOOLS can be installed in several ways. If you will be using only the Python components, it is recommended to install using the pip package manager. If you will be writing and compiling Fortran 95 code, it is recommended to use either the Brew package manager (on OSX), or to compile using the Makefile.</p>
+
+	<h2>1. Python package installer: pip</h2>
+	<p class="nomarginbot">SHTOOLS can be installed using <tt>pip</tt>, but only if you have already downloaded the SHTOOLS repository from GitHub. To start, first make sure that you have the necessary dependencies installed. This can be done on most linux distributions using</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh</tt></p>
+	</blockquote>
+	<p class="nomarginbot">or with brew on OSX using</p>
+		<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>brew install fftw --with-fortran</tt></p>
+	</blockquote>
+	<p class="nomarginbot">Then, in the SHTOOLS main directory, execute</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>pip install .</tt></p>
+	</blockquote>
+	<p class="nomarginbot">which will install pyshtools in the system Python library. If you would like to install the files in the current working directory, so that you can easily edit the source files, and link them to the system Python directory, enter the following command instead:</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>pip install -e .</tt></p>
+	</blockquote>
+	<p class="nomarginbot">To uninstall pyshtools from your system directory, enter</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>pip uninstall pyshtools</tt></p>
+	</blockquote>
+	<p>Note that this will only install the Python version that corresponds to the version of <tt>pip</tt> being used. On some systems, it may be necessary to specify <tt>pip2.7</tt> or <tt>pip3.5</tt>.</p>
+
+	<h2>2. Homebrew package manager (OSX)</h2>
 	<p class="nomarginbot">If <a href="http://brew.sh">brew</a> is already installed, it is only necessary to enter the following commands in the terminal:</p>
 		<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>brew tap shtools/shtools</tt><br>
 		<tt>brew install shtools</tt></p>
 	</blockquote>
-    
-	<h2>2. Manual installation</h2>
-
-	<p class="nomarginbot">Before installing SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main SHTOOLS directory:</p>
+	<p>This will install both the Fortran 95 and Python 2 components of SHTOOLS. To also install the Fortran 95 OpenMP and Python 3 components, add the options <tt>--with-openmp</tt> and <tt>--with-python3</tt> to the last command.</p>
 	
+	<h2>3. Manual installation using make</h2>
+
+	<p class="nomarginbot">Before installing SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, the Fortran 95, Python 2, and Python 3 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main SHTOOLS directory:</p>
+
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make</tt></p>
 	</blockquote>
-	
-	<p class="nomarginbot">To compile and run the Fortran 95 and Python test suites and examples, use</p>
+
+	<p class="nomarginbot">To compile individual components, such as Fortran 95, Fortran 95 with OpenMP, Python 2, and Python 3, use</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make fortran fortran-mp python2 python3</tt></p>
+	</blockquote>
+
+	<p class="nomarginbot">To compile and run the Fortran 95 and Python test suites, use</p>
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make fortran-tests</tt><br>
-		<tt>make python-tests</tt></p>
+		<tt>make python2-tests</tt><br>
+		<tt>make python3-tests</tt></p>
 	</blockquote>
 	
-	<p class="nomarginbot">To delete the compiled archive, module files, object files, and test suite executables, use</p>
-	
+	<p class="nomarginbot">To delete the compiled archive, module files, object files, and test suite files, use</p>
+
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make clean</tt></p>
 	</blockquote>
-	
-	<p class="nomarginbot">The default Fortran 95 compiler is set to <tt>gfortran</tt> (which is part of the <a href="http://gcc.gnu.org/"><tt>gcc</tt></a> suite), but if desired, a different compiler and compiler options can be specified by using</p>
-	
+
+	<p class="nomarginbot">By default, the <tt>Makefile</tt> will use the binaries <tt>gfortran</tt>, <tt>f2py</tt> and <tt>python</tt> (for Python 2), and <tt>f2py3</tt> and <tt>python3</tt> (for Python 3). Different compilers and options can be specified by passing optional arguments to the <tt>Makefile</tt> using the syntax</p>
+
 <blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make F95="MyCompiler" F95FLAGS="MyCompilerFlags"</tt></p>
 	</blockquote>
-	
-	<p class="nomarginbot">where "<tt>MyCompiler</tt>" and "<tt>MyCompilerFlags</tt>" are to be replaced by the compiler name and options, respectively. Other options that can be set are</p>
-	
+
+	<p class="nomarginbot">where "<tt>MyCompiler</tt>" and "<tt>MyCompilerFlags</tt>" are to be replaced by the path of the compiler name and options, respectively. Supported options include:</p>
+
 	<blockquote class="small normalfont">
-		<p class="nomargintop nomarginbot"><tt>F2PY : </tt>Name (including path) of the <tt>f2py</tt> executable<br>
-		<tt>PYTHON : </tt>Name (including path) of the <tt>python</tt> executable<br>
-		<tt>FFTW : </tt>Name and path of the FFTW3 library of the form "<tt>-Lpath -lfftw3</tt>"<br>
-		<tt>LAPACK : </tt>Name and path of the LAPACK library of the form "<tt>-Lpath -llapack</tt>"<br>
-		<tt>BLAS : </tt>Name and path of the BLAS library of the form "<tt>-Lpath -lblas</tt>"<br></p>
+		<p class="nomargintop nomarginbot">
+		<tt>F95</tt>="Name (including path) of the <tt>f95</tt> compiler"<br>
+		<tt>F95FLAGS</tt>="F95 compiler options"<br>
+		<tt>F2PY</tt>="Name (including path) of the Python 2 <tt>f2py</tt> executable"<br>
+		<tt>F2PY3</tt>="Name (including path) of the Python 3 <tt>f2py</tt> executable"<br>
+		<tt>PYTHON</tt>="Name (including path) of the Python 2 executable"<br>
+		<tt>PYTHON3</tt>="Name (including path) of the Python 3 executable"<br>
+		<tt>FFTW=</tt>Name and path of the FFTW3 library of the form "<tt>-Lpath -lfftw3</tt>"<br>
+		<tt>LAPACK</tt>=Name and path of the LAPACK library of the form "<tt>-Lpath -llapack</tt>"<br>
+		<tt>BLAS</tt>=Name and path of the BLAS library of the form "<tt>-Lpath -lblas</tt>"<br>
+		</p>
 	</blockquote>
-	
-	<p>Successful compilation will create the library file <tt>libSHTOOLS.a</tt> in the directory <tt>lib</tt>, will place a few compiled module files in the directory <tt>modules</tt>, and will create a few <tt>.so</tt> files in the directory <tt>pyshtools</tt>. The resulting output should look something like <a href="makeout.html">this</a>. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using <tt>make clean</tt>.</p>
-	
+
+	<p>Successful compilation will create the library file <tt>libSHTOOLS.a</tt> (and <tt>libSHTOOLS-mp.a</tt> when compiling with OpenMP) in the directory <tt>lib</tt>, will place a few compiled module files in the directory <tt>modules</tt>, and will create a few <tt>.so</tt> files in the directory <tt>pyshtools</tt>. The resulting output should look something like <a href="makeout.html">this</a>. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using <tt>make clean</tt>.</p>
+
 	<p>To make all files available at a system level, run</p>
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make install</tt></p>
 	</blockquote>
-	
-	<p>This will move the compiled SHTOOLS files to the standard locations in <tt>/usr/local</tt>:</p>
-	
+
+	<p>This will move the compiled SHTOOLS files and documentation to</p>
+
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>/usr/local/lib/python2.7/site-packages/pyshtools (python module)<br>
- /usr/local/lib (libSHTOOLS.a)<br>
- /usr/local/include/shtools (fftw3.mod, planetsconstants.mod, shtools.mod)<br>
- /usr/local/share/shtools/examples (example files)<br>
- /usr/local/share/man/man1 (man pages)<br>
- /usr/local/share/doc/shtools/index.html (web documentation)</tt></p>
+		<p class="nomargintop nomarginbot"><tt>SYSPYPATH/pyshtools (python module)<br>
+		SYSLIBPATH (libSHTOOLS.a, libSHTOOLS-mp.a)<br>
+		SYSMODPATH (fftw3.mod, planetsconstants.mod, shtools.mod)<br>
+		SYSSHAREPATH/shtools/examples (example files)<br>
+		SYSSHAREPATH/man/man1 (man pages)<br>
+		SYSDOCPATH/shtools (index.html, web documentation)</tt></p>
 	</blockquote>
-	
-	<p>To remove all SHTOOLS files from <tt>/usr/local</tt>, use</p>
-	
+
+	<p>The locations of the above directories can be set as optional arguments passed to the <tt>Makefile</tt>, and the default locations are</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>
+		SYSPYPATH=python variable sysconfig.get_path("platlib")<br>
+		SYSLIBPATH=/usr/local/lib<br>
+		SYSMODPATH=/usr/local/include<br>
+		SYSSHAREPATH=/usr/local/share<br>
+		SYSDOCPATH=/usr/local/share/doc</tt></p>
+	</blockquote>
+
+	<p>To remove all installed SHTOOLS files, use</p>
+
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make uninstall</tt></p>
 	</blockquote>
-	
-	<p>To access the unix man pages, it will be necessary to add <tt>/usr/local/share/man</tt> to your man path.</p>
-	
 
-	<h3>2.1 Compiler flags and optimization</h3>
-	
-	<p>Default compiler options are specified in the main <tt>Makefile</tt> for a few common compilers (Absoft <tt>f95</tt>, <tt>gfortran</tt>, <tt>g95</tt>, and <tt>ifort</tt>). If it is necessary to change these, consider the following guidelines:</p>
-	
+	<p>To access the unix man pages, it will be necessary to add <tt>SYSSHAREPATH/man</tt> to your man path.</p>
+
+	<h3>3.1 Python compiler specific flags</h3>
+
+	<p>When compiling the python wrappers and running the python examples, it is important to use the correct versions of <tt>f2py</tt> and <tt>python</tt>. Most systems provide binaries that include the name of the python version, such as <tt>python2.7</tt>, <tt>python3.5</tt>, <tt>f2py2.7</tt> and <tt>f2py3.5</tt>. These binaries may or may not be linked to generic names such as <tt>python</tt> and <tt>f2py</tt>. If there are incompatibilities with your system's naming convention and those described above, it will be necessary to pass the optional arguments <tt>PYTHON</tt>, <tt>PYTHON3</tt>, <tt>F2PY</tt> and <tt>F2PY3</tt> to the <tt>Makefile</tt>.</p>
+
+	<p>If binaries do not exist for <tt>f2py</tt>, the python wrappers can be generated by specifying the following:</p>
+
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>make F2PY="python -m numpy.f2py" F2PY3="python3 -m numpy.f2py"</tt></p>
+	</blockquote>
+
+<p>This is necessary on OSX (using the brew installation), as installing both Python 2 and 3 will create only a single <tt>f2py</tt> that is overwritten by the last install.</p>
+
+	<h3>3.2 Fortran compiler specific flags and optimizations</h3>
+
+	<p>Default compiler options are specified in the main <tt>Makefile</tt> for a few common compilers (<tt>gfortran</tt>, Absoft <tt>f95</tt>, <tt>g95</tt>, and <tt>ifort</tt>). If it is necessary to change these, consider the following guidelines.</p>
+
 	<p class="nomarginbot">One should always use some form of optimization when compiling SHTOOLS, such as by specifying the option</p>
-	
+
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>-O3</tt></p>
 	</blockquote>
-	
+
 	<p class="nomarginbot">Performance will likely be increased by 10s of percent by specifying the compiler to target the host architecture</p>
-	
+
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>-march=host</tt>  (f95)</p>
 		<p class="nomargintop nomarginbot"><tt>-march=native</tt>  (gfortran)</p>
 	</blockquote>
-	
+
 	<p class="nomarginbot">and to use fast math</p>
-	
+
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>-speed_math=11</tt>  (f95)</p>
 		<p class="nomargintop nomarginbot"><tt>-ffast-math</tt>  (gfortran)</p>
 	</blockquote>
-	
-	<p>The biggest difficulty in compiling SHTOOLS is setting the compiler flags so that the external subroutine names are in a format that is compatible with the FFTW and LAPACK libraries. In general, it is necessary to ensure that the SHTOOLS subroutine names are in lower case and have the right number of underscores appended to them.</p>
-	
+
+	<p>The biggest difficulty in compiling SHTOOLS is setting the compiler flags so that the external subroutine names are in a format that is compatible with the already compiled FFTW and LAPACK libraries. In general, it is necessary to ensure that the SHTOOLS subroutine names are in lower case and have the right number of underscores appended to them.</p>
+
 	<p class="nomarginbot">For Absoft ProFortran, this is achieved by setting</p>
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>-YEXT_NAMES=LCS -YEXT_SFX=_</tt></p>
 	</blockquote>
-	
-	<p class="nomarginbot">For <tt>g95</tt>, it will be necessary to use either</p>
+
+	<p class="nomarginbot">For <tt>g95</tt>, it will be necessary to use one of the following:</p>
 
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>-fno-second-underscore</tt> (most likely)</p>
+		<p class="nomargintop nomarginbot"><tt>-fno-second-underscore</tt> (most likely)<br>
+		<tt>-fno-underscoring</tt></p>
 	</blockquote>
-	
-	<p class="nomarginbot">or </p>
-	
+
+	<p class="nomarginbot">For <tt>gfortran</tt>, it is generally not necessary to use any special flags, though it could arise that one of the following might be necessary: </p>
+
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>-fno-underscoring</tt></p>
+		<p class="nomargintop nomarginbot"><tt>-fno-underscoring</tt><br>
+		<tt>-fsecond-underscore</tt></p>
 	</blockquote>
-	
-	<p class="nomarginbot">For <tt>gfortran</tt>, it is generally not necessary to use any special flags, though it could arise that either </p>
-	
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>-fno-underscoring</tt></p>
-	</blockquote>
-	
-	<p class="nomarginbot">or</p>
-	
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>-fsecond-underscore</tt></p>
-	</blockquote>
-	
-	<p>might be necessary.</p>
-	
+
 	<p class="nomarginbot">For the Intel Fortran compiler <tt>ifort</tt>, it will be necessary to use</p>
 
 	<blockquote class="small">
@@ -175,32 +220,29 @@
 	
 	<p>in order that the compiler recognizes files with the extension .f95 as fortran 95 files. In this case, the f95 file should come directly after the option <tt>-Tf</tt>.</p>
 
-	<p class="nomarginbot">Setting the right compiler flags is more complicated when the FFTW and LAPACK libraries have different naming and underscoring conventions. In order to accommodate this case, underscores have been added explicitly to LAPACK and FFTW subroutine names in an alternative set of source files. In order to compile SHTOOLS with underscores appended explicitly to LAPACK routine names, use</p>
+	<p class="nomarginbot">Setting the right compiler flags is more complicated when the FFTW and LAPACK libraries have different naming and underscoring conventions. In order to accommodate this case, underscores can be added explicitly to either the LAPACK or FFTW subroutine names in the SHTOOLS source code by specifying the optional <tt>make</tt> arguments when building the archive:</p>
 
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make all2</tt></p>
+		<p class="nomargintop nomarginbot">
+		<tt>FFTW_UNDERSCORE=1</tt> (to add an extra underscore to the FFTW routine names)<br>
+		<tt>LAPACK_UNDERSCORE=1</tt> (to add an extra underscore to the LAPACK routine names)
+		</p>
 	</blockquote>
 
-	<p class="nomarginbot">In order to compile SHTOOLS with underscores appended explicitly to FFTW routine names, use</p>
-	
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make all3</tt></p>
-	</blockquote>
-	
-	<p>For both cases, compiler flags should be set so that underscores are not appended to routine names. See the <a href="faq.html">FAQ</a> for further information.</p>
-	
+	<p>For both cases, compiler flags should probably be set so that underscores are not appended to routine names. See the <a href="faq.html">FAQ</a> for further information.</p>
+
 	<p class="nomarginbot">To generate 64 bit code, use the compiler option</p>
-	
+
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>-m64</tt></p>
 	</blockquote>
-	
+
 	<p>For this case, it will be necessary to use 64-bit compiled FFTW and LAPACK libraries.</p>
-		
+
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a>
 	</p>
-	
+
 	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
 	<tbody>
 		<tr>
@@ -210,7 +252,7 @@
 		</tr>
 	</tbody>
 	</table>
-	
+
 </div>
 
 </body>

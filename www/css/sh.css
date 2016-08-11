@@ -40,6 +40,8 @@ H2.man
 
 P {margin-bottom:20px;}
 
+P.hanging { padding-left: 25px; text-indent: -25px; margin-bottom: 6pt; margin-top: 0pt;}
+
 
 TT { font-family: courrier, monospace; }
 

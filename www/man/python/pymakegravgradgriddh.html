@@ -15,7 +15,7 @@
 <div class="main">
 
 	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
-    	
+
 	<table class="menu">
 		<tbody>
 			<tr>
@@ -83,9 +83,9 @@
 </dl>
 <h1 id="description">Description</h1>
 <p><code>MakeGravGradGridDH</code> will create 2-dimensional cylindrical maps from the spherical harmonic coefficients <code>cilm</code>, equally sampled (<code>n</code> by <code>n</code>) or equally spaced (<code>n</code> by 2<code>n</code>) in latitude and longitude, for six components of the gravity &quot;gradient&quot; tensor (all using geocentric coordinates):</p>
-<p><code>(Vxx,  Vxy,    Vxz)</code><br />
-<code>(Vyx,  Vyy,    Vyz)</code><br />
-<code>(Vzx,  Vzy,    Vzz)</code></p>
+<p><code>(Vxx, Vxy, Vxz)</code><br />
+<code>(Vyx, Vyy, Vyz)</code><br />
+<code>(Vzx, Vzy, Vzz)</code></p>
 <p>The reference frame is north-oriented, where <code>x</code> points north, <code>y</code> points west, and <code>z</code> points upward (all tangent or perpendicular to a sphere of radius r). The gravitational potential is defined as</p>
 <p><code>V = GM/r Sum_{l=0}^lmax (r0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}</code>,</p>
 <p>where <code>r0</code> is the reference radius of the spherical harmonic coefficients <code>Clm</code>, and the gravitational acceleration is</p>
@@ -120,7 +120,7 @@
 		</tr>
 	</tbody>
 	</table>
-	
+
 </div>
 
 </body>
