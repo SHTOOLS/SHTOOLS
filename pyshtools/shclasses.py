@@ -2920,7 +2920,7 @@ class SHWindowMask(SHWindow):
         if weights is None:
             weights = self.weights
 
-        tapers_power = _np.zeros((self.lmax+1, nwin))
+        tapers_power = _np.zeros((self.lwin+1, nwin))
         for i in range(nwin):
             tapers_power[:, i] = _shtools.SHPowerSpectrum(self.get_coeffs(i))
 
