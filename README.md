@@ -77,7 +77,8 @@ well as simple interfaces.
 
 To get started, check out the following Python tutorial notebooks:
 
-* [Introduction: A simple introduction to pyshtools](examples/notebooks/Introduction.ipynb)
+* [Introduction 1: A simple introduction to pyshtools: Grids and Coeffs](examples/notebooks/Introduction-1.ipynb)
+* [Introduction 2: A simple introduction to pyshtools: Localization windows and spectral analysis](examples/notebooks/Introduction-1.ipynb)
 * [tutorial 1: Simple Spherical Harmonic Expansions](examples/notebooks/tutorial_1.ipynb)
 * [tutorial 2: Localized Spectral Analysis on the Sphere](examples/notebooks/tutorial_2.ipynb)
 * [tutorial 3: The SHTOOLS Class Interface](examples/notebooks/tutorial_3.ipynb)
