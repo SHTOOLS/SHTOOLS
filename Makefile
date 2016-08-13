@@ -425,6 +425,7 @@ clean-libs:
 	-rm -rf build
 	-rm -rf pyshtools.egg-info
 	-rm -f src/_SHTOOLS-f2pywrappers.f src/_SHTOOLSmodule.c
+	-rm -f dist
 	@echo
 	@echo REMOVED LIB, MODULE, OBJECT FILES, COMPILED PYTHON FILES AND TESTS
 	@echo

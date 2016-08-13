@@ -1852,7 +1852,9 @@ class SHWindow(object):
     theta           : Angular radius of the spherical cap localization domain
                       (default in degrees).
     theta_degrees   : True (default) if theta is in degrees.
-    nwin            : Number of localization windows. Default is (lwin + 1)**2
+    nwin            : Number of localization windows. Default is (lwin + 1)**2.
+    nwinrot         : The number of best concentrated windows that were rotated
+                      and whose coefficients are stored in coeffs.
     clat, clon      : Latitude and longitude of the center of the rotated
                       spherical cap localization windows (default in degrees).
     coord_degrees   : True (default) if clat and clon are in degrees.
@@ -2653,6 +2655,10 @@ class SHWindowCap(SHWindow):
         if self.coeffs is None:
             coeffs = _np.copy(self._taper2coeffs(itaper))
         else:
+            if itaper > self.nwinrot - 1:
+                raise ValueError('itaper must be less than or equal to ' +
+                                 'nwinrot - 1. itaper = {:d}, nwinrot = {:d}' +
+                                 .format(itaper, self.nwinrot))
             coeffs = _shtools.SHVectorToCilm(self.coeffs[:, itaper])
 
         if normalization == 'schmidt':
@@ -2668,7 +2674,8 @@ class SHWindowCap(SHWindow):
 
         return coeffs
 
-    def rotate(self, clat, clon, coord_degrees=True, dj_matrix=None):
+    def rotate(self, clat, clon, coord_degrees=True, dj_matrix=None,
+               nwinrot=None):
         """"
         Rotate the spherical-cap windows centered on the north pole to clat
         and clon, and save the spherical harmonic coefficients in the
@@ -2688,6 +2695,8 @@ class SHWindowCap(SHWindow):
         coord_degrees : True (default) if clat and clon are in degrees.
         dj_matrix     : The djpi2 rotation matrix (default=None), computed
                         by a call to djpi2.
+        nwinrot       : The number of best concentrated windows to rotate.
+                        Default is to rotate all windows.
 
         Description
         -----------
@@ -2704,6 +2713,11 @@ class SHWindowCap(SHWindow):
         self.clon = clon
         self.coord_degrees = coord_degrees
 
+        if nwinrot is not None:
+            self.nwinrot = nwinrot
+        else:
+            self.nwinrot = self.nwin
+
         if self.coord_degrees:
             angles = _np.radians(_np.array([0., -(90. - clat), -clon]))
         else:
@@ -2716,7 +2730,7 @@ class SHWindowCap(SHWindow):
             else:
                 dj_matrix = self.dj_matrix
 
-        for i in range(self.nwin):
+        for i in range(self.nwinrot):
             if ((coord_degrees is True and clat == 90. and clon == 0.) or
                     (coord_degrees is False and clat == _np.pi/2. and
                      clon == 0.)):
@@ -2753,11 +2767,13 @@ class SHWindowCap(SHWindow):
             lmax = clm.lmax
 
         if (clat is not None and clon is not None and clat == self.clat and
-                clon == self.clon and coord_degrees is self.coord_degrees):
+                clon == self.clon and coord_degrees is self.coord_degrees and
+                k <= self.nwinrot):
             # use the already stored coeffs
             pass
         elif (clat is None and clon is None) and \
-                (self.clat is not None and self.clon is not None):
+                (self.clat is not None and self.clon is not None and
+                 k <= self.nwinrot):
             # use the already stored coeffs
             pass
         else:
@@ -2771,9 +2787,10 @@ class SHWindowCap(SHWindow):
                                  'clat = {:s}, clon = {:s}'
                                  .format(repr(clat), repr(clon)))
             if clat is None and clon is None:
-                self.rotate(clat=90., clon=0., coord_degrees=True)
+                self.rotate(clat=90., clon=0., coord_degrees=True, nwinrot=k)
             else:
-                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees)
+                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees,
+                            nwinrot=k)
 
         sh = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
 
@@ -2794,11 +2811,13 @@ class SHWindowCap(SHWindow):
             lmax = min(clm.lmax, slm.lmax)
 
         if (clat is not None and clon is not None and clat == self.clat and
-                clon == self.clon and coord_degrees is self.coord_degrees):
+                clon == self.clon and coord_degrees is self.coord_degrees and
+                k <= self.nwinrot):
             # use the already stored coeffs
             pass
         elif (clat is None and clon is None) and \
-                (self.clat is not None and self.clon is not None):
+                (self.clat is not None and self.clon is not None and
+                 k <= self.nwinrot):
             # use the already stored coeffs
             pass
         else:
@@ -2812,9 +2831,10 @@ class SHWindowCap(SHWindow):
                                  'clat = {:s}, clon = {:s}'
                                  .format(repr(clat), repr(clon)))
             if clat is None and clon is None:
-                self.rotate(clat=90., clon=0., coord_degrees=True)
+                self.rotate(clat=90., clon=0., coord_degrees=True, nwinrot=k)
             else:
-                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees)\
+                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees,
+                            nwinrot=k)
 
         sh1 = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
         sh2 = slm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)

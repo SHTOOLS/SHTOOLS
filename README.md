@@ -58,10 +58,12 @@ make fortran-mp  # Open-MP Fortran routines
 
 #### Brew package manager (OSX) ####
 
-To install the Fortran 95, Python 2, and Python 3 components using the [brew](http://brew.sh/) package manager, enter
+To install the Fortran 95 component using the [brew](http://brew.sh/) package manager, enter
 ```
 brew tap shtools/shtools
 brew install shtools
+
+Optionally, add the options ```--with-openmp```, ```--with-python2```, or ```--with-python3``` to the last command.
 ```
 
 More installation instructions and options can be found in the [web documentation](https://shtools.ipgp.fr) and GitHub 
