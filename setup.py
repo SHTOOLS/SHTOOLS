@@ -70,7 +70,7 @@ class build(_build):
         self.mkpath(docdir)
         doc_builder = os.path.join(self.build_lib, 'pyshtools', 'make_docs.py')
         doc_source = '.'
-        check_call(['python', doc_builder, doc_source, self.build_lib])
+        check_call([sys.executable, doc_builder, doc_source, self.build_lib])
 
         print('---- ALL DONE ----')
 
@@ -105,7 +105,7 @@ class develop(_develop):
         doc_builder = os.path.join(self.setup_path, 'pyshtools',
                                    'make_docs.py')
         doc_source = '.'
-        check_call(['python', doc_builder, doc_source, self.setup_path])
+        check_call([sys.executable, doc_builder, doc_source, self.setup_path])
 
         print('---- ALL DONE ----')
 
