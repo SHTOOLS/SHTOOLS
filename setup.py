@@ -23,6 +23,14 @@ from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
 
 
+# convert markdown README.md to restructured text .rst for pypi
+try:
+    import pypandoc
+    long_description = pypandoc.convert('README.md', 'rst')
+except(IOError, ImportError):
+    long_description = open('README.md').read()
+
+
 def get_version():
     """Get version from git and VERSION file.
 
@@ -214,8 +222,9 @@ def configuration(parent_package='', top_path=None):
 
 metadata = dict(
     name='pyshtools',
-    version='3.3.1',
+    version=get_version(),
     description='SHTOOLS - Tools for working with spherical harmonics',
+    long_description=long_description,
     url='http://shtools.ipgp.fr',
     download_url='https://github.com/MMesch/SHTOOLS/zipball/pypi-fixes',
     author='The SHTOOLS developers',
