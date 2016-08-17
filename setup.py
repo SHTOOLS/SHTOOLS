@@ -10,7 +10,9 @@ import os
 import re
 import sys
 import sysconfig
-import setuptools
+# the setuptools import dummy patches the distutil commands such that
+# python setup.py develop works
+import setuptools  # NOQA
 
 from numpy.distutils.core import setup
 from numpy.distutils.command.build import build as _build
@@ -212,10 +214,10 @@ def configuration(parent_package='', top_path=None):
 
 metadata = dict(
     name='pyshtools',
-    version=get_version(),
+    version='3.3.1',
     description='SHTOOLS - Tools for working with spherical harmonics',
     url='http://shtools.ipgp.fr',
-    download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
+    download_url='https://github.com/MMesch/SHTOOLS/zipball/pypi-fixes',
     author='The SHTOOLS developers',
     license='BSD',
     keywords=KEYWORDS,
