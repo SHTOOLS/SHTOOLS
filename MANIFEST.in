@@ -13,7 +13,7 @@ include examples/python/ClassInterface/topo.dat.gz
 
 graft src/pydoc
 graft src/fdoc
-recursive-include src *.py
+recursive-include src *.py *.pyf
 
 graft man
 graft www
