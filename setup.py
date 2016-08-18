@@ -224,7 +224,8 @@ def configuration(parent_package='', top_path=None):
 
 metadata = dict(
     name='pyshtools',
-    version=get_version(),
+    # version=get_version(),
+    version='3.3.2',
     description='SHTOOLS - Tools for working with spherical harmonics',
     long_description=long_description,
     url='http://shtools.ipgp.fr',
