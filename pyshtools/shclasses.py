@@ -624,6 +624,25 @@ class SHCoeffs(object):
         """
         return _np.arange(self.lmax + 1)
 
+    def get_powerspectrum(self, unit='per_lm'):
+        """
+        Return a numpy array with the power per degree l spectrum.
+
+        Usage
+        -----
+
+        power = x.get_powerperdegree()
+
+        Returns
+        -------
+
+        power : numpy ndarray of size (lmax+1).
+        """
+        if unit == 'per_l':
+            return self._powerperdegree()
+        if unit == 'per_lm':
+            return _np.abs(self.coeffs) ** 2
+
     def get_powerperdegree(self):
         """
         Return a numpy array with the power per degree l spectrum.
@@ -908,6 +927,66 @@ class SHCoeffs(object):
         return gridout
 
     # ---- plotting routines ----
+    def plot_powerspectrum(self, unit='per_l', loglog=True, show=True,
+                           fname=None):
+        """
+        Plot the power per degree spectrum.
+
+        Usage
+        -----
+
+        x.plot_powerperdegree([loglog, show, fname])
+
+        Parameters
+        ----------
+
+        loglog : If True (default), use log-log axis.
+        unit   : 'per_l', 'per_lm', 'per_logl'
+        show   : If True (default), plot to the screen.
+        fname  : If present, save the image to the file.
+        """
+        if unit == 'per_l':
+            self.plot_powerperdegree(loglog=True, show=True, fname=None)
+        elif unit == 'per_lm':
+            self.plot_powerperlm(loglog=True, show=True, fname=None)
+
+    def plot_powerperlm(self, loglog=True, show=True, fname=None):
+        """
+        Plot the power per degree spectrum.
+
+        Usage
+        -----
+
+        x.plot_powerperdegree([loglog, show, fname])
+
+        Parameters
+        ----------
+
+        loglog : If True (default), use log-log axis.
+        show   : If True (default), plot to the screen.
+        fname  : If present, save the image to the file.
+        """
+        power = self.get_powerspectrum(unit='per_lm')
+        ls = self.get_degrees()
+
+        fig, ax = _plt.subplots(1, 1)
+        ax.set_xlabel('degree l')
+        ax.set_ylabel('order m')
+        if loglog:
+            from matplotlib.colors import LogNorm
+            ax.set_xscale('log')
+            ax.grid(True, which='both')
+            mgrid, lgrid = _np.meshgrid(ls, ls, indexing='ij')
+            vmin = max(power.min(), power.max() * 1e-50)
+            vmax = power.max()
+            norm = LogNorm(vmin, vmax)
+            ax.pcolormesh(mgrid, lgrid, power, norm=norm)
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+        return fig, ax
+
     def plot_powerperdegree(self, loglog=True, show=True, fname=None):
         """
         Plot the power per degree spectrum.
