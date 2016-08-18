@@ -219,9 +219,16 @@ class SHCoeffs(object):
                            csphase=csphase)
 
     @classmethod
-    def from_random(self, power, kind='real', normalization='4pi', csphase=1):
+    def from_random(self, power, kind='real', normalization='4pi', csphase=1,
+                    phaseonly=False):
         """
-        Initialize the coefficients using Gaussian random variables.
+        Initialize the coefficients as random variables.
+
+        This routine picks random coefficients using the function
+        np.random.normal. The variance of the Gaussian distribution is set to
+        the given input power divided by the number of coefficients at degree
+        l. The output coefficient power can be fixed exactly using the keyword
+        phaseonly.
 
         Usage
         -----
@@ -231,14 +238,20 @@ class SHCoeffs(object):
         Parameters
         ----------
 
-        power         : numpy array of the power spectrum of size (lmax+1).
+        power         : numpy array of size (lmax+1) that specifies the power
+                        per degree l of the random coefficients. This is
+                        usually the expected power
         kind          : 'real' (default) or 'complex' output coefficients.
         normalization : '4pi' (default), 'ortho' or 'schmidt' for geodesy 4pi
                         normalized, orthonormalized, or Schmidt semi-normalized
                         coefficients, respectively.
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
+        phaseonly     : The total variance of the coefficients is exactly set
+                        to the input power. This means that only the phase of
+                        the coefficients is random and their power is fixed
         """
+        # check if all arguments are correct
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
@@ -262,15 +275,23 @@ class SHCoeffs(object):
                 "kind must be 'real' or 'complex'. " +
                 "Input value was {:s}.".format(repr(kind)))
 
+        # start initialization
         nl = len(power)
         l = _np.arange(nl)
 
         if kind.lower() == 'real':
             coeffs = _np.random.normal(size=(2, nl, nl))
+            if phaseonly:
+                power_per_lm = _shtools.SHPowerSpectrumDensity(coeffs)
+                power = power / (power_per_lm + 1e-50)
+
         elif kind.lower() == 'complex':
             # - need to divide by sqrt as there are two terms for each coeff.
             coeffs = (_np.random.normal(size=(2, nl, nl)) +
                       1j * _np.random.normal(size=(2, nl, nl))) / _np.sqrt(2.)
+            if phaseonly:
+                power_per_lm = _shtools.SHPowerSpectrumC(coeffs)
+                power = power / (power_per_lm + 1e-50)
 
         if normalization.lower() == '4pi':
             coeffs *= _np.sqrt(
