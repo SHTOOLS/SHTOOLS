@@ -10,10 +10,11 @@ def example():
     # grid = pyshtools.SHGrid.from_array(topo, grid='DH')
     # coeffs = grid.expand()
     path_coeffs = '../../ExampleDataFiles/MarsTopo719.shape'
-    coeffs = pyshtools.SHCoeffs.from_file(path_coeffs, 719)
+    coeffs = pyshtools.SHCoeffs.from_file(path_coeffs, 100)
 
     coeffs.set_coeffs(0, 0, 0)
-    coeffs.plot_powerperlm(show=False, loglog=True)
+    #coeffs.plot_powerperlm(show=False, loglog=True)
+    coeffs.plot_anisotropyspectrum(log=True)
 
 
 def main():

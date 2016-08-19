@@ -624,6 +624,39 @@ class SHCoeffs(object):
         """
         return _np.arange(self.lmax + 1)
 
+    def get_anisotropyspectrum(self):
+        """
+        Return a numpy array with the anisotropy spectrum.
+
+        Usage
+        -----
+
+        power = x.get_powerpernormalizedm()
+
+
+        Returns
+        -------
+
+        power : np ndarray of size (lmax+1) that contains the average
+                normalized order m at each l
+        """
+        # ---- create mask to filter out m<=l ----
+        mask = _np.zeros((2, self.lmax + 1, self.lmax + 1), dtype=_np.bool)
+        mask[0, 0, 0] = True
+        for l in _np.arange(self.lmax + 1):
+            mask[:, l, :l + 1] = True
+        mask[1, :, 0] = False
+
+        powerperlm = _np.abs(self.coeffs) ** 2
+        powerperlm[~mask] = 0.
+        powerperl = _np.sum(powerperlm, axis=(0, 2))
+        weights = powerperlm / powerperl[None, :, None]
+        ms = _np.arange(self.lmax + 1, dtype=float)
+        ls = _np.arange(self.lmax + 1, dtype=float)
+        spectrum = _np.sum(weights * ms / ls[None, :, None], axis=(0, 2))
+        spectrum[0] = _np.nan  # degree 0 cannot have an orientation
+        return spectrum
+
     def get_powerspectrum(self, unit='per_l'):
         """
         Return a numpy array with the power spectrum per l or per lm.
@@ -956,6 +989,44 @@ class SHCoeffs(object):
         return gridout
 
     # ---- plotting routines ----
+    def plot_anisotropyspectrum(self, log=False, show=True,
+                                fname=None):
+        """
+        Plot the anisotropy spectrum.
+
+        Usage
+        -----
+
+        x.plot_anisotropyspectrum([log, show, fname])
+
+        Parameters
+        ----------
+
+        log    : If True (default), use log-xaxis.
+        show   : If True (default), plot to the screen.
+        fname  : If present, save the image to the file.
+        """
+        spectrum = self.get_anisotropyspectrum()
+        ls = self.get_degrees()
+
+        fig, ax = _plt.subplots(1, 1)
+        ax.plot(ls, spectrum)
+        ax.plot([0., self.lmax], [0.5, 0.5], lw=2, c='black')
+        ax.grid(True, which='both')
+        ax.set(xlabel='degree l', ylabel='average order m / degree l',
+               xlim=(0., self.lmax * 1.3), ylim=(-0.2, 1.2),
+               title='anisotropy spectrum')
+        ax.text(self.lmax, 0.5, 'tesseral\n(isotropic)', ha='left')
+        ax.text(self.lmax, 0.0, 'zonal\n(West-East)', ha='left')
+        ax.text(self.lmax, 1.0, 'sectorial\n(North-South)', ha='left')
+        if log:
+            ax.set(xscale='log', xlim=(0.8, self.lmax ** 1.3))
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+        return fig, ax
+
     def plot_powerspectrum(self, unit='per_l', loglog=True, show=True,
                            fname=None):
         """
