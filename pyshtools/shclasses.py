@@ -624,7 +624,7 @@ class SHCoeffs(object):
         """
         return _np.arange(self.lmax + 1)
 
-    def get_anisotropyspectrum(self):
+    def get_anisotropyspectrum(self, lmax=None):
         """
         Return a numpy array with the anisotropy spectrum.
 
@@ -640,22 +640,113 @@ class SHCoeffs(object):
         power : np ndarray of size (lmax+1) that contains the average
                 normalized order m at each l
         """
-        # ---- create mask to filter out m<=l ----
-        mask = _np.zeros((2, self.lmax + 1, self.lmax + 1), dtype=_np.bool)
+        # get either all or only some coefficients
+        if lmax is None:
+            coeffs = self.coeffs
+            lmax = self.lmax
+        else:
+            coeffs = self.coeffs[:, :lmax + 1, :lmax + 1]
+
+        # create mask to filter out m<=l
+        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
         mask[0, 0, 0] = True
-        for l in _np.arange(self.lmax + 1):
+        for l in _np.arange(lmax + 1):
             mask[:, l, :l + 1] = True
         mask[1, :, 0] = False
 
-        powerperlm = _np.abs(self.coeffs) ** 2
+        # compute the weighted average of the ms (this could be done
+        # more efficiently, only summing over the required ms...)
+        powerperlm = _np.abs(coeffs) ** 2
         powerperlm[~mask] = 0.
         powerperl = _np.sum(powerperlm, axis=(0, 2))
-        weights = powerperlm / powerperl[None, :, None]
-        ms = _np.arange(self.lmax + 1, dtype=float)
-        ls = _np.arange(self.lmax + 1, dtype=float)
-        spectrum = _np.sum(weights * ms / ls[None, :, None], axis=(0, 2))
-        spectrum[0] = _np.nan  # degree 0 cannot have an orientation
+        epsilon = powerperl.max() * 1e-30
+        weights = powerperlm[:, 1:, :] / (powerperl[None, 1:, None] + epsilon)
+
+        ms = _np.arange(0, self.lmax + 1, dtype=float)
+        ls = _np.arange(1, self.lmax + 1, dtype=float)
+        spectrum = _np.nansum(weights * ms / ls[None, :, None], axis=(0, 2))
         return spectrum
+
+    def get_symmetries(self, lmax=10, nlat=None, nlon=None):
+        """
+        Search symmetry axes on a regular grid.
+
+        Usage
+        -----
+
+        power = x.get_symmetries()
+
+
+        Parameters
+        ----------
+
+        unit  : can be 'per_l' or 'per_lm'
+                'per_l' (default): the sum_m abs(c_lm)**2 at degree l is
+                computed.
+                'per_lm': abs(c_lm)**2 is computed, not summing over m
+
+
+        Returns
+        -------
+
+        grid_zonal : np array of size (nlat, nlon) with the zonal contentration
+                     value
+        grid_sectorial: np array of size (nlat, nlon) with the sectorial
+                     concentration
+        """
+        if nlat is None or nlon is None:
+            nlat = (lmax + 1) * 2
+            nlon = nlat * 2
+
+        lats = _np.linspace(0.0, 180.0 - 180.0 / nlat, nlat)
+        lons = _np.linspace(0.0, 360.0 - 360.0 / nlon, nlon)
+
+        anisotropy = _np.empty((nlat, nlon))
+
+        coeffs_trim = self.return_coeffs(lmax=lmax)
+        djpi2 = _shtools.djpi2(lmax)
+        print('Starting grid search for symmetries.')
+        print('This can take a while. Reduce lmax to get it faster ...')
+        for ilat in range(nlat):
+            for ilon in range(nlon):
+                alpha = lons[ilon]
+                beta = lats[ilat]
+                gamma = 0.  # rotation around gamma doesn't matter
+                coeffs_rot = coeffs_trim.rotate(alpha, beta, gamma,
+                                                dj_matrix=djpi2)
+                spectrum = coeffs_rot.get_anisotropyspectrum()
+                power = coeffs_rot.get_powerperdegree()[1:]
+                weights = power / power.sum()
+                anisotropy[ilat, ilon] = _np.nansum(spectrum * weights)
+        return anisotropy
+
+    def plot_symmetries(self, lmax=10, nlat=None, nlon=None, show=True,
+                        fname=None, with_grid=False):
+        """Plot symmetry axes."""
+        anisotropy = self.get_symmetries(lmax=lmax, nlat=nlat, nlon=nlon)
+
+        norm = _plt.Normalize(0., 1.)
+        extent = (-180, 180, -90, 90)
+        if with_grid:
+            fig, (row1, row2) = _plt.subplots(2, 1, figsize=(10, 10),
+                                              sharex=True, sharey=True)
+            grid = self.expand(grid='DH2')
+            row1.imshow(grid.data, aspect='auto', extent=extent)
+            row1.set(title='coefficient data', ylabel='latitude')
+            row2.imshow(anisotropy, aspect='auto', norm=norm, extent=extent)
+            row2.set(title='average order m (normalized)', xlabel='longitude',
+                     ylabel='latitude')
+        else:
+            fig, ax = _plt.subplots(1, 1, figsize=(10, 5))
+            ax.imshow(anisotropy, origin='upper', aspect='auto', norm=norm,
+                      extent=extent)
+            ax.set(title='average order m (normalized)', xlabel='longitude',
+                   ylabel='latitude')
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+        return fig
 
     def get_powerspectrum(self, unit='per_l'):
         """
@@ -896,7 +987,7 @@ class SHCoeffs(object):
         return rot
 
     # ---- Convert spherical harmonic coefficients to a different normalization
-    def return_coeffs(self, normalization='4pi', csphase=1, lmax=None):
+    def return_coeffs(self, normalization=None, csphase=None, lmax=None):
         """
         Return a class instance with a different normalization convention.
 
@@ -908,15 +999,22 @@ class SHCoeffs(object):
         Parameters
         ----------
 
-        normalization : Normalization of the output class: '4pi' (default),
-                        'ortho' or 'schmidt' for geodesy 4pi normalized,
-                        orthonormalized, or Schmidt semi-normalized
-                        coefficients, respectively.
-        csphase       : Output Condon-Shortley phase convention: 1 (default)
-                        to exlcude the phase factor, or -1 to include it.
+        normalization : Normalization of the output class:
+                        None (x.normalization), '4pi', 'ortho' or 'schmidt'
+                        or geodesy 4pi normalized, orthonormalized, or
+                        Schmidt semi-normalized coefficients, respectively.
+        csphase       : Output Condon-Shortley phase convention:
+                        None (x.csphase), 1 to exlcude the phase factor, or
+                        -1 to include it.
         lmax          : Maximum spherical harmonic degree to output.
                         Default is x.lmax.
         """
+        if normalization is None:
+            normalization = self.normalization
+
+        if csphase is None:
+            csphase = self.csphase
+
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
@@ -1007,7 +1105,7 @@ class SHCoeffs(object):
         fname  : If present, save the image to the file.
         """
         spectrum = self.get_anisotropyspectrum()
-        ls = self.get_degrees()
+        ls = self.get_degrees()[1:]
 
         fig, ax = _plt.subplots(1, 1)
         ax.plot(ls, spectrum)
