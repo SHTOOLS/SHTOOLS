@@ -624,24 +624,53 @@ class SHCoeffs(object):
         """
         return _np.arange(self.lmax + 1)
 
-    def get_powerspectrum(self, unit='per_lm'):
+    def get_powerspectrum(self, unit='per_l'):
         """
-        Return a numpy array with the power per degree l spectrum.
+        Return a numpy array with the power spectrum per l or per lm.
 
         Usage
         -----
 
-        power = x.get_powerperdegree()
+        power = x.get_powerspectrum()
+
+
+        Parameters
+        ----------
+
+        unit  : can be 'per_l' or 'per_lm'
+                'per_l' (default): the sum_m abs(c_lm)**2 at degree l is
+                computed.
+                'per_lm': abs(c_lm)**2 is computed, not summing over m
+
 
         Returns
         -------
 
-        power : numpy ndarray of size (lmax+1).
+        power : if unit='per_l' np ndarray of size (lmax+1).
+                if unit='per_lm' np ndarray of size (lmax + 1, 2 * lmax + 1)
+                where index 1 corresponds to the degree l and index 2 to the
+                order m, aranged from negative m (coeffs[1, :, ::-1] to m=0)
+                positive and then to positive m (coeffs[0, :, :])
         """
         if unit == 'per_l':
             return self._powerperdegree()
         if unit == 'per_lm':
-            return _np.abs(self.coeffs) ** 2
+            # ---- create mask to filter out m<=l ----
+            mask = _np.zeros((2, self.lmax + 1, self.lmax + 1), dtype=_np.bool)
+            mask[0, 0, 0] = True
+            for l in _np.arange(self.lmax + 1):
+                mask[:, l, :l + 1] = True
+            mask[1, :, 0] = False
+
+            power = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
+            mpositive = _np.abs(self.coeffs[0]) ** 2
+            mpositive[~mask[0]] = _np.nan
+            mnegative = _np.abs(self.coeffs[1]) ** 2
+            mnegative[~mask[1]] = _np.nan
+
+            power[:, self.lmax:] = mpositive
+            power[:, :self.lmax] = mnegative[:, ::-1][:, :-1]
+            return power
 
     def get_powerperdegree(self):
         """
@@ -966,21 +995,41 @@ class SHCoeffs(object):
         show   : If True (default), plot to the screen.
         fname  : If present, save the image to the file.
         """
-        power = self.get_powerspectrum(unit='per_lm')
-        ls = self.get_degrees()
-
-        fig, ax = _plt.subplots(1, 1)
-        ax.set_xlabel('degree l')
-        ax.set_ylabel('order m')
+        # local imports (not available in old matplotlib versions)
+        import numpy.ma as ma  # NOQA
         if loglog:
-            from matplotlib.colors import LogNorm
-            ax.set_xscale('log')
-            ax.grid(True, which='both')
-            mgrid, lgrid = _np.meshgrid(ls, ls, indexing='ij')
-            vmin = max(power.min(), power.max() * 1e-50)
-            vmax = power.max()
+            from matplotlib.colors import LogNorm  # NOQA
+
+        # get the necessary data and initialize the Figure
+        power = self.get_powerspectrum(unit='per_lm')
+        power_masked = ma.masked_invalid(power)
+
+        ls = self.get_degrees().astype(_np.float)
+        fig, ax = _plt.subplots()
+
+        # first plot either the log or the standard power spectrum
+        ms = _np.arange(-self.lmax, self.lmax + 1, dtype=_np.float)
+        lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
+        lgrid -= 0.5
+        mgrid -= 0.5
+        vmin = _np.nanmax(power) * 1e-5
+        vmax = _np.nanmax(power)
+        if loglog:
             norm = LogNorm(vmin, vmax)
-            ax.pcolormesh(mgrid, lgrid, power, norm=norm)
+            cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], power_masked[1:],
+                                  norm=norm, cmap='viridis')
+            _plt.colorbar(cmesh, label='power per l and m')
+            ax.set(xscale='log', xlim=(0.8, self.lmax * 1.2))
+        else:
+            norm = _plt.Normalize(vmin, vmax)
+            cmesh = ax.pcolormesh(lgrid, mgrid, power_masked,
+                                  norm=norm, cmap='viridis')
+            _plt.colorbar(cmesh, label='power per l and m')
+            ax.set(xlim=(-1., self.lmax + 2.))
+        ax.set(xlabel='degree l', ylabel='order m')
+        ax.grid(True, which='both')
+
+        # either show or save the figure
         if show:
             _plt.show()
         if fname is not None:
