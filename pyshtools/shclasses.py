@@ -74,7 +74,7 @@ class SHCoeffs(object):
                     phase conventions.
     normalization : The normalization of the coefficients: '4pi', 'ortho', or
                     'schmidt'.
-    csphse        : Defines whether the Condon-Shortley phase is used (1)
+    csphase        : Defines whether the Condon-Shortley phase is used (1)
                     or not (-1).
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
@@ -364,6 +364,33 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
+
+    # ---- operators ----
+    def __add__(self, clm):
+        """Add two similar sets of coefficients."""
+        if (self.normalization == clm.normalization and self.csphase ==
+                clm.csphase and self.kind == clm.kind):
+            coeffs = self.coeffs + clm.coeffs
+            return SHCoeffs.from_array(coeffs, kind=self.kind,
+                                       csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise ValueError('The two sets of coefficients must be of the ' +
+                             'same kind and have the same ' +
+                             'normalization and csphase.')
+
+    def __sub__(self, grid):
+        """Subtract two similar sets of coefficients."""
+        if (self.normalization == clm.normalization and self.csphase ==
+                clm.csphase and self.kind == clm.kind):
+            coeffs = self.coeffs - clm.coeffs
+            return SHCoeffs.from_array(coeffs, kind=self.kind,
+                                       csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise ValueError('The two sets of coefficients must be of the ' +
+                             'same kind and have the same ' +
+                             'normalization and csphase.')
 
     # ---- Extract data ----
     def get_degrees(self):
@@ -1180,7 +1207,7 @@ class SHGrid(object):
     @classmethod
     def from_array(self, array, grid='DH'):
         """
-        Initialize the grid of the class instance from an input array.
+        Initialize the class instance from an input array.
 
         Usage
         -----
@@ -1215,28 +1242,101 @@ class SHGrid(object):
                 return cls(array)
 
     @classmethod
-    def from_file(self, fname, kind='real', grid='DH'):
-        """Initialize the grid of the object from a file."""
-        raise NotImplementedError('Not implemented yet')
+    def from_file(self, fname, **kwargs):
+        """
+        Initialize the class instance from gridded data in a file.
+
+        Usage
+        -----
+
+        x = SHGrid.from_file(fname, [**kwargs])
+
+        Parameters
+        ----------
+
+        fname    : The filename containing the gridded data, which is read
+                   using the numpy routine loadtxt. The dimensions of the array
+                   must be nlon = nlat or nlon = 2 * nlat for Driscoll and
+                   Healy grids, or nlon = 2 * nlat -1 for Gauss-Legendre
+                   Quadrature grids.
+        **kwargs : Keyword arguments of numpy.loadtxt().
+        """
+        data = _np.loadtxt(fname, **kwargs)
+
+        if _np.iscomplexobj(data):
+            kind = 'complex'
+        else:
+            kind = 'real'
+
+        if (data.shape[1] == data.shape[0]) or (data.shape[1] ==
+                                                2 * data.shape[0]):
+            grid = 'DH'
+        elif data.shape[1] == 2 * data.shape[0] - 1:
+            grid = 'GLQ'
+        else:
+            raise ValueError('Input grid must be dimensioned as ' +
+                             '(nlat, nlon). For DH grids, nlon = nlat or ' +
+                             'nlon = 2 * nlat. For GLQ grids, nlon = ' +
+                             '2 * nlat - 1. Input dimensions are nlat = ' +
+                             '{:d}, nlon = {:d}'.format(data.shape[0],
+                                                        data.shape[1]))
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind) and cls.isgrid(grid):
+                return cls(data)
 
     # ---- operators ----
     def __add__(self, grid):
         """Add two similar grids."""
-        if self.grid == grid.grid and self.data.shape == grid.data.shape:
+        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
+                self.kind == grid.kind):
             data = self.data + grid.data
-            return SHGrid.from_array(data, grid=self.grid)
-
-    def __mul__(self, grid):
-        """Multiply two similar grids."""
-        if self.grid == grid.grid and self.data.shape == grid.data.shape:
-            data = self.data * grid.data
-            return SHGrid.from_array(data, grid=self.grid)
+            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+        else:
+            raise ValueError('The two grids must be of the ' +
+                             'same kind and have the same shape.')
 
     def __sub__(self, grid):
         """Subtract two similar grids."""
-        if self.grid == grid.grid and self.data.shape == grid.data.shape:
-            data = self.data * grid.data
-            return SHGrid.from_array(data, grid=self.grid)
+        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
+                self.kind == grid.kind):
+            data = self.data - grid.data
+            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+        else:
+            raise ValueError('The two grids must be of the ' +
+                             'same kind and have the same shape.')
+
+    def __mul__(self, grid):
+        """Multiply two similar grids."""
+        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
+                self.kind == grid.kind):
+            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+        else:
+            raise ValueError('The two grids must be of the ' +
+                             'same kind and have the same shape.')
+
+    def __div__(self, grid):
+        """
+        Divide two similar grids, when __future__.division is not
+        in effect.
+        """
+        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
+                self.kind == grid.kind):
+            data = self.data / grid.data
+            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+        else:
+            raise ValueError('The two grids must be of the ' +
+                             'same kind and have the same shape.')
+
+    def __truediv__(self, grid):
+        """Divide two similar grids, when __future__.division is in effect."""
+        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
+                self.kind == grid.kind):
+            data = self.data / grid.data
+            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+        else:
+            raise ValueError('The two grids must be of the ' +
+                             'same kind and have the same shape.')
 
     # ---- Extract grid properties ----
     def get_lats(self):
@@ -2445,6 +2545,10 @@ class SHWindow(object):
         show   : If True (default), plot the image to the screen.
         fname  : If present, save the image to the file.
         """
+        if self.iskind('cap'):
+            if self.nwinrot is not None and self.nwinrot <= nwin:
+                nwin = self.nwinrot
+
         maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
@@ -2657,7 +2761,7 @@ class SHWindowCap(SHWindow):
         else:
             if itaper > self.nwinrot - 1:
                 raise ValueError('itaper must be less than or equal to ' +
-                                 'nwinrot - 1. itaper = {:d}, nwinrot = {:d}' +
+                                 'nwinrot - 1. itaper = {:d}, nwinrot = {:d}'
                                  .format(itaper, self.nwinrot))
             coeffs = _shtools.SHVectorToCilm(self.coeffs[:, itaper])
 

@@ -45,8 +45,6 @@ import os as _os
 import numpy as _np
 
 # ---- Import all wrapped SHTOOLS functions into shtools submodule
-print('\npyshtools', __version__,
-      '-- Tools for working with spherical harmonics.')
 from . import _SHTOOLS as shtools
 
 # ---- Import classes into pyshtools namespace
