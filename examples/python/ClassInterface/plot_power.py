@@ -12,13 +12,13 @@ def example():
     # coeffs = pyshtools.SHCoeffs.from_random(power)
 
     # Earth topo:
-    topo = np.loadtxt('../../ExampleDataFiles/topo.dat.gz')
-    grid = pyshtools.SHGrid.from_array(topo, grid='DH')
-    coeffs = grid.expand()
+    # topo = np.loadtxt('../../ExampleDataFiles/topo.dat.gz')
+    # grid = pyshtools.SHGrid.from_array(topo, grid='DH')
+    # coeffs = grid.expand()
 
     # Mars topo:
-    # path_coeffs = '../../ExampleDataFiles/MarsTopo719.shape'
-    # coeffs = pyshtools.SHCoeffs.from_file(path_coeffs, 101)
+    path_coeffs = '../../ExampleDataFiles/MarsTopo719.shape'
+    coeffs = pyshtools.SHCoeffs.from_file(path_coeffs, 101)
 
     # Synthetic example:
     # coeffs = pyshtools.SHCoeffs.from_zeros(51)
@@ -27,8 +27,8 @@ def example():
 
     #coeffs.set_coeffs(0, 0, 0)
     # coeffs.plot_powerperlm(show=False, loglog=True)
-    coeffs.plot_anisotropyspectrum(log=False)
-    coeffs.plot_symmetries(lmax=40, with_grid=True)
+    #coeffs.plot_anisotropyspectrum(log=False)
+    coeffs.plot_symmetries(lmax=7, with_grid=True)
 
 
 def main():
