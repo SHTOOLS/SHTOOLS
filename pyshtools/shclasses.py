@@ -724,6 +724,17 @@ class SHCoeffs(object):
                         fname=None, with_grid=False):
         """Plot symmetry axes."""
         anisotropy = self.get_symmetries(lmax=lmax, nlat=nlat, nlon=nlon)
+        nlat, nlon = anisotropy.shape
+
+        # find zonal and sectorial maxima:
+        lats = _np.linspace(0.0, 180.0 - 180.0 / nlat, nlat)
+        lons = _np.linspace(0.0, 360.0 - 360.0 / nlon, nlon)
+        imax = _np.unravel_index(anisotropy.argmax(), anisotropy.shape)
+        imin = _np.unravel_index(anisotropy.argmin(), anisotropy.shape)
+        sectorialmax = anisotropy[imax]
+        sectorialpos = 90. - lats[imax[0]], lons[imax[1]]
+        zonalmax = anisotropy[imin]
+        zonalpos = 90. - lats[imin[0]], lons[imin[1]]
 
         norm = _plt.Normalize(0., 1.)
         extent = (-180, 180, -90, 90)
@@ -731,15 +742,51 @@ class SHCoeffs(object):
             fig, (row1, row2) = _plt.subplots(2, 1, figsize=(10, 10),
                                               sharex=True, sharey=True)
             grid = self.expand(grid='DH2')
+            # plot real data
             row1.imshow(grid.data, aspect='auto', extent=extent)
-            row1.set(title='coefficient data', ylabel='latitude')
+            # indicate zonal and sectorial maxima with a cross
+            row1.plot(sectorialpos[1], sectorialpos[0], 'x', c='black')
+            row1.text(sectorialpos[1], sectorialpos[0],
+                      'max sectorial symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                      format(sectorialpos[0], sectorialpos[1], sectorialmax),
+                      va='top', ha='center')
+            row1.plot(zonalpos[1], zonalpos[0], 'x', c='black')
+            row1.text(zonalpos[1], zonalpos[0],
+                      'max zonal symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                      format(zonalpos[0], zonalpos[1], zonalmax),
+                      va='top', ha='center')
+            row1.set(title='coefficient data', ylabel='latitude',
+                     xlim=(extent[0], extent[1]), ylim=(extent[2], extent[3]))
+            # plot symmetry grid
             row2.imshow(anisotropy, aspect='auto', norm=norm, extent=extent)
+            # again indicate zonal and sectorial maxima
+            row2.plot(sectorialpos[1], sectorialpos[0], 'x', c='black')
+            row2.text(sectorialpos[1], sectorialpos[0],
+                      'max sectorial symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                      format(sectorialpos[0], sectorialpos[1], sectorialmax),
+                      va='top', ha='center')
+            row2.plot(zonalpos[1], zonalpos[0], 'x', c='black')
+            row2.text(zonalpos[1], zonalpos[0],
+                      'max zonal symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                      format(zonalpos[0], zonalpos[1], zonalmax),
+                      va='top', ha='center')
             row2.set(title='average order m (normalized)', xlabel='longitude',
+                     xlim=(extent[0], extent[1]), ylim=(extent[2], extent[3]),
                      ylabel='latitude')
         else:
             fig, ax = _plt.subplots(1, 1, figsize=(10, 5))
             ax.imshow(anisotropy, origin='upper', aspect='auto', norm=norm,
                       extent=extent)
+            ax.plot(sectorialpos[1], sectorialpos[0], 'x', c='black')
+            ax.text(sectorialpos[1], sectorialpos[0],
+                    'max sectorial symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                    format(sectorialpos[0], sectorialpos[1], sectorialmax),
+                    va='top', ha='center')
+            ax.plot(zonalpos[1], zonalpos[0], 'x', c='black')
+            ax.text(zonalpos[1], zonalpos[0],
+                    'max zonal symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                    format(zonalpos[0], zonalpos[1], zonalmax),
+                    va='top', ha='center')
             ax.set(title='average order m (normalized)', xlabel='longitude',
                    ylabel='latitude')
         if show:
