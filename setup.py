@@ -224,12 +224,12 @@ def configuration(parent_package='', top_path=None):
 
 metadata = dict(
     name='pyshtools',
-    # version=get_version(),
-    version='3.3.2',
+    version=get_version(),
+    # version='3.3.2',  # this line is only for testing
     description='SHTOOLS - Tools for working with spherical harmonics',
     long_description=long_description,
     url='http://shtools.ipgp.fr',
-    download_url='https://github.com/MMesch/SHTOOLS/zipball/pypi-fixes',
+    download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
     author='The SHTOOLS developers',
     license='BSD',
     keywords=KEYWORDS,
