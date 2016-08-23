@@ -74,7 +74,7 @@ class SHCoeffs(object):
                     phase conventions.
     normalization : The normalization of the coefficients: '4pi', 'ortho', or
                     'schmidt'.
-    csphase        : Defines whether the Condon-Shortley phase is used (1)
+    csphase       : Defines whether the Condon-Shortley phase is used (1)
                     or not (-1).
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.

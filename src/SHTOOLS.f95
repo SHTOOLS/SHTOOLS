@@ -481,6 +481,15 @@ module SHTOOLS
             integer, intent(in), optional :: save_cg
         end subroutine SHBiasK
 
+        subroutine SHBiasKMask(tapers, lwin, k, incspectra, ldata, &
+                           outcspectra, taper_wt, save_cg)
+            real*8, intent(in) ::   tapers(:,:), incspectra(:)
+            real*8, intent(out) ::  outcspectra(:)
+            integer, intent(in) ::  lwin, ldata, k
+            real*8, intent(in), optional :: taper_wt(:)
+            integer, intent(in), optional :: save_cg
+        end subroutine SHBiasKMask
+
         subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, &
                                   lmaxt, k, alpha, lat, lon, taper_wt, norm, &
                                   csphase)

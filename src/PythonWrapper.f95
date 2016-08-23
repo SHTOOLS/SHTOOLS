@@ -1201,6 +1201,33 @@
         endif
     end subroutine pySHBiasK
 
+    subroutine pySHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra, &
+                         taper_wt,save_cg,taper_wt_d0,tapers_d0, &
+                         tapers_d1,incspectra_d0,outcspectra_d0)
+        use shtools, only: SHBiasKMask
+        implicit none
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lwin
+        integer, intent(in) :: k
+        real*8, dimension(incspectra_d0),intent(in) :: incspectra
+        integer, intent(in) :: ldata
+        real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: save_cg
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: incspectra_d0
+        integer, intent(in) :: outcspectra_d0
+        if (taper_wt(1) < 0.d0) then
+            call SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra, &
+                         save_cg=save_cg)
+        else
+            call SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra, &
+                         taper_wt=taper_wt,save_cg=save_cg)
+        endif
+    end subroutine pySHBiasKMask
+
     subroutine pySHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,k, &
                                 lat,lon,taper_wt,norm,csphase, &
                                 taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2, &
