@@ -371,21 +371,19 @@ class SHCoeffs(object):
         if (self.normalization == clm.normalization and self.csphase ==
                 clm.csphase and self.kind == clm.kind):
             coeffs = self.coeffs + clm.coeffs
-            return SHCoeffs.from_array(coeffs, kind=self.kind,
-                                       csphase=self.csphase,
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
             raise ValueError('The two sets of coefficients must be of the ' +
                              'same kind and have the same ' +
                              'normalization and csphase.')
 
-    def __sub__(self, grid):
+    def __sub__(self, clm):
         """Subtract two similar sets of coefficients."""
         if (self.normalization == clm.normalization and self.csphase ==
                 clm.csphase and self.kind == clm.kind):
             coeffs = self.coeffs - clm.coeffs
-            return SHCoeffs.from_array(coeffs, kind=self.kind,
-                                       csphase=self.csphase,
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
             raise ValueError('The two sets of coefficients must be of the ' +
@@ -1291,7 +1289,7 @@ class SHGrid(object):
         if (self.grid == grid.grid and self.data.shape == grid.data.shape and
                 self.kind == grid.kind):
             data = self.data + grid.data
-            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+            return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
                              'same kind and have the same shape.')
@@ -1301,7 +1299,7 @@ class SHGrid(object):
         if (self.grid == grid.grid and self.data.shape == grid.data.shape and
                 self.kind == grid.kind):
             data = self.data - grid.data
-            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+            return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
                              'same kind and have the same shape.')
@@ -1310,7 +1308,8 @@ class SHGrid(object):
         """Multiply two similar grids."""
         if (self.grid == grid.grid and self.data.shape == grid.data.shape and
                 self.kind == grid.kind):
-            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+            data = self.data * grid.data
+            return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
                              'same kind and have the same shape.')
@@ -1323,7 +1322,7 @@ class SHGrid(object):
         if (self.grid == grid.grid and self.data.shape == grid.data.shape and
                 self.kind == grid.kind):
             data = self.data / grid.data
-            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+            return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
                              'same kind and have the same shape.')
@@ -1333,45 +1332,55 @@ class SHGrid(object):
         if (self.grid == grid.grid and self.data.shape == grid.data.shape and
                 self.kind == grid.kind):
             data = self.data / grid.data
-            return SHGrid.from_array(data, grid=self.grid, kind=self.kind)
+            return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
                              'same kind and have the same shape.')
 
     # ---- Extract grid properties ----
-    def get_lats(self):
+    def get_lats(self, degrees=True):
         """
-        Return the latitudes (in degrees) of each row of the gridded data.
+        Return the latitudes of each row of the gridded data.
 
         Usage
         -----
 
         lats = x.get_lats()
 
-        Returns
+        Parameters
         -------
 
-        lats : numpy array of size nlat containing the latitude (in degrees)
-               of each row of the gridded data.
+        lats    : numpy array of size nlat containing the latitude of each row
+                  of the gridded data.
+        degrees : If True (default), the output will be in degrees. If False,
+                  the output will be in radians.
         """
-        return self._get_lats()
+        if degrees is False:
+            return _np.radians(self._get_lats())
+        else:
+            return self._get_lats()
 
-    def get_lons(self):
+    def get_lons(self, degrees=True):
         """
-        Return the longitudes (in degrees) of each column of the gridded data.
+        Return the longitudes of each column of the gridded data.
 
         Usage
         -----
 
         lons = x.get_lon()
 
-        Returns
+        Parameters
         -------
 
-        lons : numpy array of size nlon containing the longitude (in degrees)
-               of each column of the gridded data.
+        lons    : numpy array of size nlon containing the longitude of each
+                  column of the gridded data.
+        degrees : If True (default), the output will be in degrees. If False,
+                  the output will be in radians.
         """
-        return self._get_lons()
+        if degrees is False:
+            return _np.radians(self._get_lons())
+        else:
+            return self._get_lons()
 
     def get_grid(self):
         """
@@ -2400,8 +2409,8 @@ class SHWindow(object):
 
     def get_biasedpowerspectrum(self, power, k, **kwargs):
         """
-        Calculate the multitaper (cross-)power spectrum expectation of function
-        localized by spherical cap windows.
+        Calculate the multitaper (cross-)power spectrum expectation of a
+        localized function.
 
         Usage
         -----
@@ -2452,18 +2461,17 @@ class SHWindow(object):
         nwin    : The number of best concentrated localization window power
                   spectra to return.
         """
-        nl = self.tapers.shape[0]
 
         if itaper is None:
             if nwin is None:
                 nwin = self.nwin
-            power = _np.zeros((nl, nwin))
+            power = _np.zeros((self.lwin+1, nwin))
 
             for iwin in range(nwin):
                 coeffs = self.get_coeffs(iwin)
                 power[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
         else:
-            power = _np.zeros((nl))
+            power = _np.zeros((self.lwin+1))
             coeffs = self.get_coeffs(itaper)
             power = _shtools.SHPowerSpectrum(coeffs)
 
@@ -2545,7 +2553,7 @@ class SHWindow(object):
         show   : If True (default), plot the image to the screen.
         fname  : If present, save the image to the file.
         """
-        if self.iskind('cap'):
+        if self.kind == 'cap':
             if self.nwinrot is not None and self.nwinrot <= nwin:
                 nwin = self.nwinrot
 
@@ -2712,6 +2720,7 @@ class SHWindowCap(SHWindow):
         self.coord_degrees = coord_degrees
         self.dj_matrix = dj_matrix
         self.weights = weights
+        self.nwinrot = None
 
         if nwin is not None:
             self.nwin = nwin
@@ -2987,6 +2996,8 @@ class SHWindowCap(SHWindow):
         else:
             print('clon is not specified')
 
+        print('nwinrot = {:s}'.format(repr(self.nwinrot)))
+
         if self.dj_matrix is not None:
             print('dj_matrix is stored')
         else:
@@ -3097,7 +3108,8 @@ class SHWindowMask(SHWindow):
         Calculate the multitaper (cross-)power spectrum expectation of function
         localized by arbitary windows.
         """
-        raise NotImplementedError('Not implemented yet.')
+        outspectrum = _shtools.SHBiasKMask(self.tapers, power, k=k, **kwargs)
+        return outspectrum
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""

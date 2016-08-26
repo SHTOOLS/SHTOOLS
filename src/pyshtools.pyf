@@ -935,7 +935,7 @@ python module _SHTOOLS
         end subroutine SHBiasK
 
         subroutine SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
-            fortranname pyshbiask
+            fortranname pyshbiaskmask
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer, optional,intent(in),depend(tapers_d0) :: lwin = sqrt(tapers_d0)-1
             integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1

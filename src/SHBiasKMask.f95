@@ -131,11 +131,11 @@ subroutine SHBiasKMask(tapers, lwin, k, incspectra, ldata, outcspectra, &
     do l = 0, lwin
         cstart = l**2 + 1
         cend = l**2 + 2*l + 1
-        
+
         do n = 1, k
-            shh(l, n) = sum(tapers(cstart:cend, n)**2)
+            shh(l+1, n) = sum(tapers(cstart:cend, n)**2)
         enddo
-        
+
     end do
 
     !--------------------------------------------------------------------------
