@@ -33,6 +33,7 @@ from __future__ import print_function as _print_function
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
+import copy as _copy
 
 from . import _SHTOOLS as _shtools
 
@@ -106,6 +107,7 @@ class SHCoeffs(object):
                             spectrum.
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
+    copy()                : Return a copy of the class instance.
     """
 
     def __init__(self):
@@ -287,6 +289,10 @@ class SHCoeffs(object):
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
 
+    def copy(self):
+        """Return a deep copy of the class instance."""
+        return _copy.deepcopy(self)
+
     @classmethod
     def from_file(self, fname, lmax, format='shtools', kind='real',
                   normalization='4pi', csphase=1, **kwargs):
@@ -383,6 +389,18 @@ class SHCoeffs(object):
         if (self.normalization == clm.normalization and self.csphase ==
                 clm.csphase and self.kind == clm.kind):
             coeffs = self.coeffs - clm.coeffs
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise ValueError('The two sets of coefficients must be of the ' +
+                             'same kind and have the same ' +
+                             'normalization and csphase.')
+
+    def __mul__(self, clm):
+        """Multiply two similar sets of coefficients."""
+        if (self.normalization == clm.normalization and self.csphase ==
+                clm.csphase and self.kind == clm.kind):
+            coeffs = self.coeffs * clm.coeffs
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
@@ -1193,6 +1211,7 @@ class SHGrid(object):
     plot_3dsphere  : Plot the raw data on a 3d sphere.
     info()         : Print a summary of the data stored in the SHGrid
                      instance.
+    copy()         : Return a copy of the class instance.
     """
 
     def __init__():
@@ -1282,6 +1301,10 @@ class SHGrid(object):
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
                 return cls(data)
+
+    def copy(self):
+        """Return a deep copy of the class instance."""
+        return _copy.deepcopy(self)
 
     # ---- operators ----
     def __add__(self, grid):
@@ -2010,6 +2033,7 @@ class SHWindow(object):
     plot_couplingmatrix() : Plot the multitaper coupling matrix.
     info()                : Print a summary of the data stored in the SHWindow
                             instance.
+    copy()         : Return a copy of the class instance.
     """
 
     def __init__(self):
@@ -2107,6 +2131,10 @@ class SHWindow(object):
         tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
                                                          ntapers=nwin)
         return SHWindowMask(tapers, eigenvalues, weights)
+
+    def copy(self):
+        """Return a deep copy of the class instance."""
+        return _copy.deepcopy(self)
 
     def get_degrees(self):
         """
