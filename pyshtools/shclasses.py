@@ -108,6 +108,7 @@ class SHCoeffs(object):
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
     copy()                : Return a copy of the class instance.
+    tofile()              : Save raw spherical harmonic coefficients as a file.
     """
 
     def __init__(self):
@@ -290,50 +291,53 @@ class SHCoeffs(object):
                            csphase=csphase)
 
     @classmethod
-    def from_file(self, fname, lmax, format='shtools', kind='real',
+    def from_file(self, fname, lmax=None, format='shtools', kind='real',
                   normalization='4pi', csphase=1, **kwargs):
         """
-        Initialize the coefficients from input file.
+        Initialize the coefficients from a file.
 
         Usage
         -----
 
-        x = SHCoeffs.from_file(filename, lmax, [format, kind, normalization,
-                                                csphase, skip])
+        x = SHCoeffs.from_file(filename, lmax, [format='shtools', kind,
+                                                normalization, csphase, skip])
+        x = SHCoeffs.from_file(filename, [format='npy', kind, normalization,
+                                          csphase, skip])
 
         Parameters
         ----------
 
         filename      : Name of the file, including path.
         lmax          : Maximum spherical harmonic degree to read from the
-                        file.
-        format        : 'shtools' (default).
+                        file when format is 'shtools'.
+        format        : 'shtools' (default) or 'npy'.
         kind          : Output 'real' (default) or 'complex' coefficients.
         normalization : '4pi' (default), 'ortho' or 'schmidt' for geodesy 4pi
                         normalized, orthonormalized, or Schmidt semi-normalized
                         coefficients, respectively.
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
-        skip          : Number of lines to skip at the beginning of the file.
+        skip          : Number of lines to skip at the beginning of the file
+                        when format is 'shtools'.
+        **kwargs      : Keyword arguments of numpy.load() when format is 'npy'.
 
         Description
         -----------
 
-        If format='shtools' spherical harmonic coefficients are read from an
-        ascii-formatted file. The maximum spherical harmonic degree that is
+        If format='shtools', spherical harmonic coefficients will be read from
+        an ascii-formatted file. The maximum spherical harmonic degree that is
         read is determined by the input value lmax. If the optional value skip
         is specified, parsing of the file will commence after the first skip
-        lines.
-
-        Each line of the file must contain
+        lines. For this format, each line of the file must contain
 
         l, m, cilm[0, l, m], cilm[1, l, m]
 
         For each value of increasing l, increasing from zero, all the angular
-        orders are listed in inceasing order, from 0 to l.
+        orders are listed in inceasing order, from 0 to l. For more
+        information, see SHRead.
 
-        For more information, see SHRead.
-
+        If format='npy', a binary numpy 'npy' file will be read using
+        numpy.load().
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
@@ -352,15 +356,21 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        if format.lower() == 'shtools' and lmax is None:
+            raise ValueError("lmax must be specified when format is 'shtools'")
+
         if format.lower() == 'shtools':
             if kind.lower() == 'real':
                 coeffs, lmax = _shtools.SHRead(fname, lmax, **kwargs)
             else:
                 raise NotImplementedError(
-                    "kind={:s} not yet implemented".format(repr(kind)))
+                    "Complex coefficients are not yet implemented for "
+                    "format='shtools'")
+        elif format.lower() == 'npy':
+            coeffs = _np.load(fname, **kwargs)
         else:
             raise NotImplementedError(
-                "format={:s} not yet implemented".format(repr(format)))
+                'format={:s} not yet implemented'.format(repr(format)))
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
@@ -370,6 +380,35 @@ class SHCoeffs(object):
     def copy(self):
         """Return a deep copy of the class instance."""
         return _copy.deepcopy(self)
+
+    def tofile(self, filename, format='shtools', **kwargs):
+        """
+        Save raw spherical harmonic coefficients to a file.
+
+        Usage
+        -----
+
+        x.tofile(filename, [format, **kwargs])
+
+        Parameters
+        ----------
+
+        filename : Name of the output file.
+        format   : 'shtools' (default) or 'npy'.
+        **kwargs : Keyword arguments of numpy.save().
+        """
+        if format is 'shtools':
+            file = open(filename, mode='w')
+            for l in range(self.lmax+1):
+                for m in range(l+1):
+                    file.write('{:d}, {:d}, {:e}, {:e}\n'
+                               .format(l, m, self.coeffs[0, l, m],
+                                       self.coeffs[1, l, m]))
+        elif format is 'npy':
+            _np.save(filename, self.coeffs, **kwargs)
+        else:
+            raise NotImplementedError(
+                'format={:s} not yet implemented'.format(repr(format)))
 
     # ---- operators ----
     def __add__(self, other):
@@ -1212,6 +1251,7 @@ class SHGrid(object):
     info()         : Print a summary of the data stored in the SHGrid
                      instance.
     copy()         : Return a copy of the class instance.
+    tofile()       : Save gridded data to a text or binary file.
     """
 
     def __init__():
@@ -1259,26 +1299,35 @@ class SHGrid(object):
                 return cls(array)
 
     @classmethod
-    def from_file(self, fname, **kwargs):
+    def from_file(self, fname, binary=False, **kwargs):
         """
         Initialize the class instance from gridded data in a file.
 
         Usage
         -----
 
-        x = SHGrid.from_file(fname, [**kwargs])
+        x = SHGrid.from_file(fname, [binary, **kwargs])
 
         Parameters
         ----------
 
-        fname    : The filename containing the gridded data, which is read
-                   using the numpy routine loadtxt. The dimensions of the array
-                   must be nlon = nlat or nlon = 2 * nlat for Driscoll and
-                   Healy grids, or nlon = 2 * nlat -1 for Gauss-Legendre
-                   Quadrature grids.
-        **kwargs : Keyword arguments of numpy.loadtxt().
+        fname    : The filename containing the gridded data. For text files
+                   (default) the file is read using the numpy routine
+                   loadtxt(), whereas for binary files, the file is read using
+                   numpy.load(). The dimensions of the array must be
+                   nlon = nlat or nlon = 2 * nlat for Driscoll and Healy grids,
+                   or nlon = 2 * nlat -1 for Gauss-Legendre Quadrature grids.
+        binary   : If False (default), read a text file. If True, read a
+                   binary 'npy' file.
+        **kwargs : Keyword arguments of numpy.loadtxt() or numpy.load().
         """
-        data = _np.loadtxt(fname, **kwargs)
+        if binary is False:
+            data = _np.loadtxt(fname, **kwargs)
+        elif binary is True:
+            data = _np.load(fname, **kwargs)
+        else:
+            raise ValueError('binary must be True or False. '
+                             'Input value is {:s}'.format(binary))
 
         if _np.iscomplexobj(data):
             kind = 'complex'
@@ -1305,6 +1354,33 @@ class SHGrid(object):
     def copy(self):
         """Return a deep copy of the class instance."""
         return _copy.deepcopy(self)
+
+    def tofile(self, filename, binary=False, **kwargs):
+        """
+        Save gridded data to a file.
+
+        Usage
+        -----
+
+        x.tofile(filename, [binary, **kwargs])
+
+        Parameters
+        ----------
+
+        filename : Name of output file. For text files (default), the file will
+                   be saved automatically in gzip compressed format if the
+                   filename ends in .gz.
+        binary   : If False (default), save as text using numpy.savetxt(). If
+                   True, save as a 'npy' binary file using numpy.save().
+        **kwargs : Keyword arguments of numpy.savetxt() and numpy.save().
+        """
+        if binary is False:
+            _np.savetxt(filename, self.data, **kwargs)
+        elif binary is True:
+            _np.save(filename, self.data, **kwargs)
+        else:
+            raise ValueError('binary must be True or False. '
+                             'Input value is {:s}'.format(binary))
 
     # ---- operators ----
     def __add__(self, other):
