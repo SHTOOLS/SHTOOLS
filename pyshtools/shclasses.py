@@ -289,10 +289,6 @@ class SHCoeffs(object):
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
 
-    def copy(self):
-        """Return a deep copy of the class instance."""
-        return _copy.deepcopy(self)
-
     @classmethod
     def from_file(self, fname, lmax, format='shtools', kind='real',
                   normalization='4pi', csphase=1, **kwargs):
@@ -371,12 +367,16 @@ class SHCoeffs(object):
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
 
+    def copy(self):
+        """Return a deep copy of the class instance."""
+        return _copy.deepcopy(self)
+
     # ---- operators ----
-    def __add__(self, clm):
+    def __add__(self, other):
         """Add two similar sets of coefficients."""
-        if (self.normalization == clm.normalization and self.csphase ==
-                clm.csphase and self.kind == clm.kind):
-            coeffs = self.coeffs + clm.coeffs
+        if (self.normalization == other.normalization and self.csphase ==
+                other.csphase and self.kind == other.kind):
+            coeffs = self.coeffs + other.coeffs
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
@@ -384,11 +384,11 @@ class SHCoeffs(object):
                              'same kind and have the same ' +
                              'normalization and csphase.')
 
-    def __sub__(self, clm):
+    def __sub__(self, other):
         """Subtract two similar sets of coefficients."""
-        if (self.normalization == clm.normalization and self.csphase ==
-                clm.csphase and self.kind == clm.kind):
-            coeffs = self.coeffs - clm.coeffs
+        if (self.normalization == other.normalization and self.csphase ==
+                other.csphase and self.kind == other.kind):
+            coeffs = self.coeffs - other.coeffs
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
@@ -396,11 +396,11 @@ class SHCoeffs(object):
                              'same kind and have the same ' +
                              'normalization and csphase.')
 
-    def __mul__(self, clm):
+    def __mul__(self, other):
         """Multiply two similar sets of coefficients."""
-        if (self.normalization == clm.normalization and self.csphase ==
-                clm.csphase and self.kind == clm.kind):
-            coeffs = self.coeffs * clm.coeffs
+        if (self.normalization == other.normalization and self.csphase ==
+                other.csphase and self.kind == other.kind):
+            coeffs = self.coeffs * other.coeffs
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
@@ -1307,31 +1307,31 @@ class SHGrid(object):
         return _copy.deepcopy(self)
 
     # ---- operators ----
-    def __add__(self, grid):
+    def __add__(self, other):
         """Add two similar grids."""
-        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
-                self.kind == grid.kind):
-            data = self.data + grid.data
+        if (self.grid == other.grid and self.data.shape == other.data.shape and
+                self.kind == other.kind):
+            data = self.data + other.data
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
                              'same kind and have the same shape.')
 
-    def __sub__(self, grid):
+    def __sub__(self, other):
         """Subtract two similar grids."""
-        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
-                self.kind == grid.kind):
-            data = self.data - grid.data
+        if (self.grid == other.grid and self.data.shape == other.data.shape and
+                self.kind == other.kind):
+            data = self.data - other.data
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
                              'same kind and have the same shape.')
 
-    def __mul__(self, grid):
+    def __mul__(self, other):
         """Multiply two similar grids."""
-        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
-                self.kind == grid.kind):
-            data = self.data * grid.data
+        if (self.grid == other.grid and self.data.shape == other.data.shape and
+                self.kind == other.kind):
+            data = self.data * other.data
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
@@ -1342,19 +1342,19 @@ class SHGrid(object):
         Divide two similar grids, when __future__.division is not
         in effect.
         """
-        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
-                self.kind == grid.kind):
-            data = self.data / grid.data
+        if (self.grid == other.grid and self.data.shape == other.data.shape and
+                self.kind == other.kind):
+            data = self.data / other.data
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
                              'same kind and have the same shape.')
 
-    def __truediv__(self, grid):
+    def __truediv__(self, other):
         """Divide two similar grids, when __future__.division is in effect."""
-        if (self.grid == grid.grid and self.data.shape == grid.data.shape and
-                self.kind == grid.kind):
-            data = self.data / grid.data
+        if (self.grid == other.grid and self.data.shape == other.data.shape and
+                self.kind == other.kind):
+            data = self.data / other.data
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise ValueError('The two grids must be of the ' +
