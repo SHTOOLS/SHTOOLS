@@ -121,7 +121,7 @@ class SHCoeffs(object):
 
     # ---- factory methods:
     @classmethod
-    def from_zeros(self, lmax, normalization='4pi', csphase=1, kind='real'):
+    def from_zeros(self, lmax, kind='real', normalization='4pi', csphase=1):
         """
         Initialize class with spherical harmonics set to zero from degree
         0 to lmax.
@@ -163,7 +163,7 @@ class SHCoeffs(object):
                 )
 
         nl = lmax + 1
-        if kind.lower == 'real':
+        if kind.lower() == 'real':
             coeffs = _np.zeros((2, nl, nl))
         else:
             coeffs = _np.zeros((2, nl, nl), dtype=complex)
@@ -2842,7 +2842,7 @@ class SHWindow(object):
         elif mode == 'valid':
             cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
                                                weights=weights)
-            return cmatrix[:lmax - self.lmax+1, :]
+            return cmatrix[:lmax - self.lwin+1, :]
         else:
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
