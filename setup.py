@@ -10,7 +10,9 @@ import os
 import re
 import sys
 import sysconfig
-import setuptools
+# the setuptools import dummy patches the distutil commands such that
+# python setup.py develop works
+import setuptools  # NOQA
 
 from numpy.distutils.core import setup
 from numpy.distutils.command.build import build as _build
@@ -19,6 +21,16 @@ from numpy.distutils.command.develop import develop as _develop
 from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
 from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
+
+
+# convert markdown README.md to restructured text .rst for pypi
+# pandoc can be installed with
+# conda install -c conda-forge pandoc pypandoc
+try:
+    import pypandoc
+    long_description = pypandoc.convert('README.md', 'rst')
+except(IOError, ImportError):
+    long_description = open('README.md').read()
 
 
 def get_version():
@@ -213,7 +225,9 @@ def configuration(parent_package='', top_path=None):
 metadata = dict(
     name='pyshtools',
     version=get_version(),
+    # version='3.3.2',  # this line is only for testing
     description='SHTOOLS - Tools for working with spherical harmonics',
+    long_description=long_description,
     url='http://shtools.ipgp.fr',
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
     author='The SHTOOLS developers',
