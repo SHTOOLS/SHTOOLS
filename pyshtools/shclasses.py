@@ -302,7 +302,7 @@ class SHCoeffs(object):
         x = SHCoeffs.from_file(filename, lmax, [format='shtools', kind,
                                                 normalization, csphase, skip])
         x = SHCoeffs.from_file(filename, [format='npy', kind, normalization,
-                                          csphase, skip])
+                                          csphase])
 
         Parameters
         ----------
@@ -398,12 +398,12 @@ class SHCoeffs(object):
         **kwargs : Keyword arguments of numpy.save().
         """
         if format is 'shtools':
-            file = open(filename, mode='w')
-            for l in range(self.lmax+1):
-                for m in range(l+1):
-                    file.write('{:d}, {:d}, {:e}, {:e}\n'
-                               .format(l, m, self.coeffs[0, l, m],
-                                       self.coeffs[1, l, m]))
+            with open(filename, mode='w') as file:
+                for l in range(self.lmax+1):
+                    for m in range(l+1):
+                        file.write('{:d}, {:d}, {:e}, {:e}\n'
+                                   .format(l, m, self.coeffs[0, l, m],
+                                           self.coeffs[1, l, m]))
         elif format is 'npy':
             _np.save(filename, self.coeffs, **kwargs)
         else:
@@ -412,40 +412,174 @@ class SHCoeffs(object):
 
     # ---- operators ----
     def __add__(self, other):
-        """Add two similar sets of coefficients."""
-        if (self.normalization == other.normalization and self.csphase ==
-                other.csphase and self.kind == other.kind):
-            coeffs = self.coeffs + other.coeffs
+        """
+        Add two similar sets of coefficients or coefficients and a scalar:
+        self + other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] +
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] + other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise ValueError('The two sets of coefficients must be of the ' +
-                             'same kind and have the same ' +
-                             'normalization and csphase.')
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __radd__(self, other):
+        """
+        Add two similar sets of coefficients or coefficients and a scalar:
+        other + self.
+        """
+        return self.__add__(other)
 
     def __sub__(self, other):
-        """Subtract two similar sets of coefficients."""
-        if (self.normalization == other.normalization and self.csphase ==
-                other.csphase and self.kind == other.kind):
-            coeffs = self.coeffs - other.coeffs
+        """
+        Subtract two similar sets of coefficients or coefficients and a scalar:
+        self-other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] -
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] - other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise ValueError('The two sets of coefficients must be of the ' +
-                             'same kind and have the same ' +
-                             'normalization and csphase.')
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __rsub__(self, other):
+        """
+        Subtract two similar sets of coefficients or coefficients and a scalar:
+        other-self.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (other.coeffs[self.mask] -
+                                     self.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = other - self.coeffs[self.mask]
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
 
     def __mul__(self, other):
-        """Multiply two similar sets of coefficients."""
-        if (self.normalization == other.normalization and self.csphase ==
-                other.csphase and self.kind == other.kind):
-            coeffs = self.coeffs * other.coeffs
+        """
+        Multiply two similar sets of coefficients or coefficients and a scalar:
+        self * other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] *
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] * other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise ValueError('The two sets of coefficients must be of the ' +
-                             'same kind and have the same ' +
-                             'normalization and csphase.')
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __rmul__(self, other):
+        """
+        Multiply two similar sets of coefficients or coefficients and a scalar:
+        other * self.
+        """
+        return self.__mul__(other)
+
+    def __div__(self, other):
+        """
+        Divide two similar sets of coefficients or coefficients and a scalar
+        when __future__.division is not in effect: self / other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] /
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] / other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __truediv__(self, other):
+        """
+        Divide two similar sets of coefficients or coefficients and a scalar
+        when __future__.division is in effect: self / other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] /
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] / other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
 
     # ---- Extract data ----
     def get_degrees(self):
@@ -1384,57 +1518,129 @@ class SHGrid(object):
 
     # ---- operators ----
     def __add__(self, other):
-        """Add two similar grids."""
-        if (self.grid == other.grid and self.data.shape == other.data.shape and
-                self.kind == other.kind):
-            data = self.data + other.data
+        """Add two similar grids or a grid and a scaler: self + other."""
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data + other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data + other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise ValueError('The two grids must be of the ' +
-                             'same kind and have the same shape.')
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __radd__(self, other):
+        """Add two similar grids or a grid and a scaler: self + other."""
+        return self.__add__(other)
 
     def __sub__(self, other):
-        """Subtract two similar grids."""
-        if (self.grid == other.grid and self.data.shape == other.data.shape and
-                self.kind == other.kind):
-            data = self.data - other.data
+        """Subtract two similar grids or a grid and a scaler: self - other."""
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data - other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data - other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise ValueError('The two grids must be of the ' +
-                             'same kind and have the same shape.')
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __rsub__(self, other):
+        """Subtract two similar grids or a grid and a scaler: other - self."""
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = other.data - self.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = other - self.data
+            return SHGrid.from_array(data, grid=self.grid)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
 
     def __mul__(self, other):
-        """Multiply two similar grids."""
-        if (self.grid == other.grid and self.data.shape == other.data.shape and
-                self.kind == other.kind):
-            data = self.data * other.data
+        """Multiply two similar grids or a grid and a scaler: self * other."""
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data * other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data * other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise ValueError('The two grids must be of the ' +
-                             'same kind and have the same shape.')
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __rmul__(self, other):
+        """Multiply two similar grids or a grid and a scaler: other * self."""
+        return self.__mul__(other)
 
     def __div__(self, grid):
         """
-        Divide two similar grids, when __future__.division is not
-        in effect.
+        Divide two similar grids or a grid and a scalar, when
+        __future__.division is not in effect.
         """
-        if (self.grid == other.grid and self.data.shape == other.data.shape and
-                self.kind == other.kind):
-            data = self.data / other.data
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data / other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise ValueError('The two grids must be of the ' +
-                             'same kind and have the same shape.')
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
 
     def __truediv__(self, other):
-        """Divide two similar grids, when __future__.division is in effect."""
-        if (self.grid == other.grid and self.data.shape == other.data.shape and
-                self.kind == other.kind):
-            data = self.data / other.data
+        """
+        Divide two similar grids or a grid and a scalar, when
+        __future__.division is in effect.
+        """
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data / other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise ValueError('The two grids must be of the ' +
-                             'same kind and have the same shape.')
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __pow__(self, other):
+        """Raise a grid to a scalar power: pow(self, other)."""
+        if _np.isscalar(other) is True:
+            data = pow(self.data, other)
+            return SHGrid.from_array(data, grid=self.grid)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
 
     # ---- Extract grid properties ----
     def get_lats(self, degrees=True):
