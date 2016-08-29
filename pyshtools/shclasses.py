@@ -1619,7 +1619,7 @@ class SHGrid(object):
         """Multiply two similar grids or a grid and a scaler: other * self."""
         return self.__mul__(other)
 
-    def __div__(self, grid):
+    def __div__(self, other):
         """
         Divide two similar grids or a grid and a scalar, when
         __future__.division is not in effect.

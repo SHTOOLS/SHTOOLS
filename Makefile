@@ -249,7 +249,7 @@ ifeq ($(PYTHON_VERSION),all)
 python: python2 python3
 install-python: install-python2 install-python3
 python-tests: python2-tests python3-tests
-notebooks: notebooks2 notebooks3
+notebooks: notebooks3 notebooks2
 else ifeq ($(PYTHON_VERSION),2)
 python: python2
 install-python: install-python2
