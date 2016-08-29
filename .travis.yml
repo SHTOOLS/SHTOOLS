@@ -19,6 +19,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
        brew install fftw --with-fortran;
     else
+       sudo apt-get update; 
        sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh;
     fi
 
