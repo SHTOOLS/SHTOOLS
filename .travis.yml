@@ -46,6 +46,7 @@ install:
         numpy
         scipy
         matplotlib
+        jupyter
   - source activate test-environment
   - pip install --no-deps .  
 
