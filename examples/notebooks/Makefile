@@ -8,11 +8,11 @@
 #
 #######################################################################
 
-JUPYTER = jupyter
+JUPYTER = jupyter nbconvert
 
 SHELL=/bin/sh
 
-FLAGS = --to html --execute --ExecutePreprocessor.timeout=120
+JFLAGS = --to html --execute --ExecutePreprocessor.timeout=120 
 
 IPYNB = Introduction-1.ipynb Introduction-2.ipynb tutorial_1.ipynb \
 	tutorial_2.ipynb tutorial_3.ipynb tutorial_4.ipynb tutorial_5.ipynb \
@@ -30,4 +30,4 @@ clean:
 	-rm -f $(HTML)
 
 %.html: %.ipynb
-	$(JUPYTER) nbconvert $(FLAGS) $<
+	$(JUPYTER) $(JFLAGS) $<
