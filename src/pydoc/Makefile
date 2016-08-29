@@ -50,7 +50,8 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pypl
 	pymakegeoidgriddh.md pycilmplusdh.md pycilmminusdh.md pycilmplusrhohdh.md \
 	pycilmminusrhohdh.md pybatohilmdh.md pybatohilmrhohdh.md pydowncontfilterma.md \
 	pydowndontfiltermc.md pynormalgravity.md pymakemaggriddh.md pyshmagpowerspectrum.md \
-	pyshmagpowerl.md pyshmtcouplingmatrix.md pyshmultitapermaskcse.md pyshmultitapermaskse.md
+	pyshmagpowerl.md pyshmtcouplingmatrix.md pyshmultitapermaskcse.md \
+	pyshmultitapermaskse.md pyshbiaskmask.md
 
 MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 pyplbar.1 pyplbar_d1.1 \
 	pyplon.1 pyplmon.1 pyplmon_d1.1 pyplon_d1.1 pyplmschmidt.1 pyplschmidt.1 pyplmschmidt_d1.1 \
@@ -76,7 +77,7 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 pyplbar
 	pycilmplusdh.1 pycilmminusdh.1 pycilmplusrhohdh.1 pycilmminusrhohdh.1 pybatohilmdh.1 \
 	pybatohilmrhohdh.1 pydowncontfilterma.1 pydowncontfiltermc.1 pynormalgravity.1 \
 	pymakemaggriddh.1 pyshmagpowerspectrum.1 pyshmagpowerl.1 pyshmtcouplingmatrix.1 \
-	pyshmultitapermaskcse.1 pyshmultitapermaskse.1)
+	pyshmultitapermaskcse.1 pyshmultitapermaskse.1 pyshbiaskmask.1)
 
 HTMLFILES_legendre =  $(addprefix $(WWWDIR)/, pyplmindex.html pyplmbar.html pyplmbar_d1.html pyplbar.html \
 	pyplbar_d1.html pyplon.html pyplmon.html pyplmon_d1.html pyplon_d1.html pyplmschmidt.html \
@@ -107,7 +108,7 @@ HTMLFILES_localized = $(addprefix $(WWWDIR)/, pyshmultitaperse.html \
 	pyshbiask.html pyshbiasadmitcorr.html pyshmtdebias.html pyshmtvaropt.html \
 	pyshsjkpg.html pyshreturntapersmap.html pycomputedmap.html pycurve2mask.html \
 	pyshbias.html pysphericalcapcoef.html pyshmtcouplingmatrix.html \
-	pyshmultitapermaskcse.html pyshmultitapermaskse.html)
+	pyshmultitapermaskcse.html pyshmultitapermaskse.html pyshbiaskmask.html)
 
 HTMLFILES_rotations = $(addprefix $(WWWDIR)/, pydjpi2.html pyshrotatecoef.html \
 	pyshrotaterealcoef.html)

@@ -58,10 +58,12 @@ make fortran-mp  # Open-MP Fortran routines
 
 #### Brew package manager (OSX) ####
 
-To install the Fortran 95, Python 2, and Python 3 components using the [brew](http://brew.sh/) package manager, enter
+To install the Fortran 95 component using the [brew](http://brew.sh/) package manager, enter
 ```
 brew tap shtools/shtools
 brew install shtools
+
+Optionally, add the options ```--with-openmp```, ```--with-python2```, or ```--with-python3``` to the last command.
 ```
 
 More installation instructions and options can be found in the [web documentation](https://shtools.ipgp.fr) and GitHub 
@@ -77,14 +79,14 @@ well as simple interfaces.
 
 To get started, check out the following Python tutorial notebooks:
 
-* [Introduction 1: A simple introduction to pyshtools: Grids and Coeffs](examples/notebooks/Introduction-1.ipynb)
-* [Introduction 2: A simple introduction to pyshtools: Localization windows and spectral analysis](examples/notebooks/Introduction-2.ipynb)
-* [tutorial 1: Simple Spherical Harmonic Expansions](examples/notebooks/tutorial_1.ipynb)
-* [tutorial 2: Localized Spectral Analysis on the Sphere](examples/notebooks/tutorial_2.ipynb)
-* [tutorial 3: The SHTOOLS Class Interface](examples/notebooks/tutorial_3.ipynb)
-* [tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem](examples/notebooks/tutorial_4.ipynb)
-* [tutorial 5: Multitaper Spectral Estimation - SHWindows Class Interface](examples/notebooks/tutorial_5.ipynb)
-* [tutorial 6: 3D Spherical Harmonic Plots](examples/notebooks/tutorial_6.ipynb)
+* Introduction 1: Grids and Spherical Harmonic Coefficients [\[ipynb\]](examples/notebooks/Introduction-1.ipynb)
+* Introduction 2: Localization Windows and Spectral Analysis [\[ipynb\]](examples/notebooks/Introduction-2.ipynb)
+* Tutorial 1: Simple Spherical Harmonic Expansions [\[ipynb\]](examples/notebooks/tutorial_1.ipynb)
+* Tutorial 2: Localized Spectral Analysis on the Sphere [\[ipynb\]](examples/notebooks/tutorial_2.ipynb)
+* Tutorial 3: The SHTOOLS Class Interface [\[ipynb\]](examples/notebooks/tutorial_3.ipynb)
+* Tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem [\[ipynb\]](examples/notebooks/tutorial_4.ipynb)
+* Tutorial 5: Multitaper Spectral Estimation - SHWindows Class Interface [\[ipynb\]](examples/notebooks/tutorial_5.ipynb)
+* Tutorial 6: 3D Spherical Harmonic Plots [\[ipynb\]](examples/notebooks/tutorial_6.ipynb)
 
 You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
 

@@ -33,6 +33,7 @@ from __future__ import print_function as _print_function
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
+import copy as _copy
 
 from . import _SHTOOLS as _shtools
 
@@ -74,7 +75,7 @@ class SHCoeffs(object):
                     phase conventions.
     normalization : The normalization of the coefficients: '4pi', 'ortho', or
                     'schmidt'.
-    csphse        : Defines whether the Condon-Shortley phase is used (1)
+    csphase       : Defines whether the Condon-Shortley phase is used (1)
                     or not (-1).
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
@@ -106,6 +107,8 @@ class SHCoeffs(object):
                             spectrum.
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
+    copy()                : Return a copy of the class instance.
+    tofile()              : Save raw spherical harmonic coefficients as a file.
     """
 
     def __init__(self):
@@ -118,7 +121,7 @@ class SHCoeffs(object):
 
     # ---- factory methods:
     @classmethod
-    def from_zeros(self, lmax, normalization='4pi', csphase=1, kind='real'):
+    def from_zeros(self, lmax, kind='real', normalization='4pi', csphase=1):
         """
         Initialize class with spherical harmonics set to zero from degree
         0 to lmax.
@@ -160,7 +163,7 @@ class SHCoeffs(object):
                 )
 
         nl = lmax + 1
-        if kind.lower == 'real':
+        if kind.lower() == 'real':
             coeffs = _np.zeros((2, nl, nl))
         else:
             coeffs = _np.zeros((2, nl, nl), dtype=complex)
@@ -288,50 +291,53 @@ class SHCoeffs(object):
                            csphase=csphase)
 
     @classmethod
-    def from_file(self, fname, lmax, format='shtools', kind='real',
+    def from_file(self, fname, lmax=None, format='shtools', kind='real',
                   normalization='4pi', csphase=1, **kwargs):
         """
-        Initialize the coefficients from input file.
+        Initialize the coefficients from a file.
 
         Usage
         -----
 
-        x = SHCoeffs.from_file(filename, lmax, [format, kind, normalization,
-                                                csphase, skip])
+        x = SHCoeffs.from_file(filename, lmax, [format='shtools', kind,
+                                                normalization, csphase, skip])
+        x = SHCoeffs.from_file(filename, [format='npy', kind, normalization,
+                                          csphase])
 
         Parameters
         ----------
 
         filename      : Name of the file, including path.
         lmax          : Maximum spherical harmonic degree to read from the
-                        file.
-        format        : 'shtools' (default).
+                        file when format is 'shtools'.
+        format        : 'shtools' (default) or 'npy'.
         kind          : Output 'real' (default) or 'complex' coefficients.
         normalization : '4pi' (default), 'ortho' or 'schmidt' for geodesy 4pi
                         normalized, orthonormalized, or Schmidt semi-normalized
                         coefficients, respectively.
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
-        skip          : Number of lines to skip at the beginning of the file.
+        skip          : Number of lines to skip at the beginning of the file
+                        when format is 'shtools'.
+        **kwargs      : Keyword arguments of numpy.load() when format is 'npy'.
 
         Description
         -----------
 
-        If format='shtools' spherical harmonic coefficients are read from an
-        ascii-formatted file. The maximum spherical harmonic degree that is
+        If format='shtools', spherical harmonic coefficients will be read from
+        an ascii-formatted file. The maximum spherical harmonic degree that is
         read is determined by the input value lmax. If the optional value skip
         is specified, parsing of the file will commence after the first skip
-        lines.
-
-        Each line of the file must contain
+        lines. For this format, each line of the file must contain
 
         l, m, cilm[0, l, m], cilm[1, l, m]
 
         For each value of increasing l, increasing from zero, all the angular
-        orders are listed in inceasing order, from 0 to l.
+        orders are listed in inceasing order, from 0 to l. For more
+        information, see SHRead.
 
-        For more information, see SHRead.
-
+        If format='npy', a binary numpy 'npy' file will be read using
+        numpy.load().
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
@@ -350,20 +356,230 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        if format.lower() == 'shtools' and lmax is None:
+            raise ValueError("lmax must be specified when format is 'shtools'")
+
         if format.lower() == 'shtools':
             if kind.lower() == 'real':
                 coeffs, lmax = _shtools.SHRead(fname, lmax, **kwargs)
             else:
                 raise NotImplementedError(
-                    "kind={:s} not yet implemented".format(repr(kind)))
+                    "Complex coefficients are not yet implemented for "
+                    "format='shtools'")
+        elif format.lower() == 'npy':
+            coeffs = _np.load(fname, **kwargs)
         else:
             raise NotImplementedError(
-                "format={:s} not yet implemented".format(repr(format)))
+                'format={:s} not yet implemented'.format(repr(format)))
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
+
+    def copy(self):
+        """Return a deep copy of the class instance."""
+        return _copy.deepcopy(self)
+
+    def tofile(self, filename, format='shtools', **kwargs):
+        """
+        Save raw spherical harmonic coefficients to a file.
+
+        Usage
+        -----
+
+        x.tofile(filename, [format, **kwargs])
+
+        Parameters
+        ----------
+
+        filename : Name of the output file.
+        format   : 'shtools' (default) or 'npy'.
+        **kwargs : Keyword arguments of numpy.save().
+        """
+        if format is 'shtools':
+            with open(filename, mode='w') as file:
+                for l in range(self.lmax+1):
+                    for m in range(l+1):
+                        file.write('{:d}, {:d}, {:e}, {:e}\n'
+                                   .format(l, m, self.coeffs[0, l, m],
+                                           self.coeffs[1, l, m]))
+        elif format is 'npy':
+            _np.save(filename, self.coeffs, **kwargs)
+        else:
+            raise NotImplementedError(
+                'format={:s} not yet implemented'.format(repr(format)))
+
+    # ---- operators ----
+    def __add__(self, other):
+        """
+        Add two similar sets of coefficients or coefficients and a scalar:
+        self + other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] +
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] + other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __radd__(self, other):
+        """
+        Add two similar sets of coefficients or coefficients and a scalar:
+        other + self.
+        """
+        return self.__add__(other)
+
+    def __sub__(self, other):
+        """
+        Subtract two similar sets of coefficients or coefficients and a scalar:
+        self-other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] -
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] - other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __rsub__(self, other):
+        """
+        Subtract two similar sets of coefficients or coefficients and a scalar:
+        other-self.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (other.coeffs[self.mask] -
+                                     self.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = other - self.coeffs[self.mask]
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __mul__(self, other):
+        """
+        Multiply two similar sets of coefficients or coefficients and a scalar:
+        self * other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] *
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] * other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __rmul__(self, other):
+        """
+        Multiply two similar sets of coefficients or coefficients and a scalar:
+        other * self.
+        """
+        return self.__mul__(other)
+
+    def __div__(self, other):
+        """
+        Divide two similar sets of coefficients or coefficients and a scalar
+        when __future__.division is not in effect: self / other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] /
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] / other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __truediv__(self, other):
+        """
+        Divide two similar sets of coefficients or coefficients and a scalar
+        when __future__.division is in effect: self / other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind):
+                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs[self.mask] = (self.coeffs[self.mask] /
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must be of ' +
+                                 'the same kind and have the same ' +
+                                 'normalization and csphase.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs[self.mask] = self.coeffs[self.mask] / other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
 
     # ---- Extract data ----
     def get_degrees(self):
@@ -1168,6 +1384,8 @@ class SHGrid(object):
     plot_3dsphere  : Plot the raw data on a 3d sphere.
     info()         : Print a summary of the data stored in the SHGrid
                      instance.
+    copy()         : Return a copy of the class instance.
+    tofile()       : Save gridded data to a text or binary file.
     """
 
     def __init__():
@@ -1180,7 +1398,7 @@ class SHGrid(object):
     @classmethod
     def from_array(self, array, grid='DH'):
         """
-        Initialize the grid of the class instance from an input array.
+        Initialize the class instance from an input array.
 
         Usage
         -----
@@ -1215,63 +1433,259 @@ class SHGrid(object):
                 return cls(array)
 
     @classmethod
-    def from_file(self, fname, kind='real', grid='DH'):
-        """Initialize the grid of the object from a file."""
-        raise NotImplementedError('Not implemented yet')
+    def from_file(self, fname, binary=False, **kwargs):
+        """
+        Initialize the class instance from gridded data in a file.
+
+        Usage
+        -----
+
+        x = SHGrid.from_file(fname, [binary, **kwargs])
+
+        Parameters
+        ----------
+
+        fname    : The filename containing the gridded data. For text files
+                   (default) the file is read using the numpy routine
+                   loadtxt(), whereas for binary files, the file is read using
+                   numpy.load(). The dimensions of the array must be
+                   nlon = nlat or nlon = 2 * nlat for Driscoll and Healy grids,
+                   or nlon = 2 * nlat -1 for Gauss-Legendre Quadrature grids.
+        binary   : If False (default), read a text file. If True, read a
+                   binary 'npy' file.
+        **kwargs : Keyword arguments of numpy.loadtxt() or numpy.load().
+        """
+        if binary is False:
+            data = _np.loadtxt(fname, **kwargs)
+        elif binary is True:
+            data = _np.load(fname, **kwargs)
+        else:
+            raise ValueError('binary must be True or False. '
+                             'Input value is {:s}'.format(binary))
+
+        if _np.iscomplexobj(data):
+            kind = 'complex'
+        else:
+            kind = 'real'
+
+        if (data.shape[1] == data.shape[0]) or (data.shape[1] ==
+                                                2 * data.shape[0]):
+            grid = 'DH'
+        elif data.shape[1] == 2 * data.shape[0] - 1:
+            grid = 'GLQ'
+        else:
+            raise ValueError('Input grid must be dimensioned as ' +
+                             '(nlat, nlon). For DH grids, nlon = nlat or ' +
+                             'nlon = 2 * nlat. For GLQ grids, nlon = ' +
+                             '2 * nlat - 1. Input dimensions are nlat = ' +
+                             '{:d}, nlon = {:d}'.format(data.shape[0],
+                                                        data.shape[1]))
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind) and cls.isgrid(grid):
+                return cls(data)
+
+    def copy(self):
+        """Return a deep copy of the class instance."""
+        return _copy.deepcopy(self)
+
+    def tofile(self, filename, binary=False, **kwargs):
+        """
+        Save gridded data to a file.
+
+        Usage
+        -----
+
+        x.tofile(filename, [binary, **kwargs])
+
+        Parameters
+        ----------
+
+        filename : Name of output file. For text files (default), the file will
+                   be saved automatically in gzip compressed format if the
+                   filename ends in .gz.
+        binary   : If False (default), save as text using numpy.savetxt(). If
+                   True, save as a 'npy' binary file using numpy.save().
+        **kwargs : Keyword arguments of numpy.savetxt() and numpy.save().
+        """
+        if binary is False:
+            _np.savetxt(filename, self.data, **kwargs)
+        elif binary is True:
+            _np.save(filename, self.data, **kwargs)
+        else:
+            raise ValueError('binary must be True or False. '
+                             'Input value is {:s}'.format(binary))
 
     # ---- operators ----
-    def __add__(self, grid):
-        """Add two similar grids."""
-        if self.grid == grid.grid and self.data.shape == grid.data.shape:
-            data = self.data + grid.data
+    def __add__(self, other):
+        """Add two similar grids or a grid and a scaler: self + other."""
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data + other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data + other
             return SHGrid.from_array(data, grid=self.grid)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
 
-    def __mul__(self, grid):
-        """Multiply two similar grids."""
-        if self.grid == grid.grid and self.data.shape == grid.data.shape:
-            data = self.data * grid.data
-            return SHGrid.from_array(data, grid=self.grid)
+    def __radd__(self, other):
+        """Add two similar grids or a grid and a scaler: self + other."""
+        return self.__add__(other)
 
-    def __sub__(self, grid):
-        """Subtract two similar grids."""
-        if self.grid == grid.grid and self.data.shape == grid.data.shape:
-            data = self.data * grid.data
+    def __sub__(self, other):
+        """Subtract two similar grids or a grid and a scaler: self - other."""
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data - other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data - other
             return SHGrid.from_array(data, grid=self.grid)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __rsub__(self, other):
+        """Subtract two similar grids or a grid and a scaler: other - self."""
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = other.data - self.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = other - self.data
+            return SHGrid.from_array(data, grid=self.grid)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __mul__(self, other):
+        """Multiply two similar grids or a grid and a scaler: self * other."""
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data * other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data * other
+            return SHGrid.from_array(data, grid=self.grid)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __rmul__(self, other):
+        """Multiply two similar grids or a grid and a scaler: other * self."""
+        return self.__mul__(other)
+
+    def __div__(self, grid):
+        """
+        Divide two similar grids or a grid and a scalar, when
+        __future__.division is not in effect.
+        """
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data / other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data / other
+            return SHGrid.from_array(data, grid=self.grid)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __truediv__(self, other):
+        """
+        Divide two similar grids or a grid and a scalar, when
+        __future__.division is in effect.
+        """
+        if isinstance(other, SHGrid):
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data / other.data
+                return SHGrid.from_array(data, grid=self.grid)
+            else:
+                raise ValueError('The two grids must be of the ' +
+                                 'same kind and have the same shape.')
+        elif _np.isscalar(other) is True:
+            data = self.data / other
+            return SHGrid.from_array(data, grid=self.grid)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
+    def __pow__(self, other):
+        """Raise a grid to a scalar power: pow(self, other)."""
+        if _np.isscalar(other) is True:
+            data = pow(self.data, other)
+            return SHGrid.from_array(data, grid=self.grid)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
 
     # ---- Extract grid properties ----
-    def get_lats(self):
+    def get_lats(self, degrees=True):
         """
-        Return the latitudes (in degrees) of each row of the gridded data.
+        Return the latitudes of each row of the gridded data.
 
         Usage
         -----
 
         lats = x.get_lats()
 
-        Returns
+        Parameters
         -------
 
-        lats : numpy array of size nlat containing the latitude (in degrees)
-               of each row of the gridded data.
+        lats    : numpy array of size nlat containing the latitude of each row
+                  of the gridded data.
+        degrees : If True (default), the output will be in degrees. If False,
+                  the output will be in radians.
         """
-        return self._get_lats()
+        if degrees is False:
+            return _np.radians(self._get_lats())
+        else:
+            return self._get_lats()
 
-    def get_lons(self):
+    def get_lons(self, degrees=True):
         """
-        Return the longitudes (in degrees) of each column of the gridded data.
+        Return the longitudes of each column of the gridded data.
 
         Usage
         -----
 
         lons = x.get_lon()
 
-        Returns
+        Parameters
         -------
 
-        lons : numpy array of size nlon containing the longitude (in degrees)
-               of each column of the gridded data.
+        lons    : numpy array of size nlon containing the longitude of each
+                  column of the gridded data.
+        degrees : If True (default), the output will be in degrees. If False,
+                  the output will be in radians.
         """
-        return self._get_lons()
+        if degrees is False:
+            return _np.radians(self._get_lons())
+        else:
+            return self._get_lons()
 
     def get_grid(self):
         """
@@ -1852,7 +2266,9 @@ class SHWindow(object):
     theta           : Angular radius of the spherical cap localization domain
                       (default in degrees).
     theta_degrees   : True (default) if theta is in degrees.
-    nwin            : Number of localization windows. Default is (lwin + 1)**2
+    nwin            : Number of localization windows. Default is (lwin + 1)**2.
+    nwinrot         : The number of best concentrated windows that were rotated
+                      and whose coefficients are stored in coeffs.
     clat, clon      : Latitude and longitude of the center of the rotated
                       spherical cap localization windows (default in degrees).
     coord_degrees   : True (default) if clat and clon are in degrees.
@@ -1899,6 +2315,7 @@ class SHWindow(object):
     plot_couplingmatrix() : Plot the multitaper coupling matrix.
     info()                : Print a summary of the data stored in the SHWindow
                             instance.
+    copy()         : Return a copy of the class instance.
     """
 
     def __init__(self):
@@ -1996,6 +2413,10 @@ class SHWindow(object):
         tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
                                                          ntapers=nwin)
         return SHWindowMask(tapers, eigenvalues, weights)
+
+    def copy(self):
+        """Return a deep copy of the class instance."""
+        return _copy.deepcopy(self)
 
     def get_degrees(self):
         """
@@ -2298,8 +2719,8 @@ class SHWindow(object):
 
     def get_biasedpowerspectrum(self, power, k, **kwargs):
         """
-        Calculate the multitaper (cross-)power spectrum expectation of function
-        localized by spherical cap windows.
+        Calculate the multitaper (cross-)power spectrum expectation of a
+        localized function.
 
         Usage
         -----
@@ -2350,18 +2771,17 @@ class SHWindow(object):
         nwin    : The number of best concentrated localization window power
                   spectra to return.
         """
-        nl = self.tapers.shape[0]
 
         if itaper is None:
             if nwin is None:
                 nwin = self.nwin
-            power = _np.zeros((nl, nwin))
+            power = _np.zeros((self.lwin+1, nwin))
 
             for iwin in range(nwin):
                 coeffs = self.get_coeffs(iwin)
                 power[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
         else:
-            power = _np.zeros((nl))
+            power = _np.zeros((self.lwin+1))
             coeffs = self.get_coeffs(itaper)
             power = _shtools.SHPowerSpectrum(coeffs)
 
@@ -2422,7 +2842,7 @@ class SHWindow(object):
         elif mode == 'valid':
             cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
                                                weights=weights)
-            return cmatrix[:lmax - self.lmax+1, :]
+            return cmatrix[:lmax - self.lwin+1, :]
         else:
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
@@ -2443,6 +2863,10 @@ class SHWindow(object):
         show   : If True (default), plot the image to the screen.
         fname  : If present, save the image to the file.
         """
+        if self.kind == 'cap':
+            if self.nwinrot is not None and self.nwinrot <= nwin:
+                nwin = self.nwinrot
+
         maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
@@ -2606,6 +3030,7 @@ class SHWindowCap(SHWindow):
         self.coord_degrees = coord_degrees
         self.dj_matrix = dj_matrix
         self.weights = weights
+        self.nwinrot = None
 
         if nwin is not None:
             self.nwin = nwin
@@ -2653,6 +3078,10 @@ class SHWindowCap(SHWindow):
         if self.coeffs is None:
             coeffs = _np.copy(self._taper2coeffs(itaper))
         else:
+            if itaper > self.nwinrot - 1:
+                raise ValueError('itaper must be less than or equal to ' +
+                                 'nwinrot - 1. itaper = {:d}, nwinrot = {:d}'
+                                 .format(itaper, self.nwinrot))
             coeffs = _shtools.SHVectorToCilm(self.coeffs[:, itaper])
 
         if normalization == 'schmidt':
@@ -2668,7 +3097,8 @@ class SHWindowCap(SHWindow):
 
         return coeffs
 
-    def rotate(self, clat, clon, coord_degrees=True, dj_matrix=None):
+    def rotate(self, clat, clon, coord_degrees=True, dj_matrix=None,
+               nwinrot=None):
         """"
         Rotate the spherical-cap windows centered on the north pole to clat
         and clon, and save the spherical harmonic coefficients in the
@@ -2688,6 +3118,8 @@ class SHWindowCap(SHWindow):
         coord_degrees : True (default) if clat and clon are in degrees.
         dj_matrix     : The djpi2 rotation matrix (default=None), computed
                         by a call to djpi2.
+        nwinrot       : The number of best concentrated windows to rotate.
+                        Default is to rotate all windows.
 
         Description
         -----------
@@ -2704,6 +3136,11 @@ class SHWindowCap(SHWindow):
         self.clon = clon
         self.coord_degrees = coord_degrees
 
+        if nwinrot is not None:
+            self.nwinrot = nwinrot
+        else:
+            self.nwinrot = self.nwin
+
         if self.coord_degrees:
             angles = _np.radians(_np.array([0., -(90. - clat), -clon]))
         else:
@@ -2716,7 +3153,7 @@ class SHWindowCap(SHWindow):
             else:
                 dj_matrix = self.dj_matrix
 
-        for i in range(self.nwin):
+        for i in range(self.nwinrot):
             if ((coord_degrees is True and clat == 90. and clon == 0.) or
                     (coord_degrees is False and clat == _np.pi/2. and
                      clon == 0.)):
@@ -2753,11 +3190,13 @@ class SHWindowCap(SHWindow):
             lmax = clm.lmax
 
         if (clat is not None and clon is not None and clat == self.clat and
-                clon == self.clon and coord_degrees is self.coord_degrees):
+                clon == self.clon and coord_degrees is self.coord_degrees and
+                k <= self.nwinrot):
             # use the already stored coeffs
             pass
         elif (clat is None and clon is None) and \
-                (self.clat is not None and self.clon is not None):
+                (self.clat is not None and self.clon is not None and
+                 k <= self.nwinrot):
             # use the already stored coeffs
             pass
         else:
@@ -2771,9 +3210,10 @@ class SHWindowCap(SHWindow):
                                  'clat = {:s}, clon = {:s}'
                                  .format(repr(clat), repr(clon)))
             if clat is None and clon is None:
-                self.rotate(clat=90., clon=0., coord_degrees=True)
+                self.rotate(clat=90., clon=0., coord_degrees=True, nwinrot=k)
             else:
-                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees)
+                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees,
+                            nwinrot=k)
 
         sh = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
 
@@ -2794,11 +3234,13 @@ class SHWindowCap(SHWindow):
             lmax = min(clm.lmax, slm.lmax)
 
         if (clat is not None and clon is not None and clat == self.clat and
-                clon == self.clon and coord_degrees is self.coord_degrees):
+                clon == self.clon and coord_degrees is self.coord_degrees and
+                k <= self.nwinrot):
             # use the already stored coeffs
             pass
         elif (clat is None and clon is None) and \
-                (self.clat is not None and self.clon is not None):
+                (self.clat is not None and self.clon is not None and
+                 k <= self.nwinrot):
             # use the already stored coeffs
             pass
         else:
@@ -2812,9 +3254,10 @@ class SHWindowCap(SHWindow):
                                  'clat = {:s}, clon = {:s}'
                                  .format(repr(clat), repr(clon)))
             if clat is None and clon is None:
-                self.rotate(clat=90., clon=0., coord_degrees=True)
+                self.rotate(clat=90., clon=0., coord_degrees=True, nwinrot=k)
             else:
-                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees)\
+                self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees,
+                            nwinrot=k)
 
         sh1 = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
         sh2 = slm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
@@ -2862,6 +3305,8 @@ class SHWindowCap(SHWindow):
                 print('clon = {:f} radians\n'.format(self.clon), end='')
         else:
             print('clon is not specified')
+
+        print('nwinrot = {:s}'.format(repr(self.nwinrot)))
 
         if self.dj_matrix is not None:
             print('dj_matrix is stored')
@@ -2973,7 +3418,8 @@ class SHWindowMask(SHWindow):
         Calculate the multitaper (cross-)power spectrum expectation of function
         localized by arbitary windows.
         """
-        raise NotImplementedError('Not implemented yet.')
+        outspectrum = _shtools.SHBiasKMask(self.tapers, power, k=k, **kwargs)
+        return outspectrum
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""

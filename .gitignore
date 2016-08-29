@@ -6,6 +6,7 @@
 *.so.dSYM/
 NONE/
 build/
+dist/
 pyshtools/doc/
 examples/notebooks/.ipynb_checkpoints/
 pyshtools.egg-info/

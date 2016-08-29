@@ -43,8 +43,8 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
 !           Tapers      Column vectors contain the spherical harmonic
 !                       coefficients, packed according to the scheme described
 !                       in YilmIndexVector. The dimension of this array is
-!                       (lmax+1)**2 by (lmax+1)**2, or (lmax+1)**2 by NTapers if
-!                       NTapers is present.
+!                       (lmax+1)**2 by (lmax+1)**2, or (lmax+1)**2 by ntapers if
+!                       ntapers is present.
 !           Eigenvalues A 1-dimensional vector containing the eigenvalues
 !                       corresponding to the columns of Tapers, dimensioned as
 !                       (lmax+1)**2.

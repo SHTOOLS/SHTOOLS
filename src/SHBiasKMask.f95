@@ -1,9 +1,9 @@
-subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
-                   taper_wt, save_cg)
+subroutine SHBiasKMask(tapers, lwin, k, incspectra, ldata, outcspectra, &
+                       taper_wt, save_cg)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the expected multitaper windowed (cross-)power
-!   spectra using the first K tapers of the spherical-cap concentration problem
+!   spectra using the first K tapers of the general concentration problem
 !   for a given input (cross-)power spectrum. Note that this routine makes the
 !   assumption that the known spectrum can be described as a random variable.
 !   If the input spectrum is a cross-power spectra, then it is assumed that the
@@ -14,11 +14,11 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
 !   Calling Parameteters
 !
 !       IN
-!           tapers      The coefficients of the tapers (lwin+1, >= k)
-!                       corresponding to the spherical cap concentration
+!           tapers      The coefficients of the windows ((lwin+1)**2, >= k)
+!                       corresponding to the general concentration
 !                       problem, where each column corresponds to the
-!                       coefficients for a given value of m. Note the the exact
-!                       value of m is not important for this routine.
+!                       spherical harmonic coefficients packed according to
+!                       SHCilmToVector.
 !           lwin        Maximum spherical harmonic degree of the window
 !                       coefficients.
 !           incspectra  Knonw input (cross-)power spectrum as a function of
@@ -55,25 +55,26 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
     integer, intent(in) :: lwin, ldata, k
     real*8, intent(in), optional :: taper_wt(:)
     integer, intent(in), optional :: save_cg
-    integer :: l, i, j, lmax, imin, imax, n, astat
+    integer :: l, i, j, lmax, imin, imax, n, astat, cstart, cend
     real*8 :: wig(2*lwin+ldata+1)
     real*8, allocatable, save :: cg2(:,:,:)
+    real*8, allocatable :: shh(:,:)
 
 !$OMP   threadprivate(cg2)
 
     lmax = ldata + lwin
     outcspectra = 0.0d0
 
-    if (size(tapers(:,1)) < lwin+1 .or. size(tapers(1,:)) < k) then
-        print*, "Error --- SHBiasK"
-        print*, "TAPERS must be dimensioned as (LWIN+1, K) where " // &
+    if (size(tapers(:,1)) < (lwin+1)**2 .or. size(tapers(1,:)) < k) then
+        print*, "Error --- SHBiasKMask"
+        print*, "TAPERS must be dimensioned as ((LWIN+1)**2, K) where " // &
                 "LWIN and K are ", LWIN, K
         print*, "Input array is dimensioned ", size(tapers(:,1)), &
                 size(tapers(1,:))
         stop
 
     else if (size(incspectra) < ldata +1) then
-        print*, "Error --- SHBiasK"
+        print*, "Error --- SHBiasKMask"
         print*, "INCSPECTRA must be dimensioned as (LDATA+1) where " // &
                 "LDATA is ", ldata
         print*, "Input array is dimensioned ", size(incspectra)
@@ -83,14 +84,14 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
 
     if (present(taper_wt)) then
         if (size(taper_wt) < k) then 
-            print*, "Error --- SHBiasK"
+            print*, "Error --- SHBiasKMask"
             print*, "TAPER_WT must be dimensioned as (K) " // &
                     "where K is ", k
             print*, "Input array is dimensioned as ", size(taper_wt)
             stop
 
         else if (sum(taper_wt(1:k)) /= 1.0d0) then
-            print*, "Error --- SHBiasK"
+            print*, "Error --- SHBiasKMask"
             print*, "TAPER_WT must sum to unity."
             print*, "Input array sums to ", sum(taper_wt(1:k))
             stop
@@ -101,7 +102,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
 
     if (present(save_cg)) then
         if (save_cg /= 1 .and. save_cg /= -1 .and. save_cg /= 0) then
-            print*, "Error --- SHBiasK"
+            print*, "Error --- SHBiasKMask"
             print*, "SAVE_CG must be 1 (to save the Clebsch-Gordon " // &
                     "coefficients), -1 (to deallocate the memory)" 
             print*, "or 0 (to do nothing)."
@@ -111,6 +112,31 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
         end if
 
     endif
+
+    !--------------------------------------------------------------------------
+    !
+    !    Calculate power spectra of localization windows. The coefficients
+    !    in each column of TAPERS is ordered according to l**2+(i-1)*l+m+1.
+    !
+    !--------------------------------------------------------------------------
+
+    allocate (shh(lwin+1, k), stat = astat)
+
+    if (astat /= 0) then
+        print*, "Error --- SHBiasKMask"
+        print*, "Problem allocating internal array SHH"
+        stop
+    end if
+
+    do l = 0, lwin
+        cstart = l**2 + 1
+        cend = l**2 + 2*l + 1
+
+        do n = 1, k
+            shh(l+1, n) = sum(tapers(cstart:cend, n)**2)
+        enddo
+
+    end do
 
     !--------------------------------------------------------------------------
     !
@@ -131,7 +157,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
                         do i = imin, min(imax,ldata), 2
                             do n = 1, k
                                 outcspectra(l+1) = outcspectra(l+1) &
-                                        + taper_wt(n) * tapers(j+1,n)**2 * &
+                                        + taper_wt(n) * shh(j+1,n) * &
                                         incspectra(i+1) * (2.0d0*l+1.0d0) &
                                         * wig(i-imin+1)**2
                             end do
@@ -150,7 +176,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
                         do i = imin, min(imax,ldata), 2
                             do n = 1, k
                                 outcspectra(l+1) = outcspectra(l+1) &
-                                        + tapers(j+1,n)**2 * incspectra(i+1) &
+                                        + shh(j+1,n) * incspectra(i+1) &
                                         * (2.0d0*l+1.0d0) * wig(i-imin+1)**2
                             end do
 
@@ -176,7 +202,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
             allocate (cg2(lmax+1, lwin+1, lmax+lwin+1), stat = astat)
 
             if (astat /= 0) then
-                print*, "Error --- SHBiasK"
+                print*, "Error --- SHBiasKMask"
                 print*, "Problem allocating internal array CG2"
                 stop
             end if
@@ -203,7 +229,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
                     do i = imin, min(imax,ldata), 2
                         do n = 1, k
                             outcspectra(l+1) = outcspectra(l+1) + taper_wt(n) &
-                                    * tapers(j+1,n)**2 * &
+                                    * shh(j+1,n) * &
                                     incspectra(i+1) * cg2(l+1,j+1,i-imin+1)
                         end do
 
@@ -222,7 +248,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
                     do i = imin, min(imax,ldata), 2
                         do n = 1, k
                             outcspectra(l+1) = outcspectra(l+1) &
-                                    + tapers(j+1,n)**2 * &
+                                    + shh(j+1,n) * &
                                     incspectra(i+1) * cg2(l+1,j+1,i-imin+1)
                         end do
 
@@ -245,7 +271,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
                     do i = imin, min(imax,ldata), 2
                         do n = 1, k
                             outcspectra(l+1) = outcspectra(l+1) + taper_wt(n) &
-                                    * tapers(j+1,n)**2 * &
+                                    * shh(j+1,n) * &
                                     incspectra(i+1) * (2.0d0*l+1.0d0) &
                                     * wig(i-imin+1)**2
                         end do
@@ -264,7 +290,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
                     do i = imin, min(imax,ldata), 2
                         do n = 1, k
                             outcspectra(l+1) = outcspectra(l+1) &
-                                + tapers(j+1,n)**2 * &
+                                + shh(j+1,n) * &
                                 incspectra(i+1) * (2.0d0*l+1.0d0) &
                                 * wig(i-imin+1)**2
                         end do
@@ -281,4 +307,6 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
 
     end if
 
-end subroutine SHBiasK
+    deallocate (shh)
+
+end subroutine SHBiasKMask

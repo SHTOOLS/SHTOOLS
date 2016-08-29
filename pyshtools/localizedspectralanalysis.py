@@ -38,12 +38,15 @@ SHSjkPG                Calculate the expectation of the product of two
 
 Localization windows (arbitrary domain)
 ---------------------------------------
+SHReturnTapersMap      Calculate the eigenfunctions of the concentration
+                       problem for an arbitrary concentration region.
 SHMultiTaperMaskSE     Perform a localized multitaper spectral analysis using
                        arbitrary windows.
 SHMultiTaperMaskCSE    Perform a localized multitaper cross-spectral analysis
                        using arbitrary windows.
-SHReturnTapersMap      Calculate the eigenfunctions of the concentration
-                       problem for an arbitrary concentration region.
+SHBiasKMask            Calculate the multitaper (cross-)power spectrum
+                       expectation of a function localized by arbitrary
+                       windows derived from a mask.
 ComputeDMap            Compute the space-concentration kernel of a mask
                        defined on the sphere.
 Curve2Mask             Given a set of latitude and longitude coordinates
@@ -81,6 +84,7 @@ from ._SHTOOLS import SHSjkPG
 from ._SHTOOLS import SHMultiTaperMaskSE
 from ._SHTOOLS import SHMultiTaperMaskCSE
 from ._SHTOOLS import SHReturnTapersMap
+from ._SHTOOLS import SHBiasKMask
 from ._SHTOOLS import ComputeDMap
 from ._SHTOOLS import Curve2Mask
 from ._SHTOOLS import SHBias

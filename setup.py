@@ -231,6 +231,7 @@ metadata = dict(
     url='http://shtools.ipgp.fr',
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
     author='The SHTOOLS developers',
+    author_email="mark.a.wieczorek@gmail.com",
     license='BSD',
     keywords=KEYWORDS,
     requires=INSTALL_REQUIRES,

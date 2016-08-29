@@ -97,6 +97,12 @@
 #	make clean-python-tests
 #		Detele all compiled python tests
 #
+#	make notebooks
+#		Detele all compiled python tests
+#
+#	make clean-notebooks
+#		Detele all compiled python tests
+#
 #	make doc
 #		Create the man and html-man pages from input Markdown files.
 #		These are PRE-MADE in the distribution. To remake these
@@ -136,6 +142,7 @@ LIBDIR = lib
 INCDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
+NBDIR = examples/notebooks
 
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
@@ -200,7 +207,7 @@ endif
 	run-python2-tests run-python3-tests install-fortran install-python\
 	install-python2 install-python3 uninstall fortran-mp clean\
 	clean-fortran-tests clean-python-tests clean-python2 clean-python3\
-	clean-libs 
+	clean-libs clean-notebooks notebooks
 
 
 all: fortran python
@@ -381,7 +388,12 @@ remove-doc:
 	@echo
 	@echo REMOVED MAN AND HTML-MAN FILES
 
-clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs
+notebooks:
+	@$(MAKE) -C $(NBDIR) -f Makefile
+	@echo NOTEBOOK HTML FILES SUCCESSFULLY CREATED
+
+clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 /
+	clean-libs clean-notebooks
 
 clean-fortran-tests:
 	$(MAKE) -C $(FEXDIR) -f Makefile clean
@@ -425,11 +437,17 @@ clean-libs:
 	-rm -rf build
 	-rm -rf pyshtools.egg-info
 	-rm -f src/_SHTOOLS-f2pywrappers.f src/_SHTOOLSmodule.c
+	-rm -f dist
 	@echo
 	@echo REMOVED LIB, MODULE, OBJECT FILES, COMPILED PYTHON FILES AND TESTS
 	@echo
 	@echo \*\*\* If you installed pyshtools using \"pip install -e .\" you should
 	@echo \*\*\* also execute \"pip uninstall pyshtools\".
+
+clean-notebooks:
+	$(MAKE) -C $(NBDIR) -f Makefile clean
+	@echo
+	@echo REMOVED NOTEBOOK HTML FILES
 
 fortran-tests: fortran
 	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
