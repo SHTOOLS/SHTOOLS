@@ -50,6 +50,7 @@ install:
   - pip install --no-deps .  
 
 script:
+  - make notebooks
   - mkdir empty
   - cd empty
   - python -c "import pyshtools"
