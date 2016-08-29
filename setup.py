@@ -30,6 +30,8 @@ try:
     import pypandoc
     long_description = pypandoc.convert('README.md', 'rst')
 except(IOError, ImportError):
+    print('no pandoc installed. Careful, pypi description will not be '
+          'formatted correctly.')
     long_description = open('README.md').read()
 
 
@@ -57,6 +59,7 @@ def get_version():
         # PEP440 compatibility
         if '-' in git_version:
             # increase version by 0.1 if any new revision exists in repo
+            print('increasing version number {}'.format(git_version))
             version = '{:.1f}'.format(float(version) + 0.1)
             git_revision = check_output(['git', 'rev-parse', 'HEAD'])
             git_revision = git_revision.strip().decode('ascii')
