@@ -13,12 +13,12 @@ def example():
     degrees[0] = np.inf
     power = degrees**(-1)
 
-    clm1 = pyshtools.SHCoeffs.from_random(power, phaseonly=False)
-    clm2 = pyshtools.SHCoeffs.from_random(power, phaseonly=True)
+    clm1 = pyshtools.SHCoeffs.from_random(power, exact_power=False)
+    clm2 = pyshtools.SHCoeffs.from_random(power, exact_power=True)
 
     fig, ax = plt.subplots()
-    ax.plot(clm1.get_powerperdegree(), label='Gaussian coefficients')
-    ax.plot(clm2.get_powerperdegree(), label='Random phase coefficients')
+    ax.plot(clm1.get_powerperdegree(), label='Normal distributed power')
+    ax.plot(clm2.get_powerperdegree(), label='Exact power')
     ax.set(xscale='log', yscale='log', xlabel='degree l',
            ylabel='power per degree l')
     ax.grid(which='both')

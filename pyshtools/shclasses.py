@@ -220,15 +220,14 @@ class SHCoeffs(object):
 
     @classmethod
     def from_random(self, power, kind='real', normalization='4pi', csphase=1,
-                    phaseonly=False):
+                    exact_power=False):
         """
         Initialize the coefficients as random variables.
 
-        This routine picks random coefficients using the function
-        np.random.normal. The variance of the Gaussian distribution is set to
-        the given input power divided by the number of coefficients at degree
-        l. The output coefficient power can be fixed exactly using the keyword
-        phaseonly.
+        This routine picks random coefficients from a Normal Distribution.
+        The variance of the Normal Distribution is set to the given input power
+        divided by the number of coefficients at degree l. The output
+        coefficient power can be fixed exactly using the keyword exact_power.
 
         Usage
         -----
@@ -247,9 +246,11 @@ class SHCoeffs(object):
                         coefficients, respectively.
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
-        phaseonly     : The total variance of the coefficients is exactly set
-                        to the input power. This means that only the phase of
-                        the coefficients is random and their power is fixed
+        exact_power   : The total variance of the coefficients is exactly set
+                        to the input power. This means that only the
+                        distribution of power at degree l amongst coefficients
+                        with different m is random but their total power is
+                        fixed.
         """
         # check if all arguments are correct
         if type(normalization) != str:
@@ -281,17 +282,21 @@ class SHCoeffs(object):
 
         if kind.lower() == 'real':
             coeffs = _np.random.normal(size=(2, nl, nl))
-            if phaseonly:
+            if exact_power:
                 power_per_lm = _shtools.SHPowerSpectrumDensity(coeffs)
-                power = power / (power_per_lm + 1e-50)
+                with _np.errstate(divide='ignore', invalid='ignore'):
+                    power = _np.true_divide(power, power_per_lm)
+                    power[~_np.isfinite(power)] = 0  # -inf inf NaN
 
         elif kind.lower() == 'complex':
             # - need to divide by sqrt as there are two terms for each coeff.
             coeffs = (_np.random.normal(size=(2, nl, nl)) +
                       1j * _np.random.normal(size=(2, nl, nl))) / _np.sqrt(2.)
-            if phaseonly:
+            if exact_power:
                 power_per_lm = _shtools.SHPowerSpectrumC(coeffs)
-                power = power / (power_per_lm + 1e-50)
+                with _np.errstate(divide='ignore', invalid='ignore'):
+                    power = _np.true_divide(power, power_per_lm)
+                    power[~_np.isfinite(power)] = 0  # -inf inf NaN
 
         if normalization.lower() == '4pi':
             coeffs *= _np.sqrt(
