@@ -53,9 +53,9 @@ install:
 
 script:
   - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
-      make notebooks2
+      make notebooks2;
     else
-      make notebooks3
+      make notebooks3;
     fi
   - mkdir empty
   - cd empty
