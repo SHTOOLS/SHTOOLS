@@ -40,31 +40,28 @@ brew install fftw --with-fortran
 ```
 
 #### Python Library ####
-[Download](https://github.com/SHTOOLS/SHTOOLS/zipball/master) or clone the SHTOOLS repository. Enter the SHTOOLS folder that contains the file ```setup.py```, and then execute one of the following commands:
+```bash
+pip install pyshtools
+```
+Or, to install a developer version, [download](https://github.com/SHTOOLS/SHTOOLS/zipball/master) or clone the SHTOOLS repository, enter the SHTOOLS folder and then execute one of the following commands:
 ```bash
 pip install .  # installs into the active python environment lib folder
 pip install -v -e .  # installs into the SHTOOLS/pyshtools folder and links to the active python environment
 ```
 
-#### Fortran Library and Manual Installation ####
-To install the Fortran 95 library or compile the Python 2 and Python 3 components manually
-enter one of the following
-```
+#### Fortran Library ####
+To install the Fortran 95 library, enter one of the following
+```bash
 make fortran
-make python2
-make python3
 make fortran-mp  # Open-MP Fortran routines
 ```
 
-#### Brew package manager (OSX) ####
-
-To install the Fortran 95 component using the [brew](http://brew.sh/) package manager, enter
-```
+Or, with OSX, use the [brew](http://brew.sh/) package manager:
+```bash
 brew tap shtools/shtools
 brew install shtools
-
-Optionally, add the options ```--with-openmp```, ```--with-python2```, or ```--with-python3``` to the last command.
 ```
+To also install the OpenMP components, add ```--with-openmp``` to the last command.
 
 More installation instructions and options can be found in the [web documentation](https://shtools.ipgp.fr) and GitHub 
 [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki).
