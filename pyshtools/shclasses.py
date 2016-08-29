@@ -232,21 +232,21 @@ class SHCoeffs(object):
         Usage
         -----
 
-        x = SHCoeffs.from_random(power, [kind, normalization, csphase])
+        x = SHCoeffs.from_random(power, [kind, normalization, csphase, exact_power])
 
         Parameters
         ----------
 
         power         : numpy array of size (lmax+1) that specifies the power
                         per degree l of the random coefficients. This is
-                        usually the expected power
+                        usually the expected power.
         kind          : 'real' (default) or 'complex' output coefficients.
         normalization : '4pi' (default), 'ortho' or 'schmidt' for geodesy 4pi
                         normalized, orthonormalized, or Schmidt semi-normalized
                         coefficients, respectively.
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
-        exact_power   : The total variance of the coefficients is exactly set
+        exact_power   : The total variance of the coefficients is set exactly
                         to the input power. This means that only the
                         distribution of power at degree l amongst coefficients
                         with different m is random but their total power is
@@ -289,7 +289,7 @@ class SHCoeffs(object):
                     power[~_np.isfinite(power)] = 0  # -inf inf NaN
 
         elif kind.lower() == 'complex':
-            # - need to divide by sqrt as there are two terms for each coeff.
+            # - need to divide by sqrt 2 as there are two terms for each coeff.
             coeffs = (_np.random.normal(size=(2, nl, nl)) +
                       1j * _np.random.normal(size=(2, nl, nl))) / _np.sqrt(2.)
             if exact_power:
