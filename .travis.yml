@@ -47,6 +47,7 @@ install:
         scipy
         matplotlib
         jupyter
+  - conda upgrade nbconvert
   - source activate test-environment
   - pip install --no-deps .  
 
