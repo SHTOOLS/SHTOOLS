@@ -30,11 +30,23 @@ try:
     import pypandoc
     long_description = pypandoc.convert('README.md', 'rst')
 except(IOError, ImportError):
+    print('no pandoc installed. Careful, pypi description will not be '
+          'formatted correctly.')
     long_description = open('README.md').read()
+
+
+# This flag has to be True if the version number indicated in the file
+# VERSION has already been released and to False if this is a development
+# version of a future release.
+ISRELEASED = False
 
 
 def get_version():
     """Get version from git and VERSION file.
+
+    In case that the version is not tagged in git, this function appends
+    .post0+commit if the version has been released and .dev0+commit if the
+    version has not been released yet.
 
     Derived from: https://github.com/Changaco/version.py
     """
@@ -56,13 +68,26 @@ def get_version():
 
         # PEP440 compatibility
         if '-' in git_version:
-            # increase version by 0.1 if any new revision exists in repo
-            version = '{:.1f}'.format(float(version) + 0.1)
+            # check that the version string is a floating number
+            try:
+                version = '{:.1f}'.format(float(version))
+            except ValueError:
+                msg = 'VERSION string should be floating number'
+                raise ValueError(msg)
             git_revision = check_output(['git', 'rev-parse', 'HEAD'])
             git_revision = git_revision.strip().decode('ascii')
-            version += '.dev0+' + git_revision[:7]
+            # add post0 if the version is released
+            # otherwise add dev0 if the version is not yet released
+            if ISRELEASED:
+                version += '.post0+' + git_revision[:7]
+            else:
+                version += '.dev0+' + git_revision[:7]
 
     return version
+
+
+VERSION = get_version()
+print('INSTALLING SHTOOLS {}'.format(VERSION))
 
 
 # Custom Builder
@@ -224,8 +249,7 @@ def configuration(parent_package='', top_path=None):
 
 metadata = dict(
     name='pyshtools',
-    version=get_version(),
-    # version='3.3.2',  # this line is only for testing
+    version=VERSION,
     description='SHTOOLS - Tools for working with spherical harmonics',
     long_description=long_description,
     url='http://shtools.ipgp.fr',
