@@ -35,6 +35,9 @@ except(IOError, ImportError):
     long_description = open('README.md').read()
 
 
+ISRELEASED = False
+
+
 def get_version():
     """Get version from git and VERSION file.
 
@@ -58,13 +61,20 @@ def get_version():
 
         # PEP440 compatibility
         if '-' in git_version:
-            # increase version by 0.1 if any new revision exists in repo
-            # and add .dev to the end
-            # This only works with two number version strings
-            version = '{:.1f}'.format(float(version) + 0.1)
+            # check that the version string is a floating number
+            try:
+                version = '{:.1f}'.format(float(version))
+            except ValueError:
+                msg = 'VERSION string should be floating number'
+                raise ValueError(msg)
             git_revision = check_output(['git', 'rev-parse', 'HEAD'])
             git_revision = git_revision.strip().decode('ascii')
-            version += '.dev0+' + git_revision[:7]
+            # add post0 if the version is released
+            # otherwise add dev0 if the version is not yet released
+            if ISRELEASED:
+                version += '.post0+' + git_revision[:7]
+            else:
+                version += '.dev0+' + git_revision[:7]
 
     return version
 
