@@ -34,6 +34,22 @@
 
 	<h1>Version History</h1>
 
+	<h2>Version 3.4 (August 30, 2016)</h2>
+	<ul>
+		<li>Add pyshtools to PyPI repository. Can now be installed using <tt>pip install pyshtools</tt>.</li>
+		<li>Add new function <tt>SHBiasKMask</tt> which is the arbitrary window counterpart to the spherical cap window <tt>SHBiasK</tt>.</li>
+		<li>Add <tt>get_biasedpowerspectrum()</tt> method to <tt>SHWindows</tt> for arbitrary windows.</li>
+		<li>Add <tt>copy()</tt> method to all classes, which returns a deep copy of the instance.</li>
+		<li>Add <tt>__sub__</tt>, <tt>__add__</tt>, <tt>__rsub__</tt>, <tt>__radd__</tt>, <tt>__mul__</tt>, <tt>__div__</tt>, <tt>__truediv__</tt>, and <tt>__pow__</tt> operators for two sets of coefficient or grid classes, or one coefficient or grid class and a scalar.</li>
+		<li>Add <tt>nwinrot</tt> option when rotating spherical cap windows in <tt>SHWindow</tt> that will rotate only the first <tt>nwinrot</tt> windows.</li>
+		<li>Add degrees option to <tt>get_lats()</tt> and <tt>get_lons()</tt> methods.</li>
+		<li>Add the constructor <tt>from_file()</tt> to initialize an <tt>SHGrid</tt> with a numpy formatted data file. Add option to read coeffs and grids from a numpy formatted binary file. Add <tt>tofile()</tt> methods to output raw grid and coefficient data as either text or binary formatted files.</li>
+		<li>Update Intro 1 notebook and add example to Intro notebook 2 showing how to use arbitrary localization windows.</li>
+		<li>Convert notebooks to html and add links to web documentation.</li>
+		<li>Add option <tt>fixed_power</tt> to <tt>SHCoeffs.from_random()</tt> method to generate random coefficients that fit exactly the expected power spectrum.</li>
+		<li>Add Earth topography coefficients referenced to mean sea level to the example files, expanded to degree 300: srtmp300.msl.</li>
+	</ul>
+
 	<h2>Version 3.3 (August 11, 2016)</h2>
 	<ul>
 		<li>Added full support for Python 3.</li>
@@ -51,7 +67,6 @@
 		<li>Minor bug fix to the scripts that create the unix <tt>man</tt> documentation.</li>
 		<li>Add Python notebook tutorials.</li>
 		<li>Created an SHTOOLS development fund, funded by bitcoin donations.</li>
-
 	</ul>
 
 	<h2>Version 3.2 (June 20, 2016)</h2>
