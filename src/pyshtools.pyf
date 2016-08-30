@@ -934,6 +934,23 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin+1
         end subroutine SHBiasK
 
+        subroutine SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
+            fortranname pyshbiaskmask
+            real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+            integer, optional,intent(in),depend(tapers_d0) :: lwin = sqrt(tapers_d0)-1
+            integer, optional,intent(in),depend(tapers_d1) :: k = tapers_d1
+            real*8 dimension(incspectra_d0),intent(in) :: incspectra
+            integer, optional,intent(in),depend(incspectra_d0) :: ldata = incspectra_d0-1
+            real*8 dimension(outcspectra_d0),intent(out) :: outcspectra
+            real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
+            integer, optional,intent(in) :: save_cg = 0
+            integer, optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0=tapers_d1
+            integer, optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers),intent(hide) :: tapers_d0=shape(tapers,0)
+            integer, optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers),intent(hide) :: tapers_d1=shape(tapers,1)
+            integer, optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra),intent(hide) :: incspectra_d0=len(incspectra)
+            integer, optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin+1
+        end subroutine SHBiasKMask
+
         subroutine SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,k,lat,lon,taper_wt,norm,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,tapers_d0,tapers_d1,mtse_d0,sd_d0)
             fortranname pyshmultitaperse
             real*8 dimension(mtse_d0),intent(out) :: mtse

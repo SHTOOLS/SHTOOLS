@@ -97,6 +97,12 @@
 #	make clean-python-tests
 #		Detele all compiled python tests
 #
+#	make notebooks
+#		Detele all compiled python tests
+#
+#	make clean-notebooks
+#		Detele all compiled python tests
+#
 #	make doc
 #		Create the man and html-man pages from input Markdown files.
 #		These are PRE-MADE in the distribution. To remake these
@@ -109,7 +115,7 @@
 #
 #####################################################################################
 
-VERSION = 3.3
+VERSION = 3.4
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
@@ -119,6 +125,8 @@ F2PY3 = f2py3
 PYTHON = python
 PYTHON3 = python3
 PYTHON_VERSION = all
+JUPYTER = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python2"
+JUPYTER3 = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python3"
 
 SYSLIBPATH = /usr/local/lib
 
@@ -136,6 +144,7 @@ LIBDIR = lib
 INCDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
+NBDIR = examples/notebooks
 
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
@@ -200,7 +209,7 @@ endif
 	run-python2-tests run-python3-tests install-fortran install-python\
 	install-python2 install-python3 uninstall fortran-mp clean\
 	clean-fortran-tests clean-python-tests clean-python2 clean-python3\
-	clean-libs 
+	clean-libs clean-notebooks notebooks notebooks2 notebooks3
 
 
 all: fortran python
@@ -240,14 +249,17 @@ ifeq ($(PYTHON_VERSION),all)
 python: python2 python3
 install-python: install-python2 install-python3
 python-tests: python2-tests python3-tests
+notebooks: notebooks3 notebooks2
 else ifeq ($(PYTHON_VERSION),2)
 python: python2
 install-python: install-python2
 python-tests: python2-tests
+notebooks: notebooks2
 else ifeq ($(PYTHON_VERSION),3)
 python: python3
 install-python: install-python3
 python-tests: python3-tests
+notebooks: notebooks3
 else
 $(error $(PYTHON_VERSION) is unsupported.)
 endif
@@ -381,6 +393,14 @@ remove-doc:
 	@echo
 	@echo REMOVED MAN AND HTML-MAN FILES
 
+notebooks2:
+	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER)
+	@echo NOTEBOOK HTML FILES SUCCESSFULLY CREATED
+
+notebooks3:
+	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER3)
+	@echo NOTEBOOK HTML FILES SUCCESSFULLY CREATED
+
 clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs
 
 clean-fortran-tests:
@@ -425,11 +445,17 @@ clean-libs:
 	-rm -rf build
 	-rm -rf pyshtools.egg-info
 	-rm -f src/_SHTOOLS-f2pywrappers.f src/_SHTOOLSmodule.c
+	-rm -f dist
 	@echo
 	@echo REMOVED LIB, MODULE, OBJECT FILES, COMPILED PYTHON FILES AND TESTS
 	@echo
 	@echo \*\*\* If you installed pyshtools using \"pip install -e .\" you should
 	@echo \*\*\* also execute \"pip uninstall pyshtools\".
+
+clean-notebooks:
+	$(MAKE) -C $(NBDIR) -f Makefile clean
+	@echo
+	@echo REMOVED NOTEBOOK HTML FILES
 
 fortran-tests: fortran
 	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"

@@ -48,7 +48,7 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md plbar_d
 	cilmminus.md cilmplusrhoh.md cilmminusrhoh.md batohilm.md batohilmrhoh.md \
 	downcontfilterma.md downcontfiltermc.md normalgravity.md makemaggriddh.md \
 	shmagpowerspectrum.md shmagpowerl.md shmtcouplingmatrix.md \
-	shmultitapermaskcse.md shmultitapermaskse.md
+	shmultitapermaskcse.md shmultitapermaskse.md shbiaskmask.md
 
 MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_d1.1 \
 	plbar.1 plbar_d1.1 plon.1 plmon.1 plmon_d1.1 plon_d1.1 plmschmidt.1 plschmidt.1 \
@@ -71,7 +71,8 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 plmbar_
 	makegravgradgriddh.1 makegeoidgrid.1 cilmplus.1 cilmminus.1 cilmplusrhoh.1 \
 	cilmminusrhoh.1 batohilm.1 batohilmrhoh.1 downcontfilterma.1 downcontfiltermc.1 \
 	normalgravity.1 makemaggriddh.1 shmagpowerspectrum.1 shmagpowerl.1 \
-	shmtcouplingmatrix.1 shmultitapermaskcse.1 shmultitapermaskse.1)
+	shmtcouplingmatrix.1 shmultitapermaskcse.1 shmultitapermaskse.1 \
+	shbiaskmask.1)
 
 HTMLFILES_modules = $(addprefix $(WWWDIR)/, planetsconstants.html )
 
@@ -103,7 +104,7 @@ HTMLFILES_localized = $(addprefix $(WWWDIR)/, shmultitaperse.html \
 	shbiask.html shbiasadmitcorr.html shmtdebias.html shmtvaropt.html \
 	shsjkpg.html shreturntapersmap.html computedmap.html curve2mask.html \
 	shbias.html sphericalcapcoef.html shmtcouplingmatrix.html \
-	shmultitapermaskcse.html shmultitapermaskse.html)
+	shmultitapermaskcse.html shmultitapermaskse.html shbiaskmask.html)
 
 HTMLFILES_rotations = $(addprefix $(WWWDIR)/, djpi2.html shrotatecoef.html \
 	shrotaterealcoef.html)

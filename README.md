@@ -1,4 +1,4 @@
-![LOGO](logo.png)
+![LOGO](misc/logo.png)
 
 [![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.60010.svg)](http://dx.doi.org/10.5281/zenodo.60010)
@@ -40,29 +40,28 @@ brew install fftw --with-fortran
 ```
 
 #### Python Library ####
-[Download](https://github.com/SHTOOLS/SHTOOLS/zipball/master) or clone the SHTOOLS repository. Enter the SHTOOLS folder that contains the file ```setup.py```, and then execute one of the following commands:
+```bash
+pip install pyshtools
+```
+Or, to install a developer version, [download](https://github.com/SHTOOLS/SHTOOLS/zipball/master) or clone the SHTOOLS repository, enter the SHTOOLS folder and then execute one of the following commands:
 ```bash
 pip install .  # installs into the active python environment lib folder
 pip install -v -e .  # installs into the SHTOOLS/pyshtools folder and links to the active python environment
 ```
 
-#### Fortran Library and Manual Installation ####
-To install the Fortran 95 library or compile the Python 2 and Python 3 components manually
-enter one of the following
-```
+#### Fortran Library ####
+To install the Fortran 95 library, enter one of the following
+```bash
 make fortran
-make python2
-make python3
 make fortran-mp  # Open-MP Fortran routines
 ```
 
-#### Brew package manager (OSX) ####
-
-To install the Fortran 95, Python 2, and Python 3 components using the [brew](http://brew.sh/) package manager, enter
-```
+Or, with OSX, use the [brew](http://brew.sh/) package manager:
+```bash
 brew tap shtools/shtools
 brew install shtools
 ```
+To also install the OpenMP components, add ```--with-openmp``` to the last command.
 
 More installation instructions and options can be found in the [web documentation](https://shtools.ipgp.fr) and GitHub 
 [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki).
@@ -77,14 +76,14 @@ well as simple interfaces.
 
 To get started, check out the following Python tutorial notebooks:
 
-* [Introduction 1: A simple introduction to pyshtools: Grids and Coeffs](examples/notebooks/Introduction-1.ipynb)
-* [Introduction 2: A simple introduction to pyshtools: Localization windows and spectral analysis](examples/notebooks/Introduction-2.ipynb)
-* [tutorial 1: Simple Spherical Harmonic Expansions](examples/notebooks/tutorial_1.ipynb)
-* [tutorial 2: Localized Spectral Analysis on the Sphere](examples/notebooks/tutorial_2.ipynb)
-* [tutorial 3: The SHTOOLS Class Interface](examples/notebooks/tutorial_3.ipynb)
-* [tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem](examples/notebooks/tutorial_4.ipynb)
-* [tutorial 5: Multitaper Spectral Estimation - SHWindows Class Interface](examples/notebooks/tutorial_5.ipynb)
-* [tutorial 6: 3D Spherical Harmonic Plots](examples/notebooks/tutorial_6.ipynb)
+* Introduction 1: Grids and Spherical Harmonic Coefficients [\[ipynb\]](examples/notebooks/Introduction-1.ipynb)
+* Introduction 2: Localization Windows and Spectral Analysis [\[ipynb\]](examples/notebooks/Introduction-2.ipynb)
+* Tutorial 1: Simple Spherical Harmonic Expansions [\[ipynb\]](examples/notebooks/tutorial_1.ipynb)
+* Tutorial 2: Localized Spectral Analysis on the Sphere [\[ipynb\]](examples/notebooks/tutorial_2.ipynb)
+* Tutorial 3: The SHTOOLS Class Interface [\[ipynb\]](examples/notebooks/tutorial_3.ipynb)
+* Tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem [\[ipynb\]](examples/notebooks/tutorial_4.ipynb)
+* Tutorial 5: Multitaper Spectral Estimation - SHWindows Class Interface [\[ipynb\]](examples/notebooks/tutorial_5.ipynb)
+* Tutorial 6: 3D Spherical Harmonic Plots [\[ipynb\]](examples/notebooks/tutorial_6.ipynb)
 
 You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
 

@@ -34,22 +34,26 @@
 
 	<h1>Installation Instructions</h1>
 
-	<p>SHTOOLS can be installed in several ways. If you will be using only the Python components, it is recommended to install using the pip package manager. If you will be writing and compiling Fortran 95 code, it is recommended to use either the Brew package manager (on OSX), or to compile using the Makefile.</p>
+	<p>SHTOOLS can be installed in several ways. If you will be using only the Python components, it is recommended to use the <tt>pip</tt> package manager. If you will be writing and compiling Fortran 95 code, it is recommended to use either the Brew package manager (on OSX), or to compile using the Makefile.</p>
 
 	<h2>1. Python package installer: pip</h2>
-	<p class="nomarginbot">SHTOOLS can be installed using <tt>pip</tt>, but only if you have already downloaded the SHTOOLS repository from GitHub. To start, first make sure that you have the necessary dependencies installed. This can be done on most linux distributions using</p>
+	<p class="nomarginbot">The easiest way to install the Python components of SHTOOLS is to use <tt>pip</tt>. First, make sure that you have the necessary dependencies installed. This can be done on most linux distributions using</p>
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh</tt></p>
 	</blockquote>
-	<p class="nomarginbot">or with brew on OSX using</p>
+	<p class="nomarginbot">or on OSX using <tt>brew</tt></p>
 		<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>brew install fftw --with-fortran</tt></p>
 	</blockquote>
-	<p class="nomarginbot">Then, in the SHTOOLS main directory, execute</p>
+	<p>Then, execute the following command in a unix terminal:</p>
+	<blockquote class="small">
+	<p class="nomargintop nomarginbot"><tt>pip install pyshtools</tt></p>
+	</blockquote>
+	<p> If you want to instead work on a developer version, download the SHTOOLS repository from GitHub. Then, in the SHTOOLS main directory, execute</p>
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>pip install .</tt></p>
 	</blockquote>
-	<p class="nomarginbot">which will install pyshtools in the system Python library. If you would like to install the files in the current working directory, so that you can easily edit the source files, and link them to the system Python directory, enter the following command instead:</p>
+	<p class="nomarginbot">which will install pyshtools in the system Python library. If you would like to install the files in the current working directory, so that you can easily edit the source files and link them to the system Python directory, enter the following command instead:</p>
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>pip install -e .</tt></p>
 	</blockquote>
@@ -65,7 +69,7 @@
 		<p class="nomargintop nomarginbot"><tt>brew tap shtools/shtools</tt><br>
 		<tt>brew install shtools</tt></p>
 	</blockquote>
-	<p>This will install both the Fortran 95 and Python 2 components of SHTOOLS. To also install the Fortran 95 OpenMP and Python 3 components, add the options <tt>--with-openmp</tt> and <tt>--with-python3</tt> to the last command.</p>
+	<p>This will install only the Fortran 95 component of SHTOOLS. To also install the Fortran 95 OpenMP component, add the option <tt>--with-openmp</tt> to the last command. Brew can also install the Python components (using the Makefile approach below), but this is not encouraged.</p>
 	
 	<h2>3. Manual installation using make</h2>
 

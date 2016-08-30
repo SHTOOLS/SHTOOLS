@@ -10,7 +10,9 @@ import os
 import re
 import sys
 import sysconfig
-import setuptools
+# the setuptools import dummy patches the distutil commands such that
+# python setup.py develop works
+import setuptools  # NOQA
 
 from numpy.distutils.core import setup
 from numpy.distutils.command.build import build as _build
@@ -21,8 +23,30 @@ from numpy.distutils.misc_util import Configuration
 from subprocess import CalledProcessError, check_output, check_call
 
 
+# convert markdown README.md to restructured text .rst for pypi
+# pandoc can be installed with
+# conda install -c conda-forge pandoc pypandoc
+try:
+    import pypandoc
+    long_description = pypandoc.convert('README.md', 'rst')
+except(IOError, ImportError):
+    print('no pandoc installed. Careful, pypi description will not be '
+          'formatted correctly.')
+    long_description = open('README.md').read()
+
+
+# This flag has to be True if the version number indicated in the file
+# VERSION has already been released and to False if this is a development
+# version of a future release.
+ISRELEASED = False
+
+
 def get_version():
     """Get version from git and VERSION file.
+
+    In case that the version is not tagged in git, this function appends
+    .post0+commit if the version has been released and .dev0+commit if the
+    version has not been released yet.
 
     Derived from: https://github.com/Changaco/version.py
     """
@@ -44,13 +68,26 @@ def get_version():
 
         # PEP440 compatibility
         if '-' in git_version:
-            # increase version by 0.1 if any new revision exists in repo
-            version = '{:.1f}'.format(float(version) + 0.1)
+            # check that the version string is a floating number
+            try:
+                version = '{:.1f}'.format(float(version))
+            except ValueError:
+                msg = 'VERSION string should be floating number'
+                raise ValueError(msg)
             git_revision = check_output(['git', 'rev-parse', 'HEAD'])
             git_revision = git_revision.strip().decode('ascii')
-            version += '.dev0+' + git_revision[:7]
+            # add post0 if the version is released
+            # otherwise add dev0 if the version is not yet released
+            if ISRELEASED:
+                version += '.post0+' + git_revision[:7]
+            else:
+                version += '.dev0+' + git_revision[:7]
 
     return version
+
+
+VERSION = get_version()
+print('INSTALLING SHTOOLS {}'.format(VERSION))
 
 
 # Custom Builder
@@ -70,7 +107,7 @@ class build(_build):
         self.mkpath(docdir)
         doc_builder = os.path.join(self.build_lib, 'pyshtools', 'make_docs.py')
         doc_source = '.'
-        check_call(['python', doc_builder, doc_source, self.build_lib])
+        check_call([sys.executable, doc_builder, doc_source, self.build_lib])
 
         print('---- ALL DONE ----')
 
@@ -105,7 +142,7 @@ class develop(_develop):
         doc_builder = os.path.join(self.setup_path, 'pyshtools',
                                    'make_docs.py')
         doc_source = '.'
-        check_call(['python', doc_builder, doc_source, self.setup_path])
+        check_call([sys.executable, doc_builder, doc_source, self.setup_path])
 
         print('---- ALL DONE ----')
 
@@ -212,11 +249,13 @@ def configuration(parent_package='', top_path=None):
 
 metadata = dict(
     name='pyshtools',
-    version=get_version(),
+    version=VERSION,
     description='SHTOOLS - Tools for working with spherical harmonics',
+    long_description=long_description,
     url='http://shtools.ipgp.fr',
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
     author='The SHTOOLS developers',
+    author_email="mark.a.wieczorek@gmail.com",
     license='BSD',
     keywords=KEYWORDS,
     requires=INSTALL_REQUIRES,

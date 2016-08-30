@@ -9,11 +9,10 @@ graft examples/ExampleDataFiles
 recursive-include examples/fortran *.f95 input* Makefile
 recursive-include examples/python *.py Makefile
 recursive-include examples/notebooks *.ipynb
-include examples/python/ClassInterface/topo.dat.gz
 
 graft src/pydoc
 graft src/fdoc
-recursive-include src *.py
+recursive-include src *.py *.pyf
 
 graft man
 graft www
