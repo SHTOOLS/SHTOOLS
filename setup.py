@@ -35,11 +35,18 @@ except(IOError, ImportError):
     long_description = open('README.md').read()
 
 
+# This flag has to be True if the version number indicated in the file
+# VERSION has already been released and to False if this is a development
+# version of a future release.
 ISRELEASED = False
 
 
 def get_version():
     """Get version from git and VERSION file.
+
+    In case that the version is not tagged in git, this function appends
+    .post0+commit if the version has been released and .dev0+commit if the
+    version has not been released yet.
 
     Derived from: https://github.com/Changaco/version.py
     """
@@ -77,6 +84,10 @@ def get_version():
                 version += '.dev0+' + git_revision[:7]
 
     return version
+
+
+VERSION = get_version()
+print('INSTALLING SHTOOLS {}'.format(VERSION))
 
 
 # Custom Builder
@@ -238,8 +249,7 @@ def configuration(parent_package='', top_path=None):
 
 metadata = dict(
     name='pyshtools',
-    version=get_version(),
-    # version='3.3.2',  # this line is only for testing
+    version=VERSION,
     description='SHTOOLS - Tools for working with spherical harmonics',
     long_description=long_description,
     url='http://shtools.ipgp.fr',
