@@ -58,10 +58,10 @@ def get_version():
 
         # PEP440 compatibility
         if '-' in git_version:
-            # increase version by 0.1 if any new revision exists in repo.
-            # This only works with very simple version strings
-            # print('increasing version number {}'.format(version))
-            # version = '{:.1f}'.format(float(version) + 0.1)
+            # increase version by 0.1 if any new revision exists in repo
+            # and add .dev to the end
+            # This only works with two number version strings
+            version = '{:.1f}'.format(float(version) + 0.1)
             git_revision = check_output(['git', 'rev-parse', 'HEAD'])
             git_revision = git_revision.strip().decode('ascii')
             version += '.dev0+' + git_revision[:7]
