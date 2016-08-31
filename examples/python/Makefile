@@ -3,6 +3,10 @@
 #	make all
 #		Run all Python tests.
 #
+#	make no-timing
+#		Run all Python tests, with the exception of the timing/accuracy
+#		routines.
+#
 #	make clean
 #		Remove compiled Python files and output.
 #
@@ -34,6 +38,22 @@ EXAMPLES = \
 	TimingAccuracy/TimingAccuracyGLQC.py \
 	$(EMPTY)
 
+EXAMPLES-NO-TIMING = \
+	ClassInterface/ClassExample.py \
+	ClassInterface/WindowExample.py \
+	GlobalSpectralAnalysis/SHComplexSpectralAnalysis.py \
+	GlobalSpectralAnalysis/SHRealSpectralAnalysis.py \
+	IOStorageConversions/SHConversions.py \
+	IOStorageConversions/SHStorage.py \
+	LocalizedSpectralAnalysis/SHMultitaperSE.py \
+	LocalizedSpectralAnalysis/SHWindowsBiasOther.py \
+	SHRotations/SHRotations.py \
+	GravMag/TestGrav.py \
+	GravMag/TestCT.py \
+	Other/TestOther.py \
+	TestLegendre/TestLegendre.py \
+	$(EMPTY)
+
 define run-example
 # Create a phony rule to run each example.
 $(addsuffix .phony,$1):
@@ -45,6 +65,8 @@ endef
 $(foreach example,$(EXAMPLES),$(eval $(call run-example,$(example))))
 
 all: $(addsuffix .phony, $(EXAMPLES))
+
+no-timing: $(addsuffix .phony, $(EXAMPLES-NO-TIMING))
 
 clean:
 	-rm -rf Common/*.pyc Common/__pycache__/

@@ -53,14 +53,16 @@ install:
 
 script:
   - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
+      make remove-notebooks
       make notebooks2;
     else
+      make remove-notebooks
       make notebooks3;
     fi
   - mkdir empty
   - cd empty
   - python -c "import pyshtools"
-  - python ../examples/python/TimingAccuracy/TimingAccuracyDH.py
+  - make -C ../examples/notebooks -f Makefile JUPYTER=$(jupyter nbconvert)
 
 notifications:
     email: false
