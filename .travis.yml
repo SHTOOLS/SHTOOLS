@@ -53,6 +53,7 @@ install:
 
 script:
   - python examples/notebooks/test_notebooks.py
+  - export MPLBACKEND=Agg
   - make -C examples/python -f Makefile no-timing
   - mkdir empty
   - cd empty
