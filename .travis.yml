@@ -52,17 +52,11 @@ install:
   - pip install --no-deps .  
 
 script:
-  - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
-      make remove-notebooks;
-      make notebooks2;
-    else
-      make remove-notebooks;
-      make notebooks3;
-    fi
+  - python examples/notebooks/test_notebooks.py
+  - make -C ../examples/python -f Makefile no-timing
   - mkdir empty
   - cd empty
   - python -c "import pyshtools"
-  - make -C ../examples/notebooks -f Makefile JUPYTER="jupyter nbconvert"
 
 notifications:
     email: false
