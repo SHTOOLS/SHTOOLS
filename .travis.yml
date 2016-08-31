@@ -53,7 +53,7 @@ install:
 
 script:
   - python examples/notebooks/test_notebooks.py
-  - make -C ../examples/python -f Makefile no-timing
+  - make -C examples/python -f Makefile no-timing
   - mkdir empty
   - cd empty
   - python -c "import pyshtools"
