@@ -227,15 +227,16 @@ class SHCoeffs(object):
         """
         Initialize the coefficients as random variables.
 
-        This routine picks random coefficients from a Normal Distribution.
-        The variance of the Normal Distribution is set to the given input power
+        This routine picks random coefficients from a normal distribution.
+        The variance of the normal distribution is set to the given input power
         divided by the number of coefficients at degree l. The output
         coefficient power can be fixed exactly using the keyword exact_power.
 
         Usage
         -----
 
-        x = SHCoeffs.from_random(power, [kind, normalization, csphase, exact_power])
+        x = SHCoeffs.from_random(power, [kind, normalization, csphase,
+                                         exact_power])
 
         Parameters
         ----------
