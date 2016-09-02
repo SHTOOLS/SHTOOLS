@@ -9,7 +9,7 @@ Compute all the orthonormalized Legendre polynomials.
 # Returns
 
 `p` : float, dimension (`lmax`+1)
-:   An array of orthonormalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l+1`.
+:   An array of orthonormalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`.
 
 # Parameters
 
