@@ -14,7 +14,7 @@ Compute all the Schmidt semi-normalized associated Legendre functions.
 # Parameters
 
 `lmax` : integer
-:   The maximum degree of the associated Legendre functions to be computed. If `lmax` is -1, allocated memory will be deallocated.
+:   The maximum degree of the associated Legendre functions to be computed.
 
 `z` : float
 :   The argument of the associated Legendre functions.
@@ -30,8 +30,6 @@ Compute all the Schmidt semi-normalized associated Legendre functions.
 `PlmSchmidt` will calculate all of the Schmidt semi-normalized associated Legendre functions up to degree `lmax` for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree `l` and angular order `m` corresponds to `l*(l+1)/2+m`.
 
 The integral of the squared Legendre functions over the interval [-1, 1] is `2*(2-delta(0,m))/(2l+1)`, where delta is the Kronecker delta function. If the optional parameter `cnorm` is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is `2/(2L+1)`. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument `csphase` to -1.
-
-This routine saves the three-term recursion factors and square roots of the integers the first time being called. If subsequent calls possess the same value of `lmax`, these will not be recomputed. If you wish to deallocate this memory, which is an array of length `(lmax+1)*(lmax+2)`, recall this routine with `lmax`=-1.
 
 # References
 
