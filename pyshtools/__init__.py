@@ -110,6 +110,17 @@ shtools.__doc__ = (
     'pyshtools submodule that includes all pyshtools routines, with the\n' +
     'exception of shclasses.')
 
+# ---- Define pystop function that recovers from a fortran STOP.
+def _pystop(status):
+    if (status == 1):
+        raise RuntimeError('Improper dimensions of input array.')
+    elif (status == 2):
+        raise RuntimeError('Improper bounds for ' +
+                           'input variable.')
+    elif (status == 3):
+        raise RuntimeError('Fortran Runtime Error: Error allocating memory.')
+
+_SHTOOLS.pystop = _pystop
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
