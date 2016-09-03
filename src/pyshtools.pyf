@@ -1,8 +1,8 @@
 python module _SHTOOLS
 !-------------------------------------------------------------------------------
 !
-!   Python signature file for the SHTOOLS Fortran 95 routines. The 
-!   definitions of how the fortran functions are actually called are found in 
+!   Python signature file for the SHTOOLS Fortran 95 routines. The
+!   definitions of how the fortran functions are actually called are found in
 !   the wrapper file PythonWrapper.f95.
 !
 !   Note: The context of this file is case sensitive. 
@@ -18,6 +18,10 @@ python module _SHTOOLS
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in) :: cnorm = 0
             integer, intent(hide),depend(lmax) :: p_d0 = (lmax+1)*(lmax+2)/2
+            intent(callback,hide) pystop
+            external pystop
+            integer exitstatus
+            call pystop(exitstatus)
         end subroutine PlmBar
 
         subroutine PlmBar_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
