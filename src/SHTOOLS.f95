@@ -16,11 +16,12 @@ module SHTOOLS
 
     interface
 
-        subroutine PlmBar(p, lmax, z, csphase, cnorm)
+        subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
             integer, intent(in) ::  lmax
             real*8, intent(out) ::  p(:)
             real*8, intent(in) ::   z
             integer, intent(in), optional :: csphase, cnorm
+            integer, intent(out), optional :: exitstatus
         end subroutine PlmBar
 
         subroutine PlmBar_d1(p, dp, lmax, z, csphase, cnorm)
