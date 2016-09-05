@@ -109,17 +109,23 @@ shtools.__doc__ = (
     'pyshtools submodule that includes all pyshtools routines, with the\n' +
     'exception of shclasses.')
 
-# ---- Define pystop function that recovers from a fortran STOP.
-def _pystop(status):
-    if (status == 1):
-        raise RuntimeError('Improper dimensions of input array.')
-    elif (status == 2):
-        raise RuntimeError('Improper bounds for ' +
-                           'input variable.')
-    elif (status == 3):
-        raise RuntimeError('Fortran Runtime Error: Error allocating memory.')
 
-_SHTOOLS.pystop = _pystop
+# ---- Define FortranStop exception that handles a fortran STOP.
+class FortranStop(Exception):
+    '''Class that handles errors generated in SHTOOLS Fortran 95 code.'''
+    def __call__(self, status):
+        if (status == 1):
+            errmsg = 'Improper dimensions of input array.'
+        elif (status == 2):
+            errmsg = 'Improper bounds for input variable.'
+        elif (status == 3):
+            errmsg = 'Error allocating memory.'
+        else:
+            errmsg = 'Unhandled Fortran 95 error.'
+
+        raise self.__class__(errmsg)
+
+_SHTOOLS.pystop = FortranStop()
 
 # ---- Define FortranStop exception that handles a fortran STOP.
 class FortranStop(Exception):
