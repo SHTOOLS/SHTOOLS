@@ -94,14 +94,24 @@
 #	make python3-tests
 #		Run all python 3 tests.
 #
+#	make python-tests-no-timing
+#		Run all python tests (with exception of timing/accuracy tests), where
+#		the variable PYTHON_VERSION determines which versions to run.
+#
+#	make python2-tests
+#		Run all python tests (with exception of timing/accuracy tests).
+#
+#	make python3-tests
+#		Run all python tests (with exception of timing/accuracy tests).
+#
 #	make clean-python-tests
-#		Detele all compiled python tests
+#		Detele all compiled python tests.
 #
 #	make notebooks
-#		Detele all compiled python tests
+#		Run notebooks and convert to html for web documentation.
 #
-#	make clean-notebooks
-#		Detele all compiled python tests
+#	make remove-notebooks
+#		Remove html notebooks.
 #
 #	make doc
 #		Create the man and html-man pages from input Markdown files.
@@ -205,11 +215,12 @@ endif
 
 
 .PHONY: all fortran python python2 python3 install doc remove-doc\
-	fortran-tests run-fortran-tests run-python-tests\
-	run-python2-tests run-python3-tests install-fortran install-python\
+	fortran-tests run-fortran-tests python-tests\
+	python2-tests python3-tests python-tests-no-timing python2-tests-no-timing\
+	python3-tests-no-timing install-fortran install-python\
 	install-python2 install-python3 uninstall fortran-mp clean\
 	clean-fortran-tests clean-python-tests clean-python2 clean-python3\
-	clean-libs clean-notebooks notebooks notebooks2 notebooks3
+	clean-libs remove-notebooks notebooks notebooks2 notebooks3
 
 
 all: fortran python
@@ -249,16 +260,19 @@ ifeq ($(PYTHON_VERSION),all)
 python: python2 python3
 install-python: install-python2 install-python3
 python-tests: python2-tests python3-tests
+python-tests-no-timing: python2-tests-no-timing python3-tests-no-timing
 notebooks: notebooks3 notebooks2
 else ifeq ($(PYTHON_VERSION),2)
 python: python2
 install-python: install-python2
 python-tests: python2-tests
+python-tests-no-timing: python2-tests-no-timing
 notebooks: notebooks2
 else ifeq ($(PYTHON_VERSION),3)
 python: python3
 install-python: install-python3
 python-tests: python3-tests
+python-tests-no-timing: python3-tests-no-timing
 notebooks: notebooks3
 else
 $(error $(PYTHON_VERSION) is unsupported.)
@@ -452,7 +466,7 @@ clean-libs:
 	@echo \*\*\* If you installed pyshtools using \"pip install -e .\" you should
 	@echo \*\*\* also execute \"pip uninstall pyshtools\".
 
-clean-notebooks:
+remove-notebooks:
 	$(MAKE) -C $(NBDIR) -f Makefile clean
 	@echo
 	@echo REMOVED NOTEBOOK HTML FILES
@@ -487,5 +501,15 @@ python2-tests: python2
 
 python3-tests: python3
 	$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON3)
+	@echo
+	@echo RAN ALL PYTHON 3 TESTS
+
+python2-tests-no-timing: python2
+	$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON)
+	@echo
+	@echo RAN ALL PYTHON TESTS
+
+python3-tests-no-timing: python3
+	$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON3)
 	@echo
 	@echo RAN ALL PYTHON 3 TESTS

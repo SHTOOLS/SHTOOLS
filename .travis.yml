@@ -52,15 +52,12 @@ install:
   - pip install --no-deps .  
 
 script:
-  - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
-      make notebooks2;
-    else
-      make notebooks3;
-    fi
+  - python examples/notebooks/test_notebooks.py
+  - export MPLBACKEND=Agg
+  - make -C examples/python -f Makefile no-timing
   - mkdir empty
   - cd empty
   - python -c "import pyshtools"
-  - python ../examples/python/TimingAccuracy/TimingAccuracyDH.py
 
 notifications:
     email: false
