@@ -625,6 +625,235 @@ class SHCoeffs(object):
         """
         return _np.arange(self.lmax + 1)
 
+    def get_anisotropyspectrum(self, lmax=None):
+        """
+        Return a numpy array with the anisotropy spectrum.
+
+        Usage
+        -----
+
+        power = x.get_powerpernormalizedm()
+
+
+        Returns
+        -------
+
+        power : np ndarray of size (lmax+1) that contains the average
+                normalized order m at each l
+        """
+        # get either all or only some coefficients
+        if lmax is None:
+            coeffs = self.coeffs
+            lmax = self.lmax
+        else:
+            coeffs = self.coeffs[:, :lmax + 1, :lmax + 1]
+
+        # create mask to filter out m<=l
+        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
+        mask[0, 0, 0] = True
+        for l in _np.arange(lmax + 1):
+            mask[:, l, :l + 1] = True
+        mask[1, :, 0] = False
+
+        # compute the weighted average of the ms (this could be done
+        # more efficiently, only summing over the required ms...)
+        powerperlm = _np.abs(coeffs) ** 2
+        powerperlm[~mask] = 0.
+        powerperl = _np.sum(powerperlm, axis=(0, 2))
+        epsilon = powerperl.max() * 1e-30
+        weights = powerperlm[:, 1:, :] / (powerperl[None, 1:, None] + epsilon)
+
+        ms = _np.arange(0, self.lmax + 1, dtype=float)
+        ls = _np.arange(1, self.lmax + 1, dtype=float)
+        spectrum = _np.nansum(weights * ms / ls[None, :, None], axis=(0, 2))
+        return spectrum
+
+    def get_symmetries(self, lmin=1, lmax=10, nlat=None, nlon=None):
+        """
+        Search symmetry axes on a regular grid.
+
+        Usage
+        -----
+
+        power = x.get_symmetries()
+
+
+        Parameters
+        ----------
+
+        unit  : can be 'per_l' or 'per_lm'
+                'per_l' (default): the sum_m abs(c_lm)**2 at degree l is
+                computed.
+                'per_lm': abs(c_lm)**2 is computed, not summing over m
+
+
+        Returns
+        -------
+
+        grid_zonal : np array of size (nlat, nlon) with the zonal contentration
+                     value
+        grid_sectorial: np array of size (nlat, nlon) with the sectorial
+                     concentration
+        """
+        if nlat is None or nlon is None:
+            nlat = (lmax + 1) * 2
+            nlon = nlat * 2
+
+        lats = _np.linspace(0.0, 180.0 - 180.0 / nlat, nlat)
+        lons = _np.linspace(0.0, 360.0 - 360.0 / nlon, nlon)
+
+        anisotropy = _np.empty((nlat, nlon))
+
+        coeffs_trim = self.return_coeffs(lmax=lmax)
+        djpi2 = _shtools.djpi2(lmax)
+        print('Starting grid search for symmetries.')
+        print('This can take a while. Reduce lmax to get it faster ...')
+        for ilat in range(nlat):
+            for ilon in range(nlon):
+                alpha = lons[ilon]
+                beta = lats[ilat]
+                gamma = 0.  # rotation around gamma doesn't matter
+                coeffs_rot = coeffs_trim.rotate(alpha, beta, gamma,
+                                                dj_matrix=djpi2)
+                spectrum = coeffs_rot.get_anisotropyspectrum()[lmin - 1:]
+                power = coeffs_rot.get_powerperdegree()[lmin:]
+                weights = power / power.sum()
+                anisotropy[ilat, ilon] = _np.nansum(spectrum * weights)
+        return anisotropy
+
+    def plot_symmetries(self, lmin=1, lmax=10, nlat=None, nlon=None, show=True,
+                        fname=None, with_grid=False):
+        """Plot symmetry axes."""
+        anisotropy = self.get_symmetries(lmin=lmin, lmax=lmax, nlat=nlat,
+                                         nlon=nlon)
+        nlat, nlon = anisotropy.shape
+
+        # find zonal and sectorial maxima:
+        lats = _np.linspace(0.0, 180.0 - 180.0 / nlat, nlat)
+        lons = _np.linspace(0.0, 360.0 - 360.0 / nlon, nlon)
+        imax = _np.unravel_index(anisotropy.argmax(), anisotropy.shape)
+        imin = _np.unravel_index(anisotropy.argmin(), anisotropy.shape)
+        sectorialmax = anisotropy[imax]
+        sectorialpos = 90. - lats[imax[0]], lons[imax[1]]
+        sectorialpos_anti = -sectorialpos[0], (sectorialpos[1] + 180.) % 360.
+        zonalmax = anisotropy[imin]
+        zonalpos = 90. - lats[imin[0]], lons[imin[1]]
+        zonalpos_anti = -zonalpos[0], (zonalpos[1] + 180.) % 360.
+
+        norm = _plt.Normalize(0., 1.)
+        extent = (0, 360, -90, 90)
+        if with_grid:
+            fig, (row1, row2) = _plt.subplots(2, 1, figsize=(10, 10),
+                                              sharex=True, sharey=True)
+            grid = self.expand(grid='DH2')
+            # plot real data
+            row1.imshow(grid.data, aspect='auto', extent=extent)
+            # indicate zonal and sectorial maxima with a cross
+            row1.plot(sectorialpos[1], sectorialpos[0], 'x', c='black')
+            row1.plot(sectorialpos_anti[1], sectorialpos_anti[0], 'x',
+                      c='black')
+            row1.text(sectorialpos[1], sectorialpos[0],
+                      'max sectorial symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                      format(sectorialpos[0], sectorialpos[1], sectorialmax),
+                      va='top', ha='center')
+            row1.plot(zonalpos[1], zonalpos[0], 'x', c='black')
+            row1.plot(zonalpos_anti[1], zonalpos_anti[0], 'x', c='black')
+            row1.text(zonalpos[1], zonalpos[0],
+                      'max zonal symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                      format(zonalpos[0], zonalpos[1], zonalmax),
+                      va='top', ha='center')
+            row1.set(title='coefficient data', ylabel='latitude',
+                     xlim=(extent[0], extent[1]), ylim=(extent[2], extent[3]))
+            # plot symmetry grid
+            row2.imshow(anisotropy, aspect='auto', norm=norm, extent=extent)
+            # again indicate zonal and sectorial maxima
+            row2.plot(sectorialpos[1], sectorialpos[0], 'x', c='black')
+            row2.plot(sectorialpos_anti[1], sectorialpos_anti[0], 'x',
+                      c='black')
+            row2.text(sectorialpos[1], sectorialpos[0],
+                      'max sectorial symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                      format(sectorialpos[0], sectorialpos[1], sectorialmax),
+                      va='top', ha='center')
+            row2.plot(zonalpos[1], zonalpos[0], 'x', c='black')
+            row2.plot(zonalpos_anti[1], zonalpos_anti[0], 'x', c='black')
+            row2.text(zonalpos[1], zonalpos[0],
+                      'max zonal symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                      format(zonalpos[0], zonalpos[1], zonalmax),
+                      va='top', ha='center')
+            row2.set(title='average order m (normalized)', xlabel='longitude',
+                     xlim=(extent[0], extent[1]), ylim=(extent[2], extent[3]),
+                     ylabel='latitude')
+        else:
+            fig, ax = _plt.subplots(1, 1, figsize=(10, 5))
+            ax.imshow(anisotropy, origin='upper', aspect='auto', norm=norm,
+                      extent=extent)
+            ax.plot(sectorialpos[1], sectorialpos[0], 'x', c='black')
+            ax.text(sectorialpos[1], sectorialpos[0],
+                    'max sectorial symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                    format(sectorialpos[0], sectorialpos[1], sectorialmax),
+                    va='top', ha='center')
+            ax.plot(zonalpos[1], zonalpos[0], 'x', c='black')
+            ax.text(zonalpos[1], zonalpos[0],
+                    'max zonal symmetry:\n{:3.1f}, {:3.1f} = {:2.2f}'.
+                    format(zonalpos[0], zonalpos[1], zonalmax),
+                    va='top', ha='center')
+            ax.set(title='average order m (normalized)', xlabel='longitude',
+                   xlim=(extent[0], extent[1]), ylim=(extent[2], extent[3]),
+                   ylabel='latitude')
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+        return fig
+
+    def get_powerspectrum(self, unit='per_l'):
+        """
+        Return a numpy array with the power spectrum per l or per lm.
+
+        Usage
+        -----
+
+        power = x.get_powerspectrum()
+
+
+        Parameters
+        ----------
+
+        unit  : can be 'per_l' or 'per_lm'
+                'per_l' (default): the sum_m abs(c_lm)**2 at degree l is
+                computed.
+                'per_lm': abs(c_lm)**2 is computed, not summing over m
+
+
+        Returns
+        -------
+
+        power : if unit='per_l' np ndarray of size (lmax+1).
+                if unit='per_lm' np ndarray of size (lmax + 1, 2 * lmax + 1)
+                where index 1 corresponds to the degree l and index 2 to the
+                order m, aranged from negative m (coeffs[1, :, ::-1] to m=0)
+                positive and then to positive m (coeffs[0, :, :])
+        """
+        if unit == 'per_l':
+            return self._powerperdegree()
+        if unit == 'per_lm':
+            # ---- create mask to filter out m<=l ----
+            mask = _np.zeros((2, self.lmax + 1, self.lmax + 1), dtype=_np.bool)
+            mask[0, 0, 0] = True
+            for l in _np.arange(self.lmax + 1):
+                mask[:, l, :l + 1] = True
+            mask[1, :, 0] = False
+
+            power = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
+            mpositive = _np.abs(self.coeffs[0]) ** 2
+            mpositive[~mask[0]] = _np.nan
+            mnegative = _np.abs(self.coeffs[1]) ** 2
+            mnegative[~mask[1]] = _np.nan
+
+            power[:, self.lmax:] = mpositive
+            power[:, :self.lmax] = mnegative[:, ::-1][:, :-1]
+            return power
+
     def get_powerperdegree(self):
         """
         Return a numpy array with the power per degree l spectrum.
@@ -816,7 +1045,7 @@ class SHCoeffs(object):
         return rot
 
     # ---- Convert spherical harmonic coefficients to a different normalization
-    def return_coeffs(self, normalization='4pi', csphase=1, lmax=None):
+    def return_coeffs(self, normalization=None, csphase=None, lmax=None):
         """
         Return a class instance with a different normalization convention.
 
@@ -828,15 +1057,22 @@ class SHCoeffs(object):
         Parameters
         ----------
 
-        normalization : Normalization of the output class: '4pi' (default),
-                        'ortho' or 'schmidt' for geodesy 4pi normalized,
-                        orthonormalized, or Schmidt semi-normalized
-                        coefficients, respectively.
-        csphase       : Output Condon-Shortley phase convention: 1 (default)
-                        to exlcude the phase factor, or -1 to include it.
+        normalization : Normalization of the output class:
+                        None (x.normalization), '4pi', 'ortho' or 'schmidt'
+                        or geodesy 4pi normalized, orthonormalized, or
+                        Schmidt semi-normalized coefficients, respectively.
+        csphase       : Output Condon-Shortley phase convention:
+                        None (x.csphase), 1 to exlcude the phase factor, or
+                        -1 to include it.
         lmax          : Maximum spherical harmonic degree to output.
                         Default is x.lmax.
         """
+        if normalization is None:
+            normalization = self.normalization
+
+        if csphase is None:
+            csphase = self.csphase
+
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
@@ -909,6 +1145,127 @@ class SHCoeffs(object):
         return gridout
 
     # ---- plotting routines ----
+    def plot_anisotropyspectrum(self, log=False, show=True,
+                                fname=None):
+        """
+        Plot the anisotropy spectrum.
+
+        Usage
+        -----
+
+        x.plot_anisotropyspectrum([log, show, fname])
+
+        Parameters
+        ----------
+
+        log    : If True (default), use log-xaxis.
+        show   : If True (default), plot to the screen.
+        fname  : If present, save the image to the file.
+        """
+        spectrum = self.get_anisotropyspectrum()
+        ls = self.get_degrees()[1:]
+
+        fig, ax = _plt.subplots(1, 1)
+        ax.plot(ls, spectrum)
+        ax.plot([0., self.lmax], [0.5, 0.5], lw=2, c='black')
+        ax.grid(True, which='both')
+        ax.set(xlabel='degree l', ylabel='average order m / degree l',
+               xlim=(0., self.lmax * 1.3), ylim=(-0.2, 1.2),
+               title='anisotropy spectrum')
+        ax.text(self.lmax, 0.5, 'tesseral\n(isotropic)', ha='left')
+        ax.text(self.lmax, 0.0, 'zonal\n(West-East)', ha='left')
+        ax.text(self.lmax, 1.0, 'sectorial\n(North-South)', ha='left')
+        if log:
+            ax.set(xscale='log', xlim=(0.8, self.lmax ** 1.3))
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+        return fig, ax
+
+    def plot_powerspectrum(self, unit='per_l', **kwargs):
+        """
+        Plot the power per degree spectrum.
+
+        Usage
+        -----
+
+        x.plot_powerperdegree([loglog, show, fname])
+
+        Parameters
+        ----------
+
+        loglog : If True (default), use log-log axis.
+        unit   : 'per_l', 'per_lm', 'per_logl'
+        show   : If True (default), plot to the screen.
+        fname  : If present, save the image to the file.
+        """
+        if unit == 'per_l':
+            self.plot_powerperdegree(**kwargs)
+        elif unit == 'per_lm':
+            self.plot_powerperlm(**kwargs)
+        elif unit == 'per_band':
+            self.plot_powerperband(**kwargs)
+
+    def plot_powerperlm(self, loglog=True, show=True, fname=None,
+                        vrange=(1e-5, 1)):
+        """
+        Plot the power per degree spectrum.
+
+        Usage
+        -----
+
+        x.plot_powerperdegree([loglog, show, fname])
+
+        Parameters
+        ----------
+
+        loglog : If True (default), use log-log axis.
+        show   : If True (default), plot to the screen.
+        fname  : If present, save the image to the file.
+        vrange : colormap range relative to the power maximum
+        """
+        # local imports (not available in old matplotlib versions)
+        import numpy.ma as ma  # NOQA
+        if loglog:
+            from matplotlib.colors import LogNorm  # NOQA
+
+        # get the necessary data and initialize the Figure
+        power = self.get_powerspectrum(unit='per_lm')
+        power_masked = ma.masked_invalid(power)
+
+        ls = self.get_degrees().astype(_np.float)
+        fig, ax = _plt.subplots()
+
+        # first plot either the log or the standard power spectrum
+        ms = _np.arange(-self.lmax, self.lmax + 1, dtype=_np.float)
+        lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
+        lgrid -= 0.5
+        mgrid -= 0.5
+        vmin = _np.nanmax(power) * vrange[0]
+        vmax = _np.nanmax(power) * vrange[1]
+        if loglog:
+            norm = LogNorm(vmin, vmax)
+            cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], power_masked[1:],
+                                  norm=norm, cmap='viridis')
+            _plt.colorbar(cmesh, label='power per l and m')
+            ax.set(xscale='log', xlim=(0.8, self.lmax * 1.2))
+        else:
+            norm = _plt.Normalize(vmin, vmax)
+            cmesh = ax.pcolormesh(lgrid, mgrid, power_masked,
+                                  norm=norm, cmap='viridis')
+            _plt.colorbar(cmesh, label='power per l and m')
+            ax.set(xlim=(-1., self.lmax + 2.))
+        ax.set(xlabel='degree l', ylabel='order m')
+        ax.grid(True, which='both')
+
+        # either show or save the figure
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+        return fig, ax
+
     def plot_powerperdegree(self, loglog=True, show=True, fname=None):
         """
         Plot the power per degree spectrum.
@@ -942,7 +1299,8 @@ class SHCoeffs(object):
             fig.savefig(fname)
         return fig, ax
 
-    def plot_powerperband(self, bandwidth=2, show=True, fname=None):
+    def plot_powerperband(self, bandwidth=2, loglog=True, show=True,
+                          fname=None):
         """
         Plot the power per log_{bandwidth}(degree) spectrum.
 
@@ -964,11 +1322,12 @@ class SHCoeffs(object):
 
         fig, ax = _plt.subplots(1, 1)
         ax.set_xlabel('degree l')
-        ax.set_ylabel('bandpower')
-        ax.set_xscale('log', basex=bandwidth)
-        ax.set_yscale('log', basey=bandwidth)
+        ax.set_ylabel(r'power per $\log_{{ {:2.2f} }}(l)$'.format(bandwidth))
+        if loglog:
+            ax.set_xscale('log', basex=bandwidth)
+            ax.set_yscale('log', basey=bandwidth)
         ax.grid(True, which='both')
-        ax.plot(ls[1:], power[1:], label='power per degree l')
+        ax.plot(ls[1:], power[1:])
         fig.tight_layout(pad=0.1)
         if show:
             _plt.show()
@@ -1933,8 +2292,8 @@ class DHRealGrid(SHGrid):
 
         if self.nlat % 2 != 0:
             raise ValueError('Input arrays for DH grids must have an even ' +
-                             'number of latitudes: nlat = {:d}'
-                             .format(self.nlat)
+                             'number of latitudes: nlat = {:d}, nlon= {:d}'
+                             .format(self.nlat, self.nlon)
                              )
         if self.nlon == 2 * self.nlat:
             self.sampling = 2
