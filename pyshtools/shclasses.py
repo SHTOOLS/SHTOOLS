@@ -816,27 +816,37 @@ class SHCoeffs(object):
         return rot
 
     # ---- Convert spherical harmonic coefficients to a different normalization
-    def return_coeffs(self, normalization='4pi', csphase=1, lmax=None):
+    def return_coeffs(self, normalization=None, csphase=None, lmax=None):
         """
-        Return a class instance with a different normalization convention.
+        Return a SHCoeff instance with a different normalization convention.
+
+        Called without arguments, this method can be used to return a clean
+        copy of the calling SHCoeff instance.
 
         Usage
         -----
-
         SHCoeffsInstance = x.return_coeffs([normalization, csphase, lmax])
 
         Parameters
         ----------
-
-        normalization : Normalization of the output class: '4pi' (default),
-                        'ortho' or 'schmidt' for geodesy 4pi normalized,
-                        orthonormalized, or Schmidt semi-normalized
-                        coefficients, respectively.
-        csphase       : Output Condon-Shortley phase convention: 1 (default)
-                        to exlcude the phase factor, or -1 to include it.
+        normalization : Normalization of the output class:
+                        None (x.normalization), '4pi', 'ortho' or 'schmidt'
+                        or geodesy 4pi normalized, orthonormalized, or
+                        Schmidt semi-normalized coefficients, respectively.
+        csphase       : Output Condon-Shortley phase convention:
+                        None (x.csphase), 1 to exlcude the phase factor, or
+                        -1 to include it.
         lmax          : Maximum spherical harmonic degree to output.
                         Default is x.lmax.
         """
+        # copy calling instance normalization and csphase if None is given
+        if normalization is None:
+            normalization = self.normalization
+
+        if csphase is None:
+            csphase = self.csphase
+
+        # check argument consistency
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
@@ -848,14 +858,17 @@ class SHCoeffs(object):
                 "or 'schmidt'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
+
         if csphase != 1 and csphase != -1:
             raise ValueError(
                 "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase))
                 )
 
+        # get a copy of the coefficient numpy array
         coeffs = self.get_coeffs(normalization=normalization.lower(),
                                  csphase=csphase, lmax=lmax)
+
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
                                    csphase=csphase)
