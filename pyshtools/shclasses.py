@@ -1960,7 +1960,7 @@ class DHRealGrid(SHGrid):
                              )
 
         self.lmax = int(self.nlat / 2 - 1)
-        self.data = array
+        self.data = _np.copy(array)
         self.grid = 'DH'
         self.kind = 'real'
 
@@ -2040,7 +2040,7 @@ class DHComplexGrid(SHGrid):
                              )
 
         self.lmax = int(self.nlat / 2 - 1)
-        self.data = array
+        self.data = _np.copy(array)
         self.grid = 'DH'
         self.kind = 'complex'
 
@@ -2130,7 +2130,7 @@ class GLQRealGrid(SHGrid):
             self.zeros = zeros
             self.weights = weights
 
-        self.data = array
+        self.data = _np.copy(array)
         self.grid = 'GLQ'
         self.kind = 'real'
 
@@ -2215,7 +2215,7 @@ class GLQComplexGrid(SHGrid):
             self.zeros = zeros
             self.weights = weights
 
-        self.data = array
+        self.data = _np.copy(array)
         self.grid = 'GLQ'
         self.kind = 'complex'
 
