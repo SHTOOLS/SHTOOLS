@@ -1014,7 +1014,7 @@ class SHRealCoeffs(SHCoeffs):
         """Test if class is Real or Complex."""
         return kind == 'real'
 
-    def __init__(self, coeffs, normalization='4pi', csphase=1):
+    def __init__(self, coeffs, normalization='4pi', csphase=1, copy=True):
         """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -1023,14 +1023,17 @@ class SHRealCoeffs(SHCoeffs):
         for l in _np.arange(lmax + 1):
             mask[:, l, :l + 1] = True
         mask[1, :, 0] = False
-
         self.mask = mask
         self.lmax = lmax
-        self.coeffs = _np.copy(coeffs)
-        self.coeffs[_np.invert(mask)] = 0.
         self.kind = 'real'
         self.normalization = normalization
         self.csphase = csphase
+
+        if copy:
+            self.coeffs = _np.copy(coeffs)
+            self.coeffs[~mask] = 0.
+        else:
+            self.coeffs = coeffs
 
     def make_complex(self):
         """
@@ -1184,7 +1187,7 @@ class SHComplexCoeffs(SHCoeffs):
         """Check if class has kind 'real' or 'complex'."""
         return kind == 'complex'
 
-    def __init__(self, coeffs, normalization='4pi', csphase=1):
+    def __init__(self, coeffs, normalization='4pi', csphase=1, copy=True):
         """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -1196,11 +1199,15 @@ class SHComplexCoeffs(SHCoeffs):
 
         self.mask = mask
         self.lmax = lmax
-        self.coeffs = _np.copy(coeffs)
-        self.coeffs[_np.invert(mask)] = 0.
         self.kind = 'complex'
         self.normalization = normalization
         self.csphase = csphase
+
+        if copy:
+            self.coeffs = _np.copy(coeffs)
+            self.coeffs[~mask] = 0.
+        else:
+            self.coeffs = coeffs
 
     def make_real(self):
         """
@@ -1941,7 +1948,7 @@ class DHRealGrid(SHGrid):
     def isgrid(grid):
         return grid == 'DH'
 
-    def __init__(self, array):
+    def __init__(self, array, copy=True):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
@@ -1960,9 +1967,13 @@ class DHRealGrid(SHGrid):
                              )
 
         self.lmax = int(self.nlat / 2 - 1)
-        self.data = _np.copy(array)
         self.grid = 'DH'
         self.kind = 'real'
+
+        if copy:
+            self.data = _np.copy(array)
+        else:
+            self.data = array
 
     def _get_lats(self):
         """Return the latitudes (in degrees) of the gridded data."""
@@ -2021,7 +2032,7 @@ class DHComplexGrid(SHGrid):
     def isgrid(grid):
         return grid == 'DH'
 
-    def __init__(self, array):
+    def __init__(self, array, copy=True):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
@@ -2040,9 +2051,13 @@ class DHComplexGrid(SHGrid):
                              )
 
         self.lmax = int(self.nlat / 2 - 1)
-        self.data = _np.copy(array)
         self.grid = 'DH'
         self.kind = 'complex'
+
+        if copy:
+            self.data = _np.copy(array)
+        else:
+            self.data = array
 
     def _get_lats(self):
         """
@@ -2113,7 +2128,7 @@ class GLQRealGrid(SHGrid):
     def isgrid(grid):
         return grid == 'GLQ'
 
-    def __init__(self, array, zeros=None, weights=None):
+    def __init__(self, array, zeros=None, weights=None, copy=True):
         self.nlat, self.nlon = array.shape
         self.lmax = self.nlat - 1
 
@@ -2130,9 +2145,12 @@ class GLQRealGrid(SHGrid):
             self.zeros = zeros
             self.weights = weights
 
-        self.data = _np.copy(array)
         self.grid = 'GLQ'
         self.kind = 'real'
+        if copy:
+            self.data = _np.copy(array)
+        else:
+            self.data = array
 
     def _get_lats(self):
         """
@@ -2198,7 +2216,7 @@ class GLQComplexGrid(SHGrid):
     def isgrid(grid):
         return grid == 'GLQ'
 
-    def __init__(self, array, zeros=None, weights=None):
+    def __init__(self, array, zeros=None, weights=None, copy=True):
         self.nlat, self.nlon = array.shape
         self.lmax = self.nlat - 1
 
@@ -2215,9 +2233,13 @@ class GLQComplexGrid(SHGrid):
             self.zeros = zeros
             self.weights = weights
 
-        self.data = _np.copy(array)
         self.grid = 'GLQ'
         self.kind = 'complex'
+
+        if copy:
+            self.data = _np.copy(array)
+        else:
+            self.data = array
 
     def _get_lats(self):
         """
@@ -3060,7 +3082,7 @@ class SHWindowCap(SHWindow):
 
     def __init__(self, theta, tapers, eigenvalues, taper_order,
                  clat, clon, nwin, theta_degrees, coord_degrees, dj_matrix,
-                 weights):
+                 weights, copy=True):
         self.kind = 'cap'
         self.theta = theta
         self.clat = clat
@@ -3082,16 +3104,19 @@ class SHWindowCap(SHWindow):
                              '(lwin+1)**2. nwin = {:s} and lwin = {:s}.'
                              .format(repr(self.nwin), repr(self.lwin)))
 
-        self.tapers = tapers[:, :self.nwin]
-        self.eigenvalues = eigenvalues[:self.nwin]
-        self.orders = taper_order[:self.nwin]
-
-        if self.clat is None and self.clon is None:
-            # ---- If the windows aren't rotated, don't store them.
-            self.coeffs = None
-
+        if copy:
+            self.tapers = _np.copy(tapers[:, :self.nwin])
+            self.eigenvalues = _np.copy(eigenvalues[:self.nwin])
+            self.orders = _np.copy(taper_order[:self.nwin])
         else:
-            # ---- Rotate center of windows to the given coordinates ----
+            self.tapers = tapers[:, :self.nwin]
+            self.eigenvalues = eigenvalues[:self.nwin]
+            self.orders = taper_order[:self.nwin]
+
+        # If the windows aren't rotated, don't store them.
+        if self.clat is None and self.clon is None:
+            self.coeffs = None
+        else:
             self.rotate(clat=self.clat, clon=self.clon,
                         coord_degrees=self.coord_degrees,
                         dj_matrix=self.dj_matrix)
@@ -3369,13 +3394,18 @@ class SHWindowMask(SHWindow):
     def istype(kind):
         return kind == 'mask'
 
-    def __init__(self, tapers, eigenvalues, weights):
+    def __init__(self, tapers, eigenvalues, weights, copy=True):
         self.kind = 'mask'
         self.lwin = _np.sqrt(tapers.shape[0]).astype(int) - 1
-        self.weights = weights
         self.nwin = tapers.shape[1]
-        self.tapers = tapers
-        self.eigenvalues = eigenvalues
+        if copy:
+            self.weights = weights
+            self.tapers = _np.copy(tapers)
+            self.eigenvalues = _np.copy(eigenvalues)
+        else:
+            self.weights = weights
+            self.tapers = tapers
+            self.eigenvalues = eigenvalues
 
     def _get_coeffs(self, itaper, normalization='4pi', csphase=1):
         """
