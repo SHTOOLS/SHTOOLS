@@ -174,7 +174,7 @@ class SHCoeffs(object):
                            csphase=csphase)
 
     @classmethod
-    def from_array(self, coeffs, normalization='4pi', csphase=1):
+    def from_array(self, coeffs, normalization='4pi', csphase=1, copy=True):
         """
         Initialize the coefficients from an input numpy array.
 
@@ -219,7 +219,7 @@ class SHCoeffs(object):
         for cls in self.__subclasses__():
             if cls.istype(kind):
                 return cls(coeffs, normalization=normalization.lower(),
-                           csphase=csphase)
+                           csphase=csphase, copy=copy)
 
     @classmethod
     def from_random(self, power, kind='real', normalization='4pi', csphase=1,
@@ -869,9 +869,11 @@ class SHCoeffs(object):
         coeffs = self.get_coeffs(normalization=normalization.lower(),
                                  csphase=csphase, lmax=lmax)
 
+        # because get_coeffs is already a copy, we can pass it as reference
+        # to save time
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
-                                   csphase=csphase)
+                                   csphase=csphase, copy=False)
 
     # ---- Expand the coefficients onto a grid ----
     def expand(self, grid='DH', **kwargs):
@@ -1060,9 +1062,11 @@ class SHRealCoeffs(SHCoeffs):
             if m % 2 == 1:
                 complex_coeffs[1, :, m] = - complex_coeffs[1, :, m]
 
+        # complex_coeffs is initialized in this function and can be
+        # passed as reference
         return SHCoeffs.from_array(complex_coeffs,
                                    normalization=self.normalization,
-                                   csphase=self.csphase)
+                                   csphase=self.csphase, copy=False)
 
     def _powerperdegree(self):
         """Return the power per degree l spectrum."""
@@ -1126,16 +1130,18 @@ class SHRealCoeffs(SHCoeffs):
             self.get_coeffs(normalization='4pi', csphase=1), angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
-        # as the unrotated coefficients.
+        # as the unrotated coefficients. The returned class can take
+        # coeffs as reference because it is already copied in the rotation
+        # routine.
         if self.normalization != '4pi' or self.csphase != 1:
             temp = SHCoeffs.from_array(coeffs, kind='real')
             tempcoeffs = temp.get_coeffs(
                 normalization=self.normalization, csphase=self.csphase)
             return SHCoeffs.from_array(
                 tempcoeffs, normalization=self.normalization,
-                csphase=self.csphase)
+                csphase=self.csphase, copy=False)
         else:
-            return SHCoeffs.from_array(coeffs)
+            return SHCoeffs.from_array(coeffs, copy=False)
 
     def _expandDH(self, sampling, **kwargs):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
@@ -1152,7 +1158,7 @@ class SHRealCoeffs(SHCoeffs):
 
         data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
                                    csphase=self.csphase, **kwargs)
-        gridout = SHGrid.from_array(data, grid='DH')
+        gridout = SHGrid.from_array(data, grid='DH', copy=False)
         return gridout
 
     def _expandGLQ(self, zeros, **kwargs):
@@ -1173,7 +1179,7 @@ class SHRealCoeffs(SHCoeffs):
 
         data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
                                     csphase=self.csphase, **kwargs)
-        gridout = SHGrid.from_array(data, grid='GLQ')
+        gridout = SHGrid.from_array(data, grid='GLQ', copy=False)
         return gridout
 
 
@@ -1348,7 +1354,7 @@ class SHComplexCoeffs(SHCoeffs):
 
         return SHCoeffs.from_array(coeffs_rot,
                                    normalization=self.normalization,
-                                   csphase=self.csphase)
+                                   csphase=self.csphase, copy=False)
 
     def _expandDH(self, sampling, **kwargs):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
@@ -1365,7 +1371,7 @@ class SHComplexCoeffs(SHCoeffs):
 
         data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
                                     norm=norm, csphase=self.csphase, **kwargs)
-        gridout = SHGrid.from_array(data, grid='DH')
+        gridout = SHGrid.from_array(data, grid='DH', copy=False)
         return gridout
 
     def _expandGLQ(self, zeros, **kwargs):
@@ -1386,7 +1392,7 @@ class SHComplexCoeffs(SHCoeffs):
 
         data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
                                      csphase=self.csphase, **kwargs)
-        gridout = SHGrid.from_array(data, grid='GLQ')
+        gridout = SHGrid.from_array(data, grid='GLQ', copy=False)
         return gridout
 
 
@@ -1443,7 +1449,7 @@ class SHGrid(object):
 
     # ---- factory methods
     @classmethod
-    def from_array(self, array, grid='DH'):
+    def from_array(self, array, grid='DH', copy=True):
         """
         Initialize the class instance from an input array.
 
@@ -1477,7 +1483,7 @@ class SHGrid(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
-                return cls(array)
+                return cls(array, copy=copy)
 
     @classmethod
     def from_file(self, fname, binary=False, **kwargs):
@@ -2005,7 +2011,7 @@ class DHRealGrid(SHGrid):
                                    **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
-                                     csphase=csphase)
+                                     csphase=csphase, copy=False)
         return coeffs
 
     def _plot_rawdata(self):
@@ -2094,7 +2100,7 @@ class DHComplexGrid(SHGrid):
                                     **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
-                                     csphase=csphase)
+                                     csphase=csphase, copy=False)
         return coeffs
 
     def _plot_rawdata(self):
@@ -2187,7 +2193,8 @@ class GLQRealGrid(SHGrid):
                                     norm=norm, csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
-                                     csphase=csphase)
+                                     csphase=csphase,
+                                     copy=False)
         return coeffs
 
     def _plot_rawdata(self):
@@ -2242,18 +2249,12 @@ class GLQComplexGrid(SHGrid):
             self.data = array
 
     def _get_lats(self):
-        """
-        Return a vector containing the latitudes (in degrees) of each row
-        of the gridded data.
-        """
+        """Return the latitudes (in degrees) of the gridded data rows."""
         lats = 90. - _np.arccos(self.zeros) * 180. / _np.pi
         return lats
 
     def _get_lons(self):
-        """
-        Return a vector containing the longitudes (in degrees) of each column
-        of the gridded data.
-        """
+        """Return the longitudes (in degrees) of the gridded data columns."""
         lons = _np.linspace(0., 360. - 360. / self.nlon, num=self.nlon)
         return lons
 
@@ -2276,12 +2277,11 @@ class GLQComplexGrid(SHGrid):
                                      norm=norm, csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
-                                     csphase=csphase)
+                                     csphase=csphase, copy=False)
         return coeffs
 
     def _plot_rawdata(self):
         """Plot the raw data using a simply cylindrical projection."""
-
         fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='upper')
         ax.flat[0].set_title('Gauss-Legendre Quadrature Grid (real component)')
@@ -2302,8 +2302,9 @@ class GLQComplexGrid(SHGrid):
 
 class SHWindow(object):
     """
-    Class for spatio-spectral localization windows developed in spherical
-    harmonics. The windows can be initialized from:
+    Class for spatio-spectral localization windows on the sphere.
+
+    The windows can be initialized from:
 
     >>>  x = SHWindow.from_cap(theta, lwin, [clat, clon, nwin])
     >>>  x = SHWindow.from_mask(SHGrid)
@@ -2621,9 +2622,10 @@ class SHWindow(object):
 
     def return_coeffs(self, itaper, normalization='4pi', csphase=1):
         """
-        Return the spherical harmonic coefficients of taper i, where itaper = 0
-        is the best concentrated, as new SHCoeffs instance and with an
-        optionally different normalization convention.
+        Return the spherical harmonic coefficients of taper i.
+
+        itaper = 0 is the best concentrated, as new SHCoeffs instance and with
+        in optionally different normalization convention.
 
         Usage
         -----
@@ -2663,12 +2665,14 @@ class SHWindow(object):
                                  csphase=csphase)
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
-                                   csphase=csphase)
+                                   csphase=csphase, copy=False)
 
     def return_grid(self, itaper, grid='DH2', zeros=None):
         """
-        Evaluate the coefficients of taper i on a spherical grid, where i = 0
-        is the best concentrated, and return a new class instance of SHGrid.
+        Evaluate the coefficients of taper i on a spherical grid.
+
+        i = 0 is the best concentrated, and return a new class instance of
+        SHGrid.
 
         Usage
         -----
@@ -2700,25 +2704,22 @@ class SHWindow(object):
         if (grid.upper() == 'DH' or grid.upper() == 'DH1' or
                 grid.upper() == 'DH2'):
             return SHGrid.from_array(self.get_grid(itaper, grid=grid.upper()),
-                                     grid='DH')
+                                     grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lwin)
 
             return SHGrid.from_array(self.get_grid(itaper, grid=grid.upper(),
                                                    zeros=zeros),
-                                     grid='GLQ')
+                                     grid='GLQ', copy=False)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
                 "Input value was {:s}".format(repr(grid)))
 
-        return gridout
-
     def get_multitaperpowerspectrum(self, clm, k, **kwargs):
-        """"
-        Return the multitaper power spectrum estimate and uncertainty for the
-        input SHCoeffs class instance.
+        """
+        Return the multitaper power spectrum estimate and uncertainty.
 
         Usage
         -----
@@ -2746,9 +2747,8 @@ class SHWindow(object):
         return self._get_multitaperpowerspectrum(clm, k, **kwargs)
 
     def get_multitapercrosspowerspectrum(self, clm, slm, k, **kwargs):
-        """"
-        Return the multitaper cross power spectrum estimate and uncertainty
-        for two input SHCoeffs class instances.
+        """
+        Return the multitaper cross power spectrum estimate and uncertainty.
 
         Usage
         -----
