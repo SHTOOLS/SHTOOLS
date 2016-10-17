@@ -192,6 +192,9 @@ class SHCoeffs(object):
                         coefficients, respectively.
         csphase       : 1 (default) if the coefficients exclude the Condon-
                         Shortley phase factor, or -1 if they include it.
+        copy          : If True (default), make a copy of array when
+                        initializing the class instance. If False, initialize
+                        the class instance with a reference to array.
         """
         if _np.iscomplexobj(coeffs):
             kind = 'complex'
@@ -1462,8 +1465,11 @@ class SHGrid(object):
         ----------
 
         array : numpy array of size (nlat, nlon)
-        grid : 'DH' (default) or 'GLQ' for Driscoll and Healy grids or Gauss
+        grid  : 'DH' (default) or 'GLQ' for Driscoll and Healy grids or Gauss
                 Legendre Quadrature grids, respectively.
+        copy  : If True (default), make a copy of array when
+                initializing the class instance. If False, initialize
+                the class instance with a reference to array.
         """
         if _np.iscomplexobj(array):
             kind = 'complex'
@@ -2427,7 +2433,7 @@ class SHWindow(object):
 
         return SHWindowCap(theta, tapers, eigenvalues, taper_order,
                            clat, clon, nwin, theta_degrees, coord_degrees,
-                           dj_matrix, weights)
+                           dj_matrix, weights, copy=False)
 
     @classmethod
     def from_mask(self, dh_mask, lwin, nwin=None, weights=None):
@@ -2475,7 +2481,7 @@ class SHWindow(object):
 
         tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
                                                          ntapers=nwin)
-        return SHWindowMask(tapers, eigenvalues, weights)
+        return SHWindowMask(tapers, eigenvalues, weights, copy=False)
 
     def copy(self):
         """Return a deep copy of the class instance."""
