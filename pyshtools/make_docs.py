@@ -101,19 +101,19 @@ def process_mddoc(fname_mddoc):
     match = reh1.search(mdstring)
     while match is not None:
         mdstring = re.sub(match.group(0), match.group(1) + '\n' +
-                          len(match.group(1)) * '-' + '\n', mdstring)
+                          len(match.group(1)) * '-', mdstring)
         match = reh1.search(mdstring)
 
     match = reh1b.search(mdstring)
     while match is not None:
         mdstring = re.sub(match.group(0), '\n' + match.group(1) + '\n' +
-                          len(match.group(1)) * '-' + '\n', mdstring)
+                          len(match.group(1)) * '-', mdstring)
         match = reh1b.search(mdstring)
 
     match = reh2.search(mdstring)
     while match is not None:
         mdstring = re.sub(match.group(0), match.group(1) + '\n' +
-                          len(match.group(1)) * '-' + '\n', mdstring)
+                          len(match.group(1)) * '-', mdstring)
         match = reh2.search(mdstring)
 
     match = recode.search(mdstring)
