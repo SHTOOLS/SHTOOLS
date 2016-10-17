@@ -129,12 +129,18 @@ def process_mddoc(fname_mddoc):
     # ---- combine into docstring ----
     docstring = ''
     tmp = mdstring.splitlines(True)
+    for i in range(0, len(tmp)-3):
+        if tmp[i][0:4] == ':   ' and tmp[i+3][0:4] == ':   ':
+            tmp[i+1] = ''
+
     for i in range(0, len(tmp)):
         if tmp[i][0:4] == ':   ':
             docstring += textwrap.fill(tmp[i][4:], width=80,
                                        replace_whitespace=False,
                                        initial_indent='    ',
                                        subsequent_indent='    ') + '\n'
+        elif tmp[i] == '':
+            pass
         else:
             docstring += textwrap.fill(tmp[i], width=80,
                                        replace_whitespace=False) + '\n'

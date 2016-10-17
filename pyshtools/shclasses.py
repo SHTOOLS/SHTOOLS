@@ -128,12 +128,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         x = SHCoeffs.from_zeros(lmax, [normalization, csphase])
 
         Parameters
         ----------
-
         lmax          : The highest harmonic degree l of the coefficients
         normalization : '4pi' (default), 'ortho' or 'schmidt' for geodesy 4pi
                         normalized, orthonormalized, or Schmidt semi-normalized
@@ -180,12 +178,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         x = SHCoeffs.from_array(array, [normalization, csphase])
 
         Parameters
         ----------
-
         array         : numpy array of size (2, lmax+1, lmax+1).
         normalization : '4pi' (default), 'ortho' or 'schmidt' for geodesy 4pi
                         normalized, orthonormalized, or Schmidt semi-normalized
@@ -237,13 +233,11 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         x = SHCoeffs.from_random(power, [kind, normalization, csphase,
                                          exact_power])
 
         Parameters
         ----------
-
         power         : numpy array of size (lmax+1) that specifies the power
                         per degree l of the random coefficients. This is
                         usually the expected power.
@@ -328,7 +322,6 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         x = SHCoeffs.from_file(filename, lmax, [format='shtools', kind,
                                                 normalization, csphase, skip])
         x = SHCoeffs.from_file(filename, [format='npy', kind, normalization,
@@ -336,7 +329,6 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-
         filename      : Name of the file, including path.
         lmax          : Maximum spherical harmonic degree to read from the
                         file when format is 'shtools'.
@@ -353,7 +345,6 @@ class SHCoeffs(object):
 
         Description
         -----------
-
         If format='shtools', spherical harmonic coefficients will be read from
         an ascii-formatted file. The maximum spherical harmonic degree that is
         read is determined by the input value lmax. If the optional value skip
@@ -417,12 +408,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         x.tofile(filename, [format, **kwargs])
 
         Parameters
         ----------
-
         filename : Name of the output file.
         format   : 'shtools' (default) or 'npy'.
         **kwargs : Keyword arguments of numpy.save().
@@ -618,12 +607,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         degrees = x.get_degrees()
 
         Returns
         -------
-
         degrees : numpy ndarray of size (lmax+1).
         """
         return _np.arange(self.lmax + 1)
@@ -634,12 +621,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         power = x.get_powerperdegree()
 
         Returns
         -------
-
         power : numpy ndarray of size (lmax+1).
         """
         return self._powerperdegree()
@@ -650,12 +635,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         power = x.get_powerperband()
 
         Returns
         -------
-
         power : numpy ndarray of size (lmax+1).
         """
         ls = self.get_degrees()
@@ -668,12 +651,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         x.set_coeffs(values, ls, ms)
 
         Parameters
         ----------
-
         values : One or several coefficient values.
         ls     : The degree/s of the coefficients that should be set.
         ms     : The order/s of the coefficients that should be set. Positive
@@ -695,12 +676,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         coeffs = x.get_coeffs([normalization, csphase, lmax])
 
         Returns
         -------
-
         coeffs : numpy ndarray of size (2, lmax + 1, lmax + 1).
 
         Parameters
@@ -752,12 +731,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         SHCoeffsInstance = x.rotate(alpha, beta, gamma, [degrees, dj_matrix])
 
         Parameters
         ----------
-
         alpha, beta, gamma : The three Euler rotation angles in degrees.
         degrees            : True (default) if the Euler angles are in degrees,
                              False if they are in radians.
@@ -885,12 +862,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         SHGridInstance = x.expand([grid, lmax, lmax_calc, zeros])
 
         Parameters
         ----------
-
         grid      : 'DH' or 'DH1' for an equisampled lat/lon grid with
                     nlat=nlon, 'DH2' for an equidistant lat/lon grid with
                     nlon=2*nlat, or 'GLQ' for a Gauss-Legendre quadrature grid.
@@ -903,7 +878,6 @@ class SHCoeffs(object):
 
         Description
         -----------
-
         For more information concerning the spherical harmonic expansions, and
         the properties of the output grids, see the documentation for
         SHExpandDH, SHExpandDHC, SHExpandGLQ and SHExpandGLQC.
@@ -933,12 +907,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         x.plot_powerperdegree([loglog, show, fname])
 
         Parameters
         ----------
-
         loglog : If True (default), use log-log axis.
         show   : If True (default), plot to the screen.
         fname  : If present, save the image to the file.
@@ -966,12 +938,10 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         x.plot_powerperband([loglog, show, fname])
 
         Parameters
         ----------
-
         bandwidth : The bandwidth, default = 2.
         loglog    : If True (default), use log-log axis.
         show      : If True (default), plot to the screen.
@@ -1000,7 +970,6 @@ class SHCoeffs(object):
 
         Usage
         -----
-
         x.info()
         """
         print('kind = {:s}\nnormalization = {:s}\n'
@@ -1048,7 +1017,6 @@ class SHRealCoeffs(SHCoeffs):
 
         Usage
         -----
-
         SHComplexCoeffsInstance = x.make_complex()
         """
         rcomplex_coeffs = _shtools.SHrtoc(self.coeffs,
@@ -1224,7 +1192,6 @@ class SHComplexCoeffs(SHCoeffs):
 
         Usage
         -----
-
         SHRealCoeffsInstance = x.make_real()
         """
         # First test if the coefficients correspond to a real grid.
@@ -1458,12 +1425,10 @@ class SHGrid(object):
 
         Usage
         -----
-
         x = SHGrid.from_array(array, [grid])
 
         Parameters
         ----------
-
         array : numpy array of size (nlat, nlon)
         grid  : 'DH' (default) or 'GLQ' for Driscoll and Healy grids or Gauss
                 Legendre Quadrature grids, respectively.
@@ -1498,12 +1463,10 @@ class SHGrid(object):
 
         Usage
         -----
-
         x = SHGrid.from_file(fname, [binary, **kwargs])
 
         Parameters
         ----------
-
         fname    : The filename containing the gridded data. For text files
                    (default) the file is read using the numpy routine
                    loadtxt(), whereas for binary files, the file is read using
@@ -1554,12 +1517,10 @@ class SHGrid(object):
 
         Usage
         -----
-
         x.tofile(filename, [binary, **kwargs])
 
         Parameters
         ----------
-
         filename : Name of output file. For text files (default), the file will
                    be saved automatically in gzip compressed format if the
                    filename ends in .gz.
@@ -1708,12 +1669,10 @@ class SHGrid(object):
 
         Usage
         -----
-
         lats = x.get_lats()
 
         Parameters
         -------
-
         lats    : numpy array of size nlat containing the latitude of each row
                   of the gridded data.
         degrees : If True (default), the output will be in degrees. If False,
@@ -1730,12 +1689,10 @@ class SHGrid(object):
 
         Usage
         -----
-
         lons = x.get_lon()
 
         Parameters
         -------
-
         lons    : numpy array of size nlon containing the longitude of each
                   column of the gridded data.
         degrees : If True (default), the output will be in degrees. If False,
@@ -1752,12 +1709,10 @@ class SHGrid(object):
 
         Usage
         -----
-
         grid = x.get_grid()
 
         Returns
         -------
-
         grid : numpy array of the gridded data of size (nlat, nlon).
         """
         return self.data
@@ -1771,12 +1726,10 @@ class SHGrid(object):
 
         Usage
         -----
-
         x.plot_3dsphere([show, fname])
 
         Parameters
         ----------
-
         show   : If True (default), plot the image to the screen.
         fname  : If present, save the image to the file.
         """
@@ -1873,12 +1826,10 @@ class SHGrid(object):
 
         Usage
         -----
-
         x.plot_rawdata([show, fname])
 
         Parameters
         ----------
-
         show   : If True (default), plot the image to the screen.
         fname  : If present, save the image to the file.
         """
@@ -1895,12 +1846,10 @@ class SHGrid(object):
 
         Usage
         -----
-
         SHCoeffsInstance = x.expand([normalization, csphase, lmax_calc])
 
         Parameters
         ----------
-
         normalization : '4pi' (default), geodesy 4-pi normalized
                       : 'ortho', orthonormalized
                       : 'schmidt', Schmidt semi-normalized)
@@ -1935,7 +1884,6 @@ class SHGrid(object):
 
         Usage
         -----
-
         x.info()
         """
         print('kind = {:s}\ngrid = {:s}\n'.format(repr(self.kind),
@@ -2401,13 +2349,11 @@ class SHWindow(object):
 
         Usage
         -----
-
         x = SHWindow.from_cap(theta, lwin, [clat, clon, nwin, theta_degrees,
                                             coord_degrees, dj_matrix, weights])
 
         Parameters
         ----------
-
         theta          : Angular radius of the spherical cap localization
                          domain (default in degrees).
         lwin           : Spherical harmonic bandwidth of the localization
@@ -2443,12 +2389,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         x = SHWindow.from_mask(dh_mask, lwin, [nwin])
 
         Parameters
         ----------
-
         dh_mask  : A Driscoll and Healy (1994) sampled grid describing the
                    concentration region R. All elements should either be 1
                    (for inside the concentration region) or 0 (for outside the
@@ -2494,12 +2438,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         degrees = x.get_degrees()
 
         Returns
         -------
-
         degrees : numpy ndarray of size (lwin+1).
         """
         return _np.arange(self.lwin + 1)
@@ -2511,18 +2453,15 @@ class SHWindow(object):
 
         Usage
         -----
-
         k = x.get_k(alpha)
 
         Returns
         -------
-
         k : The number of windows with concentration factors greater or equal
             to alpha.
 
         Parameters
         ----------
-
         alpha  : The concentration factor, which is the power of the window
                  within the concentration region divided by the total power.
         """
@@ -2535,17 +2474,14 @@ class SHWindow(object):
 
         Usage
         -----
-
         coeffs = x.get_coeffs(itaper, [normalization, csphase])
 
         Returns
         -------
-
         coeffs : numpy ndarray of size (2, lwin + 1, lwin + 1).
 
         Parameters
         ----------
-
         itaper        : Taper number, where itaper = 0 is the best
                         concentrated.
         normalization : Normalization of the output coefficients:
@@ -2582,12 +2518,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         gridout = x.get_grid(itaper, [grid, zeros])
 
         Parameters
         ----------
-
         grid      : 'DH' or 'DH1' for an equisampled lat/lon grid with
                     nlat = nlon, 'DH2' for an equidistant lat/lon grid with
                     nlon = 2 * nlat, or 'GLQ' for a Gauss-Legendre quadrature
@@ -2597,7 +2531,6 @@ class SHWindow(object):
 
         Description
         -----------
-
         For more information concerning the spherical harmonic expansions and
         the properties of the output grids, see the documentation for
         SHExpandDH and SHExpandGLQ.
@@ -2635,12 +2568,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         SHCoeffsInstance = x.return_coeffs(itaper, [normalization, csphase])
 
         Parameters
         ----------
-
         itaper        : Taper number, where itaper = 0 is the best
                         concentrated.
         normalization : Normalization of the output class: '4pi' (default),
@@ -2682,12 +2613,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         SHGridInstance = x.return_grid(itaper, [grid, zeros])
 
         Parameters
         ----------
-
         grid      : 'DH' or 'DH1' for an equisampled lat/lon grid with
                     nlat = nlon, 'DH2' for an equidistant lat/lon grid with
                     nlon = 2 * nlat, or 'GLQ' for a Gauss-Legendre quadrature
@@ -2697,7 +2626,6 @@ class SHWindow(object):
 
         Description
         -----------
-
         For more information concerning the spherical harmonic expansions and
         the properties of the output grids, see the documentation for
         SHExpandDH and SHExpandGLQ.
@@ -2729,7 +2657,6 @@ class SHWindow(object):
 
         Usage
         -----
-
         mtse, sd = x.get_multitaperpowerspectrum(clm, k, [lmax, taper_wt, clat,
                                                           clon, coord_degrees])
 
@@ -2758,7 +2685,6 @@ class SHWindow(object):
 
         Usage
         -----
-
         mtse, sd = x.get_multitapercrosspowerspectrum(
                       clm, slm, k, [lmax, taper_wt, clat, clon, coord_degrees])
 
@@ -2792,7 +2718,6 @@ class SHWindow(object):
 
         Usage
         -----
-
         outspectrum = x.get_biasedpowerspectrum(power, k, [taper_wt, save_cg,
                                                            ldata])
 
@@ -2823,12 +2748,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         power = x.get_powerperdegree([itaper, nwin])
 
         Parameters
         ----------
-
         power   : A matrix with each column containing the power spectrum
                   of a localization window, and where the windows are arranged
                   with increasing concentration factors. If itaper is set,
@@ -2863,12 +2786,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         Mmt = x.get_couplingmatrix(lmax, [nwin, weights, mode])
 
         Parameters
         ----------
-
         lmax    : Spherical harmonic bandwidth of the global power spectrum.
         nwin    : Number of tapers used in the mutlitaper spectral analysis.
                   Default = x.nwin
@@ -2921,12 +2842,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         x.plot_windows(nwin, [show, fname])
 
         Parameters
         ----------
-
         nwin   : The number of localization windows to plot.
         show   : If True (default), plot the image to the screen.
         fname  : If present, save the image to the file.
@@ -2969,12 +2888,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         x.plot_powerspectra(nwin, [show, fname])
 
         Parameters
         ----------
-
         nwin   : The number of localization windows to plot.
         show   : If True (default), plot the image to the screen.
         fname  : If present, save the image to the file.
@@ -3025,12 +2942,10 @@ class SHWindow(object):
 
         Usage
         -----
-
         x.plot_couplingmatrix(lmax, [nwin, weights, mode, show, fname])
 
         Parameters
         ----------
-
         lmax    : Spherical harmonic bandwidth of the global power spectrum.
         nwin    : Number of tapers used in the mutlitaper spectral analysis.
                   Default = x.nwin
@@ -3073,7 +2988,6 @@ class SHWindow(object):
 
         Usage
         -----
-
         x.info()
         """
         self._info()
@@ -3177,12 +3091,10 @@ class SHWindowCap(SHWindow):
 
         Usage
         -----
-
         x.rotate(clat, clon [coord_degrees, dj_matrix])
 
         Parameters
         ----------
-
         clat, clon    : Latitude and longitude of the center of the rotated
                         spherical-cap localization windows (default in
                         degrees).
@@ -3194,7 +3106,6 @@ class SHWindowCap(SHWindow):
 
         Description
         -----------
-
         This function will take the spherical-cap localization windows
         centered at the north pole (and saved in the attributes tapers and
         orders), rotate each function to the coordinate (clat, clon), and save
