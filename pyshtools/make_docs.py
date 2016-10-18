@@ -129,6 +129,8 @@ def process_mddoc(fname_mddoc):
     # ---- combine into docstring ----
     docstring = ''
     tmp = mdstring.splitlines(True)
+
+    # --- remove line breaks between parameters ---
     for i in range(0, len(tmp)-3):
         if tmp[i][0:4] == ':   ' and tmp[i+3][0:4] == ':   ':
             tmp[i+1] = ''
