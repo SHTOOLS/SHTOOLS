@@ -142,9 +142,9 @@ class SHCoeffs(object):
             '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
             orthonormalized, or Schmidt semi-normalized coefficients,
             respectively.
-        csphase : int, optional, defalt = 1
-            1 if the coefficients exclude the Condon-Shortley phase factor, or
-            -1 if they include it.
+        csphase : int, optional, default = 1
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
         """
@@ -195,15 +195,15 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        array : ndarray, size (2, lmax+1, lmax+1).
+        array : ndarray, shape (2, lmax+1, lmax+1).
             The input spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
             orthonormalized, or Schmidt semi-normalized coefficients,
             respectively.
         csphase : int, optional, default = 1
-            1 if the coefficients exclude the Condon-Shortley phase factor, or
-            -1 if they include it.
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
         copy : bool, optional, default = True
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
@@ -259,18 +259,18 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        power : ndarray, size (lmax+1)
-            numpy array of size (lmax+1) that specifies the expected power per
+        power : ndarray, shape (lmax+1)
+            numpy array of shape (lmax+1) that specifies the expected power per
             degree l of the random coefficients.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
-        normalization : str, optional, defaul = '4pi'
+        normalization : str, optional, default = '4pi'
             '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
             orthonormalized, or Schmidt semi-normalized coefficients,
             respectively.
         csphase : int, optional, default = 1
-            1 if the coefficients exclude the Condon-Shortley phase factor, or
-            -1 if they include it.
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
         exact_power : bool, optional, default = False
             The total variance of the coefficients is set exactly to the input
             power. This means that the distribution of power at degree l
@@ -370,8 +370,8 @@ class SHCoeffs(object):
             orthonormalized, or Schmidt semi-normalized coefficients,
             respectively.
         csphase : int, optional, default = 1
-            1 if the coefficients exclude the Condon-Shortley phase factor, or
-            -1 if they include it.
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
         skip : int, required when format = 'shtools'
             Number of lines to skip at the beginning of the file when format is
             'shtools'.
@@ -650,7 +650,7 @@ class SHCoeffs(object):
 
         Returns
         -------
-        degrees : ndarray, size (lmax+1)
+        degrees : ndarray, shape (lmax+1)
             1-D numpy ndarray listing the spherical harmonic degrees, where
             lmax is the maximum spherical harmonic degree.
         """
@@ -666,7 +666,7 @@ class SHCoeffs(object):
 
         Returns
         -------
-        power : ndarray, size (lmax+1)
+        power : ndarray, shape (lmax+1)
             1-D numpy ndarray of the power per degree l spectrum, where lmax
             is the maximum spherical harmonic degree.
         """
@@ -682,7 +682,7 @@ class SHCoeffs(object):
 
         Returns
         -------
-        power : ndarray, size (lmax+1)
+        power : ndarray, shape (lmax+1)
             1-D numpy ndarray of the power spectrum, where lmax is the maximum
             spherical harmonic degree.
         """
@@ -734,7 +734,7 @@ class SHCoeffs(object):
 
         Returns
         -------
-        coeffs : ndarry, size (2, lmax+1, lmax+1)
+        coeffs : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the spherical harmonic coefficients.
 
         Parameters
@@ -744,8 +744,8 @@ class SHCoeffs(object):
             'schmidt' for geodesy 4pi normalized, orthonormalized, or Schmidt
             semi-normalized coefficients, respectively.
         csphase : int, optional, default = x.csphase
-            Output Condon-Shortley phase convention. 1 to exlcude the phase
-            factor, or -1 to include it.
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
         """
@@ -789,7 +789,7 @@ class SHCoeffs(object):
     def rotate(self, alpha, beta, gamma, degrees=True, dj_matrix=None):
         """
         Rotate the coordinate system used to express the spherical harmonic
-        coeffcients and return a new class instance.
+        coefficients and return a new class instance.
 
         Usage
         -----
@@ -886,8 +886,8 @@ class SHCoeffs(object):
             for geodesy 4pi normalized, orthonormalized, or Schmidt semi-
             normalized coefficients, respectively.
         csphase : int, optional, default = x.csphase
-            Output Condon-Shortley phase convention: 1 to exlcude the phase
-            factor, or -1 to include it.
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
         """
@@ -1530,7 +1530,7 @@ class SHGrid(object):
 
         Parameters
         ----------
-        array : ndarray, size (nlat, nlon)
+        array : ndarray, shape (nlat, nlon)
             2-D numpy array of the gridded data, where nlat and nlon are the
             number of latitudinal and longitudinal bands, respectively.
         grid : str, optional, default = 'DH'
@@ -1786,7 +1786,7 @@ class SHGrid(object):
 
         Returns
         -------
-        lats : ndarray, size (nlat)
+        lats : ndarray, shape (nlat)
             1-D numpy array of size nlat containing the latitude of each row
             of the gridded data.
 
@@ -1811,7 +1811,7 @@ class SHGrid(object):
 
         Returns
         -------
-        lons : ndarray, size (nlon)
+        lons : ndarray, shape (nlon)
             1-D numpy array of size nlon containing the longitude of each row
             of the gridded data.
 
@@ -1836,7 +1836,7 @@ class SHGrid(object):
 
         Returns
         -------
-        grid : ndarray, size (nlat, nlon)
+        grid : ndarray, shape (nlat, nlon)
             2-D numpy array of the gridded data.
         """
         return self.data
@@ -1987,7 +1987,8 @@ class SHGrid(object):
             geodesy 4-pi normalized, 'ortho' for orthonormalized, or 'schmidt'
             for Schmidt semi-normalized.
         csphase : int, optional, default = 1
-            Exlcude (1) or use (-1) the Condon-Shortley phase factor.
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
         lmax_calc : int, optional, default = x.lmax
             Maximum spherical harmonic degree to return.
         """
@@ -2106,7 +2107,6 @@ class DHRealGrid(SHGrid):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(1, 1)
         ax.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
-        ax.set_title('Driscoll and Healy Grid')
         ax.set_xlabel('longitude')
         ax.set_ylabel('latitude')
         fig.tight_layout(pad=0.5)
@@ -2196,12 +2196,12 @@ class DHComplexGrid(SHGrid):
         fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='upper',
                           extent=(0., 360., -90., 90.))
-        ax.flat[0].set_title('Driscoll and Healy Grid (real component)')
+        ax.flat[0].set_title('Real component')
         ax.flat[0].set_xlabel('longitude')
         ax.flat[0].set_ylabel('latitude')
         ax.flat[1].imshow(self.data.imag, origin='upper',
                           extent=(0., 360., -90., 90.))
-        ax.flat[1].set_title('Driscoll and Healy Grid (imaginary component)')
+        ax.flat[1].set_title('Imaginary component')
         ax.flat[1].set_xlabel('longitude')
         ax.flat[1].set_ylabel('latitude')
         fig.tight_layout(pad=0.5)
@@ -2290,9 +2290,8 @@ class GLQRealGrid(SHGrid):
 
         fig, ax = _plt.subplots(1, 1)
         ax.imshow(self.data, origin='upper')
-        ax.set_title('Gauss-Legendre Quadrature Grid')
-        ax.set_xlabel('longitude index')
-        ax.set_ylabel('latitude index')
+        ax.set_xlabel('GLQ longitude index')
+        ax.set_ylabel('GLQ latitude index')
         fig.tight_layout(pad=0.5)
         return fig, ax
 
@@ -2372,14 +2371,13 @@ class GLQComplexGrid(SHGrid):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='upper')
-        ax.flat[0].set_title('Gauss-Legendre Quadrature Grid (real component)')
+        ax.flat[0].set_title('Real component')
         ax.flat[0].set_xlabel('longitude index')
         ax.flat[0].set_ylabel('latitude index')
         ax.flat[1].imshow(self.data.imag, origin='upper')
-        ax.flat[1].set_title('Gauss-Legendre Quadrature Grid ' +
-                             '(imaginary component)')
-        ax.flat[1].set_xlabel('longitude index')
-        ax.flat[1].set_ylabel('latitude index')
+        ax.flat[1].set_title('Imaginary component')
+        ax.flat[1].set_xlabel('GLQ longitude index')
+        ax.flat[1].set_ylabel('GLQ latitude index')
         fig.tight_layout(pad=0.5)
         return fig, ax
 
@@ -2467,7 +2465,7 @@ class SHWindow(object):
     plot_couplingmatrix() : Plot the multitaper coupling matrix.
     info()                : Print a summary of the data stored in the SHWindow
                             instance.
-    copy()          : Return a copy of the class instance.
+    copy()                : Return a copy of the class instance.
 """
 
     def __init__(self):
@@ -2539,7 +2537,7 @@ class SHWindow(object):
 
         Parameters
         ----------
-        dh_mask :ndarray, size (nlat, nlon)
+        dh_mask :ndarray, shape (nlat, nlon)
             A Driscoll and Healy (1994) sampled grid describing the
             concentration region R. All elements should either be 1 (for inside
             the concentration region) or 0 (for outside the concentration
@@ -2590,7 +2588,7 @@ class SHWindow(object):
 
         Returns
         -------
-        degrees : ndarray, size (lwin+1)
+        degrees : ndarray, shape (lwin+1)
             numpy ndarray containing a list of the spherical harmonic degrees.
         """
         return _np.arange(self.lwin + 1)
@@ -2629,7 +2627,7 @@ class SHWindow(object):
 
         Returns
         -------
-        coeffs : ndarray, size (2, lwin+1, lwin+11)
+        coeffs : ndarray, shape (2, lwin+1, lwin+11)
             3-D numpy ndarray of size of the spherical harmonic coefficients
             of the window.
 
@@ -2642,8 +2640,8 @@ class SHWindow(object):
             'schmidt' for geodesy 4pi normalized, orthonormalized, or Schmidt
             semi-normalized coefficients, respectively.
         csphase : int, optional, default = 1
-            1 if the coefficients exclude the Condon-Shortley phase factor, or
-            -1 if they include it.
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
@@ -2676,7 +2674,7 @@ class SHWindow(object):
 
         Returns
         -------
-        gridout : ndarray, size (nlat, nlon)
+        gridout : ndarray, shape (nlat, nlon)
             2-D numpy array of localization window.
 
         Parameters
@@ -2743,8 +2741,8 @@ class SHWindow(object):
             geodesy 4pi-normalized, orthonormalized, or Schmidt semi-normalized
             coefficients, respectively.
         csphase : int, optional, default = 1
-            Output Condon-Shortley phase convention: 1 to exlcude the phase
-            factor, or -1 to include it.
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
@@ -2832,10 +2830,10 @@ class SHWindow(object):
 
         Returns
         -------
-        mtse : ndarray, size (lmax-lwin+1)
+        mtse : ndarray, shape (lmax-lwin+1)
             The localized multitaper power spectrum estimate, where lwin is the
             spherical harmonic bandwidth of the localization windows.
-        sd : ndarray, size (lmax-lwin+1)
+        sd : ndarray, shape (lmax-lwin+1)
             The standard error of the localized multitaper power spectral
             estimates.
 
@@ -2871,10 +2869,10 @@ class SHWindow(object):
 
         Returns
         -------
-        mtse : ndarray, size (lmax-lwin+1)
+        mtse : ndarray, shape (lmax-lwin+1)
             The localized multitaper cross-power spectrum estimate, where lwin
             is the spherical harmonic bandwidth of the localization windows.
-        sd : ndarray, size (lmax-lwin+1)
+        sd : ndarray, shape (lmax-lwin+1)
             The standard error of the localized multitaper cross-power spectral
             estimates.
 
@@ -2915,13 +2913,13 @@ class SHWindow(object):
 
         Returns
         -------
-        outspectrum : ndarray, size (ldata+lwin+1)
+        outspectrum : ndarray, shape (ldata+lwin+1)
             The expectation of the windowed power spectrum, where lwin is the
             spherical harmonic bandwidth of the localization windows.
 
         Parameters
         ----------
-        power : ndarray, size (ldata+1)
+        power : ndarray, shape (ldata+1)
             The global power spectrum.
         k : int
             The number of best concentrated localization windows to use in
@@ -2950,7 +2948,7 @@ class SHWindow(object):
 
         Returns
         -------
-        power : ndarray, size (lwin+1, nwin)
+        power : ndarray, shape (lwin+1, nwin)
              A matrix with each column containing the power spectrum of a
              localization window, and where the windows are arranged with
              increasing concentration factors. If itaper is set, only a single
@@ -2993,7 +2991,7 @@ class SHWindow(object):
 
         Returns
         -------
-        Mmt : ndarray, size (lmax+lwin+1, lmax+1) or (lmax+1, lmax+1) or
+        Mmt : ndarray, shape (lmax+lwin+1, lmax+1) or (lmax+1, lmax+1) or
               (lmax-lwin+1, lmax+1)
 
         Parameters
@@ -3005,15 +3003,14 @@ class SHWindow(object):
         weights : ndarray, optional, default = x.weights
             Taper weights used with the multitaper spectral analyses.
         mode : str, opitonal, default = 'full'
-            Can be one of the following: 'full' couples over the data bandlimit
-            and returns a biased output spectrum with size lmax+lwin+1. This
-            assumes implicitly that the input spectrum is zero for degrees
-            l>lmax. 'same' couples exactly to the data bandlimit and returns a
-            biased output spectrum with size lmax+1. This assumes implicitly
-            that the spectrum is zero for degrees l>lmax. 'valid' couples
-            exactly to the data bandlimit and returns a biased spectrum with
-            size lmax-lwin+1. This returns only the part of the biased spectrum
-            that is not influenced by degrees with l>lmax.
+            'full' returns a biased output spectrum of size lmax+lwin+1. The
+            input spectrum is assumed to be zero for degrees l>lmax.
+            'same' returns a biased output spectrum with the same size
+            (lmax+1) as the input spectrum. The input spectrum is assumed to be
+            zero for degrees l>lmax.
+            'valid' returns a biased spectrum with size lmax-lwin+1. This
+            returns only that part of the biased spectrum that is not
+            influenced by the input spectrum beyond degree lmax.
         """
         if weights is not None:
             if nwin is not None:
@@ -3165,15 +3162,14 @@ class SHWindow(object):
         weights : ndarray, optional, default = x.weights
             Taper weights used with the multitaper spectral analyses.
         mode : str, opitonal, default = 'full'
-            Can be one of the following: 'full' couples over the data bandlimit
-            and returns a biased output spectrum with size lmax+lwin+1. This
-            assumes implicitly that the input spectrum is zero for degrees
-            l>lmax. 'same' couples exactly to the data bandlimit and returns a
-            biased output spectrum with size lmax+1. This assumes implicitly
-            that the spectrum is zero for degrees l>lmax. 'valid' couples
-            exactly to the data bandlimit and returns a biased spectrum with
-            size lmax-lwin+1. This returns only the part of the biased spectrum
-            that is not influenced by degrees with l>lmax.
+            'full' returns a biased output spectrum of size lmax+lwin+1. The
+            input spectrum is assumed to be zero for degrees l>lmax.
+            'same' returns a biased output spectrum with the same size
+            (lmax+1) as the input spectrum. The input spectrum is assumed to be
+            zero for degrees l>lmax.
+            'valid' returns a biased spectrum with size lmax-lwin+1. This
+            returns only that part of the biased spectrum that is not
+            influenced by the input spectrum beyond degree lmax.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
