@@ -101,19 +101,19 @@ def process_mddoc(fname_mddoc):
     match = reh1.search(mdstring)
     while match is not None:
         mdstring = re.sub(match.group(0), match.group(1) + '\n' +
-                          len(match.group(1)) * '-' + '\n', mdstring)
+                          len(match.group(1)) * '-', mdstring)
         match = reh1.search(mdstring)
 
     match = reh1b.search(mdstring)
     while match is not None:
         mdstring = re.sub(match.group(0), '\n' + match.group(1) + '\n' +
-                          len(match.group(1)) * '-' + '\n', mdstring)
+                          len(match.group(1)) * '-', mdstring)
         match = reh1b.search(mdstring)
 
     match = reh2.search(mdstring)
     while match is not None:
         mdstring = re.sub(match.group(0), match.group(1) + '\n' +
-                          len(match.group(1)) * '-' + '\n', mdstring)
+                          len(match.group(1)) * '-', mdstring)
         match = reh2.search(mdstring)
 
     match = recode.search(mdstring)
@@ -129,12 +129,20 @@ def process_mddoc(fname_mddoc):
     # ---- combine into docstring ----
     docstring = ''
     tmp = mdstring.splitlines(True)
+
+    # --- remove line breaks between parameters ---
+    for i in range(0, len(tmp)-3):
+        if tmp[i][0:4] == ':   ' and tmp[i+3][0:4] == ':   ':
+            tmp[i+1] = ''
+
     for i in range(0, len(tmp)):
         if tmp[i][0:4] == ':   ':
             docstring += textwrap.fill(tmp[i][4:], width=80,
                                        replace_whitespace=False,
                                        initial_indent='    ',
                                        subsequent_indent='    ') + '\n'
+        elif tmp[i] == '':
+            pass
         else:
             docstring += textwrap.fill(tmp[i], width=80,
                                        replace_whitespace=False) + '\n'

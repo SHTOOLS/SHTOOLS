@@ -18,7 +18,7 @@ Create a 2D map from a set of spherical harmonic coefficients using the Driscoll
 
 `lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree of the function, which determines the sampling of the output grid.
-    
+
 `norm` : optional, integer, default = 1
 :   1 = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics;  4 = orthonormal harmonics.
 
