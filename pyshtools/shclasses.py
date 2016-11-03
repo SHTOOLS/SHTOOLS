@@ -101,8 +101,6 @@ class SHCoeffs(object):
     make_real()           : Convert a complex SHCoeffs class instance to a real
                             class instance.
     plot_powerspectrum()  : Plot the power spectrum.
-    plot_powerperband()   : Plot the power per log_{bandwidth}(degree)
-                            spectrum.
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
     copy()                : Return a copy of the class instance.
@@ -654,13 +652,13 @@ class SHCoeffs(object):
         """
         return _np.arange(self.lmax + 1)
 
-    def powerspectrum(self, unit='per_l', energy=False, base=2.):
+    def powerspectrum(self, unit='per_l', base=10., energy=False):
         """
         Return the power spectrum of the function.
 
         Usage
         -----
-        power = x.powerspectrum([unit, energy, base])
+        power = x.powerspectrum([unit, base, energy])
 
         Returns
         -------
@@ -675,10 +673,10 @@ class SHCoeffs(object):
             degree l. If 'per_lm', return the average contribution to the power
             for each coefficient at spherical harmonic degree l. If
             'per_dlogl', return the power per log interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' power spectrum.
         energy : bool, optional, default = False
             Return the energy spectrum instead of the power spectrum.
-        base : float, optional, default = e
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
 
         Description
         -----------
@@ -995,85 +993,65 @@ class SHCoeffs(object):
         return gridout
 
     # ---- plotting routines ----
-    def plot_powerspectrum(self, unit='per_l', loglog=True, show=True,
-                           fname=None):
+    def plot_powerspectrum(self, unit='per_l', base=10., energy=False,
+                           loglog=True, show=True, fname=None):
         """
         Plot the power spectrum.
 
         Usage
         -----
-        x.plot_powerspectrum([unit, loglog, show, fname])
+        x.plot_powerspectrum([unit, base, energy, loglog, show, fname])
 
         Parameters
         ----------
         unit : str, optional, default = 'per_l'
-            If unit is 'per_l', plot the total power for each spherical
-            harmonic degree l. If 'per_lm', plot the average contribution
-            to the power for each coefficient at spherical harmonic degree l.
+            If 'per_l', return the total power for each spherical harmonic
+            degree l. If 'per_lm', return the average contribution to the power
+            for each coefficient at spherical harmonic degree l. If
+            'per_dlogl', return the power per log interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' power spectrum.
+            This is also used as the base for log-log plots.
+        energy : bool, optional, default = False
+            Plot the energy spectrum instead of the power spectrum.
         loglog : bool, optional, default = True
             If True, use log-log axis.
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
             If present, save the image to the file.
-
-        Description
-        -----------
-        Power is defined as the integral of the function squared over all
-        space, divided by the area the function spans.
         """
-        power = self.powerspectrum(unit=unit)
+        power = self.powerspectrum(unit=unit, base=base, energy=energy)
         ls = self.get_degrees()
 
         fig, ax = _plt.subplots(1, 1)
         ax.set_xlabel('degree l')
-        ax.set_ylabel('power')
+        if energy:
+            ax.set_ylabel('energy')
+            if (unit == 'per_l'):
+                legend = 'energy per degree'
+            elif (unit == 'per_lm'):
+                legend = 'energy per coefficient'
+            elif (unit == 'per_dlogl'):
+                legend = 'energy per log bandwidth'
+        else:
+            ax.set_ylabel('power')
+            if (unit == 'per_l'):
+                legend = 'power per degree'
+            elif (unit == 'per_lm'):
+                legend = 'power per coefficient'
+            elif (unit == 'per_dlogl'):
+                legend = 'power per log bandwidth'
+
+        ax.grid(True, which='both')
 
         if loglog:
-            ax.set_xscale('log')
-            ax.set_yscale('log')
-            ax.grid(True, which='both')
-            if (unit == 'per_l'):
-                lbl = 'power per degree'
-            elif (unit == 'per_lm'):
-                lbl = 'power per coefficient'
-            ax.plot(ls[1:], power[1:], label=lbl)
-        if show:
-            _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, ax
+            ax.set_xscale('log', basex=base)
+            ax.set_yscale('log', basey=base)
 
-    def plot_powerperband(self, bandwidth=2, show=True, fname=None):
-        """
-        Plot the power per log_{bandwidth}(degree) spectrum.
+        ax.plot(ls[1:], power[1:], label=legend)
+        ax.legend()
 
-        Usage
-        -----
-        x.plot_powerperband([loglog, show, fname])
-
-        Parameters
-        ----------
-        bandwidth : int, optional, default = 2
-            The bandwidth.
-        loglog : bool, optional, default = True
-            If True, use log-log axis.
-        show : bool, optional, default = True
-            If True, plot to the screen.
-        fname : str, optional, default = None
-            If present, save the image to the file.
-        """
-        power = self.get_powerperband(bandwidth)
-        ls = self.get_degrees()
-
-        fig, ax = _plt.subplots(1, 1)
-        ax.set_xlabel('degree l')
-        ax.set_ylabel('bandpower')
-        ax.set_xscale('log', basex=bandwidth)
-        ax.set_yscale('log', basey=bandwidth)
-        ax.grid(True, which='both')
-        ax.plot(ls[1:], power[1:], label='power per degree l')
-        fig.tight_layout(pad=0.1)
         if show:
             _plt.show()
         if fname is not None:
@@ -1159,7 +1137,7 @@ class SHRealCoeffs(SHCoeffs):
                                    normalization=self.normalization,
                                    csphase=self.csphase, copy=False)
 
-    def _powerspectrum(self, unit='per_l', base=2.):
+    def _powerspectrum(self, unit='per_l', base=10.):
         """Return the power spectrum."""
         if self.normalization == '4pi':
             power = _shtools.SHPowerSpectrum(self.coeffs)
@@ -1369,7 +1347,7 @@ class SHComplexCoeffs(SHCoeffs):
                                    normalization=self.normalization,
                                    csphase=self.csphase)
 
-    def _powerspectrum(self, unit='per_l', base=2.):
+    def _powerspectrum(self, unit='per_l', base=10.):
         """Return the power spectrum."""
         if self.normalization == '4pi':
             power = _shtools.SHPowerSpectrumC(self.coeffs)
@@ -2992,14 +2970,14 @@ class SHWindow(object):
         outspectrum = self._get_biasedpowerspectrum(power, k, **kwargs)
         return outspectrum
 
-    def powerspectra(self, itaper=None, nwin=None, unit='per_l', energy=False,
-                     base=2.):
+    def powerspectra(self, itaper=None, nwin=None, unit='per_l', base=10.,
+                     energy=False):
         """
         Return the power spectra of one or more localization windows.
 
         Usage
         -----
-        power = x.powerperdegree([itaper, nwin, unit, energy, base])
+        power = x.powerperdegree([itaper, nwin, unit, base, energy])
 
         Returns
         -------
@@ -3023,10 +3001,10 @@ class SHWindow(object):
             degree l. If 'per_lm', return the average contribution to the power
             for each coefficient at spherical harmonic degree l. If
             'per_dlogl', return the power per log interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' power spectrum.
         energy : bool, optional, default = False
             Return the energy spectrum instead of the power spectrum.
-        base : float, optional, default = 2
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
 
         Description
         -----------
@@ -3196,34 +3174,38 @@ class SHWindow(object):
             fig.savefig(fname)
         return fig, axes
 
-    def plot_powerspectra(self, nwin, show=True, fname=None, unit='per_l'):
+    def plot_powerspectra(self, nwin, unit='per_l', base=10., energy=False,
+                          loglog=False, show=True, fname=None):
         """
         Plot the power spectra of the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_powerspectra(nwin, [show, fname, unit])
+        x.plot_powerspectra(nwin, [unit, base, energy, loglog, show, fname])
 
         Parameters
         ----------
         nwin : int
             The number of localization windows to plot.
+        unit : str, optional, default = 'per_l'
+            If 'per_l', return the total power for each spherical harmonic
+            degree l. If 'per_lm', return the average contribution to the power
+            for each coefficient at spherical harmonic degree l. If
+            'per_dlogl', return the power per log interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' power spectrum.
+        energy : bool, optional, default = False
+            Return the energy spectrum instead of the power spectrum.
+        loglog : bool, optional, default = False
+            If True, use log-log axis.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, save the image to the file.
-        unit : str, optional, default = 'per_l'
-            If unit is 'per_l', plot the total power for each spherical
-            harmonic degree l. If 'per_lm', plot the average contribution
-            to the power for each coefficient at spherical harmonic degree l.
-
-        Description
-        -----------
-        Power is defined as the integral of the function squared over all
-        space, divided by the area the function spans.
         """
         degrees = self.get_degrees()
-        power = self.powerspectra(nwin=nwin, unit=unit)
+        power = self.powerspectra(nwin=nwin, unit=unit, base=base,
+                                  energy=energy)
 
         maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
@@ -3244,7 +3226,9 @@ class SHWindow(object):
             ax = axes.flatten()[itaper]
             ax.set_xlabel('degree l')
             ax.set_ylabel('power')
-            ax.set_yscale('log')
+            ax.set_yscale('log', basey=base)
+            if loglog:
+                ax.set_xscale('log', basex=base)
             ax.grid(True, which='both')
             ax.plot(degrees[0:], power[0:, itaper])
             ax.set_title('concentration: {:2.2f}'.format(evalue))
