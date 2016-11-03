@@ -82,6 +82,7 @@ def main():
 # ===== PROCESS MD DOCUMENTATION FILE ====
 def process_mddoc(fname_mddoc):
     # ---- md file search patterns ----
+    revalue = re.compile('## Value\n\n', re.DOTALL)
     retail = re.compile('# See (.*)', re.DOTALL)
     reh2 = re.compile('## (.*?)\n', re.DOTALL)
     reh1 = re.compile('\A# (.*?)\n', re.DOTALL)
@@ -92,7 +93,13 @@ def process_mddoc(fname_mddoc):
 
     # ---- open md file and search for patterns ----
     with open(fname_mddoc, 'r') as mdfile:
-        mdstring = mdfile.read()
+        # remove the first two lines
+        mdstring = mdfile.read().split('\n', 2)[2]
+
+    # First, remove '## Value\n\n' from constant documentation
+    match = revalue.search(mdstring)
+    if match is not None:
+        mdstring = re.sub(match.group(0), '', mdstring)
 
     match = retail.search(mdstring)
     if match is not None:
