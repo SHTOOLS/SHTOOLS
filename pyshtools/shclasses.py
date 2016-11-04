@@ -101,6 +101,8 @@ class SHCoeffs(object):
     make_real()           : Convert a complex SHCoeffs class instance to a real
                             class instance.
     plot_powerspectrum()  : Plot the power spectrum.
+    plot_power()          : Plot the power associated with each spherical
+                            harmonic coefficient.
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
     copy()                : Return a copy of the class instance.
@@ -1051,6 +1053,106 @@ class SHCoeffs(object):
 
         ax.plot(ls[1:], power[1:], label=legend)
         ax.legend()
+
+        if show:
+            _plt.show()
+        if fname is not None:
+            fig.savefig(fname)
+        return fig, ax
+
+    def plot_power(self, energy=False, scale='lin', show=True, fname=None,
+                   logpower=True, vrange=(1.e-5, 1.0)):
+        """
+        Plot the power associated with each spherical harmonic coefficient.
+
+        Usage
+        -----
+        x.plot_power([energy, loglog, show, fname, vrange])
+
+        Parameters
+        ----------
+        energy : bool, optional, default = False
+            Plot the energy instead of the power.
+        scale : str, optional, default = 'lin'
+            Type of scaling for the l and m axes: 'lin', 'loglin', or 'loglog'.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        fname : str, optional, default = None
+            If present, save the image to the file.
+        logpower : bool, optional, default = True
+            Plot the logarithm of the power.
+        vrange : (float, float), optional, default = (1.e-5, 1.)
+            Colormap range relative to the maximum power.
+        """
+        # Create the matrix of the power for each coefficient
+        power = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
+        mpositive = _np.abs(self.coeffs[0])**2
+        mpositive[~self.mask[0]] = _np.nan
+        mnegative = _np.abs(self.coeffs[1])**2
+        mnegative[~self.mask[1]] = _np.nan
+
+        power[:, :self.lmax] = _np.fliplr(mnegative)[:, :self.lmax]
+        power[:, self.lmax:] = mpositive
+
+        if self.normalization == 'schmidt':
+            for l in self.get_degrees():
+                power[l, :] /= (2.0 * l + 1.0)
+        elif self.normalization == 'ortho':
+            for l in self.get_degrees():
+                power[l, :] /= (4.0 * _np.pi)
+
+        if energy:
+            power *= 4.0 * _np.pi
+
+        power_masked = _np.ma.masked_invalid(power)
+
+        # need to add one extra value to each in order for pcolormesh
+        # to plot the last row and column.
+        ls = _np.arange(self.lmax+2).astype(_np.float)
+        ms = _np.arange(-self.lmax, self.lmax + 2, dtype=_np.float)
+        lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
+        lgrid -= 0.5
+        mgrid -= 0.5
+
+        fig, ax = _plt.subplots()
+        vmin = _np.nanmax(power) * vrange[0]
+        vmax = _np.nanmax(power) * vrange[1]
+
+        if logpower:
+            norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
+            # Clipping is required to avoid an invalid value error
+        else:
+            norm = _plt.Normalize(vmin, vmax)
+        print(lgrid)
+        print(mgrid)
+        print(power)
+        print(power_masked)
+        if (scale == 'lin'):
+            cmesh = ax.pcolormesh(lgrid, mgrid, power_masked,
+                                  norm=norm, cmap='viridis')
+            ax.set(xlim=(-0.5, self.lmax + 0.5),
+                   ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+        elif (scale == 'loglin'):
+            cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], power_masked[1:],
+                                  norm=norm, cmap='viridis')
+            ax.set(xscale='log', xlim=(1., self.lmax +0.5),
+                   ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+        elif (scale == 'loglog'):
+            cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], power_masked[1:],
+                                  norm=norm, cmap='viridis')
+            ax.set(xscale='log', yscale='symlog', xlim=(1., self.lmax +0.5),
+                   ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+        else:
+            raise ValueError(
+                "scale must be 'lin', 'loglin', or 'loglog'. " +
+                "Input value was {:s}".format(repr(scale)))
+                
+        if energy:
+            _plt.colorbar(cmesh, label='energy per coefficient')
+        else:
+            _plt.colorbar(cmesh, label='power per coefficient')
+        ax.set(xlabel='degree l', ylabel='order m')
+        ax.grid(True, which='both')
 
         if show:
             _plt.show()
