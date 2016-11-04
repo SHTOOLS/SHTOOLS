@@ -1067,7 +1067,7 @@ class SHCoeffs(object):
 
         Usage
         -----
-        x.plot_power([energy, loglog, show, fname, vrange])
+        x.plot_power([energy, scale, show, fname, vrange])
 
         Parameters
         ----------
@@ -1123,10 +1123,7 @@ class SHCoeffs(object):
             # Clipping is required to avoid an invalid value error
         else:
             norm = _plt.Normalize(vmin, vmax)
-        print(lgrid)
-        print(mgrid)
-        print(power)
-        print(power_masked)
+
         if (scale == 'lin'):
             cmesh = ax.pcolormesh(lgrid, mgrid, power_masked,
                                   norm=norm, cmap='viridis')
