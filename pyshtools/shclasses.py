@@ -1135,18 +1135,18 @@ class SHCoeffs(object):
         elif (scale == 'loglin'):
             cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], power_masked[1:],
                                   norm=norm, cmap='viridis')
-            ax.set(xscale='log', xlim=(1., self.lmax +0.5),
+            ax.set(xscale='log', xlim=(1., self.lmax + 0.5),
                    ylim=(-self.lmax - 0.5, self.lmax + 0.5))
         elif (scale == 'loglog'):
             cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], power_masked[1:],
                                   norm=norm, cmap='viridis')
-            ax.set(xscale='log', yscale='symlog', xlim=(1., self.lmax +0.5),
+            ax.set(xscale='log', yscale='symlog', xlim=(1., self.lmax + 0.5),
                    ylim=(-self.lmax - 0.5, self.lmax + 0.5))
         else:
             raise ValueError(
                 "scale must be 'lin', 'loglin', or 'loglog'. " +
                 "Input value was {:s}".format(repr(scale)))
-                
+
         if energy:
             _plt.colorbar(cmesh, label='energy per coefficient')
         else:
