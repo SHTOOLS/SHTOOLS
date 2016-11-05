@@ -106,7 +106,7 @@ class SHCoeffs(object):
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
     copy()                : Return a copy of the class instance.
-    tofile()              : Save raw spherical harmonic coefficients as a file.
+    to_file()             : Save raw spherical harmonic coefficients as a file.
     """
 
     def __init__(self):
@@ -435,13 +435,13 @@ class SHCoeffs(object):
         """Return a deep copy of the class instance."""
         return _copy.deepcopy(self)
 
-    def tofile(self, filename, format='shtools', **kwargs):
+    def to_file(self, filename, format='shtools', **kwargs):
         """
         Save raw spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.tofile(filename, [format, **kwargs])
+        x.to_file(filename, [format, **kwargs])
 
         Parameters
         ----------
@@ -1637,7 +1637,7 @@ class SHGrid(object):
     info()         : Print a summary of the data stored in the SHGrid
                      instance.
     copy()         : Return a copy of the class instance.
-    tofile()       : Save gridded data to a text or binary file.
+    to_file()       : Save gridded data to a text or binary file.
     """
 
     def __init__():
@@ -1753,13 +1753,13 @@ class SHGrid(object):
         """Return a deep copy of the class instance."""
         return _copy.deepcopy(self)
 
-    def tofile(self, filename, binary=False, **kwargs):
+    def to_file(self, filename, binary=False, **kwargs):
         """
         Save gridded data to a file.
 
         Usage
         -----
-        x.tofile(filename, [binary, **kwargs])
+        x.to_file(filename, [binary, **kwargs])
 
         Parameters
         ----------
