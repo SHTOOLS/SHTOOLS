@@ -636,6 +636,19 @@ class SHCoeffs(object):
             raise NotImplementedError('Mathematical operator not implemented' +
                                       'for these operands.')
 
+    def __pow__(self, other):
+        """
+        Raise the spherical harmonic coefficients to a scalar power:
+        pow(self, other).
+        """
+        if _np.isscalar(other) is True:
+            return SHCoeffs.from_array(pow(self.coeffs, other),
+                                       csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
     # ---- Extract data ----
     def degrees(self):
         """
