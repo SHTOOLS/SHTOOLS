@@ -1635,8 +1635,8 @@ class SHGrid(object):
                      of the gridded data.
     to_grid()      : Return the raw gridded data as a numpy array.
     expand()       : Expand the grid into spherical harmonics.
-    plot_rawdata() : Plot the raw data using a simple cylindrical projection.
-    plot_3dsphere  : Plot the raw data on a 3d sphere.
+    plot()         : Plot the raw data using a simple cylindrical projection.
+    plot3d         : Plot the raw data on a 3d sphere.
     info()         : Print a summary of the data stored in the SHGrid
                      instance.
     copy()         : Return a copy of the class instance.
@@ -1976,7 +1976,7 @@ class SHGrid(object):
         """
         return self.data
 
-    def plot_3dsphere(self, show=True, fname=None, elevation=0, azimuth=0):
+    def plot3d(self, show=True, fname=None, elevation=0, azimuth=0):
         """
         Plot the raw data on a 3d sphere.
 
@@ -1985,7 +1985,7 @@ class SHGrid(object):
 
         Usage
         -----
-        x.plot_3dsphere([show, fname])
+        x.plot3d([show, fname])
 
         Parameters
         ----------
@@ -2081,13 +2081,13 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot_rawdata(self, show=True, fname=None):
+    def plot(self, show=True, fname=None):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot_rawdata([show, fname])
+        x.plot([show, fname])
 
         Parameters
         ----------
@@ -2096,7 +2096,7 @@ class SHGrid(object):
         fname : str, optional, default = None
             If present, save the image to the file.
         """
-        fig, ax = self._plot_rawdata()
+        fig, ax = self._plot()
         if show:
             _plt.show()
         if fname is not None:
@@ -2238,7 +2238,7 @@ class DHRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot_rawdata(self):
+    def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(1, 1)
         ax.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
@@ -2326,7 +2326,7 @@ class DHComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot_rawdata(self):
+    def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='upper',
@@ -2420,7 +2420,7 @@ class GLQRealGrid(SHGrid):
                                      copy=False)
         return coeffs
 
-    def _plot_rawdata(self):
+    def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
 
         fig, ax = _plt.subplots(1, 1)
@@ -2502,7 +2502,7 @@ class GLQComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot_rawdata(self):
+    def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='upper')
