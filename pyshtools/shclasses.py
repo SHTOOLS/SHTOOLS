@@ -2571,18 +2571,18 @@ class SHWindow(object):
                             specified value.
     powerspectra()        : Return the power spectra of one or more
                             localization windows.
-    get_couplingmatrix()  : Return the coupling matrix of the first nwin
+    couplingmatrix()      : Return the coupling matrix of the first nwin
                             localization windows.
-    get_biasedpowerspectrum : Calculate the multitaper (cross-)power spectrum
-                              expectation of a localized function.
+    biasedpowerspectrum   : Calculate the multitaper (cross-)power spectrum
+                            expectation of a localized function.
     to_grid()               : Return as an array a grid of taper i, where i=0
                             is the best concentrated window.
-    get_multitaperpowerspectrum()      : Return the multitaper power spectrum
-                                         estimate and uncertainty for the input
-                                         SHCoeffs class instance.
-    get_multitapercrosspowerspectrum() : Return the multitaper cross-power
-                                         spectrum estimate and uncertainty for
-                                         two input SHCoeffs class instances.
+    multitaperpowerspectrum()      : Return the multitaper power spectrum
+                                     estimate and uncertainty for the input
+                                     SHCoeffs class instance.
+    multitapercrosspowerspectrum() : Return the multitaper cross-power
+                                     spectrum estimate and uncertainty for
+                                     two input SHCoeffs class instances.
     return_coeffs()       : Return the spherical harmonic coefficients of taper
                             i, where i=0 is the best concentrated, as a new
                             SHCoeffs class instance, optionally using a
@@ -2954,14 +2954,14 @@ class SHWindow(object):
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
                 "Input value was {:s}".format(repr(grid)))
 
-    def get_multitaperpowerspectrum(self, clm, k, **kwargs):
+    def multitaperpowerspectrum(self, clm, k, **kwargs):
         """
         Return the multitaper power spectrum estimate and uncertainty.
 
         Usage
         -----
-        mtse, sd = x.get_multitaperpowerspectrum(clm, k, [lmax, taper_wt, clat,
-                                                          clon, coord_degrees])
+        mtse, sd = x.multitaperpowerspectrum(clm, k, [lmax, taper_wt, clat,
+                                                      clon, coord_degrees])
 
         Returns
         -------
@@ -2991,15 +2991,15 @@ class SHWindow(object):
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
-        return self._get_multitaperpowerspectrum(clm, k, **kwargs)
+        return self._multitaperpowerspectrum(clm, k, **kwargs)
 
-    def get_multitapercrosspowerspectrum(self, clm, slm, k, **kwargs):
+    def multitapercrosspowerspectrum(self, clm, slm, k, **kwargs):
         """
         Return the multitaper cross power spectrum estimate and uncertainty.
 
         Usage
         -----
-        mtse, sd = x.get_multitapercrosspowerspectrum(
+        mtse, sd = x.multitapercrosspowerspectrum(
                       clm, slm, k, [lmax, taper_wt, clat, clon, coord_degrees])
 
         Returns
@@ -3034,17 +3034,17 @@ class SHWindow(object):
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
-        return self._get_multitapercrosspowerspectrum(clm, slm, k, **kwargs)
+        return self._multitapercrosspowerspectrum(clm, slm, k, **kwargs)
 
-    def get_biasedpowerspectrum(self, power, k, **kwargs):
+    def biasedpowerspectrum(self, power, k, **kwargs):
         """
         Calculate the multitaper (cross-)power spectrum expectation of a
         localized function.
 
         Usage
         -----
-        outspectrum = x.get_biasedpowerspectrum(power, k, [taper_wt, save_cg,
-                                                           ldata])
+        outspectrum = x.biasedpowerspectrum(power, k, [taper_wt, save_cg,
+                                            ldata])
 
         Returns
         -------
@@ -3069,7 +3069,7 @@ class SHWindow(object):
         ldata : int, optional, default = len(power)-1
             The maximum degree of the global unwindowed power spectrum.
         """
-        outspectrum = self._get_biasedpowerspectrum(power, k, **kwargs)
+        outspectrum = self._biasedpowerspectrum(power, k, **kwargs)
         return outspectrum
 
     def powerspectra(self, itaper=None, nwin=None, unit='per_l', base=10.,
@@ -3166,7 +3166,7 @@ class SHWindow(object):
             power *= 4.0 * _np.pi
         return power
 
-    def get_couplingmatrix(self, lmax, nwin=None, weights=None, mode='full'):
+    def couplingmatrix(self, lmax, nwin=None, weights=None, mode='full'):
         """
         Return the coupling matrix of the first nwin tapers. This matrix
         relates the global power spectrum to the expectation of the localized
@@ -3174,7 +3174,7 @@ class SHWindow(object):
 
         Usage
         -----
-        Mmt = x.get_couplingmatrix(lmax, [nwin, weights, mode])
+        Mmt = x.couplingmatrix(lmax, [nwin, weights, mode])
 
         Returns
         -------
@@ -3214,13 +3214,13 @@ class SHWindow(object):
                                                                   self.nwin))
 
         if mode == 'full':
-            return self._get_couplingmatrix(lmax, nwin=nwin, weights=weights)
+            return self._couplingmatrix(lmax, nwin=nwin, weights=weights)
         elif mode == 'same':
-            cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
+            cmatrix = self._couplingmatrix(lmax, nwin=nwin,
                                                weights=weights)
             return cmatrix[:lmax+1, :]
         elif mode == 'valid':
-            cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
+            cmatrix = self._couplingmatrix(lmax, nwin=nwin,
                                                weights=weights)
             return cmatrix[:lmax - self.lwin+1, :]
         else:
@@ -3381,7 +3381,7 @@ class SHWindow(object):
         figsize[0] = figsize[1]
         fig = _plt.figure(figsize=figsize)
         ax = fig.add_subplot(111)
-        ax.imshow(self.get_couplingmatrix(lmax, nwin=nwin, weights=weights,
+        ax.imshow(self.couplingmatrix(lmax, nwin=nwin, weights=weights,
                                           mode=mode), aspect='auto')
         ax.set_xlabel('input power')  # matrix index 1 (columns)
         ax.set_ylabel('output power')  # matrix index 0 (rows)
@@ -3560,7 +3560,7 @@ class SHWindowCap(SHWindow):
                                                    angles, dj_matrix)
                 self.coeffs[:, i] = _shtools.SHCilmToVector(coeffs)
 
-    def _get_couplingmatrix(self, lmax, nwin=None, weights=None):
+    def _couplingmatrix(self, lmax, nwin=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
         if nwin is None:
             nwin = self.nwin
@@ -3574,7 +3574,7 @@ class SHWindowCap(SHWindow):
             return _shtools.SHMTCouplingMatrix(lmax, self.tapers**2, k=nwin,
                                                taper_wt=self.weights)
 
-    def _get_multitaperpowerspectrum(self, clm, k, clat=None, clon=None,
+    def _multitaperpowerspectrum(self, clm, k, clat=None, clon=None,
                                      coord_degrees=True, lmax=None,
                                      taper_wt=None):
         """
@@ -3618,9 +3618,9 @@ class SHWindowCap(SHWindow):
             return _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax, k=k,
                                                taper_wt=taper_wt)
 
-    def _get_multitapercrosspowerspectrum(self, clm, slm, k, clat=None,
-                                          clon=None, coord_degrees=True,
-                                          lmax=None, taper_wt=None):
+    def _multitapercrosspowerspectrum(self, clm, slm, k, clat=None,
+                                      clon=None, coord_degrees=True,
+                                      lmax=None, taper_wt=None):
         """
         Return the multitaper cross-power spectrum estimate and uncertainty for
         two input SHCoeffs class instances.
@@ -3665,7 +3665,7 @@ class SHWindowCap(SHWindow):
                                                 lmax1=lmax, lmax2=lmax, k=k,
                                                 taper_wt=taper_wt)
 
-    def _get_biasedpowerspectrum(self, power, k, **kwargs):
+    def _biasedpowerspectrum(self, power, k, **kwargs):
         """
         Calculate the multitaper (cross-)power spectrum expectation of function
         localized by spherical cap windows.
@@ -3757,7 +3757,7 @@ class SHWindowMask(SHWindow):
 
         return coeffs
 
-    def _get_couplingmatrix(self, lmax, nwin=None, weights=None):
+    def _couplingmatrix(self, lmax, nwin=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
         if nwin is None:
             nwin = self.nwin
@@ -3775,7 +3775,7 @@ class SHWindowMask(SHWindow):
             return _shtools.SHMTCouplingMatrix(lmax, tapers_power, k=nwin,
                                                taper_wt=self.weights)
 
-    def _get_multitaperpowerspectrum(self, clm, k, lmax=None, taper_wt=None):
+    def _multitaperpowerspectrum(self, clm, k, lmax=None, taper_wt=None):
         """
         Return the multitaper power spectrum estimate and uncertainty for an
         input SHCoeffs class instance.
@@ -3791,8 +3791,8 @@ class SHWindowMask(SHWindow):
             return _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
                                                k=k, taper_wt=taper_wt)
 
-    def _get_multitapercrosspowerspectrum(self, clm, slm, k, lmax=None,
-                                          taper_wt=None):
+    def _multitapercrosspowerspectrum(self, clm, slm, k, lmax=None,
+                                      taper_wt=None):
         """
         Return the multitaper cross-power spectrum estimate and uncertainty for
         two input SHCoeffs class instances.
@@ -3811,7 +3811,7 @@ class SHWindowMask(SHWindow):
                                                 lmax=lmax, k=k,
                                                 taper_wt=taper_wt)
 
-    def _get_biasedpowerspectrum(self, power, k, **kwargs):
+    def _biasedpowerspectrum(self, power, k, **kwargs):
         """
         Calculate the multitaper (cross-)power spectrum expectation of function
         localized by arbitary windows.
