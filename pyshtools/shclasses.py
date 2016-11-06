@@ -936,7 +936,7 @@ class SHCoeffs(object):
 
         # get a copy of the coefficient numpy array
         coeffs = self.to_array(normalization=normalization.lower(),
-                                 csphase=csphase, lmax=lmax)
+                               csphase=csphase, lmax=lmax)
 
         # because to_array is already a copy, we can pass it as reference
         # to save time
@@ -1399,7 +1399,7 @@ class SHComplexCoeffs(SHCoeffs):
         else:
             self.coeffs = coeffs
 
-    def make_real(self):
+    def make_real(self, check=True):
         """
         Convert the complex SHCoeffs class to the real class.
 
@@ -1407,37 +1407,45 @@ class SHComplexCoeffs(SHCoeffs):
 
         Usage
         -----
-        x_real = x.make_real()
+        x_real = x.make_real([check])
 
         Returns
         -------
         x_real : real SHCoeffs class instance
-        """
-        # First test if the coefficients correspond to a real grid.
-        # This is not very elegant. Also, the equality condition
-        # is probably not robust to round off errors.
-        for l in self.degrees():
-            if self.coeffs[0, l, 0] != self.coeffs[0, l, 0].conjugate():
-                raise RuntimeError('Complex coefficients do not correspond ' +
-                                   'to a real field. l = {:d}, m = 0: {:e}'
-                                   .format(l, self.coeffs[0, l, 0]))
 
-            for m in _np.arange(1, l + 1):
-                if m % 2 == 1:
-                    if (self.coeffs[0, l, m] != -
-                            self.coeffs[1, l, m].conjugate()):
-                        raise RuntimeError('Complex coefficients do not ' +
-                                           'correspond to a real field. ' +
-                                           'l = {:d}, m = {:d}: {:e}, {:e}'
-                                           .format(l, m, self.coeffs[0, l, 0],
+        Parameters
+        ----------
+        check : bool, optional, default = False
+            If True, check if function is entirely real, and if not, exit.
+        """
+        # Test if the coefficients correspond to a real grid.
+        # This is not very elegant, and the equality condition
+        # is probably not robust to round off errors.
+        if check:
+            for l in self.degrees():
+                if self.coeffs[0, l, 0] != self.coeffs[0, l, 0].conjugate():
+                    raise RuntimeError('Complex coefficients do not ' +
+                                       'correspond to a real field. ' +
+                                       'l = {:d}, m = 0: {:e}'
+                                       .format(l, self.coeffs[0, l, 0]))
+                for m in _np.arange(1, l + 1):
+                    if m % 2 == 1:
+                        if (self.coeffs[0, l, m] != -
+                                self.coeffs[1, l, m].conjugate()):
+                            raise RuntimeError('Complex coefficients do not ' +
+                                               'correspond to a real field. ' +
+                                               'l = {:d}, m = {:d}: {:e}, {:e}'
+                                               .format(
+                                                   l, m, self.coeffs[0, l, 0],
                                                    self.coeffs[1, l, 0]))
-                else:
-                    if (self.coeffs[0, l, m] !=
-                            self.coeffs[1, l, m].conjugate()):
-                        raise RuntimeError('Complex coefficients do not ' +
-                                           'correspond to a real field. ' +
-                                           'l = {:d}, m = {:d}: {:e}, {:e}'
-                                           .format(l, m, self.coeffs[0, l, 0],
+                    else:
+                        if (self.coeffs[0, l, m] !=
+                                self.coeffs[1, l, m].conjugate()):
+                            raise RuntimeError('Complex coefficients do not ' +
+                                               'correspond to a real field. ' +
+                                               'l = {:d}, m = {:d}: {:e}, {:e}'
+                                               .format(
+                                                   l, m, self.coeffs[0, l, 0],
                                                    self.coeffs[1, l, 0]))
 
         coeffs_rc = _np.zeros((2, self.lmax + 1, self.lmax + 1))
@@ -2566,7 +2574,7 @@ class SHWindow(object):
     degrees()             : Return an array containing the spherical harmonic
                             degrees of the localization windows, from 0 to
                             lwin.
-    get_k()               : Return the number of windows that have
+    number()              : Return the number of windows that have
                             concentration factors greater or equal to a
                             specified value.
     powerspectra()        : Return the power spectra of one or more
@@ -2728,14 +2736,14 @@ class SHWindow(object):
         """
         return _np.arange(self.lwin + 1)
 
-    def get_k(self, alpha):
+    def number(self, alpha):
         """
         Return the number of localization windows that have concentration
         factors greater or equal to alpha.
 
         Usage
         -----
-        k = x.get_k(alpha)
+        k = x.number(alpha)
 
         Returns
         -------
@@ -2897,7 +2905,7 @@ class SHWindow(object):
                 )
 
         coeffs = self.to_array(itaper, normalization=normalization.lower(),
-                                 csphase=csphase)
+                               csphase=csphase)
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
@@ -2947,7 +2955,7 @@ class SHWindow(object):
                 zeros, weights = _shtools.SHGLQ(self.lwin)
 
             return SHGrid.from_array(self.to_grid(itaper, grid=grid.upper(),
-                                                   zeros=zeros),
+                                                  zeros=zeros),
                                      grid='GLQ', copy=False)
         else:
             raise ValueError(
@@ -3217,11 +3225,11 @@ class SHWindow(object):
             return self._couplingmatrix(lmax, nwin=nwin, weights=weights)
         elif mode == 'same':
             cmatrix = self._couplingmatrix(lmax, nwin=nwin,
-                                               weights=weights)
+                                           weights=weights)
             return cmatrix[:lmax+1, :]
         elif mode == 'valid':
             cmatrix = self._couplingmatrix(lmax, nwin=nwin,
-                                               weights=weights)
+                                           weights=weights)
             return cmatrix[:lmax - self.lwin+1, :]
         else:
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
@@ -3382,7 +3390,7 @@ class SHWindow(object):
         fig = _plt.figure(figsize=figsize)
         ax = fig.add_subplot(111)
         ax.imshow(self.couplingmatrix(lmax, nwin=nwin, weights=weights,
-                                          mode=mode), aspect='auto')
+                                      mode=mode), aspect='auto')
         ax.set_xlabel('input power')  # matrix index 1 (columns)
         ax.set_ylabel('output power')  # matrix index 0 (rows)
         fig.tight_layout(pad=0.1)
@@ -3575,8 +3583,7 @@ class SHWindowCap(SHWindow):
                                                taper_wt=self.weights)
 
     def _multitaperpowerspectrum(self, clm, k, clat=None, clon=None,
-                                     coord_degrees=True, lmax=None,
-                                     taper_wt=None):
+                                 coord_degrees=True, lmax=None, taper_wt=None):
         """
         Return the multitaper power spectrum estimate and uncertainty for an
         input SHCoeffs class instance.
