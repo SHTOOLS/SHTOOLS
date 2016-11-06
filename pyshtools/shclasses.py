@@ -86,7 +86,7 @@ class SHCoeffs(object):
     get_degrees()         : Return an array listing the spherical harmonic
                             degrees from 0 to lmax.
     powerspectrum()       : Return the power spectrum of the function.
-    get_coeffs()          : Return an array of spherical harmonic coefficients
+    to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
@@ -738,13 +738,13 @@ class SHCoeffs(object):
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- Return coefficients with a different normalization convention ----
-    def get_coeffs(self, normalization=None, csphase=None, lmax=None):
+    def to_array(self, normalization=None, csphase=None, lmax=None):
         """
         Return spherical harmonics coefficients as a numpy array.
 
         Usage
         -----
-        coeffs = x.get_coeffs([normalization, csphase, lmax])
+        coeffs = x.to_array([normalization, csphase, lmax])
 
         Returns
         -------
@@ -795,7 +795,7 @@ class SHCoeffs(object):
         if lmax is None:
             lmax = self.lmax
 
-        return self._get_coeffs(
+        return self._to_array(
             output_normalization=normalization.lower(),
             output_csphase=csphase, lmax=lmax)
 
@@ -932,10 +932,10 @@ class SHCoeffs(object):
                 )
 
         # get a copy of the coefficient numpy array
-        coeffs = self.get_coeffs(normalization=normalization.lower(),
+        coeffs = self.to_array(normalization=normalization.lower(),
                                  csphase=csphase, lmax=lmax)
 
-        # because get_coeffs is already a copy, we can pass it as reference
+        # because to_array is already a copy, we can pass it as reference
         # to save time
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
@@ -1265,7 +1265,7 @@ class SHRealCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(unit)))
         return power
 
-    def _get_coeffs(self, output_normalization, output_csphase, lmax):
+    def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
         coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
         degrees = _np.arange(lmax + 1)
@@ -1308,7 +1308,7 @@ class SHRealCoeffs(SHCoeffs):
 
         # The coefficients need to be 4pi normalized with csphase = 1
         coeffs = _shtools.SHRotateRealCoef(
-            self.get_coeffs(normalization='4pi', csphase=1), angles, dj_matrix)
+            self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients. The returned class can take
@@ -1316,7 +1316,7 @@ class SHRealCoeffs(SHCoeffs):
         # routine.
         if self.normalization != '4pi' or self.csphase != 1:
             temp = SHCoeffs.from_array(coeffs, kind='real')
-            tempcoeffs = temp.get_coeffs(
+            tempcoeffs = temp.to_array(
                 normalization=self.normalization, csphase=self.csphase)
             return SHCoeffs.from_array(
                 tempcoeffs, normalization=self.normalization,
@@ -1475,7 +1475,7 @@ class SHComplexCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(unit)))
         return power
 
-    def _get_coeffs(self, output_normalization, output_csphase, lmax):
+    def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
         coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
         degrees = _np.arange(lmax + 1)
@@ -2556,7 +2556,7 @@ class SHWindow(object):
 
     Each class instance provides the following methods:
 
-    get_coeffs()          : Return an array of the spherical harmonic
+    to_array()            : Return an array of the spherical harmonic
                             coefficients for taper i, where i=0 is the best
                             concentrated, optionally using a different
                             normalization convention.
@@ -2748,14 +2748,14 @@ class SHWindow(object):
         """
         return len(self.eigenvalues[self.eigenvalues >= alpha])
 
-    def get_coeffs(self, itaper, normalization='4pi', csphase=1):
+    def to_array(self, itaper, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of taper i as a numpy
         array.
 
         Usage
         -----
-        coeffs = x.get_coeffs(itaper, [normalization, csphase])
+        coeffs = x.to_array(itaper, [normalization, csphase])
 
         Returns
         -------
@@ -2792,7 +2792,7 @@ class SHWindow(object):
                 .format(repr(csphase))
                 )
 
-        return self._get_coeffs(
+        return self._to_array(
             itaper, normalization=normalization.lower(), csphase=csphase)
 
     def get_grid(self, itaper, grid='DH2', zeros=None):
@@ -2833,16 +2833,16 @@ class SHWindow(object):
                              .format(str(type(grid))))
 
         if grid.upper() == 'DH' or grid.upper() == 'DH1':
-            gridout = _shtools.MakeGridDH(self.get_coeffs(itaper), sampling=1,
+            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=1,
                                           norm=1, csphase=1)
         elif grid.upper() == 'DH2':
-            gridout = _shtools.MakeGridDH(self.get_coeffs(itaper), sampling=2,
+            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
                                           norm=1, csphase=1)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lwin)
 
-            gridout = _shtools.MakeGridGLQ(self.get_coeffs(itaper), zeros,
+            gridout = _shtools.MakeGridGLQ(self.to_array(itaper), zeros,
                                            norm=1, csphase=1)
         else:
             raise ValueError(
@@ -2893,7 +2893,7 @@ class SHWindow(object):
                 .format(repr(csphase))
                 )
 
-        coeffs = self.get_coeffs(itaper, normalization=normalization.lower(),
+        coeffs = self.to_array(itaper, normalization=normalization.lower(),
                                  csphase=csphase)
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
@@ -3129,7 +3129,7 @@ class SHWindow(object):
             power = _np.zeros((self.lwin+1, nwin))
 
             for iwin in range(nwin):
-                coeffs = self.get_coeffs(iwin)
+                coeffs = self.to_array(iwin)
                 power[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
                 if (unit.lower() == 'per_l'):
                     pass
@@ -3144,7 +3144,7 @@ class SHWindow(object):
                         "unit must be 'per_l', 'per_lm', or 'per_dlogl'." +
                         "Input value was {:s}".format(repr(unit)))
         else:
-            coeffs = self.get_coeffs(itaper)
+            coeffs = self.to_array(itaper)
             power = _shtools.SHPowerSpectrum(coeffs)
             if (unit.lower() == 'per_l'):
                 pass
@@ -3463,7 +3463,7 @@ class SHWindowCap(SHWindow):
 
         return coeffs
 
-    def _get_coeffs(self, itaper, normalization='4pi', csphase=1):
+    def _to_array(self, itaper, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of taper i as an
         array, where i = 0 is the best concentrated.
@@ -3607,7 +3607,7 @@ class SHWindowCap(SHWindow):
                 self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees,
                             nwinrot=k)
 
-        sh = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
             return _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax, k=k)
@@ -3651,8 +3651,8 @@ class SHWindowCap(SHWindow):
                 self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees,
                             nwinrot=k)
 
-        sh1 = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
-        sh2 = slm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh1 = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
+        sh2 = slm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
             return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
@@ -3734,7 +3734,7 @@ class SHWindowMask(SHWindow):
             self.tapers = tapers
             self.eigenvalues = eigenvalues
 
-    def _get_coeffs(self, itaper, normalization='4pi', csphase=1):
+    def _to_array(self, itaper, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of taper i as an
         array, where i=0 is the best concentrated.
@@ -3764,7 +3764,7 @@ class SHWindowMask(SHWindow):
 
         tapers_power = _np.zeros((self.lwin+1, nwin))
         for i in range(nwin):
-            tapers_power[:, i] = _shtools.SHPowerSpectrum(self.get_coeffs(i))
+            tapers_power[:, i] = _shtools.SHPowerSpectrum(self.to_array(i))
 
         if weights is None:
             return _shtools.SHMTCouplingMatrix(lmax, tapers_power, k=nwin)
@@ -3780,7 +3780,7 @@ class SHWindowMask(SHWindow):
         if lmax is None:
             lmax = clm.lmax
 
-        sh = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
             return _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax, k=k)
@@ -3797,8 +3797,8 @@ class SHWindowMask(SHWindow):
         if lmax is None:
             lmax = min(clm.lmax, slm.lmax)
 
-        sh1 = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
-        sh2 = slm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh1 = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
+        sh2 = slm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
             return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
