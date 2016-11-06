@@ -96,10 +96,6 @@ class SHCoeffs(object):
                             normalization convention.
     expand()              : Evaluate the coefficients on a spherical grid and
                             return a new SHGrid class instance.
-    make_complex()        : Convert a real SHCoeffs class instance to a complex
-                            class instance.
-    make_real()           : Convert a complex SHCoeffs class instance to a real
-                            class instance.
     plot_powerspectrum()  : Plot the power spectrum.
     plot_power()          : Plot the power associated with each spherical
                             harmonic coefficient.
@@ -891,14 +887,15 @@ class SHCoeffs(object):
         return rot
 
     # ---- Convert spherical harmonic coefficients to a different normalization
-    def convert(self, normalization=None, csphase=None, lmax=None):
+    def convert(self, normalization=None, csphase=None, lmax=None, kind=None,
+                check=True):
         """
         Return a SHCoeff class instance with a different normalization
         convention.
 
         Usage
         -----
-        clm = x.convert([normalization, csphase, lmax])
+        clm = x.convert([normalization, csphase, lmax, kind, check])
 
         Returns
         -------
@@ -911,45 +908,53 @@ class SHCoeffs(object):
             for geodesy 4pi normalized, orthonormalized, or Schmidt semi-
             normalized coefficients, respectively.
         csphase : int, optional, default = x.csphase
-            Condon-Shortley phase convention: 1 to exclude the phase factor,
-            or -1 to include it.
+            Condon-Shortley phase convention for the output class: 1 to exclude
+            the phase factor, or -1 to include it.
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
-
-        Description
-        -----------
-        Called without arguments, this method can be used to return a clean
-        copy of the calling SHCoeff instance.
+        kind : str, optional, default = clm.kind
+            'real' or 'complex' spherical harmonic coefficients for the output
+            class.
+        check : bool, optional, default = True
+            When converting complex coefficients to real coefficients, if True,
+            check if function is entirely real.
         """
-        # copy calling instance normalization and csphase if None is given
         if normalization is None:
             normalization = self.normalization
-
         if csphase is None:
             csphase = self.csphase
+        if lmax is None:
+            lmax = self.lmax
+        if kind is None:
+            kind = self.kind
 
         # check argument consistency
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(normalization))))
-
         if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
                 "or 'schmidt'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
-
         if csphase != 1 and csphase != -1:
             raise ValueError(
                 "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase))
                 )
 
-        # get a copy of the coefficient numpy array
-        coeffs = self.to_array(normalization=normalization.lower(),
-                               csphase=csphase, lmax=lmax)
+        if (kind != self.kind):
+            if (kind == 'complex'):
+                temp = self._make_complex()
+            else:
+                temp = self._make_real(check=check)
+            coeffs = temp.to_array(normalization=normalization.lower(),
+                                   csphase=csphase, lmax=lmax)
+        else:
+            coeffs = self.to_array(normalization=normalization.lower(),
+                                   csphase=csphase, lmax=lmax)
 
         # because to_array is already a copy, we can pass it as reference
         # to save time
@@ -1218,20 +1223,8 @@ class SHRealCoeffs(SHCoeffs):
         else:
             self.coeffs = coeffs
 
-    def make_complex(self):
-        """
-        Convert the real SHCoeffs class to the complex class.
-
-        Normalization and phase conventions are kept unchanged.
-
-        Usage
-        -----
-        x_complex = x.make_complex()
-
-        Returns
-        -------
-        x_complex : complex SHCoeffs class instance
-        """
+    def _make_complex(self):
+        """Convert the real SHCoeffs class to the complex class."""
         rcomplex_coeffs = _shtools.SHrtoc(self.coeffs,
                                           convention=1, switchcs=0)
 
@@ -1412,25 +1405,8 @@ class SHComplexCoeffs(SHCoeffs):
         else:
             self.coeffs = coeffs
 
-    def make_real(self, check=True):
-        """
-        Convert the complex SHCoeffs class to the real class.
-
-        Normalization and phase conventions are kept unchanged.
-
-        Usage
-        -----
-        x_real = x.make_real([check])
-
-        Returns
-        -------
-        x_real : real SHCoeffs class instance
-
-        Parameters
-        ----------
-        check : bool, optional, default = False
-            If True, check if function is entirely real, and if not, exit.
-        """
+    def _make_real(self, check=True):
+        """Convert the complex SHCoeffs class to the real class."""
         # Test if the coefficients correspond to a real grid.
         # This is not very elegant, and the equality condition
         # is probably not robust to round off errors.
