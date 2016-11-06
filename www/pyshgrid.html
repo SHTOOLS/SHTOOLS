@@ -122,7 +122,17 @@
 		<tr>
 		<td class="head">Class methods</td>
 		</tr>
-	
+
+		<tr>
+		<td class="left"><tt>to_file()</tt></td> 
+		<td class="right">Save raw gridded data to a text or binary file.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>to_grid()</tt></td>
+		<td class="right">Return a numpy array of the gridded data.</td>
+		</tr>
+
 		<tr>
 		<td class="left"><tt>lats()</tt></td>
 		<td class="right">Return a vector containing the latitudes of each row of the gridded data.</td>
@@ -134,14 +144,15 @@
 		</tr>
 
 		<tr>
-		<td class="left"><tt>to_grid()</tt></td>
-		<td class="right">Return a numpy array of the gridded data.</td>
-		</tr>
-
-		<tr>
 		<td class="left"><tt>expand()</tt></td>
 		<td class="right">Expand the grid into spherical harmonics.</td>
 		</tr>
+
+		<tr>
+		<td class="left"><tt>copy()</tt></td> 
+		<td class="right">Return a copy of the class instance.</td>
+		</tr>
+
 
 		<tr>
 		<td class="left"><tt>plot()</tt></td>
@@ -156,16 +167,6 @@
 		<tr>
 		<td class="left"><tt>info()</tt></td>
 		<td class="right">Print a summary of the data stored in the SHGrid instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>copy()</tt></td> 
-		<td class="right">Return a copy of the class instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>to_file()</tt></td> 
-		<td class="right">Save raw gridded data to a text or binary file.</td>
 		</tr>
 
 		</tbody>

@@ -83,11 +83,12 @@ class SHCoeffs(object):
 
     Each class instance provides the following methods:
 
+    to_array()            : Return an array of spherical harmonic coefficients
+                            with a different normalization convention.
+    to_file()             : Save raw spherical harmonic coefficients as a file.
     degrees()             : Return an array listing the spherical harmonic
                             degrees from 0 to lmax.
     powerspectrum()       : Return the power spectrum of the function.
-    to_array()            : Return an array of spherical harmonic coefficients
-                            with a different normalization convention.
     set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
@@ -96,13 +97,12 @@ class SHCoeffs(object):
                             normalization convention.
     expand()              : Evaluate the coefficients on a spherical grid and
                             return a new SHGrid class instance.
+    copy()                : Return a copy of the class instance.
     plot_powerspectrum()  : Plot the power spectrum.
     plot_power()          : Plot the power associated with each spherical
                             harmonic coefficient.
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
-    copy()                : Return a copy of the class instance.
-    to_file()             : Save raw spherical harmonic coefficients as a file.
     """
 
     def __init__(self):
@@ -1626,18 +1626,18 @@ class SHGrid(object):
 
     Each class instance provides the following methods:
 
+    to_grid()      : Return the raw gridded data as a numpy array.
+    to_file()       : Save gridded data to a text or binary file.
     lats()         : Return a vector containing the latitudes of each row
                      of the gridded data.
     lons()         : Return a vector containing the longitudes of each column
                      of the gridded data.
-    to_grid()      : Return the raw gridded data as a numpy array.
     expand()       : Expand the grid into spherical harmonics.
+    copy()         : Return a copy of the class instance.
     plot()         : Plot the raw data using a simple cylindrical projection.
     plot3d         : Plot the raw data on a 3d sphere.
     info()         : Print a summary of the data stored in the SHGrid
                      instance.
-    copy()         : Return a copy of the class instance.
-    to_file()       : Save gridded data to a text or binary file.
     """
 
     def __init__():
@@ -2560,36 +2560,37 @@ class SHWindow(object):
                             coefficients for taper i, where i=0 is the best
                             concentrated, optionally using a different
                             normalization convention.
-    degrees()             : Return an array containing the spherical harmonic
-                            degrees of the localization windows, from 0 to
-                            lwin.
-    number()              : Return the number of windows that have
-                            concentration factors greater or equal to a
-                            specified value.
-    powerspectra()        : Return the power spectra of one or more
-                            localization windows.
-    couplingmatrix()      : Return the coupling matrix of the first nwin
-                            localization windows.
-    biasedpowerspectrum   : Calculate the multitaper (cross-)power spectrum
-                            expectation of a localized function.
     to_grid()               : Return as an array a grid of taper i, where i=0
                             is the best concentrated window.
-    multitaperpowerspectrum()      : Return the multitaper power spectrum
-                                     estimate and uncertainty for the input
-                                     SHCoeffs class instance.
-    multitapercrosspowerspectrum() : Return the multitaper cross-power
-                                     spectrum estimate and uncertainty for
-                                     two input SHCoeffs class instances.
     return_coeffs()       : Return the spherical harmonic coefficients of taper
                             i, where i=0 is the best concentrated, as a new
                             SHCoeffs class instance, optionally using a
                             different normalization convention.
     return_grid()         : Return as a new SHGrid instance a grid of taper i,
                             where i=0 is the best concentrated window.
+    number()              : Return the number of windows that have
+                            concentration factors greater or equal to a
+                            specified value.
+    degrees()             : Return an array containing the spherical harmonic
+                            degrees of the localization windows, from 0 to
+                            lwin.
+    powerspectra()        : Return the power spectra of one or more
+                            localization windows.
     rotate()              : Rotate the spherical cap tapers, originally located
                             at the north pole, to clat and clon and save the
                             spherical harmonic coefficients in the attribute
                             coeffs.
+    couplingmatrix()      : Return the coupling matrix of the first nwin
+                            localization windows.
+    biasedpowerspectrum   : Calculate the multitaper (cross-)power spectrum
+                            expectation of a localized function.
+    multitaperpowerspectrum()      : Return the multitaper power spectrum
+                                     estimate and uncertainty for the input
+                                     SHCoeffs class instance.
+    multitapercrosspowerspectrum() : Return the multitaper cross-power
+                                     spectrum estimate and uncertainty for
+                                     two input SHCoeffs class instances.
+    copy()                : Return a copy of the class instance.
     plot_windows()        : Plot the best concentrated localization windows
                             using a simple cylindrical projection.
     plot_powerspectra()  : Plot the power spectra of the best concentrated
@@ -2597,7 +2598,6 @@ class SHWindow(object):
     plot_couplingmatrix() : Plot the multitaper coupling matrix.
     info()                : Print a summary of the data stored in the SHWindow
                             instance.
-    copy()                : Return a copy of the class instance.
 """
 
     def __init__(self):

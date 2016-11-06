@@ -139,43 +139,8 @@
 		</tr>
 
 		<tr>
-		<td class="left"><tt>degrees()</tt></td> 
-		<td class="right">Return an array containing the spherical harmonic degrees of the localization windows, from <tt>0</tt> to <tt>lmax</tt>.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>powerspectra()</tt></td> 
-		<td class="right">Return the power spectra of one or more localization windows.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>number()</tt></td> 
-		<td class="right">Return the number of localization windows that have concentration factors greater or equal to a specified value.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>couplingmatrix()</tt></td> 
-		<td class="right">Return the coupling matrix of the first <tt>nwin</tt> tapers.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>biasedpowerspectrum()</tt></td> 
-		<td class="right">Calculate the multitaper (cross-)power spectrum expectation of a localized function.</td>
-		</tr>
-
-		<tr>
 		<td class="left"><tt>to_grid()</tt></td> 
 		<td class="right">Return as an array a grid of taper <tt>i</tt>, where <tt>i=0</tt> is the best concentrated window.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>multitaperpowerspectrum()</tt></td> 
-		<td class="right">Return the multitaper power spectrum estimate and uncertainty for the input <tt>SHCoeffs</tt> class instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>multitapercrosspowerspectrum()</tt></td> 
-		<td class="right">Return the multitaper cross-power spectrum estimate and uncertainty for two input <tt>SHCoeffs</tt> class instances.</td>
 		</tr>
 
 		<tr>
@@ -189,8 +154,48 @@
 		</tr>
 
 		<tr>
+		<td class="left"><tt>number()</tt></td> 
+		<td class="right">Return the number of localization windows that have concentration factors greater or equal to a specified value.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>degrees()</tt></td> 
+		<td class="right">Return an array containing the spherical harmonic degrees of the localization windows, from <tt>0</tt> to <tt>lmax</tt>.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>powerspectra()</tt></td> 
+		<td class="right">Return the power spectra of one or more localization windows.</td>
+		</tr>
+
+		<tr>
 		<td class="left"><tt>rotate()</tt></td> 
 		<td class="right">Rotate the spherical cap tapers, originally located at the north pole, to <tt>clat</tt> and <tt>clon</tt> and save the spherical harmonic coefficients in <tt>coeffs</tt>.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>couplingmatrix()</tt></td> 
+		<td class="right">Return the coupling matrix of the first <tt>nwin</tt> tapers.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>biasedpowerspectrum()</tt></td> 
+		<td class="right">Calculate the multitaper (cross-)power spectrum expectation of a localized function.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>multitaperpowerspectrum()</tt></td> 
+		<td class="right">Return the multitaper power spectrum estimate and uncertainty for the input <tt>SHCoeffs</tt> class instance.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>multitapercrosspowerspectrum()</tt></td> 
+		<td class="right">Return the multitaper cross-power spectrum estimate and uncertainty for two input <tt>SHCoeffs</tt> class instances.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>copy()</tt></td> 
+		<td class="right">Return a copy of the class instance.</td>
 		</tr>
 
 		<tr>
@@ -211,11 +216,6 @@
 		<tr>
 		<td class="left"><tt>info()</tt></td> 
 		<td class="right">Print a summary of the data stored in the <tt>SHWindow</tt> instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>copy()</tt></td> 
-		<td class="right">Return a copy of the class instance.</td>
 		</tr>
 
 		</tbody>
