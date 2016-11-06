@@ -92,8 +92,8 @@ class SHCoeffs(object):
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
                             class instance.
-    return_coeffs()       : Return the current class instance as a new instance
-                            using a different normalization convention.
+    convert()             : Return a new class instance using a different
+                            normalization convention.
     expand()              : Evaluate the coefficients on a spherical grid and
                             return a new SHGrid class instance.
     make_complex()        : Convert a real SHCoeffs class instance to a complex
@@ -878,16 +878,14 @@ class SHCoeffs(object):
         return rot
 
     # ---- Convert spherical harmonic coefficients to a different normalization
-    def return_coeffs(self, normalization=None, csphase=None, lmax=None):
+    def convert(self, normalization=None, csphase=None, lmax=None):
         """
-        Return a SHCoeff instance with a different normalization convention.
-
-        Called without arguments, this method can be used to return a clean
-        copy of the calling SHCoeff instance.
+        Return a SHCoeff class instance with a different normalization
+        convention.
 
         Usage
         -----
-        clm = x.return_coeffs([normalization, csphase, lmax])
+        clm = x.convert([normalization, csphase, lmax])
 
         Returns
         -------
@@ -904,6 +902,11 @@ class SHCoeffs(object):
             or -1 to include it.
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
+
+        Description
+        -----------
+        Called without arguments, this method can be used to return a clean
+        copy of the calling SHCoeff instance.
         """
         # copy calling instance normalization and csphase if None is given
         if normalization is None:
