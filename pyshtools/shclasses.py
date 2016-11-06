@@ -1629,11 +1629,11 @@ class SHGrid(object):
 
     Each class instance provides the following methods:
 
-    get_lats()     : Return a vector containing the latitudes of each row
+    lats()         : Return a vector containing the latitudes of each row
                      of the gridded data.
-    get_lons()     : Return a vector containing the longitudes of each column
+    lons()         : Return a vector containing the longitudes of each column
                      of the gridded data.
-    get_grid()     : Return the raw gridded data as a numpy array.
+    to_grid()      : Return the raw gridded data as a numpy array.
     expand()       : Expand the grid into spherical harmonics.
     plot_rawdata() : Plot the raw data using a simple cylindrical projection.
     plot_3dsphere  : Plot the raw data on a 3d sphere.
@@ -1911,13 +1911,13 @@ class SHGrid(object):
                                       'for these operands.')
 
     # ---- Extract grid properties ----
-    def get_lats(self, degrees=True):
+    def lats(self, degrees=True):
         """
         Return the latitudes of each row of the gridded data.
 
         Usage
         -----
-        lats = x.get_lats([degrees])
+        lats = x.lats([degrees])
 
         Returns
         -------
@@ -1932,11 +1932,11 @@ class SHGrid(object):
             be in radians.
         """
         if degrees is False:
-            return _np.radians(self._get_lats())
+            return _np.radians(self._lats())
         else:
-            return self._get_lats()
+            return self._lats()
 
-    def get_lons(self, degrees=True):
+    def lons(self, degrees=True):
         """
         Return the longitudes of each column of the gridded data.
 
@@ -1957,17 +1957,17 @@ class SHGrid(object):
             be in radians.
         """
         if degrees is False:
-            return _np.radians(self._get_lons())
+            return _np.radians(self._lons())
         else:
-            return self._get_lons()
+            return self._lons()
 
-    def get_grid(self):
+    def to_grid(self):
         """
         Return the raw gridded data as a numpy array.
 
         Usage
         -----
-        grid = x.get_grid()
+        grid = x.to_grid()
 
         Returns
         -------
@@ -2007,8 +2007,8 @@ class SHGrid(object):
             raise ValueError('Grid has to be either real or complex, not {}'
                              .format(self.kind))
 
-        lats = self.get_lats()
-        lons = self.get_lons()
+        lats = self.lats()
+        lons = self.lons()
 
         if self.grid == 'DH':
             # add south pole
@@ -2205,12 +2205,12 @@ class DHRealGrid(SHGrid):
         else:
             self.data = array
 
-    def _get_lats(self):
+    def _lats(self):
         """Return the latitudes (in degrees) of the gridded data."""
         lats = _np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
-    def _get_lons(self):
+    def _lons(self):
         """Return the longitudes (in degrees) of the gridded data."""
         lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
@@ -2288,7 +2288,7 @@ class DHComplexGrid(SHGrid):
         else:
             self.data = array
 
-    def _get_lats(self):
+    def _lats(self):
         """
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
@@ -2296,7 +2296,7 @@ class DHComplexGrid(SHGrid):
         lats = _np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
-    def _get_lons(self):
+    def _lons(self):
         """
         Return a vector containing the longitudes (in degrees) of each row
         of the gridded data.
@@ -2381,7 +2381,7 @@ class GLQRealGrid(SHGrid):
         else:
             self.data = array
 
-    def _get_lats(self):
+    def _lats(self):
         """
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
@@ -2389,7 +2389,7 @@ class GLQRealGrid(SHGrid):
         lats = 90. - _np.arccos(self.zeros) * 180. / _np.pi
         return lats
 
-    def _get_lons(self):
+    def _lons(self):
         """
         Return a vector containing the longitudes (in degrees) of each column
         of the gridded data.
@@ -2470,12 +2470,12 @@ class GLQComplexGrid(SHGrid):
         else:
             self.data = array
 
-    def _get_lats(self):
+    def _lats(self):
         """Return the latitudes (in degrees) of the gridded data rows."""
         lats = 90. - _np.arccos(self.zeros) * 180. / _np.pi
         return lats
 
-    def _get_lons(self):
+    def _lons(self):
         """Return the longitudes (in degrees) of the gridded data columns."""
         lons = _np.linspace(0., 360. - 360. / self.nlon, num=self.nlon)
         return lons
@@ -2575,7 +2575,7 @@ class SHWindow(object):
                             localization windows.
     get_biasedpowerspectrum : Calculate the multitaper (cross-)power spectrum
                               expectation of a localized function.
-    get_grid()            : Return as an array a grid of taper i, where i=0
+    to_grid()               : Return as an array a grid of taper i, where i=0
                             is the best concentrated window.
     get_multitaperpowerspectrum()      : Return the multitaper power spectrum
                                          estimate and uncertainty for the input
@@ -2798,14 +2798,14 @@ class SHWindow(object):
         return self._to_array(
             itaper, normalization=normalization.lower(), csphase=csphase)
 
-    def get_grid(self, itaper, grid='DH2', zeros=None):
+    def to_grid(self, itaper, grid='DH2', zeros=None):
         """
         Evaluate the coefficients of taper i on a spherical grid and return a
         numpy array.
 
         Usage
         -----
-        gridout = x.get_grid(itaper, [grid, zeros])
+        gridout = x.to_grid(itaper, [grid, zeros])
 
         Returns
         -------
@@ -2940,13 +2940,13 @@ class SHWindow(object):
 
         if (grid.upper() == 'DH' or grid.upper() == 'DH1' or
                 grid.upper() == 'DH2'):
-            return SHGrid.from_array(self.get_grid(itaper, grid=grid.upper()),
+            return SHGrid.from_array(self.to_grid(itaper, grid=grid.upper()),
                                      grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lwin)
 
-            return SHGrid.from_array(self.get_grid(itaper, grid=grid.upper(),
+            return SHGrid.from_array(self.to_grid(itaper, grid=grid.upper(),
                                                    zeros=zeros),
                                      grid='GLQ', copy=False)
         else:
@@ -3264,7 +3264,7 @@ class SHWindow(object):
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
             ax = axes.flatten()[itaper]
-            ax.imshow(self.get_grid(itaper), origin='upper',
+            ax.imshow(self.to_grid(itaper), origin='upper',
                       extent=(0., 360., -90., 90.))
             ax.set_title('concentration: {:2.2f}'.format(evalue))
 
