@@ -83,7 +83,7 @@ class SHCoeffs(object):
 
     Each class instance provides the following methods:
 
-    get_degrees()         : Return an array listing the spherical harmonic
+    degrees()             : Return an array listing the spherical harmonic
                             degrees from 0 to lmax.
     powerspectrum()       : Return the power spectrum of the function.
     to_array()            : Return an array of spherical harmonic coefficients
@@ -637,14 +637,14 @@ class SHCoeffs(object):
                                       'for these operands.')
 
     # ---- Extract data ----
-    def get_degrees(self):
+    def degrees(self):
         """
         Return a numpy array with the spherical harmonic degrees from 0 to
         lmax.
 
         Usage
         -----
-        degrees = x.get_degrees()
+        degrees = x.degrees()
 
         Returns
         -------
@@ -1024,7 +1024,7 @@ class SHCoeffs(object):
             If present, save the image to the file.
         """
         power = self.powerspectrum(unit=unit, base=base, energy=energy)
-        ls = self.get_degrees()
+        ls = self.degrees()
 
         fig, ax = _plt.subplots(1, 1)
         ax.set_xlabel('degree l')
@@ -1095,10 +1095,10 @@ class SHCoeffs(object):
         power[:, self.lmax:] = mpositive
 
         if self.normalization == 'schmidt':
-            for l in self.get_degrees():
+            for l in self.degrees():
                 power[l, :] /= (2.0 * l + 1.0)
         elif self.normalization == 'ortho':
-            for l in self.get_degrees():
+            for l in self.degrees():
                 power[l, :] /= (4.0 * _np.pi)
 
         if energy:
@@ -1226,7 +1226,7 @@ class SHRealCoeffs(SHCoeffs):
         complex_coeffs[0, :, :] = (rcomplex_coeffs[0, :, :] + 1j *
                                    rcomplex_coeffs[1, :, :])
         complex_coeffs[1, :, :] = complex_coeffs[0, :, :].conjugate()
-        for m in self.get_degrees():
+        for m in self.degrees():
             if m % 2 == 1:
                 complex_coeffs[1, :, m] = - complex_coeffs[1, :, m]
 
@@ -1242,7 +1242,7 @@ class SHRealCoeffs(SHCoeffs):
             power = _shtools.SHPowerSpectrum(self.coeffs)
         elif self.normalization == 'schmidt':
             power = _shtools.SHPowerSpectrum(self.coeffs)
-            l = self.get_degrees()
+            l = self.degrees()
             power /= (2.0 * l + 1.0)
         elif self.normalization == 'ortho':
             power = _shtools.SHPowerSpectrum(self.coeffs) / (4.0 * _np.pi)
@@ -1254,10 +1254,10 @@ class SHRealCoeffs(SHCoeffs):
         if (unit.lower() == 'per_l'):
             pass
         elif (unit.lower() == 'per_lm'):
-            l = self.get_degrees()
+            l = self.degrees()
             power /= (2.0 * l + 1.0)
         elif (unit.lower() == 'per_dlogl'):
-            l = self.get_degrees()
+            l = self.degrees()
             power *= l * _np.log(base)
         else:
             raise ValueError(
@@ -1413,7 +1413,7 @@ class SHComplexCoeffs(SHCoeffs):
         # First test if the coefficients correspond to a real grid.
         # This is not very elegant. Also, the equality condition
         # is probably not robust to round off errors.
-        for l in self.get_degrees():
+        for l in self.degrees():
             if self.coeffs[0, l, 0] != self.coeffs[0, l, 0].conjugate():
                 raise RuntimeError('Complex coefficients do not correspond ' +
                                    'to a real field. l = {:d}, m = 0: {:e}'
@@ -1452,7 +1452,7 @@ class SHComplexCoeffs(SHCoeffs):
             power = _shtools.SHPowerSpectrumC(self.coeffs)
         elif self.normalization == 'schmidt':
             power = _shtools.SHPowerSpectrumC(self.coeffs)
-            l = self.get_degrees()
+            l = self.degrees()
             power /= (2.0 * l + 1.0)
         elif self.normalization == 'ortho':
             power = _shtools.SHPowerSpectrumC(self.coeffs) / (4.0 * _np.pi)
@@ -1464,10 +1464,10 @@ class SHComplexCoeffs(SHCoeffs):
         if (unit.lower() == 'per_l'):
             pass
         elif (unit.lower() == 'per_lm'):
-            l = self.get_degrees()
+            l = self.degrees()
             power /= (2.0 * l + 1.0)
         elif (unit.lower() == 'per_dlogl'):
-            l = self.get_degrees()
+            l = self.degrees()
             power *= l * _np.log(base)
         else:
             raise ValueError(
@@ -2560,7 +2560,7 @@ class SHWindow(object):
                             coefficients for taper i, where i=0 is the best
                             concentrated, optionally using a different
                             normalization convention.
-    get_degrees()         : Return an array containing the spherical harmonic
+    degrees()             : Return an array containing the spherical harmonic
                             degrees of the localization windows, from 0 to
                             lwin.
     get_k()               : Return the number of windows that have
@@ -2709,14 +2709,14 @@ class SHWindow(object):
         """Return a deep copy of the class instance."""
         return _copy.deepcopy(self)
 
-    def get_degrees(self):
+    def degrees(self):
         """
         Return a numpy array listing the spherical harmonic degrees of the
         localization windows from 0 to lwin.
 
         Usage
         -----
-        degrees = x.get_degrees()
+        degrees = x.degrees()
 
         Returns
         -------
@@ -3134,10 +3134,10 @@ class SHWindow(object):
                 if (unit.lower() == 'per_l'):
                     pass
                 elif (unit.lower() == 'per_lm'):
-                    l = self.get_degrees()
+                    l = self.degrees()
                     power[:, iwin] /= (2.0 * l + 1.0)
                 elif (unit.lower() == 'per_dlogl'):
-                    l = self.get_degrees()
+                    l = self.degrees()
                     power[:, iwin] *= l * _np.log(base)
                 else:
                     raise ValueError(
@@ -3149,10 +3149,10 @@ class SHWindow(object):
             if (unit.lower() == 'per_l'):
                 pass
             elif (unit.lower() == 'per_lm'):
-                l = self.get_degrees()
+                l = self.degrees()
                 power /= (2.0 * l + 1.0)
             elif (unit.lower() == 'per_dlogl'):
-                l = self.get_degrees()
+                l = self.degrees()
                 power *= l * _np.log(base)
             else:
                 raise ValueError(
@@ -3302,7 +3302,7 @@ class SHWindow(object):
         fname : str, optional, default = None
             If present, save the image to the file.
         """
-        degrees = self.get_degrees()
+        degrees = self.degrees()
         power = self.powerspectra(nwin=nwin, unit=unit, base=base,
                                   energy=energy)
 
