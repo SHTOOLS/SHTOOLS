@@ -683,7 +683,9 @@ class SHCoeffs(object):
             If 'per_l', return the total power for each spherical harmonic
             degree l. If 'per_lm', return the average contribution to the power
             for each coefficient at spherical harmonic degree l. If
-            'per_dlogl', return the power per log interval dlog_a(l).
+            'per_dlogl', return the power per log interval dlog_a(l). If
+            'l2norm', return the sum of the magnitude squared of the
+            coefficients for all angular orders at spherical harmonic degree l.
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' power spectrum.
         energy : bool, optional, default = False
@@ -697,7 +699,7 @@ class SHCoeffs(object):
         The total energy is the integral of the function squared over all space
         and is 4pi times the total power.
 
-        The output power spectrum can be one of three types. 'per_l' returns
+        The output power spectrum can be one of four types. 'per_l' returns
         the contribution to the total power from all angular orders at degree
         l. 'per_lm' returns the average contribution from a single coefficient
         at degree l to the total power. The power 'per_lm' is equal to the
@@ -705,9 +707,14 @@ class SHCoeffs(object):
         to the total power from all angular orders over an infinitessimal
         logarithmic degree band. The power in the band dlog_a(l) is
         power(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
-        power(l, 'per_dlogl) is equal to power(l, 'per_l')*l*log(a).
+        power(l, 'per_dlogl) is equal to power(l, 'per_l')*l*log(a). 'l2norm'
+        returns the sum of the magnitude squared of the coefficients for all
+        angular orders as a function of spherical harmonic degree l.
         """
         power = self._powerspectrum(unit=unit, base=base)
+
+        if (unit == 'l2norm'):
+            return power    # "energy" has no effect for l2norm
         if energy:
             power *= 4.0 * _np.pi
         return power
@@ -1031,7 +1038,9 @@ class SHCoeffs(object):
             If 'per_l', return the total power for each spherical harmonic
             degree l. If 'per_lm', return the average contribution to the power
             for each coefficient at spherical harmonic degree l. If
-            'per_dlogl', return the power per log interval dlog_a(l).
+            'per_dlogl', return the power per log interval dlog_a(l). If
+            'l2norm', return the sum of the magnitude squared of the
+            coefficients for all angular orders at spherical harmonic degree l.
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' power spectrum.
             This is also used as the base for log-log plots.
@@ -1057,6 +1066,9 @@ class SHCoeffs(object):
                 legend = 'energy per coefficient'
             elif (unit == 'per_dlogl'):
                 legend = 'energy per log bandwidth'
+        elif (unit == 'l2norm'):
+            ax.set_ylabel('l2 norm')
+            legend = 'l2 norm'
         else:
             ax.set_ylabel('power')
             if (unit == 'per_l'):
@@ -1247,6 +1259,9 @@ class SHRealCoeffs(SHCoeffs):
 
     def _powerspectrum(self, unit='per_l', base=10.):
         """Return the power spectrum."""
+        if (unit == 'l2norm'):
+            return _shtools.SHPowerSpectrum(self.coeffs)
+
         if self.normalization == '4pi':
             power = _shtools.SHPowerSpectrum(self.coeffs)
         elif self.normalization == 'schmidt':
@@ -1448,6 +1463,9 @@ class SHComplexCoeffs(SHCoeffs):
 
     def _powerspectrum(self, unit='per_l', base=10.):
         """Return the power spectrum."""
+        if (unit == 'l2norm'):
+            return _shtools.SHPowerSpectrumC(self.coeffs)
+
         if self.normalization == '4pi':
             power = _shtools.SHPowerSpectrumC(self.coeffs)
         elif self.normalization == 'schmidt':
@@ -1626,18 +1644,17 @@ class SHGrid(object):
 
     Each class instance provides the following methods:
 
-    to_grid()      : Return the raw gridded data as a numpy array.
-    to_file()       : Save gridded data to a text or binary file.
-    lats()         : Return a vector containing the latitudes of each row
-                     of the gridded data.
-    lons()         : Return a vector containing the longitudes of each column
-                     of the gridded data.
-    expand()       : Expand the grid into spherical harmonics.
-    copy()         : Return a copy of the class instance.
-    plot()         : Plot the raw data using a simple cylindrical projection.
-    plot3d         : Plot the raw data on a 3d sphere.
-    info()         : Print a summary of the data stored in the SHGrid
-                     instance.
+    to_grid()   : Return the raw gridded data as a numpy array.
+    to_file()   : Save gridded data to a text or binary file.
+    lats()      : Return a vector containing the latitudes of each row
+                  of the gridded data.
+    lons()      : Return a vector containing the longitudes of each column
+                  of the gridded data.
+    expand()    : Expand the grid into spherical harmonics.
+    copy()      : Return a copy of the class instance.
+    plot()      : Plot the raw data using a simple cylindrical projection.
+    plot3d      : Plot the raw data on a 3d sphere.
+    info()      : Print a summary of the data stored in the SHGrid instance.
     """
 
     def __init__():
@@ -2560,7 +2577,7 @@ class SHWindow(object):
                             coefficients for taper i, where i=0 is the best
                             concentrated, optionally using a different
                             normalization convention.
-    to_grid()               : Return as an array a grid of taper i, where i=0
+    to_grid()             : Return as an array a grid of taper i, where i=0
                             is the best concentrated window.
     return_coeffs()       : Return the spherical harmonic coefficients of taper
                             i, where i=0 is the best concentrated, as a new
@@ -2582,7 +2599,7 @@ class SHWindow(object):
                             coeffs.
     couplingmatrix()      : Return the coupling matrix of the first nwin
                             localization windows.
-    biasedpowerspectrum   : Calculate the multitaper (cross-)power spectrum
+    biasedpowerspectrum() : Calculate the multitaper (cross-)power spectrum
                             expectation of a localized function.
     multitaperpowerspectrum()      : Return the multitaper power spectrum
                                      estimate and uncertainty for the input
@@ -2593,7 +2610,7 @@ class SHWindow(object):
     copy()                : Return a copy of the class instance.
     plot_windows()        : Plot the best concentrated localization windows
                             using a simple cylindrical projection.
-    plot_powerspectra()  : Plot the power spectra of the best concentrated
+    plot_powerspectra()   : Plot the power spectra of the best concentrated
                             localization windows.
     plot_couplingmatrix() : Plot the multitaper coupling matrix.
     info()                : Print a summary of the data stored in the SHWindow
