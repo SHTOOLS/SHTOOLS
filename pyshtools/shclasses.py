@@ -88,7 +88,8 @@ class SHCoeffs(object):
     to_file()             : Save raw spherical harmonic coefficients as a file.
     degrees()             : Return an array listing the spherical harmonic
                             degrees from 0 to lmax.
-    spectrum()            : Return the spectrum of the function.
+    spectrum()            : Return the spectrum of the function as a function
+                            of spherical harmonic degree.
     set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
@@ -1042,7 +1043,8 @@ class SHCoeffs(object):
             harmonic degree l. If 'per_dlogl', plot the spectrum per log
             interval dlog_a(l).
         base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
+            The logarithm base when calculating the 'per_dlogl' spectrum, and
+            the base to use for logarithmic axes.
         xscale : str, optional, default = 'lin'
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
@@ -1125,7 +1127,7 @@ class SHCoeffs(object):
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         vrange : (float, float), optional, default = (1.e-5, 1.)
-            Colormap range relative to the maximum power.
+            Colormap range relative to the maximum value.
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
@@ -1695,7 +1697,7 @@ class SHGrid(object):
 
     Each class instance provides the following methods:
 
-    to_grid()   : Return the raw gridded data as a numpy array.
+    to_array()   : Return the raw gridded data as a numpy array.
     to_file()   : Save gridded data to a text or binary file.
     lats()      : Return a vector containing the latitudes of each row
                   of the gridded data.
@@ -2026,20 +2028,20 @@ class SHGrid(object):
         else:
             return self._lons()
 
-    def to_grid(self):
+    def to_array(self):
         """
         Return the raw gridded data as a numpy array.
 
         Usage
         -----
-        grid = x.to_grid()
+        grid = x.to_array()
 
         Returns
         -------
         grid : ndarray, shape (nlat, nlon)
             2-D numpy array of the gridded data.
         """
-        return self.data
+        return _np.copy(self.data)
 
     def plot3d(self, show=True, fname=None, elevation=0, azimuth=0):
         """
