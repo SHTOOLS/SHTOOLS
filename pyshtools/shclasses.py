@@ -2638,7 +2638,7 @@ class SHWindow(object):
                             different normalization convention.
     to_shgrid()           : Return as a new SHGrid instance a grid of taper i,
                             where i=0 is the best concentrated window.
-    number()              : Return the number of windows that have
+    number_concentrated() : Return the number of windows that have
                             concentration factors greater or equal to a
                             specified value.
     degrees()             : Return an array containing the spherical harmonic
@@ -2795,14 +2795,14 @@ class SHWindow(object):
         """
         return _np.arange(self.lwin + 1)
 
-    def number(self, alpha):
+    def number_concentrated(self, alpha):
         """
         Return the number of localization windows that have concentration
         factors greater or equal to alpha.
 
         Usage
         -----
-        k = x.number(alpha)
+        k = x.number_concentrated(alpha)
 
         Returns
         -------
