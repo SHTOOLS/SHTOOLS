@@ -2632,11 +2632,11 @@ class SHWindow(object):
                             normalization convention.
     to_grid()             : Return as an array a grid of taper i, where i=0
                             is the best concentrated window.
-    return_coeffs()       : Return the spherical harmonic coefficients of taper
+    to_shcoeffs()         : Return the spherical harmonic coefficients of taper
                             i, where i=0 is the best concentrated, as a new
                             SHCoeffs class instance, optionally using a
                             different normalization convention.
-    return_grid()         : Return as a new SHGrid instance a grid of taper i,
+    to_shgrid()           : Return as a new SHGrid instance a grid of taper i,
                             where i=0 is the best concentrated window.
     number()              : Return the number of windows that have
                             concentration factors greater or equal to a
@@ -2921,14 +2921,14 @@ class SHWindow(object):
 
         return gridout
 
-    def return_coeffs(self, itaper, normalization='4pi', csphase=1):
+    def to_shcoeffs(self, itaper, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of taper i as a SHCoeffs
         class instance.
 
         Usage
         -----
-        clm = x.return_coeffs(itaper, [normalization, csphase])
+        clm = x.to_shcoeffs(itaper, [normalization, csphase])
 
         Returns
         -------
@@ -2969,14 +2969,14 @@ class SHWindow(object):
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    def return_grid(self, itaper, grid='DH2', zeros=None):
+    def to_shgrid(self, itaper, grid='DH2', zeros=None):
         """
         Evaluate the coefficients of taper i on a spherical grid and return
         a SHGrid class instance.
 
         Usage
         -----
-        f = x.return_grid(itaper, [grid, zeros])
+        f = x.to_shgrid(itaper, [grid, zeros])
 
         Returns
         -------
