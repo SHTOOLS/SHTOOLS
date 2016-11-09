@@ -1681,7 +1681,7 @@ class SHGrid(object):
 
     The class instance defines the following class attributes:
 
-    data       : Gridded array of the data.
+    grid       : Gridded array of the data.
     nlat, nlon : The number of latitude and longitude bands in the grid.
     lmax       : The maximum spherical harmonic degree that can be resolved
                  by the grid sampling.
