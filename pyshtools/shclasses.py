@@ -2650,7 +2650,7 @@ class SHWindow(object):
                             at the north pole, to clat and clon and save the
                             spherical harmonic coefficients in the attribute
                             coeffs.
-    couplingmatrix()      : Return the coupling matrix of the first nwin
+    coupling_matrix()      : Return the coupling matrix of the first nwin
                             localization windows.
     biasedpowerspectrum() : Calculate the multitaper (cross-)power spectrum
                             expectation of a localized function.
@@ -2665,7 +2665,7 @@ class SHWindow(object):
                             using a simple cylindrical projection.
     plot_powerspectra()   : Plot the power spectra of the best concentrated
                             localization windows.
-    plot_couplingmatrix() : Plot the multitaper coupling matrix.
+    plot_coupling_matrix() : Plot the multitaper coupling matrix.
     info()                : Print a summary of the data stored in the SHWindow
                             instance.
 """
@@ -3257,7 +3257,7 @@ class SHWindow(object):
 
         return spectra
 
-    def couplingmatrix(self, lmax, nwin=None, weights=None, mode='full'):
+    def coupling_matrix(self, lmax, nwin=None, weights=None, mode='full'):
         """
         Return the coupling matrix of the first nwin tapers. This matrix
         relates the global power spectrum to the expectation of the localized
@@ -3265,7 +3265,7 @@ class SHWindow(object):
 
         Usage
         -----
-        Mmt = x.couplingmatrix(lmax, [nwin, weights, mode])
+        Mmt = x.coupling_matrix(lmax, [nwin, weights, mode])
 
         Returns
         -------
@@ -3305,13 +3305,13 @@ class SHWindow(object):
                                                                   self.nwin))
 
         if mode == 'full':
-            return self._couplingmatrix(lmax, nwin=nwin, weights=weights)
+            return self._coupling_matrix(lmax, nwin=nwin, weights=weights)
         elif mode == 'same':
-            cmatrix = self._couplingmatrix(lmax, nwin=nwin,
+            cmatrix = self._coupling_matrix(lmax, nwin=nwin,
                                            weights=weights)
             return cmatrix[:lmax+1, :]
         elif mode == 'valid':
-            cmatrix = self._couplingmatrix(lmax, nwin=nwin,
+            cmatrix = self._coupling_matrix(lmax, nwin=nwin,
                                            weights=weights)
             return cmatrix[:lmax - self.lwin+1, :]
         else:
@@ -3434,7 +3434,7 @@ class SHWindow(object):
             fig.savefig(fname)
         return fig, axes
 
-    def plot_couplingmatrix(self, lmax, nwin=None, weights=None, mode='full',
+    def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
                             show=True, fname=None):
         """
         Plot the multitaper coupling matrix.
@@ -3444,7 +3444,7 @@ class SHWindow(object):
 
         Usage
         -----
-        x.plot_couplingmatrix(lmax, [nwin, weights, mode, show, fname])
+        x.plot_coupling_matrix(lmax, [nwin, weights, mode, show, fname])
 
         Parameters
         ----------
@@ -3472,7 +3472,7 @@ class SHWindow(object):
         figsize[0] = figsize[1]
         fig = _plt.figure(figsize=figsize)
         ax = fig.add_subplot(111)
-        ax.imshow(self.couplingmatrix(lmax, nwin=nwin, weights=weights,
+        ax.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
                                       mode=mode), aspect='auto')
         ax.set_xlabel('input power')  # matrix index 1 (columns)
         ax.set_ylabel('output power')  # matrix index 0 (rows)
@@ -3651,7 +3651,7 @@ class SHWindowCap(SHWindow):
                                                    angles, dj_matrix)
                 self.coeffs[:, i] = _shtools.SHCilmToVector(coeffs)
 
-    def _couplingmatrix(self, lmax, nwin=None, weights=None):
+    def _coupling_matrix(self, lmax, nwin=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
         if nwin is None:
             nwin = self.nwin
@@ -3847,7 +3847,7 @@ class SHWindowMask(SHWindow):
 
         return coeffs
 
-    def _couplingmatrix(self, lmax, nwin=None, weights=None):
+    def _coupling_matrix(self, lmax, nwin=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
         if nwin is None:
             nwin = self.nwin

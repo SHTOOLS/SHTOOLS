@@ -38,7 +38,7 @@ def example1():
     cap = pyshtools.SHWindow.from_cap(theta, lmax, nwin=nwin)
     cap.info()
     cap.plot_windows(20, show=False, fname='cap_tapers.png')
-    cap.plot_couplingmatrix(30, nwin=5, show=False, fname='cap_coupling.png')
+    cap.plot_coupling_matrix(30, nwin=5, show=False, fname='cap_coupling.png')
 
 
 # ==== EXAMPLES ====
@@ -53,7 +53,7 @@ def example2():
     region = pyshtools.SHWindow.from_mask(dh_mask, lmax, nwins)
     region.info()
     region.plot_windows(nwins, show=False, fname='continent_tapers.png')
-    region.plot_couplingmatrix(30, 5, show=False,
+    region.plot_coupling_matrix(30, 5, show=False,
                                fname='continent_coupling.png')
 
 # ==== EXECUTE SCRIPT ====
