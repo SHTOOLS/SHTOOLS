@@ -692,7 +692,7 @@ class SHCoeffs(object):
             harmonic degree l. If 'per_dlogl', return the spectrum per log
             interval dlog_a(l).
         base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
 
         Description
         -----------
@@ -3172,7 +3172,7 @@ class SHWindow(object):
         Parameters
         ----------
         itaper : int, optional, default = None
-            The taper number of the output power spectrum, where itaper=0
+            The taper number of the output spectrum, where itaper=0
             corresponds to the best concentrated taper.
         nwin : int, optional, default = 1
             The number of best concentrated localization window power spectra
@@ -3188,7 +3188,7 @@ class SHWindow(object):
             harmonic degree l. If 'per_dlogl', return the spectrum per log
             interval dlog_a(l).
         base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
 
         Description
         -----------
