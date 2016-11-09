@@ -2650,9 +2650,9 @@ class SHWindow(object):
                             at the north pole, to clat and clon and save the
                             spherical harmonic coefficients in the attribute
                             coeffs.
-    coupling_matrix()      : Return the coupling matrix of the first nwin
+    coupling_matrix()     : Return the coupling matrix of the first nwin
                             localization windows.
-    biasedpowerspectrum() : Calculate the multitaper (cross-)power spectrum
+    biased_spectrum()     : Calculate the multitaper (cross-) spectrum
                             expectation of a localized function.
     multitaperpowerspectrum()      : Return the multitaper power spectrum
                                      estimate and uncertainty for the input
@@ -2660,14 +2660,14 @@ class SHWindow(object):
     multitapercrosspowerspectrum() : Return the multitaper cross-power
                                      spectrum estimate and uncertainty for
                                      two input SHCoeffs class instances.
-    copy()                : Return a copy of the class instance.
-    plot_windows()        : Plot the best concentrated localization windows
-                            using a simple cylindrical projection.
-    plot_powerspectra()   : Plot the power spectra of the best concentrated
-                            localization windows.
+    copy()                 : Return a copy of the class instance.
+    plot_windows()         : Plot the best concentrated localization windows
+                             using a simple cylindrical projection.
+    plot_spectra()         : Plot the spectra of the best-concentrated
+                             localization windows.
     plot_coupling_matrix() : Plot the multitaper coupling matrix.
-    info()                : Print a summary of the data stored in the SHWindow
-                            instance.
+    info()                 : Print a summary of the data stored in the SHWindow
+                             instance.
 """
 
     def __init__(self):
@@ -3103,29 +3103,39 @@ class SHWindow(object):
         """
         return self._multitapercrosspowerspectrum(clm, slm, k, **kwargs)
 
-    def biasedpowerspectrum(self, power, k, **kwargs):
+    def biased_spectrum(self, power, k, convention='power', unit='per_l',
+                        **kwargs):
         """
-        Calculate the multitaper (cross-)power spectrum expectation of a
+        Calculate the multitaper (cross-) spectrum expectation of a
         localized function.
 
         Usage
         -----
-        outspectrum = x.biasedpowerspectrum(power, k, [taper_wt, save_cg,
-                                            ldata])
+        outspectrum = x.biased_spectrum(spectrum, k, [unit, power, taper_wt,
+                                                      save_cg, ldata])
 
         Returns
         -------
         outspectrum : ndarray, shape (ldata+lwin+1)
-            The expectation of the windowed power spectrum, where lwin is the
+            The expectation of the windowed spectrum, where lwin is the
             spherical harmonic bandwidth of the localization windows.
 
         Parameters
         ----------
-        power : ndarray, shape (ldata+1)
-            The global power spectrum.
+        spectrum : ndarray, shape (ldata+1)
+            The global spectrum.
         k : int
             The number of best concentrated localization windows to use in
-            constructing the windowed power spectrum.
+            constructing the windowed spectrum.
+        convention : str, optional, default = 'power'
+            The type of input global and output biased spectra: 'power' for
+            power spectrum, and 'energy' for energy spectrum.
+        unit : str, optional, default = 'per_l'
+            The units of the input global and output biased spectra. If
+            'per_l', the spectra contain the total contribution for each
+            spherical harmonic degree l. If 'per_lm', the spectra contain the
+            average contribution for each coefficient at spherical harmonic
+            degree l.
         taper_wt : ndarray, optional, default = None
             The weights used in calculating the multitaper spectral estimates
             and standard error.
@@ -3134,9 +3144,11 @@ class SHWindow(object):
             for future use. If 0, the Clebsch-Gordon coefficients will be
             recomputed for each call.
         ldata : int, optional, default = len(power)-1
-            The maximum degree of the global unwindowed power spectrum.
+            The maximum degree of the global unwindowed spectrum.
         """
-        outspectrum = self._biasedpowerspectrum(power, k, **kwargs)
+        outspectrum = self._biased_spectrum(power, k,
+                                            convention=convention,
+                                            unit=unit, **kwargs)
         return outspectrum
 
     def spectra(self, itaper=None, nwin=None, convention='power', unit='per_l',
@@ -3208,7 +3220,7 @@ class SHWindow(object):
 
             for iwin in range(nwin):
                 coeffs = self.to_array(iwin)
-                if (convention == 'power' or concention == 'l2norm'):
+                if (convention == 'power' or convention == 'l2norm'):
                     spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
                 elif convention == 'energy':
                     spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs) * \
@@ -3216,7 +3228,7 @@ class SHWindow(object):
                 else:
                     raise ValueError(
                         "convention must be 'power', 'energy', or 'l2norm'." +
-                        "Input value was {:s}".format(repr(concention)))
+                        "Input value was {:s}".format(repr(convention)))
 
                 if (unit.lower() == 'per_l'):
                     pass
@@ -3232,7 +3244,7 @@ class SHWindow(object):
                         "Input value was {:s}".format(repr(unit)))
         else:
             coeffs = self.to_array(itaper)
-            if (convention == 'power' or concention == 'l2norm'):
+            if (convention == 'power' or convention == 'l2norm'):
                 spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
             elif convention == 'energy':
                 spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs) * \
@@ -3240,7 +3252,7 @@ class SHWindow(object):
             else:
                 raise ValueError(
                     "convention must be 'power', 'energy', or 'l2norm'." +
-                    "Input value was {:s}".format(repr(concention)))
+                    "Input value was {:s}".format(repr(convention)))
 
             if (unit.lower() == 'per_l'):
                 pass
@@ -3308,11 +3320,11 @@ class SHWindow(object):
             return self._coupling_matrix(lmax, nwin=nwin, weights=weights)
         elif mode == 'same':
             cmatrix = self._coupling_matrix(lmax, nwin=nwin,
-                                           weights=weights)
+                                            weights=weights)
             return cmatrix[:lmax+1, :]
         elif mode == 'valid':
             cmatrix = self._coupling_matrix(lmax, nwin=nwin,
-                                           weights=weights)
+                                            weights=weights)
             return cmatrix[:lmax - self.lwin+1, :]
         else:
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
@@ -3367,38 +3379,43 @@ class SHWindow(object):
             fig.savefig(fname)
         return fig, axes
 
-    def plot_powerspectra(self, nwin, unit='per_l', base=10., energy=False,
-                          loglog=False, show=True, fname=None):
+    def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
+                     xscale='lin', yscale='log', show=True, fname=None):
         """
-        Plot the power spectra of the best-concentrated localization windows.
+        Plot the spectra of the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_powerspectra(nwin, [unit, base, energy, loglog, show, fname])
+        x.plot_spectra(nwin, [convention, unit, base, xscale, yscale,
+                              show, fname])
 
         Parameters
         ----------
         nwin : int
             The number of localization windows to plot.
+        convention : str, optional, default = 'power'
+            The type of spectra to plot: 'power' for power spectrum, and
+            'energy' for energy spectrum.
         unit : str, optional, default = 'per_l'
-            If 'per_l', return the total power for each spherical harmonic
-            degree l. If 'per_lm', return the average contribution to the power
-            for each coefficient at spherical harmonic degree l. If
-            'per_dlogl', return the power per log interval dlog_a(l).
+            If 'per_l', return the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', return the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', return the spectrum per log
+            interval dlog_a(l).
         base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
-        energy : bool, optional, default = False
-            Return the energy spectrum instead of the power spectrum.
-        loglog : bool, optional, default = False
-            If True, use log-log axis.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
+        xscale : str, optional, default = 'lin'
+            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'log'
+            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, save the image to the file.
         """
         degrees = self.degrees()
-        power = self.spectra(nwin=nwin, unit=unit, base=base,
-                                  energy=energy)
+        spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
+                                base=base)
 
         maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
@@ -3418,12 +3435,20 @@ class SHWindow(object):
             evalue = self.eigenvalues[itaper]
             ax = axes.flatten()[itaper]
             ax.set_xlabel('degree l')
-            ax.set_ylabel('power')
-            ax.set_yscale('log', basey=base)
-            if loglog:
+            if (convention == 'power'):
+                ax.set_ylabel('power')
+            else:
+                ax.set_ylabel('energy')
+
+            if yscale == 'log':
+                ax.set_yscale('log', basey=base)
+
+            if xscale == 'log':
                 ax.set_xscale('log', basex=base)
+                ax.plot(degrees[1:], spectrum[1:, itaper])
+            else:
+                ax.plot(degrees[0:], spectrum[0:, itaper])
             ax.grid(True, which='both')
-            ax.plot(degrees[0:], power[0:, itaper])
             ax.set_title('concentration: {:2.2f}'.format(evalue))
 
         fig.tight_layout(pad=0.5)
@@ -3435,7 +3460,7 @@ class SHWindow(object):
         return fig, axes
 
     def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
-                            show=True, fname=None):
+                             show=True, fname=None):
         """
         Plot the multitaper coupling matrix.
 
@@ -3473,7 +3498,7 @@ class SHWindow(object):
         fig = _plt.figure(figsize=figsize)
         ax = fig.add_subplot(111)
         ax.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
-                                      mode=mode), aspect='auto')
+                                       mode=mode), aspect='auto')
         ax.set_xlabel('input power')  # matrix index 1 (columns)
         ax.set_ylabel('output power')  # matrix index 0 (rows)
         fig.tight_layout(pad=0.1)
@@ -3755,12 +3780,34 @@ class SHWindowCap(SHWindow):
                                                 lmax1=lmax, lmax2=lmax, k=k,
                                                 taper_wt=taper_wt)
 
-    def _biasedpowerspectrum(self, power, k, **kwargs):
+    def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
+                         **kwargs):
         """
-        Calculate the multitaper (cross-)power spectrum expectation of function
+        Calculate the multitaper (cross-) spectrum expectation of a function
         localized by spherical cap windows.
         """
-        outspectrum = _shtools.SHBiasK(self.tapers, power, k=k, **kwargs)
+        # The equation is not modified if the in- and out- spectra are power
+        # or energy. However, the convention can not be l2norm, which depends
+        # upon the normalization of the coefficients.
+        if (convention != 'power' and convention != 'energy'):
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+        if (unit == 'per_l'):
+            outspectrum = _shtools.SHBiasK(self.tapers, spectrum, k=k,
+                                           **kwargs)
+        elif (unit == 'per_lm'):
+            l = self.degrees()
+            temp = spectrum * (2.0 * l + 1.0)
+            outspectrum = _shtools.SHBiasK(self.tapers, temp, k=k,
+                                           **kwargs)
+            outspectrum /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
         return outspectrum
 
     def _info(self):
@@ -3901,12 +3948,34 @@ class SHWindowMask(SHWindow):
                                                 lmax=lmax, k=k,
                                                 taper_wt=taper_wt)
 
-    def _biasedpowerspectrum(self, power, k, **kwargs):
+    def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
+                         **kwargs):
         """
-        Calculate the multitaper (cross-)power spectrum expectation of function
+        Calculate the multitaper (cross-) spectrum expectation of a function
         localized by arbitary windows.
         """
-        outspectrum = _shtools.SHBiasKMask(self.tapers, power, k=k, **kwargs)
+        # The equation is not modified if the in- and out- spectra are power
+        # or energy. However, the convention can not be l2norm, which depends
+        # upon the normalization of the coefficients.
+        if (convention != 'power' and convention != 'energy'):
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+        if (unit == 'per_l'):
+            outspectrum = _shtools.SHBiasKMask(self.tapers, spectrum, k=k,
+                                               **kwargs)
+        elif (unit == 'per_lm'):
+            l = self.degrees()
+            temp = spectrum * (2.0 * l + 1.0)
+            outspectrum = _shtools.SHBiasKMask(self.tapers, temp, k=k,
+                                               **kwargs)
+            outspectrum /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
         return outspectrum
 
     def _info(self):

@@ -8,7 +8,7 @@ Calculate the (cross-)power spectrum expectation of a windowed function from its
 
 # Returns
 
-`outcspectra` : float, dimension (`ldata`+`lwin`)
+`outcspectra` : float, dimension (`ldata`+`lwin`+1)
 :   The expectation of the localized (cross-)power spectrum.
 
 # Parameters
