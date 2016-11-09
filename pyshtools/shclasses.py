@@ -1594,7 +1594,7 @@ class SHComplexCoeffs(SHCoeffs):
             dj_matrix = _shtools.djpi2(self.lmax + 1)
 
         cgrid = self.expand(grid='DH')
-        rgrid, igrid = cgrid.data.real, cgrid.data.imag
+        rgrid, igrid = cgrid.grid.real, cgrid.grid.imag
         rgridcoeffs = _shtools.SHExpandDH(rgrid, norm=1, sampling=1, csphase=1)
         igridcoeffs = _shtools.SHExpandDH(igrid, norm=1, sampling=1, csphase=1)
 
@@ -1844,9 +1844,9 @@ class SHGrid(object):
             Keyword arguments of numpy.savetxt() and numpy.save().
         """
         if binary is False:
-            _np.savetxt(filename, self.data, **kwargs)
+            _np.savetxt(filename, self.grid, **kwargs)
         elif binary is True:
-            _np.save(filename, self.data, **kwargs)
+            _np.save(filename, self.grid, **kwargs)
         else:
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}'.format(binary))
@@ -1855,15 +1855,15 @@ class SHGrid(object):
     def __add__(self, other):
         """Add two similar grids or a grid and a scaler: self + other."""
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.data.shape ==
-                    other.data.shape and self.kind == other.kind):
-                data = self.data + other.data
+            if (self.grid == other.grid and self.grid.shape ==
+                    other.grid.shape and self.kind == other.kind):
+                data = self.grid + other.grid
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.data + other
+            data = self.grid + other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1876,15 +1876,15 @@ class SHGrid(object):
     def __sub__(self, other):
         """Subtract two similar grids or a grid and a scaler: self - other."""
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.data.shape ==
-                    other.data.shape and self.kind == other.kind):
-                data = self.data - other.data
+            if (self.grid == other.grid and self.grid.shape ==
+                    other.grid.shape and self.kind == other.kind):
+                data = self.grid - other.grid
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.data - other
+            data = self.grid - other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1893,15 +1893,15 @@ class SHGrid(object):
     def __rsub__(self, other):
         """Subtract two similar grids or a grid and a scaler: other - self."""
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.data.shape ==
-                    other.data.shape and self.kind == other.kind):
-                data = other.data - self.data
+            if (self.grid == other.grid and self.grid.shape ==
+                    other.grid.shape and self.kind == other.kind):
+                data = other.grid - self.grid
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = other - self.data
+            data = other - self.grid
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1910,15 +1910,15 @@ class SHGrid(object):
     def __mul__(self, other):
         """Multiply two similar grids or a grid and a scaler: self * other."""
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.data.shape ==
-                    other.data.shape and self.kind == other.kind):
-                data = self.data * other.data
+            if (self.grid == other.grid and self.grid.shape ==
+                    other.grid.shape and self.kind == other.kind):
+                data = self.grid * other.grid
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.data * other
+            data = self.grid * other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1934,15 +1934,15 @@ class SHGrid(object):
         __future__.division is not in effect.
         """
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.data.shape ==
-                    other.data.shape and self.kind == other.kind):
-                data = self.data / other.data
+            if (self.grid == other.grid and self.grid.shape ==
+                    other.grid.shape and self.kind == other.kind):
+                data = self.grid / other.grid
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.data / other
+            data = self.grid / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1954,15 +1954,15 @@ class SHGrid(object):
         __future__.division is in effect.
         """
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.data.shape ==
-                    other.data.shape and self.kind == other.kind):
-                data = self.data / other.data
+            if (self.grid == other.grid and self.grid.shape ==
+                    other.grid.shape and self.kind == other.kind):
+                data = self.grid / other.grid
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.data / other
+            data = self.grid / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1971,7 +1971,7 @@ class SHGrid(object):
     def __pow__(self, other):
         """Raise a grid to a scalar power: pow(self, other)."""
         if _np.isscalar(other) is True:
-            data = pow(self.data, other)
+            data = pow(self.grid, other)
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -2041,7 +2041,7 @@ class SHGrid(object):
         grid : ndarray, shape (nlat, nlon)
             2-D numpy array of the gridded data.
         """
-        return _np.copy(self.data)
+        return _np.copy(self.grid)
 
     def plot3d(self, show=True, fname=None, elevation=0, azimuth=0):
         """
@@ -2067,9 +2067,9 @@ class SHGrid(object):
         cmap = _plt.get_cmap('RdBu_r')
 
         if self.kind == 'real':
-            data = self.data
+            data = self.grid
         elif self.kind == 'complex':
-            data = _np.abs(self.data)
+            data = _np.abs(self.grid)
         else:
             raise ValueError('Grid has to be either real or complex, not {}'
                              .format(self.kind))
@@ -2268,9 +2268,9 @@ class DHRealGrid(SHGrid):
         self.kind = 'real'
 
         if copy:
-            self.data = _np.copy(array)
+            self.grid = _np.copy(array)
         else:
-            self.data = array
+            self.grid = array
 
     def _lats(self):
         """Return the latitudes (in degrees) of the gridded data."""
@@ -2297,7 +2297,7 @@ class DHRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase,
+        cilm = _shtools.SHExpandDH(self.grid, norm=norm, csphase=csphase,
                                    sampling=self.sampling,
                                    **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
@@ -2308,7 +2308,7 @@ class DHRealGrid(SHGrid):
     def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(1, 1)
-        ax.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
+        ax.imshow(self.grid, origin='upper', extent=(0., 360., -90., 90.))
         ax.set_xlabel('longitude')
         ax.set_ylabel('latitude')
         fig.tight_layout(pad=0.5)
@@ -2351,9 +2351,9 @@ class DHComplexGrid(SHGrid):
         self.kind = 'complex'
 
         if copy:
-            self.data = _np.copy(array)
+            self.grid = _np.copy(array)
         else:
-            self.data = array
+            self.grid = array
 
     def _lats(self):
         """
@@ -2386,7 +2386,7 @@ class DHComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDHC(self.data, norm=norm, csphase=csphase,
+        cilm = _shtools.SHExpandDHC(self.grid, norm=norm, csphase=csphase,
                                     **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
@@ -2396,12 +2396,12 @@ class DHComplexGrid(SHGrid):
     def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
-        ax.flat[0].imshow(self.data.real, origin='upper',
+        ax.flat[0].imshow(self.grid.real, origin='upper',
                           extent=(0., 360., -90., 90.))
         ax.flat[0].set_title('Real component')
         ax.flat[0].set_xlabel('longitude')
         ax.flat[0].set_ylabel('latitude')
-        ax.flat[1].imshow(self.data.imag, origin='upper',
+        ax.flat[1].imshow(self.grid.imag, origin='upper',
                           extent=(0., 360., -90., 90.))
         ax.flat[1].set_title('Imaginary component')
         ax.flat[1].set_xlabel('longitude')
@@ -2444,9 +2444,9 @@ class GLQRealGrid(SHGrid):
         self.grid = 'GLQ'
         self.kind = 'real'
         if copy:
-            self.data = _np.copy(array)
+            self.grid = _np.copy(array)
         else:
-            self.data = array
+            self.grid = array
 
     def _lats(self):
         """
@@ -2479,7 +2479,7 @@ class GLQRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQ(self.data, self.weights, self.zeros,
+        cilm = _shtools.SHExpandGLQ(self.grid, self.weights, self.zeros,
                                     norm=norm, csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
@@ -2491,7 +2491,7 @@ class GLQRealGrid(SHGrid):
         """Plot the raw data using a simply cylindrical projection."""
 
         fig, ax = _plt.subplots(1, 1)
-        ax.imshow(self.data, origin='upper')
+        ax.imshow(self.grid, origin='upper')
         ax.set_xlabel('GLQ longitude index')
         ax.set_ylabel('GLQ latitude index')
         fig.tight_layout(pad=0.5)
@@ -2533,9 +2533,9 @@ class GLQComplexGrid(SHGrid):
         self.kind = 'complex'
 
         if copy:
-            self.data = _np.copy(array)
+            self.grid = _np.copy(array)
         else:
-            self.data = array
+            self.grid = array
 
     def _lats(self):
         """Return the latitudes (in degrees) of the gridded data rows."""
@@ -2562,7 +2562,7 @@ class GLQComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQC(self.data, self.weights, self.zeros,
+        cilm = _shtools.SHExpandGLQC(self.grid, self.weights, self.zeros,
                                      norm=norm, csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
@@ -2572,11 +2572,11 @@ class GLQComplexGrid(SHGrid):
     def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
-        ax.flat[0].imshow(self.data.real, origin='upper')
+        ax.flat[0].imshow(self.grid.real, origin='upper')
         ax.flat[0].set_title('Real component')
         ax.flat[0].set_xlabel('longitude index')
         ax.flat[0].set_ylabel('latitude index')
-        ax.flat[1].imshow(self.data.imag, origin='upper')
+        ax.flat[1].imshow(self.grid.imag, origin='upper')
         ax.flat[1].set_title('Imaginary component')
         ax.flat[1].set_xlabel('GLQ longitude index')
         ax.flat[1].set_ylabel('GLQ latitude index')
@@ -2644,8 +2644,8 @@ class SHWindow(object):
     degrees()             : Return an array containing the spherical harmonic
                             degrees of the localization windows, from 0 to
                             lwin.
-    powerspectra()        : Return the power spectra of one or more
-                            localization windows.
+    spectra()             : Return the spectra of one or more localization
+                            windows.
     rotate()              : Rotate the spherical cap tapers, originally located
                             at the north pole, to clat and clon and save the
                             spherical harmonic coefficients in the attribute
@@ -3139,19 +3139,19 @@ class SHWindow(object):
         outspectrum = self._biasedpowerspectrum(power, k, **kwargs)
         return outspectrum
 
-    def powerspectra(self, itaper=None, nwin=None, unit='per_l', base=10.,
-                     energy=False):
+    def spectra(self, itaper=None, nwin=None, convention='power', unit='per_l',
+                base=10.):
         """
-        Return the power spectra of one or more localization windows.
+        Return the spectra of one or more localization windows.
 
         Usage
         -----
-        power = x.powerperdegree([itaper, nwin, unit, base, energy])
+        spectra = x.spectra([itaper, nwin, convention, unit, base])
 
         Returns
         -------
-        power : ndarray, shape (lwin+1, nwin)
-             A matrix with each column containing the power spectrum of a
+        spectra : ndarray, shape (lwin+1, nwin)
+             A matrix with each column containing the spectrum of a
              localization window, and where the windows are arranged with
              increasing concentration factors. If itaper is set, only a single
              vector is returned, whereas if nwin is set, the first nwin spectra
@@ -3165,73 +3165,97 @@ class SHWindow(object):
         nwin : int, optional, default = 1
             The number of best concentrated localization window power spectra
             to return.
+        convention : str, optional, default = 'power'
+            The type of spectrum to return: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
         unit : str, optional, default = 'per_l'
-            If 'per_l', return the total power for each spherical harmonic
-            degree l. If 'per_lm', return the average contribution to the power
-            for each coefficient at spherical harmonic degree l. If
-            'per_dlogl', return the power per log interval dlog_a(l).
+            If 'per_l', return the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', return the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', return the spectrum per log
+            interval dlog_a(l).
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' power spectrum.
-        energy : bool, optional, default = False
-            Return the energy spectrum instead of the power spectrum.
 
         Description
         -----------
+        This function returns either the power spectrum, energy spectrum, or
+        l2-norm spectrum of one or more of the localization windows.
         Total power is defined as the integral of the function squared over all
         space, divided by the area the function spans. If the mean of the
         function is zero, this is equivalent to the variance of the function.
         The total energy is the integral of the function squared over all space
-        and is 4pi times the total power.
+        and is 4pi times the total power. The l2-norm is the sum of the
+        magnitude of the coefficients squared.
 
-        The output power spectra can be one of three types. 'per_l' returns
-        the contribution to the total power from all angular orders at degree
-        l. 'per_lm' returns the average contribution from a single coefficient
-        at degree l to the total power. The power 'per_lm' is equal to the
-        power 'per_l' divided by (2l+1). 'per_dlogl' returns the contribution
-        to the total power from all angular orders over an infinitessimal
-        logarithmic degree band. The power in the band dlog_a(l) is
-        power(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
-        power(l, 'per_dlogl) is equal to power(l, 'per_l')*l*log(a).
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l. The 'per_lm' spectrum
+        is equal to the 'per_l' spectrum divided by (2l+1). 'per_dlogl' returns
+        the contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
+
          """
         if itaper is None:
             if nwin is None:
                 nwin = self.nwin
-            power = _np.zeros((self.lwin+1, nwin))
+            spectra = _np.zeros((self.lwin+1, nwin))
 
             for iwin in range(nwin):
                 coeffs = self.to_array(iwin)
-                power[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
+                if (convention == 'power' or concention == 'l2norm'):
+                    spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
+                elif convention == 'energy':
+                    spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs) * \
+                                       4.0 * _np.pi
+                else:
+                    raise ValueError(
+                        "convention must be 'power', 'energy', or 'l2norm'." +
+                        "Input value was {:s}".format(repr(concention)))
+
                 if (unit.lower() == 'per_l'):
                     pass
                 elif (unit.lower() == 'per_lm'):
                     l = self.degrees()
-                    power[:, iwin] /= (2.0 * l + 1.0)
+                    spectra[:, iwin] /= (2.0 * l + 1.0)
                 elif (unit.lower() == 'per_dlogl'):
                     l = self.degrees()
-                    power[:, iwin] *= l * _np.log(base)
+                    spectra[:, iwin] *= l * _np.log(base)
                 else:
                     raise ValueError(
                         "unit must be 'per_l', 'per_lm', or 'per_dlogl'." +
                         "Input value was {:s}".format(repr(unit)))
         else:
             coeffs = self.to_array(itaper)
-            power = _shtools.SHPowerSpectrum(coeffs)
+            if (convention == 'power' or concention == 'l2norm'):
+                spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
+            elif convention == 'energy':
+                spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs) * \
+                                    4.0 * _np.pi
+            else:
+                raise ValueError(
+                    "convention must be 'power', 'energy', or 'l2norm'." +
+                    "Input value was {:s}".format(repr(concention)))
+
             if (unit.lower() == 'per_l'):
                 pass
             elif (unit.lower() == 'per_lm'):
                 l = self.degrees()
-                power /= (2.0 * l + 1.0)
+                spectra /= (2.0 * l + 1.0)
             elif (unit.lower() == 'per_dlogl'):
                 l = self.degrees()
-                power *= l * _np.log(base)
+                spectra *= l * _np.log(base)
             else:
                 raise ValueError(
                     "unit must be 'per_l', 'per_lm', or 'per_dlogl'." +
                     "Input value was {:s}".format(repr(unit)))
 
-        if energy:
-            power *= 4.0 * _np.pi
-        return power
+        return spectra
 
     def couplingmatrix(self, lmax, nwin=None, weights=None, mode='full'):
         """
@@ -3373,7 +3397,7 @@ class SHWindow(object):
             If present, save the image to the file.
         """
         degrees = self.degrees()
-        power = self.powerspectra(nwin=nwin, unit=unit, base=base,
+        power = self.spectra(nwin=nwin, unit=unit, base=base,
                                   energy=energy)
 
         maxcolumns = 5
