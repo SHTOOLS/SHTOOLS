@@ -1594,7 +1594,7 @@ class SHComplexCoeffs(SHCoeffs):
             dj_matrix = _shtools.djpi2(self.lmax + 1)
 
         cgrid = self.expand(grid='DH')
-        rgrid, igrid = cgrid.grid.real, cgrid.grid.imag
+        rgrid, igrid = cgrid.data.real, cgrid.data.imag
         rgridcoeffs = _shtools.SHExpandDH(rgrid, norm=1, sampling=1, csphase=1)
         igridcoeffs = _shtools.SHExpandDH(igrid, norm=1, sampling=1, csphase=1)
 
@@ -1681,7 +1681,7 @@ class SHGrid(object):
 
     The class instance defines the following class attributes:
 
-    grid       : Gridded array of the data.
+    data       : Gridded array of the data.
     nlat, nlon : The number of latitude and longitude bands in the grid.
     lmax       : The maximum spherical harmonic degree that can be resolved
                  by the grid sampling.
@@ -1844,9 +1844,9 @@ class SHGrid(object):
             Keyword arguments of numpy.savetxt() and numpy.save().
         """
         if binary is False:
-            _np.savetxt(filename, self.grid, **kwargs)
+            _np.savetxt(filename, self.data, **kwargs)
         elif binary is True:
-            _np.save(filename, self.grid, **kwargs)
+            _np.save(filename, self.data, **kwargs)
         else:
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}'.format(binary))
@@ -1855,15 +1855,15 @@ class SHGrid(object):
     def __add__(self, other):
         """Add two similar grids or a grid and a scaler: self + other."""
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.grid.shape ==
-                    other.grid.shape and self.kind == other.kind):
-                data = self.grid + other.grid
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data + other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.grid + other
+            data = self.data + other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1876,15 +1876,15 @@ class SHGrid(object):
     def __sub__(self, other):
         """Subtract two similar grids or a grid and a scaler: self - other."""
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.grid.shape ==
-                    other.grid.shape and self.kind == other.kind):
-                data = self.grid - other.grid
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data - other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.grid - other
+            data = self.data - other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1893,15 +1893,15 @@ class SHGrid(object):
     def __rsub__(self, other):
         """Subtract two similar grids or a grid and a scaler: other - self."""
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.grid.shape ==
-                    other.grid.shape and self.kind == other.kind):
-                data = other.grid - self.grid
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = other.data - self.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = other - self.grid
+            data = other - self.data
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1910,15 +1910,15 @@ class SHGrid(object):
     def __mul__(self, other):
         """Multiply two similar grids or a grid and a scaler: self * other."""
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.grid.shape ==
-                    other.grid.shape and self.kind == other.kind):
-                data = self.grid * other.grid
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data * other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.grid * other
+            data = self.data * other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1934,15 +1934,15 @@ class SHGrid(object):
         __future__.division is not in effect.
         """
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.grid.shape ==
-                    other.grid.shape and self.kind == other.kind):
-                data = self.grid / other.grid
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data / other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.grid / other
+            data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1954,15 +1954,15 @@ class SHGrid(object):
         __future__.division is in effect.
         """
         if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.grid.shape ==
-                    other.grid.shape and self.kind == other.kind):
-                data = self.grid / other.grid
+            if (self.grid == other.grid and self.data.shape ==
+                    other.data.shape and self.kind == other.kind):
+                data = self.data / other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.grid / other
+            data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -1971,7 +1971,7 @@ class SHGrid(object):
     def __pow__(self, other):
         """Raise a grid to a scalar power: pow(self, other)."""
         if _np.isscalar(other) is True:
-            data = pow(self.grid, other)
+            data = pow(self.data, other)
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -2041,7 +2041,7 @@ class SHGrid(object):
         grid : ndarray, shape (nlat, nlon)
             2-D numpy array of the gridded data.
         """
-        return _np.copy(self.grid)
+        return _np.copy(self.data)
 
     def plot3d(self, show=True, fname=None, elevation=0, azimuth=0):
         """
@@ -2067,9 +2067,9 @@ class SHGrid(object):
         cmap = _plt.get_cmap('RdBu_r')
 
         if self.kind == 'real':
-            data = self.grid
+            data = self.data
         elif self.kind == 'complex':
-            data = _np.abs(self.grid)
+            data = _np.abs(self.data)
         else:
             raise ValueError('Grid has to be either real or complex, not {}'
                              .format(self.kind))
@@ -2268,9 +2268,9 @@ class DHRealGrid(SHGrid):
         self.kind = 'real'
 
         if copy:
-            self.grid = _np.copy(array)
+            self.data = _np.copy(array)
         else:
-            self.grid = array
+            self.data = array
 
     def _lats(self):
         """Return the latitudes (in degrees) of the gridded data."""
@@ -2297,7 +2297,7 @@ class DHRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDH(self.grid, norm=norm, csphase=csphase,
+        cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase,
                                    sampling=self.sampling,
                                    **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
@@ -2308,7 +2308,7 @@ class DHRealGrid(SHGrid):
     def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(1, 1)
-        ax.imshow(self.grid, origin='upper', extent=(0., 360., -90., 90.))
+        ax.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
         ax.set_xlabel('longitude')
         ax.set_ylabel('latitude')
         fig.tight_layout(pad=0.5)
@@ -2351,9 +2351,9 @@ class DHComplexGrid(SHGrid):
         self.kind = 'complex'
 
         if copy:
-            self.grid = _np.copy(array)
+            self.data = _np.copy(array)
         else:
-            self.grid = array
+            self.data = array
 
     def _lats(self):
         """
@@ -2386,7 +2386,7 @@ class DHComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDHC(self.grid, norm=norm, csphase=csphase,
+        cilm = _shtools.SHExpandDHC(self.data, norm=norm, csphase=csphase,
                                     **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
@@ -2396,12 +2396,12 @@ class DHComplexGrid(SHGrid):
     def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
-        ax.flat[0].imshow(self.grid.real, origin='upper',
+        ax.flat[0].imshow(self.data.real, origin='upper',
                           extent=(0., 360., -90., 90.))
         ax.flat[0].set_title('Real component')
         ax.flat[0].set_xlabel('longitude')
         ax.flat[0].set_ylabel('latitude')
-        ax.flat[1].imshow(self.grid.imag, origin='upper',
+        ax.flat[1].imshow(self.data.imag, origin='upper',
                           extent=(0., 360., -90., 90.))
         ax.flat[1].set_title('Imaginary component')
         ax.flat[1].set_xlabel('longitude')
@@ -2444,9 +2444,9 @@ class GLQRealGrid(SHGrid):
         self.grid = 'GLQ'
         self.kind = 'real'
         if copy:
-            self.grid = _np.copy(array)
+            self.data = _np.copy(array)
         else:
-            self.grid = array
+            self.data = array
 
     def _lats(self):
         """
@@ -2479,7 +2479,7 @@ class GLQRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQ(self.grid, self.weights, self.zeros,
+        cilm = _shtools.SHExpandGLQ(self.data, self.weights, self.zeros,
                                     norm=norm, csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
@@ -2491,7 +2491,7 @@ class GLQRealGrid(SHGrid):
         """Plot the raw data using a simply cylindrical projection."""
 
         fig, ax = _plt.subplots(1, 1)
-        ax.imshow(self.grid, origin='upper')
+        ax.imshow(self.data, origin='upper')
         ax.set_xlabel('GLQ longitude index')
         ax.set_ylabel('GLQ latitude index')
         fig.tight_layout(pad=0.5)
@@ -2533,9 +2533,9 @@ class GLQComplexGrid(SHGrid):
         self.kind = 'complex'
 
         if copy:
-            self.grid = _np.copy(array)
+            self.data = _np.copy(array)
         else:
-            self.grid = array
+            self.data = array
 
     def _lats(self):
         """Return the latitudes (in degrees) of the gridded data rows."""
@@ -2562,7 +2562,7 @@ class GLQComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQC(self.grid, self.weights, self.zeros,
+        cilm = _shtools.SHExpandGLQC(self.data, self.weights, self.zeros,
                                      norm=norm, csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
@@ -2572,11 +2572,11 @@ class GLQComplexGrid(SHGrid):
     def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
-        ax.flat[0].imshow(self.grid.real, origin='upper')
+        ax.flat[0].imshow(self.data.real, origin='upper')
         ax.flat[0].set_title('Real component')
         ax.flat[0].set_xlabel('longitude index')
         ax.flat[0].set_ylabel('latitude index')
-        ax.flat[1].imshow(self.grid.imag, origin='upper')
+        ax.flat[1].imshow(self.data.imag, origin='upper')
         ax.flat[1].set_title('Imaginary component')
         ax.flat[1].set_xlabel('GLQ longitude index')
         ax.flat[1].set_ylabel('GLQ latitude index')
