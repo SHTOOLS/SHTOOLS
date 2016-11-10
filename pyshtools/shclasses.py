@@ -2654,12 +2654,12 @@ class SHWindow(object):
                             localization windows.
     biased_spectrum()     : Calculate the multitaper (cross-) spectrum
                             expectation of a localized function.
-    multitaperpowerspectrum()      : Return the multitaper power spectrum
-                                     estimate and uncertainty for the input
-                                     SHCoeffs class instance.
-    multitapercrosspowerspectrum() : Return the multitaper cross-power
-                                     spectrum estimate and uncertainty for
-                                     two input SHCoeffs class instances.
+    multitaper_spectrum()       : Return the multitaper power spectrum
+                                  estimate and uncertainty for the input
+                                  SHCoeffs class instance.
+    multitaper_cross_spectrum() : Return the multitaper cross-power
+                                  spectrum estimate and uncertainty for
+                                  two input SHCoeffs class instances.
     copy()                 : Return a copy of the class instance.
     plot_windows()         : Plot the best concentrated localization windows
                              using a simple cylindrical projection.
@@ -3021,23 +3021,26 @@ class SHWindow(object):
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
                 "Input value was {:s}".format(repr(grid)))
 
-    def multitaperpowerspectrum(self, clm, k, **kwargs):
+    def multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
+                            **kwargs):
         """
-        Return the multitaper power spectrum estimate and uncertainty.
+        Return the multitaper spectrum estimate and standard error.
 
         Usage
         -----
-        mtse, sd = x.multitaperpowerspectrum(clm, k, [lmax, taper_wt, clat,
-                                                      clon, coord_degrees])
+        mtse, sd = x.multitaper_spectrum(clm, k, [convention, unit, lmax,
+                                                  taper_wt, clat, clon,
+                                                  coord_degrees])
 
         Returns
         -------
         mtse : ndarray, shape (lmax-lwin+1)
-            The localized multitaper power spectrum estimate, where lwin is the
-            spherical harmonic bandwidth of the localization windows.
+            The localized multitaper spectrum estimate, where lmax is the
+            spherical-harmonic bandwidth of clm, and lwin is the
+            spherical-harmonic bandwidth of the localization windows.
         sd : ndarray, shape (lmax-lwin+1)
-            The standard error of the localized multitaper power spectral
-            estimates.
+            The standard error of the localized multitaper spectrum
+            estimate.
 
         Parameters
         ----------
@@ -3047,10 +3050,18 @@ class SHWindow(object):
         k : int
             The number of tapers to be utilized in performing the multitaper
             spectral analysis.
+        convention : str, optional, default = 'power'
+            The type of output spectra: 'power' for power spectra, and
+            'energy' for energy spectra.
+        unit : str, optional, default = 'per_l'
+            The units of the output spectra. If 'per_l', the spectra contain
+            the total contribution for each spherical harmonic degree l. If
+            'per_lm', the spectra contain the average contribution for each
+            coefficient at spherical harmonic degree l.
         lmax : int, optional, default = clm.lmax
-            The maximum spherical harmonic degree of clm to use.
+            The maximum spherical-harmonic degree of clm to use.
         taper_wt : ndarray, optional, default = None
-            1-D numpy arrar of the weights used in calculating the multitaper
+            1-D numpy array of the weights used in calculating the multitaper
             spectral estimates and standard error.
         clat, clon : float, optional, default = 90., 0.
             Latitude and longitude of the center of the spherical-cap
@@ -3058,25 +3069,31 @@ class SHWindow(object):
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
-        return self._multitaperpowerspectrum(clm, k, **kwargs)
+        return self._multitaper_spectrum(clm, k, convention=convention,
+                                         unit=unit, **kwargs)
 
-    def multitapercrosspowerspectrum(self, clm, slm, k, **kwargs):
+    def multitaper_cross_spectrum(self, clm, slm, k, convention='power',
+                                  unit='per_l', **kwargs):
         """
-        Return the multitaper cross power spectrum estimate and uncertainty.
+        Return the multitaper cross-spectrum estimate and standard error.
 
         Usage
         -----
-        mtse, sd = x.multitapercrosspowerspectrum(
-                      clm, slm, k, [lmax, taper_wt, clat, clon, coord_degrees])
+        mtse, sd = x.multitaper_cross_spectrum(clm, slm, k, [convention, unit,
+                                                             lmax, taper_wt,
+                                                             clat, clon,
+                                                             coord_degrees])
 
         Returns
         -------
         mtse : ndarray, shape (lmax-lwin+1)
-            The localized multitaper cross-power spectrum estimate, where lwin
-            is the spherical harmonic bandwidth of the localization windows.
+            The localized multitaper cross-spectrum estimate, where lmax is the
+            smaller of the two spherical-harmonic bandwidths of clm and slm,
+            and lwin is the spherical-harmonic bandwidth of the localization
+            windows.
         sd : ndarray, shape (lmax-lwin+1)
-            The standard error of the localized multitaper cross-power spectral
-            estimates.
+            The standard error of the localized multitaper cross-spectrum
+            estimate.
 
         Parameters
         ----------
@@ -3089,24 +3106,34 @@ class SHWindow(object):
         k : int
             The number of tapers to be utilized in performing the multitaper
             spectral analysis.
+        convention : str, optional, default = 'power'
+            The type of output spectra: 'power' for power spectra, and
+            'energy' for energy spectra.
+        unit : str, optional, default = 'per_l'
+            The units of the output spectra. If 'per_l', the spectra contain
+            the total contribution for each spherical harmonic degree l. If
+            'per_lm', the spectra contain the average contribution for each
+            coefficient at spherical harmonic degree l.
         lmax : int, optional, default = min(clm.lmax, slm.lmax)
-            The maximum spherical harmonic degree of the input coefficients
+            The maximum spherical-harmonic degree of the input coefficients
             to use.
         taper_wt : ndarray, optional, default = None
-            The weights used in calculating the multitaper spectral estimates
-            and standard error.
+            The weights used in calculating the multitaper cross-spectral
+            estimates and standard error.
         clat, clon : float, optional, default = 90., 0.
             Latitude and longitude of the center of the spherical-cap
             localization windows.
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
-        return self._multitapercrosspowerspectrum(clm, slm, k, **kwargs)
+        return self._multitaper_cross_spectrum(clm, slm, k,
+                                               convention=convention,
+                                               unit=unit, **kwargs)
 
     def biased_spectrum(self, power, k, convention='power', unit='per_l',
                         **kwargs):
         """
-        Calculate the multitaper (cross-) spectrum expectation of a
+        Calculate the multitaper (cross-)spectrum expectation of a
         localized function.
 
         Usage
@@ -3117,19 +3144,20 @@ class SHWindow(object):
         Returns
         -------
         outspectrum : ndarray, shape (ldata+lwin+1)
-            The expectation of the windowed spectrum, where lwin is the
-            spherical harmonic bandwidth of the localization windows.
+            The expectation of the windowed spectrum, where ldata is the
+            spherical-harmonic bandwidth of the input spectrum, and lwin is the
+            spherical-harmonic bandwidth of the localization windows.
 
         Parameters
         ----------
         spectrum : ndarray, shape (ldata+1)
             The global spectrum.
         k : int
-            The number of best concentrated localization windows to use in
+            The number of best-concentrated localization windows to use in
             constructing the windowed spectrum.
         convention : str, optional, default = 'power'
             The type of input global and output biased spectra: 'power' for
-            power spectrum, and 'energy' for energy spectrum.
+            power spectra, and 'energy' for energy spectra.
         unit : str, optional, default = 'per_l'
             The units of the input global and output biased spectra. If
             'per_l', the spectra contain the total contribution for each
@@ -3146,10 +3174,8 @@ class SHWindow(object):
         ldata : int, optional, default = len(power)-1
             The maximum degree of the global unwindowed spectrum.
         """
-        outspectrum = self._biased_spectrum(power, k,
-                                            convention=convention,
-                                            unit=unit, **kwargs)
-        return outspectrum
+        return self._biased_spectrum(power, k, convention=convention,
+                                     unit=unit, **kwargs)
 
     def spectra(self, itaper=None, nwin=None, convention='power', unit='per_l',
                 base=10.):
@@ -3690,10 +3716,11 @@ class SHWindowCap(SHWindow):
             return _shtools.SHMTCouplingMatrix(lmax, self.tapers**2, k=nwin,
                                                taper_wt=self.weights)
 
-    def _multitaperpowerspectrum(self, clm, k, clat=None, clon=None,
-                                 coord_degrees=True, lmax=None, taper_wt=None):
+    def _multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
+                             clat=None, clon=None, coord_degrees=True,
+                             lmax=None, taper_wt=None):
         """
-        Return the multitaper power spectrum estimate and uncertainty for an
+        Return the multitaper spectrum estimate and standard error for an
         input SHCoeffs class instance.
         """
         if lmax is None:
@@ -3728,16 +3755,38 @@ class SHWindowCap(SHWindow):
         sh = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax, k=k)
+            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.coeffs,
+                                                   lmax=lmax, k=k)
         else:
-            return _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax, k=k,
-                                               taper_wt=taper_wt)
+            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax,
+                                                   k=k, taper_wt=taper_wt)
 
-    def _multitapercrosspowerspectrum(self, clm, slm, k, clat=None,
-                                      clon=None, coord_degrees=True,
-                                      lmax=None, taper_wt=None):
+        if (unit == 'per_l'):
+            pass
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(mtse))
+            mtse /= (2.0 * l + 1.0)
+            sd /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
+        if (convention == 'power'):
+            return mtse, sd
+        elif (convention == 'energy'):
+            return mtse * 4.0 * _np.pi, sd * 4.0 * _np.pi
+        else:
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+    def _multitaper_cross_spectrum(self, clm, slm, k, convention='power',
+                                   unit='per_l', clat=None, clon=None,
+                                   coord_degrees=True, lmax=None,
+                                   taper_wt=None):
         """
-        Return the multitaper cross-power spectrum estimate and uncertainty for
+        Return the multitaper cross-spectrum estimate and standard error for
         two input SHCoeffs class instances.
         """
         if lmax is None:
@@ -3773,12 +3822,33 @@ class SHWindowCap(SHWindow):
         sh2 = slm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
-                                                lmax1=lmax, lmax2=lmax, k=k)
+            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
+                                                    lmax1=lmax, lmax2=lmax,
+                                                    k=k)
         else:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
-                                                lmax1=lmax, lmax2=lmax, k=k,
-                                                taper_wt=taper_wt)
+            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
+                                                    lmax1=lmax, lmax2=lmax,
+                                                    k=k, taper_wt=taper_wt)
+
+        if (unit == 'per_l'):
+            pass
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(mtse))
+            mtse /= (2.0 * l + 1.0)
+            sd /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
+        if (convention == 'power'):
+            return mtse, sd
+        elif (convention == 'energy'):
+            return mtse * 4.0 * _np.pi, sd * 4.0 * _np.pi
+        else:
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
 
     def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
                          **kwargs):
@@ -3798,7 +3868,7 @@ class SHWindowCap(SHWindow):
             outspectrum = _shtools.SHBiasK(self.tapers, spectrum, k=k,
                                            **kwargs)
         elif (unit == 'per_lm'):
-            l = self.degrees()
+            l = _np.arange(len(spectrum))
             temp = spectrum * (2.0 * l + 1.0)
             outspectrum = _shtools.SHBiasK(self.tapers, temp, k=k,
                                            **kwargs)
@@ -3912,9 +3982,10 @@ class SHWindowMask(SHWindow):
             return _shtools.SHMTCouplingMatrix(lmax, tapers_power, k=nwin,
                                                taper_wt=self.weights)
 
-    def _multitaperpowerspectrum(self, clm, k, lmax=None, taper_wt=None):
+    def _multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
+                             lmax=None, taper_wt=None):
         """
-        Return the multitaper power spectrum estimate and uncertainty for an
+        Return the multitaper spectrum estimate and standard error for an
         input SHCoeffs class instance.
         """
         if lmax is None:
@@ -3923,15 +3994,36 @@ class SHWindowMask(SHWindow):
         sh = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax, k=k)
+            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
+                                                   k=k)
         else:
-            return _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
-                                               k=k, taper_wt=taper_wt)
+            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
+                                                   k=k, taper_wt=taper_wt)
 
-    def _multitapercrosspowerspectrum(self, clm, slm, k, lmax=None,
-                                      taper_wt=None):
+        if (unit == 'per_l'):
+            pass
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(mtse))
+            mtse /= (2.0 * l + 1.0)
+            sd /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
+        if (convention == 'power'):
+            return mtse, sd
+        elif (convention == 'energy'):
+            return mtse * 4.0 * _np.pi, sd * 4.0 * _np.pi
+        else:
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+    def _multitaper_cross_spectrum(self, clm, slm, k, convention='power',
+                                   unit='per_l', lmax=None, taper_wt=None):
         """
-        Return the multitaper cross-power spectrum estimate and uncertainty for
+        Return the multitaper cross-spectrum estimate and standard error for
         two input SHCoeffs class instances.
         """
         if lmax is None:
@@ -3941,12 +4033,32 @@ class SHWindowMask(SHWindow):
         sh2 = slm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
-                                                lmax=lmax, k=k)
+            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
+                                                    lmax=lmax, k=k)
         else:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
-                                                lmax=lmax, k=k,
-                                                taper_wt=taper_wt)
+            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
+                                                    lmax=lmax, k=k,
+                                                    taper_wt=taper_wt)
+
+        if (unit == 'per_l'):
+            pass
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(mtse))
+            mtse /= (2.0 * l + 1.0)
+            sd /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
+        if (convention == 'power'):
+            return mtse, sd
+        elif (convention == 'energy'):
+            return mtse * 4.0 * _np.pi, sd * 4.0 * _np.pi
+        else:
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
 
     def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
                          **kwargs):
@@ -3966,7 +4078,7 @@ class SHWindowMask(SHWindow):
             outspectrum = _shtools.SHBiasKMask(self.tapers, spectrum, k=k,
                                                **kwargs)
         elif (unit == 'per_lm'):
-            l = self.degrees()
+            l = _np.arange(len(spectrum))
             temp = spectrum * (2.0 * l + 1.0)
             outspectrum = _shtools.SHBiasKMask(self.tapers, temp, k=k,
                                                **kwargs)
