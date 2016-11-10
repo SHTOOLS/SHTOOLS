@@ -2630,8 +2630,6 @@ class SHWindow(object):
                             coefficients for taper i, where i=0 is the best
                             concentrated, optionally using a different
                             normalization convention.
-    to_grid()             : Return as an array a grid of taper i, where i=0
-                            is the best concentrated window.
     to_shcoeffs()         : Return the spherical harmonic coefficients of taper
                             i, where i=0 is the best concentrated, as a new
                             SHCoeffs class instance, optionally using a
@@ -2865,62 +2863,6 @@ class SHWindow(object):
         return self._to_array(
             itaper, normalization=normalization.lower(), csphase=csphase)
 
-    def to_grid(self, itaper, grid='DH2', zeros=None):
-        """
-        Evaluate the coefficients of taper i on a spherical grid and return a
-        numpy array.
-
-        Usage
-        -----
-        gridout = x.to_grid(itaper, [grid, zeros])
-
-        Returns
-        -------
-        gridout : ndarray, shape (nlat, nlon)
-            2-D numpy array of localization window.
-
-        Parameters
-        ----------
-        itaper : int
-            Taper number, where itaper=0 is the best concentrated.
-        grid : str, optional, default = 'DH'
-            'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon,
-            'DH2' for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ'
-            for a Gauss-Legendre quadrature grid.
-        zeros : ndarray, optional, default = None
-            The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
-            grids.
-
-        Description
-        -----------
-        For more information concerning the spherical harmonic expansions and
-        the properties of the output grids, see the documentation for
-        SHExpandDH and SHExpandGLQ.
-        """
-        if type(grid) != str:
-            raise ValueError('grid must be a string. ' +
-                             'Input type was {:s}'
-                             .format(str(type(grid))))
-
-        if grid.upper() == 'DH' or grid.upper() == 'DH1':
-            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=1,
-                                          norm=1, csphase=1)
-        elif grid.upper() == 'DH2':
-            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
-                                          norm=1, csphase=1)
-        elif grid.upper() == 'GLQ':
-            if zeros is None:
-                zeros, weights = _shtools.SHGLQ(self.lwin)
-
-            gridout = _shtools.MakeGridGLQ(self.to_array(itaper), zeros,
-                                           norm=1, csphase=1)
-        else:
-            raise ValueError(
-                "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
-                "Input value was {:s}".format(repr(grid)))
-
-        return gridout
-
     def to_shcoeffs(self, itaper, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of taper i as a SHCoeffs
@@ -3005,17 +2947,20 @@ class SHWindow(object):
                              'Input type was {:s}'
                              .format(str(type(grid))))
 
-        if (grid.upper() == 'DH' or grid.upper() == 'DH1' or
-                grid.upper() == 'DH2'):
-            return SHGrid.from_array(self.to_grid(itaper, grid=grid.upper()),
-                                     grid='DH', copy=False)
+        if (grid.upper() == 'DH' or grid.upper() == 'DH1'):
+            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=1,
+                                          norm=1, csphase=1)
+            return SHGrid.from_array(gridout, grid='DH', copy=False)
+        elif grid.upper() == 'DH2':
+            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
+                                          norm=1, csphase=1)
+            return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lwin)
-
-            return SHGrid.from_array(self.to_grid(itaper, grid=grid.upper(),
-                                                  zeros=zeros),
-                                     grid='GLQ', copy=False)
+            gridout = _shtools.MakeGridGLQ(self.to_array(itaper), zeros,
+                                           norm=1, csphase=1)
+            return SHGrid.from_array(gridout, grid='GLQ', copy=False)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
@@ -3393,7 +3338,9 @@ class SHWindow(object):
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
             ax = axes.flatten()[itaper]
-            ax.imshow(self.to_grid(itaper), origin='upper',
+            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
+                                          norm=1, csphase=1)
+            ax.imshow(gridout, origin='upper',
                       extent=(0., 360., -90., 90.))
             ax.set_title('concentration: {:2.2f}'.format(evalue))
 
