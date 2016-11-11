@@ -334,17 +334,6 @@ python module _SHTOOLS
             integer intent(in),depend(lmax),intent(hide) :: w_d0 = lmax + 1
         end subroutine SHGLQ
 
-        subroutine PreGLQ(x1,x2,n,zero,w,zero_d0,w_d0)
-            fortranname pypreglq
-            real*8 intent(in) :: x1
-            real*8 intent(in) :: x2
-            integer intent(in) :: n
-            real*8 dimension(zero_d0),intent(out) :: zero
-            real*8 dimension(w_d0),intent(out) :: w
-            integer, optional,intent(in),depend(n),intent(hide) :: zero_d0 = n
-            integer, optional,intent(in),depend(n),intent(hide) :: w_d0 = n
-        end subroutine PreGLQ
-
         subroutine SHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2)
             fortranname pyshread
             character*(*) intent(in) :: filename
@@ -755,21 +744,6 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax),intent(hide) :: coef_d0 = lmax+1
         end subroutine SphericalCapCoef
 
-        subroutine EigValVecSym(ain,n,eig,evec,ul,k,evec_d0,evec_d1,ain_d0,ain_d1,eig_d0)
-            fortranname pyeigvalvecsym
-            real*8 dimension(ain_d0,ain_d1),intent(in) :: ain
-            integer,optional,intent(in),depend(ain_d0) :: n = ain_d0
-            real*8 dimension(eig_d0),intent(out) :: eig
-            real*8 dimension(evec_d0,evec_d1),intent(out) :: evec
-            character, optional,intent(in) :: ul = "U"
-            integer, optional,intent(in),depend(n) :: k = n
-            integer intent(in),intent(hide),depend(ain_d0) :: evec_d0 = ain_d0
-            integer intent(in),intent(hide),depend(ain_d1) :: evec_d1 = ain_d1
-            integer, optional,intent(in),check(shape(ain,0)==ain_d0),depend(ain),intent(hide) :: ain_d0=shape(ain,0)
-            integer, optional,intent(in),check(shape(ain,1)==ain_d1),depend(ain),intent(hide) :: ain_d1=shape(ain,1)
-            integer intent(in),depend(k),intent(hide) :: eig_d0 = k
-        end subroutine EigValVecSym
-
         subroutine SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,tapers_d0,tapers_d1,eigenvalues_d0)
             fortranname pyshreturntapersm
             real*8 intent(in) :: theta0
@@ -781,17 +755,6 @@ python module _SHTOOLS
             integer intent(in),depend(lmax),intent(hide) :: tapers_d1 = lmax+1
             integer intent(in),depend(lmax),intent(hide) :: eigenvalues_d0 = lmax+1
         end subroutine SHReturnTapersM
-
-        subroutine EigValSym(ain,n,eval,ul,ain_d0,ain_d1,eval_d0)
-            fortranname pyeigvalsym
-            real*8 dimension(ain_d0,ain_d1),intent(in) :: ain
-            integer,optional,intent(in) :: n = ain_d0
-            real*8 dimension(eval_d0),intent(out) :: eval
-            character, optional,intent(in) :: ul = "U"
-            integer, optional,intent(in),check(shape(ain,0)==ain_d0),depend(ain),intent(hide) :: ain_d0=shape(ain,0)
-            integer, optional,intent(in),check(shape(ain,1)==ain_d1),depend(ain),intent(hide) :: ain_d1=shape(ain,1)
-            integer intent(in),intent(hide),depend(ain_d0) :: eval_d0 = ain_d0
-        end subroutine EigValSym
 
         function SHFindLWin(theta0,m,alpha,taper_number)
             fortranname pyshfindlwin
@@ -855,20 +818,6 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax,lwin),intent(hide) :: corr_d0 = lmax-lwin+1
         end subroutine SHLocalizedAdmitCorr
 
-        subroutine EigValVecSymTri(ain,n,eig,evec,ul,ain_d0,ain_d1,evec_d0,evec_d1,eig_d0)
-            fortranname pyeigvalvecsymtri
-            real*8 dimension(ain_d0,ain_d1),intent(in) :: ain
-            integer,option,intent(in),depend(ain_d0) :: n = ain_d0
-            real*8 dimension(eig_d0),intent(out) :: eig
-            real*8 dimension(evec_d0,evec_d1),intent(out) :: evec
-            character, optional,intent(in) :: ul = "L"
-            integer, optional,intent(in),check(shape(ain,0)==ain_d0),depend(ain),intent(hide) :: ain_d0=shape(ain,0)
-            integer, optional,intent(in),check(shape(ain,1)==ain_d1),depend(ain),intent(hide) :: ain_d1=shape(ain,1)
-            integer intent(in),intent(hide),depend(ain_d0) :: evec_d0 = ain_d0
-            integer intent(in),intent(hide),depend(ain_d1) :: evec_d1 = ain_d1
-            integer intent(in),depend(ain_d0),intent(hide) :: eig_d0 = ain_d0
-        end subroutine EigValVecSymTri
-
         subroutine ComputeDG82(dG82,lmax,m,theta0,dG82_d0,dG82_d1)
             fortranname pycomputedg82
             real*8 dimension(dG82_d0,dG82_d1),intent(out) :: dG82
@@ -878,18 +827,6 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax,m),intent(hide) :: dG82_d0 = lmax-abs(m)+1
             integer, optional,intent(in),depend(lmax,m),intent(hide) :: dG82_d1 = lmax-abs(m)+1
         end subroutine ComputeDG82
-
-        function RandomN(idum)
-            fortranname pyrandomn
-            integer(kind=4) intent(in,out) :: idum
-            real*8 :: RandomN
-        end function RandomN
-
-        function RandomGaussian(idum)
-            fortranname pyrandomgaussian
-            integer(kind=4) intent(in,out) :: idum
-            real*8 :: RandomGaussian
-        end function RandomGaussian
 
         subroutine Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0)
             fortranname pywigner3j
