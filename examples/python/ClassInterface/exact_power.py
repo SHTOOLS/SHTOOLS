@@ -17,8 +17,8 @@ def example():
     clm2 = pyshtools.SHCoeffs.from_random(power, exact_power=True)
 
     fig, ax = plt.subplots()
-    ax.plot(clm1.get_powerperdegree(), label='Normal distributed power')
-    ax.plot(clm2.get_powerperdegree(), label='Exact power')
+    ax.plot(clm1.powerspectrum(unit='per_l'), label='Normal distributed power')
+    ax.plot(clm2.powerspectrum(unit='per_l'), label='Exact power')
     ax.set(xscale='log', yscale='log', xlabel='degree l',
            ylabel='power per degree l')
     ax.grid(which='both')
