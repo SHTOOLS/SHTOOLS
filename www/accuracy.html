@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/sh.css">
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
-	<meta name="description" content="The spherical harmonic transforms in SHTOOLS are proven to be accurate to approximately degree 2800, corresponding to a spatial resolution of better than 4 arc minutes.">
+	<meta name="description" content="Accuracy of SHTOOLS spherical harmonic transforms.">
 </head>
 <body>
 
@@ -20,9 +20,9 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
-				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>	
+				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
 				<td><a href="faq.html">FAQ</a> </td>
 			</tr>
 		</tbody>
@@ -54,7 +54,7 @@
 	A set of synthetic spherical harmonic coefficients was created to test the accuracy of this routine. For a given spherical harmonic bandwidth, these coefficients were expanded in the space domain using <tt>MakeGridGLQ</tt>, and then re-expanded into spherical harmonics using <tt>SHExpandGLQ</tt>. The maximum and rms relative errors between the initial and final set of coefficients are plotted below in Figure 1 as a function of the bandwidth of the initial function. Two cases are shown. In the first, each coefficient was chosen to be a random Gaussian distributed number with unit variance, and the coefficients were then scaled such that the power spectrum was proportional to l<sup>2</sup>. In the second, these coefficients were scaled such that the power spectrum was proportional to l<sup>-2</sup>. This second power spectrum is typical of geophysical observables, such as gravity and topography.</p>
 
 	<img class="imgcenter" src="images/rel_error.jpg" alt="rel_error.jpg" width=600 height=392 >
-	
+
 	<p class="smaller">
 	<b>Figure 1.</b>  Maximum and rms relative errors of the spherical harmonic coefficients as a function of spherical harmonic bandwidth, following a call to <tt>MakeGridGLQ</tt> and <tt>SHExpandGLQ</tt>.</p>
 
@@ -64,11 +64,11 @@
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> </p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

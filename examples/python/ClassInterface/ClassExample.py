@@ -34,7 +34,7 @@ def example1():
     power = 1. / (1. + (degrees / scale)**2)**2
 
     coeffs = pyshtools.SHCoeffs.from_random(power)
-    coeffs.plot_powerperband(show=False, fname='power.png')
+    coeffs.plot_powerspectrum(show=False, fname='power.png')
 
     # expand coefficients into a spatial grid and plot it
     grid1 = coeffs.expand(grid='DH1')
