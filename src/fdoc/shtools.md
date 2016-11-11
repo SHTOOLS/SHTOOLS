@@ -37,4 +37,4 @@ The SHTOOLS software package is entirely free and open source. It can be modifie
 
 # See also
 
-[SHTOOLS](shtools.ipgp.fr)
+[SHTOOLS](shtools.oca.eu)
