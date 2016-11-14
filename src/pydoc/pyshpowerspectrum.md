@@ -4,7 +4,7 @@ Compute the power spectrum of a real function.
 
 # Usage
 
-`pspectrum` = pyshtools.SHPowerSpectrum (`cilm`, [`lmax`])
+`pspectrum` = SHPowerSpectrum (`cilm`, [`lmax`])
 
 # Returns
 

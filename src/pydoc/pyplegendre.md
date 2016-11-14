@@ -4,7 +4,7 @@ Compute all the unnormalized Legendre polynomials.
 
 # Usage
 
-`p` =  pyshtools.PLegendre (`lmax`, `z`)
+`p` = PLegendre (`lmax`, `z`)
 
 # Returns
 

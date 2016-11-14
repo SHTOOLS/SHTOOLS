@@ -4,7 +4,7 @@ Given a set of latitude and longitude coordinates representing a closed curve, o
 
 # Usage
 
-`mask_dh` = pyshtools.Curve2Mask (`n`, `profile`, `np`, [`nprofile`, `sampling`, `centralmeridian`])
+`mask_dh` = Curve2Mask (`n`, `profile`, `np`, [`nprofile`, `sampling`, `centralmeridian`])
 
 # Returns
 

@@ -4,7 +4,7 @@ Calculate the minimum variance and corresponding optimal weights of a localized 
 
 # Usage
 
-`var_opt`, `var_unit`, `weight_opt` = pyshtools.SHMTVarOpt (`l`, `tapers`, `taper_order`, `sff`, [`lwin`, `kmax`, `nocross`])
+`var_opt`, `var_unit`, `weight_opt` = SHMTVarOpt (`l`, `tapers`, `taper_order`, `sff`, [`lwin`, `kmax`, `nocross`])
 
 # Returns
 

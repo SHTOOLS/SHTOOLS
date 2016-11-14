@@ -4,7 +4,7 @@ Compute the cross-power of two real functions for a single spherical harmonic de
 
 # Usage
 
-`cpower` = pyshtools.SHCrossPowerL (`cilm1`, `cilm2`, `l`)
+`cpower` = SHCrossPowerL (`cilm1`, `cilm2`, `l`)
 
 # Returns
 

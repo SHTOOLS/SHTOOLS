@@ -4,7 +4,7 @@ Calculate iteratively the relief along an interface with lateral density variati
 
 # Usage
 
-`cilm` = pyshtools.BAtoHilmRhoHDH (`ba`, `grid`, `rho`, `nmax`, `mass`, `r0`, [`filtertype`, `filterdeg`, `lmax`, `lmaxcalc`, `sampling`)
+`cilm` = BAtoHilmRhoHDH (`ba`, `grid`, `rho`, `nmax`, `mass`, `r0`, [`filtertype`, `filterdeg`, `lmax`, `lmaxcalc`, `sampling`)
 
 # Returns
 

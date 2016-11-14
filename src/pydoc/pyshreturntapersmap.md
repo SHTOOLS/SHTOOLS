@@ -4,7 +4,7 @@ Calculate the eigenfunctions and eigenvalues of the space-concentration problem 
 
 # Usage
 
-`tapers`, `eigenvalues` = pyshtools.SHReturnTapersMap (`dh_mask`, `lmax`, [`n`, `ntapers`, `sampling`])
+`tapers`, `eigenvalues` = SHReturnTapersMap (`dh_mask`, `lmax`, [`n`, `ntapers`, `sampling`])
 
 # Returns
 

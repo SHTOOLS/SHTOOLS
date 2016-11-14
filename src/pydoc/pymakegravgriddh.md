@@ -4,7 +4,7 @@ Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three co
 
 # Usage
 
-`rad`, `theta`, `phi`, `total` = pyshtools.MakeGravGridDH (`cilm`, `gm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`, `omega`, `normal_gravity`])
+`rad`, `theta`, `phi`, `total` = MakeGravGridDH (`cilm`, `gm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`, `omega`, `normal_gravity`])
 
 # Returns
 

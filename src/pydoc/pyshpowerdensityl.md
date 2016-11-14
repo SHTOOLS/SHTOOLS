@@ -4,7 +4,7 @@ Compute the power spectral density of a real function for a single spherical har
 
 # Usage
 
-`psd` = pyshtools.SHPowerDensityL (`cilm`, `l`)
+`psd` = SHPowerDensityL (`cilm`, `l`)
 
 # Returns
 

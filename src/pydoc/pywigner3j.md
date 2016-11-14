@@ -4,7 +4,7 @@ Compute the Wigner-3j symbols for all allowable values of J.
 
 # Usage
 
-`w3j`, `jmin`, `jmax` = pyshtools.Wigner3j (`j2`, `j3`, `m1`, `m2`, `m3`)
+`w3j`, `jmin`, `jmax` = Wigner3j (`j2`, `j3`, `m1`, `m2`, `m3`)
 
 # Returns
 

@@ -4,7 +4,7 @@ Create a global map of the geoid.
 
 # Usage
 
-`geoid` = pyshtools.MakeGeoidGridDH (`cilm`, `r0`, `gm`, `potref`, [`lmax` `omega`, `r`, `order`, `lmax_calc`, `a`, `f`])
+`geoid` = MakeGeoidGridDH (`cilm`, `r0`, `gm`, `potref`, [`lmax` `omega`, `r`, `order`, `lmax_calc`, `a`, `f`])
 
 # Returns
 

@@ -4,7 +4,7 @@ Compute the space-concentration kernel of an arbitrary mask on the sphere.
 
 # Usage
 
-`dij` = pyshtools.ComputeDMap (`dh_mask`, `lmax`, [`n`, `sampling`])
+`dij` = ComputeDMap (`dh_mask`, `lmax`, [`n`, `sampling`])
 
 # Returns
 

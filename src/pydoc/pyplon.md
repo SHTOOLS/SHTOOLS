@@ -4,7 +4,7 @@ Compute all the orthonormalized Legendre polynomials.
 
 # Usage
 
-`p` = pyshtools.PlON (`lmax`, `z`)
+`p` = PlON (`lmax`, `z`)
 
 # Returns
 

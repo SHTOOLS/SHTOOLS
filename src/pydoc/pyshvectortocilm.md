@@ -4,7 +4,7 @@ Convert a 1-dimensional indexed vector of real spherical harmonic coefficients t
 
 # Usage
 
-`cilm` = pyshtools.SHVectorToCilm (`vector`, [`lmax`])
+`cilm` = SHVectorToCilm (`vector`, [`lmax`])
 
 # Returns
 

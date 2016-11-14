@@ -4,7 +4,7 @@ Compute all the unnormalized Legendre polynomials and first derivatives.
 
 # Usage
 
-`p`, `dp` = pyshtools.PLegendre_d1 (`lmax`, `z`)
+`p`, `dp` = PLegendre_d1 (`lmax`, `z`)
 
 # Returns
 

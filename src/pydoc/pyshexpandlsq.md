@@ -4,7 +4,7 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 
 # Usage
 
-`cilm`, `chi2` = pyshtools.SHExpandLSQ (`d`, `lat`, `lon`, `lmax`, [`norm`,  `csphase`])
+`cilm`, `chi2` = SHExpandLSQ (`d`, `lat`, `lon`, `lmax`, [`norm`,  `csphase`])
 
 # Returns
 

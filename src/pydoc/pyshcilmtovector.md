@@ -4,7 +4,7 @@ Convert a three-dimensional array of real spherical harmonic coefficients to a 1
 
 # Usage
 
-`vector` = pyshtools.SHCilmToVector (`cilm`, [`lmax`])
+`vector` = SHCilmToVector (`cilm`, [`lmax`])
 
 # Returns
 

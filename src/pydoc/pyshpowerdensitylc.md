@@ -4,7 +4,7 @@ Compute the power spectral density of a complex function for a single spherical 
 
 # Usage
 
-`psd` = pyshtools.SHPowerDensityLC (`cilm`, `l`)
+`psd` = SHPowerDensityLC (`cilm`, `l`)
 
 # Returns
 

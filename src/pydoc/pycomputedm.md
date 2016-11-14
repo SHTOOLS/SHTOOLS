@@ -4,7 +4,7 @@ Compute the space-concentration kernel of a spherical cap.
 
 # Usage
 
-`dm` = pyshtools.ComputeDM (`lmax`, `m`, `theta0`)
+`dm` = ComputeDM (`lmax`, `m`, `theta0`)
 
 # Returns
 

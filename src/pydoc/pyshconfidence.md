@@ -4,7 +4,7 @@ Compute the probability that two functions are correlated at a given spherical h
 
 # Usage
 
-`prob` = pyshtools.SHConfidence (`l`, `corr`)
+`prob` = SHConfidence (`l`, `corr`)
 
 # Returns
 

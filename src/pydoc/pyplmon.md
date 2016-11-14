@@ -4,7 +4,7 @@ Compute all the orthonormalized associated Legendre functions.
 
 # Usage
 
-`p` = pyshtools.PlmON (`lmax`, `z`, [`csphase`, `cnorm`])
+`p` = PlmON (`lmax`, `z`, [`csphase`, `cnorm`])
 
 # Returns
 
