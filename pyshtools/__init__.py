@@ -118,9 +118,10 @@ class FortranStop(Exception):
             errmsg = 'Improper bounds for input variable.'
         elif (status == 3):
             errmsg = 'Error allocating memory.'
+        elif (status == 4):
+            errmsg = 'File IO error.'
         else:
             errmsg = 'Unhandled Fortran 95 error.'
-
         raise self.__class__(errmsg)
 
 _SHTOOLS.pystop = FortranStop()

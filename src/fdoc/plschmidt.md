@@ -4,18 +4,21 @@ Compute all the Schmidt-normalized Legendre polynomials.
 
 # Usage
 
-call PlSchmidt (`p`, `lmax`, `z`)
+call PlSchmidt (`p`, `lmax`, `z`, `exitstatus`)
 
 # Parameters
 
 `p` : output, real\*8, dimension (`lmax`+1)
 :   An array of Schmidt-normalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l+1`.
-	
+
 `lmax` : input, integer
 :   The maximum degree of the Legendre polynomials to be computed.
 
 `z` : input, real\*8
 :   The argument of the Legendre polynomial.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

@@ -16,7 +16,6 @@ import textwrap
 import _SHTOOLS
 import _constant
 
-
 def main():
     # ---- input/output folders ----
     docfolder = os.path.abspath(sys.argv[1])

@@ -4,7 +4,7 @@ Compute all the orthonormalized associated Legendre functions.
 
 # Usage
 
-call PlmON (`p`, `lmax`, `z`, `csphase`, `cnorm`)
+call PlmON (`p`, `lmax`, `z`, `csphase`, `cnorm`, `exitstatus`)
 
 # Parameters
 
@@ -22,6 +22,9 @@ call PlmON (`p`, `lmax`, `z`, `csphase`, `cnorm`)
 
 `cnorm` : input, optional, integer, default = 0
 :   If 1, the complex normalization of the associated Legendre functions will be used. The default is to use the real normalization.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 
