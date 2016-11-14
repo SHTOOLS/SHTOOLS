@@ -1234,7 +1234,7 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax,nl),intent(hide) :: lmid_d0 = (int)(ceil((float)(lmax+1)/(float)nl))
         end subroutine SHMTDebias
 
-        subroutine MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,omega,normal_gravity,phi_d0,phi_d1,total_d0,total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1)
+        subroutine MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,pot,n,sampling,lmax_calc,omega,normal_gravity,phi_d0,phi_d1,total_d0,total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1,pot_d0,pot_d1)
             fortranname pymakegravgriddh
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer,optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
@@ -1246,6 +1246,7 @@ python module _SHTOOLS
             real*8 dimension(theta_d0,theta_d1),intent(out) :: theta
             real*8 dimension(phi_d0,phi_d1),intent(out) :: phi
             real*8 dimension(total_d0,total_d1),intent(out) :: total
+            real*8 dimension(pot_d0,pot_d1),intent(out) :: pot
             integer intent(hide) :: n
             integer, optional,intent(in) :: sampling = 2
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
@@ -1262,6 +1263,8 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
             integer intent(in),intent(hide),depend(phi_d0) :: theta_d0 = phi_d0
             integer intent(in),intent(hide),depend(phi_d1) :: theta_d1 = phi_d1
+            integer intent(in),intent(hide),depend(phi_d0) :: pot_d0 = phi_d0
+            integer intent(in),intent(hide),depend(phi_d1) :: pot_d1 = phi_d1
         end subroutine MakeGravGridDH
 
         function NormalGravity(geocentric_lat,gm,omega,a,b)

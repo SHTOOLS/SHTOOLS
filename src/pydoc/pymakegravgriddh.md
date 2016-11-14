@@ -4,7 +4,7 @@ Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three co
 
 # Usage
 
-`rad`, `theta`, `phi`, `total` = MakeGravGridDH (`cilm`, `gm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`, `omega`, `normal_gravity`])
+`rad`, `theta`, `phi`, `total`, `pot` = MakeGravGridDH (`cilm`, `gm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`, `omega`, `normal_gravity`])
 
 # Returns
 
@@ -19,6 +19,9 @@ Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three co
 
 `total` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the magnitude of the gravity acceleration.
+
+`pot` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+:   A 2D equally sampled or equally spaced grid of the gravitational potential.
 
 # Parameters
 
