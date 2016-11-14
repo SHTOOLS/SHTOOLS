@@ -4,13 +4,13 @@ Compute all the Schmidt semi-normalized associated Legendre functions.
 
 # Usage
 
-call PlmSchmidt (`p`, `lmax`, `z`, `csphase`, `cnorm`)
+call PlmSchmidt (`p`, `lmax`, `z`, `csphase`, `cnorm`, `exitstatus`)
 
 # Parameters
 
 `p` : output, real\*8, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of Schmidt-normalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m+1`, which can be calculated by a call to `PlmIndex`.
-	
+
 `lmax` : input, integer
 :   The maximum degree of the associated Legendre functions to be computed. If `lmax` is -1, allocated memory will be deallocated.
 
@@ -22,6 +22,9 @@ call PlmSchmidt (`p`, `lmax`, `z`, `csphase`, `cnorm`)
 
 `cnorm` : input, optional, integer, default = 0
 :   If 1, the complex normalization of the associated Legendre functions will be used. The default is to use the real normalization.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

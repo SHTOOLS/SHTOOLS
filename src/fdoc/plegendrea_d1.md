@@ -4,13 +4,13 @@ Compute all the unnormalized associated Legendre functions and first derivatives
 
 # Usage
 
-call PLegendreA_d1 (`p`, `dp`, `lmax`, `z`, `csphase`)
+call PLegendreA_d1 (`p`, `dp`, `lmax`, `z`, `csphase`, `exitstatus`)
 
 # Parameters
 
 `p` : output, real\*8, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of unnormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m+1`, which can be calculated by a call to `PlmIndex`.
-	
+
 `dp` : output, real\*8, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the first derivatives of the unnormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m+1`, which can be calculated by a call to `PlmIndex`.
 
@@ -22,6 +22,9 @@ call PLegendreA_d1 (`p`, `dp`, `lmax`, `z`, `csphase`)
 
 `csphase` : input, optional, integer, default = 1
 :   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the Condon-Shortley phase of (-1)^m will be appended to the associated Legendre functions.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

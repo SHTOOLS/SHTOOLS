@@ -73,6 +73,8 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
 
 !$OMP    threadprivate(f1, f2, sqr, lmax_old)
 
+    if (present(exitstatus)) exitstatus = 0
+
     if (lmax == -1) then
         if (allocated (sqr)) deallocate (sqr)
         if (allocated (f1)) deallocate (f1)
@@ -92,7 +94,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
         else
             stop
         endif
-        
+
     else if (lmax < 0) then
         print*, "Error --- PlmBar"
         print*, "LMAX must be greater than or equal to 0."
@@ -104,7 +106,6 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
             stop
         endif
 
-
     else if(abs(z) > 1.0d0) then
         print*, "Error --- PlmBar"
         print*, "ABS(Z) must be less than or equal to 1."
@@ -115,7 +116,6 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
         else
             stop
         endif
-
 
     end if
 
@@ -207,22 +207,22 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
     end if
 
     !--------------------------------------------------------------------------
-    !   
+    !
     !   Calculate P(l,0). These are not scaled.
     !
     !--------------------------------------------------------------------------
-    u = sqrt((1.0d0-z)*(1.0d0+z)) ! sin(theta)
+    u = sqrt((1.0d0 - z) * (1.0d0 + z)) ! sin(theta)
 
     p(1) = 1.0d0
 
     if (lmax == 0) return
 
-    p(2) = sqr(3)*z
+    p(2) = sqr(3) * z
 
     k = 2
 
     do l = 2, lmax, 1
-        k = k+l
+        k = k + l
         p(k) = f1(k) * z * p(k-l) - f2(k) * p(k-2*l+1)
     end do
 
@@ -263,7 +263,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
 
         ! Calculate P(l,m)
         do l = m + 2, lmax, 1
-            k = k+l
+            k = k + l
                 p(k) = z * f1(k) * p(k-l) - f2(k) * p(k-2*l+1)
                 p(k-2*l+1) = p(k-2*l+1) * rescalem
         end do
