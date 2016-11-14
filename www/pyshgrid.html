@@ -81,7 +81,7 @@
 
 		<tr>
 		<td class="left"><tt>data</tt></td>
-		<td class="right">Gridded array of the data.</td>
+		<td class="right">Array of the gridded data.</td>
 		</tr>
 
 		<tr>
@@ -122,20 +122,25 @@
 		<tr>
 		<td class="head">Class methods</td>
 		</tr>
-	
+
 		<tr>
-		<td class="left"><tt>get_lats()</tt></td>
+		<td class="left"><tt>to_file()</tt></td> 
+		<td class="right">Save raw gridded data to a text or binary file.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>to_array()</tt></td>
+		<td class="right">Return a numpy array of the gridded data.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>lats()</tt></td>
 		<td class="right">Return a vector containing the latitudes of each row of the gridded data.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>get_lons()</tt></td>
+		<td class="left"><tt>lons()</tt></td>
 		<td class="right">Return a vector containing the longitudes of each column of the gridded data.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_grid()</tt></td>
-		<td class="right">Return a numpy array of the gridded data.</td>
 		</tr>
 
 		<tr>
@@ -144,28 +149,24 @@
 		</tr>
 
 		<tr>
-		<td class="left"><tt>plot_rawdata()</tt></td>
+		<td class="left"><tt>copy()</tt></td> 
+		<td class="right">Return a copy of the class instance.</td>
+		</tr>
+
+
+		<tr>
+		<td class="left"><tt>plot()</tt></td>
 		<td class="right">Plot the raw data using a simple cylindrical projection.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>plot_3dsphere()</tt></td>
+		<td class="left"><tt>plot3d()</tt></td>
 		<td class="right">Plot the raw data on a 3d sphere.</td>
 		</tr>
 
 		<tr>
 		<td class="left"><tt>info()</tt></td>
 		<td class="right">Print a summary of the data stored in the SHGrid instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>copy()</tt></td> 
-		<td class="right">Return a copy of the class instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>tofile()</tt></td> 
-		<td class="right">Save raw gridded data to a text or binary file.</td>
 		</tr>
 
 		</tbody>

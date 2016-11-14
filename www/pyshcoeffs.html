@@ -113,18 +113,23 @@
 		</tr>
 
 		<tr>
-		<td class="left"><tt>get_degrees()</tt></td>
+		<td class="left"><tt>to_file()</tt></td> 
+		<td class="right">Save raw spherical harmonic coefficientsto a text or binary file.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>to_array()</tt></td>
+		<td class="right">Return an array of spherical harmonics coefficients with a different normalization convention.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>degrees()</tt></td>
 		<td class="right">Return an array listing the spherical harmonic degrees from <tt>0</tt> to <tt>lmax</tt>.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>powerspectrum()</tt></td>
-		<td class="right">Return the power spectrum of the function.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_coeffs()</tt></td>
-		<td class="right">Return an array of spherical harmonics coefficients with a different normalization convention.</td>
+		<td class="left"><tt>spectrum()</tt></td>
+		<td class="right">Return the spectrum of the function.</td>
 		</tr>
 
 		<tr>
@@ -138,8 +143,8 @@
 		</tr>
 
 		<tr>
-		<td class="left"><tt>return_coeffs()</tt></td>
-		<td class="right">Return the current class instance as a new instance using a different normalization convention.</td>
+		<td class="left"><tt>convert()</tt></td>
+		<td class="right">Return a new class instance using a different normalization convention.</td>
 		</tr>
 
 		<tr>
@@ -148,38 +153,23 @@
 		</tr>
 
 		<tr>
-		<td class="left"><tt>make_complex()</tt></td>
-		<td class="right">Convert a complex <tt>SHCoeffs</tt> class instance to a real class instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>make_real()</tt></td>
-		<td class="right">Convert a real <tt>SHCoeffs</tt> class instance to a complex class instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>plot_powerspectrum()</tt></td>
-		<td class="right">Plot the power spectrum.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>plot_power()</tt></td>
-		<td class="right">Plot the power associated with each spherical-harmonic coefficient.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>info()</tt></td> 
-		<td class="right">Print a summary of the data stored in the SHCoeffs instance.</td>
-		</tr>
-
-		<tr>
 		<td class="left"><tt>copy()</tt></td> 
 		<td class="right">Return a copy of the class instance.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>tofile()</tt></td> 
-		<td class="right">Save raw spherical harmonic coefficientsto a text or binary file.</td>
+		<td class="left"><tt>plot_spectrum()</tt></td>
+		<td class="right">Plot the spectrum as a function of spherical harmonic degree.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>plot_spectrum2d()</tt></td>
+		<td class="right">Plot the spectrum of all spherical-harmonic coefficients.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>info()</tt></td> 
+		<td class="right">Print a summary of the data stored in the SHCoeffs instance.</td>
 		</tr>
 
 		</tbody>

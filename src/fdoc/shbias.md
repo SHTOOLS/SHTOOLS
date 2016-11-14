@@ -20,7 +20,7 @@ call SHBias (`shh`, `lwin`, `incspectra`, `ldata`, `outcspectra`, `save_cg`)
 `ldata` : input, integer
 :   The maximum degree of the global unwindowed power spectrum.
 
-`outcspectra` : output, real\*8, dimension (`ldata`+`lwin`)
+`outcspectra` : output, real\*8, dimension (`ldata`+`lwin`+1)
 :   The expectation of the localized (cross-)power spectrum.
 
 `save_cg` : optional, input, integer, default = 0
