@@ -4,7 +4,7 @@ Compute the power of the magnetic field for a single degree `l` given the Schmid
 
 # Usage
 
-`power` = pyshtools.SHMagPowerL (`c`, `a`, `l`, [`r`])
+`power` = SHMagPowerL (`c`, `a`, `l`, [`r`])
 
 # Returns
 

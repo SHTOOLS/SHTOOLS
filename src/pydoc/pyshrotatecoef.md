@@ -4,7 +4,7 @@ Determine the spherical harmonic coefficients of a complex function rotated by t
 
 # Usage
 
-`rcoef` = pyshtools.SHRotateCoef (`x`, `coef`, `dj`, [`lmax`])
+`rcoef` = SHRotateCoef (`x`, `coef`, `dj`, [`lmax`])
 
 # Returns
 

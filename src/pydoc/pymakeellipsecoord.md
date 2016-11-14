@@ -4,7 +4,7 @@ Compute the coordinates of an ellipse placed at a given latitude and longitude.
 
 # Usage
 
-`coord` = pyshtools.MakeEllipseCoord (`lat`, `lon`, `dec`, `a_theta`, `b_theta`, [`cinterval`]) 
+`coord` = MakeEllipseCoord (`lat`, `lon`, `dec`, `a_theta`, `b_theta`, [`cinterval`])
 
 # Returns
 

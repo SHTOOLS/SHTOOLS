@@ -4,7 +4,7 @@ Compute the power spectrum of a complex function.
 
 # Usage
 
-`pspectrum` = pyshtools.SHPowerSpectrumC (`cilm`, [`lmax`])
+`pspectrum` = SHPowerSpectrumC (`cilm`, [`lmax`])
 
 # Returns
 

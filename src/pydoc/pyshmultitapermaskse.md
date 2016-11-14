@@ -4,7 +4,7 @@ Perform a localized multitaper spectral analysis using arbitrary windows derived
 
 # Usage
 
-`mtse`, `sd` = pyshtools.SHMultiTaperMaskSE (`sh`, `tapers`, [`lmax`,  `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`])
+`mtse`, `sd` = SHMultiTaperMaskSE (`sh`, `tapers`, [`lmax`,  `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`])
 
 # Returns
 

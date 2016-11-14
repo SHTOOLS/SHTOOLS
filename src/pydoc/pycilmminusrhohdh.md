@@ -4,7 +4,7 @@ Calculate the gravitational potential interior to relief with lateral variations
 
 # Usage
 
-`cilm`, `d` = pyshtools.CilmMinusRhoHDH (`gridin`, `rho`, `nmax`, `mass`, [`lmax`, `n`, `dref`, `sampling`])
+`cilm`, `d` = CilmMinusRhoHDH (`gridin`, `rho`, `nmax`, `mass`, [`lmax`, `n`, `dref`, `sampling`])
 
 # Returns
 

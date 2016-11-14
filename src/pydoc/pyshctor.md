@@ -4,7 +4,7 @@ Convert complex spherical harmonics to real form.
 
 # Usage
 
-`rcilm` = pyshtools.SHctor (`ccilm`, [`lmax`, `convention`, `switchcs`])
+`rcilm` = SHctor (`ccilm`, [`lmax`, `convention`, `switchcs`])
 
 # Returns
 

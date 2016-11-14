@@ -428,19 +428,6 @@
         call SHGLQ(lmax,zero,w)
     end subroutine pySHGLQ
 
-    subroutine pyPreGLQ(x1,x2,n,zero,w,zero_d0,w_d0)
-        use shtools, only: PreGLQ
-        implicit none
-        real*8, intent(in) :: x1
-        real*8, intent(in) :: x2
-        integer, intent(in) :: n
-        real*8, dimension(zero_d0),intent(out) :: zero
-        real*8, dimension(w_d0),intent(out) :: w
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        call PreGLQ(x1,x2,n,zero,w)
-    end subroutine pyPreGLQ
-
     subroutine pySHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1, &
                         cilm_d2)
         use shtools, only: SHRead
@@ -948,24 +935,6 @@
         call SphericalCapCoef(coef,theta,lmax=lmax)
     end subroutine pySphericalCapCoef
 
-    subroutine pyEigValVecSym(ain,n,eig,evec,ul,k,evec_d0,evec_d1,ain_d0, &
-                              ain_d1,eig_d0)
-        use shtools, only: EigValVecSym
-        implicit none
-        real*8, dimension(ain_d0,ain_d1),intent(in) :: ain
-        integer, intent(in) :: n
-        real*8, dimension(eig_d0),intent(out) :: eig
-        real*8, dimension(evec_d0,evec_d1),intent(out) :: evec
-        character, optional,intent(in) :: ul
-        integer, optional,intent(in) :: k
-        integer, intent(in) :: evec_d0
-        integer, intent(in) :: evec_d1
-        integer, intent(in) :: ain_d0
-        integer, intent(in) :: ain_d1
-        integer, intent(in) :: eig_d0
-        call EigValVecSym(ain,n,eig,evec,ul=ul,k=k)
-    end subroutine pyEigValVecSym
-
     subroutine pySHReturnTapersM(theta0,lmax,m,tapers,eigenvalues, &
                                  tapers_d0,tapers_d1,eigenvalues_d0)
         use shtools, only: SHReturnTapersM
@@ -980,19 +949,6 @@
         integer, intent(in) :: eigenvalues_d0
         call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues)
     end subroutine pySHReturnTapersM
-
-    subroutine pyEigValSym(ain,n,eval,ul,ain_d0,ain_d1,eval_d0)
-        use shtools, only: EigValSym
-        implicit none
-        real*8, dimension(ain_d0,ain_d1),intent(in) :: ain
-        integer, intent(in) :: n
-        real*8, dimension(eval_d0),intent(out) :: eval
-        character, optional,intent(in) :: ul
-        integer, intent(in) :: ain_d0
-        integer, intent(in) :: ain_d1
-        integer, intent(in) :: eval_d0
-        call EigValSym(ain,n,eval,ul=ul)
-    end subroutine pyEigValSym
 
     function pySHFindLWin(theta0,m,alpha,taper_number)
         use shtools, only: SHFindLWin
@@ -1098,23 +1054,6 @@
         endif
     end subroutine pySHLocalizedAdmitCorr
 
-    subroutine pyEigValVecSymTri(ain,n,eig,evec,ul,ain_d0,ain_d1,evec_d0, &
-                                 evec_d1,eig_d0)
-        use shtools, only: EigValVecSymTri
-        implicit none
-        real*8, dimension(ain_d0,ain_d1),intent(in) :: ain
-        integer, intent(in) :: n
-        real*8, dimension(eig_d0),intent(out) :: eig
-        real*8, dimension(evec_d0,evec_d1),intent(out) :: evec
-        character, optional,intent(in) :: ul
-        integer, intent(in) :: ain_d0
-        integer, intent(in) :: ain_d1
-        integer, intent(in) :: evec_d0
-        integer, intent(in) :: evec_d1
-        integer, intent(in) :: eig_d0
-        call EigValVecSymTri(ain,n,eig,evec,ul=ul)
-    end subroutine pyEigValVecSymTri
-
     subroutine pyComputeDG82(dG82,lmax,m,theta0,dG82_d0,dG82_d1)
         use shtools, only: ComputeDG82
         implicit none
@@ -1126,22 +1065,6 @@
         integer, intent(in) :: dG82_d1
         call ComputeDG82(dG82,lmax,m,theta0)
     end subroutine pyComputeDG82
-
-    function pyRandomN(idum)
-        use shtools, only: RandomN
-        implicit none
-        integer(kind=4), intent(inout) :: idum
-        real*8 :: pyRandomN
-        pyRandomN=RandomN(idum)
-    end function pyRandomN
-
-    function pyRandomGaussian(idum)
-        use shtools, only: RandomGaussian
-        implicit none
-        integer(kind=4), intent(inout) :: idum
-        real*8 :: pyRandomGaussian
-        pyRandomGaussian=RandomGaussian(idum)
-    end function pyRandomGaussian
 
     subroutine pyWigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0)
         use shtools, only: Wigner3j
@@ -1730,11 +1653,11 @@
         endif
     end subroutine pySHMTDebias
 
-    subroutine pyMakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n, &
-                                sampling,lmax_calc,omega,normal_gravity, &
+    subroutine pyMakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,pot,&
+                                n,sampling,lmax_calc,omega,normal_gravity, &
                                 phi_d0,phi_d1,total_d0,total_d1, &
                                 rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2, &
-                                theta_d0,theta_d1)
+                                theta_d0,theta_d1,pot_d0,pot_d1)
         use shtools, only: MakeGravGridDH
         implicit none
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
@@ -1747,6 +1670,7 @@
         real*8, dimension(theta_d0,theta_d1),intent(out) :: theta
         real*8, dimension(phi_d0,phi_d1),intent(out) :: phi
         real*8, dimension(total_d0,total_d1),intent(out) :: total
+        real*8, dimension(pot_d0,pot_d1),intent(out) :: pot
         integer, intent(out) :: n
         integer, optional,intent(in) :: sampling
         integer, optional,intent(in) :: lmax_calc
@@ -1763,9 +1687,11 @@
         integer, intent(in) :: cilm_d2
         integer, intent(in) :: theta_d0
         integer, intent(in) :: theta_d1
+        integer, intent(in) :: pot_d0
+        integer, intent(in) :: pot_d1
         call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n, &
                             sampling=sampling,lmax_calc=lmax_calc,omega=omega,&
-                            normal_gravity=normal_gravity)
+                            normal_gravity=normal_gravity,pot=pot)
     end subroutine pyMakeGravGridDH
 
     function pyNormalGravity(geocentric_lat,gm,omega,a,b)

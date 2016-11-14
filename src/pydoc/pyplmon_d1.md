@@ -4,7 +4,7 @@ Compute all the orthonormalized associated Legendre functions and first derivati
 
 # Usage
 
-`p`, `dp` = pyshtools.PlmON_d1 (`lmax`, `z`, [`csphase`, `cnorm`])
+`p`, `dp` = PlmON_d1 (`lmax`, `z`, [`csphase`, `cnorm`])
 
 # Returns
 

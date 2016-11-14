@@ -4,7 +4,7 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 
 # Usage
 
-`index` =  pyshtools.YilmIndexVector (`i`, `l`, `m`)
+`index` = YilmIndexVector (`i`, `l`, `m`)
 
 # Returns
 

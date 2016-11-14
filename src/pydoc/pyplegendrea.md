@@ -4,7 +4,7 @@ Compute all the unnormalized associated Legendre functions.
 
 # Usage
 
-`p` = pyshtools.PLegendreA (`lmax`, `z`, [`csphase`])
+`p` = PLegendreA (`lmax`, `z`, [`csphase`])
 
 # Returns
 

@@ -4,7 +4,7 @@ Compute the cross-power spectrum of two complex functions.
 
 # Usage
 
-`cspectrum` = pyshtools.SHCrossPowerSpectrumC (`cilm1`, `cilm2`, [`lmax`])
+`cspectrum` = SHCrossPowerSpectrumC (`cilm1`, `cilm2`, [`lmax`])
 
 # Returns
 

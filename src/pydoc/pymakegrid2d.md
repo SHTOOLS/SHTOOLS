@@ -4,7 +4,7 @@ Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical ha
 
 # Usage
 
-`grid` = pyshtools.MakeGrid2D (`cilm`, `interval`, [`lmax`, `norm`, `csphase`, `f`, `a`, `north`, `south`, `east`, `west`, `dealloc`])
+`grid` = MakeGrid2D (`cilm`, `interval`, [`lmax`, `norm`, `csphase`, `f`, `a`, `north`, `south`, `east`, `west`, `dealloc`])
 
 # Returns
 

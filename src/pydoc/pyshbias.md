@@ -4,7 +4,7 @@ Calculate the (cross-)power spectrum expectation of a windowed function from its
 
 # Usage
 
-`outcspectra` = pyshtools.SHBias (`shh`, `incspectra`, [`ldata`, `lwin`, `save_cg`])
+`outcspectra` = SHBias (`shh`, `incspectra`, [`ldata`, `lwin`, `save_cg`])
 
 # Returns
 

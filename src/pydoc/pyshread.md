@@ -4,7 +4,7 @@ Read spherical harmonic coefficients from an ascii-formatted file.
 
 # Usage
 
-`cilm`, `lmax` = pyshtools.SHRead (`filename`,  `lmaxin`, [`skip`])
+`cilm`, `lmax` = SHRead (`filename`,  `lmaxin`, [`skip`])
 
 # Returns
 

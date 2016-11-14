@@ -4,7 +4,7 @@ Create a 2D map from a set of spherical harmonic coefficients sampled on the Gau
 
 # Usage
 
-`gridglq` = pyshtools.MakeGridGLQ (`cilm`, `zero`, [`lmax`,  `norm`, `csphase`, `lmax_calc`])
+`gridglq` = MakeGridGLQ (`cilm`, `zero`, [`lmax`,  `norm`, `csphase`, `lmax_calc`])
 
 # Returns
 
