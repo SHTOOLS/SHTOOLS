@@ -51,11 +51,13 @@ from . import _SHTOOLS as shtools
 from . import shclasses
 from .shclasses import SHCoeffs, SHGrid, SHWindow
 
+# ---- Import shtools subpackages ----
+from . import shio
+
 # ---- Import shtools submodules ----
 from . import constant
 from . import legendre
 from . import expand
-from . import shio
 from . import spectralanalysis
 from . import localizedspectralanalysis
 from . import rotate
