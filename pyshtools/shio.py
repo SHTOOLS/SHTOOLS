@@ -112,7 +112,7 @@ def _derivative(epoch, ref_epoch, trnd, periodic):
     return trend + periodic_sum
 
 
-def SHReadGFC(filename, lmax=None, usecols=(3, 4), epoch=None):
+def read_icgem_gfc(filename, lmax=None, usecols=(3, 4), epoch=None):
     """Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted file.
 
     This function only reads file with the gravity field spherical
@@ -124,7 +124,7 @@ def SHReadGFC(filename, lmax=None, usecols=(3, 4), epoch=None):
         Array with the coefficients with the shape
         (2, lmax + 1, lmax + 1) for the given epoch.
     gm : float
-        Standart gravitational constant of the model.
+        Standart gravitational constant of the model, in m**3/s**2
     r0 : float
         Reference radius of the model, in meters.
 
@@ -138,7 +138,7 @@ def SHReadGFC(filename, lmax=None, usecols=(3, 4), epoch=None):
         (5, 6) or (7, 8). Default is (3, 4), i.e. read coefficients.
     lmax : int, optional
         Maximum degree to read from file, if None then maximum degree of the
-        model will be used as well as if lmax < 0 and lmax > lmax_model.
+        model will be used as well as if lmax < 0 or lmax > lmax_model.
     epoch : str or float, optional
         The epoch time to calculate time-variable coefficients in YYYYMMDD.DD
         format. If None then reference epoch t0 of the model will be used.
