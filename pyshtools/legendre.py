@@ -66,7 +66,12 @@ from ._SHTOOLS import PLegendreA_d1
 from ._SHTOOLS import PLegendre
 from ._SHTOOLS import PLegendre_d1
 
-
+# --- These routines will be redefined to handle the returned exitstatus
+_fortran_subroutines = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON',
+                        'PlmON_d1', 'PlON', 'PlON_d1', 'PlmSchmidt',
+                        'PlmSchmidt_d1', 'PlSchmidt', 'PlSchmidt_d1',
+                        'PLegendreA', 'PLegendreA_d1', 'PLegendre',
+                        'PLegendre_d1']
 # ---------------------------------------------------------------------
 # --- Define a Python function that replaces the Fortran
 # --- equivalent that uses different indexing conventions.
