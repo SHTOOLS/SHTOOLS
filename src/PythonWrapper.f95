@@ -1,21 +1,20 @@
-    subroutine pyPlmBar(p,lmax,z,csphase,cnorm,p_d0)
+    subroutine pyPlmBar(exitstatus,p,lmax,z,csphase,cnorm,p_d0)
         use shtools, only: PlmBar
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
-        integer :: exitstatus
-        external :: pystop
         call PlmBar(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
-        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlmBar
 
-    subroutine pyPlmBar_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
+    subroutine pyPlmBar_d1(exitstatus,p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
         use shtools, only: PlmBar_d1
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         real*8, dimension(dp_d0),intent(out) :: dp
         integer, intent(in) :: lmax
@@ -24,58 +23,50 @@
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        integer :: exitstatus
-        external :: pystop
         call PlmBar_d1(p,dp,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
-        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlmBar_d1
 
-    subroutine pyPlBar(p,lmax,z,p_d0)
+    subroutine pyPlBar(exitstatus,p,lmax,z,p_d0)
         use shtools, only: PlBar
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, intent(in) :: p_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlBar(p,lmax,z,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlBar
 
-    subroutine pyPlBar_d1(p,dp,lmax,z,p_d0,dp_d0)
+    subroutine pyPlBar_d1(exitstatus,p,dp,lmax,z,p_d0,dp_d0)
         use shtools, only: PlBar_d1
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         real*8, dimension(dp_d0),intent(out) :: dp
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlBar_d1(p,dp,lmax,z,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlBar_d1
 
-    subroutine pyPlmON(p,lmax,z,csphase,cnorm,p_d0)
+    subroutine pyPlmON(exitstatus,p,lmax,z,csphase,cnorm,p_d0)
         use shtools, only: PlmON
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlmON(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlmON
 
-    subroutine pyPlmON_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
+    subroutine pyPlmON_d1(exitstatus,p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
         use shtools, only: PlmON_d1
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         real*8, dimension(dp_d0),intent(out) :: dp
         integer, intent(in) :: lmax
@@ -84,58 +75,50 @@
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlmON_d1(p,dp,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlmON_d1
 
-    subroutine pyPlON(p,lmax,z,p_d0)
+    subroutine pyPlON(exitstatus,p,lmax,z,p_d0)
         use shtools, only: PlON
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, intent(in) :: p_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlON(p,lmax,z,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlON
 
-    subroutine pyPlON_d1(p,dp,lmax,z,p_d0,dp_d0)
+    subroutine pyPlON_d1(exitstatus,p,dp,lmax,z,p_d0,dp_d0)
         use shtools, only: PlON_d1
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         real*8, dimension(dp_d0),intent(out) :: dp
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlON_d1(p,dp,lmax,z,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlON_d1
 
-    subroutine pyPlmSchmidt(p,lmax,z,csphase,cnorm,p_d0)
+    subroutine pyPlmSchmidt(exitstatus,p,lmax,z,csphase,cnorm,p_d0)
         use shtools, only: PlmSchmidt
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlmSchmidt(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlmSchmidt
 
-    subroutine pyPlmSchmidt_d1(p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
+    subroutine pyPlmSchmidt_d1(exitstatus,p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
         use shtools, only: PlmSchmidt_d1
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         real*8, dimension(dp_d0),intent(out) :: dp
         integer, intent(in) :: lmax
@@ -144,57 +127,49 @@
         integer, optional,intent(in) :: cnorm
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlmSchmidt_d1(p,dp,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlmSchmidt_d1
 
-    subroutine pyPlSchmidt(p,lmax,z,p_d0)
+    subroutine pyPlSchmidt(exitstatus,p,lmax,z,p_d0)
         use shtools, only: PlSchmidt
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, intent(in) :: p_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlSchmidt(p,lmax,z,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlSchmidt
 
-    subroutine pyPlSchmidt_d1(p,dp,lmax,z,p_d0,dp_d0)
+    subroutine pyPlSchmidt_d1(exitstatus,p,dp,lmax,z,p_d0,dp_d0)
         use shtools, only: PlSchmidt_d1
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         real*8, dimension(dp_d0),intent(out) :: dp
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        integer :: exitstatus
-!        external :: pystop
         call PlSchmidt_d1(p,dp,lmax,z,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPlSchmidt_d1
 
-    subroutine pyPLegendreA(p,lmax,z,csphase,p_d0)
+    subroutine pyPLegendreA(exitstatus,p,lmax,z,csphase,p_d0)
         use shtools, only: PLegendreA
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, optional,intent(in) :: csphase
         integer, intent(in) :: p_d0
-        integer :: exitstatus
-!        external :: pystop
         call PLegendreA(p,lmax,z,csphase=csphase,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPLegendreA
 
-    subroutine pyPLegendreA_d1(p,dp,lmax,z,csphase,p_d0,dp_d0)
+    subroutine pyPLegendreA_d1(exitstatus,p,dp,lmax,z,csphase,p_d0,dp_d0)
         use shtools, only: PLegendreA_d1
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         real*8, dimension(dp_d0),intent(out) :: dp
         integer, intent(in) :: lmax
@@ -202,38 +177,31 @@
         integer, optional,intent(in) :: csphase
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        integer :: exitstatus
-!        external :: pystop
         call PLegendreA_d1(p,dp,lmax,z,csphase=csphase,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPLegendreA_d1
 
-    subroutine pyPLegendre(p,lmax,z,p_d0)
+    subroutine pyPLegendre(exitstatus,p,lmax,z,p_d0)
         use shtools, only: PLegendre
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, intent(in) :: p_d0
-        integer :: exitstatus
-!        external :: pystop
         call PLegendre(p,lmax,z,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPLegendre
 
-    subroutine pyPLegendre_d1(p,dp,lmax,z,p_d0,dp_d0)
+    subroutine pyPLegendre_d1(exitstatus,p,dp,lmax,z,p_d0,dp_d0)
         use shtools, only: PLegendre_d1
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(p_d0),intent(out) :: p
         real*8, dimension(dp_d0),intent(out) :: dp
         integer, intent(in) :: lmax
         real*8, intent(in) :: z
         integer, intent(in) :: p_d0
         integer, intent(in) :: dp_d0
-        integer :: exitstatus
-!        external :: pystop
         call PLegendre_d1(p,dp,lmax,z,exitstatus=exitstatus)
-!        if (exitstatus /= 0) call pystop(exitstatus)
     end subroutine pyPLegendre_d1
 
     subroutine pyCilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
