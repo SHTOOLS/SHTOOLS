@@ -146,7 +146,7 @@ def _raise_errors(func):
 
 
 _fortran_subroutines = (legendre._fortran_subroutines +
-                        legendre._fortran_subroutines)
+                        expand._fortran_subroutines)
 
 
 for _func in _fortran_subroutines:
