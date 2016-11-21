@@ -23,7 +23,7 @@ main namespace:
     rotate - Spherical harmonic rotation routines.
     gravmag - Gravity and magnetics routines.
     constant - pyshtools constants.
-    other - Other routines.
+    utils - Other routines.
 
 For further information, consult the web documentation at
 
@@ -53,6 +53,7 @@ from .shclasses import SHCoeffs, SHGrid, SHWindow
 
 # ---- Import shtools subpackages ----
 from . import shio
+from . import utils
 
 # ---- Import shtools submodules ----
 from . import constant
@@ -62,7 +63,6 @@ from . import spectralanalysis
 from . import localizedspectralanalysis
 from . import rotate
 from . import gravmag
-from . import other
 
 
 # ---- Bind two new functions to the list of all shtools routines ----
@@ -114,4 +114,4 @@ shtools.__doc__ = (
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
            'legendre', 'expand', 'shio', 'spectralanalysis',
-           'localizedspectralanalysis', 'rotate', 'gravmag', 'other']
+           'localizedspectralanalysis', 'rotate', 'gravmag', 'utils']
