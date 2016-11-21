@@ -7,14 +7,37 @@ from __future__ import division as _division
 
 import numpy as _np
 
-from pyshtools.shio.common import _derivative
+from pyshtools.shio.common import _time_variable_part
 from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
+
+
+def _time_variable_part(epoch, ref_epoch, trnd, periodic):
+    """Return sum of the time-variable part of the coefficients
+
+    The formula is:
+    G(t)=G(t0) + trnd*(t-t0 ) +
+        asin1*sin(2pi/p1 * (t-t0)) + acos1*cos(2pi/p1 * (t-t0)) +
+        asin2*sin(2pi/p2 * (t-t0)) + acos2*cos(2pi/p2 * (t-t0))
+
+    This function computes all terms after G(t0).
+    """
+    delta_t = epoch - ref_epoch
+    trend = trnd * delta_t
+    periodic_sum = _np.zeros_like(trnd)
+    for period in periodic:
+        for trifunc in periodic[period]:
+            coeffs = periodic[period][trifunc]
+            if trifunc == 'acos':
+                periodic_sum += coeffs * _np.cos(2 * _np.pi / period * delta_t)
+            elif trifunc == 'asin':
+                periodic_sum += coeffs * _np.sin(2 * _np.pi / period * delta_t)
+    return trend + periodic_sum
 
 
 def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
     """Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted file.
 
-    This function only reads file with the gravity field spherical
+    This function only reads files with the gravity field spherical
     harmonic coefficients.
 
     Returns
@@ -23,10 +46,10 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
         Array with the coefficients with the shape (2, lmax + 1, lmax + 1)
         for the given epoch.
     gm : float
-        Standart gravitational constant of the model, in m**3/s**2
+        Standard gravitational constant of the model, in m**3/s**2.
     r0 : float
         Reference radius of the model, in meters.
-    errors : array
+    errors : array, optional
         Array with the errors of the coefficients with the shape
         (2, lmax + 1, lmax + 1) for the given epoch.
 
@@ -38,8 +61,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
         Which errors to read. Can be either "calibrated", "formal" or
         None. Default is None.
     lmax : int, optional
-        Maximum degree to read from file, if None then maximum degree of the
-        model will be used as well as if lmax < 0 or lmax > lmax_model.
+        Maximum degree to read from the file. If lmax is None, less than 0, or
+        greater than lmax_model, the maximum degree of the model will be used.
     epoch : str or float, optional
         The epoch time to calculate time-variable coefficients in YYYYMMDD.DD
         format. If None then reference epoch t0 of the model will be used.
@@ -77,7 +100,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
         elif 'gravity_constant' in header:
             gravity_constant = float(header['gravity_constant'])
         else:
-            raise ValueError('No standart gravitational constant in the header')
+            raise ValueError('No standard gravitational constant in the header')
 
         radius = float(header['radius'])
 
@@ -158,7 +181,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
     if epoch is None:
         epoch = ref_epoch
 
-    cilm += _derivative(epoch, ref_epoch, trnd, periodic)
+    cilm += _time_variable_part(epoch, ref_epoch, trnd, periodic)
 
     if errors:
         return cilm[:2], gravity_constant, radius, cilm[2:]
