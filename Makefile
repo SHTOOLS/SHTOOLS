@@ -142,9 +142,9 @@ SYSLIBPATH = /usr/local/lib
 
 FFTW = -L$(SYSLIBPATH) -lfftw3
 FFTW_UNDERSCORE = 0
-LAPACK = -llapack 
+LAPACK ?= -llapack
 LAPACK_UNDERSCORE = 0
-BLAS = -lblas
+BLAS ?= -lblas
 
 SHELL = /bin/sh
 FDOCDIR = src/fdoc
@@ -182,10 +182,12 @@ SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?= -fopenmp
 else ifeq ($(F95), ifort)
 # Default intel fortran flags
-F95FLAGS ?= -m64 -free -O3 -Tf
+F95FLAGS ?= -m64 -fpp -free -O3 -Tf
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
-OPENMPFLAGS ?=
+OPENMPFLAGS ?= -qopenmp
+LAPACK = -mkl
+BLAS = 
 else ifeq ($(F95), g95)
 # Default g95 flags.
 F95FLAGS ?= -O3 -fno-second-underscore
@@ -244,7 +246,7 @@ fortran-mp:
 	mkdir -pv lib
 	mkdir -pv modules
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	@echo
 	@echo MAKE SUCCESSFUL!
@@ -252,7 +254,7 @@ fortran-mp:
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo Compile your Fortran code with the following flags:
 	@echo
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) $(OPENMPFLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(OPENMPFLAGS) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
@@ -481,7 +483,7 @@ fortran-tests: fortran
 	@echo RAN ALL FORTRAN EXAMPLE AND TESTS
 
 fortran-tests-mp: fortran-mp
-	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS) $(OPENMPFLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo MAKE OF FORTRAN TEST SUITE SUCCESSFUL
 	@echo
