@@ -10,7 +10,8 @@ import numpy as _np
 from pyshtools.shio.common import _derivative
 from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
 
-def read_icgem_gfc(filename, lmax=None, errors=None, epoch=None):
+
+def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
     """Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted file.
 
     This function only reads file with the gravity field spherical
@@ -19,13 +20,15 @@ def read_icgem_gfc(filename, lmax=None, errors=None, epoch=None):
     Returns
     -------
     cilm : array
-        Array with the coefficients with the shape
-        (2, lmax + 1, lmax + 1) for the given epoch. Returns errors
-        coefficients if errors parameter is set.
+        Array with the coefficients with the shape (2, lmax + 1, lmax + 1)
+        for the given epoch.
     gm : float
         Standart gravitational constant of the model, in m**3/s**2
     r0 : float
         Reference radius of the model, in meters.
+    errors : array
+        Array with the errors of the coefficients with the shape
+        (2, lmax + 1, lmax + 1) for the given epoch.
 
     Parameters
     ----------
@@ -82,22 +85,21 @@ def read_icgem_gfc(filename, lmax=None, errors=None, epoch=None):
         if lmax is None or lmax < 0 or lmax > lmax_model:
             lmax = lmax_model
 
-        valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
-        if header['errors'] == 'no' and errors is not None:
-            raise ValueError('This model has no errors.')
-        elif errors not in valid_err[:-1] + (None,):
-            raise ValueError('Errors can be either "formal", "calibrated" or None')
-        elif header['errors'] in valid_err and errors in valid_err[:-1]:
-            if (errors, header['errors']) == valid_err[1:]:
-                usecols = (7, 8)
-            elif header['errors'] != errors:
-                raise ValueError('This model has no {} errors.'.format(errors))
-            else:
-                usecols = (5, 6)
-        else:
-            usecols = (3, 4)
+        if errors is not None:
+            valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
+            if header['errors'] == 'no':
+                raise ValueError('This model has no errors.')
+            elif errors not in valid_err[:-1]:
+                raise ValueError('Errors can be either "formal", "calibrated" or None')
+            elif header['errors'] in valid_err and errors in valid_err[:-1]:
+                if (errors, header['errors']) == valid_err[1:]:
+                    err_cols = (7, 8)
+                elif header['errors'] != errors:
+                    raise ValueError('This model has no {} errors.'.format(errors))
+                else:
+                    err_cols = (5, 6)
 
-        cilm = _np.tile(_np.zeros((lmax + 1, lmax + 1)), (2, 1, 1))
+        cilm = _np.tile(_np.zeros((lmax + 1, lmax + 1)), (4, 1, 1))
         ref_epoch = _np.zeros((lmax + 1, lmax + 1))
         trnd = _np.zeros_like(cilm)
         periodic = {}
@@ -108,14 +110,18 @@ def read_icgem_gfc(filename, lmax=None, errors=None, epoch=None):
             key = line[0]
 
             l, m = int(line[1]), int(line[2])
-            if l > lmax:
+            if m > lmax:
                 break
+            if l > lmax:
+                continue
 
-            value_c, value_s = float(line[usecols[0]]),\
-                float(line[usecols[1]])
+            value_cs = [float(line[3]), float(line[4]), 0, 0]
+            if errors:
+                value_cs[2:] = float(line[err_cols[0]]),\
+                    float(line[err_cols[1]])
 
             if key == 'gfc':
-                cilm[0, l, m], cilm[1, l, m] = value_c, value_s
+                cilm[:, l, m] = value_cs
             elif key == 'gfct':
                 if is_v2:
                     t0i = _yyyymmdd_to_year_fraction(line[-2])
@@ -125,7 +131,7 @@ def read_icgem_gfc(filename, lmax=None, errors=None, epoch=None):
                 else:
                     t0i = _yyyymmdd_to_year_fraction(line[-1])
 
-                cilm[0, l, m], cilm[1, l, m] = value_c, value_s
+                cilm[:, l, m] = value_cs
                 ref_epoch[l, m] = t0i
             elif key == 'trnd':
                 if is_v2:
@@ -133,27 +139,28 @@ def read_icgem_gfc(filename, lmax=None, errors=None, epoch=None):
                     t1i = _yyyymmdd_to_year_fraction(line[-1])
                     if not t0i <= epoch < t1i:
                         continue
-                trnd[0, l, m], trnd[1, l, m] = value_c, value_s
+                trnd[:, l, m] = value_cs
             elif key in ('acos', 'asin'):
-                period = float(line[-1])
-                if period not in periodic:
-                    arr = _np.zeros_like(cilm)
-                    periodic[period] = {'acos': arr,
-                                        'asin': arr.copy()}
                 if is_v2:
                     t0i = _yyyymmdd_to_year_fraction(line[-3])
                     t1i = _yyyymmdd_to_year_fraction(line[-2])
                     if not t0i <= epoch < t1i:
                         continue
-                periodic[period][line[0]][0, l, m] = value_c
-                periodic[period][line[0]][1, l, m] = value_s
-            else:
-                continue
+
+                period = float(line[-1])
+                if period not in periodic:
+                    arr = _np.zeros_like(cilm)
+                    periodic[period] = {'acos': arr,
+                                        'asin': arr.copy()}
+
+                periodic[period][line[0]][:, l, m] = value_cs
 
     if epoch is None:
         epoch = ref_epoch
 
     cilm += _derivative(epoch, ref_epoch, trnd, periodic)
 
-    return cilm, gravity_constant, radius
-
+    if errors:
+        return cilm[:2], gravity_constant, radius, cilm[2:]
+    else:
+        return cilm[:2], gravity_constant, radius
