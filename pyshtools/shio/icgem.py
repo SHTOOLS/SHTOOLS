@@ -10,7 +10,7 @@ import numpy as _np
 from pyshtools.shio.common import _derivative
 from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
 
-def read_icgem_gfc(filename, lmax=None, usecols=(3, 4), epoch=None):
+def read_icgem_gfc(filename, lmax=None, errors=None, epoch=None):
     """Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted file.
 
     This function only reads file with the gravity field spherical
@@ -20,7 +20,8 @@ def read_icgem_gfc(filename, lmax=None, usecols=(3, 4), epoch=None):
     -------
     cilm : array
         Array with the coefficients with the shape
-        (2, lmax + 1, lmax + 1) for the given epoch.
+        (2, lmax + 1, lmax + 1) for the given epoch. Returns errors
+        coefficients if errors parameter is set.
     gm : float
         Standart gravitational constant of the model, in m**3/s**2
     r0 : float
@@ -30,10 +31,9 @@ def read_icgem_gfc(filename, lmax=None, usecols=(3, 4), epoch=None):
     ----------
     filename : str
         The ascii-formatted filename containing the spherical harmonic coefficients.
-    usecols : sequence, optional
-        Which two columns to read. Can be used to read errors of the
-        coefficients instead of the coefficients themself. Can be (3, 4) or
-        (5, 6) or (7, 8). Default is (3, 4), i.e. read coefficients.
+    errors : str, optional
+        Which errors to read. Can be either "calibrated", "formal" or
+        None. Default is None.
     lmax : int, optional
         Maximum degree to read from file, if None then maximum degree of the
         model will be used as well as if lmax < 0 or lmax > lmax_model.
@@ -42,9 +42,6 @@ def read_icgem_gfc(filename, lmax=None, usecols=(3, 4), epoch=None):
         format. If None then reference epoch t0 of the model will be used.
         If format of the file is 'icgem2.0' then epoch must be specified.
     """
-
-    if usecols not in ((3, 4), (5, 6), (7, 8)):
-        raise ValueError('Wrong column number for usecols.')
 
     # read header
     header = {}
@@ -77,14 +74,28 @@ def read_icgem_gfc(filename, lmax=None, usecols=(3, 4), epoch=None):
         elif 'gravity_constant' in header:
             gravity_constant = float(header['gravity_constant'])
         else:
-            raise ValueError('No standart gravitational constant in the\
-                    header')
+            raise ValueError('No standart gravitational constant in the header')
 
         radius = float(header['radius'])
 
         lmax_model = int(header['max_degree'])
         if lmax is None or lmax < 0 or lmax > lmax_model:
             lmax = lmax_model
+
+        valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
+        if header['errors'] == 'no' and errors is not None:
+            raise ValueError('This model has no errors.')
+        elif errors not in valid_err[:-1] + (None,):
+            raise ValueError('Errors can be either "formal", "calibrated" or None')
+        elif header['errors'] in valid_err and errors in valid_err[:-1]:
+            if (errors, header['errors']) == valid_err[1:]:
+                usecols = (7, 8)
+            elif header['errors'] != errors:
+                raise ValueError('This model has no {} errors.'.format(errors))
+            else:
+                usecols = (5, 6)
+        else:
+            usecols = (3, 4)
 
         cilm = _np.tile(_np.zeros((lmax + 1, lmax + 1)), (2, 1, 1))
         ref_epoch = _np.zeros((lmax + 1, lmax + 1))
