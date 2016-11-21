@@ -204,6 +204,335 @@
         call PLegendre_d1(p,dp,lmax,z,exitstatus=exitstatus)
     end subroutine pyPLegendre_d1
 
+    subroutine pySHExpandDH(exitstatus,grid,n,cilm,lmax,norm,sampling,csphase,&
+                            lmax_calc, cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
+        use shtools, only: SHExpandDH
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(grid_d0,grid_d1),intent(in) :: grid
+        integer, intent(in) :: n
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: grid_d0
+        integer, intent(in) :: grid_d1
+        call SHExpandDH(grid,n,cilm,lmax,norm=norm,sampling=sampling, &
+                        csphase=csphase,lmax_calc=lmax_calc,&
+                        exitstatus=exitstatus)
+    end subroutine pySHExpandDH
+
+    subroutine pyMakeGridDH(exitstatus,griddh,n,cilm,lmax,norm,sampling,&
+                            csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,&
+                            griddh_d0,griddh_d1)
+        use shtools, only: MakeGridDH
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(griddh_d0,griddh_d1),intent(out) :: griddh
+        integer, intent(out) :: n
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: griddh_d0
+        integer, intent(in) :: griddh_d1
+        call MakeGridDH(griddh,n,cilm,lmax,norm=norm,sampling=sampling, &
+                        csphase=csphase,lmax_calc=lmax_calc,&
+                        exitstatus=exitstatus)
+    end subroutine pyMakeGridDH
+
+    subroutine pySHExpandDHC(exitstatus,grid,n,cilm,lmax,norm,sampling,csphase,&
+                             lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
+        use shtools, only: SHExpandDHC
+        implicit none
+        integer, intent(out) :: exitstatus
+        complex*16, dimension(grid_d0,grid_d1),intent(in) :: grid
+        integer, intent(in) :: n
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: grid_d0
+        integer, intent(in) :: grid_d1
+        call SHExpandDHC(grid,n,cilm,lmax,norm=norm,sampling=sampling, &
+                         csphase=csphase,lmax_calc=lmax_calc,&
+                         exitstatus=exitstatus)
+    end subroutine pySHExpandDHC
+
+    subroutine pyMakeGridDHC(exitstatus,griddh,n,cilm,lmax,norm,sampling,&
+                             csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,&
+                             griddh_d0,griddh_d1)
+        use shtools, only: MakeGridDHC
+        implicit none
+        integer, intent(out) :: exitstatus
+        complex*16, dimension(griddh_d0,griddh_d1),intent(out) :: griddh
+        integer, intent(out) :: n
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: griddh_d0
+        integer, intent(in) :: griddh_d1
+        call MakeGridDHC(griddh,n,cilm,lmax,norm=norm,sampling=sampling, &
+                         csphase=csphase,lmax_calc=lmax_calc,&
+                         exitstatus=exitstatus)
+    end subroutine pyMakeGridDHC
+
+    subroutine pyshglq(exitstatus,lmax,zero,w,zero_d0,w_d0)
+        use shtools, only: SHGLQ
+        implicit none
+        integer, intent(out) :: exitstatus
+        integer, intent(in) :: lmax
+        real*8, dimension(zero_d0),intent(out) :: zero
+        real*8, dimension(w_d0),intent(out) :: w
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        call SHGLQ(lmax,zero,w,exitstatus=exitstatus)
+    end subroutine pySHGLQ
+
+    subroutine pySHExpandGLQ(exitstatus,cilm,lmax,gridglq,w,zero,norm,csphase,&
+                             lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,&
+                             gridglq_d1,zero_d0,w_d0)
+        use shtools, only: SHExpandGLQ
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(in) :: lmax
+        real*8, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
+        real*8, dimension(w_d0),intent(in) :: w
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        call SHExpandGLQ(cilm,lmax,gridglq,w,zero=zero,norm=norm, &
+                         csphase=csphase,lmax_calc=lmax_calc,&
+                         exitstatus=exitstatus)
+    end subroutine pySHExpandGLQ
+
+    subroutine pyMakeGridGLQ(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,&
+                             lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,&
+                             cilm_d2,zero_d0)
+        use shtools, only: MakeGridGLQ
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: zero_d0
+        call MakeGridGLQ(gridglq,cilm,lmax,zero=zero,norm=norm, &
+                         csphase=csphase,lmax_calc=lmax_calc,&
+                         exitstatus=exitstatus)
+    end subroutine pyMakeGridGLQ
+
+    subroutine pySHExpandGLQC(exitstatus,cilm,lmax,gridglq,w,zero,norm,csphase,&
+                              lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,&
+                              gridglq_d1,zero_d0,w_d0)
+        use shtools, only: SHExpandGLQC
+        implicit none
+        integer, intent(out) :: exitstatus
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(in) :: lmax
+        complex*16, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
+        real*8, dimension(w_d0),intent(in) :: w
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: zero_d0
+        integer, intent(in) :: w_d0
+        call SHExpandGLQC(cilm,lmax,gridglq,w,zero=zero,norm=norm, &
+                          csphase=csphase,lmax_calc=lmax_calc,&
+                          exitstatus=exitstatus)
+    end subroutine pySHExpandGLQC
+
+    subroutine pyMakeGridGLQC(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,&
+                              lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,&
+                              cilm_d2,zero_d0)
+        use shtools, only: MakeGridGLQC
+        implicit none
+        integer, intent(out) :: exitstatus
+        complex*16, dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, optional,dimension(zero_d0),intent(in) :: zero
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: gridglq_d0
+        integer, intent(in) :: gridglq_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: zero_d0
+        call MakeGridGLQC(gridglq,cilm,lmax,zero=zero,norm=norm, &
+                          csphase=csphase,lmax_calc=lmax_calc,&
+                          exitstatus=exitstatus)
+    end subroutine pyMakeGridGLQC
+
+    subroutine pyGLQGridCoord(exitstatus,latglq,longlq,lmax,nlat,nlong,&
+                              latglq_d0,longlq_d0)
+        use shtools, only: GLQGridCoord
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(latglq_d0),intent(out) :: latglq
+        real*8, dimension(longlq_d0),intent(out) :: longlq
+        integer, intent(in) :: lmax
+        integer, intent(out) :: nlat
+        integer, intent(out) :: nlong
+        integer, intent(in) :: latglq_d0
+        integer, intent(in) :: longlq_d0
+        call GLQGridCoord(latglq,longlq,lmax,nlat,nlong,exitstatus=exitstatus)
+    end subroutine pyGLQGridCoord
+
+    subroutine pySHExpandLSQ(exitstatus,cilm,d,lat,lon,nmax,lmax,norm,chi2,&
+                             csphase,d_d0,lon_d0,cilm_d0,cilm_d1,cilm_d2,lat_d0)
+        use shtools, only: SHExpandLSQ
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(d_d0),intent(in) :: d
+        real*8, dimension(lat_d0),intent(in) :: lat
+        real*8, dimension(lon_d0),intent(in) :: lon
+        integer, intent(in) :: nmax
+        integer, intent(in) :: lmax
+        integer, optional,intent(in) :: norm
+        real*8, optional,intent(out) :: chi2
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: d_d0
+        integer, intent(in) :: lon_d0
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: lat_d0
+        call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2, &
+                         csphase=csphase,exitstatus=exitstatus)
+    end subroutine pySHExpandLSQ
+
+    subroutine pyMakeGrid2d(exitstatus,grid,cilm,lmax,interval,nlat,nlong,norm,&
+                            csphase,f,a,north,south,east,west,dealloc,cilm_d0,&
+                            cilm_d1,cilm_d2,grid_d0,grid_d1)
+        use shtools, only: MakeGrid2d
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(grid_d0,grid_d1),intent(out) :: grid
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: interval
+        integer, intent(out) :: nlat
+        integer, intent(out) :: nlong
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        real*8, optional,intent(in) :: f
+        real*8, optional,intent(in) :: a
+        real*8, optional,intent(in) :: north
+        real*8, optional,intent(in) :: south
+        real*8, optional,intent(in) :: east
+        real*8, optional,intent(in) :: west
+        integer, optional,intent(in) :: dealloc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: grid_d0
+        integer, intent(in) :: grid_d1
+        if (f<0.0d0 .and. a<0.0d0) then
+            call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm, &
+                            csphase=csphase,north=north,south=south,east=east,&
+                            west=west,dealloc=dealloc,exitstatus=exitstatus)
+        else
+            call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm, &
+                            csphase=csphase,f=f,a=a,north=north, &
+                            south=south,east=east,west=west,dealloc=dealloc,&
+                            exitstatus=exitstatus)
+        endif
+    end subroutine pyMakeGrid2d
+
+    function pyMakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc, &
+                             cilm_d0,cilm_d1,cilm_d2)
+        use shtools, only: MakeGridPoint
+        implicit none
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: longitude
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: dealloc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        real*8 :: pyMakeGridPoint
+        pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,longitude,norm=norm, &
+                                      csphase=csphase,dealloc=dealloc)
+    end function pyMakeGridPoint
+
+    subroutine pySHMultiply(exitstatus,shout,sh1,lmax1,sh2,lmax2,precomp,norm,&
+                            csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2, &
+                            shout_d0,shout_d1,shout_d2)
+        use shtools, only: SHMultiply
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(shout_d0,shout_d1,shout_d2),intent(out) :: shout
+        real*8, dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
+        integer, intent(in) :: lmax1
+        real*8, dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
+        integer, intent(in) :: lmax2
+        integer, optional,intent(in) :: precomp
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: sh1_d0
+        integer, intent(in) :: sh1_d1
+        integer, intent(in) :: sh1_d2
+        integer, intent(in) :: sh2_d0
+        integer, intent(in) :: sh2_d1
+        integer, intent(in) :: sh2_d2
+        integer, intent(in) :: shout_d0
+        integer, intent(in) :: shout_d1
+        integer, intent(in) :: shout_d2
+        call SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp=precomp, &
+                        norm=norm,csphase=csphase,exitstatus=exitstatus)
+    end subroutine pySHMultiply
+
     subroutine pyCilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
                             gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
         use shtools, only: CilmPlus
@@ -281,7 +610,7 @@
             call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n)
         endif
     end subroutine pyCilmPlusRhoHDH
-    
+
     subroutine pyCilmMinusRhoHDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
                                  gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2, &
                                  rho_d0,rho_d1)
@@ -309,7 +638,7 @@
             call CilmMinusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n)
         endif
     end subroutine pyCilmMinusRhoHDH
-    
+
     subroutine pyBAtoHilmDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling, &
                             filter_type,filter_deg,lmax_calc,ba_d0,ba_d1, &
                             ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2)
@@ -385,113 +714,6 @@
         endif
     end subroutine pyBAtoHilmRhoHDH
 
-    subroutine pyMakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,&
-                            a,north,south,east,west,dealloc,cilm_d0,cilm_d1, &
-                            cilm_d2,grid_d0,grid_d1)
-        use shtools, only: MakeGrid2d
-        implicit none
-        real*8, dimension(grid_d0,grid_d1),intent(out) :: grid
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        real*8, intent(in) :: interval
-        integer, intent(out) :: nlat
-        integer, intent(out) :: nlong
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        real*8, optional,intent(in) :: f
-        real*8, optional,intent(in) :: a
-        real*8, optional,intent(in) :: north
-        real*8, optional,intent(in) :: south
-        real*8, optional,intent(in) :: east
-        real*8, optional,intent(in) :: west
-        integer, optional,intent(in) :: dealloc
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: grid_d0
-        integer, intent(in) :: grid_d1
-        if (f<0.0d0 .and. a<0.0d0) then
-            call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm, &
-                            csphase=csphase,north=north,south=south,east=east,&
-                            west=west,dealloc=dealloc)
-        else
-            call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm, &
-                            csphase=csphase,f=f,a=a,north=north, &
-                            south=south,east=east,west=west,dealloc=dealloc)
-        endif
-    end subroutine pyMakeGrid2d
-
-    subroutine pyGLQGridCoord(latglq,longlq,lmax,nlat,nlong,latglq_d0, &
-                             longlq_d0)
-        use shtools, only: GLQGridCoord
-        implicit none
-        real*8, dimension(latglq_d0),intent(out) :: latglq
-        real*8, dimension(longlq_d0),intent(out) :: longlq
-        integer, intent(in) :: lmax
-        integer, intent(out) :: nlat
-        integer, intent(out) :: nlong
-        integer, intent(in) :: latglq_d0
-        integer, intent(in) :: longlq_d0
-        call GLQGridCoord(latglq,longlq,lmax,nlat,nlong)
-    end subroutine pyGLQGridCoord
-
-    subroutine pyMakeGridGLQ(gridglq,cilm,lmax,zero,norm,csphase,lmax_calc, &
-                             gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2, &
-                             zero_d0)
-        use shtools, only: MakeGridGLQ
-        implicit none
-        real*8, dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: gridglq_d0
-        integer, intent(in) :: gridglq_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: zero_d0
-        call MakeGridGLQ(gridglq,cilm,lmax,zero=zero,norm=norm, &
-                         csphase=csphase,lmax_calc=lmax_calc)
-    end subroutine pyMakeGridGLQ
-
-    subroutine pySHExpandGLQ(cilm,lmax,gridglq,w,zero,norm,csphase,lmax_calc, &
-                             cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1, &
-                             zero_d0,w_d0)
-        use shtools, only: SHExpandGLQ
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(in) :: lmax
-        real*8, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-        real*8, dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: gridglq_d0
-        integer, intent(in) :: gridglq_d1
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        call SHExpandGLQ(cilm,lmax,gridglq,w,zero=zero,norm=norm, &
-                         csphase=csphase,lmax_calc=lmax_calc)
-    end subroutine pySHExpandGLQ
-
-    subroutine pyshglq(lmax,zero,w,zero_d0,w_d0)
-        use shtools, only: SHGLQ
-        implicit none
-        integer, intent(in) :: lmax
-        real*8, dimension(zero_d0),intent(out) :: zero
-        real*8, dimension(w_d0),intent(out) :: w
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        call SHGLQ(lmax,zero,w)
-    end subroutine pySHGLQ
-
     subroutine pySHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1, &
                         cilm_d2)
         use shtools, only: SHRead
@@ -506,7 +728,7 @@
         integer, intent(in) :: cilm_d2
         call SHRead(filename,cilm,lmax,skip=skip)
     end subroutine pySHRead
-    
+
     subroutine pySHReadH(filename,cilm,lmax,lmax_in,nheader,header,skip, &
                          cilm_d0,cilm_d1,cilm_d2)
         use shtools, only: SHRead
@@ -523,7 +745,7 @@
         integer, intent(in) :: cilm_d2
         call SHRead(filename,cilm,lmax,skip=skip,header=header)
     end subroutine pySHReadH
-    
+
     subroutine pySHReadError(filename,cilm,error,lmax,lmax_in,skip,cilm_d0, &
                              cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
         use shtools, only: SHRead
@@ -542,7 +764,7 @@
         integer, intent(in) :: error_d2
         call SHRead(filename,cilm,lmax,skip=skip,error=error)
     end subroutine pySHReadError
-    
+
     subroutine pySHReadErrorH(filename,cilm,error,lmax,lmax_in,nheader, &
                               header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0, &
                               error_d1,error_d2)
@@ -844,68 +1066,6 @@
         call SHRotateRealCoef(cilmrot,cilm,lmax,x,dj)
     end subroutine pySHRotateRealCoef
 
-    subroutine pySHExpandDH(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc, &
-                            cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
-        use shtools, only: SHExpandDH
-        implicit none
-        real*8, dimension(grid_d0,grid_d1),intent(in) :: grid
-        integer, intent(in) :: n
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(out) :: lmax
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: sampling
-        integer, optional,intent(in) :: csphase
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: grid_d0
-        integer, intent(in) :: grid_d1
-        call SHExpandDH(grid,n,cilm,lmax,norm=norm,sampling=sampling, &
-                        csphase=csphase,lmax_calc=lmax_calc)
-    end subroutine pySHExpandDH
-
-    subroutine pyMakeGridDH(griddh,n,cilm,lmax,norm,sampling,csphase, &
-                            lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0, &
-                            griddh_d1)
-        use shtools, only: MakeGridDH
-        implicit none
-        real*8, dimension(griddh_d0,griddh_d1),intent(out) :: griddh
-        integer, intent(out) :: n
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: sampling
-        integer, optional,intent(in) :: csphase
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: griddh_d0
-        integer, intent(in) :: griddh_d1
-        call MakeGridDH(griddh,n,cilm,lmax,norm=norm,sampling=sampling, &
-                        csphase=csphase,lmax_calc=lmax_calc)
-    end subroutine pyMakeGridDH
-
-    function pyMakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc, &
-                             cilm_d0,cilm_d1,cilm_d2)
-        use shtools, only: MakeGridPoint
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        real*8, intent(in) :: lat
-        real*8, intent(in) :: longitude
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, optional,intent(in) :: dealloc
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        real*8 :: pyMakeGridPoint
-        pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,longitude,norm=norm, &
-                                      csphase=csphase,dealloc=dealloc)
-    end function pyMakeGridPoint
-
     function pyDownContFilterMA(l,half,r,d)
         use shtools, only: DownContFilterMA
         implicit none
@@ -927,55 +1087,6 @@
         real*8 :: pyDownContFilterMC
         pyDownContFilterMC=DownContFilterMC(l,half,r,d)
     end function pyDownContFilterMC
-
-    subroutine pySHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm,chi2,csphase, &
-                             d_d0,lon_d0,cilm_d0,cilm_d1,cilm_d2,lat_d0)
-        use shtools, only: SHExpandLSQ
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(d_d0),intent(in) :: d
-        real*8, dimension(lat_d0),intent(in) :: lat
-        real*8, dimension(lon_d0),intent(in) :: lon
-        integer, intent(in) :: nmax
-        integer, intent(in) :: lmax
-        integer, optional,intent(in) :: norm
-        real*8, optional,intent(out) :: chi2
-        integer, optional,intent(in) :: csphase
-        integer, intent(in) :: d_d0
-        integer, intent(in) :: lon_d0
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: lat_d0
-        call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2, &
-                         csphase=csphase)
-    end subroutine pySHExpandLSQ
-
-    subroutine pySHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp,norm,csphase, &
-                            sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2, &
-                            shout_d0,shout_d1,shout_d2)
-        use shtools, only: SHMultiply
-        implicit none
-        real*8, dimension(shout_d0,shout_d1,shout_d2),intent(out) :: shout
-        real*8, dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-        integer, intent(in) :: lmax1
-        real*8, dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-        integer, intent(in) :: lmax2
-        integer, optional,intent(in) :: precomp
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, intent(in) :: sh1_d0
-        integer, intent(in) :: sh1_d1
-        integer, intent(in) :: sh1_d2
-        integer, intent(in) :: sh2_d0
-        integer, intent(in) :: sh2_d1
-        integer, intent(in) :: sh2_d2
-        integer, intent(in) :: shout_d0
-        integer, intent(in) :: shout_d1
-        integer, intent(in) :: shout_d2
-        call SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp=precomp, &
-                        norm=norm,csphase=csphase)
-    end subroutine pySHMultiply
 
     subroutine pyComputeDm(dllm,lmax,m,theta0,dllm_d0,dllm_d1)
         use shtools, only: ComputeDm
@@ -1760,95 +1871,6 @@
         integer, intent(in) :: spectra_d0
         call SHMagPowerSpectrum(c,a,r,lmax,spectra)
     end subroutine pySHMagPowerSpectrum
-
-    subroutine pySHExpandDHC(grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,&
-                             cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
-        use shtools, only: SHExpandDHC
-        implicit none
-        complex*16, dimension(grid_d0,grid_d1),intent(in) :: grid
-        integer, intent(in) :: n
-        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(out) :: lmax
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: sampling
-        integer, optional,intent(in) :: csphase
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: grid_d0
-        integer, intent(in) :: grid_d1
-        call SHExpandDHC(grid,n,cilm,lmax,norm=norm,sampling=sampling, &
-                         csphase=csphase,lmax_calc=lmax_calc)
-    end subroutine pySHExpandDHC
-
-    subroutine pyMakeGridDHC(griddh,n,cilm,lmax,norm,sampling,csphase, &
-                             lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0, &
-                             griddh_d1)
-        use shtools, only: MakeGridDHC
-        implicit none
-        complex*16, dimension(griddh_d0,griddh_d1),intent(out) :: griddh
-        integer, intent(out) :: n
-        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: sampling
-        integer, optional,intent(in) :: csphase
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: griddh_d0
-        integer, intent(in) :: griddh_d1
-        call MakeGridDHC(griddh,n,cilm,lmax,norm=norm,sampling=sampling, &
-                         csphase=csphase,lmax_calc=lmax_calc)
-    end subroutine pyMakeGridDHC
-
-    subroutine pyMakeGridGLQC(gridglq,cilm,lmax,zero,norm,csphase,lmax_calc, &
-                              gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2, &
-                              zero_d0)
-        use shtools, only: MakeGridGLQC
-        implicit none
-        complex*16, dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
-        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: gridglq_d0
-        integer, intent(in) :: gridglq_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: zero_d0
-        call MakeGridGLQC(gridglq,cilm,lmax,zero=zero,norm=norm, &
-                          csphase=csphase,lmax_calc=lmax_calc)
-    end subroutine pyMakeGridGLQC
-
-    subroutine pySHExpandGLQC(cilm,lmax,gridglq,w,zero,norm,csphase,lmax_calc,&
-                              cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1, &
-                              zero_d0,w_d0)
-        use shtools, only: SHExpandGLQC
-        implicit none
-        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(in) :: lmax
-        complex*16, dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-        real*8, dimension(w_d0),intent(in) :: w
-        real*8, optional,dimension(zero_d0),intent(in) :: zero
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: gridglq_d0
-        integer, intent(in) :: gridglq_d1
-        integer, intent(in) :: zero_d0
-        integer, intent(in) :: w_d0
-        call SHExpandGLQC(cilm,lmax,gridglq,w,zero=zero,norm=norm, &
-                          csphase=csphase,lmax_calc=lmax_calc)
-    end subroutine pySHExpandGLQC
 
     function pySHPowerLC(c,l,c_d0,c_d1,c_d2)
         use shtools, only: SHPowerLC

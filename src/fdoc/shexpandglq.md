@@ -4,13 +4,13 @@ Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical h
 
 # Usage
 
-call SHExpandGLQ (`cilm`, `lmax`, `gridglq`, `w`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`)
+call SHExpandGLQ (`cilm`, `lmax`, `gridglq`, `w`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`, `exitstatus`)
 
 # Parameters
 
 `cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1) or (2, `lmax_calc`+1, `lmax_calc`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `C1lm` and `C2lm` refer to the "cosine" (`Clm`) and "sine" (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`.
-	
+
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of the grid. If `lmax_calc` is not specified, this also corresponds to the maximum spherical harmonic degree of the coefficients `cilm`.
 
@@ -22,10 +22,10 @@ call SHExpandGLQ (`cilm`, `lmax`, `gridglq`, `w`, `plx`, `zero`, `norm`, `csphas
 
 `plx` : input, optional, real\*8, dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the Gauss-Legendre quadrature nodes. These are determined from a call to `SHGLQ`. Either `plx` or `zero` must be present, but not both.
-	
+
 `zero` : input, optional, real\*8, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.  Either `plx` or `zero` must be present, but not both.
-	
+
 `norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
@@ -34,6 +34,9 @@ call SHExpandGLQ (`cilm`, `lmax`, `gridglq`, `w`, `plx`, `zero`, `norm`, `csphas
 
 `lmax_calc` : input, optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree calculated in the spherical harmonic expansion.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

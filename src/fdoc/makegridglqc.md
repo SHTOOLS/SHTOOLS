@@ -4,7 +4,7 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients sa
 
 # Usage
 
-call MakeGridGLQC (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`)
+call MakeGridGLQC (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, `lmax_calc`, `exitstatus`)
 
 # Parameters
 
@@ -13,16 +13,16 @@ call MakeGridGLQC (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, 
 
 `cilm` : input, complex\*16, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of `lmax`, `lmaxin`, or `lmax_calc` (if specified). The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm(1,l+1,m+1)` and `Cl,-m=cilm(2,l+1,m+1)`.
-	
+
 `lmax` : input, integer
 :   The maximum spherical harmonic bandwidth of the function. This determines the sampling nodes and dimensions of the output grid.
 
 `plx` : input, optional, real\*8, dimension (`lmax`+1, (`lmax`+1)*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the Gauss-Legendre quadrature nodes. These are determined from a call to `SHGLQ` with the option `cnorm=1`. Either `plx` or `zero` must be present, but not both.
-	
+
 `zero` : input, optional, real\*8, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.  Either `plx` or `zero` must be present, but not both.
-	
+
 `norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
@@ -31,6 +31,9 @@ call MakeGridGLQC (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, 
 
 `lmax_calc` : input, optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

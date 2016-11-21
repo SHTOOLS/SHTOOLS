@@ -41,6 +41,16 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
 !           cnorm       0: Use real normalization.
 !                       1: Use complex normalization.
 !
+!       OPTIONAL (OUT)
+!           exitstatus  If present, instead of executing a STOP when an error
+!                       is encountered, the variable exitstatus will be
+!                       returned describing the error.
+!                       0 = No errors;
+!                       1 = Improper dimensions of input array;
+!                       2 = Improper bounds for input variable;
+!                       3 = Error allocating memory;
+!                       4 = File IO error.
+!
 !   Notes:
 !
 !   1.  The employed normalization is the "orthonormalized convention." The

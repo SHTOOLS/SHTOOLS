@@ -147,7 +147,11 @@ def _raise_errors(func):
     return wrapped_func
 
 
-for _func in legendre._fortran_subroutines:
+_fortran_subroutines = (legendre._fortran_subroutines +
+                        legendre._fortran_subroutines)
+
+
+for _func in _fortran_subroutines:
     setattr(_SHTOOLS, _func, _raise_errors(getattr(_SHTOOLS, _func)))
 
 

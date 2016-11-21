@@ -19,6 +19,16 @@ subroutine PLegendreA_d1(p, dp, lmax, z, csphase, exitstatus)
 !                       evaluated at z up to lmax. The length must by greater
 !                       or equal to (lmax+1)*(lmax+2)/2.
 !
+!       OPTIONAL (OUT)
+!           exitstatus  If present, instead of executing a STOP when an error
+!                       is encountered, the variable exitstatus will be
+!                       returned describing the error.
+!                       0 = No errors;
+!                       1 = Improper dimensions of input array;
+!                       2 = Improper bounds for input variable;
+!                       3 = Error allocating memory;
+!                       4 = File IO error.
+!
 !   Notes:
 !
 !   1.  The integral of plm**2 over (-1,1) is 2 * (l+m)! / (2l+1) / (l-m)!.

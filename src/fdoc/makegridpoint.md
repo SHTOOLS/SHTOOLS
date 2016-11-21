@@ -13,7 +13,7 @@ Evaluate a function expressed in spherical harmonics at a single point.
 
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. 
-	
+
 `lmax` : input, integer
 :   The maximum spherical harmonic degree used in evaluating the function.
 
@@ -22,7 +22,7 @@ Evaluate a function expressed in spherical harmonics at a single point.
 
 `lon` : input, rea\l*8 
 :   The longitude of the point in DEGREES.
-	
+
 `norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 

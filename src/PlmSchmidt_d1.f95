@@ -38,6 +38,16 @@ subroutine PlmSchmidt_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
 !                       evaluated at z up to lmax. The lenght must by greater
 !                       or equal to (lmax+1)*(lmax+2)/2.
 !
+!       OPTIONAL (OUT)
+!           exitstatus  If present, instead of executing a STOP when an error
+!                       is encountered, the variable exitstatus will be
+!                       returned describing the error.
+!                       0 = No errors;
+!                       1 = Improper dimensions of input array;
+!                       2 = Improper bounds for input variable;
+!                       3 = Error allocating memory;
+!                       4 = File IO error.
+!
 !   Notes:
 !
 !   1.  The employed normalization is the "Schmidt semi-normalized convention."

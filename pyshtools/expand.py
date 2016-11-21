@@ -61,3 +61,10 @@ from ._SHTOOLS import SHExpandLSQ
 from ._SHTOOLS import MakeGrid2D
 from ._SHTOOLS import MakeGridPoint
 from ._SHTOOLS import SHMultiply
+
+
+# --- These routines will be redefined to handle the returned exitstatus
+_fortran_subroutines = ['SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
+                        'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
+                        'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord',
+                        'SHExpandLSQ', 'MakeGrid2D', 'SHMultiply']
