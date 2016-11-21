@@ -7,7 +7,6 @@ from __future__ import division as _division
 
 import numpy as _np
 
-from pyshtools.shio.common import _time_variable_part
 from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
 
 
