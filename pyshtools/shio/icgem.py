@@ -14,7 +14,7 @@ def _time_variable_part(epoch, ref_epoch, trnd, periodic):
     """Return sum of the time-variable part of the coefficients
 
     The formula is:
-    G(t)=G(t0) + trnd*(t-t0 ) +
+    G(t) = G(t0) + trnd*(t-t0 ) +
         asin1*sin(2pi/p1 * (t-t0)) + acos1*cos(2pi/p1 * (t-t0)) +
         asin2*sin(2pi/p2 * (t-t0)) + acos2*cos(2pi/p2 * (t-t0))
 
