@@ -136,6 +136,144 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine PLegendre_d1
 
+        integer function PlmIndex(l,m)
+            integer, intent(in) :: l, m
+        end function PlmIndex
+
+        subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, &
+                              csphase, lmax_calc, exitstatus)
+            real*8, intent(in) ::   grid(:,:)
+            real*8, intent(out) ::  cilm(:,:,:)
+            integer, intent(in) ::  n
+            integer, intent(out) :: lmax
+            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHExpandDH
+
+        subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, &
+                              csphase, lmax_calc, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:)
+            real*8, intent(out) ::  griddh(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(out) :: n
+            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeGridDH
+
+        subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, &
+                                csphase, lmax_calc, exitstatus)
+            complex*16, intent(in) ::   grid(:,:)
+            complex*16, intent(out) ::  cilm(:,:,:)
+            integer, intent(in) ::  n
+            integer, intent(out) :: lmax
+            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHExpandDHC
+
+        subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
+                                csphase, lmax_calc, exitstatus)
+            complex*16, intent(in) ::   cilm(:,:,:)
+            complex*16, intent(out) ::  griddh(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(out) :: n
+            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeGridDHC
+
+        subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  zero(:), w(:)
+            real*8, intent(out), optional ::    plx(:,:)
+            integer, intent(in), optional :: norm, csphase, cnorm
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHGLQ
+
+        subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, &
+                               csphase, lmax_calc, exitstatus)
+            real*8, intent(in) ::   w(:), gridglq(:,:)
+            real*8, intent(in), optional :: plx(:,:), zero(:)
+            real*8, intent(out) ::  cilm(:,:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(in), optional :: norm, csphase, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHExpandGLQ
+
+        subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, &
+                               csphase, lmax_calc, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:)
+            real*8, intent(in), optional :: plx(:,:), zero(:)
+            real*8, intent(out) ::  gridglq(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(in), optional :: norm, csphase, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeGridGLQ
+
+        subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, &
+                                csphase, lmax_calc, exitstatus)
+            real*8, intent(in) ::   w(:)
+            complex*16, intent(in) ::   gridglq(:,:)
+            real*8, intent(in), optional :: plx(:,:), zero(:)
+            complex*16, intent(out) ::  cilm(:,:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(in), optional :: norm, csphase, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHExpandGLQC
+
+        subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, &
+                                csphase, lmax_calc, exitstatus)
+            complex*16, intent(in) ::   cilm(:,:,:)
+            real*8, intent(in), optional :: plx(:,:), zero(:)
+            complex*16, intent(out) ::  gridglq(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(in), optional :: norm, csphase, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeGridGLQC
+
+        subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
+            integer, intent(in) ::  lmax
+            integer, intent(out) :: nlat, nlong
+            real*8, intent(out) ::  latglq(:), longlq(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine GLQGridCoord
+
+        subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, &
+                               chi2, csphase, exitstatus)
+            real*8, intent(in) ::   d(:), lat(:), lon(:)
+            real*8, intent(out) ::  cilm(:,:,:)
+            integer, intent(in) ::  nmax, lmax
+            integer, intent(in), optional ::  norm, csphase
+            real*8, intent(out), optional ::  chi2
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHExpandLSQ
+
+        subroutine MakeGrid2d(grid, cilm, lmax, interval, nlat, nlong, &
+                              norm, csphase, f, a, north, south, east, west, &
+                              dealloc, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:), interval
+            real*8, intent(out) ::  grid(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(out) :: nlat, nlong
+            integer, intent(in), optional ::    norm, csphase, dealloc
+            real*8, intent(in), optional ::     f, a, north, south, east, west
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeGrid2D
+
+        real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
+                                      csphase, dealloc)
+            real*8, intent(in) ::   cilm(:,:,:), lat, longitude
+            integer, intent(in) ::  lmax
+            integer, intent(in), optional :: norm, csphase, dealloc
+        end function MakeGridPoint
+
+        subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, &
+                              norm, csphase, exitstatus)
+            real*8, intent(out) ::  shout(:,:,:)
+            real*8, intent(in) ::   sh1(:,:,:), sh2(:,:,:)
+            integer, intent(in) ::  lmax1, lmax2
+            integer, intent(in), optional ::  precomp, norm, csphase
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHMultiply
+
         subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, &
                             w, zero, plx, n, dref)
             real*8, intent(in) ::   gridin(:,:), mass, rho
@@ -192,52 +330,11 @@ module SHTOOLS
             integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
         end subroutine BAtoHilmRhoH
 
-        subroutine MakeGrid2d(grid, cilm, lmax, interval, nlat, nlong, &
-                              norm, csphase, f, a, north, south, east, west, &
-                              dealloc)
-            real*8, intent(in) ::   cilm(:,:,:), interval
-            real*8, intent(out) ::  grid(:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(out) :: nlat, nlong
-            integer, intent(in), optional ::    norm, csphase, dealloc
-            real*8, intent(in), optional ::     f, a, north, south, east, west
-        end subroutine MakeGrid2D
-
-        subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong)
-            integer, intent(in) ::  lmax
-            integer, intent(out) :: nlat, nlong
-            real*8, intent(out) ::  latglq(:), longlq(:)
-        end subroutine GLQGridCoord
-
-        subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, &
-                               csphase, lmax_calc)
-            real*8, intent(in) ::   cilm(:,:,:)
-            real*8, intent(in), optional :: plx(:,:), zero(:)
-            real*8, intent(out) ::  gridglq(:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(in), optional :: norm, csphase, lmax_calc
-        end subroutine MakeGridGLQ
-
-        subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, &
-                               csphase, lmax_calc)
-            real*8, intent(in) ::   w(:), gridglq(:,:)
-            real*8, intent(in), optional :: plx(:,:), zero(:)
-            real*8, intent(out) ::  cilm(:,:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(in), optional :: norm, csphase, lmax_calc
-        end subroutine SHExpandGLQ
-
-        subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm)
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  zero(:), w(:)
-            real*8, intent(out), optional ::    plx(:,:)
-            integer, intent(in), optional :: norm, csphase, cnorm
-        end subroutine SHGLQ
-
-        subroutine PreGLQ(x1, x2, n, zero, w)
+        subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
             real*8, intent(in) ::   x1, x2
             real*8, intent(out) ::  zero(:), w(:)
             integer, intent(in) ::  n
+            integer, intent(out), optional :: exitstatus
         end subroutine PreGLQ
 
         integer function NGLQ(degree)
@@ -362,31 +459,6 @@ module SHTOOLS
             real*8, intent(out) ::  aj(:)
         end subroutine DHaj
 
-        subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, &
-                              csphase, lmax_calc)
-            real*8, intent(in) ::   grid(:,:)
-            real*8, intent(out) ::  cilm(:,:,:)
-            integer, intent(in) ::  n
-            integer, intent(out) :: lmax
-            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
-        end subroutine SHExpandDH
-
-        subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, &
-                              csphase, lmax_calc)
-            real*8, intent(in) ::   cilm(:,:,:)
-            real*8, intent(out) ::  griddh(:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(out) :: n
-            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
-        end subroutine MakeGridDH
-
-        real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
-                                      csphase, dealloc)
-            real*8, intent(in) ::   cilm(:,:,:), lat, longitude
-            integer, intent(in) ::  lmax
-            integer, intent(in), optional :: norm, csphase, dealloc
-        end function MakeGridPoint
-
         real*8 function DownContFilterMA(l, half, r, d)
             integer, intent(in) ::  l, half
             real*8, intent(in) ::   r, d
@@ -396,23 +468,6 @@ module SHTOOLS
             integer, intent(in) ::  l, half
             real*8, intent(in) ::  r, d
         end function DownContFilterMC
-
-        subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, &
-                               chi2, csphase)
-            real*8, intent(in) ::   d(:), lat(:), lon(:)
-            real*8, intent(out) ::  cilm(:,:,:)
-            integer, intent(in) ::  nmax, lmax
-            integer, intent(in), optional ::  norm, csphase
-            real*8, intent(out), optional ::  chi2
-        end subroutine SHExpandLSQ
-
-        subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, &
-                              norm, csphase)
-            real*8, intent(out) ::  shout(:,:,:)
-            real*8, intent(in) ::   sh1(:,:,:), sh2(:,:,:)
-            integer, intent(in) ::  lmax1, lmax2
-            integer, intent(in), optional ::  precomp, norm, csphase
-        end subroutine SHMultiply
 
         subroutine ComputeDm(dllm, lmax, m, theta0)
             real*8, intent(out) ::  dllm(:,:)
@@ -486,10 +541,6 @@ module SHTOOLS
             real*8, intent(in) ::   theta0
             integer, intent(in) ::  lmax, m
         end subroutine ComputeDG82  
-
-        integer function PlmIndex(l,m)
-            integer, intent(in) :: l, m
-        end function PlmIndex
 
         real*8 function RandomN(idum)
             integer, parameter :: K4B=selected_int_kind(9)
@@ -680,43 +731,6 @@ module SHTOOLS
             integer, intent(in) :: lmax
             real*8, intent(out) ::  spectra(:)
         end subroutine SHMagPowerSpectrum
-
-        subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, &
-                                csphase, lmax_calc)
-            complex*16, intent(in) ::   grid(:,:)
-            complex*16, intent(out) ::  cilm(:,:,:)
-            integer, intent(in) ::  n
-            integer, intent(out) :: lmax
-            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
-        end subroutine SHExpandDHC
-
-        subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
-                                csphase, lmax_calc)
-            complex*16, intent(in) ::   cilm(:,:,:)
-            complex*16, intent(out) ::  griddh(:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(out) :: n
-            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
-        end subroutine MakeGridDHC
-
-        subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, &
-                                csphase, lmax_calc)
-            complex*16, intent(in) ::   cilm(:,:,:)
-            real*8, intent(in), optional :: plx(:,:), zero(:)
-            complex*16, intent(out) ::  gridglq(:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(in), optional :: norm, csphase, lmax_calc
-        end subroutine MakeGridGLQC
-
-        subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, &
-                                csphase, lmax_calc)    
-            real*8, intent(in) ::   w(:)
-            complex*16, intent(in) ::   gridglq(:,:)
-            real*8, intent(in), optional :: plx(:,:), zero(:)
-            complex*16, intent(out) ::  cilm(:,:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(in), optional :: norm, csphase, lmax_calc
-        end subroutine SHExpandGLQC
 
         real*8 function SHPowerLC(c, l)
             complex*16, intent(in) :: c(:,:,:)

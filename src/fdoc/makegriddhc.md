@@ -4,7 +4,7 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients th
 
 # Usage
 
-call MakeGridDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
+call MakeGridDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`, `exitstatus`)
 
 # Parameters
 
@@ -16,10 +16,10 @@ call MakeGridDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, 
 
 `cilm` : input, complex\*16, dimension (2, `lmax`+1, `lmax`+1)
 :   The complex spherical harmonic coefficients of the function.  The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm(1,l+1,m+1)` and `Cl,-m=cilm(2,l+1,m+1)`.
-	
+
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the function. This determines the number of samples `n`.
-	
+
 `norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
@@ -31,6 +31,9 @@ call MakeGridDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, 
 
 `lmax_calc` : input, optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

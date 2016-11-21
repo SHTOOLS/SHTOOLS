@@ -4,13 +4,13 @@ Multiply two functions and determine the spherical harmonic coefficients of the 
 
 # Usage
 
-call SHMultiply (`shout`, `sh1`, `lmax1`, `sh2`, `lmax2`, `precomp`, `norm`, `csphase`)
+call SHMultiply (`shout`, `sh1`, `lmax1`, `sh2`, `lmax2`, `precomp`, `norm`, `csphase`, `exitstatus`)
 
 # Parameters
 
 `shout` : output, real\*8, dimension (2, `lmax1`+`lmax2`+1, `lmax1`+`lmax2`+1)
 :   The real spherical harmonic coefficients corresponding to the multiplication of `sh1` and `sh2` in the space domain.
-	
+
 `sh1` : input, real\*8, dimension (2, `lmax1`+1, `lmax1`+1)
 :   The spherical harmonic coefficients of the first function.
 
@@ -25,12 +25,15 @@ call SHMultiply (`shout`, `sh1`, `lmax1`, `sh2`, `lmax2`, `precomp`, `norm`, `cs
 
 `precomp` : input, optional, integer, default = 0
 :   If 1, the array of Legendre functions `plx` will be precomputed on the Gauss-Legendre quadrature nodes.
-	
+
 `norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
 `csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

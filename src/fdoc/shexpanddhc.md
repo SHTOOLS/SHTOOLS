@@ -4,7 +4,7 @@ Expand an equally sampled or equally spaced complex grid into complex spherical 
 
 # Usage
 
-call SHExpandDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
+call SHExpandDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`, `exitstatus`)
 
 # Parameters
 
@@ -13,10 +13,10 @@ call SHExpandDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, 
 
 `n` : input, integer
 :   The number of samples in latitude of `griddh`. If `sampling` is 1 (default) then the number of samples in longitude is `n`. If `sampling` is 2 then the number of longitudinal samples is `2n`. `n` must be even.
-	
+
 `cilm` : output, complex\*16, dimension (2, `n`/2, `n`/2) or (2, `lmax_calc`+1, `lmax_calc`+1)> 
 :   The complex spherical harmonic coefficients of the function. These will be exact if the function is bandlimited to degree `lmax=n/2-1`. The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm(1,l+1,m+1)` and `Cl,-m=cilm(2,l+1,m+1)`.
-	
+
 `lmax` : output, integer
 :   The maximum spherical harmonic bandwidth of the input grid, which is `n`/2 - 1. If the optional parameter `lmax_calc` is not specified, this corresponds to the maximum spherical harmonic degree of the output coefficients `cilm`.
 
@@ -31,6 +31,9 @@ call SHExpandDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, 
 
 `lmax_calc` : input, optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree calculated in the spherical harmonic expansion.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 
