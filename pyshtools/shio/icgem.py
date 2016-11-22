@@ -14,7 +14,7 @@ def _time_variable_part(epoch, ref_epoch, trnd, periodic):
     """Return sum of the time-variable part of the coefficients
 
     The formula is:
-    G(t) = G(t0) + trnd*(t-t0 ) +
+    G(t) = G(t0) + trnd*(t-t0) +
         asin1*sin(2pi/p1 * (t-t0)) + acos1*cos(2pi/p1 * (t-t0)) +
         asin2*sin(2pi/p2 * (t-t0)) + acos2*cos(2pi/p2 * (t-t0))
 
@@ -99,7 +99,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
         elif 'gravity_constant' in header:
             gravity_constant = float(header['gravity_constant'])
         else:
-            raise ValueError('No standard gravitational constant in the header')
+            raise ValueError('No standard gravitational constant in the header.')
 
         radius = float(header['radius'])
 
@@ -108,11 +108,11 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
             lmax = lmax_model
 
         if errors is not None:
-            valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
+            valid_err = ('calibrated', 'formal', 'calibrated_and_formal.')
             if header['errors'] == 'no':
                 raise ValueError('This model has no errors.')
             elif errors not in valid_err[:-1]:
-                raise ValueError('Errors can be either "formal", "calibrated" or None')
+                raise ValueError('Errors can be either "formal", "calibrated" or None.')
             elif header['errors'] in valid_err and errors in valid_err[:-1]:
                 if (errors, header['errors']) == valid_err[1:]:
                     err_cols = (7, 8)
@@ -129,13 +129,14 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
         # read coefficients
         for line in f:
             line = line.replace('D', 'E').strip().split()
-            key = line[0]
 
             l, m = int(line[1]), int(line[2])
             if m > lmax:
                 break
             if l > lmax:
                 continue
+
+            key = line[0]
 
             value_cs = [float(line[3]), float(line[4]), 0, 0]
             if errors:
@@ -175,7 +176,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
                     periodic[period] = {'acos': arr,
                                         'asin': arr.copy()}
 
-                periodic[period][line[0]][:, l, m] = value_cs
+                periodic[period][key][:, l, m] = value_cs
 
     if epoch is None:
         epoch = ref_epoch
