@@ -80,7 +80,7 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
     lower = -1.0d0
 
     if (present(exitstatus)) then
-        call PreGLQ(lower, upper, nlat, zero, w, exitstatus=exitstatus)
+        call PreGLQ(lower, upper, nlat, zero, w, exitstatus = exitstatus)
         if (exitstatus /= 0) return
     else
         call PreGLQ(lower, upper, nlat, zero, w)

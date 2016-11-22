@@ -44,133 +44,25 @@ __author__ = 'SHTOOLS developers'
 import os as _os
 import numpy as _np
 
-# ---- Import all wrapped SHTOOLS functions into shtools submodule
-from . import _SHTOOLS as shtools
 
 # ---- Import classes into pyshtools namespace
 from . import shclasses
 from .shclasses import SHCoeffs, SHGrid, SHWindow
 
 # ---- Import shtools subpackages ----
+from . import shtools
+from . import constant
+from . import legendre
+from . import expand
 from . import shio
 from . import utils
 
 # ---- Import shtools submodules ----
-from . import constant
-from . import legendre
-from . import expand
 from . import spectralanalysis
 from . import localizedspectralanalysis
 from . import rotate
 from . import gravmag
 
-
-# ---- Bind two new functions to the list of all shtools routines ----
-_SHTOOLS.PlmIndex = legendre.PlmIndex
-_SHTOOLS.YilmIndexVector = shio.YilmIndexVector
-
-
-# ---------------------------------------------------------------------
-# ---- Fill the pyshtools module doc strings and pyshtools constant
-# ---- infostrings with documentation from external files. The doc files
-# ---- are generated during intitial compilation of pyshtools from md
-# ---- formatted text files.
-# ---------------------------------------------------------------------
-_pydocfolder = _os.path.abspath(_os.path.join(_os.path.dirname(__file__),
-                                              'doc'))
-
-for _name, _func in _SHTOOLS.__dict__.items():
-    if callable(_func):
-        try:
-            _path = _os.path.join(_pydocfolder, _name.lower() + '.doc')
-
-            with open(_path) as _pydocfile:
-                _pydoc = _pydocfile.read()
-
-            _func.__doc__ = _pydoc
-        except IOError as msg:
-            print(msg)
-
-for _name in _constant.planetsconstants.__dict__.keys():
-    try:
-        _path = _os.path.join(_pydocfolder, 'constant_' + _name.lower() +
-                              '.doc')
-
-        with open(_path) as _pydocfile:
-            _pydoc = _pydocfile.read()
-
-        setattr(getattr(constant, _name), '_infostring', _pydoc)
-
-    except IOError as msg:
-        print(msg)
-
-# ---- Rewrite shtools doc string ----
-shtools.__doc__ = (
-    'pyshtools submodule that includes all pyshtools routines, with the\n' +
-    'exception of shclasses.')
-
-
-# ---- Check the exit status of Fortran routines, raise exceptions, and 
-# ---- strip exitstatus from the Python return values.
-class SHToolsError(Exception):
-    pass
-
-
-def _shtools_status_message(status):
-    '''
-    Determine error message to print when a SHTOOLS Fortran 95 routine exits
-    improperly.
-    '''
-    if (status == 1):
-        errmsg = 'Improper dimensions of input array.'
-    elif (status == 2):
-        errmsg = 'Improper bounds for input variable.'
-    elif (status == 3):
-        errmsg = 'Error allocating memory.'
-    elif (status == 4):
-        errmsg = 'File IO error.'
-    else:
-        errmsg = 'Unhandled Fortran 95 error.'
-    return errmsg
-
-
-def _raise_errors(func):
-    def wrapped_func(*args, **kwargs):
-        returned_values = func(*args, **kwargs)
-        if returned_values[0] != 0:
-            raise SHToolsError(_shtools_status_message(returned_values[0]))
-        elif len(returned_values) == 2:
-            return returned_values[1]
-        else:
-            return returned_values[1:]
-    wrapped_func.__doc__ = func.__doc__
-    return wrapped_func
-
-
-_fortran_subroutines = (legendre._fortran_subroutines +
-                        expand._fortran_subroutines)
-
-
-for _func in _fortran_subroutines:
-    setattr(_SHTOOLS, _func, _raise_errors(getattr(_SHTOOLS, _func)))
-
-
-# ---- Define FortranStop exception that handles a fortran STOP.
-class FortranStop(Exception):
-    '''Class that handles errors generated in SHTOOLS Fortran 95 code.'''
-    def __call__(self, status):
-        if (status == 1):
-            errmsg = 'Improper dimensions of input array.'
-        elif (status == 2):
-            errmsg = 'Improper bounds for input variable.'
-        elif (status == 3):
-            errmsg = 'Error allocating memory.'
-        else:
-            errmsg = 'Unhandled Fortran 95 error.'
-
-        raise self.__class__(errmsg)
-
-_SHTOOLS.pystop = FortranStop()
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
