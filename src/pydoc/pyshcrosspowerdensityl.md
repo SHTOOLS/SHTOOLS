@@ -4,7 +4,7 @@ Compute the cross-power spectral density of two real functions for a single sphe
 
 # Usage
 
-`cpsd` = pyshtools.SHCrossPowerDensityL (`cilm1`, `cilm2`, `l`)
+`cpsd` = SHCrossPowerDensityL (`cilm1`, `cilm2`, `l`)
 
 # Returns
 

@@ -4,7 +4,7 @@ Compute the minimum-amplitude downward continuation filter of Wieczorek and Phil
 
 # Usage
 
-`wl` = pyshtools.DownContFilterMa (`l`, `half`, `r`, `d`)
+`wl` = DownContFilterMa (`l`, `half`, `r`, `d`)
 
 # Returns
 

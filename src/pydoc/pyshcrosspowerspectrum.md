@@ -4,7 +4,7 @@ Compute the cross-power spectrum of two real functions.
 
 # Usage
 
-`cspectrum` = pyshtools.SHCrossPowerSpectrum (`cilm1`, `cilm2`, [`lmax`])
+`cspectrum` = SHCrossPowerSpectrum (`cilm1`, `cilm2`, [`lmax`])
 
 # Returns
 

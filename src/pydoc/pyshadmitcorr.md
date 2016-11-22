@@ -4,7 +4,7 @@ Calculate the admittance and correlation spectra of two real functions.
 
 # Usage
 
-`admit`, `error`, `corr` = pyshtools.SHAdmitCorr (`gilm`, `tilm`, [`lmax`])
+`admit`, `error`, `corr` = SHAdmitCorr (`gilm`, `tilm`, [`lmax`])
 
 # Returns
 

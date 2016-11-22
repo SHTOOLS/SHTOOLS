@@ -4,7 +4,7 @@ Perform a localized multitaper spectral analysis using spherical cap windows.
 
 # Usage
 
-`mtse`, `sd` = pyshtools.SHMultiTaperSE (`sh`, `tapers`, `taper_order`, [`lmax`,  `lmaxt`, `k`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`])
+`mtse`, `sd` = SHMultiTaperSE (`sh`, `tapers`, `taper_order`, [`lmax`,  `lmaxt`, `k`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`])
 
 # Returns
 

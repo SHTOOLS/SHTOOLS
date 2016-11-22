@@ -4,7 +4,7 @@ Create 2D cylindrical maps on a flattened ellipsoid of the components of the gra
 
 # Usage
 
-`vxx`, `vyy`, `vzz`, `vxy`, `vxz`, `vyz` = pyshtools.MakeGravGradGridDH (`cilm`,  `gm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`])
+`vxx`, `vyy`, `vzz`, `vxy`, `vxz`, `vyz` = MakeGravGradGridDH (`cilm`,  `gm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`])
 
 # Returns
 

@@ -4,7 +4,7 @@ Invert for the global power spectrum given a multitaper spectrum estimate formed
 
 # Usage
 
-`mtdebias`, `lmid` = pyshtools.SHMTDebias (`mtspectra`, `tapers`, `nl`, [`lmax`, `lwin`, `k`, `taper_wt`])
+`mtdebias`, `lmid` = SHMTDebias (`mtspectra`, `tapers`, `nl`, [`lmax`, `lwin`, `k`, `taper_wt`])
 
 # Returns
 

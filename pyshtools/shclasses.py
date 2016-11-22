@@ -83,30 +83,28 @@ class SHCoeffs(object):
 
     Each class instance provides the following methods:
 
-    get_degrees()         : Return an array listing the spherical harmonic
-                            degrees from 0 to lmax.
-    powerspectrum()       : Return the power spectrum of the function.
-    get_coeffs()          : Return an array of spherical harmonic coefficients
+    to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
+    to_file()             : Save raw spherical harmonic coefficients as a file.
+    degrees()             : Return an array listing the spherical harmonic
+                            degrees from 0 to lmax.
+    spectrum()            : Return the spectrum of the function as a function
+                            of spherical harmonic degree.
     set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
                             class instance.
-    return_coeffs()       : Return the current class instance as a new instance
-                            using a different normalization convention.
+    convert()             : Return a new class instance using a different
+                            normalization convention.
     expand()              : Evaluate the coefficients on a spherical grid and
                             return a new SHGrid class instance.
-    make_complex()        : Convert a real SHCoeffs class instance to a complex
-                            class instance.
-    make_real()           : Convert a complex SHCoeffs class instance to a real
-                            class instance.
-    plot_powerspectrum()  : Plot the power spectrum.
-    plot_power()          : Plot the power associated with each spherical
-                            harmonic coefficient.
+    copy()                : Return a copy of the class instance.
+    plot_spectrum()       : Plot the  spectrum as a function of spherical
+                            harmonic degree.
+    plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
+                            coefficients.
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
-    copy()                : Return a copy of the class instance.
-    tofile()              : Save raw spherical harmonic coefficients as a file.
     """
 
     def __init__(self):
@@ -435,13 +433,13 @@ class SHCoeffs(object):
         """Return a deep copy of the class instance."""
         return _copy.deepcopy(self)
 
-    def tofile(self, filename, format='shtools', **kwargs):
+    def to_file(self, filename, format='shtools', **kwargs):
         """
         Save raw spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.tofile(filename, [format, **kwargs])
+        x.to_file(filename, [format, **kwargs])
 
         Parameters
         ----------
@@ -636,15 +634,28 @@ class SHCoeffs(object):
             raise NotImplementedError('Mathematical operator not implemented' +
                                       'for these operands.')
 
+    def __pow__(self, other):
+        """
+        Raise the spherical harmonic coefficients to a scalar power:
+        pow(self, other).
+        """
+        if _np.isscalar(other) is True:
+            return SHCoeffs.from_array(pow(self.coeffs, other),
+                                       csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented' +
+                                      'for these operands.')
+
     # ---- Extract data ----
-    def get_degrees(self):
+    def degrees(self):
         """
         Return a numpy array with the spherical harmonic degrees from 0 to
         lmax.
 
         Usage
         -----
-        degrees = x.get_degrees()
+        degrees = x.degrees()
 
         Returns
         -------
@@ -654,54 +665,57 @@ class SHCoeffs(object):
         """
         return _np.arange(self.lmax + 1)
 
-    def powerspectrum(self, unit='per_l', base=10., energy=False):
+    def spectrum(self, convention='power', unit='per_l', base=10.):
         """
-        Return the power spectrum of the function.
+        Return the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        power = x.powerspectrum([unit, base, energy])
+        power = x.spectrum([convention, unit, base])
 
         Returns
         -------
         power : ndarray, shape (lmax+1)
-            1-D numpy ndarray of the power spectrum, where lmax is the maximum
+            1-D numpy ndarray of the spectrum, where lmax is the maximum
             spherical harmonic degree.
 
         Parameters
         ----------
+        convention : str, optional, default = 'power'
+            The type of spectrum to return: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
         unit : str, optional, default = 'per_l'
-            If 'per_l', return the total power for each spherical harmonic
-            degree l. If 'per_lm', return the average contribution to the power
-            for each coefficient at spherical harmonic degree l. If
-            'per_dlogl', return the power per log interval dlog_a(l).
+            If 'per_l', return the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', return the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', return the spectrum per log
+            interval dlog_a(l).
         base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
-        energy : bool, optional, default = False
-            Return the energy spectrum instead of the power spectrum.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
 
         Description
         -----------
-        Total power is defined as the integral of the function squared over all
-        space, divided by the area the function spans. If the mean of the
-        function is zero, this is equivalent to the variance of the function.
-        The total energy is the integral of the function squared over all space
-        and is 4pi times the total power.
+        This function returns either the power spectrum, energy spectrum, or
+        l2-norm spectrum. Total power is defined as the integral of the
+        function squared over all space, divided by the area the function
+        spans. If the mean of the function is zero, this is equivalent to the
+        variance of the function. The total energy is the integral of the
+        function squared over all space and is 4pi times the total power. The
+        l2-norm is the sum of the magnitude of the coefficients squared.
 
-        The output power spectrum can be one of three types. 'per_l' returns
-        the contribution to the total power from all angular orders at degree
-        l. 'per_lm' returns the average contribution from a single coefficient
-        at degree l to the total power. The power 'per_lm' is equal to the
-        power 'per_l' divided by (2l+1). 'per_dlogl' returns the contribution
-        to the total power from all angular orders over an infinitessimal
-        logarithmic degree band. The power in the band dlog_a(l) is
-        power(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
-        power(l, 'per_dlogl) is equal to power(l, 'per_l')*l*log(a).
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l. The 'per_lm' spectrum
+        is equal to the 'per_l' spectrum divided by (2l+1). 'per_dlogl' returns
+        the contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
         """
-        power = self._powerspectrum(unit=unit, base=base)
-        if energy:
-            power *= 4.0 * _np.pi
-        return power
+        return self._spectrum(convention=convention, unit=unit, base=base)
 
     # ---- Set individual coefficient
     def set_coeffs(self, values, ls, ms):
@@ -738,13 +752,13 @@ class SHCoeffs(object):
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- Return coefficients with a different normalization convention ----
-    def get_coeffs(self, normalization=None, csphase=None, lmax=None):
+    def to_array(self, normalization=None, csphase=None, lmax=None):
         """
         Return spherical harmonics coefficients as a numpy array.
 
         Usage
         -----
-        coeffs = x.get_coeffs([normalization, csphase, lmax])
+        coeffs = x.to_array([normalization, csphase, lmax])
 
         Returns
         -------
@@ -795,7 +809,7 @@ class SHCoeffs(object):
         if lmax is None:
             lmax = self.lmax
 
-        return self._get_coeffs(
+        return self._to_array(
             output_normalization=normalization.lower(),
             output_csphase=csphase, lmax=lmax)
 
@@ -878,16 +892,15 @@ class SHCoeffs(object):
         return rot
 
     # ---- Convert spherical harmonic coefficients to a different normalization
-    def return_coeffs(self, normalization=None, csphase=None, lmax=None):
+    def convert(self, normalization=None, csphase=None, lmax=None, kind=None,
+                check=True):
         """
-        Return a SHCoeff instance with a different normalization convention.
-
-        Called without arguments, this method can be used to return a clean
-        copy of the calling SHCoeff instance.
+        Return a SHCoeff class instance with a different normalization
+        convention.
 
         Usage
         -----
-        clm = x.return_coeffs([normalization, csphase, lmax])
+        clm = x.convert([normalization, csphase, lmax, kind, check])
 
         Returns
         -------
@@ -900,42 +913,55 @@ class SHCoeffs(object):
             for geodesy 4pi normalized, orthonormalized, or Schmidt semi-
             normalized coefficients, respectively.
         csphase : int, optional, default = x.csphase
-            Condon-Shortley phase convention: 1 to exclude the phase factor,
-            or -1 to include it.
+            Condon-Shortley phase convention for the output class: 1 to exclude
+            the phase factor, or -1 to include it.
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
+        kind : str, optional, default = clm.kind
+            'real' or 'complex' spherical harmonic coefficients for the output
+            class.
+        check : bool, optional, default = True
+            When converting complex coefficients to real coefficients, if True,
+            check if function is entirely real.
         """
-        # copy calling instance normalization and csphase if None is given
         if normalization is None:
             normalization = self.normalization
-
         if csphase is None:
             csphase = self.csphase
+        if lmax is None:
+            lmax = self.lmax
+        if kind is None:
+            kind = self.kind
 
         # check argument consistency
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(normalization))))
-
         if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
                 "or 'schmidt'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
-
         if csphase != 1 and csphase != -1:
             raise ValueError(
                 "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase))
                 )
 
-        # get a copy of the coefficient numpy array
-        coeffs = self.get_coeffs(normalization=normalization.lower(),
-                                 csphase=csphase, lmax=lmax)
+        if (kind != self.kind):
+            if (kind == 'complex'):
+                temp = self._make_complex()
+            else:
+                temp = self._make_real(check=check)
+            coeffs = temp.to_array(normalization=normalization.lower(),
+                                   csphase=csphase, lmax=lmax)
+        else:
+            coeffs = self.to_array(normalization=normalization.lower(),
+                                   csphase=csphase, lmax=lmax)
 
-        # because get_coeffs is already a copy, we can pass it as reference
+        # because to_array is already a copy, we can pass it as reference
         # to save time
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
@@ -995,40 +1021,45 @@ class SHCoeffs(object):
         return gridout
 
     # ---- plotting routines ----
-    def plot_powerspectrum(self, unit='per_l', base=10., energy=False,
-                           loglog=True, show=True, fname=None):
+    def plot_spectrum(self, convention='power', unit='per_l', base=10.,
+                      xscale='lin', yscale='log', show=True, fname=None):
         """
-        Plot the power spectrum.
+        Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        x.plot_powerspectrum([unit, base, energy, loglog, show, fname])
+        x.plot_spectrum([convention, unit, base, xscale, yscale, show, fname])
 
         Parameters
         ----------
+        convention : str, optional, default = 'power'
+            The type of spectrum to plot: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
         unit : str, optional, default = 'per_l'
-            If 'per_l', return the total power for each spherical harmonic
-            degree l. If 'per_lm', return the average contribution to the power
-            for each coefficient at spherical harmonic degree l. If
-            'per_dlogl', return the power per log interval dlog_a(l).
+            If 'per_l', plot the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', plot the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', plot the spectrum per log
+            interval dlog_a(l).
         base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
-            This is also used as the base for log-log plots.
-        energy : bool, optional, default = False
-            Plot the energy spectrum instead of the power spectrum.
-        loglog : bool, optional, default = True
-            If True, use log-log axis.
+            The logarithm base when calculating the 'per_dlogl' spectrum, and
+            the base to use for logarithmic axes.
+        xscale : str, optional, default = 'lin'
+            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'log'
+            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
             If present, save the image to the file.
         """
-        power = self.powerspectrum(unit=unit, base=base, energy=energy)
-        ls = self.get_degrees()
+        spectrum = self.spectrum(convention=convention, unit=unit, base=base)
+        ls = self.degrees()
 
         fig, ax = _plt.subplots(1, 1)
         ax.set_xlabel('degree l')
-        if energy:
+        if convention == 'energy':
             ax.set_ylabel('energy')
             if (unit == 'per_l'):
                 legend = 'energy per degree'
@@ -1036,6 +1067,14 @@ class SHCoeffs(object):
                 legend = 'energy per coefficient'
             elif (unit == 'per_dlogl'):
                 legend = 'energy per log bandwidth'
+        elif convention == 'l2norm':
+            ax.set_ylabel('l2 norm')
+            if (unit == 'per_l'):
+                legend = 'l2 norm per degree'
+            elif (unit == 'per_lm'):
+                legend = 'l2 norm per coefficient'
+            elif (unit == 'per_dlogl'):
+                legend = 'l2 norm per log bandwidth'
         else:
             ax.set_ylabel('power')
             if (unit == 'per_l'):
@@ -1047,11 +1086,15 @@ class SHCoeffs(object):
 
         ax.grid(True, which='both')
 
-        if loglog:
+        if xscale == 'log':
             ax.set_xscale('log', basex=base)
+        if yscale == 'log':
             ax.set_yscale('log', basey=base)
 
-        ax.plot(ls[1:], power[1:], label=legend)
+        if xscale == 'log':
+            ax.plot(ls[1:], spectrum[1:], label=legend)
+        else:
+            ax.plot(ls, spectrum, label=legend)
         ax.legend()
 
         if show:
@@ -1060,51 +1103,70 @@ class SHCoeffs(object):
             fig.savefig(fname)
         return fig, ax
 
-    def plot_power(self, energy=False, scale='lin', show=True, fname=None,
-                   logpower=True, vrange=(1.e-5, 1.0)):
+    def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
+                        vscale='log', vrange=(1.e-5, 1.0), show=True,
+                        fname=None):
         """
-        Plot the power associated with each spherical harmonic coefficient.
+        Plot the spectrum of all spherical harmonic coefficients.
 
         Usage
         -----
-        x.plot_power([energy, scale, show, fname, vrange])
+        x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, show,
+                           fname])
 
         Parameters
         ----------
-        energy : bool, optional, default = False
-            Plot the energy instead of the power.
-        scale : str, optional, default = 'lin'
-            Type of scaling for the l and m axes: 'lin', 'loglin', or 'loglog'.
+        convention : str, optional, default = 'power'
+            The type of spectrum to plot: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
+        xscale : str, optional, default = 'lin'
+            Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'lin'
+            Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
+        vscale : str, optional, default = 'log'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
+        vrange : (float, float), optional, default = (1.e-5, 1.)
+            Colormap range relative to the maximum value.
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
             If present, save the image to the file.
-        logpower : bool, optional, default = True
-            Plot the logarithm of the power.
-        vrange : (float, float), optional, default = (1.e-5, 1.)
-            Colormap range relative to the maximum power.
         """
-        # Create the matrix of the power for each coefficient
-        power = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
+        # Create the matrix of the spectrum for each coefficient
+        spectrum = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
         mpositive = _np.abs(self.coeffs[0])**2
         mpositive[~self.mask[0]] = _np.nan
         mnegative = _np.abs(self.coeffs[1])**2
         mnegative[~self.mask[1]] = _np.nan
 
-        power[:, :self.lmax] = _np.fliplr(mnegative)[:, :self.lmax]
-        power[:, self.lmax:] = mpositive
+        spectrum[:, :self.lmax] = _np.fliplr(mnegative)[:, :self.lmax]
+        spectrum[:, self.lmax:] = mpositive
 
-        if self.normalization == 'schmidt':
-            for l in self.get_degrees():
-                power[l, :] /= (2.0 * l + 1.0)
-        elif self.normalization == 'ortho':
-            for l in self.get_degrees():
-                power[l, :] /= (4.0 * _np.pi)
+        if (convention.lower() == 'l2norm'):
+            pass
+        elif (convention.lower() == 'power' or convention.lower() == 'energy'):
+            if self.normalization == '4pi':
+                pass
+            elif self.normalization == 'schmidt':
+                for l in self.degrees():
+                    spectrum[l, :] /= (2.0 * l + 1.0)
+            elif self.normalization == 'ortho':
+                for l in self.degrees():
+                    spectrum[l, :] /= (4.0 * _np.pi)
+            else:
+                raise ValueError(
+                    "normalization must be '4pi', 'ortho', or 'schmidt'. " +
+                    "Input value was {:s}".format(repr(self.normalization)))
+        else:
+            raise ValueError(
+                "convention must be 'power', 'energy', or 'l2norm'. " +
+                "Input value was {:s}".format(repr(convention)))
 
-        if energy:
-            power *= 4.0 * _np.pi
+        if convention == 'energy':
+            spectrum *= 4.0 * _np.pi
 
-        power_masked = _np.ma.masked_invalid(power)
+        spectrum_masked = _np.ma.masked_invalid(spectrum)
 
         # need to add one extra value to each in order for pcolormesh
         # to plot the last row and column.
@@ -1115,39 +1177,47 @@ class SHCoeffs(object):
         mgrid -= 0.5
 
         fig, ax = _plt.subplots()
-        vmin = _np.nanmax(power) * vrange[0]
-        vmax = _np.nanmax(power) * vrange[1]
+        vmin = _np.nanmax(spectrum) * vrange[0]
+        vmax = _np.nanmax(spectrum) * vrange[1]
 
-        if logpower:
+        if vscale.lower() == 'log':
             norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
             # Clipping is required to avoid an invalid value error
-        else:
+        elif vscale.lower() == 'lin':
             norm = _plt.Normalize(vmin, vmax)
-
-        if (scale == 'lin'):
-            cmesh = ax.pcolormesh(lgrid, mgrid, power_masked,
-                                  norm=norm, cmap='viridis')
-            ax.set(xlim=(-0.5, self.lmax + 0.5),
-                   ylim=(-self.lmax - 0.5, self.lmax + 0.5))
-        elif (scale == 'loglin'):
-            cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], power_masked[1:],
-                                  norm=norm, cmap='viridis')
-            ax.set(xscale='log', xlim=(1., self.lmax + 0.5),
-                   ylim=(-self.lmax - 0.5, self.lmax + 0.5))
-        elif (scale == 'loglog'):
-            cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], power_masked[1:],
-                                  norm=norm, cmap='viridis')
-            ax.set(xscale='log', yscale='symlog', xlim=(1., self.lmax + 0.5),
-                   ylim=(-self.lmax - 0.5, self.lmax + 0.5))
         else:
             raise ValueError(
-                "scale must be 'lin', 'loglin', or 'loglog'. " +
-                "Input value was {:s}".format(repr(scale)))
+                "vscale must be 'lin' or 'log'. " +
+                "Input value was {:s}".format(repr(vscale)))
 
-        if energy:
-            _plt.colorbar(cmesh, label='energy per coefficient')
+        if (xscale == 'lin'):
+            cmesh = ax.pcolormesh(lgrid, mgrid, spectrum_masked,
+                                  norm=norm, cmap='viridis')
+            ax.set(xlim=(-0.5, self.lmax + 0.5))
+        elif (xscale == 'log'):
+            cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
+                                  norm=norm, cmap='viridis')
+            ax.set(xscale='log', xlim=(1., self.lmax + 0.5))
         else:
+            raise ValueError(
+                "xscale must be 'lin' or 'log'. " +
+                "Input value was {:s}".format(repr(xscale)))
+
+        if (yscale == 'lin'):
+            ax.set(ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+        elif (yscale == 'log'):
+            ax.set(yscale='symlog', ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+        else:
+            raise ValueError(
+                "yscale must be 'lin' or 'log'. " +
+                "Input value was {:s}".format(repr(yscale)))
+
+        if (convention == 'energy'):
+            _plt.colorbar(cmesh, label='energy per coefficient')
+        elif (convention == 'power'):
             _plt.colorbar(cmesh, label='power per coefficient')
+        else:
+            _plt.colorbar(cmesh, label='magnitude-squared coefficient')
         ax.set(xlabel='degree l', ylabel='order m')
         ax.grid(True, which='both')
 
@@ -1202,20 +1272,8 @@ class SHRealCoeffs(SHCoeffs):
         else:
             self.coeffs = coeffs
 
-    def make_complex(self):
-        """
-        Convert the real SHCoeffs class to the complex class.
-
-        Normalization and phase conventions are kept unchanged.
-
-        Usage
-        -----
-        x_complex = x.make_complex()
-
-        Returns
-        -------
-        x_complex : complex SHCoeffs class instance
-        """
+    def _make_complex(self):
+        """Convert the real SHCoeffs class to the complex class."""
         rcomplex_coeffs = _shtools.SHrtoc(self.coeffs,
                                           convention=1, switchcs=0)
 
@@ -1226,7 +1284,7 @@ class SHRealCoeffs(SHCoeffs):
         complex_coeffs[0, :, :] = (rcomplex_coeffs[0, :, :] + 1j *
                                    rcomplex_coeffs[1, :, :])
         complex_coeffs[1, :, :] = complex_coeffs[0, :, :].conjugate()
-        for m in self.get_degrees():
+        for m in self.degrees():
             if m % 2 == 1:
                 complex_coeffs[1, :, m] = - complex_coeffs[1, :, m]
 
@@ -1236,36 +1294,47 @@ class SHRealCoeffs(SHCoeffs):
                                    normalization=self.normalization,
                                    csphase=self.csphase, copy=False)
 
-    def _powerspectrum(self, unit='per_l', base=10.):
-        """Return the power spectrum."""
-        if self.normalization == '4pi':
-            power = _shtools.SHPowerSpectrum(self.coeffs)
-        elif self.normalization == 'schmidt':
-            power = _shtools.SHPowerSpectrum(self.coeffs)
-            l = self.get_degrees()
-            power /= (2.0 * l + 1.0)
-        elif self.normalization == 'ortho':
-            power = _shtools.SHPowerSpectrum(self.coeffs) / (4.0 * _np.pi)
+    def _spectrum(self, convention='power', unit='per_l', base=10.):
+        """Return the spectrum."""
+        if convention.lower() == 'l2norm':
+            spectrum = _shtools.SHPowerSpectrum(self.coeffs)
+        elif (convention.lower() == 'power' or convention.lower() == 'energy'):
+            if self.normalization == '4pi':
+                spectrum = _shtools.SHPowerSpectrum(self.coeffs)
+            elif self.normalization == 'schmidt':
+                spectrum = _shtools.SHPowerSpectrum(self.coeffs)
+                l = self.degrees()
+                spectrum /= (2.0 * l + 1.0)
+            elif self.normalization == 'ortho':
+                spectrum = _shtools.SHPowerSpectrum(self.coeffs) / \
+                           (4.0 * _np.pi)
+            else:
+                raise ValueError(
+                    "normalization must be '4pi', 'ortho', or 'schmidt'. " +
+                    "Input value was {:s}".format(repr(self.normalization)))
         else:
             raise ValueError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
-                "Input value was {:s}".format(repr(self.normalization)))
+                "convention must be 'power', 'energy', or 'l2norm'. " +
+                "Input value was {:s}".format(repr(convention)))
+
+        if convention.lower() == 'energy':
+            spectrum *= 4.0 * _np.pi
 
         if (unit.lower() == 'per_l'):
             pass
         elif (unit.lower() == 'per_lm'):
-            l = self.get_degrees()
-            power /= (2.0 * l + 1.0)
+            l = self.degrees()
+            spectrum /= (2.0 * l + 1.0)
         elif (unit.lower() == 'per_dlogl'):
-            l = self.get_degrees()
-            power *= l * _np.log(base)
+            l = self.degrees()
+            spectrum *= l * _np.log(base)
         else:
             raise ValueError(
                 "unit must be 'per_l', 'per_lm', or 'per_dlogl'." +
                 "Input value was {:s}".format(repr(unit)))
-        return power
+        return spectrum
 
-    def _get_coeffs(self, output_normalization, output_csphase, lmax):
+    def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
         coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
         degrees = _np.arange(lmax + 1)
@@ -1308,7 +1377,7 @@ class SHRealCoeffs(SHCoeffs):
 
         # The coefficients need to be 4pi normalized with csphase = 1
         coeffs = _shtools.SHRotateRealCoef(
-            self.get_coeffs(normalization='4pi', csphase=1), angles, dj_matrix)
+            self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients. The returned class can take
@@ -1316,7 +1385,7 @@ class SHRealCoeffs(SHCoeffs):
         # routine.
         if self.normalization != '4pi' or self.csphase != 1:
             temp = SHCoeffs.from_array(coeffs, kind='real')
-            tempcoeffs = temp.get_coeffs(
+            tempcoeffs = temp.to_array(
                 normalization=self.normalization, csphase=self.csphase)
             return SHCoeffs.from_array(
                 tempcoeffs, normalization=self.normalization,
@@ -1396,45 +1465,36 @@ class SHComplexCoeffs(SHCoeffs):
         else:
             self.coeffs = coeffs
 
-    def make_real(self):
-        """
-        Convert the complex SHCoeffs class to the real class.
-
-        Normalization and phase conventions are kept unchanged.
-
-        Usage
-        -----
-        x_real = x.make_real()
-
-        Returns
-        -------
-        x_real : real SHCoeffs class instance
-        """
-        # First test if the coefficients correspond to a real grid.
-        # This is not very elegant. Also, the equality condition
+    def _make_real(self, check=True):
+        """Convert the complex SHCoeffs class to the real class."""
+        # Test if the coefficients correspond to a real grid.
+        # This is not very elegant, and the equality condition
         # is probably not robust to round off errors.
-        for l in self.get_degrees():
-            if self.coeffs[0, l, 0] != self.coeffs[0, l, 0].conjugate():
-                raise RuntimeError('Complex coefficients do not correspond ' +
-                                   'to a real field. l = {:d}, m = 0: {:e}'
-                                   .format(l, self.coeffs[0, l, 0]))
-
-            for m in _np.arange(1, l + 1):
-                if m % 2 == 1:
-                    if (self.coeffs[0, l, m] != -
-                            self.coeffs[1, l, m].conjugate()):
-                        raise RuntimeError('Complex coefficients do not ' +
-                                           'correspond to a real field. ' +
-                                           'l = {:d}, m = {:d}: {:e}, {:e}'
-                                           .format(l, m, self.coeffs[0, l, 0],
+        if check:
+            for l in self.degrees():
+                if self.coeffs[0, l, 0] != self.coeffs[0, l, 0].conjugate():
+                    raise RuntimeError('Complex coefficients do not ' +
+                                       'correspond to a real field. ' +
+                                       'l = {:d}, m = 0: {:e}'
+                                       .format(l, self.coeffs[0, l, 0]))
+                for m in _np.arange(1, l + 1):
+                    if m % 2 == 1:
+                        if (self.coeffs[0, l, m] != -
+                                self.coeffs[1, l, m].conjugate()):
+                            raise RuntimeError('Complex coefficients do not ' +
+                                               'correspond to a real field. ' +
+                                               'l = {:d}, m = {:d}: {:e}, {:e}'
+                                               .format(
+                                                   l, m, self.coeffs[0, l, 0],
                                                    self.coeffs[1, l, 0]))
-                else:
-                    if (self.coeffs[0, l, m] !=
-                            self.coeffs[1, l, m].conjugate()):
-                        raise RuntimeError('Complex coefficients do not ' +
-                                           'correspond to a real field. ' +
-                                           'l = {:d}, m = {:d}: {:e}, {:e}'
-                                           .format(l, m, self.coeffs[0, l, 0],
+                    else:
+                        if (self.coeffs[0, l, m] !=
+                                self.coeffs[1, l, m].conjugate()):
+                            raise RuntimeError('Complex coefficients do not ' +
+                                               'correspond to a real field. ' +
+                                               'l = {:d}, m = {:d}: {:e}, {:e}'
+                                               .format(
+                                                   l, m, self.coeffs[0, l, 0],
                                                    self.coeffs[1, l, 0]))
 
         coeffs_rc = _np.zeros((2, self.lmax + 1, self.lmax + 1))
@@ -1446,36 +1506,47 @@ class SHComplexCoeffs(SHCoeffs):
                                    normalization=self.normalization,
                                    csphase=self.csphase)
 
-    def _powerspectrum(self, unit='per_l', base=10.):
-        """Return the power spectrum."""
-        if self.normalization == '4pi':
-            power = _shtools.SHPowerSpectrumC(self.coeffs)
-        elif self.normalization == 'schmidt':
-            power = _shtools.SHPowerSpectrumC(self.coeffs)
-            l = self.get_degrees()
-            power /= (2.0 * l + 1.0)
-        elif self.normalization == 'ortho':
-            power = _shtools.SHPowerSpectrumC(self.coeffs) / (4.0 * _np.pi)
+    def _spectrum(self, convention='power', unit='per_l', base=10.):
+        """Return the spectrum."""
+        if convention.lower() == 'l2norm':
+            spectrum = _shtools.SHPowerSpectrumC(self.coeffs)
+        elif (convention.lower() == 'power' or convention.lower() == 'energy'):
+            if self.normalization == '4pi':
+                spectrum = _shtools.SHPowerSpectrumC(self.coeffs)
+            elif self.normalization == 'schmidt':
+                spectrum = _shtools.SHPowerSpectrumC(self.coeffs)
+                l = self.degrees()
+                spectrum /= (2.0 * l + 1.0)
+            elif self.normalization == 'ortho':
+                spectrum = _shtools.SHPowerSpectrumC(self.coeffs) / \
+                           (4.0 * _np.pi)
+            else:
+                raise ValueError(
+                    "normalization must be '4pi', 'ortho', or 'schmidt'. " +
+                    "Input value was {:s}".format(repr(self.normalization)))
         else:
             raise ValueError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
-                "Input value was {:s}".format(repr(self.normalization)))
+                "convention must be 'power', 'energy', or 'l2norm'. " +
+                "Input value was {:s}".format(repr(convention)))
+
+        if convention.lower() == 'energy':
+            spectrum *= 4.0 * _np.pi
 
         if (unit.lower() == 'per_l'):
             pass
         elif (unit.lower() == 'per_lm'):
-            l = self.get_degrees()
-            power /= (2.0 * l + 1.0)
+            l = self.degrees()
+            spectrum /= (2.0 * l + 1.0)
         elif (unit.lower() == 'per_dlogl'):
-            l = self.get_degrees()
-            power *= l * _np.log(base)
+            l = self.degrees()
+            spectrum *= l * _np.log(base)
         else:
             raise ValueError(
                 "unit must be 'per_l', 'per_lm', or 'per_dlogl'." +
                 "Input value was {:s}".format(repr(unit)))
-        return power
+        return spectrum
 
-    def _get_coeffs(self, output_normalization, output_csphase, lmax):
+    def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
         coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
         degrees = _np.arange(lmax + 1)
@@ -1626,18 +1697,17 @@ class SHGrid(object):
 
     Each class instance provides the following methods:
 
-    get_lats()     : Return a vector containing the latitudes of each row
-                     of the gridded data.
-    get_lons()     : Return a vector containing the longitudes of each column
-                     of the gridded data.
-    get_grid()     : Return the raw gridded data as a numpy array.
-    expand()       : Expand the grid into spherical harmonics.
-    plot_rawdata() : Plot the raw data using a simple cylindrical projection.
-    plot_3dsphere  : Plot the raw data on a 3d sphere.
-    info()         : Print a summary of the data stored in the SHGrid
-                     instance.
-    copy()         : Return a copy of the class instance.
-    tofile()       : Save gridded data to a text or binary file.
+    to_array()   : Return the raw gridded data as a numpy array.
+    to_file()   : Save gridded data to a text or binary file.
+    lats()      : Return a vector containing the latitudes of each row
+                  of the gridded data.
+    lons()      : Return a vector containing the longitudes of each column
+                  of the gridded data.
+    expand()    : Expand the grid into spherical harmonics.
+    copy()      : Return a copy of the class instance.
+    plot()      : Plot the raw data using a simple cylindrical projection.
+    plot3d      : Plot the raw data on a 3d sphere.
+    info()      : Print a summary of the data stored in the SHGrid instance.
     """
 
     def __init__():
@@ -1753,13 +1823,13 @@ class SHGrid(object):
         """Return a deep copy of the class instance."""
         return _copy.deepcopy(self)
 
-    def tofile(self, filename, binary=False, **kwargs):
+    def to_file(self, filename, binary=False, **kwargs):
         """
         Save gridded data to a file.
 
         Usage
         -----
-        x.tofile(filename, [binary, **kwargs])
+        x.to_file(filename, [binary, **kwargs])
 
         Parameters
         ----------
@@ -1908,13 +1978,13 @@ class SHGrid(object):
                                       'for these operands.')
 
     # ---- Extract grid properties ----
-    def get_lats(self, degrees=True):
+    def lats(self, degrees=True):
         """
         Return the latitudes of each row of the gridded data.
 
         Usage
         -----
-        lats = x.get_lats([degrees])
+        lats = x.lats([degrees])
 
         Returns
         -------
@@ -1929,11 +1999,11 @@ class SHGrid(object):
             be in radians.
         """
         if degrees is False:
-            return _np.radians(self._get_lats())
+            return _np.radians(self._lats())
         else:
-            return self._get_lats()
+            return self._lats()
 
-    def get_lons(self, degrees=True):
+    def lons(self, degrees=True):
         """
         Return the longitudes of each column of the gridded data.
 
@@ -1954,26 +2024,26 @@ class SHGrid(object):
             be in radians.
         """
         if degrees is False:
-            return _np.radians(self._get_lons())
+            return _np.radians(self._lons())
         else:
-            return self._get_lons()
+            return self._lons()
 
-    def get_grid(self):
+    def to_array(self):
         """
         Return the raw gridded data as a numpy array.
 
         Usage
         -----
-        grid = x.get_grid()
+        grid = x.to_array()
 
         Returns
         -------
         grid : ndarray, shape (nlat, nlon)
             2-D numpy array of the gridded data.
         """
-        return self.data
+        return _np.copy(self.data)
 
-    def plot_3dsphere(self, show=True, fname=None, elevation=0, azimuth=0):
+    def plot3d(self, show=True, fname=None, elevation=0, azimuth=0):
         """
         Plot the raw data on a 3d sphere.
 
@@ -1982,7 +2052,7 @@ class SHGrid(object):
 
         Usage
         -----
-        x.plot_3dsphere([show, fname])
+        x.plot3d([show, fname])
 
         Parameters
         ----------
@@ -2004,8 +2074,8 @@ class SHGrid(object):
             raise ValueError('Grid has to be either real or complex, not {}'
                              .format(self.kind))
 
-        lats = self.get_lats()
-        lons = self.get_lons()
+        lats = self.lats()
+        lons = self.lons()
 
         if self.grid == 'DH':
             # add south pole
@@ -2078,13 +2148,13 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot_rawdata(self, show=True, fname=None):
+    def plot(self, show=True, fname=None):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot_rawdata([show, fname])
+        x.plot([show, fname])
 
         Parameters
         ----------
@@ -2093,7 +2163,7 @@ class SHGrid(object):
         fname : str, optional, default = None
             If present, save the image to the file.
         """
-        fig, ax = self._plot_rawdata()
+        fig, ax = self._plot()
         if show:
             _plt.show()
         if fname is not None:
@@ -2202,12 +2272,12 @@ class DHRealGrid(SHGrid):
         else:
             self.data = array
 
-    def _get_lats(self):
+    def _lats(self):
         """Return the latitudes (in degrees) of the gridded data."""
         lats = _np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
-    def _get_lons(self):
+    def _lons(self):
         """Return the longitudes (in degrees) of the gridded data."""
         lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
@@ -2235,7 +2305,7 @@ class DHRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot_rawdata(self):
+    def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(1, 1)
         ax.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
@@ -2285,7 +2355,7 @@ class DHComplexGrid(SHGrid):
         else:
             self.data = array
 
-    def _get_lats(self):
+    def _lats(self):
         """
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
@@ -2293,7 +2363,7 @@ class DHComplexGrid(SHGrid):
         lats = _np.linspace(90.0, -90.0 + 180.0 / self.nlat, num=self.nlat)
         return lats
 
-    def _get_lons(self):
+    def _lons(self):
         """
         Return a vector containing the longitudes (in degrees) of each row
         of the gridded data.
@@ -2323,7 +2393,7 @@ class DHComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot_rawdata(self):
+    def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='upper',
@@ -2378,7 +2448,7 @@ class GLQRealGrid(SHGrid):
         else:
             self.data = array
 
-    def _get_lats(self):
+    def _lats(self):
         """
         Return a vector containing the latitudes (in degrees) of each row
         of the gridded data.
@@ -2386,7 +2456,7 @@ class GLQRealGrid(SHGrid):
         lats = 90. - _np.arccos(self.zeros) * 180. / _np.pi
         return lats
 
-    def _get_lons(self):
+    def _lons(self):
         """
         Return a vector containing the longitudes (in degrees) of each column
         of the gridded data.
@@ -2417,7 +2487,7 @@ class GLQRealGrid(SHGrid):
                                      copy=False)
         return coeffs
 
-    def _plot_rawdata(self):
+    def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
 
         fig, ax = _plt.subplots(1, 1)
@@ -2467,12 +2537,12 @@ class GLQComplexGrid(SHGrid):
         else:
             self.data = array
 
-    def _get_lats(self):
+    def _lats(self):
         """Return the latitudes (in degrees) of the gridded data rows."""
         lats = 90. - _np.arccos(self.zeros) * 180. / _np.pi
         return lats
 
-    def _get_lons(self):
+    def _lons(self):
         """Return the longitudes (in degrees) of the gridded data columns."""
         lons = _np.linspace(0., 360. - 360. / self.nlon, num=self.nlon)
         return lons
@@ -2499,7 +2569,7 @@ class GLQComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot_rawdata(self):
+    def _plot(self):
         """Plot the raw data using a simply cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='upper')
@@ -2556,48 +2626,46 @@ class SHWindow(object):
 
     Each class instance provides the following methods:
 
-    get_coeffs()          : Return an array of the spherical harmonic
+    to_array()            : Return an array of the spherical harmonic
                             coefficients for taper i, where i=0 is the best
                             concentrated, optionally using a different
                             normalization convention.
-    get_degrees()         : Return an array containing the spherical harmonic
-                            degrees of the localization windows, from 0 to
-                            lwin.
-    get_k()               : Return the number of windows that have
-                            concentration factors greater or equal to a
-                            specified value.
-    powerspectra()        : Return the power spectra of one or more
-                            localization windows.
-    get_couplingmatrix()  : Return the coupling matrix of the first nwin
-                            localization windows.
-    get_biasedpowerspectrum : Calculate the multitaper (cross-)power spectrum
-                              expectation of a localized function.
-    get_grid()            : Return as an array a grid of taper i, where i=0
-                            is the best concentrated window.
-    get_multitaperpowerspectrum()      : Return the multitaper power spectrum
-                                         estimate and uncertainty for the input
-                                         SHCoeffs class instance.
-    get_multitapercrosspowerspectrum() : Return the multitaper cross-power
-                                         spectrum estimate and uncertainty for
-                                         two input SHCoeffs class instances.
-    return_coeffs()       : Return the spherical harmonic coefficients of taper
+    to_shcoeffs()         : Return the spherical harmonic coefficients of taper
                             i, where i=0 is the best concentrated, as a new
                             SHCoeffs class instance, optionally using a
                             different normalization convention.
-    return_grid()         : Return as a new SHGrid instance a grid of taper i,
+    to_shgrid()           : Return as a new SHGrid instance a grid of taper i,
                             where i=0 is the best concentrated window.
+    number_concentrated() : Return the number of windows that have
+                            concentration factors greater or equal to a
+                            specified value.
+    degrees()             : Return an array containing the spherical harmonic
+                            degrees of the localization windows, from 0 to
+                            lwin.
+    spectra()             : Return the spectra of one or more localization
+                            windows.
     rotate()              : Rotate the spherical cap tapers, originally located
                             at the north pole, to clat and clon and save the
                             spherical harmonic coefficients in the attribute
                             coeffs.
-    plot_windows()        : Plot the best concentrated localization windows
-                            using a simple cylindrical projection.
-    plot_powerspectra()  : Plot the power spectra of the best concentrated
+    coupling_matrix()     : Return the coupling matrix of the first nwin
                             localization windows.
-    plot_couplingmatrix() : Plot the multitaper coupling matrix.
-    info()                : Print a summary of the data stored in the SHWindow
-                            instance.
-    copy()                : Return a copy of the class instance.
+    biased_spectrum()     : Calculate the multitaper (cross-) spectrum
+                            expectation of a localized function.
+    multitaper_spectrum()       : Return the multitaper power spectrum
+                                  estimate and uncertainty for the input
+                                  SHCoeffs class instance.
+    multitaper_cross_spectrum() : Return the multitaper cross-power
+                                  spectrum estimate and uncertainty for
+                                  two input SHCoeffs class instances.
+    copy()                 : Return a copy of the class instance.
+    plot_windows()         : Plot the best concentrated localization windows
+                             using a simple cylindrical projection.
+    plot_spectra()         : Plot the spectra of the best-concentrated
+                             localization windows.
+    plot_coupling_matrix() : Plot the multitaper coupling matrix.
+    info()                 : Print a summary of the data stored in the SHWindow
+                             instance.
 """
 
     def __init__(self):
@@ -2709,14 +2777,14 @@ class SHWindow(object):
         """Return a deep copy of the class instance."""
         return _copy.deepcopy(self)
 
-    def get_degrees(self):
+    def degrees(self):
         """
         Return a numpy array listing the spherical harmonic degrees of the
         localization windows from 0 to lwin.
 
         Usage
         -----
-        degrees = x.get_degrees()
+        degrees = x.degrees()
 
         Returns
         -------
@@ -2725,14 +2793,14 @@ class SHWindow(object):
         """
         return _np.arange(self.lwin + 1)
 
-    def get_k(self, alpha):
+    def number_concentrated(self, alpha):
         """
         Return the number of localization windows that have concentration
         factors greater or equal to alpha.
 
         Usage
         -----
-        k = x.get_k(alpha)
+        k = x.number_concentrated(alpha)
 
         Returns
         -------
@@ -2748,14 +2816,14 @@ class SHWindow(object):
         """
         return len(self.eigenvalues[self.eigenvalues >= alpha])
 
-    def get_coeffs(self, itaper, normalization='4pi', csphase=1):
+    def to_array(self, itaper, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of taper i as a numpy
         array.
 
         Usage
         -----
-        coeffs = x.get_coeffs(itaper, [normalization, csphase])
+        coeffs = x.to_array(itaper, [normalization, csphase])
 
         Returns
         -------
@@ -2792,73 +2860,17 @@ class SHWindow(object):
                 .format(repr(csphase))
                 )
 
-        return self._get_coeffs(
+        return self._to_array(
             itaper, normalization=normalization.lower(), csphase=csphase)
 
-    def get_grid(self, itaper, grid='DH2', zeros=None):
-        """
-        Evaluate the coefficients of taper i on a spherical grid and return a
-        numpy array.
-
-        Usage
-        -----
-        gridout = x.get_grid(itaper, [grid, zeros])
-
-        Returns
-        -------
-        gridout : ndarray, shape (nlat, nlon)
-            2-D numpy array of localization window.
-
-        Parameters
-        ----------
-        itaper : int
-            Taper number, where itaper=0 is the best concentrated.
-        grid : str, optional, default = 'DH'
-            'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon,
-            'DH2' for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ'
-            for a Gauss-Legendre quadrature grid.
-        zeros : ndarray, optional, default = None
-            The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
-            grids.
-
-        Description
-        -----------
-        For more information concerning the spherical harmonic expansions and
-        the properties of the output grids, see the documentation for
-        SHExpandDH and SHExpandGLQ.
-        """
-        if type(grid) != str:
-            raise ValueError('grid must be a string. ' +
-                             'Input type was {:s}'
-                             .format(str(type(grid))))
-
-        if grid.upper() == 'DH' or grid.upper() == 'DH1':
-            gridout = _shtools.MakeGridDH(self.get_coeffs(itaper), sampling=1,
-                                          norm=1, csphase=1)
-        elif grid.upper() == 'DH2':
-            gridout = _shtools.MakeGridDH(self.get_coeffs(itaper), sampling=2,
-                                          norm=1, csphase=1)
-        elif grid.upper() == 'GLQ':
-            if zeros is None:
-                zeros, weights = _shtools.SHGLQ(self.lwin)
-
-            gridout = _shtools.MakeGridGLQ(self.get_coeffs(itaper), zeros,
-                                           norm=1, csphase=1)
-        else:
-            raise ValueError(
-                "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
-                "Input value was {:s}".format(repr(grid)))
-
-        return gridout
-
-    def return_coeffs(self, itaper, normalization='4pi', csphase=1):
+    def to_shcoeffs(self, itaper, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of taper i as a SHCoeffs
         class instance.
 
         Usage
         -----
-        clm = x.return_coeffs(itaper, [normalization, csphase])
+        clm = x.to_shcoeffs(itaper, [normalization, csphase])
 
         Returns
         -------
@@ -2893,20 +2905,20 @@ class SHWindow(object):
                 .format(repr(csphase))
                 )
 
-        coeffs = self.get_coeffs(itaper, normalization=normalization.lower(),
-                                 csphase=csphase)
+        coeffs = self.to_array(itaper, normalization=normalization.lower(),
+                               csphase=csphase)
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    def return_grid(self, itaper, grid='DH2', zeros=None):
+    def to_shgrid(self, itaper, grid='DH2', zeros=None):
         """
         Evaluate the coefficients of taper i on a spherical grid and return
         a SHGrid class instance.
 
         Usage
         -----
-        f = x.return_grid(itaper, [grid, zeros])
+        f = x.to_shgrid(itaper, [grid, zeros])
 
         Returns
         -------
@@ -2935,39 +2947,45 @@ class SHWindow(object):
                              'Input type was {:s}'
                              .format(str(type(grid))))
 
-        if (grid.upper() == 'DH' or grid.upper() == 'DH1' or
-                grid.upper() == 'DH2'):
-            return SHGrid.from_array(self.get_grid(itaper, grid=grid.upper()),
-                                     grid='DH', copy=False)
+        if (grid.upper() == 'DH' or grid.upper() == 'DH1'):
+            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=1,
+                                          norm=1, csphase=1)
+            return SHGrid.from_array(gridout, grid='DH', copy=False)
+        elif grid.upper() == 'DH2':
+            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
+                                          norm=1, csphase=1)
+            return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lwin)
-
-            return SHGrid.from_array(self.get_grid(itaper, grid=grid.upper(),
-                                                   zeros=zeros),
-                                     grid='GLQ', copy=False)
+            gridout = _shtools.MakeGridGLQ(self.to_array(itaper), zeros,
+                                           norm=1, csphase=1)
+            return SHGrid.from_array(gridout, grid='GLQ', copy=False)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
                 "Input value was {:s}".format(repr(grid)))
 
-    def get_multitaperpowerspectrum(self, clm, k, **kwargs):
+    def multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
+                            **kwargs):
         """
-        Return the multitaper power spectrum estimate and uncertainty.
+        Return the multitaper spectrum estimate and standard error.
 
         Usage
         -----
-        mtse, sd = x.get_multitaperpowerspectrum(clm, k, [lmax, taper_wt, clat,
-                                                          clon, coord_degrees])
+        mtse, sd = x.multitaper_spectrum(clm, k, [convention, unit, lmax,
+                                                  taper_wt, clat, clon,
+                                                  coord_degrees])
 
         Returns
         -------
         mtse : ndarray, shape (lmax-lwin+1)
-            The localized multitaper power spectrum estimate, where lwin is the
-            spherical harmonic bandwidth of the localization windows.
+            The localized multitaper spectrum estimate, where lmax is the
+            spherical-harmonic bandwidth of clm, and lwin is the
+            spherical-harmonic bandwidth of the localization windows.
         sd : ndarray, shape (lmax-lwin+1)
-            The standard error of the localized multitaper power spectral
-            estimates.
+            The standard error of the localized multitaper spectrum
+            estimate.
 
         Parameters
         ----------
@@ -2977,10 +2995,18 @@ class SHWindow(object):
         k : int
             The number of tapers to be utilized in performing the multitaper
             spectral analysis.
+        convention : str, optional, default = 'power'
+            The type of output spectra: 'power' for power spectra, and
+            'energy' for energy spectra.
+        unit : str, optional, default = 'per_l'
+            The units of the output spectra. If 'per_l', the spectra contain
+            the total contribution for each spherical harmonic degree l. If
+            'per_lm', the spectra contain the average contribution for each
+            coefficient at spherical harmonic degree l.
         lmax : int, optional, default = clm.lmax
-            The maximum spherical harmonic degree of clm to use.
+            The maximum spherical-harmonic degree of clm to use.
         taper_wt : ndarray, optional, default = None
-            1-D numpy arrar of the weights used in calculating the multitaper
+            1-D numpy array of the weights used in calculating the multitaper
             spectral estimates and standard error.
         clat, clon : float, optional, default = 90., 0.
             Latitude and longitude of the center of the spherical-cap
@@ -2988,25 +3014,31 @@ class SHWindow(object):
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
-        return self._get_multitaperpowerspectrum(clm, k, **kwargs)
+        return self._multitaper_spectrum(clm, k, convention=convention,
+                                         unit=unit, **kwargs)
 
-    def get_multitapercrosspowerspectrum(self, clm, slm, k, **kwargs):
+    def multitaper_cross_spectrum(self, clm, slm, k, convention='power',
+                                  unit='per_l', **kwargs):
         """
-        Return the multitaper cross power spectrum estimate and uncertainty.
+        Return the multitaper cross-spectrum estimate and standard error.
 
         Usage
         -----
-        mtse, sd = x.get_multitapercrosspowerspectrum(
-                      clm, slm, k, [lmax, taper_wt, clat, clon, coord_degrees])
+        mtse, sd = x.multitaper_cross_spectrum(clm, slm, k, [convention, unit,
+                                                             lmax, taper_wt,
+                                                             clat, clon,
+                                                             coord_degrees])
 
         Returns
         -------
         mtse : ndarray, shape (lmax-lwin+1)
-            The localized multitaper cross-power spectrum estimate, where lwin
-            is the spherical harmonic bandwidth of the localization windows.
+            The localized multitaper cross-spectrum estimate, where lmax is the
+            smaller of the two spherical-harmonic bandwidths of clm and slm,
+            and lwin is the spherical-harmonic bandwidth of the localization
+            windows.
         sd : ndarray, shape (lmax-lwin+1)
-            The standard error of the localized multitaper cross-power spectral
-            estimates.
+            The standard error of the localized multitaper cross-spectrum
+            estimate.
 
         Parameters
         ----------
@@ -3019,43 +3051,64 @@ class SHWindow(object):
         k : int
             The number of tapers to be utilized in performing the multitaper
             spectral analysis.
+        convention : str, optional, default = 'power'
+            The type of output spectra: 'power' for power spectra, and
+            'energy' for energy spectra.
+        unit : str, optional, default = 'per_l'
+            The units of the output spectra. If 'per_l', the spectra contain
+            the total contribution for each spherical harmonic degree l. If
+            'per_lm', the spectra contain the average contribution for each
+            coefficient at spherical harmonic degree l.
         lmax : int, optional, default = min(clm.lmax, slm.lmax)
-            The maximum spherical harmonic degree of the input coefficients
+            The maximum spherical-harmonic degree of the input coefficients
             to use.
         taper_wt : ndarray, optional, default = None
-            The weights used in calculating the multitaper spectral estimates
-            and standard error.
+            The weights used in calculating the multitaper cross-spectral
+            estimates and standard error.
         clat, clon : float, optional, default = 90., 0.
             Latitude and longitude of the center of the spherical-cap
             localization windows.
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
-        return self._get_multitapercrosspowerspectrum(clm, slm, k, **kwargs)
+        return self._multitaper_cross_spectrum(clm, slm, k,
+                                               convention=convention,
+                                               unit=unit, **kwargs)
 
-    def get_biasedpowerspectrum(self, power, k, **kwargs):
+    def biased_spectrum(self, power, k, convention='power', unit='per_l',
+                        **kwargs):
         """
-        Calculate the multitaper (cross-)power spectrum expectation of a
+        Calculate the multitaper (cross-)spectrum expectation of a
         localized function.
 
         Usage
         -----
-        outspectrum = x.get_biasedpowerspectrum(power, k, [taper_wt, save_cg,
-                                                           ldata])
+        outspectrum = x.biased_spectrum(spectrum, k, [unit, power, taper_wt,
+                                                      save_cg, ldata])
 
         Returns
         -------
         outspectrum : ndarray, shape (ldata+lwin+1)
-            The expectation of the windowed power spectrum, where lwin is the
-            spherical harmonic bandwidth of the localization windows.
+            The expectation of the windowed spectrum, where ldata is the
+            spherical-harmonic bandwidth of the input spectrum, and lwin is the
+            spherical-harmonic bandwidth of the localization windows.
 
         Parameters
         ----------
-        power : ndarray, shape (ldata+1)
-            The global power spectrum.
+        spectrum : ndarray, shape (ldata+1)
+            The global spectrum.
         k : int
-            The number of best concentrated localization windows to use in
-            constructing the windowed power spectrum.
+            The number of best-concentrated localization windows to use in
+            constructing the windowed spectrum.
+        convention : str, optional, default = 'power'
+            The type of input global and output biased spectra: 'power' for
+            power spectra, and 'energy' for energy spectra.
+        unit : str, optional, default = 'per_l'
+            The units of the input global and output biased spectra. If
+            'per_l', the spectra contain the total contribution for each
+            spherical harmonic degree l. If 'per_lm', the spectra contain the
+            average contribution for each coefficient at spherical harmonic
+            degree l.
         taper_wt : ndarray, optional, default = None
             The weights used in calculating the multitaper spectral estimates
             and standard error.
@@ -3064,24 +3117,24 @@ class SHWindow(object):
             for future use. If 0, the Clebsch-Gordon coefficients will be
             recomputed for each call.
         ldata : int, optional, default = len(power)-1
-            The maximum degree of the global unwindowed power spectrum.
+            The maximum degree of the global unwindowed spectrum.
         """
-        outspectrum = self._get_biasedpowerspectrum(power, k, **kwargs)
-        return outspectrum
+        return self._biased_spectrum(power, k, convention=convention,
+                                     unit=unit, **kwargs)
 
-    def powerspectra(self, itaper=None, nwin=None, unit='per_l', base=10.,
-                     energy=False):
+    def spectra(self, itaper=None, nwin=None, convention='power', unit='per_l',
+                base=10.):
         """
-        Return the power spectra of one or more localization windows.
+        Return the spectra of one or more localization windows.
 
         Usage
         -----
-        power = x.powerperdegree([itaper, nwin, unit, base, energy])
+        spectra = x.spectra([itaper, nwin, convention, unit, base])
 
         Returns
         -------
-        power : ndarray, shape (lwin+1, nwin)
-             A matrix with each column containing the power spectrum of a
+        spectra : ndarray, shape (lwin+1, nwin)
+             A matrix with each column containing the spectrum of a
              localization window, and where the windows are arranged with
              increasing concentration factors. If itaper is set, only a single
              vector is returned, whereas if nwin is set, the first nwin spectra
@@ -3090,80 +3143,104 @@ class SHWindow(object):
         Parameters
         ----------
         itaper : int, optional, default = None
-            The taper number of the output power spectrum, where itaper=0
+            The taper number of the output spectrum, where itaper=0
             corresponds to the best concentrated taper.
         nwin : int, optional, default = 1
             The number of best concentrated localization window power spectra
             to return.
+        convention : str, optional, default = 'power'
+            The type of spectrum to return: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
         unit : str, optional, default = 'per_l'
-            If 'per_l', return the total power for each spherical harmonic
-            degree l. If 'per_lm', return the average contribution to the power
-            for each coefficient at spherical harmonic degree l. If
-            'per_dlogl', return the power per log interval dlog_a(l).
+            If 'per_l', return the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', return the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', return the spectrum per log
+            interval dlog_a(l).
         base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
-        energy : bool, optional, default = False
-            Return the energy spectrum instead of the power spectrum.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
 
         Description
         -----------
+        This function returns either the power spectrum, energy spectrum, or
+        l2-norm spectrum of one or more of the localization windows.
         Total power is defined as the integral of the function squared over all
         space, divided by the area the function spans. If the mean of the
         function is zero, this is equivalent to the variance of the function.
         The total energy is the integral of the function squared over all space
-        and is 4pi times the total power.
+        and is 4pi times the total power. The l2-norm is the sum of the
+        magnitude of the coefficients squared.
 
-        The output power spectra can be one of three types. 'per_l' returns
-        the contribution to the total power from all angular orders at degree
-        l. 'per_lm' returns the average contribution from a single coefficient
-        at degree l to the total power. The power 'per_lm' is equal to the
-        power 'per_l' divided by (2l+1). 'per_dlogl' returns the contribution
-        to the total power from all angular orders over an infinitessimal
-        logarithmic degree band. The power in the band dlog_a(l) is
-        power(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
-        power(l, 'per_dlogl) is equal to power(l, 'per_l')*l*log(a).
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l. The 'per_lm' spectrum
+        is equal to the 'per_l' spectrum divided by (2l+1). 'per_dlogl' returns
+        the contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
+
          """
         if itaper is None:
             if nwin is None:
                 nwin = self.nwin
-            power = _np.zeros((self.lwin+1, nwin))
+            spectra = _np.zeros((self.lwin+1, nwin))
 
             for iwin in range(nwin):
-                coeffs = self.get_coeffs(iwin)
-                power[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
+                coeffs = self.to_array(iwin)
+                if (convention == 'power' or convention == 'l2norm'):
+                    spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
+                elif convention == 'energy':
+                    spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs) * \
+                                       4.0 * _np.pi
+                else:
+                    raise ValueError(
+                        "convention must be 'power', 'energy', or 'l2norm'." +
+                        "Input value was {:s}".format(repr(convention)))
+
                 if (unit.lower() == 'per_l'):
                     pass
                 elif (unit.lower() == 'per_lm'):
-                    l = self.get_degrees()
-                    power[:, iwin] /= (2.0 * l + 1.0)
+                    l = self.degrees()
+                    spectra[:, iwin] /= (2.0 * l + 1.0)
                 elif (unit.lower() == 'per_dlogl'):
-                    l = self.get_degrees()
-                    power[:, iwin] *= l * _np.log(base)
+                    l = self.degrees()
+                    spectra[:, iwin] *= l * _np.log(base)
                 else:
                     raise ValueError(
                         "unit must be 'per_l', 'per_lm', or 'per_dlogl'." +
                         "Input value was {:s}".format(repr(unit)))
         else:
-            coeffs = self.get_coeffs(itaper)
-            power = _shtools.SHPowerSpectrum(coeffs)
+            coeffs = self.to_array(itaper)
+            if (convention == 'power' or convention == 'l2norm'):
+                spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs)
+            elif convention == 'energy':
+                spectra[:, iwin] = _shtools.SHPowerSpectrum(coeffs) * \
+                                    4.0 * _np.pi
+            else:
+                raise ValueError(
+                    "convention must be 'power', 'energy', or 'l2norm'." +
+                    "Input value was {:s}".format(repr(convention)))
+
             if (unit.lower() == 'per_l'):
                 pass
             elif (unit.lower() == 'per_lm'):
-                l = self.get_degrees()
-                power /= (2.0 * l + 1.0)
+                l = self.degrees()
+                spectra /= (2.0 * l + 1.0)
             elif (unit.lower() == 'per_dlogl'):
-                l = self.get_degrees()
-                power *= l * _np.log(base)
+                l = self.degrees()
+                spectra *= l * _np.log(base)
             else:
                 raise ValueError(
                     "unit must be 'per_l', 'per_lm', or 'per_dlogl'." +
                     "Input value was {:s}".format(repr(unit)))
 
-        if energy:
-            power *= 4.0 * _np.pi
-        return power
+        return spectra
 
-    def get_couplingmatrix(self, lmax, nwin=None, weights=None, mode='full'):
+    def coupling_matrix(self, lmax, nwin=None, weights=None, mode='full'):
         """
         Return the coupling matrix of the first nwin tapers. This matrix
         relates the global power spectrum to the expectation of the localized
@@ -3171,7 +3248,7 @@ class SHWindow(object):
 
         Usage
         -----
-        Mmt = x.get_couplingmatrix(lmax, [nwin, weights, mode])
+        Mmt = x.coupling_matrix(lmax, [nwin, weights, mode])
 
         Returns
         -------
@@ -3211,14 +3288,14 @@ class SHWindow(object):
                                                                   self.nwin))
 
         if mode == 'full':
-            return self._get_couplingmatrix(lmax, nwin=nwin, weights=weights)
+            return self._coupling_matrix(lmax, nwin=nwin, weights=weights)
         elif mode == 'same':
-            cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
-                                               weights=weights)
+            cmatrix = self._coupling_matrix(lmax, nwin=nwin,
+                                            weights=weights)
             return cmatrix[:lmax+1, :]
         elif mode == 'valid':
-            cmatrix = self._get_couplingmatrix(lmax, nwin=nwin,
-                                               weights=weights)
+            cmatrix = self._coupling_matrix(lmax, nwin=nwin,
+                                            weights=weights)
             return cmatrix[:lmax - self.lwin+1, :]
         else:
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
@@ -3261,7 +3338,9 @@ class SHWindow(object):
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
             ax = axes.flatten()[itaper]
-            ax.imshow(self.get_grid(itaper), origin='upper',
+            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
+                                          norm=1, csphase=1)
+            ax.imshow(gridout, origin='upper',
                       extent=(0., 360., -90., 90.))
             ax.set_title('concentration: {:2.2f}'.format(evalue))
 
@@ -3273,38 +3352,43 @@ class SHWindow(object):
             fig.savefig(fname)
         return fig, axes
 
-    def plot_powerspectra(self, nwin, unit='per_l', base=10., energy=False,
-                          loglog=False, show=True, fname=None):
+    def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
+                     xscale='lin', yscale='log', show=True, fname=None):
         """
-        Plot the power spectra of the best-concentrated localization windows.
+        Plot the spectra of the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_powerspectra(nwin, [unit, base, energy, loglog, show, fname])
+        x.plot_spectra(nwin, [convention, unit, base, xscale, yscale,
+                              show, fname])
 
         Parameters
         ----------
         nwin : int
             The number of localization windows to plot.
+        convention : str, optional, default = 'power'
+            The type of spectra to plot: 'power' for power spectrum, and
+            'energy' for energy spectrum.
         unit : str, optional, default = 'per_l'
-            If 'per_l', return the total power for each spherical harmonic
-            degree l. If 'per_lm', return the average contribution to the power
-            for each coefficient at spherical harmonic degree l. If
-            'per_dlogl', return the power per log interval dlog_a(l).
+            If 'per_l', return the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', return the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', return the spectrum per log
+            interval dlog_a(l).
         base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' power spectrum.
-        energy : bool, optional, default = False
-            Return the energy spectrum instead of the power spectrum.
-        loglog : bool, optional, default = False
-            If True, use log-log axis.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
+        xscale : str, optional, default = 'lin'
+            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'log'
+            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, save the image to the file.
         """
-        degrees = self.get_degrees()
-        power = self.powerspectra(nwin=nwin, unit=unit, base=base,
-                                  energy=energy)
+        degrees = self.degrees()
+        spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
+                                base=base)
 
         maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
@@ -3324,12 +3408,20 @@ class SHWindow(object):
             evalue = self.eigenvalues[itaper]
             ax = axes.flatten()[itaper]
             ax.set_xlabel('degree l')
-            ax.set_ylabel('power')
-            ax.set_yscale('log', basey=base)
-            if loglog:
+            if (convention == 'power'):
+                ax.set_ylabel('power')
+            else:
+                ax.set_ylabel('energy')
+
+            if yscale == 'log':
+                ax.set_yscale('log', basey=base)
+
+            if xscale == 'log':
                 ax.set_xscale('log', basex=base)
+                ax.plot(degrees[1:], spectrum[1:, itaper])
+            else:
+                ax.plot(degrees[0:], spectrum[0:, itaper])
             ax.grid(True, which='both')
-            ax.plot(degrees[0:], power[0:, itaper])
             ax.set_title('concentration: {:2.2f}'.format(evalue))
 
         fig.tight_layout(pad=0.5)
@@ -3340,8 +3432,8 @@ class SHWindow(object):
             fig.savefig(fname)
         return fig, axes
 
-    def plot_couplingmatrix(self, lmax, nwin=None, weights=None, mode='full',
-                            show=True, fname=None):
+    def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
+                             show=True, fname=None):
         """
         Plot the multitaper coupling matrix.
 
@@ -3350,7 +3442,7 @@ class SHWindow(object):
 
         Usage
         -----
-        x.plot_couplingmatrix(lmax, [nwin, weights, mode, show, fname])
+        x.plot_coupling_matrix(lmax, [nwin, weights, mode, show, fname])
 
         Parameters
         ----------
@@ -3378,8 +3470,8 @@ class SHWindow(object):
         figsize[0] = figsize[1]
         fig = _plt.figure(figsize=figsize)
         ax = fig.add_subplot(111)
-        ax.imshow(self.get_couplingmatrix(lmax, nwin=nwin, weights=weights,
-                                          mode=mode), aspect='auto')
+        ax.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
+                                       mode=mode), aspect='auto')
         ax.set_xlabel('input power')  # matrix index 1 (columns)
         ax.set_ylabel('output power')  # matrix index 0 (rows)
         fig.tight_layout(pad=0.1)
@@ -3463,7 +3555,7 @@ class SHWindowCap(SHWindow):
 
         return coeffs
 
-    def _get_coeffs(self, itaper, normalization='4pi', csphase=1):
+    def _to_array(self, itaper, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of taper i as an
         array, where i = 0 is the best concentrated.
@@ -3557,7 +3649,7 @@ class SHWindowCap(SHWindow):
                                                    angles, dj_matrix)
                 self.coeffs[:, i] = _shtools.SHCilmToVector(coeffs)
 
-    def _get_couplingmatrix(self, lmax, nwin=None, weights=None):
+    def _coupling_matrix(self, lmax, nwin=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
         if nwin is None:
             nwin = self.nwin
@@ -3571,11 +3663,11 @@ class SHWindowCap(SHWindow):
             return _shtools.SHMTCouplingMatrix(lmax, self.tapers**2, k=nwin,
                                                taper_wt=self.weights)
 
-    def _get_multitaperpowerspectrum(self, clm, k, clat=None, clon=None,
-                                     coord_degrees=True, lmax=None,
-                                     taper_wt=None):
+    def _multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
+                             clat=None, clon=None, coord_degrees=True,
+                             lmax=None, taper_wt=None):
         """
-        Return the multitaper power spectrum estimate and uncertainty for an
+        Return the multitaper spectrum estimate and standard error for an
         input SHCoeffs class instance.
         """
         if lmax is None:
@@ -3607,19 +3699,41 @@ class SHWindowCap(SHWindow):
                 self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees,
                             nwinrot=k)
 
-        sh = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax, k=k)
+            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.coeffs,
+                                                   lmax=lmax, k=k)
         else:
-            return _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax, k=k,
-                                               taper_wt=taper_wt)
+            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax,
+                                                   k=k, taper_wt=taper_wt)
 
-    def _get_multitapercrosspowerspectrum(self, clm, slm, k, clat=None,
-                                          clon=None, coord_degrees=True,
-                                          lmax=None, taper_wt=None):
+        if (unit == 'per_l'):
+            pass
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(mtse))
+            mtse /= (2.0 * l + 1.0)
+            sd /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
+        if (convention == 'power'):
+            return mtse, sd
+        elif (convention == 'energy'):
+            return mtse * 4.0 * _np.pi, sd * 4.0 * _np.pi
+        else:
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+    def _multitaper_cross_spectrum(self, clm, slm, k, convention='power',
+                                   unit='per_l', clat=None, clon=None,
+                                   coord_degrees=True, lmax=None,
+                                   taper_wt=None):
         """
-        Return the multitaper cross-power spectrum estimate and uncertainty for
+        Return the multitaper cross-spectrum estimate and standard error for
         two input SHCoeffs class instances.
         """
         if lmax is None:
@@ -3651,23 +3765,66 @@ class SHWindowCap(SHWindow):
                 self.rotate(clat=clat, clon=clon, coord_degrees=coord_degrees,
                             nwinrot=k)
 
-        sh1 = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
-        sh2 = slm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh1 = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
+        sh2 = slm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
-                                                lmax1=lmax, lmax2=lmax, k=k)
+            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
+                                                    lmax1=lmax, lmax2=lmax,
+                                                    k=k)
         else:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
-                                                lmax1=lmax, lmax2=lmax, k=k,
-                                                taper_wt=taper_wt)
+            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
+                                                    lmax1=lmax, lmax2=lmax,
+                                                    k=k, taper_wt=taper_wt)
 
-    def _get_biasedpowerspectrum(self, power, k, **kwargs):
+        if (unit == 'per_l'):
+            pass
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(mtse))
+            mtse /= (2.0 * l + 1.0)
+            sd /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
+        if (convention == 'power'):
+            return mtse, sd
+        elif (convention == 'energy'):
+            return mtse * 4.0 * _np.pi, sd * 4.0 * _np.pi
+        else:
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+    def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
+                         **kwargs):
         """
-        Calculate the multitaper (cross-)power spectrum expectation of function
+        Calculate the multitaper (cross-) spectrum expectation of a function
         localized by spherical cap windows.
         """
-        outspectrum = _shtools.SHBiasK(self.tapers, power, k=k, **kwargs)
+        # The equation is not modified if the in- and out- spectra are power
+        # or energy. However, the convention can not be l2norm, which depends
+        # upon the normalization of the coefficients.
+        if (convention != 'power' and convention != 'energy'):
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+        if (unit == 'per_l'):
+            outspectrum = _shtools.SHBiasK(self.tapers, spectrum, k=k,
+                                           **kwargs)
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(spectrum))
+            temp = spectrum * (2.0 * l + 1.0)
+            outspectrum = _shtools.SHBiasK(self.tapers, temp, k=k,
+                                           **kwargs)
+            outspectrum /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
         return outspectrum
 
     def _info(self):
@@ -3734,7 +3891,7 @@ class SHWindowMask(SHWindow):
             self.tapers = tapers
             self.eigenvalues = eigenvalues
 
-    def _get_coeffs(self, itaper, normalization='4pi', csphase=1):
+    def _to_array(self, itaper, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of taper i as an
         array, where i=0 is the best concentrated.
@@ -3754,7 +3911,7 @@ class SHWindowMask(SHWindow):
 
         return coeffs
 
-    def _get_couplingmatrix(self, lmax, nwin=None, weights=None):
+    def _coupling_matrix(self, lmax, nwin=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
         if nwin is None:
             nwin = self.nwin
@@ -3764,7 +3921,7 @@ class SHWindowMask(SHWindow):
 
         tapers_power = _np.zeros((self.lwin+1, nwin))
         for i in range(nwin):
-            tapers_power[:, i] = _shtools.SHPowerSpectrum(self.get_coeffs(i))
+            tapers_power[:, i] = _shtools.SHPowerSpectrum(self.to_array(i))
 
         if weights is None:
             return _shtools.SHMTCouplingMatrix(lmax, tapers_power, k=nwin)
@@ -3772,48 +3929,112 @@ class SHWindowMask(SHWindow):
             return _shtools.SHMTCouplingMatrix(lmax, tapers_power, k=nwin,
                                                taper_wt=self.weights)
 
-    def _get_multitaperpowerspectrum(self, clm, k, lmax=None, taper_wt=None):
+    def _multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
+                             lmax=None, taper_wt=None):
         """
-        Return the multitaper power spectrum estimate and uncertainty for an
+        Return the multitaper spectrum estimate and standard error for an
         input SHCoeffs class instance.
         """
         if lmax is None:
             lmax = clm.lmax
 
-        sh = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax, k=k)
+            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
+                                                   k=k)
         else:
-            return _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
-                                               k=k, taper_wt=taper_wt)
+            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
+                                                   k=k, taper_wt=taper_wt)
 
-    def _get_multitapercrosspowerspectrum(self, clm, slm, k, lmax=None,
-                                          taper_wt=None):
+        if (unit == 'per_l'):
+            pass
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(mtse))
+            mtse /= (2.0 * l + 1.0)
+            sd /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
+        if (convention == 'power'):
+            return mtse, sd
+        elif (convention == 'energy'):
+            return mtse * 4.0 * _np.pi, sd * 4.0 * _np.pi
+        else:
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+    def _multitaper_cross_spectrum(self, clm, slm, k, convention='power',
+                                   unit='per_l', lmax=None, taper_wt=None):
         """
-        Return the multitaper cross-power spectrum estimate and uncertainty for
+        Return the multitaper cross-spectrum estimate and standard error for
         two input SHCoeffs class instances.
         """
         if lmax is None:
             lmax = min(clm.lmax, slm.lmax)
 
-        sh1 = clm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
-        sh2 = slm.get_coeffs(normalization='4pi', csphase=1, lmax=lmax)
+        sh1 = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
+        sh2 = slm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         if taper_wt is None:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
-                                                lmax=lmax, k=k)
+            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
+                                                    lmax=lmax, k=k)
         else:
-            return _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
-                                                lmax=lmax, k=k,
-                                                taper_wt=taper_wt)
+            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
+                                                    lmax=lmax, k=k,
+                                                    taper_wt=taper_wt)
 
-    def _get_biasedpowerspectrum(self, power, k, **kwargs):
+        if (unit == 'per_l'):
+            pass
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(mtse))
+            mtse /= (2.0 * l + 1.0)
+            sd /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
+        if (convention == 'power'):
+            return mtse, sd
+        elif (convention == 'energy'):
+            return mtse * 4.0 * _np.pi, sd * 4.0 * _np.pi
+        else:
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+    def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
+                         **kwargs):
         """
-        Calculate the multitaper (cross-)power spectrum expectation of function
+        Calculate the multitaper (cross-) spectrum expectation of a function
         localized by arbitary windows.
         """
-        outspectrum = _shtools.SHBiasKMask(self.tapers, power, k=k, **kwargs)
+        # The equation is not modified if the in- and out- spectra are power
+        # or energy. However, the convention can not be l2norm, which depends
+        # upon the normalization of the coefficients.
+        if (convention != 'power' and convention != 'energy'):
+            raise ValueError(
+                "convention must be 'power' or 'energy'." +
+                "Input value was {:s}".format(repr(convention)))
+
+        if (unit == 'per_l'):
+            outspectrum = _shtools.SHBiasKMask(self.tapers, spectrum, k=k,
+                                               **kwargs)
+        elif (unit == 'per_lm'):
+            l = _np.arange(len(spectrum))
+            temp = spectrum * (2.0 * l + 1.0)
+            outspectrum = _shtools.SHBiasKMask(self.tapers, temp, k=k,
+                                               **kwargs)
+            outspectrum /= (2.0 * l + 1.0)
+        else:
+            raise ValueError(
+                "unit must be 'per_l' or 'per_lm'." +
+                "Input value was {:s}".format(repr(unit)))
+
         return outspectrum
 
     def _info(self):

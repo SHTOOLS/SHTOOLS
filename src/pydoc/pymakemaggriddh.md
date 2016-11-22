@@ -4,7 +4,7 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 
 # Usage
 
-`rad`, `theta`, `phi`, `total` = pyshtools.MakeMagGridDH (`cilm`, `r0`, [`lmax`, `a`, `f`, `sampling`, `lmaxcalc`])
+`rad`, `theta`, `phi`, `total` = MakeMagGridDH (`cilm`, `r0`, [`lmax`, `a`, `f`, `sampling`, `lmaxcalc`])
 
 # Returns
 

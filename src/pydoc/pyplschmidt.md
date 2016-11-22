@@ -4,7 +4,7 @@ Compute all the Schmidt-normalized Legendre polynomials.
 
 # Usage
 
-`p` = pyshtools.PlSchmidt (`lmax`, `z`)
+`p` = PlSchmidt (`lmax`, `z`)
 
 # Returns
 

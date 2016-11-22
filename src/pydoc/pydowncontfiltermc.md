@@ -4,7 +4,7 @@ Calculate a minimum-curvature downward continuation filter for a given spherical
 
 # Usage
 
-`wl` =  pyshtools.DownContFilterMC (`l`, `half`, `r`, `d`)
+`wl` = DownContFilterMC (`l`, `half`, `r`, `d`)
 
 # Returns
 

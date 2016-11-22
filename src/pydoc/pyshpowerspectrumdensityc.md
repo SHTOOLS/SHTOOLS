@@ -4,7 +4,7 @@ Compute the power spectral density of a complex function.
 
 # Usage
 
-`pspectrum` = pyshtools.SHPowerSpectrumDensityC (`cilm`, [`lmax`])
+`pspectrum` = SHPowerSpectrumDensityC (`cilm`, [`lmax`])
 
 # Returns
 

@@ -4,7 +4,7 @@ Compute the power spectrum of the magnetic field given the Schmidt seminormalize
 
 # Usage
 
-`spectrum` = pyshtools.SHMagPowerSpectrum (`c`, `a`, [`r`, `lmax`])
+`spectrum` = SHMagPowerSpectrum (`c`, `a`, [`r`, `lmax`])
 
 # Returns
 

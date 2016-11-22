@@ -4,7 +4,7 @@ Compute the power of a real function for a single spherical harmonic degree.
 
 # Usage
 
-`power` = pyshtools.SHPowerL (`cilm`, `l`)
+`power` = SHPowerL (`cilm`, `l`)
 
 # Returns
 

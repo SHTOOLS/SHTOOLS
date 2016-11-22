@@ -4,7 +4,7 @@ Compute the index of a array of Legendre functions corresponding to degree `l` a
 
 # Usage
 
-`index` = pyshtools.PlmIndex (`l`, `m`)
+`index` = PlmIndex (`l`, `m`)
 
 # Returns
 

@@ -7,6 +7,7 @@ from __future__ import division as _division
 
 import datetime as _datetime
 
+
 def _yyyymmdd_to_year_fraction(date):
     """Convert YYYMMDD.DD date string or float to YYYY.YYY"""
     date = str(date)
@@ -28,4 +29,3 @@ def _yyyymmdd_to_year_fraction(date):
     fraction = year_elapsed / year_duration
 
     return year + fraction
-

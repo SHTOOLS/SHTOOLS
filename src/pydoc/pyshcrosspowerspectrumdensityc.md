@@ -4,7 +4,7 @@ Compute the cross-power spectral density of two complex functions.
 
 # Usage
 
-`cspectrum` = pyshtools.SHCrossPowerSpectrumDensityC (`cilm1`, `cilm2`, [`lmax`])
+`cspectrum` = SHCrossPowerSpectrumDensityC (`cilm1`, `cilm2`, [`lmax`])
 
 # Returns
 

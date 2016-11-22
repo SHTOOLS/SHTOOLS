@@ -4,7 +4,7 @@ Create a 2D map from a set of spherical harmonic coefficients using the Driscoll
 
 # Usage
 
-`griddh` = pyshtools.MakeGridDH(`cilm`, [`lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`])
+`griddh` = MakeGridDH(`cilm`, [`lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`])
 
 # Returns
 

@@ -4,7 +4,7 @@ Convert a two-dimensional indexed array of spherical harmonic coefficients to a 
 
 # Usage
 
-`cilm` = pyshtools.SHCindexToCilm (`cindex`, [`lmax`])
+`cilm` = SHCindexToCilm (`cindex`, [`lmax`])
 
 # Returns
 
