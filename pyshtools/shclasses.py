@@ -35,7 +35,7 @@ import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 import copy as _copy
 
-from . import _SHTOOLS as _shtools
+from . import shtools as _shtools
 
 
 # =============================================================================

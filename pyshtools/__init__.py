@@ -64,51 +64,6 @@ from . import rotate
 from . import gravmag
 
 
-# ---- Check the exit status of Fortran routines, raise exceptions, and 
-# ---- strip exitstatus from the Python return values.
-class SHToolsError(Exception):
-    pass
-
-
-def _shtools_status_message(status):
-    '''
-    Determine error message to print when a SHTOOLS Fortran 95 routine exits
-    improperly.
-    '''
-    if (status == 1):
-        errmsg = 'Improper dimensions of input array.'
-    elif (status == 2):
-        errmsg = 'Improper bounds for input variable.'
-    elif (status == 3):
-        errmsg = 'Error allocating memory.'
-    elif (status == 4):
-        errmsg = 'File IO error.'
-    else:
-        errmsg = 'Unhandled Fortran 95 error.'
-    return errmsg
-
-
-def _raise_errors(func):
-    def wrapped_func(*args, **kwargs):
-        returned_values = func(*args, **kwargs)
-        if returned_values[0] != 0:
-            raise SHToolsError(_shtools_status_message(returned_values[0]))
-        elif len(returned_values) == 2:
-            return returned_values[1]
-        else:
-            return returned_values[1:]
-    wrapped_func.__doc__ = func.__doc__
-    return wrapped_func
-
-
-_fortran_subroutines = (legendre._fortran_subroutines +
-                        expand._fortran_subroutines)
-
-
-for _func in _fortran_subroutines:
-    setattr(_SHTOOLS, _func, _raise_errors(getattr(_SHTOOLS, _func)))
-
-
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
            'legendre', 'expand', 'shio', 'spectralanalysis',
