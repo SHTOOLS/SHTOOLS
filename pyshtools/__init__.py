@@ -23,7 +23,7 @@ main namespace:
     rotate - Spherical harmonic rotation routines.
     gravmag - Gravity and magnetics routines.
     constant - pyshtools constants.
-    other - Other routines.
+    utils - Other routines.
 
 For further information, consult the web documentation at
 
@@ -44,68 +44,24 @@ __author__ = 'SHTOOLS developers'
 import os as _os
 import numpy as _np
 
-# ---- Import all wrapped SHTOOLS functions into shtools submodule
-from . import _SHTOOLS as shtools
 
 # ---- Import classes into pyshtools namespace
 from . import shclasses
 from .shclasses import SHCoeffs, SHGrid, SHWindow
 
-# ---- Import shtools submodules ----
+# ---- Import shtools subpackages ----
+from . import shtools
 from . import constant
 from . import legendre
 from . import expand
 from . import shio
+from . import utils
+
+# ---- Import shtools submodules ----
 from . import spectralanalysis
 from . import localizedspectralanalysis
 from . import rotate
 from . import gravmag
-from . import other
-
-
-# ---- Bind two new functions to the list of all shtools routines ----
-_SHTOOLS.PlmIndex = legendre.PlmIndex
-_SHTOOLS.YilmIndexVector = shio.YilmIndexVector
-
-
-# ---------------------------------------------------------------------
-# ---- Fill the pyshtools module doc strings and pyshtools constant
-# ---- infostrings with documentation from external files. The doc files
-# ---- are generated during intitial compilation of pyshtools from md
-# ---- formatted text files.
-# ---------------------------------------------------------------------
-_pydocfolder = _os.path.abspath(_os.path.join(_os.path.dirname(__file__),
-                                              'doc'))
-
-for _name, _func in _SHTOOLS.__dict__.items():
-    if callable(_func):
-        try:
-            _path = _os.path.join(_pydocfolder, _name.lower() + '.doc')
-
-            with open(_path) as _pydocfile:
-                _pydoc = _pydocfile.read()
-
-            _func.__doc__ = _pydoc
-        except IOError as msg:
-            print(msg)
-
-for _name in _constant.planetsconstants.__dict__.keys():
-    try:
-        _path = _os.path.join(_pydocfolder, 'constant_' + _name.lower() +
-                              '.doc')
-
-        with open(_path) as _pydocfile:
-            _pydoc = _pydocfile.read()
-
-        setattr(getattr(constant, _name), '_infostring', _pydoc)
-
-    except IOError as msg:
-        print(msg)
-
-# ---- Rewrite shtools doc string ----
-shtools.__doc__ = (
-    'pyshtools submodule that includes all pyshtools routines, with the\n' +
-    'exception of shclasses.')
 
 
 # ---- Check the exit status of Fortran routines, raise exceptions, and 
@@ -156,4 +112,4 @@ for _func in _fortran_subroutines:
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
            'legendre', 'expand', 'shio', 'spectralanalysis',
-           'localizedspectralanalysis', 'rotate', 'gravmag', 'other']
+           'localizedspectralanalysis', 'rotate', 'gravmag', 'utils']

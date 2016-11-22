@@ -1,5 +1,5 @@
 """
-pyshtools Other Routines.
+pyshtools utils.
 
 This submodule of pyshtools defines the following functions:
 
@@ -14,6 +14,6 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ._SHTOOLS import MakeCircleCoord
-from ._SHTOOLS import MakeEllipseCoord
-from ._SHTOOLS import Wigner3j
+from .._SHTOOLS import MakeCircleCoord
+from .._SHTOOLS import MakeEllipseCoord
+from .._SHTOOLS import Wigner3j
