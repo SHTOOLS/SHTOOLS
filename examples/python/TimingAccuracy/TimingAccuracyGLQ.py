@@ -10,10 +10,9 @@ import sys
 import time
 import numpy as np
 
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import expand
 from pyshtools import spectralanalysis
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 
 
 # ==== MAIN FUNCTION ====

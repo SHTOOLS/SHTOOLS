@@ -11,14 +11,13 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import localizedspectralanalysis
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
 
-# import shtools:
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-
 # set shtools plot style:
-sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 mpl.rcParams.update(style_shtools)
 
 

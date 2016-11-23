@@ -10,16 +10,16 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import gravmag
 from pyshtools import spectralanalysis
 from pyshtools import shio
 from pyshtools import constant
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-
 # set shtools plot style:
-sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 mpl.rcParams.update(style_shtools)
 
 
