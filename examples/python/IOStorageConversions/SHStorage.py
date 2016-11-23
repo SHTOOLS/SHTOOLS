@@ -11,12 +11,13 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+from pyshtools import shio
+from FigStyle import style_shtools
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import shtools
 
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
-from FigStyle import style_shtools
 mpl.rcParams.update(style_shtools)
 
 
@@ -36,8 +37,8 @@ def test_SHStorage():
     coeffs[np.invert(mask)] = 0.
 
     print('\n---- testing SHCilmToCindex and SHCindexToCilm ----')
-    coeffs_indexed = shtools.SHCilmToCindex(coeffs)
-    coeffs_recomp = shtools.SHCindexToCilm(coeffs_indexed)
+    coeffs_indexed = shio.SHCilmToCindex(coeffs)
+    coeffs_recomp = shio.SHCindexToCilm(coeffs_indexed)
     print('input coeffs (l={:d}):'.format(lmax))
     print(coeffs)
     print('indexed coeffs:')
@@ -46,8 +47,8 @@ def test_SHStorage():
     print(coeffs_recomp)
 
     print('\n---- testing SHCilmToVector and SHVectorToCilm ----')
-    coeffs_indexed = shtools.SHCilmToVector(coeffs)
-    coeffs_recomp = shtools.SHVectorToCilm(coeffs_indexed)
+    coeffs_indexed = shio.SHCilmToVector(coeffs)
+    coeffs_recomp = shio.SHVectorToCilm(coeffs_indexed)
     print('\ninput coeffs (l={:d}):'.format(lmax))
     print(coeffs)
     print('\nindexed coeffs:')

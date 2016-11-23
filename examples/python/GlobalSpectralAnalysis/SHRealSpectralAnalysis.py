@@ -11,12 +11,15 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+from pyshtools import spectralanalysis
+from pyshtools import shio
+from pyshtools import expand
+from FigStyle import style_shtools
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import shtools
 
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
-from FigStyle import style_shtools
 mpl.rcParams.update(style_shtools)
 
 
@@ -41,14 +44,15 @@ def test_RealSpectralAnalysis():
     coeffs1 = np.random.normal(size=(2, lmax + 1, lmax + 1))
     coeffs1[np.invert(mask)] = 0.
 
-    spec1 = np.array([shtools.SHPowerL(coeffs1, l) for l in ls])
-    spec2 = shtools.SHPowerSpectrum(coeffs1)
+    spec1 = np.array([spectralanalysis.SHPowerL(coeffs1, l) for l in ls])
+    spec2 = spectralanalysis.SHPowerSpectrum(coeffs1)
     print('tot power computed with SHPowerL={:2.2f}'.format(np.sum(spec1)))
     print('tot power computed with SHPowerSpectrum={:2.2f}'.format(
         np.sum(spec2)))
 
-    spec1 = np.array([shtools.SHPowerDensityL(coeffs1, l) for l in ls])
-    spec2 = shtools.SHPowerSpectrumDensity(coeffs1)
+    spec1 = np.array([spectralanalysis.SHPowerDensityL(coeffs1, l)
+                     for l in ls])
+    spec2 = spectralanalysis.SHPowerSpectrumDensity(coeffs1)
     print('tot power computed with SHPowerDensityL={:2.2f}'.format(
         np.sum(spec1 * (2 * ls + 1))))
     print('tot power computed with SHPowerSpectrumDensity={:2.2f}'.format(
@@ -61,24 +65,27 @@ def test_RealSpectralAnalysis():
     coeffs2 = np.random.normal(size=(2, lmax + 1, lmax + 1))
     coeffs2[np.invert(mask)] = 0.
 
-    spec1 = np.array([shtools.SHCrossPowerL(coeffs1, coeffs2, l) for l in ls])
-    spec2 = shtools.SHCrossPowerSpectrum(coeffs1, coeffs2)
+    spec1 = np.array([spectralanalysis.SHCrossPowerL(coeffs1, coeffs2, l)
+                     for l in ls])
+    spec2 = spectralanalysis.SHCrossPowerSpectrum(coeffs1, coeffs2)
     print('tot cpower computed with SHCrossPowerL={:2.2f}'.format(
         np.sum(spec1)))
     print('tot cpower computed with SHCrossPowerSpectrum={:2.2f}'.format(
         np.sum(spec2)))
 
-    spec1 = np.array([shtools.SHCrossPowerDensityL(coeffs1, coeffs2, l)
-                      for l in ls])
-    spec2 = shtools.SHCrossPowerSpectrumDensity(coeffs1, coeffs2)
+    spec1 = np.array(
+        [spectralanalysis.SHCrossPowerDensityL(coeffs1, coeffs2, l)
+         for l in ls])
+    spec2 = spectralanalysis.SHCrossPowerSpectrumDensity(coeffs1, coeffs2)
     print('tot cpower computed with SHCrossPowerDensityL={:2.2f}'.format(
         np.sum(spec1 * (2 * ls + 1))))
     print('tot cpower computed with SHCrossPowerSpectrumDensity={:2.2f}'
           .format(np.sum(spec2 * (2 * ls + 1))))
 
     print('\n---- testing SHAdmitCorr and SHConfidence ----')
-    admit, dadmit, corr = shtools.SHAdmitCorr(coeffs1, coeffs2)
-    confidence = np.array([shtools.SHConfidence(l, corr[l]) for l in ls])
+    admit, dadmit, corr = spectralanalysis.SHAdmitCorr(coeffs1, coeffs2)
+    confidence = np.array([spectralanalysis.SHConfidence(l, corr[l])
+                          for l in ls])
     print('admittance:', admit)
     print('admittance error:', dadmit)
     print('correlation:', corr)
@@ -94,18 +101,18 @@ def example():
     # --- input data filename ---
     infile = os.path.join(os.path.dirname(__file__),
                           '../../ExampleDataFiles/MarsTopo719.shape')
-    coeffs, lmax = shtools.SHRead(infile, 719)
+    coeffs, lmax = shio.SHRead(infile, 719)
     lmax = coeffs.shape[1] - 1
 
     # --- plot grid ---
-    grid = shtools.MakeGridDH(coeffs, csphase=-1)
+    grid = expand.MakeGridDH(coeffs, csphase=-1)
     fig_map = plt.figure()
     plt.imshow(grid)
 
     # ---- compute spectrum ----
     ls = np.arange(lmax + 1)
-    pspectrum = shtools.SHPowerSpectrum(coeffs)
-    pdensity = shtools.SHPowerSpectrumDensity(coeffs)
+    pspectrum = spectralanalysis.SHPowerSpectrum(coeffs)
+    pdensity = spectralanalysis.SHPowerSpectrumDensity(coeffs)
 
     # ---- plot spectrum ----
     fig_spectrum, ax = plt.subplots(1, 1)

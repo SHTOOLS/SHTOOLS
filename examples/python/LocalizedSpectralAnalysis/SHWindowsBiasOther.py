@@ -10,12 +10,13 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+from pyshtools import localizedspectralanalysis
+from FigStyle import style_shtools
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import shtools
 
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
-from FigStyle import style_shtools
 mpl.rcParams.update(style_shtools)
 
 
@@ -31,14 +32,15 @@ def test_LocalizationWindows():
     lmax = 15
     theta = 50.
     print('generating {:2.1f} degrees cap:'.format(theta))
-    coeffsm0 = shtools.SphericalCapCoef(np.radians(theta), lmax)
+    coeffsm0 = localizedspectralanalysis.SphericalCapCoef(np.radians(theta),
+                                                          lmax)
     print(coeffsm0)
 
     print('\n---- testing SHBias ----')
     winpower = coeffsm0**2
     ldata = 20
     globalpower = np.random.rand(ldata)
-    localpower = shtools.SHBias(winpower, globalpower)
+    localpower = localizedspectralanalysis.SHBias(winpower, globalpower)
     print(localpower[:min(ldata, 20)])
 
     print('\n---- testing Curve2Mask ----')
@@ -52,7 +54,7 @@ def test_LocalizationWindows():
     points[2] = [80., 50.]
     points[3] = [80., 20.]
     hasnorthpole = False
-    dhmask = shtools.Curve2Mask(nlat, points, hasnorthpole)
+    dhmask = localizedspectralanalysis.Curve2Mask(nlat, points, hasnorthpole)
     # compute covered area as a check
     thetas = np.linspace(0 + dlat / 2., 180. - dlat / 2., nlat)
     weights = 2 * np.sin(np.radians(thetas))
@@ -73,11 +75,13 @@ def test_LocalizationWindows():
     latgrid, longrid = np.meshgrid(lats, lons, indexing='ij')
     dh_mask = np.logical_and(5. < latgrid, latgrid < 20.)
     print('dij matrix[0,:lmax={:d}]:'.format(lmax))
-    dij_matrix = shtools.ComputeDMap(dh_mask, lmax)
+    dij_matrix = localizedspectralanalysis.ComputeDMap(dh_mask, lmax)
     print(dij_matrix[0, :lmax])
 
     print('\n---- testing SHReturnTapersMap ----')
-    tapers, evalues = shtools.SHReturnTapersMap(dh_mask, lmax, ntapers=1)
+    tapers, evalues = localizedspectralanalysis.SHReturnTapersMap(dh_mask,
+                                                                  lmax,
+                                                                  ntapers=1)
     print('best taper concentration: {:2.2f}'.format(evalues[0]))
 
 # ==== EXECUTE SCRIPT ====

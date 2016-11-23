@@ -13,12 +13,13 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
+from FigStyle import style_shtools
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 
 # set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
-from FigStyle import style_shtools
 mpl.rcParams.update(style_shtools)
 
 
@@ -54,7 +55,7 @@ def example2():
     region.info()
     region.plot_windows(nwins, show=False, fname='continent_tapers.png')
     region.plot_coupling_matrix(30, 5, show=False,
-                               fname='continent_coupling.png')
+                                fname='continent_coupling.png')
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
