@@ -4,13 +4,13 @@ Read spherical harmonic coefficients from a JPL ascii-formatted file.
 
 # Usage
 
-call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`)
+call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`, `exitstatus`)
 
 # Parameters
 
 `filename` : input, character(*)
 :   The filename of the JPL ascii formatted spherical harmonic coefficients.
-	
+
 `cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients contained in `filename`.
 
@@ -25,6 +25,9 @@ call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`)
 
 `formatstring` : input character*6, optional, default = "E19.12"
 :   The format string used to read the elements of `cilm` and `cilm_error`. The default is "E19.12".
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

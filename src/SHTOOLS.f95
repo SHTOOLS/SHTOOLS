@@ -9,7 +9,7 @@ module SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    integer, parameter ::   CSPHASE_DEFAULT = 1 
+    integer, parameter ::   CSPHASE_DEFAULT = 1
                             ! The default for all routines is to EXCLUDE
                             ! the Condon-Shortley phase of (-1)^m
                             ! in front of the Legendre functions.
@@ -161,7 +161,7 @@ module SHTOOLS
         end subroutine MakeGridDH
 
         subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, &
-                                csphase, lmax_calc, exitstatus)
+                               csphase, lmax_calc, exitstatus)
             complex*16, intent(in) ::   grid(:,:)
             complex*16, intent(out) ::  cilm(:,:,:)
             integer, intent(in) ::  n
@@ -171,7 +171,7 @@ module SHTOOLS
         end subroutine SHExpandDHC
 
         subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
-                                csphase, lmax_calc, exitstatus)
+                               csphase, lmax_calc, exitstatus)
             complex*16, intent(in) ::   cilm(:,:,:)
             complex*16, intent(out) ::  griddh(:,:)
             integer, intent(in) ::  lmax
@@ -183,7 +183,7 @@ module SHTOOLS
         subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
             integer, intent(in) ::  lmax
             real*8, intent(out) ::  zero(:), w(:)
-            real*8, intent(out), optional ::    plx(:,:)
+            real*8, intent(out), optional :: plx(:,:)
             integer, intent(in), optional :: norm, csphase, cnorm
             integer, intent(out), optional :: exitstatus
         end subroutine SHGLQ
@@ -274,6 +274,80 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHMultiply
 
+        subroutine SHRead(filename, cilm, lmax, skip, header, error, &
+                          exitstatus)
+            character(*), intent(in) :: filename
+            integer, intent(out) :: lmax
+            real*8, intent(out) ::  cilm(:,:,:)
+            real*8, intent(out), optional :: header(:), error(:,:,:)
+            integer, intent(in), optional :: skip
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHRead
+
+        subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, &
+                           doystart, doyend, epoch, exitstatus)
+            character(*), intent(in) :: filename
+            integer, intent(out) :: lmax
+            real*8, intent(out) ::  cilm(:,:,:), gm, r0_pot
+            real*8, intent(out), optional :: error(:,:,:), dot(:,:,:), &
+                                             doystart, doyend, epoch
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHRead2
+
+        subroutine SHReadJPL(filename, cilm, lmax, error, gm, formatstring, &
+                             exitstatus)
+            character(*), intent(in) :: filename
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  cilm(:,:,:)
+            real*8, intent(out), optional :: error(:,:,:), gm(2)
+            character, intent(in), optional :: formatstring*6
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHReadJPL
+
+        subroutine SHCilmToVector(cilm, vector, lmax, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:)
+            real*8, intent(out) ::  vector(:)
+            integer, intent(in) ::  lmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHCilmToVector
+
+        subroutine SHVectorToCilm(vector, cilm, lmax, exitstatus)
+            real*8, intent(out) ::  cilm(:,:,:)
+            real*8, intent(in) ::   vector(:)
+            integer, intent(in) ::  lmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHVectorToCilm
+
+        subroutine SHCilmToCindex(cilm, cindex, degmax, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:)
+            real*8, intent(out) ::  cindex(:,:)
+            integer, intent(in), optional :: degmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHCilmToCindex
+
+        subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
+            real*8, intent(out) ::  cilm(:,:,:)
+            real*8, intent(in) ::   cindex(:,:)
+            integer, intent(in), optional :: degmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHCindexToCilm
+
+        subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, &
+                          exitstatus)
+            real*8, intent(in) ::   rcilm(:,:,:)
+            real*8, intent(out) ::  ccilm(:,:,:) 
+            integer, intent(in), optional :: degmax, convention, switchcs
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHrtoc
+
+        subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs, &
+                          exitstatus)
+            real*8, intent(in) ::   ccilm(:,:,:)
+            real*8, intent(out) ::  rcilm(:,:,:)
+            integer, intent(in), optional :: degmax, convention, switchcs
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHctor
+
         subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, &
                             w, zero, plx, n, dref)
             real*8, intent(in) ::   gridin(:,:), mass, rho
@@ -349,14 +423,6 @@ module SHTOOLS
             integer, intent(in) ::  degree, n
         end function NGLQSHN
 
-        subroutine SHRead(filename, cilm, lmax, skip, header, error)
-            character(*), intent(in) :: filename
-            integer, intent(out) :: lmax
-            real*8, intent(out) ::  cilm(:,:,:)
-            real*8, intent(out), optional :: header(:), error(:,:,:)
-            integer, intent(in), optional :: skip
-        end subroutine SHRead
-
         subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                                  phi_grid, total_grid, n, sampling, lmax_calc, &
                                  pot_grid)
@@ -417,30 +483,6 @@ module SHTOOLS
             integer, intent(in) ::  lmax
             real*8, intent(out) ::  dj(:,:,:)
         end subroutine djpi2
-
-        subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs)
-            real*8, intent(in) ::   rcilm(:,:,:)
-            real*8, intent(out) ::  ccilm(:,:,:) 
-            integer, intent(in), optional :: degmax, convention, switchcs
-        end subroutine SHrtoc
-
-        subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs)
-            real*8, intent(in) ::   ccilm(:,:,:)
-            real*8, intent(out) ::  rcilm(:,:,:)
-            integer, intent(in), optional :: degmax, convention, switchcs
-        end subroutine SHctor
-
-        subroutine SHCilmToCindex(cilm, cindex, degmax)
-            real*8, intent(in) ::   cilm(:,:,:)
-            real*8, intent(out) ::  cindex(:,:)
-            integer, intent(in), optional :: degmax
-        end subroutine SHCilmToCindex
-
-        subroutine SHCindexToCilm(cindex, cilm, degmax)
-            real*8, intent(out) ::  cilm(:,:,:)
-            real*8, intent(in) ::   cindex(:,:)
-            integer, intent(in), optional :: degmax
-        end subroutine SHCindexToCilm
 
         subroutine SHRotateCoef(x, cof, rcof, dj, lmax)
             real*8, intent(in) ::   cof(:,:), dj(:,:,:), x(3)
@@ -616,23 +658,6 @@ module SHTOOLS
             integer, intent(in), optional ::    csphase, norm
         end subroutine SHMultiTaperMaskCSE
 
-        subroutine SHReadJPL(filename, cilm, lmax, error, gm, formatstring)
-            character(*), intent(in) :: filename
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  cilm(:,:,:)
-            real*8, intent(out), optional :: error(:,:,:), gm(2)
-            character, intent(in), optional :: formatstring*6
-        end subroutine SHReadJPL
-
-        subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, &
-                           doystart, doyend, epoch)
-            character(*), intent(in) :: filename
-            integer, intent(out) :: lmax
-            real*8, intent(out) ::  cilm(:,:,:), gm, r0_pot
-            real*8, intent(out), optional :: error(:,:,:), dot(:,:,:), &
-                                             doystart, doyend, epoch
-        end subroutine SHRead2
-
         subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, &
                                  r, gridtype, order, nlat, nlong, interval, &
                                  lmax_calc, a, f)
@@ -771,18 +796,6 @@ module SHTOOLS
             integer, intent(in), optional ::    mtdef
             real*8, intent(in), optional :: taper_wt(:)
         end subroutine SHBiasAdmitCorr
-
-        subroutine SHCilmToVector(cilm, vector, lmax)
-            real*8, intent(in) ::   cilm(:,:,:)
-            real*8, intent(out) ::  vector(:)
-            integer, intent(in) ::  lmax
-        end subroutine SHCilmToVector
-
-        subroutine SHVectorToCilm(vector, cilm, lmax)
-            real*8, intent(out) ::  cilm(:,:,:)
-            real*8, intent(in) ::   vector(:)
-            integer, intent(in) ::  lmax
-        end subroutine SHVectorToCilm
 
         integer function YilmIndexVector(i, l, m)
             integer, intent(in) ::  i, l, m

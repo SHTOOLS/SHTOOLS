@@ -123,21 +123,19 @@ from .._SHTOOLS import MakeCircleCoord
 from .._SHTOOLS import MakeEllipseCoord
 from .._SHTOOLS import Wigner3j
 
-__all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON',
-                     'PlmON_d1', 'PlON', 'PlON_d1', 'PlmSchmidt',
-                     'PlmSchmidt_d1', 'PlSchmidt', 'PlSchmidt_d1',
-                     'PLegendreA', 'PLegendreA_d1', 'PLegendre',
-                     'PLegendre_d1', 'SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
-                     'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
-                     'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord',
-                     'SHExpandLSQ', 'MakeGrid2D', 'MakeGridPoint',
-                     'SHMultiply', 'MakeCircleCoord', 'MakeEllipseCoord',
-                     'Wigner3j']
+__all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
+           'PlON', 'PlON_d1', 'PlmSchmidt', 'PlmSchmidt_d1', 'PlSchmidt',
+           'PlSchmidt_d1', 'PLegendreA', 'PLegendreA_d1', 'PLegendre',
+            'PLegendre_d1', 'SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
+            'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
+            'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ',
+            'MakeGrid2D', 'MakeGridPoint', 'SHMultiply', 'SHRead', 'SHReadH',
+            'SHReadError', 'SHReadErrorH', 'SHRead2', 'SHRead2Error',
+            'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector', 'SHVectorToCilm',
+            'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc', 'SHctor',
+            'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j']
 
-_not_finished = ['SHReadH', 'SHReadError', 'SHReadErrorH', 'SHRead2',
-                 'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
-                 'SHCilmToCindex', 'SHCindexToCilm', 'SHCilmToVector',
-                 'SHVectorToCilm', 'SHrtoc', 'SHctor', 'SHPowerL',
+_not_finished = ['SHPowerL',
                  'SHPowerDensityL', 'SHCrossPowerL', 'SHCrossPowerDensityL',
                  'SHPowerSpectrum', 'SHPowerSpectrumDensity',
                  'SHCrossPowerSpectrum', 'SHCrossPowerSpectrumDensity',

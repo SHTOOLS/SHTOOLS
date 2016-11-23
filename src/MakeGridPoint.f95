@@ -1,5 +1,5 @@
 real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
-                            csphase, dealloc)
+                              csphase, dealloc)
 !------------------------------------------------------------------------------
 !
 !   This function will determine the value at a given latitude and
@@ -79,26 +79,26 @@ real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
         end if
 
     else
-            phase = dble(CSPHASE_DEFAULT)
+        phase = dble(CSPHASE_DEFAULT)
 
     end if
 
     allocate (pl(((lmax+1) * (lmax+2)) / 2), stat = astat(1))
     allocate (cosm(lmax+1), stat = astat(2))
     allocate (sinm(lmax+1), stat = astat(3))
-    
+
     if (sum(astat(1:3)) /= 0) then
         print*, "Error --- MakeGridPoint"
         print*, "Cannot allocate memory for arrays PL, MCOS and MSIN", &
                 astat(1), astat(2), astat(3)
         stop
-    end if 
+    end if
 
     pi = acos(-1.0d0)
     x = sin(lat * pi / 180.0d0)
     lon = longitude * pi / 180.0d0
 
-    lmax_comp = min(lmax, size(cilm(1,1,:))-1)
+    lmax_comp = min(lmax, size(cilm(1,1,:)) - 1)
 
     if (present(norm)) then
         if (norm == 1) call PlmBar(pl, lmax_comp, x, csphase = phase)
@@ -113,7 +113,7 @@ real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 
     expand = 0.0d0
 
-    ! Precompute sines and cosines. Use multiple angle identity to minimize 
+    ! Precompute sines and cosines. Use multiple angle identity to minimize
     ! number of calls to SIN and COS.
     sinm(1) = 0.0d0
     cosm(1) = 1.0d0
@@ -131,14 +131,14 @@ real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 
     do l = lmax_comp, 0, -1
         l1 = l + 1
-        index = (l+1)*l/2 + 1
+        index = (l+1) * l / 2 + 1
         expand = expand + cilm(1,l1,1) * pl(index)
 
         do m = 1, l, 1
             m1 = m + 1
             index = index + 1
-            expand = expand + ( cilm(1,l1,m1) * cosm(m1) + &
-                     cilm(2,l1,m1) * sinm(m1) ) * pl(index)
+            expand = expand + (cilm(1,l1,m1) * cosm(m1) + &
+                               cilm(2,l1,m1) * sinm(m1)) * pl(index)
         end do
 
     end do

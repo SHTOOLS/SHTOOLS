@@ -436,6 +436,230 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(east,west,interval),intent(hide) :: grid_d1 = (east-west)/interval + 1
         end subroutine MakeGrid2d
 
+        subroutine SHRead(exitstatus,filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pyshread
+            integer, intent(out) :: exitstatus
+            character*(*) intent(in) :: filename
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            integer intent(out) :: lmax
+            integer intent(in)  :: lmax_in
+            integer, optional,intent(in) :: skip = 0
+            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
+            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
+        end subroutine SHRead
+
+        subroutine SHReadH(exitstatus,filename,cilm,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pyshreadh
+            integer, intent(out) :: exitstatus
+            character*(*) intent(in) :: filename
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            integer intent(out) :: lmax
+            integer intent(in)  :: lmax_in
+            integer, intent(in) :: nheader
+            real*8 intent(out), dimension(nheader) :: header
+            integer, optional,intent(in) :: skip = 0
+            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
+            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
+        end subroutine SHReadH
+
+        subroutine SHReadError(exitstatus,filename,cilm,error,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
+            fortranname pyshreaderror
+            integer, intent(out) :: exitstatus
+            character*(*) intent(in) :: filename
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            real*8 dimension(error_d0,error_d1,error_d2),intent(out) :: error
+            integer intent(out) :: lmax
+            integer intent(in)  :: lmax_in
+            integer, optional,intent(in) :: skip = 0
+            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
+            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
+            integer, optional,intent(in),depend(cilm_d0),intent(hide) :: error_d0 = cilm_d0
+            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1 = cilm_d1
+            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2 = cilm_d2
+        end subroutine SHReadError
+
+        subroutine SHReadErrorH(exitstatus,filename,cilm,error,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
+            fortranname pyshreaderrorh
+            integer, intent(out) :: exitstatus
+            character*(*) intent(in) :: filename
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            real*8 dimension(error_d0,error_d1,error_d2),intent(out) :: error
+            integer intent(out) :: lmax
+            integer intent(in)  :: lmax_in
+            integer, intent(in) :: nheader
+            real*8, intent(out),dimension(nheader) :: header
+            integer, optional,intent(in) :: skip = 0
+            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
+            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
+            integer, optional,intent(in),depend(cilm_d0),intent(hide) :: error_d0 = cilm_d0
+            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1 = cilm_d1
+            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2 = cilm_d2
+        end subroutine SHReadErrorH
+
+        subroutine SHRead2(exitstatus,filename,cilm,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,dot_d0,dot_d1,dot_d2)
+            fortranname pyshread2
+            integer, intent(out) :: exitstatus
+            character*(*) intent(in) :: filename
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            integer intent(out) :: lmax
+            integer, intent(in) :: lmax_in
+            real*8 intent(out) :: gm
+            real*8 intent(out) :: r0_pot
+            real*8, dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
+            real*8, intent(out) :: doystart
+            real*8, intent(out) :: doyend
+            real*8, intent(out) :: epoch
+            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),intent(hide),depend(lmax_in),check(lmax_in>=0) :: cilm_d1 = lmax_in + 1
+            integer, optional,intent(in),intent(hide),depend(cilm_d1) :: cilm_d2=cilm_d1
+            integer, optional,intent(in),intent(hide) :: dot_d0 = 2
+            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: dot_d1 = cilm_d1
+            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: dot_d2 = cilm_d1
+        end subroutine SHRead2
+
+        subroutine SHRead2Error(exitstatus,filename,cilm,error,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2)
+            fortranname pyshread2error
+            integer, intent(out) :: exitstatus
+            character*(*) intent(in) :: filename
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
+            integer intent(out) :: lmax
+            integer, intent(in) :: lmax_in
+            real*8 intent(out) :: gm
+            real*8 intent(out) :: r0_pot
+            real*8, dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
+            real*8, intent(out) :: doystart
+            real*8, intent(out) :: doyend
+            real*8, intent(out) :: epoch
+            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer optional,intent(in),intent(hide),depend(lmax_in),check(lmax_in>=0) :: cilm_d1 = lmax_in + 1
+            integer, optional,intent(in),intent(hide),depend(cilm_d1) :: cilm_d2=cilm_d1
+            integer, optional,intent(in),intent(hide) :: error_d0=2
+            integer, optioanl,intent(in),depend(cilm_d1),intent(hide) :: error_d1=cilm_d1
+            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2=cilm_d2
+            integer, optional,intent(in),intent(hide) :: dot_d0=2
+            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: dot_d1=cilm_d1
+            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: dot_d2=cilm_d1
+        end subroutine SHRead2Error
+
+        subroutine SHReadJPL(exitstatus,filename,cilm,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pyshreadjpl
+            integer, intent(out) :: exitstatus
+            character*(*) intent(in) :: filename
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            integer intent(out) :: lmax
+            integer intent(out) :: lmax_in
+            real*8, dimension(2),intent(out) :: gm
+            character*6, optional,intent(in) :: formatstring = 'E19.12'
+            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0):: cilm_d1 = lmax_in + 1
+            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: cilm_d2=cilm_d1
+        end subroutine SHReadJPL
+
+        subroutine SHReadJPLError(exitstatus,filename,cilm,error,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
+            fortranname pyshreadjplerror
+            integer, intent(out) :: exitstatus
+            character*(*) intent(in) :: filename
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
+            integer intent(out) :: lmax
+            integer intent(out) :: lmax_in
+            real*8, dimension(2),intent(out) :: gm
+            character*6, optional,intent(in) :: formatstring = 'E19.12'
+            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0):: cilm_d1 = lmax_in + 1
+            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: cilm_d2 = cilm_d1
+            integer, optional,intent(in),intent(hide) :: error_d0 = 2
+            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1 = cilm_d1
+            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2 = cilm_d2
+        end subroutine SHReadJPLError
+
+        subroutine SHCilmToVector(exitstatus,cilm,vector,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pyshcilmtovector
+            integer, intent(out) :: exitstatus
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+            real*8 dimension(vector_d0),intent(out) :: vector
+            integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: vector_d0 = (lmax+1)*(lmax+1)
+            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
+            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
+            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
+        end subroutine SHCilmToVector
+
+        subroutine SHVectorToCilm(exitstatus,vector,cilm,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pyshvectortocilm
+            integer, intent(out) :: exitstatus
+            real*8 dimension(vector_d0),intent(in) :: vector
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            integer optional,intent(in),depend(vector_d0) :: lmax = sqrt(vector_d0)-1
+            integer, optional,intent(in),check(len(vector)>=vector_d0),depend(vector),intent(hide) :: vector_d0=len(vector)
+            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: cilm_d1 = lmax+1
+            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d2 = lmax+1
+        end subroutine SHVectorToCilm
+
+        subroutine SHCilmToCindex(exitstatus,cilm,cindex,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pyshcilmtocindex
+            integer, intent(out) :: exitstatus
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+            real*8 dimension(cindex_d0,cindex_d1),intent(out) :: cindex
+            integer, optional,intent(in),depend(cilm_d1) :: degmax = cilm_d1-1
+            integer, optional,intent(in),intent(hide) :: cindex_d0 = 2
+            integer, optional,intent(in),depend(degmax),intent(hide),check(degmax>=0) :: cindex_d1 = (degmax+1)*(degmax+2)/2
+            integer, optional,intent(in),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
+            integer, optional,intent(in),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
+            integer, optional,intent(in),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
+        end subroutine SHCilmToCindex
+
+        subroutine SHCindexToCilm(exitstatus,cindex,cilm,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pyshcindextocilm
+            integer, intent(out) :: exitstatus
+            real*8 dimension(cindex_d0,cindex_d1),intent(in) :: cindex
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+            integer, optional,intent(in),depend(cindex_d1) :: degmax = (-3+sqrt(1+8*cindex_d1))/2
+            integer, optional,intent(in),check(shape(cindex,0)==cindex_d0),depend(cindex),intent(hide) :: cindex_d0=shape(cindex,0)
+            integer, optional,intent(in),check(shape(cindex,1)==cindex_d1),depend(cindex),intent(hide) :: cindex_d1=shape(cindex,1)
+            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
+            integer, optional,intent(in),depend(degmax),intent(hide),check(degmax>=0) :: cilm_d1 = degmax+1
+            integer, optional,intent(in),depend(degmax),intent(hide) :: cilm_d2 = degmax+1
+        end subroutine SHCindexToCilm
+
+        subroutine SHrtoc(exitstatus,rcilm,ccilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
+            fortranname pyshrtoc
+            integer, intent(out) :: exitstatus
+            real*8 dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
+            real*8 dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
+            integer, optional,intent(in),depend(rcilm_d1) :: degmax = rcilm_d1-1
+            integer, optional,intent(in) :: convention = 1
+            integer, optional,intent(in) :: switchcs = 0
+            integer, optional,intent(in),check(shape(rcilm,0)==rcilm_d0),depend(rcilm),intent(hide) :: rcilm_d0=shape(rcilm,0)
+            integer, optional,intent(in),check(shape(rcilm,1)==rcilm_d1),depend(rcilm),intent(hide) :: rcilm_d1=shape(rcilm,1)
+            integer, optional,intent(in),check(shape(rcilm,2)==rcilm_d2),depend(rcilm),intent(hide) :: rcilm_d2=shape(rcilm,2)
+            integer, optional,intent(in),depend(rcilm_d0),intent(hide) :: ccilm_d0 = rcilm_d0
+            integer, optional,intent(in),depend(rcilm_d1),intent(hide) :: ccilm_d1 = rcilm_d1
+            integer, optional,intent(in),depend(rcilm_d2),intent(hide) :: ccilm_d2 = rcilm_d2
+        end subroutine SHrtoc
+
+        subroutine SHctor(exitstatus,ccilm,rcilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
+            fortranname pyshctor
+            integer, intent(out) :: exitstatus
+            real*8 dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
+            real*8 dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
+            integer, optional,intent(in),depend(ccilm_d1) :: degmax = ccilm_d1-1
+            integer, optional,intent(in) :: convention = 1
+            integer, optional,intent(in) :: switchcs = 0
+            integer, optional,intent(in),depend(ccilm_d0),intent(hide) :: rcilm_d0 = ccilm_d0
+            integer, optional,intent(in),depend(ccilm_d1),intent(hide) :: rcilm_d1 = ccilm_d1
+            integer, optional,intent(in),depend(ccilm_d2),intent(hide) :: rcilm_d2 = ccilm_d2
+            integer, optional,intent(in),check(shape(ccilm,0)==ccilm_d0),depend(ccilm),intent(hide) :: ccilm_d0=shape(ccilm,0)
+            integer, optional,intent(in),check(shape(ccilm,1)==ccilm_d1),depend(ccilm),intent(hide) :: ccilm_d1=shape(ccilm,1)
+            integer, optional,intent(in),check(shape(ccilm,2)==ccilm_d2),depend(ccilm),intent(hide) :: ccilm_d2=shape(ccilm,2)
+        end subroutine SHctor
+
         subroutine CilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
             fortranname pycilmplusdh
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
@@ -561,66 +785,6 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(rho,0)==rho_d0),depend(rho) :: rho_d0=shape(rho,0)
             integer, optional,intent(in),check(shape(rho,1)==rho_d1),depend(rho) :: rho_d1=shape(rho,1)
         end subroutine BAtoHilmRhoHDH
-
-        subroutine SHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2)
-            fortranname pyshread
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer intent(out) :: lmax
-            integer intent(in)  :: lmax_in
-            integer, optional,intent(in) :: skip = 0
-            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d1 = lmax_in+1
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
-        end subroutine SHRead
-        
-        subroutine SHReadH(filename,cilm,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2)
-            fortranname pyshreadh
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer intent(out) :: lmax
-            integer intent(in)  :: lmax_in
-            integer, intent(in) :: nheader
-            real*8 intent(out), dimension(nheader) :: header
-            integer, optional,intent(in) :: skip = 0
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d1 = lmax_in+1
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
-        end subroutine SHReadH
-
-        subroutine SHReadError(filename,cilm,error,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
-            fortranname pyshreaderror
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            real*8 dimension(error_d0,error_d1,error_d2),intent(out) :: error
-            integer intent(out) :: lmax
-            integer intent(in)  :: lmax_in
-            integer, optional,intent(in) :: skip = 0          
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d1 = lmax_in+1
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
-            integer, optional,intent(in),depend(cilm_d0),intent(hide) :: error_d0 = cilm_d0
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1 = cilm_d1
-            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2 = cilm_d2
-        end subroutine SHReadError
-
-        subroutine SHReadErrorH(filename,cilm,error,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
-            fortranname pyshreaderrorh
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            real*8 dimension(error_d0,error_d1,error_d2),intent(out) :: error
-            integer intent(out) :: lmax
-            integer intent(in)  :: lmax_in
-            integer, intent(in) :: nheader
-            real*8, intent(out),dimension(nheader) :: header
-            integer, optional,intent(in) :: skip = 0          
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d1 = lmax_in+1
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
-            integer, optional,intent(in),depend(cilm_d0),intent(hide) :: error_d0 = cilm_d0
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1 = cilm_d1
-            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2 = cilm_d2
-        end subroutine SHReadErrorH
 
         subroutine MakeMagGridDH(cilm,lmax,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,total_d0,total_d1,cilm_d0,cilm_d1,cilm_d2,rad_d0,rad_d1,theta_d0,theta_d1,phi_d0,phi_d1)
             fortranname pymakemaggriddh
@@ -757,60 +921,6 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax),intent(hide) :: dj_d1 = lmax+1
             integer, optional,intent(in),depend(lmax),intent(hide) :: dj_d2 = lmax+1
         end subroutine djpi2
-
-        subroutine SHrtoc(rcilm,ccilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
-            fortranname pyshrtoc
-            real*8 dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
-            real*8 dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
-            integer, optional,intent(in),depend(rcilm_d1) :: degmax = rcilm_d1-1
-            integer, optional,intent(in) :: convention = 1
-            integer, optional,intent(in) :: switchcs = 0
-            integer, optional,intent(in),check(shape(rcilm,0)==rcilm_d0),depend(rcilm),intent(hide) :: rcilm_d0=shape(rcilm,0)
-            integer, optional,intent(in),check(shape(rcilm,1)==rcilm_d1),depend(rcilm),intent(hide) :: rcilm_d1=shape(rcilm,1)
-            integer, optional,intent(in),check(shape(rcilm,2)==rcilm_d2),depend(rcilm),intent(hide) :: rcilm_d2=shape(rcilm,2)
-            integer, optional,intent(in),depend(rcilm_d0),intent(hide) :: ccilm_d0 = rcilm_d0
-            integer, optional,intent(in),depend(rcilm_d1),intent(hide) :: ccilm_d1 = rcilm_d1
-            integer, optional,intent(in),depend(rcilm_d2),intent(hide) :: ccilm_d2 = rcilm_d2
-        end subroutine SHrtoc
-
-        subroutine SHctor(ccilm,rcilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
-            fortranname pyshctor
-            real*8 dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
-            real*8 dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
-            integer, optional,intent(in),depend(ccilm_d1) :: degmax = ccilm_d1-1
-            integer, optional,intent(in) :: convention = 1
-            integer, optional,intent(in) :: switchcs = 0
-            integer, optional,intent(in),depend(ccilm_d0),intent(hide) :: rcilm_d0 = ccilm_d0
-            integer, optional,intent(in),depend(ccilm_d1),intent(hide) :: rcilm_d1 = ccilm_d1
-            integer, optional,intent(in),depend(ccilm_d2),intent(hide) :: rcilm_d2 = ccilm_d2
-            integer, optional,intent(in),check(shape(ccilm,0)==ccilm_d0),depend(ccilm),intent(hide) :: ccilm_d0=shape(ccilm,0)
-            integer, optional,intent(in),check(shape(ccilm,1)==ccilm_d1),depend(ccilm),intent(hide) :: ccilm_d1=shape(ccilm,1)
-            integer, optional,intent(in),check(shape(ccilm,2)==ccilm_d2),depend(ccilm),intent(hide) :: ccilm_d2=shape(ccilm,2)
-        end subroutine SHctor
-
-        subroutine SHCilmToCindex(cilm,cindex,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2)
-            fortranname pyshcilmtocindex
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            real*8 dimension(cindex_d0,cindex_d1),intent(out) :: cindex
-            integer, optional,intent(in),depend(cilm_d1) :: degmax = cilm_d1-1
-            integer, optional,intent(in),intent(hide) :: cindex_d0 = 2
-            integer, optional,intent(in),depend(degmax),intent(hide) :: cindex_d1 = (degmax+1)*(degmax+2)/2
-            integer, optional,intent(in),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
-            integer, optional,intent(in),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
-            integer, optional,intent(in),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
-        end subroutine SHCilmToCindex
-
-        subroutine SHCindexToCilm(cindex,cilm,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2)
-            fortranname pyshcindextocilm
-            real*8 dimension(cindex_d0,cindex_d1),intent(in) :: cindex
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer, optional,intent(in),depend(cindex_d1) :: degmax = (-3+sqrt(1+8*cindex_d1))/2
-            integer, optional,intent(in),check(shape(cindex,0)==cindex_d0),depend(cindex),intent(hide) :: cindex_d0=shape(cindex,0)
-            integer, optional,intent(in),check(shape(cindex,1)==cindex_d1),depend(cindex),intent(hide) :: cindex_d1=shape(cindex,1)
-            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(degmax),intent(hide) :: cilm_d1 = degmax+1
-            integer, optional,intent(in),depend(degmax),intent(hide) :: cilm_d2 = degmax+1
-        end subroutine SHCindexToCilm
 
         subroutine SHRotateCoef(x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1)
             fortranname pyshrotatecoef
@@ -1120,80 +1230,6 @@ python module _SHTOOLS
             integer, optional,intent(in),check(mtse_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
         end subroutine SHMultiTaperMaskCSE
 
-        subroutine SHReadJPL(filename,cilm,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2)
-            fortranname pyshreadjpl
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer intent(out) :: lmax
-            integer intent(out) :: lmax_in
-            real*8, dimension(2),intent(out) :: gm
-            character*6, optional,intent(in) :: formatstring = 'E19.12'
-            integer, optional,intent(in),intent(hide) :: cilm_d0=2
-            integer, optional,intent(in),depend(lmax_in),intent(hide):: cilm_d1 = lmax_in + 1
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: cilm_d2=cilm_d1
-        end subroutine SHReadJPL
-
-        subroutine SHReadJPLError(filename,cilm,error,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
-            fortranname pyshreadjplerror
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
-            integer intent(out) :: lmax
-            integer intent(out) :: lmax_in
-            real*8, dimension(2),intent(out) :: gm
-            character*6, optional,intent(in) :: formatstring = 'E19.12'
-            integer, optional,intent(in),intent(hide) :: cilm_d0=2
-            integer, optional,intent(in),depend(lmax_in),intent(hide):: cilm_d1 = lmax_in + 1
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: cilm_d2=cilm_d1
-            integer, optional,intent(in),intent(hide) :: error_d0=2
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1=cilm_d1
-            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2=cilm_d2
-        end subroutine SHReadJPLError
-
-        subroutine SHRead2(filename,cilm,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,dot_d0,dot_d1,dot_d2)
-            fortranname pyshread2
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer intent(out) :: lmax
-            integer, intent(in) :: lmax_in
-            real*8 intent(out) :: gm
-            real*8 intent(out) :: r0_pot
-            real*8, dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
-            real*8, intent(out) :: doystart
-            real*8, intent(out) :: doyend
-            real*8, intent(out) :: epoch
-            integer, optional,intent(in),intent(hide) :: cilm_d0=2
-            integer optional,intent(in),intent(hide),depent(lmax_in) :: cilm_d1 = lmax_in + 1
-            integer, optional,intent(in),intent(hide),depent(cilm_d1) :: cilm_d2=cilm_d1
-            integer, optional,intent(in),intent(hide) :: dot_d0=2
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: dot_d1=cilm_d1
-            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: dot_d2=cilm_d1
-        end subroutine SHRead2
-
-        subroutine SHRead2Error(filename,cilm,error,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2)
-            fortranname pyshread2error
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
-            integer intent(out) :: lmax
-            integer, intent(in) :: lmax_in
-            real*8 intent(out) :: gm
-            real*8 intent(out) :: r0_pot
-            real*8, dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
-            real*8, intent(out) :: doystart
-            real*8, intent(out) :: doyend
-            real*8, intent(out) :: epoch
-            integer, optional,intent(in),intent(hide) :: cilm_d0=2
-            integer optional,intent(in),intent(hide),depent(lmax_in) :: cilm_d1 = lmax_in + 1
-            integer, optional,intent(in),intent(hide),depent(cilm_d1) :: cilm_d2=cilm_d1
-            integer, optional,intent(in),intent(hide) :: error_d0=2
-            integer, optioanl,intent(in),depend(cilm_d1),intent(hide) :: error_d1=cilm_d1
-            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2=cilm_d2
-            integer, optional,intent(in),intent(hide) :: dot_d0=2
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: dot_d1=cilm_d1
-            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: dot_d2=cilm_d1
-        end subroutine SHRead2Error
-        
         subroutine MakeGeoidGridDH(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,sampling,order,nlat,nlong,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
             fortranname pymakegeoidgriddh
             real*8 dimension(geoid_d0,geoid_d1),intent(out) :: geoid
@@ -1255,7 +1291,7 @@ python module _SHTOOLS
             real*8 dimension(tapers_d0,tapers_d1),intent(in) :: tapers
             integer dimension(taper_order_d0),intent(in) :: taper_order
             integer optional,intent(in), depend(tapers_d0) :: lwin = tapers_d0 - 1
-            integer optional,intent(in),depent(tapers_d1) :: kmax = tapers_d1
+            integer optional,intent(in),depend(tapers_d1) :: kmax = tapers_d1
             real*8 dimension(Sff_d0),intent(in) :: Sff
             real*8 dimension(var_opt_d0),intent(out) :: var_opt
             real*8 dimension(var_unit_d0),intent(out) :: var_unit
@@ -1505,28 +1541,6 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax,lwin),intent(hide) :: corr_d0 = lmax-lwin+1
             integer, optional,intent(in),depend(lmax,lwin),intent(hide) :: admit_d0 = lmax-lwin+1
         end subroutine SHBiasAdmitCorr
-
-        subroutine SHCilmToVector(cilm,vector,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2)
-            fortranname pyshcilmtovector
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            real*8 dimension(vector_d0),intent(out) :: vector
-            integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
-            integer, optional,intent(in),depend(lmax),intent(hide) :: vector_d0 = (lmax+1)*(lmax+1)
-            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
-            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
-            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
-        end subroutine SHCilmToVector
-
-        subroutine SHVectorToCilm(vector,cilm,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2)
-            fortranname pyshvectortocilm
-            real*8 dimension(vector_d0),intent(in) :: vector
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer optional,intent(in),depend(vector_d0) :: lmax = sqrt(vector_d0)-1
-            integer, optional,intent(in),check(len(vector)>=vector_d0),depend(vector),intent(hide) :: vector_d0=len(vector)
-            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d1 = lmax+1
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d2 = lmax+1
-        end subroutine SHVectorToCilm
 
         subroutine ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1)
             fortranname pycomputedmap

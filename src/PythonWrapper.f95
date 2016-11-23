@@ -533,6 +533,290 @@
                         norm=norm,csphase=csphase,exitstatus=exitstatus)
     end subroutine pySHMultiply
 
+    subroutine pySHRead(exitstatus,filename,cilm,lmax,lmax_in,skip,cilm_d0,&
+                        cilm_d1,cilm_d2)
+        use shtools, only: SHRead
+        implicit none
+        integer, intent(out) :: exitstatus
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, intent(in)  :: lmax_in
+        integer, optional,intent(in) :: skip
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHRead(filename,cilm,lmax,skip=skip, exitstatus=exitstatus)
+    end subroutine pySHRead
+
+    subroutine pySHReadH(exitstatus,filename,cilm,lmax,lmax_in,nheader,header,&
+                         skip,cilm_d0,cilm_d1,cilm_d2)
+        use shtools, only: SHRead
+        implicit none
+        integer, intent(out) :: exitstatus
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, intent(in)  :: lmax_in
+        integer, intent(in) ::  nheader
+        real*8, intent(out), dimension(nheader) :: header
+        integer, optional,intent(in) :: skip
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHRead(filename,cilm,lmax,skip=skip,header=header,&
+                    exitstatus=exitstatus)
+    end subroutine pySHReadH
+
+    subroutine pySHReadError(exitstatus,filename,cilm,error,lmax,lmax_in,skip,&
+                             cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,&
+                             error_d2)
+        use shtools, only: SHRead
+        implicit none
+        integer, intent(out) :: exitstatus
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        integer, intent(out) :: lmax
+        integer, intent(in)  :: lmax_in
+        integer, optional,intent(in) :: skip
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: error_d0
+        integer, intent(in) :: error_d1
+        integer, intent(in) :: error_d2
+        call SHRead(filename,cilm,lmax,skip=skip,error=error,&
+                    exitstatus=exitstatus)
+    end subroutine pySHReadError
+
+    subroutine pySHReadErrorH(exitstatus,filename,cilm,error,lmax,lmax_in,&
+                              nheader,header,skip,cilm_d0,cilm_d1,cilm_d2,&
+                              error_d0,error_d1,error_d2)
+        use shtools, only: SHRead
+        implicit none
+        integer, intent(out) :: exitstatus
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        integer, intent(out) :: lmax
+        integer, intent(in)  :: lmax_in
+        integer, intent(in) :: nheader
+        real*8, dimension(nheader),intent(out) :: header
+        integer, optional,intent(in) :: skip
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: error_d0
+        integer, intent(in) :: error_d1
+        integer, intent(in) :: error_d2
+        call SHRead(filename,cilm,lmax,skip=skip,error=error,header=header,&
+                    exitstatus=exitstatus)
+    end subroutine pySHReadErrorH
+
+    subroutine pySHRead2(exitstatus,filename,cilm,lmax,lmax_in,gm,r0_pot,dot,&
+                         doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,dot_d0,&
+                         dot_d1,dot_d2)
+        use shtools, only: SHRead2
+        implicit none
+        integer, intent(out) :: exitstatus
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, intent(in) :: lmax_in
+        real*8, intent(out) :: gm
+        real*8, intent(out) :: r0_pot
+        real*8, optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
+        real*8, optional,intent(out) :: doystart
+        real*8, optional,intent(out) :: doyend
+        real*8, optional,intent(out) :: epoch
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: dot_d0
+        integer, intent(in) :: dot_d1
+        integer, intent(in) :: dot_d2
+        call SHRead2(filename,cilm,lmax,gm,r0_pot,dot=dot,doystart=doystart, &
+                     doyend=doyend,epoch=epoch,exitstatus=exitstatus)
+    end subroutine pySHRead2
+
+    subroutine pySHRead2Error(exitstatus,filename,cilm,error,lmax,lmax_in,gm,&
+                              r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,&
+                              cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,&
+                              dot_d2)
+        use shtools, only: SHRead2
+        implicit none
+        integer, intent(out) :: exitstatus
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) ::&
+                                                                          error
+        integer, intent(out) :: lmax
+        integer, intent(in) :: lmax_in
+        real*8, intent(out) :: gm
+        real*8, intent(out) :: r0_pot
+        real*8, optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
+        real*8, optional,intent(out) :: doystart
+        real*8, optional,intent(out) :: doyend
+        real*8, optional,intent(out) :: epoch
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: error_d0
+        integer, intent(in) :: error_d1
+        integer, intent(in) :: error_d2
+        integer, intent(in) :: dot_d0
+        integer, intent(in) :: dot_d1
+        integer, intent(in) :: dot_d2
+        call SHRead2(filename,cilm,lmax,gm,r0_pot,error=error,dot=dot, &
+                     doystart=doystart,doyend=doyend,epoch=epoch,&
+                     exitstatus=exitstatus)
+    end subroutine pySHRead2Error
+
+    subroutine pySHReadJPL(exitstatus,filename,cilm,lmax,lmax_in,gm,&
+                           formatstring,cilm_d0,cilm_d1,cilm_d2)
+        use shtools, only: SHReadJPL
+        implicit none
+        integer, intent(out) :: exitstatus
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(out) :: lmax
+        integer, intent(in) :: lmax_in
+        real*8, optional,dimension(2),intent(out) :: gm
+        character*6, optional,intent(in) :: formatstring
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHReadJPL(filename,cilm,lmax,gm=gm,formatstring=formatstring,&
+                       exitstatus=exitstatus)
+    end subroutine pySHReadJPL
+
+    subroutine pySHReadJPLError(exitstatus,filename,cilm,error,lmax,lmax_in,&
+                                gm,formatstring,cilm_d0,cilm_d1,cilm_d2,&
+                                error_d0,error_d1,error_d2)
+        use shtools, only: SHReadJPL
+        implicit none
+        integer, intent(out) :: exitstatus
+        character*(*), intent(in) :: filename
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) ::&
+                                                                          error
+        integer, intent(in) :: lmax
+        integer, intent(in) :: lmax_in
+        real*8, optional,dimension(2),intent(out) :: gm
+        character*6, optional,intent(in) :: formatstring
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: error_d0
+        integer, intent(in) :: error_d1
+        integer, intent(in) :: error_d2
+        call SHReadJPL(filename,cilm,lmax,error=error,gm=gm, &
+                       formatstring=formatstring,exitstatus=exitstatus)
+    end subroutine pySHReadJPLError
+
+    subroutine pySHCilmToVector(exitstatus,cilm,vector,lmax,vector_d0,cilm_d0,&
+                                cilm_d1,cilm_d2)
+        use shtools, only: SHCilmToVector
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        real*8, dimension(vector_d0),intent(out) :: vector
+        integer, intent(in) :: lmax
+        integer, intent(in) :: vector_d0
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHCilmToVector(cilm,vector,lmax,exitstatus=exitstatus)
+    end subroutine pySHCilmToVector
+
+    subroutine pySHVectorToCilm(exitstatus,vector,cilm,lmax,vector_d0,cilm_d0,&
+                                cilm_d1,cilm_d2)
+        use shtools, only: SHVectorToCilm
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(vector_d0),intent(in) :: vector
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, intent(in) :: lmax
+        integer, intent(in) :: vector_d0
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHVectorToCilm(vector,cilm,lmax,exitstatus=exitstatus)
+    end subroutine pySHVectorToCilm
+
+    subroutine pySHCilmToCindex(exitstatus,cilm,cindex,degmax,cindex_d0,&
+                                cindex_d1,cilm_d0,cilm_d1,cilm_d2)
+        use shtools, only: SHCilmToCindex
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        real*8, dimension(cindex_d0,cindex_d1),intent(out) :: cindex
+        integer, optional,intent(in) :: degmax
+        integer, intent(in) :: cindex_d0
+        integer, intent(in) :: cindex_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHCilmToCindex(cilm,cindex,degmax=degmax,exitstatus=exitstatus)
+    end subroutine pySHCilmToCindex
+
+    subroutine pySHCindexToCilm(exitstatus,cindex,cilm,degmax,cindex_d0,&
+                                cindex_d1,cilm_d0,cilm_d1,cilm_d2)
+        use shtools, only: SHCindexToCilm
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cindex_d0,cindex_d1),intent(in) :: cindex
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        integer, optional,intent(in) :: degmax
+        integer, intent(in) :: cindex_d0
+        integer, intent(in) :: cindex_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        call SHCindexToCilm(cindex,cilm,degmax=degmax,exitstatus=exitstatus)
+    end subroutine pySHCindexToCilm
+
+    subroutine pySHrtoc(exitstatus,rcilm,ccilm,degmax,convention,switchcs,&
+                        rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
+        use shtools, only: SHrtoc
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
+        real*8, dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
+        integer, optional,intent(in) :: degmax
+        integer, optional,intent(in) :: convention
+        integer, optional,intent(in) :: switchcs
+        integer, intent(in) :: rcilm_d0
+        integer, intent(in) :: rcilm_d1
+        integer, intent(in) :: rcilm_d2
+        integer, intent(in) :: ccilm_d0
+        integer, intent(in) :: ccilm_d1
+        integer, intent(in) :: ccilm_d2
+        call SHrtoc(rcilm,ccilm,degmax=degmax,convention=convention, &
+                    switchcs=switchcs,exitstatus=exitstatus)
+    end subroutine pySHrtoc
+
+    subroutine pySHctor(exitstatus,ccilm,rcilm,degmax,convention,switchcs,&
+                        rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
+        use shtools, only: SHctor
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
+        real*8, dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
+        integer, optional,intent(in) :: degmax
+        integer, optional,intent(in) :: convention
+        integer, optional,intent(in) :: switchcs
+        integer, intent(in) :: rcilm_d0
+        integer, intent(in) :: rcilm_d1
+        integer, intent(in) :: rcilm_d2
+        integer, intent(in) :: ccilm_d0
+        integer, intent(in) :: ccilm_d1
+        integer, intent(in) :: ccilm_d2
+        call SHctor(ccilm,rcilm,degmax=degmax,convention=convention, &
+                    switchcs=switchcs,exitstatus=exitstatus)
+    end subroutine pySHctor
+
     subroutine pyCilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
                             gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
         use shtools, only: CilmPlus
@@ -714,79 +998,6 @@
         endif
     end subroutine pyBAtoHilmRhoHDH
 
-    subroutine pySHRead(filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1, &
-                        cilm_d2)
-        use shtools, only: SHRead
-        implicit none
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(out) :: lmax
-        integer, intent(in)  :: lmax_in
-        integer, optional,intent(in) :: skip
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        call SHRead(filename,cilm,lmax,skip=skip)
-    end subroutine pySHRead
-
-    subroutine pySHReadH(filename,cilm,lmax,lmax_in,nheader,header,skip, &
-                         cilm_d0,cilm_d1,cilm_d2)
-        use shtools, only: SHRead
-        implicit none
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(out) :: lmax
-        integer, intent(in)  :: lmax_in
-        integer, intent(in) ::  nheader
-        real*8, intent(out), dimension(nheader) :: header
-        integer, optional,intent(in) :: skip
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        call SHRead(filename,cilm,lmax,skip=skip,header=header)
-    end subroutine pySHReadH
-
-    subroutine pySHReadError(filename,cilm,error,lmax,lmax_in,skip,cilm_d0, &
-                             cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
-        use shtools, only: SHRead
-        implicit none
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
-        integer, intent(out) :: lmax
-        integer, intent(in)  :: lmax_in
-        integer, optional,intent(in) :: skip
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: error_d0
-        integer, intent(in) :: error_d1
-        integer, intent(in) :: error_d2
-        call SHRead(filename,cilm,lmax,skip=skip,error=error)
-    end subroutine pySHReadError
-
-    subroutine pySHReadErrorH(filename,cilm,error,lmax,lmax_in,nheader, &
-                              header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0, &
-                              error_d1,error_d2)
-        use shtools, only: SHRead
-        implicit none
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
-        integer, intent(out) :: lmax
-        integer, intent(in)  :: lmax_in
-        integer, intent(in) :: nheader
-        real*8, dimension(nheader),intent(out) :: header
-        integer, optional,intent(in) :: skip
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: error_d0
-        integer, intent(in) :: error_d1
-        integer, intent(in) :: error_d2
-        call SHRead(filename,cilm,lmax,skip=skip,error=error,header=header)
-    end subroutine pySHReadErrorH
-
     subroutine pyMakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid, &
                                total_grid,n,sampling,lmax_calc,total_grid_d0, &
                                total_grid_d1,cilm_d0,cilm_d1,cilm_d2, &
@@ -955,73 +1166,6 @@
         call djpi2(dj,lmax)
     end subroutine pydjpi2
 
-    subroutine pySHrtoc(rcilm,ccilm,degmax,convention,switchcs,rcilm_d0, &
-                        rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
-        use shtools, only: SHrtoc
-        implicit none
-        real*8, dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
-        real*8, dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
-        integer, optional,intent(in) :: degmax
-        integer, optional,intent(in) :: convention
-        integer, optional,intent(in) :: switchcs
-        integer, intent(in) :: rcilm_d0
-        integer, intent(in) :: rcilm_d1
-        integer, intent(in) :: rcilm_d2
-        integer, intent(in) :: ccilm_d0
-        integer, intent(in) :: ccilm_d1
-        integer, intent(in) :: ccilm_d2
-        call SHrtoc(rcilm,ccilm,degmax=degmax,convention=convention, &
-                    switchcs=switchcs)
-    end subroutine pySHrtoc
-
-    subroutine pySHctor(ccilm,rcilm,degmax,convention,switchcs,rcilm_d0, &
-                        rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
-        use shtools, only: SHctor
-        implicit none
-        real*8, dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
-        real*8, dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
-        integer, optional,intent(in) :: degmax
-        integer, optional,intent(in) :: convention
-        integer, optional,intent(in) :: switchcs
-        integer, intent(in) :: rcilm_d0
-        integer, intent(in) :: rcilm_d1
-        integer, intent(in) :: rcilm_d2
-        integer, intent(in) :: ccilm_d0
-        integer, intent(in) :: ccilm_d1
-        integer, intent(in) :: ccilm_d2
-        call SHctor(ccilm,rcilm,degmax=degmax,convention=convention, &
-                    switchcs=switchcs)
-    end subroutine pySHctor
-
-    subroutine pySHCilmToCindex(cilm,cindex,degmax,cindex_d0,cindex_d1, &
-                                cilm_d0,cilm_d1,cilm_d2)
-        use shtools, only: SHCilmToCindex
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        real*8, dimension(cindex_d0,cindex_d1),intent(out) :: cindex
-        integer, optional,intent(in) :: degmax
-        integer, intent(in) :: cindex_d0
-        integer, intent(in) :: cindex_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        call SHCilmToCindex(cilm,cindex,degmax=degmax)
-    end subroutine pySHCilmToCindex
-
-    subroutine pySHCindexToCilm(cindex,cilm,degmax,cindex_d0,cindex_d1, &
-                                cilm_d0,cilm_d1,cilm_d2)
-        use shtools, only: SHCindexToCilm
-        implicit none
-        real*8, dimension(cindex_d0,cindex_d1),intent(in) :: cindex
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, optional,intent(in) :: degmax
-        integer, intent(in) :: cindex_d0
-        integer, intent(in) :: cindex_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        call SHCindexToCilm(cindex,cilm,degmax=degmax)
-    end subroutine pySHCindexToCilm
 
     subroutine pySHRotateCoef(x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1, &
                               dj_d2,cof_d0,cof_d1)
@@ -1469,100 +1613,6 @@
         endif
     end subroutine pySHMultiTaperMaskCSE
 
-    subroutine pySHReadJPL(filename,cilm,lmax,lmax_in,gm,formatstring,cilm_d0,&
-                           cilm_d1,cilm_d2)
-        use shtools, only: SHReadJPL
-        implicit none
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(out) :: lmax
-        integer, intent(in) :: lmax_in
-        real*8, optional,dimension(2),intent(out) :: gm
-        character*6, optional,intent(in) :: formatstring
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        call SHReadJPL(filename,cilm,lmax,gm=gm,formatstring=formatstring)
-    end subroutine pySHReadJPL
-
-    subroutine pySHReadJPLError(filename,cilm,error,lmax,lmax_in,gm, &
-                                formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,&
-                                error_d1,error_d2)
-        use shtools, only: SHReadJPL
-        implicit none
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) ::&
-                                                                          error
-        integer, intent(in) :: lmax
-        integer, intent(in) :: lmax_in
-        real*8, optional,dimension(2),intent(out) :: gm
-        character*6, optional,intent(in) :: formatstring
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: error_d0
-        integer, intent(in) :: error_d1
-        integer, intent(in) :: error_d2
-        call SHReadJPL(filename,cilm,lmax,error=error,gm=gm, &
-                       formatstring=formatstring)
-    end subroutine pySHReadJPLError
-
-    subroutine pySHRead2(filename,cilm,lmax,lmax_in,gm,r0_pot,dot,doystart, &
-                         doyend,epoch,cilm_d0,cilm_d1,cilm_d2,dot_d0,dot_d1, &
-                         dot_d2)
-        use shtools, only: SHRead2
-        implicit none
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(out) :: lmax
-        integer, intent(in) :: lmax_in
-        real*8, intent(out) :: gm
-        real*8, intent(out) :: r0_pot
-        real*8, optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
-        real*8, optional,intent(out) :: doystart
-        real*8, optional,intent(out) :: doyend
-        real*8, optional,intent(out) :: epoch
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: dot_d0
-        integer, intent(in) :: dot_d1
-        integer, intent(in) :: dot_d2
-        call SHRead2(filename,cilm,lmax,gm,r0_pot,dot=dot,doystart=doystart, &
-                     doyend=doyend,epoch=epoch)
-    end subroutine pySHRead2
-
-    subroutine pySHRead2Error(filename,cilm,error,lmax,lmax_in,gm,r0_pot,dot, &
-                              doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2, &
-                              error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2)
-        use shtools, only: SHRead2
-        implicit none
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, optional,dimension(error_d0,error_d1,error_d2),intent(out) ::&
-                                                                          error
-        integer, intent(out) :: lmax
-        integer, intent(in) :: lmax_in
-        real*8, intent(out) :: gm
-        real*8, intent(out) :: r0_pot
-        real*8, optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
-        real*8, optional,intent(out) :: doystart
-        real*8, optional,intent(out) :: doyend
-        real*8, optional,intent(out) :: epoch
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: error_d0
-        integer, intent(in) :: error_d1
-        integer, intent(in) :: error_d2
-        integer, intent(in) :: dot_d0
-        integer, intent(in) :: dot_d1
-        integer, intent(in) :: dot_d2
-        call SHRead2(filename,cilm,lmax,gm,r0_pot,error=error,dot=dot, &
-                     doystart=doystart,doyend=doyend,epoch=epoch)
-    end subroutine pySHRead2Error
-    
     subroutine pyMakeGeoidGridDH(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r, &
                                  sampling,order,nlat,nlong,lmax_calc,a,f, &
                                  cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
@@ -1994,34 +2044,6 @@
                                  mtdef=mtdef,taper_wt=taper_wt)
         endif
     end subroutine pySHBiasAdmitCorr
-
-    subroutine pySHCilmToVector(cilm,vector,lmax,vector_d0,cilm_d0,cilm_d1, &
-                                cilm_d2)
-        use shtools, only: SHCilmToVector
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        real*8, dimension(vector_d0),intent(out) :: vector
-        integer, intent(in) :: lmax
-        integer, intent(in) :: vector_d0
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        call SHCilmToVector(cilm,vector,lmax)
-    end subroutine pySHCilmToVector
-
-    subroutine pySHVectorToCilm(vector,cilm,lmax,vector_d0,cilm_d0, &
-                                cilm_d1,cilm_d2)
-        use shtools, only: SHVectorToCilm
-        implicit none
-        real*8, dimension(vector_d0),intent(in) :: vector
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(in) :: lmax
-        integer, intent(in) :: vector_d0
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        call SHVectorToCilm(vector,cilm,lmax)
-    end subroutine pySHVectorToCilm
 
     subroutine pyComputeDMap(Dij,dh_mask,n_dh,lmax,sampling,dh_mask_d0, &
                              dh_mask_d1,Dij_d0,Dij_d1)

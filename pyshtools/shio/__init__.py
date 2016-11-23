@@ -47,20 +47,20 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from .._SHTOOLS import SHRead
-from .._SHTOOLS import SHReadH
-from .._SHTOOLS import SHReadError
-from .._SHTOOLS import SHReadErrorH
-from .._SHTOOLS import SHRead2
-from .._SHTOOLS import SHRead2Error
-from .._SHTOOLS import SHReadJPL
-from .._SHTOOLS import SHReadJPLError
-from .._SHTOOLS import SHCilmToCindex
-from .._SHTOOLS import SHCindexToCilm
-from .._SHTOOLS import SHCilmToVector
-from .._SHTOOLS import SHVectorToCilm
-from .._SHTOOLS import SHrtoc
-from .._SHTOOLS import SHctor
+from ..shtools import SHRead
+from ..shtools import SHReadH
+from ..shtools import SHReadError
+from ..shtools import SHReadErrorH
+from ..shtools import SHRead2
+from ..shtools import SHRead2Error
+from ..shtools import SHReadJPL
+from ..shtools import SHReadJPLError
+from ..shtools import SHCilmToCindex
+from ..shtools import SHCindexToCilm
+from ..shtools import SHCilmToVector
+from ..shtools import SHVectorToCilm
+from ..shtools import SHrtoc
+from ..shtools import SHctor
 from .icgem import read_icgem_gfc
 
 

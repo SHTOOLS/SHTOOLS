@@ -4,13 +4,13 @@ Convert real spherical harmonics to complex form.
 
 # Usage
 
-call SHrtoc (`rcilm`, `ccilm`, `degmax`, `convention`, `switchcs`)
+call SHrtoc (`rcilm`, `ccilm`, `degmax`, `convention`, `switchcs`, `exitstatus`)
 
 # Parameters
 
 `rcilm` : input, real\*8, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input real spherical harmonic coefficients. `rcilm(1,:,:)` and `rcilm(2,:,:)` correspond to the cosine and sine terms, respectively.
-	
+
 `ccilm` : output, real\*8, dimension (2, `lmaxout`+1, `lmaxout`+1)
 :   The output complex spherical harmonic coefficients. `ccilm(1,:,:)` and `ccilm(2,:,:)` correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are output; the negative orders can be calculated from the relation `C_{l-m}=(-1)^m C_{lm}^*`.
 
@@ -22,6 +22,9 @@ call SHrtoc (`rcilm`, `ccilm`, `degmax`, `convention`, `switchcs`)
 
 `swtichcs` : input, optional, integer, default = 0
 :   If 0 (default), the input and output coefficients will possess the same Condon-Shortley phase convention. If 1, the input coefficients will first be multiplied by (-1)^m.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 
