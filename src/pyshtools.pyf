@@ -967,19 +967,6 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax,m),intent(hide) :: dG82_d1 = lmax-abs(m)+1
         end subroutine ComputeDG82
 
-        subroutine Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0)
-            fortranname pywigner3j
-            real*8 dimension(w3j_d0),intent(out) :: w3j
-            integer intent(out) :: jmin
-            integer intent(out) :: jmax
-            integer intent(in) :: j2
-            integer intent(in) :: j3
-            integer intent(in) :: m1
-            integer intent(in) :: m2
-            integer intent(in) :: m3
-            integer intent(in),intent(hide) :: w3j_d0 = j2+j3+1
-        end subroutine Wigner3j
-
         subroutine SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg,Shh_d0,incspectra_d0,outcspectra_d0)
             fortranname pyshbias
             real*8 dimension(Shh_d0),intent(in) :: Shh
@@ -1230,18 +1217,6 @@ python module _SHTOOLS
             integer optional,intent(in),intent(hide),depend(lmax) :: geoid_d0 = 2*(lmax+1)
             integer optional,intent(in),intent(hide),depend(geoid_d0) :: geoid_d1 = sampling*geoid_d0
         end subroutine MakeGeoidGridDH
-
-        subroutine MakeCircleCoord(coord,lat,lon,theta0,cinterval,cnum,coord_d0,coord_d1)
-            fortranname pymakecirclecoord
-            real*8 dimension(coord_d0,coord_d1),intent(out) :: coord
-            real*8 intent(in) :: lat
-            real*8 intent(in) :: lon
-            real*8 intent(in) :: theta0
-            real*8, optional,intent(in) :: cinterval = 1.0
-            integer,intent(hide) :: cnum
-            integer intent(in),intent(hide),depend(cinterval) :: coord_d0 = (int)(360.0/cinterval)
-            integer intent(in),intent(hide) :: coord_d1 = 2
-        end subroutine MakeCircleCoord
 
         subroutine SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,eigenvalues_d0,tapers_d0,tapers_d1,taper_order_d0)
             fortranname pyshreturntapers
@@ -1597,20 +1572,6 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(n,sampling),intent(hide) :: dhgrid_d1 = n*sampling
         end subroutine Curve2Mask
 
-        subroutine MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval,cnum,coord_d0,coord_d1)
-            fortranname pymakeellipsecoord
-            real*8 dimension(coord_d0,coord_d1),intent(out) :: coord
-            real*8 intent(in) :: lat
-            real*8 intent(in) :: lon
-            real*8 intent(in) :: dec
-            real*8 intent(in) :: A_theta
-            real*8 intent(in) :: B_theta
-            real*8, optional,intent(in) :: cinterval = 1.0
-            integer, intent(hide) :: cnum
-            integer intent(in),intent(hide),depend(interval) :: coord_d0 = (int)(360.0/cinterval)
-            integer intent(in),intent(hide) :: coord_d1 = 2
-        end subroutine MakeEllipseCoord
-
         subroutine MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc,vyz_d0,vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1)
             fortranname pymakegravgradgriddh
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
@@ -1644,7 +1605,49 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax),intent(hide) :: vxz_d0=2*(lmax+1)
             integer, optional,intent(in),depend(vxz_d0,sampling),intent(hide) :: vxz_d1=sampling*vxz_d0
         end subroutine MakeGravGradGridDH
-        
-    end interface 
-    
+
+        subroutine MakeCircleCoord(exitstatus,coord,lat,lon,theta0,cinterval,cnum,coord_d0,coord_d1)
+            fortranname pymakecirclecoord
+            integer, intent(out) :: exitstatus
+            real*8 dimension(coord_d0,coord_d1),intent(out) :: coord
+            real*8 intent(in) :: lat
+            real*8 intent(in) :: lon
+            real*8 intent(in) :: theta0
+            real*8, optional,intent(in) :: cinterval = 1.0
+            integer,intent(hide) :: cnum
+            integer intent(in),intent(hide),depend(cinterval),check(cinterval>=0) :: coord_d0 = (int)(360.0/cinterval)
+            integer intent(in),intent(hide) :: coord_d1 = 2
+        end subroutine MakeCircleCoord
+
+        subroutine MakeEllipseCoord(exitstatus,coord,lat,lon,dec,A_theta,B_theta,cinterval,cnum,coord_d0,coord_d1)
+            fortranname pymakeellipsecoord
+            integer, intent(out) :: exitstatus
+            real*8 dimension(coord_d0,coord_d1),intent(out) :: coord
+            real*8 intent(in) :: lat
+            real*8 intent(in) :: lon
+            real*8 intent(in) :: dec
+            real*8 intent(in) :: A_theta
+            real*8 intent(in) :: B_theta
+            real*8, optional,intent(in) :: cinterval = 1.0
+            integer, intent(hide) :: cnum
+            integer intent(in),intent(hide),depend(cinterval),check(cinterval>=0) :: coord_d0 = (int)(360.0/cinterval)
+            integer intent(in),intent(hide) :: coord_d1 = 2
+        end subroutine MakeEllipseCoord
+
+        subroutine Wigner3j(exitstatus,w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0)
+            fortranname pywigner3j
+            integer, intent(out) :: exitstatus
+            real*8 dimension(w3j_d0),intent(out) :: w3j
+            integer intent(out) :: jmin
+            integer intent(out) :: jmax
+            integer intent(in) :: j2
+            integer intent(in) :: j3
+            integer intent(in) :: m1
+            integer intent(in) :: m2
+            integer intent(in) :: m3
+            integer intent(in),intent(hide) :: w3j_d0 = j2+j3+1
+        end subroutine Wigner3j
+
+    end interface
+
 end python module _SHTOOLS

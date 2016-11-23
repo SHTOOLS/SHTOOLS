@@ -1241,21 +1241,6 @@
         call ComputeDG82(dG82,lmax,m,theta0)
     end subroutine pyComputeDG82
 
-    subroutine pyWigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0)
-        use shtools, only: Wigner3j
-        implicit none
-        real*8, dimension(w3j_d0),intent(out) :: w3j
-        integer, intent(out) :: jmin
-        integer, intent(out) :: jmax
-        integer, intent(in) :: j2
-        integer, intent(in) :: j3
-        integer, intent(in) :: m1
-        integer, intent(in) :: m2
-        integer, intent(in) :: m3
-        integer, intent(in) :: w3j_d0
-        call Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3)
-    end subroutine pyWigner3j
-
     subroutine pySHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg,Shh_d0, &
                         incspectra_d0,outcspectra_d0)
         use shtools, only: SHBias
@@ -1641,22 +1626,6 @@
                            nlat,nlong,interval=interval,lmax_calc=lmax_calc, &
                            a=a,f=f)
     end subroutine pyMakeGeoidGrid2D
-
-    subroutine pyMakeCircleCoord(coord,lat,lon,theta0,cinterval,cnum, &
-                                 coord_d0,coord_d1)
-        use shtools, only: MakeCircleCoord
-        implicit none
-        real*8, dimension(coord_d0,coord_d1),intent(out) :: coord
-        real*8, intent(in) :: lat
-        real*8, intent(in) :: lon
-        real*8, intent(in) :: theta0
-        real*8, optional,intent(in) :: cinterval
-        integer, optional,intent(out) :: cnum
-        integer, intent(in) :: coord_d0
-        integer, intent(in) :: coord_d1
-        call MakeCircleCoord(coord,lat,lon,theta0,cinterval=cinterval,&
-                             cnum=cnum)
-    end subroutine pyMakeCircleCoord
 
     subroutine pySHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order, &
                                 eigenvalues_d0,tapers_d0,tapers_d1, &
@@ -2111,24 +2080,6 @@
                         centralmeridian=centralmeridian)
     end subroutine pyCurve2Mask
 
-    subroutine pyMakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval,&
-                                  cnum,coord_d0,coord_d1)
-        use shtools, only: MakeEllipseCoord
-        implicit none
-        real*8, dimension(coord_d0,coord_d1),intent(out) :: coord
-        real*8, intent(in) :: lat
-        real*8, intent(in) :: lon
-        real*8, intent(in) :: dec
-        real*8, intent(in) :: A_theta
-        real*8, intent(in) :: B_theta
-        real*8, optional,intent(in) :: cinterval
-        integer, optional,intent(out) :: cnum
-        integer, intent(in) :: coord_d0
-        integer, intent(in) :: coord_d1
-        call MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta, &
-                                cinterval=cinterval,cnum=cnum)
-    end subroutine pyMakeEllipseCoord
-
     subroutine pyMakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz, &
                                     vyz,n,sampling,lmax_calc,vyz_d0,vyz_d1, &
                                     vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2, &
@@ -2169,3 +2120,55 @@
         call MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,&
                                 sampling=sampling,lmax_calc=lmax_calc)
     end subroutine pyMakeGravGradGridDH
+
+    subroutine pyMakeCircleCoord(exitstatus,coord,lat,lon,theta0,cinterval,cnum, &
+                                 coord_d0,coord_d1)
+        use shtools, only: MakeCircleCoord
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(coord_d0,coord_d1),intent(out) :: coord
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: lon
+        real*8, intent(in) :: theta0
+        real*8, optional,intent(in) :: cinterval
+        integer, optional,intent(out) :: cnum
+        integer, intent(in) :: coord_d0
+        integer, intent(in) :: coord_d1
+        call MakeCircleCoord(coord,lat,lon,theta0,cinterval=cinterval,&
+                             cnum=cnum, exitstatus=exitstatus)
+    end subroutine pyMakeCircleCoord
+
+    subroutine pyMakeEllipseCoord(exitstatus,coord,lat,lon,dec,A_theta,B_theta,cinterval,&
+                                  cnum,coord_d0,coord_d1)
+        use shtools, only: MakeEllipseCoord
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(coord_d0,coord_d1),intent(out) :: coord
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: lon
+        real*8, intent(in) :: dec
+        real*8, intent(in) :: A_theta
+        real*8, intent(in) :: B_theta
+        real*8, optional,intent(in) :: cinterval
+        integer, optional,intent(out) :: cnum
+        integer, intent(in) :: coord_d0
+        integer, intent(in) :: coord_d1
+        call MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta, &
+                                cinterval=cinterval,cnum=cnum, exitstatus=exitstatus)
+    end subroutine pyMakeEllipseCoord
+
+    subroutine pyWigner3j(exitstatus,w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0)
+        use shtools, only: Wigner3j
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(w3j_d0),intent(out) :: w3j
+        integer, intent(out) :: jmin
+        integer, intent(out) :: jmax
+        integer, intent(in) :: j2
+        integer, intent(in) :: j3
+        integer, intent(in) :: m1
+        integer, intent(in) :: m2
+        integer, intent(in) :: m3
+        integer, intent(in) :: w3j_d0
+        call Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3, exitstatus=exitstatus)
+    end subroutine pyWigner3j

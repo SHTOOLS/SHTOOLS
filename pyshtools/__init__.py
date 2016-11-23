@@ -23,11 +23,11 @@ main namespace:
     rotate - Spherical harmonic rotation routines.
     gravmag - Gravity and magnetics routines.
     constant - pyshtools constants.
-    utils - Other routines.
+    utils - Python utilities.
 
 For further information, consult the web documentation at
 
-   http://shtools.ipgp.fr/
+   https://shtools.oca.eu/
 
 and the GitHub project page at
 

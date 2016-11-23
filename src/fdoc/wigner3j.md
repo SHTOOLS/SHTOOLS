@@ -4,13 +4,13 @@ Compute the Wigner-3j symbols for all allowable values of J.
 
 # Usage
 
-call Wigner3j (`w3j`, `jmin`, `jmax`, `j2`, `j3`, `m1`, `m2`, `m3`)
+call Wigner3j (`w3j`, `jmin`, `jmax`, `j2`, `j3`, `m1`, `m2`, `m3`, `exitstatus`)
 
 # Parameters
 
 `w3j` : output, real\*8, dimension (`j2`+`j3`+1)
 :   An array of the Wigner-3j symbols evaluated for all allowable values of `j`. The minimum and maximum values of `j` are given by `jmin` and `jmax`.
-	
+
 `jmin` : output, integer
 :   The minimum value of `j` in the array `w3j`. This corresponds to the first element of `w3j`.
 
@@ -32,12 +32,14 @@ call Wigner3j (`w3j`, `jmin`, `jmax`, `j2`, `j3`, `m1`, `m2`, `m3`)
 `m3` : input, integer
 :   An integer.
 
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 # Description
 
 `Wigner3j` will calculate the Wigner 3J symbols
 
-`/ j  j2 j3 \`   
-`\ m1 m2 m3 /`  
+`/ j  j2 j3 \`
+`\ m1 m2 m3 /`
 
 for all allowable values of `j`. The returned values in the array `w3j` are calculated only for the limits
 

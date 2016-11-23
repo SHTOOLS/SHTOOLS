@@ -4,13 +4,13 @@ Compute the coordinates of an ellipse placed at a given latitude and longitude.
 
 # Usage
 
-call MakeEllipseCoord (`coord`, `lat`, `lon`, `dec`, `a_theta`, `b_theta`, `cinterval`, `cnum`) 
+call MakeEllipseCoord (`coord`, `lat`, `lon`, `dec`, `a_theta`, `b_theta`, `cinterval`, `cnum`, `exitstatus`)
 
 # Parameters
 
 `coord` : output, real*8, dimension(360/`cinterval`, 2)
 :   The latitude (:,1) and longitude (:,2) coordinates of the ellipse in degrees.
-	
+
 `lat` : input, real\*8
 :   The latitude of the center of the ellipse in degrees.
 
@@ -31,6 +31,9 @@ call MakeEllipseCoord (`coord`, `lat`, `lon`, `dec`, `a_theta`, `b_theta`, `cint
 
 `cnum` : optional, output, integer
 :   Number of elements in the output arrays.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

@@ -552,12 +552,6 @@ module SHTOOLS
             integer(K4B), intent(inout) ::  idum
         end function RandomGaussian
 
-        subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3)
-            integer, intent(in) ::  j2, j3, m1, m2, m3
-            integer, intent(out) :: jmin, jmax
-            real*8, intent(out) ::  w3j(:)
-        end subroutine Wigner3j
-
         subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg)
             real*8, intent(in) ::   Shh(:), incspectra(:)
             real*8, intent(out) ::  outcspectra(:)
@@ -649,13 +643,6 @@ module SHTOOLS
             integer, intent(out) :: nlat, nlong
             real*8, intent(in), optional :: interval, a, f
         end subroutine MakeGeoidGrid
-
-        subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum)
-            real*8, intent(in) ::   lat, lon, theta0
-            real*8, intent(out) :: coord(:,:)
-            real*8, intent(in), optional :: cinterval
-            integer, intent(out), optional :: cnum
-        end subroutine MakeCircleCoord
 
         subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, &
                                   taper_order)
@@ -822,14 +809,6 @@ module SHTOOLS
             integer, intent(in), optional :: centralmeridian
         end subroutine Curve2Mask
 
-        subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
-                                    cinterval, cnum)
-            real*8, intent(in) ::   lat, lon, A_theta, B_theta, dec
-            real*8, intent(out) :: coord(:,:)
-            real*8, intent(in), optional :: cinterval
-            integer, intent(out), optional :: cnum
-        end subroutine MakeEllipseCoord
-
         subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, &
                                       vzz, vxy, vxz, vyz, n, sampling, &
                                       lmax_calc)
@@ -840,6 +819,29 @@ module SHTOOLS
             integer, intent(out) :: n
             integer, intent(in), optional :: sampling, lmax_calc
         end subroutine MakeGravGradGridDH
+
+        subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
+                                   exitstatus)
+            real*8, intent(in) :: lat, lon, theta0
+            real*8, intent(out) :: coord(:,:)
+            real*8, intent(in), optional :: cinterval
+            integer, intent(out), optional :: cnum, exitstatus
+        end subroutine MakeCircleCoord
+
+        subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
+                                    cinterval, cnum, exitstatus)
+            real*8, intent(in) :: lat, lon, A_theta, B_theta, dec
+            real*8, intent(out) :: coord(:,:)
+            real*8, intent(in), optional :: cinterval
+            integer, intent(out), optional :: cnum, exitstatus
+        end subroutine MakeEllipseCoord
+
+        subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
+            integer, intent(in) :: j2, j3, m1, m2, m3
+            integer, intent(out) :: jmin, jmax
+            real*8, intent(out) :: w3j(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine Wigner3j
 
     end interface
 

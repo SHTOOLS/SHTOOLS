@@ -131,7 +131,8 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON',
                      'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
                      'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord',
                      'SHExpandLSQ', 'MakeGrid2D', 'MakeGridPoint',
-                     'SHMultiply']
+                     'SHMultiply', 'MakeCircleCoord', 'MakeEllipseCoord',
+                     'Wigner3j']
 
 _not_finished = ['SHReadH', 'SHReadError', 'SHReadErrorH', 'SHRead2',
                  'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
@@ -156,8 +157,7 @@ _not_finished = ['SHReadH', 'SHReadError', 'SHReadErrorH', 'SHRead2',
                  'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
                  'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
                  'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
-                 'SHMagPowerSpectrum', 'SHMagPowerL', 'MakeCircleCoord',
-                 'MakeEllipseCoord', 'Wigner3j']
+                 'SHMagPowerSpectrum', 'SHMagPowerL']
 
 _fortran_functions = ['MakeGridPoint', 'SHPowerL', 'SHPowerDensityL',
                       'SHCrossPowerL', 'SHCrossPowerDensityL',
