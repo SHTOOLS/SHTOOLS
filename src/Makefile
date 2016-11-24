@@ -34,7 +34,7 @@ else ifeq ($(F95),gfortran)
 F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
 else ifeq ($(F95),ifort)
 # Default intel fortran flags
-F95FLAGS ?= -m64 -free -O3 -Tf
+F95FLAGS ?= -m64 -fpp -free -O3 -Tf
 else ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
 endif

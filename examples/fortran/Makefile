@@ -13,9 +13,7 @@
 
 F95 = gfortran
 
-FFTW = -lfftw3
-LAPACK = -llapack
-BLAS = -lblas
+FFTW ?= -lfftw3
 
 LIBPATH = ../../lib
 MODPATH = ../../modules/
@@ -44,7 +42,7 @@ EXAMPLES = \
 all: $(EXAMPLES)
 
 %: %.f95 $(LIBPATH)/lib$(LIBNAME).a
-	$(F95) $< $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o $@
+	$(F95) $(F95FLAGS) $< $(MODFLAG) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o $@
 
 run-fortran-tests: $(EXAMPLES)
 	 @echo MARS-CRUSTAL-THICKNESS
@@ -98,31 +96,43 @@ run-fortran-tests: $(EXAMPLES)
 ifeq ($(F95),f95)
 F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic
 MODFLAG = -p $(MODPATH)
+LAPACK ?= -llapack
+BLAS ?= -lblas
 endif
 
 ifeq ($(F95),gfortran)
 F95FLAGS ?= -m64 -fPIC -O3
 MODFLAG = -I$(MODPATH)
+LAPACK ?= -llapack
+BLAS ?= -lblas
 endif
 
 ifeq ($(F95),ifort)
-F95FLAGS ?= -m64 -free -O3 -Tf
+F95FLAGS ?= -m64 -fpp -free -O3 -Tf
 MODFLAG = -I$(MODPATH)
+LAPACK ?= -mkl
+BLAS ?= 
 endif
 
 ifeq ($(F95),g95)
 F95FLAGS ?= -O3 -fno-second-underscore 
 MODFLAG = -I$(MODPATH)
+LAPACK ?= -llapack
+BLAS ?= -lblas
 endif
 
 ifeq ($(F95),pgf90)
 F95FLAGS ?= -fast 
 MODFLAG = -Imodpath
+LAPACK ?= -llapack
+BLAS ?= -lblas
 endif
 
 ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
 MODFLAG = -I$(MODPATH)
+LAPACK ?= -llapack
+BLAS ?= -lblas
 endif
 
 
