@@ -142,9 +142,7 @@ SYSLIBPATH = /usr/local/lib
 
 FFTW = -L$(SYSLIBPATH) -lfftw3
 FFTW_UNDERSCORE = 0
-LAPACK ?= -llapack
 LAPACK_UNDERSCORE = 0
-BLAS ?= -lblas
 
 SHELL = /bin/sh
 FDOCDIR = src/fdoc
@@ -173,6 +171,8 @@ F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
 MODFLAG = -p $(MODPATH)
 SYSMODFLAG = -p $(SYSMODPATH)
 OPENMPFLAGS ?= -openmp
+BLAS ?= -lblas
+LAPACK ?= -llapack
 else ifeq ($(F95), gfortran)
 # Default gfortran flags
 F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
@@ -180,31 +180,39 @@ F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?= -fopenmp
+BLAS ?= -lblas
+LAPACK ?= -llapack
 else ifeq ($(F95), ifort)
 # Default intel fortran flags
 F95FLAGS ?= -m64 -fpp -free -O3 -Tf
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?= -qopenmp
-LAPACK = -mkl
-BLAS = 
+LAPACK ?= -mkl
+BLAS ?= 
 else ifeq ($(F95), g95)
 # Default g95 flags.
 F95FLAGS ?= -O3 -fno-second-underscore
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?=
+BLAS ?= -lblas
+LAPACK ?= -llapack
 else ifeq ($(F95), pgf90)
 # Default pgf90 flags
 F95FLAGS ?= -fast 
 MODFLAG = -Imodpath
 SYSMODFLAG = -Imodpath
 OPENMPFLAGS ?=
+BLAS ?= -lblas
+LAPACK ?= -llapack
 else ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
 OPENMPFLAGS ?=
+BLAS ?= -lblas
+LAPACK ?= -llapack
 endif
 
 ifeq ($(LAPACK_UNDERSCORE),1)
