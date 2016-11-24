@@ -817,6 +817,63 @@
                     switchcs=switchcs,exitstatus=exitstatus)
     end subroutine pySHctor
 
+    subroutine pydjpi2(exitstatus,dj,lmax,dj_d0,dj_d1,dj_d2)
+        use shtools, only: djpi2
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(dj_d0,dj_d1,dj_d2),intent(out) :: dj
+        integer, intent(in) :: lmax
+        integer, intent(in) :: dj_d0
+        integer, intent(in) :: dj_d1
+        integer, intent(in) :: dj_d2
+        call djpi2(dj,lmax,exitstatus=exitstatus)
+    end subroutine pydjpi2
+
+    subroutine pySHRotateCoef(exitstatus,x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,&
+                              dj_d0,dj_d1,dj_d2,cof_d0,cof_d1)
+        use shtools, only: SHRotateCoef
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(3),intent(in) :: x
+        real*8, dimension(cof_d0,cof_d1),intent(in) :: cof
+        real*8, dimension(rcof_d0,rcof_d1),intent(out) :: rcof
+        real*8, dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
+        integer, intent(in) :: lmax
+        integer, intent(in) :: rcof_d0
+        integer, intent(in) :: rcof_d1
+        integer, intent(in) :: dj_d0
+        integer, intent(in) :: dj_d1
+        integer, intent(in) :: dj_d2
+        integer, intent(in) :: cof_d0
+        integer, intent(in) :: cof_d1
+        call SHRotateCoef(x,cof,rcof,dj,lmax,exitstatus=exitstatus)
+    end subroutine pySHRotateCoef
+
+    subroutine pySHRotateRealCoef(exitstatus,cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,&
+                                  dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2, &
+                                  cilmrot_d0,cilmrot_d1,cilmrot_d2)
+        use shtools, only: SHRotateRealCoef
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out) ::&
+                                                                        cilmrot
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, dimension(x_d0),intent(in) :: x
+        real*8, dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
+        integer, intent(in) :: x_d0
+        integer, intent(in) :: dj_d0
+        integer, intent(in) :: dj_d1
+        integer, intent(in) :: dj_d2
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: cilmrot_d0
+        integer, intent(in) :: cilmrot_d1
+        integer, intent(in) :: cilmrot_d2
+        call SHRotateRealCoef(cilmrot,cilm,lmax,x,dj,exitstatus=exitstatus)
+    end subroutine pySHRotateRealCoef
+
     subroutine pyCilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
                             gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
         use shtools, only: CilmPlus
@@ -1154,61 +1211,6 @@
         integer, intent(in) :: cspectra_d0
         call SHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra)
     end subroutine pySHCrossPowerSpectrumDensity
-
-    subroutine pydjpi2(dj,lmax,dj_d0,dj_d1,dj_d2)
-        use shtools, only: djpi2
-        implicit none
-        real*8, dimension(dj_d0,dj_d1,dj_d2),intent(out) :: dj
-        integer, intent(in) :: lmax
-        integer, intent(in) :: dj_d0
-        integer, intent(in) :: dj_d1
-        integer, intent(in) :: dj_d2
-        call djpi2(dj,lmax)
-    end subroutine pydjpi2
-
-
-    subroutine pySHRotateCoef(x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1, &
-                              dj_d2,cof_d0,cof_d1)
-        use shtools, only: SHRotateCoef
-        implicit none
-        real*8, dimension(3),intent(in) :: x
-        real*8, dimension(cof_d0,cof_d1),intent(in) :: cof
-        real*8, dimension(rcof_d0,rcof_d1),intent(out) :: rcof
-        real*8, dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
-        integer, intent(in) :: lmax
-        integer, intent(in) :: rcof_d0
-        integer, intent(in) :: rcof_d1
-        integer, intent(in) :: dj_d0
-        integer, intent(in) :: dj_d1
-        integer, intent(in) :: dj_d2
-        integer, intent(in) :: cof_d0
-        integer, intent(in) :: cof_d1
-        call SHRotateCoef(x,cof,rcof,dj,lmax)
-    end subroutine pySHRotateCoef
-
-    subroutine pySHRotateRealCoef(cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,dj_d1, &
-                                  dj_d2,cilm_d0,cilm_d1,cilm_d2, &
-                                  cilmrot_d0,cilmrot_d1,cilmrot_d2)
-        use shtools, only: SHRotateRealCoef
-        implicit none
-        real*8, dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out) ::&
-                                                                        cilmrot
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        real*8, dimension(x_d0),intent(in) :: x
-        real*8, dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
-        integer, intent(in) :: x_d0
-        integer, intent(in) :: dj_d0
-        integer, intent(in) :: dj_d1
-        integer, intent(in) :: dj_d2
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: cilmrot_d0
-        integer, intent(in) :: cilmrot_d1
-        integer, intent(in) :: cilmrot_d2
-        call SHRotateRealCoef(cilmrot,cilm,lmax,x,dj)
-    end subroutine pySHRotateRealCoef
 
     function pyDownContFilterMA(l,half,r,d)
         use shtools, only: DownContFilterMA

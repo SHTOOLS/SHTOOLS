@@ -4,13 +4,13 @@ Determine the spherical harmonic coefficients of a real function rotated by thre
 
 # Usage
 
-call SHRotateRealCoef (`cilmrot`, `cilm`, `lmax`, `x`, `dj`)
+call SHRotateRealCoef (`cilmrot`, `cilm`, `lmax`, `x`, `dj`, `exitstatus`)
 
 # Parameters
 
 `cilmrot` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the rotated function, normalized for use with the geodesy 4-pi spherical harmonics.
-	
+
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The input real spherical harmonic coefficients. The coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention.
 
@@ -21,7 +21,10 @@ call SHRotateRealCoef (`cilmrot`, `cilm`, `lmax`, `x`, `dj`)
 :   The rotation matrix `dj(pi/2)`, obtained from a call to `djpi2`.
 
 `lmax` : input, integer
-:   The maximum spherical harmonic degree of the input and output coefficients. 
+:   The maximum spherical harmonic degree of the input and output coefficients.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 
@@ -43,7 +46,7 @@ The rotation of a coordinate system or body can be viewed in two complementary w
 
 The rotations can further be viewed either as a rotation of the coordinate system or the physical body. For a rotation of the coordinate system without rotation of the physical body, use 
 
-`x(alpha, beta, gamma)`. 
+`x(alpha, beta, gamma)`.
 
 For a rotation of the physical body without rotation of the coordinate system, use 
 

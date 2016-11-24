@@ -4,15 +4,18 @@ Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical
 
 # Usage
 
-call djpi2 (`dj`, `lmax`)
+call djpi2 (`dj`, `lmax`, `exitstatus`)
 
 # Parameters
 
 `dj` : output, real\*8, dimension (`lmax`+1, `lmax`+1, `lmax`+1)
 :   The rotation matrix dj(pi/2).
-	
+
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the spherical harmonic rotation.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

@@ -348,6 +348,26 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHctor
 
+        subroutine djpi2(dj, lmax, exitstatus)
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  dj(:,:,:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine djpi2
+
+        subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
+            real*8, intent(in) ::   cof(:,:), dj(:,:,:), x(3)
+            real*8, intent(out) ::  rcof(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHRotateCoef
+
+        subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:), x(:), dj(:,:,:)
+            real*8, intent(out) ::  cilmrot(:,:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHRotateRealCoef
+
         subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, &
                             w, zero, plx, n, dref)
             real*8, intent(in) ::   gridin(:,:), mass, rho
@@ -478,23 +498,6 @@ module SHTOOLS
             integer, intent(in) ::  lmax
             real*8, intent(out) ::  cspectra(:)
         end subroutine SHCrossPowerSpectrumDensity
-
-        subroutine djpi2(dj, lmax)
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  dj(:,:,:)
-        end subroutine djpi2
-
-        subroutine SHRotateCoef(x, cof, rcof, dj, lmax)
-            real*8, intent(in) ::   cof(:,:), dj(:,:,:), x(3)
-            real*8, intent(out) ::  rcof(:,:)
-            integer, intent(in) ::  lmax
-        end subroutine SHRotateCoef
-
-        subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj)
-            real*8, intent(in) ::   cilm(:,:,:), x(:), dj(:,:,:)
-            real*8, intent(out) ::  cilmrot(:,:,:)
-            integer, intent(in) ::  lmax
-        end subroutine SHRotateRealCoef
 
         subroutine DHaj(n, aj)
             integer, intent(in) ::  n

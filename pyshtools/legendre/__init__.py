@@ -66,4 +66,4 @@ from ..shtools import PLegendreA_d1
 from ..shtools import PLegendre
 from ..shtools import PLegendre_d1
 
-from ._plmindex import PlmIndex
+from .plm_index import PlmIndex

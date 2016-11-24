@@ -660,6 +660,53 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(ccilm,2)==ccilm_d2),depend(ccilm),intent(hide) :: ccilm_d2=shape(ccilm,2)
         end subroutine SHctor
 
+        subroutine djpi2(exitstatus,dj,lmax,dj_d0,dj_d1,dj_d2)
+            fortranname pydjpi2
+            integer, intent(out) :: exitstatus
+            real*8 dimension(dj_d0,dj_d1,dj_d2),intent(out) :: dj
+            integer intent(in) :: lmax
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: dj_d0 = lmax+1
+            integer, optional,intent(in),depend(lmax),intent(hide) :: dj_d1 = lmax+1
+            integer, optional,intent(in),depend(lmax),intent(hide) :: dj_d2 = lmax+1
+        end subroutine djpi2
+
+        subroutine SHRotateCoef(exitstatus,x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1)
+            fortranname pyshrotatecoef
+            integer, intent(out) :: exitstatus
+            real*8 dimension(3),intent(in) :: x
+            real*8 dimension(cof_d0,cof_d1),intent(in) :: cof
+            real*8 dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
+            real*8 dimension(rcof_d0,rcof_d1),intent(out) :: rcof
+            integer, optional,intent(in),depend(cof_d1) :: lmax = (-3+sqrt(1+8*cof_d1))/2
+            integer, optional,intent(in),intent(hide) :: rcof_d0 = 2
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: rcof_d1 = (lmax+1)*(lmax+2)/2
+            integer, optional,intent(in),check(shape(dj,0)==dj_d0),depend(dj),intent(hide) :: dj_d0=shape(dj,0)
+            integer, optional,intent(in),check(shape(dj,1)==dj_d1),depend(dj),intent(hide) :: dj_d1=shape(dj,1)
+            integer, optional,intent(in),check(shape(dj,2)==dj_d2),depend(dj),intent(hide) :: dj_d2=shape(dj,2)
+            integer, optional,intent(in),check(shape(cof,0)==cof_d0),depend(cof),intent(hide) :: cof_d0=shape(cof,0)
+            integer, optional,intent(in),check(shape(cof,1)==cof_d1),depend(cof),intent(hide) :: cof_d1=shape(cof,1)
+        end subroutine SHRotateCoef
+
+        subroutine SHRotateRealCoef(exitstatus,cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2,cilmrot_d0,cilmrot_d1,cilmrot_d2)
+            fortranname pyshrotaterealcoef
+            integer, intent(out) :: exitstatus
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+            real*8 dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out) :: cilmrot
+            integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
+            real*8 dimension(x_d0),intent(in) :: x
+            real*8 dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
+            integer, optional,intent(in),check(len(x)>=x_d0),depend(x),intent(hide) :: x_d0=len(x)
+            integer, optional,intent(in),check(shape(dj,0)==dj_d0),depend(dj),intent(hide) :: dj_d0=shape(dj,0)
+            integer, optional,intent(in),check(shape(dj,1)==dj_d1),depend(dj),intent(hide) :: dj_d1=shape(dj,1)
+            integer, optional,intent(in),check(shape(dj,2)==dj_d2),depend(dj),intent(hide) :: dj_d2=shape(dj,2)
+            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
+            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
+            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
+            integer, optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d0 = 2
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: cilmrot_d1 = lmax+1
+            integer, optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d2 = lmax+1
+        end subroutine SHRotateRealCoef
+
         subroutine CilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
             fortranname pycilmplusdh
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
@@ -912,50 +959,6 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
             integer, optional,intent(in),depend(lmax),intent(hide) :: cspectra_d0 = lmax+1
         end subroutine SHCrossPowerSpectrumDensity
-
-        subroutine djpi2(dj,lmax,dj_d0,dj_d1,dj_d2)
-            fortranname pydjpi2
-            real*8 dimension(dj_d0,dj_d1,dj_d2),intent(out) :: dj
-            integer intent(in) :: lmax
-            integer, optional,intent(in),depend(lmax),intent(hide) :: dj_d0 = lmax+1
-            integer, optional,intent(in),depend(lmax),intent(hide) :: dj_d1 = lmax+1
-            integer, optional,intent(in),depend(lmax),intent(hide) :: dj_d2 = lmax+1
-        end subroutine djpi2
-
-        subroutine SHRotateCoef(x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1)
-            fortranname pyshrotatecoef
-            real*8 dimension(3),intent(in) :: x
-            real*8 dimension(cof_d0,cof_d1),intent(in) :: cof
-            real*8 dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
-            real*8 dimension(rcof_d0,rcof_d1),intent(out) :: rcof
-            integer, optional,intent(in),depend(cof_d1) :: lmax = (-3+sqrt(1+8*cof_d1))/2
-            integer, optional,intent(in),intent(hide) :: rcof_d0 = 2
-            integer, optional,intent(in),depend(lmax),intent(hide) :: rcof_d1 = (lmax+1)*(lmax+2)/2
-            integer, optional,intent(in),check(shape(dj,0)==dj_d0),depend(dj),intent(hide) :: dj_d0=shape(dj,0)
-            integer, optional,intent(in),check(shape(dj,1)==dj_d1),depend(dj),intent(hide) :: dj_d1=shape(dj,1)
-            integer, optional,intent(in),check(shape(dj,2)==dj_d2),depend(dj),intent(hide) :: dj_d2=shape(dj,2)
-            integer, optional,intent(in),check(shape(cof,0)==cof_d0),depend(cof),intent(hide) :: cof_d0=shape(cof,0)
-            integer, optional,intent(in),check(shape(cof,1)==cof_d1),depend(cof),intent(hide) :: cof_d1=shape(cof,1)
-        end subroutine SHRotateCoef
-
-        subroutine SHRotateRealCoef(cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2,cilmrot_d0,cilmrot_d1,cilmrot_d2)
-            fortranname pyshrotaterealcoef
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            real*8 dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out) :: cilmrot
-            integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
-            real*8 dimension(x_d0),intent(in) :: x
-            real*8 dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
-            integer, optional,intent(in),check(len(x)>=x_d0),depend(x),intent(hide) :: x_d0=len(x)
-            integer, optional,intent(in),check(shape(dj,0)==dj_d0),depend(dj),intent(hide) :: dj_d0=shape(dj,0)
-            integer, optional,intent(in),check(shape(dj,1)==dj_d1),depend(dj),intent(hide) :: dj_d1=shape(dj,1)
-            integer, optional,intent(in),check(shape(dj,2)==dj_d2),depend(dj),intent(hide) :: dj_d2=shape(dj,2)
-            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
-            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
-            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d0 = 2
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d1 = lmax+1
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d2 = lmax+1
-        end subroutine SHRotateRealCoef
 
         function DownContFilterMA(l,half,r,d)
             fortranname pydowncontfilterma

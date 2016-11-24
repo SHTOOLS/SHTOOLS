@@ -61,14 +61,6 @@ from ..shtools import SHCilmToVector
 from ..shtools import SHVectorToCilm
 from ..shtools import SHrtoc
 from ..shtools import SHctor
+
 from .icgem import read_icgem_gfc
-
-
-# ---------------------------------------------------------------------
-# --- Define a Python function that replaces the Fortran
-# --- equivalent that uses different indexing conventions.
-# ---------------------------------------------------------------------
-
-
-def YilmIndexVector(i, l, m):
-    return l**2 + (i - 1) * l + m
+from .yilm_index_vector import YilmIndexVector
