@@ -24,7 +24,7 @@ Compute the cross-power spectral density of two complex functions for a single s
 
 # Description
 
-`SHCrossPowerDensityLC` will calculate the cross-power spectral density of two complex functions expressed in complex spherical harmonics for a single spherical harmonic degree `l`. This is calculated as:
+`SHCrossPowerDensityLC` will calculate the cross-power spectral density of two complex functions expressed in complex 4-pi normalized spherical harmonics for a single spherical harmonic degree `l`. This is calculated as:
 
 `cpsd = Sum_{i=0}^1 Sum_{m=0}^l cilm1[i, l, m] * conjg[cilm2[i, l, m]] / (2l + 1)`.
 

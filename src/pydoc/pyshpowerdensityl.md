@@ -17,11 +17,11 @@ Compute the power spectral density of a real function for a single spherical har
 :   The function expressed in real spherical harmonics.
 
 `l` : integer
-:   The spherical harmonic degree. 
+:   The spherical harmonic degree.
 
 # Description
 
-`SHPowerDensityL` will calculate the power spectral density of a function expressed in real spherical harmonics for a single degree `l`. This is explicitly calculated as:
+`SHPowerDensityL` will calculate the power spectral density of a function expressed in real 4-pi normalized spherical harmonics for a single degree `l`. This is explicitly calculated as:
 
 `psd = Sum_{i=0}^1 Sum_{m=0}^l cilm[i, l, m]**2 / (2l + 1)`.
 

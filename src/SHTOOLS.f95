@@ -368,6 +368,117 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHRotateRealCoef
 
+        real*8 function SHPowerL(c, l)
+            real*8, intent(in) :: c(:,:,:)
+            integer, intent(in) :: l
+        end function SHPowerL
+
+        real*8 function SHPowerDensityL(c, l)
+            real*8, intent(in) ::   c(:,:,:)
+            integer, intent(in) ::  l
+        end function SHPowerDensityL
+
+        real*8 function SHCrossPowerL(c1, c2, l)
+            real*8, intent(in) ::   c1(:,:,:), c2(:,:,:)
+            integer, intent(in) ::  l
+        end function SHCrossPowerL
+
+        real*8 function SHCrossPowerDensityL(c1, c2, l)
+            real*8, intent(in) ::   c1(:,:,:), c2(:,:,:)
+            integer, intent(in) ::  l
+        end function SHCrossPowerDensityL
+
+        subroutine SHPowerSpectrum(c, lmax, spectra, exitstatus)
+            real*8, intent(in) ::   c(:,:,:)
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  spectra(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHPowerSpectrum
+
+        subroutine SHPowerSpectrumDensity(c, lmax, spectra, exitstatus)
+            real*8, intent(in) ::   c(:,:,:)
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  spectra(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHPowerSpectrumDensity
+
+        subroutine SHCrossPowerSpectrum(c1, c2, lmax, cspectra, exitstatus)
+            real*8, intent(in) ::   c1(:,:,:), c2(:,:,:)
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  cspectra(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHCrossPowerSpectrum
+
+        subroutine SHCrossPowerSpectrumDensity(c1, c2, lmax, cspectra, &
+                                               exitstatus)
+            real*8, intent(in) ::   c1(:,:,:), c2(:,:,:)
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  cspectra(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHCrossPowerSpectrumDensity
+
+        subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
+            real*8, intent(in) ::   G(:,:,:), T(:,:,:)
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  admit(:), corr(:)
+            real*8, intent(out), optional ::  admit_error(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHAdmitCorr
+
+        real*8 function SHConfidence(l_conf, r)
+            real*8, intent(in) :: r
+            integer, intent(in) :: l_conf
+        end function SHConfidence
+
+        real*8 function SHPowerLC(c, l)
+            complex*16, intent(in) :: c(:,:,:)
+            integer, intent(in) :: l
+        end function SHPowerLC
+
+        real*8 function SHPowerDensityLC(c, l)
+            complex*16, intent(in) ::   c(:,:,:)
+            integer, intent(in) ::  l
+        end function SHPowerDensityLC
+
+        complex*16 function SHCrossPowerLC(c1, c2, l)
+            complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+            integer, intent(in) ::  l
+        end function SHCrossPowerLC
+
+        Complex*16 function SHCrossPowerDensityLC(c1, c2, l)
+            complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+            integer, intent(in) ::  l
+        end function SHCrossPowerDensityLC
+
+        subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
+            complex*16, intent(in) ::   c(:,:,:)
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  spectra(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHPowerSpectrumC
+
+        subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
+            complex*16, intent(in) ::   c(:,:,:)
+            integer, intent(in) ::  lmax
+            real*8, intent(out) ::  spectra(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHPowerSpectrumDensityC
+
+        subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
+            complex*16, intent(in) ::   c1(:,:,:), c2(:,:,:)
+            integer, intent(in) ::  lmax
+            complex*16, intent(out) ::  cspectra(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHCrossPowerSpectrumC
+
+        subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra,&
+                                                exitstatus)
+            complex*16, intent(in) ::   c1(:,:,:), c2(:,:,:)
+            integer, intent(in) ::  lmax
+            complex*16, intent(out) ::  cspectra(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHCrossPowerSpectrumDensityC
+
         subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, &
                             w, zero, plx, n, dref)
             real*8, intent(in) ::   gridin(:,:), mass, rho
@@ -455,50 +566,6 @@ module SHTOOLS
             integer, intent(in), optional :: sampling, lmax_calc
         end subroutine MakeMagGridDH
 
-        real*8 function SHPowerL(c, l)
-            real*8, intent(in) :: c(:,:,:)
-            integer, intent(in) :: l
-        end function SHPowerL
-
-        real*8 function SHPowerDensityL(c, l)
-            real*8, intent(in) ::   c(:,:,:)
-            integer, intent(in) ::  l
-        end function SHPowerDensityL
-
-        real*8 function SHCrossPowerL(c1, c2, l)
-            real*8, intent(in) ::   c1(:,:,:), c2(:,:,:)
-            integer, intent(in) ::  l
-        end function SHCrossPowerL
-
-        real*8 function SHCrossPowerDensityL(c1, c2, l)
-            real*8, intent(in) ::   c1(:,:,:), c2(:,:,:)
-            integer, intent(in) ::  l
-        end function SHCrossPowerDensityL
-
-        subroutine SHPowerSpectrum(c, lmax, spectra)
-            real*8, intent(in) ::   c(:,:,:)
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  spectra(:)
-        end subroutine SHPowerSpectrum
-
-        subroutine SHPowerSpectrumDensity(c, lmax, spectra)
-            real*8, intent(in) ::   c(:,:,:)
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  spectra(:)
-        end subroutine SHPowerSpectrumDensity
-
-        subroutine SHCrossPowerSpectrum(c1, c2, lmax, cspectra)
-            real*8, intent(in) ::   c1(:,:,:), c2(:,:,:)
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  cspectra(:)
-        end subroutine SHCrossPowerSpectrum
-
-        subroutine SHCrossPowerSpectrumDensity(c1, c2, lmax, cspectra)
-            real*8, intent(in) ::   c1(:,:,:), c2(:,:,:)
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  cspectra(:)
-        end subroutine SHCrossPowerSpectrumDensity
-
         subroutine DHaj(n, aj)
             integer, intent(in) ::  n
             real*8, intent(out) ::  aj(:)
@@ -554,13 +621,6 @@ module SHTOOLS
             integer, intent(in) ::  m
             integer, intent(in), optional :: taper_number
         end function SHFindLWin
-
-        subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error)
-            real*8, intent(in) ::   G(:,:,:), T(:,:,:)
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  admit(:), corr(:)
-            real*8, intent(out), optional ::  admit_error(:)
-        end subroutine SHAdmitCorr
 
         subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, &
                                         g, t, lmax, admit, corr, k, &
@@ -729,11 +789,6 @@ module SHTOOLS
             real*8, intent(in) ::   geocentric_lat, gm, omega, a, b
         end function NormalGravity
 
-        real*8 function SHConfidence(l_conf, r)
-            real*8, intent(in) :: r
-            integer, intent(in) :: l_conf
-        end function SHConfidence
-
         real*8 function SHMagPowerL(c, a, r, l)
             real*8, intent(in) :: c(:,:,:)
             real*8, intent(in) :: a, r
@@ -746,50 +801,6 @@ module SHTOOLS
             integer, intent(in) :: lmax
             real*8, intent(out) ::  spectra(:)
         end subroutine SHMagPowerSpectrum
-
-        real*8 function SHPowerLC(c, l)
-            complex*16, intent(in) :: c(:,:,:)
-            integer, intent(in) :: l
-        end function SHPowerLC
-
-        real*8 function SHPowerDensityLC(c, l)
-            complex*16, intent(in) ::   c(:,:,:)
-            integer, intent(in) ::  l
-        end function SHPowerDensityLC
-
-        complex*16 function SHCrossPowerLC(c1, c2, l)
-            complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
-            integer, intent(in) ::  l
-        end function SHCrossPowerLC
-
-        Complex*16 function SHCrossPowerDensityLC(c1, c2, l)
-            complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
-            integer, intent(in) ::  l
-        end function SHCrossPowerDensityLC
-
-        subroutine SHPowerSpectrumC(c, lmax, spectra)
-            complex*16, intent(in) ::   c(:,:,:)
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  spectra(:)
-        end subroutine SHPowerSpectrumC
-
-        subroutine SHPowerSpectrumDensityC(c, lmax, spectra)
-            complex*16, intent(in) ::   c(:,:,:)
-            integer, intent(in) ::  lmax
-            real*8, intent(out) ::  spectra(:)
-        end subroutine SHPowerSpectrumDensityC
-
-        subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra)
-            complex*16, intent(in) ::   c1(:,:,:), c2(:,:,:)
-            integer, intent(in) ::  lmax
-            complex*16, intent(out) ::  cspectra(:)
-        end subroutine SHCrossPowerSpectrumC
-
-        subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra)
-            complex*16, intent(in) ::   c1(:,:,:), c2(:,:,:)
-            integer, intent(in) ::  lmax
-            complex*16, intent(out) ::  cspectra(:)
-        end subroutine SHCrossPowerSpectrumDensityC
 
         subroutine SHBiasAdmitCorr(sgt, sgg, stt, lmax, tapers, lwin, k, &
                                    admit, corr, mtdef, taper_wt)

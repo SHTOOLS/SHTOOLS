@@ -21,7 +21,7 @@ Compute the power spectral density of a complex function.
 
 # Description
 
-`SHPowerSpectrumDensityC` will calculate the power spectral density of a complex function expressed in complex spherical harmonics. For a given spherical harmonic degree `l`, this is calculated as:
+`SHPowerSpectrumDensityC` will calculate the power spectral density of a complex function expressed in complex 4-pi normalized spherical harmonics. For a given spherical harmonic degree `l`, this is calculated as:
 
 `pspectrum(l) = Sum_{i=0}^1 Sum_{m=0}^l | cilm[i, l, m] |**2 / (2l + 1)`.
 

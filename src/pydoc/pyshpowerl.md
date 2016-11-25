@@ -21,9 +21,9 @@ Compute the power of a real function for a single spherical harmonic degree.
 
 # Description
 
-`SHPowerL` will calculate the power of a function expressed in real spherical harmonics for a single degree `l`. This is explicitly calculated as:
+`SHPowerL` will calculate the power of a function expressed in real 4-pi normalized spherical harmonics for a single degree `l`. This is explicitly calculated as:
 
-`power = Sum_{i=0}^1 Sum_{m=0}^l cilm[i, l, m]**2` .
+`power = Sum_{i=0}^1 Sum_{m=0}^l cilm[i, l, m]**2`.
 
 # See also
 

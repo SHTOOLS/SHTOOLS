@@ -24,7 +24,7 @@ Compute the cross-power spectral density of two real functions.
 
 # Description
 
-`SHCrossPowerSpectrumDensity` will calculate the cross-power spectral density of two functions expressed in real spherical harmonics. For a given spherical harmonic degree `l`, this is explicitly calculated as:
+`SHCrossPowerSpectrumDensity` will calculate the cross-power spectral density of two functions expressed in real 4-pi normalized spherical harmonics. For a given spherical harmonic degree `l`, this is explicitly calculated as:
 
 `cspectrum(l) = Sum_{i=0}^1 Sum_{m=0}^l cilm1[i, l, m] * cilm2[i, l, m] / (2l + 1)`.
 

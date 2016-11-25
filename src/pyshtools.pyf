@@ -5,7 +5,7 @@ python module _SHTOOLS
 !   definitions of how the fortran functions are actually called are found in
 !   the wrapper file PythonWrapper.f95.
 !
-!   Note: The context of this file is case sensitive. 
+!   Note: The context of this file is case sensitive.
 !
 !------------------------------------------------------------------------------
     interface
@@ -707,6 +707,241 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d2 = lmax+1
         end subroutine SHRotateRealCoef
 
+        function SHPowerL(c,l,c_d0,c_d1,c_d2)
+            fortranname pyshpowerl
+            real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
+            integer intent(in) :: l
+            integer, optional,intent(in),depend(c),intent(hide) :: c_d0=shape(c,0)
+            integer, optional,intent(in),depend(c),intent(hide) :: c_d1=shape(c,1)
+            integer, optional,intent(in),depend(c),intent(hide) :: c_d2=shape(c,2)
+            real*8 :: SHPowerL
+        end function SHPowerL
+
+        function SHPowerDensityL(c,l,c_d0,c_d1,c_d2)
+            fortranname pyshpowerdensityl
+            real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
+            integer intent(in) :: l
+            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
+            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
+            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
+            real*8 :: SHPowerDensityL
+        end function SHPowerDensityL
+
+        function SHCrossPowerL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
+            fortranname pyshcrosspowerl
+            real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+            real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+            integer intent(in) :: l
+            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
+            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
+            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
+            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
+            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
+            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
+            real*8 :: SHCrossPowerL
+        end function SHCrossPowerL
+
+        function SHCrossPowerDensityL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
+            fortranname pyshcrosspowerdensityl
+            real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+            real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+            integer intent(in) :: l
+            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
+            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
+            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
+            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
+            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
+            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
+            real*8 :: SHCrossPowerDensityL
+        end function SHCrossPowerDensityL
+
+        subroutine SHPowerSpectrum(exitstatus,c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
+            fortranname pyshpowerspectrum
+            integer, intent(out) :: exitstatus
+            real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
+            integer, optional,intent(in),depend(c) :: lmax = shape(c,1)-1
+            real*8 dimension(spectra_d0),intent(out) :: spectra
+            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
+            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
+            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: spectra_d0=lmax+1
+        end subroutine SHPowerSpectrum
+
+        subroutine SHPowerSpectrumDensity(exitstatus,c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
+            fortranname pyshpowerspectrumdensity
+            integer, intent(out) :: exitstatus
+            real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
+            integer, optional,intent(in),depend(c) :: lmax = shape(c,1)-1
+            real*8 dimension(spectra_d0),intent(out) :: spectra
+            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
+            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
+            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: spectra_d0=lmax+1
+        end subroutine SHPowerSpectrumDensity
+
+        subroutine SHCrossPowerSpectrum(exitstatus,c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
+            fortranname pyshcrosspowerspectrum
+            integer, intent(out) :: exitstatus
+            real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+            real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+            integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
+            real*8 dimension(cspectra_d0),intent(out) :: cspectra
+            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
+            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
+            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
+            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
+            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
+            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: cspectra_d0 = lmax+1
+        end subroutine SHCrossPowerSpectrum
+
+        subroutine SHCrossPowerSpectrumDensity(exitstatus,c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
+            fortranname pyshcrosspowerspectrumdensity
+            integer, intent(out) :: exitstatus
+            real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+            real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+            integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
+            real*8 dimension(cspectra_d0),intent(out) :: cspectra
+            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
+            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
+            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
+            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
+            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
+            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: cspectra_d0 = lmax+1
+        end subroutine SHCrossPowerSpectrumDensity
+
+        subroutine SHAdmitCorr(exitstatus,G,T,lmax,admit,admit_error,corr,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0)
+            fortranname pyshadmitcorr
+            integer, intent(out) :: exitstatus
+            real*8 dimension(G_d0,G_d1,G_d2),intent(in) :: G
+            real*8 dimension(T_d0,T_d1,T_d2),intent(in) :: T
+            integer, optional,intent(in),depend(G_d1,T_d1) :: lmax = min(G_d1,T_d1)-1
+            real*8 dimension(admit_d0),intent(out) :: admit
+            real*8, dimension(admit_error_d0),intent(out) :: admit_error
+            real*8 dimension(corr_d0),intent(out) :: corr
+            integer, optional,intent(in),check(shape(G,0)==G_d0),depend(G),intent(hide) :: G_d0=shape(G,0)
+            integer, optional,intent(in),check(shape(G,1)==G_d1),depend(G),intent(hide) :: G_d1=shape(G,1)
+            integer, optional,intent(in),check(shape(G,2)==G_d2),depend(G),intent(hide) :: G_d2=shape(G,2)
+            integer, optional,intent(in),check(shape(T,0)==T_d0),depend(T),intent(hide) :: T_d0=shape(T,0)
+            integer, optional,intent(in),check(shape(T,1)==T_d1),depend(T),intent(hide) :: T_d1=shape(T,1)
+            integer, optional,intent(in),check(shape(T,2)==T_d2),depend(T),intent(hide) :: T_d2=shape(T,2)
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: admit_d0 = lmax+1
+            integer, optional,intent(in),depend(lmax),intent(hide) :: admit_error_d0 = lmax+1
+            integer, optional,intent(in),depend(lmax),intent(hide) :: corr_d0 = lmax+1
+        end subroutine SHAdmitCorr
+
+        function SHConfidence(l_conf,r)
+            fortranname pyshconfidence
+            integer intent(in) :: l_conf
+            real*8 intent(in) :: r
+            real*8 :: SHConfidence
+        end function SHConfidence
+
+        function SHPowerLC(c,l,c_d0,c_d1,c_d2)
+            fortranname pyshpowerlc
+            complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
+            integer intent(in) :: l
+            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
+            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
+            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
+            real*8 :: SHPowerLC
+        end function SHPowerLC
+
+        function SHPowerDensityLC(c,l,c_d0,c_d1,c_d2)
+            fortranname pyshpowerdensitylc
+            complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
+            integer intent(in) :: l
+            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
+            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
+            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
+            real*8 :: SHPowerDensityLC
+        end function SHPowerDensityLC
+
+        function SHCrossPowerLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
+            fortranname pyshcrosspowerlc
+            complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+            complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+            integer intent(in) :: l
+            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
+            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
+            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
+            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
+            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
+            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
+            complex*16 :: SHCrossPowerLC
+        end function SHCrossPowerLC
+
+        function SHCrossPowerDensityLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
+            fortranname pyshcrosspowerdensitylc
+            complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+            complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+            integer intent(in) :: l
+            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
+            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
+            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
+            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
+            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
+            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
+            complex*16 :: SHCrossPowerDensityLC
+        end function SHCrossPowerDensityLC
+
+        subroutine SHPowerSpectrumC(exitstatus,c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
+            fortranname pyshpowerspectrumc
+            integer, intent(out) :: exitstatus
+            complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
+            integer, optional,intent(in),depend(c_d1) :: lmax = c_d1-1
+            real*8 dimension(spectra_d0),intent(out) :: spectra
+            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
+            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
+            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: spectra_d0 = lmax+1
+        end subroutine SHPowerSpectrumC
+
+        subroutine SHPowerSpectrumDensityC(exitstatus,c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
+            fortranname pyshpowerspectrumdensityc
+            integer, intent(out) :: exitstatus
+            complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
+            integer, optional,intent(in),depend(c_d1) :: lmax = c_d1-1
+            real*8 dimension(spectra_d0),intent(out) :: spectra
+            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
+            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
+            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: spectra_d0 = lmax+1
+        end subroutine SHPowerSpectrumDensityC
+
+        subroutine SHCrossPowerSpectrumC(exitstatus,c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
+            fortranname pyshcrosspowerspectrumc
+            integer, intent(out) :: exitstatus
+            complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+            complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+            integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
+            complex*16 dimension(cspectra_d0),intent(out) :: cspectra
+            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
+            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
+            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
+            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
+            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
+            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
+            integer, optioanl,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: cspectra_d0 = lmax+1
+        end subroutine SHCrossPowerSpectrumC
+
+        subroutine SHCrossPowerSpectrumDensityC(exitstatus,c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
+            fortranname pyshcrosspowerspectrumdensityc
+            integer, intent(out) :: exitstatus
+            complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
+            complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
+            integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
+            complex*16 dimension(cspectra_d0),intent(out) :: cspectra
+            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
+            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
+            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
+            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
+            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
+            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
+            integer, optioanl,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: cspectra_d0 = lmax+1
+        end subroutine SHCrossPowerSpectrumDensityC
+
         subroutine CilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
             fortranname pycilmplusdh
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
@@ -860,106 +1095,6 @@ python module _SHTOOLS
             integer, optional,intent(in),intent(hide),depend(total_d1)  :: phi_d1 = total_d1
         end subroutine MakeMagGridDH
 
-        function SHPowerL(c,l,c_d0,c_d1,c_d2)
-            fortranname pyshpowerl
-            real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer intent(in) :: l
-            integer, optional,intent(in),depend(c),intent(hide) :: c_d0=shape(c,0)
-            integer, optional,intent(in),depend(c),intent(hide) :: c_d1=shape(c,1)
-            integer, optional,intent(in),depend(c),intent(hide) :: c_d2=shape(c,2)
-            real*8 :: SHPowerL
-        end function SHPowerL
-
-        function SHPowerDensityL(c,l,c_d0,c_d1,c_d2)
-            fortranname pyshpowerdensityl
-            real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer intent(in) :: l
-            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
-            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
-            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
-            real*8 :: SHPowerDensityL
-        end function SHPowerDensityL
-
-        function SHCrossPowerL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
-            fortranname pyshcrosspowerl
-            real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-            real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer intent(in) :: l
-            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
-            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
-            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
-            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
-            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
-            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
-            real*8 :: SHCrossPowerL
-        end function SHCrossPowerL
-
-        function SHCrossPowerDensityL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
-            fortranname pyshcrosspowerdensityl
-            real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-            real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer intent(in) :: l
-            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
-            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
-            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
-            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
-            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
-            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
-            real*8 :: SHCrossPowerDensityL
-        end function SHCrossPowerDensityL
-
-        subroutine SHPowerSpectrum(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
-            fortranname pyshpowerspectrum
-            real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer, optional,intent(in),depend(c) :: lmax = shape(c,1)-1
-            real*8 dimension(spectra_d0),intent(out) :: spectra
-            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
-            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
-            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
-            integer, optional,intent(in),depend(lmax),intent(hide) :: spectra_d0=lmax+1
-        end subroutine SHPowerSpectrum
-
-        subroutine SHPowerSpectrumDensity(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
-            fortranname pyshpowerspectrumdensity
-            real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer, optional,intent(in),depend(c) :: lmax = shape(c,1)-1
-            real*8 dimension(spectra_d0),intent(out) :: spectra
-            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
-            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
-            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
-            integer, optional,intent(in),depend(lmax),intent(hide) :: spectra_d0=lmax+1
-        end subroutine SHPowerSpectrumDensity
-
-        subroutine SHCrossPowerSpectrum(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
-            fortranname pyshcrosspowerspectrum
-            real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-            real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
-            real*8 dimension(cspectra_d0),intent(out) :: cspectra
-            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
-            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
-            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
-            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
-            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
-            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cspectra_d0 = lmax+1
-        end subroutine SHCrossPowerSpectrum
-
-        subroutine SHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
-            fortranname pyshcrosspowerspectrumdensity
-            real*8 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-            real*8 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
-            real*8 dimension(cspectra_d0),intent(out) :: cspectra
-            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
-            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
-            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
-            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
-            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
-            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cspectra_d0 = lmax+1
-        end subroutine SHCrossPowerSpectrumDensity
-
         function DownContFilterMA(l,half,r,d)
             fortranname pydowncontfilterma
             integer intent(in) :: l
@@ -1016,25 +1151,6 @@ python module _SHTOOLS
             integer, optional,intent(in) :: taper_number = 1
             integer :: SHFindLWin
         end function SHFindLWin
-
-        subroutine SHAdmitCorr(G,T,lmax,admit,admit_error,corr,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0)
-            fortranname pyshadmitcorr
-            real*8 dimension(G_d0,G_d1,G_d2),intent(in) :: G
-            real*8 dimension(T_d0,T_d1,T_d2),intent(in) :: T
-            integer, optional,intent(in),depend(G_d1,T_d1) :: lmax = min(G_d1,T_d1)-1
-            real*8 dimension(admit_d0),intent(out) :: admit
-            real*8, dimension(admit_error_d0),intent(out) :: admit_error
-            real*8 dimension(corr_d0),intent(out) :: corr
-            integer, optional,intent(in),check(shape(G,0)==G_d0),depend(G),intent(hide) :: G_d0=shape(G,0)
-            integer, optional,intent(in),check(shape(G,1)==G_d1),depend(G),intent(hide) :: G_d1=shape(G,1)
-            integer, optional,intent(in),check(shape(G,2)==G_d2),depend(G),intent(hide) :: G_d2=shape(G,2)
-            integer, optional,intent(in),check(shape(T,0)==T_d0),depend(T),intent(hide) :: T_d0=shape(T,0)
-            integer, optional,intent(in),check(shape(T,1)==T_d1),depend(T),intent(hide) :: T_d1=shape(T,1)
-            integer, optional,intent(in),check(shape(T,2)==T_d2),depend(T),intent(hide) :: T_d2=shape(T,2)
-            integer, optional,intent(in),depend(lmax),intent(hide) :: admit_d0 = lmax+1
-            integer, optional,intent(in),depend(lmax),intent(hide) :: admit_error_d0 = lmax+1
-            integer, optional,intent(in),depend(lmax),intent(hide) :: corr_d0 = lmax+1
-        end subroutine SHAdmitCorr
 
         subroutine SHLocalizedAdmitCorr(g,t,tapers,taper_order,k,lat,lon,lwin,lmax,admit,corr,admit_error,corr_error,taper_wt,mtdef,k1linsig,taper_order_d0,g_d0,g_d1,g_d2,taper_wt_d0,corr_error_d0,admit_d0,admit_error_d0,corr_d0,tapers_d0,tapers_d1,t_d0,t_d1,t_d2)
             fortranname pyshlocalizedadmitcorr
@@ -1390,13 +1506,6 @@ python module _SHTOOLS
             real*8 :: NormalGravity
         end function NormalGravity
 
-        function SHConfidence(l_conf,r)
-            fortranname pyshconfidence
-            integer intent(in) :: l_conf
-            real*8 intent(in) :: r
-            real*8 :: SHConfidence
-        end function SHConfidence
-
         function SHMagPowerL(c,a,r,l,c_d0,c_d1,c_d2)
             fortranname pyshmagpowerl
             real*8 dimension(c_d0,c_d1,c_d2),intent(in) :: c
@@ -1421,106 +1530,6 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
             integer, optional,intent(in),intent(hide),depend(c_d1) :: spectrum_d0 = c_d1
         end subroutine SHMagPowerSpectrum
-
-        function SHPowerLC(c,l,c_d0,c_d1,c_d2)
-            fortranname pyshpowerlc
-            complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer intent(in) :: l
-            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
-            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
-            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
-            real*8 :: SHPowerLC
-        end function SHPowerLC
-
-        function SHPowerDensityLC(c,l,c_d0,c_d1,c_d2)
-            fortranname pyshpowerdensitylc
-            complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer intent(in) :: l
-            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
-            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
-            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
-            real*8 :: SHPowerDensityLC
-        end function SHPowerDensityLC
-
-        function SHCrossPowerLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
-            fortranname pyshcrosspowerlc
-            complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-            complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer intent(in) :: l
-            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
-            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
-            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
-            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
-            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
-            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
-            complex*16 :: SHCrossPowerLC
-        end function SHCrossPowerLC
-
-        function SHCrossPowerDensityLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
-            fortranname pyshcrosspowerdensitylc
-            complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-            complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer intent(in) :: l
-            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
-            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
-            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
-            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
-            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
-            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
-            complex*16 :: SHCrossPowerDensityLC
-        end function SHCrossPowerDensityLC
-
-        subroutine SHPowerSpectrumC(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
-            fortranname pyshpowerspectrumc
-            complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer, optional,intent(in),depend(c_d1) :: lmax = c_d1-1
-            real*8 dimension(spectra_d0),intent(out) :: spectra
-            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
-            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
-            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
-            integer, optional,intent(in),depend(lmax),intent(hide) :: spectra_d0 = lmax+1
-        end subroutine SHPowerSpectrumC
-
-        subroutine SHPowerSpectrumDensityC(c,lmax,spectra,c_d0,c_d1,c_d2,spectra_d0)
-            fortranname pyshpowerspectrumdensityc
-            complex*16 dimension(c_d0,c_d1,c_d2),intent(in) :: c
-            integer, optional,intent(in),depend(c_d1) :: lmax = c_d1-1
-            real*8 dimension(spectra_d0),intent(out) :: spectra
-            integer, optional,intent(in),check(shape(c,0)==c_d0),depend(c),intent(hide) :: c_d0=shape(c,0)
-            integer, optional,intent(in),check(shape(c,1)==c_d1),depend(c),intent(hide) :: c_d1=shape(c,1)
-            integer, optional,intent(in),check(shape(c,2)==c_d2),depend(c),intent(hide) :: c_d2=shape(c,2)
-            integer, optional,intent(in),depend(lmax),intent(hide) :: spectra_d0 = lmax+1
-        end subroutine SHPowerSpectrumDensityC
-
-        subroutine SHCrossPowerSpectrumC(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
-            fortranname pyshcrosspowerspectrumc
-            complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-            complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
-            complex*16 dimension(cspectra_d0),intent(out) :: cspectra
-            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
-            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
-            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
-            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
-            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
-            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
-            integer, optioanl,intent(in),depend(lmax),intent(hide) :: cspectra_d0 = lmax+1
-        end subroutine SHCrossPowerSpectrumC
-
-        subroutine SHCrossPowerSpectrumDensityC(c1,c2,lmax,cspectra,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,cspectra_d0)
-            fortranname pyshcrosspowerspectrumdensityc
-            complex*16 dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-            complex*16 dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-            integer, optional,intent(in),depend(c1_d1,c2_d1) :: lmax = min(c1_d1,c2_d1)-1
-            complex*16 dimension(cspectra_d0),intent(out) :: cspectra
-            integer, optional,intent(in),check(shape(c2,0)==c2_d0),depend(c2),intent(hide) :: c2_d0=shape(c2,0)
-            integer, optional,intent(in),check(shape(c2,1)==c2_d1),depend(c2),intent(hide) :: c2_d1=shape(c2,1)
-            integer, optional,intent(in),check(shape(c2,2)==c2_d2),depend(c2),intent(hide) :: c2_d2=shape(c2,2)
-            integer, optional,intent(in),check(shape(c1,0)==c1_d0),depend(c1),intent(hide) :: c1_d0=shape(c1,0)
-            integer, optional,intent(in),check(shape(c1,1)==c1_d1),depend(c1),intent(hide) :: c1_d1=shape(c1,1)
-            integer, optional,intent(in),check(shape(c1,2)==c1_d2),depend(c1),intent(hide) :: c1_d2=shape(c1,2)
-            integer, optioanl,intent(in),depend(lmax),intent(hide) :: cspectra_d0 = lmax+1
-        end subroutine SHCrossPowerSpectrumDensityC
 
         subroutine SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr,mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0,admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0)
             fortranname pyshbiasadmitcorr

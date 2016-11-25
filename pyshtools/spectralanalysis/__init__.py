@@ -1,7 +1,7 @@
 """
 pyshtools Global Spectral Analysis Routines.
 
-This submodule of pyshtools defines the following functions:
+This supackage of pyshtools defines the following functions:
 
 Real spectral analysis
 ----------------------
@@ -50,21 +50,21 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ._SHTOOLS import SHPowerL
-from ._SHTOOLS import SHPowerDensityL
-from ._SHTOOLS import SHCrossPowerL
-from ._SHTOOLS import SHCrossPowerDensityL
-from ._SHTOOLS import SHPowerSpectrum
-from ._SHTOOLS import SHPowerSpectrumDensity
-from ._SHTOOLS import SHCrossPowerSpectrum
-from ._SHTOOLS import SHCrossPowerSpectrumDensity
-from ._SHTOOLS import SHAdmitCorr
-from ._SHTOOLS import SHConfidence
-from ._SHTOOLS import SHPowerLC
-from ._SHTOOLS import SHPowerDensityLC
-from ._SHTOOLS import SHCrossPowerLC
-from ._SHTOOLS import SHCrossPowerDensityLC
-from ._SHTOOLS import SHPowerSpectrumC
-from ._SHTOOLS import SHPowerSpectrumDensityC
-from ._SHTOOLS import SHCrossPowerSpectrumC
-from ._SHTOOLS import SHCrossPowerSpectrumDensityC
+from ..shtools import SHPowerL
+from ..shtools import SHPowerDensityL
+from ..shtools import SHCrossPowerL
+from ..shtools import SHCrossPowerDensityL
+from ..shtools import SHPowerSpectrum
+from ..shtools import SHPowerSpectrumDensity
+from ..shtools import SHCrossPowerSpectrum
+from ..shtools import SHCrossPowerSpectrumDensity
+from ..shtools import SHAdmitCorr
+from ..shtools import SHConfidence
+from ..shtools import SHPowerLC
+from ..shtools import SHPowerDensityLC
+from ..shtools import SHCrossPowerLC
+from ..shtools import SHCrossPowerDensityLC
+from ..shtools import SHPowerSpectrumC
+from ..shtools import SHPowerSpectrumDensityC
+from ..shtools import SHCrossPowerSpectrumC
+from ..shtools import SHCrossPowerSpectrumDensityC
