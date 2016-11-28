@@ -1,7 +1,7 @@
 """
 pyshtools Localized Spectral Analysis Routines.
 
-This submodule of pyshtools defines the following functions:
+This subpackage of pyshtools defines the following functions:
 
 Multitaper spectral estimation (spherical cap domain)
 -----------------------------------------------------
@@ -67,25 +67,25 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ._SHTOOLS import SHMultiTaperSE
-from ._SHTOOLS import SHMultiTaperCSE
-from ._SHTOOLS import SHLocalizedAdmitCorr
-from ._SHTOOLS import SHReturnTapers
-from ._SHTOOLS import SHReturnTapersM
-from ._SHTOOLS import ComputeDm
-from ._SHTOOLS import ComputeDG82
-from ._SHTOOLS import SHFindLWin
-from ._SHTOOLS import SHBiasK
-from ._SHTOOLS import SHMTCouplingMatrix
-from ._SHTOOLS import SHBiasAdmitCorr
-from ._SHTOOLS import SHMTDebias
-from ._SHTOOLS import SHMTVarOpt
-from ._SHTOOLS import SHSjkPG
-from ._SHTOOLS import SHMultiTaperMaskSE
-from ._SHTOOLS import SHMultiTaperMaskCSE
-from ._SHTOOLS import SHReturnTapersMap
-from ._SHTOOLS import SHBiasKMask
-from ._SHTOOLS import ComputeDMap
-from ._SHTOOLS import Curve2Mask
-from ._SHTOOLS import SHBias
-from ._SHTOOLS import SphericalCapCoef
+from ..shtools import SHMultiTaperSE
+from ..shtools import SHMultiTaperCSE
+from ..shtools import SHLocalizedAdmitCorr
+from ..shtools import SHReturnTapers
+from ..shtools import SHReturnTapersM
+from ..shtools import ComputeDm
+from ..shtools import ComputeDG82
+from ..shtools import SHFindLWin
+from ..shtools import SHBiasK
+from ..shtools import SHMTCouplingMatrix
+from ..shtools import SHBiasAdmitCorr
+from ..shtools import SHMTDebias
+from ..shtools import SHMTVarOpt
+from ..shtools import SHSjkPG
+from ..shtools import SHMultiTaperMaskSE
+from ..shtools import SHMultiTaperMaskCSE
+from ..shtools import SHReturnTapersMap
+from ..shtools import SHBiasKMask
+from ..shtools import ComputeDMap
+from ..shtools import Curve2Mask
+from ..shtools import SHBias
+from ..shtools import SphericalCapCoef

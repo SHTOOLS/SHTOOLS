@@ -4,7 +4,7 @@ Calculate the eigenfunctions of the spherical-cap concentration problem.
 
 # Usage
 
-call SHReturnTapers (`theta0`, `lmax`, `tapers`, `eigenvalues`, `taper_order`)
+call SHReturnTapers (`theta0`, `lmax`, `tapers`, `eigenvalues`, `taper_order`, `exitstatus`)
 
 # Parameters
 
@@ -22,6 +22,9 @@ call SHReturnTapers (`theta0`, `lmax`, `tapers`, `eigenvalues`, `taper_order`)
 
 `taper_order` : output, integer, dimension ((`lmax`+1)\*\*2)
 :   The angular order of the non-zero spherical harmonic coefficients in each column of `tapers`.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

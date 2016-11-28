@@ -4,7 +4,7 @@ Calculate the expected multitaper admittance and correlation spectra associated 
 
 # Usage
 
-call SHAdmitCorr (`sgt`, `sgg`, `stt`, `lmax`, `tapers`, `lwin`, `k`, `admit`, `corr`, `mtdef`, `taper_wt`)
+call SHAdmitCorr (`sgt`, `sgg`, `stt`, `lmax`, `tapers`, `lwin`, `k`, `admit`, `corr`, `mtdef`, `taper_wt`, `exitstatus`)
 
 # Parameters
 
@@ -40,6 +40,9 @@ call SHAdmitCorr (`sgt`, `sgg`, `stt`, `lmax`, `tapers`, `lwin`, `k`, `admit`, `
 
 `taper_wt` : input, optional, real\*8, dimension (`k`)
 :   The weights to apply to each individual windowed spectral estimate. The weights must sum to unity and are obtained from `SHMTVarOpt`.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

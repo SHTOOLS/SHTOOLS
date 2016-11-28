@@ -1,4 +1,5 @@
-subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
+subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
+                              exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This routine returns the multitaper coupling matrix, which relates the
@@ -33,15 +34,24 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
     real*8, intent(in) :: tapers_power(:,:)
     real*8, intent(in), optional :: taper_wt(:)
     integer, intent(in) :: lmax, K, lwin
+    integer, intent(out), optional :: exitstatus
     real*8 :: w3j(lwin+2*lmax+1), sum1
     integer :: i, j, l, wmin, wmax
+
+    if (present(exitstatus)) exitstatus = 0
 
     if  (size(Mmt(:,1)) < lmax+lwin+1 .or. size(Mmt(1,:)) < lmax+1) then
         print*, "Error --- SHMTCouplingMatrix"
         print*, "MMT must be dimensioned as (LMAX+LWIN+1, LMAX+1) where "// &
                 "LMAX and LWIN are ", lmax, lwin
         print*, "Input array is dimensioned as ", size(Mmt(:,1)), size(Mmt(1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
+
     endif
 
     if (size(tapers_power(:,1)) < lwin+1 .or. size(tapers_power(1,:)) < K) then
@@ -50,7 +60,13 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
                 "and K are ", lwin, k
         print*, "Input array is dimensioned as ", size(tapers_power(:,1)), &
             size(tapers_power(1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
+
     endif
 
     if (present(taper_wt)) then
@@ -58,8 +74,14 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
             print*, "Error --- SHMTCouplingMatrix"
             print*, "TAPER_WT must be dimensioned as (K) where K is ", k
             print*, "Input array is dimensioned as ", size(taper_wt)
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
             stop
+        end if
         endif
+
     endif
 
     !--------------------------------------------------------------------------
@@ -72,12 +94,18 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
 
         do i=0, lmax+lwin
             do j=0, lmax
-                call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
+                if (present(exitstatus)) then
+                    call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0, &
+                                  exitstatus = exitstatus)
+                    if (exitstatus /= 0) return
+                else
+                    call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
+                end if
                 sum1 = 0.0d0
 
                 do l = wmin, min(wmax,lwin), 2
                     sum1 = sum1 + dot_product(taper_wt(1:K), &
-                        tapers_power(l+1,1:K)) * w3j(l-wmin+1)**2
+                           tapers_power(l+1,1:K)) * w3j(l-wmin+1)**2
                 enddo
 
                 Mmt(i+1,j+1) = sum1 * dble(2*i+1)
@@ -89,7 +117,13 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt)
 
         do i = 0, lmax+lwin
             do j = 0, lmax
-                call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
+                if (present(exitstatus)) then
+                    call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0, &
+                                  exitstatus = exitstatus)
+                    if (exitstatus /= 0) return
+                else
+                    call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
+                end if
                 sum1 = 0.0d0
 
                 do l = wmin, min(wmax,lwin), 2

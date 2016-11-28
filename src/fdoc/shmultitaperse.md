@@ -4,16 +4,16 @@ Perform a localized multitaper spectral analysis using spherical cap windows.
 
 # Usage
 
-call SHMultiTaperSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `taper_order`, `lmaxt`, `k`, `alpha`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`)
+call SHMultiTaperSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `taper_order`, `lmaxt`, `k`, `alpha`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
 
 # Parameters
 
 `mtse` : output, real\*8, dimension (`lmax`-`lmaxt`+1)
-:   The localized multitaper power spectrum estimate. 
+:   The localized multitaper power spectrum estimate.
 
 `sd` : output, real\*8, dimension (`lmax`-`lmaxt`+1)
 :   The standard error of the localized multitaper power spectral estimates.
-	
+
 `sh` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the function to be localized.
 
@@ -43,12 +43,15 @@ call SHMultiTaperSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `taper_order`, `lmaxt
 
 `taper_wt` : input, optional, real\*8, dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates and standard error. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
-	
+
 `norm` : input, optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
 `csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

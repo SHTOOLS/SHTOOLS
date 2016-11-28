@@ -4,7 +4,7 @@ Calculate the eigenfunctions of the spherical-cap concentration problem for a si
 
 # Usage
 
-call SHReturnTapersM (`theta0`, `lmax`, `m`, `tapers`, `eigenvalues`, `shannon`)
+call SHReturnTapersM (`theta0`, `lmax`, `m`, `tapers`, `eigenvalues`, `shannon`, `exitstatus`)
 
 # Parameters
 
@@ -25,6 +25,9 @@ call SHReturnTapersM (`theta0`, `lmax`, `m`, `tapers`, `eigenvalues`, `shannon`)
 
 `shannon` : output, optional, real\*8
 :   The Shannon number, which is the trace of the concentration kernel.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

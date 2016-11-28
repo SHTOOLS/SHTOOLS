@@ -1,5 +1,5 @@
 subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
-                             sampling, ntapers)
+                             sampling, ntapers, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will calculate the eigenvalues and eigenfunctions of the
@@ -49,10 +49,20 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
 !                       corresponding to the columns of Tapers, dimensioned as
 !                       (lmax+1)**2.
 !
+!       OPTIONAL (OUT)
+!           exitstatus  If present, instead of executing a STOP when an error
+!                       is encountered, the variable exitstatus will be
+!                       returned describing the error.
+!                       0 = No errors;
+!                       1 = Improper dimensions of input array;
+!                       2 = Improper bounds for input variable;
+!                       3 = Error allocating memory;
+!                       4 = File IO error.
+!
 !   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
-!-------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
     use SHTOOLS, only : EigValVecSym, ComputeDMap
 
     implicit none
@@ -60,9 +70,12 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
     real*8, intent(out) :: tapers(:,:), eigenvalues(:)
     integer, intent(in) :: dh_mask(:,:), n_dh, lmax
     integer, intent(in), optional :: sampling, ntapers
+    integer, intent(out), optional :: exitstatus
     real*8, allocatable :: dij(:,:)
     integer :: nlat, nlong, lmax_dh, astat, i, j
     real*8 :: area, areaf, pi, colat, long_int, lat_int, da
+
+    if (present(exitstatus)) exitstatus = 0
 
     pi = acos(-1.0d0)
 
@@ -73,7 +86,12 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
                     "equal to (LMAX+1)**2."
             print*, "LMAX = ", lmax
             print*, "NTAPERS = ", ntapers
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
 
         else if (size(tapers(:,1)) < (lmax+1)**2 .or. &
             size(tapers(1,:)) < ntapers) then
@@ -83,14 +101,24 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
                         size(tapers(1,:))
                 print*, "LMAX = ", lmax
                 print*, "NTAPERS = ", ntapers
-                stop
+                if (present(exitstatus)) then
+                    exitstatus = 1
+                    return
+                else
+                    stop
+                end if
 
         else if (size(eigenvalues(:)) < ntapers) then
             print*, "Error --- SHReturnTapersMap"
             print*, "EIGENVALUES must be dimensioned as NTAPERS."
             print*, "Dimension of EIGENVALUES = ", size(eigenvalues)
             print*, "NTAPERS = ", ntapers
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
 
         end if
 
@@ -102,14 +130,24 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
             print*, "Dimension of TAPERS = ", size(tapers(:,1)), &
                     size(tapers(1,:))
             print*, "LMAX = ", lmax
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
 
         else if (size(eigenvalues(:)) < (lmax+1)**2) then
             print*, "Error --- SHReturnTapersMap"
             print*, "EIGENVALUES must be dimensioned as (LMAX+1)**2"
             print*, "Dimension of EIGENVALUES = ", size(eigenvalues)
             print*, "LMAX = ", lmax
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
 
         end if
 
@@ -120,12 +158,17 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
         print*, "Number of samples in latitude must be even for the " // &
                 "Driscoll and Healy sampling theorem."
         print*, "N_DH = ", n_dh
-        stop
+        if (present(exitstatus)) then
+             exitstatus = 2
+             return
+        else
+             stop
+        end if
 
     end if
 
     nlat = n_dh
-    lat_int = pi/dble(nlat)
+    lat_int = pi / dble(nlat)
 
     if (present(sampling)) then
         if (sampling == 1) then
@@ -133,7 +176,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
             long_int = 2.0d0 * lat_int
 
         else if (sampling == 2) then
-            nlong = 2*nlat
+            nlong = 2 * nlat
             long_int = lat_int
 
         else 
@@ -141,7 +184,12 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
             print*, "SAMPLING must be either 1 (equally sampled) " // &
                     "or 2 (equally spaced)."
             print*, "SAMPLING = ", sampling
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
 
         end if
 
@@ -156,7 +204,12 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
         print*, "DH_MASK must be dimensioned as ", nlat, nlong
         print*, "Dimensions of DH_MASK are ", size(dh_mask(:,1)), &
                 size(dh_mask(1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     end if
 
@@ -169,7 +222,12 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
         print*, "Experience suggests that this should be about 4 times LMAX."
         print*, "LMAX = ", lmax
         print*, "Effective bandwidth of DH_MASK = (N/2 -1) = ", lmax_dh
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 2
+            return
+        else
+            stop
+        end if
 
     end if
 
@@ -179,25 +237,50 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
         print*, "Error --- SHReturnTapersMap"
         print*, "Problem allocating DIJ((LMAX+1)**2,(LMAX+1)**2)"
         print*, "LMAX = ", lmax
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 3
+            return
+        else
+            stop
+        end if
 
     end if
 
-    if (present(sampling)) then
-        call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=sampling)
+    if (present(exitstatus)) then
+        if (present(sampling)) then
+            call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=sampling, &
+                             exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=1, &
+                             exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        end if
 
+        if (present(ntapers)) then
+            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, &
+                              k = ntapers, exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, &
+                              exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        endif
+    
     else
-        call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=1)
+        if (present(sampling)) then
+            call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=sampling)
+        else
+            call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=1)
+        end if
+
+        if (present(ntapers)) then
+            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, k = ntapers)
+        else
+            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers)
+        endif
 
     end if
-
-    if (present(ntapers)) then
-        call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, k = ntapers)
-
-    else
-        call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers)
-
-    endif
 
     !--------------------------------------------------------------------------
     !
@@ -221,18 +304,11 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
 
     end do
 
-    da = 2.0d0 * pi * (1.0d0 - cos(lat_int/2.0d0) )
+    da = 2.0d0 * pi * (1.0d0 - cos(lat_int/2.0d0))
     area = area + 2.0d0 * da
 
-    if (dh_mask(1,1) == 1) areaf = areaf +  da
+    if (dh_mask(1,1) == 1) areaf = areaf + da
     if (dh_mask(nlat,nlong) == 1) areaf = areaf + da
-
-    !print*, "SHReturnTapersMap --- (Area of entire grid) / 4pi = ", &
-    !                area / 4.0d0 / pi
-    !print*, "SHReturnTapersMap --- (Area of DH_MASK) / 4pi = ", &
-    !                areaf / 4.0d0 / pi
-    !print*, "SHReturnTapersMap --- (Area of DH_MASK) / 4pi / D00 = ", &
-    !                areaf / 4.0d0 / pi / Dij(1,1)
 
     deallocate (dij)
 

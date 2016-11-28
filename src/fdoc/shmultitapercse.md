@@ -4,7 +4,7 @@ Perform a localized multitaper cross-spectral analysis using spherical cap windo
 
 # Usage
 
-call SHMultiTaperCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `taper_order`, `lmaxt`, `k`, `alpha`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`)
+call SHMultiTaperCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `taper_order`, `lmaxt`, `k`, `alpha`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
 
 # Parameters
 
@@ -13,7 +13,7 @@ call SHMultiTaperCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `t
 
 `sd` : output, real\*8, dimension (`lmax`-`lmaxt`+1)
 :   The standard error of the localized multitaper cross-power spectral estimates. `lmax` is the smaller of `lmax1` and `lmax2`.
-	
+
 `sh1` : input, real\*8, dimension (2, `lmax1`+1, `lmax1`+1)
 :   The spherical harmonic coefficients of the first function.
 
@@ -55,6 +55,9 @@ call SHMultiTaperCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `t
 
 `csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

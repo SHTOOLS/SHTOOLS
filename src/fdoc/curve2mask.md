@@ -4,18 +4,18 @@ Given a set of latitude and longitude coordinates representing a closed curve, o
 
 # Usage
 
-call Curve2Mask (`mask_dh`, `n`, `sampling`, `profile`, `nprofile`, `np`, `centralmeridian`)
+call Curve2Mask (`mask_dh`, `n`, `sampling`, `profile`, `nprofile`, `np`, `centralmeridian`, `exitstatus`)
 
 # Parameters
 
 `dh_mask` : output, integer, dimension (`n`, `n`\*`sampling`)
 :   A Driscoll and Healy (1994) sampled grid describing the concentration region R. All elements on output will either be 1 (for inside the concentration region) or 0 (for outside R).
-	
+
 `n` : input, integer
 :   The number of latitudinal samples in `dh_mask`. The effective spherical harmonic bandwidth of this grid is `L=n/2-1`.
 
 `sampling` : input, integer
-:   For 1, `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples. 
+:   For 1, `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples.
 
 `profile` : input, real\*8, dimension (`nprofile`, 2)
 :   List of latitude (:,1) and longitude (:,2) coordinates in degrees specifying a single closed curve.
@@ -28,6 +28,9 @@ call Curve2Mask (`mask_dh`, `n`, `sampling`, `profile`, `nprofile`, `np`, `centr
 
 `centralmeridian` : input, optional, integer, default = 0
 :   If 1, the curve is assumed to pass through the central meridian: passing from < 360 degrees to > 0 degrees. The curve makes a complete circle about the planet in longitude.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

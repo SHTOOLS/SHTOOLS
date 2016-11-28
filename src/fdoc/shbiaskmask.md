@@ -4,7 +4,7 @@ Calculate the multitaper (cross-)power spectrum expectation of a function locali
 
 # Usage
 
-call SHBiasK (`tapers`, `lwin`, `k`, `incspectra`, `ldata`, `outcspectra`, `taper_wt`, `save_cg`)
+call SHBiasK (`tapers`, `lwin`, `k`, `incspectra`, `ldata`, `outcspectra`, `taper_wt`, `save_cg`, `exitstatus`)
 
 # Parameters
 
@@ -31,6 +31,9 @@ call SHBiasK (`tapers`, `lwin`, `k`, `incspectra`, `ldata`, `outcspectra`, `tape
 
 `save_cg` : input, optional, integer, default = 0
 :   If set equal to 1, the Clebsch-Gordon coefficients will be precomputed and saved for future use (if `lwin` or `ldata` change, these will be recomputed). To deallocate the saved memory, set this parameter equal to 1. If set equal to 0 (default), the Clebsch-Gordon coefficients will be recomputed for each call.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

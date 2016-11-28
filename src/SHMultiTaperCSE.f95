@@ -1,6 +1,6 @@
 subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
                            taper_order, lmaxt, K, alpha, lat, lon, taper_wt, &
-                           norm, csphase)
+                           norm, csphase, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will calculate the multitaper spectrum estimate utilizing
@@ -43,6 +43,16 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 !                           (3) unnormalized
 !                           (4) orthonormalized
 !
+!       OPTIONAL (OUT)
+!           exitstatus  If present, instead of executing a STOP when an error
+!                       is encountered, the variable exitstatus will be
+!                       returned describing the error.
+!                       0 = No errors;
+!                       1 = Improper dimensions of input array;
+!                       2 = Improper bounds for input variable;
+!                       3 = Error allocating memory;
+!                       4 = File IO error.
+!
 !   If the optional parameter alpha (or lat and lon) is input, then the
 !   spherical harmonic coefficients of the localizing windows will be rotated
 !   accordingly. To rotate a window originally centered at the north pole to
@@ -61,17 +71,18 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 !   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
-!-------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
     use SHTOOLS, only:  SHCrossPowerSpectrum, SHRotateRealCoef, &
                         djpi2, CSPHASE_DEFAULT, MakeGridGLQ, SHGLQ, SHExpandGLQ
-    
+
     implicit none
-    
+
     real*8, intent(out) :: mtse(:), sd(:)
     real*8, intent(in) ::  sh1(:,:,:), sh2(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax1, lmax2, lmaxt, K, taper_order(:)
     real*8, intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
     integer, intent(in), optional :: csphase, norm
+    integer, intent(out), optional :: exitstatus
     integer ::  i, l, lmax, phase, mnorm, astat(9), lmaxmul, nlat, nlong
     real*8, allocatable, save :: zero(:), w(:)
     integer, save :: first = 1, lmaxmul_last = -1
@@ -81,6 +92,8 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
                             grid2glq(:,:), gridwinglq(:,:), temp(:,:)
 
 !$OMP   threadprivate(zero, w, first, lmaxmul_last)
+
+    if (present(exitstatus)) exitstatus = 0
 
     pi = acos(-1.0d0)
 
@@ -93,7 +106,12 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
                 "where LMAX is ", lmax
         print*, "Input array is dimensioned ", size(sh1(:,1,1)), &
                 size(sh1(1,:,1)), size(sh1(1,1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (size(sh2(:,1,1)) < 2 .or. size(sh2(1,:,1)) < lmax+1 .or. &
              size(sh2(1,1,:)) < lmax+1) then
@@ -102,7 +120,12 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
                 "where lmax is ", lmax
         print*, "Input array is dimensioned ", size(sh2(:,1,1)), &
                 size(sh2(1,:,1)), size(sh2(1,1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (size(tapers(:,1)) < lmaxt+1 .or. size(tapers(1,:)) < K) then
         print*, "Error --- SHMultiTaperCSE"
@@ -110,33 +133,58 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
                 "where LMAXT and K are, ", lmaxt, K
         print*, "Input array is dimensioned ", size(tapers(:,1)), &
                 size(tapers(1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (size(taper_order) < K) then
         print*, "Error --- SHMutltiTaperCSE"
         print*, "TAPER_ORDER must be dimensioned as (K) where K is ", K
         print*, "Input dimension of array is ", size(taper_order)
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (size(mtse) < lmax-lmaxt+1) then
         print*, "Error --- SHMultiTaperCSE"
         print*, "MTSE must be dimensioned as (LMAX-LMAXT+1) " // &
                 "where LMAX and LMAXT are ", lmax, lmaxt
         print*, "Input dimension of array is ", size(mtse)
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (size(sd) < lmax-lmaxt+1) then
         print*, "Error --- SHMultiTaperCSE"
         print*, "SD must be dimensioned as (LMAX-LMAXT1) where " // &
                 "LMAX and LMAXT are ", lmax, lmaxt
         print*, "Input dimension of array is ", size(sd)
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (lmax < lmaxt) then
         print*, "Error --- SHMultiTaperCSE"
         print*, "LMAX must be larger than LMAXT."
         print*, "Input valuse of LMAX and LMAXT are ", lmax, lmaxt
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 2
+            return
+        else
+            stop
+        end if
 
     end if
 
@@ -145,7 +193,13 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
             print*, "Error --- SHMultiTaperCSE"
             print*, "TAPER_WT must be dimensioned as (K) where K is ", K
             print*, "Input dimension of array is ", size(taper_wt)
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
+
         end if
     end if
 
@@ -155,7 +209,13 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
             print*, "Parameter NORM must be 1 (geodesy), 2 (Schmidt), " // &
                     "3 (unnormalized), or 4 (orthonormalized)."
             print*, "Input value is ", norm
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
+
         end if
         mnorm = norm
 
@@ -169,7 +229,12 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
             print*, "Error --- SHMultiTaperCSE"
             print*, "CSPHASE must be 1 (exclude) or -1 (include)."
             print*, "Input value is ", csphase
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
 
         else
             phase = csphase
@@ -183,32 +248,56 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     if (present(alpha) .and. present(lat) .and. present(lon)) then
         print*, "Error --- SHMultiTaperSE"
         print*, "Only ALPHA or LAT and LON can be present, but not both"
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 5
+            return
+        else
+            stop
+        end if
+
     end if
 
     if (present(lat) .and. .not. present(lon)) then
         print*, "Error --- SHMultiTaperCSE"
         print*, "Both the optional parameters LAT and LON must be present."
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
+
     end if
 
     if (present(lon) .and. .not. present(lat)) then
         print*, "Error --- SHMultiTaperCSE"
         print*, "Both the optional parameters LAT and LON must be present."
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
+
     end if
 
     if (present(lat) .and. present(lon)) then
         x(1) = 0.0d0
-        x(2) = -(90.0d0 - lat)*pi/180.0d0
-        x(3) =  -lon*pi/180.0d0
+        x(2) = -(90.0d0 - lat) * pi / 180.0d0
+        x(3) =  -lon * pi / 180.0d0
 
     else if (present(alpha)) then
         if (size(alpha) < 3) then
             print*, "Error --- SHMultiTaperCSE"
             print*, "ALPHA must be dimensioned as (3)."
             print*, "Input array is dimensioned as ", size(alpha)
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
+
         end if
 
         x = alpha
@@ -216,8 +305,8 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     end if
 
     lmaxmul = lmax + lmaxt
-    nlat = lmax+lmaxt+1
-    nlong = 2*(lmax+lmaxt)+1
+    nlat = lmax + lmaxt + 1
+    nlong = 2 * (lmax + lmaxt) + 1
 
     allocate (shwin(2,lmaxt+1,lmaxt+1), stat = astat(1))
     allocate (shloc1(2, lmax1+lmaxt+1, lmax1+lmaxt+1), stat= astat(2))
@@ -235,7 +324,13 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
                 "SHLOC2, DJ, SHWINROT, GRID1GLQ, GRID2GLQ, GRIDWNGLQ, " // &
                 "and TEMP", astat(1), astat(2), astat(3), &
                 astat(4), astat(5), astat(6), astat(7), astat(8), astat(9)
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 3
+            return
+        else
+            stop
+        end if
+
     end if
 
    if (first == 1) then
@@ -248,11 +343,22 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
         if (sum(astat(1:2)) /= 0) then
             print*, "Error --- SHMultiTaperCSE"
             print*, "Problem allocating arrays ZERO and W", astat(1), astat(2)
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 3
+                return
+            else
+                stop
+            end if
 
         end if
 
-        call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
+        if (present(exitstatus)) then
+            call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm, &
+                       exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
+        endif
 
     end if
 
@@ -267,11 +373,22 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
         if (sum(astat(1:2)) /= 0) then
             print*, "Error --- SHMultiTaperCSE"
             print*, "Problem allocating arrays ZERO and W", astat(1), astat(2)
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 3
+                return
+            else
+                stop
+            end if
 
         end if
 
-        call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
+        if (present(exitstatus)) then
+            call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm, &
+                       exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
+        end if
 
     end if
 
@@ -284,15 +401,31 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     !
     !--------------------------------------------------------------------------
     if (present(alpha) .or. (present(lat) .and. present(lon)) ) then
-        call djpi2(dj, lmaxt)   ! Create rotation matrix used in the
-                                ! rotation routine.
+        ! Create rotation matrix used in the rotation routine.
+        if (present(exitstatus)) then
+            call djpi2(dj, lmaxt, exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call djpi2(dj, lmaxt)
+        end if
+
     end if
 
-    call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax+1, 1:lmax+1), &
-                     lmaxmul, zero = zero, csphase = phase, norm = mnorm)
-
-    call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax+1, 1:lmax+1), &
-                     lmaxmul, zero = zero, csphase = phase, norm = mnorm)
+    if (present(exitstatus)) then
+        call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax+1, 1:lmax+1), &
+                         lmaxmul, zero = zero, csphase = phase, norm = mnorm, &
+                         exitstatus = exitstatus)
+        if (exitstatus /= 0) return
+        call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax+1, 1:lmax+1), &
+                         lmaxmul, zero = zero, csphase = phase, norm = mnorm, &
+                         exitstatus = exitstatus)
+        if (exitstatus /= 0) return
+    else
+        call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax+1, 1:lmax+1), &
+                         lmaxmul, zero = zero, csphase = phase, norm = mnorm)
+        call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax+1, 1:lmax+1), &
+                         lmaxmul, zero = zero, csphase = phase, norm = mnorm)
+    end if
 
     do i = 1, K
         shwin = 0.0d0
@@ -305,27 +438,51 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
         end if
 
         if (present(alpha) .or. (present(lat) .and. present(lon)) ) then
-            call SHRotateRealCoef(shwinrot, shwin, lmaxt, x, dj)
+            if (present(exitstatus)) then
+                call SHRotateRealCoef(shwinrot, shwin, lmaxt, x, dj, &
+                                      exitstatus = exitstatus)
+                if (exitstatus /= 0) return
+            else
+                call SHRotateRealCoef(shwinrot, shwin, lmaxt, x, dj)
+            end if
             shwin = shwinrot
 
         end if
 
-        call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
-                         lmaxmul, zero = zero, csphase = phase, norm = mnorm)
-
-        temp(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
-                               * gridwinglq(1:nlat,1:nlong) 
-
-        call SHExpandGLQ(shloc1, lmaxmul, temp, w, zero = zero, &
-                            csphase = phase, norm = mnorm)
-
-        temp(1:nlat,1:nlong) = grid2glq(1:nlat,1:nlong) &
-                               * gridwinglq(1:nlat,1:nlong) 
-
-        call SHExpandGLQ(shloc2, lmaxmul, temp, w, zero = zero, &
-                         csphase = phase, norm = mnorm)
-
-        call SHCrossPowerSpectrum(shloc1, shloc2, lmax-lmaxt, se(:,i))
+        if (present(exitstatus)) then
+            call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
+                             lmaxmul, zero = zero, csphase = phase, &
+                             norm = mnorm, exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+            temp(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
+                                   * gridwinglq(1:nlat,1:nlong)
+            call SHExpandGLQ(shloc1, lmaxmul, temp, w, zero = zero, &
+                             csphase = phase, norm = mnorm, &
+                             exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+            temp(1:nlat,1:nlong) = grid2glq(1:nlat,1:nlong) &
+                                   * gridwinglq(1:nlat,1:nlong)
+            call SHExpandGLQ(shloc2, lmaxmul, temp, w, zero = zero, &
+                             csphase = phase, norm = mnorm, &
+                             exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+            call SHCrossPowerSpectrum(shloc1, shloc2, lmax-lmaxt, se(:,i), &
+                                      exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
+                             lmaxmul, zero = zero, csphase = phase, &
+                             norm = mnorm)
+            temp(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
+                                   * gridwinglq(1:nlat,1:nlong)
+            call SHExpandGLQ(shloc1, lmaxmul, temp, w, zero = zero, &
+                             csphase = phase, norm = mnorm)
+            temp(1:nlat,1:nlong) = grid2glq(1:nlat,1:nlong) &
+                                   * gridwinglq(1:nlat,1:nlong)
+            call SHExpandGLQ(shloc2, lmaxmul, temp, w, zero = zero, &
+                             csphase = phase, norm = mnorm)
+            call SHCrossPowerSpectrum(shloc1, shloc2, lmax-lmaxt, se(:,i))
+        end if
 
     end do
 
@@ -351,14 +508,14 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 
             if (K > 1) then
                 sd(l+1) = sum( ( se(l+1,1:K) - mtse(l+1) )**2 ) / &
-                                        dble(K-1) /dble(K)  ! standard error !
+                          dble(K-1) /dble(K)  ! standard error !
             end if
 
         end do
 
     end if
 
-    if (K > 1) sd(1:lmax-lmaxt+1) = sqrt(sd(1:lmax-lmaxt+1) )
+    if (K > 1) sd(1:lmax-lmaxt+1) = sqrt(sd(1:lmax-lmaxt+1))
 
     deallocate (shwin)
     deallocate (shloc1)

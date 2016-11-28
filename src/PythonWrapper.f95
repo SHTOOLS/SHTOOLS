@@ -1164,6 +1164,618 @@
                                           exitstatus=exitstatus)
     end subroutine pySHCrossPowerSpectrumDensityC
 
+    subroutine pySHMultiTaperSE(exitstatus,mtse,sd,sh,lmax,tapers,taper_order,&
+                                lmaxt,k,lat,lon,taper_wt,norm,csphase, &
+                                taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2, &
+                                tapers_d0,tapers_d1,mtse_d0,sd_d0)
+        use shtools, only: SHMultiTaperSE
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(mtse_d0),intent(out) :: mtse
+        real*8, dimension(sd_d0),intent(out) :: sd
+        real*8, dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
+        integer, intent(in) :: lmax
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, dimension(taper_order_d0),intent(in) :: taper_order
+        integer, intent(in) :: lmaxt
+        integer, intent(in) :: k
+        real*8, optional,intent(in) :: lat
+        real*8, optional,intent(in) :: lon
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: taper_order_d0
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: sh_d0
+        integer, intent(in) :: sh_d1
+        integer, intent(in) :: sh_d2
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: mtse_d0
+        integer, intent(in) :: sd_d0
+        if (taper_wt(1) < 0.d0) then
+            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order, &
+                                lmaxt,k,lat=lat,lon=lon,norm=norm, &
+                                csphase=csphase,exitstatus=exitstatus)
+        else
+            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt, &
+                                k,lat=lat,lon=lon,taper_wt=taper_wt,norm=norm,&
+                                csphase=csphase,exitstatus=exitstatus)
+        endif
+    end subroutine pySHMultiTaperSE
+
+    subroutine pySHMultiTaperCSE(exitstatus,mtse,sd,sh1,lmax1,sh2,lmax2,&
+                                 tapers,taper_order,lmaxt,k,lat,lon,taper_wt,&
+                                 norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,&
+                                 sh2_d1,sh2_d2,taper_order_d0,taper_wt_d0,&
+                                 tapers_d0,tapers_d1,sd_d0,mtse_d0)
+        use shtools, only: SHMultiTaperCSE
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(mtse_d0),intent(out) :: mtse
+        real*8, dimension(sd_d0),intent(out) :: sd
+        real*8, dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
+        integer, intent(in) :: lmax1
+        real*8, dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
+        integer, intent(in) :: lmax2
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, dimension(taper_order_d0),intent(in) :: taper_order
+        integer, intent(in) :: lmaxt
+        integer, intent(in) :: k
+        real*8, optional,intent(in) :: lat
+        real*8, optional,intent(in) :: lon
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: sh1_d0
+        integer, intent(in) :: sh1_d1
+        integer, intent(in) :: sh1_d2
+        integer, intent(in) :: sh2_d0
+        integer, intent(in) :: sh2_d1
+        integer, intent(in) :: sh2_d2
+        integer, intent(in) :: taper_order_d0
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: sd_d0
+        integer, intent(in) :: mtse_d0
+        if(taper_wt(1) < 0.d0) then
+            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
+                                 taper_order,lmaxt,k,lat=lat,lon=lon,&
+                                 norm=norm,csphase=csphase, &
+                                 exitstatus=exitstatus)
+        else
+            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
+                                 taper_order,lmaxt,k,lat=lat,lon=lon,&
+                                 taper_wt=taper_wt,norm=norm,csphase=csphase,&
+                                 exitstatus=exitstatus)
+        endif
+    end subroutine pySHMultiTaperCSE
+
+    subroutine pySHLocalizedAdmitCorr(exitstatus,g,t,tapers,taper_order,k,lat,&
+                                      lon,lwin,lmax,admit,corr,admit_error,&
+                                      corr_error,taper_wt,mtdef,k1linsig,&
+                                      taper_order_d0,g_d0,g_d1,g_d2,&
+                                      taper_wt_d0,corr_error_d0,admit_d0,&
+                                      admit_error_d0,corr_d0,tapers_d0,&
+                                      tapers_d1,t_d0,t_d1,t_d2)
+        use shtools, only: SHLocalizedAdmitCorr
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(g_d0,g_d1,g_d2),intent(in) :: g
+        real*8, dimension(t_d0,t_d1,t_d2),intent(in) :: t
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, dimension(taper_order_d0),intent(in) :: taper_order
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: lon
+        integer, intent(in) :: lwin
+        integer, intent(in) :: lmax
+        real*8, dimension(admit_d0),intent(out) :: admit
+        real*8, dimension(corr_d0),intent(out) :: corr
+        integer, intent(in) :: k
+        real*8, optional,dimension(admit_error_d0),intent(out) :: admit_error
+        real*8, optional,dimension(corr_error_d0),intent(out) :: corr_error
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: mtdef
+        integer, optional,intent(in) :: k1linsig
+        integer, intent(in) :: taper_order_d0
+        integer, intent(in) :: g_d0
+        integer, intent(in) :: g_d1
+        integer, intent(in) :: g_d2
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: corr_error_d0
+        integer, intent(in) :: admit_d0
+        integer, intent(in) :: admit_error_d0
+        integer, intent(in) :: corr_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: t_d0
+        integer, intent(in) :: t_d1
+        integer, intent(in) :: t_d2
+        if(taper_wt(1) < 0.d0) then
+            if (k1linsig<0) then
+                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,&
+                                          lmax,admit,corr,k,&
+                                          admit_error=admit_error,&
+                                          corr_error=corr_error,&
+                                          mtdef=mtdef, exitstatus=exitstatus)
+            else
+                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,&
+                                          lmax,admit,corr,k,&
+                                          admit_error=admit_error,&
+                                          corr_error=corr_error, &
+                                          mtdef=mtdef,k1linsig=k1linsig, &
+                                          exitstatus=exitstatus)
+            endif
+        else
+            if (k1linsig<0) then
+                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,&
+                                          lmax,admit,corr,k,&
+                                          admit_error=admit_error,&
+                                          corr_error=corr_error,&
+                                          taper_wt=taper_wt,mtdef=mtdef, &
+                                          exitstatus=exitstatus)
+            else
+                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,&
+                                          lmax,admit,corr,k,&
+                                          admit_error=admit_error,&
+                                          corr_error=corr_error,&
+                                          taper_wt=taper_wt,mtdef=mtdef,&
+                                          k1linsig=k1linsig, &
+                                          exitstatus=exitstatus)
+            endif
+        endif
+    end subroutine pySHLocalizedAdmitCorr
+
+    subroutine pySHReturnTapers(exitstatus,theta0,lmax,tapers,eigenvalues,&
+                                taper_order,eigenvalues_d0,tapers_d0,&
+                                tapers_d1,taper_order_d0)
+        use shtools, only: SHReturnTapers
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: lmax
+        real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
+        real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
+        integer, dimension(taper_order_d0),intent(out) :: taper_order
+        integer, intent(in) :: eigenvalues_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: taper_order_d0
+        call SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,&
+                            exitstatus=exitstatus)
+    end subroutine pySHReturnTapers
+
+    subroutine pySHReturnTapersM(exitstatus,theta0,lmax,m,tapers,eigenvalues, &
+                                 tapers_d0,tapers_d1,eigenvalues_d0)
+        use shtools, only: SHReturnTapersM
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: lmax
+        integer, intent(in) :: m
+        real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
+        real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: eigenvalues_d0
+        call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,&
+                             exitstatus=exitstatus)
+    end subroutine pySHReturnTapersM
+
+    subroutine pyComputeDm(exitstatus,dllm,lmax,m,theta0,dllm_d0,dllm_d1)
+        use shtools, only: ComputeDm
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(dllm_d0,dllm_d1),intent(out) :: dllm
+        integer, intent(in) :: lmax
+        integer, intent(in) :: m
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: dllm_d0
+        integer, intent(in) :: dllm_d1
+        call ComputeDm(dllm,lmax,m,theta0,exitstatus=exitstatus)
+    end subroutine pyComputeDm
+
+    subroutine pyComputeDG82(exitstatus,dG82,lmax,m,theta0,dG82_d0,dG82_d1)
+        use shtools, only: ComputeDG82
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(dG82_d0,dG82_d1),intent(out) :: dG82
+        integer, intent(in) :: lmax
+        integer, intent(in) :: m
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: dG82_d0
+        integer, intent(in) :: dG82_d1
+        call ComputeDG82(dG82,lmax,m,theta0,exitstatus=exitstatus)
+    end subroutine pyComputeDG82
+
+    function pySHFindLWin(theta0,m,alpha,taper_number)
+        use shtools, only: SHFindLWin
+        implicit none
+        real*8, intent(in) :: theta0
+        integer, intent(in) :: m
+        real*8, intent(in) :: alpha
+        integer, optional,intent(in) :: taper_number
+        integer :: pySHFindLWin
+        pySHFindLWin=SHFindLWin(theta0,m,alpha,taper_number=taper_number)
+    end function pySHFindLWin
+
+    subroutine pySHBiasK(exitstatus,tapers,lwin,k,incspectra,ldata,outcspectra, &
+                         taper_wt,save_cg,taper_wt_d0,tapers_d0, &
+                         tapers_d1,incspectra_d0,outcspectra_d0)
+        use shtools, only: SHBiasK
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lwin
+        integer, intent(in) :: k
+        real*8, dimension(incspectra_d0),intent(in) :: incspectra
+        integer, intent(in) :: ldata
+        real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: save_cg
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: incspectra_d0
+        integer, intent(in) :: outcspectra_d0
+        if (taper_wt(1) < 0.d0) then
+            call SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra, &
+                         save_cg=save_cg,exitstatus=exitstatus)
+        else
+            call SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra, &
+                         taper_wt=taper_wt,save_cg=save_cg,&
+                         exitstatus=exitstatus)
+        endif
+    end subroutine pySHBiasK
+
+    subroutine pySHMTCouplingMatrix(exitstatus,Mmt, lmax, tapers_power, lwin, &
+                                    k, taper_wt, Mmt_d0, Mmt_d1, &
+                                    tapers_power_d0, tapers_power_d1, &
+                                    taper_wt_d0)
+        use shtools, only: SHMTCouplingMatrix
+        implicit none
+        integer, intent(out) :: exitstatus
+        integer, intent(in) :: lmax, k, lwin
+        real*8, intent(out) :: Mmt(Mmt_d0, Mmt_d1)
+        real*8, intent(in) ::  tapers_power(tapers_power_d0, tapers_power_d1)
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, intent(in) :: Mmt_d0
+        integer, intent(in) :: Mmt_d1
+        integer, intent(in) :: tapers_power_d0
+        integer, intent(in) :: tapers_power_d1
+        integer, intent(in) :: taper_wt_d0
+        if (taper_wt(1) < 0.d0) then
+            call SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, &
+                                    exitstatus = exitstatus)
+        else
+            call SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, &
+                                    taper_wt = taper_wt, &
+                                    exitstatus = exitstatus)
+        endif
+    end subroutine
+
+    subroutine pySHBiasAdmitCorr(exitstatus,sgt,sgg,stt,lmax,tapers,lwin,k,&
+                                 admit,corr,mtdef,taper_wt,taper_wt_d0,sgt_d0,&
+                                 stt_d0,admit_d0,tapers_d0,tapers_d1,corr_d0,&
+                                 sgg_d0)
+        use shtools, only: SHBiasAdmitCorr
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(sgt_d0),intent(in) :: sgt
+        real*8, dimension(sgg_d0),intent(in) :: sgg
+        real*8, dimension(stt_d0),intent(in) :: stt
+        integer, intent(in) :: lmax
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lwin
+        integer, intent(in) :: k
+        real*8, dimension(admit_d0),intent(out) :: admit
+        real*8, dimension(corr_d0),intent(out) :: corr
+        integer, optional,intent(in) :: mtdef
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: sgt_d0
+        integer, intent(in) :: stt_d0
+        integer, intent(in) :: admit_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: corr_d0
+        integer, intent(in) :: sgg_d0
+        if (taper_wt(1) < 0.d0) then
+            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr, &
+                                 mtdef=mtdef,exitstatus=exitstatus)
+        else
+            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr, &
+                                 mtdef=mtdef,taper_wt=taper_wt,&
+                                 exitstatus=exitstatus)
+        endif
+    end subroutine pySHBiasAdmitCorr
+
+    subroutine pySHMTDebias(exitstatus,mtdebias,mtspectra,lmax,tapers,lwin,k,&
+                            nl,lmid,n,taper_wt,mtdebias_d0,mtdebias_d1,&
+                            taper_wt_d0,mtspectra_d0,mtspectra_d1,tapers_d0,&
+                            tapers_d1,lmid_d0)
+        use shtools, only: SHMTDebias
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(mtdebias_d0,mtdebias_d1),intent(out) :: mtdebias
+        real*8, dimension(mtspectra_d0,mtspectra_d1),intent(in) :: mtspectra
+        integer, intent(in) :: lmax
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lwin
+        integer, intent(in) :: k
+        integer, intent(in) :: nl
+        real*8, dimension(lmid_d0),intent(out) :: lmid
+        integer, intent(out) :: n
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, intent(in) :: mtdebias_d0
+        integer, intent(in) :: mtdebias_d1
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: mtspectra_d0
+        integer, intent(in) :: mtspectra_d1
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: lmid_d0
+        if (taper_wt(1) < 0.d0) then
+            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n,&
+                            exitstatus = exitstatus)
+        else
+            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n, &
+                            taper_wt=taper_wt,exitstatus=exitstatus)
+        endif
+    end subroutine pySHMTDebias
+
+    subroutine pySHMTVarOpt(exitstatus,l,tapers,taper_order,lwin,kmax,Sff,&
+                            var_opt,var_unit,weight_opt,nocross, &
+                            taper_order_d0,weight_opt_d0,weight_opt_d1, &
+                            var_unit_d0,var_opt_d0,Sff_d0,tapers_d0,tapers_d1)
+        use shtools, only: SHMTVarOpt
+        implicit none
+        integer, intent(out) :: exitstatus
+        integer, intent(in) :: l
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, dimension(taper_order_d0),intent(in) :: taper_order
+        integer, intent(in) :: lwin
+        integer, intent(in) :: kmax
+        real*8, dimension(Sff_d0),intent(in) :: Sff
+        real*8, dimension(var_opt_d0),intent(out) :: var_opt
+        real*8, dimension(var_unit_d0),intent(out) :: var_unit
+        real*8, optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) ::&
+                                                                     weight_opt
+        integer, optional,intent(in) :: nocross
+        integer, intent(in) :: taper_order_d0
+        integer, intent(in) :: weight_opt_d0
+        integer, intent(in) :: weight_opt_d1
+        integer, intent(in) :: var_unit_d0
+        integer, intent(in) :: var_opt_d0
+        integer, intent(in) :: Sff_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        call SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit, &
+                        weight_opt=weight_opt,nocross=nocross, &
+                        exitstatus=exitstatus)
+    end subroutine pySHMTVarOpt
+
+    function pySHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc, &
+                       hk_real_d0,incspectra_d0,hj_real_d0)
+        use shtools, only: SHSjkPG
+        implicit none
+        real*8, dimension(incspectra_d0),intent(in) :: incspectra
+        integer, intent(in) :: l
+        integer, intent(in) :: m
+        integer, intent(in) :: mprime
+        real*8, dimension(hj_real_d0),intent(in) :: hj_real
+        real*8, dimension(hk_real_d0),intent(in) :: hk_real
+        integer, intent(in) :: mj
+        integer, intent(in) :: mk
+        integer, intent(in) :: lwin
+        integer, intent(in) :: hkcc
+        integer, intent(in) :: hk_real_d0
+        integer, intent(in) :: incspectra_d0
+        integer, intent(in) :: hj_real_d0
+        complex*16 :: pySHSjkPG
+        pySHSjkPG=SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin, &
+                          hkcc)
+    end function pySHSjkPG
+
+    subroutine pySHReturnTapersMap(exitstatus,tapers,eigenvalues,dh_mask,n_dh,&
+                                   lmax,sampling,ntapers,dh_mask_d0,dh_mask_d1,&
+                                   tapers_d0,tapers_d1,eigenvalues_d0)
+        use shtools, only: SHReturnTapersMap
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
+        real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
+        integer, dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
+        integer, intent(in) :: n_dh
+        integer, intent(in), optional :: sampling
+        integer, intent(in) :: lmax
+        integer, optional,intent(in) :: ntapers
+        integer, intent(in) :: dh_mask_d0
+        integer, intent(in) :: dh_mask_d1
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: eigenvalues_d0
+        call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax, &
+                               sampling=sampling,ntapers=ntapers, &
+                               exitstatus = exitstatus)
+    end subroutine pySHReturnTapersMap
+
+    subroutine pySHBiasKMask(exitstatus,tapers,lwin,k,incspectra,ldata,&
+                             outcspectra,taper_wt,save_cg,taper_wt_d0,&
+                             tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
+        use shtools, only: SHBiasKMask
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lwin
+        integer, intent(in) :: k
+        real*8, dimension(incspectra_d0),intent(in) :: incspectra
+        integer, intent(in) :: ldata
+        real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: save_cg
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: incspectra_d0
+        integer, intent(in) :: outcspectra_d0
+        if (taper_wt(1) < 0.d0) then
+            call SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra, &
+                             save_cg=save_cg, exitstatus=exitstatus)
+        else
+            call SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra, &
+                             taper_wt=taper_wt,save_cg=save_cg, &
+                             exitstatus=exitstatus)
+        endif
+    end subroutine pySHBiasKMask
+
+    subroutine pySHMultiTaperMaskSE(exitstatus,mtse,sd,sh,lmax,tapers,lmaxt,k,&
+                                    taper_wt,norm,csphase, &
+                                    taper_wt_d0,sh_d0,sh_d1,sh_d2, &
+                                    tapers_d0,tapers_d1,mtse_d0,sd_d0)
+        use shtools, only: SHMultiTaperMaskSE
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(mtse_d0),intent(out) :: mtse
+        real*8, dimension(sd_d0),intent(out) :: sd
+        real*8, dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
+        integer, intent(in) :: lmax
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lmaxt
+        integer, intent(in) :: k
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: sh_d0
+        integer, intent(in) :: sh_d1
+        integer, intent(in) :: sh_d2
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: mtse_d0
+        integer, intent(in) :: sd_d0
+        if (taper_wt(1) < 0.d0) then
+            call SHMultiTaperMaskSE(mtse,sd,sh,lmax,tapers,lmaxt,k,norm=norm, &
+                                    csphase=csphase, exitstatus=exitstatus)
+        else
+            call SHMultiTaperMaskSE(mtse,sd,sh,lmax,tapers,lmaxt,k, &
+                                    taper_wt=taper_wt,norm=norm, &
+                                    csphase=csphase, exitstatus=exitstatus)
+        endif
+    end subroutine pySHMultiTaperMaskSE
+
+    subroutine pySHMultiTaperMaskCSE(exitstatus,mtse,sd,sh1,lmax1,sh2,lmax2,&
+                                     tapers,lmaxt,k,taper_wt,norm,csphase,&
+                                     sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,&
+                                     sh2_d2,taper_wt_d0,tapers_d0,tapers_d1,&
+                                     sd_d0,mtse_d0)
+        use shtools, only: SHMultiTaperMaskCSE
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(mtse_d0),intent(out) :: mtse
+        real*8, dimension(sd_d0),intent(out) :: sd
+        real*8, dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
+        integer, intent(in) :: lmax1
+        real*8, dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
+        integer, intent(in) :: lmax2
+        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer, intent(in) :: lmaxt
+        integer, intent(in) :: k
+        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, intent(in) :: sh1_d0
+        integer, intent(in) :: sh1_d1
+        integer, intent(in) :: sh1_d2
+        integer, intent(in) :: sh2_d0
+        integer, intent(in) :: sh2_d1
+        integer, intent(in) :: sh2_d2
+        integer, intent(in) :: taper_wt_d0
+        integer, intent(in) :: tapers_d0
+        integer, intent(in) :: tapers_d1
+        integer, intent(in) :: sd_d0
+        integer, intent(in) :: mtse_d0
+        if(taper_wt(1) < 0.d0) then
+            call SHMultiTaperMaskCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
+                                     lmaxt,k,norm=norm,csphase=csphase, &
+                                     exitstatus=exitstatus)
+        else
+            call SHMultiTaperMaskCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
+                                     lmaxt,k,taper_wt=taper_wt,norm=norm, &
+                                     csphase=csphase,exitstatus=exitstatus)
+        endif
+    end subroutine pySHMultiTaperMaskCSE
+
+    subroutine pyComputeDMap(exitstatus,Dij,dh_mask,n_dh,lmax,sampling,&
+                             dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1)
+        use shtools, only: ComputeDMap
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(Dij_d0,Dij_d1),intent(out) :: Dij
+        integer, dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
+        integer, intent(in) :: n_dh
+        integer, intent(in), optional :: sampling
+        integer, intent(in) :: lmax
+        integer, intent(in) :: dh_mask_d0
+        integer, intent(in) :: dh_mask_d1
+        integer, intent(in) :: Dij_d0
+        integer, intent(in) :: Dij_d1
+        call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling=sampling,&
+                         exitstatus=exitstatus)
+    end subroutine pyComputeDMap
+
+    subroutine pyCurve2Mask(exitstatus,dhgrid,n,sampling,profile,nprofile,NP, &
+                            centralmeridian,profile_d0,profile_d1,dhgrid_d0, &
+                            dhgrid_d1)
+        use shtools, only: Curve2Mask
+        implicit none
+        integer, intent(out) :: exitstatus
+        integer, dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
+        integer, intent(in) :: n
+        integer, intent(in) :: sampling
+        real*8, dimension(profile_d0,profile_d1),intent(in) :: profile
+        integer, intent(in) :: nprofile
+        integer, intent(in) :: NP
+        integer, optional, intent(in) :: centralmeridian
+        integer, intent(in) :: profile_d0
+        integer, intent(in) :: profile_d1
+        integer, intent(in) :: dhgrid_d0
+        integer, intent(in) :: dhgrid_d1
+        call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP, &
+                        centralmeridian=centralmeridian, &
+                        exitstatus=exitstatus)
+    end subroutine pyCurve2Mask
+
+    subroutine pySHBias(exitstatus,Shh,lwin,incspectra,ldata,outcspectra,&
+                        save_cg,Shh_d0,incspectra_d0,outcspectra_d0)
+        use shtools, only: SHBias
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(Shh_d0),intent(in) :: Shh
+        integer, intent(in) :: lwin
+        real*8, dimension(incspectra_d0),intent(in) :: incspectra
+        integer, intent(in) :: ldata
+        real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
+        integer, optional,intent(in) :: save_cg
+        integer, intent(in) :: Shh_d0
+        integer, intent(in) :: incspectra_d0
+        integer, intent(in) :: outcspectra_d0
+        call SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg=save_cg,&
+                    exitstatus=exitstatus)
+    end subroutine pySHBias
+
+    subroutine pySphericalCapCoef(exitstatus,coef,theta,lmax,coef_d0)
+        use shtools, only: SphericalCapCoef
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(coef_d0),intent(out) :: coef
+        real*8, intent(in) :: theta
+        integer, optional,intent(in) :: lmax
+        integer, intent(in) :: coef_d0
+        call SphericalCapCoef(coef,theta,lmax=lmax,exitstatus=exitstatus)
+    end subroutine pySphericalCapCoef
+
     subroutine pyCilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
                             gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
         use shtools, only: CilmPlus
@@ -1403,365 +2015,6 @@
         pyDownContFilterMC=DownContFilterMC(l,half,r,d)
     end function pyDownContFilterMC
 
-    subroutine pyComputeDm(dllm,lmax,m,theta0,dllm_d0,dllm_d1)
-        use shtools, only: ComputeDm
-        implicit none
-        real*8, dimension(dllm_d0,dllm_d1),intent(out) :: dllm
-        integer, intent(in) :: lmax
-        integer, intent(in) :: m
-        real*8, intent(in) :: theta0
-        integer, intent(in) :: dllm_d0
-        integer, intent(in) :: dllm_d1
-        call ComputeDm(dllm,lmax,m,theta0)
-    end subroutine pyComputeDm
-
-    subroutine pySphericalCapCoef(coef,theta,lmax,coef_d0)
-        use shtools, only: SphericalCapCoef
-        implicit none
-        real*8, dimension(coef_d0),intent(out) :: coef
-        real*8, intent(in) :: theta
-        integer, optional,intent(in) :: lmax
-        integer, intent(in) :: coef_d0
-        call SphericalCapCoef(coef,theta,lmax=lmax)
-    end subroutine pySphericalCapCoef
-
-    subroutine pySHReturnTapersM(theta0,lmax,m,tapers,eigenvalues, &
-                                 tapers_d0,tapers_d1,eigenvalues_d0)
-        use shtools, only: SHReturnTapersM
-        implicit none
-        real*8, intent(in) :: theta0
-        integer, intent(in) :: lmax
-        integer, intent(in) :: m
-        real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
-        real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: eigenvalues_d0
-        call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues)
-    end subroutine pySHReturnTapersM
-
-    function pySHFindLWin(theta0,m,alpha,taper_number)
-        use shtools, only: SHFindLWin
-        implicit none
-        real*8, intent(in) :: theta0
-        integer, intent(in) :: m
-        real*8, intent(in) :: alpha
-        integer, optional,intent(in) :: taper_number
-        integer :: pySHFindLWin
-        pySHFindLWin=SHFindLWin(theta0,m,alpha,taper_number=taper_number)
-    end function pySHFindLWin
-
-    subroutine pySHLocalizedAdmitCorr(g,t,tapers,taper_order,k,lat,lon,lwin, &
-                                      lmax,admit,corr,admit_error,corr_error, &
-                                      taper_wt,mtdef,k1linsig,taper_order_d0, &
-                                      g_d0,g_d1,g_d2,taper_wt_d0, &
-                                      corr_error_d0,admit_d0,admit_error_d0, &
-                                      corr_d0,tapers_d0,tapers_d1,t_d0,t_d1, &
-                                      t_d2)
-        use shtools, only: SHLocalizedAdmitCorr
-        implicit none
-        real*8, dimension(g_d0,g_d1,g_d2),intent(in) :: g
-        real*8, dimension(t_d0,t_d1,t_d2),intent(in) :: t
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, dimension(taper_order_d0),intent(in) :: taper_order
-        real*8, intent(in) :: lat
-        real*8, intent(in) :: lon
-        integer, intent(in) :: lwin
-        integer, intent(in) :: lmax
-        real*8, dimension(admit_d0),intent(out) :: admit
-        real*8, dimension(corr_d0),intent(out) :: corr
-        integer, intent(in) :: k
-        real*8, optional,dimension(admit_error_d0),intent(out) :: admit_error
-        real*8, optional,dimension(corr_error_d0),intent(out) :: corr_error
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, optional,intent(in) :: mtdef
-        integer, optional,intent(in) :: k1linsig
-        integer, intent(in) :: taper_order_d0
-        integer, intent(in) :: g_d0
-        integer, intent(in) :: g_d1
-        integer, intent(in) :: g_d2
-        integer, intent(in) :: taper_wt_d0
-        integer, intent(in) :: corr_error_d0
-        integer, intent(in) :: admit_d0
-        integer, intent(in) :: admit_error_d0
-        integer, intent(in) :: corr_d0
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: t_d0
-        integer, intent(in) :: t_d1
-        integer, intent(in) :: t_d2
-        if(taper_wt(1) < 0.d0) then
-            if (k1linsig<0) then
-                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,&
-                                          lmax,admit,corr,k,&
-                                          admit_error=admit_error,&
-                                          corr_error=corr_error,&
-                                          mtdef=mtdef)
-            else
-                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,&
-                                          lmax,admit,corr,k,&
-                                          admit_error=admit_error,&
-                                          corr_error=corr_error, &
-                                          mtdef=mtdef,k1linsig=k1linsig)
-            endif
-        else
-            if (k1linsig<0) then
-                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,&
-                                          lmax,admit,corr,k,&
-                                          admit_error=admit_error,&
-                                          corr_error=corr_error,&
-                                          taper_wt=taper_wt,mtdef=mtdef)
-            else
-                call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,&
-                                          lmax,admit,corr,k,&
-                                          admit_error=admit_error,&
-                                          corr_error=corr_error,&
-                                          taper_wt=taper_wt,mtdef=mtdef,&
-                                          k1linsig=k1linsig)
-            endif
-        endif
-    end subroutine pySHLocalizedAdmitCorr
-
-    subroutine pyComputeDG82(dG82,lmax,m,theta0,dG82_d0,dG82_d1)
-        use shtools, only: ComputeDG82
-        implicit none
-        real*8, dimension(dG82_d0,dG82_d1),intent(out) :: dG82
-        integer, intent(in) :: lmax
-        integer, intent(in) :: m
-        real*8, intent(in) :: theta0
-        integer, intent(in) :: dG82_d0
-        integer, intent(in) :: dG82_d1
-        call ComputeDG82(dG82,lmax,m,theta0)
-    end subroutine pyComputeDG82
-
-    subroutine pySHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg,Shh_d0, &
-                        incspectra_d0,outcspectra_d0)
-        use shtools, only: SHBias
-        implicit none
-        real*8, dimension(Shh_d0),intent(in) :: Shh
-        integer, intent(in) :: lwin
-        real*8, dimension(incspectra_d0),intent(in) :: incspectra
-        integer, intent(in) :: ldata
-        real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
-        integer, optional,intent(in) :: save_cg
-        integer, intent(in) :: Shh_d0
-        integer, intent(in) :: incspectra_d0
-        integer, intent(in) :: outcspectra_d0
-        call SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg=save_cg)
-    end subroutine pySHBias
-
-    subroutine pySHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra, &
-                         taper_wt,save_cg,taper_wt_d0,tapers_d0, &
-                         tapers_d1,incspectra_d0,outcspectra_d0)
-        use shtools, only: SHBiasK
-        implicit none
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, intent(in) :: lwin
-        integer, intent(in) :: k
-        real*8, dimension(incspectra_d0),intent(in) :: incspectra
-        integer, intent(in) :: ldata
-        real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, optional,intent(in) :: save_cg
-        integer, intent(in) :: taper_wt_d0
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: incspectra_d0
-        integer, intent(in) :: outcspectra_d0
-        if (taper_wt(1) < 0.d0) then
-            call SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra, &
-                         save_cg=save_cg)
-        else
-            call SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra, &
-                         taper_wt=taper_wt,save_cg=save_cg)
-        endif
-    end subroutine pySHBiasK
-
-    subroutine pySHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra, &
-                         taper_wt,save_cg,taper_wt_d0,tapers_d0, &
-                         tapers_d1,incspectra_d0,outcspectra_d0)
-        use shtools, only: SHBiasKMask
-        implicit none
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, intent(in) :: lwin
-        integer, intent(in) :: k
-        real*8, dimension(incspectra_d0),intent(in) :: incspectra
-        integer, intent(in) :: ldata
-        real*8, dimension(outcspectra_d0),intent(out) :: outcspectra
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, optional,intent(in) :: save_cg
-        integer, intent(in) :: taper_wt_d0
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: incspectra_d0
-        integer, intent(in) :: outcspectra_d0
-        if (taper_wt(1) < 0.d0) then
-            call SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra, &
-                         save_cg=save_cg)
-        else
-            call SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra, &
-                         taper_wt=taper_wt,save_cg=save_cg)
-        endif
-    end subroutine pySHBiasKMask
-
-    subroutine pySHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,k, &
-                                lat,lon,taper_wt,norm,csphase, &
-                                taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2, &
-                                tapers_d0,tapers_d1,mtse_d0,sd_d0)
-        use shtools, only: SHMultiTaperSE
-        implicit none
-        real*8, dimension(mtse_d0),intent(out) :: mtse
-        real*8, dimension(sd_d0),intent(out) :: sd
-        real*8, dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
-        integer, intent(in) :: lmax
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, dimension(taper_order_d0),intent(in) :: taper_order
-        integer, intent(in) :: lmaxt
-        integer, intent(in) :: k
-        real*8, optional,intent(in) :: lat
-        real*8, optional,intent(in) :: lon
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, intent(in) :: taper_order_d0
-        integer, intent(in) :: taper_wt_d0
-        integer, intent(in) :: sh_d0
-        integer, intent(in) :: sh_d1
-        integer, intent(in) :: sh_d2
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: mtse_d0
-        integer, intent(in) :: sd_d0
-        if (taper_wt(1) < 0.d0) then
-            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order, &
-                                lmaxt,k,lat=lat,lon=lon,norm=norm, &
-                                csphase=csphase)
-        else
-            call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt, &
-                                k,lat=lat,lon=lon,taper_wt=taper_wt,norm=norm,&
-                                csphase=csphase)
-        endif
-    end subroutine pySHMultiTaperSE
-
-    subroutine pySHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
-                                 taper_order,lmaxt,k,lat,lon,taper_wt,norm, &
-                                 csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1, &
-                                 sh2_d2,taper_order_d0,taper_wt_d0,tapers_d0,&
-                                 tapers_d1,sd_d0,mtse_d0)
-        use shtools, only: SHMultiTaperCSE
-        implicit none
-        real*8, dimension(mtse_d0),intent(out) :: mtse
-        real*8, dimension(sd_d0),intent(out) :: sd
-        real*8, dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-        integer, intent(in) :: lmax1
-        real*8, dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-        integer, intent(in) :: lmax2
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, dimension(taper_order_d0),intent(in) :: taper_order
-        integer, intent(in) :: lmaxt
-        integer, intent(in) :: k
-        real*8, optional,intent(in) :: lat
-        real*8, optional,intent(in) :: lon
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, intent(in) :: sh1_d0
-        integer, intent(in) :: sh1_d1
-        integer, intent(in) :: sh1_d2
-        integer, intent(in) :: sh2_d0
-        integer, intent(in) :: sh2_d1
-        integer, intent(in) :: sh2_d2
-        integer, intent(in) :: taper_order_d0
-        integer, intent(in) :: taper_wt_d0
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: sd_d0
-        integer, intent(in) :: mtse_d0
-        if(taper_wt(1) < 0.d0) then
-            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
-                                 taper_order,lmaxt,k,lat=lat,lon=lon,&
-                                 norm=norm,csphase=csphase)
-        else
-            call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
-                                 taper_order,lmaxt,k,lat=lat,lon=lon,&
-                                 taper_wt=taper_wt,norm=norm,csphase=csphase)
-        endif
-    end subroutine pySHMultiTaperCSE
-
-    subroutine pySHMultiTaperMaskSE(mtse,sd,sh,lmax,tapers,lmaxt,k, &
-                                    taper_wt,norm,csphase, &
-                                    taper_wt_d0,sh_d0,sh_d1,sh_d2, &
-                                    tapers_d0,tapers_d1,mtse_d0,sd_d0)
-        use shtools, only: SHMultiTaperMaskSE
-        implicit none
-        real*8, dimension(mtse_d0),intent(out) :: mtse
-        real*8, dimension(sd_d0),intent(out) :: sd
-        real*8, dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
-        integer, intent(in) :: lmax
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, intent(in) :: lmaxt
-        integer, intent(in) :: k
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, intent(in) :: taper_wt_d0
-        integer, intent(in) :: sh_d0
-        integer, intent(in) :: sh_d1
-        integer, intent(in) :: sh_d2
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: mtse_d0
-        integer, intent(in) :: sd_d0
-        if (taper_wt(1) < 0.d0) then
-            call SHMultiTaperMaskSE(mtse,sd,sh,lmax,tapers,lmaxt,k,norm=norm, &
-                                    csphase=csphase)
-        else
-            call SHMultiTaperMaskSE(mtse,sd,sh,lmax,tapers,lmaxt,k, &
-                                    taper_wt=taper_wt,norm=norm, &
-                                    csphase=csphase)
-        endif
-    end subroutine pySHMultiTaperMaskSE
-
-    subroutine pySHMultiTaperMaskCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
-                                     lmaxt,k,taper_wt,norm,csphase,sh1_d0, &
-                                     sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2, &
-                                     taper_wt_d0,tapers_d0,tapers_d1,sd_d0, &
-                                     mtse_d0)
-        use shtools, only: SHMultiTaperMaskCSE
-        implicit none
-        real*8, dimension(mtse_d0),intent(out) :: mtse
-        real*8, dimension(sd_d0),intent(out) :: sd
-        real*8, dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-        integer, intent(in) :: lmax1
-        real*8, dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-        integer, intent(in) :: lmax2
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, intent(in) :: lmaxt
-        integer, intent(in) :: k
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, optional,intent(in) :: norm
-        integer, optional,intent(in) :: csphase
-        integer, intent(in) :: sh1_d0
-        integer, intent(in) :: sh1_d1
-        integer, intent(in) :: sh1_d2
-        integer, intent(in) :: sh2_d0
-        integer, intent(in) :: sh2_d1
-        integer, intent(in) :: sh2_d2
-        integer, intent(in) :: taper_wt_d0
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: sd_d0
-        integer, intent(in) :: mtse_d0
-        if(taper_wt(1) < 0.d0) then
-            call SHMultiTaperMaskCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
-                                     lmaxt,k,norm=norm,csphase=csphase)
-        else
-            call SHMultiTaperMaskCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers, &
-                                     lmaxt,k,taper_wt=taper_wt,norm=norm, &
-                                     csphase=csphase)
-        endif
-    end subroutine pySHMultiTaperMaskCSE
-
     subroutine pyMakeGeoidGridDH(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r, &
                                  sampling,order,nlat,nlong,lmax_calc,a,f, &
                                  cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
@@ -1825,128 +2078,6 @@
                            nlat,nlong,interval=interval,lmax_calc=lmax_calc, &
                            a=a,f=f)
     end subroutine pyMakeGeoidGrid2D
-
-    subroutine pySHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order, &
-                                eigenvalues_d0,tapers_d0,tapers_d1, &
-                                taper_order_d0)
-        use shtools, only: SHReturnTapers
-        implicit none
-        real*8, intent(in) :: theta0
-        integer, intent(in) :: lmax
-        real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
-        real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        integer, dimension(taper_order_d0),intent(out) :: taper_order
-        integer, intent(in) :: eigenvalues_d0
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: taper_order_d0
-        call SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order)
-    end subroutine pySHReturnTapers
-
-    function pySHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc, &
-                       hk_real_d0,incspectra_d0,hj_real_d0)
-        use shtools, only: SHSjkPG
-        implicit none
-        real*8, dimension(incspectra_d0),intent(in) :: incspectra
-        integer, intent(in) :: l
-        integer, intent(in) :: m
-        integer, intent(in) :: mprime
-        real*8, dimension(hj_real_d0),intent(in) :: hj_real
-        real*8, dimension(hk_real_d0),intent(in) :: hk_real
-        integer, intent(in) :: mj
-        integer, intent(in) :: mk
-        integer, intent(in) :: lwin
-        integer, intent(in) :: hkcc
-        integer, intent(in) :: hk_real_d0
-        integer, intent(in) :: incspectra_d0
-        integer, intent(in) :: hj_real_d0
-        complex*16 :: pySHSjkPG
-        pySHSjkPG=SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin, &
-                          hkcc)
-    end function pySHSjkPG
-
-    subroutine pySHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt, &
-                            var_unit,weight_opt,nocross, &
-                            taper_order_d0,weight_opt_d0,weight_opt_d1, &
-                            var_unit_d0,var_opt_d0,Sff_d0,tapers_d0,tapers_d1)
-        use shtools, only: SHMTVarOpt
-        implicit none
-        integer, intent(in) :: l
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, dimension(taper_order_d0),intent(in) :: taper_order
-        integer, intent(in) :: lwin
-        integer, intent(in) :: kmax
-        real*8, dimension(Sff_d0),intent(in) :: Sff
-        real*8, dimension(var_opt_d0),intent(out) :: var_opt
-        real*8, dimension(var_unit_d0),intent(out) :: var_unit
-        real*8, optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) ::&
-                                                                     weight_opt
-        integer, optional,intent(in) :: nocross
-        integer, intent(in) :: taper_order_d0
-        integer, intent(in) :: weight_opt_d0
-        integer, intent(in) :: weight_opt_d1
-        integer, intent(in) :: var_unit_d0
-        integer, intent(in) :: var_opt_d0
-        integer, intent(in) :: Sff_d0
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        call SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit, &
-                        weight_opt=weight_opt,nocross=nocross)
-    end subroutine pySHMTVarOpt
-
-    subroutine pySHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, taper_wt,&
-                                    Mmt_d0, Mmt_d1, tapers_power_d0, &
-                                    tapers_power_d1, taper_wt_d0)
-        use shtools, only: SHMTCouplingMatrix
-        implicit none
-        integer, intent(in) :: lmax, k, lwin
-        real*8, intent(out) :: Mmt(Mmt_d0, Mmt_d1)
-        real*8, intent(in) ::  tapers_power(tapers_power_d0, tapers_power_d1)
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, intent(in) :: Mmt_d0
-        integer, intent(in) :: Mmt_d1
-        integer, intent(in) :: tapers_power_d0
-        integer, intent(in) :: tapers_power_d1
-        integer, intent(in) :: taper_wt_d0
-        if (taper_wt(1) < 0.d0) then
-            call SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k)
-        else
-            call SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, &
-                                    taper_wt=taper_wt)
-        endif
-    end subroutine
-
-    subroutine pySHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n, &
-                            taper_wt,mtdebias_d0,mtdebias_d1,taper_wt_d0, &
-                            mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1, &
-                            lmid_d0)
-        use shtools, only: SHMTDebias
-        implicit none
-        real*8, dimension(mtdebias_d0,mtdebias_d1),intent(out) :: mtdebias
-        real*8, dimension(mtspectra_d0,mtspectra_d1),intent(in) :: mtspectra
-        integer, intent(in) :: lmax
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, intent(in) :: lwin
-        integer, intent(in) :: k
-        integer, intent(in) :: nl
-        real*8, dimension(lmid_d0),intent(out) :: lmid
-        integer, intent(out) :: n
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, intent(in) :: mtdebias_d0
-        integer, intent(in) :: mtdebias_d1
-        integer, intent(in) :: taper_wt_d0
-        integer, intent(in) :: mtspectra_d0
-        integer, intent(in) :: mtspectra_d1
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: lmid_d0
-        if (taper_wt(1) < 0.d0) then
-            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n)
-        else
-            call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n, &
-                            taper_wt=taper_wt)
-        endif
-    end subroutine pySHMTDebias
 
     subroutine pyMakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,pot,&
                                 n,sampling,lmax_calc,omega,normal_gravity, &
@@ -2030,96 +2161,6 @@
         integer, intent(in) :: spectra_d0
         call SHMagPowerSpectrum(c,a,r,lmax,spectra)
     end subroutine pySHMagPowerSpectrum
-
-    subroutine pySHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr, &
-                                 mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0, &
-                                 admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0)
-        use shtools, only: SHBiasAdmitCorr
-        implicit none
-        real*8, dimension(sgt_d0),intent(in) :: sgt
-        real*8, dimension(sgg_d0),intent(in) :: sgg
-        real*8, dimension(stt_d0),intent(in) :: stt
-        integer, intent(in) :: lmax
-        real*8, dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer, intent(in) :: lwin
-        integer, intent(in) :: k
-        real*8, dimension(admit_d0),intent(out) :: admit
-        real*8, dimension(corr_d0),intent(out) :: corr
-        integer, optional,intent(in) :: mtdef
-        real*8, optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer, intent(in) :: taper_wt_d0
-        integer, intent(in) :: sgt_d0
-        integer, intent(in) :: stt_d0
-        integer, intent(in) :: admit_d0
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: corr_d0
-        integer, intent(in) :: sgg_d0
-        if (taper_wt(1) < 0.d0) then
-            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr, &
-                                 mtdef=mtdef)
-        else
-            call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr, &
-                                 mtdef=mtdef,taper_wt=taper_wt)
-        endif
-    end subroutine pySHBiasAdmitCorr
-
-    subroutine pyComputeDMap(Dij,dh_mask,n_dh,lmax,sampling,dh_mask_d0, &
-                             dh_mask_d1,Dij_d0,Dij_d1)
-        use shtools, only: ComputeDMap
-        implicit none
-        real*8, dimension(Dij_d0,Dij_d1),intent(out) :: Dij
-        integer, dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
-        integer, intent(in) :: n_dh
-        integer, intent(in), optional :: sampling
-        integer, intent(in) :: lmax
-        integer, intent(in) :: dh_mask_d0
-        integer, intent(in) :: dh_mask_d1
-        integer, intent(in) :: Dij_d0
-        integer, intent(in) :: Dij_d1
-        call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling=sampling)
-    end subroutine pyComputeDMap
-
-    subroutine pySHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax, &
-                                   sampling,ntapers,dh_mask_d0,dh_mask_d1, &
-                                   tapers_d0,tapers_d1,eigenvalues_d0)
-        use shtools, only: SHReturnTapersMap
-        implicit none
-        real*8, dimension(tapers_d0,tapers_d1),intent(out) :: tapers
-        real*8, dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        integer, dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
-        integer, intent(in) :: n_dh
-        integer, intent(in), optional :: sampling
-        integer, intent(in) :: lmax
-        integer, optional,intent(in) :: ntapers
-        integer, intent(in) :: dh_mask_d0
-        integer, intent(in) :: dh_mask_d1
-        integer, intent(in) :: tapers_d0
-        integer, intent(in) :: tapers_d1
-        integer, intent(in) :: eigenvalues_d0
-        call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax, &
-                               sampling=sampling,ntapers=ntapers)
-    end subroutine pySHReturnTapersMap
-
-    subroutine pyCurve2Mask(dhgrid,n,sampling,profile,nprofile,NP, &
-                            centralmeridian,profile_d0,profile_d1,dhgrid_d0, &
-                            dhgrid_d1)
-        use shtools, only: Curve2Mask
-        implicit none
-        integer, dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
-        integer, intent(in) :: n
-        integer, intent(in) :: sampling
-        real*8, dimension(profile_d0,profile_d1),intent(in) :: profile
-        integer, intent(in) :: nprofile
-        integer, intent(in) :: NP
-        integer, optional, intent(in) :: centralmeridian
-        integer, intent(in) :: profile_d0
-        integer, intent(in) :: profile_d1
-        integer, intent(in) :: dhgrid_d0
-        integer, intent(in) :: dhgrid_d1
-        call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP, &
-                        centralmeridian=centralmeridian)
-    end subroutine pyCurve2Mask
 
     subroutine pyMakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz, &
                                     vyz,n,sampling,lmax_calc,vyz_d0,vyz_d1, &

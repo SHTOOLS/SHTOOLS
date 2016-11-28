@@ -15,6 +15,7 @@ main namespace:
     SHWindow - A high level classes for localization windows.
     shclasses - All pyshtools classes and subclasses.
     shtools - All Python-wrapped Fortran 95 routines.
+    constant - pyshtools constants.
     legendre - Legendre functions.
     expand - Spherical harmonic expansion routines.
     shio - Spherical harmonic I/O, storage, and conversion routines.
@@ -22,7 +23,6 @@ main namespace:
     localizedspectralanalysis - Localized spectral analysis routines.
     rotate - Spherical harmonic rotation routines.
     gravmag - Gravity and magnetics routines.
-    constant - pyshtools constants.
     utils - Python utilities.
 
 For further information, consult the web documentation at
@@ -56,11 +56,11 @@ from . import legendre
 from . import expand
 from . import shio
 from . import spectralanalysis
+from . import localizedspectralanalysis
 from . import rotate
 from . import utils
 
 # ---- Import shtools submodules ----
-from . import localizedspectralanalysis
 from . import gravmag
 
 
