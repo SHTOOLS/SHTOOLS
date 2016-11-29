@@ -2148,7 +2148,7 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, show=True, fname=None):
+    def plot(self, coordinates='grid', show=True, fname=None):
         """
         Plot the raw data using a simple cylindrical projection.
 
@@ -2163,7 +2163,44 @@ class SHGrid(object):
         fname : str, optional, default = None
             If present, save the image to the file.
         """
-        fig, ax = self._plot()
+        if coordinates == 'grid':
+            fig, ax = self._plot()
+        elif coordinates == 'cylindrical':
+            # plot regular lat/lon image
+            from .utils.grid_interpolator import interpolate_2dgrid  # NOQA
+            nlons_new, nlats_new = 400, 200
+            lats1d_new = _np.linspace(-90, 90, nlats_new)
+            lons1d_new = _np.linspace(0, 360, nlons_new)
+            lats_new, lons_new = _np.meshgrid(lats1d_new, lons1d_new,
+                                              indexing='ij')
+            data_new = interpolate_2dgrid(lats_new, lons_new,
+                                          self.lats()[::-1], self.lons(),
+                                          self.data[::-1])
+            fig, ax = _plt.subplots(1, 1)
+            extent = (lons1d_new[0], lons1d_new[-1],
+                      lats1d_new[0], lats1d_new[-1])
+            ax.imshow(data_new, origin='lower', extent=extent)
+            yticks = self.lats()[::-1]
+            ax.set(xlabel='longitude', ylabel='latitude', yticks=yticks)
+        elif coordinates == 'cartopy':
+            # get interpolated image first
+            from .utils.grid_interpolator import interpolate_2dgrid  # NOQA
+            import cartopy.crs as ccrs
+            nlons_new, nlats_new = 400, 200
+            lats1d_new = _np.linspace(-90, 90, nlats_new)
+            lons1d_new = _np.linspace(0, 180, nlons_new)
+            lats_new, lons_new = _np.meshgrid(lats1d_new, lons1d_new,
+                                              indexing='ij')
+            data_new = interpolate_2dgrid(lats_new, lons_new,
+                                          self.lats()[::-1], self.lons(),
+                                          self.data[::-1], order=0)
+            fig = _plt.figure()
+            ax = _plt.axes(projection=ccrs.Mollweide())
+            extent = (lons1d_new[0], lons1d_new[-1],
+                      lats1d_new[0], lats1d_new[-1])
+            ax.imshow(data_new, origin='upper', extent=extent,
+                      transform=ccrs.PlateCarree())
+            ax.coastlines(resolution='50m', color='black', linewidth=1)
         if show:
             _plt.show()
         if fname is not None:
@@ -2306,7 +2343,7 @@ class DHRealGrid(SHGrid):
         return coeffs
 
     def _plot(self):
-        """Plot the raw data using a simply cylindrical projection."""
+        """Plot the raw data using a simple cylindrical projection."""
         fig, ax = _plt.subplots(1, 1)
         ax.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
         ax.set_xlabel('longitude')
@@ -2394,18 +2431,19 @@ class DHComplexGrid(SHGrid):
         return coeffs
 
     def _plot(self):
-        """Plot the raw data using a simply cylindrical projection."""
+        """Plot the raw data using a simple cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
+
         ax.flat[0].imshow(self.data.real, origin='upper',
                           extent=(0., 360., -90., 90.))
-        ax.flat[0].set_title('Real component')
-        ax.flat[0].set_xlabel('longitude')
-        ax.flat[0].set_ylabel('latitude')
+        ax.flat[0].set(title='Real component', xlabel='longitude',
+                       ylabel='latitude')
+
         ax.flat[1].imshow(self.data.imag, origin='upper',
                           extent=(0., 360., -90., 90.))
-        ax.flat[1].set_title('Imaginary component')
-        ax.flat[1].set_xlabel('longitude')
-        ax.flat[1].set_ylabel('latitude')
+        ax.flat[1].set(title='Imaginary component',_xlabel='longitude',
+                       ylabel='latitude')
+
         fig.tight_layout(pad=0.5)
         return fig, ax
 
@@ -2488,7 +2526,7 @@ class GLQRealGrid(SHGrid):
         return coeffs
 
     def _plot(self):
-        """Plot the raw data using a simply cylindrical projection."""
+        """Plot the raw data using a simple cylindrical projection."""
 
         fig, ax = _plt.subplots(1, 1)
         ax.imshow(self.data, origin='upper')
@@ -2570,12 +2608,12 @@ class GLQComplexGrid(SHGrid):
         return coeffs
 
     def _plot(self):
-        """Plot the raw data using a simply cylindrical projection."""
+        """Plot the raw data using a simple cylindrical projection."""
         fig, ax = _plt.subplots(2, 1)
         ax.flat[0].imshow(self.data.real, origin='upper')
         ax.flat[0].set_title('Real component')
-        ax.flat[0].set_xlabel('longitude index')
-        ax.flat[0].set_ylabel('latitude index')
+        ax.flat[0].set_xlabel('GLQ longitude index')
+        ax.flat[0].set_ylabel('GLQ latitude index')
         ax.flat[1].imshow(self.data.imag, origin='upper')
         ax.flat[1].set_title('Imaginary component')
         ax.flat[1].set_xlabel('GLQ longitude index')
