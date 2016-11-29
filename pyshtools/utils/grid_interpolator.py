@@ -40,7 +40,7 @@ def interpolate_2dgrid(x_new, y_new, x1d_old, y1d_old, grid_old, order=2):
 
     # get flattened values from grid
     values = _map_coordinates(grid_wrapped, points, order=order,
-                              mode='wrap')
+                              mode='constant', fill_value=np.nan)
 
     # reshape to original shape
     values = values.reshape(inshape)

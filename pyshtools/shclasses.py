@@ -2190,15 +2190,19 @@ class SHGrid(object):
             import cartopy.crs as ccrs
             nlons_new, nlats_new = 400, 200
             lats1d_new = _np.linspace(-90, 90, nlats_new)
-            lons1d_new = _np.linspace(0, 180, nlons_new)
+            lons1d_new = _np.linspace(0, 360, nlons_new)
             lats_new, lons_new = _np.meshgrid(lats1d_new, lons1d_new,
                                               indexing='ij')
             data_new = interpolate_2dgrid(lats_new, lons_new,
                                           self.lats()[::-1], self.lons(),
                                           self.data[::-1], order=order)
+
+
             datamax = _np.max(_np.abs(data_new))
             fig = _plt.figure()
-            ax = _plt.axes(projection=ccrs.Mollweide())
+            #ax = _plt.axes(projection=ccrs.Mollweide())
+            ax = _plt.axes(projection=ccrs.Orthographic(central_longitude=0.0,
+                           central_latitude=80., globe=None))
             extent = (lons1d_new[0], lons1d_new[-1],
                       lats1d_new[0], lats1d_new[-1])
             ax.imshow(data_new, origin='upper', extent=extent,
