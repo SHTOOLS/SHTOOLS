@@ -2148,7 +2148,7 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, coordinates='grid', show=True, fname=None):
+    def plot(self, coordinates='grid', show=True, fname=None, order=2):
         """
         Plot the raw data using a simple cylindrical projection.
 
@@ -2175,11 +2175,13 @@ class SHGrid(object):
                                               indexing='ij')
             data_new = interpolate_2dgrid(lats_new, lons_new,
                                           self.lats()[::-1], self.lons(),
-                                          self.data[::-1])
+                                          self.data[::-1], order=order)
+            datamax = _np.max(_np.abs(data_new))
             fig, ax = _plt.subplots(1, 1)
             extent = (lons1d_new[0], lons1d_new[-1],
                       lats1d_new[0], lats1d_new[-1])
-            ax.imshow(data_new, origin='lower', extent=extent)
+            ax.imshow(data_new, origin='lower', extent=extent, vmin=-datamax,
+                      vmax=datamax)
             yticks = self.lats()[::-1]
             ax.set(xlabel='longitude', ylabel='latitude', yticks=yticks)
         elif coordinates == 'cartopy':
@@ -2193,13 +2195,15 @@ class SHGrid(object):
                                               indexing='ij')
             data_new = interpolate_2dgrid(lats_new, lons_new,
                                           self.lats()[::-1], self.lons(),
-                                          self.data[::-1], order=0)
+                                          self.data[::-1], order=order)
+            datamax = _np.max(_np.abs(data_new))
             fig = _plt.figure()
             ax = _plt.axes(projection=ccrs.Mollweide())
             extent = (lons1d_new[0], lons1d_new[-1],
                       lats1d_new[0], lats1d_new[-1])
             ax.imshow(data_new, origin='upper', extent=extent,
-                      transform=ccrs.PlateCarree())
+                      transform=ccrs.PlateCarree(), vmin=-datamax,
+                      vmax=datamax)
             ax.coastlines(resolution='50m', color='black', linewidth=1)
         if show:
             _plt.show()
