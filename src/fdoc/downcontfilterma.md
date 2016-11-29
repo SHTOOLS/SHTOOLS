@@ -13,7 +13,7 @@ Compute the minimum-amplitude downward continuation filter of Wieczorek and Phil
 
 `l` : input, integer
 :   The spherical harmonic degree.
-	
+
 `half` : input, integer
 :   The spherical harmonic degree where the filter is equal to 0.5.
 

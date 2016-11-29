@@ -1776,316 +1776,14 @@
         call SphericalCapCoef(coef,theta,lmax=lmax,exitstatus=exitstatus)
     end subroutine pySphericalCapCoef
 
-    subroutine pyCilmPlusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
-                            gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
-        use shtools, only: CilmPlus
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(out) :: d
-        real*8, intent(in) :: rho
-        integer, intent(in) :: sampling
-        integer, optional,intent(in) :: n
-        integer, intent(in) :: gridin_d0
-        integer, intent(in) :: gridin_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        if (sampling == 1) then
-            call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n)
-        else 
-            call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n)
-        endif
-    end subroutine pyCilmPlusDH
-
-    subroutine pyCilmMinusDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
-                             gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
-        use shtools, only: CilmMinus
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(out) :: d
-        real*8, intent(in) :: rho
-        integer, intent(in) :: sampling
-        integer, optional,intent(in) :: n
-        integer, intent(in) :: gridin_d0
-        integer, intent(in) :: gridin_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        if (sampling == 1) then
-            call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n)
-        else 
-            call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n)
-        endif
-    end subroutine pyCilmMinusDH
-
-    subroutine pyCilmPlusRhoHDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
-                                gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2, &
-                                rho_d0,rho_d1)
-        use shtools, only: CilmPlusRhoH
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(out) :: d
-        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer, intent(in) :: sampling
-        integer, optional,intent(in) :: n
-        integer, intent(in) :: gridin_d0
-        integer, intent(in) :: gridin_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: rho_d0
-        integer, intent(in) :: rho_d1
-        if (sampling == 1) then
-            call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n)
-        else
-            call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n)
-        endif
-    end subroutine pyCilmPlusRhoHDH
-
-    subroutine pyCilmMinusRhoHDH(cilm,gridin,lmax,nmax,mass,d,rho,sampling,n, &
-                                 gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2, &
-                                 rho_d0,rho_d1)
-        use shtools, only: CilmMinusRhoH
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(out) :: d
-        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer, intent(in) :: sampling
-        integer, optional,intent(in) :: n
-        integer, intent(in) :: gridin_d0
-        integer, intent(in) :: gridin_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: rho_d0
-        integer, intent(in) :: rho_d1
-        if (sampling == 1) then
-            call CilmMinusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n)
-        else
-            call CilmMinusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n)
-        endif
-    end subroutine pyCilmMinusRhoHDH
-
-    subroutine pyBAtoHilmDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling, &
-                            filter_type,filter_deg,lmax_calc,ba_d0,ba_d1, &
-                            ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2)
-        use shtools, only: BAtoHilm
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
-        real*8, dimension(griddh_d0,griddh_d1),intent(in) :: griddh
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(in) :: r0
-        real*8, intent(in) :: rho
-        integer, intent(in) :: sampling
-        integer, optional,intent(in) :: filter_type
-        integer, optional,intent(in) :: filter_deg
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: ba_d0
-        integer, intent(in) :: ba_d1
-        integer, intent(in) :: ba_d2
-        integer, intent(in) :: griddh_d0
-        integer, intent(in) :: griddh_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        if (sampling == 1) then
-            call BAtoHilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2, &
-                          filter_type=filter_type,filter_deg=filter_deg, &
-                          lmax_calc=lmax_calc)
-        else
-            call BAtoHilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3, &
-                          filter_type=filter_type,filter_deg=filter_deg, &
-                          lmax_calc=lmax_calc)
-        endif   
-    end subroutine pyBAtoHilmDH
-    
-    subroutine pyBAtoHilmRhoHDH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling,&
-                                filter_type,filter_deg,lmax_calc,ba_d0,ba_d1, &
-                                ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1, &
-                                cilm_d2, rho_d0,rho_d1)
-        use shtools, only: BAtoHilmRhoH
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
-        real*8, dimension(griddh_d0,griddh_d1),intent(in) :: griddh
-        integer, intent(in) :: lmax
-        integer, intent(in) :: nmax
-        real*8, intent(in) :: mass
-        real*8, intent(in) :: r0
-        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer, optional,intent(in) :: sampling
-        integer, optional,intent(in) :: filter_type
-        integer, optional,intent(in) :: filter_deg
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: ba_d0
-        integer, intent(in) :: ba_d1
-        integer, intent(in) :: ba_d2
-        integer, intent(in) :: griddh_d0
-        integer, intent(in) :: griddh_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: rho_d0
-        integer, intent(in) :: rho_d1
-        if (sampling == 1) then
-            call BAtoHilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2,&
-                              filter_type=filter_type,filter_deg=filter_deg, &
-                              lmax_calc=lmax_calc)
-        else
-            call BAtoHilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3,&
-                              filter_type=filter_type,filter_deg=filter_deg, &
-                              lmax_calc=lmax_calc)
-        endif
-    end subroutine pyBAtoHilmRhoHDH
-
-    subroutine pyMakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid, &
-                               total_grid,n,sampling,lmax_calc,total_grid_d0, &
-                               total_grid_d1,cilm_d0,cilm_d1,cilm_d2, &
-                               rad_grid_d0,rad_grid_d1,theta_grid_d0, &
-                               theta_grid_d1,phi_grid_d0,phi_grid_d1)
-        use shtools, only: MakeMagGridDH
-        implicit none
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        real*8, intent(in) :: r0
-        real*8, intent(in) :: a
-        real*8, intent(in) :: f
-        real*8, dimension(rad_grid_d0,rad_grid_d1),intent(out) :: rad_grid
-        real*8, dimension(theta_grid_d0,theta_grid_d1),intent(out) :: &
-                                                                     theta_grid
-        real*8, dimension(phi_grid_d0,phi_grid_d1),intent(out) :: phi_grid
-        real*8, dimension(total_grid_d0,total_grid_d1),intent(out) :: &
-                                                                     total_grid
-        integer, intent(out) :: n
-        integer, optional,intent(in) :: sampling
-        integer, optional,intent(in) :: lmax_calc
-        integer, intent(in) :: total_grid_d0
-        integer, intent(in) :: total_grid_d1
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: rad_grid_d0
-        integer, intent(in) :: rad_grid_d1
-        integer, intent(in) :: theta_grid_d0
-        integer, intent(in) :: theta_grid_d1
-        integer, intent(in) :: phi_grid_d0
-        integer, intent(in) :: phi_grid_d1
-        call MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid, &
-                           total_grid,n,sampling=sampling,lmax_calc=lmax_calc)
-    end subroutine pyMakeMagGridDH
-
-    function pyDownContFilterMA(l,half,r,d)
-        use shtools, only: DownContFilterMA
-        implicit none
-        integer, intent(in) :: l
-        integer, intent(in) :: half
-        real*8, intent(in) :: r
-        real*8, intent(in) :: d
-        real*8 :: pyDownContFilterMA
-        pyDownContFilterMA=DownContFilterMA(l,half,r,d)
-    end function pyDownContFilterMA
-
-    function pyDownContFilterMC(l,half,r,d)
-        use shtools, only: DownContFilterMC
-        implicit none
-        integer, intent(in) :: l
-        integer, intent(in) :: half
-        real*8, intent(in) :: r
-        real*8, intent(in) :: d
-        real*8 :: pyDownContFilterMC
-        pyDownContFilterMC=DownContFilterMC(l,half,r,d)
-    end function pyDownContFilterMC
-
-    subroutine pyMakeGeoidGridDH(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r, &
-                                 sampling,order,nlat,nlong,lmax_calc,a,f, &
-                                 cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
-        use shtools, only: MakeGeoidGrid
-        implicit none
-        real*8, dimension(geoid_d0,geoid_d1),intent(out) :: geoid
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        real*8, intent(in) :: r0pot
-        real*8, intent(in) :: GM
-        real*8, intent(in) :: PotRef
-        real*8, intent(in) :: omega
-        real*8, intent(in) :: r
-        integer, intent(in) :: sampling
-        integer, intent(in) :: order
-        integer, intent(out) :: nlat
-        integer, intent(out) :: nlong
-        integer, optional,intent(in) :: lmax_calc
-        real*8, optional,intent(in) :: a
-        real*8, optional,intent(in) :: f
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: geoid_d0
-        integer, intent(in) :: geoid_d1
-        if (sampling == 1) then
-            call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,2, &
-                               order,nlat,nlong,lmax_calc=lmax_calc,a=a,f=f)
-        elseif (sampling == 2) then
-            call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,3, &
-                               order,nlat,nlong,lmax_calc=lmax_calc,a=a,f=f)
-        endif
-    end subroutine pyMakeGeoidGridDH
-
-    subroutine pyMakeGeoidGrid2D(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r, &
-                                 order,nlat,nlong,interval,lmax_calc,a,f, &
-                                 cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
-        use shtools, only: MakeGeoidGrid
-        implicit none
-        real*8, dimension(geoid_d0,geoid_d1),intent(out) :: geoid
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer, intent(in) :: lmax
-        real*8, intent(in) :: r0pot
-        real*8, intent(in) :: GM
-        real*8, intent(in) :: PotRef
-        real*8, intent(in) :: omega
-        real*8, intent(in) :: r
-        integer, intent(in) :: order
-        integer, intent(out) :: nlat
-        integer, intent(out) :: nlong
-        real*8, optional,intent(in) :: interval
-        integer, optional,intent(in) :: lmax_calc
-        real*8, optional,intent(in) :: a
-        real*8, optional,intent(in) :: f
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: geoid_d0
-        integer, intent(in) :: geoid_d1
-        call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,4,order, &
-                           nlat,nlong,interval=interval,lmax_calc=lmax_calc, &
-                           a=a,f=f)
-    end subroutine pyMakeGeoidGrid2D
-
-    subroutine pyMakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,pot,&
-                                n,sampling,lmax_calc,omega,normal_gravity, &
-                                phi_d0,phi_d1,total_d0,total_d1, &
+    subroutine pyMakeGravGridDH(exitstatus,cilm,lmax,gm,r0,a,f,rad,theta,phi,&
+                                total,pot,n,sampling,lmax_calc,omega,&
+                                normal_gravity,phi_d0,phi_d1,total_d0,total_d1,&
                                 rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2, &
                                 theta_d0,theta_d1,pot_d0,pot_d1)
         use shtools, only: MakeGravGridDH
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer, intent(in) :: lmax
         real*8, intent(in) :: gm
@@ -2117,58 +1815,18 @@
         integer, intent(in) :: pot_d1
         call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n, &
                             sampling=sampling,lmax_calc=lmax_calc,omega=omega,&
-                            normal_gravity=normal_gravity,pot=pot)
+                            normal_gravity=normal_gravity,pot=pot,&
+                            exitstatus=exitstatus)
     end subroutine pyMakeGravGridDH
 
-    function pyNormalGravity(geocentric_lat,gm,omega,a,b)
-        use shtools, only: NormalGravity
-        implicit none
-        real*8, intent(in) :: geocentric_lat
-        real*8, intent(in) :: gm
-        real*8, intent(in) :: omega
-        real*8, intent(in) :: a
-        real*8, intent(in) :: b
-        real*8 :: pyNormalGravity
-        pyNormalGravity=NormalGravity(geocentric_lat,gm,omega,a,b)
-    end function pyNormalGravity
-
-    function pySHMagPowerL(c,a,r,l,c_d0,c_d1,c_d2)
-        use shtools, only: SHMagPowerL
-        implicit none
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        real*8, intent(in) :: a
-        real*8, intent(in) :: r
-        integer, intent(in) :: l
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        real*8 :: pySHMagPowerL
-        pySHMagPowerL=SHMagPowerL(c,a,r,l)
-    end function pySHMagPowerL
-
-    subroutine pySHMagPowerSpectrum(c,a,r,lmax,spectra,c_d0,c_d1, &
-                                    c_d2,spectra_d0)
-        use shtools, only: SHMagPowerSpectrum
-        implicit none
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        real*8, intent(in) :: a
-        real*8, intent(in) :: r
-        integer, intent(in) :: lmax
-        real*8, dimension(spectra_d0),intent(out) :: spectra
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        integer, intent(in) :: spectra_d0
-        call SHMagPowerSpectrum(c,a,r,lmax,spectra)
-    end subroutine pySHMagPowerSpectrum
-
-    subroutine pyMakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz, &
-                                    vyz,n,sampling,lmax_calc,vyz_d0,vyz_d1, &
-                                    vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2, &
-                                    vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0, &
+    subroutine pyMakeGravGradGridDH(exitstatus,cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,&
+                                    vxy,vxz,vyz,n,sampling,lmax_calc,vyz_d0,&
+                                    vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,&
+                                    cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0,&
                                     vxx_d1,vxz_d0,vxz_d1)
         use shtools, only: MakeGravGradGridDH
         implicit none
+        integer, intent(out) :: exitstatus
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer, intent(in) :: lmax
         real*8, intent(in) :: gm
@@ -2200,8 +1858,347 @@
         integer, intent(in) :: vxz_d0
         integer, intent(in) :: vxz_d1
         call MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,&
-                                sampling=sampling,lmax_calc=lmax_calc)
+                                sampling=sampling,lmax_calc=lmax_calc,&
+                                exitstatus=exitstatus)
     end subroutine pyMakeGravGradGridDH
+
+    subroutine pyMakeGeoidGridDH(exitstatus,geoid,cilm,lmax,r0pot,GM,PotRef,&
+                                 omega,r,sampling,order,nlat,nlong,lmax_calc,a,&
+                                 f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
+        use shtools, only: MakeGeoidGrid
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(geoid_d0,geoid_d1),intent(out) :: geoid
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: r0pot
+        real*8, intent(in) :: GM
+        real*8, intent(in) :: PotRef
+        real*8, intent(in) :: omega
+        real*8, intent(in) :: r
+        integer, intent(in) :: sampling
+        integer, intent(in) :: order
+        integer, intent(out) :: nlat
+        integer, intent(out) :: nlong
+        integer, optional,intent(in) :: lmax_calc
+        real*8, optional,intent(in) :: a
+        real*8, optional,intent(in) :: f
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: geoid_d0
+        integer, intent(in) :: geoid_d1
+        if (sampling == 1) then
+            call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,2, &
+                               order,nlat,nlong,lmax_calc=lmax_calc,a=a,f=f,&
+                               exitstatus=exitstatus)
+        elseif (sampling == 2) then
+            call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,3, &
+                               order,nlat,nlong,lmax_calc=lmax_calc,a=a,f=f,&
+                               exitstatus=exitstatus)
+        endif
+    end subroutine pyMakeGeoidGridDH
+
+    subroutine pyCilmPlusDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,&
+                            sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,&
+                            cilm_d2)
+        use shtools, only: CilmPlus
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, intent(in) :: rho
+        integer, intent(in) :: sampling
+        integer, optional,intent(in) :: n
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        if (sampling == 1) then
+            call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n,&
+                          exitstatus=exitstatus)
+        else 
+            call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n,&
+                          exitstatus=exitstatus)
+        endif
+    end subroutine pyCilmPlusDH
+
+    subroutine pyCilmMinusDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,&
+                             sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,&
+                             cilm_d2)
+        use shtools, only: CilmMinus
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, intent(in) :: rho
+        integer, intent(in) :: sampling
+        integer, optional,intent(in) :: n
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        if (sampling == 1) then
+            call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n, &
+                           exitstatus=exitstatus)
+        else 
+            call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n, &
+                           exitstatus=exitstatus)
+        endif
+    end subroutine pyCilmMinusDH
+
+    subroutine pyCilmPlusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,&
+                                sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,&
+                                cilm_d2,rho_d0,rho_d1)
+        use shtools, only: CilmPlusRhoH
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
+        integer, intent(in) :: sampling
+        integer, optional,intent(in) :: n
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: rho_d0
+        integer, intent(in) :: rho_d1
+        if (sampling == 1) then
+            call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n, &
+                              exitstatus=exitstatus)
+        else
+            call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n,&
+                              exitstatus=exitstatus)
+        endif
+    end subroutine pyCilmPlusRhoHDH
+
+    subroutine pyCilmMinusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,&
+                                 sampling,n,gridin_d0,gridin_d1,cilm_d0,&
+                                 cilm_d1,cilm_d2,rho_d0,rho_d1)
+        use shtools, only: CilmMinusRhoH
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(gridin_d0,gridin_d1),intent(in) :: gridin
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(out) :: d
+        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
+        integer, intent(in) :: sampling
+        integer, optional,intent(in) :: n
+        integer, intent(in) :: gridin_d0
+        integer, intent(in) :: gridin_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: rho_d0
+        integer, intent(in) :: rho_d1
+        if (sampling == 1) then
+            call CilmMinusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n, &
+                               exitstatus=exitstatus)
+        else
+            call CilmMinusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n, &
+                               exitstatus=exitstatus)
+        endif
+    end subroutine pyCilmMinusRhoHDH
+
+    subroutine pyBAtoHilmDH(exitstatus,cilm,ba,griddh,lmax,nmax,mass,r0,rho,&
+                            sampling,filter_type,filter_deg,lmax_calc,ba_d0,&
+                            ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,&
+                            cilm_d2)
+        use shtools, only: BAtoHilm
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
+        real*8, dimension(griddh_d0,griddh_d1),intent(in) :: griddh
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(in) :: r0
+        real*8, intent(in) :: rho
+        integer, intent(in) :: sampling
+        integer, optional,intent(in) :: filter_type
+        integer, optional,intent(in) :: filter_deg
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: ba_d0
+        integer, intent(in) :: ba_d1
+        integer, intent(in) :: ba_d2
+        integer, intent(in) :: griddh_d0
+        integer, intent(in) :: griddh_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        if (sampling == 1) then
+            call BAtoHilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2, &
+                          filter_type=filter_type,filter_deg=filter_deg, &
+                          lmax_calc=lmax_calc,exitstatus=exitstatus)
+        else
+            call BAtoHilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3, &
+                          filter_type=filter_type,filter_deg=filter_deg, &
+                          lmax_calc=lmax_calc,exitstatus=exitstatus)
+        endif
+    end subroutine pyBAtoHilmDH
+    
+    subroutine pyBAtoHilmRhoHDH(exitstatus,cilm,ba,griddh,lmax,nmax,mass,r0,&
+                                rho,sampling,filter_type,filter_deg,lmax_calc,&
+                                ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,&
+                                cilm_d1,cilm_d2, rho_d0,rho_d1)
+        use shtools, only: BAtoHilmRhoH
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8, dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
+        real*8, dimension(griddh_d0,griddh_d1),intent(in) :: griddh
+        integer, intent(in) :: lmax
+        integer, intent(in) :: nmax
+        real*8, intent(in) :: mass
+        real*8, intent(in) :: r0
+        real*8, dimension(rho_d0,rho_d1),intent(in) :: rho
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: filter_type
+        integer, optional,intent(in) :: filter_deg
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: ba_d0
+        integer, intent(in) :: ba_d1
+        integer, intent(in) :: ba_d2
+        integer, intent(in) :: griddh_d0
+        integer, intent(in) :: griddh_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: rho_d0
+        integer, intent(in) :: rho_d1
+        if (sampling == 1) then
+            call BAtoHilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2,&
+                              filter_type=filter_type,filter_deg=filter_deg, &
+                              lmax_calc=lmax_calc,exitstatus=exitstatus)
+        else
+            call BAtoHilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,3,&
+                              filter_type=filter_type,filter_deg=filter_deg, &
+                              lmax_calc=lmax_calc,exitstatus=exitstatus)
+        endif
+    end subroutine pyBAtoHilmRhoHDH
+
+    function pyDownContFilterMA(l,half,r,d)
+        use shtools, only: DownContFilterMA
+        implicit none
+        integer, intent(in) :: l
+        integer, intent(in) :: half
+        real*8, intent(in) :: r
+        real*8, intent(in) :: d
+        real*8 :: pyDownContFilterMA
+        pyDownContFilterMA=DownContFilterMA(l,half,r,d)
+    end function pyDownContFilterMA
+
+    function pyDownContFilterMC(l,half,r,d)
+        use shtools, only: DownContFilterMC
+        implicit none
+        integer, intent(in) :: l
+        integer, intent(in) :: half
+        real*8, intent(in) :: r
+        real*8, intent(in) :: d
+        real*8 :: pyDownContFilterMC
+        pyDownContFilterMC=DownContFilterMC(l,half,r,d)
+    end function pyDownContFilterMC
+
+    function pyNormalGravity(geocentric_lat,gm,omega,a,b)
+        use shtools, only: NormalGravity
+        implicit none
+        real*8, intent(in) :: geocentric_lat
+        real*8, intent(in) :: gm
+        real*8, intent(in) :: omega
+        real*8, intent(in) :: a
+        real*8, intent(in) :: b
+        real*8 :: pyNormalGravity
+        pyNormalGravity=NormalGravity(geocentric_lat,gm,omega,a,b)
+    end function pyNormalGravity
+
+    subroutine pyMakeMagGridDH(exitstatus,cilm,lmax,r0,a,f,rad_grid,theta_grid,&
+                               phi_grid,total_grid,n,sampling,lmax_calc,&
+                               total_grid_d0,total_grid_d1,cilm_d0,cilm_d1,&
+                               cilm_d2,rad_grid_d0,rad_grid_d1,theta_grid_d0, &
+                               theta_grid_d1,phi_grid_d0,phi_grid_d1)
+        use shtools, only: MakeMagGridDH
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: r0
+        real*8, intent(in) :: a
+        real*8, intent(in) :: f
+        real*8, dimension(rad_grid_d0,rad_grid_d1),intent(out) :: rad_grid
+        real*8, dimension(theta_grid_d0,theta_grid_d1),intent(out) :: &
+                                                                     theta_grid
+        real*8, dimension(phi_grid_d0,phi_grid_d1),intent(out) :: phi_grid
+        real*8, dimension(total_grid_d0,total_grid_d1),intent(out) :: &
+                                                                     total_grid
+        integer, intent(out) :: n
+        integer, optional,intent(in) :: sampling
+        integer, optional,intent(in) :: lmax_calc
+        integer, intent(in) :: total_grid_d0
+        integer, intent(in) :: total_grid_d1
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        integer, intent(in) :: rad_grid_d0
+        integer, intent(in) :: rad_grid_d1
+        integer, intent(in) :: theta_grid_d0
+        integer, intent(in) :: theta_grid_d1
+        integer, intent(in) :: phi_grid_d0
+        integer, intent(in) :: phi_grid_d1
+        call MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid, &
+                           total_grid,n,sampling=sampling,lmax_calc=lmax_calc,&
+                           exitstatus=exitstatus)
+    end subroutine pyMakeMagGridDH
+
+    subroutine pySHMagPowerSpectrum(exitstatus,c,a,r,lmax,spectra,c_d0,c_d1, &
+                                    c_d2,spectra_d0)
+        use shtools, only: SHMagPowerSpectrum
+        implicit none
+        integer, intent(out) :: exitstatus
+        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        real*8, intent(in) :: a
+        real*8, intent(in) :: r
+        integer, intent(in) :: lmax
+        real*8, dimension(spectra_d0),intent(out) :: spectra
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        integer, intent(in) :: spectra_d0
+        call SHMagPowerSpectrum(c,a,r,lmax,spectra,exitstatus=exitstatus)
+    end subroutine pySHMagPowerSpectrum
+
+   function pySHMagPowerL(c,a,r,l,c_d0,c_d1,c_d2)
+        use shtools, only: SHMagPowerL
+        implicit none
+        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
+        real*8, intent(in) :: a
+        real*8, intent(in) :: r
+        integer, intent(in) :: l
+        integer, intent(in) :: c_d0
+        integer, intent(in) :: c_d1
+        integer, intent(in) :: c_d2
+        real*8 :: pySHMagPowerL
+        pySHMagPowerL=SHMagPowerL(c,a,r,l)
+    end function pySHMagPowerL
 
     subroutine pyMakeCircleCoord(exitstatus,coord,lat,lon,theta0,cinterval,cnum, &
                                  coord_d0,coord_d1)

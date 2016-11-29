@@ -13,7 +13,7 @@ Calculate a minimum-curvature downward continuation filter for a given spherical
 
 `l` : input, integer
 :   The spherical harmonic degree.
-	
+
 `half` : input, integer
 :   The spherical harmonic degree where the filter is equal to 0.5.
 
@@ -25,7 +25,7 @@ Calculate a minimum-curvature downward continuation filter for a given spherical
 
 # Description
 
-`DownContFilterMC` will calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree `l`. The input parameters include `half`, which is the degree where the filter is equal to 0.5, and `r` and `d`, which are the reference radius of the gravitational field and the radius of the surface to downward continue to, respectively. 
+`DownContFilterMC` will calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree `l`. The input parameters include `half`, which is the degree where the filter is equal to 0.5, and `r` and `d`, which are the reference radius of the gravitational field and the radius of the surface to downward continue to, respectively.
 
 A simple analytic expression exists for the downward continuation filter, following the methodology of Wieczorek and Phillips (1998), only when taking the first, third, fifth, and so on, derivatives of their equation 17. For this minimum-curvature filter, which corresponds to the second derivative, the form has simply been generalized using the solutions of the odd derivatives. This may or may not turn out to be exact. In any case, the form of this filter is numerically very similar to the Cartesian minimum-curvature filter of Phipps Morgan and Blackman (1993).
 

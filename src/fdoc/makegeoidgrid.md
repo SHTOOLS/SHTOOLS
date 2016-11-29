@@ -4,7 +4,7 @@ Create a global map of the geoid.
 
 # Usage
 
-call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`, `gridtype`, `order`, `nlat`, `nlong`, `interval`, `lmax_calc`, `a`, `f`)
+call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`, `gridtype`, `order`, `nlat`, `nlong`, `interval`, `lmax_calc`, `a`, `f`, `exitstatus`)
 
 # Parameters
 
@@ -13,10 +13,10 @@ call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`,
 
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential referenced to a spherical interface of radius `r0pot`.
-	
+
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the gravitational-potential coefficients. For `gridtype`s 1, 2 and 3, this determines the number of latitudinal and longitudinal samples.
-	
+
 `r0` : input, real\*8
 :   The reference radius of the spherical harmonic coefficients.
 
@@ -37,13 +37,13 @@ call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`,
 
 `order` : input, integer
 :   The order of the Taylor series expansion of the potential about the reference radius `r`. This can be either 1, 2, or 3.
-		
+
 `nlat` : output, integer
 :   The number of latitudinal samples.
 
 `nlong` : output, integer
 :   The number of longitudinal samples.
-	
+
 `interval`: optional, input, real\*8
 :   The latitudinal and longitudinal spacing of the output grid when `gridtype` is 4.
 
@@ -56,9 +56,12 @@ call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`,
 `f` : optional, input, real\*8, default = 0
 :   The flattening `(R_equator-R_pole)/R_equator` of the reference ellipsoid. The optional parameter `a` (i.e., `R_equator`) must be specified.
 
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+
 # Description
 
-`MakeGeoidGrid` will create a global map of the geoid, accurate to either first, second, or third order, using the method described in Wieczorek (2007; equation 19-20). The algorithm expands the potential in a Taylor series on a spherical interface of radius `r`, and computes the height above this interface to the potential `potref` exactly from the linear, quadratic, or cubic equation at each grid point. If the optional parameters `a` and `f` are specified, the geoid height will be referenced to a flattened ellipsoid with semi-major axis `a` and flattening `f`. The pseudo-rotational potential is explicitly accounted for by specifying the angular rotation rate `omega` of the planet. 
+`MakeGeoidGrid` will create a global map of the geoid, accurate to either first, second, or third order, using the method described in Wieczorek (2007; equation 19-20). The algorithm expands the potential in a Taylor series on a spherical interface of radius `r`, and computes the height above this interface to the potential `potref` exactly from the linear, quadratic, or cubic equation at each grid point. If the optional parameters `a` and `f` are specified, the geoid height will be referenced to a flattened ellipsoid with semi-major axis `a` and flattening `f`. The pseudo-rotational potential is explicitly accounted for by specifying the angular rotation rate `omega` of the planet.
 
 It should be noted that this geoid calculation is only strictly exact when the radius `r` lies above the maximum radius of the planet. Furthermore, the geoid is only strictly valid when it lies above the surface of the planet (it is necessary to know the density structure of the planet when calculating the potential below the surface).
 

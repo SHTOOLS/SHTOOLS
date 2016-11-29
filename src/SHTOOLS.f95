@@ -680,78 +680,104 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SphericalCapCoef
 
+        subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad, theta, phi, &
+                                  total, n, sampling, lmax_calc, omega, &
+                                  normal_gravity, pot, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:), gm, r0, a, f
+            real*8, intent(out) ::  rad(:,:), theta(:,:), phi(:,:), total(:,:)
+            real*8, intent(in), optional :: omega
+            real*8, intent(out), optional :: pot(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(out) :: n
+            integer, intent(in), optional :: sampling, lmax_calc, normal_gravity
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeGravGridDH
+
+        subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, &
+                                      vzz, vxy, vxz, vyz, n, sampling, &
+                                      lmax_calc, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:), gm, r0, a, f
+            real*8, intent(out) ::  vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
+                                    vxz(:,:), vyz(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(out) :: n
+            integer, intent(in), optional :: sampling, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeGravGradGridDH
+
+        subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, &
+                                 r, gridtype, order, nlat, nlong, interval, &
+                                 lmax_calc, a, f, exitstatus)
+            real*8, intent(out) ::  geoid(:,:)
+            real*8, intent(in) ::   cilm(:,:,:), r0pot, GM, r, PotRef, omega
+            integer, intent(in) :: lmax, order, gridtype
+            integer, intent(in), optional :: lmax_calc
+            integer, intent(out) :: nlat, nlong
+            real*8, intent(in), optional :: interval, a, f
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeGeoidGrid
+
         subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, &
-                            w, zero, plx, n, dref)
+                            w, zero, plx, n, dref, exitstatus)
             real*8, intent(in) ::   gridin(:,:), mass, rho
             real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
             real*8, intent(out) ::  cilm(:,:,:), d
             integer, intent(in) ::  lmax, nmax, gridtype
             integer, intent(in), optional :: n
+            integer, intent(out), optional :: exitstatus
         end subroutine CilmPlus
 
         subroutine CilmMinus(cilm, gridin, lmax, nmax, mass, d, rho, &
-                             gridtype, w, zero, plx, n, dref)
+                             gridtype, w, zero, plx, n, dref, exitstatus)
             real*8, intent(in) ::   gridin(:,:), mass, rho
             real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
             real*8, intent(out) ::  cilm(:,:,:), d
             integer, intent(in) ::  lmax, nmax, gridtype
             integer, intent(in), optional :: n
+            integer, intent(out), optional :: exitstatus
         end subroutine CilmMinus
 
         subroutine CilmPlusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, &
-                                gridtype, w, zero, plx, n, dref)
+                                gridtype, w, zero, plx, n, dref, exitstatus)
             real*8, intent(in) ::   gridin(:,:), mass, rho(:,:)
             real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
             real*8, intent(out) ::  cilm(:,:,:), d
             integer, intent(in) ::  lmax, nmax, gridtype
             integer, intent(in), optional :: n
+            integer, intent(out), optional :: exitstatus
         end subroutine CilmPlusRhoH
 
         subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, &
-                                 gridtype, w, zero, plx, n, dref)
+                                 gridtype, w, zero, plx, n, dref, exitstatus)
             real*8, intent(in) ::   gridin(:,:), mass, rho(:,:)
             real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
             real*8, intent(out) ::  cilm(:,:,:), d
             integer, intent(in) ::  lmax, nmax, gridtype
             integer, intent(in), optional :: n
+            integer, intent(out), optional :: exitstatus
         end subroutine CilmMinusRhoH
 
         subroutine BAtoHilm(cilm, ba, gridglq, lmax, nmax, mass, r0, rho, &
                             gridtype, w, plx, zero, filter_type, filter_deg, &
-                            lmax_calc)
+                            lmax_calc, exitstatus)
             real*8, intent(out) ::  cilm(:,:,:)
             real*8, intent(in) ::   ba(:,:,:), gridglq(:,:), mass, r0, rho
             real*8, intent(in), optional :: plx(:,:), zero(:), w(:)
             integer, intent(in) ::  lmax, nmax, gridtype
             integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
+            integer, intent(out), optional :: exitstatus
         end subroutine BAtoHilm
 
         subroutine BAtoHilmRhoH(cilm, ba, gridglq, lmax, nmax, mass, r0, &
                                 rho, gridtype, w, plx, zero, filter_type, &
-                                filter_deg, lmax_calc)
+                                filter_deg, lmax_calc, exitstatus)
             real*8, intent(out) ::  cilm(:,:,:)
             real*8, intent(in) ::   ba(:,:,:), gridglq(:,:), mass, r0, rho(:,:)
             real*8, intent(in), optional :: plx(:,:), zero(:), w(:)
             integer, intent(in) ::  lmax, nmax, gridtype
             integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
+            integer, intent(out), optional :: exitstatus
         end subroutine BAtoHilmRhoH
-
-        subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
-                                 phi_grid, total_grid, n, sampling, lmax_calc, &
-                                 pot_grid)
-            real*8, intent(in) ::   cilm(:,:,:), r0, a, f
-            real*8, intent(out) ::  rad_grid(:,:), theta_grid(:,:), &
-                                    phi_grid(:,:), total_grid(:,:)
-            real*8, intent(out), optional :: pot_grid(:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(out) :: n
-            integer, intent(in), optional :: sampling, lmax_calc
-        end subroutine MakeMagGridDH
-
-        subroutine DHaj(n, aj)
-            integer, intent(in) ::  n
-            real*8, intent(out) ::  aj(:)
-        end subroutine DHaj
 
         real*8 function DownContFilterMA(l, half, r, d)
             integer, intent(in) ::  l, half
@@ -763,84 +789,36 @@ module SHTOOLS
             real*8, intent(in) ::  r, d
         end function DownContFilterMC
 
-        subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, &
-                                 r, gridtype, order, nlat, nlong, interval, &
-                                 lmax_calc, a, f)
-            real*8, intent(out) ::  geoid(:,:)
-            real*8, intent(in) ::   cilm(:,:,:), r0pot, GM, r, PotRef, omega
-            integer, intent(in) :: lmax, order, gridtype
-            integer, intent(in), optional :: lmax_calc
-            integer, intent(out) :: nlat, nlong
-            real*8, intent(in), optional :: interval, a, f
-        end subroutine MakeGeoidGrid
-
-        subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad, theta, phi, &
-                                  total, n, sampling, lmax_calc, omega, &
-                                  normal_gravity, pot)
-            real*8, intent(in) ::   cilm(:,:,:), gm, r0, a, f
-            real*8, intent(out) ::  rad(:,:), theta(:,:), phi(:,:), total(:,:)
-            real*8, intent(in), optional :: omega
-            real*8, intent(out), optional :: pot(:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(out) :: n
-            integer, intent(in), optional :: sampling, lmax_calc, normal_gravity
-        end subroutine MakeGravGridDH
-
         real*8 function NormalGravity(geocentric_lat, gm, omega, a, b)
             real*8, intent(in) ::   geocentric_lat, gm, omega, a, b
         end function NormalGravity
+
+        subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
+                                 phi_grid, total_grid, n, sampling, lmax_calc, &
+                                 pot_grid, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:), r0, a, f
+            real*8, intent(out) ::  rad_grid(:,:), theta_grid(:,:), &
+                                    phi_grid(:,:), total_grid(:,:)
+            real*8, intent(out), optional :: pot_grid(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(out) :: n
+            integer, intent(in), optional :: sampling, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeMagGridDH
+
+        subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
+            real*8, intent(in) :: c(:,:,:)
+            real*8, intent(in) :: a, r
+            integer, intent(in) :: lmax
+            real*8, intent(out) ::  spectra(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHMagPowerSpectrum
 
         real*8 function SHMagPowerL(c, a, r, l)
             real*8, intent(in) :: c(:,:,:)
             real*8, intent(in) :: a, r
             integer, intent(in) :: l
         end function SHMagPowerL
-
-        subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra)
-            real*8, intent(in) :: c(:,:,:)
-            real*8, intent(in) :: a, r
-            integer, intent(in) :: lmax
-            real*8, intent(out) ::  spectra(:)
-        end subroutine SHMagPowerSpectrum
-
-        integer function YilmIndexVector(i, l, m)
-            integer, intent(in) ::  i, l, m
-        end function YilmIndexVector
-
-        subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, &
-                                      vzz, vxy, vxz, vyz, n, sampling, &
-                                      lmax_calc)
-            real*8, intent(in) ::   cilm(:,:,:), gm, r0, a, f
-            real*8, intent(out) ::  vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
-                                    vxz(:,:), vyz(:,:)
-            integer, intent(in) ::  lmax
-            integer, intent(out) :: n
-            integer, intent(in), optional :: sampling, lmax_calc
-        end subroutine MakeGravGradGridDH
-
-        subroutine EigValVecSym(ain, n, eig, evec, ul, k, exitstatus)
-            real*8, intent(in) ::   ain(:,:)
-            integer, intent(in) ::  n
-            real*8, intent(out) ::  eig(:), evec(:,:)
-            character, intent(in), optional ::  ul
-            integer, intent(in), optional ::    k
-            integer, intent(out), optional :: exitstatus
-        end subroutine EigValVecSym
-
-        subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
-            real*8, intent(in) ::   ain(:,:)
-            integer, intent(in) ::  n
-            real*8, intent(out) ::  eig(:), evec(:,:)
-            character, intent(in), optional :: ul
-            integer, intent(out), optional :: exitstatus
-        end subroutine EigValVecSymTri
-
-        subroutine EigValSym(ain, n, eval, ul)
-            real*8, intent(in) ::   ain(:,:)
-            integer, intent(in) ::  n
-            real*8, intent(out) ::  eval(:)
-            character, intent(in), optional :: ul
-        end subroutine EigValSym
 
         subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
                                    exitstatus)
@@ -893,6 +871,39 @@ module SHTOOLS
         integer function NGLQSHN(degree, n)
             integer, intent(in) ::  degree, n
         end function NGLQSHN
+
+        subroutine DHaj(n, aj)
+            integer, intent(in) ::  n
+            real*8, intent(out) ::  aj(:)
+        end subroutine DHaj
+
+        integer function YilmIndexVector(i, l, m)
+            integer, intent(in) ::  i, l, m
+        end function YilmIndexVector
+
+        subroutine EigValVecSym(ain, n, eig, evec, ul, k, exitstatus)
+            real*8, intent(in) ::   ain(:,:)
+            integer, intent(in) ::  n
+            real*8, intent(out) ::  eig(:), evec(:,:)
+            character, intent(in), optional ::  ul
+            integer, intent(in), optional ::    k
+            integer, intent(out), optional :: exitstatus
+        end subroutine EigValVecSym
+
+        subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
+            real*8, intent(in) ::   ain(:,:)
+            integer, intent(in) ::  n
+            real*8, intent(out) ::  eig(:), evec(:,:)
+            character, intent(in), optional :: ul
+            integer, intent(out), optional :: exitstatus
+        end subroutine EigValVecSymTri
+
+        subroutine EigValSym(ain, n, eval, ul)
+            real*8, intent(in) ::   ain(:,:)
+            integer, intent(in) ::  n
+            real*8, intent(out) ::  eval(:)
+            character, intent(in), optional :: ul
+        end subroutine EigValSym
 
     end interface
 

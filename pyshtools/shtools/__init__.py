@@ -10,6 +10,7 @@ import numpy as _np
 
 # ---- Import all wrapped SHTOOLS functions
 
+# legendre
 from .._SHTOOLS import PlmBar
 from .._SHTOOLS import PlmBar_d1
 from .._SHTOOLS import PlBar
@@ -27,6 +28,7 @@ from .._SHTOOLS import PLegendreA_d1
 from .._SHTOOLS import PLegendre
 from .._SHTOOLS import PLegendre_d1
 
+# expand
 from .._SHTOOLS import SHExpandDH
 from .._SHTOOLS import MakeGridDH
 from .._SHTOOLS import SHExpandDHC
@@ -42,6 +44,7 @@ from .._SHTOOLS import MakeGrid2D
 from .._SHTOOLS import MakeGridPoint
 from .._SHTOOLS import SHMultiply
 
+# shio
 from .._SHTOOLS import SHRead
 from .._SHTOOLS import SHReadH
 from .._SHTOOLS import SHReadError
@@ -57,6 +60,7 @@ from .._SHTOOLS import SHVectorToCilm
 from .._SHTOOLS import SHrtoc
 from .._SHTOOLS import SHctor
 
+# spectralanalysis
 from .._SHTOOLS import SHPowerL
 from .._SHTOOLS import SHPowerDensityL
 from .._SHTOOLS import SHCrossPowerL
@@ -76,6 +80,7 @@ from .._SHTOOLS import SHPowerSpectrumDensityC
 from .._SHTOOLS import SHCrossPowerSpectrumC
 from .._SHTOOLS import SHCrossPowerSpectrumDensityC
 
+# localizedspectralanalysis
 from .._SHTOOLS import SHMultiTaperSE
 from .._SHTOOLS import SHMultiTaperCSE
 from .._SHTOOLS import SHLocalizedAdmitCorr
@@ -99,10 +104,12 @@ from .._SHTOOLS import Curve2Mask
 from .._SHTOOLS import SHBias
 from .._SHTOOLS import SphericalCapCoef
 
+# rotate
 from .._SHTOOLS import djpi2
 from .._SHTOOLS import SHRotateCoef
 from .._SHTOOLS import SHRotateRealCoef
 
+# gravmag
 from .._SHTOOLS import MakeGravGridDH
 from .._SHTOOLS import MakeGravGradGridDH
 from .._SHTOOLS import MakeGeoidGridDH
@@ -119,6 +126,7 @@ from .._SHTOOLS import MakeMagGridDH
 from .._SHTOOLS import SHMagPowerSpectrum
 from .._SHTOOLS import SHMagPowerL
 
+# utils
 from .._SHTOOLS import MakeCircleCoord
 from .._SHTOOLS import MakeEllipseCoord
 from .._SHTOOLS import Wigner3j
@@ -148,14 +156,12 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
             'SHMultiTaperMaskCSE', 'SHReturnTapersMap', 'SHBiasKMask',
             'ComputeDMap', 'Curve2Mask', 'SHBias', 'SphericalCapCoef',
             'djpi2', 'SHRotateCoef', 'SHRotateRealCoef',
+            'MakeGravGridDH', 'MakeGravGradGridDH', 'MakeGeoidGridDH',
+            'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
+            'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
+            'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
+            'SHMagPowerSpectrum', 'SHMagPowerL',
             'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j']
-
-_not_finished = ['MakeGravGridDH',
-                 'MakeGravGradGridDH', 'MakeGeoidGridDH', 'CilmPlusDH',
-                 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
-                 'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
-                 'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
-                 'SHMagPowerSpectrum', 'SHMagPowerL']
 
 _fortran_functions = ['MakeGridPoint', 'SHPowerL', 'SHPowerDensityL',
                       'SHCrossPowerL', 'SHCrossPowerDensityL',
@@ -175,7 +181,7 @@ _fortran_subroutines = list(set(__all__) - set(_fortran_functions))
 _pydocfolder = _os.path.abspath(_os.path.join(
                    _os.path.split(_os.path.dirname(__file__))[0], 'doc'))
 
-for _name in __all__ + _not_finished:
+for _name in __all__:
     try:
         _path = _os.path.join(_pydocfolder, _name.lower() + '.doc')
 

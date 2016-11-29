@@ -23,7 +23,7 @@ main namespace:
     localizedspectralanalysis - Localized spectral analysis routines.
     rotate - Spherical harmonic rotation routines.
     gravmag - Gravity and magnetics routines.
-    utils - Python utilities.
+    utils - pyshtools utilities.
 
 For further information, consult the web documentation at
 
@@ -58,10 +58,8 @@ from . import shio
 from . import spectralanalysis
 from . import localizedspectralanalysis
 from . import rotate
-from . import utils
-
-# ---- Import shtools submodules ----
 from . import gravmag
+from . import utils
 
 
 # ---- Define __all__ for use with: from pyshtools import * ----
