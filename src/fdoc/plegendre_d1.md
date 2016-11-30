@@ -4,13 +4,13 @@ Compute all the unnormalized Legendre polynomials and first derivatives.
 
 # Usage 
 
-call PLegendre_d1 (`p`, `dp`, `lmax`, `z`)
+call PLegendre_d1 (`p`, `dp`, `lmax`, `z`, `exitstatus`)
 
 # Parameters
 
 `p` : output, real\*8, dimension (`lmax`+1)
 :   An array of unnormalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`+1.
-	
+
 `dp` : output, real\*8, dimension (`lmax`+1)
 :   An array of the first derivatives of the unnormalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`+1.
 
@@ -19,6 +19,9 @@ call PLegendre_d1 (`p`, `dp`, `lmax`, `z`)
 
 `z` : input, real\*8
 :   The argument of the Legendre polynomial.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

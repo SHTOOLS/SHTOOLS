@@ -4,7 +4,7 @@ Calculate the weights and nodes used in integrating a function by Gauss-Legendre
 
 # Usage
 
-call PreGLQ (`lower`, `upper`, `n`, `zero`, `w`)
+call PreGLQ (`lower`, `upper`, `n`, `zero`, `w`, `exitstatus`)
 
 # Parameters
 
@@ -22,6 +22,9 @@ call PreGLQ (`lower`, `upper`, `n`, `zero`, `w`)
 
 `w` : output, real\*8, dimension (`n`)
 :   The weights used in the Gauss-Legendre quadrature.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

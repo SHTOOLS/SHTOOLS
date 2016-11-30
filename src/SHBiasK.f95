@@ -1,5 +1,5 @@
 subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
-                   taper_wt, save_cg)
+                   taper_wt, save_cg, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the expected multitaper windowed (cross-)power
@@ -40,6 +40,16 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
 !                       degree calculated is equal to lwin + ldata, or the
 !                       dimension of outspectra.
 !
+!       OPTIONAL (OUT)
+!           exitstatus  If present, instead of executing a STOP when an error
+!                       is encountered, the variable exitstatus will be
+!                       returned describing the error.
+!                       0 = No errors;
+!                       1 = Improper dimensions of input array;
+!                       2 = Improper bounds for input variable;
+!                       3 = Error allocating memory;
+!                       4 = File IO error.
+!
 !   Dependencies: Wigner3j
 !
 !   Copyright (c) 2016, SHTOOLS
@@ -55,11 +65,14 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
     integer, intent(in) :: lwin, ldata, k
     real*8, intent(in), optional :: taper_wt(:)
     integer, intent(in), optional :: save_cg
+    integer, intent(out), optional :: exitstatus
     integer :: l, i, j, lmax, imin, imax, n, astat
     real*8 :: wig(2*lwin+ldata+1)
     real*8, allocatable, save :: cg2(:,:,:)
 
 !$OMP   threadprivate(cg2)
+
+    if (present(exitstatus)) exitstatus = 0
 
     lmax = ldata + lwin
     outcspectra = 0.0d0
@@ -70,14 +83,24 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
                 "LWIN and K are ", LWIN, K
         print*, "Input array is dimensioned ", size(tapers(:,1)), &
                 size(tapers(1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (size(incspectra) < ldata +1) then
         print*, "Error --- SHBiasK"
         print*, "INCSPECTRA must be dimensioned as (LDATA+1) where " // &
                 "LDATA is ", ldata
         print*, "Input array is dimensioned ", size(incspectra)
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     end if
 
@@ -87,13 +110,23 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
             print*, "TAPER_WT must be dimensioned as (K) " // &
                     "where K is ", k
             print*, "Input array is dimensioned as ", size(taper_wt)
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
             stop
+        end if
 
         else if (sum(taper_wt(1:k)) /= 1.0d0) then
             print*, "Error --- SHBiasK"
             print*, "TAPER_WT must sum to unity."
             print*, "Input array sums to ", sum(taper_wt(1:k))
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 5
+                return
+            else
+                stop
+            end if
 
         end if
 
@@ -106,7 +139,12 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
                     "coefficients), -1 (to deallocate the memory)" 
             print*, "or 0 (to do nothing)."
             print*, "Input value is ", save_cg
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
 
         end if
 
@@ -126,14 +164,22 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
             if (present(taper_wt)) then
                 do l = 0, min(lmax, size(outcspectra)-1)
                     do j = 0, lwin
-                        call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                        if (present(exitstatus)) then
+                            call Wigner3j(wig, imin, imax, j, l, 0, 0, 0, &
+                                          exitstatus = exitstatus)
+                            if (exitstatus /= 0) return
+                        else
+                            call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                        end if
 
                         do i = imin, min(imax,ldata), 2
                             do n = 1, k
                                 outcspectra(l+1) = outcspectra(l+1) &
-                                        + taper_wt(n) * tapers(j+1,n)**2 * &
-                                        incspectra(i+1) * (2.0d0*l+1.0d0) &
-                                        * wig(i-imin+1)**2
+                                                   + taper_wt(n) &
+                                                   * tapers(j+1,n)**2 &
+                                                   * incspectra(i+1) &
+                                                   * (2.0d0*l+1.0d0) &
+                                                   * wig(i-imin+1)**2
                             end do
 
                         end do
@@ -145,13 +191,21 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
             else
                 do l = 0, min(lmax, size(outcspectra)-1)
                     do j = 0, lwin
-                        call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                        if (present(exitstatus)) then
+                            call Wigner3j(wig, imin, imax, j, l, 0, 0, 0, &
+                                          exitstatus = exitstatus)
+                            if (exitstatus /= 0) return
+                        else
+                            call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                        end if
 
                         do i = imin, min(imax,ldata), 2
                             do n = 1, k
                                 outcspectra(l+1) = outcspectra(l+1) &
-                                        + tapers(j+1,n)**2 * incspectra(i+1) &
-                                        * (2.0d0*l+1.0d0) * wig(i-imin+1)**2
+                                                   + tapers(j+1,n)**2 &
+                                                   * incspectra(i+1) &
+                                                   * (2.0d0*l+1.0d0) &
+                                                   * wig(i-imin+1)**2
                             end do
 
                         end do
@@ -178,14 +232,27 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
             if (astat /= 0) then
                 print*, "Error --- SHBiasK"
                 print*, "Problem allocating internal array CG2"
-                stop
+                if (present(exitstatus)) then
+                    exitstatus = 3
+                    return
+                else
+                    stop
+                end if
+
             end if
 
             cg2 = 0.0d0
 
             do l = 0, lmax
                 do j = 0, lwin
-                    call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                    if (present(exitstatus)) then
+                        call Wigner3j(wig, imin, imax, j, l, 0, 0, 0, &
+                                      exitstatus = exitstatus)
+                        if (exitstatus /= 0) return
+                    else
+                        call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                    endif
+
                     cg2(l+1,j+1,1:imax-imin+1) = (2.0d0*l+1.0d0) &
                                                  * wig(1:imax-imin+1)**2
                 end do
@@ -198,13 +265,14 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
             do l = 0, min(lmax, size(outcspectra)-1)
                 do j = 0, lwin
                     imin = abs(j-l)
-                    imax = j+l
+                    imax = j + l
 
                     do i = imin, min(imax,ldata), 2
                         do n = 1, k
                             outcspectra(l+1) = outcspectra(l+1) + taper_wt(n) &
-                                    * tapers(j+1,n)**2 * &
-                                    incspectra(i+1) * cg2(l+1,j+1,i-imin+1)
+                                               * tapers(j+1,n)**2 &
+                                               * incspectra(i+1) &
+                                               * cg2(l+1,j+1,i-imin+1)
                         end do
 
                     end do
@@ -217,13 +285,14 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
             do l = 0, min(lmax, size(outcspectra)-1)
                 do j = 0, lwin
                     imin = abs(j-l)
-                    imax = j+l
+                    imax = j + l
 
                     do i = imin, min(imax,ldata), 2
                         do n = 1, k
                             outcspectra(l+1) = outcspectra(l+1) &
-                                    + tapers(j+1,n)**2 * &
-                                    incspectra(i+1) * cg2(l+1,j+1,i-imin+1)
+                                               + tapers(j+1,n)**2 &
+                                               * incspectra(i+1) &
+                                               * cg2(l+1,j+1,i-imin+1)
                         end do
 
                     end do
@@ -240,14 +309,21 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
         if (present(taper_wt)) then
             do l = 0, min(lmax, size(outcspectra)-1)
                 do j = 0, lwin
-                    call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                    if (present(exitstatus)) then
+                        call Wigner3j(wig, imin, imax, j, l, 0, 0, 0, &
+                                      exitstatus = exitstatus)
+                        if (exitstatus /= 0) return
+                    else
+                        call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                    end if
 
                     do i = imin, min(imax,ldata), 2
                         do n = 1, k
                             outcspectra(l+1) = outcspectra(l+1) + taper_wt(n) &
-                                    * tapers(j+1,n)**2 * &
-                                    incspectra(i+1) * (2.0d0*l+1.0d0) &
-                                    * wig(i-imin+1)**2
+                                               * tapers(j+1,n)**2 &
+                                               * incspectra(i+1) &
+                                               * (2.0d0*l+1.0d0) &
+                                               * wig(i-imin+1)**2
                         end do
 
                     end do
@@ -259,14 +335,21 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
         else
             do l = 0, min(lmax, size(outcspectra)-1)
                 do j = 0, lwin
-                    call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                    if (present(exitstatus)) then
+                        call Wigner3j(wig, imin, imax, j, l, 0, 0, 0, &
+                                      exitstatus = exitstatus)
+                        if (exitstatus /= 0) return
+                    else
+                        call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
+                    end if
 
                     do i = imin, min(imax,ldata), 2
                         do n = 1, k
                             outcspectra(l+1) = outcspectra(l+1) &
-                                + tapers(j+1,n)**2 * &
-                                incspectra(i+1) * (2.0d0*l+1.0d0) &
-                                * wig(i-imin+1)**2
+                                               + tapers(j+1,n)**2 &
+                                               * incspectra(i+1) &
+                                               * (2.0d0*l+1.0d0) &
+                                               * wig(i-imin+1)**2
                         end do
 
                     end do

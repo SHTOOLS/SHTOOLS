@@ -24,7 +24,7 @@ Compute the cross-power of two complex functions for a single spherical harmonic
 
 # Description
 
-`SHCrossPowerLC` will calculate the spectral cross-power of two complex functions expressed in complex spherical harmonics for a single spherical harmonic degree `l`. This is calculated as:
+`SHCrossPowerLC` will calculate the spectral cross-power of two complex functions expressed in complex 4-pi normalized spherical harmonics for a single spherical harmonic degree `l`. This is calculated as:
 
 `cpower = Sum_{i=0}^1 Sum_{m=0}^l cilm1[i, l, m] * conjg[cilm2[i, l, m]]`.
 

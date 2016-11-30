@@ -4,7 +4,7 @@ This routine returns the multitaper coupling matrix for a given set of power spe
 
 # Usage
 
-call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers_power`, `lwin`, `k`, `taper_wt`)
+call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers_power`, `lwin`, `k`, `taper_wt`, `exitstatus`)
 
 # Parameters
 
@@ -25,6 +25,9 @@ call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers_power`, `lwin`, `k`, `taper_wt`)
 
 `taper_wt` : input, optional, real\*8, dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

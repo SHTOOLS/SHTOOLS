@@ -1,7 +1,7 @@
 """
 pyshtools Spherical Harmonic Expansion Routines.
 
-This submodule of pyshtools defines the following functions:
+This subpackage of pyshtools defines the following functions:
 
 Equally sampled (N by N) and equally spaced (N by 2N) Grids
 -----------------------------------------------------
@@ -47,17 +47,18 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ._SHTOOLS import SHExpandDH
-from ._SHTOOLS import MakeGridDH
-from ._SHTOOLS import SHExpandDHC
-from ._SHTOOLS import MakeGridDHC
-from ._SHTOOLS import SHGLQ
-from ._SHTOOLS import SHExpandGLQ
-from ._SHTOOLS import MakeGridGLQ
-from ._SHTOOLS import SHExpandGLQC
-from ._SHTOOLS import MakeGridGLQC
-from ._SHTOOLS import GLQGridCoord
-from ._SHTOOLS import SHExpandLSQ
-from ._SHTOOLS import MakeGrid2D
-from ._SHTOOLS import MakeGridPoint
-from ._SHTOOLS import SHMultiply
+
+from ..shtools import SHExpandDH
+from ..shtools import MakeGridDH
+from ..shtools import SHExpandDHC
+from ..shtools import MakeGridDHC
+from ..shtools import SHGLQ
+from ..shtools import SHExpandGLQ
+from ..shtools import MakeGridGLQ
+from ..shtools import SHExpandGLQC
+from ..shtools import MakeGridGLQC
+from ..shtools import GLQGridCoord
+from ..shtools import SHExpandLSQ
+from ..shtools import MakeGrid2D
+from ..shtools import MakeGridPoint
+from ..shtools import SHMultiply

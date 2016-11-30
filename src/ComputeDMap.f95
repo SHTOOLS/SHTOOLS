@@ -1,4 +1,4 @@
-subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
+subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the matrix D(lm,l'm') for the spatiospectral
@@ -53,28 +53,46 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
 !                       to YilmINDEX. Dimesions of Dij are
 !                       ((lmax+1)**2, (lmax+1)**2).
 !
+!       OPTIONAL (OUT)
+!           exitstatus  If present, instead of executing a STOP when an error
+!                       is encountered, the variable exitstatus will be
+!                       returned describing the error.
+!                       0 = No errors;
+!                       1 = Improper dimensions of input array;
+!                       2 = Improper bounds for input variable;
+!                       3 = Error allocating memory;
+!                       4 = File IO error.
+!
 !   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only : SHExpandDH, PlmIndex, PlmBar, SHCilmToVector, &
                         YilmIndexVector
-    
+
     implicit none
-        
+
     real*8, intent(out) :: Dij(:,:)
     integer, intent(in) :: dh_mask(:,:), n_dh, lmax
     integer, intent(in), optional:: sampling
+    integer, intent(out), optional :: exitstatus
     integer :: nlat, nlong, lmax_dh, astat, i, j, k, l, m, max_mask, min_mask
     real*8, allocatable :: f(:,:), plm(:), clm(:,:,:), vec(:)
     real*8 :: colat, lat_int, temp(2*n_dh), lon, lon_int
 
+    if (present(exitstatus)) exitstatus = 0
 
     if (size(Dij(:,1)) < (lmax+1)**2 .or. size(Dij(1,:)) < (lmax+1)**2) then
         print*, "Error --- ComputeDMap"
         print*, "Dij must be dimesioned as ((LMAX+1)**2, (LMAX+1)**2)."
         print*, "Dij is dimensioned as ", size(Dij(:,1)), size(Dij(1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
+
     end if
 
     if (mod(n_dh,2) /= 0) then
@@ -82,7 +100,13 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
         print*, "Number of samples in latitude must be even for the " // &
                 "Driscoll and Healy sampling theorem."
         print*, "N_DH = ", n_dh
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 2
+            return
+        else
+            stop
+        end if
+
     end if
 
     nlat = n_dh
@@ -91,10 +115,10 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
     if (present(sampling)) then
         if (sampling == 1) then
             nlong = nlat
-            lon_int = 2.0d0*lat_int
+            lon_int = 2.0d0 * lat_int
 
         else if (sampling == 2) then
-            nlong = 2*nlat
+            nlong = 2 * nlat
             lon_int = lat_int
 
         else 
@@ -102,13 +126,18 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
             print*, "SAMPLING must be either 1 (equally sampled) " // &
                     "or 2 (equally spaced)."
             print*, "SAMPLING = ", sampling
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
 
         end if
 
     else
         nlong = nlat
-        lon_int = 2.0d0*lat_int
+        lon_int = 2.0d0 * lat_int
 
     end if
 
@@ -117,10 +146,16 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
         print*, "DH_MASK must be dimensioned as ", nlat, nlong
         print*, "Dimensions of DH_MASK are ", size(dh_mask(:,1)),  &
                 size(dh_mask(1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
+
     end if
 
-    lmax_dh = n_dh/2 - 1
+    lmax_dh = n_dh / 2 - 1
 
     if (lmax_dh < lmax) then
         print*, "Error --- ComputeDMap"
@@ -128,7 +163,13 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
                 "greater or equal than LMAX."
         print*, "LMAX = ", lmax
         print*, "Effective bandwidth of DH_MASK = ", lmax_dh
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 2
+            return
+        else
+            stop
+        end if
+
     endif
 
     allocate (f(nlat,nlong), stat = astat)
@@ -138,7 +179,13 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
         print*, "Problem allocating memory for grid F(NLAT, NLONG)."
         print*, "NLAT = ", nlat
         print*, "NLONG = ", nlong
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 3
+            return
+        else
+            stop
+        end if
+
     end if
 
     allocate (plm((lmax+1)*(lmax+2)/2), stat = astat)
@@ -147,7 +194,13 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
         print*, "Error --- ComputeDMap"
         print*, "Problem allocating memory for grid PLM((LMAX+1)*(LMAX+2)/2)."
         print*, "LMAX = ", lmax
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 3
+            return
+        else
+            stop
+        end if
+
     end if
 
     allocate (clm(2, lmax+1, lmax+1), stat = astat)
@@ -155,7 +208,13 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
     if (astat /= 0) then
         print*, "Error --- ComputeDMap"
         print*, "Problem allocating memory for CLM(2, LMAX+1, LMAX+1)."
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 3
+            return
+        else
+            stop
+        end if
+
     end if
 
     allocate (vec((lmax+1)**2), stat = astat)
@@ -164,7 +223,13 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
         print*, "Error --- ComputeDMap"
         print*, "Problem allocating memory for VEC((LMAX+1)**2)."
         print*, "LMAX = ", lmax
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 3
+            return
+        else
+            stop
+        end if
+
     end if
 
     min_mask = minval(dh_mask(1:nlat, 1:nlong))
@@ -177,7 +242,13 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
         print*, "and 1s inside of the concentration region."
         print*, "Minimum value of DH_MASK = ", min_mask
         print*, "Maximum value of DH_MASK = ", max_mask
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 2
+            return
+        else
+            stop
+        end if
+
     end if
 
     !--------------------------------------------------------------------------
@@ -190,10 +261,10 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
     dij = 0.0d0
 
     do l = lmax, 0, -1
-        do m = 0, l   
+        do m = 0, l
             do j = 1, 2
 
-                if (m==0 .and. j==2) cycle
+                if (m == 0 .and. j == 2) cycle
 
                 !--------------------------------------------------------------
                 !
@@ -202,43 +273,62 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling)
                 !--------------------------------------------------------------
 
                 do k = 1, nlong
-                    lon = dble(k-1)*lon_int
+                    lon = dble(k-1) * lon_int
 
                     if (j == 1) then
-                        temp(k) = cos(dble(m)*lon)
+                        temp(k) = cos(dble(m) * lon)
 
                     else
-                        temp(k) = sin(dble(m)*lon)
+                        temp(k) = sin(dble(m) * lon)
 
                     end if
 
                 end do
 
                 do k = 1, nlat
-                    colat = dble(k-1)*lat_int
-                    call plmbar(plm, l, cos(colat))
+                    colat = dble(k-1) * lat_int
+                    if (present(exitstatus)) then
+                        call plmbar(plm, l, cos(colat), exitstatus=exitstatus)
+                        if (exitstatus /= 0) return
+                    else
+                        call plmbar(plm, l, cos(colat))
+                    end if
                     f(k, 1:nlong) = plm(plmindex(l,m)) * temp(1:nlong) &
-                            * dble(dh_mask(k, 1:nlong))
+                                    * dble(dh_mask(k, 1:nlong))
 
                 end do
 
                 i = YilmIndexVector(j, l, m)
 
-                if (present(sampling)) then 
-                    call SHExpandDH(f, n_dh, clm, lmax_dh, &
-                                    sampling = sampling, lmax_calc = l)
+                if (present(exitstatus)) then
+                    if (present(sampling)) then
+                        call SHExpandDH(f, n_dh, clm, lmax_dh, &
+                                        sampling = sampling, lmax_calc = l, &
+                                        exitstatus = exitstatus)
+                        if (exitstatus /= 0) return
+                    else
+                        call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = 1, &
+                                        lmax_calc = l, exitstatus = exitstatus)
+                        if (exitstatus /= 0) return
+                    end if
+                    call SHCilmToVector(clm, vec, l, exitstatus = exitstatus)
+                    if (exitstatus /= 0) return
 
                 else
-                    call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = 1,  &
-                                    lmax_calc = l)
+                    if (present(sampling)) then
+                        call SHExpandDH(f, n_dh, clm, lmax_dh, &
+                                        sampling = sampling, lmax_calc = l)
+                    else
+                        call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = 1, &
+                                        lmax_calc = l)
+                    end if
+                    call SHCilmToVector(clm, vec, l)
 
                 end if
 
-                call SHCilmToVector(clm, vec, l)
-
                 dij(i, 1:(l+1)**2) = vec(1:(l+1)**2)
 
-                if (l /= 0) dij(1:(l+1)**2 - 1, i) = vec(1:(l+1)**2 - 1) 
+                if (l /= 0) dij(1:(l+1)**2 - 1, i) = vec(1:(l+1)**2 - 1)
 
             end do
 

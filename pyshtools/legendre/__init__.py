@@ -1,7 +1,7 @@
 """
 pyshtools Legendre Functions.
 
-This submodule of pyshtools defines the following functions:
+This subpackage of pyshtools defines the following functions:
 
 "Geodesy" 4-pi normalized
 -----------------------
@@ -49,27 +49,21 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ._SHTOOLS import PlmBar
-from ._SHTOOLS import PlmBar_d1
-from ._SHTOOLS import PlBar
-from ._SHTOOLS import PlBar_d1
-from ._SHTOOLS import PlmON
-from ._SHTOOLS import PlmON_d1
-from ._SHTOOLS import PlON
-from ._SHTOOLS import PlON_d1
-from ._SHTOOLS import PlmSchmidt
-from ._SHTOOLS import PlmSchmidt_d1
-from ._SHTOOLS import PlSchmidt
-from ._SHTOOLS import PlSchmidt_d1
-from ._SHTOOLS import PLegendreA
-from ._SHTOOLS import PLegendreA_d1
-from ._SHTOOLS import PLegendre
-from ._SHTOOLS import PLegendre_d1
+from ..shtools import PlmBar
+from ..shtools import PlmBar_d1
+from ..shtools import PlBar
+from ..shtools import PlBar_d1
+from ..shtools import PlmON
+from ..shtools import PlmON_d1
+from ..shtools import PlON
+from ..shtools import PlON_d1
+from ..shtools import PlmSchmidt
+from ..shtools import PlmSchmidt_d1
+from ..shtools import PlSchmidt
+from ..shtools import PlSchmidt_d1
+from ..shtools import PLegendreA
+from ..shtools import PLegendreA_d1
+from ..shtools import PLegendre
+from ..shtools import PLegendre_d1
 
-
-# ---------------------------------------------------------------------
-# --- Define a Python function that replaces the Fortran
-# --- equivalent that uses different indexing conventions.
-# ---------------------------------------------------------------------
-def PlmIndex(l, m):
-    return (l * (l + 1)) // 2 + m
+from .plm_index import PlmIndex

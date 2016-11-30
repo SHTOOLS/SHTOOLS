@@ -11,7 +11,8 @@ import time
 import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import shtools
+from pyshtools import expand
+from pyshtools import spectralanalysis
 
 
 # ==== MAIN FUNCTION ====
@@ -45,7 +46,7 @@ def TimingAccuracyDHC(sampling=1):
                                  size=(2, maxdeg + 1, maxdeg + 1))
     cilm.real = np.random.normal(loc=0., scale=1.,
                                  size=(2, maxdeg + 1, maxdeg + 1))
-    old_power = shtools.SHPowerSpectrumC(cilm)
+    old_power = spectralanalysis.SHPowerSpectrumC(cilm)
     new_power = 1. / (1. + ls)**beta  # initialize degrees > 0 to power-law
     cilm[:, :, :] *= np.sqrt(new_power / old_power)[None, :, None]
     cilm[~mask] = 0.
@@ -61,13 +62,13 @@ def TimingAccuracyDHC(sampling=1):
 
         # synthesis / inverse
         tstart = time.time()
-        grid = shtools.MakeGridDHC(cilm_trim, sampling=sampling)
+        grid = expand.MakeGridDHC(cilm_trim, sampling=sampling)
         tend = time.time()
         tinverse = tend - tstart
 
         # analysis / forward
         tstart = time.time()
-        cilm2_trim = shtools.SHExpandDHC(grid, sampling=sampling)
+        cilm2_trim = expand.SHExpandDHC(grid, sampling=sampling)
         tend = time.time()
         tforward = tend - tstart
 

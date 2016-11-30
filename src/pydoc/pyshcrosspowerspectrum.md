@@ -24,7 +24,7 @@ Compute the cross-power spectrum of two real functions.
 
 # Description
 
-`SHCrossPowerSpectrum` will calculate the cross-power spectrum of two real functions expressed in real spherical harmonics. For a given degree spherical harmonic degree `l`, this is explicitly calculated as:
+`SHCrossPowerSpectrum` will calculate the cross-power spectrum of two real functions expressed in real 4-pi normalized spherical harmonics. For a given degree spherical harmonic degree `l`, this is explicitly calculated as:
 
 `cspectrum(l) = Sum_{i=0}^1 Sum_{m=0}^l cilm1[i, l, m] * cilm2[i, l, m]`.
 

@@ -11,12 +11,15 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import shtools
+from pyshtools import shio
+from pyshtools import expand
+from pyshtools import gravmag
 from pyshtools import constant
 
-# set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
+
+# set shtools plot style:
 mpl.rcParams.update(style_shtools)
 
 
@@ -42,14 +45,14 @@ def TestCrustalThickness():
     half = 0
 
     gravfile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
-    pot, lmaxp, header = shtools.SHReadH(gravfile, degmax, 2)
+    pot, lmaxp, header = shio.SHReadH(gravfile, degmax, 2)
     gm = header[1] * 1.e9
     mass = gm / constant.grav_constant
     r_grav = header[0] * 1.e3
     print(r_grav, gm, mass, lmaxp)
 
     topofile = '../../ExampleDataFiles/MarsTopo719.shape'
-    hlm, lmaxt = shtools.SHRead(topofile, 719)
+    hlm, lmaxt = shio.SHRead(topofile, 719)
     r0 = hlm[0, 0, 0]
     d = r0 - 45.217409924028445e3
     print(r0, lmaxt)
@@ -57,12 +60,12 @@ def TestCrustalThickness():
     for l in range(2, lmaxp + 1):
         pot[:, l, :l + 1] = pot[:, l, :l + 1] * (r_grav / r0)**l
 
-    topo_grid = shtools.MakeGridDH(hlm, lmax=lmax, sampling=2,
-                                   lmax_calc=degmax)
+    topo_grid = expand.MakeGridDH(hlm, lmax=lmax, sampling=2,
+                                  lmax_calc=degmax)
     print("Maximum radius (km) = ", topo_grid.max() / 1.e3)
     print("Minimum radius (km) = ", topo_grid.min() / 1.e3)
 
-    bc, r0 = shtools.CilmPlusDH(topo_grid, nmax, mass, rho_c, lmax=degmax)
+    bc, r0 = gravmag.CilmPlusDH(topo_grid, nmax, mass, rho_c, lmax=degmax)
 
     ba = pot - bc
 
@@ -85,20 +88,20 @@ def TestCrustalThickness():
                                    ((r0 / d)**l) / \
                                    (4.0 * np.pi * (rho_m - rho_c) * d**2)
 
-    moho_grid3 = shtools.MakeGridDH(moho_c, lmax=lmax, sampling=2,
-                                    lmax_calc=degmax)
+    moho_grid3 = expand.MakeGridDH(moho_c, lmax=lmax, sampling=2,
+                                   lmax_calc=degmax)
     print('Maximum Crustal thickness (km) = ',
           (topo_grid - moho_grid3).max() / 1.e3)
     print('Minimum Crustal thickness (km) = ',
           (topo_grid - moho_grid3).min() / 1.e3)
 
-    moho_c = shtools.BAtoHilmDH(ba, moho_grid3, nmax, mass, r0,
+    moho_c = gravmag.BAtoHilmDH(ba, moho_grid3, nmax, mass, r0,
                                 (rho_m - rho_c), lmax=lmax,
                                 filter_type=filter_type, filter_deg=half,
                                 lmax_calc=degmax)
 
-    moho_grid2 = shtools.MakeGridDH(moho_c, lmax=lmax, sampling=2,
-                                    lmax_calc=degmax)
+    moho_grid2 = expand.MakeGridDH(moho_c, lmax=lmax, sampling=2,
+                                   lmax_calc=degmax)
     print('Delta (km) = ', abs(moho_grid3 - moho_grid2).max() / 1.e3)
 
     temp_grid = topo_grid - moho_grid2
@@ -125,13 +128,13 @@ def TestCrustalThickness():
         iter += 1
         print('Iteration ', iter)
 
-        moho_c = shtools.BAtoHilmDH(ba, moho_grid2, nmax, mass, r0,
+        moho_c = gravmag.BAtoHilmDH(ba, moho_grid2, nmax, mass, r0,
                                     rho_m - rho_c, lmax=lmax,
                                     filter_type=filter_type, filter_deg=half,
                                     lmax_calc=degmax)
 
-        moho_grid = shtools.MakeGridDH(moho_c, lmax=lmax, sampling=2,
-                                       lmax_calc=degmax)
+        moho_grid = expand.MakeGridDH(moho_c, lmax=lmax, sampling=2,
+                                      lmax_calc=degmax)
         delta = abs(moho_grid - moho_grid2).max()
         print('Delta (km) = ', delta / 1.e3)
 

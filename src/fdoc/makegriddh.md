@@ -4,7 +4,7 @@ Create a 2D map from a set of spherical harmonic coefficients that conforms with
 
 # Usage
 
-call MakeGridDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`)
+call MakeGridDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`, `exitstatus`)
 
 # Parameters
 
@@ -16,10 +16,10 @@ call MakeGridDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `
 
 `cilm` :  input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `c1lm` and `c2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`.
-	
+
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the function. This determines the number of samples `n`.
-	
+
 `norm` : input, optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
@@ -31,6 +31,9 @@ call MakeGridDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `
 
 `lmax_calc` : input, optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

@@ -13,7 +13,7 @@ Compute the probability that two functions are correlated at a given spherical h
 
 `l` : input,  integer
 :   The spherical harmonic degree.
-	
+
 `corr` : input, real\*8
 :   The correlation coefficient of the two data sets at degree `l`.
 

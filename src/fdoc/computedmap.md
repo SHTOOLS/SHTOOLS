@@ -4,7 +4,7 @@ Compute the space-concentration kernel of an arbitrary mask on the sphere.
 
 # Usage
 
-call ComputeDMap (`dij`, `dh_mask`, `n`, `lmax`, `sampling`)
+call ComputeDMap (`dij`, `dh_mask`, `n`, `lmax`, `sampling`, `exitstatus`)
 
 # Parameters
 
@@ -16,18 +16,21 @@ call ComputeDMap (`dij`, `dh_mask`, `n`, `lmax`, `sampling`)
 
 `n` : input, integer
 :   The number of latitudinal samples in `dh_mask`. The effective spherical harmonic bandwidth of this grid is `L=n/2-1`.
-	
+
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the matrix `dij`.
 
 `sampling` : input, optional, integer, default = 1
-:   For 1 (default), `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples. 
+:   For 1 (default), `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 
 `ComputeDMap` will calculate the space-concentration kernel for a generic mask defined on the sphere. The input mask `dh_mask` must be sampled according to the Driscoll and Healy (1994) sampling theorem with `n` samples in latitude, and possess a value of 1 inside the concentration region, and 0 elsewhere. `dh_mask` can either possess `n` samples in longitude (`sampling=1`) or `2n` samples in longitude (`sampling=2`). Given the approximate way in which the elements of `dij` are calculated (see below), `sampling=2` should be preferred. `dij` is symmetric, and the elements are ordered according to the scheme described in `YilmIndexVector`. See Simons et al. (2006) for further details.
 
-The elements of DIJ are explicitly given by 
+The elements of DIJ are explicitly given by
 
 `Dlm,l'm' = 1/(4pi) Integral_R Ylm Yl'm' dOmega`,
 
@@ -35,7 +38,7 @@ where `R` is the concentration region. In this routine, all values of `l'm'` are
 
 `Dl'm' = 1/(4pi) Integral_Omega F Yl'm' dOmega`.
 
-where 
+where
 
 `F = Ylm dh_mask`.
 

@@ -21,7 +21,7 @@ Compute the power of a complex function for a single spherical harmonic degree.
 
 # Description
 
-`SHPowerLC` will calculate the power of a complex function expressed in complex spherical harmonics for a single spherical harmonic degree `l`. This is  calculated as:
+`SHPowerLC` will calculate the power of a complex function expressed in complex 4-pi normalized spherical harmonics for a single spherical harmonic degree `l`. This is calculated as:
 
 `power = Sum_{i=0}^1 Sum_{m=0}^l | cilm[i, l, m] |**2`.
 

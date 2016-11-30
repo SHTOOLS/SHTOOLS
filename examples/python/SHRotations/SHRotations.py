@@ -11,11 +11,12 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import shtools
+from pyshtools import rotate
 
-# set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
+
+# set shtools plot style:
 mpl.rcParams.update(style_shtools)
 
 
@@ -40,14 +41,14 @@ def test_SHRotations():
     print('computing rotation matrix for Euler angles: ' +
           '({:2.2f},{:2.2f},{:2.2f})'
           .format(alpha, beta, gamma))
-    dj_matrix = shtools.djpi2(lmax)
+    dj_matrix = rotate.djpi2(lmax)
 
     print('\n---- testing SHRotateRealCoef ----')
     print('generating normal distributed complex coefficients with ' +
           'variance 1...')
     rcoeffs = np.random.normal(size=(2, lmax + 1, lmax + 1))
     rcoeffs[np.invert(mask)] = 0.
-    rcoeffs_rot = shtools.SHRotateRealCoef(rcoeffs, angles, dj_matrix)
+    rcoeffs_rot = rotate.SHRotateRealCoef(rcoeffs, angles, dj_matrix)
     print(rcoeffs_rot)
 
     print('\n---- testing SHRotateCoef ----')
@@ -55,7 +56,7 @@ def test_SHRotations():
           'variance 1...')
     ccoeffs = np.random.normal(loc=0., scale=1.,
                                size=(2, (lmax + 1) * (lmax + 2) // 2))
-    ccoeffs_rot = shtools.SHRotateCoef(angles, ccoeffs, dj_matrix)
+    ccoeffs_rot = rotate.SHRotateCoef(angles, ccoeffs, dj_matrix)
     print(ccoeffs_rot)
 
 # ==== EXECUTE SCRIPT ====

@@ -14,10 +14,12 @@ import matplotlib as mpl
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 
-# set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
+
+# set shtools plot style:
 mpl.rcParams.update(style_shtools)
+
 
 # ==== MAIN FUNCTION ====
 

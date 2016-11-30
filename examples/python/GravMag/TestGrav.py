@@ -11,12 +11,15 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import shtools
+from pyshtools import gravmag
+from pyshtools import spectralanalysis
+from pyshtools import shio
 from pyshtools import constant
 
-# set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
+
+# set shtools plot style:
 mpl.rcParams.update(style_shtools)
 
 
@@ -34,13 +37,13 @@ def main():
 
 def TestMakeGravGrid():
     infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
-    clm, lmax, header = shtools.SHReadH(infile, 110, 2)
+    clm, lmax, header = shio.SHReadH(infile, 110, 2)
     r0 = header[0] * 1.e3
     gm = header[1] * 1.e9
     clm[0, 0, 0] = 1.0
     print(gm, r0)
 
-    geoid = shtools.MakeGeoidGridDH(clm, r0, gm, constant.w0_mars,
+    geoid = gravmag.MakeGeoidGridDH(clm, r0, gm, constant.w0_mars,
                                     a=constant.a_mars, f=constant.f_mars,
                                     omega=constant.omega_mars)
     geoid = geoid / 1.e3  # convert to meters
@@ -48,7 +51,7 @@ def TestMakeGravGrid():
     plt.imshow(geoid)
     fig_map.savefig('MarsGeoid.png')
 
-    rad, theta, phi, total, pot = shtools.MakeGravGridDH(
+    rad, theta, phi, total, pot = gravmag.MakeGravGridDH(
         clm, gm, r0, lmax=719, a=constant.a_mars, f=constant.f_mars,
         lmax_calc=85, omega=constant.omega_mars, normal_gravity=1)
     fig, axes = plt.subplots(2, 2)
@@ -74,7 +77,7 @@ def TestNormalGravity():
     a = constant.a_mars
     b = constant.b_mars
     lat = np.arange(-90., 90., 1.)
-    ng = np.array([shtools.NormalGravity(x, gm, omega, a, b) for x in lat])
+    ng = np.array([gravmag.NormalGravity(x, gm, omega, a, b) for x in lat])
     fig = plt.figure()
     plt.plot(lat, ng, '-')
     plt.xlim(-90, 90)
@@ -93,7 +96,7 @@ def TestGravGrad():
     a = 1.0
     f = 0.0
 
-    vxx, vyy, vzz, vxy, vxz, vyz = shtools.MakeGravGradGridDH(clm, gm, r0,
+    vxx, vyy, vzz, vxy, vxz, vyz = gravmag.MakeGravGradGridDH(clm, gm, r0,
                                                               a=a, f=f)
 
     print("Maximum Trace(Vxx+Vyy+Vzz) = ", np.max(vxx + vyy + vzz))
@@ -122,8 +125,8 @@ def TestFilter():
     wlcurv = np.zeros(len(deglist) + 1)
 
     for l in deglist:
-        wl[l] = shtools.DownContFilterMA(l, half, r, d)
-        wlcurv[l] = shtools.DownContFilterMC(l, half, r, d)
+        wl[l] = gravmag.DownContFilterMA(l, half, r, d)
+        wlcurv[l] = gravmag.DownContFilterMC(l, half, r, d)
 
     fig = plt.figure()
     plt.plot(deglist, wl[1:], 'b-', label='Minimum amplitude')
@@ -137,11 +140,11 @@ def TestFilter():
 
 def TestMakeMagGrid():
     infile = '../../ExampleDataFiles/FSU_mars90.sh'
-    clm, lmax, header = shtools.SHReadH(infile, 90, 4, skip=1)
+    clm, lmax, header = shio.SHReadH(infile, 90, 4, skip=1)
     r0 = header[0] * 1.e3
     a = constant.r_mars + 145.0e3  # radius to evaluate the field
 
-    rad, theta, phi, total = shtools.MakeMagGridDH(clm, r0, lmax=719, a=a,
+    rad, theta, phi, total = gravmag.MakeMagGridDH(clm, r0, lmax=719, a=a,
                                                    f=constant.f_mars,
                                                    lmax_calc=90)
     fig, axes = plt.subplots(2, 2)
@@ -159,8 +162,8 @@ def TestMakeMagGrid():
     fig.savefig('Mars_Mag.png')
 
     ls = np.arange(lmax + 1)
-    pspectrum = shtools.SHMagPowerSpectrum(clm, r0)
-    pspectrum2 = np.array([shtools.SHMagPowerL(clm, r0, l)
+    pspectrum = gravmag.SHMagPowerSpectrum(clm, r0)
+    pspectrum2 = np.array([gravmag.SHMagPowerL(clm, r0, l)
                            for l in range(0, lmax + 1)])
     print('Minimum and maximum difference in spectra = ',
           (pspectrum - pspectrum2).min(), (pspectrum - pspectrum2).max())

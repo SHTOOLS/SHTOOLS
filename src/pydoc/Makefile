@@ -45,13 +45,12 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md pypl
 	pyshmtdebias.md pyyilmindexvector.md pyshmtvaropt.md pyshsjkpg.md pyshreturntapersmap.md \
 	pycomputedmap.md pycurve2mask.md pyshbias.md pysphericalcapcoef.md pydjpi2.md \
 	pyshrotatecoef.md pyshrotaterealcoef.md pymakecirclecoord.md pymakeellipsecoord.md \
-	pyrandomn.md pyrandomgaussian.md pypreglq.md pyeigvalvecsym.md pyeigvalvecsymtri.md \
-	pyeigvalsym.md pywigner3j.md pymakegravgriddh.md pymakegravgradgriddh.md \
+	pywigner3j.md pymakegravgriddh.md pymakegravgradgriddh.md \
 	pymakegeoidgriddh.md pycilmplusdh.md pycilmminusdh.md pycilmplusrhohdh.md \
 	pycilmminusrhohdh.md pybatohilmdh.md pybatohilmrhohdh.md pydowncontfilterma.md \
 	pydowndontfiltermc.md pynormalgravity.md pymakemaggriddh.md pyshmagpowerspectrum.md \
 	pyshmagpowerl.md pyshmtcouplingmatrix.md pyshmultitapermaskcse.md \
-	pyshmultitapermaskse.md pyshbiaskmask.md
+	pyshmultitapermaskse.md pyshbiaskmask.md read_icgem_gfc.md
 
 MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 pyplbar.1 pyplbar_d1.1 \
 	pyplon.1 pyplmon.1 pyplmon_d1.1 pyplon_d1.1 pyplmschmidt.1 pyplschmidt.1 pyplmschmidt_d1.1 \
@@ -72,18 +71,17 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 pyplbar
 	pyshbiasadmitcorr.1 pyshmtdebias.1 pyyilmindexvector.1 pyshmtvaropt.1 pyshsjkpg.1 \
 	pyshreturntapersmap.1 pycomputedmap.1 pycurve2mask.1 pyshbias.1 pysphericalcapcoef.1 \
 	pydjpi2.1 pyshrotatecoef.1 pyshrotaterealcoef.1 pymakecirclecoord.1 pymakeellipsecoord.1\
-	pyrandomn.1 pyrandomgaussian.1 pypreglq.1 pyeigvalvecsym.1 pyeigvalvecsymtri.1 \
-	pyeigvalsym.1 pywigner3j.1 pymakegravgriddh.1 pymakegravgradgriddh.1 pymakegeoidgriddh.1 \
+	pywigner3j.1 pymakegravgriddh.1 pymakegravgradgriddh.1 pymakegeoidgriddh.1 \
 	pycilmplusdh.1 pycilmminusdh.1 pycilmplusrhohdh.1 pycilmminusrhohdh.1 pybatohilmdh.1 \
 	pybatohilmrhohdh.1 pydowncontfilterma.1 pydowncontfiltermc.1 pynormalgravity.1 \
 	pymakemaggriddh.1 pyshmagpowerspectrum.1 pyshmagpowerl.1 pyshmtcouplingmatrix.1 \
-	pyshmultitapermaskcse.1 pyshmultitapermaskse.1 pyshbiaskmask.1)
+	pyshmultitapermaskcse.1 pyshmultitapermaskse.1 pyshbiaskmask.1 read_icgem_gfc.1)
 
 HTMLFILES_legendre =  $(addprefix $(WWWDIR)/, pyplmindex.html pyplmbar.html pyplmbar_d1.html pyplbar.html \
 	pyplbar_d1.html pyplon.html pyplmon.html pyplmon_d1.html pyplon_d1.html pyplmschmidt.html \
 	pyplschmidt.html pyplmschmidt_d1.html pyplschmidt_d1.html pyplegendrea.html pyplegendre.html \
 	pyplegendrea_d1.html pyplegendre_d1.html)
-	  
+
 HTMLFILES_transformations = $(addprefix $(WWWDIR)/, pyshexpanddh.html pymakegriddh.html	 \
 	pyshexpanddhc.html pymakegriddhc.html pyshglq.html pyglqgridcoord.html pyshexpandglq.html\
 	pymakegridglq.html pyshexpandglqc.html pymakegridglqc.html pyshexpandlsq.html \
@@ -92,8 +90,9 @@ HTMLFILES_transformations = $(addprefix $(WWWDIR)/, pyshexpanddh.html pymakegrid
 HTMLFILES_io = $(addprefix $(WWWDIR)/, pyshread.html pyshreaderror.html pyshreadh.html \
 	pyshreaderrorh.html pyshread2.html pyshread2error.html pyshreadjpl.html \
 	pyshreadjplerror.html pyshcilmtocindex.html pyshcindextocilm.html pyshcilmtovector.html \
-	pyshvectortocilm.html pyshrtoc.html pyshctor.html pyyilmindexvector.html)
-	  
+	pyshvectortocilm.html pyshrtoc.html pyshctor.html pyyilmindexvector.html \
+	read_icgem_gfc.html)
+
 HTMLFILES_gspectra = $(addprefix $(WWWDIR)/, pyshpowerl.html pyshpowerdensityl.html \
 	pyshcrosspowerl.html pyshcrosspowerdensityl.html pyshpowerspectrum.html \
 	pyshpowerspectrumdensity.html pyshcrosspowerspectrum.html \
@@ -118,10 +117,9 @@ HTMLFILES_gravmag = $(addprefix $(WWWDIR)/, pymakegravgriddh.html pymakegravgrad
 	pycilmminusrhohdh.html pybatohilmdh.html pybatohilmrhohdh.html pydowncontfilterma.html \
 	pydowncontfiltermc.html pynormalgravity.html pymakemaggriddh.html pyshmagpowerl.html)
 
-HTMLFILES_other =  $(addprefix $(WWWDIR)/, pymakecirclecoord.html pymakeellipsecoord.html \
-	 pyrandomn.html pyrandomgaussian.html pypreglq.html pyeigvalvecsym.html \
-	 pyeigvalvecsymtri.html pyeigvalsym.html pywigner3j.html)	 
- 
+HTMLFILES_other = $(addprefix $(WWWDIR)/, pymakecirclecoord.html pymakeellipsecoord.html \
+	pywigner3j.html)
+
 
 all: install-man install-html
 
@@ -190,7 +188,7 @@ uninstall:
 
 
 .SUFFIXES: $(SUFFIXES)	.md .html .1
-	
+
 
 $(MANDIR)/%.1 : %.md
 	printf "%% $(basename $<)(1) Python | SHTOOLS $(VERSION)\n%%\n%% %s" > temp.md

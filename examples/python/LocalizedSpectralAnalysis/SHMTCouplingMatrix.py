@@ -11,11 +11,12 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import shtools
+from pyshtools import localizedspectralanalysis
 
-# set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
+
+# set shtools plot style:
 mpl.rcParams.update(style_shtools)
 
 
@@ -31,7 +32,7 @@ def test_CouplingMatrix():
 
     sqrt_taper_power = np.zeros((lwin+1, nwins))
     sqrt_taper_power[:, 0] = np.hanning(lwin+1)
-    Mmt = shtools.SHMTCouplingMatrix(lmax, sqrt_taper_power)
+    Mmt = localizedspectralanalysis.SHMTCouplingMatrix(lmax, sqrt_taper_power)
     print(Mmt)
 
 # ==== EXECUTE SCRIPT ====

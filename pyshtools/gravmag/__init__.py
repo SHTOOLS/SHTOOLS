@@ -1,7 +1,7 @@
 """
 pyshtools Gravity and Magnetics Routines.
 
-This submodule of pyshtools defines the following functions:
+This subpackage of pyshtools defines the following functions:
 
 Gravity routines
 ----------------
@@ -60,18 +60,18 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ._SHTOOLS import MakeGravGridDH
-from ._SHTOOLS import MakeGravGradGridDH
-from ._SHTOOLS import MakeGeoidGridDH
-from ._SHTOOLS import CilmPlusDH
-from ._SHTOOLS import CilmMinusDH
-from ._SHTOOLS import CilmPlusRhoHDH
-from ._SHTOOLS import CilmMinusRhoHDH
-from ._SHTOOLS import BAtoHilmDH
-from ._SHTOOLS import BAtoHilmRhoHDH
-from ._SHTOOLS import DownContFilterMA
-from ._SHTOOLS import DownContFilterMC
-from ._SHTOOLS import NormalGravity
-from ._SHTOOLS import MakeMagGridDH
-from ._SHTOOLS import SHMagPowerSpectrum
-from ._SHTOOLS import SHMagPowerL
+from ..shtools import MakeGravGridDH
+from ..shtools import MakeGravGradGridDH
+from ..shtools import MakeGeoidGridDH
+from ..shtools import CilmPlusDH
+from ..shtools import CilmMinusDH
+from ..shtools import CilmPlusRhoHDH
+from ..shtools import CilmMinusRhoHDH
+from ..shtools import BAtoHilmDH
+from ..shtools import BAtoHilmRhoHDH
+from ..shtools import DownContFilterMA
+from ..shtools import DownContFilterMC
+from ..shtools import NormalGravity
+from ..shtools import MakeMagGridDH
+from ..shtools import SHMagPowerSpectrum
+from ..shtools import SHMagPowerL

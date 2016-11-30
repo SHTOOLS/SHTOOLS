@@ -1,5 +1,5 @@
 subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
-                              taper_wt, norm, csphase)
+                              taper_wt, norm, csphase, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will calculate the multitaper spectrum estimate utilizing
@@ -19,7 +19,7 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
 !                       corresponds to the spherical-harmonic coefficients of
 !                       a window in the packed form used by SHCilmToVector.
 !           lmaxt       Maximum degree of the eigentapers.
-!           K           Number of tapers to use in the multitaper spectral 
+!           K           Number of tapers to use in the multitaper spectral
 !                       estimation.
 !
 !       OUT
@@ -39,6 +39,16 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
 !                           (3) unnormalized
 !                           (4) orthonormalized
 !
+!       OPTIONAL (OUT)
+!           exitstatus  If present, instead of executing a STOP when an error
+!                       is encountered, the variable exitstatus will be
+!                       returned describing the error.
+!                       0 = No errors;
+!                       1 = Improper dimensions of input array;
+!                       2 = Improper bounds for input variable;
+!                       3 = Error allocating memory;
+!                       4 = File IO error.
+!
 !   Dependencies:   SHPowerSpectrum, SHVectorToCilm, MakeGridGLQ, SHGLQ,
 !                   SHExpandGLQ, CSPHASE_DEFAULT.
 !
@@ -56,6 +66,7 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
     integer, intent(in) :: lmax, lmaxt, K
     real*8, intent(in), optional :: taper_wt(:)
     integer, intent(in), optional :: csphase, norm
+    integer, intent(out), optional :: exitstatus
     integer :: i, l, phase, mnorm, astat(7), lmaxmul, nlat, nlong
     real*8 :: se(lmax-lmaxt+1, K), pi, factor
     real*8, allocatable, save :: zero(:), w(:)
@@ -65,6 +76,8 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
 
 !$OMP   threadprivate(zero, w, first, lmaxmul_last)
 
+    if (present(exitstatus)) exitstatus = 0
+
     pi = acos(-1.0d0)
 
     if (size(sh(:,1,1)) < 2 .or. size(sh(1,:,1)) < lmax+1 .or. &
@@ -73,7 +86,12 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
         print*, "SH must be dimensioned (2,LMAX+1, LMAX+1) where LMAX is ", lmax
         print*, "Input array is dimensioned ", size(sh(:,1,1)), &
                 size(sh(1,:,1)), size(sh(1,1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (size(tapers(:,1)) < (lmaxt+1)**2 .or. size(tapers(1,:)) < K) then
         print*, "Error --- SHMultiTaperMaskSE"
@@ -81,27 +99,47 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
                 "LMAXT and K are, ", lmaxt, K
         print*, "Input array is dimensioned ", size(tapers(:,1)), &
                 size(tapers(1,:))
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (size(mtse) < lmax-lmaxt+1) then
         print*, "Error --- SHMultiTaperMaskSE"
         print*, "MTSE must be dimensioned as (LMAX-LMAXT+1) where " // &
                 "LMAX and LMAXT are ", lmax, lmaxt
         print*, "Input dimension of array is ", size(mtse)
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (size(sd) < lmax-lmaxt+1) then
         print*, "Error --- SHMultiTaperMaskSE"
         print*, "SD must be dimensioned as (LMAX-LMAXT+1) " // &
                 "where LMAX and LMAXT are ", lmax, lmaxt
         print*, "Input dimension of array is ", size(sd)
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
+        end if
 
     else if (lmax < lmaxt) then
         print*, "Error --- SHMultiTaperMaskSE"
         print*, "LMAX must be larger than LMAXT."
         print*, "Input valuse of LMAX and LMAXT are ", lmax, lmaxt
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 2
+            return
+        else
+            stop
+        end if
 
     end if
 
@@ -110,7 +148,12 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
             print*, "Error --- SHMultiTaperMaskSE"
             print*, "TAPER_WT must be dimensioned as (K) where K is ", K
             print*, "Input dimension of array is ", size(taper_wt)
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
         end if
 
     end if
@@ -121,11 +164,19 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
             print*, "Parameter NORM must be 1 (geodesy), 2 (Schmidt), " // &
                     "3 (unnormalized), or 4 (orthonormalized)."
             print*, "Input value is ", norm
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
+
         end if
         mnorm = norm
+        
     else
         mnorm = 1
+        
     end if
 
     if (present(csphase)) then
@@ -133,7 +184,12 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
             print*, "Error --- SHMultiTaperMaskSE"
             print*, "CSPHASE must be 1 (exclude) or -1 (include)."
             print*, "Input value if ", csphase
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
 
         else
             phase = csphase
@@ -147,8 +203,8 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
 
 
     lmaxmul = lmax + lmaxt
-    nlat = lmax+lmaxt+1
-    nlong = 2*(lmax+lmaxt)+1
+    nlat = lmax + lmaxt + 1
+    nlong = 2 * (lmax + lmaxt) + 1
 
     allocate (shwin(2,lmaxt+1,lmaxt+1), stat = astat(1))
     allocate (shloc(2, lmax+lmaxt+1, lmax+lmaxt+1), stat = astat(2))
@@ -161,7 +217,13 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
         print*, "Problem allocating arrays SHWIN, SHLOC, " // &
                  "GRID1GLQ, GRIDWINGLQ and TEMP", &
                     astat(1), astat(2), astat(3), astat(4), astat(5)
-        stop
+        if (present(exitstatus)) then
+            exitstatus = 3
+            return
+        else
+            stop
+        end if
+
     end if
 
     if (first == 1) then
@@ -174,11 +236,22 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
         if (sum(astat(1:2)) /= 0) then
             print*, "Error --- SHMultiTaperSE"
             print*, "Problem allocating arrays ZERO and W", astat(1), astat(2)
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 3
+                return
+            else
+                stop
+            end if
 
         end if
 
-        call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
+        if (present(exitstatus)) then
+            call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm, &
+                       exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
+        end if
 
     end if
 
@@ -193,11 +266,22 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
         if (sum(astat(1:2)) /= 0) then
             print*, "Error --- SHMultiTaperSE"
             print*, "Problem allocating arrays ZERO and W", astat(1), astat(2)
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 3
+                return
+            else
+                stop
+            end if
 
         end if
 
-        call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
+        if (present(exitstatus)) then
+            call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm, &
+                       exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
+        end if
 
     end if
 
@@ -216,18 +300,36 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
     do i = 1, K
         shwin = 0.0d0
 
-        call SHVectorToCilm(tapers(:,i), shwin, lmaxt)
+        if (present(exitstatus)) then
+            call SHVectorToCilm(tapers(:,i), shwin, lmaxt, &
+                                exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+            call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
+                             lmaxmul, zero = zero, csphase = phase, &
+                             norm = mnorm, exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+            temp(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
+                                   * gridwinglq(1:nlat,1:nlong)
+            call SHExpandGLQ(shloc, lmaxmul, temp, w, zero = zero, &
+                             csphase = phase, norm = mnorm, &
+                             exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+            call SHPowerSpectrum(shloc, lmax-lmaxt, se(:,i), &
+                                 exitstatus = exitstatus)
+            if (exitstatus /= 0) return
 
-        call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
-                         lmaxmul, zero = zero, csphase = phase, norm = mnorm)
+        else
+            call SHVectorToCilm(tapers(:,i), shwin, lmaxt)
+            call MakeGridGLQ(gridwinglq, shwin(1:2,1:lmaxt+1, 1:lmaxt+1), &
+                             lmaxmul, zero = zero, csphase = phase, &
+                             norm = mnorm)
+            temp(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
+                                   * gridwinglq(1:nlat,1:nlong)
+            call SHExpandGLQ(shloc, lmaxmul, temp, w, zero = zero, &
+                             csphase = phase, norm = mnorm)
+            call SHPowerSpectrum(shloc, lmax-lmaxt, se(:,i))
 
-        temp(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
-                               * gridwinglq(1:nlat,1:nlong)
-
-        call SHExpandGLQ(shloc, lmaxmul, temp, w, zero = zero, &
-                         csphase = phase, norm = mnorm)
-
-        call SHPowerSpectrum(shloc, lmax-lmaxt, se(:,i))
+        end if
 
     end do
 

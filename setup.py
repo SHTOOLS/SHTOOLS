@@ -185,7 +185,7 @@ def get_compiler_flags():
     elif compiler == 'gnu95':
         flags = ['-m64', '-fPIC', '-O3', '-ffast-math']
     elif compiler == 'intel':
-        flags = ['-m64', '-free', '-O3', '-Tf']
+        flags = ['-m64', '-fpp', '-free', '-O3', '-Tf']
     elif compiler == 'g95':
         flags = ['-O3', '-fno-second-underscore']
     elif compiler == 'pg':

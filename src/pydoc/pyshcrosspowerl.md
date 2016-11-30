@@ -24,7 +24,7 @@ Compute the cross-power of two real functions for a single spherical harmonic de
 
 # Description
 
-`SHCrossPowerL` will calculate the cross-power of two functions for a single spherical harmonic degree `l`. This is explicitly calculated as:
+`SHCrossPowerL` will calculate the cross-power of two functions expressed in real 4-pi normalized spherical harmonics for a single spherical harmonic degree `l`. This is explicitly calculated as:
 
 `cpower = Sum_{i=0}^1 Sum_{m=0}^l cilm1[i, l, m] * cilm2[i, l, m]`.
 

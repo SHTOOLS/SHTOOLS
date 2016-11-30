@@ -21,7 +21,7 @@ Compute the power spectrum of a real function.
 
 # Description
 
-`SHPowerSpectrum` will calculate the power spectrum of a function expressed in real spherical harmonics. For a given spherical harmonic degree `l`, this is calculated explicitly as:
+`SHPowerSpectrum` will calculate the power spectrum of a function expressed in real 4-pi normalized spherical harmonics. For a given spherical harmonic degree `l`, this is calculated explicitly as:
 
 `pspectrum(l) = Sum_{i=0}^1 Sum_{m=0}^l cilm[i, l, m]**2`.
 

@@ -12,11 +12,12 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
-from pyshtools import shtools
+from pyshtools import legendre
 
-# set shtools plot style:
 sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
 from FigStyle import style_shtools
+
+# set shtools plot style:
 mpl.rcParams.update(style_shtools)
 
 
@@ -41,11 +42,11 @@ def test_legendre(lmax, normalization):
     print('testing Pl{0} and Pl{0}_d1...'.format(normalization))
     # --- import function from shtools ---
     if normalization == '':
-        Pl = shtools.PLegendre
-        Pl_d1 = shtools.PLegendre_d1
+        Pl = legendre.PLegendre
+        Pl_d1 = legendre.PLegendre_d1
     else:
-        Pl = getattr(shtools, 'Pl' + normalization)
-        Pl_d1 = getattr(shtools, 'Pl' + normalization + '_d1')
+        Pl = getattr(legendre, 'Pl' + normalization)
+        Pl_d1 = getattr(legendre, 'Pl' + normalization + '_d1')
 
     # --- derived parameters ---
     npoints = 5 * lmax
@@ -89,11 +90,11 @@ def test_associatedlegendre(lmax, mplot, normalization):
     print('testing Plm{0} and Plm{0}_d1...'.format(normalization))
     # --- import function from shtools ---
     if normalization == '':
-        Plm = shtools.PLegendreA
-        Plm_d1 = shtools.PLegendreA_d1
+        Plm = legendre.PLegendreA
+        Plm_d1 = legendre.PLegendreA_d1
     else:
-        Plm = getattr(shtools, 'Plm' + normalization)
-        Plm_d1 = getattr(shtools, 'Plm' + normalization + '_d1')
+        Plm = getattr(legendre, 'Plm' + normalization)
+        Plm_d1 = getattr(legendre, 'Plm' + normalization + '_d1')
 
     # --- derived parameters ---
     npoints = 5 * lmax
@@ -112,7 +113,7 @@ def test_associatedlegendre(lmax, mplot, normalization):
         Plm2_buf, dPlm2_buf = Plm_d1(lmax, z)
         for l in ls:
             for m in np.arange(l):
-                ind = shtools.PlmIndex(l, m) - 1  # Fortran indexing
+                ind = legendre.PlmIndex(l, m) - 1  # Fortran indexing
                 Plm1[iz, l, m] = Plm1_buf[ind]
                 Plm2[iz, l, m] = Plm2_buf[ind]
                 dPlm2[iz, l, m] = dPlm2_buf[ind]

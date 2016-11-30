@@ -24,7 +24,7 @@ Compute the cross-power spectrum of two complex functions.
 
 # Description
 
-`SHCrossPowerSpectrumC` will calculate the cross-power spectrum of two complex functions expressed in complex spherical harmonics. For a given spherical harmonic degree `l`, this is calculated as:
+`SHCrossPowerSpectrumC` will calculate the cross-power spectrum of two complex functions expressed in complex 4-pi normalized spherical harmonics. For a given spherical harmonic degree `l`, this is calculated as:
 
 `cspectrum(l) = Sum_{i=0}^1 Sum_{m=0}^l cilm1[i, l, m] * conjg[cilm2[i, l, m]]`.
 

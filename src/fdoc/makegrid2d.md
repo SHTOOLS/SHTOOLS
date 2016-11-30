@@ -4,7 +4,7 @@ Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical ha
 
 # Usage
 
-call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `csphase`, `f`, `a`, `north`, `south`, `east`, `west`, `dealloc`)
+call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `csphase`, `f`, `a`, `north`, `south`, `east`, `west`, `dealloc`, `exitstatus`)
 
 # Parameters
 
@@ -13,19 +13,19 @@ call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `c
 
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. 
-	
+
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the coefficients `cilm` used when calculating the grid.
 
 `interval` : input, real\*8
 :   The latitudinal and longitudinal spacing of `grid`.
-	
+
 `nlat` : output, integer
 :   The number of latitudinal samples. Both 90 N and 90 S are included.
 
 `nlong` : output, integer
 :   The number of longitudinal samples. Both 0 and 360 E are included.
-	
+
 `norm` : input, optional, integer, default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
@@ -52,6 +52,9 @@ call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `c
 
 `dealloc` : input, optional, integer, default = 0
 :   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

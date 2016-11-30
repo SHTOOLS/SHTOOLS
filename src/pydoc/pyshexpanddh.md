@@ -8,7 +8,7 @@ Expand an equally sampled or equally spaced grid into spherical harmonics using 
 
 # Returns
 
-`cilm` : float, dimension (2, `n/2, `n`/2) or (2, `lmax_calc`+1, `lmax_calc`+1) 
+`cilm` : float, dimension (2, `n/2`, `n`/2) or (2, `lmax_calc`+1, `lmax_calc`+1)
 :   The real spherical harmonic coefficients of the function. These will be exact if the function is bandlimited to degree `lmax=n/2-1`. The coefficients `c1lm` and `c2lm` refer to the cosine (`clm`) and sine (`slm`) coefficients, respectively, with `clm=cilm[0,l,m]` and `slm=cilm[1,l,m]`.
 
 # Parameters

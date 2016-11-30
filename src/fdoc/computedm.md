@@ -4,21 +4,24 @@ Compute the space-concentration kernel of a spherical cap.
 
 # Usage
 
-call ComputeDM (`dm`, `lmax`, `m`, `theta0`)
+call ComputeDM (`dm`, `lmax`, `m`, `theta0`, `exitstatus`)
 
 # Parameters
 
 `dm` : output, real\*8, dimension (`lmax`+1, `lmax`+1)
 :   The space-concentration kernel or angular order `m`.
-	
+
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of the windows.
-	
+
 `m` : input, integer
 :   The angular order of the concentration problem.
 
 `theta0` : input, real\*8
 :   The angular radius of the spherical cap in radians.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

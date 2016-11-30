@@ -108,7 +108,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
             lmax = lmax_model
 
         if errors is not None:
-            valid_err = ('calibrated', 'formal', 'calibrated_and_formal.')
+            valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
             if header['errors'] == 'no':
                 raise ValueError('This model has no errors.')
             elif errors not in valid_err[:-1]:

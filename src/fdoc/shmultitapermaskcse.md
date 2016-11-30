@@ -4,7 +4,7 @@ Perform a localized multitaper cross-spectral analysis using using arbitrary win
 
 # Usage
 
-call SHMultiTaperMaskCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`)
+call SHMultiTaperMaskCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
 
 # Parameters
 
@@ -43,6 +43,9 @@ call SHMultiTaperMaskCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`
 
 `csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 

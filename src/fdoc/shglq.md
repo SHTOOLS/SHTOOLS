@@ -4,7 +4,7 @@ Precompute weights, nodes, and associated Legendre functions used in the Gauss-L
 
 # Usage
 
-call SHGLQ (`lmax`, `zero`, `w`, `plx`, `norm`, `csphase`, `cnorm`)
+call SHGLQ (`lmax`, `zero`, `w`, `plx`, `norm`, `csphase`, `cnorm`, `exitstatus`)
 
 # Parameters
 
@@ -19,7 +19,7 @@ call SHGLQ (`lmax`, `zero`, `w`, `plx`, `norm`, `csphase`, `cnorm`)
 
 `plx` : output, optional, real\*8, dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the nodes used in the Gauss-Legendre quadrature. 
-	
+
 `norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
@@ -28,6 +28,9 @@ call SHGLQ (`lmax`, `zero`, `w`, `plx`, `norm`, `csphase`, `cnorm`)
 
 `cnorm` : input, optional, integer, default = 0
 :   If 0 (default), the real normalization of the associated Legendre functions will be used. If 1, the complex normalization of the associated Legendre functions will be used.
+
+`exitstatus` : output, optional, integer
+:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description
 
