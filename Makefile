@@ -138,7 +138,8 @@ PYTHON_VERSION = all
 JUPYTER = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python2"
 JUPYTER3 = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python3"
 
-SYSLIBPATH = /usr/local/lib
+PREFIX = /usr/local
+SYSLIBPATH = $(PREFIX)/lib
 
 FFTW = -L$(SYSLIBPATH) -lfftw3
 FFTW_UNDERSCORE = 0
@@ -157,12 +158,12 @@ NBDIR = examples/notebooks
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
-SYSMODPATH = /usr/local/include
+SYSMODPATH = $(PREFIX)/include
 SYSPYPATH = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_path("platlib"))')
 SYSPY3PATH := $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_path("platlib"))')
-PY3EXT := $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_config_var("SO"))')
-SYSSHAREPATH =/usr/local/share
-SYSDOCPATH = /usr/local/share/doc
+PY3EXT := $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_config_var("SO"))' || echo nopy3)
+SYSSHAREPATH =$(PREFIX)/share
+SYSDOCPATH = $(PREFIX)/share/doc
 
 ifeq ($(F95), f95)
 # Default Absoft f95 flags
@@ -341,8 +342,8 @@ pyshtools/_constant$(PY3EXT): $(SRCDIR)/PlanetsConstants.f95
 install: install-fortran install-python
 
 install-python2: python2
-	mkdir -pv $(SYSPYPATH)/pyshtools
-	cp -R $(filter-out %$(PY3EXT), $(wildcard pyshtools/*)) $(SYSPYPATH)/pyshtools/
+	mkdir -pv $(DESTDIR)$(SYSPYPATH)/pyshtools
+	cp -R $(filter-out %$(PY3EXT), $(wildcard pyshtools/*)) $(DESTDIR)$(SYSPYPATH)/pyshtools/
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo import shtools into Python 2 with:
 	@echo
@@ -352,9 +353,9 @@ install-python2: python2
 	@echo ---------------------------------------------------------------------------------------------------
 
 install-python3: python3
-	mkdir -pv $(SYSPY3PATH)/pyshtools
-	cp -R $(filter-out %.so, $(wildcard pyshtools/*)) $(SYSPY3PATH)/pyshtools/
-	cp -R $(filter %$(PY3EXT), $(wildcard pyshtools/*)) $(SYSPY3PATH)/pyshtools/
+	mkdir -pv $(DESTDIR)$(SYSPY3PATH)/pyshtools
+	cp -R $(filter-out %.so, $(wildcard pyshtools/*)) $(DESTDIR)$(SYSPY3PATH)/pyshtools/
+	cp -R $(filter %$(PY3EXT), $(wildcard pyshtools/*)) $(DESTDIR)$(SYSPY3PATH)/pyshtools/
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo import shtools into Python 3 with:
 	@echo
@@ -378,24 +379,24 @@ uninstall:
 	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 
 install-fortran: fortran
-	-rm -r $(SYSMODPATH)/fftw3.mod
-	-rm -r $(SYSMODPATH)/planetsconstants.mod
-	-rm -r $(SYSMODPATH)/shtools.mod
-	mkdir -pv $(SYSLIBPATH)
-	cp $(LIBDIR)/lib$(LIBNAME).a $(SYSLIBPATH)/lib$(LIBNAME).a
-	-cp $(LIBDIR)/lib$(LIBNAMEMP).a $(SYSLIBPATH)/lib$(LIBNAMEMP).a
-	mkdir -pv $(SYSMODPATH)
-	cp $(INCDIR)/*.mod $(SYSMODPATH)/
-	mkdir -pv $(SYSSHAREPATH)/shtools
-	cp -R examples $(SYSSHAREPATH)/shtools/
-	mkdir -pv $(SYSSHAREPATH)/man/man1
-	cp -R man/man1/ $(SYSSHAREPATH)/man/man1/
-	mkdir -pv $(SYSDOCPATH)/shtools
-	cp index.html $(SYSDOCPATH)/shtools/index.html
-	cp -R www $(SYSDOCPATH)/shtools/
-	awk '{gsub("../../lib","/usr/local/lib");print}' "examples/fortran/Makefile" > "temp.txt"
-	awk '{gsub("../../modules","/usr/local/include");print}' "temp.txt" > "temp2.txt"
-	cp temp2.txt "$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
+	-rm -r $(DESTDIR)$(SYSMODPATH)/fftw3.mod
+	-rm -r $(DESTDIR)$(SYSMODPATH)/planetsconstants.mod
+	-rm -r $(DESTDIR)$(SYSMODPATH)/shtools.mod
+	mkdir -pv $(DESTDIR)$(SYSLIBPATH)
+	cp $(LIBDIR)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
+	-cp $(LIBDIR)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
+	mkdir -pv $(DESTDIR)$(SYSMODPATH)
+	cp $(INCDIR)/*.mod $(DESTDIR)$(SYSMODPATH)/
+	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/shtools
+	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
+	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
+	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
+	mkdir -pv $(DESTDIR)$(SYSDOCPATH)/shtools
+	cp index.html $(DESTDIR)$(SYSDOCPATH)/shtools/index.html
+	cp -R www $(DESTDIR)$(SYSDOCPATH)/shtools/
+	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
+	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
+	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
 	rm temp.txt
 	rm temp2.txt
 	@echo ---------------------------------------------------------------------------------------------------
