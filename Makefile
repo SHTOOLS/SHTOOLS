@@ -319,7 +319,7 @@ python3: fortran pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
 	@echo ---------------------------------------------------------------------------------------------------
 	@echo
 
-pyshtools/_SHTOOLS.so: $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 $(LIBDIR)/lib$(LIBNAME).a
+pyshtools/_SHTOOLS.so: $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 fortran
 	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
@@ -329,7 +329,7 @@ pyshtools/_constant.so: $(SRCDIR)/PlanetsConstants.f95
 	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _constant.so pyshtools/.
 
-pyshtools/_SHTOOLS$(PY3EXT): $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 $(LIBDIR)/lib$(LIBNAME).a
+pyshtools/_SHTOOLS$(PY3EXT): $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 fortran
 	$(F2PY3) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
