@@ -192,9 +192,9 @@ PlmON_d1.o : SHTOOLS.o
 SHMTCouplingMatrix.o : SHTOOLS.o
 SHMTDebias.o : SHTOOLS.o
 SHMTDebias2.o : SHTOOLS.o
-MakeGravGridDH.o : SHTOOLS.o
+MakeGravGridDH.o : FFTW3.o SHTOOLS.o
 MakeGravGridDH2.o : SHTOOLS.o
-MakeMagGridDH.o: SHTOOLS.o
+MakeMagGridDH.o: FFTW3.o SHTOOLS.o
 SHBiasAdmitCorr.o : SHTOOLS.o
 ComputeDMap.o : SHTOOLS.o
 SHReturnTapersMap.o : SHTOOLS.o
