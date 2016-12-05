@@ -487,14 +487,14 @@
         endif
     end subroutine pyMakeGrid2d
 
-    function pyMakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc, &
+    function pyMakeGridPoint(cilm,lmax,lat,lon,norm,csphase,dealloc, &
                              cilm_d0,cilm_d1,cilm_d2)
         use shtools, only: MakeGridPoint
         implicit none
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer, intent(in) :: lmax
         real*8, intent(in) :: lat
-        real*8, intent(in) :: longitude
+        real*8, intent(in) :: lon
         integer, optional,intent(in) :: norm
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: dealloc
@@ -502,9 +502,28 @@
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
         real*8 :: pyMakeGridPoint
-        pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,longitude,norm=norm, &
+        pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,lon,norm=norm, &
                                       csphase=csphase,dealloc=dealloc)
     end function pyMakeGridPoint
+
+    function pyMakeGridPointC(cilm,lmax,lat,lon,norm,csphase,dealloc, &
+                              cilm_d0,cilm_d1,cilm_d2)
+        use shtools, only: MakeGridPointC
+        implicit none
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: lon
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: dealloc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        complex*16 :: pyMakeGridPointC
+        pyMakeGridPointC=MakeGridPointC(cilm,lmax,lat,lon,norm=norm, &
+                                        csphase=csphase,dealloc=dealloc)
+    end function pyMakeGridPointC
 
     subroutine pySHMultiply(exitstatus,shout,sh1,lmax1,sh2,lmax2,precomp,norm,&
                             csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2, &

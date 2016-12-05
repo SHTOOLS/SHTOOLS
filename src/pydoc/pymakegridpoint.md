@@ -1,6 +1,6 @@
 # MakeGridPoint
 
-Evaluate a function expressed in spherical harmonics at a single point.
+Evaluate a real function expressed in real spherical harmonics at a single point.
 
 # Usage
 
@@ -9,14 +9,14 @@ Evaluate a function expressed in spherical harmonics at a single point.
 # Returns
 
 `value` : float
-:   Value of the function at (`lat`, `lon`). 
+:   Value of the function at (`lat`, `lon`).
 
 # Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
-:   The real spherical harmonic coefficients of the function. The coefficients `C0lm` and `C1lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm[0,1,m]` and `Slm=cilm[1,l,m]`. 
+:   The real spherical harmonic coefficients of the function. The coefficients `C0lm` and `C1lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm[0,1,m]` and `Slm=cilm[1,l,m]`.
 
-`lat` : float 
+`lat` : float
 :   The latitude of the point in DEGREES.
 
 `lon` : float 
@@ -36,9 +36,9 @@ Evaluate a function expressed in spherical harmonics at a single point.
 
 # Description
 
-`MakeGridPoint` will expand a function expressed in spherical harmonics at a single point. The input latitude and longitude are in degrees, and the maximum degree used in evaluating the function is the smaller of `lmaxin` and `lmax`. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. 
+`MakeGridPoint` will expand a function expressed in spherical harmonics at a single point. The input latitude and longitude are in degrees, and the maximum degree used in evaluating the function is the smaller of `lmaxin` and `lmax`. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
 # See also
 
-[`makegriddh`](pymakegriddh.html), [`makegriddhc`](pymakegriddhc.html), [`makegridglq`](pymakegridglq.html), [`makegridglqc`](pymakegridglqc.html)
+[`makegridpointc`](pymakegridpointc.html), [`makegriddh`](pymakegriddh.html), [`makegriddhc`](pymakegriddhc.html), [`makegridglq`](pymakegridglq.html), [`makegridglqc`](pymakegridglqc.html)
 

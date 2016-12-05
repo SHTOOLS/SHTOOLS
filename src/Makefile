@@ -41,7 +41,7 @@ endif
 
 SRCS0 = SHTOOLS.f95 FFTW3.f95 CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 \
 	ComputeDm.f95 DHaj.f95 djpi2.f95 BAtoHilm.f95 MakeGrid2D.f95 \
-	GLQGridCoord.f95 MakeGridPoint.f95 \
+	GLQGridCoord.f95 MakeGridPoint.f95 MakeGridPointC.f95 \
 	PlanetsConstants.f95 PlBar.f95 PlBar_d1.f95 PLegendre.f95 \
 	PLegendre_d1.f95 PLegendreA.f95 PLegendreA_d1.f95 PlmBar.f95 \
 	PlmBar_d1.f95 PlmIndex.f95 PlmSchmidt.f95 PlmSchmidt_d1.f95 \
@@ -61,8 +61,8 @@ SRCS0 = SHTOOLS.f95 FFTW3.f95 CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 \
 	SHMultiTaperMaskSE.f95 SHMultiTaperMaskCSE.f95 SHBiasKMask.f95
 
 OBJS0 = SHTOOLS.o FFTW3.o CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o \
-	DHaj.o djpi2.o BAtoHilm.o MakeGrid2D.o GLQGridCoord.o \
-	MakeGridPoint.o PlanetsConstants.o PlBar.o PlBar_d1.o PLegendre.o \
+	DHaj.o djpi2.o BAtoHilm.o MakeGrid2D.o GLQGridCoord.o MakeGridPoint.o \
+	MakeGridPointC.o PlanetsConstants.o PlBar.o PlBar_d1.o PLegendre.o \
 	PLegendre_d1.o PLegendreA.o PLegendreA_d1.o PlmBar.o PlmBar_d1.o \
 	PlmIndex.o PlmSchmidt.o PlmSchmidt_d1.o PlSchmidt.o PlSchmidt_d1.o \
 	PreGLQ.o Random.o SHAdmitCorr.o SHBias.o SHBiasK.o SHConvertCoef.o \
@@ -151,6 +151,7 @@ MakeGridDH2.o: FFTW3.o SHTOOLS.o
 MakeGridDHC.o: FFTW3.o SHTOOLS.o
 MakeGridDHC2.o: FFTW3.o SHTOOLS.o
 MakeGridPoint.o: SHTOOLS.o
+MakeGridPointC.o: SHTOOLS.o
 SHGLQ.o: SHTOOLS.o
 SHAdmitCorr.o: SHTOOLS.o
 SHBias.o: SHTOOLS.o

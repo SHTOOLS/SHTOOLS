@@ -1,6 +1,6 @@
 # MakeGridPoint
 
-Evaluate a function expressed in spherical harmonics at a single point.
+Evaluate a real function expressed in real spherical harmonics at a single point.
 
 # Usage
 
@@ -9,18 +9,18 @@ Evaluate a function expressed in spherical harmonics at a single point.
 # Parameters
 
 `value` : output, real\*8
-:   Value of the function at (`lat`, `lon`). 
+:   Value of the function at (`lat`, `lon`).
 
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
-:   The real spherical harmonic coefficients of the function. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. 
+:   The real spherical harmonic coefficients of the function. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree used in evaluating the function.
 
-`lat` : input, real\*8 
+`lat` : input, real\*8
 :   The latitude of the point in DEGREES.
 
-`lon` : input, rea\l*8 
+`lon` : input, rea\l*8
 :   The longitude of the point in DEGREES.
 
 `norm` : input, optional, integer, default = 1
@@ -34,9 +34,8 @@ Evaluate a function expressed in spherical harmonics at a single point.
 
 # Description
 
-`MakeGridPoint` will expand a function expressed in spherical harmonics at a single point. The input latitude and longitude are in degrees. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. 
+`MakeGridPoint` will expand a function expressed in spherical harmonics at a single point. The input latitude and longitude are in degrees. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
 # See also
 
-[`makegriddh`](makegriddh.html), [`makegriddhc`](makegriddhc.html), [`makegridglq`](makegridglq.html), [`makegridglqc`](makegridglqc.html)
-
+[`makegridpointc`](makegridpointc.html), [`makegriddh`](makegriddh.html), [`makegriddhc`](makegriddhc.html), [`makegridglq`](makegridglq.html), [`makegridglqc`](makegridglqc.html)

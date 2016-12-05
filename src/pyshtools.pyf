@@ -374,12 +374,12 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d2 = lmax+1
         end subroutine SHExpandLSQ
 
-        function MakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2)
+        function MakeGridPoint(cilm,lmax,lat,lon,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2)
             fortranname pymakegridpoint
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
             real*8 intent(in) :: lat
-            real*8 intent(in) :: longitude
+            real*8 intent(in) :: lon
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1
             integer, optional,intent(in) :: dealloc = 0
@@ -388,6 +388,21 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
             real*8 :: MakeGridPoint
         end function MakeGridPoint
+
+        function MakeGridPointC(cilm,lmax,lat,lon,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pymakegridpointc
+            complex*16 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+            integer, optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
+            real*8 intent(in) :: lat
+            real*8 intent(in) :: lon
+            integer, optional,intent(in) :: norm = 1
+            integer, optional,intent(in) :: csphase = 1
+            integer, optional,intent(in) :: dealloc = 0
+            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
+            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
+            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
+            complex*16 :: MakeGridPointC
+        end function MakeGridPointC
 
         subroutine SHMultiply(exitstatus,shout,sh1,lmax1,sh2,lmax2,precomp,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,shout_d0,shout_d1,shout_d2)
             fortranname pyshmultiply

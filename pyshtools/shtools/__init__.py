@@ -42,6 +42,7 @@ from .._SHTOOLS import GLQGridCoord
 from .._SHTOOLS import SHExpandLSQ
 from .._SHTOOLS import MakeGrid2D
 from .._SHTOOLS import MakeGridPoint
+from .._SHTOOLS import MakeGridPointC
 from .._SHTOOLS import SHMultiply
 
 # shio
@@ -137,11 +138,11 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
             'PLegendre_d1', 'SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
             'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
             'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ',
-            'MakeGrid2D', 'MakeGridPoint', 'SHMultiply', 'SHRead', 'SHReadH',
-            'SHReadError', 'SHReadErrorH', 'SHRead2', 'SHRead2Error',
-            'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector', 'SHVectorToCilm',
-            'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc', 'SHctor',
-            'SHPowerL', 'SHPowerDensityL', 'SHCrossPowerL',
+            'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
+            'SHRead', 'SHReadH', 'SHReadError', 'SHReadErrorH', 'SHRead2',
+            'SHRead2Error', 'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector',
+            'SHVectorToCilm', 'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc',
+            'SHctor', 'SHPowerL', 'SHPowerDensityL', 'SHCrossPowerL',
             'SHCrossPowerDensityL', 'SHPowerSpectrum',
             'SHPowerSpectrumDensity', 'SHCrossPowerSpectrum',
             'SHCrossPowerSpectrumDensity', 'SHAdmitCorr', 'SHConfidence',
@@ -163,12 +164,13 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
             'SHMagPowerSpectrum', 'SHMagPowerL',
             'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j']
 
-_fortran_functions = ['MakeGridPoint', 'SHPowerL', 'SHPowerDensityL',
-                      'SHCrossPowerL', 'SHCrossPowerDensityL',
-                      'DownContFilterMA', 'DownContFilterMC', 'SHFindLWin',
-                      'SHSjkPG', 'NormalGravity', 'SHConfidence',
-                      'SHMagPowerL', 'SHPowerLC', 'SHPowerDensityLC',
-                      'SHCrossPowerLC', 'SHCrossPowerDensityLC']
+_fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'SHPowerL',
+                      'SHPowerDensityL', 'SHCrossPowerL',
+                      'SHCrossPowerDensityL', 'DownContFilterMA',
+                      'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',
+                      'NormalGravity', 'SHConfidence', 'SHMagPowerL',
+                      'SHPowerLC', 'SHPowerDensityLC', 'SHCrossPowerLC',
+                      'SHCrossPowerDensityLC']
 
 _fortran_subroutines = list(set(__all__) - set(_fortran_functions))
 
