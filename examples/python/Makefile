@@ -1,16 +1,16 @@
-######################################################################
+###############################################################################
 #
-#	make all
-#		Run all Python tests.
+#   make all
+#       Run all Python tests.
 #
-#	make no-timing
-#		Run all Python tests, with the exception of the timing/accuracy
-#		routines.
+#   make no-timing
+#       Run all Python tests, with the exception of the timing/accuracy
+#       routines.
 #
-#	make clean
-#		Remove compiled Python files and output.
+#   make clean
+#       Remove compiled Python files and output.
 #
-#######################################################################
+###############################################################################
 
 PYTHON = python
 
@@ -69,7 +69,7 @@ all: $(addsuffix .phony, $(EXAMPLES))
 no-timing: $(addsuffix .phony, $(EXAMPLES-NO-TIMING))
 
 clean:
-	-rm -rf Common/*.pyc Common/__pycache__/
-	-rm -f $(addsuffix *.pyc, $(dir $(EXAMPLES)))
-	-rm -rf $(addsuffix __pycache__, $(dir $(EXAMPLES)))
-	-rm -f $(addsuffix *.png, $(dir $(EXAMPLES)))
+	@-rm -rf Common/*.pyc Common/__pycache__/
+	@-rm -f $(addsuffix *.pyc, $(dir $(EXAMPLES)))
+	@-rm -rf $(addsuffix __pycache__, $(dir $(EXAMPLES)))
+	@-rm -f $(addsuffix *.png, $(dir $(EXAMPLES)))
