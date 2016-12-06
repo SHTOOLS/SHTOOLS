@@ -4,12 +4,12 @@
 <html>
 
 <head>
-	<title>SHTOOLS - Localized spectral analysis</title>
+	<title>SHTOOLS - Global and localized spectral analysis</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/sh.css">
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
-	<meta name="description" content="SHTOOLS Python localized multitaper spectral analysis routines.">
+	<meta name="description" content="SHTOOLS Python global and localized spectral analysis routines.">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a  href="../index.html">HOME</a></td>
+				<td><a href="../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
 				<td><a href="faq.html">FAQ</a> </td>
@@ -32,10 +32,36 @@
 <p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="python-routines.html" class="dir">Python</a></p>
 
-	<h1>Localized spectral analysis</h1>
+	<h1>Global and Localized Spectral Analysis</h1>
 
 	<table class="main">
 		<tbody>
+
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Global spectral analysis</p></td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/spectrum.html"><tt>spectrum</tt></a></td>
+		<td class="right">Calculate the spectrum of a real or complex function.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/cross_spectrum.html"><tt>cross_spectrum</tt></a></td>
+		<td class="right">Calculate the cross-spectrum of a real or complex function.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshadmitcorr.html"><tt>SHAdmitCorr</tt></a></td>
+		<td class="right">Calculate the admittance and correlation spectra of two functions.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshconfidence.html"><tt>SHConfidence</tt></a></td>
+		<td class="right">Compute the probability that two sets of spherical harmonic coefficients are correlated at a given degree and for a given correlation coefficient.</td>
+		</tr>
+
 		<tr>
 		<td colspan=2>
 		<p class="nomargin headbox2">Multitaper spectral estimation (spherical cap domain)</p></td>
@@ -117,7 +143,7 @@
 		</tr>
 
 		<tr>
-		<td class="left"><a href="man/python/pyshreturntapersmap.html"><tt>SHReturnTapersMap</tt></a></td> 
+		<td class="left"><a href="man/python/pyshreturntapersmap.html"><tt>SHReturnTapersMap</tt></a></td>
 		<td class="right">Calculate the eigenfunctions of the concentration problem for an arbitrary concentration region.</td>
 		</tr>
 
@@ -137,7 +163,7 @@
 		</tr>
 
 		<tr>
-		<td class="left"><a href="man/python/pycomputedmap.html"><tt>ComputeDMap</tt></a></td> 
+		<td class="left"><a href="man/python/pycomputedmap.html"><tt>ComputeDMap</tt></a></td>
 		<td class="right">Compute the space-concentration kernel of a mask defined on the sphere.</td>
 		</tr>
 
@@ -153,7 +179,7 @@
 		</tr>
 
 		<tr>
-		<td class="left"><a href="man/python/pyshbias.html"><tt>SHBias</tt></a></td> 
+		<td class="left"><a href="man/python/pyshbias.html"><tt>SHBias</tt></a></td>
 		<td class="right">Calculate the (cross-)power spectrum expectation of a windowed function.</td>
 		</tr>
 
@@ -163,14 +189,13 @@
 		</tr>
 
 		<tr>
-		<td class="left"><a href="man/python/pysphericalcapcoef.html"><tt>SphericalCapCoef</tt></a></td> 
+		<td class="left"><a href="man/python/pysphericalcapcoef.html"><tt>SphericalCapCoef</tt></a></td>
 		<td class="right">Calculate the spherical harmonic coefficients of a spherical cap.
 		</td>
 		</tr>
 
 		</tbody>
 	</table>
-
 <br>
 
 <p class="dir">

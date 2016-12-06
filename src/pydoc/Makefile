@@ -56,7 +56,8 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md \
 	pybatohilmrhohdh.md pydowncontfilterma.md pydowndontfiltermc.md \
 	pynormalgravity.md pymakemaggriddh.md pyshmagpowerspectrum.md \
 	pyshmagpowerl.md pyshmtcouplingmatrix.md pyshmultitapermaskcse.md \
-	pyshmultitapermaskse.md pyshbiaskmask.md read_icgem_gfc.md
+	pyshmultitapermaskse.md pyshbiaskmask.md read_icgem_gfc.md \
+	spectrum.md cross_spectrum.md
 
 MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 \
 	pyplbar.1 pyplbar_d1.1 pyplon.1 pyplmon.1 pyplmon_d1.1 pyplon_d1.1 \
@@ -88,9 +89,9 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 \
 	pydowncontfilterma.1 pydowncontfiltermc.1 pynormalgravity.1 \
 	pymakemaggriddh.1 pyshmagpowerspectrum.1 pyshmagpowerl.1 \
 	pyshmtcouplingmatrix.1 pyshmultitapermaskcse.1 pyshmultitapermaskse.1 \
-	pyshbiaskmask.1 read_icgem_gfc.1)
+	pyshbiaskmask.1 read_icgem_gfc.1 spectrum.1 cross_spectrum.1)
 
-HTMLFILES_legendre =  $(addprefix $(WWWDIR)/, pyplmindex.html pyplmbar.html \
+HTMLFILES_legendre = $(addprefix $(WWWDIR)/, pyplmindex.html pyplmbar.html \
 	pyplmbar_d1.html pyplbar.html pyplbar_d1.html pyplon.html pyplmon.html \
 	pyplmon_d1.html pyplon_d1.html pyplmschmidt.html pyplschmidt.html \
 	pyplmschmidt_d1.html pyplschmidt_d1.html pyplegendrea.html \
@@ -109,17 +110,9 @@ HTMLFILES_io = $(addprefix $(WWWDIR)/, pyshread.html pyshreaderror.html \
 	pyshcindextocilm.html pyshcilmtovector.html pyshvectortocilm.html \
 	pyshrtoc.html pyshctor.html pyyilmindexvector.html read_icgem_gfc.html)
 
-HTMLFILES_gspectra = $(addprefix $(WWWDIR)/, pyshpowerl.html \
-	pyshpowerdensityl.html pyshcrosspowerl.html pyshcrosspowerdensityl.html \
-	pyshpowerspectrum.html pyshpowerspectrumdensity.html \
-	pyshcrosspowerspectrum.html pyshcrosspowerspectrumdensity.html \
-	pyshadmitcorr.html pyshconfidence.html pyshpowerlc.html \
-	pyshpowerdensitylc.html pyshcrosspowerlc.html \
-	pyshcrosspowerdensitylc.html pyshpowerspectrumc.html \
-	pyshpowerspectrumdensityc.html pyshcrosspowerspectrumc.html \
-	pyshcrosspowerspectrumdensityc.html)
-
-HTMLFILES_localized = $(addprefix $(WWWDIR)/, pyshmultitaperse.html \
+HTMLFILES_spectralanalysis = $(addprefix $(WWWDIR)/, spectrum.html \
+	cross_spectrum.html pyshadmitcorr.html pyshconfidence.html \
+	pyshmultitaperse.html \
 	pyshmultitapercse.html pyshlocalizedadmitcorr.html pyshreturntapers.html \
 	pyshreturntapersm.html pycomputedm.html pycomputedg82.html \
 	pyshfindlwin.html pyshbiask.html pyshbiasadmitcorr.html pyshmtdebias.html \
@@ -151,7 +144,7 @@ install-man: $(MANFILES)
 	@echo
 
 install-html: $(HTMLFILES_modules) $(HTMLFILES_legendre) $(HTMLFILES_transformations) \
-	$(HTMLFILES_io) $(HTMLFILES_gspectra) $(HTMLFILES_localized) \
+	$(HTMLFILES_io) $(HTMLFILES_spectralanalysis) \
 	$(HTMLFILES_rotations) $(HTMLFILES_gravmag) \
 	$(HTMLFILES_other)
 	@echo
@@ -173,14 +166,9 @@ $(HTMLFILES_io) : $(WWWDIR)/%.html : %.md
 	cat header_io.html test.html tail_io.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_gspectra) : $(WWWDIR)/%.html : %.md
+$(HTMLFILES_spectralanalysis) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_gspectra.html test.html tail_gspectra.html > $@
-	@rm -f test.html
-
-$(HTMLFILES_localized) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_localized.html test.html tail_localized.html > $@
+	cat header_spectralanalysis.html test.html tail_spectralanalysis.html > $@
 	@rm -f test.html
 
 $(HTMLFILES_rotations) : $(WWWDIR)/%.html : %.md

@@ -12,7 +12,7 @@ import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import expand
-from pyshtools import spectralanalysis
+from pyshtools import shtools
 
 
 # ==== MAIN FUNCTION ====
@@ -40,7 +40,7 @@ def TimingAccuracyDH(sampling=1):
                                                      (maxdeg + 1)))
     np.random.seed(0)
     cilm = np.random.normal(loc=0., scale=1., size=(2, maxdeg + 1, maxdeg + 1))
-    old_power = spectralanalysis.SHPowerSpectrum(cilm)
+    old_power = shtools.SHPowerSpectrum(cilm)
     new_power = 1. / (1. + ls)**beta  # initialize degrees > 0 to power-law
     cilm[:, :, :] *= np.sqrt(new_power / old_power)[None, :, None]
     cilm[~mask] = 0.

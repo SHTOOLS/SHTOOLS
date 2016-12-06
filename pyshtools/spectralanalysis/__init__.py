@@ -1,70 +1,108 @@
 """
-pyshtools Global Spectral Analysis Routines.
+pyshtools Global and Localized Spectral Analysis Routines.
 
-This supackage of pyshtools defines the following functions:
+This subpackage of pyshtools defines the following functions:
 
-Real spectral analysis
-----------------------
-SHPowerL                      Compute the power of a real function for a single
-                              spherical harmonic degree.
-SHPowerDensityL               Compute the power spectral density of a real
-                              function for a single spherical harmonic degree.
-SHCrossPowerL                 Compute the cross-power of two functions for a
-                              single spherical harmonic degree.
-SHCrossPowerDensityL          Compute the cross-power spectral density of two
-                              functions for a single spherical harmonic degree.
-SHPowerSpectrum               Compute the power spectrum of a function.
-SHPowerSpectrumDensity        Compute the power spectral density of a function.
-SHCrossPowerSpectrum          Compute the cross-power spectrum of two
-                              functions.
-SHCrossPowerSpectrumDensity   Compute the cross-power spectral density of two
-                              functions.
-SHAdmitCorr                   Calculate the admittance and correlation spectra
-                              of two functions.
-SHConfidence                  Compute the probability that two sets of
-                              spherical harmonic coefficients are correlated at
-                              a given degree and for a given correlation
-                              coefficient.
+Global spectral analysis
+------------------------
+spectrum               Calculate the spectrum of a real or complex function.
+cross-spectrum         Calculate the cross-spectrum of two real or complex
+                       functions.
+SHAdmitCorr            Calculate the admittance and correlation spectra
+                       of two functions.
+SHConfidence           Compute the probability that two sets of
+                       spherical harmonic coefficients are correlated at
+                       a given degree and for a given correlation coefficient.
 
-Complex spectral analysis
--------------------------
-SHPowerLC                     Compute the power of a complex function for a
-                              single spherical harmonic degree.
-SHPowerDensityLC              Compute the power spectral density of a complex
-                              function for a single spherical harmonic degree.
-SHCrossPowerLC                Compute the cross-power of two complex functions
-                              for a single spherical harmonic degree.
-SHCrossPowerDensityLC         Compute the cross-power spectral density of two
-                              complex functions for a single spherical harmonic
-                              degree.
-SHPowerSpectrumC              Compute the power spectrum of a complex function.
-SHPowerSpectrumDensityC       Compute the power spectral density of a complex
-                              function.
-SHCrossPowerSpectrumC         Compute the cross-power spectrum of two complex
-                              functions.
-SHCrossPowerSpectrumDensityC  Compute the cross-power spectral density of two
-                              complex functions.
+Multitaper spectral estimation (spherical cap domain)
+-----------------------------------------------------
+SHMultiTaperSE         Perform a localized multitaper spectral analysis.
+SHMultiTaperCSE        Perform a localized multitaper cross-spectral analysis.
+SHLocalizedAdmitCorr   Calculate the localized admittance and correlation
+                       spectra of two functions at a given location.
+SHReturnTapers         Calculate the eigenfunctions of the spherical-cap
+                       concentration problem.
+SHReturnTapersM        Calculate the eigenfunctions of the spherical-cap
+                       concentration problem for a single angular order.
+ComputeDm              Compute the space-concentration kernel of a spherical
+                       cap.
+ComputeDG82            Compute the tridiagonal matrix of Grunbaum et al. (1982)
+                       that commutes with the space-concentration kernel of a
+                       spherical cap.
+SHFindLWin             Determine the spherical-harmonic bandwidth that is
+                       necessary to achieve a certain concentration factor.
+SHBiasK                Calculate the multitaper (cross-)power spectrum
+                       expectation of a windowed function.
+SHMTCouplingMatrix     Calculate the multitaper coupling matrix for a given
+                       set of localization windows.
+SHBiasAdmitCorr        Calculate the expected multitaper admittance and
+                       correlation spectra associated with the input global
+                       cross-power spectra of two functions.
+SHMTDebias             Invert for the global power spectrum given a localized
+                       multitaper spectrum estimate.
+SHMTVarOpt             Calculate the minimum variance and corresponding optimal
+                       weights of a localized multitaper spectral estimate.
+SHSjkPG                Calculate the expectation of the product of two
+                       functions, each multiplied by a different data taper,
+                       for a given spherical harmonic degree and two different
+                       angular orders.
+
+Localization windows (arbitrary domain)
+---------------------------------------
+SHReturnTapersMap      Calculate the eigenfunctions of the concentration
+                       problem for an arbitrary concentration region.
+SHMultiTaperMaskSE     Perform a localized multitaper spectral analysis using
+                       arbitrary windows.
+SHMultiTaperMaskCSE    Perform a localized multitaper cross-spectral analysis
+                       using arbitrary windows.
+SHBiasKMask            Calculate the multitaper (cross-)power spectrum
+                       expectation of a function localized by arbitrary
+                       windows derived from a mask.
+ComputeDMap            Compute the space-concentration kernel of a mask
+                       defined on the sphere.
+Curve2Mask             Given a set of latitude and longitude coordinates
+                       representing a closed curve, output a gridded mask.
+
+Localization Bias (General)
+---------------------------
+SHBias                 Calculate the (cross-)power spectrum expectation of a
+                       windowed function.
+
+Other
+-----
+SphericalCapCoef       Calculate the spherical harmonic coefficients of a
+                       spherical cap.
 """
 
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ..shtools import SHPowerL
-from ..shtools import SHPowerDensityL
-from ..shtools import SHCrossPowerL
-from ..shtools import SHCrossPowerDensityL
-from ..shtools import SHPowerSpectrum
-from ..shtools import SHPowerSpectrumDensity
-from ..shtools import SHCrossPowerSpectrum
-from ..shtools import SHCrossPowerSpectrumDensity
 from ..shtools import SHAdmitCorr
 from ..shtools import SHConfidence
-from ..shtools import SHPowerLC
-from ..shtools import SHPowerDensityLC
-from ..shtools import SHCrossPowerLC
-from ..shtools import SHCrossPowerDensityLC
-from ..shtools import SHPowerSpectrumC
-from ..shtools import SHPowerSpectrumDensityC
-from ..shtools import SHCrossPowerSpectrumC
-from ..shtools import SHCrossPowerSpectrumDensityC
+
+from .spectrum import spectrum
+from .cross_spectrum import cross_spectrum
+
+from ..shtools import SHMultiTaperSE
+from ..shtools import SHMultiTaperCSE
+from ..shtools import SHLocalizedAdmitCorr
+from ..shtools import SHReturnTapers
+from ..shtools import SHReturnTapersM
+from ..shtools import ComputeDm
+from ..shtools import ComputeDG82
+from ..shtools import SHFindLWin
+from ..shtools import SHBiasK
+from ..shtools import SHMTCouplingMatrix
+from ..shtools import SHBiasAdmitCorr
+from ..shtools import SHMTDebias
+from ..shtools import SHMTVarOpt
+from ..shtools import SHSjkPG
+from ..shtools import SHMultiTaperMaskSE
+from ..shtools import SHMultiTaperMaskCSE
+from ..shtools import SHReturnTapersMap
+from ..shtools import SHBiasKMask
+from ..shtools import ComputeDMap
+from ..shtools import Curve2Mask
+from ..shtools import SHBias
+from ..shtools import SphericalCapCoef

@@ -19,8 +19,7 @@ main namespace:
     legendre - Legendre functions.
     expand - Spherical harmonic expansion routines.
     shio - Spherical harmonic I/O, storage, and conversion routines.
-    spectralanalysis - Global spectral analysis routines.
-    localizedspectralanalysis - Localized spectral analysis routines.
+    spectralanalysis - Global and localized spectral analysis routines.
     rotate - Spherical harmonic rotation routines.
     gravmag - Gravity and magnetics routines.
     utils - pyshtools utilities.
@@ -56,7 +55,6 @@ from . import legendre
 from . import expand
 from . import shio
 from . import spectralanalysis
-from . import localizedspectralanalysis
 from . import rotate
 from . import gravmag
 from . import utils
@@ -65,4 +63,4 @@ from . import utils
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
            'legendre', 'expand', 'shio', 'spectralanalysis',
-           'localizedspectralanalysis', 'rotate', 'gravmag', 'utils']
+           'rotate', 'gravmag', 'utils']
