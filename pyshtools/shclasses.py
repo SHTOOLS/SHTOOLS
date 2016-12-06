@@ -96,8 +96,9 @@ class SHCoeffs(object):
                             class instance.
     convert()             : Return a new class instance using a different
                             normalization convention.
-    expand()              : Evaluate the coefficients on a spherical grid and
-                            return a new SHGrid class instance.
+    expand()              : Evaluate the coefficients either on a spherical
+                            grid and return an SHGrid class instance, or for
+                            a list of latitude and longitude coordinates.
     copy()                : Return a copy of the class instance.
     plot_spectrum()       : Plot the  spectrum as a function of spherical
                             harmonic degree.
@@ -968,20 +969,29 @@ class SHCoeffs(object):
                                    csphase=csphase, copy=False)
 
     # ---- Expand the coefficients onto a grid ----
-    def expand(self, grid='DH', **kwargs):
+    def expand(self, grid='DH', lat=None, lon=None, degrees=True, zeros=None,
+               lmax=None, lmax_calc=None):
         """
-        Evaluate the spherical harmonic coefficients on a spherical grid.
+        Evaluate the spherical harmonic coefficients either on a grid or for
+        a list of coordinates.
 
         Usage
         -----
-        f = x.expand([grid, lmax, lmax_calc, zeros])
+        f = x.expand(lat, lon, [lmax_calc, degrees])
+        g = x.expand([grid, lmax, lmax_calc, zeros])
 
         Returns
         -------
-        f : SHGrid class instance
+        f : float, ndarray, or list
+        g : SHGrid class instance
 
         Parameters
         ----------
+        lat, lon : int, float, ndarray, or list, optional, default = None
+            Latitude and longitude coordinates where the function is to be
+            evaluated.
+        degrees : bool, optional, default = True
+            True if lat and lon are in degrees, False if in radians.
         grid : str, optional, default = 'DH'
             'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon,
             'DH2' for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ'
@@ -998,27 +1008,44 @@ class SHCoeffs(object):
 
         Description
         -----------
-        For more information concerning the spherical harmonic expansions, and
+        For more information concerning the spherical harmonic expansions and
         the properties of the output grids, see the documentation for
         SHExpandDH, SHExpandDHC, SHExpandGLQ and SHExpandGLQC.
         """
-        if type(grid) != str:
-            raise ValueError('grid must be a string. ' +
-                             'Input type was {:s}'
-                             .format(str(type(grid))))
+        if lat is not None and lon is not None:
+            if lmax_calc is None:
+                lmax_calc = self.lmax
 
-        if grid.upper() == 'DH' or grid.upper() == 'DH1':
-            gridout = self._expandDH(sampling=1, **kwargs)
-        elif grid.upper() == 'DH2':
-            gridout = self._expandDH(sampling=2, **kwargs)
-        elif grid.upper() == 'GLQ':
-            gridout = self._expandGLQ(zeros=None, **kwargs)
+            values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
+                                        lmax_calc=lmax_calc)
+            return values
+
         else:
-            raise ValueError(
-                "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
-                "Input value was {:s}".format(repr(grid)))
+            if lmax is None:
+                lmax = self.lmax
+            if lmax_calc is None:
+                lmax_calc = lmax
 
-        return gridout
+            if type(grid) != str:
+                raise ValueError('grid must be a string. ' +
+                                 'Input type was {:s}'
+                                 .format(str(type(grid))))
+
+            if grid.upper() == 'DH' or grid.upper() == 'DH1':
+                gridout = self._expandDH(sampling=1, lmax=lmax,
+                                         lmax_calc=lmax_calc)
+            elif grid.upper() == 'DH2':
+                gridout = self._expandDH(sampling=2, lmax=lmax,
+                                         lmax_calc=lmax_calc)
+            elif grid.upper() == 'GLQ':
+                gridout = self._expandGLQ(zeros=zeros, lmax=lmax,
+                                          lmax_calc=lmax_calc)
+            else:
+                raise ValueError(
+                    "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
+                    "Input value was {:s}".format(repr(grid)))
+
+            return gridout
 
     # ---- plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
@@ -1393,7 +1420,7 @@ class SHRealCoeffs(SHCoeffs):
         else:
             return SHCoeffs.from_array(coeffs, copy=False)
 
-    def _expandDH(self, sampling, **kwargs):
+    def _expandDH(self, sampling, lmax, lmax_calc):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         if self.normalization == '4pi':
             norm = 1
@@ -1407,11 +1434,12 @@ class SHRealCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
         data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
-                                   csphase=self.csphase, **kwargs)
+                                   csphase=self.csphase, lmax=lmax,
+                                   lmax_calc=lmax_calc)
         gridout = SHGrid.from_array(data, grid='DH', copy=False)
         return gridout
 
-    def _expandGLQ(self, zeros, **kwargs):
+    def _expandGLQ(self, zeros, lmax, lmax_calc):
         """Evaluate the coefficients on a Gauss Legendre quadrature grid."""
         if self.normalization == '4pi':
             norm = 1
@@ -1428,9 +1456,63 @@ class SHRealCoeffs(SHCoeffs):
             zeros, weights = _shtools.SHGLQ(self.lmax)
 
         data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
-                                    csphase=self.csphase, **kwargs)
+                                    csphase=self.csphase, lmax=lmax,
+                                    lmax_calc=lmax_calc)
         gridout = SHGrid.from_array(data, grid='GLQ', copy=False)
         return gridout
+
+    def _expand_coord(self, lat, lon, lmax_calc, degrees):
+        """Evaluate the function at the coordinates lat and lon."""
+        if self.normalization == '4pi':
+            norm = 1
+        elif self.normalization == 'schmidt':
+            norm = 2
+        elif self.normalization == 'ortho':
+            norm = 4
+        else:
+            raise ValueError(
+                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
+                "Input value was {:s}".format(repr(self.normalization)))
+
+        if degrees is True:
+            latin = lat
+            lonin = lon
+        else:
+            latin = lat * _np.pi / 180.
+            lonin = lon * _np.pi / 180.
+
+        if type(lat) is not type(lon):
+            raise ValueError('lat and lon must be of the same type. ' +
+                             'Input types are {:s} and {:s}'
+                             .format(repr(type(lat)), repr(type(lon))))
+
+        if type(lat) is int or type(lat) is float:
+            return _shtools.MakeGridPoint(self.coeffs, lat=latin, lon=lonin,
+                                          lmax=lmax_calc, norm=norm,
+                                          csphase=self.csphase)
+        elif type(lat) is _np.ndarray:
+            values = _np.empty_like(lat, dtype=float)
+            for v, latitude, longitude in _np.nditer([values, latin, lonin],
+                                                     op_flags=['readwrite']):
+                v[...] = _shtools.MakeGridPoint(self.coeffs, lat=latitude,
+                                                lon=longitude,
+                                                lmax=lmax_calc, norm=norm,
+                                                csphase=self.csphase)
+            return values
+        elif type(lat) is list:
+            values = []
+            for latitude, longitude in zip(latin, lonin):
+                values.append(
+                    _shtools.MakeGridPoint(self.coeffs, lat=latitude,
+                                           lon=longitude,
+                                           lmax=lmax_calc, norm=norm,
+                                           csphase=self.csphase))
+            return values
+        else:
+            raise ValueError('lat and lon must be either an int, float, ' +
+                             'ndarray, or list. ' +
+                             'Input types are {:s} and {:s}'
+                             .format(repr(type(lat)), repr(type(lon))))
 
 
 # =============== COMPLEX SPHERICAL HARMONICS ================
@@ -1626,7 +1708,7 @@ class SHComplexCoeffs(SHCoeffs):
                                    normalization=self.normalization,
                                    csphase=self.csphase, copy=False)
 
-    def _expandDH(self, sampling, **kwargs):
+    def _expandDH(self, sampling, lmax, lmax_calc):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         if self.normalization == '4pi':
             norm = 1
@@ -1640,11 +1722,12 @@ class SHComplexCoeffs(SHCoeffs):
                 "Input value was {:s}".format(repr(self.normalization)))
 
         data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
-                                    norm=norm, csphase=self.csphase, **kwargs)
+                                    norm=norm, csphase=self.csphase, lmax=lmax,
+                                    lmax_calc=lmax_calc)
         gridout = SHGrid.from_array(data, grid='DH', copy=False)
         return gridout
 
-    def _expandGLQ(self, zeros, **kwargs):
+    def _expandGLQ(self, zeros, lmax, lmax_calc):
         """Evaluate the coefficients on a Gauss-Legendre quadrature grid."""
         if self.normalization == '4pi':
             norm = 1
@@ -1661,9 +1744,63 @@ class SHComplexCoeffs(SHCoeffs):
             zeros, weights = _shtools.SHGLQ(self.lmax)
 
         data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
-                                     csphase=self.csphase, **kwargs)
+                                     csphase=self.csphase, lmax=lmax,
+                                     lmax_calc=lmax_calc)
         gridout = SHGrid.from_array(data, grid='GLQ', copy=False)
         return gridout
+
+    def _expand_coord(self, lat, lon, lmax_calc, degrees):
+        """Evaluate the function at the coordinates lat and lon."""
+        if self.normalization == '4pi':
+            norm = 1
+        elif self.normalization == 'schmidt':
+            norm = 2
+        elif self.normalization == 'ortho':
+            norm = 4
+        else:
+            raise ValueError(
+                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
+                "Input value was {:s}".format(repr(self.normalization)))
+
+        if degrees is True:
+            latin = lat
+            lonin = lon
+        else:
+            latin = lat * _np.pi / 180.
+            lonin = lon * _np.pi / 180.
+
+        if type(lat) is not type(lon):
+            raise ValueError('lat and lon must be of the same type. ' +
+                             'Input types are {:s} and {:s}'
+                             .format(repr(type(lat)), repr(type(lon))))
+
+        if type(lat) is int or type(lat) is float:
+            return _shtools.MakeGridPointC(self.coeffs, lat=latin, lon=lonin,
+                                           lmax=lmax_calc, norm=norm,
+                                           csphase=self.csphase)
+        elif type(lat) is _np.ndarray:
+            values = _np.empty_like(lat, dtype=float)
+            for v, latitude, longitude in _np.nditer([values, latin, lonin],
+                                                     op_flags=['readwrite']):
+                v[...] = _shtools.MakeGridPointC(self.coeffs, lat=latitude,
+                                                 lon=longitude,
+                                                 lmax=lmax_calc, norm=norm,
+                                                 csphase=self.csphase)
+            return values
+        elif type(lat) is list:
+            values = []
+            for latitude, longitude in zip(latin, lonin):
+                values.append(
+                    _shtools.MakeGridPointC(self.coeffs, lat=latitude,
+                                            lon=longitude,
+                                            lmax=lmax_calc, norm=norm,
+                                            csphase=self.csphase))
+            return values
+        else:
+            raise ValueError('lat and lon must be either an int, float, ' +
+                             'ndarray, or list. ' +
+                             'Input types are {:s} and {:s}'
+                             .format(repr(type(lat)), repr(type(lon))))
 
 
 # ========================================================================
