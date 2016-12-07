@@ -3,6 +3,7 @@
 
         SHWindow: SHWindowCap, SHWindowMask
 """
+
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
@@ -15,8 +16,8 @@ import copy as _copy
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 
-from .shcoeffs import *
-from .shgrid import *
+from . import shcoeffs
+from . import shgrid
 
 
 __all__ = ['SHWindow', 'SHWindowCap', 'SHWindowMask']
@@ -341,9 +342,9 @@ class SHWindow(object):
 
         coeffs = self.to_array(itaper, normalization=normalization.lower(),
                                csphase=csphase)
-        return SHCoeffs.from_array(coeffs,
-                                   normalization=normalization.lower(),
-                                   csphase=csphase, copy=False)
+        return shcoeffs.SHCoeffs.from_array(
+            coeffs, normalization=normalization.lower(),
+            csphase=csphase, copy=False)
 
     def to_shgrid(self, itaper, grid='DH2', zeros=None):
         """
@@ -384,17 +385,17 @@ class SHWindow(object):
         if grid.upper() in ('DH', 'DH1'):
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=1,
                                           norm=1, csphase=1)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return shgrid.SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'DH2':
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
                                           norm=1, csphase=1)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return shgrid.SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lwin)
             gridout = _shtools.MakeGridGLQ(self.to_array(itaper), zeros,
                                            norm=1, csphase=1)
-            return SHGrid.from_array(gridout, grid='GLQ', copy=False)
+            return shgrid.SHGrid.from_array(gridout, grid='GLQ', copy=False)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +

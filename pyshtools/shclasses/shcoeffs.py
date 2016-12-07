@@ -15,7 +15,7 @@ import copy as _copy
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 
-from .shgrid import *
+from . import shgrid
 
 
 __all__ = ['SHCoeffs', 'SHRealCoeffs', 'SHComplexCoeffs']
@@ -1374,7 +1374,7 @@ class SHRealCoeffs(SHCoeffs):
         data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
                                    csphase=self.csphase, lmax=lmax,
                                    lmax_calc=lmax_calc)
-        gridout = SHGrid.from_array(data, grid='DH', copy=False)
+        gridout = shgrid.SHGrid.from_array(data, grid='DH', copy=False)
         return gridout
 
     def _expandGLQ(self, zeros, lmax, lmax_calc):
@@ -1396,7 +1396,7 @@ class SHRealCoeffs(SHCoeffs):
         data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
                                     csphase=self.csphase, lmax=lmax,
                                     lmax_calc=lmax_calc)
-        gridout = SHGrid.from_array(data, grid='GLQ', copy=False)
+        gridout = shgrid.SHGrid.from_array(data, grid='GLQ', copy=False)
         return gridout
 
     def _expand_coord(self, lat, lon, lmax_calc, degrees):
@@ -1622,7 +1622,7 @@ class SHComplexCoeffs(SHCoeffs):
         data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
                                     norm=norm, csphase=self.csphase, lmax=lmax,
                                     lmax_calc=lmax_calc)
-        gridout = SHGrid.from_array(data, grid='DH', copy=False)
+        gridout = shgrid.SHGrid.from_array(data, grid='DH', copy=False)
         return gridout
 
     def _expandGLQ(self, zeros, lmax, lmax_calc):
@@ -1644,7 +1644,7 @@ class SHComplexCoeffs(SHCoeffs):
         data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
                                      csphase=self.csphase, lmax=lmax,
                                      lmax_calc=lmax_calc)
-        gridout = SHGrid.from_array(data, grid='GLQ', copy=False)
+        gridout = shgrid.SHGrid.from_array(data, grid='GLQ', copy=False)
         return gridout
 
     def _expand_coord(self, lat, lon, lmax_calc, degrees):

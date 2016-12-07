@@ -3,6 +3,7 @@
 
         SHGrid: DHRealGrid, DHComplexGrid, GLQRealGrid, GLQComplexGrid
 """
+
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
@@ -15,7 +16,7 @@ import copy as _copy
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 
-from .shcoeffs import *
+from . import shcoeffs
 
 
 __all__ = ['SHGrid', 'DHRealGrid', 'DHComplexGrid', 'GLQRealGrid',
@@ -652,9 +653,9 @@ class DHRealGrid(SHGrid):
         cilm = _shtools.SHExpandDH(self.data, norm=norm, csphase=csphase,
                                    sampling=self.sampling,
                                    **kwargs)
-        coeffs = SHCoeffs.from_array(cilm,
-                                     normalization=normalization.lower(),
-                                     csphase=csphase, copy=False)
+        coeffs = shcoeffs.SHCoeffs.from_array(
+            cilm, normalization=normalization.lower(),
+            csphase=csphase, copy=False)
         return coeffs
 
     def _plot(self):
@@ -740,9 +741,9 @@ class DHComplexGrid(SHGrid):
 
         cilm = _shtools.SHExpandDHC(self.data, norm=norm, csphase=csphase,
                                     **kwargs)
-        coeffs = SHCoeffs.from_array(cilm,
-                                     normalization=normalization.lower(),
-                                     csphase=csphase, copy=False)
+        coeffs = shcoeffs.SHCoeffs.from_array(
+            cilm, normalization=normalization.lower(),
+            csphase=csphase, copy=False)
         return coeffs
 
     def _plot(self):
@@ -833,10 +834,9 @@ class GLQRealGrid(SHGrid):
 
         cilm = _shtools.SHExpandGLQ(self.data, self.weights, self.zeros,
                                     norm=norm, csphase=csphase, **kwargs)
-        coeffs = SHCoeffs.from_array(cilm,
-                                     normalization=normalization.lower(),
-                                     csphase=csphase,
-                                     copy=False)
+        coeffs = shcoeffs.SHCoeffs.from_array(
+            cilm, normalization=normalization.lower(),
+            csphase=csphase, copy=False)
         return coeffs
 
     def _plot(self):
@@ -916,9 +916,9 @@ class GLQComplexGrid(SHGrid):
 
         cilm = _shtools.SHExpandGLQC(self.data, self.weights, self.zeros,
                                      norm=norm, csphase=csphase, **kwargs)
-        coeffs = SHCoeffs.from_array(cilm,
-                                     normalization=normalization.lower(),
-                                     csphase=csphase, copy=False)
+        coeffs = shcoeffs.SHCoeffs.from_array(
+            cilm, normalization=normalization.lower(),
+            csphase=csphase, copy=False)
         return coeffs
 
     def _plot(self):

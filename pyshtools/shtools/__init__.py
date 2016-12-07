@@ -1,6 +1,7 @@
 """
 pyshtools subpackage that includes all Python wrapped Fortran routines.
 """
+
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
@@ -117,27 +118,27 @@ from .._SHTOOLS import Wigner3j
 __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'PlON', 'PlON_d1', 'PlmSchmidt', 'PlmSchmidt_d1', 'PlSchmidt',
            'PlSchmidt_d1', 'PLegendreA', 'PLegendreA_d1', 'PLegendre',
-            'PLegendre_d1', 'SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
-            'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
-            'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ',
-            'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
-            'SHRead', 'SHReadH', 'SHReadError', 'SHReadErrorH', 'SHRead2',
-            'SHRead2Error', 'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector',
-            'SHVectorToCilm', 'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc',
-            'SHctor', 'SHAdmitCorr', 'SHConfidence', 'SHMultiTaperSE',
-            'SHMultiTaperCSE', 'SHLocalizedAdmitCorr', 'SHReturnTapers',
-            'SHReturnTapersM', 'ComputeDm', 'ComputeDG82', 'SHFindLWin',
-            'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr', 'SHMTDebias',
-            'SHMTVarOpt', 'SHSjkPG', 'SHMultiTaperMaskSE',
-            'SHMultiTaperMaskCSE', 'SHReturnTapersMap', 'SHBiasKMask',
-            'ComputeDMap', 'Curve2Mask', 'SHBias', 'SphericalCapCoef',
-            'djpi2', 'SHRotateCoef', 'SHRotateRealCoef',
-            'MakeGravGridDH', 'MakeGravGradGridDH', 'MakeGeoidGridDH',
-            'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
-            'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
-            'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
-            'SHMagPowerSpectrum', 'SHMagPowerL',
-            'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j']
+           'PLegendre_d1', 'SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
+           'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
+           'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ',
+           'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
+           'SHRead', 'SHReadH', 'SHReadError', 'SHReadErrorH', 'SHRead2',
+           'SHRead2Error', 'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector',
+           'SHVectorToCilm', 'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc',
+           'SHctor', 'SHAdmitCorr', 'SHConfidence', 'SHMultiTaperSE',
+           'SHMultiTaperCSE', 'SHLocalizedAdmitCorr', 'SHReturnTapers',
+           'SHReturnTapersM', 'ComputeDm', 'ComputeDG82', 'SHFindLWin',
+           'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr', 'SHMTDebias',
+           'SHMTVarOpt', 'SHSjkPG', 'SHMultiTaperMaskSE',
+           'SHMultiTaperMaskCSE', 'SHReturnTapersMap', 'SHBiasKMask',
+           'ComputeDMap', 'Curve2Mask', 'SHBias', 'SphericalCapCoef',
+           'djpi2', 'SHRotateCoef', 'SHRotateRealCoef',
+           'MakeGravGridDH', 'MakeGravGradGridDH', 'MakeGeoidGridDH',
+           'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
+           'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
+           'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
+           'SHMagPowerSpectrum', 'SHMagPowerL',
+           'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j']
 
 _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',
