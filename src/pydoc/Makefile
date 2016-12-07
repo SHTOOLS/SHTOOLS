@@ -36,14 +36,7 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md \
 	pyshreadh.md pyshreaderrorh.md pyshread2.md pyshread2error.md \
 	pyshreadjpl.md pyshreadjplerror.md pyshcilmtocindex.md \
 	pyshcindextocilm.md pyshcilmtovector.md pyshvectortocilm.md pyshrtoc.md \
-	pyshctor.md pyshpowerl.md pyshpowerdensityl.md pyshcrosspowerl.md \
-	pyshcrosspowerdensityl.md pyshpowerspectrum.md \
-	pyshpowerspectrumdensity.md pyshcrosspowerspectrum.md \
-	pyshcrosspowerspectrumdensity.md pyshadmitcorr.md pyshconfidence.md \
-	pyshpowerlc.md pyshpowerdensitylc.md pyshcrosspowerlc.md \
-	pyshcrosspowerdensitylc.md pyshpowerspectrumc.md \
-	pyshpowerspectrumdensityc.md pyshcrosspowerspectrumc.md \
-	pyshcrosspowerspectrumdensityc.md pyshmultitaperse.md \
+	pyshctor.md pyshadmitcorr.md pyshconfidence.md pyshmultitaperse.md \
 	pyshmultitapercse.md pyshlocalizedadmitcorr.md pyshreturntapers.md \
 	pyshreturntapersm.md pycomputedm.md pycomputedg82.md pyshfindlwin.md \
 	pyshbiask.md pyshbiasadmitcorr.md pyshmtdebias.md pyyilmindexvector.md \
@@ -70,13 +63,7 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 \
 	pyshreadh.1 pyshreaderrorh.1 pyshread2.1 pyshread2error.1 pyshreadjpl.1 \
 	pyshreadjplerror.1 pyshcilmtocindex.1 pyshcindextocilm.1 \
 	pyshcilmtovector.1 pyshvectortocilm.1 pyshrtoc.1 pyshctor.1 \
-	pyshpowerl.1 pyshpowerdensityl.1 pyshcrosspowerl.1 \
-	pyshcrosspowerdensityl.1 pyshpowerspectrum.1 pyshpowerspectrumdensity.1 \
-	pyshcrosspowerspectrum.1 pyshcrosspowerspectrumdensity.1 pyshadmitcorr.1 \
-	pyshconfidence.1 pyshpowerlc.1 pyshpowerdensitylc.1 pyshcrosspowerlc.1 \
-	pyshcrosspowerdensitylc.1 pyshpowerspectrumc.1 \
-	pyshpowerspectrumdensityc.1 pyshcrosspowerspectrumc.1 \
-	pyshcrosspowerspectrumdensityc.1 pyshmultitaperse.1 pyshmultitapercse.1 \
+	pyshadmitcorr.1 pyshconfidence.1 pyshmultitaperse.1 pyshmultitapercse.1 \
 	pyshlocalizedadmitcorr.1 pyshreturntapers.1 pyshreturntapersm.1 
 	pycomputedm.1 pycomputedg82.1 pyshfindlwin.1 pyshbiask.1 \
 	pyshbiasadmitcorr.1 pyshmtdebias.1 pyyilmindexvector.1 pyshmtvaropt.1 \

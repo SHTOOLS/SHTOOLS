@@ -20,7 +20,7 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 `lat` : input, real\*8
 :   The latitude of the point in DEGREES.
 
-`lon` : input, rea\l*8
+`lon` : input, real\*8
 :   The longitude of the point in DEGREES.
 
 `norm` : input, optional, integer, default = 1

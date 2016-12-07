@@ -9,13 +9,13 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
 
     Usage
     -----
-    array = spectrum(clm, [normalization, degrees, lmax, convention, unit,
-                           base])
+    array = spectrum(clm, [normalization, degrees, lmax, convention,
+                           unit, base])
 
     Returns
     -------
     array : ndarray, shape (len(degrees))
-            1-D ndarray of the spectrum.
+        1-D ndarray of the spectrum.
 
     Parameters
     ----------
@@ -26,7 +26,7 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
         orthonormalized, or Schmidt semi-normalized coefficients, respectively.
     lmax : int, optional, default = len(clm[0,:,0]) - 1.
         Maximum spherical harmonic degree to output.
-    degrees : ndarray, optional, default = range(lmax+1)
+    degrees : ndarray, optional, default = numpy.arange(lmax+1)
         Array containing the spherical harmonic degrees where the spectrum
         is computed.
     convention : str, optional, default = 'power'
@@ -66,7 +66,7 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
         lmax = len(clm[0, :, 0]) - 1
 
     if (degrees is None):
-        degrees = range(lmax+1)
+        degrees = _np.arange(lmax+1)
 
     ndegrees = len(degrees)
     array = _np.empty(ndegrees)
@@ -74,23 +74,23 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
     # First compute l2norm, and then convert to the required normalization
     if _np.iscomplexobj(clm):
         for i, l in enumerate(degrees):
-            array[i] = (clm[0, l, 0:lmax + 1] *
-                        clm[0, l, 0:lmax + 1].conjugate()).real.sum() + \
-                       (clm[1, l, 1:lmax + 1] *
-                        clm[1, l, 1:lmax + 1].conjugate()).real.sum()
+            array[i] = (clm[0, l, 0:l + 1] *
+                        clm[0, l, 0:l + 1].conjugate()).real.sum() + \
+                       (clm[1, l, 1:l + 1] *
+                        clm[1, l, 1:l + 1].conjugate()).real.sum()
     else:
         for i, l in enumerate(degrees):
-            array[i] = (clm[0, l, 0:lmax+1]**2).sum() \
-                       + (clm[1, l, 1:lmax+1]**2).sum()
+            array[i] = (clm[0, l, 0:l+1]**2).sum() \
+                       + (clm[1, l, 1:l+1]**2).sum()
 
     if convention.lower() == 'l2norm':
         pass
-    elif (convention.lower() == 'power' or convention.lower() == 'energy'):
+    elif convention.lower() in ('power', 'energy'):
         if normalization == '4pi':
             pass
         elif normalization == 'schmidt':
             array /= (2.0 * degrees + 1.0)
-        elif self.normalization == 'ortho':
+        elif normalization == 'ortho':
             array /= (4.0 * _np.pi)
         else:
             raise ValueError(
@@ -104,11 +104,11 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
     if convention.lower() == 'energy':
         array *= 4.0 * _np.pi
 
-    if (unit.lower() == 'per_l'):
+    if unit.lower() == 'per_l':
         pass
-    elif (unit.lower() == 'per_lm'):
+    elif unit.lower() == 'per_lm':
         array /= (2.0 * degrees + 1.0)
-    elif (unit.lower() == 'per_dlogl'):
+    elif unit.lower() == 'per_dlogl':
         array *= degrees * _np.log(base)
     else:
         raise ValueError(

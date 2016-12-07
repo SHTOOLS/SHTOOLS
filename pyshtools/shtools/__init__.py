@@ -62,26 +62,8 @@ from .._SHTOOLS import SHrtoc
 from .._SHTOOLS import SHctor
 
 # spectralanalysis
-from .._SHTOOLS import SHPowerL
-from .._SHTOOLS import SHPowerDensityL
-from .._SHTOOLS import SHCrossPowerL
-from .._SHTOOLS import SHCrossPowerDensityL
-from .._SHTOOLS import SHPowerSpectrum
-from .._SHTOOLS import SHPowerSpectrumDensity
-from .._SHTOOLS import SHCrossPowerSpectrum
-from .._SHTOOLS import SHCrossPowerSpectrumDensity
 from .._SHTOOLS import SHAdmitCorr
 from .._SHTOOLS import SHConfidence
-from .._SHTOOLS import SHPowerLC
-from .._SHTOOLS import SHPowerDensityLC
-from .._SHTOOLS import SHCrossPowerLC
-from .._SHTOOLS import SHCrossPowerDensityLC
-from .._SHTOOLS import SHPowerSpectrumC
-from .._SHTOOLS import SHPowerSpectrumDensityC
-from .._SHTOOLS import SHCrossPowerSpectrumC
-from .._SHTOOLS import SHCrossPowerSpectrumDensityC
-
-# localizedspectralanalysis
 from .._SHTOOLS import SHMultiTaperSE
 from .._SHTOOLS import SHMultiTaperCSE
 from .._SHTOOLS import SHLocalizedAdmitCorr
@@ -142,14 +124,7 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
             'SHRead', 'SHReadH', 'SHReadError', 'SHReadErrorH', 'SHRead2',
             'SHRead2Error', 'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector',
             'SHVectorToCilm', 'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc',
-            'SHctor', 'SHPowerL', 'SHPowerDensityL', 'SHCrossPowerL',
-            'SHCrossPowerDensityL', 'SHPowerSpectrum',
-            'SHPowerSpectrumDensity', 'SHCrossPowerSpectrum',
-            'SHCrossPowerSpectrumDensity', 'SHAdmitCorr', 'SHConfidence',
-            'SHPowerLC', 'SHPowerDensityLC', 'SHCrossPowerLC',
-            'SHCrossPowerDensityLC', 'SHPowerSpectrumC',
-            'SHPowerSpectrumDensityC', 'SHCrossPowerSpectrumC',
-            'SHCrossPowerSpectrumDensityC', 'SHMultiTaperSE',
+            'SHctor', 'SHAdmitCorr', 'SHConfidence', 'SHMultiTaperSE',
             'SHMultiTaperCSE', 'SHLocalizedAdmitCorr', 'SHReturnTapers',
             'SHReturnTapersM', 'ComputeDm', 'ComputeDG82', 'SHFindLWin',
             'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr', 'SHMTDebias',
@@ -164,13 +139,9 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
             'SHMagPowerSpectrum', 'SHMagPowerL',
             'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j']
 
-_fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'SHPowerL',
-                      'SHPowerDensityL', 'SHCrossPowerL',
-                      'SHCrossPowerDensityL', 'DownContFilterMA',
+_fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',
-                      'NormalGravity', 'SHConfidence', 'SHMagPowerL',
-                      'SHPowerLC', 'SHPowerDensityLC', 'SHCrossPowerLC',
-                      'SHCrossPowerDensityLC']
+                      'NormalGravity', 'SHConfidence', 'SHMagPowerL']
 
 _fortran_subroutines = list(set(__all__) - set(_fortran_functions))
 

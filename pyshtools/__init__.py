@@ -43,14 +43,10 @@ __author__ = 'SHTOOLS developers'
 import os as _os
 import numpy as _np
 
-
-# ---- Import classes into pyshtools namespace
-from . import shclasses
-from .shclasses import SHCoeffs, SHGrid, SHWindow
-
 # ---- Import shtools subpackages ----
 from . import shtools
 from . import constant
+from . import shclasses
 from . import legendre
 from . import expand
 from . import shio
@@ -59,6 +55,8 @@ from . import rotate
 from . import gravmag
 from . import utils
 
+# ---- Import classes into pyshtools namespace
+from .shclasses import SHCoeffs, SHGrid, SHWindow
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',

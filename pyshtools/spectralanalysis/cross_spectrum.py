@@ -9,13 +9,13 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
 
     Usage
     -----
-    array = spectrum(clm1, clm2, [normalization, degrees, lmax, convention,
-                                  unit, base])
+    array = cross_spectrum(clm1, clm2, [normalization, degrees, lmax,
+                                        convention, unit, base])
 
     Returns
     -------
     array : ndarray, shape (len(degrees))
-            1-D ndarray of the spectrum.
+        1-D ndarray of the spectrum.
 
     Parameters
     ----------
@@ -28,7 +28,7 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
         orthonormalized, or Schmidt semi-normalized coefficients, respectively.
     lmax : int, optional, default = len(clm[0,:,0]) - 1.
         Maximum spherical harmonic degree to output.
-    degrees : ndarray, optional, default = range(lmax+1)
+    degrees : ndarray, optional, default = numpy.arange(lmax+1)
         Array containing the spherical harmonic degrees where the spectrum
         is computed.
     convention : str, optional, default = 'power'
@@ -70,7 +70,7 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
         lmax = len(clm1[0, :, 0]) - 1
 
     if (degrees is None):
-        degrees = range(lmax+1)
+        degrees = _np.range(lmax+1)
 
     if _np.iscomplexobj(clm1) is not _np.iscomplexobj(clm2):
         raise ValueError('clm1 and clm2 must both be either real or ' +
@@ -88,23 +88,23 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
     # First compute l2norm, and then convert to the required normalization
     if _np.iscomplexobj(clm1):
         for i, l in enumerate(degrees):
-            array[i] = (clm1[0, l, 0:lmax + 1] *
-                        clm2[0, l, 0:lmax + 1].conjugate()).sum() + \
-                       (clm1[1, l, 1:lmax + 1] *
-                        clm2[1, l, 1:lmax + 1].conjugate()).sum()
+            array[i] = (clm1[0, l, 0:l + 1] *
+                        clm2[0, l, 0:l + 1].conjugate()).sum() + \
+                       (clm1[1, l, 1:l + 1] *
+                        clm2[1, l, 1:l + 1].conjugate()).sum()
     else:
         for i, l in enumerate(degrees):
-            array[i] = (clm1[0, l, 0:lmax+1] * clm2[0, l, 0:lmax+1]).sum() \
-                       + (clm1[1, l, 1:lmax+1] * clm2[1, l, 1:lmax+1]).sum()
+            array[i] = (clm1[0, l, 0:l + 1] * clm2[0, l, 0:l + 1]).sum() \
+                       + (clm1[1, l, 1:l + 1] * clm2[1, l, 1:l + 1]).sum()
 
     if convention.lower() == 'l2norm':
         pass
-    elif (convention.lower() == 'power' or convention.lower() == 'energy'):
+    elif convention.lower() in ('power', 'energy'):
         if normalization == '4pi':
             pass
         elif normalization == 'schmidt':
             array /= (2.0 * degrees + 1.0)
-        elif self.normalization == 'ortho':
+        elif normalization == 'ortho':
             array /= (4.0 * _np.pi)
         else:
             raise ValueError(
@@ -118,11 +118,11 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
     if convention.lower() == 'energy':
         array *= 4.0 * _np.pi
 
-    if (unit.lower() == 'per_l'):
+    if unit.lower() == 'per_l':
         pass
-    elif (unit.lower() == 'per_lm'):
+    elif unit.lower() == 'per_lm':
         array /= (2.0 * degrees + 1.0)
-    elif (unit.lower() == 'per_dlogl'):
+    elif unit.lower() == 'per_dlogl':
         array *= degrees * _np.log(base)
     else:
         raise ValueError(

@@ -12,7 +12,7 @@ import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import expand
-from pyshtools import shtools
+from pyshtools import spectralanalysis
 
 
 # ==== MAIN FUNCTION ====
@@ -42,7 +42,7 @@ def TimingAccuracyGLQ():
     cilm = np.random.normal(loc=0., scale=1., size=(2, maxdeg + 1, maxdeg + 1))
     cilm[:, 1:, :] *= np.sqrt((ls[1:]**beta) /
                               (2. * ls[1:] + 1.))[None, :, None]
-    old_power = shtools.SHPowerSpectrum(cilm)
+    old_power = spectralanalysis.spectrum(cilm)
     new_power = 1. / (1. + ls)**beta  # initialize degrees > 0 to power-law
     cilm[:, :, :] *= np.sqrt(new_power / old_power)[None, :, None]
     cilm[~mask] = 0.

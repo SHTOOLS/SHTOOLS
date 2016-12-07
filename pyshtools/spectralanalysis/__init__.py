@@ -6,7 +6,7 @@ This subpackage of pyshtools defines the following functions:
 Global spectral analysis
 ------------------------
 spectrum               Calculate the spectrum of a real or complex function.
-cross-spectrum         Calculate the cross-spectrum of two real or complex
+cross_spectrum         Calculate the cross-spectrum of two real or complex
                        functions.
 SHAdmitCorr            Calculate the admittance and correlation spectra
                        of two functions.

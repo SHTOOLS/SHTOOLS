@@ -20,7 +20,7 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 `lat` : input, real\*8
 :   The latitude of the point in DEGREES.
 
-`lon` : input, rea\l*8
+`lon` : input, real\*8
 :   The longitude of the point in DEGREES.
 
 `norm` : input, optional, integer, default = 1
@@ -34,7 +34,7 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 
 # Description
 
-`MakeGridPointC` will expand a complex function expressed in complex spherical harmonics at a single point. The input latitude and longitude are in degrees. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. 
+`MakeGridPointC` will expand a complex function expressed in complex spherical harmonics at a single point. The input latitude and longitude are in degrees. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
 # See also
 
