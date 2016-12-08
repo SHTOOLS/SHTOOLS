@@ -14,15 +14,15 @@ Convert a 1-dimensional indexed vector of real spherical harmonic coefficients t
 # Parameters
 
 `vector` : float, dimension ( (`lmaxin`+1)\*\*2 )
-:   The input 1-D indexed array of real spherical harmonic coefficients. 
+:   The input 1-D indexed array of real spherical harmonic coefficients.
 
 `lmax` : optional, optional, default = `lmaxin`
 :   The maximum degree of the output coefficients.
 
 # Description
 
-`SHVectorToCilm` will convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array.  The degree `l`, order `m`, and `i` (1 = cosine, 2 = sine) corresponds to the index `l**2+(i-1)*l+m.
+`SHVectorToCilm` will convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array. The degree `l`, order `m`, and `i` (1 = cosine, 2 = sine) corresponds to the index `l**2+(i-1)*l+m.
 
 # See also
 
-[shcilmtovector](pyshcilmtovector.html), [yilmindex](pyyilmindex.html), [shcilmtocindex](pyshcilmtocindex.html), [shcindextocilm](pyshcindextocilm.html)
+[shcilmtovector](pyshcilmtovector.html), [yilmindexvector](pyyilmindexvector.html), [shcilmtocindex](pyshcilmtocindex.html), [shcindextocilm](pyshcindextocilm.html)

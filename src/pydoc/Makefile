@@ -116,7 +116,7 @@ HTMLFILES_gravmag = $(addprefix $(WWWDIR)/, pymakegravgriddh.html \
 	pycilmminusdh.html pycilmplusrhohdh.html pycilmminusrhohdh.html \
 	pybatohilmdh.html pybatohilmrhohdh.html pydowncontfilterma.html \
 	pydowncontfiltermc.html pynormalgravity.html pymakemaggriddh.html \
-	pyshmagpowerl.html)
+	pyshmagpowerl.html pyshmagpowerspectrum.html)
 
 HTMLFILES_utils = $(addprefix $(WWWDIR)/, pymakecirclecoord.html \
 	pymakeellipsecoord.html pywigner3j.html)

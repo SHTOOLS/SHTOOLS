@@ -56,13 +56,13 @@ Create 2D cylindrical maps on a flattened ellipsoid of the components of the gra
 
 `MakeGravGradGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm`, equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) in latitude and longitude, for six components of the gravity "gradient" tensor (all using geocentric coordinates):
 
-`(Vxx, Vxy, Vxz)`  
-`(Vyx, Vyy, Vyz)`  
-`(Vzx, Vzy, Vzz)`  
+`(Vxx, Vxy, Vxz)`
+`(Vyx, Vyy, Vyz)`
+`(Vzx, Vzy, Vzz)`
 
 The reference frame is north-oriented, where `x` points north, `y` points west, and `z` points upward (all tangent or perpendicular to a sphere of radius r). The gravitational potential is defined as
 
-`V = GM/r Sum_{l=0}^lmax (r0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}`, 
+`V = GM/r Sum_{l=0}^lmax (r0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}`,
 
 where `r0` is the reference radius of the spherical harmonic coefficients `Clm`, and the gravitational acceleration is
 
@@ -72,12 +72,12 @@ The gravity tensor is symmetric, and satisfies `Vxx+Vyy+Vzz=0`, though all three
 
 The components of the gravity tensor are calculated according to eq. 1 in Petrovskaya and Vershkov (2006), which is based on eq. 3.28 in Reed (1973) (noting that Reed's equations are in terms of latitude and that the `y` axis points east):
 
-`Vzz = Vrr`  
-`Vxx = 1/r Vr + 1/r^2 Vtt`  
-`Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp`  
-`Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp`  
-`Vxz = 1/r^2 Vt - 1/r Vrt`  
-`Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp`  
+`Vzz = Vrr`
+`Vxx = 1/r Vr + 1/r^2 Vtt`
+`Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp`
+`Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp`
+`Vxz = 1/r^2 Vt - 1/r Vrt`
+`Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp`
 
 where `r`, `t`, `p` stand for radius, theta, and phi, respectively, and subscripts on `V` denote partial derivatives.
 
@@ -96,4 +96,4 @@ Petrovskaya, M.S. and A.N. Vershkov, Non-singular expressions for the gravity gr
 
 # See also
 
-[makegravgriddh](pymakegravgriddh.html), [makegeoidgrid](pymakegeoidgrid.html), [makegriddh](pymakegriddh.html)
+[makegravgriddh](pymakegravgriddh.html), [makegeoidgriddh](pymakegeoidgriddh.html), [makegriddh](pymakegriddh.html)

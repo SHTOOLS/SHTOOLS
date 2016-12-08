@@ -26,5 +26,5 @@ call SHCindexToCilm (`cindex`, `cilm`, `degmax`, `exitstatus`)
 
 # See also
 
-[shcindextocilm](shcindextocilm.html), [shcindextovector](pyshcindextovector.html), [shvectortocilm](pyshvectortocilm.html)
+[shcilmtocindex](shcilmtocindex.html), [shcilmtovector](shcilmtovector.html), [shvectortocilm](shvectortocilm.html)
 

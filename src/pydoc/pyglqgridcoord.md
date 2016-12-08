@@ -9,10 +9,10 @@ Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature
 # Returns
 
 `latglq` : float, dimension (`lmax`+1)
-:   The latitude coordinates of a grid, corresponding to the indices [:,0], in DEGREES.
+:   The latitude coordinates of a grid, corresponding to the indices [:,0], in degrees.
 
 `longlq` : float, dimension (2\*`lmax`+1)
-:   The longitude coordinates of a grid, corresponding to the indices [0,:], in DEGREES. The first node is 0 E.
+:   The longitude coordinates of a grid, corresponding to the indices [0,:], in degrees. The first node is 0 E.
 
 # Parameters
 
@@ -25,4 +25,4 @@ Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature
 
 # See also
 
-[`shglq`](pyshglq.html), [`shexpandglq`](pyshexpandglq.html), [`makegridglq`](pymakegridglq.html), [`shexpandglqc`](pyshexpandglqc.html), [`makegridglqc`](pymakegridglqc.html), [`preglq`](pypreglq.html)
+[`shglq`](pyshglq.html), [`shexpandglq`](pyshexpandglq.html), [`makegridglq`](pymakegridglq.html), [`shexpandglqc`](pyshexpandglqc.html), [`makegridglqc`](pymakegridglqc.html)
