@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="shreturntapers">SHReturnTapers</h1>
 <p>Calculate the eigenfunctions of the spherical-cap concentration problem.</p>
 <h1 id="usage">Usage</h1>
-<p>call SHReturnTapers (<code>theta0</code>, <code>lmax</code>, <code>tapers</code>, <code>eigenvalues</code>, <code>taper_order</code>)</p>
+<p>call SHReturnTapers (<code>theta0</code>, <code>lmax</code>, <code>tapers</code>, <code>eigenvalues</code>, <code>taper_order</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>theta0</code> : input, real*8</dt>
@@ -50,6 +50,9 @@
 <dt><code>taper_order</code> : output, integer, dimension ((<code>lmax</code>+1)**2)</dt>
 <dd>The angular order of the non-zero spherical harmonic coefficients in each column of <code>tapers</code>.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHReturnTapers</code> will calculate the eigenfunctions (i.e., localization windows) of the spherical-cap concentration problem. Each column of the matrix <code>tapers</code> contains the spherical harmonic coefficients of a single window and the corresponding concentration factor is given in the array <code>eigenvalues</code>. Each window has non-zero coefficients for only a single angular order that is specified in <code>taper_order</code>: all other spherical harmonic coefficients for a given window are identically zero. The columns of <code>tapers</code> are ordered from best to worst concentrated, and the first and last rows of each column correspond to spherical harmonic degrees 0 and <code>lmax</code>, respectively. The localization windows are normalized such that they have unit power.</p>
@@ -62,11 +65,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

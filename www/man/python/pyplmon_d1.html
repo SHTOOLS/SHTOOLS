@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="plmon_d1">PlmON_d1</h1>
 <p>Compute all the orthonormalized associated Legendre functions and first derivatives.</p>
 <h1 id="usage">Usage</h1>
-<p><code>p</code>, <code>dp</code> = pyshtools.PlmON_d1 (<code>lmax</code>, <code>z</code>, [<code>csphase</code>, <code>cnorm</code>])</p>
+<p><code>p</code>, <code>dp</code> = PlmON_d1 (<code>lmax</code>, <code>z</code>, [<code>csphase</code>, <code>cnorm</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>p</code> : float, dimension ((<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
@@ -45,7 +45,7 @@
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>lmax</code> : integer</dt>
-<dd>The maximum degree of the associated Legendre functions to be computed. If <code>lmax</code> is -1, allocated memory will be deallocated.
+<dd>The maximum degree of the associated Legendre functions to be computed.
 </dd>
 <dt><code>z</code> : float</dt>
 <dd>The argument of the associated Legendre functions.
@@ -60,7 +60,6 @@
 <h1 id="description">Description</h1>
 <p><code>PlmON_d1</code> will calculate all of the orthonormalized associated Legendre functions and first derivatives up to degree <code>lmax</code> for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree <code>l</code> and angular order <code>m</code> corresponds to <code>l*(l+1)/2+m</code>.</p>
 <p>The integral of the squared Legendre functions over the interval [-1, 1] is <code>(2-delta(0,m))/(2pi)</code>, where delta is the Kronecker delta function. If the optional parameter <code>cnorm</code> is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is <code>1/(2pi)</code>. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument <code>csphase</code> to -1. Note that the derivative of the Legendre functions is calculated with respect to its arguement <code>z</code>, and not latitude or colatitude. If <code>z=cos(theta)</code>, where <code>theta</code> is the colatitude, then it is only necessary to multiply <code>dp</code> by <code>-sin(theta)</code> to obtain the derivative with respect to <code>theta</code>.</p>
-<p>This routine saves the three-term recursion factors and square roots of the integers the first time being called. If subsequent calls possess the same value of <code>lmax</code>, these will not be recomputed. If you wish to deallocate this memory, which is an array of length <code>(lmax+1)*(lmax+2)</code>, recall this routine with <code>lmax</code>=-1.</p>
 <h1 id="references">References</h1>
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, 2002.</p>
 <h1 id="see-also">See also</h1>
@@ -69,11 +68,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylegendre.html" class="dir">Legendre Functions</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

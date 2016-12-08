@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a  href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="shread">SHRead</h1>
 <p>Read spherical harmonic coefficients from an ascii-formatted file.</p>
 <h1 id="usage">Usage</h1>
-<p>call SHRead (<code>filename</code>, <code>cilm</code>, <code>lmax</code>, <code>skip</code>, <code>header</code>, <code>error</code>)</p>
+<p>call SHRead (<code>filename</code>, <code>cilm</code>, <code>lmax</code>, <code>skip</code>, <code>header</code>, <code>error</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>filename</code> : input, character(:)</dt>
@@ -53,6 +53,9 @@
 <dt><code>error</code> : output, optional, real*8 dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
 <dd>The errors corresponding to the spherical harmonic coefficients <code>cilm</code>.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHRead</code> will read spherical harmonic coefficients from an ascii-formatted file into an array <code>cilm</code>. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array <code>cilm</code>-1 and the maximum degree of the coefficients in the file. If the optional array <code>skip</code> is specified, parsing of the file will commence after the first <code>skip</code> lines. If the optional array <code>header</code> is specified, then the first <code>n</code> elements after the skipped lines will be output, where <code>n</code> is the length of the array <code>header</code>.</p>
@@ -69,11 +72,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

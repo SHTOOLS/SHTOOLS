@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a  href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -30,7 +30,7 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 <h1 id="makegridpoint">MakeGridPoint</h1>
-<p>Evaluate a function expressed in spherical harmonics at a single point.</p>
+<p>Evaluate a real function expressed in real spherical harmonics at a single point.</p>
 <h1 id="usage">Usage</h1>
 <p><code>value</code> = MakeGridPoint (<code>cilm</code>, <code>lmax</code>, <code>lat</code>, <code>lon</code>, <code>norm</code>, <code>csphase</code>, <code>dealloc</code>)</p>
 <h1 id="parameters">Parameters</h1>
@@ -47,7 +47,7 @@
 <dt><code>lat</code> : input, real*8</dt>
 <dd>The latitude of the point in DEGREES.
 </dd>
-<dt><code>lon</code> : input, rea8</dt>
+<dt><code>lon</code> : input, real*8</dt>
 <dd>The longitude of the point in DEGREES.
 </dd>
 <dt><code>norm</code> : input, optional, integer, default = 1</dt>
@@ -63,16 +63,16 @@
 <h1 id="description">Description</h1>
 <p><code>MakeGridPoint</code> will expand a function expressed in spherical harmonics at a single point. The input latitude and longitude are in degrees. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code>norm</code> and <code>csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
 <h1 id="see-also">See also</h1>
-<p><a href="makegriddh.html"><code>makegriddh</code></a>, <a href="makegriddhc.html"><code>makegriddhc</code></a>, <a href="makegridglq.html"><code>makegridglq</code></a>, <a href="makegridglqc.html"><code>makegridglqc</code></a></p>
+<p><a href="makegridpointc.html"><code>makegridpointc</code></a>, <a href="makegriddh.html"><code>makegriddh</code></a>, <a href="makegriddhc.html"><code>makegriddhc</code></a>, <a href="makegridglq.html"><code>makegridglq</code></a>, <a href="makegridglqc.html"><code>makegridglqc</code></a></p>
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

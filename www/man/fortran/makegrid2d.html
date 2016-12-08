@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a  href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="makegrid2d">MakeGrid2D</h1>
 <p>Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical harmonic coefficients.</p>
 <h1 id="usage">Usage</h1>
-<p>call MakeGrid2D (<code>grid</code>, <code>cilm</code>, <code>lmax</code>, <code>interval</code>, <code>nlat</code>, <code>nlong</code>, <code>norm</code>, <code>csphase</code>, <code>f</code>, <code>a</code>, <code>north</code>, <code>south</code>, <code>east</code>, <code>west</code>, <code>dealloc</code>)</p>
+<p>call MakeGrid2D (<code>grid</code>, <code>cilm</code>, <code>lmax</code>, <code>interval</code>, <code>nlat</code>, <code>nlong</code>, <code>norm</code>, <code>csphase</code>, <code>f</code>, <code>a</code>, <code>north</code>, <code>south</code>, <code>east</code>, <code>west</code>, <code>dealloc</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>grid</code> : output, real*8, dimension (180/<code>interval</code>+1, 360/<code>interval</code>+1)</dt>
@@ -80,6 +80,9 @@
 <dt><code>dealloc</code> : input, optional, integer, default = 0</dt>
 <dd>0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>MakeGrid2D</code> will create a 2-dimensional cylindrical map, equally spaced in (geocentric) latitude and longitude, from a set of input spherical harmonic coefficients. The output grid is in raster format possessing upper-left and lower-right coordinates of (90 N, 0 E) and (90 S, 360 E), repsectively. If the optional parameters <code>north</code>, <code>south</code>, <code>east</code> and <code>west</code> are specified, then the output grid will possess upper-left and lower-right coordinates of (<code>north</code>, <code>west</code>) and (<code>south</code>, <code>east</code>), repsectively. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code>norm</code> and <code>csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
@@ -92,11 +95,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

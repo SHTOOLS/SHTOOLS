@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="shmtdebias">SHMTDebias</h1>
 <p>Invert for the global power spectrum given a multitaper spectrum estimate formed with spherical cap localization windows.</p>
 <h1 id="usage">Usage</h1>
-<p>call SHMTDebias (<code>mtdebias</code>, <code>mtspectra</code>, <code>lmax</code>, <code>tapers</code>, <code>lwin</code>, <code>k</code>, <code>nl</code>, <code>lmid</code>, <code>n</code>, <code>taper_wt</code>)</p>
+<p>call SHMTDebias (<code>mtdebias</code>, <code>mtspectra</code>, <code>lmax</code>, <code>tapers</code>, <code>lwin</code>, <code>k</code>, <code>nl</code>, <code>lmid</code>, <code>n</code>, <code>taper_wt</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>mtdebias</code> : output, real*8, dimension (2, ceiling((<code>lmax</code>+1)/<code>nl</code>))</dt>
@@ -65,6 +65,9 @@
 <dt><code>taper_wt</code> : input, optional, real*8, dimension (<code>k</code>)</dt>
 <dd>The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine <code>SHMTVarOpt</code>.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHMTDebias</code> will invert for the global power spectrum given a localized multitaper spectrum estimate formed from spherical cap localization windows. This linear inverse problem is inherently underdetermined, and in order to achive a unique solution it is assumed that the global spectrum is constant in bins of width <code>nl</code>, and that the global power spectrum is constant for degrees greater than <code>lmax</code>. In practice <code>nl</code> should be increased until the global power spectrum is everywhere positive (negative values would be unphysical) and the variances are reasonable. Further details can be found in Wieczorek and Simons (2007).</p>
@@ -79,11 +82,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

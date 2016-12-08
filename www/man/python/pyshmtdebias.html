@@ -4,7 +4,7 @@
 <html>
 
 <head>
-	<title>SHTOOLS - Localized spectral analysis</title>
+	<title>SHTOOLS - Global spectral analysis</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -28,11 +28,11 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyspectralanalysis.html" class="dir">Global and Localized Spectral Analysis</a></p>
 <h1 id="shmtdebias">SHMTDebias</h1>
 <p>Invert for the global power spectrum given a multitaper spectrum estimate formed with spherical cap localization windows.</p>
 <h1 id="usage">Usage</h1>
-<p><code>mtdebias</code>, <code>lmid</code> = pyshtools.SHMTDebias (<code>mtspectra</code>, <code>tapers</code>, <code>nl</code>, [<code>lmax</code>, <code>lwin</code>, <code>k</code>, <code>taper_wt</code>])</p>
+<p><code>mtdebias</code>, <code>lmid</code> = SHMTDebias (<code>mtspectra</code>, <code>tapers</code>, <code>nl</code>, [<code>lmax</code>, <code>lwin</code>, <code>k</code>, <code>taper_wt</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>mtdebias</code> : float, dimension (2, <code>n</code>)</dt>
@@ -77,13 +77,13 @@
 <p><a href="pyshmultitaperse.html">shmultitaperse</a>, <a href="pyshmultitapercse.html">shmultitapercse</a>, <a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshmtvaropt.html">shmtvaropt</a>, <a href="pyshmtcouplingmatrix.html">shmtcouplingmatrix</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyspectralanalysis.html" class="dir">Global and Localized Spectral Analysis</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
