@@ -38,7 +38,7 @@ Compute the Wigner-3j symbols for all allowable values of J.
 
 `Wigner3j` will calculate the Wigner 3J symbols
 
-`/ j  j2 j3 \`
+`/ j  j2 j3 \`  
 `\ m1 m2 m3 /`
 
 for all allowable values of `j`. The returned values in the array `w3j` are calculated only for the limits
@@ -53,9 +53,9 @@ The employed algorithm is based upon the stable non-linear recurrence relations 
 
 The results of this routine have been verified against the same routine run in quadruple precision. For 1.e7 acceptable random values of `j2`, `j3`, `m2`, and `m3` between -200 and 200, the relative error was calculated only for those 3j coefficients that had an absolute value greater than 1.d-17 (values smaller than this are for all practical purposed zero, and can be heavily affected by machine roundoff errors or underflow). 853 combinations of parameters were found to have relative errors greater than 1.d-8. Here I list the minimum value of `max(j2,j3)` for different ranges of error, as well as the number of times this error occurred:
 
-`max(j2,j3) = 103: 1.d-7 < error <=1.d-8 ; Number of occurrences = 483`
-`max(j2,j3) = 116: 1.d-6 < error <= 1.d-7 ; Number of occurrences = 240`
-`max(j2,j3) = 165: 1.d-5 < error <= 1.d-6 ; Number of occurrences = 93`
+`max(j2,j3) = 103: 1.d-7 < error <=1.d-8 ; Number of occurrences = 483`  
+`max(j2,j3) = 116: 1.d-6 < error <= 1.d-7 ; Number of occurrences = 240`  
+`max(j2,j3) = 165: 1.d-5 < error <= 1.d-6 ; Number of occurrences = 93`  
 `max(j2,j3) = 167: 1.d-4 < error <= 1.d-5 ; Number of occurrences = 36`
 
 Many times, the large relative errors occur when the 3j coefficient changes sign and is very close to zero (i.e., adjacent values are about 1.e7 times greater in magnitude). Thus, if one does not need to know highly accurate values of the 3j coefficients when they are almost zero (i.e., ~1.e-10) then this routine is probably usable up to about 160.
