@@ -1,4 +1,4 @@
-# MakeGeoidGrid  
+# MakeGeoidGrid
 
 Create a global map of the geoid.
 

@@ -4,7 +4,7 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 
 # Usage
 
-`index` =  YilmIndex (`i`, `l`, `m`)
+`index` = YilmIndex (`i`, `l`, `m`)
 
 # Parameters
 
@@ -16,7 +16,7 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 
 `l` : input, integer
 :   The spherical harmonic degree.
-	
+
 `m` : input, integer
 :   The angular order.
 

@@ -16,7 +16,7 @@ SHTOOLS Module containing planetary constants.
 `pi_constant`
 :   Pi.
 
-`mu0_constant` 
+`mu0_constant`
 :   Magnetic constant.
 
 
@@ -88,17 +88,17 @@ SHTOOLS Module containing planetary constants.
 :   Semi-major axis radius of Mars.
 
 `b_Mars`
-:	 Semi-minor axis radius of Mars.
+:   Semi-minor axis radius of Mars.
 
 `W0_mars`
-:	Reference potential of Mars.
+:   Reference potential of Mars.
 
 ## Venus
 
 `R_Venus`
 :   Average radius of Venus.
 
-`R0_pot_Venus` 
+`R0_pot_Venus`
 :   Reference radius of the gravitational-potential models of Venus.
 
 `GM_Venus`

@@ -1,4 +1,4 @@
-# SHExpandDH  
+# SHExpandDH
 
 Expand an equally sampled or equally spaced grid into spherical harmonics using Driscoll and Healy's (1994) sampling theorem.
 
