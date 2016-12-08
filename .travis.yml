@@ -3,8 +3,8 @@ language: c
 matrix:
   include:
     # do one build run with our minimum dependencies
-    # (or, well, at least the lowest version number that is available through
-    #  anaconda..)
+    # (or, at least the lowest version number that is available through
+    #  anaconda)
     - os: linux
       env: PYTHON_VERSION=2.7
     - os: linux
@@ -19,7 +19,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
        brew install fftw --with-fortran;
     else
-       sudo apt-get update; 
+       sudo apt-get update;
        sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh;
     fi
 
@@ -49,7 +49,7 @@ install:
         jupyter
   - conda install nbconvert
   - source activate test-environment
-  - pip install --no-deps .  
+  - pip install --no-deps .
 
 script:
   - python examples/notebooks/test_notebooks.py

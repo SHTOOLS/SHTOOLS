@@ -30,15 +30,15 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from .shcoeffs import SHCoeffs
-from .shcoeffs import SHRealCoeffs
-from .shcoeffs import SHComplexCoeffs
+from .shcoeffsgrid import SHCoeffs
+from .shcoeffsgrid import SHRealCoeffs
+from .shcoeffsgrid import SHComplexCoeffs
 
-from .shgrid import SHGrid
-from .shgrid import DHRealGrid
-from .shgrid import DHComplexGrid
-from .shgrid import GLQRealGrid
-from .shgrid import GLQComplexGrid
+from .shcoeffsgrid import SHGrid
+from .shcoeffsgrid import DHRealGrid
+from .shcoeffsgrid import DHComplexGrid
+from .shcoeffsgrid import GLQRealGrid
+from .shcoeffsgrid import GLQComplexGrid
 
 from .shwindow import SHWindow
 from .shwindow import SHWindowCap
