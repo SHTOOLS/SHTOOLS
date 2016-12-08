@@ -1,4 +1,4 @@
-# SHGLQ 
+# SHGLQ
 
 Precompute weights, nodes, and associated Legendre functions used in the Gauss-Legendre quadrature based spherical harmonics routines.
 

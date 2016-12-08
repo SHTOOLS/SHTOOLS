@@ -8,7 +8,7 @@ Return the cross\-spectrum of the spherical harmonic coefficients as a
 function of spherical harmonic degree.
 .SH Usage
 .PP
-\f[C]array\f[] = spectrum (\f[C]clm1\f[], \f[C]clm2\f[],
+\f[C]array\f[] = cross_spectrum (\f[C]clm1\f[], \f[C]clm2\f[],
 [\f[C]normalization\f[], \f[C]degrees\f[], \f[C]lmax\f[],
 \f[C]convention\f[], \f[C]unit\f[], \f[C]base\f[]])
 .SH Returns
@@ -94,3 +94,6 @@ The contrubution in the band dlog_a(l) is spectrum(l,
 \[aq]per_dlogl\[aq])*dlog_a(l), where a is the base, and where
 spectrum(l, \[aq]per_dlogl\[aq]) is equal to spectrum(l,
 \[aq]per_l\[aq])*l*log(a).
+.SH See also
+.PP
+spectrum

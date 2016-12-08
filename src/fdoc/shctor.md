@@ -1,4 +1,4 @@
-# SHctor  
+# SHctor
 
 Convert complex spherical harmonics to real form.
 

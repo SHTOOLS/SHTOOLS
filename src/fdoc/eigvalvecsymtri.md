@@ -1,4 +1,4 @@
-# EigValVecSymTri  
+# EigValVecSymTri
 
 Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix.
 

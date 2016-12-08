@@ -86,7 +86,7 @@
 	<h3>Intel Fortran <tt>ifort</tt></h3>
 
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>ifort -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -Tf MyProgram.f95 -o MyProgram</tt></p>
+		<p class="nomargintop nomarginbot"><tt>ifort -fpp -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm &#8209;llapack -lblas -O3 -m64 -Tf MyProgram.f95 -o MyProgram</tt></p>
 	</blockquote>
 
 	<p>Note that the position of the source file in the above examples might be important for some compilers. It may be necessary to modify some options in order to properly link to both the LAPACK and FFTW libraries (see <a href="install.html">Compilation Instructions</a> for more details). If the library <tt>ATLAS</tt> exists on your system, this could be used instead of <tt>BLAS</tt>.</p>
@@ -96,7 +96,7 @@
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot">
 		<tt>-fopenmp</tt> (gfortran)<br>
-		<tt>-openmp</tt> (Absoft Pro Fortran)
+		<tt>-openmp</tt> (Absoft Pro Fortran)<br>
 		<tt>-qopenmp</tt> (ifort)
 		</p>
 	</blockquote>
