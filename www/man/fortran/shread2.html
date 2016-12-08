@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a  href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="shread2">SHRead2</h1>
 <p>Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file.</p>
 <h1 id="usage">Usage</h1>
-<p>call SHRead2 (<code>filename</code>, <code>cilm</code>, <code>lmax</code>, <code>gm</code>, <code>r0_pot</code>, <code>error</code>, <code>dot</code>, <code>doystart</code>, <code>doyend</code>, <code>epoch</code>)</p>
+<p>call SHRead2 (<code>filename</code>, <code>cilm</code>, <code>lmax</code>, <code>gm</code>, <code>r0_pot</code>, <code>error</code>, <code>dot</code>, <code>doystart</code>, <code>doyend</code>, <code>epoch</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>filename</code> : input, character(*)</dt>
@@ -65,6 +65,9 @@
 <dt><code>epoch</code> : output, optional, real*8</dt>
 <dd>The epoch time for the time derivates.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHRead2</code> will read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file into an array <code>cilm</code>. The errors and time derivatives associated with the coefficients will be read if the optional arrays <code>error</code> and <code>dot</code> are specified, respectively. The staring and ending date of the solution are specified by the optional parameters <code>doystart</code> and <code>doyend</code>, and the epoch of the time derivates is specified by the optional parameter <code>epoch</code>. The maximum spherical harmonic degree is read from the file, and the file does not need to be ordered by angular degree or order.</p>
@@ -81,11 +84,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

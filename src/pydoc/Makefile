@@ -64,7 +64,7 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 \
 	pyshreadjplerror.1 pyshcilmtocindex.1 pyshcindextocilm.1 \
 	pyshcilmtovector.1 pyshvectortocilm.1 pyshrtoc.1 pyshctor.1 \
 	pyshadmitcorr.1 pyshconfidence.1 pyshmultitaperse.1 pyshmultitapercse.1 \
-	pyshlocalizedadmitcorr.1 pyshreturntapers.1 pyshreturntapersm.1 
+	pyshlocalizedadmitcorr.1 pyshreturntapers.1 pyshreturntapersm.1 \
 	pycomputedm.1 pycomputedg82.1 pyshfindlwin.1 pyshbiask.1 \
 	pyshbiasadmitcorr.1 pyshmtdebias.1 pyyilmindexvector.1 pyshmtvaropt.1 \
 	pyshsjkpg.1 pyshreturntapersmap.1 pycomputedmap.1 pycurve2mask.1 \
@@ -118,7 +118,7 @@ HTMLFILES_gravmag = $(addprefix $(WWWDIR)/, pymakegravgriddh.html \
 	pydowncontfiltermc.html pynormalgravity.html pymakemaggriddh.html \
 	pyshmagpowerl.html)
 
-HTMLFILES_other = $(addprefix $(WWWDIR)/, pymakecirclecoord.html \
+HTMLFILES_utils = $(addprefix $(WWWDIR)/, pymakecirclecoord.html \
 	pymakeellipsecoord.html pywigner3j.html)
 
 
@@ -133,7 +133,7 @@ install-man: $(MANFILES)
 install-html: $(HTMLFILES_modules) $(HTMLFILES_legendre) $(HTMLFILES_transformations) \
 	$(HTMLFILES_io) $(HTMLFILES_spectralanalysis) \
 	$(HTMLFILES_rotations) $(HTMLFILES_gravmag) \
-	$(HTMLFILES_other)
+	$(HTMLFILES_utils)
 	@echo
 	@echo "--> Python html web pages created successfully"
 	@echo
@@ -168,9 +168,9 @@ $(HTMLFILES_gravmag) : $(WWWDIR)/%.html : %.md
 	cat header_gravmag.html test.html tail_gravmag.html > $@
 	@rm -f test.html
 
-$(HTMLFILES_other) : $(WWWDIR)/%.html : %.md
+$(HTMLFILES_utils) : $(WWWDIR)/%.html : %.md
 	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_other.html test.html tail_other.html > $@
+	cat header_utils.html test.html tail_utils.html > $@
 	@rm -f test.html
 
 
