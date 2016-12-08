@@ -36,10 +36,10 @@
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>latglq</code> : float, dimension (<code>lmax</code>+1)</dt>
-<dd>The latitude coordinates of a grid, corresponding to the indices [:,0], in DEGREES.
+<dd>The latitude coordinates of a grid, corresponding to the indices [:,0], in degrees.
 </dd>
 <dt><code>longlq</code> : float, dimension (2*<code>lmax</code>+1)</dt>
-<dd>The longitude coordinates of a grid, corresponding to the indices [0,:], in DEGREES. The first node is 0 E.
+<dd>The longitude coordinates of a grid, corresponding to the indices [0,:], in degrees. The first node is 0 E.
 </dd>
 </dl>
 <h1 id="parameters">Parameters</h1>
@@ -51,7 +51,7 @@
 <h1 id="description">Description</h1>
 <p><code>GLQGridCoord</code> will compute the latitude and longitude coordinates that are used in Gauss-Legendre quadrature grids for performing spherical harmonic transforms and reconstructions. The latitudinal nodes correspond to the zeros of the Legendre polynomial of degree <code>lmax+1</code>, and the longitudinal nodes are equally spaced with an interval of <code>360/(2*lmax+1)</code> degrees.</p>
 <h1 id="see-also">See also</h1>
-<p><a href="pyshglq.html"><code>shglq</code></a>, <a href="pyshexpandglq.html"><code>shexpandglq</code></a>, <a href="pymakegridglq.html"><code>makegridglq</code></a>, <a href="pyshexpandglqc.html"><code>shexpandglqc</code></a>, <a href="pymakegridglqc.html"><code>makegridglqc</code></a>, <a href="pypreglq.html"><code>preglq</code></a></p>
+<p><a href="pyshglq.html"><code>shglq</code></a>, <a href="pyshexpandglq.html"><code>shexpandglq</code></a>, <a href="pymakegridglq.html"><code>makegridglq</code></a>, <a href="pyshexpandglqc.html"><code>shexpandglqc</code></a>, <a href="pymakegridglqc.html"><code>makegridglqc</code></a></p>
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pytransformations.html" class="dir">Spherical Harmonic Transformations</a></p>

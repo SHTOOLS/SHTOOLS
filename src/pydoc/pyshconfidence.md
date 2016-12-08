@@ -29,4 +29,4 @@ Pauer, M, K. Fleming, and O. Cadek, Modeling the dynamic component of the geoid 
 
 # See also
 
-[shadmitcorr](pyshadmitcorr.html), [shpowerspectrum](pyshpowerspectrum.html), [shcrosspowerspectrum](pyshcrosspowerspectrum.html)
+[shadmitcorr](pyshadmitcorr.html), [spectrum](spectrum.html), [cross_spectrum](cross_spectrum.html)

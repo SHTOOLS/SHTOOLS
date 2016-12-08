@@ -27,7 +27,7 @@ Compute all the 4-pi (geodesy) normalized associated Legendre functions.
 
 # Description
 
-`PlmBar` will calculate all of the 4-pi (geodesy) normalized associated Legendre functions up to degree `lmax` for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree `l` and angular order `m` corresponds to `l*(l+1)/2+m`. 
+`PlmBar` will calculate all of the 4-pi (geodesy) normalized associated Legendre functions up to degree `lmax` for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree `l` and angular order `m` corresponds to `l*(l+1)/2+m`.
 
 The integral of the squared Legendre functions over the interval [-1, 1] is `2*(2-delta(0,m))`, where `delta` is the Kronecker delta function. If the optional parameter `cnorm` is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is `2`. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument `csphase` to -1.
 
@@ -40,4 +40,4 @@ order normalised associated Legendre functions, J. Geodesy, 76, 279-
 
 # See also
 
-[`pyplbar`](pyplbar.html), [`pyplbar_d1`](pyplbar_d1.html), [`pyplmbar_d1`](pyplmbar_d1.html), [`pyplon`](pyplon.html), [`pyplon_d1`](pyplon_d1,html), [`pyplmon`](pyplmon.html), [`pyplmon_d1`](pyplmon_d1.html), [`pyplschmidt`](pyplschmidt.html), [`pyplschmidt_d1`](pyplschmidt_d1.html), [`pyplmschmidt`](pyplmschmidt.html), [`pyplmschmidt_d1`](pyplmschmidt_d1.html), [`pyplegendre`](pyplegendre.html), [`pyplegendre_d1`](pyplegendre_d1.html), [`pyplegendrea`](pyplegendrea.html), [`pyplegendrea_d1`](pyplegendrea_d1.html)
+[`pyplbar`](pyplbar.html), [`pyplbar_d1`](pyplbar_d1.html), [`pyplmbar_d1`](pyplmbar_d1.html), [`pyplon`](pyplon.html), [`pyplon_d1`](pyplon_d1.html), [`pyplmon`](pyplmon.html), [`pyplmon_d1`](pyplmon_d1.html), [`pyplschmidt`](pyplschmidt.html), [`pyplschmidt_d1`](pyplschmidt_d1.html), [`pyplmschmidt`](pyplmschmidt.html), [`pyplmschmidt_d1`](pyplmschmidt_d1.html), [`pyplegendre`](pyplegendre.html), [`pyplegendre_d1`](pyplegendre_d1.html), [`pyplegendrea`](pyplegendrea.html), [`pyplegendrea_d1`](pyplegendrea_d1.html)

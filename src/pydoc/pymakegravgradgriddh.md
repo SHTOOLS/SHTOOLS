@@ -58,11 +58,11 @@ Create 2D cylindrical maps on a flattened ellipsoid of the components of the gra
 
 `(Vxx, Vxy, Vxz)`  
 `(Vyx, Vyy, Vyz)`  
-`(Vzx, Vzy, Vzz)`  
+`(Vzx, Vzy, Vzz)`
 
 The reference frame is north-oriented, where `x` points north, `y` points west, and `z` points upward (all tangent or perpendicular to a sphere of radius r). The gravitational potential is defined as
 
-`V = GM/r Sum_{l=0}^lmax (r0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}`, 
+`V = GM/r Sum_{l=0}^lmax (r0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}`,
 
 where `r0` is the reference radius of the spherical harmonic coefficients `Clm`, and the gravitational acceleration is
 
@@ -77,7 +77,7 @@ The components of the gravity tensor are calculated according to eq. 1 in Petrov
 `Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp`  
 `Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp`  
 `Vxz = 1/r^2 Vt - 1/r Vrt`  
-`Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp`  
+`Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp`
 
 where `r`, `t`, `p` stand for radius, theta, and phi, respectively, and subscripts on `V` denote partial derivatives.
 
@@ -96,4 +96,4 @@ Petrovskaya, M.S. and A.N. Vershkov, Non-singular expressions for the gravity gr
 
 # See also
 
-[makegravgriddh](pymakegravgriddh.html), [makegeoidgrid](pymakegeoidgrid.html), [makegriddh](pymakegriddh.html)
+[makegravgriddh](pymakegravgriddh.html), [makegeoidgriddh](pymakegeoidgriddh.html), [makegriddh](pymakegriddh.html)

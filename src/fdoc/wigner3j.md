@@ -38,7 +38,7 @@ call Wigner3j (`w3j`, `jmin`, `jmax`, `j2`, `j3`, `m1`, `m2`, `m3`, `exitstatus`
 
 `Wigner3j` will calculate the Wigner 3J symbols
 
-`/ j  j2 j3 \`
+`/ j  j2 j3 \`  
 `\ m1 m2 m3 /`
 
 for all allowable values of `j`. The returned values in the array `w3j` are calculated only for the limits

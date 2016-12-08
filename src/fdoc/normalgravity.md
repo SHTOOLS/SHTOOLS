@@ -36,4 +36,4 @@ Hofmann-Wellenhof B, and H. Moritz, "Physical Geodesy," second edition, Springer
 
 # See also
 
-[makegravgrid2d](makegravgrid2d.html), [makegravgriddh](makegravgriddh.html), [makegeoidgrid](makegeoidgrid.html)
+[makegravgriddh](makegravgriddh.html), [makegeoidgrid](makegeoidgrid.html)

@@ -25,4 +25,4 @@ Convert a three-dimensional array of real spherical harmonic coefficients to a 1
 
 # See also
 
-[shvectortocilm](pyshvectortocilm.html), [yilmindex](pyyilmindex.html), [shcindextocilm](pyshcindextocilm.html), [shcilmtocindex](pyshcilmtocindex.html)
+[shvectortocilm](pyshvectortocilm.html), [yilmindexvector](pyyilmindexvector.html), [shcindextocilm](pyshcindextocilm.html), [shcilmtocindex](pyshcilmtocindex.html)

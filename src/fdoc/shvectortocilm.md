@@ -26,4 +26,4 @@ call SHVectorToCilm (`vector`, `cilm`, `lmax`, `exitstatus`)
 
 # See also
 
-[shvectortocilm](shvectortocilm.html), [yilmindex](yilmindex.html), [shcilmtocindex](shcilmtocindex.html), [shcindextocilm](shcindextocilm.html)
+[shvectortocilm](shvectortocilm.html), [yilmindexvector](yilmindexvector.html), [shcilmtocindex](shcilmtocindex.html), [shcindextocilm](shcindextocilm.html)

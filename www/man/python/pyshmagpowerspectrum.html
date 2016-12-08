@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Gravity and magnetics routines</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="../../images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="../../../index.html">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
+				<td><a href="../../faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pygravmag.html" class="dir">Gravity and Magnetics</a></p>
+<h1 id="shmagpowerspectrum">SHMagPowerSpectrum</h1>
+<p>Compute the power spectrum of the magnetic field given the Schmidt seminormalized magnetic potential spherical harmonic coefficients.</p>
+<h1 id="usage">Usage</h1>
+<p><code>spectrum</code> = SHMagPowerSpectrum (<code>c</code>, <code>a</code>, [<code>r</code>, <code>lmax</code>])</p>
+<h1 id="returns">Returns</h1>
+<dl>
+<dt><code>spectrum</code> : float, dimension (<code>lmax</code>+1)</dt>
+<dd>The power spectrum of the magnetic field.
+</dd>
+</dl>
+<h1 id="parameters">Parameters</h1>
+<dl>
+<dt><code>c</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
+<dd>The Schmidt seminormalized spherical harmonic coefficients of the magnetic potential.
+</dd>
+<dt><code>a</code> : float</dt>
+<dd>The reference radius of the magnetic potential spherical harmonic coefficients.
+</dd>
+<dt><code>r</code> : float, default = <code>a</code></dt>
+<dd>The radius to evaluate the magnetic field.
+</dd>
+<dt><code>lmax</code> : optional, integer, default = <code>lmaxin</code></dt>
+<dd>The maximum spherical harmonic degree to calculate the power spectrum.
+</dd>
+</dl>
+<h1 id="description">Description</h1>
+<p><code>SHMagPowerSpectrum</code> will calculate the power spectrum of the magnetic field at radius <code>r</code> given the magnetic potential Schmidt seminormalized spherical harmonic coefficients <code>c</code> evaluated at radius <code>a</code>. For a given degree <code>l</code>, this is explicitly calculated as (Lowes 1966):</p>
+<p><code>S(l) = (l+1) (a/r)**(2l+4) Sum_{m=0}^l [ c[0,l,m]**2 + c[1,l,m]**2 ].</code></p>
+<h1 id="reference">Reference</h1>
+<p>Lowes, F. J., Mean-square values on sphere of spherical harmonic fields, J. Geophys. Res., 71(8), 2179, 1966.</p>
+<h1 id="see-also">See also</h1>
+<p><a href="pyshmagpowerl.html">shmagpowerl</a></p>
+
+	<p class="dir">
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pygravmag.html" class="dir">Gravity and Magnetics</a></p>
+
+	<table class="footer2">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
+			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+		</tr>
+	</tbody>
+	</table>
+
+</div>
+
+</body>
+</html>

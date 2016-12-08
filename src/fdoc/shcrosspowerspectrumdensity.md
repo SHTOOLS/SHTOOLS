@@ -31,4 +31,4 @@ call SHCrossPowerSpectrumDensity (`cilm1`, `cilm2`, `lmax`, `cspectrum`, `exitst
 
 # See also
 
-[shpowerl](shpowerl.html), [shpowerdensityl](shpowerdensityl.html), [shcrosspower](shcrosspower.html), [shcrosspowerdensityl](shcrosspowerdensityl.html), [shpowerspectrum](shpowerspectrum.html), [shpowerspectrumdensity](shpowerspectrumdensity.html), [shcrosspowerspectrum](shcrosspowerspectrum.html), [shadmitcorr](shadmitcorr.html)
+[shpowerl](shpowerl.html), [shpowerdensityl](shpowerdensityl.html), [shcrosspowerl](shcrosspowerl.html), [shcrosspowerdensityl](shcrosspowerdensityl.html), [shpowerspectrum](shpowerspectrum.html), [shpowerspectrumdensity](shpowerspectrumdensity.html), [shcrosspowerspectrum](shcrosspowerspectrum.html), [shadmitcorr](shadmitcorr.html)

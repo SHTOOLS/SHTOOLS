@@ -34,4 +34,4 @@ Calculate the admittance and correlation spectra of two real functions.
 
 # See also
 
-[shpowerspectrum](pyshpowerspectrum.html), [shcrosspowerspectrum](pyshcrosspowerspectrum.html)
+[spectrum](spectrum.html), [cross_spectrum](cross_spectrum.html)

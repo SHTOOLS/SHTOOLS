@@ -47,4 +47,4 @@ Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimati
 
 # See also
 
-[shpowerspectra](pyshpowerspectra.html),[shcrosspowerspectra](pyshcrosspowerspectra.html), [wigner3j](pywigner3j.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shbiasadmitcorr](pyshbiasadmitcorr.html)
+[spectrum](spectrum.html),[cross_spectrum](cross_spectrum.html), [wigner3j](pywigner3j.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shbiasadmitcorr](pyshbiasadmitcorr.html)

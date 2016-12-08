@@ -25,4 +25,4 @@ Compute the index of a array of Legendre functions corresponding to degree `l` a
 
 # See also
 
-[`plmbar`](plmbar.html), [`plmbar_d1`](plmbar_d1.html), [`plmschmidt`](plmschmidt.html), [`plmschmidt_d1`](plmschmidt_d1.html), [`plmon`](plmon.html), [`plmon_d1`](plmon_d1.html), [`plegendrea`](plegendrea.html), [`plegendrea_d1`](plegendrea_d1.html)
+[`plmbar`](pyplmbar.html), [`plmbar_d1`](pyplmbar_d1.html), [`plmschmidt`](pyplmschmidt.html), [`plmschmidt_d1`](pyplmschmidt_d1.html), [`plmon`](pyplmon.html), [`plmon_d1`](pyplmon_d1.html), [`plegendrea`](pyplegendrea.html), [`plegendrea_d1`](pyplegendrea_d1.html)
