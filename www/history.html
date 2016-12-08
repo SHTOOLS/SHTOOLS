@@ -34,6 +34,24 @@
 
 	<h1>Version History</h1>
 
+	<h2>Version 4.0 (December 16, 2016)</h2>
+	<ul>
+		<li>Instead of executing a Fortran STOP, which kills the Python kernel, the Fortran subroutines now return an <tt>exitstatus</tt> that allows Python to raise an exception. This technique does not work with the few Fortran functions that pyshtools calls, but these functions are relatively benign, and will soon be phased out for Python native functions.</li>
+		<li>The Fortran powerspectrum routines have been removed from pyshtools, and have been replaced with Python native routines <tt>spectrum</tt> and <tt>cross_spectrum</tt>. The Python routines allow to specify the normalization, whether the output should be power, energy or l2norm, and whether the spectrum is per degree, per coefficient, or per log bandwidth.</li>
+		<li>The method <tt>plot_spectrum2d()</tt> was added to the class <tt>SHCoeffs</tt> to plot the power as a function of degree and order.</li>
+		<li>All pyshtools modules have been converted into proper Python subpackages. The subpackage <tt>localizedpsectralanalysis</tt> has been merged into <tt>spectralanalysis</tt>, and the subpackage <tt>other</tt> has been renamed <tt>utils</tt>.</li>
+		<li>The Python class method <tt>SHCoeffs.expand()</tt> now can evaluate the function either on an <tt>SHGrid</tt> or for a list of latitude and longitude points. As part of this change, a new fortran function <tt>MakeGridPointC</tt> was created for complex coefficients.</li>
+		<li>The majority of the methods for the classes <tt>SHCoeffs</tt>, <tt>SHGrid</tt> and <tt>SHWindow</tt> have been rename for consistency (see documentation!). Also, the classes now give the option of reading or saving to files as numpy arrays.</li>
+		<li>Add new Python function <tt>read_icgen_gfc</tt> for reading ICGEM-format gravity coefficient files.</li>
+		<li>The operator <tt>pow</tt> was added to the class <tt>SHCoeffs</tt>.</li>
+		<li>All methods in the pyshtools classes now return copies by default, which can be modified by the optional argument <tt>copy</tt>.</li>
+		<li>Add <tt>pot</tt> as a mandatory return argument for the Python routine <tt>MakeGravGridDH</tt>.</li>
+		<li>Several minor modifications and bug fixes were made to the makefiles to improve compatibility and to allow the use of <tt>make -j</tt>.</li>
+		<li>The routines <tt>other.EigValSym</tt>, <tt>other.EigValVecSym</tt>, <tt>other.EigValVecSymTri</tt>, <tt>other.RandomGaussian</tt>, <tt>other.RandomN</tt> and <tt>other.PreGLQ</tt> were removed from pyshtools, as these can be found in other scipy packages.</li>
+		<li>Python docstrings have been streamlined and standardized.</li>
+		<li>...plus, many minor changes and optimizations...</li>
+	</ul>
+
 	<h2>Version 3.4 (August 30, 2016)</h2>
 	<ul>
 		<li>Add pyshtools to PyPI repository. Can now be installed using <tt>pip install pyshtools</tt>.</li>
