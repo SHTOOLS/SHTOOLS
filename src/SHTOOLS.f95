@@ -258,12 +258,20 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGrid2D
 
-        real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
+        real*8 function MakeGridPoint(cilm, lmax, lat, lon, norm, &
                                       csphase, dealloc)
-            real*8, intent(in) ::   cilm(:,:,:), lat, longitude
+            real*8, intent(in) ::   cilm(:,:,:), lat, lon
             integer, intent(in) ::  lmax
             integer, intent(in), optional :: norm, csphase, dealloc
         end function MakeGridPoint
+
+        complex*16 function MakeGridPointC(cilm, lmax, lat, lon, norm, &
+                                           csphase, dealloc)
+            complex*16, intent(in) :: cilm(:,:,:)
+            real*8, intent(in) :: lat, lon
+            integer, intent(in) :: lmax
+            integer, intent(in), optional :: norm, csphase, dealloc
+        end function MakeGridPointC
 
         subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, &
                               norm, csphase, exitstatus)

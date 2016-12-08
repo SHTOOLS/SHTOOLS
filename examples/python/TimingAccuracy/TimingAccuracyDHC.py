@@ -46,7 +46,7 @@ def TimingAccuracyDHC(sampling=1):
                                  size=(2, maxdeg + 1, maxdeg + 1))
     cilm.real = np.random.normal(loc=0., scale=1.,
                                  size=(2, maxdeg + 1, maxdeg + 1))
-    old_power = spectralanalysis.SHPowerSpectrumC(cilm)
+    old_power = spectralanalysis.spectrum(cilm)
     new_power = 1. / (1. + ls)**beta  # initialize degrees > 0 to power-law
     cilm[:, :, :] *= np.sqrt(new_power / old_power)[None, :, None]
     cilm[~mask] = 0.

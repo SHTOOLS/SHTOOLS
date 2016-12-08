@@ -21,8 +21,7 @@ SHELL=/bin/sh
 EXAMPLES = \
 	ClassInterface/ClassExample.py \
 	ClassInterface/WindowExample.py \
-	GlobalSpectralAnalysis/SHComplexSpectralAnalysis.py \
-	GlobalSpectralAnalysis/SHRealSpectralAnalysis.py \
+	GlobalSpectralAnalysis/GlobalSpectralAnalysis.py \
 	IOStorageConversions/SHConversions.py \
 	IOStorageConversions/SHStorage.py \
 	LocalizedSpectralAnalysis/SHMultitaperSE.py \
@@ -41,8 +40,7 @@ EXAMPLES = \
 EXAMPLES-NO-TIMING = \
 	ClassInterface/ClassExample.py \
 	ClassInterface/WindowExample.py \
-	GlobalSpectralAnalysis/SHComplexSpectralAnalysis.py \
-	GlobalSpectralAnalysis/SHRealSpectralAnalysis.py \
+	GlobalSpectralAnalysis/GlobalSpectralAnalysis.py \
 	IOStorageConversions/SHConversions.py \
 	IOStorageConversions/SHStorage.py \
 	LocalizedSpectralAnalysis/SHMultitaperSE.py \

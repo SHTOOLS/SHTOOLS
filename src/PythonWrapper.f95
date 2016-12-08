@@ -487,14 +487,14 @@
         endif
     end subroutine pyMakeGrid2d
 
-    function pyMakeGridPoint(cilm,lmax,lat,longitude,norm,csphase,dealloc, &
+    function pyMakeGridPoint(cilm,lmax,lat,lon,norm,csphase,dealloc, &
                              cilm_d0,cilm_d1,cilm_d2)
         use shtools, only: MakeGridPoint
         implicit none
         real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer, intent(in) :: lmax
         real*8, intent(in) :: lat
-        real*8, intent(in) :: longitude
+        real*8, intent(in) :: lon
         integer, optional,intent(in) :: norm
         integer, optional,intent(in) :: csphase
         integer, optional,intent(in) :: dealloc
@@ -502,9 +502,28 @@
         integer, intent(in) :: cilm_d1
         integer, intent(in) :: cilm_d2
         real*8 :: pyMakeGridPoint
-        pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,longitude,norm=norm, &
+        pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,lon,norm=norm, &
                                       csphase=csphase,dealloc=dealloc)
     end function pyMakeGridPoint
+
+    function pyMakeGridPointC(cilm,lmax,lat,lon,norm,csphase,dealloc, &
+                              cilm_d0,cilm_d1,cilm_d2)
+        use shtools, only: MakeGridPointC
+        implicit none
+        complex*16, dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer, intent(in) :: lmax
+        real*8, intent(in) :: lat
+        real*8, intent(in) :: lon
+        integer, optional,intent(in) :: norm
+        integer, optional,intent(in) :: csphase
+        integer, optional,intent(in) :: dealloc
+        integer, intent(in) :: cilm_d0
+        integer, intent(in) :: cilm_d1
+        integer, intent(in) :: cilm_d2
+        complex*16 :: pyMakeGridPointC
+        pyMakeGridPointC=MakeGridPointC(cilm,lmax,lat,lon,norm=norm, &
+                                        csphase=csphase,dealloc=dealloc)
+    end function pyMakeGridPointC
 
     subroutine pySHMultiply(exitstatus,shout,sh1,lmax1,sh2,lmax2,precomp,norm,&
                             csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2, &
@@ -874,134 +893,6 @@
         call SHRotateRealCoef(cilmrot,cilm,lmax,x,dj,exitstatus=exitstatus)
     end subroutine pySHRotateRealCoef
 
-    function pySHPowerL(c,l,c_d0,c_d1,c_d2)
-        use shtools, only: SHPowerL
-        implicit none
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer, intent(in) :: l
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        real*8 :: pySHPowerL
-        pySHPowerL=SHPowerL(c,l)
-    end function pySHPowerL
-
-    function pySHPowerDensityL(c,l,c_d0,c_d1,c_d2)
-        use shtools, only: SHPowerDensityL
-        implicit none
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer, intent(in) :: l
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        real*8 :: pySHPowerDensityL
-        pySHPowerDensityL=SHPowerDensityL(c,l)
-    end function pySHPowerDensityL
-
-    function pySHCrossPowerL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
-        use shtools, only: SHCrossPowerL
-        implicit none
-        real*8, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        real*8, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer, intent(in) :: l
-        integer, intent(in) :: c2_d0
-        integer, intent(in) :: c2_d1
-        integer, intent(in) :: c2_d2
-        integer, intent(in) :: c1_d0
-        integer, intent(in) :: c1_d1
-        integer, intent(in) :: c1_d2
-        real*8 :: pySHCrossPowerL
-        pySHCrossPowerL=SHCrossPowerL(c1,c2,l)
-    end function pySHCrossPowerL
-
-    function pySHCrossPowerDensityL(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1, &
-                                    c1_d2)
-        use shtools, only: SHCrossPowerDensityL
-        implicit none
-        real*8, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        real*8, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer, intent(in) :: l
-        integer, intent(in) :: c2_d0
-        integer, intent(in) :: c2_d1
-        integer, intent(in) :: c2_d2
-        integer, intent(in) :: c1_d0
-        integer, intent(in) :: c1_d1
-        integer, intent(in) :: c1_d2
-        real*8 :: pySHCrossPowerDensityL
-        pySHCrossPowerDensityL=SHCrossPowerDensityL(c1,c2,l)
-    end function pySHCrossPowerDensityL
-
-    subroutine pySHPowerSpectrum(exitstatus,c,lmax,spectra,c_d0,c_d1,c_d2,&
-                                 spectra_d0)
-        use shtools, only: SHPowerSpectrum
-        implicit none
-        integer, intent(out) :: exitstatus
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer, intent(in) :: lmax
-        real*8, dimension(spectra_d0),intent(out) :: spectra
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        integer, intent(in) :: spectra_d0
-        call SHPowerSpectrum(c,lmax,spectra,exitstatus=exitstatus)
-    end subroutine pySHPowerSpectrum
-
-    subroutine pySHPowerSpectrumDensity(exitstatus,c,lmax,spectra,c_d0,c_d1,&
-                                        c_d2,spectra_d0)
-        use shtools, only: SHPowerSpectrumDensity
-        implicit none
-        integer, intent(out) :: exitstatus
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer, intent(in) :: lmax
-        real*8, dimension(spectra_d0),intent(out) :: spectra
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        integer, intent(in) :: spectra_d0
-        call SHPowerSpectrumDensity(c,lmax,spectra,exitstatus=exitstatus)
-    end subroutine pySHPowerSpectrumDensity
-
-    subroutine pySHCrossPowerSpectrum(exitstatus,c1,c2,lmax,cspectra,c2_d0,&
-                                      c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,&
-                                      cspectra_d0)
-        use shtools, only: SHCrossPowerSpectrum
-        implicit none
-        integer, intent(out) :: exitstatus
-        real*8, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        real*8, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer, intent(in) :: lmax
-        real*8, dimension(cspectra_d0),intent(out) :: cspectra
-        integer, intent(in) :: c2_d0
-        integer, intent(in) :: c2_d1
-        integer, intent(in) :: c2_d2
-        integer, intent(in) :: c1_d0
-        integer, intent(in) :: c1_d1
-        integer, intent(in) :: c1_d2
-        integer, intent(in) :: cspectra_d0
-        call SHCrossPowerSpectrum(c1,c2,lmax,cspectra,exitstatus=exitstatus)
-    end subroutine pySHCrossPowerSpectrum
-
-    subroutine pySHCrossPowerSpectrumDensity(exitstatus,c1,c2,lmax,cspectra,&
-                                             c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,&
-                                             c1_d2,cspectra_d0)
-        use shtools, only: SHCrossPowerSpectrumDensity
-        implicit none
-        integer, intent(out) :: exitstatus
-        real*8, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        real*8, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer, intent(in) :: lmax
-        real*8, dimension(cspectra_d0),intent(out) :: cspectra
-        integer, intent(in) :: c2_d0
-        integer, intent(in) :: c2_d1
-        integer, intent(in) :: c2_d2
-        integer, intent(in) :: c1_d0
-        integer, intent(in) :: c1_d1
-        integer, intent(in) :: c1_d2
-        integer, intent(in) :: cspectra_d0
-        call SHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra,&
-                                         exitstatus=exitstatus)
-    end subroutine pySHCrossPowerSpectrumDensity
-
     subroutine pySHAdmitCorr(exitstatus,G,T,lmax,admit,admit_error,corr,G_d0,&
                              G_d1,G_d2,admit_d0,admit_error_d0,T_d0,T_d1,T_d2,&
                              corr_d0)
@@ -1035,134 +926,6 @@
         real*8 :: pySHConfidence
         pySHConfidence=SHConfidence(l_conf,r)
     end function pySHConfidence
-
-    function pySHPowerLC(c,l,c_d0,c_d1,c_d2)
-        use shtools, only: SHPowerLC
-        implicit none
-        complex*16, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer, intent(in) :: l
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        real*8 :: pySHPowerLC
-        pySHPowerLC=SHPowerLC(c,l)
-    end function pySHPowerLC
-
-    function pySHPowerDensityLC(c,l,c_d0,c_d1,c_d2)
-        use shtools, only: SHPowerDensityLC
-        implicit none
-        complex*16, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer, intent(in) :: l
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        real*8 :: pySHPowerDensityLC
-        pySHPowerDensityLC=SHPowerDensityLC(c,l)
-    end function pySHPowerDensityLC
-
-    function pySHCrossPowerLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,c1_d2)
-        use shtools, only: SHCrossPowerLC
-        implicit none
-        complex*16, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        complex*16, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer, intent(in) :: l
-        integer, intent(in) :: c2_d0
-        integer, intent(in) :: c2_d1
-        integer, intent(in) :: c2_d2
-        integer, intent(in) :: c1_d0
-        integer, intent(in) :: c1_d1
-        integer, intent(in) :: c1_d2
-        complex*16 :: pySHCrossPowerLC
-        pySHCrossPowerLC=SHCrossPowerLC(c1,c2,l)
-    end function pySHCrossPowerLC
-
-    function pySHCrossPowerDensityLC(c1,c2,l,c2_d0,c2_d1,c2_d2,c1_d0, &
-                                     c1_d1,c1_d2)
-        use shtools, only: SHCrossPowerDensityLC
-        implicit none
-        complex*16, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        complex*16, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer, intent(in) :: l
-        integer, intent(in) :: c2_d0
-        integer, intent(in) :: c2_d1
-        integer, intent(in) :: c2_d2
-        integer, intent(in) :: c1_d0
-        integer, intent(in) :: c1_d1
-        integer, intent(in) :: c1_d2
-        complex*16 :: pySHCrossPowerDensityLC
-        pySHCrossPowerDensityLC=SHCrossPowerDensityLC(c1,c2,l)
-    end function pySHCrossPowerDensityLC
-
-    subroutine pySHPowerSpectrumC(exitstatus,c,lmax,spectra,c_d0,c_d1,c_d2,&
-                                  spectra_d0)
-        use shtools, only: SHPowerSpectrumC
-        implicit none
-        integer, intent(out) :: exitstatus
-        complex*16, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer, intent(in) :: lmax
-        real*8, dimension(spectra_d0),intent(out) :: spectra
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        integer, intent(in) :: spectra_d0
-        call SHPowerSpectrumC(c,lmax,spectra,exitstatus=exitstatus)
-    end subroutine pySHPowerSpectrumC
-
-    subroutine pySHPowerSpectrumDensityC(exitstatus,c,lmax,spectra,c_d0,c_d1,&
-                                         c_d2,spectra_d0)
-        use shtools, only: SHPowerSpectrumDensityC
-        implicit none
-        integer, intent(out) :: exitstatus
-        complex*16, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer, intent(in) :: lmax
-        real*8, dimension(spectra_d0),intent(out) :: spectra
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        integer, intent(in) :: spectra_d0
-        call SHPowerSpectrumDensityC(c,lmax,spectra,exitstatus=exitstatus)
-    end subroutine pySHPowerSpectrumDensityC
-
-    subroutine pySHCrossPowerSpectrumC(exitstatus,c1,c2,lmax,cspectra,c2_d0,&
-                                       c2_d1,c2_d2,c1_d0,c1_d1,c1_d2,&
-                                       cspectra_d0)
-        use shtools, only: SHCrossPowerSpectrumC
-        implicit none
-        integer, intent(out) :: exitstatus
-        complex*16, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        complex*16, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer, intent(in) :: lmax
-        complex*16, dimension(cspectra_d0),intent(out) :: cspectra
-        integer, intent(in) :: c2_d0
-        integer, intent(in) :: c2_d1
-        integer, intent(in) :: c2_d2
-        integer, intent(in) :: c1_d0
-        integer, intent(in) :: c1_d1
-        integer, intent(in) :: c1_d2
-        integer, intent(in) :: cspectra_d0
-        call SHCrossPowerSpectrumC(c1,c2,lmax,cspectra,exitstatus=exitstatus)
-    end subroutine pySHCrossPowerSpectrumC
-
-    subroutine pySHCrossPowerSpectrumDensityC(exitstatus,c1,c2,lmax,cspectra,&
-                                              c2_d0,c2_d1,c2_d2,c1_d0,c1_d1,&
-                                              c1_d2,cspectra_d0)
-        use shtools, only: SHCrossPowerSpectrumDensityC
-        implicit none
-        integer, intent(out) :: exitstatus
-        complex*16, dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        complex*16, dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer, intent(in) :: lmax
-        complex*16, dimension(cspectra_d0),intent(out) :: cspectra
-        integer, intent(in) :: c2_d0
-        integer, intent(in) :: c2_d1
-        integer, intent(in) :: c2_d2
-        integer, intent(in) :: c1_d0
-        integer, intent(in) :: c1_d1
-        integer, intent(in) :: c1_d2
-        integer, intent(in) :: cspectra_d0
-        call SHCrossPowerSpectrumDensityC(c1,c2,lmax,cspectra,&
-                                          exitstatus=exitstatus)
-    end subroutine pySHCrossPowerSpectrumDensityC
 
     subroutine pySHMultiTaperSE(exitstatus,mtse,sd,sh,lmax,tapers,taper_order,&
                                 lmaxt,k,lat,lon,taper_wt,norm,csphase, &

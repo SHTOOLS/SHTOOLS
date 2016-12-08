@@ -1,6 +1,7 @@
 """
 pyshtools subpackage that includes all Python wrapped Fortran routines.
 """
+
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
@@ -42,6 +43,7 @@ from .._SHTOOLS import GLQGridCoord
 from .._SHTOOLS import SHExpandLSQ
 from .._SHTOOLS import MakeGrid2D
 from .._SHTOOLS import MakeGridPoint
+from .._SHTOOLS import MakeGridPointC
 from .._SHTOOLS import SHMultiply
 
 # shio
@@ -61,26 +63,8 @@ from .._SHTOOLS import SHrtoc
 from .._SHTOOLS import SHctor
 
 # spectralanalysis
-from .._SHTOOLS import SHPowerL
-from .._SHTOOLS import SHPowerDensityL
-from .._SHTOOLS import SHCrossPowerL
-from .._SHTOOLS import SHCrossPowerDensityL
-from .._SHTOOLS import SHPowerSpectrum
-from .._SHTOOLS import SHPowerSpectrumDensity
-from .._SHTOOLS import SHCrossPowerSpectrum
-from .._SHTOOLS import SHCrossPowerSpectrumDensity
 from .._SHTOOLS import SHAdmitCorr
 from .._SHTOOLS import SHConfidence
-from .._SHTOOLS import SHPowerLC
-from .._SHTOOLS import SHPowerDensityLC
-from .._SHTOOLS import SHCrossPowerLC
-from .._SHTOOLS import SHCrossPowerDensityLC
-from .._SHTOOLS import SHPowerSpectrumC
-from .._SHTOOLS import SHPowerSpectrumDensityC
-from .._SHTOOLS import SHCrossPowerSpectrumC
-from .._SHTOOLS import SHCrossPowerSpectrumDensityC
-
-# localizedspectralanalysis
 from .._SHTOOLS import SHMultiTaperSE
 from .._SHTOOLS import SHMultiTaperCSE
 from .._SHTOOLS import SHLocalizedAdmitCorr
@@ -134,41 +118,31 @@ from .._SHTOOLS import Wigner3j
 __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'PlON', 'PlON_d1', 'PlmSchmidt', 'PlmSchmidt_d1', 'PlSchmidt',
            'PlSchmidt_d1', 'PLegendreA', 'PLegendreA_d1', 'PLegendre',
-            'PLegendre_d1', 'SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
-            'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
-            'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ',
-            'MakeGrid2D', 'MakeGridPoint', 'SHMultiply', 'SHRead', 'SHReadH',
-            'SHReadError', 'SHReadErrorH', 'SHRead2', 'SHRead2Error',
-            'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector', 'SHVectorToCilm',
-            'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc', 'SHctor',
-            'SHPowerL', 'SHPowerDensityL', 'SHCrossPowerL',
-            'SHCrossPowerDensityL', 'SHPowerSpectrum',
-            'SHPowerSpectrumDensity', 'SHCrossPowerSpectrum',
-            'SHCrossPowerSpectrumDensity', 'SHAdmitCorr', 'SHConfidence',
-            'SHPowerLC', 'SHPowerDensityLC', 'SHCrossPowerLC',
-            'SHCrossPowerDensityLC', 'SHPowerSpectrumC',
-            'SHPowerSpectrumDensityC', 'SHCrossPowerSpectrumC',
-            'SHCrossPowerSpectrumDensityC', 'SHMultiTaperSE',
-            'SHMultiTaperCSE', 'SHLocalizedAdmitCorr', 'SHReturnTapers',
-            'SHReturnTapersM', 'ComputeDm', 'ComputeDG82', 'SHFindLWin',
-            'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr', 'SHMTDebias',
-            'SHMTVarOpt', 'SHSjkPG', 'SHMultiTaperMaskSE',
-            'SHMultiTaperMaskCSE', 'SHReturnTapersMap', 'SHBiasKMask',
-            'ComputeDMap', 'Curve2Mask', 'SHBias', 'SphericalCapCoef',
-            'djpi2', 'SHRotateCoef', 'SHRotateRealCoef',
-            'MakeGravGridDH', 'MakeGravGradGridDH', 'MakeGeoidGridDH',
-            'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
-            'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
-            'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
-            'SHMagPowerSpectrum', 'SHMagPowerL',
-            'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j']
+           'PLegendre_d1', 'SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
+           'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
+           'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ',
+           'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
+           'SHRead', 'SHReadH', 'SHReadError', 'SHReadErrorH', 'SHRead2',
+           'SHRead2Error', 'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector',
+           'SHVectorToCilm', 'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc',
+           'SHctor', 'SHAdmitCorr', 'SHConfidence', 'SHMultiTaperSE',
+           'SHMultiTaperCSE', 'SHLocalizedAdmitCorr', 'SHReturnTapers',
+           'SHReturnTapersM', 'ComputeDm', 'ComputeDG82', 'SHFindLWin',
+           'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr', 'SHMTDebias',
+           'SHMTVarOpt', 'SHSjkPG', 'SHMultiTaperMaskSE',
+           'SHMultiTaperMaskCSE', 'SHReturnTapersMap', 'SHBiasKMask',
+           'ComputeDMap', 'Curve2Mask', 'SHBias', 'SphericalCapCoef',
+           'djpi2', 'SHRotateCoef', 'SHRotateRealCoef',
+           'MakeGravGridDH', 'MakeGravGradGridDH', 'MakeGeoidGridDH',
+           'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
+           'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
+           'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
+           'SHMagPowerSpectrum', 'SHMagPowerL',
+           'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j']
 
-_fortran_functions = ['MakeGridPoint', 'SHPowerL', 'SHPowerDensityL',
-                      'SHCrossPowerL', 'SHCrossPowerDensityL',
-                      'DownContFilterMA', 'DownContFilterMC', 'SHFindLWin',
-                      'SHSjkPG', 'NormalGravity', 'SHConfidence',
-                      'SHMagPowerL', 'SHPowerLC', 'SHPowerDensityLC',
-                      'SHCrossPowerLC', 'SHCrossPowerDensityLC']
+_fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
+                      'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',
+                      'NormalGravity', 'SHConfidence', 'SHMagPowerL']
 
 _fortran_subroutines = list(set(__all__) - set(_fortran_functions))
 

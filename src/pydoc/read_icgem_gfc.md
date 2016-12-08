@@ -12,7 +12,7 @@ harmonic coefficients.
 # Returns
 
 `cilm` : array
-:   Array with the coefficients with the shape (2, lmax + 1, lmax + 1) for the given epoch.
+:   Array with the coefficients with the shape (2, `lmax` + 1, `lmax` + 1) for the given epoch.
 
 `gm` : float
 :   Standard gravitational constant of the model, in m**3/s**2.
@@ -21,7 +21,7 @@ harmonic coefficients.
 :   Reference radius of the model, in meters.
 
 `errors` : array, optional
-:   Array with the errors of the coefficients with the shape (2, lmax + 1, lmax + 1) for the given epoch.
+:   Array with the errors of the coefficients with the shape (2, `lmax` + 1, `lmax` + 1) for the given epoch.
 
 # Parameters
 
