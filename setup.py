@@ -38,7 +38,7 @@ except(IOError, ImportError):
 # This flag has to be True if the version number indicated in the file
 # VERSION has already been released and to False if this is a development
 # version of a future release.
-ISRELEASED = True
+ISRELEASED = False
 
 
 def get_version():
@@ -252,7 +252,7 @@ metadata = dict(
     version=VERSION,
     description='SHTOOLS - Tools for working with spherical harmonics',
     long_description=long_description,
-    url='http://shtools.ipgp.fr',
+    url='http://shtools.oca.eu',
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
     author='The SHTOOLS developers',
     author_email="mark.a.wieczorek@gmail.com",
