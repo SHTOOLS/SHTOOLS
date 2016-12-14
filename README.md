@@ -78,7 +78,7 @@ To get started, check out the following Python tutorial notebooks:
 
 * Introduction 1: Grids and Spherical Harmonic Coefficients [\[ipynb\]](examples/notebooks/Introduction-1.ipynb)
 * Introduction 2: Localization Windows and Spectral Analysis [\[ipynb\]](examples/notebooks/Introduction-2.ipynb)
-* Tutorial 1: Simple Spherical Harmonic Expansions [\[ipynb\]](examples/notebooks/tutorial_1.ipynb)
+* Tutorial 1: Simple Spherical Harmonic Analyses [\[ipynb\]](examples/notebooks/tutorial_1.ipynb)
 * Tutorial 2: Localized Spectral Analysis on the Sphere [\[ipynb\]](examples/notebooks/tutorial_2.ipynb)
 * Tutorial 3: The SHTOOLS Class Interface [\[ipynb\]](examples/notebooks/tutorial_3.ipynb)
 * Tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem [\[ipynb\]](examples/notebooks/tutorial_4.ipynb)
