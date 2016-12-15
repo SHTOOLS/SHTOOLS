@@ -1512,6 +1512,14 @@ python module _SHTOOLS
             integer intent(in),intent(hide) :: w3j_d0 = j2+j3+1
         end subroutine Wigner3j
 
+        subroutine DHaj(exitstatus,n,aj,aj_d0)
+            fortranname pydhaj
+            integer, intent(out) :: exitstatus
+            integer intent(in) :: n
+            real*8 dimension(aj_d0),intent(out) :: aj
+            integer, optional,intent(in),depend(n),check(n%2==0),intent(hide) :: aj_d0 = n
+        end subroutine DHaj
+
     end interface
 
 end python module _SHTOOLS

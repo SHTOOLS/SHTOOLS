@@ -114,6 +114,7 @@ from .._SHTOOLS import SHMagPowerL
 from .._SHTOOLS import MakeCircleCoord
 from .._SHTOOLS import MakeEllipseCoord
 from .._SHTOOLS import Wigner3j
+from .._SHTOOLS import DHaj
 
 __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'PlON', 'PlON_d1', 'PlmSchmidt', 'PlmSchmidt_d1', 'PlSchmidt',
@@ -138,7 +139,7 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
            'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
            'SHMagPowerSpectrum', 'SHMagPowerL',
-           'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j']
+           'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j', 'DHaj']
 
 _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',

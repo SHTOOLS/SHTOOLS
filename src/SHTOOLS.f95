@@ -880,9 +880,10 @@ module SHTOOLS
             integer, intent(in) ::  degree, n
         end function NGLQSHN
 
-        subroutine DHaj(n, aj)
+        subroutine DHaj(n, aj, exitstatus)
             integer, intent(in) ::  n
             real*8, intent(out) ::  aj(:)
+            integer, intent(out), optional :: exitstatus
         end subroutine DHaj
 
         integer function YilmIndexVector(i, l, m)

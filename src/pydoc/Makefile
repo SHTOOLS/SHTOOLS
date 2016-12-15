@@ -50,7 +50,7 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md \
 	pynormalgravity.md pymakemaggriddh.md pyshmagpowerspectrum.md \
 	pyshmagpowerl.md pyshmtcouplingmatrix.md pyshmultitapermaskcse.md \
 	pyshmultitapermaskse.md pyshbiaskmask.md read_icgem_gfc.md \
-	spectrum.md cross_spectrum.md
+	spectrum.md cross_spectrum.md pydhaj.md
 
 MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 \
 	pyplbar.1 pyplbar_d1.1 pyplon.1 pyplmon.1 pyplmon_d1.1 pyplon_d1.1 \
@@ -76,7 +76,8 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 \
 	pydowncontfilterma.1 pydowncontfiltermc.1 pynormalgravity.1 \
 	pymakemaggriddh.1 pyshmagpowerspectrum.1 pyshmagpowerl.1 \
 	pyshmtcouplingmatrix.1 pyshmultitapermaskcse.1 pyshmultitapermaskse.1 \
-	pyshbiaskmask.1 read_icgem_gfc.1 spectrum.1 cross_spectrum.1)
+	pyshbiaskmask.1 read_icgem_gfc.1 spectrum.1 cross_spectrum.1 \
+	pydhaj.1)
 
 HTMLFILES_legendre = $(addprefix $(WWWDIR)/, pyplmindex.html pyplmbar.html \
 	pyplmbar_d1.html pyplbar.html pyplbar_d1.html pyplon.html pyplmon.html \
@@ -119,7 +120,7 @@ HTMLFILES_gravmag = $(addprefix $(WWWDIR)/, pymakegravgriddh.html \
 	pyshmagpowerl.html pyshmagpowerspectrum.html)
 
 HTMLFILES_utils = $(addprefix $(WWWDIR)/, pymakecirclecoord.html \
-	pymakeellipsecoord.html pywigner3j.html)
+	pymakeellipsecoord.html pywigner3j.html pydhaj.html)
 
 
 all: install-man install-html
