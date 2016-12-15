@@ -41,18 +41,23 @@
 		sys.path.append('/path-to-pyshtools')</tt></p>
 	</blockquote>
 
-	<p>where <tt>/path-to-pyshtools</tt> is the directory that contains the <tt>pyshtools</tt> directory. Typically, this is located in a place such as <tt>/usr/local/lib/python2.7/site-packages</tt>. After setting the path, it is then only necessary to execute the statement</p>
+	<p>where <tt>/path-to-pyshtools</tt> is the directory that contains the <tt>pyshtools</tt> directory. Typically, this is located in a place such as <tt>/usr/local/lib/python3.5/site-packages</tt>. After setting the path, it is then only necessary to execute the statement</p>
 
 		<blockquote class="small">
 			<p class="nomargintop nomarginbot"><tt>import pyshtools</tt></p>
 		</blockquote>
 
-	<p>This will load the following classes and submodules into the <tt>pyshtools</tt> namespace:</p>
+	<p>This will load the three classes</p>
 
 	<ul>
 		<li><tt>SHCoeffs</tt> - A high level class for spherical harmonic coefficients.</li>
 		<li><tt>SHGrid</tt> - A high level classes for global grids.</li>
 		<li><tt>SHWindow</tt> - A high level classes for localization windows.</li>
+</ul>
+
+<p> and subpackages</p>
+
+	<ul>
 		<li><tt>shclasses</tt> - All pyshtools classes and subclasses.</li>
 		<li><tt>shtools</tt> - All <tt>pyshtools</tt> routines.</li>
 		<li><tt>legendre</tt> - Legendre functions.</li>
@@ -64,6 +69,8 @@
 		<li><tt>constant</tt> - pyshtools constants.</li>
 		<li><tt>utils</tt> - Utilities.</li>
 </ul>
+
+<p>into the <tt>pyshtools</tt> namespace.</p>
 
 	<p>If you are using <a href="http://ipython.org/">iPython</a>, which adds improved functionality to Python, the available <tt>pyshtools</tt> routines can be explored by typing</p>
 
@@ -78,7 +85,7 @@
 	<p>To read the documentation of a routine in iPython, such as <tt>MakeGridDH</tt>, enter</p>
 
 		<blockquote class="small">
-			<p class="nomargintop nomarginbot"><tt>pyshtools.MakeGridDH?</tt></p>
+			<p class="nomargintop nomarginbot"><tt>pyshtools.expand.MakeGridDH?</tt></p>
 	</blockquote>
 
 	<p>To read the info string of an SHTOOLS constant, such as <tt>a_mars</tt>, enter</p>

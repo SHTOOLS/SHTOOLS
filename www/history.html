@@ -42,12 +42,13 @@
 		<li>All pyshtools modules have been converted into proper Python subpackages. The subpackage <tt>localizedpsectralanalysis</tt> has been merged into <tt>spectralanalysis</tt>, and the subpackage <tt>other</tt> has been renamed <tt>utils</tt>.</li>
 		<li>The Python class method <tt>SHCoeffs.expand()</tt> now can evaluate the function either on an <tt>SHGrid</tt> or for a list of latitude and longitude points. As part of this change, a new fortran function <tt>MakeGridPointC</tt> was created for complex coefficients.</li>
 		<li>The majority of the methods for the classes <tt>SHCoeffs</tt>, <tt>SHGrid</tt> and <tt>SHWindow</tt> have been rename for consistency (see documentation!). Also, the classes now give the option of reading or saving to files as numpy arrays.</li>
-		<li>Add new Python function <tt>read_icgen_gfc</tt> for reading ICGEM-format gravity coefficient files.</li>
+		<li>Added new Python function <tt>read_icgen_gfc</tt> for reading ICGEM-format gravity coefficient files.</li>
 		<li>The operator <tt>pow</tt> was added to the class <tt>SHCoeffs</tt>.</li>
 		<li>All methods in the pyshtools classes now return copies by default, which can be modified by the optional argument <tt>copy</tt>.</li>
 		<li>Added <tt>pot</tt> as a mandatory return argument for the Python routine <tt>MakeGravGridDH</tt>.</li>
 		<li>Several minor modifications and bug fixes were made to the makefiles to improve compatibility and to allow the use of <tt>make -j</tt>.</li>
 		<li>The routines <tt>other.EigValSym</tt>, <tt>other.EigValVecSym</tt>, <tt>other.EigValVecSymTri</tt>, <tt>other.RandomGaussian</tt>, <tt>other.RandomN</tt> and <tt>other.PreGLQ</tt> were removed from pyshtools, as these can be found in other scipy packages.</li>
+		<li>The SHTOOLS routine <tt>DHaj</tt> was added to the pyshtools subpackage <tt>utils</tt>.</li>
 		<li>Python docstrings have been streamlined and standardized.</li>
 		<li>...plus, many minor changes and optimizations...</li>
 	</ul>

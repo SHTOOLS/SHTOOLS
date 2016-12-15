@@ -2014,3 +2014,13 @@
         integer, intent(in) :: w3j_d0
         call Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3, exitstatus=exitstatus)
     end subroutine pyWigner3j
+
+    subroutine pyDHaj(exitstatus,n,aj,aj_d0)
+        use shtools, only: DHaj
+        implicit none
+        integer, intent(out) :: exitstatus
+        integer, intent(in) :: n
+        real*8, dimension(aj_d0),intent(out) :: aj
+        integer, intent(in) :: aj_d0
+        call DHaj(n,aj,exitstatus=exitstatus)
+    end subroutine pyDHaj
