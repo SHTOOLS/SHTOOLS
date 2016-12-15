@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/sh.css">
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
-	<meta name="description" content="Python classes defined by SHTOOLS.">
+	<meta name="description" content="SHTOOLS Python class for localization windows.">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
 				<td><a href="faq.html">FAQ</a> </td>
@@ -134,58 +134,33 @@
 		</tr>
 	
 		<tr>
-		<td class="left"><tt>get_coeffs()</tt></td> 
+		<td class="left"><tt>to_array()</tt></td> 
 		<td class="right">Return an array of the spherical harmonic coefficients for taper <tt>i</tt>, where <tt>i=0</tt> is the best concentrated, optionally using a different normalization convention.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>get_degrees()</tt></td> 
-		<td class="right">Return an array containing the spherical harmonic degrees of the localization windows, from <tt>0</tt> to <tt>lmax</tt>.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_powerperdegree()</tt></td> 
-		<td class="right">Return the power per degree spectra for one or more of the localization windows.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_k()</tt></td> 
-		<td class="right">Return the number of localization windows that have concentration factors greater or equal to a specified value.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_couplingmatrix()</tt></td> 
-		<td class="right">Return the coupling matrix of the first <tt>nwin</tt> tapers.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_biasedpowerspectrum()</tt></td> 
-		<td class="right">Calculate the multitaper (cross-)power spectrum expectation of a localized function.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_grid()</tt></td> 
-		<td class="right">Return as an array a grid of taper <tt>i</tt>, where <tt>i=0</tt> is the best concentrated window.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_multitaperpowerspectrum()</tt></td> 
-		<td class="right">Return the multitaper power spectrum estimate and uncertainty for the input <tt>SHCoeffs</tt> class instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_multitapercrosspowerspectrum()</tt></td> 
-		<td class="right">Return the multitaper cross-power spectrum estimate and uncertainty for two input <tt>SHCoeffs</tt> class instances.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>return_coeffs()</tt></td> 
+		<td class="left"><tt>to_shcoeffs()</tt></td> 
 		<td class="right">Return the spherical harmonic coefficients of taper <tt>i</tt>, where <tt>i=0</tt> is the best concentrated, as a new <tt>SHCoeffs</tt> class instance, optionally using a different normalization convention.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>return_grid()</tt></td> 
+		<td class="left"><tt>to_shgrid()</tt></td> 
 		<td class="right">Return as a new <tt>SHGrid</tt> instance a grid of taper <tt>i</tt>, where <tt>i=0</tt> is the best concentrated window.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>number_concentrated()</tt></td> 
+		<td class="right">Return the number of localization windows that have concentration factors greater or equal to a specified value.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>degrees()</tt></td> 
+		<td class="right">Return an array containing the spherical harmonic degrees of the localization windows, from <tt>0</tt> to <tt>lmax</tt>.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>spectra()</tt></td> 
+		<td class="right">Return the spectra of one or more localization windows.</td>
 		</tr>
 
 		<tr>
@@ -194,28 +169,48 @@
 		</tr>
 
 		<tr>
+		<td class="left"><tt>coupling_matrix()</tt></td> 
+		<td class="right">Return the coupling matrix of the first <tt>nwin</tt> tapers.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>biased_spectrum()</tt></td> 
+		<td class="right">Calculate the multitaper (cross-) spectrum expectation of a localized function.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>multitaper_spectrum()</tt></td> 
+		<td class="right">Return the multitaper spectrum estimate and uncertainty for the input <tt>SHCoeffs</tt> class instance.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>multitaper_cross_spectrum()</tt></td> 
+		<td class="right">Return the multitaper cross-spectrum estimate and uncertainty for two input <tt>SHCoeffs</tt> class instances.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>copy()</tt></td> 
+		<td class="right">Return a copy of the class instance.</td>
+		</tr>
+
+		<tr>
 		<td class="left"><tt>plot_windows()</tt></td> 
 		<td class="right">Plot the best concentrated localization windows using a simple cylindrical projection.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>plot_powerperdegree()</tt></td> 
-		<td class="right">Plot the power spectra of the best concentrated localization windows.</td>
+		<td class="left"><tt>plot_spectra()</tt></td> 
+		<td class="right">Plot the spectra of the best concentrated localization windows.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>plot_couplingmatrix()</tt></td> 
+		<td class="left"><tt>plot_coupling_matrix()</tt></td> 
 		<td class="right">Plot the multitaper coupling matrix.</td>
 		</tr>
 
 		<tr>
 		<td class="left"><tt>info()</tt></td> 
 		<td class="right">Print a summary of the data stored in the <tt>SHWindow</tt> instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>copy()</tt></td> 
-		<td class="right">Return a copy of the class instance.</td>
 		</tr>
 
 		</tbody>
@@ -226,11 +221,11 @@
 <p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="python-routines.html" class="dir">Python</a> > <a href="pyclasses.html" class="dir">Classes</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

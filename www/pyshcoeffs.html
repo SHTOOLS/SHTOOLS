@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/sh.css">
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
-	<meta name="description" content="Python classes defined by SHTOOLS.">
+	<meta name="description" content="SHTOOLS Python class for spherical harmonic coefficients.">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
 				<td><a href="faq.html">FAQ</a> </td>
@@ -113,23 +113,23 @@
 		</tr>
 
 		<tr>
-		<td class="left"><tt>get_degrees()</tt></td>
+		<td class="left"><tt>to_file()</tt></td> 
+		<td class="right">Save raw spherical harmonic coefficientsto a text or binary file.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>to_array()</tt></td>
+		<td class="right">Return an array of spherical harmonics coefficients with a different normalization convention.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>degrees()</tt></td>
 		<td class="right">Return an array listing the spherical harmonic degrees from <tt>0</tt> to <tt>lmax</tt>.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>get_powerperdegree()</tt></td>
-		<td class="right">Return an array with the power per degree spectrum.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_powerperband()</tt></td>
-		<td class="right">Return an array with the power per log<sub>bandwidth</sub> spectrum.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>get_coeffs()</tt></td>
-		<td class="right">Return an array of spherical harmonics coefficients with a different normalization convention.</td>
+		<td class="left"><tt>spectrum()</tt></td>
+		<td class="right">Return the spectrum of the function.</td>
 		</tr>
 
 		<tr>
@@ -143,48 +143,33 @@
 		</tr>
 
 		<tr>
-		<td class="left"><tt>return_coeffs()</tt></td>
-		<td class="right">Return the current class instance as a new instance using a different normalization convention.</td>
+		<td class="left"><tt>convert()</tt></td>
+		<td class="right">Return a new class instance using a different normalization convention.</td>
 		</tr>
 
 		<tr>
 		<td class="left"><tt>expand()</tt></td>
-		<td class="right">Evaluate the coefficients on a spherical grid and return a new SHGrid class instance.</td>
+		<td class="right">Evaluate the coefficients either on a spherical grid and return an SHGrid class instance, or for a list of latitude and longitude coordinates.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>make_complex()</tt></td>
-		<td class="right">Convert a complex <tt>SHCoeffs</tt> class instance to a real class instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>make_real()</tt></td>
-		<td class="right">Convert a real <tt>SHCoeffs</tt> class instance to a complex class instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>plot_powerperdegree()</tt></td>
-		<td class="right">Plot the power per degree spectrum.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>plot_powerperband()</tt></td> 
-		<td class="right">Plot the power per log<sub>bandwidth</sub>(degree) spectrum.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>info()</tt></td> 
-		<td class="right">Print a summary of the data stored in the SHCoeffs instance.</td>
-		</tr>
-
-		<tr>
-		<td class="left"><tt>copy()</tt></td> 
+		<td class="left"><tt>copy()</tt></td>
 		<td class="right">Return a copy of the class instance.</td>
 		</tr>
 
 		<tr>
-		<td class="left"><tt>tofile()</tt></td> 
-		<td class="right">Save raw spherical harmonic coefficientsto a text or binary file.</td>
+		<td class="left"><tt>plot_spectrum()</tt></td>
+		<td class="right">Plot the spectrum as a function of spherical harmonic degree.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>plot_spectrum2d()</tt></td>
+		<td class="right">Plot the spectrum of all spherical-harmonic coefficients.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><tt>info()</tt></td>
+		<td class="right">Print a summary of the data stored in the SHCoeffs instance.</td>
 		</tr>
 
 		</tbody>
@@ -195,11 +180,11 @@
 <p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="python-routines.html" class="dir">Python</a> > <a href="pyclasses.html" class="dir">Classes</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

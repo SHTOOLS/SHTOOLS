@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/sh.css">
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
-	<meta name="description" content="How to call SHTOOLS routines from Python.">
+	<meta name="description" content="How to use SHTOOLS routines in Python.">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
 				<td><a href="faq.html">FAQ</a> </td>
@@ -41,30 +41,36 @@
 		sys.path.append('/path-to-pyshtools')</tt></p>
 	</blockquote>
 
-	<p>where <tt>/path-to-pyshtools</tt> is the directory that contains the <tt>pyshtools</tt> directory. Typically, this is located in a place such as <tt>/usr/local/lib/python2.7/site-packages</tt>. After setting the path, it is then only necessary to execute the statement</p>
+	<p>where <tt>/path-to-pyshtools</tt> is the directory that contains the <tt>pyshtools</tt> directory. Typically, this is located in a place such as <tt>/usr/local/lib/python3.5/site-packages</tt>. After setting the path, it is then only necessary to execute the statement</p>
 
 		<blockquote class="small">
 			<p class="nomargintop nomarginbot"><tt>import pyshtools</tt></p>
 		</blockquote>
 
-	<p>This will load the following classes and submodules into the <tt>pyshtools</tt> namespace:</p>
+	<p>This will load the three classes</p>
 
 	<ul>
 		<li><tt>SHCoeffs</tt> - A high level class for spherical harmonic coefficients.</li>
 		<li><tt>SHGrid</tt> - A high level classes for global grids.</li>
 		<li><tt>SHWindow</tt> - A high level classes for localization windows.</li>
+</ul>
+
+<p> and subpackages</p>
+
+	<ul>
 		<li><tt>shclasses</tt> - All pyshtools classes and subclasses.</li>
 		<li><tt>shtools</tt> - All <tt>pyshtools</tt> routines.</li>
 		<li><tt>legendre</tt> - Legendre functions.</li>
 		<li><tt>expand</tt> - Spherical harmonic expansion routines.</li>
 		<li><tt>shio</tt> - Spherical harmonic I/O, storage, and conversion routines.</li>
-		<li><tt>spectralanalysis</tt> - Global spectral analysis routines.</li>
-		<li><tt>localizedspectralanalysis</tt> - Localized spectral analysis routines.</li>
+		<li><tt>spectralanalysis</tt> - Global and localized spectral analysis routines.</li>
 		<li><tt>rotate</tt> - Spherical harmonic rotation routines.</li>
 		<li><tt>gravmag</tt> - Gravity and magnetics routines.</li>
 		<li><tt>constant</tt> - pyshtools constants.</li>
-		<li><tt>other</tt> - Other routines.</li>
+		<li><tt>utils</tt> - Utilities.</li>
 </ul>
+
+<p>into the <tt>pyshtools</tt> namespace.</p>
 
 	<p>If you are using <a href="http://ipython.org/">iPython</a>, which adds improved functionality to Python, the available <tt>pyshtools</tt> routines can be explored by typing</p>
 
@@ -79,7 +85,7 @@
 	<p>To read the documentation of a routine in iPython, such as <tt>MakeGridDH</tt>, enter</p>
 
 		<blockquote class="small">
-			<p class="nomargintop nomarginbot"><tt>pyshtools.MakeGridDH?</tt></p>
+			<p class="nomargintop nomarginbot"><tt>pyshtools.expand.MakeGridDH?</tt></p>
 	</blockquote>
 
 	<p>To read the info string of an SHTOOLS constant, such as <tt>a_mars</tt>, enter</p>
@@ -89,7 +95,7 @@
 	</blockquote>
 
 	<p>Documentation for the Python functions used in SHTOOLS can also be accessed by their unix man pages, appending <tt>py</tt> to the name and using all lower case letters. As an example, to access the python <tt>MakeGridDH</tt> man page, use</p>
-	
+
 	<blockquote>
 	<p>
 	<tt>man pymakegriddh</tt></p>
@@ -100,11 +106,11 @@
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> >  <a href="documentation.html" class="dir">Documentation</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

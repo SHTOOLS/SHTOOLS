@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a  href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="makegridglq">MakeGridGLQ</h1>
 <p>Create a 2D map from a set of spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes.</p>
 <h1 id="usage">Usage</h1>
-<p>call MakeGridGLQ (<code>gridglq</code>, <code>cilm</code>, <code>lmax</code>, <code>plx</code>, <code>zero</code>, <code>norm</code>, <code>csphase</code>, <code>lmax_calc</code>)</p>
+<p>call MakeGridGLQ (<code>gridglq</code>, <code>cilm</code>, <code>lmax</code>, <code>plx</code>, <code>zero</code>, <code>norm</code>, <code>csphase</code>, <code>lmax_calc</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>gridglq</code> : output, real*8, dimension (<code>lmax</code>+1, 2*<code>lmax</code>+1)</dt>
@@ -59,8 +59,10 @@
 <dt><code>lmax_calc</code> : input, optional, integer, default = <code>lmax</code></dt>
 <dd>The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to <code>lmax</code>.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error. # Description
+</dd>
 </dl>
-<h1 id="description">Description</h1>
 <p><code>MakeGridGLQ</code> will create a 2-dimensional map from a set of input spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. This is the inverse of the routine <code>SHExpandGLQ</code>. The latitudinal nodes correspond to the zeros of the Legendre polynomial of degree <code>lmax+1</code>, and the longitudinal nodes are equally spaced with an interval of <code>360/(2*lmax+1)</code> degrees. When evaluating the function, the maximum spherical harmonic degree that is considered is the minimum of <code>lmax</code>, the size of <code>lmaxin</code>, or <code>lmax_calc</code> (if specified).</p>
 <p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code>norm</code> and <code>csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. The normalized legendre functions are calculated using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15.</p>
 <p>The reconstruction of the spherical harmonic function may be speeded up by precomputing the Legendre functions on the Gauss-Legendre quadrature nodes in the routine <code>SHGLQ</code>. However, given that this array contains on the order of <code>lmax</code>**3 entries, this is only feasible for moderate values of <code>lmax</code>.</p>
@@ -72,11 +74,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../transformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

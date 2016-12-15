@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/sh.css">
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
-	<meta name="description" content="SHTOOLS Frequently asked questions.">
+	<meta name="description" content="SHTOOLS frequently asked questions.">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>	
+				<td><a href="../index.html">HOME</a></td>	
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>	
 				<td><a href="documentation.html">DOCUMENTATION</a></td>
 				<td class="selected"><a href="faq.html">FAQ</a> </td>
@@ -49,14 +49,14 @@
 			<li><a href="#g10">How do I make images with the output from SHTOOLS?</a></li>
 			<li><a href="#g11">SHTOOLS developer fund</a></li>
 		</ul>
-			
+
 		<p class="headbox">Fortran Compiling Problems</p>
-		
+
 		<ul>
 			<li><a href="#c1">SHTOOLS won't compile on my computer.</a></li>
 			<li><a href="#c2">Can I compile SHTOOLS with Fortran 77?</a></li>
 		</ul>
-		
+
 		<p class="headbox">Fortran Linking Problems</p>
 		<ul>
 			<li><a href="#l1">Linking fails because of "Undefined symbols".</a></li>
@@ -84,7 +84,7 @@
 
 	<h2><a name="g2"></a>I have a question.</h2>
 
-	<p>Before contacting us, first (1) read the page <a href="compilation.html">Compilation Instructions</a>, (2) read the sections <a href="using-f95.html">Using SHTOOLS with Fortran 95</a> and <a href="using-python.html">Python</a>, (3) read this FAQ, (4) ensure that you are using the current version of SHTOOLS, (5) perform a <tt>make clean</tt> and recompile SHTOOLS, and finally (6) consult the <a href="https://github.com/SHTOOLS/SHTOOLS/issues">SHTOOLS issues at GitHub</a>. </p>
+	<p>Before contacting us, first (1) read the page <a href="install.html">Compilation Instructions</a>, (2) read the sections <a href="using-f95.html">Using SHTOOLS with Fortran 95</a> and <a href="using-python.html">Python</a>, (3) read this FAQ, (4) ensure that you are using the current version of SHTOOLS, (5) perform a <tt>make clean</tt> and recompile SHTOOLS, and finally (6) consult the <a href="https://github.com/SHTOOLS/SHTOOLS/issues">SHTOOLS issues at GitHub</a>. </p>
 
 	<p>If at this point your problem is not resolved, for most cases we would prefer that you open an issue on <a href="https://github.com/SHTOOLS/SHTOOLS/issues">GitHub</a>. You can also contact the developers by email.</p>
 
@@ -259,7 +259,7 @@ collect2: error: ld returned 1 exit status<br></p>
 	<p> Note that the LAPACK and BLAS library names might be somewhat different than assumed in this documentation. For instance, the LAPACK and BLAS libraries might be invoked by passing <tt>-llapack3</tt>, <tt>-lf77BLAS</tt>, or <tt>-lcblas</tt> to the linker. Note that if the library ATLAS is present, it can be substituted for the BLAS library. If you are certain that the library exists, and that the linker is attempting to link to it, then see <a href="#l4">How do I know if I need to append underscores to external function and subroutine names?</a></p>
 
 	<h2><a name="l4"></a>How do I know if I need to append underscores to external function and subroutine names?</h2>
-	
+
 	<p>When making libraries such as SHTOOLS, LAPACK and FFTW, some compilers by default add trailing underscores to external function and subroutine names. If the function and subroutine names in the SHTOOLS library do not correspond exactly to what is in the LAPACK and FFTW libraries, the linker will not be able to resolve all of the symbols, and you will receive a linker "undefined symbols" error. Most compilers have options that allows you to "modify" the name of the subroutine and function name by specifying arguments such as "fold external function names to lower case", "do not append trailing underscores to external function names", and so on.</p>
 
 	<p class="nomarginbot">If you are certain that you have installed correctly the FFTW, LAPACK and BLAS libraries, and that the linker can indeed find them, then it is quite possible that a linking problem is related to a trailing underscore being present in the external library, but not in the function and subroutine names in the SHTOOLS library (or vice versa). It is simple to inspect these libraries to determine the underscoring convections. For instance, the unix command "display name list"</p>
@@ -278,7 +278,7 @@ collect2: error: ld returned 1 exit status<br></p>
 	_makegridglqc_<br>
 	</tt></p>
 	</blockquote>
-	
+
 	<p>Indicating that underscores were added to the SHTOOLS subroutine names.</p>
 
 	<p class="nomarginbot">The command</p>
@@ -374,11 +374,11 @@ collect2: error: ld returned 1 exit status<br></p>
 <p class="dir">
 >  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> </p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

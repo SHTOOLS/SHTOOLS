@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="shmultitapermaskcse">SHMultiTaperMaskCSE</h1>
 <p>Perform a localized multitaper cross-spectral analysis using using arbitrary windows derived from a mask.</p>
 <h1 id="usage">Usage</h1>
-<p>call SHMultiTaperMaskCSE (<code>mtse</code>, <code>sd</code>, <code>sh1</code>, <code>lmax1</code>, <code>sh2</code>, <code>lmax2</code>, <code>tapers</code>, <code>lmaxt</code>, <code>k</code>, <code>taper_wt</code>, <code>norm</code>, <code>csphase</code>)</p>
+<p>call SHMultiTaperMaskCSE (<code>mtse</code>, <code>sd</code>, <code>sh1</code>, <code>lmax1</code>, <code>sh2</code>, <code>lmax2</code>, <code>tapers</code>, <code>lmaxt</code>, <code>k</code>, <code>taper_wt</code>, <code>norm</code>, <code>csphase</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>mtse</code> : output, real*8, dimension (<code>lmax</code>-<code>lmaxt</code>+1)</dt>
@@ -71,6 +71,9 @@
 <dt><code>csphase</code> : input, optional, integer, default = 1</dt>
 <dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHMultiTaperMaskCSE</code> will perform a localized multitaper cross-spectral analysis of two input functions expressed in spherical harmonics, <code>SH1</code> and <code>SH2</code>, using an arbitrary set of windows derived from a mask. The maximum degree of the localized multitaper power spectrum estimate is <code>lmax-lmaxt</code>, where <code>lmax</code> is the smaller of <code>lmax1</code> and <code>lmax2</code>. The matrix <code>tapers</code> contains the spherical harmonic coefficients of the windows and can be obtained by a call to <code>SHReturnTapersMap</code>. The coefficients of each window are stored in a single column, ordered according to the conventions used in <code>SHCilmToVector</code>.</p>
@@ -84,11 +87,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

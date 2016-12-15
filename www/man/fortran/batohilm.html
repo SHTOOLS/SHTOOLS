@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="batohilm">BAtoHilm</h1>
 <p>Calculate iteratively the relief along an interface of constant density contrast that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998).</p>
 <h1 id="usage">Usage</h1>
-<p>call BAtoHilm (<code>cilm</code>, <code>ba</code>, <code>grid</code>, <code>lmax</code>, <code>nmax</code>, <code>mass</code>, <code>r0</code>, <code>rho</code>, <code>gridtype</code>, <code>w</code>, <code>plx</code>, <code>zero</code>, <code>filtertype</code>, <code>filterdeg</code>, <code>lmaxcalc</code>)</p>
+<p>call BAtoHilm (<code>cilm</code>, <code>ba</code>, <code>grid</code>, <code>lmax</code>, <code>nmax</code>, <code>mass</code>, <code>r0</code>, <code>rho</code>, <code>gridtype</code>, <code>w</code>, <code>plx</code>, <code>zero</code>, <code>filtertype</code>, <code>filterdeg</code>, <code>lmaxcalc</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>cilm</code> : output, real*8, dimension (2, <code>lmaxcalc</code>+1, <code>lmaxcalc</code>+1)</dt>
@@ -80,12 +80,14 @@
 <dt><code>lmaxcalc</code> : optional, input, integer, default = <code>lmax</code></dt>
 <dd>The maximum degree that will be calculated in the spherical harmonic expansions.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p>I<code>BAtoHilm</code> is used to solve iteratively for the relief along an interface that corresponds to a given Bouguer anomaly. This is equation 18 of Wieczorek and Phillips (1998) which implicitly takes into consideration the finite-amplitude correction. Each iteration takes as input a guess for the relief (specified by <code>grid</code>) and outputs the iteratively improved spherical harmonic coefficients of this relief. These coefficients can then be re-expanded and re-input into this routine as the next guess. For the initial guess, it is often sufficient to use the relief predicted using the first-order &quot;mass sheet&quot; approximation. The input relief <code>grid</code> can be of one of three type specified by <code>gridtype</code>: 1 for Gauss-Legendre grids, 2 for equally sampled Driscoll-Healy grids (<code>n</code> by <code>n</code>), and 3 for equally spaced Driscoll-Healy grid (<code>n</code> by 2<code>n</code>).</p>
 <p>If the algorithm does not converge, one might want to try damping the initial estimate. Alternatively, iterations of the following form have proven successfulin in damping oscilations between successive iterations:</p>
-<p><code>h3 = (h2+h1)/2</code><br />
-<code>h4 = f(h3)</code></p>
+<p><code>h3 = (h2+h1)/2</code> <code>h4 = f(h3)</code></p>
 <p>It is important to understand that as an intermediate step, this routine calculates the spherical harmonic coefficients of the relief raised to the nth power, i.e., grid**n. As such, if the input function is bandlimited to degree <code>L</code>, the resulting function will thus be bandlimited to degree <code>L*nmax</code>. This subroutine implicitly assumes that <code>lmax</code> is greater than or equal to <code>L*nmax</code>. If this is not the case, aliasing will occur. In practice, for accurate results, it is found that <code>lmax</code> needs only to be about twice the size of <code>L</code>, though this should be verified for each application. Thus, if the input function is considered to be bandlimited to degree <code>L</code>, the function should be evaluated on a grid corresponding to a maximum degree of about <code>2L</code>.</p>
 <p>If the input grid is evaluated on the Gauss-Legendre points, it is necessary to specify the optional parameters <code>w</code> and<code>zero</code>, or <code>w</code> and <code>plx</code>, which are calculated by a call to <code>SHGLQ</code>. If memory is not an issue, the algorithm can be speeded up by inputing the optional array <code>plx</code> of precomputed associated Legendre functions on the Gauss-Legendre nodes. If <code>plx</code> is not specified, then it is necessary to input the optional array <code>zero</code> that contains the latitudinal Gauss-Legendre quadrature nodes.</p>
 <p>This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase.</p>
@@ -97,11 +99,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

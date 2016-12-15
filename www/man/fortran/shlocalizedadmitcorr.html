@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="shlocalizedadmitcorr">SHLocalizedAdmitCorr</h1>
 <p>Calculate the localized admittance and correlation spectra of two functions at a given location using spherical cap localization windows.</p>
 <h1 id="usage">Usage</h1>
-<p>call SHLocalizedAdmitCorr (<code>tapers</code>, <code>taper_order</code>, <code>lwin</code>, <code>lat</code>, <code>lon</code>, <code>gilm</code>, <code>tilm</code>, <code>lmax</code>, <code>admit</code>, <code>corr</code>, <code>k</code>, <code>admit_error</code>, <code>corr_error</code>, <code>taper_wt</code>, <code>mtdef</code>, <code>k1linsig</code>)</p>
+<p>call SHLocalizedAdmitCorr (<code>tapers</code>, <code>taper_order</code>, <code>lwin</code>, <code>lat</code>, <code>lon</code>, <code>gilm</code>, <code>tilm</code>, <code>lmax</code>, <code>admit</code>, <code>corr</code>, <code>k</code>, <code>admit_error</code>, <code>corr_error</code>, <code>taper_wt</code>, <code>mtdef</code>, <code>k1linsig</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>tapers</code> : input, real*8, dimension (<code>lwin</code>+1, <code>k</code>)</dt>
@@ -83,6 +83,9 @@
 <dt><code>k1linsig</code> : input, optional, integer</dt>
 <dd>If equal to one, and only a single taper is being used, the errors in the admittance function will be calculated by assuming that the coefficients of <code>gilm</code> and <code>tilm</code> are related by a linear degree-dependent transfer function and that the lack of correlation is a result of uncorrelated noise. This is the square root of eq. 33 of Simons et al. 1997.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHLocalizedAdmitCorr</code> will calculate the localized admittance and degree correlation spectra of two functions at a given location. The windowing functions are solutions to the spherical-cap concentration problem (as calculated by <code>SHReturnTapers</code> or <code>SHReturnTapersM</code>), of which the best <code>k</code> concentrated tapers are utilized. If <code>k</code> is greater than 1, then estimates of the standard error for the admittance and correlation will be returned in the optional arrays <code>admit_error</code> and <code>corr_error</code>. The symmetry axis of the localizing windows are rotated to the coordinates (<code>lat</code>, <code>lon</code>) before performing the windowing operation.</p>
@@ -101,11 +104,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../localized.html" class="dir">Localized Spectral Analysis</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

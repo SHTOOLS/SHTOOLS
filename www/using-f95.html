@@ -21,7 +21,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
 				<td><a href="faq.html">FAQ</a> </td>
@@ -33,7 +33,7 @@
 >  <a href="../index.html" class="dir">Home</a> >  <a href="documentation.html" class="dir">Documentation</a></p>
 
 	<h1>Using SHTOOLS with Fortran 95</h1>
-		
+
 	<h2>Calling SHTOOLS routines</h2>
 
 	<p class="nomarginbot">To access the SHTOOLS functions and subroutines in your code, it is necessary to place the statement</p>
@@ -86,17 +86,18 @@
 	<h3>Intel Fortran <tt>ifort</tt></h3>
 
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>ifort -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -Tf MyProgram.f95 -o MyProgram</tt></p>
+		<p class="nomargintop nomarginbot"><tt>ifort -fpp -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm &#8209;llapack -lblas -O3 -m64 -Tf MyProgram.f95 -o MyProgram</tt></p>
 	</blockquote>
 
-	<p>Note that the position of the source file in the above examples might be important for some compilers. It may be necessary to modify some options in order to properly link to both the LAPACK and FFTW libraries (see <a href="compilation.html">Compilation Instructions</a> for more details). If the library <tt>ATLAS</tt> exists on your system, this could be used instead of <tt>BLAS</tt>.</p>
+	<p>Note that the position of the source file in the above examples might be important for some compilers. It may be necessary to modify some options in order to properly link to both the LAPACK and FFTW libraries (see <a href="install.html">Compilation Instructions</a> for more details). If the library <tt>ATLAS</tt> exists on your system, this could be used instead of <tt>BLAS</tt>.</p>
 
 	<p>To use the SHTOOLS library with OpenMP, the library name <tt>libSHTOOLS.a</tt> in the above examples would need to be replaced by <tt>libSHTOOLS-mp.a</tt>. Furthermore, it would be necessary to add the compiler option to use OpenMP:</p>
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot">
 		<tt>-fopenmp</tt> (gfortran)<br>
-		<tt>-openmp</tt> (Absoft Pro Fortran)
+		<tt>-openmp</tt> (Absoft Pro Fortran)<br>
+		<tt>-qopenmp</tt> (ifort)
 		</p>
 	</blockquote>
 
@@ -133,11 +134,11 @@
 	<p class="dir">
 >  <a href="../index.html" class="dir">Home</a> >  <a href="documentation.html" class="dir">Documentation</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

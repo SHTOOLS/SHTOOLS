@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="makegravgradgriddh">MakeGravGradGridDH</h1>
 <p>Create 2D cylindrical maps on a flattened ellipsoid of the components of the gravity &quot;gradient&quot; tensor in a local north-oriented reference frame.</p>
 <h1 id="usage">Usage</h1>
-<p>call MakeGravGradGridDH (<code>cilm</code>, <code>lmax</code>, <code>gm</code>, <code>r0</code>, <code>a</code>, <code>f</code>, <code>vxx</code>, <code>vyy</code>, <code>vzz</code>, <code>vxy</code>, <code>vxz</code>, <code>vyz</code>, <code>n</code>, <code>sampling</code>, <code>lmax_calc</code>)</p>
+<p>call MakeGravGradGridDH (<code>cilm</code>, <code>lmax</code>, <code>gm</code>, <code>r0</code>, <code>a</code>, <code>f</code>, <code>vxx</code>, <code>vyy</code>, <code>vzz</code>, <code>vxy</code>, <code>vxz</code>, <code>vyz</code>, <code>n</code>, <code>sampling</code>, <code>lmax_calc</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>cilm</code> : input, real*8, dimension (2, <code>lmax</code>+1, <code>lmax</code>+1)</dt>
@@ -80,12 +80,15 @@
 <dt><code>lmax_calc</code> : optional, input, integer</dt>
 <dd>The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to <code>lmax</code>.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>MakeGravGradGridDH</code> will create 2-dimensional cylindrical maps from the spherical harmonic coefficients <code>cilm</code>, equally sampled (<code>n</code> by <code>n</code>) or equally spaced (<code>n</code> by 2<code>n</code>) in latitude and longitude, for six components of the gravity &quot;gradient&quot; tensor (all using geocentric coordinates):</p>
-<p><code>(Vxx,  Vxy,    Vxz)</code><br />
-<code>(Vyx,  Vyy,    Vyz)</code><br />
-<code>(Vzx,  Vzy,    Vzz)</code></p>
+<p><code>(Vxx,  Vxy,  Vxz)</code><br />
+<code>(Vyx,  Vyy,  Vyz)</code><br />
+<code>(Vzx,  Vzy,  Vzz)</code></p>
 <p>The reference frame is north-oriented, where <code>x</code> points north, <code>y</code> points west, and <code>z</code> points upward (all tangent or perpendicular to a sphere of radius r). The gravitational potential is defined as</p>
 <p><code>V = GM/r Sum_{l=0}^lmax (r0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}</code>,</p>
 <p>where <code>r0</code> is the reference radius of the spherical harmonic coefficients <code>Clm</code>, and the gravitational acceleration is</p>
@@ -111,11 +114,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

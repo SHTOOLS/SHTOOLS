@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a  href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a  href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="shctor">SHctor</h1>
 <p>Convert complex spherical harmonics to real form.</p>
 <h1 id="usage">Usage</h1>
-<p>call SHctor (<code>ccilm</code>, <code>rcilm</code>, <code>degmax</code>, <code>convention</code>, <code>switchcs</code>)</p>
+<p>call SHctor (<code>ccilm</code>, <code>rcilm</code>, <code>degmax</code>, <code>convention</code>, <code>switchcs</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>ccilm</code> : input, real*8, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
@@ -50,6 +50,9 @@
 <dt><code>swtichcs</code> : input, optional, integer, default = 0</dt>
 <dd>If 0 (default), the input and output coefficients will possess the same Condon-Shortley phase convention. If 1, the input coefficients will first be multiplied by (-1)^m.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHctor</code> will convert complex spherical harmonics of a real function to real form. By default, the dimension of the output array is the minimum of <code>rcilm(1,:,:)</code> and <code>ccilm(1,:,:)</code>, though this can be changed by specifying the optional parameter <code>degmax</code>. The normalization of the input and output coefficients are by default the same, but if the optional argument <code>convention</code> is set to 2, this routine will convert from geodesy 4-pi normalized coefficients to orthonormalized coefficients. The Condon-Shortley phase convention between the input an output coefficients can be modified by the optional argument <code>switchcs</code>.</p>
@@ -59,11 +62,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../io.html" class="dir">Spherical Harmonic I/O</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

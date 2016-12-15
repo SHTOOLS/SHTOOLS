@@ -4,7 +4,7 @@
 <html>
 
 <head>
-	<title>SHTOOLS - Localized spectral analysis</title>
+	<title>SHTOOLS - Global spectral analysis</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="../../css/sh.css">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico">
@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -28,14 +28,14 @@
 	</table>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyspectralanalysis.html" class="dir">Global and Localized Spectral Analysis</a></p>
 <h1 id="shbias">SHBias</h1>
 <p>Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum.</p>
 <h1 id="usage">Usage</h1>
-<p><code>outcspectra</code> = pyshtools.SHBias (<code>shh</code>, <code>incspectra</code>, [<code>ldata</code>, <code>lwin</code>, <code>save_cg</code>])</p>
+<p><code>outcspectra</code> = SHBias (<code>shh</code>, <code>incspectra</code>, [<code>ldata</code>, <code>lwin</code>, <code>save_cg</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
-<dt><code>outcspectra</code> : float, dimension (<code>ldata</code>+<code>lwin</code>)</dt>
+<dt><code>outcspectra</code> : float, dimension (<code>ldata</code>+<code>lwin</code>+1)</dt>
 <dd>The expectation of the localized (cross-)power spectrum.
 </dd>
 </dl>
@@ -66,16 +66,16 @@
 <p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.</p>
 <p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on a sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.</p>
 <h1 id="see-also">See also</h1>
-<p><a href="pyshpowerspectra.html">shpowerspectra</a>,<a href="pyshcrosspowerspectra.html">shcrosspowerspectra</a>, <a href="pywigner3j.html">wigner3j</a>, <a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshreturntapersm.html">shreturntapersm</a>, <a href="pyshbiasadmitcorr.html">shbiasadmitcorr</a></p>
+<p><a href="spectrum.html">spectrum</a>,<a href="cross_spectrum.html">cross_spectrum</a>, <a href="pywigner3j.html">wigner3j</a>, <a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshreturntapersm.html">shreturntapersm</a>, <a href="pyshbiasadmitcorr.html">shbiasadmitcorr</a></p>
 
 	<p class="dir">
->  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylocalized.html" class="dir">Localized Spectral Analysis</a></p>
+>  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyspectralanalysis.html" class="dir">Global and Localized Spectral Analysis</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

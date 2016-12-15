@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,17 +32,17 @@
 <h1 id="plmbar">PlmBar</h1>
 <p>Compute all the 4-pi (geodesy) normalized associated Legendre functions.</p>
 <h1 id="usage">Usage</h1>
-<p><code>p</code> = pyshtools.PlmBar(<code>lmax</code>, <code>z</code>, [<code>csphase</code>, <code>cnorm</code>])</p>
+<p><code>p</code> = PlmBar (<code>lmax</code>, <code>z</code>, [<code>csphase</code>, <code>cnorm</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>p</code> : float, dimension ((<code>lmax</code>+1)*(<code>lmax</code>+2)/2)</dt>
-<dd>An array of 4-pi (geodesy) normalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m</code>,.
+<dd>An array of 4-pi (geodesy) normalized associated Legendre functions up to degree <code>lmax</code>. The index corresponds to <code>l*(l+1)/2+m</code>.
 </dd>
 </dl>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>lmax</code> : integer</dt>
-<dd>The maximum degree of the associated Legendre functions to be computed. If <code>lmax = -1</code>, allocated memory will be deallocated.
+<dd>The maximum degree of the associated Legendre functions to be computed.
 </dd>
 <dt><code>z</code> : float</dt>
 <dd>The argument of the associated Legendre functions.
@@ -57,20 +57,19 @@
 <h1 id="description">Description</h1>
 <p><code>PlmBar</code> will calculate all of the 4-pi (geodesy) normalized associated Legendre functions up to degree <code>lmax</code> for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree <code>l</code> and angular order <code>m</code> corresponds to <code>l*(l+1)/2+m</code>.</p>
 <p>The integral of the squared Legendre functions over the interval [-1, 1] is <code>2*(2-delta(0,m))</code>, where <code>delta</code> is the Kronecker delta function. If the optional parameter <code>cnorm</code> is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is <code>2</code>. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument <code>csphase</code> to -1.</p>
-<p>This routine saves the three-term recursion factors and square roots of the integers the first time being called. If subsequent calls possess the same value of <code>lmax</code>, these will not be recomputed. If you wish to deallocate this memory, which is an array of length <code>(lmax+1)*(lmax+2)</code>, recall this routine with <code>lmax = -1</code>.</p>
 <h1 id="references">References</h1>
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, 2002.</p>
 <h1 id="see-also">See also</h1>
-<p><a href="pyplbar.html"><code>pyplbar</code></a>, <a href="pyplbar_d1.html"><code>pyplbar_d1</code></a>, <a href="pyplmbar_d1.html"><code>pyplmbar_d1</code></a>, <a href="pyplon.html"><code>pyplon</code></a>, <a href="pyplon_d1,html"><code>pyplon_d1</code></a>, <a href="pyplmon.html"><code>pyplmon</code></a>, <a href="pyplmon_d1.html"><code>pyplmon_d1</code></a>, <a href="pyplschmidt.html"><code>pyplschmidt</code></a>, <a href="pyplschmidt_d1.html"><code>pyplschmidt_d1</code></a>, <a href="pyplmschmidt.html"><code>pyplmschmidt</code></a>, <a href="pyplmschmidt_d1.html"><code>pyplmschmidt_d1</code></a>, <a href="pyplegendre.html"><code>pyplegendre</code></a>, <a href="pyplegendre_d1.html"><code>pyplegendre_d1</code></a>, <a href="pyplegendrea.html"><code>pyplegendrea</code></a>, <a href="pyplegendrea_d1.html"><code>pyplegendrea_d1</code></a></p>
+<p><a href="pyplbar.html"><code>pyplbar</code></a>, <a href="pyplbar_d1.html"><code>pyplbar_d1</code></a>, <a href="pyplmbar_d1.html"><code>pyplmbar_d1</code></a>, <a href="pyplon.html"><code>pyplon</code></a>, <a href="pyplon_d1.html"><code>pyplon_d1</code></a>, <a href="pyplmon.html"><code>pyplmon</code></a>, <a href="pyplmon_d1.html"><code>pyplmon_d1</code></a>, <a href="pyplschmidt.html"><code>pyplschmidt</code></a>, <a href="pyplschmidt_d1.html"><code>pyplschmidt_d1</code></a>, <a href="pyplmschmidt.html"><code>pyplmschmidt</code></a>, <a href="pyplmschmidt_d1.html"><code>pyplmschmidt_d1</code></a>, <a href="pyplegendre.html"><code>pyplegendre</code></a>, <a href="pyplegendre_d1.html"><code>pyplegendre_d1</code></a>, <a href="pyplegendrea.html"><code>pyplegendrea</code></a>, <a href="pyplegendrea_d1.html"><code>pyplegendrea_d1</code></a></p>
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pylegendre.html" class="dir">Legendre Functions</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>

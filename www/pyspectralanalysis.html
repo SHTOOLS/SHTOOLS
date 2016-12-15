@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<title>SHTOOLS - Global and localized spectral analysis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/sh.css">
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico">
+	<meta name="description" content="SHTOOLS Python global and localized spectral analysis routines.">
+</head>
+
+<body>
+
+<div class="main">
+
+	<p class="centeredimage"><img src="images/logo.jpg" width=894 height=135 alt="SHTOOLS --- Tools for working with spherical harmonics"></p>
+
+	<table class="menu">
+		<tbody>
+			<tr>
+				<td><a href="../index.html">HOME</a></td>
+				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
+				<td class="selected"><a href="documentation.html">DOCUMENTATION</a></td>
+				<td><a href="faq.html">FAQ</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="python-routines.html" class="dir">Python</a></p>
+
+	<h1>Global and Localized Spectral Analysis</h1>
+
+	<table class="main">
+		<tbody>
+
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Global spectral analysis</p></td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/spectrum.html"><tt>spectrum</tt></a></td>
+		<td class="right">Calculate the spectrum of a real or complex function.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/cross_spectrum.html"><tt>cross_spectrum</tt></a></td>
+		<td class="right">Calculate the cross-spectrum of a real or complex function.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshadmitcorr.html"><tt>SHAdmitCorr</tt></a></td>
+		<td class="right">Calculate the admittance and correlation spectra of two functions.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshconfidence.html"><tt>SHConfidence</tt></a></td>
+		<td class="right">Compute the probability that two sets of spherical harmonic coefficients are correlated at a given degree and for a given correlation coefficient.</td>
+		</tr>
+
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Multitaper spectral estimation (spherical cap domain)</p></td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshmultitaperse.html"><tt>SHMultiTaperSE</tt></a></td>
+		<td class="right">Perform a localized multitaper spectral analysis.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshmultitapercse.html"><tt>SHMultiTaperCSE</tt></a></td>
+		<td class="right">Perform a localized multitaper cross-spectral analysis.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshlocalizedadmitcorr.html"><tt>SHLocalizedAdmitCorr</tt></a></td>
+		<td class="right">Calculate the localized admittance and correlation spectra of two functions at a given location.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshreturntapers.html"><tt>SHReturnTapers</tt></a></td>
+		<td class="right">Calculate the eigenfunctions of the spherical-cap concentration problem.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshreturntapersm.html"><tt>SHReturnTapersM</tt></a></td>
+		<td class="right">Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pycomputedm.html"><tt>ComputeDm</tt></a></td>
+		<td class="right">Compute the space-concentration kernel of a spherical cap.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pycomputedg82.html"><tt>ComputeDG82</tt></a></td>
+		<td class="right">Compute the tridiagonal matrix of <i>Gr&uuml;nbaum et al.</i> (1982) that commutes with the space-concentration kernel of a spherical cap.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshfindlwin.html"><tt>SHFindLWin</tt></a></td>
+		<td class="right">Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshbiask.html"><tt>SHBiasK</tt></a></td>
+		<td class="right">Calculate the multitaper (cross-)power spectrum expectation of a windowed function.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshmtcouplingmatrix.html"><tt>SHMTCouplingMatrix</tt></a></td>
+		<td class="right">Calculate the multitaper coupling matrix for a given set of localization windows.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshbiasadmitcorr.html"><tt>SHBiasAdmitCorr</tt></a></td>
+		<td class="right">Calculate the expected multitaper admittance and correlation spectra associated with the input global cross-power spectra of two functions.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshmtdebias.html"><tt>SHMTDebias</tt></a></td>
+		<td class="right">Invert for the global power spectrum given a localized multitaper spectrum estimate.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshmtvaropt.html"><tt>SHMTVarOpt</tt></a></td>
+		<td class="right">Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshsjkpg.html"><tt>SHSjkPG</tt></a></td>
+		<td class="right">Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.</td>
+		</tr>
+
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Localization windows (arbitrary domain)</p></td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshreturntapersmap.html"><tt>SHReturnTapersMap</tt></a></td>
+		<td class="right">Calculate the eigenfunctions of the concentration problem for an arbitrary concentration region.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshbiaskmask.html"><tt>SHBiasKMask</tt></a></td>
+		<td class="right">Calculate the multitaper (cross-)power spectrum expectation of a function localized by arbitrary windows derived from a mask.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshmultitapermaskse.html"><tt>SHMultiTaperMaskSE</tt></a></td>
+		<td class="right">Perform a localized multitaper spectral analysis using arbitrary windows.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshmultitapermaskcse.html"><tt>SHMultiTaperMaskCSE</tt></a></td>
+		<td class="right">Perform a localized multitaper cross-spectral analysis using arbitrary windows.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pycomputedmap.html"><tt>ComputeDMap</tt></a></td>
+		<td class="right">Compute the space-concentration kernel of a mask defined on the sphere.</td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pycurve2mask.html"><tt>Curve2Mask</tt></a></td>
+		<td class="right">Given a set of latitude and longitude coordinates representing a closed curve, output a gridded mask.
+		</td>
+		</tr>
+
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Localization Bias (General)</p></td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pyshbias.html"><tt>SHBias</tt></a></td>
+		<td class="right">Calculate the (cross-)power spectrum expectation of a windowed function.</td>
+		</tr>
+
+		<tr>
+		<td colspan=2>
+		<p class="nomargin headbox2">Other</p></td>
+		</tr>
+
+		<tr>
+		<td class="left"><a href="man/python/pysphericalcapcoef.html"><tt>SphericalCapCoef</tt></a></td>
+		<td class="right">Calculate the spherical harmonic coefficients of a spherical cap.
+		</td>
+		</tr>
+
+		</tbody>
+	</table>
+<br>
+
+<p class="dir">
+>  <a href="../index.html" class="dir">Home</a> > <a href="documentation.html" class="dir">Documentation</a> > <a href="python-routines.html" class="dir">Python</a></p>
+
+	<table class="footer2">
+	<tbody>
+		<tr>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
+			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+		</tr>
+	</tbody>
+	</table>
+
+</div>
+
+</body>
+</html>

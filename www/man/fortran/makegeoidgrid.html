@@ -19,7 +19,7 @@
 	<table class="menu">
 		<tbody>
 			<tr>
-				<td><a href="http://shtools.ipgp.fr/">HOME</a></td>
+				<td><a href="../../../index.html">HOME</a></td>
 				<td><a href="https://github.com/SHTOOLS/SHTOOLS/releases">DOWNLOAD</a></td>
 				<td class="selected"><a href="../../documentation.html">DOCUMENTATION</a></td>
 				<td><a href="../../faq.html">FAQ</a> </td>
@@ -32,7 +32,7 @@
 <h1 id="makegeoidgrid">MakeGeoidGrid</h1>
 <p>Create a global map of the geoid.</p>
 <h1 id="usage">Usage</h1>
-<p>call MakeGeoidGrid (<code>geoid</code>, <code>cilm</code>, <code>lmax</code>, <code>r0</code>, <code>gm</code>, <code>potref</code>, <code>omega</code>, <code>r</code>, <code>gridtype</code>, <code>order</code>, <code>nlat</code>, <code>nlong</code>, <code>interval</code>, <code>lmax_calc</code>, <code>a</code>, <code>f</code>)</p>
+<p>call MakeGeoidGrid (<code>geoid</code>, <code>cilm</code>, <code>lmax</code>, <code>r0</code>, <code>gm</code>, <code>potref</code>, <code>omega</code>, <code>r</code>, <code>gridtype</code>, <code>order</code>, <code>nlat</code>, <code>nlong</code>, <code>interval</code>, <code>lmax_calc</code>, <code>a</code>, <code>f</code>, <code>exitstatus</code>)</p>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>geoid</code> : output, real*8, dimension(<code>nlat</code>, <code>nlong</code>)</dt>
@@ -83,6 +83,9 @@
 <dt><code>f</code> : optional, input, real*8, default = 0</dt>
 <dd>The flattening <code>(R_equator-R_pole)/R_equator</code> of the reference ellipsoid. The optional parameter <code>a</code> (i.e., <code>R_equator</code>) must be specified.
 </dd>
+<dt><code>exitstatus</code> : output, optional, integer</dt>
+<dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
+</dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>MakeGeoidGrid</code> will create a global map of the geoid, accurate to either first, second, or third order, using the method described in Wieczorek (2007; equation 19-20). The algorithm expands the potential in a Taylor series on a spherical interface of radius <code>r</code>, and computes the height above this interface to the potential <code>potref</code> exactly from the linear, quadratic, or cubic equation at each grid point. If the optional parameters <code>a</code> and <code>f</code> are specified, the geoid height will be referenced to a flattened ellipsoid with semi-major axis <code>a</code> and flattening <code>f</code>. The pseudo-rotational potential is explicitly accounted for by specifying the angular rotation rate <code>omega</code> of the planet.</p>
@@ -97,11 +100,11 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../f95-routines.html" class="dir">Fortran 95</a> > <a href="../../gravmag.html" class="dir">Gravity and Magnetics</a></p>
 
-	<table class="footer2" summary = "SHTOOLS; Fortran and Python spherical harmonic transform software package">
+	<table class="footer2">
 	<tbody>
 		<tr>
-			<td class="c1"><a href="http://www.ipgp.fr/">Institut de Physique du Globe de Paris</a></td>
-			<td class="c2"><a href="http://www.sorbonne-paris-cite.fr/index.php/en">University of Sorbonne Paris Cité</a></td>
+			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
+			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
 			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
