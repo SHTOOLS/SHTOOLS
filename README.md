@@ -82,7 +82,7 @@ To get started, check out the following Python tutorial notebooks:
 * Tutorial 2: Localized Spectral Analysis on the Sphere [\[ipynb\]](examples/notebooks/tutorial_2.ipynb)
 * Tutorial 3: The SHTOOLS Class Interface [\[ipynb\]](examples/notebooks/tutorial_3.ipynb)
 * Tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem [\[ipynb\]](examples/notebooks/tutorial_4.ipynb)
-* Tutorial 5: Multitaper Spectral Estimation - SHWindows Class Interface [\[ipynb\]](examples/notebooks/tutorial_5.ipynb)
+* Tutorial 5: Multitaper Spectral Analysis Class Interface [\[ipynb\]](examples/notebooks/tutorial_5.ipynb)
 * Tutorial 6: 3D Spherical Harmonic Plots [\[ipynb\]](examples/notebooks/tutorial_6.ipynb)
 
 You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
