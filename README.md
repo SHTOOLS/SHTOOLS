@@ -63,7 +63,7 @@ brew install shtools
 ```
 To also install the OpenMP components, add ```--with-openmp``` to the last command.
 
-More installation instructions and options can be found in the [web documentation](https://shtools.ipgp.fr) and GitHub 
+More installation instructions and options can be found in the [web documentation](https://shtools.oca.eu) and GitHub 
 [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki).
 
 
