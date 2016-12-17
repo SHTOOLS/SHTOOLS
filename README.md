@@ -1,7 +1,7 @@
 ![LOGO](misc/logo.png)
 
 [![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.61180.svg)](http://dx.doi.org/10.5281/zenodo.61180)
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.206114.svg)](http://dx.doi.org/10.5281/zenodo.206114)
 
 SHTOOLS is a Fortran 95 / Python library that can be used to perform
 spherical harmonic transforms and reconstructions, rotations of data expressed
@@ -63,7 +63,7 @@ brew install shtools
 ```
 To also install the OpenMP components, add ```--with-openmp``` to the last command.
 
-More installation instructions and options can be found in the [web documentation](https://shtools.ipgp.fr) and GitHub 
+More installation instructions and options can be found in the [web documentation](https://shtools.oca.eu) and GitHub 
 [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki).
 
 
@@ -95,4 +95,4 @@ available Fourier transform package
 [BLAS](http://www.netlib.org/blas/).
 
 ### CITATION ###
-Wieczorek, M. A., M. Meschede, I. Oshchepkov, E. Sales de Andrade (2016). SHTOOLS: Version 3.4. Zenodo. doi:[10.5281/zenodo.61180](http://dx.doi.org/10.5281/zenodo.61180).
+Wieczorek, M. A., M. Meschede, I. Oshchepkov, E. Sales de Andrade, and heroxbd (2016). SHTOOLS: Version 4.0. Zenodo. doi:[10.5281/zenodo.206114](http://dx.doi.org/10.5281/zenodo.206114).
