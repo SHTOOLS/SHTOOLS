@@ -723,12 +723,17 @@ class SHWindow(object):
         figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
         fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
 
-        for ax in axes[:-1, :].flatten():
-            for xlabel_i in ax.get_xticklabels():
-                xlabel_i.set_visible(False)
-        for ax in axes[:, 1:].flatten():
-            for ylabel_i in ax.get_yticklabels():
-                ylabel_i.set_visible(False)
+        if nrows > 1:
+            for ax in axes[:-1, :].flatten():
+                for xlabel_i in ax.get_xticklabels():
+                    xlabel_i.set_visible(False)
+            for ax in axes[:, 1:].flatten():
+                for ylabel_i in ax.get_yticklabels():
+                    ylabel_i.set_visible(False)
+        else:
+            for ax in axes[1:].flatten():
+                for ylabel_i in ax.get_yticklabels():
+                    ylabel_i.set_visible(False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
@@ -792,12 +797,17 @@ class SHWindow(object):
 
         fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
 
-        for ax in axes[:-1, :].flatten():
-            for xlabel_i in ax.get_xticklabels():
-                xlabel_i.set_visible(False)
-        for ax in axes[:, 1:].flatten():
-            for ylabel_i in ax.get_yticklabels():
-                ylabel_i.set_visible(False)
+        if nrows > 1:
+            for ax in axes[:-1, :].flatten():
+                for xlabel_i in ax.get_xticklabels():
+                    xlabel_i.set_visible(False)
+            for ax in axes[:, 1:].flatten():
+                for ylabel_i in ax.get_yticklabels():
+                    ylabel_i.set_visible(False)
+        else:
+            for ax in axes[1:].flatten():
+                for ylabel_i in ax.get_yticklabels():
+                    ylabel_i.set_visible(False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
