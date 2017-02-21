@@ -730,14 +730,17 @@ class SHWindow(object):
             for ax in axes[:, 1:].flatten():
                 for ylabel_i in ax.get_yticklabels():
                     ylabel_i.set_visible(False)
-        else:
+        elif nwin > 1:
             for ax in axes[1:].flatten():
                 for ylabel_i in ax.get_yticklabels():
                     ylabel_i.set_visible(False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
-            ax = axes.flatten()[itaper]
+            if min(self.nwin, nwin) == 1:
+                ax = axes
+            else:
+                ax = axes.flatten()[itaper]
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
                                           norm=1, csphase=1)
             ax.imshow(gridout, origin='upper',
@@ -804,14 +807,17 @@ class SHWindow(object):
             for ax in axes[:, 1:].flatten():
                 for ylabel_i in ax.get_yticklabels():
                     ylabel_i.set_visible(False)
-        else:
+        elif nwin > 1:
             for ax in axes[1:].flatten():
                 for ylabel_i in ax.get_yticklabels():
                     ylabel_i.set_visible(False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
-            ax = axes.flatten()[itaper]
+            if min(self.nwin, nwin) == 1:
+                ax = axes
+            else:
+                ax = axes.flatten()[itaper]
             ax.set_xlabel('degree l')
             if (convention == 'power'):
                 ax.set_ylabel('power')
