@@ -338,8 +338,8 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         wnmid = wl(jindex(jmid))
 
-        if (abs(wl(jindex(jmid-1)) /= 0.0d0 .and. &
-                wnmid / wl(jindex(jmid-1))) < 1.d-6) then
+        if (wl(jindex(jmid-1)) /= 0.0d0 .and. &
+                abs(wnmid / wl(jindex(jmid-1))) < 1.d-6) then
             ! Make sure that the stopping midpoint value is not a zero,
             ! or close to it!
             wnmid = wl(jindex(jmid-1))
