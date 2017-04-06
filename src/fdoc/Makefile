@@ -78,7 +78,7 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 \
 	cilmplusrhoh.1 cilmminusrhoh.1 batohilm.1 batohilmrhoh.1 \
 	downcontfilterma.1 downcontfiltermc.1 normalgravity.1 makemaggriddh.1 \
 	shmagpowerspectrum.1 shmagpowerl.1 shmtcouplingmatrix.1 \
-	shmultitapermaskcse.1 shmultitapermaskse.1 shbiaskmask.1 dhaj.1 )
+	shmultitapermaskcse.1 shmultitapermaskse.1 shbiaskmask.1 dhaj.1 shglq.1)
 
 HTMLFILES_modules = $(addprefix $(WWWDIR)/, planetsconstants.html)
 
