@@ -70,7 +70,7 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
         lmax = len(clm1[0, :, 0]) - 1
 
     if (degrees is None):
-        degrees = _np.range(lmax+1)
+        degrees = _np.arange(lmax+1)
 
     if _np.iscomplexobj(clm1) is not _np.iscomplexobj(clm2):
         raise ValueError('clm1 and clm2 must both be either real or ' +
