@@ -1720,7 +1720,7 @@ class SHGrid(object):
     lmax       : The maximum spherical harmonic degree that can be resolved
                  by the grid sampling.
     sampling   : For Driscoll and Healy grids, the longitudinal sampling
-                 of the grid. Either nlong=nlat or nlong=2*nlat.
+                 of the grid. Either 1 for nlong=nlat or 2 for nlong=2*nlat.
     kind       : Either 'complex' or 'real' for the data type.
     grid       : Either 'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-
                  Legendre Quadrature grids.
