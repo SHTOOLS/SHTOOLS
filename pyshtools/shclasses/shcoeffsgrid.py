@@ -1740,7 +1740,7 @@ class SHGrid(object):
     expand()    : Expand the grid into spherical harmonics.
     copy()      : Return a copy of the class instance.
     plot()      : Plot the raw data using a simple cylindrical projection.
-    plot3d      : Plot the raw data on a 3d sphere.
+    plot3d()      : Plot the raw data on a 3d sphere.
     info()      : Print a summary of the data stored in the SHGrid instance.
     """
 
