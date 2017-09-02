@@ -43,7 +43,7 @@ Program LocalizedAdmitCorr
 	allocate(pot(2,degmax+1,degmax+1), stat = astat(2))
 	if (astat(1) /= 0 .or. astat(2) /= 0) then
 		print*, "Problem allocating arrays TOPO and POT", astat(1), astat(2)
-		stop
+		stop 
 	endif
 
 	print*, "Reading = ", topography_file	
@@ -110,7 +110,7 @@ Program LocalizedAdmitCorr
 		read(*,*) lwin		
 		print*, "Corresponding approximate Shannon number = ", (lwin+1)*theta0/pi	
 	else		
-		stop	
+		stop 	
 	endif		
 	
 	allocate(tapers(lwin+1, (lwin+1)**2), stat = astat(1))
@@ -119,7 +119,7 @@ Program LocalizedAdmitCorr
 	
 	if (astat(1) /= 0 .or. astat(2) /= 0 .or. astat(3) /= 0 ) then
 		print*, "Problem allocatig arrays for tapers, taper_order, or eigenvalues", astat(1), astat(2), astat(3)
-		stop
+		stop 
 	endif
 	
 	call SHReturnTapers(theta0, lwin, tapers, eigenvalues, taper_order)
@@ -159,7 +159,7 @@ Program LocalizedAdmitCorr
 	if (astat(1) /= 0 .or. astat(2) /= 0 .or. astat(3) /= 0 .or. astat(4) /= 0 &
 		.or. astat(5) /=0) then		
 		print*, "Problem allocating memory"		
-		stop	
+		stop 	
 	endif		
 	
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
