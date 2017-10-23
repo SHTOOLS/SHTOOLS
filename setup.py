@@ -237,9 +237,9 @@ def configuration(parent_package='', top_path=None):
 
     # SHTOOLS
     kwargs['libraries'].extend(['SHTOOLS', 'fftw3', 'm'])
+    kwargs['include_dirs'].extend([libdir])
+    kwargs['library_dirs'].extend([libdir])
     config.add_extension('pyshtools._SHTOOLS',
-                         include_dirs=[libdir],
-                         library_dirs=[libdir],
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
                          **kwargs)
