@@ -235,8 +235,10 @@ def configuration(parent_package='', top_path=None):
                        **kwargs)
     
     # BLAS / Lapack info
-    blas_info = get_info('lapack_opt')
+    lapack_info = get_info('lapack_opt')
+    blas_info = get_info('blas_opt')
     dict_append(kwargs, **blas_info)
+    dict_append(kwargs, **lapack_info)
 
     # SHTOOLS
     kwargs['libraries'].extend(['SHTOOLS', 'fftw3', 'm'])
