@@ -20,6 +20,7 @@ from numpy.distutils.command.install import install as _install
 from numpy.distutils.command.develop import develop as _develop
 from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
 from numpy.distutils.misc_util import Configuration
+from numpy.distutils.system_info import get_info, dict_append
 from subprocess import CalledProcessError, check_output, check_call
 
 
@@ -229,12 +230,16 @@ def configuration(parent_package='', top_path=None):
     config.add_library('SHTOOLS',
                        sources=sources,
                        **kwargs)
+    
+    # BLAS / Lapack info
+    blas_info = get_info('lapack_opt')
+    dict_append(kwargs, **blas_info)
 
     # SHTOOLS
+    kwargs['libraries'].extend(['SHTOOLS', 'fftw3', 'm'])
     config.add_extension('pyshtools._SHTOOLS',
                          include_dirs=[libdir],
                          library_dirs=[libdir],
-                         libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
                          **kwargs)
