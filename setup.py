@@ -143,7 +143,10 @@ class develop(_develop):
         doc_builder = os.path.join(self.setup_path, 'pyshtools',
                                    'make_docs.py')
         doc_source = '.'
-        check_call([sys.executable, doc_builder, doc_source, self.setup_path])
+        try:
+            check_call([sys.executable, doc_builder, doc_source, self.setup_path])
+        except CalledProcessError:
+            print('WARNING: FAILED TO BUILD DOCS')
 
         print('---- ALL DONE ----')
 
