@@ -402,7 +402,7 @@ class SHCoeffs(object):
 
         if format.lower() == 'shtools':
             if kind.lower() == 'real':
-                coeffs, lmax = _shtools.SHRead(fname, lmax, **kwargs)
+                coeffs, lmaxout = _shtools.SHRead(fname, lmax, **kwargs)
             else:
                 raise NotImplementedError(
                     "Complex coefficients are not yet implemented for "
@@ -415,7 +415,8 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, normalization=normalization.lower(),
+                return cls(coeffs[:, 0:lmaxout+1, 0:lmaxout+1],
+                           normalization=normalization.lower(),
                            csphase=csphase)
 
     def copy(self):
