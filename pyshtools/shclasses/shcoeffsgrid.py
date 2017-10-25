@@ -155,7 +155,7 @@ class SHCoeffs(object):
                            csphase=csphase)
 
     @classmethod
-    def from_array(self, coeffs, normalization='4pi', csphase=1, lmax = None,
+    def from_array(self, coeffs, normalization='4pi', csphase=1, lmax=None,
                    copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
@@ -219,7 +219,7 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs[:,0:lmax+1,0:lmax+1],
+                return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
                            normalization=normalization.lower(),
                            csphase=csphase, copy=copy)
 
