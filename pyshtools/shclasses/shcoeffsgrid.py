@@ -795,8 +795,9 @@ class SHCoeffs(object):
             if lmax > self.lmax:
                 raise ValueError('Output lmax is greater than the maximum ' +
                                  'degree of the coefficients. ' +
-                                 'Output lmax = {:d}, lmax of coefficients ' +
-                                 '= {:d}'.format(lmax, self.lmax))
+                                 'Output lmax = {:d} '.format(lmax) +
+                                 'lmax of coefficients ' +
+                                 '= {:d}'.format(self.lmax))
         if lmax is None:
             lmax = self.lmax
 
@@ -2388,9 +2389,9 @@ class DHComplexGrid(SHGrid):
         elif self.nlat == self.nlon:
             self.sampling = 1
         else:
-            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n' +
+            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n'
+                             .format(self.nlat, self.nlon) +
                              'but needs nlat=nlon or nlat=2*nlon'
-                             .format(self.nlat, self.nlon)
                              )
 
         self.lmax = int(self.nlat / 2 - 1)
@@ -2475,10 +2476,10 @@ class GLQRealGrid(SHGrid):
         self.lmax = self.nlat - 1
 
         if self.nlat != self.lmax + 1 or self.nlon != 2 * self.lmax + 1:
-            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n' +
+            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n'
+                             .format(self.nlat, self.nlon) +
                              'but needs (nlat={:d}, {:d})'
-                             .format(self.nlat, self.nlon, self.lmax+1,
-                                     2*self.lmax+1)
+                             .format(self.lmax+1, 2*self.lmax+1)
                              )
 
         if zeros is None or weights is None:
@@ -2561,10 +2562,10 @@ class GLQComplexGrid(SHGrid):
         self.lmax = self.nlat - 1
 
         if self.nlat != self.lmax + 1 or self.nlon != 2 * self.lmax + 1:
-            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n' +
+            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n'
+                             .format(self.nlat, self.nlon) +
                              'but needs (nlat={:d}, {:d})'
-                             .format(self.nlat, self.nlon, self.lmax+1,
-                                     2*self.lmax+1)
+                             .format(self.lmax+1, 2*self.lmax+1)
                              )
 
         if zeros is None or weights is None:
