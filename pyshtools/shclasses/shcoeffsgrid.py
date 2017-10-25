@@ -766,7 +766,8 @@ class SHCoeffs(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         lmax : int, optional, default = x.lmax
-            Maximum spherical harmonic degree to output.
+            Maximum spherical harmonic degree to output. If lmax is greater
+            than x.lmax, the array will be zero padded.
         """
         if normalization is None:
             normalization = self.normalization
@@ -791,13 +792,6 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
-        if lmax is not None:
-            if lmax > self.lmax:
-                raise ValueError('Output lmax is greater than the maximum ' +
-                                 'degree of the coefficients. ' +
-                                 'Output lmax = {:d} '.format(lmax) +
-                                 'lmax of coefficients ' +
-                                 '= {:d}'.format(self.lmax))
         if lmax is None:
             lmax = self.lmax
 
@@ -1314,7 +1308,13 @@ class SHRealCoeffs(SHCoeffs):
 
     def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
-        coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        if lmax <= self.lmax:
+            coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        else:
+            coeffs = _np.copy(self.coeffs[:, :self.lmax+1, :self.lmax+1])
+            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - self.lmax),
+                                      (0, lmax - self.lmax)), 'constant')
+
         degrees = _np.arange(lmax + 1)
 
         if self.normalization == output_normalization:
@@ -1541,7 +1541,13 @@ class SHComplexCoeffs(SHCoeffs):
 
     def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
-        coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        if lmax <= self.lmax:
+            coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        else:
+            coeffs = _np.copy(self.coeffs[:, :self.lmax+1, :self.lmax+1])
+            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - self.lmax),
+                                      (0, lmax - self.lmax)), 'constant')
+
         degrees = _np.arange(lmax + 1)
 
         if self.normalization == output_normalization:
