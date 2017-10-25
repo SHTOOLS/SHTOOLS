@@ -155,14 +155,15 @@ class SHCoeffs(object):
                            csphase=csphase)
 
     @classmethod
-    def from_array(self, coeffs, normalization='4pi', csphase=1, copy=True):
+    def from_array(self, coeffs, normalization='4pi', csphase=1, lmax = None,
+                   copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
 
         Usage
         -----
-        x = SHCoeffs.from_array(array, [normalization, csphase, copy])
+        x = SHCoeffs.from_array(array, [normalization, csphase, lmax, copy])
 
         Returns
         -------
@@ -170,7 +171,7 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        array : ndarray, shape (2, lmax+1, lmax+1).
+        array : ndarray, shape (2, lmaxin+1, lmaxin+1).
             The input spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
@@ -179,6 +180,9 @@ class SHCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        lmax : int, optional, default = None
+            The maximum spherical harmonic degree to include in the returned
+            class instance. This must be less than or equal to lmaxin.
         copy : bool, optional, default = True
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
@@ -206,9 +210,17 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        lmaxin = coeffs.shape[1] - 1
+        if lmax is None:
+            lmax = lmaxin
+        else:
+            if lmax > lmaxin:
+                lmax = lmaxin
+
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, normalization=normalization.lower(),
+                return cls(coeffs[:,0:lmax+1,0:lmax+1],
+                           normalization=normalization.lower(),
                            csphase=csphase, copy=copy)
 
     @classmethod
