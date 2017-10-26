@@ -17,6 +17,7 @@ matrix:
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+       brew update;
        brew install fftw --with-fortran;
     else
        sudo apt-get update;
