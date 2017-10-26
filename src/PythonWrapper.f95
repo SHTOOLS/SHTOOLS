@@ -1820,10 +1820,10 @@
         endif
     end subroutine pyBAtoHilmDH
     
-    subroutine pyBAtoHilmRhoHDH(exitstatus,cilm,ba,griddh,lmax,nmax,mass,r0,&
-                                rho,sampling,filter_type,filter_deg,lmax_calc,&
+    subroutine pyBAtoHilmRhoHDH(exitstatus,cilm,ba,griddh,rho,lmax,nmax,mass,&
+                                r0,sampling,filter_type,filter_deg,lmax_calc,&
                                 ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,&
-                                cilm_d1,cilm_d2, rho_d0,rho_d1)
+                                cilm_d1,cilm_d2,rho_d0,rho_d1)
         use shtools, only: BAtoHilmRhoH
         implicit none
         integer, intent(out) :: exitstatus
