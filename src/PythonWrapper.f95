@@ -1720,7 +1720,7 @@
         endif
     end subroutine pyCilmMinusDH
 
-    subroutine pyCilmPlusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,&
+    subroutine pyCilmPlusRhoHDH(exitstatus,cilm,gridin,rho,lmax,nmax,mass,d,&
                                 sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,&
                                 cilm_d2,rho_d0,rho_d1)
         use shtools, only: CilmPlusRhoH
