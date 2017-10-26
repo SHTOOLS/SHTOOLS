@@ -1,10 +1,10 @@
-# SHReadJPL
+# SHReadJPLError
 
 Read spherical harmonic coefficients from a JPL ascii-formatted file.
 
 # Usage
 
-`cilm`, `error`, `lmax`, `gm` = SHReadJPL (`filename`, `lmaxin`, [`formatstring`])
+`cilm`, `error`, `lmax`, `gm` = SHReadJPLError (`filename`, `lmaxin`, [`formatstring`])
 
 # Returns
 
