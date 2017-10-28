@@ -74,6 +74,8 @@ class SHCoeffs(object):
                             class instance.
     convert()             : Return a new class instance using a different
                             normalization convention.
+    pad()                 : Return a new class instance that is zero padded or
+                            truncated to a different lmax.
     expand()              : Evaluate the coefficients either on a spherical
                             grid and return an SHGrid class instance, or for
                             a list of latitude and longitude coordinates.
@@ -881,7 +883,7 @@ class SHCoeffs(object):
     def convert(self, normalization=None, csphase=None, lmax=None, kind=None,
                 check=True):
         """
-        Return a SHCoeff class instance with a different normalization
+        Return a SHCoeffs class instance with a different normalization
         convention.
 
         Usage
@@ -952,6 +954,36 @@ class SHCoeffs(object):
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
+
+    # ---- Return a SHCoeffs class instance zero padded up to lmax
+    def pad(self, lmax):
+        """
+        Return a SHCoeffs class where the coefficients are zero padded or
+        truncated to a different lmax.
+
+        Usage
+        -----
+        clm = x.pad(lmax)
+
+        Returns
+        -------
+        clm : SHCoeffs class instance
+
+        Parameters
+        ----------
+        lmax : int
+            Maximum spherical harmonic degree to output.
+        """
+        clm = self.copy()
+
+        if lmax <= self.lmax:
+            clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
+        else:
+            clm.coeffs = _np.pad(clm.coeffs, ((0, 0), (0, lmax - self.lmax),
+                                 (0, lmax - self.lmax)), 'constant')
+
+        clm.lmax = lmax
+        return clm
 
     # ---- Expand the coefficients onto a grid ----
     def expand(self, grid='DH', lat=None, lon=None, degrees=True, zeros=None,
