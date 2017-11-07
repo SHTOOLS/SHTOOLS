@@ -4,20 +4,23 @@ Calculate iteratively the relief along an interface with lateral density variati
 
 # Usage
 
-`cilm` = BAtoHilmRhoHDH (`ba`, `grid`, `rho`, `nmax`, `mass`, `r0`, [`filtertype`, `filterdeg`, `lmax`, `lmaxcalc`, `sampling`)
+`cilm` = BAtoHilmRhoHDH (`ba`, `grid`, `rho`, `nmax`, `mass`, `r0`, [`filter_type`, `filter_deg`, `lmax`, `lmax_calc`, `sampling`)
 
 # Returns
 
-`cilm` : float, dimension (2, `lmaxcalc`+1, `lmaxcalc`+1)
+`cilm` : float, dimension (2, `lmax_calc`+1, `lmax_calc`+1)
 :   An estimate of the real spherical harmonic coefficients (geodesy normalized) of relief along an interface with lateraly varying density contrast `rho` that satisfies the Bouguer anomaly `ba`. The degree-zero term corresponds to the mean radius of the relief.
 
 # Parameters
 
-`ba` : float, dimension (2, `lmaxcalc`+1, `lmaxcalc`+1)
+`ba` : float, dimension (2, `lmax_calc`+1, `lmax_calc`+1)
 :   The real spherical harmonic coefficients of the Bouguer anomaly referenced to a spherical interface `r0`.
 
 `grid` : float, dimension (2\*`lmaxin`+2, `sampling`\*(2\*`lmaxin`+2)) 
 :   The initial estimate for the radii of the interface evaluated on a grid corresponding to a function of maximum spherical harmonic degree `lmaxin`. This is calculated by a call to `MakeGridDH` and must contain the degree-0 average radius of the interface.
+
+`rho` : float, dimension (2\*`lmaxin`+2, `sampling`\*(2\*`lmaxin`+2)) 
+:   The density contrast of the relief in kg/m^3, with the same dimensions as `grid`.
 
 `nmax` : integer
 :   The maximum order used in the Taylor-series expansion used in calculating the potential coefficients.
@@ -28,19 +31,16 @@ Calculate iteratively the relief along an interface with lateral density variati
 `r0` : float
 :   The reference radius of the Bouguer anomaly `ba`.
 
-`rho` : float, dimension (2\*`lmaxin`+2, `sampling`\*(2\*`lmaxin`+2)) 
-:   The density contrast of the relief in kg/m^3, with the same dimensions as `grid`.
-
-`filtertype` : optional, integer, default = 0
+`filter_type` : optional, integer, default = 0
 :   Apply a filter when calculating the relief in order to minimize the destabilizing effects of downward continuation which amplify uncertainties in the Bouguer anomaly. If 0, no filtering is applied. If 1, use the minimum amplitude filter `DownContFilterMA`. If 2, use the minimum curvature filter `DownContFilterMC`. 
 
-`filterdeg` : optional, integer, default = 0
+`filter_deg` : optional, integer, default = 0
 :   The spherical harmonic degree for which the filter is 0.5.
 
 `lmax` : optional, integer, default = `lmaxin`
-:   The spherical harmonic bandwidth of the input relief `grid`, which determines the dimensions of `grid`. If `lmaxcalc` is not set, this determines also the maximum spherical harmonic degree of the output spherical harmonic coefficients of the relief and the input spherical harmonics of the Bouguer anomaly.
+:   The spherical harmonic bandwidth of the input relief `grid`, which determines the dimensions of `grid`. If `lmax_calc` is not set, this determines also the maximum spherical harmonic degree of the output spherical harmonic coefficients of the relief and the input spherical harmonics of the Bouguer anomaly.
 
-`lmaxcalc` : optional, integer, default = `lmax`
+`lmax_calc` : optional, integer, default = `lmax`
 :   The maximum degree that will be calculated in the spherical harmonic expansions.
 
 `sampling` : optional, integer, default set by dimensions of `grid`

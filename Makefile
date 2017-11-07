@@ -480,7 +480,7 @@ clean-libs:
 	@-rm -rf build
 	@-rm -rf pyshtools.egg-info
 	@-rm -f src/_SHTOOLS-f2pywrappers.f src/_SHTOOLSmodule.c
-	@-rm -f dist
+	@-rm -rf dist
 	@echo "--> Removed lib, module, object files, compiled Python files and tests"
 	@echo
 	@echo \*\*\* If you installed pyshtools using \"pip install -e .\" you should

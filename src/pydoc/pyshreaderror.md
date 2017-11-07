@@ -4,7 +4,7 @@ Read spherical harmonic coefficients and associated errors from an ascii-formatt
 
 # Usage
 
-`cilm`, `error`, `lmax` = SHRead (`filename`,  `lmaxin`, [`skip`])
+`cilm`, `error`, `lmax` = SHReadError (`filename`,  `lmaxin`, [`skip`])
 
 # Returns
 

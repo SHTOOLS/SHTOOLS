@@ -4,7 +4,7 @@ Read spherical harmonic coefficients from an ascii-formatted file with a header 
 
 # Usage
 
-`cilm`, `lmax`, `header` = SHRead (`filename`, `lmaxin`, `nhead`, [`skip`])
+`cilm`, `lmax`, `header` = SHReadH (`filename`, `lmaxin`, `nhead`, [`skip`])
 
 # Returns
 
