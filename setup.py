@@ -231,11 +231,10 @@ def configuration(parent_package='', top_path=None):
                        sources=sources,
                        **kwargs)
 
-    # BLAS / Lapack info
-    lapack_info = get_info('lapack_opt')
-    blas_info = get_info('blas_opt')
-    dict_append(kwargs, **blas_info)
-    dict_append(kwargs, **lapack_info)
+    # SHTOOLS
+    kwargs['libraries'].extend(['SHTOOLS'])
+    kwargs['include_dirs'].extend([libdir])
+    kwargs['library_dirs'].extend([libdir])
 
     # FFTW info
     fftw_info = get_info('fftw')
@@ -244,10 +243,12 @@ def configuration(parent_package='', top_path=None):
     if sys.platform != 'win32':
         kwargs['libraries'].extend(['m'])
 
-    # SHTOOLS
-    kwargs['libraries'].extend(['SHTOOLS'])
-    kwargs['include_dirs'].extend([libdir])
-    kwargs['library_dirs'].extend([libdir])
+    # BLAS / Lapack info
+    lapack_info = get_info('lapack_opt')
+    blas_info = get_info('blas_opt')
+    dict_append(kwargs, **blas_info)
+    dict_append(kwargs, **lapack_info)
+
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
