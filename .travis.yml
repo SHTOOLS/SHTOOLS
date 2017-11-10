@@ -48,6 +48,7 @@ install:
         scipy
         matplotlib
         jupyter
+        mkl
   - conda install nbconvert
   - source activate test-environment
   - pip install --no-deps .
