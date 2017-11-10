@@ -202,7 +202,11 @@ def configuration(parent_package='', top_path=None):
 
     F95FLAGS = get_compiler_flags()
 
-    kwargs = {}
+    kwargs = {
+        'libraries': [],
+        'include_dirs': [],
+        'library_dirs': [],
+    }
     kwargs['extra_compile_args'] = F95FLAGS
     kwargs['f2py_options'] = ['--quiet']
 
