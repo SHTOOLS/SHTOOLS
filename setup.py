@@ -20,6 +20,7 @@ from numpy.distutils.command.install import install as _install
 from numpy.distutils.command.develop import develop as _develop
 from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
 from numpy.distutils.misc_util import Configuration
+from numpy.distutils.system_info import get_info, dict_append
 from subprocess import CalledProcessError, check_output, check_call
 
 
@@ -201,7 +202,11 @@ def configuration(parent_package='', top_path=None):
 
     F95FLAGS = get_compiler_flags()
 
-    kwargs = {}
+    kwargs = {
+        'libraries': [],
+        'include_dirs': [],
+        'library_dirs': [],
+    }
     kwargs['extra_compile_args'] = F95FLAGS
     kwargs['f2py_options'] = ['--quiet']
 
@@ -214,7 +219,7 @@ def configuration(parent_package='', top_path=None):
     files = os.listdir('src')
     exclude_sources = ['PlanetsConstants.f95', 'PythonWrapper.f95']
     sources = [os.path.join('src', file) for file in files if
-               file.lower().endswith('.f95') and file not in exclude_sources]
+               file.lower().endswith(('.f95', '.c')) and file not in exclude_sources]
 
     # (from http://stackoverflow.com/questions/14320220/
     #              testing-python-c-libraries-get-build-path)):
@@ -231,10 +236,24 @@ def configuration(parent_package='', top_path=None):
                        **kwargs)
 
     # SHTOOLS
+    kwargs['libraries'].extend(['SHTOOLS'])
+    kwargs['include_dirs'].extend([libdir])
+    kwargs['library_dirs'].extend([libdir])
+
+    # FFTW info
+    fftw_info = get_info('fftw')
+    dict_append(kwargs, **fftw_info)
+
+    if sys.platform != 'win32':
+        kwargs['libraries'].extend(['m'])
+
+    # BLAS / Lapack info
+    lapack_info = get_info('lapack_opt')
+    blas_info = get_info('blas_opt')
+    dict_append(kwargs, **blas_info)
+    dict_append(kwargs, **lapack_info)
+
     config.add_extension('pyshtools._SHTOOLS',
-                         include_dirs=[libdir],
-                         library_dirs=[libdir],
-                         libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
                          **kwargs)
