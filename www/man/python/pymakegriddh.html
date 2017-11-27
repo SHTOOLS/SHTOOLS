@@ -36,13 +36,13 @@
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>griddh</code> : float, dimension (2*<code>lmax</code>+2, <code>sampling</code>*(2*<code>lmax</code>+2))</dt>
-<dd>A 2D equally sampled (default) or equally spaced map in degrees of the spherical harmonic coefficients <code>cilm</code> that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/<code>n</code> degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/<code>n</code> for an equally sampled and 180/<code>m</code> for an equally spaced grid, respectively.
+<dd>A 2D equally sampled (default) or equally spaced map in degrees of the spherical harmonic coefficients <code>cilm</code> that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/<code>n</code> degrees, where <code>n</code> is 2*<code>lmax</code>+2. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/<code>n</code> for an equally sampled and 180/<code>n</code> for an equally spaced grid, respectively.
 </dd>
 </dl>
 <h1 id="parameters">Parameters</h1>
 <dl>
 <dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
-<dd>The real spherical harmonic coefficients of the function. The coefficients <code>cilm[0,l,m]</code> and <code>cilm[1,l,m]</code> refer to the &quot;cosine&quot; (<code>Clm</code>) and &quot;sine&quot; (<code>Slm</code>) coefficients, respectively.
+<dd>The real spherical harmonic coefficients of the function. The coefficients <code>cilm[0,l,m]</code> and <code>cilm[1,l,m]</code> refer to the “cosine” (<code>Clm</code>) and “sine” (<code>Slm</code>) coefficients, respectively.
 </dd>
 <dt><code>lmax</code> : optional, integer, default = <code>lmaxin</code></dt>
 <dd>The maximum spherical harmonic degree of the function, which determines the sampling of the output grid.
@@ -78,7 +78,7 @@
 		<tr>
 			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
 			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
-			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+			<td class="c3">&copy; 2017 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>

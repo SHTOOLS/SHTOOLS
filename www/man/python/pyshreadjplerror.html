@@ -29,10 +29,10 @@
 
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pyio.html" class="dir">Spherical Harmonic I/O and Storage</a></p>
-<h1 id="shreadjpl">SHReadJPL</h1>
+<h1 id="shreadjplerror">SHReadJPLError</h1>
 <p>Read spherical harmonic coefficients from a JPL ascii-formatted file.</p>
 <h1 id="usage">Usage</h1>
-<p><code>cilm</code>, <code>error</code>, <code>lmax</code>, <code>gm</code> = SHReadJPL (<code>filename</code>, <code>lmaxin</code>, [<code>formatstring</code>])</p>
+<p><code>cilm</code>, <code>error</code>, <code>lmax</code>, <code>gm</code> = SHReadJPLError (<code>filename</code>, <code>lmaxin</code>, [<code>formatstring</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
@@ -56,15 +56,15 @@
 <dt><code>lmaxin</code> : integer</dt>
 <dd>This spherical harmonic degree controls the dimension of the output array <code>cilm</code>. The coefficients between <code>lmax+1</code> and <code>lmaxin</code> will be set to zero.
 </dd>
-<dt><code>formatstring</code> : character*6, optional, default = &quot;E19.12&quot;</dt>
-<dd>The format string used to read the elements of <code>cilm</code> and <code>error</code>. The default is &quot;E19.12&quot;.
+<dt><code>formatstring</code> : character*6, optional, default = “E19.12”</dt>
+<dd>The format string used to read the elements of <code>cilm</code> and <code>error</code>. The default is “E19.12”.
 </dd>
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHReadJPL</code> will read spherical harmonic coefficients from a JPL ascii formatted file into an array <code>cilm</code>. The real numbers are assumed to be formated with the specifier <code>E19.12</code>, but this can be changed by specifiying the optional string <code>formatstring</code>.</p>
 <p>The JPL ascii-formatted file is organized as follows:</p>
 <ul>
-<li>Comment lines starting with &quot;#&quot;.</li>
+<li>Comment lines starting with “#”.</li>
 <li><code>gm</code> (if a gravitational potential file)</li>
 <li>A list of <code>J_l</code>, which is <code>-cilm[0,l,0]</code>.</li>
 <li>A list of the cosine and sine terms.</li>
@@ -81,7 +81,7 @@
 		<tr>
 			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
 			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
-			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+			<td class="c3">&copy; 2017 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>

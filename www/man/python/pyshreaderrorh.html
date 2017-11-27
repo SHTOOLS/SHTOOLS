@@ -32,7 +32,7 @@
 <h1 id="shreaderrorh">SHReadErrorH</h1>
 <p>Read spherical harmonic coefficients and associated errors from an ascii-formatted file with a header line.</p>
 <h1 id="usage">Usage</h1>
-<p><code>cilm</code>, <code>error</code>, <code>lmax</code>, <code>header</code> = SHRead (<code>filename</code>, <code>lmaxin</code>, <code>nhead</code>, [<code>skip</code>])</p>
+<p><code>cilm</code>, <code>error</code>, <code>lmax</code>, <code>header</code> = SHReadErrorH (<code>filename</code>, <code>lmaxin</code>, <code>nhead</code>, [<code>skip</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>cilm</code> : float, dimension (2, <code>lmaxin</code>+1, <code>lmaxin</code>+1)</dt>
@@ -45,7 +45,7 @@
 <dd>The maximum spherical harmonic degree of <code>cilm</code>. This is the minimum of the maximum spherical harmonic degree of <code>filename</code> and the dimension of <code>cilm</code>-1.
 </dd>
 <dt><code>header</code> : float, dimension (<code>nhead</code>)</dt>
-<dd>Array of the first <code>nhead</code> values in the file's initial header line.
+<dd>Array of the first <code>nhead</code> values in the file’s initial header line.
 </dd>
 </dl>
 <h1 id="parameters">Parameters</h1>
@@ -57,7 +57,7 @@
 <dd>This spherical harmonic degree controls the dimension of the output array <code>cilm</code>. The coefficients between <code>lmax+1</code> and <code>lmaxin</code> will be set to zero.
 </dd>
 <dt><code>nhead</code> : integer</dt>
-<dd>Number of values to read from the file's initial header line.
+<dd>Number of values to read from the file’s initial header line.
 </dd>
 <dt><code>skip</code> : optional, integer, default = 0</dt>
 <dd>The number of lines to skip before parsing <code>filename</code>.
@@ -81,7 +81,7 @@
 		<tr>
 			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
 			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
-			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+			<td class="c3">&copy; 2017 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>

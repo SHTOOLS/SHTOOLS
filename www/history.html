@@ -34,9 +34,22 @@
 
 	<h1>Version History</h1>
 
-	<h2>Version 4.1 (beta)</h2>
+	<h2>Version 4.1 (November 27, 2017)</h2>
 	<ul>
-		<li></li>
+		<li>Precompiled wheels are now uploaded to PyPi for unix, macOS and windows.</li>
+		<li>Added an optional argument <tt>lmax</tt> to SHCoeffs.from_array().</li>
+		<li>Coefficients are zero-padded when <tt>lmax</tt> is greater than the maximum degree in <tt>SHCoeffs.to_array()</tt>.</li>
+		<li>The method <tt>pad()</tt> was added to the <tt>SHCoeffs</tt> class that zero pads or truncates the coefficients to a different <tt>lmax</tt>.</li>
+		<li>Fixed the method <tt>SHCoeffs.from_file()</tt> such that the maximum spherical harmonic degree of the class is the maximum spherical harmonic degree of the coeffs (and not <tt>lmaxin</tt> as before).</li>
+		<li>Fixed formatting issues with error messages in <tt>SHCoeffs</tt>.</li>
+		<li>Removed print statements from the fortran code in <tt>BAtoHilm</tt> and <tt>BAtoHilmRohH</tt> that served no purpose.</li>
+		<li>Fixed a bug in the argument order of the python wrappers of <tt>CilmPlusRhoDH</tt> and <tt>BAtoHilmRhoDH</tt>.</li>
+		<li>Fixed the makefile to remove the <tt>dist</tt> directory during clean.</li>
+		<li>Fixed a bug in the python routine <tt>cross_spectrum()</tt>, where the numpy <tt>arange</tt> function was incorrectly called.</li>
+		<li>Fixed the <tt>SHWindow</tt> plotting methods to work when the number of rows is equal to 1.</li>
+		<li>Conditional tests in the routine <tt>Wigner3j</tt> were reordered to avoid a division by zero.</li>
+		<li>Numpy's auto-configuration is now used to detect the LAPACK libraries.</li>
+		<li>Many minor updates to the python documentation and unix man pages.</li>
 	</ul>
 
 	<h2>Version 4.0 (December 16, 2016)</h2>
@@ -371,7 +384,7 @@
 		<tr>
 			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
 			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
-			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+			<td class="c3">&copy; 2017 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>
