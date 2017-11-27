@@ -30,13 +30,13 @@
 	<p class="dir">
 >  <a href="../../../index.html" class="dir">Home</a> > <a href="../../documentation.html" class="dir">Documentation</a> > <a href="../../python-routines.html" class="dir">Python</a> > <a href="../../pytransformations.html" class="dir">Spherical Harmonic Transformations</a></p>
 <h1 id="makegriddhc">MakeGridDHC</h1>
-<p>Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with Driscoll and Healy's (1994) sampling theorem.</p>
+<p>Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with Driscoll and Healy’s (1994) sampling theorem.</p>
 <h1 id="usage">Usage</h1>
 <p><code>griddh</code> = MakeGridDHC (<code>cilm</code>, [<code>lmax</code>, <code>norm</code>, <code>sampling</code>, <code>csphase</code>, <code>lmax_calc</code>])</p>
 <h1 id="returns">Returns</h1>
 <dl>
 <dt><code>griddh</code> : complex, dimension (2*lmax+2, 2*lmax+2) or (2*lmax+2, 4*lmax+4)</dt>
-<dd>A 2D equally sampled (<code>n</code> by <code>n</code>, default), or equally spaced (<code>n</code> by <code>2n</code>) complex map of the input complex spherical harmonic coefficients <code>cilm</code> that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/<code>n</code> degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/<code>n</code> for an equally sampled and 180/<code>n</code> for an equally spaced grid, respectively.
+<dd>A 2D equally sampled (<code>n</code> by <code>n</code>, default), or equally spaced (<code>n</code> by <code>2n</code>) complex map of the input complex spherical harmonic coefficients <code>cilm</code> that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/<code>n</code> degrees, where <code>n</code> is 2*<code>lmax</code>+2. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/<code>n</code> for an equally sampled and 180/<code>n</code> for an equally spaced grid, respectively.
 </dd>
 </dl>
 <h1 id="parameters">Parameters</h1>
@@ -78,7 +78,7 @@
 		<tr>
 			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
 			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
-			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+			<td class="c3">&copy; 2017 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>

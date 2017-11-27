@@ -81,7 +81,7 @@
 <dd>The angular rotation rate of the planet.
 </dd>
 <dt><code>normal_gravity</code> : optional, integer, default = 1</dt>
-<dd>If 1, the normal gravity (the gravitational acceleration on the ellipsoid) will be subtracted from the total gravity, yielding the &quot;gravity disturbance.&quot; This is done using Somigliana's formula (after converting geocentric to geodetic coordinates).
+<dd>If 1, the normal gravity (the gravitational acceleration on the ellipsoid) will be subtracted from the total gravity, yielding the “gravity disturbance.” This is done using Somigliana’s formula (after converting geocentric to geodetic coordinates).
 </dd>
 </dl>
 <h1 id="description">Description</h1>
@@ -90,7 +90,7 @@
 <p>and the gravitational acceleration is</p>
 <p><code>B = Grad V</code>.</p>
 <p>The coefficients are referenced to a radius <code>r0</code>, and the function is computed on a flattened ellipsoid with semi-major axis <code>a</code> (i.e., the mean equatorial radius) and flattening <code>f</code>. All grids are output in SI units, and the sign of the radial components is positive when directed upwards. If the optional angular rotation rate <code>omega</code> is specified, the potential and radial gravitational acceleration will be calculated in a body-fixed rotating reference frame.</p>
-<p>To remove the &quot;normal gravity&quot; (the total gravitational acceleration on the ellipsoid) from the magnitude of the total gravity field (to obtain the &quot;gravity disturbance&quot;), set <code>normal_gravity</code> to 1. To convert m/s^2 to mGals, multiply the gravity grids by 10^5.</p>
+<p>To remove the “normal gravity” (the total gravitational acceleration on the ellipsoid) from the magnitude of the total gravity field (to obtain the “gravity disturbance”), set <code>normal_gravity</code> to 1. To convert m/s^2 to mGals, multiply the gravity grids by 10^5.</p>
 <p>The calculated values should be considered exact only when the radii on the ellipsoid are less than the maximum radius of the planet (the potential coefficients are simply downward continued in the spectral domain). The components of the gravity vector are calculated using spherical coordinates whose origin is at the center of the planet, and the components are thus not normal to the reference ellipsoid.</p>
 <p>The default is to calculate grids for use in the Driscoll and Healy routines that are equally spaced (<code>n</code> by <code>2n</code>), but this can be changed to calculate equally sampled grids (<code>n</code> by <code>n</code>) by setting the optional argument <code>sampling</code> to 1. The input value of <code>lmax</code> determines the number of samples, <code>n=2lmax+2</code>, and the latitudinal sampling interval, 90/(<code>lmax</code>+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/<code>n</code> degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/<code>n</code> for equally sampled and 180/<code>n</code> for equally spaced grids, respectively.</p>
 <h1 id="references">References</h1>
@@ -106,7 +106,7 @@
 		<tr>
 			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
 			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
-			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+			<td class="c3">&copy; 2017 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>
