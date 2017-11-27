@@ -95,4 +95,4 @@ available Fourier transform package
 [BLAS](http://www.netlib.org/blas/).
 
 ### CITATION ###
-Wieczorek, M. A., M. Meschede, I. Oshchepkov, E. Sales de Andrade, and heroxbd (2016). SHTOOLS: Version 4.0. Zenodo. doi:[10.5281/zenodo.206114](http://dx.doi.org/10.5281/zenodo.206114).
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS: Version 4.1, Zenodo, doi:[10.5281/zenodo.1067108](http://doi.org/10.5281/zenodo.1067108)
