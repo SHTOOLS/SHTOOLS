@@ -50,8 +50,8 @@
 <dt><code>gm</code> : output, optional, real*8, dimension(2)</dt>
 <dd>The mass-gravitational constant and error.
 </dd>
-<dt><code>formatstring</code> : input character*6, optional, default = &quot;E19.12&quot;</dt>
-<dd>The format string used to read the elements of <code>cilm</code> and <code>cilm_error</code>. The default is &quot;E19.12&quot;.
+<dt><code>formatstring</code> : input character*6, optional, default = “E19.12”</dt>
+<dd>The format string used to read the elements of <code>cilm</code> and <code>cilm_error</code>. The default is “E19.12”.
 </dd>
 <dt><code>exitstatus</code> : output, optional, integer</dt>
 <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
@@ -61,7 +61,7 @@
 <p><code>SHReadJPL</code> will read spherical harmonic coefficients from a JPL ascii formatted file into an array <code>cilm</code>. The maximum spherical harmonic degree <code>lmax</code> must be known a priori. The errors associated with the coefficients <code>cilm</code> will be read if the optional array <code>error</code> is specified. The real numbers are assumed to be formated with the specifier <code>E19.12</code>, but this can be changed by specifiying the optional string <code>formatstring</code>. If the optional parameter <code>gm</code> is specified, the mass-gravitational constant and error will be output, if present.</p>
 <p>The JPL ascii formatted file is organized as follows:</p>
 <ul>
-<li>Comment lines starting with &quot;#&quot;.</li>
+<li>Comment lines starting with “#”.</li>
 <li><code>gm</code> (if a gravitational potential file)</li>
 <li>A list of <code>J_l</code>, which is <code>-cilm(1,l+1,1)</code>.</li>
 <li>A list of the cosine and sine terms.</li>
@@ -78,7 +78,7 @@
 		<tr>
 			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
 			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
-			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+			<td class="c3">&copy; 2017 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>
