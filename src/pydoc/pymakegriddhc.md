@@ -9,7 +9,7 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients th
 # Returns
 
 `griddh` : complex, dimension (2\*lmax+2, 2\*lmax+2) or (2\*lmax+2, 4\*lmax+4)
-:   A 2D equally sampled (`n` by `n`, default), or equally spaced (`n` by `2n`) complex map of the input complex spherical harmonic coefficients `cilm` that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
+:   A 2D equally sampled (`n` by `n`, default), or equally spaced (`n` by `2n`) complex map of the input complex spherical harmonic coefficients `cilm` that conforms to the sampling theorem of Driscoll and Healy (1994).  The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees, where `n` is 2\*`lmax`+2. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
 
 # Parameters
 

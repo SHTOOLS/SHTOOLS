@@ -68,7 +68,7 @@
 </dl>
 <h1 id="description">Description</h1>
 <p><code>SHMTDebias</code> will invert for the global power spectrum given a localized multitaper spectrum estimate formed from spherical cap localization windows. This linear inverse problem is inherently underdetermined, and in order to achive a unique solution it is assumed that the global spectrum is constant in bins of width <code>nl</code>, and that the global power spectrum is constant for degrees greater than <code>lmax</code>. In practice <code>nl</code> should be increased until the global power spectrum is everywhere positive (negative values would be unphysical) and the variances are reasonable. Further details can be found in Wieczorek and Simons (2007).</p>
-<p>This set of linear equations is solved using the method of singular value decomposition as outlined in Press et al. (1992, pp. 670-672). Each value of the multitaper spectrum estimate <code>mtspectra[0,:]</code>, as well as the corresponding rows of the transformation matrix, is divided by the uncertainties of the estimate <code>mtspectra[1,:]</code>. The solution and uncertainty are given by eqs 15.4.17 and 15.4.19 of Press et al. (1992, p. 671), respectively.</p>
+<p>This set of linear equations is solved using the method of singular value decomposition as outlined in Press et al. (1992, pp. 670-672). Each value of the multitaper spectrum estimate <code>mtspectra[0,:]</code>, as well as the corresponding rows of the transformation matrix, is divided by the uncertainties of the estimate <code>mtspectra[1,:]</code>. The solution and uncertainty are given by eqs 15.4.17 and 15.4.19 of Press et al. (1992, p. 671), respectively.</p>
 <p>If <code>taper_wt</code> is not specified, the weights will all be assumed to be equal to <code>1/K</code>.</p>
 <h1 id="references">References</h1>
 <p>Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.</p>
@@ -84,7 +84,7 @@
 		<tr>
 			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
 			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
-			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+			<td class="c3">&copy; 2017 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>

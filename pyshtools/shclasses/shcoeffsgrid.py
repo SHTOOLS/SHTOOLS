@@ -74,6 +74,8 @@ class SHCoeffs(object):
                             class instance.
     convert()             : Return a new class instance using a different
                             normalization convention.
+    pad()                 : Return a new class instance that is zero padded or
+                            truncated to a different lmax.
     expand()              : Evaluate the coefficients either on a spherical
                             grid and return an SHGrid class instance, or for
                             a list of latitude and longitude coordinates.
@@ -155,14 +157,15 @@ class SHCoeffs(object):
                            csphase=csphase)
 
     @classmethod
-    def from_array(self, coeffs, normalization='4pi', csphase=1, copy=True):
+    def from_array(self, coeffs, normalization='4pi', csphase=1, lmax=None,
+                   copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
 
         Usage
         -----
-        x = SHCoeffs.from_array(array, [normalization, csphase, copy])
+        x = SHCoeffs.from_array(array, [normalization, csphase, lmax, copy])
 
         Returns
         -------
@@ -170,7 +173,7 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        array : ndarray, shape (2, lmax+1, lmax+1).
+        array : ndarray, shape (2, lmaxin+1, lmaxin+1).
             The input spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
@@ -179,6 +182,9 @@ class SHCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        lmax : int, optional, default = None
+            The maximum spherical harmonic degree to include in the returned
+            class instance. This must be less than or equal to lmaxin.
         copy : bool, optional, default = True
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
@@ -206,9 +212,17 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        lmaxin = coeffs.shape[1] - 1
+        if lmax is None:
+            lmax = lmaxin
+        else:
+            if lmax > lmaxin:
+                lmax = lmaxin
+
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, normalization=normalization.lower(),
+                return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
+                           normalization=normalization.lower(),
                            csphase=csphase, copy=copy)
 
     @classmethod
@@ -390,7 +404,7 @@ class SHCoeffs(object):
 
         if format.lower() == 'shtools':
             if kind.lower() == 'real':
-                coeffs, lmax = _shtools.SHRead(fname, lmax, **kwargs)
+                coeffs, lmaxout = _shtools.SHRead(fname, lmax, **kwargs)
             else:
                 raise NotImplementedError(
                     "Complex coefficients are not yet implemented for "
@@ -403,7 +417,8 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, normalization=normalization.lower(),
+                return cls(coeffs[:, 0:lmaxout+1, 0:lmaxout+1],
+                           normalization=normalization.lower(),
                            csphase=csphase)
 
     def copy(self):
@@ -753,7 +768,8 @@ class SHCoeffs(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         lmax : int, optional, default = x.lmax
-            Maximum spherical harmonic degree to output.
+            Maximum spherical harmonic degree to output. If lmax is greater
+            than x.lmax, the array will be zero padded.
         """
         if normalization is None:
             normalization = self.normalization
@@ -778,12 +794,6 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
-        if lmax is not None:
-            if lmax > self.lmax:
-                raise ValueError('Output lmax is greater than the maximum ' +
-                                 'degree of the coefficients. ' +
-                                 'Output lmax = {:d}, lmax of coefficients ' +
-                                 '= {:d}'.format(lmax, self.lmax))
         if lmax is None:
             lmax = self.lmax
 
@@ -873,7 +883,7 @@ class SHCoeffs(object):
     def convert(self, normalization=None, csphase=None, lmax=None, kind=None,
                 check=True):
         """
-        Return a SHCoeff class instance with a different normalization
+        Return a SHCoeffs class instance with a different normalization
         convention.
 
         Usage
@@ -944,6 +954,36 @@ class SHCoeffs(object):
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
+
+    # ---- Return a SHCoeffs class instance zero padded up to lmax
+    def pad(self, lmax):
+        """
+        Return a SHCoeffs class where the coefficients are zero padded or
+        truncated to a different lmax.
+
+        Usage
+        -----
+        clm = x.pad(lmax)
+
+        Returns
+        -------
+        clm : SHCoeffs class instance
+
+        Parameters
+        ----------
+        lmax : int
+            Maximum spherical harmonic degree to output.
+        """
+        clm = self.copy()
+
+        if lmax <= self.lmax:
+            clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
+        else:
+            clm.coeffs = _np.pad(clm.coeffs, ((0, 0), (0, lmax - self.lmax),
+                                 (0, lmax - self.lmax)), 'constant')
+
+        clm.lmax = lmax
+        return clm
 
     # ---- Expand the coefficients onto a grid ----
     def expand(self, grid='DH', lat=None, lon=None, degrees=True, zeros=None,
@@ -1300,7 +1340,13 @@ class SHRealCoeffs(SHCoeffs):
 
     def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
-        coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        if lmax <= self.lmax:
+            coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        else:
+            coeffs = _np.copy(self.coeffs[:, :self.lmax+1, :self.lmax+1])
+            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - self.lmax),
+                                      (0, lmax - self.lmax)), 'constant')
+
         degrees = _np.arange(lmax + 1)
 
         if self.normalization == output_normalization:
@@ -1527,7 +1573,13 @@ class SHComplexCoeffs(SHCoeffs):
 
     def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
-        coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        if lmax <= self.lmax:
+            coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
+        else:
+            coeffs = _np.copy(self.coeffs[:, :self.lmax+1, :self.lmax+1])
+            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - self.lmax),
+                                      (0, lmax - self.lmax)), 'constant')
+
         degrees = _np.arange(lmax + 1)
 
         if self.normalization == output_normalization:
@@ -1720,7 +1772,7 @@ class SHGrid(object):
     lmax       : The maximum spherical harmonic degree that can be resolved
                  by the grid sampling.
     sampling   : For Driscoll and Healy grids, the longitudinal sampling
-                 of the grid. Either nlong=nlat or nlong=2*nlat.
+                 of the grid. Either 1 for nlong=nlat or 2 for nlong=2*nlat.
     kind       : Either 'complex' or 'real' for the data type.
     grid       : Either 'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-
                  Legendre Quadrature grids.
@@ -1740,7 +1792,7 @@ class SHGrid(object):
     expand()    : Expand the grid into spherical harmonics.
     copy()      : Return a copy of the class instance.
     plot()      : Plot the raw data using a simple cylindrical projection.
-    plot3d      : Plot the raw data on a 3d sphere.
+    plot3d()      : Plot the raw data on a 3d sphere.
     info()      : Print a summary of the data stored in the SHGrid instance.
     """
 
@@ -2375,9 +2427,9 @@ class DHComplexGrid(SHGrid):
         elif self.nlat == self.nlon:
             self.sampling = 1
         else:
-            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n' +
+            raise ValueError('Input array has shape (nlat={:d},nlon={:d})\n'
+                             .format(self.nlat, self.nlon) +
                              'but needs nlat=nlon or nlat=2*nlon'
-                             .format(self.nlat, self.nlon)
                              )
 
         self.lmax = int(self.nlat / 2 - 1)
@@ -2462,10 +2514,10 @@ class GLQRealGrid(SHGrid):
         self.lmax = self.nlat - 1
 
         if self.nlat != self.lmax + 1 or self.nlon != 2 * self.lmax + 1:
-            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n' +
+            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n'
+                             .format(self.nlat, self.nlon) +
                              'but needs (nlat={:d}, {:d})'
-                             .format(self.nlat, self.nlon, self.lmax+1,
-                                     2*self.lmax+1)
+                             .format(self.lmax+1, 2*self.lmax+1)
                              )
 
         if zeros is None or weights is None:
@@ -2548,10 +2600,10 @@ class GLQComplexGrid(SHGrid):
         self.lmax = self.nlat - 1
 
         if self.nlat != self.lmax + 1 or self.nlon != 2 * self.lmax + 1:
-            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n' +
+            raise ValueError('Input array has shape (nlat={:d}, nlon={:d})\n'
+                             .format(self.nlat, self.nlon) +
                              'but needs (nlat={:d}, {:d})'
-                             .format(self.nlat, self.nlon, self.lmax+1,
-                                     2*self.lmax+1)
+                             .format(self.lmax+1, 2*self.lmax+1)
                              )
 
         if zeros is None or weights is None:

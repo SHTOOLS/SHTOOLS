@@ -32,20 +32,23 @@
 <h1 id="batohilmrhohdh">BAtoHilmRhoHDH</h1>
 <p>Calculate iteratively the relief along an interface with lateral density variations that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998).</p>
 <h1 id="usage">Usage</h1>
-<p><code>cilm</code> = BAtoHilmRhoHDH (<code>ba</code>, <code>grid</code>, <code>rho</code>, <code>nmax</code>, <code>mass</code>, <code>r0</code>, [<code>filtertype</code>, <code>filterdeg</code>, <code>lmax</code>, <code>lmaxcalc</code>, <code>sampling</code>)</p>
+<p><code>cilm</code> = BAtoHilmRhoHDH (<code>ba</code>, <code>grid</code>, <code>rho</code>, <code>nmax</code>, <code>mass</code>, <code>r0</code>, [<code>filter_type</code>, <code>filter_deg</code>, <code>lmax</code>, <code>lmax_calc</code>, <code>sampling</code>)</p>
 <h1 id="returns">Returns</h1>
 <dl>
-<dt><code>cilm</code> : float, dimension (2, <code>lmaxcalc</code>+1, <code>lmaxcalc</code>+1)</dt>
+<dt><code>cilm</code> : float, dimension (2, <code>lmax_calc</code>+1, <code>lmax_calc</code>+1)</dt>
 <dd>An estimate of the real spherical harmonic coefficients (geodesy normalized) of relief along an interface with lateraly varying density contrast <code>rho</code> that satisfies the Bouguer anomaly <code>ba</code>. The degree-zero term corresponds to the mean radius of the relief.
 </dd>
 </dl>
 <h1 id="parameters">Parameters</h1>
 <dl>
-<dt><code>ba</code> : float, dimension (2, <code>lmaxcalc</code>+1, <code>lmaxcalc</code>+1)</dt>
+<dt><code>ba</code> : float, dimension (2, <code>lmax_calc</code>+1, <code>lmax_calc</code>+1)</dt>
 <dd>The real spherical harmonic coefficients of the Bouguer anomaly referenced to a spherical interface <code>r0</code>.
 </dd>
 <dt><code>grid</code> : float, dimension (2*<code>lmaxin</code>+2, <code>sampling</code>*(2*<code>lmaxin</code>+2))</dt>
 <dd>The initial estimate for the radii of the interface evaluated on a grid corresponding to a function of maximum spherical harmonic degree <code>lmaxin</code>. This is calculated by a call to <code>MakeGridDH</code> and must contain the degree-0 average radius of the interface.
+</dd>
+<dt><code>rho</code> : float, dimension (2*<code>lmaxin</code>+2, <code>sampling</code>*(2*<code>lmaxin</code>+2))</dt>
+<dd>The density contrast of the relief in kg/m^3, with the same dimensions as <code>grid</code>.
 </dd>
 <dt><code>nmax</code> : integer</dt>
 <dd>The maximum order used in the Taylor-series expansion used in calculating the potential coefficients.
@@ -56,19 +59,16 @@
 <dt><code>r0</code> : float</dt>
 <dd>The reference radius of the Bouguer anomaly <code>ba</code>.
 </dd>
-<dt><code>rho</code> : float, dimension (2*<code>lmaxin</code>+2, <code>sampling</code>*(2*<code>lmaxin</code>+2))</dt>
-<dd>The density contrast of the relief in kg/m^3, with the same dimensions as <code>grid</code>.
-</dd>
-<dt><code>filtertype</code> : optional, integer, default = 0</dt>
+<dt><code>filter_type</code> : optional, integer, default = 0</dt>
 <dd>Apply a filter when calculating the relief in order to minimize the destabilizing effects of downward continuation which amplify uncertainties in the Bouguer anomaly. If 0, no filtering is applied. If 1, use the minimum amplitude filter <code>DownContFilterMA</code>. If 2, use the minimum curvature filter <code>DownContFilterMC</code>.
 </dd>
-<dt><code>filterdeg</code> : optional, integer, default = 0</dt>
+<dt><code>filter_deg</code> : optional, integer, default = 0</dt>
 <dd>The spherical harmonic degree for which the filter is 0.5.
 </dd>
 <dt><code>lmax</code> : optional, integer, default = <code>lmaxin</code></dt>
-<dd>The spherical harmonic bandwidth of the input relief <code>grid</code>, which determines the dimensions of <code>grid</code>. If <code>lmaxcalc</code> is not set, this determines also the maximum spherical harmonic degree of the output spherical harmonic coefficients of the relief and the input spherical harmonics of the Bouguer anomaly.
+<dd>The spherical harmonic bandwidth of the input relief <code>grid</code>, which determines the dimensions of <code>grid</code>. If <code>lmax_calc</code> is not set, this determines also the maximum spherical harmonic degree of the output spherical harmonic coefficients of the relief and the input spherical harmonics of the Bouguer anomaly.
 </dd>
-<dt><code>lmaxcalc</code> : optional, integer, default = <code>lmax</code></dt>
+<dt><code>lmax_calc</code> : optional, integer, default = <code>lmax</code></dt>
 <dd>The maximum degree that will be calculated in the spherical harmonic expansions.
 </dd>
 <dt><code>sampling</code> : optional, integer, default set by dimensions of <code>grid</code></dt>
@@ -76,7 +76,7 @@
 </dd>
 </dl>
 <h1 id="description">Description</h1>
-<p><code>BAtoHilmRhoHDH</code> is used to solve iteratively for the relief along an interface with lateral variations in density that corresponds to a given Bouguer anomaly. This is equation 18 of Wieczorek and Phillips (1998), modified to account for density variations as in equation 30 of Wieczorek 2007, which implicitly takes into consideration the finite-amplitude correction. Each iteration takes as input a guess for the relief and outputs the iteratively improved spherical harmonic coefficients of this relief. These coefficients can then be re-expanded and re-input into this routine as the next guess. For the initial guess, it is often sufficient to use the relief predicted using the first-order &quot;mass sheet&quot; approximation. The input relief <code>grid</code> can be of one of three type specified by <code>gridtype</code>: 1 for Gauss-Legendre grids, 2 for equally sampled Driscoll-Healy grids (<code>n</code> by <code>n</code>), and 3 for equally spaced Driscoll-Healy grids (<code>n</code> by 2<code>n</code>).</p>
+<p><code>BAtoHilmRhoHDH</code> is used to solve iteratively for the relief along an interface with lateral variations in density that corresponds to a given Bouguer anomaly. This is equation 18 of Wieczorek and Phillips (1998), modified to account for density variations as in equation 30 of Wieczorek 2007, which implicitly takes into consideration the finite-amplitude correction. Each iteration takes as input a guess for the relief and outputs the iteratively improved spherical harmonic coefficients of this relief. These coefficients can then be re-expanded and re-input into this routine as the next guess. For the initial guess, it is often sufficient to use the relief predicted using the first-order “mass sheet” approximation. The input relief <code>grid</code> can be of one of three type specified by <code>gridtype</code>: 1 for Gauss-Legendre grids, 2 for equally sampled Driscoll-Healy grids (<code>n</code> by <code>n</code>), and 3 for equally spaced Driscoll-Healy grids (<code>n</code> by 2<code>n</code>).</p>
 <p>If the algorithm does not converge, one might want to try damping the initial estimate. Alternatively, iterations of the following form have proven successfulin in damping oscilations between successive iterations:</p>
 <p><code>h3 = (h2+h1)/2</code><br />
 <code>h4 = f(h3)</code></p>
@@ -95,7 +95,7 @@
 		<tr>
 			<td class="c1"><a href="https://lagrange.oca.eu/?lang=en">Laboratoire Lagrange</a></td>
 			<td class="c2"><a href="https://www.oca.eu/?lang=en">Observatoire de la Côte d'Azur</a></td>
-			<td class="c3">&copy; 2016 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
+			<td class="c3">&copy; 2017 <a href="https://github.com/SHTOOLS">SHTOOLS</a></td>
 		</tr>
 	</tbody>
 	</table>
