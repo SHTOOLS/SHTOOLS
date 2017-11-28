@@ -26,13 +26,13 @@ from subprocess import CalledProcessError, check_output, check_call
 # convert markdown README.md to restructured text .rst for pypi
 # pandoc can be installed with
 # conda install -c conda-forge pandoc pypandoc
+# pip install pypandoc
 try:
     import pypandoc
     long_description = pypandoc.convert('README.md', 'rst')
 except(IOError, ImportError):
-    print('no pandoc installed. Careful, pypi description will not be '
-          'formatted correctly.')
-    long_description = open('README.md').read()
+    print('Pandoc is not installed. Can not convert README.md to README.rst')
+    raise
 
 
 # This flag has to be True if the version number indicated in the file
