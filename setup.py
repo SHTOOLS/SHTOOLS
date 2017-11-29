@@ -173,7 +173,7 @@ KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Wigner Symbols',
 
 
 INSTALL_REQUIRES = [
-    'numpy>=' + str(numpy.__version__),
+    'numpy (>=' + str(numpy.__version__) + ')',
 ]
 
 # configure python extension to be compiled with f2py
