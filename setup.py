@@ -173,7 +173,7 @@ KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Wigner Symbols',
 
 
 INSTALL_REQUIRES = [
-    'numpy (>=' + str(numpy.__version__) + ')',
+    'numpy>=' + str(numpy.__version__),
 ]
 
 # configure python extension to be compiled with f2py
@@ -279,7 +279,7 @@ metadata = dict(
     author_email="mark.a.wieczorek@gmail.com",
     license='BSD',
     keywords=KEYWORDS,
-    requires=INSTALL_REQUIRES,
+    install_requires=INSTALL_REQUIRES,
     platforms='OS Independent',
     packages=setuptools.find_packages(),
     classifiers=CLASSIFIERS,
