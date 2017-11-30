@@ -32,7 +32,6 @@ try:
     long_description = pypandoc.convert('README.md', 'rst')
 except(IOError, ImportError):
     print('Pandoc is not installed. Can not convert README.md to README.rst')
-    raise
 
 
 # This flag has to be True if the version number indicated in the file
