@@ -13,6 +13,7 @@ import sysconfig
 # the setuptools import dummy patches the distutil commands such that
 # python setup.py develop works
 import setuptools  # NOQA
+import numpy
 
 from numpy.distutils.core import setup
 from numpy.distutils.command.build import build as _build
@@ -173,7 +174,8 @@ KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Wigner Symbols',
 
 
 INSTALL_REQUIRES = [
-    'numpy (>=1.0.0)']
+    'numpy>=' + str(numpy.__version__),
+]
 
 # configure python extension to be compiled with f2py
 
@@ -278,7 +280,7 @@ metadata = dict(
     author_email="mark.a.wieczorek@gmail.com",
     license='BSD',
     keywords=KEYWORDS,
-    requires=INSTALL_REQUIRES,
+    install_requires=INSTALL_REQUIRES,
     platforms='OS Independent',
     packages=setuptools.find_packages(),
     classifiers=CLASSIFIERS,
