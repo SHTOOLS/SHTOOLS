@@ -18,7 +18,7 @@ matrix:
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
        brew update;
-       brew install gcc || brew link --overwrite gcc;
+       brew cask uninstall oclint;
        brew install fftw --with-fortran;
     else
        sudo apt-get update;
