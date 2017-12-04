@@ -18,6 +18,7 @@ matrix:
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
        brew update;
+       brew cask uninstall oclint;
        brew install fftw --with-fortran;
     else
        sudo apt-get update;
@@ -48,6 +49,7 @@ install:
         scipy
         matplotlib
         jupyter
+        mkl
   - conda install nbconvert
   - source activate test-environment
   - pip install --no-deps .
