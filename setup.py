@@ -41,7 +41,7 @@ except(IOError, ImportError):
 # This flag has to be True if the version number indicated in the file
 # VERSION has already been released and to False if this is a development
 # version of a future release.
-ISRELEASED = True
+ISRELEASED = False
 
 
 def get_version():
