@@ -4,9 +4,7 @@
 #
 #   The normal user should only have to use the following commands
 #
-#       make (all)          : Install the Fortran, Python 2, and Python 3
-#                             components.
-#       make fortran        : Install the Fortan components.
+#       make (all, fortran) : Install the Fortran 95 components.
 #       make fortran-mp     : Install the Fortan OpenMP components.
 #       make python         : Install the Python components (versions
 #                             determined by PYTHON_VERSION).
@@ -65,12 +63,8 @@
 #
 #   LIST OF ALL SUPPORTED MAKE TARGETS
 #
-#   make, make all
-#       Compile the Fortran 95, Python 2, and Python 3 components the 
-#       current directory.
-#
-#   make fortran
-#       Compile only the Fortran 95 component of the archive.
+#   make, make all, make fortran
+#       Compile the Fortran 95 components the current directory.
 #
 #   make fortran-mp
 #       Compile only the fortran 95 component of the archive with OpenMP
@@ -260,7 +254,7 @@ endif
 	clean-libs remove-notebooks notebooks notebooks2 notebooks3
 
 
-all: fortran python
+all: fortran
 
 fortran:
 	mkdir -pv lib
@@ -355,7 +349,7 @@ pyshtools/_constant$(PY3EXT): $(SRCDIR)/PlanetsConstants.f95
 	$(F2PY3) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _constant$(PY3EXT) pyshtools/.
 
-install: install-fortran install-python
+install: install-fortran
 
 install-python2: python2
 	mkdir -pv $(DESTDIR)$(SYSPYPATH)/pyshtools

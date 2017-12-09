@@ -34,63 +34,65 @@
 
 	<h1>Installation Instructions</h1>
 
-	<p>SHTOOLS can be installed in several ways. If you will be using only the Python components, it is recommended to use the <tt>pip</tt> package manager. If you will be writing and compiling Fortran 95 code, it is recommended to use either the Brew package manager (on OSX), or to compile using the Makefile.</p>
+	<p>SHTOOLS can be installed in several ways. If you will be using only the Python components, you should use the <tt>pip</tt> package manager. If you will be writing and compiling Fortran 95 code, it is recommended to use either the Brew package manager (on macOS) or to compile using the Makefile.</p>
 
 	<h2>1. Python package installer: pip</h2>
-	<p class="nomarginbot">The easiest way to install the Python components of SHTOOLS is to use <tt>pip</tt>. First, make sure that you have the necessary dependencies installed. This can be done on most linux distributions using</p>
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh</tt></p>
-	</blockquote>
-	<p class="nomarginbot">or on OSX using <tt>brew</tt></p>
-		<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>brew install fftw --with-fortran</tt></p>
-	</blockquote>
-	<p>Then, execute the following command in a unix terminal:</p>
+	<p class="nomarginbot">The easiest way to install the Python components of SHTOOLS is to use <tt>pip</tt>. On Linux, macOS and windows machines, the binary archive can be installed by executing the following command:</p>
 	<blockquote class="small">
 	<p class="nomargintop nomarginbot"><tt>pip install pyshtools</tt></p>
 	</blockquote>
-	<p> If you want to instead work on a developer version, download the SHTOOLS repository from GitHub. Then, in the SHTOOLS main directory, execute</p>
+	<p>If you wish to instead compile the archive yourself, first make sure that you have the necessary dependencies installed. On most linux distributions, this can be accomplished using</p>
+	<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh</tt></p>
+	</blockquote>
+	<p class="nomarginbot">or on OSX using</p>
+		<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>brew install fftw --with-fortran</tt></p>
+	</blockquote>
+	<p>Then clone the SHTOOLS repo</p>
+		<blockquote class="small">
+		<p class="nomargintop nomarginbot"><tt>git clone https://github.com/SHTOOLS/SHTOOLS.git</tt></p>
+	</blockquote>
+	<p>and in the shtools main directory, execute either</p>
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>pip install .</tt></p>
 	</blockquote>
-	<p class="nomarginbot">which will install pyshtools in the system Python library. If you would like to install the files in the current working directory, so that you can easily edit the source files and link them to the system Python directory, enter the following command instead:</p>
+	<p class="nomarginbot">which will install pyshtools in the active Python environment lib folder, or</p>
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>pip install -e .</tt></p>
 	</blockquote>
-	<p class="nomarginbot">To uninstall pyshtools from your system directory, enter</p>
+	<p class="nomarginbot">which will install the files in the current working directory and link them to the system Python directory. To uninstall pyshtools from your system directory, enter</p>
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>pip uninstall pyshtools</tt></p>
 	</blockquote>
-	<p>Note that this will only install the Python version that corresponds to the version of <tt>pip</tt> being used. On some systems, it may be necessary to specify <tt>pip2.7</tt> or <tt>pip3.5</tt>.</p>
+	<p>Note that this will only install the Python version that corresponds to the version of <tt>pip</tt> being used. On some systems, it may be necessary to specify <tt>pip2.7</tt> or <tt>pip3.x</tt>.</p>
 
-	<h2>2. Homebrew package manager (OSX)</h2>
+	<h2>2. Fortran 95 library using brew (macOS)</h2>
 	<p class="nomarginbot">If <a href="http://brew.sh">brew</a> is already installed, it is only necessary to enter the following commands in the terminal:</p>
 		<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>brew tap shtools/shtools</tt><br>
 		<tt>brew install shtools</tt></p>
 	</blockquote>
-	<p>This will install only the Fortran 95 component of SHTOOLS. To also install the Fortran 95 OpenMP component, add the option <tt>--with-openmp</tt> to the last command. Brew can also install the Python components (using the Makefile approach below), but this is not encouraged.</p>
+	<p>To also install the Fortran 95 OpenMP component, add the option <tt>--with-openmp</tt> to the last command.</p>
 	
-	<h2>3. Manual installation using make</h2>
+	<h2>3. Fortran 95 library using make</h2>
 
-	<p class="nomarginbot">Before installing SHTOOLS, it will be necessary to have a Fortran 95 compiler, <a href="https://www.python.org/">Python</a>, and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, the Fortran 95, Python 2, and Python 3 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main SHTOOLS directory:</p>
+	<p class="nomarginbot">Before installing the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, the Fortran 95 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main shtools directory:</p>
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make</tt></p>
 	</blockquote>
 
-	<p class="nomarginbot">To compile individual components, such as Fortran 95, Fortran 95 with OpenMP, Python 2, and Python 3, use</p>
+	<p class="nomarginbot">To compile the Fortran 95 components with OpenMP use</p>
 
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make fortran fortran-mp python2 python3</tt></p>
+		<p class="nomargintop nomarginbot"><tt>make fortran-mp</tt></p>
 	</blockquote>
 
-	<p class="nomarginbot">To compile and run the Fortran 95 and Python test suites, use</p>
+	<p class="nomarginbot">To compile and run the Fortran 95 test suites, use</p>
 
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make fortran-tests</tt><br>
-		<tt>make python2-tests</tt><br>
-		<tt>make python3-tests</tt></p>
+		<p class="nomargintop nomarginbot"><tt>make fortran-tests</tt></p>
 	</blockquote>
 
 	<p class="nomarginbot">To delete the compiled archive, module files, object files, and test suite files, use</p>
@@ -99,7 +101,7 @@
 		<p class="nomargintop nomarginbot"><tt>make clean</tt></p>
 	</blockquote>
 
-	<p class="nomarginbot">By default, the <tt>Makefile</tt> will use the binaries <tt>gfortran</tt>, <tt>f2py</tt> and <tt>python</tt> (for Python 2), and <tt>f2py3</tt> and <tt>python3</tt> (for Python 3). Different compilers and options can be specified by passing optional arguments to the <tt>Makefile</tt> using the syntax</p>
+	<p class="nomarginbot">By default, the <tt>Makefile</tt> will use the <tt>gfortran</tt> compiler. Different compilers and options can be specified by passing optional arguments to the <tt>Makefile</tt> using the syntax</p>
 
 <blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>make F95="MyCompiler" F95FLAGS="MyCompilerFlags"</tt></p>
@@ -111,17 +113,13 @@
 		<p class="nomargintop nomarginbot">
 		<tt>F95</tt>="Name (including path) of the <tt>f95</tt> compiler"<br>
 		<tt>F95FLAGS</tt>="F95 compiler options"<br>
-		<tt>F2PY</tt>="Name (including path) of the Python 2 <tt>f2py</tt> executable"<br>
-		<tt>F2PY3</tt>="Name (including path) of the Python 3 <tt>f2py</tt> executable"<br>
-		<tt>PYTHON</tt>="Name (including path) of the Python 2 executable"<br>
-		<tt>PYTHON3</tt>="Name (including path) of the Python 3 executable"<br>
 		<tt>FFTW=</tt>Name and path of the FFTW3 library of the form "<tt>-Lpath -lfftw3</tt>"<br>
 		<tt>LAPACK</tt>=Name and path of the LAPACK library of the form "<tt>-Lpath -llapack</tt>"<br>
 		<tt>BLAS</tt>=Name and path of the BLAS library of the form "<tt>-Lpath -lblas</tt>"<br>
 		</p>
 	</blockquote>
 
-	<p>Successful compilation will create the library file <tt>libSHTOOLS.a</tt> (and <tt>libSHTOOLS-mp.a</tt> when compiling with OpenMP) in the directory <tt>lib</tt>, will place a few compiled module files in the directory <tt>modules</tt>, and will create a few <tt>.so</tt> files in the directory <tt>pyshtools</tt>. The resulting output should look something like <a href="makeout.html">this</a>. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using <tt>make clean</tt>.</p>
+	<p>Successful compilation will create the library file <tt>libSHTOOLS.a</tt> (and <tt>libSHTOOLS-mp.a</tt> when compiling with OpenMP) in the directory <tt>lib</tt>, and will place a few compiled module files in the directory <tt>modules</tt>. The resulting output should look something like <a href="makeout.html">this</a>. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using <tt>make clean</tt>.</p>
 
 	<p>To make all files available at a system level, run</p>
 	<blockquote class="small">
@@ -131,7 +129,7 @@
 	<p>This will move the compiled SHTOOLS files and documentation to</p>
 
 	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>SYSPYPATH/pyshtools (python module)<br>
+		<p class="nomargintop nomarginbot"><tt>
 		SYSLIBPATH (libSHTOOLS.a, libSHTOOLS-mp.a)<br>
 		SYSMODPATH (fftw3.mod, planetsconstants.mod, shtools.mod)<br>
 		SYSSHAREPATH/shtools/examples (example files)<br>
@@ -143,7 +141,6 @@
 
 	<blockquote class="small">
 		<p class="nomargintop nomarginbot"><tt>
-		SYSPYPATH=python variable sysconfig.get_path("platlib")<br>
 		SYSLIBPATH=/usr/local/lib<br>
 		SYSMODPATH=/usr/local/include<br>
 		SYSSHAREPATH=/usr/local/share<br>
@@ -158,19 +155,7 @@
 
 	<p>To access the unix man pages, it will be necessary to add <tt>SYSSHAREPATH/man</tt> to your man path.</p>
 
-	<h3>3.1 Python compiler specific flags</h3>
-
-	<p>When compiling the python wrappers and running the python examples, it is important to use the correct versions of <tt>f2py</tt> and <tt>python</tt>. Most systems provide binaries that include the name of the python version, such as <tt>python2.7</tt>, <tt>python3.5</tt>, <tt>f2py2.7</tt> and <tt>f2py3.5</tt>. These binaries may or may not be linked to generic names such as <tt>python</tt> and <tt>f2py</tt>. If there are incompatibilities with your system's naming convention and those described above, it will be necessary to pass the optional arguments <tt>PYTHON</tt>, <tt>PYTHON3</tt>, <tt>F2PY</tt> and <tt>F2PY3</tt> to the <tt>Makefile</tt>.</p>
-
-	<p>If binaries do not exist for <tt>f2py</tt>, the python wrappers can be generated by specifying the following:</p>
-
-	<blockquote class="small">
-		<p class="nomargintop nomarginbot"><tt>make F2PY="python -m numpy.f2py" F2PY3="python3 -m numpy.f2py"</tt></p>
-	</blockquote>
-
-<p>This is necessary on OSX (using the brew installation), as installing both Python 2 and 3 will create only a single <tt>f2py</tt> that is overwritten by the last install.</p>
-
-	<h3>3.2 Fortran compiler specific flags and optimizations</h3>
+	<h3>3.1 Fortran compiler specific flags and optimizations</h3>
 
 	<p>Default compiler options are specified in the main <tt>Makefile</tt> for a few common compilers (<tt>gfortran</tt>, Absoft <tt>f95</tt>, <tt>g95</tt>, and <tt>ifort</tt>). If it is necessary to change these, consider the following guidelines.</p>
 
