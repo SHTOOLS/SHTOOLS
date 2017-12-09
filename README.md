@@ -77,7 +77,7 @@ To get started, check out the following Python tutorial notebooks:
 * Introduction 1: Grids and Spherical Harmonic Coefficients [\[ipynb\]](examples/notebooks/Introduction-1.ipynb)
 * Introduction 2: Localization Windows and Spectral Analysis [\[ipynb\]](examples/notebooks/Introduction-2.ipynb)
 
-You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
+You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/pyshtools).
 
 ### ACKNOWLEDGMENTS ###
 SHTOOLS is open source (revised BSD license) and makes use of the freely
