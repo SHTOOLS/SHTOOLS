@@ -176,7 +176,3 @@ SHTOOLS Module containing planetary constants.
 
 `g0_Mercury`
 :   Gravitational acceleration at R_Mercury, not including rotation.
-
-# See also
-
-shtools

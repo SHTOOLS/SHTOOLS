@@ -134,7 +134,7 @@
 #       Remove html notebooks.
 #
 #   make doc
-#       Create the man and html-man pages from input markdown files. These are
+#       Create the man pages from input markdown files. These are
 #       PRE-MADE in the distribution. To remake these files, it will be
 #       necessary to install "pandoc", "ghc" and "cabal-install" (all using
 #       brew on OSX), and then execute "cabal update" and
@@ -422,9 +422,9 @@ doc:
 
 remove-doc:
 	@-rm -f man/man1/*.1
-	@-rm -f www/man/fortran/*.html
-	@-rm -f www/man/python/*.html
-	@echo "--> Removed man and html-man files"
+	@-rm -f www/pages/mydoc/fdoc/*.md
+	@-rm -f www/pages/mydoc/pydoc/*.md
+	@echo "--> Removed man files and www md files"
 
 notebooks2:
 	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER)
