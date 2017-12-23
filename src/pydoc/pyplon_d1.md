@@ -28,4 +28,4 @@ Compute all the orthonormalized Legendre polynomials and first derivatives.
 
 # See also
 
-[`plbar`](pyplbar.html), [`plbar_d1`](pyplbar_d1.html), [`plmbar`](pyplmbar.html), [`plmbar_d1`](pyplmbar_d1.html), [`plon`](pyplon.html), [`plmon`](pyplmon.html), [`plmon_d1`](pyplmon_d1.html), [`plschmidt`](pyplschmidt.html), [`plschmidt_d1`](pyplschmidt_d1.html), [`plmschmidt`](pyplmschmidt.html), [`plmschmidt_d1`](pyplmschmidt_d1.html), [`plegendre`](pyplegendre.html), [`plegendre_d1`](pyplegendre_d1.html), [`plegendrea`](pyplegendrea.html), [`plegendrea_d1`](pyplegendrea_d1.html)
+[plbar](pyplbar.html), [plbar_d1](pyplbar_d1.html), [plmbar](pyplmbar.html), [plmbar_d1](pyplmbar_d1.html), [plon](pyplon.html), [plmon](pyplmon.html), [plmon_d1](pyplmon_d1.html), [plschmidt](pyplschmidt.html), [plschmidt_d1](pyplschmidt_d1.html), [plmschmidt](pyplmschmidt.html), [plmschmidt_d1](pyplmschmidt_d1.html), [plegendre](pyplegendre.html), [plegendre_d1](pyplegendre_d1.html), [plegendrea](pyplegendrea.html), [plegendrea_d1](pyplegendrea_d1.html)

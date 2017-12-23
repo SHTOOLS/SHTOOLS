@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field">
+<title>SHTOOLS release notes: Version 4 | SHTOOLS - Tools for working with spherical harmonics</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="https://shtools.oca.eu/shtools//feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> SHTOOLS</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/" target="_blank">GitHub</a></li>
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+			<li>
+
+
+
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about SHTOOLS release notes: Version 4 page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+
+</li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="SHTOOLS release notes: Version 4">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">SHTOOLS 4.1</li>
+  
+  
+  
+      
+  
+  <li>
+      <a href="#">Getting started</a>
+      <ul>
+          
+          
+          
+          <li><a href="index.html">Overview</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="installing.html">Installing</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-f95.html">Using with Fortran 95</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-python.html">Using with Python</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Spherical harmonics</a>
+      <ul>
+          
+          
+          
+          <li><a href="real-spherical-harmonics.html">Real spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="complex-spherical-harmonics.html">Complex spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="implementation-details.html">Implementation details</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Fortran 95 Routines</a>
+      <ul>
+          
+          
+          
+          <li><a href="f95-modules.html">Modules</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="global-spectral-analysis.html">Global spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="localized-spectral-analysis.html">Localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="miscellaneous-routines.html">Miscellaneous</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Python components</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-classes.html">Python classes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spectral-analysis.html">Global and localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-utilities.html">Utilities</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-constants.html">Constants</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Examples programs</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-examples.html">Python examples</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-examples.html">Fortran 95 examples</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Support</a>
+      <ul>
+          
+          
+          
+          <li><a href="faq.html">FAQ</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-95-problems.html">Fortran 95 problems</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="how-to-contribute.html">How to contribute</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Release Notes</a>
+      <ul>
+          
+          
+          
+          <li class="active"><a href="release-notes-v4.html">Version 4</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="release-notes-v3.html">Version 3</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="license.html">License</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="contributors.html">Contributors</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  displayAlign: "left",
+  displayIndent: "2em"
+});
+</script>
+
+<script type="text/javascript" async
+ src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<div class="post-header">
+   <h1 class="post-title-main">SHTOOLS release notes: Version 4</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+
+    
+
+  <h2 id="version-41">Version 4.1</h2>
+
+<p>This version adds improved functionality to SHTOOLS and fixes a couple of minor bugs. In addition, this release will be the first where pre-built wheels for unix/macOS/windows will be distributed via PYPI.</p>
+
+<p><strong>Change log:</strong></p>
+
+<ul>
+  <li>Added an optional argument <code class="highlighter-rouge">lmax</code> to <code class="highlighter-rouge">SHCoeffs.from_array()</code>.</li>
+  <li>Coefficients are zero-padded when <code class="highlighter-rouge">lmax</code> is greater than the maximum degree in <code class="highlighter-rouge">SHCoeffs.to_array()</code>.</li>
+  <li>The method <code class="highlighter-rouge">pad()</code> was added to the <code class="highlighter-rouge">SHCoeffs</code> class that zero pads or truncates the coefficients to a different <code class="highlighter-rouge">lmax</code>.</li>
+  <li>Fixed the method <code class="highlighter-rouge">SHCoeffs.from_file()</code> such that the maximum spherical harmonic degree of the class is the maximum spherical harmonic degree of the coeffs (and not <code class="highlighter-rouge">lmaxin</code> as before).</li>
+  <li>Fixed formatting issues with error messages in <code class="highlighter-rouge">SHCoeffs</code>.</li>
+  <li>Removed print statements from the fortran code in <code class="highlighter-rouge">BAtoHilm</code> and <code class="highlighter-rouge">BAtoHilmRohH</code> that served no purpose.</li>
+  <li>Fixed a bug in the argument order of the python wrappers of <code class="highlighter-rouge">CilmPlusRhoDH</code> and <code class="highlighter-rouge">BAtoHilmRhoDH</code>.</li>
+  <li>Fixed the makefile to remove the <code class="highlighter-rouge">dist</code> directory during clean.</li>
+  <li>Fixed a bug in the python routine <code class="highlighter-rouge">cross_spectrum()</code>, where the numpy arange function was incorrectly called.</li>
+  <li>Fixed the<code class="highlighter-rouge">SHWindow</code> plotting methods to work when the number of rows is equal to 1.</li>
+  <li>Conditional tests in the routine <code class="highlighter-rouge">Wigner3j</code> were reordered to avoid a division by zero.</li>
+  <li>Numpy’s auto-configuration is now used to detect the LAPACK libraries.</li>
+  <li>Many minor updates to the python documentation and unix man pages.</li>
+</ul>
+
+<p><strong>Citation:</strong></p>
+
+<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS: Version 4.1, Zenodo, doi:<a href="http://doi.org/10.5281/zenodo.1067108">10.5281/zenodo.1067108</a></p>
+
+<h2 id="version-40">Version 4.0</h2>
+<p>This is a major update that fixes bugs, adds new functionality, and improves Python error handing. All users are requested to upgrade to 4.0.</p>
+
+<p><strong>Change log:</strong></p>
+
+<ul>
+  <li>Instead of executing a Fortran STOP, which kills the Python kernel, the Fortran subroutines now return an <code class="highlighter-rouge">exitstatus</code> that allows Python to raise an exception. This technique does not work with the few Fortran functions that pyshtools calls, but these functions are relatively benign, and will soon be phased out for Python native functions.</li>
+  <li>The Fortran <code class="highlighter-rouge">powerspectrum</code> routines have been removed from pyshtools, and have been replaced with Python native routines <code class="highlighter-rouge">spectrum</code> and <code class="highlighter-rouge">cross_spectrum</code>. The Python routines allow to specify the normalization, whether the output should be power, energy or l2norm, and whether the spectrum is per degree, per coefficient, or per log bandwidth.</li>
+  <li>The method <code class="highlighter-rouge">plot_spectrum2d()</code> was added to the class <code class="highlighter-rouge">SHCoeffs</code> to plot the power as a function of degree and order.</li>
+  <li>All pyshtools modules have been converted into proper Python subpackages. The subpackage <code class="highlighter-rouge">localizedpsectralanalysis</code> has been merged into <code class="highlighter-rouge">spectralanalysis</code>, and the subpackage <code class="highlighter-rouge">other</code> has been renamed <code class="highlighter-rouge">utils</code>.</li>
+  <li>The Python class method <code class="highlighter-rouge">SHCoeffs.expand()</code> now can evaluate the function either on an SHGrid or for a list of latitude and longitude points. As part of this change, a new fortran function <code class="highlighter-rouge">MakeGridPointC</code> was created for complex coefficients.</li>
+  <li>The majority of the methods for the classes <code class="highlighter-rouge">SHCoeffs</code>, <code class="highlighter-rouge">SHGrid</code> and <code class="highlighter-rouge">SHWindow</code> have been rename for consistency (see documentation!). Also, the classes now give the option of reading or saving to files as numpy arrays.</li>
+  <li>Added new Python function <code class="highlighter-rouge">read_icgen_gfc</code> for reading ICGEM-format gravity coefficient files.</li>
+  <li>The operator <code class="highlighter-rouge">pow</code> was added to the class <code class="highlighter-rouge">SHCoeffs</code>.</li>
+  <li>All methods in the pyshtools classes now return copies by default, which can be modified by the optional argument <code class="highlighter-rouge">copy</code>.</li>
+  <li>Added <code class="highlighter-rouge">pot</code> as a mandatory return argument for the Python routine <code class="highlighter-rouge">MakeGravGridDH</code>.</li>
+  <li>Several minor modifications and bug fixes were made to the makefiles to improve compatibility and to allow the use of <code class="highlighter-rouge">make -j</code>.</li>
+  <li>The routines <code class="highlighter-rouge">other.EigValSym</code>, <code class="highlighter-rouge">other.EigValVecSym</code>, <code class="highlighter-rouge">other.EigValVecSymTri</code>, <code class="highlighter-rouge">other.RandomGaussian</code>, <code class="highlighter-rouge">other.RandomN</code> and <code class="highlighter-rouge">other.PreGLQ</code> were removed from pyshtools, as these can be found in other scipy packages.</li>
+  <li>The SHTOOLS routine <code class="highlighter-rouge">DHaj</code> was added to the pyshtools subpackage <code class="highlighter-rouge">utils</code>.</li>
+  <li>Python docstrings have been streamlined and standardized.</li>
+  <li>…plus, many minor changes and optimizations…</li>
+</ul>
+
+<p><strong>Citation:</strong></p>
+
+<p>M. A. Wieczorek, M. Meschede, I. Oshchepkov, E. Sales de Andrade, and heroxbd  (2016). SHTOOLS: Version 4.0. Zenodo. doi:<a href="http://doi.org/10.5281/zenodo.206114">10.5281/zenodo.206114</a></p>
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2017 SHTOOLS. All rights reserved. <br />
+<a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
+<a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
+<p><img src="images/company_logo.png" alt="SHTOOLS"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

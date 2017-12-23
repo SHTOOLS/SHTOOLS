@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" ">
+<title>Python routines | SHTOOLS - Tools for working with spherical harmonics</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="https://shtools.oca.eu/shtools//feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> SHTOOLS</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/" target="_blank">GitHub</a></li>
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+			<li>
+
+
+
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about Python routines page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+
+</li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Python routines">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">SHTOOLS 4.1</li>
+  
+  
+  
+      
+  
+  <li>
+      <a href="#">Getting started</a>
+      <ul>
+          
+          
+          
+          <li><a href="index.html">Overview</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="installing.html">Installing</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-f95.html">Using with Fortran 95</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-python.html">Using with Python</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Spherical harmonics</a>
+      <ul>
+          
+          
+          
+          <li><a href="real-spherical-harmonics.html">Real spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="complex-spherical-harmonics.html">Complex spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="implementation-details.html">Implementation details</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Fortran 95 Routines</a>
+      <ul>
+          
+          
+          
+          <li><a href="f95-modules.html">Modules</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="global-spectral-analysis.html">Global spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="localized-spectral-analysis.html">Localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="miscellaneous-routines.html">Miscellaneous</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Python components</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-classes.html">Python classes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spectral-analysis.html">Global and localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-utilities.html">Utilities</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-constants.html">Constants</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Examples programs</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-examples.html">Python examples</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-examples.html">Fortran 95 examples</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Support</a>
+      <ul>
+          
+          
+          
+          <li><a href="faq.html">FAQ</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-95-problems.html">Fortran 95 problems</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="how-to-contribute.html">How to contribute</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Release Notes</a>
+      <ul>
+          
+          
+          
+          <li><a href="release-notes-v4.html">Version 4</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="release-notes-v3.html">Version 3</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="license.html">License</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="contributors.html">Contributors</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  displayAlign: "left",
+  displayIndent: "2em"
+});
+</script>
+
+<script type="text/javascript" async
+ src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<div class="post-header">
+   <h1 class="post-title-main">Python routines</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+
+    
+
+  <style>
+table:nth-of-type(n) {
+    display:table;
+    width:100%;
+}
+table:nth-of-type(n) th:nth-of-type(2) {
+    width:65%;
+}
+</style>
+
+<p>The following routines are tagged as <button type="button" style="cursor: default" class="btn btn-default navbar-btn">python</button></p>
+<table><thead><tr><th>Title</th><th>Excerpt</th></tr></thead>
+    <tbody>
+    
+  
+    
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+   
+    
+        
+
+        <tr><td><a href="cross_spectrum.html">cross_spectrum (Python)</a></td>
+          <td> Return the cross-spectrum of the spherical harmonic coefficients as a function of spherical harmonic degree. Usage array = cross_spectrum (clm1, clm2, [normalization, degrees, lmax, convention, unit, base]) Returns  array : ndarray, shape (len(degrees)) 1-D ndarray of the... </td>
+        </tr>
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+   
+    
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+   
+    
+        
+
+        <tr><td><a href="pybatohilmdh.html">BAtoHilmDH (Python)</a></td>
+          <td> Calculate iteratively the relief along an interface of constant density contrast that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998). Usage cilm = BAtoHilmDH (ba, grid, nmax, mass, r0, rho, [filter_type, filter_deg, lmax,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pybatohilmrhohdh.html">BAtoHilmRhoHDH (Python)</a></td>
+          <td> Calculate iteratively the relief along an interface with lateral density variations that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998). Usage cilm = BAtoHilmRhoHDH (ba, grid, rho, nmax, mass, r0, [filter_type, filter_deg, lmax,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pycilmminusdh.html">CilmMinusDH (Python)</a></td>
+          <td> Calculate the gravitational potential interior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmMinusDH (gridin, nmax, mass, rho, [lmax, n, dref, sampling]) Returns  cilm... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pycilmminusrhohdh.html">CilmMinusRhoHDH (Python)</a></td>
+          <td> Calculate the gravitational potential interior to relief with lateral variations in density referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmMinusRhoHDH (gridin, rho, nmax, mass, [lmax, n, dref, sampling])... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pycilmplusdh.html">CilmPlusDH (Python)</a></td>
+          <td> Calculate the gravitational potential exterior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmPlusDH (gridin, nmax, mass, rho, [lmax, n, dref, sampling]) Returns  cilm... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pycilmplusrhohdh.html">CilmPlusRhoHDH (Python)</a></td>
+          <td> Calculate the gravitational potential exterior to relief with lateral variations in density referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmPlusRhoHDH (gridin, rho, nmax, mass, [lmax, n, dref, sampling])... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pycomputedg82.html">ComputeDG82 (Python)</a></td>
+          <td> Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of a spherical cap. Usage dg82 = ComputeDG82 (lmax, m, theta0) Returns  dg82 : float, dimension (lmax-abs(m)+1, lmax-abs(m)+1) The tridiagonal matrix of Grunbaum... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pycomputedm.html">ComputeDM (Python)</a></td>
+          <td> Compute the space-concentration kernel of a spherical cap. Usage dm = ComputeDM (lmax, m, theta0) Returns  dm : float, dimension (lmax+1, lmax+1) The space-concentration kernel or angular order m.  Parameters  lmax : integer The spherical... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pycomputedmap.html">ComputeDMap (Python)</a></td>
+          <td> Compute the space-concentration kernel of an arbitrary mask on the sphere. Usage dij = ComputeDMap (dh_mask, lmax, [n, sampling]) Returns  dij : float, dimension ( (lmax+1)**2, (lmax+1)**2 ) The space-concentration kernel corresponding to the mask dh_mask.  Parameters... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pycurve2mask.html">Curve2Mask (Python)</a></td>
+          <td> Given a set of latitude and longitude coordinates representing a closed curve, output a gridded binary mask. Usage mask_dh = Curve2Mask (n, profile, np, [nprofile, sampling, centralmeridian]) Returns  dh_mask : integer, dimension (n, n*sampling) A Driscoll... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pydhaj.html">DHaj (Python)</a></td>
+          <td> Compute the latitudinal weights used in the Driscoll and Healy (1994) spherical harmonic transform. Usage aj = DHaj (n) Returns  aj : float, dimension (n) The latitudinal weights used in the spherical harmonic transform.  Parameters  n : integer The... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pydjpi2.html">djpi2 (Python)</a></td>
+          <td> Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical harmonics. Usage dj = djpi2 (lmax) Returns  dj : float, dimension (lmax+1, lmax+1, lmax+1) The rotation matrix dj(pi/2).  Parameters  lmax : integer The maximum spherical... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pydowncontfilterma.html">DownContFilterMA (Python)</a></td>
+          <td> Compute the minimum-amplitude downward continuation filter of Wieczorek and Phillips (1998). Usage wl = DownContFilterMA (l, half, r, d) Returns  wl : float The amplitude of the downward continuation filter.  Parameters  l : integer The spherical harmonic... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pydowncontfiltermc.html">DownContFilterMC (Python)</a></td>
+          <td> Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree. Usage wl = DownContFilterMC (l, half, r, d) Returns  wl : float The amplitude of the downward continuation filter.  Parameters  l : integer The spherical... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyglqgridcoord.html">GLQGridCoord (Python)</a></td>
+          <td> Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids. Usage latglq, longlq = GLQGridCoord (lmax) Returns  latglq : float, dimension (lmax+1) The latitude coordinates of a grid, corresponding to the indices [:,0], in degrees. longlq : float, dimension (2*&lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakecirclecoord.html">MakeCircleCoord (Python)</a></td>
+          <td> Compute the coordinates of a circle placed at a given latitude and longitude. Usage coord = MakeCircleCoord (lat, lon, theta0, [cinterval]) Returns  coord : float, dimension(360/cinterval, 2) The latitude [:,0] and longitude [:,1] coordinates of the circle in degrees. ... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakeellipsecoord.html">MakeEllipseCoord (Python)</a></td>
+          <td> Compute the coordinates of an ellipse placed at a given latitude and longitude. Usage coord = MakeEllipseCoord (lat, lon, dec, a_theta, b_theta, [cinterval]) Returns  coord :float, dimension(360/cinterval, 2) The latitude [:,0] and longitude [:,1] coordinates of the ellipse... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegeoidgriddh.html">MakeGeoidGridDH (Python)</a></td>
+          <td> Create a global map of the geoid. Usage geoid = MakeGeoidGridDH (cilm, r0, gm, potref, [lmax, omega, r, order, lmax_calc, a, f]) Returns  geoid : float, dimension (2lmax+2, sampling*2lmax+2) A global... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegravgradgriddh.html">MakeGravGradGridDH (Python)</a></td>
+          <td> Create 2D cylindrical maps on a flattened ellipsoid of the components of the gravity “gradient” tensor in a local north-oriented reference frame. Usage vxx, vyy, vzz, vxy, vxz, vyz = MakeGravGradGridDH (cilm, gm, r0, [a, f, lmax,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegravgriddh.html">MakeGravGridDH (Python)</a></td>
+          <td> Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential. Usage rad, theta, phi, total, pot = MakeGravGridDH (cilm, gm, r0, [a, f, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegrid2d.html">MakeGrid2D (Python)</a></td>
+          <td> Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical harmonic coefficients. Usage grid = MakeGrid2D (cilm, interval, [lmax, norm, csphase, f, a, north, south, east, west, dealloc]) Returns  &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegriddh.html">MakeGridDH (Python)</a></td>
+          <td> Create a 2D map from a set of spherical harmonic coefficients using the Driscoll and Healy (1994) sampling theorem. Usage griddh = MakeGridDH (cilm, [lmax, norm, sampling, csphase, lmax_calc]) Returns  griddh : float, dimension (2*lmax+2, sampling*(2*lmax+2))... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegriddhc.html">MakeGridDHC (Python)</a></td>
+          <td> Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with Driscoll and Healy’s (1994) sampling theorem. Usage griddh = MakeGridDHC (cilm, [lmax, norm, sampling, csphase, lmax_calc]) Returns  griddh : complex, dimension (2*lmax+2, 2*lmax+2)... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegridglq.html">MakeGridGLQ (Python)</a></td>
+          <td> Create a 2D map from a set of spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. Usage gridglq = MakeGridGLQ (cilm, zero, [lmax, norm, csphase, lmax_calc]) Returns  gridglq : float, dimension (lmax+1, 2*lmax+1) A 2D map... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegridglqc.html">MakeGridGLQC (Python)</a></td>
+          <td> Create a 2D complex map from a set of complex spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. Usage gridglq = MakeGridGLQC (cilm, zero, [lmax, norm, csphase, lmax_calc]) Returns  gridglq : complex, dimension (lmax+1, 2*lmax+1) A... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegridpoint.html">MakeGridPoint (Python)</a></td>
+          <td> Evaluate a real function expressed in real spherical harmonics at a single point. Usage value = MakeGridPoint (cilm, lat, lon, [lmax, norm, csphase, dealloc]) Returns  value : float Value of the function at (lat, lon). ... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakegridpointc.html">MakeGridPointC (Python)</a></td>
+          <td> Evaluate a complex function expressed in complex spherical harmonics at a single point. Usage value = MakeGridPointC (cilm, lat, lon, [lmax, norm, csphase, dealloc]) Returns  value : complex Value of the function at (lat, lon). ... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pymakemaggriddh.html">MakeMagGridDH (Python)</a></td>
+          <td> Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential. Usage rad, theta, phi, total = MakeMagGridDH (cilm, r0, [lmax, a, f, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pynormalgravity.html">NormalGravity (Python)</a></td>
+          <td> Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana. Usage value = NormalGravity (geocentriclat, gm, omega, a, b) Returns  value : float The normal gravity in SI units.  Parameters  &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplbar.html">PlBar (Python)</a></td>
+          <td> Compute all the 4-pi (geodesy) normalized Legendre polynomials. Usage p = PlBar (lmax, z) Returns  p : float, dimension (lmax+1) An array of 4-pi (geodesy) normalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l.... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplbar_d1.html">PlBar_d1 (Python)</a></td>
+          <td> Compute all the 4-pi (geodesy) normalized Legendre polynomials and first derivatives. Usage p, dp = PlBar_d1 (lmax, z) Returns  p : float, dimension (lmax+1) An array of 4-pi (geodesy) normalized Legendre polynomials up to degree lmax. Degree l corresponds... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplegendre.html">PLegendre (Python)</a></td>
+          <td> Compute all the unnormalized Legendre polynomials. Usage p = PLegendre (lmax, z) Returns  p : float, dimension (lmax+1) An array of unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l.  Parameters ... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplegendre_d1.html">PLegendre_d1 (Python)</a></td>
+          <td> Compute all the unnormalized Legendre polynomials and first derivatives. Usage p, dp = PLegendre_d1 (lmax, z) Returns  p : float, dimension (lmax+1) An array of unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplegendrea.html">PLegendreA (Python)</a></td>
+          <td> Compute all the unnormalized associated Legendre functions. Usage p = PLegendreA (lmax, z, [csphase]) Returns  p : float, dimension ((lmax+1)*(lmax+2)/2) An array of unnormalized associated Legendre functions up to degree lmax. The index corresponds to l*(l+1)/2+m.  &lt;h1... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplegendrea_d1.html">PLegendreA_d1 (Python)</a></td>
+          <td> Compute all the unnormalized associated Legendre functions and first derivatives. Usage p, dp = PLegendreA_d1 (lmax, z, [csphase]) Returns  p : float, dimension ((lmax+1)*(lmax+2)/2) An array of unnormalized associated Legendre functions up to degree lmax. The index corresponds... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplmbar.html">PlmBar (Python)</a></td>
+          <td> Compute all the 4-pi (geodesy) normalized associated Legendre functions. Usage p = PlmBar (lmax, z, [csphase, cnorm]) Returns  p : float, dimension ((lmax+1)*(lmax+2)/2) An array of 4-pi (geodesy) normalized associated Legendre functions up to degree lmax. The index... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplmbar_d1.html">PlmBar_d1 (Python)</a></td>
+          <td> Compute all the 4-pi (geodesy) normalized associated Legendre functions and first derivatives. Usage p, dp = PlmBar_d1 (lmax, z, [csphase, cnorm]) Returns  p : float, dimension ((lmax+1)*(lmax+2)/2) An array of 4-pi (geodesy) normalized associated Legendre functions up to... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplmindex.html">PlmIndex (Python)</a></td>
+          <td> Compute the index of a array of Legendre functions corresponding to degree l and angular order m. Usage index = PlmIndex (l, m) Returns  index : integer Index of an array of associated Legendre functions corresponding to degree l and... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplmon.html">PlmON (Python)</a></td>
+          <td> Compute all the orthonormalized associated Legendre functions. Usage p = PlmON (lmax, z, [csphase, cnorm]) Returns  p : float, dimension ((lmax+1)*(lmax+2)/2) An array of orthonormalized associated Legendre functions up to degree lmax. The index corresponds to l*(l+1)/2+m.... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplmon_d1.html">PlmON_d1 (Python)</a></td>
+          <td> Compute all the orthonormalized associated Legendre functions and first derivatives. Usage p, dp = PlmON_d1 (lmax, z, [csphase, cnorm]) Returns  p : float, dimension ((lmax+1)*(lmax+2)/2) An array of orthonormalized associated Legendre functions up to degree lmax. The... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplmschmidt.html">PlmSchmidt (Python)</a></td>
+          <td> Compute all the Schmidt semi-normalized associated Legendre functions. Usage p = PlmSchmidt (lmax, z, [csphase, cnorm]) Returns  p : float, dimension ((lmax+1)*(lmax+2)/2) An array of Schmidt-normalized associated Legendre functions up to degree lmax. The index corresponds to &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplmschmidt_d1.html">PlmSchmidt_d1 (Python)</a></td>
+          <td> Compute all the Schmidt semi-normalized associated Legendre functions and first derivatives. Usage p, dp = PlmSchmidt_d1 (lmax, z, [csphase, cnorm]) Returns  p : float, dimension ((lmax+1)*(lmax+2)/2) An array of Schmidt-normalized associated Legendre functions up to degree lmax.... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplon.html">PlON (Python)</a></td>
+          <td> Compute all the orthonormalized Legendre polynomials. Usage p = PlON (lmax, z) Returns  p : float, dimension (lmax+1) An array of orthonormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l.  Parameters ... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplon_d1.html">PlON_d1 (Python)</a></td>
+          <td> Compute all the orthonormalized Legendre polynomials and first derivatives. Usage p, dp = PlON_d1 (lmax, z) Returns  p : float, dimension (lmax+1) An array of orthonormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplschmidt.html">PlSchmidt (Python)</a></td>
+          <td> Compute all the Schmidt-normalized Legendre polynomials. Usage p = PlSchmidt (lmax, z) Returns  p : float, dimension (lmax+1) An array of Schmidt-normalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l.  Parameters ... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyplschmidt_d1.html">PlSchmidt_d1 (Python)</a></td>
+          <td> Compute all the Schmidt-normalized Legendre polynomials and first derivatives. Usage p, dp = PlSchmidt_d1 (lmax, z)  p : float, dimension (lmax+1) An array of Schmidt-normalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshadmitcorr.html">SHAdmitCorr (Python)</a></td>
+          <td> Calculate the admittance and correlation spectra of two real functions. Usage admit, error, corr = SHAdmitCorr (gilm, tilm, [lmax]) Returns  admit : float, dimension (lmax+1) The admittance function, which is equal to Sgt/Stt. error : float, dimension... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshbias.html">SHBias (Python)</a></td>
+          <td> Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum. Usage outcspectra = SHBias (shh, incspectra, [ldata, lwin, save_cg]) Returns  outcspectra : float, dimension (ldata+lwin+1) The expectation of the localized (cross-)power spectrum.  Parameters... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshbiasadmitcorr.html">SHBiasAdmitCorr (Python)</a></td>
+          <td> Calculate the expected multitaper admittance and correlation spectra associated with the input global cross-power spectra of two functions. Usage admit, corr = SHAdmitCorr (sgt, sgg, stt, tapers, [lmax, lwin, k, mtdef, taper_wt]) Returns  admit :... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshbiask.html">SHBiasK (Python)</a></td>
+          <td> Calculate the multitaper (cross-)power spectrum expectation of a function localized by spherical cap windows. Usage outcspectra = SHBiasK (tapers, incspectra, [lwin, k, ldata, taper_wt, save_cg]) Returns  outcspectra : float, dimension (ldata+lwin+1) The expectation of the localized... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshbiaskmask.html">SHBiasKMask (Python)</a></td>
+          <td> Calculate the multitaper (cross-)power spectrum expectation of a function localized by arbitrary windows derived from a mask. Usage outcspectra = SHBiasK (tapers, incspectra, [lwin, k, ldata, taper_wt, save_cg]) Returns  outcspectra : float, dimension (ldata+lwin+1) The expectation... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshcilmtocindex.html">SHCilmToCindex (Python)</a></td>
+          <td> Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array. Usage cindex = SHCilmToCindex (cilm, [lmax]) Returns  cindex : float, dimension (2, (lmax+1)*(lmax+2)/2) The indexed output spherical harmonic coefficients.  Parameters  cilm : float, dimension... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshcilmtovector.html">SHCilmToVector (Python)</a></td>
+          <td> Convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed vector. Usage vector = SHCilmToVector (cilm, [lmax]) Returns  vector : float, dimension ( (lmax+1)**2 ) The indexed output real spherical harmonic coefficients.  Parameters  cilm :... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshcindextocilm.html">SHCindexToCilm (Python)</a></td>
+          <td> Convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array. Usage cilm = SHCindexToCilm (cindex, [lmax]) Returns  cilm : float, dimension (2, lmax+1, lmax+1) The input spherical harmonic coefficients. cilm[0,:,:] and cilm[1,:,:] correspond to either the... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshconfidence.html">SHConfidence (Python)</a></td>
+          <td> Compute the probability that two functions are correlated at a given spherical harmonic degree for a given correlation coefficient. Usage prob = SHConfidence (l, corr) Returns  prob : float Probability that two functions expressed in spherical coefficients with spectral correlation corr are... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshctor.html">SHctor (Python)</a></td>
+          <td> Convert complex spherical harmonics to real form. Usage rcilm = SHctor (ccilm, [lmax, convention, switchcs]) Returns  rcilm : float, dimension (2, lmax+1, lamx+1) The output real spherical harmonic coefficients. rcilm[0,:,:] and rcilm[1,:,:] correspond to the cosine and... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshexpanddh.html">SHExpandDH (Python)</a></td>
+          <td> Expand an equally sampled or equally spaced grid into spherical harmonics using Driscoll and Healy’s (1994) sampling theorem. Usage cilm = SHExpandDH (griddh, [norm, sampling, csphase, lmax_calc]) Returns  cilm : float, dimension (2, n/2, n/2) or (2, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshexpanddhc.html">SHExpandDHC (Python)</a></td>
+          <td> Expand an equally sampled or equally spaced complex grid into complex spherical harmonics using Driscoll and Healy’s (1994) sampling theorem. Usage cilm = SHExpandDHC (griddh, [norm, sampling, csphase, lmax_calc]) Returns  cilm : complex, dimension (2, n/2, n/2) or... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshexpandglq.html">SHExpandGLQ (Python)</a></td>
+          <td> Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics. Usage cilm = SHExpandGLQ (gridglq, w, zero, [norm, csphase, lmax_calc]) Returns  cilm : float, dimension (2, lmax+1, lmax+1) or (2, lmax_calc+1, lmax_calc+1)... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshexpandglqc.html">SHExpandGLQC (Python)</a></td>
+          <td> Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics. Usage cilm = SHExpandGLQC (gridglq, w, zero, [norm, csphase, lmax_calc]) Returns  cilm : complex, dimension (2, lmax+1, lmax+1) or (2, lmax_calc+1, lmax_calc+1)... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshexpandlsq.html">SHExpandLSQ (Python)</a></td>
+          <td> Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion. Usage cilm, chi2 = SHExpandLSQ (d, lat, lon, lmax, [norm, csphase]) Returns  cilm : float, dimension (2, lmax+1, lmax+1) The... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshfindlwin.html">SHFindLWin (Python)</a></td>
+          <td> Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor. Usage lwin = SHFindLWin (theta0, m, alpha, [taper_number]) Returns  lwin : integer The spherical harmonic bandwidth  Parameters  theta0 : float The angular radius of... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshglq.html">SHGLQ (Python)</a></td>
+          <td> Precompute the weights and nodes used in the Gauss-Legendre quadrature based spherical harmonics routines. Usage zero, w = SHGLQ (lmax) Returns  zero : float, dimension (lmax+1) The nodes used in the Gauss-Legendre quadrature over latitude, determined from a call to PreGLQ.... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshlocalizedadmitcorr.html">SHLocalizedAdmitCorr (Python)</a></td>
+          <td> Calculate the localized admittance and correlation spectra of two functions at a given location using spherical cap localization windows. Usage admit, corr, admit_error, corr_error = SHLocalizedAdmitCorr (gilm, tilm, tapers, taper_order, lat, lon, [k, lwin, lmax, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmagpowerl.html">SHMagPowerL (Python)</a></td>
+          <td> Compute the power of the magnetic field for a single degree l given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage power = SHMagPowerL (c, a, l, [r]) Returns  power : float The power at degree l ... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmagpowerspectrum.html">SHMagPowerSpectrum (Python)</a></td>
+          <td> Compute the power spectrum of the magnetic field given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage spectrum = SHMagPowerSpectrum (c, a, [r, lmax]) Returns  spectrum : float, dimension (lmax+1) The power spectrum of the magnetic field.  &lt;h1... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmtcouplingmatrix.html">SHMTCouplingMatrix (Python)</a></td>
+          <td> This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum. Usage Mmt = SHMTCouplingMatrix (lmax, tapers_power, [lwin, k, taper_wt]) &lt;h1... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmtdebias.html">SHMTDebias (Python)</a></td>
+          <td> Invert for the global power spectrum given a multitaper spectrum estimate formed with spherical cap localization windows. Usage mtdebias, lmid = SHMTDebias (mtspectra, tapers, nl, [lmax, lwin, k, taper_wt]) Returns  mtdebias : float, dimension (2, n)... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmtvaropt.html">SHMTVarOpt (Python)</a></td>
+          <td> Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate. Usage var_opt, var_unit, weight_opt = SHMTVarOpt (l, tapers, taper_order, sff, [lwin, kmax, nocross]) Returns  var_opt : float, dimension (kmax) The minimum... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmultiply.html">SHMultiply (Python)</a></td>
+          <td> Multiply two functions and determine the spherical harmonic coefficients of the resulting function. Usage shout = SHMultiply (sh1, lmax1, sh2, lmax2, [norm, csphase]) Returns  shout : float, dimension (2, lmax1+lmax2+1, lmax1+lmax2+1) The real spherical harmonic... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmultitapercse.html">SHMultiTaperCSE (Python)</a></td>
+          <td> Perform a localized multitaper cross-spectral analysis using spherical cap windows. Usage mtse, sd = SHMultiTaperCSE (sh1, sh2, tapers, taper_order, [lmax1, lmax2, lmaxt, k, lat, lon, taper_wt, norm, csphase]) Returns  mtse :... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmultitapermaskcse.html">SHMultiTaperMaskCSE (Python)</a></td>
+          <td> Perform a localized multitaper cross-spectral analysis using arbitrary windows derived from a mask. Usage mtse, sd = SHMultiTaperMaskCSE (sh1, sh2, tapers, [lmax1, lmax2, lmaxt, k, taper_wt, norm, csphase]) Returns  mtse : float, dimension (&lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmultitapermaskse.html">SHMultiTaperMaskSE (Python)</a></td>
+          <td> Perform a localized multitaper spectral analysis using arbitrary windows derived from a mask. Usage mtse, sd = SHMultiTaperMaskSE (sh, tapers, [lmax, lmaxt, k, taper_wt, norm, csphase]) Returns  mtse : float dimension (lmax-lmaxt+1) The localized... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshmultitaperse.html">SHMultiTaperSE (Python)</a></td>
+          <td> Perform a localized multitaper spectral analysis using spherical cap windows. Usage mtse, sd = SHMultiTaperSE (sh, tapers, taper_order, [lmax, lmaxt, k, lat, lon, taper_wt, norm, csphase]) Returns  mtse : float dimension (lmax-&lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshread.html">SHRead (Python)</a></td>
+          <td> Read spherical harmonic coefficients from an ascii-formatted file. Usage cilm, lmax = SHRead (filename, lmaxin, [skip]) Returns  cilm : float, dimension (2, lmaxin+1, lmaxin+1) The spherical harmonic coefficients contained in filename. Note that dimensions of the output array... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshread2.html">SHRead2 (Python)</a></td>
+          <td> Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file. Usage cilm, lmax, gm, r0_pot, dot, doystart, doyend, epoch = SHRead2 (filename, lmaxin) Returns  cilm : float, dimension (2, lmaxin+1, lmaxin+1) The spherical... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshread2error.html">SHRead2Error (Python)</a></td>
+          <td> Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file. Usage cilm, error, lmax, gm, r0_pot, dot, doystart, doyend, epoch = SHRead2Error (filename, lmaxin) Returns  cilm : float, dimension (2, lmaxin+1, lmaxin+1)... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshreaderror.html">SHReadError (Python)</a></td>
+          <td> Read spherical harmonic coefficients and associated errors from an ascii-formatted file. Usage cilm, error, lmax = SHReadError (filename, lmaxin, [skip]) Returns  cilm : float, dimension (2, lmaxin+1, lmaxin+1) The spherical harmonic coefficients contained in filename. Note that... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshreaderrorh.html">SHReadErrorH (Python)</a></td>
+          <td> Read spherical harmonic coefficients and associated errors from an ascii-formatted file with a header line. Usage cilm, error, lmax, header = SHReadErrorH (filename, lmaxin, nhead, [skip]) Returns  cilm : float, dimension (2, lmaxin+1, lmaxin+1) The spherical... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshreadh.html">SHReadH (Python)</a></td>
+          <td> Read spherical harmonic coefficients from an ascii-formatted file with a header line. Usage cilm, lmax, header = SHReadH (filename, lmaxin, nhead, [skip]) Returns  cilm : float, dimension (2, lmaxin+1, lmaxin+1) The spherical harmonic coefficients contained in &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshreadjpl.html">SHReadJPL (Python)</a></td>
+          <td> Read spherical harmonic coefficients from a JPL ascii-formatted file. Usage cilm, lmax, gm = SHReadJPL (filename, lmaxin, [formatstring]) Returns  cilm : float, dimension (2, lmaxin+1, lmaxin+1) The spherical harmonic coefficients contained in filename. lmax : integer... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshreadjplerror.html">SHReadJPLError (Python)</a></td>
+          <td> Read spherical harmonic coefficients from a JPL ascii-formatted file. Usage cilm, error, lmax, gm = SHReadJPLError (filename, lmaxin, [formatstring]) Returns  cilm : float, dimension (2, lmaxin+1, lmaxin+1) The spherical harmonic coefficients contained in filename. error... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshreturntapers.html">SHReturnTapers (Python)</a></td>
+          <td> Calculate the eigenfunctions of the spherical-cap concentration problem. Usage tapers, eigenvalues, taper_order = SHReturnTapers (theta0, lmax) Returns  tapers : float, dimension (lmax+1, (lmax+1)**2) The spherical harmonic coefficients of the (lmax+1)**2 localization windows. Each column contains the coefficients of... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshreturntapersm.html">SHReturnTapersM (Python)</a></td>
+          <td> Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order. Usage tapers, eigenvalues = SHReturnTapersM (theta0, lmax, m) Returns  tapers : float, dimension (lmax+1, lmax+1) The spherical harmonic coefficients of the lmax+1 localization windows, arranged... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshreturntapersmap.html">SHReturnTapersMap (Python)</a></td>
+          <td> Calculate the eigenfunctions and eigenvalues of the space-concentration problem for an arbitrary region. Usage tapers, eigenvalues = SHReturnTapersMap (dh_mask, lmax, [n, ntapers, sampling]) Returns  tapers : float, dimension ((lmax+1)**2, ntapers) The spherical harmonic coefficients of the tapers,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshrotatecoef.html">SHRotateCoef (Python)</a></td>
+          <td> Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles. Usage rcoef = SHRotateCoef (x, coef, dj, [lmax]) Returns  rcoef : flaot, dimension (2, (lmax+1)*(lmax+2)/2) The spherical harmonic coefficients of the rotated function in indexed... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshrotaterealcoef.html">SHRotateRealCoef (Python)</a></td>
+          <td> Determine the spherical harmonic coefficients of a real function rotated by three Euler angles. Usage cilmrot = SHRotateRealCoef (cilm, x, dj, [lmax]) Returns  cilmrot : float, dimension (2, lmax+1, lmax+1) The spherical harmonic coefficients of the rotated function, normalized... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshrtoc.html">SHrtoc (Python)</a></td>
+          <td> Convert real spherical harmonics to complex form. Usage ccilm = SHrtoc (rcilm, [lmax, convention, switchcs]) Returns  ccilm : float, dimension (2, lmax+1, lmax+1) The output complex spherical harmonic coefficients. ccilm[0,:,:] and ccilm[1,:,:] correspond to the real and... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshsjkpg.html">SHSjkPG (Python)</a></td>
+          <td> Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders. Usage value = SHSjkPG (incspectra, l, m, mprime, hj_real, hk_real, mj, mk, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyshvectortocilm.html">SHVectorToCilm (Python)</a></td>
+          <td> Convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array. Usage cilm = SHVectorToCilm (vector, [lmax]) Returns  cilm : float, dimension (2, lmax+1, lmax+1) The 3-D arrary of output real spherical harmonic coefficients.  Parameters ... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pysphericalcapcoef.html">SphericalCapCoef (Python)</a></td>
+          <td> Calculate the spherical harmonic coefficients of a spherical cap. Usage coef = SphericalCapCoef (theta, lmax) Returns  coef : float, dimension(lmax+1) The zonal spherical harmonic coefficients of a spherical cap centered over the north pole.  Parameters  theta : float... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+        
+
+        <tr><td><a href="python-constants.html">Constants</a></td>
+          <td>  The constant subpackage defines several constants that are useful when working with gravity and topography data of the terrestrial planets. All units are SI. Confer with the constant’s info() method for exact values and references. &lt;h2... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+
+        <tr><td><a href="pywigner3j.html">Wigner3j (Python)</a></td>
+          <td> Compute the Wigner-3j symbols for all allowable values of J. Usage w3j, jmin, jmax = Wigner3j (j2, j3, m1, m2, m3) Returns  w3j : float, dimension (j2+j3+1) An array of the Wigner-3j symbols evaluated for all... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyyilmindexvector.html">YilmIndexVector (Python)</a></td>
+          <td> Compute the index of an 1D array of spherical harmonic coefficients corresponding to i, l, and m. Usage index = YilmIndexVector (i, l, m) Returns  index : integer Index of an 1D array of spherical harmonic coefficients corresponding to... </td>
+        </tr>
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+
+        <tr><td><a href="read_icgem_gfc.html">read_icgem_gfc (Python)</a></td>
+          <td> Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted file. This function only reads files with the gravity field spherical harmonic coefficients. Usage cilm, gm, r0, [errors] = read_icgem_gfc (filename, [errors, lmax, epoch]) Returns  cilm : array Array... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+   
+    
+        
+
+        <tr><td><a href="spectrum.html">spectrum (Python)</a></td>
+          <td> Return the spectrum of the spherical harmonic coefficients as a function of spherical harmonic degree. Usage array = spectrum (clm, [normalization, degrees, lmax, convention, unit, base]) Returns  array : ndarray, shape (len(degrees)) 1-D ndarray of the spectrum. ... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+   
+    
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+     
+   
+    
+        
+     
+   
+
+        
+        
+
+   </tbody>
+</table>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2017 SHTOOLS. All rights reserved. <br />
+<a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
+<a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
+<p><img src="images/company_logo.png" alt="SHTOOLS"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

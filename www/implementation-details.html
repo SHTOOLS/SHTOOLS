@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The spherical harmonic transforms in SHTOOLS make use of integrations over longitude that involve fast Fourier transforms and integrations over latitude that...">
+<meta name="keywords" content=" spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field">
+<title>Implementation details | SHTOOLS - Tools for working with spherical harmonics</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="https://shtools.oca.eu/shtools//feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> SHTOOLS</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/" target="_blank">GitHub</a></li>
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+			<li>
+
+
+
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about Implementation details page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+
+</li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Implementation details">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">SHTOOLS 4.1</li>
+  
+  
+  
+      
+  
+  <li>
+      <a href="#">Getting started</a>
+      <ul>
+          
+          
+          
+          <li><a href="index.html">Overview</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="installing.html">Installing</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-f95.html">Using with Fortran 95</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-python.html">Using with Python</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Spherical harmonics</a>
+      <ul>
+          
+          
+          
+          <li><a href="real-spherical-harmonics.html">Real spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="complex-spherical-harmonics.html">Complex spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a href="implementation-details.html">Implementation details</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Fortran 95 Routines</a>
+      <ul>
+          
+          
+          
+          <li><a href="f95-modules.html">Modules</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="global-spectral-analysis.html">Global spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="localized-spectral-analysis.html">Localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="miscellaneous-routines.html">Miscellaneous</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Python components</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-classes.html">Python classes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spectral-analysis.html">Global and localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-utilities.html">Utilities</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-constants.html">Constants</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Examples programs</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-examples.html">Python examples</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-examples.html">Fortran 95 examples</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Support</a>
+      <ul>
+          
+          
+          
+          <li><a href="faq.html">FAQ</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-95-problems.html">Fortran 95 problems</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="how-to-contribute.html">How to contribute</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Release Notes</a>
+      <ul>
+          
+          
+          
+          <li><a href="release-notes-v4.html">Version 4</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="release-notes-v3.html">Version 3</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="license.html">License</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="contributors.html">Contributors</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  displayAlign: "left",
+  displayIndent: "2em"
+});
+</script>
+
+<script type="text/javascript" async
+ src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<div class="post-header">
+   <h1 class="post-title-main">Implementation details</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+    <div class="summary">The spherical harmonic transforms in SHTOOLS make use of integrations over longitude that involve fast Fourier transforms and integrations over latitude that utilize either Gauss-Legendre quadrature or exact quadrature rules for regularly spaced grids. The transforms and reconstructions are accurate to about degree 2800.</div>
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+
+    
+
+  <style>
+table:nth-of-type(n) {
+    display:table;
+    width:100%;
+}
+</style>
+
+<h2 id="numerical-computations">Numerical computations</h2>
+
+<h3 id="spherical-harmonic-reconstructions">Spherical harmonic reconstructions</h3>
+
+<p>If the spherical harmonic coefficients of a function <script type="math/tex">f</script> were known up to a maximum degree <script type="math/tex">L</script>, the function could be evaluated at arbitrary colatitude <script type="math/tex">\theta</script> and longitude <script type="math/tex">\phi</script> using the equation</p>
+
+<p>\begin{equation}
+f\left(\theta,\phi\right) = \sum_{l=0}^{L} \sum_{m=-l}^l f_{lm} \, Y_{lm}\left(\theta,\phi \right).
+\end{equation}</p>
+
+<p>Using the separate variables <script type="math/tex">C_{lm}</script> and <script type="math/tex">S_{lm}</script> for the cosine and sine spherical harmonic coefficients, respectively, and after interchanging the order of summations over <script type="math/tex">l</script> and <script type="math/tex">m</script>, the function can be expressed equivalently as</p>
+
+<script type="math/tex; mode=display">\begin{equation}
+f\left(\theta,\phi\right) = \sum_{m=0}^L \sum_{m=l}^{L} \left( C_{lm} \, \bar{P}_{lm}(\cos \theta) \, \cos m\phi + S_{lm} \, \bar{P}_{lm}(\cos \theta) \, \sin m\phi\right).
+\end{equation}</script>
+
+<p>Defining the two component vector</p>
+
+<script type="math/tex; mode=display">\begin{equation}
+\left[a_m(\theta), b_m(\theta)\right] = \sum_{m=l}^{L} \left[C_{lm}, S_{lm}\right] \, \bar{P}_{lm}(\cos \theta),
+\end{equation}</script>
+
+<p>The function <script type="math/tex">f</script> can be written more simply as</p>
+
+<script type="math/tex; mode=display">\begin{equation}
+f\left(\theta,\phi\right) = \sum_{m=0}^L \left( a_m(\theta) \, \cos m\phi + b_m(\theta) \, \sin m\phi\right).
+\end{equation}</script>
+
+<p>For a given latitude band, the function <script type="math/tex">f</script> can thus be evaluated on a series of grid nodes all at the same time using an inverse fast Fourier transform. For this operation, SHTOOLS makes use of the highly optimized software package <a href="http://www.fftw.org">FFTW</a> [Frigo and Johnson 2005] that supports grids of arbitrary length and both real and complex data. To adequately sample the function in longitude, a minimum of <script type="math/tex">2L+1</script> data points should be employed.</p>
+
+<p>The coefficients <script type="math/tex">a_m</script> and <script type="math/tex">b_m</script> depend upon the associated Legendre functions, which are calculated efficiently using standard three-term recursion relations over adjacent spherical harmonic degrees. For a given colatitude, the sectoral term <script type="math/tex">\bar{P}_{mm}</script> is first calculated using an analytic equation, and then <script type="math/tex">\bar{P}_{lm}</script> is calculated for all values of <script type="math/tex">l>m</script>. To circumvent numerical underflows near the poles for large values of <script type="math/tex">m</script>, the associated Legendre functions are calculated using the approach of Holmes and Featherstone [2002], where the sectoral <script type="math/tex">\bar{P}_{mm}</script> terms are multiplied by <script type="math/tex">10^{280} \sin^m \theta</script> prior to performing the recursions, and then appropriately unscaled at the end of the recursion. This ensures that the Legendre functions are accurate to about degree 2800.</p>
+
+<h3 id="spherical-harmonic-transforms">Spherical harmonic transforms</h3>
+
+<p>The spherical harmonic coefficients of a function can be calculated from the relation</p>
+
+<script type="math/tex; mode=display">\begin{equation}
+\left[C_{lm}, S_{lm}\right] = \frac{1}{4\pi} \int_{0}^{2\pi} \int_0^{\pi} f(\theta,\phi) \, \bar{P}_{lm}(\theta) \left[\cos m\phi, \sin m\phi\right]\, \sin\theta \, d\theta \, d\phi.
+\end{equation}</script>
+
+<p>Defining the two intermediary variables <script type="math/tex">c</script> and <script type="math/tex">s</script></p>
+
+<script type="math/tex; mode=display">\begin{equation}
+\left[c_{lm}^{(i)}, s_{lm}^{(i)}\right] = \int_0^{2\pi} f(\theta_i,\phi) \left[ \cos m\phi, \sin m\phi\right] d\phi,
+\end{equation}</script>
+
+<p>it is seen that for a given colatitude <script type="math/tex">\theta_i</script> and degree <script type="math/tex">l</script>, all of the
+angular orders can be calculated at once by making use of a fast Fourier
+transform of the function <script type="math/tex">f</script>. Replacing the integral over latitude with a numerical quadrature rule, the spherical harmonic
+coefficients can be calculated as</p>
+
+<script type="math/tex; mode=display">\begin{equation}
+\left[C_{lm}, S_{lm}\right] = \frac{1}{4 \pi} \sum_{i=1}^N w_i \, \bar{P}_{lm}(\cos \theta_i) \left[c_{lm}^{(i)}, s_{lm}^{(i)}\right].
+\label{eq:quadrature}
+\end{equation}</script>
+
+<p>Here, <script type="math/tex">w</script> is the latitudinal weight, and <script type="math/tex">N</script> is the number of latitudinal
+points over which the integration is performed.</p>
+
+<h2 id="supported-grid-formats">Supported grid formats</h2>
+
+<p>It is possible to choose the weights <script type="math/tex">w_i</script> and the locations of the latitudinal sampling points <script type="math/tex">\theta_i</script> such that the quadrature in equation \eqref{eq:quadrature} is exact. SHTOOLS makes use of two grid formats that accommodate exact quadrature using Gauss-Legendre quadrature [e.g., Press et al. 1992], and exact quadrature using regular grids sampled according to the <em>Driscoll and Healy</em> (1994) theorem. In both techniques, the quadrature is exact only when the function being integrated is a terminating polynomial. The functions <script type="math/tex">c_{lm}</script> and <script type="math/tex">s_{lm}</script> can be approximated as polynomials of maximum degree <script type="math/tex">L</script>, and when multiplied by the associated Legendre function, the integrand is approximately a polynomial of maximum degree <script type="math/tex">2L</script>. The following table summarizes the properties of the different types of grids supported by SHTOOLS.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Acronym</th>
+      <th>Name</th>
+      <th>Shape (<script type="math/tex">N_{lat} \times N_{lon}</script>)</th>
+      <th><script type="math/tex">L</script></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DH</td>
+      <td>Driscoll and Healy</td>
+      <td><script type="math/tex">N \times N</script></td>
+      <td><script type="math/tex">N/2-1</script></td>
+    </tr>
+    <tr>
+      <td>DH2</td>
+      <td>Driscoll and Healy</td>
+      <td><script type="math/tex">N \times 2N</script></td>
+      <td><script type="math/tex">N/2-1</script></td>
+    </tr>
+    <tr>
+      <td>GLQ</td>
+      <td>Gauss-Legendre Quadrature</td>
+      <td><script type="math/tex">N \times (2N-1)</script></td>
+      <td><script type="math/tex">N-1</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="gauss-legendre-quadrature">Gauss-Legendre Quadrature</h3>
+
+<p>For the case of Gauss-Legendre quadrature (<code class="highlighter-rouge">GLQ</code>), the quadrature is exact when the function <script type="math/tex">f</script> is sampled in latitude at the <script type="math/tex">(L+1)</script> zeros of the Legendre Polynomial of degree <script type="math/tex">(L+1)</script>. Since the function also needs to be sampled on <script type="math/tex">(2L+1)</script> equally space grid nodes for the Fourier transforms in longitude, the function <script type="math/tex">f</script> is sampled on a grid of size <script type="math/tex">(L+1)\times(2L+1)</script>.</p>
+
+<h3 id="driscoll-and-healy-1994">Driscoll and Healy [1994]</h3>
+
+<p>The second type of grid is for data that are sampled on regular grids. As shown by <em>Driscoll and Healy</em> [1994], an exact quadrature exists when the function <script type="math/tex">f</script> is sampled at <script type="math/tex">N</script> equally spaced nodes in latitude and <script type="math/tex">N</script> equally spaced nodes in longitude. For this sampling (<code class="highlighter-rouge">DH</code>), the grids make use of the longitude band at 90<script type="math/tex">^{\circ}</script> N, but not 90<script type="math/tex">^{\circ}</script> S, and the number of samples is <script type="math/tex">2(L+1)</script>, which is always even. Given that the sampling in latitude was imposed a priori, these grids contain almost twice as many samples in latitude as the grids used with Gauss-Legendre quadrature.</p>
+
+<p>For geographic data, it is common to work with grids that are equally spaced in degrees latitude and longitude. SHTOOLS provides the option of using grids of size <script type="math/tex">N\times2N</script>, and when performing the Fourier transforms for this case (<code class="highlighter-rouge">DH2</code>), the coefficients <script type="math/tex">c_{lm}</script> and <script type="math/tex">s_{lm}</script> with <script type="math/tex">m>L</script> are discarded.</p>
+
+<figure><img class="docimage" src="images/grids.png" alt="Spherical harmonic grid formats" /><figcaption>Figure 1. Schematic diagram illustrating the properties of the grids used with the Gauss-Legendre quadrature and Driscoll and Healy routines in SHTOOLS.</figcaption></figure>
+
+<h2 id="accuracy">Accuracy</h2>
+
+<p>To test the accuracy of the spherical harmonic transforms and reconstructions,
+two sets of synthetic spherical harmonic coefficients were created. Each
+coefficient was chosen to be a random Gaussian distributed number with unit
+variance, and the coefficients were then scaled such that the power spectrum
+was proportional to either <script type="math/tex">l^2</script> or <script type="math/tex">l^{-2}</script>. For a given spherical harmonic bandwidth <script type="math/tex">L</script>, the function was reconstructed in the space domain using the Gauss-Legendre quadrature implementation and then re-expanded into spherical harmonics. The maximum and root-mean square (rms) relative errors between the initial and final set of coefficients were then computed as a function of spherical harmonic degree, as plotted in the figure below.</p>
+
+<figure><img class="docimage" src="images/relative-errors.png" alt="Relative errors of the spherical harmonic coefficients" /><figcaption>Figure 2. Maximum and rms relative errors of the spherical harmonic coefficients as a function of spherical harmonic bandwidth following a reconstruction of the function in the space domain and a subsequent spherical harmonic transform.</figcaption></figure>
+
+<p>The errors associated with the transform and inverse pair increase in an quasi-exponential manner, with the maximum relative error being approximately 1 part in a billion for degrees close to 400, and about 1 part in
+a million for degrees close to 2600. Though the errors are negligible to about
+degree 2600, they then grow somewhat between degrees 2700 and 2800. The rms
+errors for the coefficients as a function of the bandwidth <script type="math/tex">L</script> are typically
+three orders of magnitude smaller than the maximum relative errors.</p>
+
+<p>The relative errors are nearly the same for the two tested power spectra, implying that the form of the data do not strongly affect the accuracy of the routines. Relative errors using the <em>Driscoll and Healy</em> [1994] sampled grids are nearly identical to those using Gauss-Legendre quadrature. The errors associated with the routines for complex data are lower by a few orders of magnitude.</p>
+
+<h2 id="timing-tests">Timing tests</h2>
+
+<p>The speed of the spherical harmonic reconstructions and transforms were tested for both real and complex data using the Gauss-Legendre and
+<em>Driscoll and Healy</em> [1994] quadrature implementations. The amount of time in seconds required to perform these operations is plotted in the figure below as
+a function of the spherical harmonic bandwidth of the function. These
+calculations were performed on a modern Mac Pro 2.7 GHz 12-Core Intel Xeon E5
+using 64 bit executables and level 3 optimizations.</p>
+
+<figure><img class="docimage" src="images/timing-tests.png" alt="Timing tests" /><figcaption>Figure 3. Time to perform the reconstruction of a function from its spherical harmonic coefficients (solid lines) and the spherical harmonic transform of the function (dashed lines).</figcaption></figure>
+
+<p>For the real Gauss-Legendre quadrature routines, the transform time is on the order of one second for degrees close to 800 and about 30 seconds for degree 2600. For the real <em>Driscoll and Healy</em> [1994] sampled grids, the transform time is close to a second for degree 600 and about 1 minute for degrees close to 2600. The complex routines are slower by a factor of about 1.4.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li>
+    <p>Driscoll, J. R. and D. M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, doi:<a href="https://dx.doi.org/10.1006/aama.1994.1008">10.1006/aama.1994.1008</a>, 1994.</p>
+  </li>
+  <li>
+    <p>Frigo, M., and S. G. Johnson, The design and implementation of FFTW3, Proc. IEEE, 93, 216–231, doi:<a href="https://dx.doi.org/10.1109/JPROC.2004.840301">10.1109/JPROC.2004.840301</a>, 2005.</p>
+  </li>
+  <li>
+    <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, doi:<a href="https://dx.doi.org/10.1007/s00190-002-0216-2">10.1007/s00190-002-0216-2</a>, 2002.</p>
+  </li>
+  <li>
+    <p>Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery, “Numerical Recipes in FORTRAN: The Art of Scientific Computing,” 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.</p>
+  </li>
+</ul>
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2017 SHTOOLS. All rights reserved. <br />
+<a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
+<a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
+<p><img src="images/company_logo.png" alt="SHTOOLS"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

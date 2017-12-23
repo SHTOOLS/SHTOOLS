@@ -40,5 +40,5 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 
 # See also
 
-[`makegridpointc`](pymakegridpointc.html), [`makegriddh`](pymakegriddh.html), [`makegriddhc`](pymakegriddhc.html), [`makegridglq`](pymakegridglq.html), [`makegridglqc`](pymakegridglqc.html)
+[makegridpointc](pymakegridpointc.html), [makegriddh](pymakegriddh.html), [makegriddhc](pymakegriddhc.html), [makegridglq](pymakegridglq.html), [makegridglqc](pymakegridglqc.html)
 

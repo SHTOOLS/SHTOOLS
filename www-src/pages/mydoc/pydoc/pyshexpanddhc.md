@@ -52,4 +52,4 @@ Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summat
 
 # See also
 
-[makegriddhc](pymakegriddhc.html), [makegriddh](pymakegriddh.html), [shexpanddh](pyshexpanddh.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), [`shexpandlsq](pyshexpandlsq.html)
+[makegriddhc](pymakegriddhc.html), [makegriddh](pymakegriddh.html), [shexpanddh](pyshexpanddh.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), [shexpandlsq](pyshexpandlsq.html)

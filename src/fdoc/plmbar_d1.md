@@ -31,7 +31,7 @@ call PlmBar_d1 (`p`, `dp`, `lmax`, `z`, `csphase`, `cnorm`, `exitstatus`)
 
 # Description
 
-`PlmBar_d1` will calculate all of the 4-pi (geodesy) normalized associated Legendre functions and first derivatives up to degree `lmax` for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree `l` and angular order `m` corresponds to `l*(l+1)/2+m+1`, which can be computed by a call to `PlmIndex`. 
+`PlmBar_d1` will calculate all of the 4-pi (geodesy) normalized associated Legendre functions and first derivatives up to degree `lmax` for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree `l` and angular order `m` corresponds to `l*(l+1)/2+m+1`, which can be computed by a call to `PlmIndex`.
 
 The integral of the squared Legendre functions over the interval [-1, 1] is `2*(2-delta(0,m))`, where delta is the Kronecker delta function. If the optional parameter `cnorm` is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is 2. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument `csphase` to -1. Note that the derivative of the Legendre functions is calculated with respect to its arguement `z`, and not latitude or colatitude. If `z=cos(theta)`, where `theta` is the colatitude, then it is only necessary to multiply `dp` by `-sin(theta)` to obtain the derivative with respect to `theta`.
 
@@ -46,4 +46,4 @@ order normalised associated Legendre functions, J. Geodesy, 76, 279-
 
 # See also
 
-[`plbar`](plbar.html), [`plbar_d1`](plbar_d1.html), [`plmbar`](plmbar.html), [`plon`](plon.html), [`plon_d1`](plon_d1.html), [`plmon`](plmon.html), [`plmon_d1`](plmon_d1.html), [`plschmidt`](plschmidt.html), [`plschmidt_d1`](plschmidt_d1.html), [`plmschmidt`](plmschmidt.html), [`plmschmidt_d1`](plmschmidt_d1.html), [`plegendre`](plegendre.html), [`plegendre_d1`](plegendre_d1.html), [`plegendrea`](plegendrea.html), [`plegendrea_d1`](plegendrea_d1.html), [`plmindex`](plmindex.html)
+[plbar](plbar.html), [plbar_d1](plbar_d1.html), [plmbar](plmbar.html), [plon](plon.html), [plon_d1](plon_d1.html), [plmon](plmon.html), [plmon_d1](plmon_d1.html), [plschmidt](plschmidt.html), [plschmidt_d1](plschmidt_d1.html), [plmschmidt](plmschmidt.html), [plmschmidt_d1](plmschmidt_d1.html), [plegendre](plegendre.html), [plegendre_d1](plegendre_d1.html), [plegendrea](plegendrea.html), [plegendrea_d1](plegendrea_d1.html), [plmindex](plmindex.html)

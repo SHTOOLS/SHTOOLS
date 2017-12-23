@@ -48,4 +48,4 @@ order normalised associated Legendre functions, J. Geodesy, 76, 279-
 
 # See also
 
-[`makegridglqc`](pymakegridglqc.html), [`shexpandglq`](pyshexpandglq.html), [`makegridglq`](pymakegridglq.html), [`shexpanddh`](pyshexpanddh.html), [`makegriddh`](pymakegriddh.html), [`shexpanddhc`](pyshexpanddhc.html), [`makegriddhc`](pymakegriddhc.html), [`shexpandlsq`](pyshexpandlsq.html), [`glqgridcoord`](pyglqgridcoord.html), [`shglq`](pyshglq.html)
+[makegridglqc](pymakegridglqc.html), [shexpandglq](pyshexpandglq.html), [makegridglq](pymakegridglq.html), [shexpanddh](pyshexpanddh.html), [makegriddh](pymakegriddh.html), [shexpanddhc](pyshexpanddhc.html), [makegriddhc](pymakegriddhc.html), [shexpandlsq](pyshexpandlsq.html), [glqgridcoord](pyglqgridcoord.html), [shglq](pyshglq.html)

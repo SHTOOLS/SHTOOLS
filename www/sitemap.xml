@@ -1,24 +1,1495 @@
----
-layout: none
-search: exclude
----
-
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {% for post in site.posts %}
-  {% unless post.search == "exclude" %}
-  <url>
-    <loc>{{site.url}}{{post.url}}</loc>
-  </url>
-  {% endunless %}
-  {% endfor %}
+  
 
 
-  {% for page in site.pages %}
-  {% unless page.search == "exclude" %}
+  
+  
+  
+  
   <url>
-    <loc>{{site.url}}{{ page.url}}</loc>
+    <loc>https://shtools.oca.eu/shtools//batohilm.html</loc>
   </url>
-  {% endunless %}
-  {% endfor %}
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//batohilmrhoh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//cilmminus.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//cilmminusrhoh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//cilmplus.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//cilmplusrhoh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//complex-spherical-harmonics.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//computedg82.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//computedm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//computedmap.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//contributors.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//cross_spectrum.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//curve2mask.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//dhaj.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//djpi2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//downcontfilterma.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//downcontfiltermc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//eigvalsym.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//eigvalvecsym.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//eigvalvecsymtri.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//faq.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//fortran-95-problems.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//fortran-examples.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//global-spectral-analysis.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//glqgridcoord.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//gravity-magnetics.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//how-to-contribute.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//implementation-details.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//index.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//installing.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//io.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//legendre-functions.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//license.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//localized-spectral-analysis.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makecirclecoord.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makeellipsecoord.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegeoidgrid.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegravgradgriddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegravgriddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegrid2d.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegriddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegriddhc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegridglq.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegridglqc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegridpoint.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makegridpointc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//makemaggriddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//miscellaneous-routines.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//f95-modules.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//normalgravity.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//planets-constants.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plbar.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plbar_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plegendre.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plegendre_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plegendrea.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plegendrea_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plmbar.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plmbar_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plmindex.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plmon.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plmon_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plmschmidt.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plmschmidt_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plon.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plon_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plschmidt.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//plschmidt_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//preglq.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pybatohilmdh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pybatohilmrhohdh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pycilmminusdh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pycilmminusrhohdh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pycilmplusdh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pycilmplusrhohdh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pycomputedg82.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pycomputedm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pycomputedmap.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pycurve2mask.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pydhaj.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pydjpi2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pydowncontfilterma.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pydowncontfiltermc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyglqgridcoord.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakecirclecoord.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakeellipsecoord.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegeoidgriddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegravgradgriddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegravgriddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegrid2d.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegriddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegriddhc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegridglq.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegridglqc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegridpoint.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakegridpointc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pymakemaggriddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pynormalgravity.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplbar.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplbar_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplegendre.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplegendre_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplegendrea.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplegendrea_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplmbar.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplmbar_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplmindex.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplmon.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplmon_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplmschmidt.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplmschmidt_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplon.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplon_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplschmidt.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyplschmidt_d1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshadmitcorr.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshbias.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshbiasadmitcorr.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshbiask.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshbiaskmask.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshcilmtocindex.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshcilmtovector.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshcindextocilm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshconfidence.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshctor.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshexpanddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshexpanddhc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshexpandglq.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshexpandglqc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshexpandlsq.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshfindlwin.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshglq.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshlocalizedadmitcorr.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmagpowerl.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmagpowerspectrum.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmtcouplingmatrix.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmtdebias.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmtvaropt.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmultiply.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmultitapercse.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmultitapermaskcse.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmultitapermaskse.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshmultitaperse.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshread.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshread2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshread2error.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshreaderror.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshreaderrorh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshreadh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshreadjpl.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshreadjplerror.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshreturntapers.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshreturntapersm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshreturntapersmap.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshrotatecoef.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshrotaterealcoef.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshrtoc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshsjkpg.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyshvectortocilm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pysphericalcapcoef.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-classes.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-constants.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-examples.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-gravity-magnetics.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-io.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-legendre-functions.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-shcoeffs.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-shgrid.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-shwindow.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-spectral-analysis.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-spherical-harmonic-rotations.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-spherical-harmonic-transforms.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//python-utilities.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pywigner3j.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//pyyilmindexvector.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//randomgaussian.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//randomn.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//read_icgem_gfc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//real-spherical-harmonics.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//release-notes-v3.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//release-notes-v4.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shadmitcorr.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shbias.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shbiasadmitcorr.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shbiask.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shbiaskmask.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcilmtocindex.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcilmtovector.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcindextocilm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shconfidence.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcrosspowerdensityl.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcrosspowerdensitylc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcrosspowerl.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcrosspowerlc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcrosspowerspectrum.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcrosspowerspectrumc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcrosspowerspectrumdensity.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shcrosspowerspectrumdensityc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shctor.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shexpanddh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shexpanddhc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shexpandglq.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shexpandglqc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shexpandlsq.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shfindlwin.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shglq.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shlocalizedadmitcorr.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmagpowerl.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmagpowerspectrum.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmtcouplingmatrix.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmtdebias.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmtvaropt.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmultiply.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmultitapercse.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmultitapermaskcse.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmultitapermaskse.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shmultitaperse.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shpowerdensityl.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shpowerdensitylc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shpowerl.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shpowerlc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shpowerspectrum.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shpowerspectrumc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shpowerspectrumdensity.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shpowerspectrumdensityc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shread.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shread2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shreadjpl.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shreturntapers.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shreturntapersm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shreturntapersmap.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shrotatecoef.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shrotaterealcoef.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shrtoc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shsjkpg.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shtools.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//shvectortocilm.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//spectrum.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//spherical-harmonic-rotations.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//spherical-harmonic-transforms.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//sphericalcapcoef.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//using-with-f95.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//using-with-python.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//wigner3j.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>https://shtools.oca.eu/shtools//yilmindexvector.html</loc>
+  </url>
+  
+  
 </urlset>

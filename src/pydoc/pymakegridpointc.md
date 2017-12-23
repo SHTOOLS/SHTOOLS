@@ -40,5 +40,5 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 
 # See also
 
-[`makegridpoint`](pymakegridpoint.html), [`makegriddh`](pymakegriddh.html), [`makegriddhc`](pymakegriddhc.html), [`makegridglq`](pymakegridglq.html), [`makegridglqc`](pymakegridglqc.html)
+[makegridpoint](pymakegridpoint.html), [makegriddh](pymakegriddh.html), [makegriddhc](pymakegriddhc.html), [makegridglq](pymakegridglq.html), [makegridglqc](pymakegridglqc.html)
 

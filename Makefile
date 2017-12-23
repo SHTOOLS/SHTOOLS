@@ -134,11 +134,12 @@
 #       Remove html notebooks.
 #
 #   make doc
-#       Create the man pages from input markdown files. These are
-#       PRE-MADE in the distribution. To remake these files, it will be
-#       necessary to install "pandoc", "ghc" and "cabal-install" (all using
-#       brew on OSX), and then execute "cabal update" and
-#       "cabal install pandoc-types".
+#       Create the man pages from input markdown files and create the static
+#       web site. Both of these are PRE-MADE in the distribution. To remake
+#       these files, it will be necessary to install "pandoc", "ghc" and
+#       "cabal-install" (all using brew on OSX), and then execute
+#       "cabal update" and "cabal install pandoc-types". Furthermore, it will
+#       be necessary to install jekyll.
 #
 #   make remove-doc
 #       Remove the man and html-man pages.
@@ -157,6 +158,7 @@ PYTHON3 = python3
 PYTHON_VERSION = all
 JUPYTER = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python2"
 JUPYTER3 = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python3"
+JEKYLL = jekyll
 
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
@@ -418,12 +420,13 @@ install-fortran: fortran
 doc:
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
 	@$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
+	@$(JEKYLL) build -s www-src -d www
 	@echo "--> Documentation created successfully"
 
 remove-doc:
 	@-rm -f man/man1/*.1
-	@-rm -f www/pages/mydoc/fdoc/*.md
-	@-rm -f www/pages/mydoc/pydoc/*.md
+	@-rm -f www-src/pages/mydoc/fdoc/*.md
+	@-rm -f www-src/pages/mydoc/pydoc/*.md
 	@echo "--> Removed man files and www md files"
 
 notebooks2:

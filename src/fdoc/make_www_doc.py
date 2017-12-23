@@ -20,7 +20,7 @@ for fn in fdocfiles:
             mdfile.readline()
             doc = mdfile.read()
 
-        string = ('---\n' + 'title: ' + title + '\n' +
+        string = ('---\n' + 'title: ' + title + ' (Fortran)\n' +
                   'keywords: spherical harmonics software package, ' +
                   'spherical harmonic transform, legendre functions, ' +
                   'multitaper spectral analysis, fortran, Python, ' +
@@ -28,5 +28,6 @@ for fn in fdocfiles:
                   'permalink: ' + name + '.html\n' + 'summary:\n' +
                   'tags: [fortran]\n' + 'toc: false\n' + '---\n\n' + doc)
 
-        with open('../../www/pages/mydoc/fdoc/' + name + '.md', 'w') as www:
+        with open('../../www-src/pages/mydoc/fdoc/' + name +
+                  '.md', 'w') as www:
             www.write(string)
