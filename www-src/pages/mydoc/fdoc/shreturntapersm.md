@@ -10,11 +10,11 @@ toc: false
 
 Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order.
 
-# Usage
+## Usage
 
 call SHReturnTapersM (`theta0`, `lmax`, `m`, `tapers`, `eigenvalues`, `shannon`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `theta0` : input, real\*8
 :   The angular radius of the spherical cap in radians.
@@ -37,17 +37,17 @@ call SHReturnTapersM (`theta0`, `lmax`, `m`, `tapers`, `eigenvalues`, `shannon`,
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHReturnTapersM` will calculate the eigenfunctions (i.e., localization windows) of the spherical-cap concentration problem for a singular angular order. The spherical harmonic coefficients of each window are given in the columns of `tapers`, and the corresponding concentration factors are given in `eigenvaules`. The columns of `tapers` are ordered from best to worst concentrated, and the first and last rows of each column correspond to spherical harmonic degrees 0 and `lmax`, respectively. The localization windows are normalized such that they have unit power.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 `Geophys. J. Int.`, 162, 655-675, 2005.
 
 Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, `SIAM Review`, 48, 504-536, 2006.
 
-# See also
+## See also
 
 [shreturntapers](shreturntapers.html), [computedg82](computedg82.html), [computedm](computedm.html)

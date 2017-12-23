@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Read spherical harmonic coefficients from an ascii-formatted file.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">lmax</code> = SHRead (<code class="highlighter-rouge">filename</code>,  <code class="highlighter-rouge">lmaxin</code>, [<code class="highlighter-rouge">skip</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -552,7 +552,7 @@ MathJax.Hub.Config({
   <dd>The maximum spherical harmonic degree of <code class="highlighter-rouge">cilm</code>. This is the minimum of the maximum spherical harmonic degree of <code class="highlighter-rouge">filename</code> and the dimension of <code class="highlighter-rouge">cilm</code>-1.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">filename</code> : character(:)</dt>
@@ -563,7 +563,7 @@ MathJax.Hub.Config({
   <dd>The number of lines to skip before parsing <code class="highlighter-rouge">filename</code>.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHRead</code> will read spherical harmonic coefficients from an ascii-formatted file into an array <code class="highlighter-rouge">cilm</code>. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array <code class="highlighter-rouge">cilm</code>-1 and the maximum degree of the coefficients in the file. If the optional array <code class="highlighter-rouge">skip</code> is specified, parsing of the file will commence after the first <code class="highlighter-rouge">skip</code> lines.</p>
 
@@ -577,7 +577,7 @@ MathJax.Hub.Config({
 
 <p>The first spherical harmonic degree of the filename does not have to be 0; this is determined from the first element after the <code class="highlighter-rouge">skip</code> and <code class="highlighter-rouge">header</code> lines.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshreadh.html">shreadh</a>, <a href="pyshreaderror.html">shreaderror</a>, <a href="pyshreaderrorh.html">shreaderrorh</a>, <a href="pyshread2.html">shread2</a>, <a href="pyshread2error.html">shread2error</a>, <a href="pyshreadjpl.html">shreadjpl</a> <a href="pyshreadjplerror.html">shreadjplerror</a></p>
 

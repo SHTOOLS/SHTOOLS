@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute all the Schmidt semi-normalized associated Legendre functions and first derivatives.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">p</code>, <code class="highlighter-rouge">dp</code> = PlmSchmidt_d1 (<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">z</code>, [<code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">cnorm</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">p</code> : float, dimension ((<code class="highlighter-rouge">lmax</code>+1)*(<code class="highlighter-rouge">lmax</code>+2)/2)</dt>
@@ -552,7 +552,7 @@ MathJax.Hub.Config({
   <dd>An array of the first derivatives of the Schmidt-normalized associated Legendre functions up to degree <code class="highlighter-rouge">lmax</code>. The index corresponds to <code class="highlighter-rouge">l*(l+1)/2+m</code>.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">lmax</code> : integer</dt>
@@ -565,20 +565,20 @@ MathJax.Hub.Config({
   <dd>If 1, the complex normalization of the associated Legendre functions will be used. The default is to use the real normalization.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">PlmSchmidt_d1</code> will calculate all of the Schmidt-normalized associated Legendre functions and first derivatives up to degree <code class="highlighter-rouge">lmax</code> for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree <code class="highlighter-rouge">l</code> and angular order <code class="highlighter-rouge">m</code> corresponds to <code class="highlighter-rouge">l*(l+1)/2+m</code>.</p>
 
 <p>The integral of the squared Legendre functions over the interval [-1, 1] is <code class="highlighter-rouge">2*(2-delta(0,m))/(2l+1)</code>, where delta is the Kronecker delta function. If the optional parameter <code class="highlighter-rouge">cnorm</code> is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is <code class="highlighter-rouge">2/(2l+1)</code>. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument <code class="highlighter-rouge">csphase</code> to -1. Note that the derivative of the Legendre functions is calculated with respect to its arguement <code class="highlighter-rouge">z</code>, and not latitude or colatitude. If <code class="highlighter-rouge">z=cos(theta)</code>, where <code class="highlighter-rouge">theta</code> is the colatitude, then it is only necessary to multiply <code class="highlighter-rouge">dp</code> by <code class="highlighter-rouge">-sin(theta)</code> to obtain the derivative with respect to <code class="highlighter-rouge">theta</code>.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
 summation and the recursive computation of very high degree and
 order normalised associated Legendre functions, J. Geodesy, 76, 279-
 299, 2002.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyplbar.html">plbar</a>, <a href="pyplbar_d1.html">plbar_d1</a>, <a href="pyplmbar.html">plmbar</a>, <a href="pyplmbar_d1.html">plmbar_d1</a>, <a href="pyplon.html">plon</a>, <a href="pyplon_d1.html">plon_d1</a>, <a href="pyplmon.html">plmon</a>, <a href="pyplmon_d1.html">plmon_d1</a>, <a href="pyplschmidt.html">plschmidt</a>, <a href="pyplmschmidt.html">plmschmidt</a>, <a href="pyplmschmidt_d1.html">plmschmidt_d1</a>, <a href="pyplegendre.html">plegendre</a>, <a href="pyplegendre_d1.html">plegendre_d1</a>, <a href="pyplegendrea.html">plegendrea</a>, <a href="pyplegendrea_d1.html">plegendrea_d1</a></p>
 

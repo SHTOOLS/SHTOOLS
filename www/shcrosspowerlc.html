@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute the cross-power of two complex functions for a single spherical harmonic degree.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cpower</code> = SHCrossPowerLC (<code class="highlighter-rouge">cilm1</code>, <code class="highlighter-rouge">cilm2</code>, <code class="highlighter-rouge">l</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cpower</code> : output, complex*16</dt>
@@ -556,13 +556,13 @@ MathJax.Hub.Config({
   <dd>The spherical harmonic degree. This must be less than or equal to the minimum of <code class="highlighter-rouge">lmaxin1</code> and <code class="highlighter-rouge">lmaxin2</code>.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHCrossPowerLC</code> will calculate the spectral cross-power of two complex functions expressed in complex 4-pi normalized spherical harmonics for a single spherical harmonic degree <code class="highlighter-rouge">l</code>. This is calculated as:</p>
 
 <p><code class="highlighter-rouge">cpower = Sum_{i=1}^2 Sum_{m=0}^l cilm1(i, l+1, m+1) * conjg[cilm2(i, l+1, m+1)]</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shpowerlc.html">shpowerlc</a>, <a href="shpowerdensitylc.html">shpowerdensitylc</a>, <a href="shcrosspowerdensitylc.html">shcrosspowerdensitylc</a>, <a href="shpowerspectrumc.html">shpowerspectrumc</a>, <a href="shpowerspectrumdensityc.html">shpowerspectrumdensityc</a>, <a href="shcrosspowerspectrumc.html">shcrosspowerspectrumc</a>, <a href="shcrosspowerspectrumdensityc.html">shcrosspowerspectrumdensityc</a></p>
 

@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">error</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">gm</code>, <code class="highlighter-rouge">r0_pot</code>, <code class="highlighter-rouge">dot</code>, <code class="highlighter-rouge">doystart</code>, <code class="highlighter-rouge">doyend</code>, <code class="highlighter-rouge">epoch</code> = SHRead2Error (<code class="highlighter-rouge">filename</code>, <code class="highlighter-rouge">lmaxin</code>)</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -566,7 +566,7 @@ MathJax.Hub.Config({
   <dd>The epoch time for the time derivates.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">filename</code> : character(*)</dt>
@@ -575,7 +575,7 @@ MathJax.Hub.Config({
   <dd>This spherical harmonic degree controls the dimension of the output array <code class="highlighter-rouge">cilm</code>. The coefficients between <code class="highlighter-rouge">lmax+1</code> and <code class="highlighter-rouge">lmaxin</code> will be set to zero.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHRead2Error</code> will read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file into an array <code class="highlighter-rouge">cilm</code>. The errors and time derivatives associated with the coefficients will be read if the optional arrays <code class="highlighter-rouge">error</code> and <code class="highlighter-rouge">dot</code> are specified, respectively. The staring and ending date of the solution are specified by the optional parameters <code class="highlighter-rouge">doystart</code> and <code class="highlighter-rouge">doyend</code>, and the epoch of the time derivates is specified by the optional parameter <code class="highlighter-rouge">epoch</code>. The maximum spherical harmonic degree is read from the file, and the file does not need to be ordered by angular degree or order.</p>
 
@@ -589,7 +589,7 @@ MathJax.Hub.Config({
   <li><code class="highlighter-rouge">GRCOF2</code>, <code class="highlighter-rouge">CALSDV</code>, or <code class="highlighter-rouge">gfc</code>: spherical harmonic coefficients, formatted as (<code class="highlighter-rouge">l</code>, <code class="highlighter-rouge">m</code>, <code class="highlighter-rouge">clm</code>, <code class="highlighter-rouge">slm</code>) or (<code class="highlighter-rouge">l</code>, <code class="highlighter-rouge">m</code>, <code class="highlighter-rouge">clm</code>, <code class="highlighter-rouge">slm</code>, <code class="highlighter-rouge">clm_error</code>, <code class="highlighter-rouge">slm_error</code>).</li>
 </ul>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshread.html">shread</a>, <a href="pyshread2.html">shread2</a>, <a href="pyshreadjpl.html">shreadjpl</a></p>
 

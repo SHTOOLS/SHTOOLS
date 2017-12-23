@@ -10,11 +10,11 @@ toc: false
 
 Evaluate a real function expressed in real spherical harmonics at a single point.
 
-# Usage
+## Usage
 
 `value` = MakeGridPoint (`cilm`, `lmax`, `lat`, `lon`, `norm`, `csphase`, `dealloc`)
 
-# Parameters
+## Parameters
 
 `value` : output, real\*8
 :   Value of the function at (`lat`, `lon`).
@@ -40,10 +40,10 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 `dealloc` : input, optional, integer, default = 0
 :   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
 
-# Description
+## Description
 
 `MakeGridPoint` will expand a function expressed in spherical harmonics at a single point. The input latitude and longitude are in degrees. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
-# See also
+## See also
 
 [makegridpointc](makegridpointc.html), [makegriddh](makegriddh.html), [makegriddhc](makegriddhc.html), [makegridglq](makegridglq.html), [makegridglqc](makegridglqc.html)

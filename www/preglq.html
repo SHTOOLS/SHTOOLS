@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Calculate the weights and nodes used in integrating a function by Gauss-Legendre quadrature.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call PreGLQ (<code class="highlighter-rouge">lower</code>, <code class="highlighter-rouge">upper</code>, <code class="highlighter-rouge">n</code>, <code class="highlighter-rouge">zero</code>, <code class="highlighter-rouge">w</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">lower</code> : input, real*8</dt>
@@ -560,7 +560,7 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">PreGLQ</code> will calculate the weights and zeros used to integrate a function using Gauss-Legendre quadrature. For <code class="highlighter-rouge">n</code> quadrature points, the integration will be exact if the function is a polynomial of degree <code class="highlighter-rouge">2n-1</code>, or less. The quadrature nodes correspond to the zeros of the Legendre polynomial of degree <code class="highlighter-rouge">n</code>. The number of quadrature points required to integrate a polynomial of degree <code class="highlighter-rouge">L</code> is <code class="highlighter-rouge">ceiling((L+1)/2)</code>.</p>
 
@@ -568,11 +568,11 @@ MathJax.Hub.Config({
 
 <p>This is a slightly modified version of the algorithm that was published in NUMERICAL RECIPES.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shglq.html">shglq</a></p>
 

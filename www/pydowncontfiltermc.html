@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">wl</code> = DownContFilterMC (<code class="highlighter-rouge">l</code>, <code class="highlighter-rouge">half</code>, <code class="highlighter-rouge">r</code>, <code class="highlighter-rouge">d</code>)</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">wl</code> : float</dt>
   <dd>The amplitude of the downward continuation filter.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">l</code> : integer</dt>
@@ -563,19 +563,19 @@ MathJax.Hub.Config({
   <dd>The radius of the surface to downward continue to.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">DownContFilterMC</code> will calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree <code class="highlighter-rouge">l</code>. The input parameters include <code class="highlighter-rouge">half</code>, which is the degree where the filter is equal to 0.5, and <code class="highlighter-rouge">r</code> and <code class="highlighter-rouge">d</code>, which are the reference radius of the gravitational field and the radius of the surface to downward continue to, respectively.</p>
 
 <p>A simple analytic expression exists for the downward continuation filter, following the methodology of Wieczorek and Phillips (1998), only when taking the first, third, fifth, and so on, derivatives of their equation 17. For this minimum-curvature filter, which corresponds to the second derivative, the form has simply been generalized using the solutions of the odd derivatives. This may or may not turn out to be exact. In any case, the form of this filter is numerically very similar to the Cartesian minimum-curvature filter of Phipps Morgan and Blackman (1993).</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Phipps Morgan, J., and D. K. Blackman, Inversion of combined gravity and bathymetry data for crustal structure: A prescription for downward continuation, Earth Planet. Sci. Lett., 119, 167-179, 1993.</p>
 
 <p>Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pydowncontfilterma.html">downcontfilterma</a>, <a href="pybatohilmdh.html">batohilmdh</a> <a href="pybatohilmrhohdh.html">batohilmrhohdh</a></p>
 

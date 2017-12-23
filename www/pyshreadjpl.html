@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Read spherical harmonic coefficients from a JPL ascii-formatted file.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">gm</code> = SHReadJPL (<code class="highlighter-rouge">filename</code>, <code class="highlighter-rouge">lmaxin</code>, [<code class="highlighter-rouge">formatstring</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -554,7 +554,7 @@ MathJax.Hub.Config({
   <dd>The mass-gravitational constant and error.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">filename</code> : character(*)</dt>
@@ -565,7 +565,7 @@ MathJax.Hub.Config({
   <dd>The format string used to read the elements of <code class="highlighter-rouge">cilm</code>. The default is “E19.12”.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHReadJPL</code> will read spherical harmonic coefficients from a JPL ascii formatted file into an array <code class="highlighter-rouge">cilm</code>. The real numbers are assumed to be formated with the specifier <code class="highlighter-rouge">E19.12</code>, but this can be changed by specifiying the optional string <code class="highlighter-rouge">formatstring</code>.</p>
 
@@ -579,7 +579,7 @@ MathJax.Hub.Config({
   <li>The errors of the above (starting at step 2).</li>
 </ul>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshread.html">shread</a>, <a href="pyshread2.html">shread2</a>, <a href="pyshreadjplerror.html">shreadjplerror</a></p>
 

@@ -10,16 +10,16 @@ toc: false
 
 Convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array.
 
-# Usage
+## Usage
 
 `cilm` = SHVectorToCilm (`vector`, [`lmax`])
 
-# Returns
+## Returns
 
 `cilm` : float, dimension (2, `lmax`+1, `lmax`+1)
 :   The 3-D arrary of output real spherical harmonic coefficients.
 
-# Parameters
+## Parameters
 
 `vector` : float, dimension ( (`lmaxin`+1)\*\*2 )
 :   The input 1-D indexed array of real spherical harmonic coefficients.
@@ -27,10 +27,10 @@ Convert a 1-dimensional indexed vector of real spherical harmonic coefficients t
 `lmax` : optional, optional, default = `lmaxin`
 :   The maximum degree of the output coefficients.
 
-# Description
+## Description
 
 `SHVectorToCilm` will convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array. The degree `l`, order `m`, and `i` (1 = cosine, 2 = sine) corresponds to the index `l**2+(i-1)*l+m.
 
-# See also
+## See also
 
 [shcilmtovector](pyshcilmtovector.html), [yilmindexvector](pyyilmindexvector.html), [shcilmtocindex](pyshcilmtocindex.html), [shcindextocilm](pyshcindextocilm.html)

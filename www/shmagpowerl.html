@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute the power of the magnetic field for a single degree <code class="highlighter-rouge">l</code> given the Schmidt seminormalized magnetic potential spherical harmonic coefficients.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">power</code> = SHMagPowerL (<code class="highlighter-rouge">c</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">r</code>, <code class="highlighter-rouge">l</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">power</code> : output, real*8</dt>
@@ -558,13 +558,13 @@ MathJax.Hub.Config({
   <dd>The spherical harmonic degree for which the power will be calculated.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHMagPowerL</code> will calculate the power of the magnetic field at radius <code class="highlighter-rouge">r</code> for a single degree <code class="highlighter-rouge">l</code> given the magnetic potential Schmidt seminormalized spherical harmonic coefficients <code class="highlighter-rouge">c</code> evaluated at radius <code class="highlighter-rouge">a</code>. This is explicitly calculated as:</p>
 
 <p><code class="highlighter-rouge">S(l) = (l+1) (a/r)**(2l+4) Sum_{m=0}^l [ c(1, l+1, m+1)**2 + c(2, l+1, m+1)**2 ].</code></p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shmagpowerspectrum.html">shmagpowerspectrum</a></p>
 

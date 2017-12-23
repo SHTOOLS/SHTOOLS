@@ -10,16 +10,16 @@ toc: false
 
 Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles.
 
-# Usage
+## Usage
 
 `rcoef` = SHRotateCoef (`x`, `coef`, `dj`, [`lmax`])
 
-# Returns
+## Returns
 
 `rcoef` : flaot, dimension (2, (`lmax`+1)\*(`lmax`+2)/2)
 :   The spherical harmonic coefficients of the rotated function in indexed form.
 
-# Parameters
+## Parameters
 
 `x` : float, dimension(3)
 :   The three Euler angles, alpha, beta, and gamma, in radians.
@@ -33,7 +33,7 @@ Determine the spherical harmonic coefficients of a complex function rotated by t
 `lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree of the input and output coefficients. 
 
-# Description
+## Description
 
 `SHRotateCoef` will take the complex spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in `x`, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients are in an indexed form that can be converted to and from `cilm[:,:,:]` form by using the functions `SHCilmToCindex` and `SHCindexToCilm`. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention. Real spherical harmonics can be converted to and from complex form using `SHrtoc` and `SHctor`. The input rotation matrix `dj` is computed by a call to `djpi2`.
 
@@ -63,6 +63,6 @@ To perform the inverse transform of `x(alpha, beta, gamma)`, use `x(-gamma, -bet
 
 Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the "x convention", where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be `alpha_y=alpha_x-pi/2`, `beta_x=beta_y`, and `gamma_y=gamma_x+pi/2`.
 
-# See also
+## See also
 
 [djpi2](pydjpi2.html), [shrotaterealcoef](pyshrotaterealcoef.html), [shctor](pyshctor.html), [shrtoc](pyshrtoc.html), [shcilmtocindex](pyshcilmtocindex.html), [shcindextocilm](pyshcindextocilm.html)

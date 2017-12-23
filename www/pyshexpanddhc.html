@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Expand an equally sampled or equally spaced complex grid into complex spherical harmonics using Driscoll and Healy’s (1994) sampling theorem.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cilm</code> = SHExpandDHC (<code class="highlighter-rouge">griddh</code>, [<code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">sampling</code>, <code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">lmax_calc</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : complex, dimension (2, <code class="highlighter-rouge">n</code>/2, <code class="highlighter-rouge">n</code>/2) or (2, <code class="highlighter-rouge">lmax_calc</code>+1, <code class="highlighter-rouge">lmax_calc</code>+1)</dt>
   <dd>The complex spherical harmonic coefficients of the function. These will be exact if the function is bandlimited to degree <code class="highlighter-rouge">lmax=n/2-1</code>. The first index specifies the coefficient corresponding to the positive and negative order of <code class="highlighter-rouge">m</code>, respectively, with <code class="highlighter-rouge">Clm=cilm[0,l,m]</code> and <code class="highlighter-rouge">Cl,-m=cilm[1,l,m]</code>.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">griddh</code> : complex, dimension (<code class="highlighter-rouge">n</code>, <code class="highlighter-rouge">n</code>) or (<code class="highlighter-rouge">n</code>, 2*<code class="highlighter-rouge">n</code>)</dt>
@@ -565,7 +565,7 @@ MathJax.Hub.Config({
   <dd>The maximum spherical harmonic degree calculated in the spherical harmonic expansion.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHExpandDHC</code> will expand an equally sampled (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>) or equally spaced complex grid (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">2n</code>) into complex spherical harmonics using the sampling theorem of Driscoll and Healy (1994). The number of latitudinal samples <code class="highlighter-rouge">n</code> must be even, and the transform is exact if the function is bandlimited to spherical harmonic degree <code class="highlighter-rouge">n</code>/2 - 1. The inverse transform is given by the routine <code class="highlighter-rouge">MakeGridDHC</code>. If the optional parameter <code class="highlighter-rouge">lmax_calc</code> is specified, the spherical harmonic coefficients will only be calculated to this degree instead of <code class="highlighter-rouge">n</code>/2 - 1. The algorithm is based on performing FFTs in longitude and then integrating over latitude using an exact quadrature rule.</p>
 
@@ -573,13 +573,13 @@ MathJax.Hub.Config({
 
 <p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code class="highlighter-rouge">norm</code> and <code class="highlighter-rouge">csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. The normalized legendre functions are calculated in this routine using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
 
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pymakegriddhc.html">makegriddhc</a>, <a href="pymakegriddh.html">makegriddh</a>, <a href="pyshexpanddh.html">shexpanddh</a>, <a href="pymakegridglq.html">makegridglq</a>, <a href="pyshexpandglq.html">shexpandglq</a>, <a href="pymakegridglqc.html">makegridglqc</a>, <a href="pyshexpandglqc.html">shexpandglqc</a>, <a href="pyshexpandlsq.html">shexpandlsq</a></p>
 

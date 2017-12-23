@@ -10,11 +10,11 @@ toc: false
 
 Expand an equally sampled or equally spaced complex grid into complex spherical harmonics using Driscoll and Healy's (1994) sampling theorem.
 
-# Usage
+## Usage
 
 call SHExpandDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `griddh` : input, complex\*16, dimension (`n`, `n`) or (`n`, 2\*`n`)
 :   A 2D equally sampled (default) or equally spaced complex grid that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitude band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally and 180/`n` for an equally spaced grid, respectively.
@@ -43,7 +43,7 @@ call SHExpandDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, 
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHExpandDHC` will expand an equally sampled (`n` by `n`) or equally spaced complex grid (`n` by `2n`) into complex spherical harmonics using the sampling theorem of Driscoll and Healy (1994). The number of latitudinal samples `n` must be even, and the transform is exact if the function is bandlimited to spherical harmonic degree `n`/2 - 1. The inverse transform is given by the routine `MakeGridDHC`. If the optional parameter `lmax_calc` is specified, the spherical harmonic coefficients will only be calculated to this degree instead of `n`/2 - 1. The algorithm is based on performing FFTs in longitude and then integrating over latitude using an exact quadrature rule. 
 
@@ -51,12 +51,12 @@ The default is to use an input grid that is equally sampled (`n` by `n`), but th
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. The normalized legendre functions are calculated in this routine using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15. 
 
-# References
+## References
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.
 
-# See also
+## See also
 
 [makegriddhc](makegriddhc.html), [makegriddh](makegriddh.html), [shexpanddh](shexpanddh.html), [makegridglq](makegridglq.html), [shexpandglq](shexpandglq.html), [makegridglqc](makegridglqc.html), [shexpandglqc](shexpandglqc.html), [shexpandlsq](shexpandlsq.html)

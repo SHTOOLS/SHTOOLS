@@ -10,16 +10,16 @@ toc: false
 
 Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.
 
-# Usage
+## Usage
 
 `cindex` = SHCilmToCindex (`cilm`, [`lmax`])
 
-# Returns
+## Returns
 
 `cindex` : float, dimension (2, (`lmax`+1)\*(`lmax`+2)/2)
 :   The indexed output spherical harmonic coefficients.
 
-# Parameters
+## Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input spherical harmonic coefficients. `cilm[0,:,:]` and `cilm[1,:,:]` correspond to either the real and imaginary components, or cosine and sine coefficients, respectively.
@@ -27,10 +27,10 @@ Convert a three-dimensional array of spherical harmonic coefficients to a two-di
 `lmax` : optional, integer, default = `lmaxin`
 :   Maximum degree of input spherical harmonics to convert.
 
-# Description
+## Description
 
 `SHCilmToCindex` will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.  The degree `l` and order `m` corresponds to the index `l*(l+1)/2+m`.
 
-# See also
+## See also
 
 [shcindextocilm](pyshcindextocilm.html), [shcilmtovector](pyshcilmtovector.html), [shvectortocilm](pyshvectortocilm.html)

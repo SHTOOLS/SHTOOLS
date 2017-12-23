@@ -10,16 +10,16 @@ toc: false
 
 Compute all the 4-pi (geodesy) normalized associated Legendre functions.
 
-# Usage
+## Usage
 
 `p` = PlmBar (`lmax`, `z`, [`csphase`, `cnorm`])
 
-# Returns
+## Returns
 
 `p` : float, dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of 4-pi (geodesy) normalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m`.
 
-# Parameters
+## Parameters
 
 `lmax` : integer
 :   The maximum degree of the associated Legendre functions to be computed.
@@ -33,19 +33,19 @@ Compute all the 4-pi (geodesy) normalized associated Legendre functions.
 `cnorm` : optional, integer, default = 0
 :   If 1, the complex normalization of the associated Legendre functions will be used. The default is to use the real normalization.
 
-# Description
+## Description
 
 `PlmBar` will calculate all of the 4-pi (geodesy) normalized associated Legendre functions up to degree `lmax` for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree `l` and angular order `m` corresponds to `l*(l+1)/2+m`.
 
 The integral of the squared Legendre functions over the interval [-1, 1] is `2*(2-delta(0,m))`, where `delta` is the Kronecker delta function. If the optional parameter `cnorm` is set equal to 1, the complex normalization will be used where the integral of the squared Legendre functions over the interval [-1, 1] is `2`. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument `csphase` to -1.
 
-# References
+## References
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
 summation and the recursive computation of very high degree and
 order normalised associated Legendre functions, J. Geodesy, 76, 279-
 299, 2002.
 
-# See also
+## See also
 
 [pyplbar](pyplbar.html), [pyplbar_d1](pyplbar_d1.html), [pyplmbar_d1](pyplmbar_d1.html), [pyplon](pyplon.html), [pyplon_d1](pyplon_d1.html), [pyplmon](pyplmon.html), [pyplmon_d1](pyplmon_d1.html), [pyplschmidt](pyplschmidt.html), [pyplschmidt_d1](pyplschmidt_d1.html), [pyplmschmidt](pyplmschmidt.html), [pyplmschmidt_d1](pyplmschmidt_d1.html), [pyplegendre](pyplegendre.html), [pyplegendre_d1](pyplegendre_d1.html), [pyplegendrea](pyplegendrea.html), [pyplegendrea_d1](pyplegendrea_d1.html)

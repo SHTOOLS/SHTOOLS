@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute the power spectrum of the magnetic field given the Schmidt seminormalized magnetic potential spherical harmonic coefficients.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call SHMagPowerSpectrum (<code class="highlighter-rouge">c</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">r</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">spectrum</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">c</code> : input, real*8, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
@@ -560,17 +560,17 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHMagPowerSpectrum</code> will calculate the power spectrum of the magnetic field at radius <code class="highlighter-rouge">r</code> given the magnetic potential Schmidt seminormalized spherical harmonic coefficients <code class="highlighter-rouge">c</code> evaluated at radius <code class="highlighter-rouge">a</code>. For a given degree <code class="highlighter-rouge">l</code>, this is explicitly calculated as (Lowes 1966):</p>
 
 <p><code class="highlighter-rouge">S(l) = (l+1) (a/r)**(2l+4) Sum_{m=0}^l [ c(1, l+1, m+1)**2 + c(2, l+1, m+1)**2 ].</code></p>
 
-<h1 id="reference">Reference</h1>
+<h2 id="reference">Reference</h2>
 
 <p>Lowes, F. J., Mean-square values on sphere of spherical harmonic fields, J. Geophys. Res., 71(8), 2179, 1966.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shmagpowerl.html">shmagpowerl</a></p>
 

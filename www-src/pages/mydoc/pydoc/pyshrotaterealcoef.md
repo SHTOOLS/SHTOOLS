@@ -10,16 +10,16 @@ toc: false
 
 Determine the spherical harmonic coefficients of a real function rotated by three Euler angles.
 
-# Usage
+## Usage
 
 `cilmrot` = SHRotateRealCoef (`cilm`, `x`, `dj`, [`lmax`])
 
-# Returns
+## Returns
 
 `cilmrot` : float, dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the rotated function, normalized for use with the geodesy 4-pi spherical harmonics.
 
-# Parameters
+## Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input real spherical harmonic coefficients. The coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention.
@@ -33,7 +33,7 @@ Determine the spherical harmonic coefficients of a real function rotated by thre
 `lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree of the input and output coefficients. 
 
-# Description
+## Description
 
 `SHRotateRealCoef` will take the real spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in `x`, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention. The input rotation matrix `dj` is computed by a call to `djpi2`.
 
@@ -65,6 +65,6 @@ Note that this routine uses the "y convention", where the second rotation is wit
 
 This routine first converts the real coefficients to complex form using `SHrtoc`. Then the coefficients are converted to indexed form using `SHCilmToCindex`, these are sent to `SHRotateCoef`, the result if converted back to `cilm` complex form using `SHCindexToCilm`, and these are finally converted back to real form using `SHctor`.
 
-# See also
+## See also
 
 [djpi2](pydjpi2.html), [shrotatecoef](pyshrotatecoef.html), [shctor](pyshctor.html), [shrtoc](pyshrtoc.html), [shcilmtocindex](pyshcilmtocindex.html), [shcindextocilm](pyshcindextocilm.html)

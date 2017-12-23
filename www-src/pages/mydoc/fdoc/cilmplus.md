@@ -10,11 +10,11 @@ toc: false
 
 Calculate the gravitational potential exterior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998).
 
-# Usage
+## Usage
 
 call CilmPlus (`cilm`, `gridin`, `lmax`, `nmax`, `mass`, `d`, `rho`, `gridtype`, `w`, `zero`, `plx`, `n`, `dref`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential corresponding to constant density relief referenced to a spherical interface of radius `d`.
@@ -58,7 +58,7 @@ call CilmPlus (`cilm`, `gridin`, `lmax`, `nmax`, `mass`, `d`, `rho`, `gridtype`,
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `CilmPlus` will calculate the spherical harmonic coefficients of the gravitational potential exterior to constant density relief referenced to a spherical interface. This is equation 10 of Wieczorek and Phillips (1998), where the potential is strictly valid only when the coefficients are evaluated at a radius greater than the maximum radius of the relief. The relief is input as a grid, whose type is specified by `gridtype` (1 for Gauss-Legendre quadrature grids, 2 for `n` by `n` Driscoll and Healy sampled grids, and 3 for `n` by 2`n` Driscoll and Healy sampled grids). The input relief `gridin` must correspond to absolute radii. The parameter `nmax` is the order of the Taylor series used in the algorithm to approximate the potential coefficients. By default, the relief and spherical harmonic coefficients will be referenced to the mean radius of `gridin`. However, if the optional parameter `dref` is specified, this will be used instead as the reference radius.
 
@@ -68,10 +68,10 @@ If the input grid is evaluated on the Gauss-Legendre points, it is necessary to 
 
 This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase.
 
-# References
+## References
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
 
-# See also
+## See also
 
 [cilmplusrhoh](cilmplusrhoh.html), [cilmminus](cilmminus.html), [cilmminusrhoh](cilmminusrhoh.html), [shexpandglq](shexpandglq.html), [makegridglq](makegridglq.html), [shglq](shglq.html), [glqgridcoord](glqgridcoord.html), [makegriddh](makegriddh.html)

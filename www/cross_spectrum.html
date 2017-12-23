@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Return the cross-spectrum of the spherical harmonic coefficients as a function of spherical harmonic degree.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">array</code> = cross_spectrum (<code class="highlighter-rouge">clm1</code>, <code class="highlighter-rouge">clm2</code>, [<code class="highlighter-rouge">normalization</code>, <code class="highlighter-rouge">degrees</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">convention</code>, <code class="highlighter-rouge">unit</code>, <code class="highlighter-rouge">base</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">array</code> : ndarray, shape (len(degrees))</dt>
   <dd>1-D ndarray of the spectrum.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">clm1</code> : ndarray, shape (2, <code class="highlighter-rouge">lmax</code> + 1, <code class="highlighter-rouge">lmax</code> + 1)</dt>
@@ -571,13 +571,13 @@ MathJax.Hub.Config({
   <dd>The logarithm base when calculating the ‘per_dlogl’ spectrum.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p>This function returns either the cross-power spectrum, cross-energy spectrum, or l2-cross-norm spectrum. Total cross-power is defined as the integral of the clm1 times the conjugate of clm2 over all space, divided by the area the functions span. If the mean of the functions is zero, this is equivalent to the covariance of the two functions. The total cross-energy is the integral of clm1 times the conjugate of clm2 over all space and is 4pi times the total power. The l2-cross-norm is the sum of clm1 times the conjugate of clm2 over all angular orders as a function of spherical harmonic degree.</p>
 
 <p>The output spectrum can be expresed using one of three units. ‘per_l’ returns the contribution to the total spectrum from all angular orders at degree l. ‘per_lm’ returns the average contribution to the total spectrum from a single coefficient at degree l. The ‘per_lm’ spectrum is equal to the ‘per_l’ spectrum divided by (2l+1). ‘per_dlogl’ returns the contribution to the total spectrum from all angular orders over an  infinitessimal logarithmic degree band. The contrubution in the band dlog_a(l) is spectrum(l, ‘per_dlogl’)*dlog_a(l), where a is the base, and where spectrum(l, ‘per_dlogl’) is equal to spectrum(l, ‘per_l’)*l*log(a).</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="spectrum.html">spectrum</a></p>
 

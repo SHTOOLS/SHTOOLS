@@ -19,6 +19,7 @@ for fn in fdocfiles:
             title = reh1.search(line).group(1)
             mdfile.readline()
             doc = mdfile.read()
+            doc = doc.replace('# ', '## ')
 
         string = ('---\n' + 'title: ' + title + ' (Fortran)\n' +
                   'keywords: spherical harmonics software package, ' +

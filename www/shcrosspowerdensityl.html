@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute the cross-power spectral density of two real functions for a single spherical harmonic degree.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cpsd</code> = SHCrossPowerDensityL (<code class="highlighter-rouge">cilm1</code>, <code class="highlighter-rouge">cilm2</code>, <code class="highlighter-rouge">l</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cpsd</code> : output, real*8</dt>
@@ -556,13 +556,13 @@ MathJax.Hub.Config({
   <dd>The spherical harmonic degree. This must be less than or equal to the minimum of <code class="highlighter-rouge">lmaxin1</code> and <code class="highlighter-rouge">lmaxin2</code>.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHCrossPowerDensityL</code> will calculate the cross-power spectral density of two real functions expressed in real 4-pi normalized spherical harmonics for a single spherical harmonic degree <code class="highlighter-rouge">l</code>. This is explicitly calculated as:</p>
 
 <p><code class="highlighter-rouge">cpsd = Sum_{i=1}^2 Sum_{m=0}^l cilm1(i, l+1, m+1) * cilm2(i, l+1, m+1) / (2l + 1)</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shpowerl.html">shpowerl</a>, <a href="shpowerdensityl.html">shpowerdensityl</a>, <a href="shcrosspowerl.html">shcrosspowerl</a>, <a href="shpowerspectrum.html">shpowerspectrum</a>, <a href="shpowerspectrumdensity.html">shpowerspectrumdensity</a>, <a href="shcrosspowerspectrum.html">shcrosspowerspectrum</a>, <a href="shcrosspowerspectrumdensity.html">shcrosspowerspectrumdensity</a>, <a href="shadmitcorr.html">shadmitcorr</a></p>
 

@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">latglq</code>, <code class="highlighter-rouge">longlq</code> = GLQGridCoord (<code class="highlighter-rouge">lmax</code>)</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">latglq</code> : float, dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
@@ -552,18 +552,18 @@ MathJax.Hub.Config({
   <dd>The longitude coordinates of a grid, corresponding to the indices [0,:], in degrees. The first node is 0 E.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">lmax</code> : integer</dt>
   <dd>The maximum spherical harmonic degree that will be integrated exactly by Gauss-Legendre quadrature.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">GLQGridCoord</code> will compute the latitude and longitude coordinates that are used in Gauss-Legendre quadrature grids for performing spherical harmonic transforms and reconstructions. The latitudinal nodes correspond to the zeros of the Legendre polynomial of degree <code class="highlighter-rouge">lmax+1</code>, and the longitudinal nodes are equally spaced with an interval of <code class="highlighter-rouge">360/(2*lmax+1)</code> degrees.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshglq.html">shglq</a>, <a href="pyshexpandglq.html">shexpandglq</a>, <a href="pymakegridglq.html">makegridglq</a>, <a href="pyshexpandglqc.html">shexpandglqc</a>, <a href="pymakegridglqc.html">makegridglqc</a></p>
 

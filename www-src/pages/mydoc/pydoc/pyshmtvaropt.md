@@ -10,11 +10,11 @@ toc: false
 
 Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.
 
-# Usage
+## Usage
 
 `var_opt`, `var_unit`, `weight_opt` = SHMTVarOpt (`l`, `tapers`, `taper_order`, `sff`, [`lwin`, `kmax`, `nocross`])
 
-# Returns
+## Returns
 
 `var_opt` : float, dimension (`kmax`)
 :   The minimum variance of the multitaper spectral estimate for degree `l` using 1 through `kmax` tapers.
@@ -25,7 +25,7 @@ Calculate the minimum variance and corresponding optimal weights of a localized 
 `weight_opt` : float, dimension (`kmax`, `kmax`)
 :   The optimal weights (in columns) that minimize the multitaper spectral estimate's variance using 1 through `kmax` tapers.
 
-# Parameters
+## Parameters
 
 `l` : integer
 :   The angular degree to determine the minimum variance and optimal weights.
@@ -48,16 +48,16 @@ Calculate the minimum variance and corresponding optimal weights of a localized 
 `nocross` : optional, integer, default = 0
 :   If 1, only the diagonal terms of the covariance matrix Fij will be computed. If 0, all terms will be computed.
 
-# Description
+## Description
 
 `SHMTVarOpt` will determine the minimum variance that can be achieved by a weighted multitaper spectral analysis, as is described by Wieczorek and Simons (2007). The minimum variance is output as a function of the number of tapers utilized, from 1 to a maximum of `kmax`, and the corresponding variance using equal weights is output for comparison. The windowing functions are assumed to be solutions to the spherical-cap concentration problem, as determined by a call to `SHReturnTapers` or `SHReturnTapersM`. The minimum variance and weights are dependent upon the form of the global unwindowed power spectrum, `Sff`.
 
 If the optional argument `nocross` is set to 1, then only the diagnonal terms of `Fij` will be computed.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 
-# See also
+## See also
 
 [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html); [shlocalizedadmitcorr](pyshlocalizedadmitcorr.html), [shbiasadmitcorr](pyshbiasadmitcorr.html), [shbiask](pyshbiask.html), [shmtdebias](pyshmtdebias.html)

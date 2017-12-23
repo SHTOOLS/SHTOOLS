@@ -10,11 +10,11 @@ toc: false
 
 Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.
 
-# Usage
+## Usage
 
 call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `csphase`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`.
@@ -46,13 +46,13 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHExpandLSQ` will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When there are more data points than spherical harmonic coefficients (i.e., `nmax>(lmax+1)**2`), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. See the LAPACK documentation concerning DGELS for further information.
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
-# See also
+## See also
 
 [makegriddh](makegriddh.html), [shexpanddh](shexpanddh.html), [makegriddhc](makegriddhc.html), [shexpanddhc](shexpanddhc.html), [makegridglq](makegridglq.html), [shexpandglq](shexpandglq.html), [makegridglqc](makegridglqc.html), [shexpandglqc](shexpandglqc.html), dgels(1)
 

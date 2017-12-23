@@ -10,11 +10,11 @@ toc: false
 
 Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix.
 
-# Usage
+## Usage
 
 call EigValVecSymTri (`ain`, `n`, `eval`, `evec`, `ul`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `ain` : input, real\*8, dimension (`n`, `n`)
 :   The input real symmetric tridiagonal matrix.
@@ -34,10 +34,10 @@ call EigValVecSymTri (`ain`, `n`, `eval`, `evec`, `ul`, `exitstatus`)
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `EigValVecSymTri` will calculate the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix. By default, only the lower portion of the matrix is used, but this can be changed by the optional argument `ul`. The eigenvalues and eigenvectors are sorted from largest to smallest eigenvalues, and the sign of the first element of each eigenvector is chosen to be positive. This routine factors the matrix `ain` using the LAPACK routine `DSTEGR`.
 
-# See also
+## See also
 
 [eigvalsym](eigvalsym.html), [eigvalvecsym](eigvalvecsym.html)

@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Calculate the gravitational potential interior to relief with lateral variations in density referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998).</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">d</code> = CilmMinusRhoHDH (<code class="highlighter-rouge">gridin</code>, <code class="highlighter-rouge">rho</code>, <code class="highlighter-rouge">nmax</code>, <code class="highlighter-rouge">mass</code>, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">n</code>, <code class="highlighter-rouge">dref</code>, <code class="highlighter-rouge">sampling</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
@@ -552,7 +552,7 @@ MathJax.Hub.Config({
   <dd>The mean radius of the relief in meters.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">gridin</code> : float, dimension (<code class="highlighter-rouge">nin</code>, <code class="highlighter-rouge">sampling</code>*<code class="highlighter-rouge">nin</code>)</dt>
@@ -573,7 +573,7 @@ MathJax.Hub.Config({
   <dd>If 1 the output grids are equally sampled (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>). If 2, the grids are equally spaced (<code class="highlighter-rouge">n</code> by 2<code class="highlighter-rouge">n</code>).</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">CilmMinusRhoHDH</code> will calculate the spherical harmonic coefficients of the gravitational potential exterior to relief with lateral variations in density referenced to a spherical interface. This is a generalization of equation 30 of Wieczorek (2007) and equation 12 of Wieczorek and Phillips (1998). The potential is strictly valid only when the coefficients are evaluated at a radius greater than the maximum radius of the relief. The input relief <code class="highlighter-rouge">gridin</code> must correspond to absolute radii. The parameter <code class="highlighter-rouge">nmax</code> is the order of the Taylor series used in the algorithm to approximate the potential coefficients. By default, the relief and spherical harmonic coefficients will be referenced to the mean radius of <code class="highlighter-rouge">gridin</code>. However, if the optional parameter <code class="highlighter-rouge">dref</code> is specified, this will be used instead as the reference radius.</p>
 
@@ -581,13 +581,13 @@ MathJax.Hub.Config({
 
 <p>This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.</p>
 
 <p>Wieczorek, M. A., Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, doi:10.1016/B978-044452748-6/00156-5, 2007.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pycilmminusdh.html">cilmminusdh</a> <a href="pycilmplusdh.html">cilmplusdh</a>, <a href="pycilmplusrhohdh.html">cilmplusrhohdh</a>, <a href="pymakegriddh.html">makegriddh</a></p>
 

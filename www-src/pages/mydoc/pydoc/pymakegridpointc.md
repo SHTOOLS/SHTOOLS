@@ -10,16 +10,16 @@ toc: false
 
 Evaluate a complex function expressed in complex spherical harmonics at a single point.
 
-# Usage
+## Usage
 
 `value` = MakeGridPointC (`cilm`, `lat`, `lon`, [`lmax`, `norm`, `csphase`, `dealloc`])
 
-# Returns
+## Returns
 
 `value` : complex
 :   Value of the function at (`lat`, `lon`).
 
-# Parameters
+## Parameters
 
 `cilm` : complex, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex spherical harmonic coefficients of the function. The coefficients `C0lm` and `C1lm` refer to the positive and negative angular orders, respectively, with `Clm=cilm[0,1,m]` and `Cl-m=cilm[1,l,m]`.
@@ -42,11 +42,11 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 `dealloc` : optional, integer, default = 0
 :   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
 
-# Description
+## Description
 
 `MakeGridPointC` will expand a complex function expressed in complex spherical harmonics at a single point. The input latitude and longitude are in degrees, and the maximum degree used in evaluating the function is the smaller of `lmaxin` and `lmax`. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
-# See also
+## See also
 
 [makegridpoint](pymakegridpoint.html), [makegriddh](pymakegriddh.html), [makegriddhc](pymakegriddhc.html), [makegridglq](pymakegridglq.html), [makegridglqc](pymakegridglqc.html)
 

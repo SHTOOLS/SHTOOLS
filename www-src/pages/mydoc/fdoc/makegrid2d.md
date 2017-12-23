@@ -10,11 +10,11 @@ toc: false
 
 Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical harmonic coefficients.
 
-# Usage
+## Usage
 
 call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `csphase`, `f`, `a`, `north`, `south`, `east`, `west`, `dealloc`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `grid` : output, real\*8, dimension (180/`interval`+1, 360/`interval`+1)
 :   A 2D equally spaced map of the input spherical harmonic coefficients `cilm`. The  array is in raster format with upper-left and lower-right coordinates of (90 N, 0 E) and (90 S, 360 E), respectively.
@@ -64,16 +64,16 @@ call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `c
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `MakeGrid2D` will create a 2-dimensional cylindrical map, equally spaced in (geocentric) latitude and longitude, from a set of input spherical harmonic coefficients. The output grid is in raster format possessing upper-left and lower-right coordinates of (90 N, 0 E) and (90 S, 360 E), repsectively. If the optional parameters `north`, `south`, `east` and `west` are specified, then the output grid will possess upper-left and lower-right coordinates of (`north`, `west`) and (`south`, `east`), repsectively. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
 If the optional arguments `f` and `a` are specified, the output function will be referenced to an ellipsoid with flattening `f` and semimajor axis `a`. The normalized legendre functions are calculated in this routine using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15. 
 
-# References
+## References
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.
 
-# See also
+## See also
 
 [makegriddh](makegriddh.html), [makegriddhc](makegriddhc.html), [makegridglq](makegridglq.html), [makegridglqc](makegridglqc.html), [makegravgriddh](makegravgriddh.html), [makemaggriddh](makemaggriddh.html)

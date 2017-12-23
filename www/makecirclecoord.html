@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute the coordinates of a circle placed at a given latitude and longitude.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call MakeCircleCoord (<code class="highlighter-rouge">coord</code>, <code class="highlighter-rouge">lat</code>, <code class="highlighter-rouge">lon</code>, <code class="highlighter-rouge">theta0</code>, <code class="highlighter-rouge">cinterval</code>, <code class="highlighter-rouge">cnum</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">coord</code> : output, real*8, dimension(360/<code class="highlighter-rouge">cinterval</code>, 2)</dt>
@@ -562,11 +562,11 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">MakeCircleCoord</code> will calculate the latitude and longitude coordinates of a circle of angular radius <code class="highlighter-rouge">theta0</code> placed on a sphere at position (<code class="highlighter-rouge">lat</code>, <code class="highlighter-rouge">lon</code>). This is useful for plotting circles on geographic maps. The first index in the output vectors corresponds to the point directly north of the cirlce origin, and subsequent points are arranged in a clockwise manner. Input and output units are in degrees.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="makeellipsecoord.html">makeellipsecoord</a></p>
 

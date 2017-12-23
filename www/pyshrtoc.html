@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Convert real spherical harmonics to complex form.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">ccilm</code> = SHrtoc (<code class="highlighter-rouge">rcilm</code>, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">convention</code>, <code class="highlighter-rouge">switchcs</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">ccilm</code> : float, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The output complex spherical harmonic coefficients. <code class="highlighter-rouge">ccilm[0,:,:]</code> and <code class="highlighter-rouge">ccilm[1,:,:]</code> correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are output; the negative orders can be calculated from the relation <code class="highlighter-rouge">C_{l-m}=(-1)^m C_{lm}^*</code>.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">rcilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -563,11 +563,11 @@ MathJax.Hub.Config({
   <dd>If 0 (default), the input and output coefficients will possess the same Condon-Shortley phase convention. If 1, the input coefficients will first be multiplied by (-1)^m.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHrtoc</code> will convert real spherical harmonics to complex form. The normalization of the input and output coefficients are by default the same, but if the optional argument <code class="highlighter-rouge">convention</code> is set to 2, this routine will convert from geodesy 4-pi normalized coefficients to orthonormalized coefficients. The Condon-Shortley phase convention between the input an output coefficients can be modified by the optional argument <code class="highlighter-rouge">switchcs</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshctor.html">shctor</a></p>
 

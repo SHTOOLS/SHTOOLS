@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cindex</code> = SHCilmToCindex (<code class="highlighter-rouge">cilm</code>, [<code class="highlighter-rouge">lmax</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cindex</code> : float, dimension (2, (<code class="highlighter-rouge">lmax</code>+1)*(<code class="highlighter-rouge">lmax</code>+2)/2)</dt>
   <dd>The indexed output spherical harmonic coefficients.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -559,11 +559,11 @@ MathJax.Hub.Config({
   <dd>Maximum degree of input spherical harmonics to convert.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHCilmToCindex</code> will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.  The degree <code class="highlighter-rouge">l</code> and order <code class="highlighter-rouge">m</code> corresponds to the index <code class="highlighter-rouge">l*(l+1)/2+m</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshcindextocilm.html">shcindextocilm</a>, <a href="pyshcilmtovector.html">shcilmtovector</a>, <a href="pyshvectortocilm.html">shvectortocilm</a></p>
 

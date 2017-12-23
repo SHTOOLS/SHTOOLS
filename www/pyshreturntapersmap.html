@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Calculate the eigenfunctions and eigenvalues of the space-concentration problem for an arbitrary region.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">tapers</code>, <code class="highlighter-rouge">eigenvalues</code> = SHReturnTapersMap (<code class="highlighter-rouge">dh_mask</code>, <code class="highlighter-rouge">lmax</code>, [<code class="highlighter-rouge">n</code>, <code class="highlighter-rouge">ntapers</code>, <code class="highlighter-rouge">sampling</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">tapers</code> : float, dimension ((<code class="highlighter-rouge">lmax</code>+1)**2, <code class="highlighter-rouge">ntapers</code>)</dt>
@@ -552,7 +552,7 @@ MathJax.Hub.Config({
   <dd>The concentration factor for each localization window specified in the columns of <code class="highlighter-rouge">tapers</code>.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">dh_mask</code> : integer, dimension (<code class="highlighter-rouge">n</code>, <code class="highlighter-rouge">n</code>*<code class="highlighter-rouge">sampling</code>)</dt>
@@ -567,19 +567,19 @@ MathJax.Hub.Config({
   <dd>For 1, <code class="highlighter-rouge">dh_mask</code> has <code class="highlighter-rouge">n x n</code> samples. For 2, <code class="highlighter-rouge">dh_mask</code> has <code class="highlighter-rouge">n x 2n</code> samples. The default it to determine <code class="highlighter-rouge">sampling</code> from the dimensions of <code class="highlighter-rouge">dh_mask</code>.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHReturnTapersMap</code> will calculate the eigenfunctions (i.e., localization windows) of the space-concentration problem for an arbitrary concentration region specified in <code class="highlighter-rouge">dh_mask</code> (see Simons et al. (2006) for further details). The input mask <code class="highlighter-rouge">dh_mask</code> must be sampled according to the Driscoll and Healy (1994) sampling theorem with <code class="highlighter-rouge">n</code> samples in latitude, and possess a value of 1 inside the concentration region, and 0 elsewhere. <code class="highlighter-rouge">dh_mask</code> can either possess <code class="highlighter-rouge">n</code> samples in longitude (<code class="highlighter-rouge">sampling=1</code>) or <code class="highlighter-rouge">2n</code> samples in longitude (<code class="highlighter-rouge">sampling=2</code>). Given the approximate way in which the elements of the space-concentration kernel are calculated (see <code class="highlighter-rouge">ComputeDMap</code> for details), <code class="highlighter-rouge">sampling=2</code> should be preferred. The effective spherical harmonic bandwidth (L=N/2-1) of the grid <code class="highlighter-rouge">dh_mask</code> determines the accuracy of the results, and experience shows that this should be about 4 times larger than <code class="highlighter-rouge">lmax</code>.</p>
 
 <p>The spherical harmonic coefficients of each window are given in the columns of <code class="highlighter-rouge">tapers</code>, and the corresponding concentration factors are given in <code class="highlighter-rouge">eigenvaules</code>. The spherical harmonic coefficients are ordered according to the scheme described in <code class="highlighter-rouge">YilmIndexVector</code>, which can be converted to matrix form using <code class="highlighter-rouge">SHVectorToCilm</code>, and the columns of <code class="highlighter-rouge">tapers</code> are ordered from best to worst concentrated. The localization windows are normalized such that they have unit power. If the optional parameter <code class="highlighter-rouge">ntapers</code> is specified, then only the <code class="highlighter-rouge">ntapers</code> largest eigenvalues and corresponding eigenfunctions will be calculated and returned.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
 
 <p>Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pycomputedmap.html">computedmap</a>, <a href="pyyilmindexvector.html">yilmindexvector</a>, <a href="pyshvectortocilm.html">shvectortocilm</a></p>
 

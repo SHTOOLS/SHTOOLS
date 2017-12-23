@@ -10,11 +10,11 @@ toc: false
 
 Perform a localized multitaper cross-spectral analysis using spherical cap windows.
 
-# Usage
+## Usage
 
 `mtse`, `sd` = SHMultiTaperCSE (`sh1`, `sh2`, `tapers`, `taper_order`, [`lmax1`, `lmax2`, `lmaxt`, `k`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`])
 
-# Returns
+## Returns
 
 `mtse` : float, dimension (`lmax`-`lmaxt`+1)
 :   The localized multitaper cross-power spectrum estimate. `lmax` is the smaller of `lmax1` and `lmax2`.
@@ -22,7 +22,7 @@ Perform a localized multitaper cross-spectral analysis using spherical cap windo
 `sd` : float, dimension (`lmax`-`lmaxt`+1)
 :   The standard error of the localized multitaper cross-power spectral estimates. `lmax` is the smaller of `lmax1` and `lmax2`.
 
-# Parameters
+## Parameters
 
 `sh1` : float, dimension (2, `lmax1in`+1, `lmax1in`+1)
 :   The spherical harmonic coefficients of the first function.
@@ -63,7 +63,7 @@ Perform a localized multitaper cross-spectral analysis using spherical cap windo
 `csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-# Description
+## Description
 
 `SHMultiTaperCSE` will perform a localized multitaper cross-spectral analysis of two input functions expressed in spherical harmonics, `SH1` and `SH2`. The maximum degree of the localized multitaper power spectrum estimate is `lmax-lmaxt`, where `lmax` is the smaller of `lmax1` and `lmax2`. The coefficients and angular orders of the windowing coefficients (`tapers` and `taper_order`) are obtained by a call to `SHReturnTapers`. If `lat` and `lon` are specified, then the symmetry axis of the localizing windows will be rotated to these coordinates. Otherwise, the localized spectral analysis will be centered over the north pole.
 
@@ -71,10 +71,10 @@ If the optional array `taper_wt` is specified, then these weights will be used i
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 
-# See also
+## See also
 
 [shmultitaperse](pyshmultitaperse.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmtvaropt](pyshmtvaropt.html)

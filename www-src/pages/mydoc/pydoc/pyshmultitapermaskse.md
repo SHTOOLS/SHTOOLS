@@ -10,11 +10,11 @@ toc: false
 
 Perform a localized multitaper spectral analysis using arbitrary windows derived from a mask.
 
-# Usage
+## Usage
 
 `mtse`, `sd` = SHMultiTaperMaskSE (`sh`, `tapers`, [`lmax`,  `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`])
 
-# Returns
+## Returns
 
 `mtse` : float dimension (`lmax`-`lmaxt`+1)
 :   The localized multitaper power spectrum estimate. 
@@ -22,7 +22,7 @@ Perform a localized multitaper spectral analysis using arbitrary windows derived
 `sd` : float, dimension (`lmax`-`lmaxt`+1)
 :   The standard error of the localized multitaper power spectral estimates.
 
-# Parameters
+## Parameters
 
 `sh` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The spherical harmonic coefficients of the function to be localized.
@@ -48,7 +48,7 @@ Perform a localized multitaper spectral analysis using arbitrary windows derived
 `csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-# Description
+## Description
 
 `SHMultiTaperMaskSE` will perform a localized multitaper spectral analysis of an input function expressed in spherical harmonics using an arbitrary set of windows derived from a mask. The maximum degree of the localized multitaper cross-power spectrum estimate is `lmax-lmaxt`. The matrix `tapers` contains the spherical harmonic coefficients of the windows and can be obtained by a call to `SHReturnTapersMap`. The coefficients of each window are stored in a single column, ordered according to the conventions used in `SHCilmToVector`.
 
@@ -56,10 +56,10 @@ If the optional array `taper_wt` is specified, these weights will be used in cal
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 
-# See also
+## See also
 
 [shmultitapermaskcse](pyshmultitapermaskcse.html), [shreturntapersmap](pyshreturntapersmap.html), [shcilmtovector](pyshcilmtovector.html)

@@ -10,11 +10,11 @@ toc: false
 
 Invert for the global power spectrum given a multitaper spectrum estimate formed with spherical cap localization windows.
 
-# Usage
+## Usage
 
 `mtdebias`, `lmid` = SHMTDebias (`mtspectra`, `tapers`, `nl`, [`lmax`, `lwin`, `k`, `taper_wt`])
 
-# Returns
+## Returns
 
 `mtdebias` : float, dimension (2, `n`)
 :   The global power spectrum (column 1) and uncertainty (column 2). The midpoints of the `n` spherical harmonic bins are given in `lmid`.
@@ -22,7 +22,7 @@ Invert for the global power spectrum given a multitaper spectrum estimate formed
 `lmid` : float, dimension (`n`)
 :   The midpoints of the spherical harmonic bins for which the global power spectrum is constant.
 
-# Parameters
+## Parameters
 
 `mtspectra` : float, dimension (2, `lmaxin`+1)
 :   The localized multitaper spectrum estimate and uncertainty, obtained from a routine such as `SHMultitaperCSE` or `SHMultitaperSE`.
@@ -45,7 +45,7 @@ Invert for the global power spectrum given a multitaper spectrum estimate formed
 `taper_wt` : optional, float, dimension (`kin`)
 :   The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 
-# Description
+## Description
 
 `SHMTDebias` will invert for the global power spectrum given a localized multitaper spectrum estimate formed from spherical cap localization windows. This linear inverse problem is inherently underdetermined, and in order to achive a unique solution it is assumed that the global spectrum is constant in bins of width `nl`, and that the global power spectrum is constant for degrees greater than `lmax`. In practice `nl` should be increased until the global power spectrum is everywhere positive (negative values would be unphysical) and the variances are reasonable. Further details can be found in Wieczorek and Simons (2007).
 
@@ -53,12 +53,12 @@ This set of linear equations is solved using the method of singular value decomp
 
 If `taper_wt` is not specified, the weights will all be assumed to be equal to `1/K`.
 
-# References
+## References
 
 Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
 
-# See also
+## See also
 
 [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html), [shreturntapers](pyshreturntapers.html), [shmtvaropt](pyshmtvaropt.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)

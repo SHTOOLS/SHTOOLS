@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute all the unnormalized associated Legendre functions.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call PLegendreA (<code class="highlighter-rouge">p</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">z</code>, <code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">p</code> : output, real*8, dimension ((<code class="highlighter-rouge">lmax</code>+1)*(<code class="highlighter-rouge">lmax</code>+2)/2)</dt>
@@ -558,11 +558,11 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">PLegendreA</code> will calculate all of the unnormalized associated Legendre functions up to degree <code class="highlighter-rouge">lmax</code> for a given argument. These are calculated using a standard three-term recursion formula and hence will overflow for moderate values of <code class="highlighter-rouge">l</code> and <code class="highlighter-rouge">m</code>. The index of the array corresponding to a given degree <code class="highlighter-rouge">l</code> and angular order <code class="highlighter-rouge">m</code> corresponds to <code class="highlighter-rouge">l*(l+1)/2+m+1</code> and can be computed by a call to <code class="highlighter-rouge">PlmIndex</code>. The integral of the associated Legendre functions over the interval [-1, 1] is <code class="highlighter-rouge">2*(l+m)!/(l-m)!/(2l+1)</code>. The default is to exclude the Condon-Shortley phase, but this can be modified by setting the optional argument <code class="highlighter-rouge">csphase</code> to -1.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="plbar.html">plbar</a>, <a href="plbar_d1.html">plbar_d1</a>, <a href="plmbar.html">plmbar</a>, <a href="plmbar_d1.html">plmbar_d1</a>, <a href="plon.html">plon</a>, <a href="plon_d1.html">plon_d1</a>, <a href="plmon.html">plmon</a>, <a href="plmon_d1.html">plmon_d1</a>, <a href="plschmidt.html">plschmidt</a>, <a href="plschmidt_d1.html">plschmidt_d1</a>, <a href="plmschmidt.html">plmschmidt</a>, <a href="plmschmidt_d1.html">plmschmidt_d1</a>, <a href="plegendre.html">plegendre</a>, <a href="plegendre_d1.html">plegendre_d1</a>, <a href="plegendrea_d1.html">plegendrea_d1</a>, <a href="plmindex.html">plmindex</a></p>
 

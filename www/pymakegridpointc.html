@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Evaluate a complex function expressed in complex spherical harmonics at a single point.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">value</code> = MakeGridPointC (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">lat</code>, <code class="highlighter-rouge">lon</code>, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">dealloc</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">value</code> : complex</dt>
   <dd>Value of the function at (<code class="highlighter-rouge">lat</code>, <code class="highlighter-rouge">lon</code>).</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : complex, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -569,11 +569,11 @@ MathJax.Hub.Config({
   <dd>0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">MakeGridPointC</code> will expand a complex function expressed in complex spherical harmonics at a single point. The input latitude and longitude are in degrees, and the maximum degree used in evaluating the function is the smaller of <code class="highlighter-rouge">lmaxin</code> and <code class="highlighter-rouge">lmax</code>. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code class="highlighter-rouge">norm</code> and <code class="highlighter-rouge">csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pymakegridpoint.html">makegridpoint</a>, <a href="pymakegriddh.html">makegriddh</a>, <a href="pymakegriddhc.html">makegriddhc</a>, <a href="pymakegridglq.html">makegridglq</a>, <a href="pymakegridglqc.html">makegridglqc</a></p>
 

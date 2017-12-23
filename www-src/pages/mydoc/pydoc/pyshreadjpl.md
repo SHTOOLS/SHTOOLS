@@ -10,11 +10,11 @@ toc: false
 
 Read spherical harmonic coefficients from a JPL ascii-formatted file.
 
-# Usage
+## Usage
 
 `cilm`, `lmax`, `gm` = SHReadJPL (`filename`, `lmaxin`, [`formatstring`])
 
-# Returns
+## Returns
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The spherical harmonic coefficients contained in `filename`.
@@ -25,7 +25,7 @@ Read spherical harmonic coefficients from a JPL ascii-formatted file.
 `gm` : float, dimension(2)
 :   The mass-gravitational constant and error.
 
-# Parameters
+## Parameters
 
 `filename` : character(*)
 :   The filename of the JPL ascii-formatted spherical harmonic coefficients.
@@ -36,7 +36,7 @@ Read spherical harmonic coefficients from a JPL ascii-formatted file.
 `formatstring` : character*6, optional, default = "E19.12"
 :   The format string used to read the elements of `cilm`. The default is "E19.12".
 
-# Description
+## Description
 
 `SHReadJPL` will read spherical harmonic coefficients from a JPL ascii formatted file into an array `cilm`. The real numbers are assumed to be formated with the specifier `E19.12`, but this can be changed by specifiying the optional string `formatstring`.
 
@@ -48,6 +48,6 @@ The JPL ascii-formatted file is organized as follows:
 - A list of the cosine and sine terms.
 - The errors of the above (starting at step 2).
 
-# See also
+## See also
 
 [shread](pyshread.html), [shread2](pyshread2.html), [shreadjplerror](pyshreadjplerror.html)

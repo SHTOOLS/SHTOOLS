@@ -10,11 +10,11 @@ toc: false
 
 Create 2D cylindrical maps on a flattened ellipsoid of the components of the gravity "gradient" tensor in a local north-oriented reference frame.
 
-# Usage
+## Usage
 
 call MakeGravGradGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `vxx`, `vyy`, `vzz`, `vxy`, `vxz`, `vyz`, `n`, `sampling`, `lmax_calc`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The real gravitational potential spherical harmonic coefficients. The coefficients `c1lm` and `c2lm` refer to the cosine and sine coefficients, respectively, with `c1lm=cilm(1,l+1,m+1)` and `c2lm=cilm(2,l+1,m+1)`. 
@@ -64,7 +64,7 @@ call MakeGravGradGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `vxx`, `vyy`, `vz
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `MakeGravGradGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm`, equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) in latitude and longitude, for six components of the gravity "gradient" tensor (all using geocentric coordinates):
 
@@ -97,7 +97,7 @@ The output grid are in units of s^-2 and are cacluated on a flattened ellipsoid 
 
 The default is to calculate grids for use in the Driscoll and Healy (1994) routines that are equally sampled (`n` by `n`), but this can be changed to calculate equally spaced grids (`n` by 2`n`) by setting the optional argument `sampling` to 2. The input value of `lmax` determines the number of samples, `n=2lmax+2`, and the latitudinal sampling interval, 90/(`lmax`+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/`n` for equally sampled and 180/`n` for equally spaced grids, respectively.
 
-# References
+## References
 
 Reed, G.B., Application of kinematical geodesy for determining
 the short wave length components of the gravity field by satellite gradiometry, Ohio State University, Dept. of Geod. Sciences, Rep. No. 201, Columbus, Ohio, 1973.
@@ -106,6 +106,6 @@ Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on 
 
 Petrovskaya, M.S. and A.N. Vershkov, Non-singular expressions for the gravity gradients in the local north-oriented and orbital reference frames, J. Geod., 80, 117-127, 2006.
 
-# See also
+## See also
 
 [makegravgriddh](makegravgriddh.html), [makegeoidgrid](makegeoidgrid.html), [makegriddh](makegriddh.html)

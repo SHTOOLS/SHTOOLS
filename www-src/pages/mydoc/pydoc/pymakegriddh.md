@@ -10,16 +10,16 @@ toc: false
 
 Create a 2D map from a set of spherical harmonic coefficients using the Driscoll and Healy (1994) sampling theorem.
 
-# Usage
+## Usage
 
 `griddh` = MakeGridDH (`cilm`, [`lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`])
 
-# Returns
+## Returns
 
 `griddh` : float, dimension (2\*`lmax`+2, `sampling`\*(2\*`lmax`+2))
 :   A 2D equally sampled (default) or equally spaced map in degrees of the spherical harmonic coefficients `cilm` that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees, where `n` is 2\*`lmax`+2. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
 
-# Parameters
+## Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `cilm[0,l,m]` and `cilm[1,l,m]` refer to the "cosine" (`Clm`) and "sine" (`Slm`) coefficients, respectively.
@@ -39,7 +39,7 @@ Create a 2D map from a set of spherical harmonic coefficients using the Driscoll
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the  function. This must be less than or equal to `lmax`, and does not affect the number of samples of the output grid.
 
-# Description
+## Description
 
 `MakeGridDH` will create a 2-dimensional map equally sampled or equally spaced in latitude and longitude from a set of input spherical harmonic coefficients. This grid conforms with the sampling theorem of Driscoll and Healy (1994) and this routine is the inverse of SHExpandDH. The function is evaluated at each longitudinal band by inverse Fourier transforming the sin and cos terms for each degree `l`, and then summing over all degrees. When evaluating the function, the maximum spherical harmonic degree that is considered is the minimum of `lmaxin`, `lmax`, and `lmax_calc` (if specified).
 
@@ -47,12 +47,12 @@ The default is to use an input grid that is equally sampled (`n` by `n`), but th
 
 The normalized legendre functions are calculated using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15.
 
-# References
+## References
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, 2002.
 
-# See also
+## See also
 
 [shexpanddh](pyshexpanddh.html), [makegriddhc](pymakegriddhc.html), [shexpanddhc](pyshexpanddhc.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), [makegrid2d](pymakegrid2d.html)

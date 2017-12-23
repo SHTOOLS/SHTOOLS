@@ -10,11 +10,11 @@ toc: false
 
 Compute the power spectrum of the magnetic field given the Schmidt seminormalized magnetic potential spherical harmonic coefficients.
 
-# Usage
+## Usage
 
 call SHMagPowerSpectrum (`c`, `a`, `r`, `lmax`, `spectrum`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `c` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The Schmidt seminormalized spherical harmonic coefficients of the magnetic potential.
@@ -34,16 +34,16 @@ call SHMagPowerSpectrum (`c`, `a`, `r`, `lmax`, `spectrum`, `exitstatus`)
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHMagPowerSpectrum` will calculate the power spectrum of the magnetic field at radius `r` given the magnetic potential Schmidt seminormalized spherical harmonic coefficients `c` evaluated at radius `a`. For a given degree `l`, this is explicitly calculated as (Lowes 1966):
 
 `S(l) = (l+1) (a/r)**(2l+4) Sum_{m=0}^l [ c(1, l+1, m+1)**2 + c(2, l+1, m+1)**2 ].`
 
-# Reference
+## Reference
 
 Lowes, F. J., Mean-square values on sphere of spherical harmonic fields, J. Geophys. Res., 71(8), 2179, 1966.
 
-# See also
+## See also
 
 [shmagpowerl](shmagpowerl.html)

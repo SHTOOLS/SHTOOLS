@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">chi2</code> = SHExpandLSQ (<code class="highlighter-rouge">d</code>, <code class="highlighter-rouge">lat</code>, <code class="highlighter-rouge">lon</code>, <code class="highlighter-rouge">lmax</code>, [<code class="highlighter-rouge">norm</code>,  <code class="highlighter-rouge">csphase</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
@@ -552,7 +552,7 @@ MathJax.Hub.Config({
   <dd>The residual sum of squares misfit for an overdetermined inversion.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">d</code> : float, dimension (<code class="highlighter-rouge">nmax</code>)</dt>
@@ -569,13 +569,13 @@ MathJax.Hub.Config({
   <dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHExpandLSQ</code> will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When there are more data points than spherical harmonic coefficients (i.e., <code class="highlighter-rouge">nmax&gt;(lmax+1)**2</code>), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. See the LAPACK documentation concerning DGELS for further information.</p>
 
 <p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code class="highlighter-rouge">norm</code> and <code class="highlighter-rouge">csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pymakegriddh.html">makegriddh</a>, <a href="pyshexpanddh.html">shexpanddh</a>, <a href="pymakegriddhc.html">makegriddhc</a>, <a href="pyshexpanddhc.html">shexpanddhc</a>, <a href="pymakegridglq.html">makegridglq</a>, <a href="pyshexpandglq.html">shexpandglq</a>, <a href="pymakegridglqc.html">makegridglqc</a>, <a href="pyshexpandglqc.html">shexpandglqc</a>, dgels(1)</p>
 

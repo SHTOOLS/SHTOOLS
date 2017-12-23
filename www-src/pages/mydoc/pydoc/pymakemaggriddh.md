@@ -10,11 +10,11 @@ toc: false
 
 Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential.
 
-# Usage
+## Usage
 
 `rad`, `theta`, `phi`, `total` = MakeMagGridDH (`cilm`, `r0`, [`lmax`, `a`, `f`, `sampling`, `lmaxcalc`])
 
-# Returns
+## Returns
 
 `rad` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
 :   A 2D equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) grid of the radial component of the magnetic field corresponding to the input spherical harmonic coefficients `cilm`. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
@@ -28,7 +28,7 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 `total` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
 :   A 2D equally sampled or equally spaced grid of the total magnetic field strength. 
 
-# Parameters
+## Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The real Schmidt semi-normalized spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm[0,l,m]` and `Slm=cilm[1,l,m]`. Alternatively, `C1lm` and `C2lm` correspond to the positive and negative order coefficients, respectively.
@@ -51,7 +51,7 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 `lmaxcalc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to `lmax`.
 
-# Description
+## Description
 
 `MakeMagGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm` of all three components of the magnetic field, the total field strength, and the magnetic potential. The magnetic potential is given by
 

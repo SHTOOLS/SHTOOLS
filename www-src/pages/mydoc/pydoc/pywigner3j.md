@@ -10,11 +10,11 @@ toc: false
 
 Compute the Wigner-3j symbols for all allowable values of J.
 
-# Usage
+## Usage
 
 `w3j`, `jmin`, `jmax` = Wigner3j (`j2`, `j3`, `m1`, `m2`, `m3`)
 
-# Returns
+## Returns
 
 `w3j` : float, dimension (`j2`+`j3`+1)
 :   An array of the Wigner-3j symbols evaluated for all allowable values of `j`. The minimum and maximum values of `j` are given by `jmin` and `jmax`.
@@ -25,7 +25,7 @@ Compute the Wigner-3j symbols for all allowable values of J.
 `jmax` : integer
 :   The maximum value of `j` in the array `w3j`. This corresponds to the last non-zero element of `w3j`.
 
-# Parameters
+## Parameters
 
 `j2` : integer
 :   A positive integer.
@@ -42,7 +42,7 @@ Compute the Wigner-3j symbols for all allowable values of J.
 `m3` : integer
 :   An integer.
 
-# Description
+## Description
 
 `Wigner3j` will calculate the Wigner 3J symbols
 
@@ -70,7 +70,7 @@ Many times, the large relative errors occur when the 3j coefficient changes sign
 
 These results have also been verified for parameter values less than 100 using a code based on the algorith of de Blanc (1987), which was originally coded by Olav van Genabeek, and modified by M. Fang. (This code was run in quadruple precision and only calculates one coefficient for each call.) Maximum relative errors between the two routines were less than 1.d-8 for a large number of values (again, only 3j coefficients greater than 1.d-17 were considered here).
 
-# References
+## References
 
 Luscombe, J. J., and M. Luban, Simplified recursive algorithm for Wigner 3j and 6j symbols, Phys. Rev. E, 57, 7274-7277, 1998.
 

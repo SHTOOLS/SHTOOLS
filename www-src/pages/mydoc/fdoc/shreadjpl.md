@@ -10,11 +10,11 @@ toc: false
 
 Read spherical harmonic coefficients from a JPL ascii-formatted file.
 
-# Usage
+## Usage
 
 call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `filename` : input, character(*)
 :   The filename of the JPL ascii formatted spherical harmonic coefficients.
@@ -37,7 +37,7 @@ call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`, `exit
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHReadJPL` will read spherical harmonic coefficients from a JPL ascii formatted file into an array `cilm`. The maximum spherical harmonic degree `lmax` must be known a priori. The errors associated with the coefficients `cilm` will be read if the optional array `error` is specified. The real numbers are assumed to be formated with the specifier `E19.12`, but this can be changed by specifiying the optional string `formatstring`. If the optional parameter `gm` is specified, the mass-gravitational constant and error will be output, if present.
 
@@ -49,6 +49,6 @@ The JPL ascii formatted file is organized as follows:
 - A list of the cosine and sine terms.
 - The errors of the above (starting at step 2).
 
-# See also
+## See also
 
 [shread](shread.html), [shread2](shread2.html)

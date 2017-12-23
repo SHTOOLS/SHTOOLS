@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Convert complex spherical harmonics to real form.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call SHctor (<code class="highlighter-rouge">ccilm</code>, <code class="highlighter-rouge">rcilm</code>, <code class="highlighter-rouge">degmax</code>, <code class="highlighter-rouge">convention</code>, <code class="highlighter-rouge">switchcs</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">ccilm</code> : input, real*8, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -560,11 +560,11 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHctor</code> will convert complex spherical harmonics of a real function to real form. By default, the dimension of the output array is the minimum of <code class="highlighter-rouge">rcilm(1,:,:)</code> and <code class="highlighter-rouge">ccilm(1,:,:)</code>, though this can be changed by specifying the optional parameter <code class="highlighter-rouge">degmax</code>. The normalization of the input and output coefficients are by default the same, but if the optional argument <code class="highlighter-rouge">convention</code> is set to 2, this routine will convert from geodesy 4-pi normalized coefficients to orthonormalized coefficients. The Condon-Shortley phase convention between the input an output coefficients can be modified by the optional argument <code class="highlighter-rouge">switchcs</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shrtoc.html">shrtoc</a></p>
 

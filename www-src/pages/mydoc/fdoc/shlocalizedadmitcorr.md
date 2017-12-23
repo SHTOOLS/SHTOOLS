@@ -10,11 +10,11 @@ toc: false
 
 Calculate the localized admittance and correlation spectra of two functions at a given location using spherical cap localization windows.
 
-# Usage
+## Usage
 
 call SHLocalizedAdmitCorr (`tapers`, `taper_order`, `lwin`, `lat`, `lon`, `gilm`, `tilm`, `lmax`, `admit`, `corr`, `k`, `admit_error`, `corr_error`, `taper_wt`, `mtdef`, `k1linsig`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `tapers` : input, real\*8, dimension (`lwin`+1, `k`)
 :   A matrix of spherical cap localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
@@ -67,7 +67,7 @@ call SHLocalizedAdmitCorr (`tapers`, `taper_order`, `lwin`, `lat`, `lon`, `gilm`
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHLocalizedAdmitCorr` will calculate the localized admittance and degree correlation spectra of two functions at a given location. The windowing functions are solutions to the spherical-cap concentration problem (as calculated by `SHReturnTapers` or `SHReturnTapersM`), of which the best `k` concentrated tapers are utilized. If `k` is greater than 1, then estimates of the standard error for the admittance and correlation will be returned in the optional arrays `admit_error` and `corr_error`. The symmetry axis of the localizing windows are rotated to the coordinates (`lat`, `lon`) before performing the windowing operation.
 
@@ -79,11 +79,11 @@ When `mtdef` is 1, by default, the multitaper spectral estimates are calculated 
 
 This routine assumes that the input functions and tapers are expressed using geodesy 4-pi normalized spherical harmonic functions that exclude the  Condon-Shortley phase factor of (-1)^m.
 
-# See also
+## See also
 
 [shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [shmultitaperse](shmultitaperse.html), [shmultitapercse](shmultitapercse.html)
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 

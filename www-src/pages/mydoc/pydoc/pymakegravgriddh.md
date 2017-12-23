@@ -10,11 +10,11 @@ toc: false
 
 Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential.
 
-# Usage
+## Usage
 
 `rad`, `theta`, `phi`, `total`, `pot` = MakeGravGridDH (`cilm`, `gm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`, `omega`, `normal_gravity`])
 
-# Returns
+## Returns
 
 `rad` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) grid of the radial component of the gravity field corresponding to the input spherical harmonic coefficients `cilm`. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
@@ -31,7 +31,7 @@ Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three co
 `pot` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the gravitational potential.
 
-# Parameters
+## Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The real gravitational potential spherical harmonic coefficients. The coefficients c1lm and c2lm refer to the cosine and sine coefficients, respectively, with `c1lm=cilm[0,l,m]` and `c2lm=cilm[1,l,m]`.
@@ -63,7 +63,7 @@ Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three co
 `normal_gravity` : optional, integer, default = 1
 :   If 1, the normal gravity (the gravitational acceleration on the ellipsoid) will be subtracted from the total gravity, yielding the "gravity disturbance." This is done using Somigliana's formula (after converting geocentric to geodetic coordinates).
 
-# Description
+## Description
 
 `MakeGravGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm`, equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) in latitude and longitude, for the three vector components of the gravity field, the magnitude of the gravity field, and the potential (all using geocentric coordinates). The gravitational potential is given by
 
@@ -81,10 +81,10 @@ The calculated values should be considered exact only when the radii on the elli
 
 The default is to calculate grids for use in the Driscoll and Healy routines that are equally spaced (`n` by `2n`), but this can be changed to calculate equally sampled grids (`n` by `n`) by setting the optional argument `sampling` to 1. The input value of `lmax` determines the number of samples, `n=2lmax+2`, and the latitudinal sampling interval, 90/(`lmax`+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/`n` for equally sampled and 180/`n` for equally spaced grids, respectively.
 
-# References
+## References
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
-# See also
+## See also
 
 [makegeoidgriddh](pymakegeoidgriddh.html), [makegravgradgriddh](pymakegravgradgriddh.html), [normalgravity](pynormalgravity.html), [makegriddh](pymakegriddh.html)

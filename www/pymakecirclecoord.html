@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Compute the coordinates of a circle placed at a given latitude and longitude.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">coord</code> = MakeCircleCoord (<code class="highlighter-rouge">lat</code>, <code class="highlighter-rouge">lon</code>, <code class="highlighter-rouge">theta0</code>, [<code class="highlighter-rouge">cinterval</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">coord</code> : float, dimension(360/<code class="highlighter-rouge">cinterval</code>, 2)</dt>
   <dd>The latitude [:,0] and longitude [:,1] coordinates of the circle in degrees.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">lat</code> : float</dt>
@@ -563,11 +563,11 @@ MathJax.Hub.Config({
   <dd>Angular spacing in degrees of the output latitude and longitude points. If not present, the default is 1.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">MakeCircleCoord</code> will calculate the latitude and longitude coordinates of a circle of angular radius <code class="highlighter-rouge">theta0</code> placed on a sphere at position (<code class="highlighter-rouge">lat</code>, <code class="highlighter-rouge">lon</code>). This is useful for plotting circles on geographic maps. The first index in the output vectors corresponds to the point directly north of the cirlce origin, and subsequent points are arranged in a clockwise manner. Input and output units are in degrees.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pymakeellipsecoord.html">makeellipsecoord</a></p>
 

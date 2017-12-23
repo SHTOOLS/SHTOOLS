@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Calculate the eigenfunctions of the spherical-cap concentration problem.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call SHReturnTapers (<code class="highlighter-rouge">theta0</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">tapers</code>, <code class="highlighter-rouge">eigenvalues</code>, <code class="highlighter-rouge">taper_order</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">theta0</code> : input, real*8</dt>
@@ -560,18 +560,18 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHReturnTapers</code> will calculate the eigenfunctions (i.e., localization windows) of the spherical-cap concentration problem. Each column of the matrix <code class="highlighter-rouge">tapers</code> contains the spherical harmonic coefficients of a single window and the corresponding concentration factor is given in the array <code class="highlighter-rouge">eigenvalues</code>. Each window has non-zero coefficients for only a single angular order that is specified in <code class="highlighter-rouge">taper_order</code>: all other spherical harmonic coefficients for a given window are identically zero. The columns of <code class="highlighter-rouge">tapers</code> are ordered from best to worst concentrated, and the first and last rows of each column correspond to spherical harmonic degrees 0 and <code class="highlighter-rouge">lmax</code>, respectively. The localization windows are normalized such that they have unit power.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675, 2005.</p>
 
 <p>Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shreturntapersm.html">shreturntapersm</a>, <a href="computedg82.html">computedg82</a>, <a href="computedm.html">computedm</a></p>
 

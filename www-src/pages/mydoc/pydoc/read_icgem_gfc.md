@@ -13,11 +13,11 @@ Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted file.
 This function only reads files with the gravity field spherical
 harmonic coefficients.
 
-# Usage
+## Usage
 
 `cilm`, `gm`, `r0`, [`errors`] = read_icgem_gfc (`filename`, [`errors`, `lmax`, `epoch`])
 
-# Returns
+## Returns
 
 `cilm` : array
 :   Array with the coefficients with the shape (2, `lmax` + 1, `lmax` + 1) for the given epoch.
@@ -31,7 +31,7 @@ harmonic coefficients.
 `errors` : array, optional
 :   Array with the errors of the coefficients with the shape (2, `lmax` + 1, `lmax` + 1) for the given epoch.
 
-# Parameters
+## Parameters
 
 `filename` : str
 :   The ascii-formatted filename containing the spherical harmonic coefficients.

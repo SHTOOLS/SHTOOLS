@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">rcoef</code> = SHRotateCoef (<code class="highlighter-rouge">x</code>, <code class="highlighter-rouge">coef</code>, <code class="highlighter-rouge">dj</code>, [<code class="highlighter-rouge">lmax</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">rcoef</code> : flaot, dimension (2, (<code class="highlighter-rouge">lmax</code>+1)*(<code class="highlighter-rouge">lmax</code>+2)/2)</dt>
   <dd>The spherical harmonic coefficients of the rotated function in indexed form.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">x</code> : float, dimension(3)</dt>
@@ -563,7 +563,7 @@ MathJax.Hub.Config({
   <dd>The maximum spherical harmonic degree of the input and output coefficients.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHRotateCoef</code> will take the complex spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in <code class="highlighter-rouge">x</code>, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients are in an indexed form that can be converted to and from <code class="highlighter-rouge">cilm[:,:,:]</code> form by using the functions <code class="highlighter-rouge">SHCilmToCindex</code> and <code class="highlighter-rouge">SHCindexToCilm</code>. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention. Real spherical harmonics can be converted to and from complex form using <code class="highlighter-rouge">SHrtoc</code> and <code class="highlighter-rouge">SHctor</code>. The input rotation matrix <code class="highlighter-rouge">dj</code> is computed by a call to <code class="highlighter-rouge">djpi2</code>.</p>
 
@@ -593,7 +593,7 @@ MathJax.Hub.Config({
 
 <p>Note that this routine uses the “y convention”, where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the “x convention”, where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be <code class="highlighter-rouge">alpha_y=alpha_x-pi/2</code>, <code class="highlighter-rouge">beta_x=beta_y</code>, and <code class="highlighter-rouge">gamma_y=gamma_x+pi/2</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pydjpi2.html">djpi2</a>, <a href="pyshrotaterealcoef.html">shrotaterealcoef</a>, <a href="pyshctor.html">shctor</a>, <a href="pyshrtoc.html">shrtoc</a>, <a href="pyshcilmtocindex.html">shcilmtocindex</a>, <a href="pyshcindextocilm.html">shcindextocilm</a></p>
 

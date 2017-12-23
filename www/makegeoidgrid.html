@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Create a global map of the geoid.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call MakeGeoidGrid (<code class="highlighter-rouge">geoid</code>, <code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">r0</code>, <code class="highlighter-rouge">gm</code>, <code class="highlighter-rouge">potref</code>, <code class="highlighter-rouge">omega</code>, <code class="highlighter-rouge">r</code>, <code class="highlighter-rouge">gridtype</code>, <code class="highlighter-rouge">order</code>, <code class="highlighter-rouge">nlat</code>, <code class="highlighter-rouge">nlong</code>, <code class="highlighter-rouge">interval</code>, <code class="highlighter-rouge">lmax_calc</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">f</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">geoid</code> : output, real*8, dimension(<code class="highlighter-rouge">nlat</code>, <code class="highlighter-rouge">nlong</code>)</dt>
@@ -582,7 +582,7 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">MakeGeoidGrid</code> will create a global map of the geoid, accurate to either first, second, or third order, using the method described in Wieczorek (2007; equation 19-20). The algorithm expands the potential in a Taylor series on a spherical interface of radius <code class="highlighter-rouge">r</code>, and computes the height above this interface to the potential <code class="highlighter-rouge">potref</code> exactly from the linear, quadratic, or cubic equation at each grid point. If the optional parameters <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">f</code> are specified, the geoid height will be referenced to a flattened ellipsoid with semi-major axis <code class="highlighter-rouge">a</code> and flattening <code class="highlighter-rouge">f</code>. The pseudo-rotational potential is explicitly accounted for by specifying the angular rotation rate <code class="highlighter-rouge">omega</code> of the planet.</p>
 
@@ -590,13 +590,13 @@ MathJax.Hub.Config({
 
 <p>The geoid can be computed on one of four different grids: (1) a Gauss-Legendre quadrature grid (see <code class="highlighter-rouge">MakeGridGLQ</code>), (2) A <code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code> equally sampled grid (see <code class="highlighter-rouge">MakeGridDH</code>), (3) an <code class="highlighter-rouge">n</code> by 2<code class="highlighter-rouge">n</code> equally spaced grid (see <code class="highlighter-rouge">MakeGridDH</code>), or (4) A 2D Cartesian grid (see <code class="highlighter-rouge">MakeGrid2D</code>). This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase. This can not be modified.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
 
 <p>Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, 2007.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="makegrid2d.html">makegrid2d</a>, <a href="makegridglq.html">makegridglq</a>, <a href="makegriddh.html">makegriddh</a>, <a href="makegravgriddh.html">makegravgriddh</a>, <a href="makegravgradgriddh.html">makegravgradgriddh</a></p>
 

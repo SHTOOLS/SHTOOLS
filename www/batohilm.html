@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Calculate iteratively the relief along an interface of constant density contrast that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998).</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call BAtoHilm (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">ba</code>, <code class="highlighter-rouge">grid</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">nmax</code>, <code class="highlighter-rouge">mass</code>, <code class="highlighter-rouge">r0</code>, <code class="highlighter-rouge">rho</code>, <code class="highlighter-rouge">gridtype</code>, <code class="highlighter-rouge">w</code>, <code class="highlighter-rouge">plx</code>, <code class="highlighter-rouge">zero</code>, <code class="highlighter-rouge">filtertype</code>, <code class="highlighter-rouge">filterdeg</code>, <code class="highlighter-rouge">lmaxcalc</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : output, real*8, dimension (2, <code class="highlighter-rouge">lmaxcalc</code>+1, <code class="highlighter-rouge">lmaxcalc</code>+1)</dt>
@@ -580,7 +580,7 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p>I<code class="highlighter-rouge">BAtoHilm</code> is used to solve iteratively for the relief along an interface that corresponds to a given Bouguer anomaly. This is equation 18 of Wieczorek and Phillips (1998) which implicitly takes into consideration the finite-amplitude correction. Each iteration takes as input a guess for the relief (specified by <code class="highlighter-rouge">grid</code>) and outputs the iteratively improved spherical harmonic coefficients of this relief. These coefficients can then be re-expanded and re-input into this routine as the next guess. For the initial guess, it is often sufficient to use the relief predicted using the first-order “mass sheet” approximation. The input relief <code class="highlighter-rouge">grid</code> can be of one of three type specified by <code class="highlighter-rouge">gridtype</code>: 1 for Gauss-Legendre grids, 2 for equally sampled Driscoll-Healy grids (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>), and 3 for equally spaced Driscoll-Healy grid (<code class="highlighter-rouge">n</code> by 2<code class="highlighter-rouge">n</code>).</p>
 
@@ -595,11 +595,11 @@ MathJax.Hub.Config({
 
 <p>This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="batohilmrhoh.html">batohilmrhoh</a>, <a href="cilmplus.html">cilmplus</a>, <a href="cilmplusrhoh.html">cilmplusrhoh</a>, <a href="shexpandglq.html">shexpandglq</a>, <a href="makegridglq.html">makegridglq</a>, <a href="shglq.html">shglq</a>, <a href="shexpanddh.html">shexpanddh</a>, <a href="makegriddh.html">makegriddh</a>, <a href="glqgridcoord.html">glqgridcoord</a>, <a href="downcontfilterma.html">downcontfilterma</a>, <a href="downcontfiltermc.html">downcontfiltermc</a></p>
 

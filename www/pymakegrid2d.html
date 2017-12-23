@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical harmonic coefficients.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">grid</code> = MakeGrid2D (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">interval</code>, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">f</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">north</code>, <code class="highlighter-rouge">south</code>, <code class="highlighter-rouge">east</code>, <code class="highlighter-rouge">west</code>, <code class="highlighter-rouge">dealloc</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">grid</code> : float, dimension ((<code class="highlighter-rouge">north</code>-<code class="highlighter-rouge">south</code>)/<code class="highlighter-rouge">interval</code>+1, (<code class="highlighter-rouge">east</code>-<code class="highlighter-rouge">west</code>)/<code class="highlighter-rouge">interval</code>+1)</dt>
   <dd>A 2D equally spaced map of the input spherical harmonic coefficients <code class="highlighter-rouge">cilm</code>. The  array is in raster format with upper-left and lower-right coordinates of (90 N, 0 E) and (90 S, 360 E), respectively.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -579,17 +579,17 @@ MathJax.Hub.Config({
   <dd>0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">MakeGrid2D</code> will create a 2-dimensional cylindrical map, equally spaced in (geocentric) latitude and longitude, from a set of input spherical harmonic coefficients. The output grid is in raster format possessing upper-left and lower-right coordinates of (90 N, 0 E) and (90 S, 360 E), repsectively. If the optional parameters <code class="highlighter-rouge">north</code>, <code class="highlighter-rouge">south</code>, <code class="highlighter-rouge">east</code> and <code class="highlighter-rouge">west</code> are specified, then the output grid will possess upper-left and lower-right coordinates of (<code class="highlighter-rouge">north</code>, <code class="highlighter-rouge">west</code>) and (<code class="highlighter-rouge">south</code>, <code class="highlighter-rouge">east</code>), repsectively. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code class="highlighter-rouge">norm</code> and <code class="highlighter-rouge">csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
 
 <p>If the optional arguments <code class="highlighter-rouge">f</code> and <code class="highlighter-rouge">a</code> are specified, the output function will be referenced to an ellipsoid with flattening <code class="highlighter-rouge">f</code> and semimajor axis <code class="highlighter-rouge">a</code>. The normalized legendre functions are calculated in this routine using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pymakegriddh.html">makegriddh</a>, <a href="pymakegriddhc.html">makegriddhc</a>, <a href="pymakegridglq.html">makegridglq</a>, <a href="pymakegridglqc.html">makegridglqc</a>, <a href="pymakegravgriddh.html">makegravgriddh</a>, <a href="pymakemaggriddh.html">makemaggriddh</a></p>
 

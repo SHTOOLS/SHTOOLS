@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute the power spectral density of a complex function for a single spherical harmonic degree.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">psd</code> = SHPowerDensityLC (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">l</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">psd</code> : output, real*8</dt>
@@ -554,13 +554,13 @@ MathJax.Hub.Config({
   <dd>The spherical harmonic degree. This must be less than or equal to <code class="highlighter-rouge">lmaxin</code>.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHPowerDensityLC</code> will calculate the power spectral density of a complex function expressed in complex 4-pi normalized spherical harmonics for a single spherical harmonic degree <code class="highlighter-rouge">l</code>. This is calculated as:</p>
 
 <p><code class="highlighter-rouge">psd = Sum_{i=1}^2 Sum_{m=0}^l | cilm(i, l+1, m+1) |**2 / (2l + 1)</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shpowerlc.html">shpowerlc</a>, <a href="shcrosspowerlc.html">shcrosspowerlc</a>, <a href="shcrosspowerdensitylc.html">shcrosspowerdensitylc</a>, <a href="shpowerspectrumc.html">shpowerspectrumc</a>, <a href="shpowerspectrumdensityc.html">shpowerspectrumdensityc</a>, <a href="shcrosspowerspectrumc.html">shcrosspowerspectrumc</a>, <a href="shcrosspowerspectrumdensityc.html">shcrosspowerspectrumdensityc</a></p>
 

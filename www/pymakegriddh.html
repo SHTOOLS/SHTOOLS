@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Create a 2D map from a set of spherical harmonic coefficients using the Driscoll and Healy (1994) sampling theorem.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">griddh</code> = MakeGridDH (<code class="highlighter-rouge">cilm</code>, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">sampling</code>, <code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">lmax_calc</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">griddh</code> : float, dimension (2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
   <dd>A 2D equally sampled (default) or equally spaced map in degrees of the spherical harmonic coefficients <code class="highlighter-rouge">cilm</code> that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/<code class="highlighter-rouge">n</code> degrees, where <code class="highlighter-rouge">n</code> is 2*<code class="highlighter-rouge">lmax</code>+2. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/<code class="highlighter-rouge">n</code> for an equally sampled and 180/<code class="highlighter-rouge">n</code> for an equally spaced grid, respectively.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -567,7 +567,7 @@ MathJax.Hub.Config({
   <dd>The maximum spherical harmonic degree used in evaluating the  function. This must be less than or equal to <code class="highlighter-rouge">lmax</code>, and does not affect the number of samples of the output grid.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">MakeGridDH</code> will create a 2-dimensional map equally sampled or equally spaced in latitude and longitude from a set of input spherical harmonic coefficients. This grid conforms with the sampling theorem of Driscoll and Healy (1994) and this routine is the inverse of SHExpandDH. The function is evaluated at each longitudinal band by inverse Fourier transforming the sin and cos terms for each degree <code class="highlighter-rouge">l</code>, and then summing over all degrees. When evaluating the function, the maximum spherical harmonic degree that is considered is the minimum of <code class="highlighter-rouge">lmaxin</code>, <code class="highlighter-rouge">lmax</code>, and <code class="highlighter-rouge">lmax_calc</code> (if specified).</p>
 
@@ -575,13 +575,13 @@ MathJax.Hub.Config({
 
 <p>The normalized legendre functions are calculated using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
 
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, 2002.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshexpanddh.html">shexpanddh</a>, <a href="pymakegriddhc.html">makegriddhc</a>, <a href="pyshexpanddhc.html">shexpanddhc</a>, <a href="pymakegridglq.html">makegridglq</a>, <a href="pyshexpandglq.html">shexpandglq</a>, <a href="pymakegridglqc.html">makegridglqc</a>, <a href="pyshexpandglqc.html">shexpandglqc</a>, <a href="pymakegrid2d.html">makegrid2d</a></p>
 

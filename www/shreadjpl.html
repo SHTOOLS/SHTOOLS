@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Read spherical harmonic coefficients from a JPL ascii-formatted file.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call SHReadJPL (<code class="highlighter-rouge">filename</code>, <code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">error</code>, <code class="highlighter-rouge">gm</code>, <code class="highlighter-rouge">formatstring</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">filename</code> : input, character(*)</dt>
@@ -562,7 +562,7 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHReadJPL</code> will read spherical harmonic coefficients from a JPL ascii formatted file into an array <code class="highlighter-rouge">cilm</code>. The maximum spherical harmonic degree <code class="highlighter-rouge">lmax</code> must be known a priori. The errors associated with the coefficients <code class="highlighter-rouge">cilm</code> will be read if the optional array <code class="highlighter-rouge">error</code> is specified. The real numbers are assumed to be formated with the specifier <code class="highlighter-rouge">E19.12</code>, but this can be changed by specifiying the optional string <code class="highlighter-rouge">formatstring</code>. If the optional parameter <code class="highlighter-rouge">gm</code> is specified, the mass-gravitational constant and error will be output, if present.</p>
 
@@ -576,7 +576,7 @@ MathJax.Hub.Config({
   <li>The errors of the above (starting at step 2).</li>
 </ul>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shread.html">shread</a>, <a href="shread2.html">shread2</a></p>
 

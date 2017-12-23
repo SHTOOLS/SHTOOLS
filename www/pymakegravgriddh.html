@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">rad</code>, <code class="highlighter-rouge">theta</code>, <code class="highlighter-rouge">phi</code>, <code class="highlighter-rouge">total</code>, <code class="highlighter-rouge">pot</code> = MakeGravGridDH (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">gm</code>, <code class="highlighter-rouge">r0</code>, [<code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">f</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">sampling</code>, <code class="highlighter-rouge">lmax_calc</code>, <code class="highlighter-rouge">omega</code>, <code class="highlighter-rouge">normal_gravity</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">rad</code> : float, dimension (2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
@@ -558,7 +558,7 @@ MathJax.Hub.Config({
   <dd>A 2D equally sampled or equally spaced grid of the gravitational potential.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -583,7 +583,7 @@ MathJax.Hub.Config({
   <dd>If 1, the normal gravity (the gravitational acceleration on the ellipsoid) will be subtracted from the total gravity, yielding the “gravity disturbance.” This is done using Somigliana’s formula (after converting geocentric to geodetic coordinates).</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">MakeGravGridDH</code> will create 2-dimensional cylindrical maps from the spherical harmonic coefficients <code class="highlighter-rouge">cilm</code>, equally sampled (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>) or equally spaced (<code class="highlighter-rouge">n</code> by 2<code class="highlighter-rouge">n</code>) in latitude and longitude, for the three vector components of the gravity field, the magnitude of the gravity field, and the potential (all using geocentric coordinates). The gravitational potential is given by</p>
 
@@ -601,11 +601,11 @@ MathJax.Hub.Config({
 
 <p>The default is to calculate grids for use in the Driscoll and Healy routines that are equally spaced (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">2n</code>), but this can be changed to calculate equally sampled grids (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>) by setting the optional argument <code class="highlighter-rouge">sampling</code> to 1. The input value of <code class="highlighter-rouge">lmax</code> determines the number of samples, <code class="highlighter-rouge">n=2lmax+2</code>, and the latitudinal sampling interval, 90/(<code class="highlighter-rouge">lmax</code>+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/<code class="highlighter-rouge">n</code> degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/<code class="highlighter-rouge">n</code> for equally sampled and 180/<code class="highlighter-rouge">n</code> for equally spaced grids, respectively.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pymakegeoidgriddh.html">makegeoidgriddh</a>, <a href="pymakegravgradgriddh.html">makegravgradgriddh</a>, <a href="pynormalgravity.html">normalgravity</a>, <a href="pymakegriddh.html">makegriddh</a></p>
 

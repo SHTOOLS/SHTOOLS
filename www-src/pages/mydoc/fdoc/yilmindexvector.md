@@ -10,11 +10,11 @@ toc: false
 
 Compute the index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`.
 
-# Usage
+## Usage
 
 `index` = YilmIndex (`i`, `l`, `m`)
 
-# Parameters
+## Parameters
 
 `index` : output, integer 
 :   Index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`.
@@ -28,10 +28,10 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 `m` : input, integer
 :   The angular order.
 
-# Description
+## Description
 
 `YilmIndexVector` will calculate the index of a 1D vector of spherical harmonic coefficients corresponding to degree `l`, angular order `m` and `i` (1 = cosine, 2 = sine). The index is given by `l**2+(i-1)*l+m+1`.
 
-# See also
+## See also
 
 [shcilmtovector](shcilmtovector.html), [shvectortocilm](shvectortocilm.html)

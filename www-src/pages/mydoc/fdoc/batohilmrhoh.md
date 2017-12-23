@@ -10,11 +10,11 @@ toc: false
 
 Calculate iteratively the relief along an interface with lateral density variations that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998).
 
-# Usage
+## Usage
 
 call BAtoHilmRhoH (`cilm`, `ba`, `grid`, `lmax`, `nmax`, `mass`, `r0`, `rho`, `gridtype`, `w`, `plx`, `zero`, `filtertype`, `filterdeg`, `lmaxcalc`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `cilm` : output, real\*8, dimension (2, `lmaxcalc`+1, `lmaxcalc`+1)
 :   An estimate of the real spherical harmonic coefficients (geodesy normalized) of relief along an interface with lateraly varying density contrast `rho` that satisfies the Bouguer anomaly `ba`. The degree-zero term corresponds to the mean radius of the relief.
@@ -64,7 +64,7 @@ call BAtoHilmRhoH (`cilm`, `ba`, `grid`, `lmax`, `nmax`, `mass`, `r0`, `rho`, `g
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `BAtoHilmRhoH` is used to solve  iteratively for the relief along an interface with lateral variations in density that corresponds to a given Bouguer anomaly. This is equation 18 of Wieczorek and Phillips (1998), modified to account for density variations as in equation 30 of Wieczorek 2007, which implicitly takes into consideration the finite-amplitude correction. Each iteration takes as input a guess for the relief and outputs the iteratively improved spherical harmonic coefficients of this relief. These coefficients can then be re-expanded and re-input into this routine as the next guess. For the initial guess, it is often sufficient to use the relief predicted using the first-order "mass sheet" approximation. The input relief `grid` can be of one of three type specified by `gridtype`: 1 for Gauss-Legendre grids, 2 for equally sampled Driscoll-Healy grids (`n` by `n`), and 3 for equally spaced Driscoll-Healy grids (`n` by 2`n`).
 
@@ -79,10 +79,10 @@ If the input grid is evaluated on the Gauss-Legendre points, it is necessary to 
 
 This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase; This can not be modified.
 
-# References
+## References
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
 
-# See also
+## See also
 
 [batohilm](batohilm.html), [cilmplus](cilmplus.html), [cilmplusrhoh](cilmplusrhoh.html), [shexpandglq](shexpandglq.html), [makegridglq](makegridglq.html), [shglq](shglq.html), [shexpanddh](shexpanddh.html), [makegriddh](makegriddh.html), [glqgridcoord](glqgridcoord.html), [downcontfilterma](downcontfilterma.html), [downcontfiltermc](downcontfiltermc.html)

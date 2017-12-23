@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call SHBias (<code class="highlighter-rouge">shh</code>, <code class="highlighter-rouge">lwin</code>, <code class="highlighter-rouge">incspectra</code>, <code class="highlighter-rouge">ldata</code>, <code class="highlighter-rouge">outcspectra</code>, <code class="highlighter-rouge">save_cg</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">shh</code> : input, real*8, dimension (<code class="highlighter-rouge">lwin</code>+1)</dt>
@@ -562,7 +562,7 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHBias</code> will calculate the (cross-)power spectrum expectation of a function multiplied by a localizing window. This is given by equation 35 of Wieczorek and Simons (2005) and equation 2.11 of Wieczorek and Simons (2007),</p>
 
@@ -572,14 +572,14 @@ MathJax.Hub.Config({
 
 <p>If this routine is to be called several times using the same values of <code class="highlighter-rouge">lwin</code> and <code class="highlighter-rouge">ldata</code>, then the Clebsch-Gordon coefficients can be precomputed and saved by setting the optional parameter <code class="highlighter-rouge">save_cg</code> equal to 1. To deallocate the saved memory, which is a matrix of size (<code class="highlighter-rouge">lwin+ldata,lwin,2*lwin+ldata+1</code>), set <code class="highlighter-rouge">save_cg</code> equal to -1.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.</p>
 
 <p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on a sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shpowerspectrum.html">shpowerspectrum</a>,<a href="shcrosspowerspectrum.html">shcrosspowerspectrum</a>, <a href="wigner3j.html">wigner3j</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersm.html">shreturntapersm</a>, <a href="shbiasadmitcorr.html">shbiasadmitcorr</a></p>
 

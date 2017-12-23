@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Calculate the gravitational potential exterior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998).</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call CilmPlus (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">gridin</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">nmax</code>, <code class="highlighter-rouge">mass</code>, <code class="highlighter-rouge">d</code>, <code class="highlighter-rouge">rho</code>, <code class="highlighter-rouge">gridtype</code>, <code class="highlighter-rouge">w</code>, <code class="highlighter-rouge">zero</code>, <code class="highlighter-rouge">plx</code>, <code class="highlighter-rouge">n</code>, <code class="highlighter-rouge">dref</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : output, real*8, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
@@ -576,7 +576,7 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">CilmPlus</code> will calculate the spherical harmonic coefficients of the gravitational potential exterior to constant density relief referenced to a spherical interface. This is equation 10 of Wieczorek and Phillips (1998), where the potential is strictly valid only when the coefficients are evaluated at a radius greater than the maximum radius of the relief. The relief is input as a grid, whose type is specified by <code class="highlighter-rouge">gridtype</code> (1 for Gauss-Legendre quadrature grids, 2 for <code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code> Driscoll and Healy sampled grids, and 3 for <code class="highlighter-rouge">n</code> by 2<code class="highlighter-rouge">n</code> Driscoll and Healy sampled grids). The input relief <code class="highlighter-rouge">gridin</code> must correspond to absolute radii. The parameter <code class="highlighter-rouge">nmax</code> is the order of the Taylor series used in the algorithm to approximate the potential coefficients. By default, the relief and spherical harmonic coefficients will be referenced to the mean radius of <code class="highlighter-rouge">gridin</code>. However, if the optional parameter <code class="highlighter-rouge">dref</code> is specified, this will be used instead as the reference radius.</p>
 
@@ -586,11 +586,11 @@ MathJax.Hub.Config({
 
 <p>This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="cilmplusrhoh.html">cilmplusrhoh</a>, <a href="cilmminus.html">cilmminus</a>, <a href="cilmminusrhoh.html">cilmminusrhoh</a>, <a href="shexpandglq.html">shexpandglq</a>, <a href="makegridglq.html">makegridglq</a>, <a href="shglq.html">shglq</a>, <a href="glqgridcoord.html">glqgridcoord</a>, <a href="makegriddh.html">makegriddh</a></p>
 

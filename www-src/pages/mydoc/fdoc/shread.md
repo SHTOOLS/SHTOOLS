@@ -10,11 +10,11 @@ toc: false
 
 Read spherical harmonic coefficients from an ascii-formatted file.
 
-# Usage
+## Usage
 
 call SHRead (`filename`, `cilm`, `lmax`, `skip`, `header`, `error`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `filename` : input, character(:)
 :   The filename of the ascii file containing the spherical harmonic coefficients.
@@ -37,7 +37,7 @@ call SHRead (`filename`, `cilm`, `lmax`, `skip`, `header`, `error`, `exitstatus`
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHRead` will read spherical harmonic coefficients from an ascii-formatted file into an array `cilm`. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array `cilm`-1 and the maximum degree of the coefficients in the file. If the optional array `skip` is specified, parsing of the file will commence after the first `skip` lines. If the optional array `header` is specified, then the first `n` elements after the skipped lines will be output, where `n` is the length of the array `header`.
 
@@ -55,6 +55,6 @@ The ordering of the file is explcitly given by
 
 The first spherical harmonic degree of the filename does not have to be 0; this is determined from the first element after the `skip` and `header` lines.
 
-# See also
+## See also
 
 [shread2](shread2.html), [shreadjpl](shreadjpl.html)

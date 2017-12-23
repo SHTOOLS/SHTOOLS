@@ -10,11 +10,11 @@ toc: false
 
 Compute the cross-power spectral density of two real functions for a single spherical harmonic degree.
 
-# Usage
+## Usage
 
 `cpsd` = SHCrossPowerDensityL (`cilm1`, `cilm2`, `l`)
 
-# Parameters
+## Parameters
 
 `cpsd` : output, real\*8
 :   Cross-power spectral density of the two real functions for spherical harmonic degree `l`.
@@ -28,12 +28,12 @@ Compute the cross-power spectral density of two real functions for a single sphe
 `l` : input, integer
 :   The spherical harmonic degree. This must be less than or equal to the minimum of `lmaxin1` and `lmaxin2`.
 
-# Description
+## Description
 
 `SHCrossPowerDensityL` will calculate the cross-power spectral density of two real functions expressed in real 4-pi normalized spherical harmonics for a single spherical harmonic degree `l`. This is explicitly calculated as:
 
 `cpsd = Sum_{i=1}^2 Sum_{m=0}^l cilm1(i, l+1, m+1) * cilm2(i, l+1, m+1) / (2l + 1)`.
 
-# See also
+## See also
 
 [shpowerl](shpowerl.html), [shpowerdensityl](shpowerdensityl.html), [shcrosspowerl](shcrosspowerl.html), [shpowerspectrum](shpowerspectrum.html), [shpowerspectrumdensity](shpowerspectrumdensity.html), [shcrosspowerspectrum](shcrosspowerspectrum.html), [shcrosspowerspectrumdensity](shcrosspowerspectrumdensity.html), [shadmitcorr](shadmitcorr.html)

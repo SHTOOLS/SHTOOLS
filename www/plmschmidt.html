@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute all the Schmidt semi-normalized associated Legendre functions.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call PlmSchmidt (<code class="highlighter-rouge">p</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">z</code>, <code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">cnorm</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">p</code> : output, real*8, dimension ((<code class="highlighter-rouge">lmax</code>+1)*(<code class="highlighter-rouge">lmax</code>+2)/2)</dt>
@@ -560,7 +560,7 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">PlmSchmidt</code> will calculate all of the Schmidt semi-normalized associated Legendre functions up to degree <code class="highlighter-rouge">lmax</code> for a given argument. These are calculated using a standard three-term recursion formula, and in order to prevent overflows, the scaling approach of Holmes and Featherstone (2002) is utilized. These functions are accurate to about degree 2800. The index of the array corresponding to a given degree <code class="highlighter-rouge">l</code> and angular order <code class="highlighter-rouge">m</code> corresponds to <code class="highlighter-rouge">l*(l+1)/2+m+1</code>, which can be calculated by a call to <code class="highlighter-rouge">PlmIndex</code>.</p>
 
@@ -568,14 +568,14 @@ MathJax.Hub.Config({
 
 <p>This routine saves the three-term recursion factors and square roots of the integers the first time being called. If subsequent calls possess the same value of <code class="highlighter-rouge">lmax</code>, these will not be recomputed. If you wish to deallocate this memory, which is an array of length <code class="highlighter-rouge">(lmax+1)*(lmax+2)</code>, recall this routine with <code class="highlighter-rouge">lmax</code>=-1.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
 summation and the recursive computation of very high degree and
 order normalised associated Legendre functions, J. Geodesy, 76, 279-
 299, 2002.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="plbar.html">plbar</a>, <a href="plbar_d1.html">plbar_d1</a>, <a href="plmbar.html">plmbar</a>, <a href="plmbar_d1.html">plmbar_d1</a>, <a href="plon.html">plon</a>, <a href="plon_d1.html">plon_d1</a>, <a href="plmon.html">plmon</a>, <a href="plmon_d1.html">plmon_d1</a>, <a href="plschmidt.html">plschmidt</a>, <a href="plschmidt_d1.html">plschmidt_d1</a>, <a href="plmschmidt_d1.html">plmschmidt_d1</a>, <a href="plegendre.html">plegendre</a>, <a href="plegendre_d1.html">plegendre_d1</a>, <a href="plegendrea.html">plegendrea</a>, <a href="plegendrea_d1.html">plegendrea_d1</a>, <a href="plmindex.html">plmindex</a></p>
 

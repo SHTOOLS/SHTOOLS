@@ -10,11 +10,11 @@ toc: false
 
 Create a global map of the geoid.
 
-# Usage
+## Usage
 
 call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`, `gridtype`, `order`, `nlat`, `nlong`, `interval`, `lmax_calc`, `a`, `f`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `geoid` : output, real\*8, dimension(`nlat`, `nlong`)
 :   A global grid of the height to the potential `potref` above a sphere of radius `r` (or above a flattened ellipsoid if both `a` and `f` are specified). The number of latitude and longitude points depends upon `gridtype`: (1) `lmax+1` by `2lmax+1`, (2) `2lmax+2` by `2lmax+2`, (3) `2lmax+2` by `4lmax+4`, or (4) `180/interval+1` by `360/interval+1`.
@@ -67,7 +67,7 @@ call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`,
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `MakeGeoidGrid` will create a global map of the geoid, accurate to either first, second, or third order, using the method described in Wieczorek (2007; equation 19-20). The algorithm expands the potential in a Taylor series on a spherical interface of radius `r`, and computes the height above this interface to the potential `potref` exactly from the linear, quadratic, or cubic equation at each grid point. If the optional parameters `a` and `f` are specified, the geoid height will be referenced to a flattened ellipsoid with semi-major axis `a` and flattening `f`. The pseudo-rotational potential is explicitly accounted for by specifying the angular rotation rate `omega` of the planet.
 
@@ -75,12 +75,12 @@ It should be noted that this geoid calculation is only strictly exact when the r
 
 The geoid can be computed on one of four different grids: (1) a Gauss-Legendre quadrature grid (see `MakeGridGLQ`), (2) A `n` by `n` equally sampled grid (see `MakeGridDH`), (3) an `n` by 2`n` equally spaced grid (see `MakeGridDH`), or (4) A 2D Cartesian grid (see `MakeGrid2D`). This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase. This can not be modified.
 
-# References
+## References
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, 2007.
 
-# See also
+## See also
 
 [makegrid2d](makegrid2d.html), [makegridglq](makegridglq.html), [makegriddh](makegriddh.html), [makegravgriddh](makegravgriddh.html), [makegravgradgriddh](makegravgradgriddh.html)

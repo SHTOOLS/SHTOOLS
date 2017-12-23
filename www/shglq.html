@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Precompute weights, nodes, and associated Legendre functions used in the Gauss-Legendre quadrature based spherical harmonics routines.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call SHGLQ (<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">zero</code>, <code class="highlighter-rouge">w</code>, <code class="highlighter-rouge">plx</code>, <code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">cnorm</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">lmax</code> : input, integer</dt>
@@ -564,13 +564,13 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHGLQ</code> will calculate the weights and zeros used in the Gauss-Legendre quadrature based spherical harmonic routines <code class="highlighter-rouge">SHExpandGLQ</code>, <code class="highlighter-rouge">MakeGridGLQ</code>, <code class="highlighter-rouge">SHExpandGLQC</code>, and <code class="highlighter-rouge">MakeGridGLQC</code>. Optionally, an array of the associated Legendre functions evaluated on the quadrature nodes can be computed as well. If the complex routines are to be used, the optional parameter <code class="highlighter-rouge">cnorm</code> must be set equal to 1.</p>
 
 <p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code class="highlighter-rouge">norm</code> and <code class="highlighter-rouge">csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shexpandglq.html">shexpandglq</a>, <a href="makegridglq.html">makegridglq</a>, <a href="shexpandglqc.html">shexpandglqc</a>, <a href="makegridglqc.html">makegridglqc</a>, <a href="glqgridcoord.html">glqgridcoord</a>, <a href="preglq.html">preglq</a></p>
 

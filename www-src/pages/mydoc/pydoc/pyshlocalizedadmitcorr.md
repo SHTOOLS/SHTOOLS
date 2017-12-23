@@ -10,11 +10,11 @@ toc: false
 
 Calculate the localized admittance and correlation spectra of two functions at a given location using spherical cap localization windows.
 
-# Usage
+## Usage
 
 `admit`, `corr`, `admit_error`, `corr_error` = SHLocalizedAdmitCorr (`gilm`, `tilm`, `tapers`, `taper_order`, `lat`, `lon`, [`k`, `lwin`, `lmax`, `taper_wt`, `mtdef`, `k1linsig`])
 
-# Returns
+## Returns
 
 `admit` : float, dimension (`lmax`-`lwin`+1)
 :   The admittance function, which is equal to `Sgt/Stt`.
@@ -28,7 +28,7 @@ Calculate the localized admittance and correlation spectra of two functions at a
 `corr_error` : float, dimension (`lmax`-`lwin`+1)
 :   The standard error of the degree correlation function.
 
-# Parameters
+## Parameters
 
 `gilm` : float, dimension (2, `lmaxgin`+1, `lmaxgin`+1)
 :   The spherical harmonic coefficients of the function G.
@@ -66,7 +66,7 @@ Calculate the localized admittance and correlation spectra of two functions at a
 `k1linsig` : optional, integer, default = -1
 :   If equal to one, and only a single taper is being used, the errors in the admittance function will be calculated by assuming that the coefficients of `gilm` and `tilm` are related by a linear degree-dependent transfer function and that the lack of correlation is a result of uncorrelated noise. This is the square root of eq. 33 of Simons et al. 1997. The default value specifies that this is not set.
 
-# Description
+## Description
 
 `SHLocalizedAdmitCorr` will calculate the localized admittance and degree correlation spectra of two functions at a given location. The windowing functions are solutions to the spherical-cap concentration problem (as calculated by `SHReturnTapers` or `SHReturnTapersM`), of which the best `k` concentrated tapers are utilized. If `k` is greater than 1, then estimates of the standard error for the admittance and correlation will be returned in the optional arrays `admit_error` and `corr_error`. The symmetry axis of the localizing windows are rotated to the coordinates (`lat`, `lon`) before performing the windowing operation.
 
@@ -78,7 +78,7 @@ When `mtdef` is 1, by default, the multitaper spectral estimates are calculated 
 
 This routine assumes that the input functions and tapers are expressed using geodesy 4-pi normalized spherical harmonic functions that exclude the  Condon-Shortley phase factor of (-1)^m.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 
@@ -89,7 +89,7 @@ Geophys. J. Int., 162, 655-675, 2005.
 
 Simons, M., S. C. Solomon and B. H. Hager, Localization of gravity and topography: constrains on the tectonics and mantle dynamics of Venus, Geophys. J. Int., 131, 24-44, 1997.
 
-# See also
+## See also
 
 [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html)
 

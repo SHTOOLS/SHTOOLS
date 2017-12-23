@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Perform a localized multitaper spectral analysis using arbitrary windows derived from a mask.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">mtse</code>, <code class="highlighter-rouge">sd</code> = SHMultiTaperMaskSE (<code class="highlighter-rouge">sh</code>, <code class="highlighter-rouge">tapers</code>, [<code class="highlighter-rouge">lmax</code>,  <code class="highlighter-rouge">lmaxt</code>, <code class="highlighter-rouge">k</code>, <code class="highlighter-rouge">taper_wt</code>, <code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">csphase</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">mtse</code> : float dimension (<code class="highlighter-rouge">lmax</code>-<code class="highlighter-rouge">lmaxt</code>+1)</dt>
@@ -552,7 +552,7 @@ MathJax.Hub.Config({
   <dd>The standard error of the localized multitaper power spectral estimates.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">sh</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -573,7 +573,7 @@ MathJax.Hub.Config({
   <dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHMultiTaperMaskSE</code> will perform a localized multitaper spectral analysis of an input function expressed in spherical harmonics using an arbitrary set of windows derived from a mask. The maximum degree of the localized multitaper cross-power spectrum estimate is <code class="highlighter-rouge">lmax-lmaxt</code>. The matrix <code class="highlighter-rouge">tapers</code> contains the spherical harmonic coefficients of the windows and can be obtained by a call to <code class="highlighter-rouge">SHReturnTapersMap</code>. The coefficients of each window are stored in a single column, ordered according to the conventions used in <code class="highlighter-rouge">SHCilmToVector</code>.</p>
 
@@ -581,11 +581,11 @@ MathJax.Hub.Config({
 
 <p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code class="highlighter-rouge">norm</code> and <code class="highlighter-rouge">csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshmultitapermaskcse.html">shmultitapermaskcse</a>, <a href="pyshreturntapersmap.html">shreturntapersmap</a>, <a href="pyshcilmtovector.html">shcilmtovector</a></p>
 

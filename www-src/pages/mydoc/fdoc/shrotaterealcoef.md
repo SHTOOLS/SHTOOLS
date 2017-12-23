@@ -10,11 +10,11 @@ toc: false
 
 Determine the spherical harmonic coefficients of a real function rotated by three Euler angles.
 
-# Usage
+## Usage
 
 call SHRotateRealCoef (`cilmrot`, `cilm`, `lmax`, `x`, `dj`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `cilmrot` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the rotated function, normalized for use with the geodesy 4-pi spherical harmonics.
@@ -34,7 +34,7 @@ call SHRotateRealCoef (`cilmrot`, `cilm`, `lmax`, `x`, `dj`, `exitstatus`)
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHRotateRealCoef` will take the real spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in `x`, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention. The input rotation matrix `dj` is computed by a call to `djpi2`.
 
@@ -66,6 +66,6 @@ Note that this routine uses the "y convention", where the second rotation is wit
 
 This routine first converts the real coefficients to complex form using `SHrtoc`. Then the coefficients are converted to indexed form using `SHCilmToCindex`, these are sent to `SHRotateCoef`, the result if converted back to `cilm` complex form using `SHCindexToCilm`, and these are finally converted back to real form using `SHctor`.
 
-# See also
+## See also
 
 [djpi2](djpi2.html), [shrotatecoef](shrotatecoef.html), [shctor](shctor.html), [shrtoc](shrtoc.html), [shcilmtocindex](shcilmtocindex.html), [shcindextocilm](shcindextocilm.html)

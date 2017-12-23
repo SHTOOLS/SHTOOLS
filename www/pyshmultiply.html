@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Multiply two functions and determine the spherical harmonic coefficients of the resulting function.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">shout</code> = SHMultiply (<code class="highlighter-rouge">sh1</code>, <code class="highlighter-rouge">lmax1</code>, <code class="highlighter-rouge">sh2</code>, <code class="highlighter-rouge">lmax2</code>, [<code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">csphase</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">shout</code> : float, dimension (2, <code class="highlighter-rouge">lmax1</code>+<code class="highlighter-rouge">lmax2</code>+1, <code class="highlighter-rouge">lmax1</code>+<code class="highlighter-rouge">lmax2</code>+1)</dt>
   <dd>The real spherical harmonic coefficients corresponding to the multiplication of <code class="highlighter-rouge">sh1</code> and <code class="highlighter-rouge">sh2</code> in the space domain.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">sh1</code> : float, dimension (2, <code class="highlighter-rouge">lmax1in</code>+1, <code class="highlighter-rouge">lmax1in</code>+1)</dt>
@@ -567,13 +567,13 @@ MathJax.Hub.Config({
   <dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHMultiply</code> will take two sets of spherical harmonic coefficients, multiply the functions in the space domain, and expand the resulting field in spherical harmonics using <code class="highlighter-rouge">SHExpandGLQ</code>. The spherical harmonic bandwidth of the resulting field is <code class="highlighter-rouge">lmax1+lmax2</code>, where <code class="highlighter-rouge">lmax1</code> and <code class="highlighter-rouge">lmax2</code> are the bandwidths of the input fields.</p>
 
 <p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code class="highlighter-rouge">norm</code> and <code class="highlighter-rouge">csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshexpandglq.html">shexpandglq</a>, <a href="pymakegridglq.html">makegridglq</a>, <a href="pyshglq.html">shglq</a></p>
 

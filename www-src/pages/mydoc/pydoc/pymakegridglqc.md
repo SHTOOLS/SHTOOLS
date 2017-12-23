@@ -10,16 +10,16 @@ toc: false
 
 Create a 2D complex map from a set of complex spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes.
 
-# Usage
+## Usage
 
 `gridglq` = MakeGridGLQC (`cilm`, `zero`, [`lmax`, `norm`, `csphase`, `lmax_calc`])
 
-# Returns
+## Returns
 
 `gridglq` : complex, dimension (`lmax`+1, 2\*`lmax`+1)
 :   A 2D complex map of the function sampled on the Gauss-Legendre quadrature nodes.
 
-# Parameters
+## Parameters
 
 `cilm` : complex, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of `lmax`, `lmaxin`, or `lmax_calc` (if specified). The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm[0,l,m+]` and `Cl,-m=cilm[1,l,m]`.
@@ -39,7 +39,7 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients sa
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
 
-# Description
+## Description
 
 `MakeGridGLQC` will create a 2-dimensional complex map from a set of input complex spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. This is the inverse of the routine `SHExpandGLQC`. The latitudinal nodes correspond to the zeros of the Legendre polynomial of degree `lmax+1`, and the longitudinal nodes are equally spaced with an interval of `360/(2*lmax+1)` degrees. When evaluating the function, the maximum spherical harmonic degree that is considered is the minimum of `lmax`, `lmaxin`, or `lmax_calc` (if specified).
 
@@ -47,11 +47,11 @@ The employed spherical harmonic normalization and Condon-Shortley phase conventi
 
 The reconstruction of the spherical harmonic function may be speeded up by precomputing the Legendre functions on the Gauss-Legendre quadrature nodes in the routine `SHGLQ` with the optional parameter `cnorm` set to 1. However, given that this array contains on the order of `lmax`**3 entries, this is only feasible for moderate values of `lmax`.
 
-# References
+## References
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
 summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.
 
-# See also
+## See also
 
 [shexpandglqc](pyshexpandglqc.html), [shexpandglq](pyshexpandglq.html), [makegridglq](pymakegridglq.html), [shexpanddh](pyshexpanddh.html), [makegriddh](pymakegriddh.html), [shexpanddhc](pyshexpanddhc.html), [makegriddhc](pymakegriddhc.html), [shexpandlsq](pyshexpandlsq.html), [glqgridcoord](pyglqgridcoord.html), [shglq](pyshglq.html)

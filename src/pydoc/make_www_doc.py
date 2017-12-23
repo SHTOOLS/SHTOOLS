@@ -19,6 +19,7 @@ for fn in pydocfiles:
             title = reh1.search(line).group(1)
             mdfile.readline()
             doc = mdfile.read()
+            doc = doc.replace('# ', '## ')
 
         string = ('---\n' + 'title: ' + title + ' (Python)\n' +
                   'keywords: spherical harmonics software package, ' +

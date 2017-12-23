@@ -10,11 +10,11 @@ toc: false
 
 Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential.
 
-# Usage
+## Usage
 
 call MakeGravGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `rad`, `theta`, `phi`, `total`, `n`, `sampling`, `lmax_calc`, `omega`, `normal_gravity`, `pot_grid`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The real gravitational potential spherical harmonic coefficients. The coefficients c1lm and c2lm refer to the cosine and sine coefficients, respectively, with `c1lm=cilm(1,l+1,m+1)` and `c2lm=cilm(2,l+1,m+1)`.
@@ -67,7 +67,7 @@ call MakeGravGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `rad`, `theta`, `phi`
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `MakeGravGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm`, equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) in latitude and longitude, for the three vector components of the gravity field, the magnitude of the gravity field, and the potential (all using geocentric coordinates). The gravitational potential is given by
 
@@ -85,10 +85,10 @@ The calculated values should be considered exact only when the radii on the elli
 
 The default is to calculate grids for use in the Driscoll and Healy routines that are equally sampled (`n` by `n`), but this can be changed to calculate equally spaced grids (`n` by 2`n`) by setting the optional argument `sampling` to 2. The input value of `lmax` determines the number of samples, `n=2lmax+2`, and the latitudinal sampling interval, 90/(`lmax`+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/`n` for equally sampled and 180/`n` for equally spaced grids, respectively.
 
-# References
+## References
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
-# See also
+## See also
 
 [makegeoidgrid](makegeoidgrid.html), [makegravgradgriddh](makegravgradgriddh.html), [normalgravity](normalgravity.html), [makegriddh](makegriddh.html)

@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Create a global map of the geoid.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">geoid</code> = MakeGeoidGridDH (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">r0</code>, <code class="highlighter-rouge">gm</code>, <code class="highlighter-rouge">potref</code>, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">omega</code>, <code class="highlighter-rouge">r</code>, <code class="highlighter-rouge">order</code>, <code class="highlighter-rouge">lmax_calc</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">f</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">geoid</code> : float, dimension (<code class="highlighter-rouge">2lmax+2</code>, <code class="highlighter-rouge">sampling</code>*2<code class="highlighter-rouge">lmax+2</code>)</dt>
   <dd>A global grid of the height to the potential <code class="highlighter-rouge">potref</code> above a flattened ellipsoid of equatorial radius <code class="highlighter-rouge">a</code> and flattening <code class="highlighter-rouge">f</code>.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -577,7 +577,7 @@ MathJax.Hub.Config({
   <dd>The flattening <code class="highlighter-rouge">(R_equator-R_pole)/R_equator</code> of the reference ellipsoid. The optional parameter <code class="highlighter-rouge">a</code> (i.e., <code class="highlighter-rouge">R_equator</code>) must be specified.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">MakeGeoidGrid</code> will create a global map of the geoid, accurate to either first, second, or third order, using the method described in Wieczorek (2007; equation 19-20). The algorithm expands the potential in a Taylor series on a spherical interface of radius <code class="highlighter-rouge">r</code>, and computes the height above this interface to the potential <code class="highlighter-rouge">potref</code> exactly from the linear, quadratic, or cubic equation at each grid point. If the optional parameters <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">f</code> are specified, the geoid height will be referenced to a flattened ellipsoid with semi-major axis <code class="highlighter-rouge">a</code> and flattening <code class="highlighter-rouge">f</code>. The pseudo-rotational potential is explicitly accounted for by specifying the angular rotation rate <code class="highlighter-rouge">omega</code> of the planet.</p>
 
@@ -585,13 +585,13 @@ MathJax.Hub.Config({
 
 <p>The default is to calculate grids for use in the Driscoll and Healy routines that are equally spaced (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">2n</code>), but this can be changed to calculate equally sampled grids (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>) by setting the optional argument <code class="highlighter-rouge">sampling</code> to 1. This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
 
 <p>Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, 2007.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pymakegrid2d.html">makegrid2d</a>, <a href="pymakegridglq.html">makegridglq</a>, <a href="pymakegriddh.html">makegriddh</a>, <a href="pymakegravgriddh.html">makegravgriddh</a>, <a href="pymakegravgradgriddh.html">makegravgradgriddh</a></p>
 

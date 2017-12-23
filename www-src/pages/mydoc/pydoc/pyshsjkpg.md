@@ -10,16 +10,16 @@ toc: false
 
 Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.
 
-# Usage
+## Usage
 
 `value` = SHSjkPG (`incspectra`, `l`, `m`, `mprime`, `hj_real`, `hk_real`, `mj`, `mk`, `lwin`, `hkcc`)
 
-# Returns
+## Returns
 
 `value` : complex
 :   The expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.
 
-# Parameters
+## Parameters
 
 `incspectra` : float, dimension (`l`+`lwin`+1)
 :   The global cross-power spectrum of `f` and `g`.
@@ -51,7 +51,7 @@ Calculate the expectation of the product of two functions, each multiplied by a 
 `hkcc` : integer
 :   If 1, the function described in the `description` will be calculated as is. If 2, the second localized function `Gamma` will not have its complex conjugate taken.
 
-# Description
+## Description
 
 `SHSjkPG` will calculate the expectation of two functions (`f` and `g`), each localized by a different data taper that is a solution of the spherical cap concentration problem, for a given spherical harmonic degree and two different angular orders. As described in Wieczorek and Simons (2007), this is the function
 
@@ -61,10 +61,10 @@ Calculate the expectation of the product of two functions, each multiplied by a 
 
 The global cross-power spectrum of `f` and `g` is input as `incspectra`, and the real coefficients of the two data tapers of angular order `mj` and `mk` (obtained by a call to `SHReturnTapers`) are specified by `hj_real` and `hk_real`. If `hkcc` is set to 1, then the above function is calculated as is. However, if this is set to 2, then the complex conjugate of the second localized function is not taken.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 
-# See also
+## See also
 
 [shreturntapers](pyshreturntapers.html), [shmtvaropt](pyshmtvaropt.html)

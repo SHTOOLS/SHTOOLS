@@ -10,16 +10,16 @@ toc: false
 
 Create a global map of the geoid.
 
-# Usage
+## Usage
 
 `geoid` = MakeGeoidGridDH (`cilm`, `r0`, `gm`, `potref`, [`lmax`, `omega`, `r`, `order`, `lmax_calc`, `a`, `f`])
 
-# Returns
+## Returns
 
 `geoid` : float, dimension (`2lmax+2`, `sampling`\*2`lmax+2`)
 :   A global grid of the height to the potential `potref` above a flattened ellipsoid of equatorial radius `a` and flattening `f`.
 
-# Parameters
+## Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential referenced to a spherical interface of radius `r0`.
@@ -54,7 +54,7 @@ Create a global map of the geoid.
 `f` : optional, float, default = 0
 :   The flattening `(R_equator-R_pole)/R_equator` of the reference ellipsoid. The optional parameter `a` (i.e., `R_equator`) must be specified.
 
-# Description
+## Description
 
 `MakeGeoidGrid` will create a global map of the geoid, accurate to either first, second, or third order, using the method described in Wieczorek (2007; equation 19-20). The algorithm expands the potential in a Taylor series on a spherical interface of radius `r`, and computes the height above this interface to the potential `potref` exactly from the linear, quadratic, or cubic equation at each grid point. If the optional parameters `a` and `f` are specified, the geoid height will be referenced to a flattened ellipsoid with semi-major axis `a` and flattening `f`. The pseudo-rotational potential is explicitly accounted for by specifying the angular rotation rate `omega` of the planet. 
 
@@ -62,12 +62,12 @@ It should be noted that this geoid calculation is only strictly exact when the r
 
 The default is to calculate grids for use in the Driscoll and Healy routines that are equally spaced (`n` by `2n`), but this can be changed to calculate equally sampled grids (`n` by `n`) by setting the optional argument `sampling` to 1. This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase.
 
-# References
+## References
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, 2007.
 
-# See also
+## See also
 
 [makegrid2d](pymakegrid2d.html), [makegridglq](pymakegridglq.html), [makegriddh](pymakegriddh.html), [makegravgriddh](pymakegravgriddh.html), [makegravgradgriddh](pymakegravgradgriddh.html)

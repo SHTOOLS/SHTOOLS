@@ -10,11 +10,11 @@ toc: false
 
 Precompute the weights and nodes used in the Gauss-Legendre quadrature based spherical harmonics routines.
 
-# Usage
+## Usage
 
 `zero`, `w` = SHGLQ (`lmax`)
 
-# Returns
+## Returns
 
 `zero` : float, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, determined from a call to `PreGLQ`.
@@ -22,15 +22,15 @@ Precompute the weights and nodes used in the Gauss-Legendre quadrature based sph
 `w` : float, dimension (`lmax`+1)
 :   The weights used in the Gauss-Legendre quadrature over latitude, determined from a call to `PreGLQ`.
 
-# Parameters
+## Parameters
 
 `lmax` : integer
 :   The maximum spherical harmonic degree of the coefficients to be calculated in the Gauss-Legendre quadrature based spherical harmonic transform routines.
 
-# Description
+## Description
 
 `SHGLQ` will calculate the weights and zeros used in the Gauss-Legendre quadrature based spherical harmonic routines `SHExpandGLQ`, `MakeGridGLQ`, `SHExpandGLQC`, and `MakeGridGLQC`.
 
-# See also
+## See also
 
 [shexpandglq](pyshexpandglq.html), [makegridglq](pymakegridglq.html), [shexpandglqc](pyshexpandglqc.html), [makegridglqc](pymakegridglqc.html), [glqgridcoord](pyglqgridcoord.html)

@@ -10,11 +10,11 @@ toc: false
 
 Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file.
 
-# Usage
+## Usage
 
 `cilm`, `lmax`, `gm`, `r0_pot`, `dot`, `doystart`, `doyend`, `epoch` = SHRead2 (`filename`, `lmaxin`)
 
-# Returns
+## Returns
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The spherical harmonic coefficients contained in `filename`.
@@ -40,7 +40,7 @@ Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted 
 `epoch` : float
 :   The epoch time for the time derivates.
 
-# Parameters
+## Parameters
 
 `filename` : character(*)
 :   The ascii-formatted filename containing the spherical harmonic coefficients.
@@ -48,7 +48,7 @@ Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted 
 `lmaxin` : integer
 :   This spherical harmonic degree controls the dimension of the output array `cilm`. The coefficients between `lmax+1` and `lmaxin` will be set to zero.
 
-# Description
+## Description
 
 `SHRead2` will read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file into an array `cilm`. The errors and time derivatives associated with the coefficients will be read if the optional arrays `error` and `dot` are specified, respectively. The staring and ending date of the solution are specified by the optional parameters `doystart` and `doyend`, and the epoch of the time derivates is specified by the optional parameter `epoch`. The maximum spherical harmonic degree is read from the file, and the file does not need to be ordered by angular degree or order.
 
@@ -60,6 +60,6 @@ Each line of the file starts with a character string describing what follows.
 - `SHM`: Maximum spherical harmonic degree of file.
 - `GRCOF2`, `CALSDV`, or `gfc`: spherical harmonic coefficients, formatted as (`l`, `m`, `clm`, `slm`) or (`l`, `m`, `clm`, `slm`, `clm_error`, `slm_error`).
 
-# See also
+## See also
 
 [shread](pyshread.html), [shread2error](pyshread2error.html), [shreadjpl](pyshreadjpl.html)

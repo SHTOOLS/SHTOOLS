@@ -10,11 +10,11 @@ toc: false
 
 Convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed vector.
 
-# Usage
+## Usage
 
 call SHCilmToVector (`cilm`, `vector`, `lmax`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The input real spherical harmonic coefficients.
@@ -28,10 +28,10 @@ call SHCilmToVector (`cilm`, `vector`, `lmax`, `exitstatus`)
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHCilmToVector` will convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed array.  The degree `l`, order `m`, and `i` (1 for cosine, 2 for sine) corresponds to the index `l**2+(i-1)*l+m+1`.
 
-# See also
+## See also
 
 [shvectortocilm](shvectortocilm.html), [yilmindexvector](yilmindexvector.html), [shcindextocilm](shcindextocilm.html), [shcilmtocindex](shcilmtocindex.html)

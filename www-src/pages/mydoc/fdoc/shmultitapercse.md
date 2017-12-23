@@ -10,11 +10,11 @@ toc: false
 
 Perform a localized multitaper cross-spectral analysis using spherical cap windows.
 
-# Usage
+## Usage
 
 call SHMultiTaperCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `taper_order`, `lmaxt`, `k`, `alpha`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `mtse` : output, real\*8, dimension (`lmax`-`lmaxt`+1)
 :   The localized multitaper cross-power spectrum estimate. `lmax` is the smaller of `lmax1` and `lmax2`.
@@ -67,7 +67,7 @@ call SHMultiTaperCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `t
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHMultiTaperCSE` will perform a localized multitaper cross-spectral analysis of two input functions expressed in spherical harmonics, `SH1` and `SH2`. The maximum degree of the localized multitaper power spectrum estimate is `lmax-lmaxt`, where `lmax` is the smaller of `lmax1` and `lmax2`. The coefficients and angular orders of the windowing coefficients (`tapers` and `taper_order`) are obtained by a call to `SHReturnTapers`. If `lat` and `lon` or `alpha` is specified, then the symmetry axis of the localizing windows will be rotated to these coordinates. Otherwise, the localized spectral analysis will be centered over the north pole.
 
@@ -75,10 +75,10 @@ If the optional array `taper_wt` is specified, then these weights will be used i
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 
-# See also
+## See also
 
 [shmultitaperse](shmultitaperse.html), [shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [shmtvaropt](shmtvaropt.html)

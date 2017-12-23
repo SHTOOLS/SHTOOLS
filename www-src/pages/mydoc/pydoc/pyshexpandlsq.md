@@ -10,11 +10,11 @@ toc: false
 
 Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.
 
-# Usage
+## Usage
 
 `cilm`, `chi2` = SHExpandLSQ (`d`, `lat`, `lon`, `lmax`, [`norm`,  `csphase`])
 
-# Returns
+## Returns
 
 `cilm` : float, dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `C0lm` and `C1lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm[0,l,m]` and `Slm=cilm[1,l,m]`.
@@ -22,7 +22,7 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 `chi2` : float
 :   The residual sum of squares misfit for an overdetermined inversion.
 
-# Parameters
+## Parameters
 
 `d` : float, dimension (`nmax`)
 :   The value of the function at the coordinates (`lat`, `lon`).
@@ -42,12 +42,12 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 `csphase` : optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-# Description
+## Description
 
 `SHExpandLSQ` will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When there are more data points than spherical harmonic coefficients (i.e., `nmax>(lmax+1)**2`), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. See the LAPACK documentation concerning DGELS for further information.
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
-# See also
+## See also
 
 [makegriddh](pymakegriddh.html), [shexpanddh](pyshexpanddh.html), [makegriddhc](pymakegriddhc.html), [shexpanddhc](pyshexpanddhc.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), dgels(1)

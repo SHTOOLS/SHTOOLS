@@ -10,11 +10,11 @@ toc: false
 
 Invert for the global power spectrum given a multitaper spectrum estimate formed with spherical cap localization windows.
 
-# Usage
+## Usage
 
 call SHMTDebias (`mtdebias`, `mtspectra`, `lmax`, `tapers`, `lwin`, `k`, `nl`, `lmid`, `n`, `taper_wt`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `mtdebias` : output, real\*8, dimension (2, ceiling((`lmax`+1)/`nl`))
 :   The global power spectrum (column 1) and uncertainty (column 2). The midpoints of the N spherical harmonic bins are given in `lmid`.
@@ -49,7 +49,7 @@ call SHMTDebias (`mtdebias`, `mtspectra`, `lmax`, `tapers`, `lwin`, `k`, `nl`, `
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHMTDebias` will invert for the global power spectrum given a localized multitaper spectrum estimate formed from spherical cap localization windows. This linear inverse problem is inherently underdetermined, and in order to achive a unique solution it is assumed that the global spectrum is constant in bins of width `nl`, and that the global power spectrum is constant for degrees greater than `lmax`. In practice `nl` should be increased until the global power spectrum is everywhere positive (negative values would be unphysical) and the variances are reasonable. Further details can be found in Wieczorek and Simons (2007).
 
@@ -57,12 +57,12 @@ This set of linear equations is solved using the method of singular value decomp
 
 If `taper_wt` is not specified, the weights will all be assumed to be equal to `1/K`.
 
-# References
+## References
 
 Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
 
-# See also
+## See also
 
 [shmultitaperse](shmultitaperse.html), [shmultitapercse](shmultitapercse.html), [shreturntapers](shreturntapers.html), [shmtvaropt](shmtvaropt.html),  [shmtcouplingmatrix](shmtcouplingmatrix.html)

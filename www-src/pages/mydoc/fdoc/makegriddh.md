@@ -10,11 +10,11 @@ toc: false
 
 Create a 2D map from a set of spherical harmonic coefficients that conforms with Driscoll and Healy's (1994) sampling theorem.
 
-# Usage
+## Usage
 
 call MakeGridDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `griddh` : output, real\*8, dimension (2\*`lmax`+2, 2\*`lmax`+2) or (2\*`lmax`+2, 4\*`lmax`+4)
 :   A 2D equally sampled (`n` by `n`, default), or equally spaced (`n` by 2`n`) map of the input spherical harmonic coefficients `cilm` that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
@@ -43,7 +43,7 @@ call MakeGridDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `MakeGridDH` will create a 2-dimensional map equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) in latitude and longitude from a set of input spherical harmonic coefficients, where `n=2lmax+2`. This grid conforms with the sampling theorem of Driscoll and Healy (1994) and this routine is the inverse of `SHExpandDH`. The function is evaluated at each longitudinal band by inverse Fourier transforming the sin and cos terms for each degree `l`, and then summing over all degrees. When evaluating the function, the maximum spherical harmonic degree that is considered is the minimum of `lmax`, the size of `cilm-1`, or `lmax_calc` (if specified).
 
@@ -51,12 +51,12 @@ The default is to use an input grid that is equally sampled (`n` by `n`), but th
 
 The normalized legendre functions are calculated using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15.
 
-# References
+## References
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.
 
-# See also
+## See also
 
 [shexpanddh](shexpanddh.html), [makegriddhc](makegriddhc.html), [shexpanddhc](shexpanddhc.html), [makegridglq](makegridglq.html), [shexpandglq](shexpandglq.html), [makegridglqc](makegridglqc.html), [shexpandglqc](shexpandglqc.html), [shexpandlsq](shexpandlsq.html)

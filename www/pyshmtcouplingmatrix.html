@@ -538,18 +538,18 @@ MathJax.Hub.Config({
     
 
   <p>This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum.</p>
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">Mmt</code> = SHMTCouplingMatrix (<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">tapers_power</code>, [<code class="highlighter-rouge">lwin</code>, <code class="highlighter-rouge">k</code>, <code class="highlighter-rouge">taper_wt</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">Mmt</code> : float, dimension (<code class="highlighter-rouge">lmax</code>+<code class="highlighter-rouge">lwin</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The full multitaper coupling matrix that relates the global power spectrum to the expectation of the localized multitaper spectrum.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">lmax</code> : integer</dt>
@@ -564,7 +564,7 @@ MathJax.Hub.Config({
   <dd>The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine <code class="highlighter-rouge">SHMTVarOpt</code>.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHMTCouplingMatrix</code> returns the multitaper coupling matrix that relates the global power spectrum (assumed to be stationary) to the expectation of the localized multitaper spectrum. This is given by eqs 4.5 and 4.6 in Wieczorek and Simons (2007):</p>
 
@@ -578,11 +578,11 @@ MathJax.Hub.Config({
 
 <p>Note that this routine returns the “full” coupling matrix of dimension (<code class="highlighter-rouge">lmax</code> + <code class="highlighter-rouge">lwin</code> + 1, <code class="highlighter-rouge">lmax</code> + 1). When multiplied by a global input power spectrum with bandwidth <code class="highlighter-rouge">lmax</code>, it returns the output power spectrum with a bandwidth of <code class="highlighter-rouge">lmax</code> + <code class="highlighter-rouge">lwin</code>. In doing so, it is implicitly assumed that input power spectrum is exactly zero for all degrees greater than lmax. If this is not the case, the ouput power spectrum should be considered valid only for the degrees up to and including <code class="highlighter-rouge">lmax</code> - <code class="highlighter-rouge">lwin</code>.</p>
 
-<h1 id="references">References</h1>
+<h2 id="references">References</h2>
 
 <p>Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pyshmultitaperse.html">shmultitaperse</a>, <a href="pyshmultitapercse.html">shmultitapercse</a>, <a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshmtvaropt.html">shmtvaropt</a>, <a href="pyshmtdebias.html">shmtdebias</a></p>
 

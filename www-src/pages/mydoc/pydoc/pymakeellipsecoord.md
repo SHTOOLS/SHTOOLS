@@ -10,16 +10,16 @@ toc: false
 
 Compute the coordinates of an ellipse placed at a given latitude and longitude.
 
-# Usage
+## Usage
 
 `coord` = MakeEllipseCoord (`lat`, `lon`, `dec`, `a_theta`, `b_theta`, [`cinterval`])
 
-# Returns
+## Returns
 
 `coord` :float, dimension(360/`cinterval`, 2)
 :   The latitude [:,0] and longitude [:,1] coordinates of the ellipse in degrees.
 
-# Parameters
+## Parameters
 
 `lat` : float
 :   The latitude of the center of the ellipse in degrees.
@@ -39,10 +39,10 @@ Compute the coordinates of an ellipse placed at a given latitude and longitude.
 `cinterval` : optional, float, default = 1
 :   Angular spacing in degrees of the output latitude and longitude points. If not present, the default is 1.
 
-# Description
+## Description
 
 `MakeEllipseCoord` will calculate the (lat, long) coordinates of an ellipse placed on a sphere at position (`lat`, `lon`). The semi-major and semi-minor axes, expressed in angular radii in degrees, are given by `a_theta` and `b_theta`, respectively. The semimajor axis of the ellipse is initially directed due north, and it is then rotated clockwise by the angle `dec`. This is useful for plotting ellipses on geographic maps. The first index in the output vectors corresponds to the northern rotated semimajor axis, and subsequent points are arranged in a clockwise manner. Input and output units are in degrees.
 
-# See also
+## See also
 
 [makecirclecoord](pymakecirclecoord.html)

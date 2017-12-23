@@ -10,11 +10,11 @@ toc: false
 
 Calculate the gravitational potential interior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998).
 
-# Usage
+## Usage
 
 `cilm`, `d` = CilmMinusDH (`gridin`, `nmax`, `mass`, `rho`, [`lmax`,  `n`, `dref`, `sampling`])
 
-# Returns
+## Returns
 
 `cilm` : float, dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential corresponding to constant density relief referenced to a spherical interface of radius `d`.
@@ -22,7 +22,7 @@ Calculate the gravitational potential interior to relief referenced to a spheric
 `d` : float
 :   The mean radius of the relief in meters.
 
-# Parameters
+## Parameters
 
 `gridin` : float, dimension (`nin`, `sampling`\*`nin`)
 :   The radii of the interface evaluated on a grid, determined by a call to `MakeGridDH`.
@@ -48,7 +48,7 @@ Calculate the gravitational potential interior to relief referenced to a spheric
 `sampling` : optional, integer, default determined by dimensions of `gridin`
 :   If 1 the output grids are equally sampled (`n` by `n`). If 2, the grids are equally spaced (`n` by 2`n`).
 
-# Description
+## Description
 
 `CilmMinus` will calculate the spherical harmonic coefficients of the gravitational potential interior to constant density relief referenced to a spherical interface. This is equation 12 of Wieczorek and Phillips (1998), where the potential is strictly valid only when the coefficients are evaluated at a radius greater than the maximum radius of the relief. The input relief `gridin` must correspond to absolute radii. The parameter `nmax` is the order of the Taylor series used in the algorithm to approximate the potential coefficients. By default, the relief and spherical harmonic coefficients will be referenced to the mean radius of `gridin`. However, if the optional parameter `dref` is specified, this will be used instead as the reference radius. 
 
@@ -56,10 +56,10 @@ It is important to understand that as an intermediate step, this routine calcula
 
 This routine uses geodesy 4-pi normalized spherical harmonics that exclude the Condon-Shortley phase.
 
-# References
+## References
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
 
-# See also
+## See also
 
 [cilmminusrhohdh](pycilmminusrhohdh.html), [cilmplusdh](pycilmplusdh.html), [cilmplusrhohdh](pycilmplusrhohdh.html), [makegriddh](pymakegriddh.html)

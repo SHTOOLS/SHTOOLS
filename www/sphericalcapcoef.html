@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Calculate the spherical harmonic coefficients of a spherical cap.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call SphericalCapCoef (<code class="highlighter-rouge">coef</code>, <code class="highlighter-rouge">theta</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">coef</code> : output, real*8, dimension(<code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -556,7 +556,7 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SphericalCapCoef</code> will calculate the spherical harmonic coefficients of a spherical cap centered over the north pole. The zonal coefficients, returned in the array <code class="highlighter-rouge">coef</code>, are normalized such that the degree-0 term is 1, and are to be used with either the geodesy 4-pi normalized or orthonormalized spherical harmonics.</p>
 

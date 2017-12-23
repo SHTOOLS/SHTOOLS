@@ -10,11 +10,11 @@ toc: false
 
 Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential.
 
-# Usage
+## Usage
 
 call MakeMagGridDH (`cilm`, `lmax`, `r0`, `a`, `f`, `rad`, `theta`, `phi`, `total`, `n`, `sampling`, `lmaxcalc`, `potgrid`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
 :   The real Schmidt semi-normalized spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. Alternatively, `C1lm` and `C2lm` correspond to the positive and negative order coefficients, respectively.
@@ -58,7 +58,7 @@ call MakeMagGridDH (`cilm`, `lmax`, `r0`, `a`, `f`, `rad`, `theta`, `phi`, `tota
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `MakeMagGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm` of all three components of the magnetic field, the total field strength, and the magnetic potential. The magnetic potential is given by
 

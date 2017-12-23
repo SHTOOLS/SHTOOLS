@@ -10,16 +10,16 @@ toc: false
 
 Compute the minimum-amplitude downward continuation filter of Wieczorek and Phillips (1998).
 
-# Usage
+## Usage
 
 `wl` = DownContFilterMA (`l`, `half`, `r`, `d`)
 
-# Returns
+## Returns
 
 `wl` : float
 :   The amplitude of the downward continuation filter.
 
-# Parameters
+## Parameters
 
 `l` : integer
 :   The spherical harmonic degree.
@@ -33,14 +33,14 @@ Compute the minimum-amplitude downward continuation filter of Wieczorek and Phil
 `d` : float
 :   The radius of the surface to downward continue to.
 
-# Description
+## Description
 
 `DownContFilterMA` will calculate the downward continuation filter of Wieczorek and Phillips (1998; eq. 19) for a given spherical harmonic degree `l`. The input parameters include `half`, which is the degree where the filter is equal to 0.5, and `r` and `d`, which are the reference radius of the gravitational field and the radius of the surface to downward continue to, respectively.
 
-# References
+## References
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
 
-# See also
+## See also
 
 [downcontfiltermc](pydowncontfiltermc.html), [batohilmdh](pybatohilmdh.html) [batohilmrhohdh](pybatohilmrhohdh.html)

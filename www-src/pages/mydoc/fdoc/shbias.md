@@ -10,11 +10,11 @@ toc: false
 
 Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum.
 
-# Usage
+## Usage
 
 call SHBias (`shh`, `lwin`, `incspectra`, `ldata`, `outcspectra`, `save_cg`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `shh` : input, real\*8, dimension (`lwin`+1)
 :   The power spectrum of the localizing window.
@@ -37,7 +37,7 @@ call SHBias (`shh`, `lwin`, `incspectra`, `ldata`, `outcspectra`, `save_cg`, `ex
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHBias` will calculate the (cross-)power spectrum expectation of a function multiplied by a localizing window. This is given by equation 35 of Wieczorek and Simons (2005) and equation 2.11 of Wieczorek and Simons (2007),
 
@@ -47,13 +47,13 @@ where `<SFG>` is the expectation of the localized (cross-)power spectrum, `Shh` 
 
 If this routine is to be called several times using the same values of `lwin` and `ldata`, then the Clebsch-Gordon coefficients can be precomputed and saved by setting the optional parameter `save_cg` equal to 1. To deallocate the saved memory, which is a matrix of size (`lwin+ldata,lwin,2*lwin+ldata+1`), set `save_cg` equal to -1.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on a sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
 
-# See also
+## See also
 
 [shpowerspectrum](shpowerspectrum.html),[shcrosspowerspectrum](shcrosspowerspectrum.html), [wigner3j](wigner3j.html), [shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [shbiasadmitcorr](shbiasadmitcorr.html)

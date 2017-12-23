@@ -10,11 +10,11 @@ toc: false
 
 Convert complex spherical harmonics to real form.
 
-# Usage
+## Usage
 
 call SHctor (`ccilm`, `rcilm`, `degmax`, `convention`, `switchcs`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `ccilm` : input, real\*8, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input complex spherical harmonic coefficients. `ccilm(1,:,:)` and `ccilm(2,:,:)` correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are input; the negative orders are assumed to satisfy the relation `C_{l-m}=(-1)^m C_{lm}^*`.
@@ -34,10 +34,10 @@ call SHctor (`ccilm`, `rcilm`, `degmax`, `convention`, `switchcs`, `exitstatus`)
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHctor` will convert complex spherical harmonics of a real function to real form. By default, the dimension of the output array is the minimum of `rcilm(1,:,:)` and `ccilm(1,:,:)`, though this can be changed by specifying the optional parameter `degmax`. The normalization of the input and output coefficients are by default the same, but if the optional argument `convention` is set to 2, this routine will convert from geodesy 4-pi normalized coefficients to orthonormalized coefficients. The Condon-Shortley phase convention between the input an output coefficients can be modified by the optional argument `switchcs`.
 
-# See also
+## See also
 
 [shrtoc](shrtoc.html)

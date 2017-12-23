@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call SHCilmToCindex (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">cindex</code>, <code class="highlighter-rouge">degmax</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : input, real*8, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -556,11 +556,11 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHCilmToCindex</code> will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.  The degree <code class="highlighter-rouge">l</code> and order <code class="highlighter-rouge">m</code> corresponds to the index <code class="highlighter-rouge">l*(l+1)/2+m+1</code>. The default is to convert the entire array <code class="highlighter-rouge">cilm</code>, but a subset of this array can be converted by specifying the optional argument <code class="highlighter-rouge">degmax</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shcindextocilm.html">shcindextocilm</a>, <a href="shcilmtovector.html">shcilmtovector</a>, <a href="shvectortocilm.html">shvectortocilm</a></p>
 

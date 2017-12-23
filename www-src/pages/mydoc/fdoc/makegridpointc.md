@@ -10,11 +10,11 @@ toc: false
 
 Evaluate a complex function expressed in complex spherical harmonics at a single point.
 
-# Usage
+## Usage
 
 `value` = MakeGridPointC (`cilm`, `lmax`, `lat`, `lon`, `norm`, `csphase`, `dealloc`)
 
-# Parameters
+## Parameters
 
 `value` : output, complex\*16
 :   Value of the function at (`lat`, `lon`).
@@ -40,10 +40,10 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 `dealloc` : input, optional, integer, default = 0
 :   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
 
-# Description
+## Description
 
 `MakeGridPointC` will expand a complex function expressed in complex spherical harmonics at a single point. The input latitude and longitude are in degrees. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
-# See also
+## See also
 
 [makegridpoint](makegridpoint.html), [makegriddh](makegriddh.html), [makegriddhc](makegriddhc.html), [makegridglq](makegridglq.html), [makegridglqc](makegridglqc.html)

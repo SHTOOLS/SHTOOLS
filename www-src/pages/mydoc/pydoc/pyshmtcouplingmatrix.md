@@ -9,16 +9,16 @@ toc: false
 ---
 
 This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum.
-# Usage
+## Usage
 
 `Mmt` = SHMTCouplingMatrix (`lmax`, `tapers_power`, [`lwin`, `k`, `taper_wt`])
 
-# Returns
+## Returns
 
 `Mmt` : float, dimension (`lmax`+`lwin`+1, `lmax`+1)
 :   The full multitaper coupling matrix that relates the global power spectrum to the expectation of the localized multitaper spectrum.
 
-# Parameters
+## Parameters
 
 `lmax` : integer
 :   The spherical harmonic bandwidth of the global power spectrum.
@@ -35,7 +35,7 @@ This routine returns the multitaper coupling matrix for a given set of power spe
 `taper_wt` : optional, float, dimension (`kin`)
 :   The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 
-# Description
+## Description
 
 `SHMTCouplingMatrix` returns the multitaper coupling matrix that relates the global power spectrum (assumed to be stationary) to the expectation of the localized multitaper spectrum. This is given by eqs 4.5 and 4.6 in Wieczorek and Simons (2007):
 
@@ -49,10 +49,10 @@ where `a_k` are the taper weights, `S_{hh}` is the power of the window, and `C` 
 
 Note that this routine returns the "full" coupling matrix of dimension (`lmax` + `lwin` + 1, `lmax` + 1). When multiplied by a global input power spectrum with bandwidth `lmax`, it returns the output power spectrum with a bandwidth of `lmax` + `lwin`. In doing so, it is implicitly assumed that input power spectrum is exactly zero for all degrees greater than lmax. If this is not the case, the ouput power spectrum should be considered valid only for the degrees up to and including `lmax` - `lwin`.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
 
-# See also
+## See also
 
 [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html), [shreturntapers](pyshreturntapers.html), [shmtvaropt](pyshmtvaropt.html), [shmtdebias](pyshmtdebias.html)

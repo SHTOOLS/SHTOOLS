@@ -539,11 +539,11 @@ MathJax.Hub.Config({
 
   <p>Compute the cross-power spectral density of two complex functions.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p>call SHCrossPowerSpectrumDensityC (<code class="highlighter-rouge">cilm1</code>, <code class="highlighter-rouge">cilm2</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">cspectrum</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm1</code> : input, complex*16, dimension (2, <code class="highlighter-rouge">lmaxin1</code>+1, <code class="highlighter-rouge">lmaxin1</code>+1)</dt>
@@ -558,13 +558,13 @@ MathJax.Hub.Config({
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHCrossPowerSpectrumDensityC</code> will calculate the cross-power spectral density of two complex functions expressed in complex 4-pi normalized spherical harmonics. For a given spherical harmonic degree <code class="highlighter-rouge">l</code>, this is calculated as:</p>
 
 <p><code class="highlighter-rouge">cspectrum(l) = Sum_{i=1}^2 Sum_{m=0}^l cilm1(i, l+1, m+1) * conjg[cilm2(i, l+1, m+1)] / (2l + 1)</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="shpowerlc.html">shpowerlc</a>, <a href="shpowerdensitylc.html">shpowerdensitylc</a>, <a href="shcrosspowerlc.html">shcrosspowerlc</a>, <a href="shcrosspowerdensitylc.html">shcrosspowerdensitylc</a>, <a href="shpowerspectrumc.html">shpowerspectrumc</a>, <a href="shpowerspectrumdensityc.html">shpowerspectrumdensityc</a>, <a href="shcrosspowerspectrumc.html">shcrosspowerspectrumc</a></p>
 

@@ -10,11 +10,11 @@ toc: false
 
 Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.
 
-# Usage
+## Usage
 
 call SHMTVarOpt (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `var_opt`, `var_unit`, `weight_opt`, `unweighted_covar`, `nocross`, `exitstatus`)
 
-# Parameters
+## Parameters
 
 `l` : input, integer
 :   The angular degree to determine the minimum variance and optimal weights.
@@ -52,16 +52,16 @@ call SHMTVarOpt (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `var_opt`,
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
-# Description
+## Description
 
 `SHMTVarOpt` will determine the minimum variance that can be achieved by a weighted multitaper spectral analysis, as is described by Wieczorek and Simons (2007). The minimum variance is output as a function of the number of tapers utilized, from 1 to a maximum of `kmax`, and the corresponding variance using equal weights is output for comparison. The windowing functions are assumed to be solutions to the spherical-cap concentration problem, as determined by a call to `SHReturnTapers` or `SHReturnTapersM`. The minimum variance and weights are dependent upon the form of the global unwindowed power spectrum, `Sff`.
 
 If the optional argument `weight_opt` is specified, then the optimal weights will be returned as a function of the number of tapers employed, from 1 to `kmax`. If `unweighted_covar` is specified, then the unweighted covariance matrix of the `kmax` tapers (i.e., Fij) will be output. If the optional argument `nocross` is set to 1, then only the diagnonal terms of `Fij` will be computed.
 
-# References
+## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 
-# See also
+## See also
 
 [shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [shmultitaperse](shmultitaperse.html), [shmultitapercse](shmultitapercse.html); [shlocalizedadmitcorr](shlocalizedadmitcorr.html), [shbiasadmitcorr](shbiasadmitcorr.html), [shbiask](shbiask.html), [shmtdebias](shmtdebias.html)

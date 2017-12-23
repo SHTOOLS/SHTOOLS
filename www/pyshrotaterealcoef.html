@@ -539,18 +539,18 @@ MathJax.Hub.Config({
 
   <p>Determine the spherical harmonic coefficients of a real function rotated by three Euler angles.</p>
 
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 
 <p><code class="highlighter-rouge">cilmrot</code> = SHRotateRealCoef (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">x</code>, <code class="highlighter-rouge">dj</code>, [<code class="highlighter-rouge">lmax</code>])</p>
 
-<h1 id="returns">Returns</h1>
+<h2 id="returns">Returns</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilmrot</code> : float, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The spherical harmonic coefficients of the rotated function, normalized for use with the geodesy 4-pi spherical harmonics.</dd>
 </dl>
 
-<h1 id="parameters">Parameters</h1>
+<h2 id="parameters">Parameters</h2>
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
@@ -563,7 +563,7 @@ MathJax.Hub.Config({
   <dd>The maximum spherical harmonic degree of the input and output coefficients.</dd>
 </dl>
 
-<h1 id="description">Description</h1>
+<h2 id="description">Description</h2>
 
 <p><code class="highlighter-rouge">SHRotateRealCoef</code> will take the real spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in <code class="highlighter-rouge">x</code>, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention. The input rotation matrix <code class="highlighter-rouge">dj</code> is computed by a call to <code class="highlighter-rouge">djpi2</code>.</p>
 
@@ -595,7 +595,7 @@ MathJax.Hub.Config({
 
 <p>This routine first converts the real coefficients to complex form using <code class="highlighter-rouge">SHrtoc</code>. Then the coefficients are converted to indexed form using <code class="highlighter-rouge">SHCilmToCindex</code>, these are sent to <code class="highlighter-rouge">SHRotateCoef</code>, the result if converted back to <code class="highlighter-rouge">cilm</code> complex form using <code class="highlighter-rouge">SHCindexToCilm</code>, and these are finally converted back to real form using <code class="highlighter-rouge">SHctor</code>.</p>
 
-<h1 id="see-also">See also</h1>
+<h2 id="see-also">See also</h2>
 
 <p><a href="pydjpi2.html">djpi2</a>, <a href="pyshrotatecoef.html">shrotatecoef</a>, <a href="pyshctor.html">shctor</a>, <a href="pyshrtoc.html">shrtoc</a>, <a href="pyshcilmtocindex.html">shcilmtocindex</a>, <a href="pyshcindextocilm.html">shcindextocilm</a></p>
 
