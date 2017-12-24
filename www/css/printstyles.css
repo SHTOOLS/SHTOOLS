@@ -121,7 +121,7 @@ body.frontmatter {counter-reset: page 1}
         content: counter(page, lower-roman);
     }
     @bottom-left {
-        content: "youremail@domain.com";   }
+        content: "mark.wieczorek@oca.eu";   }
 }
 
 body.first_page {counter-reset: page 1}

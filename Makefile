@@ -158,7 +158,7 @@ PYTHON3 = python3
 PYTHON_VERSION = all
 JUPYTER = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python2"
 JUPYTER3 = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python3"
-JEKYLL = jekyll
+JEKYLL = bundle exec jekyll
 
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
@@ -176,6 +176,8 @@ INCDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
+WWWSRC = www-src
+WWWDEST = www
 
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
@@ -420,7 +422,7 @@ install-fortran: fortran
 doc:
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
 	@$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
-	@$(JEKYLL) build -s www-src -d www
+	@cd $(WWWSRC) ; $(JEKYLL) build -d ../$(WWWDEST)
 	@echo "--> Documentation created successfully"
 
 remove-doc:

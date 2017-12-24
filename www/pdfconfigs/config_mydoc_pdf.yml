@@ -4,8 +4,8 @@ baseurl: "/mydoc-pdf"
 port: 4010
 output: pdf
 product: mydoc
-print_title: Jekyll theme for documentation — mydoc product
-print_subtitle: version 6.0
+print_title: SHTOOLS - Tools for working with spherical harmonics
+print_subtitle: Version 4.1
 output: pdf
 defaults:
   -
