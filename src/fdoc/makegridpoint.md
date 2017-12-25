@@ -38,4 +38,4 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 
 # See also
 
-[`makegridpointc`](makegridpointc.html), [`makegriddh`](makegriddh.html), [`makegriddhc`](makegriddhc.html), [`makegridglq`](makegridglq.html), [`makegridglqc`](makegridglqc.html)
+[makegridpointc](makegridpointc.html), [makegriddh](makegriddh.html), [makegriddhc](makegriddhc.html), [makegridglq](makegridglq.html), [makegridglqc](makegridglqc.html)

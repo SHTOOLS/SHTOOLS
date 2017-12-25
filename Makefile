@@ -4,9 +4,7 @@
 #
 #   The normal user should only have to use the following commands
 #
-#       make (all)          : Install the Fortran, Python 2, and Python 3
-#                             components.
-#       make fortran        : Install the Fortan components.
+#       make (all, fortran) : Install the Fortran 95 components.
 #       make fortran-mp     : Install the Fortan OpenMP components.
 #       make python         : Install the Python components (versions
 #                             determined by PYTHON_VERSION).
@@ -65,12 +63,8 @@
 #
 #   LIST OF ALL SUPPORTED MAKE TARGETS
 #
-#   make, make all
-#       Compile the Fortran 95, Python 2, and Python 3 components the 
-#       current directory.
-#
-#   make fortran
-#       Compile only the Fortran 95 component of the archive.
+#   make, make all, make fortran
+#       Compile the Fortran 95 components the current directory.
 #
 #   make fortran-mp
 #       Compile only the fortran 95 component of the archive with OpenMP
@@ -140,18 +134,24 @@
 #       Remove html notebooks.
 #
 #   make doc
-#       Create the man and html-man pages from input markdown files. These are
-#       PRE-MADE in the distribution. To remake these files, it will be
-#       necessary to install "pandoc", "ghc" and "cabal-install" (all using
-#       brew on OSX), and then execute "cabal update" and
-#       "cabal install pandoc-types".
+#       Create the man pages from input markdown files and create the static
+#       web site. Both of these are PRE-MADE in the distribution. To remake
+#       these files, it will be necessary to install "pandoc", "ghc" and
+#       "cabal-install" (all using brew on OSX), and then execute
+#       "cabal update" and "cabal install pandoc-types".
 #
 #   make remove-doc
 #       Remove the man and html-man pages.
 #
+#   make www
+#       Make the static html web documention in the directory www using Jekyll.
+#
+#   make remove-www
+#       Remove the directory containing the static html web site.
+#
 ###############################################################################
 
-VERSION = 4.1.2
+VERSION = 4.1.3
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
@@ -163,6 +163,7 @@ PYTHON3 = python3
 PYTHON_VERSION = all
 JUPYTER = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python2"
 JUPYTER3 = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python3"
+JEKYLL = bundle exec jekyll
 
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
@@ -180,6 +181,8 @@ INCDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
+WWWSRC = doc
+WWWDEST = www
 
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
@@ -257,10 +260,10 @@ endif
 	python3-tests-no-timing install-fortran install-python\
 	install-python2 install-python3 uninstall fortran-mp clean\
 	clean-fortran-tests clean-python-tests clean-python2 clean-python3\
-	clean-libs remove-notebooks notebooks notebooks2 notebooks3
+	clean-libs remove-notebooks notebooks notebooks2 notebooks3 www remove-www
 
 
-all: fortran python
+all: fortran
 
 fortran:
 	mkdir -pv lib
@@ -355,7 +358,7 @@ pyshtools/_constant$(PY3EXT): $(SRCDIR)/PlanetsConstants.f95
 	$(F2PY3) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
 	mv _constant$(PY3EXT) pyshtools/.
 
-install: install-fortran install-python
+install: install-fortran
 
 install-python2: python2
 	mkdir -pv $(DESTDIR)$(SYSPYPATH)/pyshtools
@@ -428,9 +431,15 @@ doc:
 
 remove-doc:
 	@-rm -f man/man1/*.1
-	@-rm -f www/man/fortran/*.html
-	@-rm -f www/man/python/*.html
-	@echo "--> Removed man and html-man files"
+	@-rm -f doc/pages/mydoc/fdoc/*.md
+	@-rm -f doc/pages/mydoc/pydoc/*.md
+	@echo "--> Removed man files and web site source md files"
+
+www:
+	@cd $(WWWSRC) ; $(JEKYLL) build -d ../$(WWWDEST)
+
+remove-www:
+	@-rm -r $(WWWDEST)
 
 notebooks2:
 	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER)
@@ -440,7 +449,7 @@ notebooks3:
 	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER3)
 	@echo "--> Notebook html files created successfully with Python 3"
 
-clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs
+clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs remove-www
 
 clean-fortran-tests:
 	@$(MAKE) -C $(FEXDIR) -f Makefile clean

@@ -40,4 +40,4 @@ order normalised associated Legendre functions, J. Geodesy, 76, 279-
 
 # See also
 
-[`plbar`](pyplbar.html), [`plbar_d1`](pyplbar_d1.html), [`plmbar`](pyplmbar.html), [`plmbar_d1`](pyplmbar_d1.html), [`plon`](pyplon.html), [`plon_d1`](pyplon_d1.html), [`plmon_d1`](pyplmon_d1.html), [`plschmidt`](pyplschmidt.html), [`plschmidt_d1`](pyplschmidt_d1.html), [`plmschmidt`](pyplmschmidt.html), [`plmschmidt_d1`](pyplmschmidt_d1.html), [`plegendre`](pyplegendre.html), [`plegendre_d1`](pyplegendre_d1.html), [`plegendrea`](pyplegendrea.html), [`plegendrea_d1`](pyplegendrea_d1.html)
+[plbar](pyplbar.html), [plbar_d1](pyplbar_d1.html), [plmbar](pyplmbar.html), [plmbar_d1](pyplmbar_d1.html), [plon](pyplon.html), [plon_d1](pyplon_d1.html), [plmon_d1](pyplmon_d1.html), [plschmidt](pyplschmidt.html), [plschmidt_d1](pyplschmidt_d1.html), [plmschmidt](pyplmschmidt.html), [plmschmidt_d1](pyplmschmidt_d1.html), [plegendre](pyplegendre.html), [plegendre_d1](pyplegendre_d1.html), [plegendrea](pyplegendrea.html), [plegendrea_d1](pyplegendrea_d1.html)
