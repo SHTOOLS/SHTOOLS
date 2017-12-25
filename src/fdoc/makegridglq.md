@@ -51,4 +51,4 @@ order normalised associated Legendre functions, J. Geodesy, 76, 279-
 
 # See also
 
-[`shexpandglq`](shexpandglq.html), [`shexpandglqc`](shexpandglqc.html), [`makegridglqc`](makegridglqc.html), [`shexpanddh`](shexpanddh.html), [`makegriddh`](makegriddh.html), [`shexpanddhc`](shexpanddhc.html), [`makegriddhc`](makegriddhc.html), [`shexpandlsq`](shexpandlsq.html), [`glqgridcoord`](glqgridcoord.html), [`shglq`](shglq.html)
+[shexpandglq](shexpandglq.html), [shexpandglqc](shexpandglqc.html), [makegridglqc](makegridglqc.html), [shexpanddh](shexpanddh.html), [makegriddh](makegriddh.html), [shexpanddhc](shexpanddhc.html), [makegriddhc](makegriddhc.html), [shexpandlsq](shexpandlsq.html), [glqgridcoord](glqgridcoord.html), [shglq](shglq.html)

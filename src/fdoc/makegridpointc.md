@@ -38,4 +38,4 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 
 # See also
 
-[`makegridpoint`](makegridpoint.html), [`makegriddh`](makegriddh.html), [`makegriddhc`](makegriddhc.html), [`makegridglq`](makegridglq.html), [`makegridglqc`](makegridglqc.html)
+[makegridpoint](makegridpoint.html), [makegriddh](makegriddh.html), [makegriddhc](makegriddhc.html), [makegridglq](makegridglq.html), [makegridglqc](makegridglqc.html)

@@ -71,12 +71,6 @@ def get_version():
 
         # PEP440 compatibility
         if '-' in git_version:
-            # check that the version string is a floating number
-            try:
-                version = '{:.1f}'.format(float(version))
-            except ValueError:
-                msg = 'VERSION string should be floating number'
-                raise ValueError(msg)
             git_revision = check_output(['git', 'rev-parse', 'HEAD'])
             git_revision = git_revision.strip().decode('ascii')
             # add post0 if the version is released

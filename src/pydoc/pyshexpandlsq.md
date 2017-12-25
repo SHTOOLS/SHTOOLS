@@ -42,4 +42,4 @@ The employed spherical harmonic normalization and Condon-Shortley phase conventi
 
 # See also
 
-[`makegriddh`](pymakegriddh.html), [`shexpanddh`](pyshexpanddh.html), [`makegriddhc`](pymakegriddhc.html), [`shexpanddhc`](pyshexpanddhc.html), [`makegridglq`](pymakegridglq.html), [`shexpandglq`](pyshexpandglq.html), [`makegridglqc`](pymakegridglqc.html), [`shexpandglqc`](pyshexpandglqc.html), `dgels(1)`
+[makegriddh](pymakegriddh.html), [shexpanddh](pyshexpanddh.html), [makegriddhc](pymakegriddhc.html), [shexpanddhc](pyshexpanddhc.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), dgels(1)

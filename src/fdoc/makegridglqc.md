@@ -50,4 +50,4 @@ summation and the recursive computation of very high degree and order normalised
 
 # See also
 
-[`shexpandglqc`](shexpandglqc.html), [`shexpandglq`](shexpandglq.html), [`makegridglq`](makegridglq.html), [`shexpanddh`](shexpanddh.html), [`makegriddh`](makegriddh.html), [`shexpanddhc`](shexpanddhc.html), [`makegriddhc`](makegriddhc.html), [`shexpandlsq`](shexpandlsq.html), [`glqgridcoord`](glqgridcoord.html), [`shglq`](shglq.html)
+[shexpandglqc](shexpandglqc.html), [shexpandglq](shexpandglq.html), [makegridglq](makegridglq.html), [shexpanddh](shexpanddh.html), [makegriddh](makegriddh.html), [shexpanddhc](shexpanddhc.html), [makegriddhc](makegriddhc.html), [shexpandlsq](shexpandlsq.html), [glqgridcoord](glqgridcoord.html), [shglq](shglq.html)

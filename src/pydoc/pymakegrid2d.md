@@ -61,4 +61,4 @@ Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summat
 
 # See also
 
-[`makegriddh`](pymakegriddh.html), [`makegriddhc`](pymakegriddhc.html), [`makegridglq`](pymakegridglq.html), [`makegridglqc`](pymakegridglqc.html), [`makegravgriddh`](pymakegravgriddh.html), [`makemaggriddh`](pymakemaggriddh.html)
+[makegriddh](pymakegriddh.html), [makegriddhc](pymakegriddhc.html), [makegridglq](pymakegridglq.html), [makegridglqc](pymakegridglqc.html), [makegravgriddh](pymakegravgriddh.html), [makemaggriddh](pymakemaggriddh.html)

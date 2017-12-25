@@ -12,7 +12,7 @@ JUPYTER = jupyter nbconvert
 
 SHELL=/bin/sh
 
-WWWNBDIR = ../../www/notebooks
+WWWNBDIR = ../../www/pages/mydoc/notebooks
 JFLAGS = --to html --execute --ExecutePreprocessor.timeout=120 --output-dir=$(WWWNBDIR)
 
 IPYNB = Introduction-1.ipynb Introduction-2.ipynb tutorial_1.ipynb \

@@ -47,7 +47,7 @@ The default is to apply equal weights to each individual windowed estimate of th
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
 
-Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, doi:10.1137/S0036144504445765, 2006. 
+Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, doi:10.1137/S0036144504445765, 2006.
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.
