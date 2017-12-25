@@ -151,7 +151,7 @@
 #
 ###############################################################################
 
-VERSION = 4.2
+VERSION = 4.1.2
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
@@ -431,8 +431,8 @@ doc:
 
 remove-doc:
 	@-rm -f man/man1/*.1
-	@-rm -f www-src/pages/mydoc/fdoc/*.md
-	@-rm -f www-src/pages/mydoc/pydoc/*.md
+	@-rm -f doc/pages/mydoc/fdoc/*.md
+	@-rm -f doc/pages/mydoc/pydoc/*.md
 	@echo "--> Removed man files and web site source md files"
 
 www:

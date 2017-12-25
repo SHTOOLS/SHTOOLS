@@ -1,7 +1,7 @@
 """
 This script takes the python documentation files, adds a YAML header with a
 custom title, strips the first two lines of the file, and outputs a new file
-in www/pages/mydoc/pydoc.
+in doc/pages/mydoc/pydoc.
 """
 import os
 import re
@@ -29,6 +29,6 @@ for fn in pydocfiles:
                   'permalink: ' + name + '.html\n' + 'summary:\n' +
                   'tags: [python]\n' + 'toc: false\n' + '---\n\n' + doc)
 
-        with open('../../www-src/pages/mydoc/pydoc/' + name +
+        with open('../../doc/pages/mydoc/pydoc/' + name +
                   '.md', 'w') as www:
             www.write(string)

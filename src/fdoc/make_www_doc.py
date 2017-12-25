@@ -1,7 +1,7 @@
 """
 This script takes the fortran documentation files, adds a YAML header with a
 custom title, strips the first two lines of the file, and outputs a new file
-in www/pages/mydoc/fdoc.
+in doc/pages/mydoc/fdoc.
 """
 import os
 import re
@@ -29,6 +29,6 @@ for fn in fdocfiles:
                   'permalink: ' + name + '.html\n' + 'summary:\n' +
                   'tags: [fortran]\n' + 'toc: false\n' + '---\n\n' + doc)
 
-        with open('../../www-src/pages/mydoc/fdoc/' + name +
+        with open('../../doc/pages/mydoc/fdoc/' + name +
                   '.md', 'w') as www:
             www.write(string)
