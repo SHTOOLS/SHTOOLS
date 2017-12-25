@@ -138,11 +138,16 @@
 #       web site. Both of these are PRE-MADE in the distribution. To remake
 #       these files, it will be necessary to install "pandoc", "ghc" and
 #       "cabal-install" (all using brew on OSX), and then execute
-#       "cabal update" and "cabal install pandoc-types". Furthermore, it will
-#       be necessary to install jekyll.
+#       "cabal update" and "cabal install pandoc-types".
 #
 #   make remove-doc
 #       Remove the man and html-man pages.
+#
+#   make www
+#       Make the static html web documention in the directory www using Jekyll.
+#
+#   make remove-www
+#       Remove the directory containing the static html web site.
 #
 ###############################################################################
 
@@ -176,7 +181,7 @@ INCDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
-WWWSRC = www-src
+WWWSRC = doc
 WWWDEST = www
 
 LIBPATH = $(PWD)/$(LIBDIR)
@@ -255,7 +260,7 @@ endif
 	python3-tests-no-timing install-fortran install-python\
 	install-python2 install-python3 uninstall fortran-mp clean\
 	clean-fortran-tests clean-python-tests clean-python2 clean-python3\
-	clean-libs remove-notebooks notebooks notebooks2 notebooks3
+	clean-libs remove-notebooks notebooks notebooks2 notebooks3 www remove-www
 
 
 all: fortran
@@ -422,14 +427,19 @@ install-fortran: fortran
 doc:
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
 	@$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
-	@cd $(WWWSRC) ; $(JEKYLL) build -d ../$(WWWDEST)
 	@echo "--> Documentation created successfully"
 
 remove-doc:
 	@-rm -f man/man1/*.1
 	@-rm -f www-src/pages/mydoc/fdoc/*.md
 	@-rm -f www-src/pages/mydoc/pydoc/*.md
-	@echo "--> Removed man files and www md files"
+	@echo "--> Removed man files and web site source md files"
+
+www:
+	@cd $(WWWSRC) ; $(JEKYLL) build -d ../$(WWWDEST)
+
+remove-www:
+	@-rm -r $(WWWDEST)
 
 notebooks2:
 	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER)
@@ -439,7 +449,7 @@ notebooks3:
 	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER3)
 	@echo "--> Notebook html files created successfully with Python 3"
 
-clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs
+clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs remove-www
 
 clean-fortran-tests:
 	@$(MAKE) -C $(FEXDIR) -f Makefile clean
