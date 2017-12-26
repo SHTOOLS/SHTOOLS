@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="SHTOOLS uses by default 4&pi;-normalized spherical harmonic functions that exclude the Condon-Shortley phase factor. Schmidt semi-normalized, orthonormalized...">
+<meta name="keywords" content=" spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field">
+<title>Complex spherical harmonics | SHTOOLS - Tools for working with spherical harmonics</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="http://shtools.github.io/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> SHTOOLS</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/" target="_blank">GitHub</a></li>
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+			<li>
+
+
+
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about Complex spherical harmonics page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+
+</li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Complex spherical harmonics">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  
+  
+  
+      
+  
+  <li>
+      <a href="#">Getting started</a>
+      <ul>
+          
+          
+          
+          <li><a href="index.html">Overview</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="installing.html">Installing</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-f95.html">Using with Fortran 95</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-python.html">Using with Python</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Spherical harmonics</a>
+      <ul>
+          
+          
+          
+          <li><a href="real-spherical-harmonics.html">Real spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a href="complex-spherical-harmonics.html">Complex spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="implementation-details.html">Implementation details</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Fortran 95 Routines</a>
+      <ul>
+          
+          
+          
+          <li><a href="f95-modules.html">Modules</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="global-spectral-analysis.html">Global spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="localized-spectral-analysis.html">Localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="miscellaneous-routines.html">Miscellaneous</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Python components</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-classes.html">Python classes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spectral-analysis.html">Global and localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-utilities.html">Utilities</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-constants.html">Constants</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Examples programs</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-examples.html">Python examples</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-examples.html">Fortran 95 examples</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Support</a>
+      <ul>
+          
+          
+          
+          <li><a href="faq.html">FAQ</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-95-problems.html">Fortran 95 problems</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="how-to-contribute.html">How to contribute</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Release Notes</a>
+      <ul>
+          
+          
+          
+          <li><a href="release-notes-v4.html">Version 4</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="release-notes-v3.html">Version 3</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="license.html">License</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="contributors.html">Contributors</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  displayAlign: "left",
+  displayIndent: "2em"
+});
+</script>
+
+<script type="text/javascript" async
+ src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<div class="post-header">
+   <h1 class="post-title-main">Complex spherical harmonics</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+    <div class="summary">SHTOOLS uses by default 4&pi;-normalized spherical harmonic functions that exclude the Condon-Shortley phase factor. Schmidt semi-normalized, orthonormalized, and unnormalized harmonics can be employed in most routines by specifying optional parameters.</div>
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+
+    
+
+  <style>
+table:nth-of-type(n) {
+    display:table;
+    width:100%;
+}
+table:nth-of-type(n) th:nth-of-type(2) {
+    width:75%;
+}
+</style>
+
+<h2 id="definitions-complex-4pi-normalized-harmonics">Definitions: Complex <script type="math/tex">4\pi</script>-normalized harmonics</h2>
+
+<p>Any real square-integrable function can be expressed as a series of spherical harmonic functions</p>
+
+<p>\begin{equation}
+f\left(\theta,\phi\right) = \sum_{l=0}^{\infty} \sum_{m=-l}^l f_l^m \, Y_l^m\left(\theta,\phi \right),
+\label{eq:f-complex}
+\end{equation}</p>
+
+<p>where <script type="math/tex">f_l^m</script> is the complex spherical harmonic coefficient, <script type="math/tex">Y_l^m</script> is the
+corresponding complex spherical harmonic function, <script type="math/tex">\theta</script> is co-latitude, <script type="math/tex">\phi</script> is longitude, and <script type="math/tex">l</script> and <script type="math/tex">m</script> are the spherical harmonic degree and order, respectively. The complex spherical harmonics are defined as
+\begin{equation}
+Y_l^m(\theta,\phi) = \bar{P}_l^m(\cos \theta) \, e^{im\phi},
+\end{equation}</p>
+
+<p>where the normalized associated Legendre functions for use with the complex <script type="math/tex">4\pi</script>-normalized spherical harmonic functions are given by</p>
+
+<script type="math/tex; mode=display">\begin{eqnarray}
+\bar{P}_l^m(\mu) = \sqrt{\left(2l+1\right)\frac{(l-m)!}{(l+m)!}}\, P_{lm}(\mu),
+\end{eqnarray}</script>
+
+<p>and where <script type="math/tex">\delta_{ij}</script> is the Kronecker delta function. The unnormalized
+associated Legendre functions are derived from the standard Legendre
+polynomials using the relations
+\begin{equation}
+P_{lm}(\mu) = \left( 1-\mu^2\right)^{m/2} \frac{d^m}{d\mu^m} P_l(\mu)
+\end{equation}
+and</p>
+
+<p>\begin{equation}
+P_l(\mu) = \frac{1}{2^l l!}\frac{d^l}{d\mu^l}\left(\mu^2-1\right)^l.
+\end{equation}</p>
+
+<p>The normalized associated Legendre functions are orthogonal for a given value of <script type="math/tex">m</script>,</p>
+
+<script type="math/tex; mode=display">\begin{equation}
+\int_{-1}^{1} \bar{P}_l^m(\mu) \,\bar{P}_{l'}^m(\mu) = 2 \, \delta_{ll'}.
+\end{equation}</script>
+
+<p>The complex spherical harmonic functions possess the symmetry relationship for positive
+and negative angular orders</p>
+
+<script type="math/tex; mode=display">\begin{equation}
+Y_l^{*m}(\theta,\phi) = (-1)^m \, Y_l^{-m}(\theta,\phi),
+\end{equation}</script>
+
+<p>where the asterisk denotes complex conjugation, and they satisfy the orthogonality relationship
+\begin{equation}
+\int_\Omega Y_l^m(\theta,\phi) \, Y_{l’}^{m’}(\theta,\phi) \, d\Omega = 4 \pi \, \delta_{ll’} \, \delta_{mm’},
+\end{equation}
+where <script type="math/tex">d\Omega</script> is the differential surface area on the unit sphere, <script type="math/tex">\sin
+\theta \, d\theta \, d\phi</script>. By multiplying the equation \eqref{eq:f-complex} by <script type="math/tex">Y_{l'm'}</script> and integrating over all space, it is straightforward to show that the spherical harmonic coefficients of a function can be calculated by the integral
+\begin{equation}
+f_l^m = \frac{1}{4\pi} \int_\Omega f(\theta,\phi) \, Y_l^{*m}(\theta,\phi) \, d\Omega.
+\end{equation}</p>
+
+<p>Finally, it is noted that if a function defined on the sphere is entirely real, then the real and complex spherical harmonic coefficients are related by</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+f_l^m = \left \lbrace \begin{array}{ll} (f_{lm} - if_{l-m}) /
+	\sqrt{2} & \mbox{if $m >0$} \\
+	f_{l0} & \mbox{if $m = 0$}\\
+	 (-1)^m \, f_l^{*-m} & \mbox{if $m <0$}.
+	\end{array} \right.
+\end{eqnarray} %]]></script>
+
+<h2 id="power-spectrum">Power spectrum</h2>
+
+<p>Parseval’s theorem in Cartesian geometry relates the integral of a function squared to the sum of the squares of the function’s Fourier coefficients. This relation is easily extended to spherical geometry using the orthogonality properties of the spherical harmonic functions. Defining <em>power</em> to be the integral of the function squared divided by the area it spans, the total power of a function is equal to a sum over its power spectrum
+\begin{equation}
+\frac{1}{4\pi} \int_\Omega |f|^2(\theta,\phi) \, d\Omega
+= \sum_{l=0}^{\infty} S_{ff}(l),
+\end{equation}
+where the power spectrum <script type="math/tex">S</script> is related to the spherical harmonic coefficients by</p>
+
+<script type="math/tex; mode=display">\begin{equation}
+S_{ff}(l) = \sum\limits_{m=-l}^l |f_l^m|^2.
+\end{equation}</script>
+
+<p>Similarly, the cross power of two functions <script type="math/tex">f</script> and <script type="math/tex">g</script> is given by
+\begin{equation}
+\frac{1}{4\pi} \int_\Omega f(\theta,\phi) \, g^*(\theta,\phi)\, d\Omega
+= \sum_{l=0}^{\infty} S_{fg}(l),
+\end{equation}
+with</p>
+
+<script type="math/tex; mode=display">\begin{equation}
+S_{fg}(l) = \sum\limits_{m=-l}^l f_{lm} \, g_{l}^{*m}.
+\end{equation}</script>
+
+<p>The power spectrum is unmodified by a rotation of the coordinate system. Furthermore, the numerical values of the power spectrum are independent of the normalization convention used for the spherical harmonic functions (though the mathematical formulae will be different, as given <a href="#supported-normalizations">below</a>). If the functions <script type="math/tex">f</script> and <script type="math/tex">g</script> have a zero mean, <script type="math/tex">S_{ff}</script> and <script type="math/tex">S_{fg}</script> represent the contribution to the variance and covariance, respectively, as a function of degree <script type="math/tex">l</script>. It should be noted that while the power spectrum of a function is inherently real, the cross power of two functions may be a complex quantity.</p>
+
+<p><script type="math/tex">S</script> is the total power of the function at spherical harmonic degree <script type="math/tex">l</script>, which in SHTOOLS is called the <em>power per degree <script type="math/tex">l</script></em>. Alternatively, one can calculate the average power per coefficient at spherical harmonic degree <script type="math/tex">l</script>, which in SHTOOLS is referred to as the <em>power per <script type="math/tex">lm</script></em>. Since there are <script type="math/tex">(2l+1)</script> spherical harmonic coefficients at degree <script type="math/tex">l</script>, this is
+\begin{equation}
+\mbox{power per $lm$} = \frac{S(l)}{(2l+1)}.
+\end{equation}
+One can also calculate the power from all angular orders over an infinitesimal logarithmic spherical harmonic degree band <script type="math/tex">d \log_a l</script>, where <script type="math/tex">a</script> is the logarithmic base. In SHTOOLS, this is referred to as the <em>power per <script type="math/tex">d\log_a l</script></em>, which is given by
+\begin{equation}
+\mbox{power per $d\log_a l$} = S(l)\, l \, \ln a.
+\end{equation}
+Finally, SHTOOLS defines the <em>energy</em> of a function as the integral of its square. The energy spectrum is thus equal to the power spectrum multiplied by <script type="math/tex">4\pi</script>.</p>
+
+<h2 id="condon-shortley-phase-factor">Condon-Shortley phase factor</h2>
+
+<p>The above definitions of the Legendre functions and spherical harmonic functions do not include the Condon-Shortley phase factor of <script type="math/tex">(-1)^m</script> that is often employed in the physics and seismology communities [Varshalovich et al. 1988, Dahlen and Tromp 1998]. Nevertheless, this phase can be included in most SHTOOLS routines by specifying the optional parameter</p>
+
+<ul>
+  <li><code class="highlighter-rouge">csphase = 0</code> : exclude the Condon-Shortley phase factor (default)</li>
+  <li><code class="highlighter-rouge">csphase = 1</code> : append the Condon-Shortley phase factor to the Legendre functions.</li>
+</ul>
+
+<p>The choice of the Condon-Shortley phase factor does not affect the numerical value of the power spectrum.</p>
+
+<h2 id="supported-normalizations">Supported normalizations</h2>
+
+<p>SHTOOLS supports the use of <script type="math/tex">4\pi</script>-normalized, Schmidt semi-normalized, orthonormalized, and unnormalized spherical harmonic functions. To specify which normalization should be used, it is only necessary to specify the optional parameter <code class="highlighter-rouge">norm</code> in the Fortran 95 routines or <code class="highlighter-rouge">normalization</code> in the Python routines:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">norm = 1</code>, <code class="highlighter-rouge">normalization = '4pi'</code>: <script type="math/tex">4\pi</script> normalized (default, unless stated otherwise)</li>
+  <li><code class="highlighter-rouge">norm = 2</code>, <code class="highlighter-rouge">normalization = 'schmidt'</code>: Schmidt semi-normalized</li>
+  <li><code class="highlighter-rouge">norm = 3</code>, <code class="highlighter-rouge">normalization = 'unnorm'</code>: Unnormalized</li>
+  <li><code class="highlighter-rouge">norm = 4</code>, <code class="highlighter-rouge">normalization = 'ortho'</code>: Orthonormalized.</li>
+</ul>
+
+<p>Each of these normalizations has slightly different definitions for the normalized Legendre functions, the orthogonality conditions of the Legendre functions and spherical harmonic functions, and the power spectrum. These equations are provided below.</p>
+
+<h3 id="4pi-normalized"><script type="math/tex">4\pi</script> normalized</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">\displaystyle \bar{P}_{l}^m(\mu) =  \sqrt{\left(2l+1\right) \frac{(l-m)!}{(l+m)!}}\, P_{lm}\left(\mu\right)</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle \int_{-1}^{1} \bar{P}_{l}^m(\mu) \,\bar{P}_{l'}^m(\mu) \,d\mu=  2 \, \delta_{ll'}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle \int_\Omega {Y_{l}^{m}}^*(\theta,\phi) \, Y_{l'}^{m'}(\theta,\phi) \, d\Omega = 4\pi\, \delta_{ll'}\, \delta_{mm'}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle S_{fg}\left(l\right) = \sum_{m=-l}^l f_l^m \, g_l^{*m}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="schmidt-semi-normalized">Schmidt semi-normalized</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">\displaystyle \bar{P}_{l}^m(\mu) = \sqrt{ \frac{(l-m)!}{(l+m)!}}\, P_{lm}\left(\mu\right)</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle \int_{-1}^{1} \bar{P}_{l}^m(\mu) \,\bar{P}_{l'}^m(\mu) \,d\mu=  \frac{2}{(2l+1)} \, \delta_{ll'}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle \int_\Omega Y_{l}^{*m}(\theta,\phi) \,Y_{l'}^{m'}(\theta,\phi) \, d\Omega = \frac{4\pi}{(2l+1)} \, \delta_{ll'}\, \delta_{mm'}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle S_{fg}\left(l\right) = \frac{1}{(2l+1)}\sum_{m=-l}^l f_l^m \, g_l^{*m}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="orthonormalized">Orthonormalized</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">\displaystyle \bar{P}_{l}^m(\mu) = \sqrt{\frac{ \left(2l+1\right)}{4 \pi} \frac{(l-m)!}{(l+m)!}}\, P_{lm}\left(\mu\right)</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle \int_{-1}^{1} \bar{P}_{l}^m(\mu) \,\bar{P}_{l'}^m(\mu) \,d\mu= \frac{1}{2 \pi} \, \delta_{ll'}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle\int_\Omega Y_{l}^{*m}(\theta,\phi) \,Y_{l'}^{m'}(\theta,\phi)\, d\Omega =  \delta_{ll'}\, \delta_{mm'}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle S_{fg}\left(l\right) = \frac{1}{4\pi}\sum_{m=-l}^l f_l^m \, g_l^{*m}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="unnormalized">Unnormalized</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">\displaystyle \bar{P}_{l}^m(\mu) =  P_{lm}\left(\mu\right)</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle \int_{-1}^{1} \bar{P}_{l}^m(\mu) \,\bar{P}_{l'}^m(\mu)= \frac{2}{(2l+1)} \frac{(l+m)!}{(l-m)!} \, \delta_{ll'}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle \int_\Omega Y_{l}^{*m}(\theta,\phi) \,Y_{l'}^{m'}(\theta,\phi)\, d\Omega = \frac{4\pi}{(2l+1)} \frac{(l+m)!}{(l-m)!}\,  \delta_{ll'}\, \delta_{mm'}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\displaystyle S_{fg}\left(l\right) = \frac{(l+m)!}{(2l+1)(l-m)!}\sum_{m=-l}^l f_l^m \, g_l^{*m}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li>
+    <p>Dahlen, F. A. and J. Tromp, “Theoretical Global Seismology,” <em>Princeton University Press</em>, Princeton, New Jersey, 1025 pp., 1998.</p>
+  </li>
+  <li>
+    <p>Varshalovich, D. A., A. N. Moskalev, and V. K. Khersonskii, “Quantum theory of angular momentum,” <em>World Scientific</em>, Singapore, 1988.</p>
+  </li>
+</ul>
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2017 SHTOOLS. All rights reserved. <br />
+<a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
+<a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
+<p><img src="images/company_logo.png" alt="SHTOOLS"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

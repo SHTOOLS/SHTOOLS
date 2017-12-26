@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" ">
+<title>Fortran routines | SHTOOLS - Tools for working with spherical harmonics</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="http://shtools.github.io/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> SHTOOLS</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/" target="_blank">GitHub</a></li>
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+			<li>
+
+
+
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about Fortran routines page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+
+</li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Fortran routines">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  
+  
+  
+      
+  
+  <li>
+      <a href="#">Getting started</a>
+      <ul>
+          
+          
+          
+          <li><a href="index.html">Overview</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="installing.html">Installing</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-f95.html">Using with Fortran 95</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-python.html">Using with Python</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Spherical harmonics</a>
+      <ul>
+          
+          
+          
+          <li><a href="real-spherical-harmonics.html">Real spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="complex-spherical-harmonics.html">Complex spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="implementation-details.html">Implementation details</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Fortran 95 Routines</a>
+      <ul>
+          
+          
+          
+          <li><a href="f95-modules.html">Modules</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="global-spectral-analysis.html">Global spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="localized-spectral-analysis.html">Localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="miscellaneous-routines.html">Miscellaneous</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Python components</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-classes.html">Python classes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spectral-analysis.html">Global and localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-utilities.html">Utilities</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-constants.html">Constants</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Examples programs</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-examples.html">Python examples</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-examples.html">Fortran 95 examples</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Support</a>
+      <ul>
+          
+          
+          
+          <li><a href="faq.html">FAQ</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-95-problems.html">Fortran 95 problems</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="how-to-contribute.html">How to contribute</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Release Notes</a>
+      <ul>
+          
+          
+          
+          <li><a href="release-notes-v4.html">Version 4</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="release-notes-v3.html">Version 3</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="license.html">License</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="contributors.html">Contributors</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  displayAlign: "left",
+  displayIndent: "2em"
+});
+</script>
+
+<script type="text/javascript" async
+ src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<div class="post-header">
+   <h1 class="post-title-main">Fortran routines</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+
+    
+
+  <style>
+table:nth-of-type(n) {
+    display:table;
+    width:100%;
+}
+table:nth-of-type(n) th:nth-of-type(2) {
+    width:65%;
+}
+</style>
+
+<p>The following routines are tagged as <button type="button" style="cursor: default" class="btn btn-default navbar-btn">fortran</button></p>
+<table><thead><tr><th>Title</th><th>Excerpt</th></tr></thead>
+    <tbody>
+    
+  
+    
+   
+    
+        
+
+        <tr><td><a href="batohilm.html">BAtoHilm (Fortran)</a></td>
+          <td> Calculate iteratively the relief along an interface of constant density contrast that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998). Usage call BAtoHilm (cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="batohilmrhoh.html">BAtoHilmRhoH (Fortran)</a></td>
+          <td> Calculate iteratively the relief along an interface with lateral density variations that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998). Usage call BAtoHilmRhoH (cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="cilmminus.html">CilmMinus (Fortran)</a></td>
+          <td> Calculate the gravitational potential interior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage call CilmMinus (cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx, n, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="cilmminusrhoh.html">CilmMinusRhoH (Fortran)</a></td>
+          <td> Calculate the gravitational potential interior to relief referenced to a spherical interface with laterally varying density using the finite amplitude algorithm of Wieczorek (2007). Usage call CilmMinusRhoH (cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="cilmplus.html">CilmPlus (Fortran)</a></td>
+          <td> Calculate the gravitational potential exterior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage call CilmPlus (cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx, n, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="cilmplusrhoh.html">CilmPlusRhoH (Fortran)</a></td>
+          <td> Calculate the gravitational potential exterior to relief referenced to a spherical interface with laterally varying density using the finite amplitude algorithm of Wieczorek (2007). Usage call CilmPlusRhoH (cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero, plx,... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+        
+
+        <tr><td><a href="computedg82.html">ComputeDG82 (Fortran)</a></td>
+          <td> Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of a spherical cap. Usage call ComputeDG82 (dg82, lmax, m, theta0, exitstatus) Parameters  dg82 : output, real*8, dimension (lmax-abs(m)+1, lmax-abs(m)+1) The tridiagonal... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="computedm.html">ComputeDM (Fortran)</a></td>
+          <td> Compute the space-concentration kernel of a spherical cap. Usage call ComputeDM (dm, lmax, m, theta0, exitstatus) Parameters  dm : output, real*8, dimension (lmax+1, lmax+1) The space-concentration kernel or angular order m. lmax : input, integer The spherical... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="computedmap.html">ComputeDMap (Fortran)</a></td>
+          <td> Compute the space-concentration kernel of an arbitrary mask on the sphere. Usage call ComputeDMap (dij, dh_mask, n, lmax, sampling, exitstatus) Parameters  dij : output, real*8, dimension ( (lmax+1)**2, (lmax+1)**2 ) The space-concentration kernel corresponding to the mask dh_mask.... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+        
+     
+   
+    
+        
+
+        <tr><td><a href="curve2mask.html">Curve2Mask (Fortran)</a></td>
+          <td> Given a set of latitude and longitude coordinates representing a closed curve, output a gridded binary mask. Usage call Curve2Mask (mask_dh, n, sampling, profile, nprofile, np, centralmeridian, exitstatus) Parameters  dh_mask : output, integer, dimension (n, n*&lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="dhaj.html">DHaj (Fortran)</a></td>
+          <td> Compute the latitudinal weights used in the Driscoll and Healy (1994) spherical harmonic transform. Usage call DHaj (n, aj, exitstatus) Parameters  n : input, integer The number of samples in latitude used in the spherical harmonic transform. This must be even. aj... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="djpi2.html">djpi2 (Fortran)</a></td>
+          <td> Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical harmonics. Usage call djpi2 (dj, lmax, exitstatus) Parameters  dj : output, real*8, dimension (lmax+1, lmax+1, lmax+1) The rotation matrix dj(pi/2). lmax : input, integer The maximum spherical... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="downcontfilterma.html">DownContFilterMA (Fortran)</a></td>
+          <td> Compute the minimum-amplitude downward continuation filter of Wieczorek and Phillips (1998). Usage wl = DownContFilterMA (l, half, r, d) Parameters  wl : output, real*8 The amplitude of the downward continuation filter. l : input, integer The spherical harmonic degree. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="downcontfiltermc.html">DownContFilterMC (Fortran)</a></td>
+          <td> Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree. Usage wl = DownContFilterMC (l, half, r, d) Parameters  wl : output, real*8 The amplitude of the downward continuation filter. l : input, integer The spherical harmonic degree.... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="eigvalsym.html">EigValSym (Fortran)</a></td>
+          <td> Compute the eigenvalues of a real symmetric matrix. Usage call EigValSym (ain, n, eval, ul) Parameters  ain : input, real*8, dimension (n, n) The input real symmetric matrix. By default, only the upper portion of the matrix is used. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="eigvalvecsym.html">EigValVecSym (Fortran)</a></td>
+          <td> Compute the eigenvalues and eigenvectors of a real symmetric matrix. Usage call EigValVecSym (ain, n, eval, evec, ul, k, exitstatus) Parameters  ain : input, real*8, dimension (n, n) The input real symmetric matrix. By default, only the... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="eigvalvecsymtri.html">EigValVecSymTri (Fortran)</a></td>
+          <td> Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix. Usage call EigValVecSymTri (ain, n, eval, evec, ul, exitstatus) Parameters  ain : input, real*8, dimension (n, n) The input real symmetric tridiagonal matrix. n : input,... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+
+        <tr><td><a href="glqgridcoord.html">GLQGridCoord (Fortran)</a></td>
+          <td> Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids. Usage call GLQGridCoord (latglq, longlq, lmax, nlat, nlong, exitstatus) Parameters  latglq : output, real*8, dimension (lmax+1) The latitude coordinates of a grid, corresponding to the indices (:,1), in... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+
+        <tr><td><a href="makecirclecoord.html">MakeCircleCoord (Fortran)</a></td>
+          <td> Compute the coordinates of a circle placed at a given latitude and longitude. Usage call MakeCircleCoord (coord, lat, lon, theta0, cinterval, cnum, exitstatus) Parameters  coord : output, real*8, dimension(360/cinterval, 2) The latitude (:,1) and longitude (:,2) coordinates of... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makeellipsecoord.html">MakeEllipseCoord (Fortran)</a></td>
+          <td> Compute the coordinates of an ellipse placed at a given latitude and longitude. Usage call MakeEllipseCoord (coord, lat, lon, dec, a_theta, b_theta, cinterval, cnum, exitstatus) Parameters  coord : output, real*8, dimension(360/cinterval, 2) The latitude (:,1) and... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegeoidgrid.html">MakeGeoidGrid (Fortran)</a></td>
+          <td> Create a global map of the geoid. Usage call MakeGeoidGrid (geoid, cilm, lmax, r0, gm, potref, omega, r, gridtype, order, nlat, nlong, interval, lmax_calc, a, f, exitstatus) Parameters  geoid... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegravgradgriddh.html">MakeGravGradGridDH (Fortran)</a></td>
+          <td> Create 2D cylindrical maps on a flattened ellipsoid of the components of the gravity “gradient” tensor in a local north-oriented reference frame. Usage call MakeGravGradGridDH (cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, vxz, vyz,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegravgriddh.html">MakeGravGridDH (Fortran)</a></td>
+          <td> Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential. Usage call MakeGravGridDH (cilm, lmax, gm, r0, a, f, rad, theta, phi, total, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegrid2d.html">MakeGrid2D (Fortran)</a></td>
+          <td> Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical harmonic coefficients. Usage call MakeGrid2D (grid, cilm, lmax, interval, nlat, nlong, norm, csphase, f, a, north, south, east, west, dealloc,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegriddh.html">MakeGridDH (Fortran)</a></td>
+          <td> Create a 2D map from a set of spherical harmonic coefficients that conforms with Driscoll and Healy’s (1994) sampling theorem. Usage call MakeGridDH (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh : output, real*8,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegriddhc.html">MakeGridDHC (Fortran)</a></td>
+          <td> Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with Driscoll and Healy’s (1994) sampling theorem. Usage call MakeGridDHC (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh :... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegridglq.html">MakeGridGLQ (Fortran)</a></td>
+          <td> Create a 2D map from a set of spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. Usage call MakeGridGLQ (gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  gridglq : output, real*8, dimension (lmax+1,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegridglqc.html">MakeGridGLQC (Fortran)</a></td>
+          <td> Create a 2D complex map from a set of complex spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. Usage call MakeGridGLQC (gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  gridglq : output, complex*16, dimension... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegridpoint.html">MakeGridPoint (Fortran)</a></td>
+          <td> Evaluate a real function expressed in real spherical harmonics at a single point. Usage value = MakeGridPoint (cilm, lmax, lat, lon, norm, csphase, dealloc) Parameters  value : output, real*8 Value of the function at (lat, lon).... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makegridpointc.html">MakeGridPointC (Fortran)</a></td>
+          <td> Evaluate a complex function expressed in complex spherical harmonics at a single point. Usage value = MakeGridPointC (cilm, lmax, lat, lon, norm, csphase, dealloc) Parameters  value : output, complex*16 Value of the function at (lat, lon).... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="makemaggriddh.html">MakeMagGridDH (Fortran)</a></td>
+          <td> Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential. Usage call MakeMagGridDH (cilm, lmax, r0, a, f, rad, theta, phi, total, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+   
+    
+        
+
+        <tr><td><a href="normalgravity.html">NormalGravity (Fortran)</a></td>
+          <td> Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana. Usage value = NormalGravity (geocentriclat, gm, omega, a, b) Parameters  value : output, real*8 The normal gravity in SI units. geocentriclat: input, real*8... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="planets-constants.html">PlanetsConstants</a></td>
+          <td>  The PlanetsConstantsmodule defines several constants that are useful when working with gravity and topography data of the terrestrial planets. All units are SI. Confer with the Python info() method or fortran source file for exact values... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plbar.html">PlBar (Fortran)</a></td>
+          <td> Compute all the 4-pi (geodesy) normalized Legendre polynomials. Usage call PlBar (p, lmax, z, exitstatus) Parameters  p : output, real/*8, dimension (lmax+1) An array of geodesy-normalized Legendre polynomials up to degree lmax. Degree l corresponds to array index &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plbar_d1.html">PlBar_d1 (Fortran)</a></td>
+          <td> Compute all the 4-pi (geodesy) normalized Legendre polynomials and first derivatives. Usage call PlBar_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of 4-pi (geodesy) normalized Legendre polynomials up to degree lmax. Degree... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plegendre.html">PLegendre (Fortran)</a></td>
+          <td> Compute all the unnormalized Legendre polynomials. Usage call PLegendre (p, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l+1. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plegendre_d1.html">PLegendre_d1 (Fortran)</a></td>
+          <td> Compute all the unnormalized Legendre polynomials and first derivatives. Usage call PLegendre_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plegendrea.html">PLegendreA (Fortran)</a></td>
+          <td> Compute all the unnormalized associated Legendre functions. Usage call PLegendreA (p, lmax, z, csphase, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of unnormalized associated Legendre functions up to degree lmax. The index corresponds to &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plegendrea_d1.html">PLegendreA_d1 (Fortran)</a></td>
+          <td> Compute all the unnormalized associated Legendre functions and first derivatives. Usage call PLegendreA_d1 (p, dp, lmax, z, csphase, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of unnormalized associated Legendre functions up to degree lmax.... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plmbar.html">PlmBar (Fortran)</a></td>
+          <td> Compute all the 4-pi (geodesy) normalized associated Legendre functions. Usage call PlmBar (p, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of 4-pi (geodesy) normalized associated Legendre functions up to degree &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plmbar_d1.html">PlmBar_d1 (Fortran)</a></td>
+          <td> Compute all the 4-pi (geodesy) normalized associated Legendre functions and first derivatives. Usage call PlmBar_d1 (p, dp, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of 4-pi (geodesy) normalized associated Legendre... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plmindex.html">PlmIndex (Fortran)</a></td>
+          <td> Compute the index of an array corresponding to degree l and angular order m. Usage index = PlmIndex (l, m) Parameters  index : function output, integer Index of an array of associated Legendre functions corresponding to degree l and angular... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plmon.html">PlmON (Fortran)</a></td>
+          <td> Compute all the orthonormalized associated Legendre functions. Usage call PlmON (p, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of orthonormalized associated Legendre functions up to degree lmax. The index corresponds... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plmon_d1.html">PlmON_d1 (Fortran)</a></td>
+          <td> Compute all the orthonormalized associated Legendre functions and first derivatives. Usage call PlmON_d1 (p, dp, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of orthonormalized associated Legendre functions up to degree... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plmschmidt.html">PlmSchmidt (Fortran)</a></td>
+          <td> Compute all the Schmidt semi-normalized associated Legendre functions. Usage call PlmSchmidt (p, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of Schmidt-normalized associated Legendre functions up to degree lmax. The index... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plmschmidt_d1.html">PlmSchmidt_d1 (Fortran)</a></td>
+          <td> Compute all the Schmidt semi-normalized associated Legendre functions and first derivatives. Usage call PlmSchmidt_d1 (p, dp, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of Schmidt-normalized associated Legendre functions up to... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plon.html">PlON (Fortran)</a></td>
+          <td> Compute all the orthonormalized Legendre polynomials. Usage call PlON (p, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of orthonormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l+1. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plon_d1.html">PlON_d1 (Fortran)</a></td>
+          <td> Compute all the orthonormalized Legendre polynomials and first derivatives. Usage call PlON_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of orthonormalized Legendre polynomials up to degree lmax. Degree l corresponds to... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plschmidt.html">PlSchmidt (Fortran)</a></td>
+          <td> Compute all the Schmidt-normalized Legendre polynomials. Usage call PlSchmidt (p, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of Schmidt-normalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l+1. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="plschmidt_d1.html">PlSchmidt_d1 (Fortran)</a></td>
+          <td> Compute all the Schmidt-normalized Legendre polynomials and first derivatives. Usage call PlSchmidt_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of Schmidt-normalized Legendre polynomials up to degree lmax. Degree l corresponds to... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="preglq.html">PreGLQ (Fortran)</a></td>
+          <td> Calculate the weights and nodes used in integrating a function by Gauss-Legendre quadrature. Usage call PreGLQ (lower, upper, n, zero, w, exitstatus) Parameters  lower : input, real*8 The lower bound of the integration. upper : input, real*8 The upper... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+   
+    
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+
+        <tr><td><a href="randomgaussian.html">RandomGaussian (Fortran)</a></td>
+          <td> Return a pseudo-Gaussian deviate of zero mean and unit variance. Usage rg = RandomGaussian (seed) Parameters  rg : output, real*8 The radom Gaussian deviate. seed : input/output, integer Input a negative integer to (re-)initialize the random number generator. Afterwards, this argument should not... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="randomn.html">RandomN (Fortran)</a></td>
+          <td> Return a pseudo uniform random deviate between 0 and 1 using the algorithm of Park and Miller with a Marsaglia shift sequence. Usage rn = RandomN (seed) Parameters  rn : output, real*8 The uniform random deviate. seed : input/output, integer Input a negative... </td>
+        </tr>
+        
+     
+   
+    
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+
+        <tr><td><a href="shadmitcorr.html">SHAdmitCorr (Fortran)</a></td>
+          <td> Calculate the admittance and correlation spectra of two real functions. Usage call SHAdmitCorr (gilm, tilm, lmax, admit, corr, admit_error, exitstatus) Parameters  gilm : input, real*8, dimension (2, lmaxg+1, lmaxg+1) The real spherical harmonic coefficients of the function... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shbias.html">SHBias (Fortran)</a></td>
+          <td> Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum. Usage call SHBias (shh, lwin, incspectra, ldata, outcspectra, save_cg, exitstatus) Parameters  shh : input, real*8, dimension (lwin+1) The power spectrum of the localizing window. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shbiasadmitcorr.html">SHBiasAdmitCorr (Fortran)</a></td>
+          <td> Calculate the expected multitaper admittance and correlation spectra associated with the input global cross-power spectra of two functions. Usage call SHAdmitCorr (sgt, sgg, stt, lmax, tapers, lwin, k, admit, corr, mtdef, taper_wt, exitstatus) Parameters  &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shbiask.html">SHBiasK (Fortran)</a></td>
+          <td> Calculate the multitaper (cross-)power spectrum expectation of a function localized by spherical cap windows. Usage call SHBiasK (tapers, lwin, k, incspectra, ldata, outcspectra, taper_wt, save_cg, exitstatus) Parameters  tapers : input, real*8, dimension (lwin+1, k) The... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shbiaskmask.html">SHBiasKMask (Fortran)</a></td>
+          <td> Calculate the multitaper (cross-)power spectrum expectation of a function localized by arbitrary windows derived from a mask. Usage call SHBiasK (tapers, lwin, k, incspectra, ldata, outcspectra, taper_wt, save_cg, exitstatus) Parameters  tapers : input, real*8, dimension ((lwin+1)**2,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcilmtocindex.html">SHCilmToCindex (Fortran)</a></td>
+          <td> Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array. Usage call SHCilmToCindex (cilm, cindex, degmax, exitstatus) Parameters  cilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The input spherical harmonic coefficients. cilm(1,:,:) and cilm(2,:,:) correspond... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcilmtovector.html">SHCilmToVector (Fortran)</a></td>
+          <td> Convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed vector. Usage call SHCilmToVector (cilm, vector, lmax, exitstatus) Parameters  cilm : input, real*8, dimension (2, lmax+1, lmax+1) The input real spherical harmonic coefficients. vector : output,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcindextocilm.html">SHCindexToCilm (Fortran)</a></td>
+          <td> Convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array. Usage call SHCindexToCilm (cindex, cilm, degmax, exitstatus) Parameters  cindex : input, real*8, dimension (2, (lmaxin+1)*(lmaxin+2)/2) The indexed spherical harmonic coefficients. cilm : output, real*8, dimension (2,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shconfidence.html">SHConfidence (Fortran)</a></td>
+          <td> Compute the probability that two functions are correlated at a given spherical harmonic degree for a given correlation coefficient. Usage prob = SHConfidence (l, corr) Parameters  prob : output, real*8 Probability that two functions expressed in spherical coefficients with spectral correlation corr... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcrosspowerdensityl.html">SHCrossPowerDensityL (Fortran)</a></td>
+          <td> Compute the cross-power spectral density of two real functions for a single spherical harmonic degree. Usage cpsd = SHCrossPowerDensityL (cilm1, cilm2, l) Parameters  cpsd : output, real*8 Cross-power spectral density of the two real functions for spherical harmonic degree l. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcrosspowerdensitylc.html">SHCrossPowerDensityLC (Fortran)</a></td>
+          <td> Compute the cross-power spectral density of two complex functions for a single spherical harmonic degree. Usage cpsd = SHCrossPowerDensityLC (cilm1, cilm2, l) Parameters  cpsd : output, complex*16 The cross-power spectral density of the two complex functions for spherical harmonic degree l.... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcrosspowerl.html">SHCrossPowerL (Fortran)</a></td>
+          <td> Compute the cross-power of two real functions for a single spherical harmonic degree. Usage cpower = SHCrossPowerL (cilm1, cilm2, l) Parameters  cpower : output, real*8 The cross power of the two functions for spherical harmonic degree l. cilm1 : input,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcrosspowerlc.html">SHCrossPowerLC (Fortran)</a></td>
+          <td> Compute the cross-power of two complex functions for a single spherical harmonic degree. Usage cpower = SHCrossPowerLC (cilm1, cilm2, l) Parameters  cpower : output, complex*16 Cross power of the two complex functions for spherical harmonic degree l. cilm1 : input,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcrosspowerspectrum.html">SHCrossPowerSpectrum (Fortran)</a></td>
+          <td> Compute the cross-power spectrum of two real functions. Usage call SHCrossPowerSpectrum (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, real*8, dimension (2, lmaxin1+1, lmaxin1+1) The first function expressed in real spherical harmonics. cilm2 : input, real*8, dimension... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcrosspowerspectrumc.html">SHCrossPowerSpectrumC (Fortran)</a></td>
+          <td> Compute the cross-power spectrum of two complex functions. Usage call SHCrossPowerSpectrumC (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, complex*16, dimension (2, lmaxin1+1, lmaxin1+1) The complex spherical harmonics of the first complex function. cilm2 : input, complex*16,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcrosspowerspectrumdensity.html">SHCrossPowerSpectrumDensity (Fortran)</a></td>
+          <td> Compute the cross-power spectral density of two real functions. Usage call SHCrossPowerSpectrumDensity (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, real*8, dimension (2, lmaxin1+1, lmaxin1+1) The first function expressed in real spherical harmonics. cilm2 : input, real*8,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shcrosspowerspectrumdensityc.html">SHCrossPowerSpectrumDensityC (Fortran)</a></td>
+          <td> Compute the cross-power spectral density of two complex functions. Usage call SHCrossPowerSpectrumDensityC (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, complex*16, dimension (2, lmaxin1+1, lmaxin1+1) The complex spherical harmonics of the first complex function. cilm2 : input,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shctor.html">SHctor (Fortran)</a></td>
+          <td> Convert complex spherical harmonics to real form. Usage call SHctor (ccilm, rcilm, degmax, convention, switchcs, exitstatus) Parameters  ccilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The input complex spherical harmonic coefficients. ccilm(1,:,:) and ccilm(2,:,:) correspond to... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shexpanddh.html">SHExpandDH (Fortran)</a></td>
+          <td> Expand an equally sampled or equally spaced grid into spherical harmonics using Driscoll and Healy’s (1994) sampling theorem. Usage call SHExpandDH (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh : input, real*8, dimension (&lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shexpanddhc.html">SHExpandDHC (Fortran)</a></td>
+          <td> Expand an equally sampled or equally spaced complex grid into complex spherical harmonics using Driscoll and Healy’s (1994) sampling theorem. Usage call SHExpandDHC (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh : input, complex*16,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shexpandglq.html">SHExpandGLQ (Fortran)</a></td>
+          <td> Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics. Usage call SHExpandGLQ (cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  cilm : output, real*8, dimension (2, lmax+1, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shexpandglqc.html">SHExpandGLQC (Fortran)</a></td>
+          <td> Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics. Usage call SHExpandGLQC (cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  cilm : output, complex*16, dimension (2, lmax+1, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shexpandlsq.html">SHExpandLSQ (Fortran)</a></td>
+          <td> Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion. Usage call SHExpandLSQ (cilm, d, lat, lon, nmax, lmax, norm, chi2, csphase, exitstatus) Parameters  cilm : output, real*8, dimension (2,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shfindlwin.html">SHFindLWin (Fortran)</a></td>
+          <td> Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor. Usage lwin = SHFindLWin (theta0, m, alpha, taper_number) Parameters  lwin : output, integer The spherical harmonic bandwidth theta0 : input, real*8 The angular radius of the spherical... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shglq.html">SHGLQ (Fortran)</a></td>
+          <td> Precompute weights, nodes, and associated Legendre functions used in the Gauss-Legendre quadrature based spherical harmonics routines. Usage call SHGLQ (lmax, zero, w, plx, norm, csphase, cnorm, exitstatus) Parameters  lmax : input, integer The maximum spherical harmonic degree of... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shlocalizedadmitcorr.html">SHLocalizedAdmitCorr (Fortran)</a></td>
+          <td> Calculate the localized admittance and correlation spectra of two functions at a given location using spherical cap localization windows. Usage call SHLocalizedAdmitCorr (tapers, taper_order, lwin, lat, lon, gilm, tilm, lmax, admit, corr, k, admit_error, corr_error, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmagpowerl.html">SHMagPowerL (Fortran)</a></td>
+          <td> Compute the power of the magnetic field for a single degree l given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage power = SHMagPowerL (c, a, r, l) Parameters  power : output, real*8 The power at degree l... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmagpowerspectrum.html">SHMagPowerSpectrum (Fortran)</a></td>
+          <td> Compute the power spectrum of the magnetic field given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage call SHMagPowerSpectrum (c, a, r, lmax, spectrum, exitstatus) Parameters  c : input, real*8, dimension (2, lmax+1, lmax+1) The Schmidt seminormalized... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmtcouplingmatrix.html">SHMTCouplingMatrix (Fortran)</a></td>
+          <td> This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum. Usage call SHMTCouplingMatrix (mmt, lmax,tapers_power, lwin, k, taper_wt, exitstatus)... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmtdebias.html">SHMTDebias (Fortran)</a></td>
+          <td> Invert for the global power spectrum given a multitaper spectrum estimate formed with spherical cap localization windows. Usage call SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, k, nl, lmid, n, taper_wt, exitstatus) Parameters  mtdebias : output,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmtvaropt.html">SHMTVarOpt (Fortran)</a></td>
+          <td> Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate. Usage call SHMTVarOpt (l, tapers, taper_order, lwin, kmax, sff, var_opt, var_unit, weight_opt, unweighted_covar, nocross, exitstatus) Parameters  l : input, integer... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmultiply.html">SHMultiply (Fortran)</a></td>
+          <td> Multiply two functions and determine the spherical harmonic coefficients of the resulting function. Usage call SHMultiply (shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase, exitstatus) Parameters  shout : output, real*8, dimension (2, lmax1+lmax2+1, lmax1+&lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmultitapercse.html">SHMultiTaperCSE (Fortran)</a></td>
+          <td> Perform a localized multitaper cross-spectral analysis using spherical cap windows. Usage call SHMultiTaperCSE (mtse, sd, sh1, lmax1, sh2, lmax2, tapers, taper_order, lmaxt, k, alpha, lat, lon, taper_wt, norm, csphase, exitstatus) Parameters... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmultitapermaskcse.html">SHMultiTaperMaskCSE (Fortran)</a></td>
+          <td> Perform a localized multitaper cross-spectral analysis using using arbitrary windows derived from a mask. Usage call SHMultiTaperMaskCSE (mtse, sd, sh1, lmax1, sh2, lmax2, tapers, lmaxt, k, taper_wt, norm, csphase, exitstatus) Parameters  mtse :... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmultitapermaskse.html">SHMultiTaperMaskSE (Fortran)</a></td>
+          <td> Perform a localized multitaper spectral analysis using arbitrary windows derived from a mask. Usage call SHMultiTaperMaskSE (mtse, sd, sh, lmax, tapers, lmaxt, k, taper_wt, norm, csphase, exitstatus) Parameters  mtse : output, real*8, dimension (lmax-&lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shmultitaperse.html">SHMultiTaperSE (Fortran)</a></td>
+          <td> Perform a localized multitaper spectral analysis using spherical cap windows. Usage call SHMultiTaperSE (mtse, sd, sh, lmax, tapers, taper_order, lmaxt, k, alpha, lat, lon, taper_wt, norm, csphase, exitstatus) Parameters  mtse :... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shpowerdensityl.html">SHPowerDensityL (Fortran)</a></td>
+          <td> Compute the power spectral density of a real function for a single spherical harmonic degree. Usage psd = SHPowerDensityL (cilm, l) Parameters  psd : output, real*8 Power spectral density of the function for the spherical harmonic degree l. cilm : input,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shpowerdensitylc.html">SHPowerDensityLC (Fortran)</a></td>
+          <td> Compute the power spectral density of a complex function for a single spherical harmonic degree. Usage psd = SHPowerDensityLC (cilm, l) Parameters  psd : output, real*8 Power spectral density of the complex function for spherical harmonic degree l. cilm : input,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shpowerl.html">SHPowerL (Fortran)</a></td>
+          <td> Compute the power of a real function for a single spherical harmonic degree. Usage power = SHPowerL (cilm, l) Parameters  power : output, real*8 Power of the function for a single spherical harmonic degree l. cilm : input, real*8, dimension (2,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shpowerlc.html">SHPowerLC (Fortran)</a></td>
+          <td> Compute the power of a complex function for a single spherical harmonic degree. Usage power = SHPowerLC (cilm, l) Parameters  power : output, real*8 Power of the complex function for spherical harmonic degree l. cilm : input, complex*16, dimension (2, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shpowerspectrum.html">SHPowerSpectrum (Fortran)</a></td>
+          <td> Compute the power spectrum of a real function. Usage call SHPowerSpectrum (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The function expressed in real spherical harmonics. lmax : input, integer The maximum spherical harmonic... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shpowerspectrumc.html">SHPowerSpectrumC (Fortran)</a></td>
+          <td> Compute the power spectrum of a complex function. Usage call SHPowerSpectrumC (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, complex*16, dimension (2, lmaxin+1, lmaxin+1) The complex function expressed in complex spherical harmonics. lmax : input, integer The maximum spherical... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shpowerspectrumdensity.html">SHPowerSpectrumDensity (Fortran)</a></td>
+          <td> Compute the power spectral density of a real function. Usage call SHPowerSpectrumDensity (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The real function expressed in real spherical harmonics. lmax : input, integer The maximum... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shpowerspectrumdensityc.html">SHPowerSpectrumDensityC (Fortran)</a></td>
+          <td> Compute the power spectral density of a complex function. Usage call SHPowerSpectrumDensityC (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, complex*16, dimension (2, lmaxin+1, lmaxin+1) The complex function expressed in complex spherical harmonics. lmax : input, integer The maximum... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shread.html">SHRead (Fortran)</a></td>
+          <td> Read spherical harmonic coefficients from an ascii-formatted file. Usage call SHRead (filename, cilm, lmax, skip, header, error, exitstatus) Parameters  filename : input, character(:) The filename of the ascii file containing the spherical harmonic coefficients. cilm : output, real*8,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shread2.html">SHRead2 (Fortran)</a></td>
+          <td> Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file. Usage call SHRead2 (filename, cilm, lmax, gm, r0_pot, error, dot, doystart, doyend, epoch, exitstatus) Parameters  filename : input, character(*) The ascii-formatted filename containing the... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shreadjpl.html">SHReadJPL (Fortran)</a></td>
+          <td> Read spherical harmonic coefficients from a JPL ascii-formatted file. Usage call SHReadJPL (filename, cilm, lmax, error, gm, formatstring, exitstatus) Parameters  filename : input, character(*) The filename of the JPL ascii formatted spherical harmonic coefficients. cilm : output, real*8,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shreturntapers.html">SHReturnTapers (Fortran)</a></td>
+          <td> Calculate the eigenfunctions of the spherical-cap concentration problem. Usage call SHReturnTapers (theta0, lmax, tapers, eigenvalues, taper_order, exitstatus) Parameters  theta0 : input, real*8 The angular radius of the spherical cap in radians. lmax : input, integer The spherical harmonic bandwidth... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shreturntapersm.html">SHReturnTapersM (Fortran)</a></td>
+          <td> Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order. Usage call SHReturnTapersM (theta0, lmax, m, tapers, eigenvalues, shannon, exitstatus) Parameters  theta0 : input, real*8 The angular radius of the spherical cap in radians. lmax... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shreturntapersmap.html">SHReturnTapersMap (Fortran)</a></td>
+          <td> Calculate the eigenfunctions and eigenvalues of the space-concentration problem for an arbitrary region. Usage call SHReturnTapersMap (tapers, eigenvalues, dh_mask, n, lmax, sampling, ntapers, exitstatus) Parameters  tapers : input, real*8, dimension ((lmax+1)**2, ntapers) The spherical harmonic coefficients... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shrotatecoef.html">SHRotateCoef (Fortran)</a></td>
+          <td> Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles. Usage call SHRotateCoef (x, coef, rcoef, dj, lmax, exitstatus) Parameters  x : input, real*8, dimension(3) The three Euler angles, alpha, beta, and gamma, in radians. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shrotaterealcoef.html">SHRotateRealCoef (Fortran)</a></td>
+          <td> Determine the spherical harmonic coefficients of a real function rotated by three Euler angles. Usage call SHRotateRealCoef (cilmrot, cilm, lmax, x, dj, exitstatus) Parameters  cilmrot : output, real*8, dimension (2, lmax+1, lmax+1) The spherical harmonic coefficients of the... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shrtoc.html">SHrtoc (Fortran)</a></td>
+          <td> Convert real spherical harmonics to complex form. Usage call SHrtoc (rcilm, ccilm, degmax, convention, switchcs, exitstatus) Parameters  rcilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The input real spherical harmonic coefficients. rcilm(1,:,:) and rcilm(2,:,:) correspond to... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shsjkpg.html">SHSjkPG (Fortran)</a></td>
+          <td> Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders. Usage value = SHSjkPG (incspectra, l, m, mprime, hj_real, hk_real, mj, mk, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shtools.html">SHTOOLS (Fortran)</a></td>
+          <td> SHTOOLS is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere. Features SHTOOLS is extremely versatile:  It can accommodate any standard normalization of the... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shvectortocilm.html">SHVectorToCilm (Fortran)</a></td>
+          <td> Convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array. Usage call SHVectorToCilm (vector, cilm, lmax, exitstatus) Parameters  vector : input, real*8, dimension ( (lmax+1)**2 ) The input 1-D indexed array of real spherical harmonic coefficients. &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+        
+     
+   
+    
+   
+    
+   
+    
+        
+
+        <tr><td><a href="sphericalcapcoef.html">SphericalCapCoef (Fortran)</a></td>
+          <td> Calculate the spherical harmonic coefficients of a spherical cap. Usage call SphericalCapCoef (coef, theta, lmax, exitstatus) Parameters  coef : output, real*8, dimension(lmaxin+1) The zonal spherical harmonic coefficients of a spherical cap centered over the north pole. theta : input, real*8... </td>
+        </tr>
+        
+     
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+        
+
+        <tr><td><a href="wigner3j.html">Wigner3j (Fortran)</a></td>
+          <td> Compute the Wigner-3j symbols for all allowable values of J. ## Usage call Wigner3j (`w3j`, `jmin`, `jmax`, `j2`, `j3`, `m1`, `m2`, `m3`, `exitstatus`) ## Parameters `w3j` : output, real\*8, dimension (`j2`+`j3`+1) : An array of the Wigner-3j symbols evaluated for all allowable values of `j`. The minimum and maximum values... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="yilmindexvector.html">YilmIndexVector (Fortran)</a></td>
+          <td> Compute the index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`. ## Usage `index` = YilmIndex (`i`, `l`, `m`) ## Parameters `index` : output, integer : Index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`. `i` : input,... </td>
+        </tr>
+        
+     
+   
+
+        
+        
+
+   </tbody>
+</table>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2017 SHTOOLS. All rights reserved. <br />
+<a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
+<a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
+<p><img src="images/company_logo.png" alt="SHTOOLS"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="SHTOOLS can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and...">
+<meta name="keywords" content=" spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field">
+<title>Installing SHTOOLS | SHTOOLS - Tools for working with spherical harmonics</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="http://shtools.github.io/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> SHTOOLS</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/" target="_blank">GitHub</a></li>
+                
+                
+                
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+			<li>
+
+
+
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about Installing SHTOOLS page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+
+</li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Installing SHTOOLS">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  
+  
+  
+      
+  
+  <li>
+      <a href="#">Getting started</a>
+      <ul>
+          
+          
+          
+          <li><a href="index.html">Overview</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a href="installing.html">Installing</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-f95.html">Using with Fortran 95</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="using-with-python.html">Using with Python</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Spherical harmonics</a>
+      <ul>
+          
+          
+          
+          <li><a href="real-spherical-harmonics.html">Real spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="complex-spherical-harmonics.html">Complex spherical harmonics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="implementation-details.html">Implementation details</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Fortran 95 Routines</a>
+      <ul>
+          
+          
+          
+          <li><a href="f95-modules.html">Modules</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="global-spectral-analysis.html">Global spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="localized-spectral-analysis.html">Localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="miscellaneous-routines.html">Miscellaneous</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Python components</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-classes.html">Python classes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-legendre-functions.html">Legendre functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-transforms.html">Spherical harmonic transformations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-io.html">I/O, storage, conversions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spectral-analysis.html">Global and localized spectral analysis</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-spherical-harmonic-rotations.html">Spherical harmonic rotations</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-gravity-magnetics.html">Gravity and magnetics</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-utilities.html">Utilities</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="python-constants.html">Constants</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Examples programs</a>
+      <ul>
+          
+          
+          
+          <li><a href="python-examples.html">Python examples</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-examples.html">Fortran 95 examples</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Support</a>
+      <ul>
+          
+          
+          
+          <li><a href="faq.html">FAQ</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="fortran-95-problems.html">Fortran 95 problems</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="how-to-contribute.html">How to contribute</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a href="#">Release Notes</a>
+      <ul>
+          
+          
+          
+          <li><a href="release-notes-v4.html">Version 4</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="release-notes-v3.html">Version 3</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="license.html">License</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="contributors.html">Contributors</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  displayAlign: "left",
+  displayIndent: "2em"
+});
+</script>
+
+<script type="text/javascript" async
+ src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<div class="post-header">
+   <h1 class="post-title-main">Installing SHTOOLS</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+    <div class="summary">SHTOOLS can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and compiling Fortran 95 code, you should use either the brew package manager (on macOS) or compile manually using the Makefile.</div>
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+
+    
+
+  <h2 id="python-package-installer-pip">Python package installer (pip)</h2>
+
+<p>The easiest way to install the Python components of SHTOOLS (pyshtools) is to use <code class="highlighter-rouge">pip</code>. On Linux, macOS and windows machines, the binary wheels can be installed by executing the following command:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pyshtools
+</code></pre></div></div>
+<p>If you wish to instead compile the archive yourself, first make sure that you have the necessary dependencies installed. On most linux distributions, this can be accomplished using</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
+</code></pre></div></div>
+<p>or on macOS using <a href="https://brew.sh/">brew</a></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install fftw <span class="nt">--with-fortran</span>
+</code></pre></div></div>
+<p>Then clone the SHTOOLS repo</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/SHTOOLS/SHTOOLS.git
+</code></pre></div></div>
+<p>To install pyshtools in the active Python environment lib folder, execute this command in the main directory:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nb">.</span>
+</code></pre></div></div>
+<p>To instead install the files in the current working directory and link them to the system Python directory, use</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nt">-e</span> <span class="nb">.</span>
+</code></pre></div></div>
+<p>To uninstall pyshtools from your system directory, use the command</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip uninstall pyshtools
+</code></pre></div></div>
+<p>Note that these commands will install only the Python version that corresponds to the version of <code class="highlighter-rouge">pip</code> being used. On some systems, it may be necessary to specify <code class="highlighter-rouge">pip2.7</code> or <code class="highlighter-rouge">pip3.x</code>.</p>
+
+<h2 id="fortran-95-library-using-brew-macos">Fortran 95 library using brew (macOS)</h2>
+
+<p>If <a href="https://brew.sh/">brew</a> is already installed, it is only necessary to enter the following commands in the terminal:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew tap shtools/shtools
+brew install shtools
+</code></pre></div></div>
+<p>To also install both the standard Fortran 95 library along with the OpenMP components, add the option <code class="highlighter-rouge">--with-openmp</code> to the last command:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install shtools <span class="nt">--with-openmp</span>
+</code></pre></div></div>
+
+<h2 id="fortran-95-library-using-the-makefile">Fortran 95 library using the Makefile</h2>
+
+<p>Before installing the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, the Fortran 95 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main directory:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make
+</code></pre></div></div>
+<p>To compile the Fortran 95 components with OpenMP use</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make fortran-mp
+</code></pre></div></div>
+<p>To compile and run the Fortran 95 test suites, use</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make fortran-tests
+</code></pre></div></div>
+<p>To delete the compiled archive, module files, object files, and test suite files, use</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make clean
+</code></pre></div></div>
+<p>By default, the <code class="highlighter-rouge">Makefile</code> will use the <code class="highlighter-rouge">gfortran</code> compiler. Different compilers and options can be specified by passing optional arguments to the <code class="highlighter-rouge">Makefile</code> using the syntax</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make F95 <span class="o">=</span> <span class="s2">"MyCompiler"</span> F95FLAGS <span class="o">=</span> <span class="s2">"MyCompilerFlags"</span>
+</code></pre></div></div>
+<p>where “<code class="highlighter-rouge">MyCompiler</code>” and “<code class="highlighter-rouge">MyCompilerFlags</code>” are to be replaced by the path of the compiler name and options, respectively. Supported options include:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>F95 <span class="o">=</span> <span class="s2">"Name (including path) of the f95 compiler"</span>
+F95FLAGS <span class="o">=</span> <span class="s2">"F95 compiler options"</span>
+FFTW <span class="o">=</span> Name and path of the FFTW3 library of the form <span class="s2">"-Lpath -lfftw3"</span>
+LAPACK <span class="o">=</span> Name and path of the LAPACK library of the form <span class="s2">"-Lpath -llapack"</span>
+BLAS <span class="o">=</span> Name and path of the BLAS library of the form <span class="s2">"-Lpath -lblas"</span>
+</code></pre></div></div>
+<p>Successful compilation will create the library file <code class="highlighter-rouge">libSHTOOLS.a</code> (and <code class="highlighter-rouge">libSHTOOLS-mp.a</code> when compiling with OpenMP) in the directory <code class="highlighter-rouge">lib</code>, and will place a few compiled module files in the directory <code class="highlighter-rouge">modules</code>. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using <code class="highlighter-rouge">make clean</code>.</p>
+
+<p>To make all files available at a system level, execute</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make install
+</code></pre></div></div>
+<p>This will move the compiled SHTOOLS files and documentation to</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SYSLIBPATH  <span class="c"># libSHTOOLS.a, libSHTOOLS-mp.a</span>
+SYSMODPATH  <span class="c"># fftw3.mod, planetsconstants.mod, shtools.mod</span>
+SYSSHAREPATH/shtools/examples  <span class="c"># example files</span>
+SYSSHAREPATH/man/man1  <span class="c"># man pages</span>
+SYSDOCPATH/shtools  <span class="c"># index.html, web documentation </span>
+</code></pre></div></div>
+<p>The locations of the above directories can be set as optional arguments passed to the <code class="highlighter-rouge">Makefile</code>, and the default locations are</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SYSLIBPATH <span class="o">=</span> /usr/local/lib
+SYSMODPATH <span class="o">=</span> /usr/local/include
+SYSSHAREPATH <span class="o">=</span> /usr/local/share
+SYSDOCPATH <span class="o">=</span> /usr/local/share/doc
+</code></pre></div></div>
+<p>To remove all installed SHTOOLS files, use</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make uninstall
+</code></pre></div></div>
+<p>To access the unix man pages, it will be necessary to add <code class="highlighter-rouge">SYSSHAREPATH/man</code> to your man path.</p>
+
+<h2 id="fortran-95-compiler-specific-flags-and-optimizations">Fortran 95 compiler specific flags and optimizations</h2>
+
+<p>Default compiler options are specified in the main <code class="highlighter-rouge">Makefile</code> for a few common compilers (<code class="highlighter-rouge">gfortran</code>, Absoft <code class="highlighter-rouge">f95</code>, <code class="highlighter-rouge">g95</code>, and <code class="highlighter-rouge">ifort</code>). If it is necessary to change these, consider the following guidelines.</p>
+
+<p>One should always use some form of optimization when compiling SHTOOLS, such as by specifying the option</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-O3</span>
+</code></pre></div></div>
+<p>Performance will likely be increased by 10s of percent by specifying the compiler to target the host architecture</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-march</span><span class="o">=</span>host  <span class="c"># f95</span>
+<span class="nt">-march</span><span class="o">=</span>native  <span class="c"># gfortran</span>
+</code></pre></div></div>
+<p>and to use fast math</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-speed_math</span><span class="o">=</span>11  <span class="c"># f95</span>
+<span class="nt">-ffast-math</span>  <span class="c"># gfortran</span>
+</code></pre></div></div>
+<p>The biggest difficulty in compiling SHTOOLS is setting the compiler flags so that the external subroutine names are in a format that is compatible with the already compiled FFTW and LAPACK libraries. In general, it is necessary to ensure that the SHTOOLS subroutine names are in lower case and have the right number of underscores appended to them.</p>
+
+<p>For Absoft ProFortran, this is achieved by setting</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-YEXT_NAMES</span><span class="o">=</span>LCS <span class="nt">-YEXT_SFX</span><span class="o">=</span>_
+</code></pre></div></div>
+<p>For <code class="highlighter-rouge">g95</code>, it will be necessary to use one of the following:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-fno-second-underscore</span> <span class="c"># most likely</span>
+<span class="nt">-fno-underscoring</span>
+</code></pre></div></div>
+<p>For <code class="highlighter-rouge">gfortran</code>, it is generally not necessary to use any special flags, though it could arise that one of the following might be necessary:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-fno-underscoring</span>
+<span class="nt">-fsecond-underscore</span>
+</code></pre></div></div>
+<p>For the Intel Fortran compiler <code class="highlighter-rouge">ifort</code>, it will be necessary to use</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-free</span> <span class="nt">-Tf</span>
+</code></pre></div></div>
+<p>in order that the compiler recognizes files with the extension <code class="highlighter-rouge">.f95</code> as Fortran 95 files. In this case, the f95 file should come directly after the option <code class="highlighter-rouge">-Tf</code>.</p>
+
+<p>Setting the right compiler flags is more complicated when the FFTW and LAPACK libraries have different naming and underscoring conventions. In order to accommodate this case, underscores can be added explicitly to either the LAPACK or FFTW subroutine names in the SHTOOLS source code by specifying the optional <code class="highlighter-rouge">make</code> arguments when building the archive:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FFTW_UNDERSCORE <span class="o">=</span> 1  <span class="c"># to add an extra underscore to the FFTW routine names</span>
+LAPACK_UNDERSCORE <span class="o">=</span> 1  <span class="c"># to add an extra underscore to the LAPACK routine names</span>
+</code></pre></div></div>
+<p>For both cases, compiler flags should probably be set so that underscores are not appended to routine names. See <a href="fortran-95-problems.html">Fortran 95 problems</a> for further information.</p>
+
+<p>To generate 64 bit code, use the compiler option</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-m64</span>
+</code></pre></div></div>
+<p>For this case, it will be necessary to use 64-bit compiled FFTW and LAPACK libraries.</p>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2017 SHTOOLS. All rights reserved. <br />
+<a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
+<a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
+<p><img src="images/company_logo.png" alt="SHTOOLS"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

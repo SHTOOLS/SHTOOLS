@@ -1,0 +1,4 @@
+www/* linguist-documentation
+src/fdoc/* linguist-documentation
+src/pydoc/* linguist-documentation
+examples/ExampleDataFiles/FSU_mars90.sh linguist-documentation

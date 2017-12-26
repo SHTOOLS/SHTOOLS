@@ -1,0 +1,13 @@
+Contributors.txt
+LICENSE
+MANIFEST.in
+Makefile
+README.md
+VERSION
+docs/
+examples/
+man/
+misc/
+pyshtools/
+setup.py
+src/
