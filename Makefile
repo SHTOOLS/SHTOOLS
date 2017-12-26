@@ -181,7 +181,7 @@ INCDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
-WWWSRC = doc
+WWWSRC = docs
 WWWDEST = www
 
 LIBPATH = $(PWD)/$(LIBDIR)
