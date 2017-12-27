@@ -6,6 +6,7 @@ permalink: shexpandlsq.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.

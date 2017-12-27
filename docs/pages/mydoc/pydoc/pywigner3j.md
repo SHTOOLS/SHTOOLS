@@ -6,6 +6,7 @@ permalink: pywigner3j.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the Wigner-3j symbols for all allowable values of J.

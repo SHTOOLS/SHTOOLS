@@ -6,6 +6,7 @@ permalink: pymakegravgradgriddh.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Create 2D cylindrical maps on a flattened ellipsoid of the components of the gravity "gradient" tensor in a local north-oriented reference frame.

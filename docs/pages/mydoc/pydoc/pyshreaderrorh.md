@@ -6,6 +6,7 @@ permalink: pyshreaderrorh.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Read spherical harmonic coefficients and associated errors from an ascii-formatted file with a header line.

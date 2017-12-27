@@ -6,6 +6,7 @@ permalink: pyshexpandlsq.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.

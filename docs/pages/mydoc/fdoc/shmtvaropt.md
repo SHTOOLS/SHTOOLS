@@ -6,6 +6,7 @@ permalink: shmtvaropt.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.

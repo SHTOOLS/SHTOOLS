@@ -6,6 +6,7 @@ permalink: pyplschmidt_d1.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute all the Schmidt-normalized Legendre polynomials and first derivatives.

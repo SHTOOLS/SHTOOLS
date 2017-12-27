@@ -6,6 +6,7 @@ permalink: shrtoc.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Convert real spherical harmonics to complex form.

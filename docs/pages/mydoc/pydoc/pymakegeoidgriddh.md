@@ -6,6 +6,7 @@ permalink: pymakegeoidgriddh.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Create a global map of the geoid.

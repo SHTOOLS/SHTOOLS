@@ -6,6 +6,7 @@ permalink: pyyilmindexvector.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`.

@@ -6,6 +6,7 @@ permalink: shtools.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 SHTOOLS is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.

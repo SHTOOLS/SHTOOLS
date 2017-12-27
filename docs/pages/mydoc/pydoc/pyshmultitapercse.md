@@ -6,6 +6,7 @@ permalink: pyshmultitapercse.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Perform a localized multitaper cross-spectral analysis using spherical cap windows.

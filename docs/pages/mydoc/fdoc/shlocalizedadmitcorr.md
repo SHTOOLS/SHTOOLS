@@ -6,6 +6,7 @@ permalink: shlocalizedadmitcorr.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the localized admittance and correlation spectra of two functions at a given location using spherical cap localization windows.

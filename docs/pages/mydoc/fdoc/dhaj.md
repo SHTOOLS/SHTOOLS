@@ -6,6 +6,7 @@ permalink: dhaj.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the latitudinal weights used in the Driscoll and Healy (1994) spherical harmonic transform.

@@ -6,6 +6,7 @@ permalink: pydowncontfilterma.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the minimum-amplitude downward continuation filter of Wieczorek and Phillips (1998).

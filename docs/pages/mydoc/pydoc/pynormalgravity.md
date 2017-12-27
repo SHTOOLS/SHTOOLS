@@ -6,6 +6,7 @@ permalink: pynormalgravity.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana.

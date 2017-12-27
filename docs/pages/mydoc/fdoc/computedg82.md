@@ -6,6 +6,7 @@ permalink: computedg82.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of a spherical cap.

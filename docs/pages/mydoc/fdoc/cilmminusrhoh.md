@@ -6,6 +6,7 @@ permalink: cilmminusrhoh.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the gravitational potential interior to relief referenced to a spherical interface with laterally varying density using the finite amplitude algorithm of Wieczorek (2007).

@@ -6,6 +6,7 @@ permalink: shbiasadmitcorr.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the expected multitaper admittance and correlation spectra associated with the input global cross-power spectra of two functions.

@@ -6,6 +6,7 @@ permalink: shcrosspowerspectrumdensityc.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the cross-power spectral density of two complex functions.

@@ -6,6 +6,7 @@ permalink: makegriddhc.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with Driscoll and Healy's (1994) sampling theorem.

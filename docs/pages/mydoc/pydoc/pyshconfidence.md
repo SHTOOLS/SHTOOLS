@@ -6,6 +6,7 @@ permalink: pyshconfidence.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the probability that two functions are correlated at a given spherical harmonic degree for a given correlation coefficient.

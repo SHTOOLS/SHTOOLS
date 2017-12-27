@@ -6,6 +6,7 @@ permalink: makeellipsecoord.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the coordinates of an ellipse placed at a given latitude and longitude.

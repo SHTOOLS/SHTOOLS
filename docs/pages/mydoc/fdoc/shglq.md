@@ -6,6 +6,7 @@ permalink: shglq.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Precompute weights, nodes, and associated Legendre functions used in the Gauss-Legendre quadrature based spherical harmonics routines.

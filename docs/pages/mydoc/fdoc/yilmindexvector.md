@@ -6,6 +6,7 @@ permalink: yilmindexvector.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`.

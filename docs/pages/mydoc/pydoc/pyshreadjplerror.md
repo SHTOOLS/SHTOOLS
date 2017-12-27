@@ -6,6 +6,7 @@ permalink: pyshreadjplerror.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Read spherical harmonic coefficients from a JPL ascii-formatted file.

@@ -550,10 +550,10 @@ hr.faded {
 hr.shaded {
     height: 12px;
     border: 0;
-    margin-top: 70px;
+    margin-top: 10px;
     background: white;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .fa-6x{font-size:900%;}

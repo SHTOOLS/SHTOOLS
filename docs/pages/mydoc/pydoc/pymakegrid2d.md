@@ -6,6 +6,7 @@ permalink: pymakegrid2d.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical harmonic coefficients.

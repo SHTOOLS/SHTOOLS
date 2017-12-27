@@ -26,4 +26,4 @@ If you are not comfortable with using `git`, please just contact us by email. We
 
 ## I would like to fix some typos in the documentation
 
-* The easiest way to suggest a change to the documentation is to find the file on GitHub and modify it by clicking on the edit button. Then just follow the instructions for opening a pull request. This is really very easy, and it is impossible to mess anything up.
+* The easiest way to improve the documentation is by clicking on the "Edit me" button at the bottom of the page you are reading. This will bring you to the original source file on GitHub where you can make the change by clicking on the "edit this file" button. Just follow the instructions and don't worry, it is impossible to mess anything up.

@@ -6,6 +6,7 @@ permalink: sphericalcapcoef.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the spherical harmonic coefficients of a spherical cap.

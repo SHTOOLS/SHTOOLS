@@ -6,6 +6,7 @@ permalink: pyshrotaterealcoef.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Determine the spherical harmonic coefficients of a real function rotated by three Euler angles.

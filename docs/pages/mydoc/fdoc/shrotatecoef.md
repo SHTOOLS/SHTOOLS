@@ -6,6 +6,7 @@ permalink: shrotatecoef.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles.

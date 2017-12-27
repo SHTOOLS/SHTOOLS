@@ -6,6 +6,7 @@ permalink: shmultiply.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Multiply two functions and determine the spherical harmonic coefficients of the resulting function.

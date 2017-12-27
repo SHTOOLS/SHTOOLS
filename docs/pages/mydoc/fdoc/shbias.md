@@ -6,6 +6,7 @@ permalink: shbias.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum.

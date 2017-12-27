@@ -6,6 +6,7 @@ permalink: shexpanddh.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Expand an equally sampled or equally spaced grid into spherical harmonics using Driscoll and Healy's (1994) sampling theorem.

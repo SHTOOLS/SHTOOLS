@@ -6,6 +6,7 @@ permalink: spectrum.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Return the spectrum of the spherical harmonic coefficients as a function of spherical harmonic degree.

@@ -6,6 +6,7 @@ permalink: plegendrea.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the unnormalized associated Legendre functions.

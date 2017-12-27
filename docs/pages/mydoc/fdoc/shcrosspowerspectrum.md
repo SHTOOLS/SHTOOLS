@@ -6,6 +6,7 @@ permalink: shcrosspowerspectrum.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the cross-power spectrum of two real functions.

@@ -6,6 +6,7 @@ permalink: pycomputedmap.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the space-concentration kernel of an arbitrary mask on the sphere.

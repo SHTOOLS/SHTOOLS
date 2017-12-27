@@ -6,6 +6,7 @@ permalink: shfindlwin.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor.

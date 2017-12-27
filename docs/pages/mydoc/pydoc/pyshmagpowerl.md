@@ -6,6 +6,7 @@ permalink: pyshmagpowerl.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the power of the magnetic field for a single degree `l` given the Schmidt seminormalized magnetic potential spherical harmonic coefficients.

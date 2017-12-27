@@ -6,6 +6,7 @@ permalink: pyshread2.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file.

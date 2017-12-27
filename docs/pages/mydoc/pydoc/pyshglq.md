@@ -6,6 +6,7 @@ permalink: pyshglq.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Precompute the weights and nodes used in the Gauss-Legendre quadrature based spherical harmonics routines.

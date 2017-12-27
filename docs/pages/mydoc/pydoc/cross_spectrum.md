@@ -6,6 +6,7 @@ permalink: cross_spectrum.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Return the cross-spectrum of the spherical harmonic coefficients as a function of spherical harmonic degree.

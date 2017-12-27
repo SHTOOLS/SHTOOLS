@@ -6,6 +6,7 @@ permalink: shrotaterealcoef.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Determine the spherical harmonic coefficients of a real function rotated by three Euler angles.

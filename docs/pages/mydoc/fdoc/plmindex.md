@@ -6,6 +6,7 @@ permalink: plmindex.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the index of an array corresponding to degree `l` and angular order `m`.

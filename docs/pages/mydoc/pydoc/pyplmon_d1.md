@@ -6,6 +6,7 @@ permalink: pyplmon_d1.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute all the orthonormalized associated Legendre functions and first derivatives.

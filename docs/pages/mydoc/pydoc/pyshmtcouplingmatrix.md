@@ -6,6 +6,7 @@ permalink: pyshmtcouplingmatrix.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum.

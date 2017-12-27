@@ -6,6 +6,7 @@ permalink: shexpandglq.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics.

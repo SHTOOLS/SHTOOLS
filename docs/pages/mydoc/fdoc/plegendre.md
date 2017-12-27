@@ -6,6 +6,7 @@ permalink: plegendre.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the unnormalized Legendre polynomials.

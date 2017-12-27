@@ -6,6 +6,7 @@ permalink: pydjpi2.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical harmonics.

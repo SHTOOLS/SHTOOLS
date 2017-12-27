@@ -6,6 +6,7 @@ permalink: randomn.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Return a pseudo uniform random deviate between 0 and 1 using the algorithm of Park and Miller with a Marsaglia shift sequence.

@@ -6,6 +6,7 @@ permalink: normalgravity.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana.

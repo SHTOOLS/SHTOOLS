@@ -6,6 +6,7 @@ permalink: wigner3j.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the Wigner-3j symbols for all allowable values of J.

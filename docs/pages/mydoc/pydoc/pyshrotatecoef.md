@@ -6,6 +6,7 @@ permalink: pyshrotatecoef.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles.

@@ -6,6 +6,7 @@ permalink: pyshmagpowerspectrum.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the power spectrum of the magnetic field given the Schmidt seminormalized magnetic potential spherical harmonic coefficients.

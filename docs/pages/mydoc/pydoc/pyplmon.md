@@ -6,6 +6,7 @@ permalink: pyplmon.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute all the orthonormalized associated Legendre functions.

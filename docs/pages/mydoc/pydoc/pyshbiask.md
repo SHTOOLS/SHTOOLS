@@ -6,6 +6,7 @@ permalink: pyshbiask.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the multitaper (cross-)power spectrum expectation of a function localized by spherical cap windows.

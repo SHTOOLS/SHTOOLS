@@ -6,6 +6,7 @@ permalink: shconfidence.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the probability that two functions are correlated at a given spherical harmonic degree for a given correlation coefficient.

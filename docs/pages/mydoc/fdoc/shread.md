@@ -6,6 +6,7 @@ permalink: shread.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Read spherical harmonic coefficients from an ascii-formatted file.

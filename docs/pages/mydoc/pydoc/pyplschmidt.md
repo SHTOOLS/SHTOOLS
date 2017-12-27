@@ -6,6 +6,7 @@ permalink: pyplschmidt.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute all the Schmidt-normalized Legendre polynomials.

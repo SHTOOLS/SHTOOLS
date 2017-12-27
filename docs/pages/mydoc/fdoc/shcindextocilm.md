@@ -6,6 +6,7 @@ permalink: shcindextocilm.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array.

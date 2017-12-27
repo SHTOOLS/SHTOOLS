@@ -6,6 +6,7 @@ permalink: shadmitcorr.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the admittance and correlation spectra of two real functions.
