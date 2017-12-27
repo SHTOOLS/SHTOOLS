@@ -87,5 +87,6 @@ description: "SHTOOLS is an archive of Fortran 95 and Python software that can b
 # the description is used in the feed.xml file
 
 # needed for sitemap.xml file and github pages
-url : http://shtools.github.io
-baseurl: /SHTOOLS
+url : http://shtools.oca.eu
+
+baseurl: 
