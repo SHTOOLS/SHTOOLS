@@ -46,8 +46,8 @@ def example1():
     grid2.plot(show=False, fname='GLQGrid.png')
 
     # rotate coefficients, expand to grid and plot again
-    coeffs.rotate(40., 0., 0., degrees=True)
-    grid3 = coeffs.expand(grid='DH1')
+    coeffs_rot = coeffs.rotate(40., 0., 0., degrees=True)
+    grid3 = coeffs_rot.expand(grid='DH1')
     grid3.plot(show=False, fname='DHGrid_rotated.png')
 
 
