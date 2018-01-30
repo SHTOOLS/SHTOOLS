@@ -51,4 +51,4 @@ Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summat
 
 # See also
 
-[`shexpanddhc`](shexpanddhc.html), [`makegriddh`](makegriddh.html), [`shexpanddh`](shexpanddh.html), [`makegridglq`](makegridglq.html), [`shexpandglq`](shexpandglq.html), [`makegridglqc`](makegridglqc.html), [`shexpandglqc`](shexpandglqc.html), [`shexpandlsq`](shexpandlsq.html)
+[shexpanddhc](shexpanddhc.html), [makegriddh](makegriddh.html), [shexpanddh](shexpanddh.html), [makegridglq](makegridglq.html), [shexpandglq](shexpandglq.html), [makegridglqc](makegridglqc.html), [shexpandglqc](shexpandglqc.html), [shexpandlsq](shexpandlsq.html)

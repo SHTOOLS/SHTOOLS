@@ -46,4 +46,4 @@ summation and the recursive computation of very high degree and order normalised
 
 # See also
 
-[`shexpandglqc`](pyshexpandglqc.html), [`shexpandglq`](pyshexpandglq.html), [`makegridglq`](pymakegridglq.html), [`shexpanddh`](pyshexpanddh.html), [`makegriddh`](pymakegriddh.html), [`shexpanddhc`](pyshexpanddhc.html), [`makegriddhc`](pymakegriddhc.html), [`shexpandlsq`](pyshexpandlsq.html), [`glqgridcoord`](pyglqgridcoord.html), [`shglq`](pyshglq.html)
+[shexpandglqc](pyshexpandglqc.html), [shexpandglq](pyshexpandglq.html), [makegridglq](pymakegridglq.html), [shexpanddh](pyshexpanddh.html), [makegriddh](pymakegriddh.html), [shexpanddhc](pyshexpanddhc.html), [makegriddhc](pymakegriddhc.html), [shexpandlsq](pyshexpandlsq.html), [glqgridcoord](pyglqgridcoord.html), [shglq](pyshglq.html)

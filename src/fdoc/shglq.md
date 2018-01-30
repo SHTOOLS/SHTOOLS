@@ -40,4 +40,4 @@ The employed spherical harmonic normalization and Condon-Shortley phase conventi
 
 # See also
 
-[`shexpandglq`](shexpandglq.html), [`makegridglq`](makegridglq.html), [`shexpandglqc`](shexpandglqc.html), [`makegridglqc`](makegridglqc.html), [`glqgridcoord`](glqgridcoord.html), [`preglq`](preglq.html)
+[shexpandglq](shexpandglq.html), [makegridglq](makegridglq.html), [shexpandglqc](shexpandglqc.html), [makegridglqc](makegridglqc.html), [glqgridcoord](glqgridcoord.html), [preglq](preglq.html)

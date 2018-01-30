@@ -71,12 +71,6 @@ def get_version():
 
         # PEP440 compatibility
         if '-' in git_version:
-            # check that the version string is a floating number
-            try:
-                version = '{:.1f}'.format(float(version))
-            except ValueError:
-                msg = 'VERSION string should be floating number'
-                raise ValueError(msg)
             git_revision = check_output(['git', 'rev-parse', 'HEAD'])
             git_revision = git_revision.strip().decode('ascii')
             # add post0 if the version is released
@@ -244,15 +238,15 @@ def configuration(parent_package='', top_path=None):
     kwargs['library_dirs'].extend([libdir])
 
     # FFTW info
-    fftw_info = get_info('fftw')
+    fftw_info = get_info('fftw', notfound_action=2)
     dict_append(kwargs, **fftw_info)
 
     if sys.platform != 'win32':
         kwargs['libraries'].extend(['m'])
 
     # BLAS / Lapack info
-    lapack_info = get_info('lapack_opt')
-    blas_info = get_info('blas_opt')
+    lapack_info = get_info('lapack_opt', notfound_action=2)
+    blas_info = get_info('blas_opt', notfound_action=2)
     dict_append(kwargs, **blas_info)
     dict_append(kwargs, **lapack_info)
 

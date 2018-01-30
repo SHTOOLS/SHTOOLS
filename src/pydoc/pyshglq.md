@@ -25,4 +25,4 @@ Precompute the weights and nodes used in the Gauss-Legendre quadrature based sph
 
 # See also
 
-[`shexpandglq`](pyshexpandglq.html), [`makegridglq`](pymakegridglq.html), [`shexpandglqc`](pyshexpandglqc.html), [`makegridglqc`](pymakegridglqc.html), [`glqgridcoord`](pyglqgridcoord.html)
+[shexpandglq](pyshexpandglq.html), [makegridglq](pymakegridglq.html), [shexpandglqc](pyshexpandglqc.html), [makegridglqc](pymakegridglqc.html), [glqgridcoord](pyglqgridcoord.html)
