@@ -736,15 +736,15 @@ class SHWindow(object):
 
         if ax is None:
             if nrows > 1:
-                for ax in axes[:-1, :].flatten():
-                    for xlabel_i in ax.get_xticklabels():
+                for axtemp in axes[:-1, :].flatten():
+                    for xlabel_i in axtemp.get_xticklabels():
                         xlabel_i.set_visible(False)
-                for ax in axes[:, 1:].flatten():
-                    for ylabel_i in ax.get_yticklabels():
+                for axtemp in axes[:, 1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
             elif nwin > 1:
-                for ax in axes[1:].flatten():
-                    for ylabel_i in ax.get_yticklabels():
+                for axtemp in axes[1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
 
         for itaper in range(min(self.nwin, nwin)):
@@ -826,19 +826,19 @@ class SHWindow(object):
 
         if ax is None:
             if nrows > 1:
-                for ax in axes[:-1, :].flatten():
-                    for xlabel_i in ax.get_xticklabels():
+                for axtemp in axes[:-1, :].flatten():
+                    for xlabel_i in axtemp.get_xticklabels():
                         xlabel_i.set_visible(False)
-                    ax.set_xlabel('', visible=False)
-                for ax in axes[:, 1:].flatten():
-                    for ylabel_i in ax.get_yticklabels():
+                    axtemp.set_xlabel('', visible=False)
+                for axtemp in axes[:, 1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
-                    ax.set_ylabel('', visible=False)
+                    axtemp.set_ylabel('', visible=False)
             elif nwin > 1:
-                for ax in axes[1:].flatten():
-                    for ylabel_i in ax.get_yticklabels():
+                for axtemp in axes[1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
-                    ax.set_ylabel('', visible=False)
+                    axtemp.set_ylabel('', visible=False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
