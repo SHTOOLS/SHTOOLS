@@ -929,7 +929,7 @@ class SHWindow(object):
             fig.tight_layout(pad=0.1)
             if fname is not None:
                 fig.savefig(fname)
-            return fig, ax
+            return fig, axes
 
     def info(self):
         """
