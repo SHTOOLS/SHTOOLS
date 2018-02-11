@@ -8,4 +8,4 @@ Angular rotation rate of the Moon.
 
 ## Reference
 
-C. F. Yoder (1995). Astrometric and geodetic properties of Earth and the solar system. In: Ahrens TJ (ed.) Global Earth Physics: A Handbook of Physical Constants. AGU Reference Shelf, vol. 1, pp. 1–31. American Geophysical Union.
+C. F. Yoder (1995). Astrometric and geodetic properties of Earth and the solar system. In: Ahrens TJ (ed.) Global Earth Physics: A Handbook of Physical Constants. AGU Reference Shelf, vol. 1, pp. 131. American Geophysical Union.
