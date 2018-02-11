@@ -160,7 +160,7 @@ for _name in __all__:
     try:
         _path = _os.path.join(_pydocfolder, _name.lower() + '.doc')
 
-        with open(_path) as _pydocfile:
+        with open(_path, encoding = 'utf-8') as _pydocfile:
             _pydoc = _pydocfile.read()
 
         setattr(locals()[_name], '__doc__', _pydoc)

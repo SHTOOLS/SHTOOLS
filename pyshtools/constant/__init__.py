@@ -64,7 +64,7 @@ for _name in _constant.planetsconstants.__dict__.keys():
         _path = _os.path.join(_pydocfolder, 'constant_' + _name.lower() +
                               '.doc')
 
-        with open(_path) as _pydocfile:
+        with open(_path, encoding = 'utf-8') as _pydocfile:
             _pydoc = _pydocfile.read()
 
         setattr(locals()[_name], '_infostring', _pydoc)
