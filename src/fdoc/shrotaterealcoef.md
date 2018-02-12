@@ -54,7 +54,7 @@ For a rotation of the physical body without rotation of the coordinate system, u
 
 To perform the inverse transform of `x(alpha, beta, gamma)`, use `x(-gamma, -beta, -alpha)`.
 
-Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the "x convention", where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be `alpha_y=alpha_x-pi/2`, `beta_x=beta_y`, and `gamma_y=gamma_x+pi/2`.
+Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were originally defined in terms of the "x convention", where the second rotation was with respect to the new x axis, the Euler angles according to the y convention would be `alpha_y=alpha_x-pi/2`, `beta_x=beta_y`, and `gamma_y=gamma_x+pi/2`.
 
 This routine first converts the real coefficients to complex form using `SHrtoc`. Then the coefficients are converted to indexed form using `SHCilmToCindex`, these are sent to `SHRotateCoef`, the result if converted back to `cilm` complex form using `SHCindexToCilm`, and these are finally converted back to real form using `SHctor`.
 
