@@ -1066,13 +1066,15 @@ class SHCoeffs(object):
 
     # ---- plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
-                      xscale='lin', yscale='log', show=True, fname=None):
+                      xscale='lin', yscale='log', show=True, ax=None,
+                      fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        x.plot_spectrum([convention, unit, base, xscale, yscale, show, fname])
+        x.plot_spectrum([convention, unit, base, xscale, yscale, show, ax,
+                         fname])
 
         Parameters
         ----------
@@ -1095,16 +1097,23 @@ class SHCoeffs(object):
             Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
         show : bool, optional, default = True
             If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         fname : str, optional, default = None
-            If present, save the image to the file.
+            If present, and if axes is not specified, save the image to the
+            specified file.
         """
         spectrum = self.spectrum(convention=convention, unit=unit, base=base)
         ls = self.degrees()
 
-        fig, ax = _plt.subplots(1, 1)
-        ax.set_xlabel('degree l')
+        if ax is None:
+            fig, axes = _plt.subplots(1, 1)
+        else:
+            axes = ax
+
+        axes.set_xlabel('degree l')
         if convention == 'energy':
-            ax.set_ylabel('energy')
+            axes.set_ylabel('energy')
             if (unit == 'per_l'):
                 legend = 'energy per degree'
             elif (unit == 'per_lm'):
@@ -1112,7 +1121,7 @@ class SHCoeffs(object):
             elif (unit == 'per_dlogl'):
                 legend = 'energy per log bandwidth'
         elif convention == 'l2norm':
-            ax.set_ylabel('l2 norm')
+            axes.set_ylabel('l2 norm')
             if (unit == 'per_l'):
                 legend = 'l2 norm per degree'
             elif (unit == 'per_lm'):
@@ -1120,7 +1129,7 @@ class SHCoeffs(object):
             elif (unit == 'per_dlogl'):
                 legend = 'l2 norm per log bandwidth'
         else:
-            ax.set_ylabel('power')
+            axes.set_ylabel('power')
             if (unit == 'per_l'):
                 legend = 'power per degree'
             elif (unit == 'per_lm'):
@@ -1128,35 +1137,37 @@ class SHCoeffs(object):
             elif (unit == 'per_dlogl'):
                 legend = 'power per log bandwidth'
 
-        ax.grid(True, which='both')
+        axes.grid(True, which='both')
 
         if xscale == 'log':
-            ax.set_xscale('log', basex=base)
+            axes.set_xscale('log', basex=base)
         if yscale == 'log':
-            ax.set_yscale('log', basey=base)
+            axes.set_yscale('log', basey=base)
 
         if xscale == 'log':
-            ax.plot(ls[1:], spectrum[1:], label=legend)
+            axes.plot(ls[1:], spectrum[1:], label=legend)
         else:
-            ax.plot(ls, spectrum, label=legend)
-        ax.legend()
+            axes.plot(ls, spectrum, label=legend)
+        axes.legend()
 
         if show:
             _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, ax
+
+        if ax is None:
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
                         vscale='log', vrange=(1.e-5, 1.0), show=True,
-                        fname=None):
+                        ax=None, fname=None):
         """
         Plot the spectrum of all spherical harmonic coefficients.
 
         Usage
         -----
         x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, show,
-                           fname])
+                           ax, fname])
 
         Parameters
         ----------
@@ -1174,8 +1185,11 @@ class SHCoeffs(object):
             Colormap range relative to the maximum value.
         show : bool, optional, default = True
             If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         fname : str, optional, default = None
-            If present, save the image to the file.
+            If present, and if axes is not specified, save the image to the
+            specified file.
         """
         # Create the matrix of the spectrum for each coefficient
         spectrum = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
@@ -1220,7 +1234,11 @@ class SHCoeffs(object):
         lgrid -= 0.5
         mgrid -= 0.5
 
-        fig, ax = _plt.subplots()
+        if ax is None:
+            fig, axes = _plt.subplots()
+        else:
+            axes = ax
+
         vmin = _np.nanmax(spectrum) * vrange[0]
         vmax = _np.nanmax(spectrum) * vrange[1]
 
@@ -1235,41 +1253,53 @@ class SHCoeffs(object):
                 "Input value was {:s}".format(repr(vscale)))
 
         if (xscale == 'lin'):
-            cmesh = ax.pcolormesh(lgrid, mgrid, spectrum_masked,
-                                  norm=norm, cmap='viridis')
-            ax.set(xlim=(-0.5, self.lmax + 0.5))
+            cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
+                                    norm=norm, cmap='viridis')
+            axes.set(xlim=(-0.5, self.lmax + 0.5))
         elif (xscale == 'log'):
-            cmesh = ax.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
-                                  norm=norm, cmap='viridis')
-            ax.set(xscale='log', xlim=(1., self.lmax + 0.5))
+            cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
+                                    norm=norm, cmap='viridis')
+            axes.set(xscale='log', xlim=(1., self.lmax + 0.5))
         else:
             raise ValueError(
                 "xscale must be 'lin' or 'log'. " +
                 "Input value was {:s}".format(repr(xscale)))
 
         if (yscale == 'lin'):
-            ax.set(ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+            axes.set(ylim=(-self.lmax - 0.5, self.lmax + 0.5))
         elif (yscale == 'log'):
-            ax.set(yscale='symlog', ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+            axes.set(yscale='symlog', ylim=(-self.lmax - 0.5, self.lmax + 0.5))
         else:
             raise ValueError(
                 "yscale must be 'lin' or 'log'. " +
                 "Input value was {:s}".format(repr(yscale)))
 
-        if (convention == 'energy'):
-            _plt.colorbar(cmesh, label='energy per coefficient')
-        elif (convention == 'power'):
-            _plt.colorbar(cmesh, label='power per coefficient')
+        if ax is None:
+            if (convention == 'energy'):
+                _plt.colorbar(cmesh, label='energy per coefficient')
+            elif (convention == 'power'):
+                _plt.colorbar(cmesh, label='power per coefficient')
+            else:
+                _plt.colorbar(cmesh, label='magnitude-squared coefficient')
         else:
-            _plt.colorbar(cmesh, label='magnitude-squared coefficient')
-        ax.set(xlabel='degree l', ylabel='order m')
-        ax.grid(True, which='both')
+            if (convention == 'energy'):
+                _plt.colorbar(cmesh, ax=ax, label='energy per coefficient')
+            elif (convention == 'power'):
+                _plt.colorbar(cmesh, ax=ax, label='power per coefficient')
+            else:
+                _plt.colorbar(cmesh, ax=ax,
+                              label='magnitude-squared coefficient')
+
+        axes.set(xlabel='degree l', ylabel='order m')
+        axes.grid(True, which='both')
 
         if show:
             _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, ax
+
+        if ax is None:
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def info(self):
         """
@@ -1783,7 +1813,7 @@ class SHGrid(object):
 
     Each class instance provides the following methods:
 
-    to_array()   : Return the raw gridded data as a numpy array.
+    to_array()  : Return the raw gridded data as a numpy array.
     to_file()   : Save gridded data to a text or binary file.
     lats()      : Return a vector containing the latitudes of each row
                   of the gridded data.
@@ -1792,7 +1822,7 @@ class SHGrid(object):
     expand()    : Expand the grid into spherical harmonics.
     copy()      : Return a copy of the class instance.
     plot()      : Plot the raw data using a simple cylindrical projection.
-    plot3d()      : Plot the raw data on a 3d sphere.
+    plot3d()    : Plot the raw data on a 3d sphere.
     info()      : Print a summary of the data stored in the SHGrid instance.
     """
 
@@ -2129,7 +2159,7 @@ class SHGrid(object):
         """
         return _np.copy(self.data)
 
-    def plot3d(self, show=True, fname=None, elevation=0, azimuth=0):
+    def plot3d(self, elevation=0, azimuth=0, show=True, fname=None):
         """
         Plot the raw data on a 3d sphere.
 
@@ -2138,14 +2168,18 @@ class SHGrid(object):
 
         Usage
         -----
-        x.plot3d([show, fname])
+        x.plot3d([elevation, azimuth, show, fname])
 
         Parameters
         ----------
+        elevation : float, optional, default = 0
+            elev parameter for the 3d projection.
+        azimuth : float, optional, default = 0
+            azim parameter for the 3d projection.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, save the image to the file.
+            If present, save the image to the specified file.
         """
         from mpl_toolkits.mplot3d import Axes3D  # NOQA
 
@@ -2219,6 +2253,7 @@ class SHGrid(object):
         # plot 3d radiation pattern
         fig = _plt.figure(figsize=(10, 10))
         ax3d = fig.add_subplot(1, 1, 1, projection='3d')
+
         ax3d.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=colors)
         ax3d.set(xlim=(-1.5, 1.5), ylim=(-1.5, 1.5), zlim=(-1.5, 1.5),
                  xticks=[-1, 1], yticks=[-1, 1], zticks=[-1, 1])
@@ -2228,33 +2263,54 @@ class SHGrid(object):
         # show or save output
         if show:
             _plt.show()
+
         if fname is not None:
             fig.savefig(fname)
 
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, show=True, fname=None):
+    def plot(self, show=True, ax=None, ax2=None, fname=None):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([show, fname])
+        x.plot([show, ax, ax2, fname])
 
         Parameters
         ----------
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear. If the
+            grid is complex, the real component of the grid will be plotted
+            on this axes.
+        ax2 : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear. If the
+            grid is complex, the complex component of the grid will be plotted
+            on this axes.
         fname : str, optional, default = None
-            If present, save the image to the file.
+            If present, and if axes is not specified, save the image to the
+            specified file.
         """
-        fig, ax = self._plot()
+        if ax is None and ax2 is None:
+            fig, axes = self._plot()
+        else:
+            if self.kind == 'complex':
+                if (ax is None and ax2 is not None) or (ax2 is None and
+                                                        ax is not None):
+                    raise ValueError('For complex grids, one must specify ' +
+                                     'both optional arguments axes and axes2.')
+            self._plot(ax=ax, ax2=ax2)
+
         if show:
             _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, ax
+
+        if ax is None:
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def expand(self, normalization='4pi', csphase=1, **kwargs):
         """
@@ -2391,14 +2447,20 @@ class DHRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self):
+    def _plot(self, ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
-        fig, ax = _plt.subplots(1, 1)
-        ax.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
-        ax.set_xlabel('longitude')
-        ax.set_ylabel('latitude')
-        fig.tight_layout(pad=0.5)
-        return fig, ax
+        if ax is None:
+            fig, axes = _plt.subplots(1, 1)
+        else:
+            axes = ax
+
+        axes.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
+        axes.set_xlabel('longitude')
+        axes.set_ylabel('latitude')
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            return fig, axes
 
 
 # ---- Complex Driscoll and Healy grid class ----
@@ -2478,21 +2540,30 @@ class DHComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self):
+    def _plot(self, ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
-        fig, ax = _plt.subplots(2, 1)
-        ax.flat[0].imshow(self.data.real, origin='upper',
-                          extent=(0., 360., -90., 90.))
-        ax.flat[0].set_title('Real component')
-        ax.flat[0].set_xlabel('longitude')
-        ax.flat[0].set_ylabel('latitude')
-        ax.flat[1].imshow(self.data.imag, origin='upper',
-                          extent=(0., 360., -90., 90.))
-        ax.flat[1].set_title('Imaginary component')
-        ax.flat[1].set_xlabel('longitude')
-        ax.flat[1].set_ylabel('latitude')
-        fig.tight_layout(pad=0.5)
-        return fig, ax
+        if ax is None:
+            fig, axes = _plt.subplots(2, 1)
+            axreal = axes.flat[0]
+            axcomplex = axes.flat[1]
+        else:
+            axreal = ax
+            axcomplex = ax2
+
+        axreal.imshow(self.data.real, origin='upper',
+                      extent=(0., 360., -90., 90.))
+        axreal.set_title('Real component')
+        axreal.set_xlabel('longitude')
+        axreal.set_ylabel('latitude')
+        axcomplex.imshow(self.data.imag, origin='upper',
+                         extent=(0., 360., -90., 90.))
+        axcomplex.set_title('Imaginary component')
+        axcomplex.set_xlabel('longitude')
+        axcomplex.set_ylabel('latitude')
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            return fig, axes
 
 
 # ---- Real Gaus Legendre Quadrature grid class ----
@@ -2570,15 +2641,20 @@ class GLQRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self):
+    def _plot(self, ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
+        if ax is None:
+            fig, axes = _plt.subplots(1, 1)
+        else:
+            axes = ax
 
-        fig, ax = _plt.subplots(1, 1)
-        ax.imshow(self.data, origin='upper')
-        ax.set_xlabel('GLQ longitude index')
-        ax.set_ylabel('GLQ latitude index')
-        fig.tight_layout(pad=0.5)
-        return fig, ax
+        axes.imshow(self.data, origin='upper')
+        axes.set_xlabel('GLQ longitude index')
+        axes.set_ylabel('GLQ latitude index')
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            return fig, axes
 
 
 # ---- Complex Gaus Legendre Quadrature grid class ----
@@ -2651,16 +2727,25 @@ class GLQComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self):
+    def _plot(self, ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
-        fig, ax = _plt.subplots(2, 1)
-        ax.flat[0].imshow(self.data.real, origin='upper')
-        ax.flat[0].set_title('Real component')
-        ax.flat[0].set_xlabel('longitude index')
-        ax.flat[0].set_ylabel('latitude index')
-        ax.flat[1].imshow(self.data.imag, origin='upper')
-        ax.flat[1].set_title('Imaginary component')
-        ax.flat[1].set_xlabel('GLQ longitude index')
-        ax.flat[1].set_ylabel('GLQ latitude index')
-        fig.tight_layout(pad=0.5)
-        return fig, ax
+        if ax is None:
+            fig, axes = _plt.subplots(2, 1)
+            axreal = axes.flat[0]
+            axcomplex = axes.flat[1]
+        else:
+            axreal = ax
+            axcomplex = ax2
+
+        axreal.imshow(self.data.real, origin='upper')
+        axreal.set_title('Real component')
+        axreal.set_xlabel('longitude index')
+        axreal.set_ylabel('latitude index')
+        axcomplex.imshow(self.data.imag, origin='upper')
+        axcomplex.set_title('Imaginary component')
+        axcomplex.set_xlabel('GLQ longitude index')
+        axcomplex.set_ylabel('GLQ latitude index')
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            return fig, axes

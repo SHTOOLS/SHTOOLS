@@ -696,13 +696,13 @@ class SHWindow(object):
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
 
-    def plot_windows(self, nwin, show=True, fname=None):
+    def plot_windows(self, nwin, show=True, ax=None, fname=None):
         """
         Plot the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_windows(nwin, [show, fname])
+        x.plot_windows(nwin, [show, ax, fname])
 
         Parameters
         ----------
@@ -710,8 +710,10 @@ class SHWindow(object):
             The number of localization windows to plot.
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        ax : matplotlib axes object, optional, default = None
+            An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
-            If present, save the image to the file.
+            If present, save the image to the specified file.
         """
         if self.kind == 'cap':
             if self.nwinrot is not None and self.nwinrot <= nwin:
@@ -721,49 +723,61 @@ class SHWindow(object):
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
-        fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
 
-        if nrows > 1:
-            for ax in axes[:-1, :].flatten():
-                for xlabel_i in ax.get_xticklabels():
-                    xlabel_i.set_visible(False)
-            for ax in axes[:, 1:].flatten():
-                for ylabel_i in ax.get_yticklabels():
-                    ylabel_i.set_visible(False)
-        elif nwin > 1:
-            for ax in axes[1:].flatten():
-                for ylabel_i in ax.get_yticklabels():
-                    ylabel_i.set_visible(False)
+        if ax is None:
+            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+        else:
+            if ax.size < nwin:
+                raise ValueError('nwin must be less than or equal to ' +
+                                 'the size of ax: ' +
+                                 'nwin = {:s}'.format(repr(nwin)) +
+                                 ' and ax.size = {:s}.'.format(repr(ax.size)))
+            axes = ax
+
+        if ax is None:
+            if nrows > 1:
+                for axtemp in axes[:-1, :].flatten():
+                    for xlabel_i in axtemp.get_xticklabels():
+                        xlabel_i.set_visible(False)
+                for axtemp in axes[:, 1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
+            elif nwin > 1:
+                for axtemp in axes[1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
-            if min(self.nwin, nwin) == 1:
-                ax = axes
+            if min(self.nwin, nwin) == 1 and ax is None:
+                axtemp = axes
             else:
-                ax = axes.flatten()[itaper]
+                axtemp = axes.flatten()[itaper]
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
                                           norm=1, csphase=1)
-            ax.imshow(gridout, origin='upper',
-                      extent=(0., 360., -90., 90.))
-            ax.set_title('concentration: {:2.2f}'.format(evalue))
-
-        fig.tight_layout(pad=0.5)
+            axtemp.imshow(gridout, origin='upper',
+                          extent=(0., 360., -90., 90.))
+            axtemp.set_title('concentration: {:2.2f}'.format(evalue))
 
         if show:
             _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, axes
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
-                     xscale='lin', yscale='log', show=True, fname=None):
+                     xscale='lin', yscale='log', show=True, ax=None,
+                     fname=None):
         """
         Plot the spectra of the best-concentrated localization windows.
 
         Usage
         -----
         x.plot_spectra(nwin, [convention, unit, base, xscale, yscale,
-                              show, fname])
+                              show, ax, fname])
 
         Parameters
         ----------
@@ -786,6 +800,8 @@ class SHWindow(object):
             Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        ax : matplotlib axes object, optional, default = None
+            An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
             If present, save the image to the file.
         """
@@ -798,53 +814,66 @@ class SHWindow(object):
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
 
-        fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+        if ax is None:
+            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+        else:
+            if ax.size < nwin:
+                raise ValueError('nwin must be less than or equal to ' +
+                                 'the size of ax: ' +
+                                 'nwin = {:s}'.format(repr(nwin)) +
+                                 ' and ax.size = {:s}.'.format(repr(ax.size)))
+            axes = ax
 
-        if nrows > 1:
-            for ax in axes[:-1, :].flatten():
-                for xlabel_i in ax.get_xticklabels():
-                    xlabel_i.set_visible(False)
-            for ax in axes[:, 1:].flatten():
-                for ylabel_i in ax.get_yticklabels():
-                    ylabel_i.set_visible(False)
-        elif nwin > 1:
-            for ax in axes[1:].flatten():
-                for ylabel_i in ax.get_yticklabels():
-                    ylabel_i.set_visible(False)
+        if ax is None:
+            if nrows > 1:
+                for axtemp in axes[:-1, :].flatten():
+                    for xlabel_i in axtemp.get_xticklabels():
+                        xlabel_i.set_visible(False)
+                    axtemp.set_xlabel('', visible=False)
+                for axtemp in axes[:, 1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
+                    axtemp.set_ylabel('', visible=False)
+            elif nwin > 1:
+                for axtemp in axes[1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
+                    axtemp.set_ylabel('', visible=False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
-            if min(self.nwin, nwin) == 1:
-                ax = axes
+            if min(self.nwin, nwin) == 1 and ax is None:
+                axtemp = axes
             else:
-                ax = axes.flatten()[itaper]
-            ax.set_xlabel('degree l')
+                axtemp = axes.flatten()[itaper]
+            axtemp.set_xlabel('degree l')
             if (convention == 'power'):
-                ax.set_ylabel('power')
+                axtemp.set_ylabel('power')
             else:
-                ax.set_ylabel('energy')
+                axtemp.set_ylabel('energy')
 
             if yscale == 'log':
-                ax.set_yscale('log', basey=base)
+                axtemp.set_yscale('log', basey=base)
 
             if xscale == 'log':
-                ax.set_xscale('log', basex=base)
-                ax.plot(degrees[1:], spectrum[1:, itaper])
+                axtemp.set_xscale('log', basex=base)
+                axtemp.plot(degrees[1:], spectrum[1:, itaper])
             else:
-                ax.plot(degrees[0:], spectrum[0:, itaper])
-            ax.grid(True, which='both')
-            ax.set_title('concentration: {:2.2f}'.format(evalue))
-
-        fig.tight_layout(pad=0.5)
+                axtemp.plot(degrees[0:], spectrum[0:, itaper])
+            axtemp.grid(True, which='both')
+            axtemp.set_title('concentration: {:2.2f}'.format(evalue))
 
         if show:
             _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, axes
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
-                             show=True, fname=None):
+                             show=True, ax=None, fname=None):
         """
         Plot the multitaper coupling matrix.
 
@@ -853,7 +882,7 @@ class SHWindow(object):
 
         Usage
         -----
-        x.plot_coupling_matrix(lmax, [nwin, weights, mode, show, fname])
+        x.plot_coupling_matrix(lmax, [nwin, weights, mode, show, ax, fname])
 
         Parameters
         ----------
@@ -874,24 +903,33 @@ class SHWindow(object):
             influenced by the input spectrum beyond degree lmax.
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        ax : matplotlib axes object, optional, default = None
+            An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
-            If present, save the image to the file.
+            If present, save the image to the specified file.
         """
         figsize = _mpl.rcParams['figure.figsize']
         figsize[0] = figsize[1]
-        fig = _plt.figure(figsize=figsize)
-        ax = fig.add_subplot(111)
-        ax.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
-                                       mode=mode), aspect='auto')
-        ax.set_xlabel('input power')  # matrix index 1 (columns)
-        ax.set_ylabel('output power')  # matrix index 0 (rows)
-        fig.tight_layout(pad=0.1)
+
+        if ax is None:
+            fig = _plt.figure(figsize=figsize)
+            axes = fig.add_subplot(111)
+        else:
+            axes = ax
+
+        axes.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
+                                         mode=mode), aspect='auto')
+        axes.set_xlabel('input power')  # matrix index 1 (columns)
+        axes.set_ylabel('output power')  # matrix index 0 (rows)
 
         if show:
             _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, ax
+
+        if ax is None:
+            fig.tight_layout(pad=0.1)
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def info(self):
         """
