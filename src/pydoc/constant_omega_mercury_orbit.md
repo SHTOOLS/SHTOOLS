@@ -8,7 +8,7 @@ Angular rotation rate of Mercury about the Sun.
 
 ## Reference
 
-N. Rambaux and E. Bois (2004). Theory of the Mercury's spin–orbit motion and analysis of its main librations. Astronomy and Astrophysics, 413, 381–393, doi:10.1051/0004-6361:20031446.
+N. Rambaux and E. Bois (2004). Theory of the Mercury's spin-orbit motion and analysis of its main librations. Astronomy and Astrophysics, 413, 381-393, doi:10.1051/0004-6361:20031446.
 
 
 
