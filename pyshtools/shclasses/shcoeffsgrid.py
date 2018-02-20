@@ -1293,10 +1293,9 @@ class SHCoeffs(object):
         axes.set(xlabel='degree l', ylabel='order m')
         axes.grid(True, which='both')
 
-        if show:
-            _plt.show()
-
         if ax is None:
+            if show:
+                _plt.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -2455,8 +2454,7 @@ class DHRealGrid(SHGrid):
             axes = ax
 
         axes.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
-        axes.set_xlabel('longitude')
-        axes.set_ylabel('latitude')
+        axes.set(xlabel='longitude', ylabel='latitude')
 
         if ax is None:
             fig.tight_layout(pad=0.5)
