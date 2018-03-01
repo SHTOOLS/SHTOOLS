@@ -36,11 +36,10 @@ where the normalized associated Legendre functions for use with the complex $$4\
 
 $$ \begin{eqnarray}
 \bar{P}_l^m(\mu) = \sqrt{\left(2l+1\right)\frac{(l-m)!}{(l+m)!}}\, P_{lm}(\mu),
-\end{eqnarray} $$
+\end{eqnarray}. $$
 
-and where $$\delta_{ij}$$ is the Kronecker delta function. The unnormalized
-associated Legendre functions are derived from the standard Legendre
-polynomials using the relations
+The unnormalized associated Legendre functions are derived from the standard
+Legendre polynomials using the relations
 \begin{equation}
 P_{lm}(\mu) = \left( 1-\mu^2\right)^{m/2} \frac{d^m}{d\mu^m} P_l(\mu)
 \end{equation}
@@ -104,7 +103,7 @@ Similarly, the cross power of two functions $$f$$ and $$g$$ is given by
 with
 
 $$ \begin{equation}
-S_{fg}(l) = \sum\limits_{m=-l}^l f_{lm} \, g_{l}^{*m}.
+S_{fg}(l) = \sum\limits_{m=-l}^l f_{l}^{m} \, g_{l}^{*m}.
 \end{equation} $$
 
 The power spectrum is unmodified by a rotation of the coordinate system. Furthermore, the numerical values of the power spectrum are independent of the normalization convention used for the spherical harmonic functions (though the mathematical formulae will be different, as given [below](#supported-normalizations)). If the functions $$f$$ and $$g$$ have a zero mean, $$S_{ff}$$ and $$S_{fg}$$ represent the contribution to the variance and covariance, respectively, as a function of degree $$l$$. It should be noted that while the power spectrum of a function is inherently real, the cross power of two functions may be a complex quantity.
