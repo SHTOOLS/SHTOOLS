@@ -34,7 +34,8 @@ pip install pyshtools
 
 #### pyshtools for Anaconda Python ####
 
-fftw3 with fortran bindings can be installed on anaconda like this
+fftw3 with fortran bindings and pyshtools can be installed on anaconda like 
+this
 
 ```bash
 conda install -c eumetsat fftw3
