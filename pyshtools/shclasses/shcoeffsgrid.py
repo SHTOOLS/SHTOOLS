@@ -2303,10 +2303,10 @@ class SHGrid(object):
                                      'both optional arguments axes and axes2.')
             self._plot(ax=ax, ax2=ax2)
 
-        if show:
-            _plt.show()
-
         if ax is None:
+            if show:
+                _plt.show()
+
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
