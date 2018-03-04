@@ -696,7 +696,7 @@ class SHWindow(object):
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
 
-    def plot_windows(self, nwin, show=True, ax=None, fname=None):
+    def plot_windows(self, nwin, lmax=None, show=True, ax=None, fname=None):
         """
         Plot the best-concentrated localization windows.
 
@@ -756,12 +756,17 @@ class SHWindow(object):
             else:
                 axtemp = axes[itaper]
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
-                                          norm=1, csphase=1)
+                                          lmax=lmax, norm=1, csphase=1)
             axtemp.imshow(gridout, origin='upper',
                           extent=(0., 360., -90., 90.))
-            axtemp.set(title='concentration: {:2.2f}'.format(evalue),
-                       xlabel='longitude', ylabel='latitude')
+            axtemp.set(xlabel='longitude', ylabel='latitude')
 
+            axtemp.text(0.02, 0.95, '#{:d} [loss={:2.2g}]'.format(itaper,
+                                                                  1-evalue),
+                        transform=axtemp.transAxes,
+                        va='top', ha='left', color='black',
+                        bbox={'boxstyle': 'round',  'edgecolor': 'none',
+                              'facecolor': 'white'})
         if ax is None:
             if show:
                 _plt.show()
