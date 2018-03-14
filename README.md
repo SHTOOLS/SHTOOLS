@@ -26,10 +26,22 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
 
 ### INSTALLATION ###
 #### pyshtools for Python ####
+
 Binary install for linux/macOS/windows:
 ```bash
 pip install pyshtools
 ```
+
+#### pyshtools for Anaconda Python ####
+
+fftw3 with fortran bindings and pyshtools can be installed on anaconda like 
+this
+
+```bash
+conda install -c eumetsat fftw3
+pip install pyshtools
+```
+
 #### pyshtools for Python (developer install) ####
 Linux requirements:
 ```bash

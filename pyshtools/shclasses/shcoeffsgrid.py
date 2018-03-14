@@ -1300,21 +1300,23 @@ class SHCoeffs(object):
                 "Input value was {:s}".format(repr(yscale)))
 
         if ax is None:
+            cb = _plt.colorbar(cmesh)
             if (convention == 'energy'):
-                _plt.colorbar(cmesh, label='energy per coefficient')
+                cb.set_label('energy per coefficient')
             elif (convention == 'power'):
-                _plt.colorbar(cmesh, label='power per coefficient')
+                cb.set_label('power per coefficient')
             else:
-                _plt.colorbar(cmesh, label='magnitude-squared coefficient')
+                cb.set_label('magnitude-squared coefficient')
         else:
+            cb = _plt.colorbar(cmesh, ax=ax)
             if (convention == 'energy'):
-                _plt.colorbar(cmesh, ax=ax, label='energy per coefficient')
+                cb.set_label('energy per coefficient')
             elif (convention == 'power'):
-                _plt.colorbar(cmesh, ax=ax, label='power per coefficient')
+                cb.set_label('power per coefficient')
             else:
-                _plt.colorbar(cmesh, ax=ax,
-                              label='magnitude-squared coefficient')
+                cb.set_label('magnitude-squared coefficient')
 
+        cb.ax.tick_params(width=0.2)
         axes.set(xlabel='degree l', ylabel='order m')
         axes.grid(True, which='both')
 
@@ -2328,10 +2330,10 @@ class SHGrid(object):
                                      'both optional arguments axes and axes2.')
             self._plot(ax=ax, ax2=ax2)
 
-        if show:
-            _plt.show()
-
         if ax is None:
+            if show:
+                _plt.show()
+
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes

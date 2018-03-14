@@ -109,7 +109,7 @@ class SHWindow(object):
 
     # ---- factory methods:
     @classmethod
-    def from_cap(self, theta, lwin, clat=None, clon=None, nwin=None,
+    def from_cap(cls, theta, lwin, clat=None, clon=None, nwin=None,
                  theta_degrees=True, coord_degrees=True, dj_matrix=None,
                  weights=None):
         """
@@ -157,7 +157,7 @@ class SHWindow(object):
                            dj_matrix, weights, copy=False)
 
     @classmethod
-    def from_mask(self, dh_mask, lwin, nwin=None, weights=None):
+    def from_mask(cls, dh_mask, lwin, nwin=None, weights=None):
         """
         Construct localization windows that are optimally concentrated within
         the region specified by a mask.
@@ -287,7 +287,7 @@ class SHWindow(object):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
                 "or 'schmidt'. Provided value was {:s}"
-                .format(repr(output_normalization))
+                .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
@@ -696,7 +696,7 @@ class SHWindow(object):
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
 
-    def plot_windows(self, nwin, show=True, ax=None, fname=None):
+    def plot_windows(self, nwin, lmax=None, show=True, ax=None, fname=None):
         """
         Plot the best-concentrated localization windows.
 
@@ -727,7 +727,7 @@ class SHWindow(object):
         if ax is None:
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
         else:
-            if ax.size < nwin:
+            if hasattr(ax, '__len__') and len(ax) < nwin:
                 raise ValueError('nwin must be less than or equal to ' +
                                  'the size of ax: ' +
                                  'nwin = {:s}'.format(repr(nwin)) +
@@ -751,26 +751,34 @@ class SHWindow(object):
             evalue = self.eigenvalues[itaper]
             if min(self.nwin, nwin) == 1 and ax is None:
                 axtemp = axes
-            else:
+            elif hasattr(ax, 'flatten'):
                 axtemp = axes.flatten()[itaper]
+            else:
+                axtemp = axes[itaper]
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
-                                          norm=1, csphase=1)
+                                          lmax=lmax, norm=1, csphase=1)
             axtemp.imshow(gridout, origin='upper',
                           extent=(0., 360., -90., 90.))
-            axtemp.set_title('concentration: {:2.2f}'.format(evalue))
+            axtemp.set(xlabel='longitude', ylabel='latitude')
 
-        if show:
-            _plt.show()
-
+            axtemp.text(0.02, 0.95, '#{:d} [loss={:2.2g}]'.format(itaper,
+                                                                  1-evalue),
+                        transform=axtemp.transAxes,
+                        va='top', ha='left', color='black',
+                        bbox={'boxstyle': 'round',  'edgecolor': 'none',
+                              'facecolor': 'white'})
         if ax is None:
+            if show:
+                _plt.show()
+
             fig.tight_layout(pad=0.5)
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
 
     def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
-                     xscale='lin', yscale='log', show=True, ax=None,
-                     fname=None):
+                     xscale='lin', yscale='log', xlim=(None, None),
+                     ylim=(None, None), show=True, ax=None, fname=None):
         """
         Plot the spectra of the best-concentrated localization windows.
 
@@ -817,9 +825,8 @@ class SHWindow(object):
         if ax is None:
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
         else:
-            if ax.size < nwin:
-                raise ValueError('nwin must be less than or equal to ' +
-                                 'the size of ax: ' +
+            if hasattr(ax, '__len__') and 1 < len(ax) < nwin:
+                raise ValueError('number axes must be 0 < ax.size < nwin ' +
                                  'nwin = {:s}'.format(repr(nwin)) +
                                  ' and ax.size = {:s}.'.format(repr(ax.size)))
             axes = ax
@@ -842,11 +849,10 @@ class SHWindow(object):
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
-            if min(self.nwin, nwin) == 1 and ax is None:
-                axtemp = axes
-            else:
+            if hasattr(axes, 'flatten'):
                 axtemp = axes.flatten()[itaper]
-            axtemp.set_xlabel('degree l')
+            else:
+                axtemp = axes
             if (convention == 'power'):
                 axtemp.set_ylabel('power')
             else:
@@ -859,14 +865,16 @@ class SHWindow(object):
                 axtemp.set_xscale('log', basex=base)
                 axtemp.plot(degrees[1:], spectrum[1:, itaper])
             else:
-                axtemp.plot(degrees[0:], spectrum[0:, itaper])
+                axtemp.plot(degrees[0:], spectrum[0:, itaper],
+                            label='#{:d}'.format(itaper))
+            axtemp.set(xlabel='degree l', xlim=xlim, ylim=ylim)
             axtemp.grid(True, which='both')
             axtemp.set_title('concentration: {:2.2f}'.format(evalue))
 
-        if show:
-            _plt.show()
-
         if ax is None:
+            if show:
+                _plt.show()
+
             fig.tight_layout(pad=0.5)
             if fname is not None:
                 fig.savefig(fname)
@@ -1160,9 +1168,9 @@ class SHWindowCap(SHWindow):
         if (unit == 'per_l'):
             pass
         elif (unit == 'per_lm'):
-            l = _np.arange(len(mtse))
-            mtse /= (2.0 * l + 1.0)
-            sd /= (2.0 * l + 1.0)
+            degree_l = _np.arange(len(mtse))
+            mtse /= (2.0 * degree_l + 1.0)
+            sd /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1229,9 +1237,9 @@ class SHWindowCap(SHWindow):
         if (unit == 'per_l'):
             pass
         elif (unit == 'per_lm'):
-            l = _np.arange(len(mtse))
-            mtse /= (2.0 * l + 1.0)
-            sd /= (2.0 * l + 1.0)
+            degree_l = _np.arange(len(mtse))
+            mtse /= (2.0 * degree_l + 1.0)
+            sd /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1264,11 +1272,11 @@ class SHWindowCap(SHWindow):
             outspectrum = _shtools.SHBiasK(self.tapers, spectrum, k=k,
                                            **kwargs)
         elif (unit == 'per_lm'):
-            l = _np.arange(len(spectrum))
-            temp = spectrum * (2.0 * l + 1.0)
+            degree_l = _np.arange(len(spectrum))
+            temp = spectrum * (2.0 * degree_l + 1.0)
             outspectrum = _shtools.SHBiasK(self.tapers, temp, k=k,
                                            **kwargs)
-            outspectrum /= (2.0 * l + 1.0)
+            outspectrum /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1401,9 +1409,9 @@ class SHWindowMask(SHWindow):
         if (unit == 'per_l'):
             pass
         elif (unit == 'per_lm'):
-            l = _np.arange(len(mtse))
-            mtse /= (2.0 * l + 1.0)
-            sd /= (2.0 * l + 1.0)
+            degree_l = _np.arange(len(mtse))
+            mtse /= (2.0 * degree_l + 1.0)
+            sd /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1441,9 +1449,9 @@ class SHWindowMask(SHWindow):
         if (unit == 'per_l'):
             pass
         elif (unit == 'per_lm'):
-            l = _np.arange(len(mtse))
-            mtse /= (2.0 * l + 1.0)
-            sd /= (2.0 * l + 1.0)
+            degree_l = _np.arange(len(mtse))
+            mtse /= (2.0 * degree_l + 1.0)
+            sd /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1476,11 +1484,11 @@ class SHWindowMask(SHWindow):
             outspectrum = _shtools.SHBiasKMask(self.tapers, spectrum, k=k,
                                                **kwargs)
         elif (unit == 'per_lm'):
-            l = _np.arange(len(spectrum))
-            temp = spectrum * (2.0 * l + 1.0)
+            degree_l = _np.arange(len(spectrum))
+            temp = spectrum * (2.0 * degree_l + 1.0)
             outspectrum = _shtools.SHBiasKMask(self.tapers, temp, k=k,
                                                **kwargs)
-            outspectrum /= (2.0 * l + 1.0)
+            outspectrum /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
