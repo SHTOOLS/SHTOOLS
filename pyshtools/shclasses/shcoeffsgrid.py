@@ -802,14 +802,17 @@ class SHCoeffs(object):
             output_csphase=csphase, lmax=lmax)
 
     # ---- Rotate the coordinate system ----
-    def rotate(self, alpha, beta, gamma, degrees=True, dj_matrix=None):
+    def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
+               body=False, dj_matrix=None):
         """
-        Rotate the coordinate system used to express the spherical harmonic
-        coefficients and return a new class instance.
+        Rotate either the coordinate system used to express the spherical
+        harmonic coefficients or the physical body, and return a new class
+        instance.
 
         Usage
         -----
-        x_rotated = x.rotate(alpha, beta, gamma, [degrees, dj_matrix])
+        x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
+                             body, dj_matrix])
 
         Returns
         -------
@@ -822,6 +825,12 @@ class SHCoeffs(object):
         degrees : bool, optional, default = True
             True if the Euler angles are in degrees, False if they are in
             radians.
+        convention : str, optional, default = 'y'
+            The convention used for the rotation of the second angle, which
+            can be either 'x' or 'y' for a rotation about the x or y axes,
+            respectively.
+        body : bool, optional, default = False
+            If true, rotate the physical body and not the coordinate system.
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2.
 
@@ -829,7 +838,9 @@ class SHCoeffs(object):
         -----------
         This method will take the spherical harmonic coefficients of a
         function, rotate the coordinate frame by the three Euler anlges, and
-        output the spherical harmonic coefficients of the rotated function.
+        output the spherical harmonic coefficients of the new function. If
+        the optional parameter body is set to True, then the physical body will
+        be rotated instead of the coordinate system.
 
         The rotation of a coordinate system or body can be viewed in two
         complementary ways involving three successive rotations. Both methods
@@ -848,33 +859,47 @@ class SHCoeffs(object):
         (II) Rotation about the initial y axis by beta.
         (III) Rotation about the initial z axis by alpha.
 
-        The rotations can further be viewed either as a rotation of the
-        coordinate system or the physical body. For a rotation of the
-        coordinate system without rotation of the physical body, use
+        Here, the 'y convention' is employed, where the second rotation is with
+        respect to the y axis. When using the 'x convention', the second
+        rotation is instead with respect to the x axis. The relation between
+        the Euler angles in the x and y conventions is given by
 
-        (alpha, beta, gamma).
+        alpha_y=alpha_x-pi/2, beta_y=beta_x, and gamma_y=gamma_x+pi/2.
 
-        For a rotation of the physical body without rotation of the coordinate
-        system, use
+        To perform the inverse transform associated with the three angles
+        (alpha, beta, gamma), one would perform an additional rotation using
+        the angles (-gamma, -beta, -alpha).
 
-        (-gamma, -beta, -alpha).
-
-        To perform the inverse transform of (alpha, beta, gamma), use
-
-        (-gamma, -beta, -alpha).
-
-        Note that this routine uses the "y convention", where the second
-        rotation is with respect to the new y axis. If alpha, beta, and gamma
-        were orginally defined in terms of the "x convention", where the second
-        rotation was with respect to the new x axis, the Euler angles according
-        to the y convention would be
-
-        alpha_y=alpha_x-pi/2, beta_x=beta_y, and gamma_y=gamma_x+pi/2.
+        The rotations can be viewed either as a rotation of the coordinate
+        system or the physical body. To rotate the physical body without
+        rotation of the coordinate system, set the optional parameter body to
+        True. This rotation is accomplished by performing the inverse rotation
+        using the angles (-gamma, -beta, -alpha).
         """
+        if type(convention) != str:
+            raise ValueError('convention must be a string. ' +
+                             'Input type was {:s}'
+                             .format(str(type(convention))))
+
+        if convention.lower() not in ('x', 'y'):
+            raise ValueError(
+                "convention must be either 'x' or 'y'. " +
+                "Provided value was {:s}".format(repr(convention))
+                )
+
+        if convention is 'y':
+            if body is True:
+                angles = _np.array([-gamma, -beta, -alpha])
+            else:
+                angles = _np.array([alpha, beta, gamma])
+        elif convention is 'x':
+            if body is True:
+                angles = _np.array([-gamma - np.pi/2, -beta, -alpha + np.pi/2])
+            else:
+                angles = _np.array([alpha - np.pi/2, beta, gamma + np.pi/2])
+
         if degrees:
-            angles = _np.radians([alpha, beta, gamma])
-        else:
-            angles = _np.array([alpha, beta, gamma])
+            angles = _np.radians(angles)
 
         rot = self._rotate(angles, dj_matrix)
         return rot
