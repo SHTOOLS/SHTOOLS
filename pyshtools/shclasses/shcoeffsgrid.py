@@ -227,8 +227,8 @@ class SHCoeffs(object):
                            csphase=csphase, copy=copy)
 
     @classmethod
-    def from_random(self, power, kind='real', normalization='4pi', csphase=1,
-                    exact_power=False):
+    def from_random(self, power, lmax=None, kind='real', normalization='4pi',
+                    csphase=1, exact_power=False):
         """
         Initialize the class with spherical harmonic coefficients as random
         variables.
@@ -242,7 +242,7 @@ class SHCoeffs(object):
 
         Usage
         -----
-        x = SHCoeffs.from_random(power, [kind, normalization, csphase,
+        x = SHCoeffs.from_random(power, [lmax, kind, normalization, csphase,
                                          exact_power])
 
         Returns
@@ -251,9 +251,13 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        power : ndarray, shape (lmax+1)
-            numpy array of shape (lmax+1) that specifies the expected power per
-            degree l of the random coefficients.
+        power : ndarray, shape (L+1)
+            numpy array of shape (L+1) that specifies the expected power per
+            degree l of the random coefficients, where L is the maximum
+            spherical harmonic bandwidth.
+        lmax : int, optional, default = len(power) - 1
+            The highest spherical harmonic degree l of the output coefficients.
+            The coefficients will be set to zero for degrees greater than L.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
@@ -292,7 +296,13 @@ class SHCoeffs(object):
                 "kind must be 'real' or 'complex'. " +
                 "Input value was {:s}.".format(repr(kind)))
 
-        nl = len(power)
+        if lmax is None:
+            nl = len(power)
+        else:
+            if lmax <= len(power) - 1:
+                nl = lmax + 1
+            else:
+                nl = len(power)
         l = _np.arange(nl)
 
         # create coefficients with unit variance, which returns an expected
@@ -308,17 +318,21 @@ class SHCoeffs(object):
             power_per_l = _spectrum(coeffs, normalization=normalization,
                                     unit='per_l')
             coeffs *= _np.sqrt(
-                power / power_per_l)[_np.newaxis, :, _np.newaxis]
+                power[0:nl] / power_per_l)[_np.newaxis, :, _np.newaxis]
         else:
             if normalization.lower() == '4pi':
                 coeffs *= _np.sqrt(
-                    power / (2.0 * l + 1.0))[_np.newaxis, :, _np.newaxis]
+                    power[0:nl] / (2.0 * l + 1.0))[_np.newaxis, :, _np.newaxis]
             elif normalization.lower() == 'ortho':
                 coeffs *= _np.sqrt(
-                    4.0 * _np.pi * power / (2.0 * l + 1.0)
+                    4.0 * _np.pi * power[0:nl] / (2.0 * l + 1.0)
                     )[_np.newaxis, :, _np.newaxis]
             elif normalization.lower() == 'schmidt':
-                coeffs *= _np.sqrt(power)[_np.newaxis, :, _np.newaxis]
+                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
+
+        if lmax is not None and lmax > nl - 1:
+            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - nl + 1),
+                             (0, lmax - nl + 1)), 'constant')
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
