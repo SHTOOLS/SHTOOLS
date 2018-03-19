@@ -697,13 +697,13 @@ class SHWindow(object):
                              "{}".format(mode))
 
     def plot_windows(self, nwin, lmax=None, maxcolumns=5, show=True, ax=None,
-                     fname=None):
+                     legend=True, fname=None):
         """
         Plot the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_windows(nwin, [lmax, maxcolumns, show, ax, fname])
+        x.plot_windows(nwin, [lmax, maxcolumns, show, ax, legend, fname])
 
         Parameters
         ----------
@@ -719,6 +719,9 @@ class SHWindow(object):
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
+        legend : bool, optional, default = True
+            If True, plot a legend in each subplot providing the taper number
+            and 1 minus the concentration factor.
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
@@ -765,13 +768,13 @@ class SHWindow(object):
             axtemp.imshow(gridout, origin='upper',
                           extent=(0., 360., -90., 90.))
             axtemp.set(xlabel='longitude', ylabel='latitude')
-
-            axtemp.text(0.02, 0.95, '#{:d} [loss={:2.2g}]'.format(itaper,
-                                                                  1-evalue),
-                        transform=axtemp.transAxes,
-                        va='top', ha='left', color='black',
-                        bbox={'boxstyle': 'round',  'edgecolor': 'none',
-                              'facecolor': 'white'})
+            if legend is True:
+                axtemp.text(0.02, 0.95,
+                            '#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue),
+                            transform=axtemp.transAxes,
+                            va='top', ha='left', color='black',
+                            bbox={'boxstyle': 'round',  'edgecolor': 'none',
+                                  'facecolor': 'white'})
         if ax is None:
             if show:
                 _plt.show()
@@ -883,7 +886,7 @@ class SHWindow(object):
                             label='#{:d}'.format(itaper))
             axtemp.set(xlabel='degree l', xlim=xlim, ylim=ylim)
             axtemp.grid(True, which='both')
-            axtemp.set_title('concentration: {:2.2f}'.format(evalue))
+            axtemp.set_title('#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue))
 
         if ax is None:
             if show:

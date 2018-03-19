@@ -88,7 +88,7 @@ subroutine djpi2(dj, lmax, exitstatus)
             f(i) = dsqrt(i * (fl2p1-i))
         end do
 
-            f1 = f1 * (l+l-1.0d0)/ (l+l)
+            f1 = f1 * (l+l-1.0d0) / (l+l)
 
         ! Do N = 0 terms
         dj(lp1,1,lp1) = -dsqrt(f1)
@@ -109,9 +109,9 @@ subroutine djpi2(dj, lmax, exitstatus)
             en2 = n + n
             g1 = g1 + 1.0d0
             g2 = g2 - 1.0d0
-            f2 = f2 * g2/g1
+            f2 = f2 * g2 / g1
             dj(lp1,np,lp1) = -dsqrt(f2)
-            dj(l,np,lp1) = dj(lp1,np,lp1)*en2/f(1)
+            dj(l,np,lp1) = dj(lp1,np,lp1) * en2 / f(1)
 
             do i = 2, l - n
                 j = lp1 - i
