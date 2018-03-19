@@ -11,6 +11,7 @@ import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 import copy as _copy
+import warnings as _warnings
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
@@ -900,6 +901,12 @@ class SHCoeffs(object):
 
         if degrees:
             angles = _np.radians(angles)
+
+        if self.lmax > 1200:
+            _warnings.warn("The rotate() method is accurate only to about" +
+                           " spherical harmonic degree 1200. " +
+                           "lmax = {:d}".format(self.lmax),
+                           category=RuntimeWarning)
 
         rot = self._rotate(angles, dj_matrix)
         return rot
