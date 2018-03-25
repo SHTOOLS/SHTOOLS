@@ -1,5 +1,5 @@
 import numpy as _np
-import scipy.special as _sp
+from scipy.special import factorial as _factorial
 
 
 def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
@@ -91,18 +91,18 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
                              "using unnormalized harmonics.")
 
         for i, l in enumerate(degrees):
-            ms = _np.arange(lmax+1)
-            conv = _sp.factorial(l+ms) / (2. * l + 1.) / _sp.factorial(l-ms)
+            ms = _np.arange(l+1)
+            conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
 
             if _np.iscomplexobj(clm):
                 array[i] = (conv[0:l + 1] * clm[0, l, 0:l + 1] *
                             clm[0, l, 0:l + 1].conjugate()).real.sum() + \
-                           (conv[0:l + 1] * clm[1, l, 1:l + 1] *
+                           (conv[1:l + 1] * clm[1, l, 1:l + 1] *
                             clm[1, l, 1:l + 1].conjugate()).real.sum()
             else:
                 conv[1:l + 1] = conv[1:l + 1] / 2.
                 array[i] = (conv[0:l + 1] * clm[0, l, 0:l+1]**2).sum() + \
-                           (conv[0:l + 1] * clm[1, l, 1:l+1]**2).sum()
+                           (conv[1:l + 1] * clm[1, l, 1:l+1]**2).sum()
 
     else:
         for i, l in enumerate(degrees):

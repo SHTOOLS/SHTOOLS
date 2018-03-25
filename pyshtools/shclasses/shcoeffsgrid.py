@@ -12,6 +12,7 @@ import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 import copy as _copy
 import warnings as _warnings
+from scipy.special import factorial as _factorial
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
@@ -52,8 +53,8 @@ class SHCoeffs(object):
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions.
-    normalization : The normalization of the coefficients: '4pi', 'ortho', or
-                    'schmidt'.
+    normalization : The normalization of the coefficients: '4pi', 'ortho',
+                    'schmidt', or 'unnorm'.
     csphase       : Defines whether the Condon-Shortley phase is used (1)
                     or not (-1).
     mask          : A boolean mask that is True for the permissible values of
@@ -117,9 +118,9 @@ class SHCoeffs(object):
         lmax : int
             The highest spherical harmonic degree l of the coefficients.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
-            orthonormalized, or Schmidt semi-normalized coefficients,
-            respectively.
+            '4pi', 'ortho', 'schmidt' or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+             coefficients, respectively.
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
@@ -133,10 +134,10 @@ class SHCoeffs(object):
                 .format(repr(kind))
                 )
 
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt'):
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
 
@@ -145,6 +146,14 @@ class SHCoeffs(object):
                 "csphase must be either 1 or -1. Input value was {:s}."
                 .format(repr(csphase))
                 )
+
+        if normalization.lower() == 'unnorm' and lmax > 85:
+            _warnings.warn("Calculations using unnormalized coefficients " +
+                           "are stable only for degrees less than or equal " +
+                           "to 85. lmax for the coefficients will be set to " +
+                           "85. Input value was {:d}.".format(lmax),
+                           category=RuntimeWarning)
+            lmax = 85
 
         nl = lmax + 1
         if kind.lower() == 'real':
@@ -177,9 +186,9 @@ class SHCoeffs(object):
         array : ndarray, shape (2, lmaxin+1, lmaxin+1).
             The input spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
-            orthonormalized, or Schmidt semi-normalized coefficients,
-            respectively.
+            '4pi', 'ortho', 'schmidt' or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+            coefficients, respectively.
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
@@ -200,10 +209,10 @@ class SHCoeffs(object):
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt'):
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
+                "The normalization must be '4pi', 'ortho', 'schmidt' " +
+                "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
 
@@ -219,6 +228,14 @@ class SHCoeffs(object):
         else:
             if lmax > lmaxin:
                 lmax = lmaxin
+
+        if normalization.lower() == 'unnorm' and lmax > 85:
+            _warnings.warn("Calculations using unnormalized coefficients " +
+                           "are stable only for degrees less than or equal " +
+                           "to 85. lmax for the coefficients will be set to " +
+                           "85. Input value was {:d}.".format(lmax),
+                           category=RuntimeWarning)
+            lmax = 85
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
@@ -261,9 +278,9 @@ class SHCoeffs(object):
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
-            orthonormalized, or Schmidt semi-normalized coefficients,
-            respectively.
+            '4pi', 'ortho', 'schmidt' or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+            coefficients, respectively.
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
@@ -278,10 +295,10 @@ class SHCoeffs(object):
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt'):
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "The input normalization must be '4pi', 'ortho', 'schmidt' " +
+                "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
 
@@ -298,21 +315,36 @@ class SHCoeffs(object):
 
         if lmax is None:
             nl = len(power)
+            lmax = nl - 1
         else:
             if lmax <= len(power) - 1:
                 nl = lmax + 1
             else:
                 nl = len(power)
-        l = _np.arange(nl)
+        degrees = _np.arange(nl)
 
-        # create coefficients with unit variance, which returns an expected
-        # total power per degree of (2l+1)
+        if normalization.lower() == 'unnorm' and nl - 1 > 85:
+            _warnings.warn("Calculations using unnormalized coefficients " +
+                           "are stable only for degrees less than or equal " +
+                           "to 85. lmax for the coefficients will be set to " +
+                           "85. Input value was {:d}.".format(nl-1),
+                           category=RuntimeWarning)
+            nl = 85 + 1
+            lmax = 85
+
+        # Create coefficients with unit variance, which returns an expected
+        # total power per degree of (2l+1).
         if kind.lower() == 'real':
-            coeffs = _np.random.normal(size=(2, nl, nl))
+            coeffs = _np.empty((2, nl, nl))
+            for l in degrees:
+                coeffs[:2, l, :l+1] = _np.random.normal(size=(2, l+1))
         elif kind.lower() == 'complex':
             # - need to divide by sqrt 2 as there are two terms for each coeff.
-            coeffs = (_np.random.normal(size=(2, nl, nl)) +
-                      1j * _np.random.normal(size=(2, nl, nl))) / _np.sqrt(2.)
+            coeffs = _np.empty((2, nl, nl), dtype=complex)
+            for l in degrees:
+                coeffs[:2, l, :l+1] = (_np.random.normal(size=(2, l+1)) +
+                                       1j * _np.random.normal(size=(2, l+1))
+                                       ) / _np.sqrt(2.)
 
         if exact_power:
             power_per_l = _spectrum(coeffs, normalization=normalization,
@@ -322,15 +354,24 @@ class SHCoeffs(object):
         else:
             if normalization.lower() == '4pi':
                 coeffs *= _np.sqrt(
-                    power[0:nl] / (2.0 * l + 1.0))[_np.newaxis, :, _np.newaxis]
+                    power[0:nl] / (2.0 * degrees + 1.0))[_np.newaxis, :,
+                                                         _np.newaxis]
             elif normalization.lower() == 'ortho':
                 coeffs *= _np.sqrt(
-                    4.0 * _np.pi * power[0:nl] / (2.0 * l + 1.0)
+                    4.0 * _np.pi * power[0:nl] / (2.0 * degrees + 1.0)
                     )[_np.newaxis, :, _np.newaxis]
             elif normalization.lower() == 'schmidt':
                 coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
+            elif normalization.lower() == 'unnorm':
+                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
+                for l in degrees:
+                    ms = _np.arange(l+1)
+                    coeffs[:, l, :l+1] *= _np.sqrt(_factorial(l-ms) /
+                                                   _factorial(l+ms))
+                if kind.lower() == 'real':
+                    coeffs[:, :, 1:] *= _np.sqrt(2.)
 
-        if lmax is not None and lmax > nl - 1:
+        if lmax > nl - 1:
             coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - nl + 1),
                              (0, lmax - nl + 1)), 'constant')
 
@@ -368,9 +409,9 @@ class SHCoeffs(object):
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
-            orthonormalized, or Schmidt semi-normalized coefficients,
-            respectively.
+            '4pi', 'ortho', 'schmidt' or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+            coefficients, respectively.
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
@@ -402,10 +443,10 @@ class SHCoeffs(object):
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt'):
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "The input normalization must be '4pi', 'ortho', 'schmidt' " +
+                "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
@@ -429,6 +470,14 @@ class SHCoeffs(object):
         else:
             raise NotImplementedError(
                 'format={:s} not yet implemented'.format(repr(format)))
+
+        if normalization.lower() == 'unnorm' and lmaxout > 85:
+            _warnings.warn("Calculations using unnormalized coefficients " +
+                           "are stable only for degrees less than or equal " +
+                           "to 85. lmax for the coefficients will be set to " +
+                           "85. Input value was {:d}.".format(lmaxout),
+                           category=RuntimeWarning)
+            lmaxout = 85
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
@@ -762,7 +811,7 @@ class SHCoeffs(object):
     # ---- Return coefficients with a different normalization convention ----
     def to_array(self, normalization=None, csphase=None, lmax=None):
         """
-        Return spherical harmonics coefficients as a numpy array.
+        Return spherical harmonic coefficients as a numpy array.
 
         Usage
         -----
@@ -776,9 +825,9 @@ class SHCoeffs(object):
         Parameters
         ----------
         normalization : str, optional, default = x.normalization
-            Normalization of the output coefficients. '4pi', 'ortho' or
-            'schmidt' for geodesy 4pi normalized, orthonormalized, or Schmidt
-            semi-normalized coefficients, respectively.
+            Normalization of the output coefficients. '4pi', 'ortho', 'schmidt'
+            or 'unnorm' for geodesy 4pi normalized, orthonormalized, Schmidt
+            semi-normalized or unnormalized coefficients, respectively.
         csphase : int, optional, default = x.csphase
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
@@ -797,10 +846,10 @@ class SHCoeffs(object):
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt'):
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "normalization must be '4pi', 'ortho', 'schmidt' " +
+                "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
@@ -943,9 +992,9 @@ class SHCoeffs(object):
         Parameters
         ----------
         normalization : str, optional, default = x.normalization
-            Normalization of the output class: '4pi', 'ortho' or 'schmidt'
-            for geodesy 4pi normalized, orthonormalized, or Schmidt semi-
-            normalized coefficients, respectively.
+            Normalization of the output class: '4pi', 'ortho', 'schmidt' or
+            'unnorm', for geodesy 4pi normalized, orthonormalized, Schmidt
+            semi-normalized, or unnormalized coefficients, respectively.
         csphase : int, optional, default = x.csphase
             Condon-Shortley phase convention for the output class: 1 to exclude
             the phase factor, or -1 to include it.
@@ -972,10 +1021,10 @@ class SHCoeffs(object):
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(normalization))))
-        if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
+        if normalization.lower() not in ['4pi', 'ortho', 'schmidt', 'unnorm']:
             raise ValueError(
-                "normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "normalization must be '4pi', 'ortho', 'schmidt' or " +
+                "'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
@@ -995,8 +1044,6 @@ class SHCoeffs(object):
             coeffs = self.to_array(normalization=normalization.lower(),
                                    csphase=csphase, lmax=lmax)
 
-        # because to_array is already a copy, we can pass it as reference
-        # to save time
         return SHCoeffs.from_array(coeffs,
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
@@ -1417,6 +1464,14 @@ class SHRealCoeffs(SHCoeffs):
 
     def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
+        if output_normalization == 'unnorm' and lmax > 85:
+            _warnings.warn("Conversion to unnormalized coefficients is " +
+                           "stable only for degrees less than or equal to " +
+                           "85. lmax for the output coefficients will be " +
+                           "set to 85. Input value was {:d}.".format(lmax),
+                           category=RuntimeWarning)
+            lmax = 85
+
         if lmax <= self.lmax:
             coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
         else:
@@ -1431,24 +1486,66 @@ class SHRealCoeffs(SHCoeffs):
         elif (self.normalization == '4pi' and
               output_normalization == 'schmidt'):
             for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
+                coeffs[:, l, :l+1] *= _np.sqrt(2. * l + 1.)
         elif self.normalization == '4pi' and output_normalization == 'ortho':
             coeffs *= _np.sqrt(4.0 * _np.pi)
+        elif self.normalization == '4pi' and output_normalization == 'unnorm':
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = 2. * (2. * l + 1.) * _factorial(l-ms) / _factorial(l+ms)
+                conv[0] = conv[0] / 2.
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
         elif (self.normalization == 'schmidt' and
               output_normalization == '4pi'):
             for l in degrees:
-                coeffs[:, l, :l+1] /= _np.sqrt(2.0 * l + 1.0)
+                coeffs[:, l, :l+1] /= _np.sqrt(2. * l + 1.)
         elif (self.normalization == 'schmidt' and
               output_normalization == 'ortho'):
             for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(4.0 * _np.pi / (2.0 * l + 1.0))
+                coeffs[:, l, :l+1] *= _np.sqrt(4. * _np.pi / (2. * l + 1.))
+        elif (self.normalization == 'schmidt' and
+              output_normalization == 'unnorm'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = 2. * _factorial(l-ms) / _factorial(l+ms)
+                conv[0] = conv[0] / 2.
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
         elif self.normalization == 'ortho' and output_normalization == '4pi':
-            coeffs /= _np.sqrt(4.0 * _np.pi)
+            coeffs /= _np.sqrt(4. * _np.pi)
         elif (self.normalization == 'ortho' and
               output_normalization == 'schmidt'):
             for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt((2.0 * l + 1.0) /
-                                               (4.0 * _np.pi))
+                coeffs[:, l, :l+1] *= _np.sqrt((2. * l + 1.) / (4. * _np.pi))
+        elif (self.normalization == 'ortho' and
+              output_normalization == 'unnorm'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = (2. * l + 1.) * _factorial(l-ms) \
+                    / 2. / _np.pi / _factorial(l+ms)
+                conv[0] = conv[0] / 2.
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
+        elif (self.normalization == 'unnorm' and
+              output_normalization == '4pi'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms) / 2.
+                conv[0] = conv[0] * 2.
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
+        elif (self.normalization == 'unnorm' and
+              output_normalization == 'schmidt'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = _factorial(l+ms) / _factorial(l-ms) / 2.
+                conv[0] = conv[0] * 2.
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
+        elif (self.normalization == 'unnorm' and
+              output_normalization == 'ortho'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = 2. * _np.pi * _factorial(l+ms) / (2. * l + 1.) / \
+                    _factorial(l-ms)
+                conv[0] = conv[0] * 2.
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
 
         if output_csphase != self.csphase:
             for m in degrees:
@@ -1650,6 +1747,14 @@ class SHComplexCoeffs(SHCoeffs):
 
     def _to_array(self, output_normalization, output_csphase, lmax):
         """Return coefficients with a different normalization convention."""
+        if output_normalization == 'unnorm' and lmax > 85:
+            _warnings.warn("Conversion to unnormalized coefficients is " +
+                           "stable only for degrees less than or equal to " +
+                           "85. lmax for the output coefficients will be " +
+                           "set to 85. Input value was {:d}.".format(lmax),
+                           category=RuntimeWarning)
+            lmax = 85
+
         if lmax <= self.lmax:
             coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
         else:
@@ -1664,24 +1769,60 @@ class SHComplexCoeffs(SHCoeffs):
         elif (self.normalization == '4pi' and
               output_normalization == 'schmidt'):
             for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
+                coeffs[:, l, :l+1] *= _np.sqrt(2. * l + 1.)
         elif self.normalization == '4pi' and output_normalization == 'ortho':
-            coeffs *= _np.sqrt(4.0 * _np.pi)
+            coeffs *= _np.sqrt(4. * _np.pi)
+        elif self.normalization == '4pi' and output_normalization == 'unnorm':
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = (2. * l + 1.) * _factorial(l-ms) / _factorial(l+ms)
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
         elif (self.normalization == 'schmidt' and
               output_normalization == '4pi'):
             for l in degrees:
-                coeffs[:, l, :l+1] /= _np.sqrt(2.0 * l + 1.0)
+                coeffs[:, l, :l+1] /= _np.sqrt(2. * l + 1.)
         elif (self.normalization == 'schmidt' and
               output_normalization == 'ortho'):
             for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(4.0 * _np.pi / (2.0 * l + 1.0))
+                coeffs[:, l, :l+1] *= _np.sqrt(4. * _np.pi / (2. * l + 1.))
+        elif (self.normalization == 'schmidt' and
+              output_normalization == 'unnorm'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = _factorial(l-ms) / _factorial(l+ms)
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
         elif self.normalization == 'ortho' and output_normalization == '4pi':
-            coeffs /= _np.sqrt(4.0 * _np.pi)
+            coeffs /= _np.sqrt(4. * _np.pi)
         elif (self.normalization == 'ortho' and
               output_normalization == 'schmidt'):
             for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt((2.0 * l + 1.0) /
-                                               (4.0 * _np.pi))
+                coeffs[:, l, :l+1] *= _np.sqrt((2. * l + 1.) / (4. * _np.pi))
+        elif (self.normalization == 'ortho' and
+              output_normalization == 'unnorm'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = (2. * l + 1.) * _factorial(l-ms) \
+                    / 4. / _np.pi / _factorial(l+ms)
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
+        elif (self.normalization == 'unnorm' and
+              output_normalization == '4pi'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
+        elif (self.normalization == 'unnorm' and
+              output_normalization == 'schmidt'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = _factorial(l+ms) / _factorial(l-ms)
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
+        elif (self.normalization == 'unnorm' and
+              output_normalization == 'ortho'):
+            for l in degrees:
+                ms = _np.arange(l+1)
+                conv = 4. * _np.pi * _factorial(l+ms) / (2. * l + 1.) / \
+                    _factorial(l-ms)
+                coeffs[:, l, :l+1] *= _np.sqrt(conv)
 
         if output_csphase != self.csphase:
             for m in degrees:
@@ -1694,7 +1835,7 @@ class SHComplexCoeffs(SHCoeffs):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         # Note that the current method is EXTREMELY inefficient. The complex
         # coefficients are expanded onto real and imaginary grids, each of
-        # the two components are rotated separately as real data, they rotated
+        # the two components are rotated separately as real data, the rotated
         # real data are re-expanded on new real and complex grids, they are
         # combined to make a complex grid, and the resultant is expanded
         # in complex spherical harmonics.
