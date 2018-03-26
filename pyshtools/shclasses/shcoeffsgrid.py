@@ -528,7 +528,8 @@ class SHCoeffs(object):
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
                     other.csphase and self.kind == other.kind):
-                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] +
                                      other.coeffs[self.mask])
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
@@ -538,7 +539,11 @@ class SHCoeffs(object):
                                  'the same kind and have the same ' +
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
-            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                               dtype=self.coeffs.dtype)
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not add a complex constant to real ' +
+                                 'coefficients.')
             coeffs[self.mask] = self.coeffs[self.mask] + other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
@@ -561,7 +566,8 @@ class SHCoeffs(object):
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
                     other.csphase and self.kind == other.kind):
-                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] -
                                      other.coeffs[self.mask])
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
@@ -571,7 +577,11 @@ class SHCoeffs(object):
                                  'the same kind and have the same ' +
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
-            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                               dtype=self.coeffs.dtype)
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not subtract a complex constant from ' +
+                                 'real coefficients.')
             coeffs[self.mask] = self.coeffs[self.mask] - other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
@@ -587,7 +597,8 @@ class SHCoeffs(object):
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
                     other.csphase and self.kind == other.kind):
-                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (other.coeffs[self.mask] -
                                      self.coeffs[self.mask])
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
@@ -597,7 +608,11 @@ class SHCoeffs(object):
                                  'the same kind and have the same ' +
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
-            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                               dtype=self.coeffs.dtype)
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not subtract a complex constant from ' +
+                                 'real coefficients.')
             coeffs[self.mask] = other - self.coeffs[self.mask]
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
@@ -613,7 +628,8 @@ class SHCoeffs(object):
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
                     other.csphase and self.kind == other.kind):
-                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] *
                                      other.coeffs[self.mask])
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
@@ -623,7 +639,11 @@ class SHCoeffs(object):
                                  'the same kind and have the same ' +
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
-            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                               dtype=self.coeffs.dtype)
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not multiply real coefficients by ' +
+                                 'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] * other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
@@ -646,7 +666,8 @@ class SHCoeffs(object):
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
                     other.csphase and self.kind == other.kind):
-                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] /
                                      other.coeffs[self.mask])
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
@@ -656,7 +677,11 @@ class SHCoeffs(object):
                                  'the same kind and have the same ' +
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
-            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                               dtype=self.coeffs.dtype)
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not divide real coefficients by ' +
+                                 'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] / other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
@@ -672,7 +697,8 @@ class SHCoeffs(object):
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
                     other.csphase and self.kind == other.kind):
-                coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] /
                                      other.coeffs[self.mask])
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
@@ -682,7 +708,11 @@ class SHCoeffs(object):
                                  'the same kind and have the same ' +
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
-            coeffs = _np.zeros([2, self.lmax+1, self.lmax+1])
+            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                               dtype=self.coeffs.dtype)
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not multiply real coefficients by ' +
+                                 'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] / other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
@@ -2167,6 +2197,9 @@ class SHGrid(object):
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not add a complex constant to a ' +
+                                 'real grid.')
             data = self.data + other
             return SHGrid.from_array(data, grid=self.grid)
         else:
@@ -2188,6 +2221,9 @@ class SHGrid(object):
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not subtract a complex constant from ' +
+                                 'a real grid.')
             data = self.data - other
             return SHGrid.from_array(data, grid=self.grid)
         else:
@@ -2205,6 +2241,9 @@ class SHGrid(object):
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not subtract a complex constant from ' +
+                                 'a real grid.')
             data = other - self.data
             return SHGrid.from_array(data, grid=self.grid)
         else:
@@ -2222,6 +2261,9 @@ class SHGrid(object):
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not multiply a real grid by a complex ' +
+                                 'constant.')
             data = self.data * other
             return SHGrid.from_array(data, grid=self.grid)
         else:
@@ -2246,6 +2288,9 @@ class SHGrid(object):
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not divide a real grid by a complex ' +
+                                 'constant.')
             data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
@@ -2266,7 +2311,10 @@ class SHGrid(object):
                 raise ValueError('The two grids must be of the ' +
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
-            data = self.data / other
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not divide a real grid by a complex ' +
+                                 'constant.')
+                data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
@@ -2275,11 +2323,14 @@ class SHGrid(object):
     def __pow__(self, other):
         """Raise a grid to a scalar power: pow(self, other)."""
         if _np.isscalar(other) is True:
-            data = pow(self.data, other)
-            return SHGrid.from_array(data, grid=self.grid)
+            return SHGrid.from_array(pow(self.data, other), grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
                                       'for these operands.')
+
+    def __abs__(self):
+        """Return the absolute value of the gridded data."""
+        return SHGrid.from_array(abs(self.data), grid=self.grid)
 
     # ---- Extract grid properties ----
     def lats(self, degrees=True):
