@@ -29,10 +29,10 @@ class SHCoeffs(object):
     The coefficients of this class can be initialized using one of the
     four constructor methods:
 
-    >>> x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
-    >>> x = SHCoeffs.from_random(powerspectrum[0:lmax+1])
-    >>> x = SHCoeffs.from_zeros(lmax)
-    >>> x = SHCoeffs.from_file('fname.dat')
+        x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
+        x = SHCoeffs.from_random(powerspectrum[0:lmax+1])
+        x = SHCoeffs.from_zeros(lmax)
+        x = SHCoeffs.from_file('fname.dat')
 
     The normalization convention of the input coefficents is specified
     by the normalization and csphase parameters, which take the following
@@ -41,6 +41,7 @@ class SHCoeffs(object):
     normalization : '4pi' (default), geodesy 4-pi normalized.
                   : 'ortho', orthonormalized.
                   : 'schmidt', Schmidt semi-normalized.
+                  : 'unnorm', unnormalized.
 
     csphase       : 1 (default), exlcude the Condon-Shortley phase factor.
                   : -1, include the Condon-Shortley phase factor.
@@ -98,7 +99,7 @@ class SHCoeffs(object):
               '>>> SHCoeffs.from_zeros?\n'
               '>>> SHCoeffs.from_file?\n')
 
-    # ---- factory methods:
+    # ---- Factory methods ----
     @classmethod
     def from_zeros(self, lmax, kind='real', normalization='4pi', csphase=1):
         """
@@ -118,7 +119,7 @@ class SHCoeffs(object):
         lmax : int
             The highest spherical harmonic degree l of the coefficients.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho', 'schmidt' or 'unnorm' for geodesy 4pi normalized,
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
              coefficients, respectively.
         csphase : int, optional, default = 1
@@ -186,7 +187,7 @@ class SHCoeffs(object):
         array : ndarray, shape (2, lmaxin+1, lmaxin+1).
             The input spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho', 'schmidt' or 'unnorm' for geodesy 4pi normalized,
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
             coefficients, respectively.
         csphase : int, optional, default = 1
@@ -211,7 +212,7 @@ class SHCoeffs(object):
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The normalization must be '4pi', 'ortho', 'schmidt' " +
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
                 "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
@@ -278,7 +279,7 @@ class SHCoeffs(object):
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho', 'schmidt' or 'unnorm' for geodesy 4pi normalized,
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
             coefficients, respectively.
         csphase : int, optional, default = 1
@@ -297,7 +298,7 @@ class SHCoeffs(object):
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho', 'schmidt' " +
+                "The input normalization must be '4pi', 'ortho', 'schmidt', " +
                 "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
@@ -354,11 +355,11 @@ class SHCoeffs(object):
         else:
             if normalization.lower() == '4pi':
                 coeffs *= _np.sqrt(
-                    power[0:nl] / (2.0 * degrees + 1.0))[_np.newaxis, :,
-                                                         _np.newaxis]
+                    power[0:nl] / (2. * degrees + 1.))[_np.newaxis, :,
+                                                       _np.newaxis]
             elif normalization.lower() == 'ortho':
                 coeffs *= _np.sqrt(
-                    4.0 * _np.pi * power[0:nl] / (2.0 * degrees + 1.0)
+                    4. * _np.pi * power[0:nl] / (2. * degrees + 1.)
                     )[_np.newaxis, :, _np.newaxis]
             elif normalization.lower() == 'schmidt':
                 coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
@@ -409,7 +410,7 @@ class SHCoeffs(object):
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho', 'schmidt' or 'unnorm' for geodesy 4pi normalized,
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
             coefficients, respectively.
         csphase : int, optional, default = 1
@@ -445,7 +446,7 @@ class SHCoeffs(object):
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho', 'schmidt' " +
+                "The input normalization must be '4pi', 'ortho', 'schmidt', " +
                 "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
@@ -502,7 +503,7 @@ class SHCoeffs(object):
         filename : str
             Name of the output file.
         format : str, optional, default = 'shtools'
-            'shtools' or 'npy'. See method from_file for more information.
+            'shtools' or 'npy'. See method from_file() for more information.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
         """
@@ -519,7 +520,7 @@ class SHCoeffs(object):
             raise NotImplementedError(
                 'format={:s} not yet implemented'.format(repr(format)))
 
-    # ---- operators ----
+    # ---- Mathematical operators ----
     def __add__(self, other):
         """
         Add two similar sets of coefficients or coefficients and a scalar:
@@ -787,15 +788,16 @@ class SHCoeffs(object):
         function squared over all space, divided by the area the function
         spans. If the mean of the function is zero, this is equivalent to the
         variance of the function. The total energy is the integral of the
-        function squared over all space and is 4pi times the total power. The
-        l2-norm is the sum of the magnitude of the coefficients squared.
+        function squared over all space and is 4pi times the total power. For
+        normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm is
+        the sum of the magnitude of the coefficients squared.
 
         The output spectrum can be expresed using one of three units. 'per_l'
         returns the contribution to the total spectrum from all angular orders
         at degree l. 'per_lm' returns the average contribution to the total
-        spectrum from a single coefficient at degree l. The 'per_lm' spectrum
-        is equal to the 'per_l' spectrum divided by (2l+1). 'per_dlogl' returns
-        the contribution to the total spectrum from all angular orders over an
+        spectrum from a single coefficient at degree l, which is equal to the
+        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
+        contribution to the total spectrum from all angular orders over an
         infinitessimal logarithmic degree band. The contrubution in the band
         dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
         and where spectrum(l, 'per_dlogl) is equal to
@@ -804,7 +806,7 @@ class SHCoeffs(object):
         return _spectrum(self.coeffs, normalization=self.normalization,
                          convention=convention, unit=unit, base=base)
 
-    # ---- Set individual coefficient
+    # ---- Set individual coefficients ----
     def set_coeffs(self, values, ls, ms):
         """
         Set spherical harmonic coefficients in-place to specified values.
@@ -830,7 +832,7 @@ class SHCoeffs(object):
         x.set_coeffs([1.,2], [1,2], [0,-2]) # x.coeffs[0,1,0] = 1.
                                             # x.coeffs[1,2,2] = 2.
         """
-        # make sure that the type is correct
+        # Ensure that the type is correct
         values = _np.array(values)
         ls = _np.array(ls)
         ms = _np.array(ms)
@@ -855,9 +857,10 @@ class SHCoeffs(object):
         Parameters
         ----------
         normalization : str, optional, default = x.normalization
-            Normalization of the output coefficients. '4pi', 'ortho', 'schmidt'
-            or 'unnorm' for geodesy 4pi normalized, orthonormalized, Schmidt
-            semi-normalized or unnormalized coefficients, respectively.
+            Normalization of the output coefficients: '4pi', 'ortho',
+            'schmidt', or 'unnorm' for geodesy 4pi normalized, orthonormalized,
+            Schmidt semi-normalized, or unnormalized coefficients,
+            respectively.
         csphase : int, optional, default = x.csphase
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
@@ -878,7 +881,7 @@ class SHCoeffs(object):
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "normalization must be '4pi', 'ortho', 'schmidt' " +
+                "normalization must be '4pi', 'ortho', 'schmidt', " +
                 "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
@@ -1022,7 +1025,7 @@ class SHCoeffs(object):
         Parameters
         ----------
         normalization : str, optional, default = x.normalization
-            Normalization of the output class: '4pi', 'ortho', 'schmidt' or
+            Normalization of the output class: '4pi', 'ortho', 'schmidt', or
             'unnorm', for geodesy 4pi normalized, orthonormalized, Schmidt
             semi-normalized, or unnormalized coefficients, respectively.
         csphase : int, optional, default = x.csphase
@@ -1051,9 +1054,9 @@ class SHCoeffs(object):
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(normalization))))
-        if normalization.lower() not in ['4pi', 'ortho', 'schmidt', 'unnorm']:
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "normalization must be '4pi', 'ortho', 'schmidt' or " +
+                "normalization must be '4pi', 'ortho', 'schmidt', or " +
                 "'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
@@ -1187,7 +1190,7 @@ class SHCoeffs(object):
 
             return gridout
 
-    # ---- plotting routines ----
+    # ---- Plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
                       xscale='lin', yscale='log', show=True, ax=None,
                       fname=None):
@@ -1325,20 +1328,33 @@ class SHCoeffs(object):
         spectrum[:, self.lmax:] = mpositive
 
         if (convention.lower() == 'l2norm'):
-            pass
+            if self.normalization == 'unnorm':
+                raise ValueError("convention can not be set to 'l2norm' " +
+                                 "when using unnormalized harmonics.")
+            else:
+                pass
         elif convention.lower() in ('power', 'energy'):
             if self.normalization == '4pi':
                 pass
             elif self.normalization == 'schmidt':
                 for l in self.degrees():
-                    spectrum[l, :] /= (2.0 * l + 1.0)
+                    spectrum[l, :] /= (2. * l + 1.)
             elif self.normalization == 'ortho':
                 for l in self.degrees():
-                    spectrum[l, :] /= (4.0 * _np.pi)
+                    spectrum[l, :] /= (4. * _np.pi)
+            elif self.normalization == 'unnorm':
+                for l in self.degrees():
+                    ms = _np.arange(l+1)
+                    conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
+                    if self.kind == 'real':
+                        conv[1:l + 1] = conv[1:l + 1] / 2.
+                    spectrum[l, self.lmax-l:self.lmax] *= conv[::-1][0:l]
+                    spectrum[l, self.lmax:self.lmax+l+1] *= conv[0:l+1]
             else:
                 raise ValueError(
-                    "normalization must be '4pi', 'ortho', or 'schmidt'. " +
-                    "Input value was {:s}".format(repr(self.normalization)))
+                    "normalization must be '4pi', 'ortho', 'schmidt', " +
+                    "or 'unnorm'. Input value was {:s}"
+                    .format(repr(self.normalization)))
         else:
             raise ValueError(
                 "convention must be 'power', 'energy', or 'l2norm'. " +
@@ -1613,12 +1629,15 @@ class SHRealCoeffs(SHCoeffs):
             norm = 1
         elif self.normalization == 'schmidt':
             norm = 2
+        elif self.normalization == 'unnorm':
+            norm = 3
         elif self.normalization == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
-                "Input value was {:s}".format(repr(self.normalization)))
+                "Normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "'unnorm'. Input value was {:s}"
+                .format(repr(self.normalization)))
 
         data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
                                    csphase=self.csphase, lmax=lmax,
@@ -1632,12 +1651,15 @@ class SHRealCoeffs(SHCoeffs):
             norm = 1
         elif self.normalization == 'schmidt':
             norm = 2
+        elif self.normalization == 'unnorm':
+            norm = 3
         elif self.normalization == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
-                "Input value was {:s}".format(repr(self.normalization)))
+                "Normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "'unnorm'. Input value was {:s}"
+                .format(repr(self.normalization)))
 
         if zeros is None:
             zeros, weights = _shtools.SHGLQ(self.lmax)
@@ -1654,12 +1676,15 @@ class SHRealCoeffs(SHCoeffs):
             norm = 1
         elif self.normalization == 'schmidt':
             norm = 2
+        elif self.normalization == 'unnorm':
+            norm = 3
         elif self.normalization == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
-                "Input value was {:s}".format(repr(self.normalization)))
+                "Normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "'unnorm'. Input value was {:s}"
+                .format(repr(self.normalization)))
 
         if degrees is True:
             latin = lat
@@ -1892,11 +1917,15 @@ class SHComplexCoeffs(SHCoeffs):
             norm = 1
         elif self.normalization == 'schmidt':
             norm = 2
+        elif self.normalization == 'unnorm':
+            norm = 3
         elif self.normalization == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'")
+                "Normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "'unnorm'. Input value was {:s}"
+                .format(repr(self.normalization)))
 
         coeffs_rot = _shtools.SHExpandDHC(grid_rot, norm=norm,
                                           csphase=self.csphase)
@@ -1911,12 +1940,15 @@ class SHComplexCoeffs(SHCoeffs):
             norm = 1
         elif self.normalization == 'schmidt':
             norm = 2
+        elif self.normalization == 'unnorm':
+            norm = 3
         elif self.normalization == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
-                "Input value was {:s}".format(repr(self.normalization)))
+                "Normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "'unnorm'. Input value was {:s}"
+                .format(repr(self.normalization)))
 
         data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
                                     norm=norm, csphase=self.csphase, lmax=lmax,
@@ -1930,12 +1962,15 @@ class SHComplexCoeffs(SHCoeffs):
             norm = 1
         elif self.normalization == 'schmidt':
             norm = 2
+        elif self.normalization == 'unnorm':
+            norm = 3
         elif self.normalization == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
-                "Input value was {:s}".format(repr(self.normalization)))
+                "Normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "'unnorm'. Input value was {:s}"
+                .format(repr(self.normalization)))
 
         if zeros is None:
             zeros, weights = _shtools.SHGLQ(self.lmax)
@@ -1952,12 +1987,15 @@ class SHComplexCoeffs(SHCoeffs):
             norm = 1
         elif self.normalization == 'schmidt':
             norm = 2
+        elif self.normalization == 'unnorm':
+            norm = 3
         elif self.normalization == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "Normalization must be '4pi', 'ortho', or 'schmidt'. " +
-                "Input value was {:s}".format(repr(self.normalization)))
+                "Normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "'unnorm'. Input value was {:s}"
+                .format(repr(self.normalization)))
 
         if degrees is True:
             latin = lat
