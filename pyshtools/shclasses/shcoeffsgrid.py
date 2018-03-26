@@ -2352,7 +2352,7 @@ class SHGrid(object):
             if self.kind == 'real' and _np.iscomplexobj(other):
                 raise ValueError('Can not divide a real grid by a complex ' +
                                  'constant.')
-                data = self.data / other
+            data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
             raise NotImplementedError('Mathematical operator not implemented' +
