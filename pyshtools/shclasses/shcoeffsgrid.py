@@ -2048,8 +2048,8 @@ class SHGrid(object):
 
     Grids can be initialized from:
 
-    >>> x = SHGrid.from_array(array)
-    >>> x = SHGrid.from_file('fname.dat')
+        x = SHGrid.from_array(array)
+        x = SHGrid.from_file('fname.dat')
 
     The class instance defines the following class attributes:
 
@@ -2088,7 +2088,7 @@ class SHGrid(object):
               '>>> SHGrid.from_array?\n'
               '>>> SHGrid.from_file?\n')
 
-    # ---- factory methods
+    # ---- Factory methods ----
     @classmethod
     def from_array(self, array, grid='DH', copy=True):
         """
@@ -2223,7 +2223,7 @@ class SHGrid(object):
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}'.format(binary))
 
-    # ---- operators ----
+    # ---- Mathematical operators ----
     def __add__(self, other):
         """Add two similar grids or a grid and a scaler: self + other."""
         if isinstance(other, SHGrid):
@@ -2604,9 +2604,9 @@ class SHGrid(object):
         Parameters
         ----------
         normalization : str, optional, default = '4pi'
-            Normalization of the spherical harmonic coefficients: '4pi' for
-            geodesy 4-pi normalized, 'ortho' for orthonormalized, or 'schmidt'
-            for Schmidt semi-normalized.
+            Normalization of the output class: '4pi', 'ortho', 'schmidt', or
+            'unnorm', for geodesy 4pi normalized, orthonormalized, Schmidt
+            semi-normalized, or unnormalized coefficients, respectively.
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
@@ -2618,10 +2618,10 @@ class SHGrid(object):
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
-        if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
 
@@ -2707,12 +2707,14 @@ class DHRealGrid(SHGrid):
             norm = 1
         elif normalization.lower() == 'schmidt':
             norm = 2
+        elif normalization.lower() == 'unnorm':
+            norm = 3
         elif normalization.lower() == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
 
@@ -2801,12 +2803,14 @@ class DHComplexGrid(SHGrid):
             norm = 1
         elif normalization.lower() == 'schmidt':
             norm = 2
+        elif normalization.lower() == 'schmidt':
+            norm = 3
         elif normalization.lower() == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
 
@@ -2902,12 +2906,14 @@ class GLQRealGrid(SHGrid):
             norm = 1
         elif normalization.lower() == 'schmidt':
             norm = 2
+        elif normalization.lower() == 'unnorm':
+            norm = 3
         elif normalization.lower() == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
+                "The normalization must be '4pi', 'ortho', 'schmidt' " +
+                "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
 
@@ -2988,12 +2994,14 @@ class GLQComplexGrid(SHGrid):
             norm = 1
         elif normalization.lower() == 'schmidt':
             norm = 2
+        elif normalization.lower() == 'unnorm':
+            norm = 3
         elif normalization.lower() == 'ortho':
             norm = 4
         else:
             raise ValueError(
-                "The normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Input value was {:s}."
+                "The normalization must be '4pi', 'ortho', 'schmidt' " +
+                "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
 
