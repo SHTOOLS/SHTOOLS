@@ -2,16 +2,17 @@ import numpy as _np
 from scipy.special import factorial as _factorial
 
 
-def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
-                   convention='power', unit='per_l', base=10.):
+def mag_spectrum(clm, a, r, potential=False, normalization='schmidt',
+                 degrees=None, lmax=None, convention='power', unit='per_l',
+                 base=10.):
     """
-    Return the cross-spectrum of the spherical harmonic coefficients as a
-    function of spherical harmonic degree.
+    Return the spectrum of the magnetic field as a function of spherical
+    harmonic degree.
 
     Usage
     -----
-    array = cross_spectrum(clm1, clm2, [normalization, degrees, lmax,
-                                        convention, unit, base])
+    array = mag_spectrum(clm, a, r, [potential, normalization, degrees, lmax,
+                                     convention, unit, base])
 
     Returns
     -------
@@ -20,11 +21,16 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
 
     Parameters
     ----------
-    clm1 : ndarray, shape (2, lmax + 1, lmax + 1)
-        ndarray containing the first set of spherical harmonic coefficients.
-    clm2 : ndarray, shape (2, lmax + 1, lmax + 1)
-        ndarray containing the second set of spherical harmonic coefficients.
-    normalization : str, optional, default = '4pi'
+    clm : ndarray, shape (2, lmax + 1, lmax + 1)
+        ndarray containing the spherical harmonic coefficients.
+    a : float
+        The reference radius of the spherical harmonic coefficients.
+    r : float
+        The radius at which the spectrum is evaluated.
+    potential : bool, optional, default = False
+        If True, calculate the spectrum of the magnetic potential. Otherwise,
+        calculate the spectrum of the magnetic intensity (default).
+    normalization : str, optional, default = 'schmidt'
         '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
         orthonormalized, Schmidt semi-normalized, or unnormalized coefficients,
         respectively.
@@ -47,15 +53,29 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
 
     Description
     -----------
-    This function returns either the cross-power spectrum, cross-energy
-    spectrum, or l2-cross-norm spectrum. Total cross-power is defined as the
-    integral of the clm1 times the conjugate of clm2 over all space, divided
-    by the area the functions span. If the mean of the functions is zero,
-    this is equivalent to the covariance of the two functions. The total
-    cross-energy is the integral of clm1 times the conjugate of clm2 over all
-    space and is 4pi times the total power. The l2-cross-norm is the
-    sum of clm1 times the conjugate of clm2 over all angular orders as a
-    function of spherical harmonic degree.
+    This function returns either the power spectrum, energy spectrum, or
+    l2-norm spectrum of a global magnetic field. Total power is defined as the
+    integral of the function squared over all space, divided by the area the
+    function spans. If the mean of the function is zero, this is equivalent to
+    the variance of the function. The total energy is the integral of the
+    function squared over all space and is 4pi times the total power. The
+    l2-norm is simply the sum of the magnitude of the spherical harmonic
+    coefficients squared. The default behaviour of this function is to return
+    the Lowes-Mauersberger spectrum, which is the total power of the magnetic
+    field strength as a function of spherical harmonic degree (see below).
+
+    The magnetic potential and magnetic field are defined respectively by the
+    two equations
+
+        U = a**2 \sum_{l, m}^L (a/r)**(l+1) glm Ylm,
+        B = - \Del U.
+
+    Here, a is the reference radius of the spherical harmonic coefficients, r
+    is the radius at which the function is evalulated, and L is the maximum
+    spherical harmonic degree of the expansion. If the optional parameter
+    potential is set to True, the spectrum of the magnetic potential
+    will be calculated. Otherwise, the default behavior is to calculate the
+    spectrum of the magnetic field intensity.
 
     The output spectrum can be expresed using one of three units. 'per_l'
     returns the contribution to the total spectrum from all angular orders
@@ -66,6 +86,10 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
     logarithmic degree band. The contrubution in the band dlog_a(l) is
     spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
     spectrum(l, 'per_dlogl) is equal to spectrum(l, 'per_l')*l*log(a).
+
+    When no optional parameters are specified, the Lowes-Mauersberger power
+    spectrum is calculated. Explicitly, this corrresponds to convention =
+    'power', unit = 'per_l', and potential = False.
     """
     if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
         raise ValueError("The normalization must be '4pi', 'ortho', " +
@@ -81,23 +105,13 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
         raise ValueError("unit must be 'per_l', 'per_lm', or 'per_dlogl'." +
                          "Input value was {:s}".format(repr(unit)))
 
-    if _np.iscomplexobj(clm1) is not _np.iscomplexobj(clm2):
-        raise ValueError('clm1 and clm2 must both be either real or ' +
-                         'complex. \nclm1 is complex : {:s}\n'
-                         .format(repr(_np.iscomplexobj(clm1))) +
-                         'clm2 is complex : {:s}'
-                         .format(repr(_np.iscomplexobj(clm2))))
-
     if lmax is None:
-        lmax = len(clm1[0, :, 0]) - 1
+        lmax = len(clm[0, :, 0]) - 1
 
     if degrees is None:
         degrees = _np.arange(lmax+1)
 
-    if _np.iscomplexobj(clm1):
-        array = _np.empty(len(degrees), dtype='complex')
-    else:
-        array = _np.empty(len(degrees))
+    array = _np.empty(len(degrees))
 
     if normalization.lower() == 'unnorm':
         if convention.lower() == 'l2norm':
@@ -109,25 +123,25 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
             conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
 
             if _np.iscomplexobj(clm):
-                array[i] = (conv[0:l + 1] * clm1[0, l, 0:l + 1] *
-                            clm2[0, l, 0:l + 1].conjugate()).real.sum() + \
-                           (conv[1:l + 1] * clm1[1, l, 1:l + 1] *
-                            clm2[1, l, 1:l + 1].conjugate()).real.sum()
+                array[i] = (conv[0:l + 1] * clm[0, l, 0:l + 1] *
+                            clm[0, l, 0:l + 1].conjugate()).real.sum() + \
+                           (conv[1:l + 1] * clm[1, l, 1:l + 1] *
+                            clm[1, l, 1:l + 1].conjugate()).real.sum()
             else:
                 conv[1:l + 1] = conv[1:l + 1] / 2.
-                array[i] = (conv[0:l + 1] * clm1[0, l, 0:l+1]**2).sum() + \
-                           (conv[1:l + 1] * clm2[1, l, 1:l+1]**2).sum()
+                array[i] = (conv[0:l + 1] * clm[0, l, 0:l+1]**2).sum() + \
+                           (conv[1:l + 1] * clm[1, l, 1:l+1]**2).sum()
 
     else:
         for i, l in enumerate(degrees):
-            if _np.iscomplexobj(clm1):
-                array[i] = (clm1[0, l, 0:l + 1] *
-                            clm2[0, l, 0:l + 1].conjugate()).sum() + \
-                           (clm1[1, l, 1:l + 1] *
-                            clm2[1, l, 1:l + 1].conjugate()).sum()
+            if _np.iscomplexobj(clm):
+                array[i] = (clm[0, l, 0:l + 1] *
+                            clm[0, l, 0:l + 1].conjugate()).real.sum() + \
+                           (clm[1, l, 1:l + 1] *
+                            clm[1, l, 1:l + 1].conjugate()).real.sum()
             else:
-                array[i] = (clm1[0, l, 0:l + 1] * clm2[0, l, 0:l + 1]).sum() \
-                           + (clm1[1, l, 1:l + 1] * clm2[1, l, 1:l + 1]).sum()
+                array[i] = (clm[0, l, 0:l+1]**2).sum() + \
+                           (clm[1, l, 1:l+1]**2).sum()
 
         if convention.lower() == 'l2norm':
             return array
@@ -148,5 +162,10 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
         array /= (2. * degrees + 1.)
     elif unit.lower() == 'per_dlogl':
         array *= degrees * _np.log(base)
+
+    if potential is True:
+        array *= (a**2) * (a / r)**(2 * degrees + 2)
+    else:
+        array *= (a / r)**(2 * degrees + 4) * (degrees + 1) * (2 * degrees + 1)
 
     return array

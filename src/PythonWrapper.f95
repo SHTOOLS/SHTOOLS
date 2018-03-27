@@ -1932,37 +1932,6 @@
                            exitstatus=exitstatus)
     end subroutine pyMakeMagGridDH
 
-    subroutine pySHMagPowerSpectrum(exitstatus,c,a,r,lmax,spectra,c_d0,c_d1, &
-                                    c_d2,spectra_d0)
-        use shtools, only: SHMagPowerSpectrum
-        implicit none
-        integer, intent(out) :: exitstatus
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        real*8, intent(in) :: a
-        real*8, intent(in) :: r
-        integer, intent(in) :: lmax
-        real*8, dimension(spectra_d0),intent(out) :: spectra
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        integer, intent(in) :: spectra_d0
-        call SHMagPowerSpectrum(c,a,r,lmax,spectra,exitstatus=exitstatus)
-    end subroutine pySHMagPowerSpectrum
-
-   function pySHMagPowerL(c,a,r,l,c_d0,c_d1,c_d2)
-        use shtools, only: SHMagPowerL
-        implicit none
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        real*8, intent(in) :: a
-        real*8, intent(in) :: r
-        integer, intent(in) :: l
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        real*8 :: pySHMagPowerL
-        pySHMagPowerL=SHMagPowerL(c,a,r,l)
-    end function pySHMagPowerL
-
     subroutine pyMakeCircleCoord(exitstatus,coord,lat,lon,theta0,cinterval,cnum, &
                                  coord_d0,coord_d1)
         use shtools, only: MakeCircleCoord
