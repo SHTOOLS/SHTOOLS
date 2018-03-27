@@ -696,22 +696,32 @@ class SHWindow(object):
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
 
-    def plot_windows(self, nwin, lmax=None, show=True, ax=None, fname=None):
+    def plot_windows(self, nwin, lmax=None, maxcolumns=5, show=True, ax=None,
+                     legend=True, fname=None):
         """
         Plot the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_windows(nwin, [show, ax, fname])
+        x.plot_windows(nwin, [lmax, maxcolumns, show, ax, legend, fname])
 
         Parameters
         ----------
         nwin : int
             The number of localization windows to plot.
+        lmax : int, optional, default = self.lwin
+            The maximum degree to use when plotting the windows, which controls
+            the number of samples in latitude and longitude.
+        maxcolumns : int, optional, default = 5
+            The maximum number of columns to use when plotting multiple
+            localization windows.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
+        legend : bool, optional, default = True
+            If True, plot a legend in each subplot providing the taper number
+            and 1 minus the concentration factor.
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
@@ -719,7 +729,6 @@ class SHWindow(object):
             if self.nwinrot is not None and self.nwinrot <= nwin:
                 nwin = self.nwinrot
 
-        maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
@@ -727,9 +736,8 @@ class SHWindow(object):
         if ax is None:
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
         else:
-            if hasattr(ax, '__len__') and len(ax) < nwin:
-                raise ValueError('nwin must be less than or equal to ' +
-                                 'the size of ax: ' +
+            if hasattr(ax, 'flatten') and ax.size < nwin:
+                raise ValueError('ax.size must be greater or equal to nwin. ' +
                                  'nwin = {:s}'.format(repr(nwin)) +
                                  ' and ax.size = {:s}.'.format(repr(ax.size)))
             axes = ax
@@ -751,7 +759,7 @@ class SHWindow(object):
             evalue = self.eigenvalues[itaper]
             if min(self.nwin, nwin) == 1 and ax is None:
                 axtemp = axes
-            elif hasattr(ax, 'flatten'):
+            elif hasattr(axes, 'flatten'):
                 axtemp = axes.flatten()[itaper]
             else:
                 axtemp = axes[itaper]
@@ -760,13 +768,13 @@ class SHWindow(object):
             axtemp.imshow(gridout, origin='upper',
                           extent=(0., 360., -90., 90.))
             axtemp.set(xlabel='longitude', ylabel='latitude')
-
-            axtemp.text(0.02, 0.95, '#{:d} [loss={:2.2g}]'.format(itaper,
-                                                                  1-evalue),
-                        transform=axtemp.transAxes,
-                        va='top', ha='left', color='black',
-                        bbox={'boxstyle': 'round',  'edgecolor': 'none',
-                              'facecolor': 'white'})
+            if legend is True:
+                axtemp.text(0.02, 0.95,
+                            '#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue),
+                            transform=axtemp.transAxes,
+                            va='top', ha='left', color='black',
+                            bbox={'boxstyle': 'round',  'edgecolor': 'none',
+                                  'facecolor': 'white'})
         if ax is None:
             if show:
                 _plt.show()
@@ -777,15 +785,16 @@ class SHWindow(object):
             return fig, axes
 
     def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
-                     xscale='lin', yscale='log', xlim=(None, None),
-                     ylim=(None, None), show=True, ax=None, fname=None):
+                     maxcolumns=5, xscale='lin', yscale='log',
+                     xlim=(None, None), ylim=(None, None), show=True, ax=None,
+                     fname=None):
         """
         Plot the spectra of the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_spectra(nwin, [convention, unit, base, xscale, yscale,
-                              show, ax, fname])
+        x.plot_spectra(nwin, [convention, unit, base, maxcolumns, xscale,
+                              yscale, xlim, ylim, show, ax, fname])
 
         Parameters
         ----------
@@ -802,10 +811,17 @@ class SHWindow(object):
             interval dlog_a(l).
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
+        maxcolumns : int, optional, default = 5
+            The maximum number of columns to use when plotting the spectra
+            of multiple localization windows.
         xscale : str, optional, default = 'lin'
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
             Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        xlim : tuple, optional, default = (None, None)
+            The upper and lower limits used for the x axis.
+        ylim : tuple, optional, default = (None, None)
+            The upper and lower limits used for the y axis.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -817,7 +833,6 @@ class SHWindow(object):
         spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
                                 base=base)
 
-        maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
@@ -825,8 +840,8 @@ class SHWindow(object):
         if ax is None:
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
         else:
-            if hasattr(ax, '__len__') and 1 < len(ax) < nwin:
-                raise ValueError('number axes must be 0 < ax.size < nwin ' +
+            if hasattr(ax, 'flatten') and ax.size < nwin:
+                raise ValueError('ax.size must be greater or equal to nwin. ' +
                                  'nwin = {:s}'.format(repr(nwin)) +
                                  ' and ax.size = {:s}.'.format(repr(ax.size)))
             axes = ax
@@ -849,10 +864,12 @@ class SHWindow(object):
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
-            if hasattr(axes, 'flatten'):
+            if min(self.nwin, nwin) == 1 and ax is None:
+                axtemp = axes
+            elif hasattr(axes, 'flatten'):
                 axtemp = axes.flatten()[itaper]
             else:
-                axtemp = axes
+                axtemp = axes[itaper]
             if (convention == 'power'):
                 axtemp.set_ylabel('power')
             else:
@@ -869,7 +886,7 @@ class SHWindow(object):
                             label='#{:d}'.format(itaper))
             axtemp.set(xlabel='degree l', xlim=xlim, ylim=ylim)
             axtemp.grid(True, which='both')
-            axtemp.set_title('concentration: {:2.2f}'.format(evalue))
+            axtemp.set_title('#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue))
 
         if ax is None:
             if show:

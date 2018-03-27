@@ -11,6 +11,7 @@ import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 import copy as _copy
+import warnings as _warnings
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
@@ -226,8 +227,8 @@ class SHCoeffs(object):
                            csphase=csphase, copy=copy)
 
     @classmethod
-    def from_random(self, power, kind='real', normalization='4pi', csphase=1,
-                    exact_power=False):
+    def from_random(self, power, lmax=None, kind='real', normalization='4pi',
+                    csphase=1, exact_power=False):
         """
         Initialize the class with spherical harmonic coefficients as random
         variables.
@@ -241,7 +242,7 @@ class SHCoeffs(object):
 
         Usage
         -----
-        x = SHCoeffs.from_random(power, [kind, normalization, csphase,
+        x = SHCoeffs.from_random(power, [lmax, kind, normalization, csphase,
                                          exact_power])
 
         Returns
@@ -250,9 +251,13 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        power : ndarray, shape (lmax+1)
-            numpy array of shape (lmax+1) that specifies the expected power per
-            degree l of the random coefficients.
+        power : ndarray, shape (L+1)
+            numpy array of shape (L+1) that specifies the expected power per
+            degree l of the random coefficients, where L is the maximum
+            spherical harmonic bandwidth.
+        lmax : int, optional, default = len(power) - 1
+            The highest spherical harmonic degree l of the output coefficients.
+            The coefficients will be set to zero for degrees greater than L.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
@@ -291,7 +296,13 @@ class SHCoeffs(object):
                 "kind must be 'real' or 'complex'. " +
                 "Input value was {:s}.".format(repr(kind)))
 
-        nl = len(power)
+        if lmax is None:
+            nl = len(power)
+        else:
+            if lmax <= len(power) - 1:
+                nl = lmax + 1
+            else:
+                nl = len(power)
         l = _np.arange(nl)
 
         # create coefficients with unit variance, which returns an expected
@@ -307,17 +318,21 @@ class SHCoeffs(object):
             power_per_l = _spectrum(coeffs, normalization=normalization,
                                     unit='per_l')
             coeffs *= _np.sqrt(
-                power / power_per_l)[_np.newaxis, :, _np.newaxis]
+                power[0:nl] / power_per_l)[_np.newaxis, :, _np.newaxis]
         else:
             if normalization.lower() == '4pi':
                 coeffs *= _np.sqrt(
-                    power / (2.0 * l + 1.0))[_np.newaxis, :, _np.newaxis]
+                    power[0:nl] / (2.0 * l + 1.0))[_np.newaxis, :, _np.newaxis]
             elif normalization.lower() == 'ortho':
                 coeffs *= _np.sqrt(
-                    4.0 * _np.pi * power / (2.0 * l + 1.0)
+                    4.0 * _np.pi * power[0:nl] / (2.0 * l + 1.0)
                     )[_np.newaxis, :, _np.newaxis]
             elif normalization.lower() == 'schmidt':
-                coeffs *= _np.sqrt(power)[_np.newaxis, :, _np.newaxis]
+                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
+
+        if lmax is not None and lmax > nl - 1:
+            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - nl + 1),
+                             (0, lmax - nl + 1)), 'constant')
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
@@ -802,14 +817,17 @@ class SHCoeffs(object):
             output_csphase=csphase, lmax=lmax)
 
     # ---- Rotate the coordinate system ----
-    def rotate(self, alpha, beta, gamma, degrees=True, dj_matrix=None):
+    def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
+               body=False, dj_matrix=None):
         """
-        Rotate the coordinate system used to express the spherical harmonic
-        coefficients and return a new class instance.
+        Rotate either the coordinate system used to express the spherical
+        harmonic coefficients or the physical body, and return a new class
+        instance.
 
         Usage
         -----
-        x_rotated = x.rotate(alpha, beta, gamma, [degrees, dj_matrix])
+        x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
+                             body, dj_matrix])
 
         Returns
         -------
@@ -822,6 +840,12 @@ class SHCoeffs(object):
         degrees : bool, optional, default = True
             True if the Euler angles are in degrees, False if they are in
             radians.
+        convention : str, optional, default = 'y'
+            The convention used for the rotation of the second angle, which
+            can be either 'x' or 'y' for a rotation about the x or y axes,
+            respectively.
+        body : bool, optional, default = False
+            If true, rotate the physical body and not the coordinate system.
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2.
 
@@ -829,7 +853,9 @@ class SHCoeffs(object):
         -----------
         This method will take the spherical harmonic coefficients of a
         function, rotate the coordinate frame by the three Euler anlges, and
-        output the spherical harmonic coefficients of the rotated function.
+        output the spherical harmonic coefficients of the new function. If
+        the optional parameter body is set to True, then the physical body will
+        be rotated instead of the coordinate system.
 
         The rotation of a coordinate system or body can be viewed in two
         complementary ways involving three successive rotations. Both methods
@@ -848,33 +874,53 @@ class SHCoeffs(object):
         (II) Rotation about the initial y axis by beta.
         (III) Rotation about the initial z axis by alpha.
 
-        The rotations can further be viewed either as a rotation of the
-        coordinate system or the physical body. For a rotation of the
-        coordinate system without rotation of the physical body, use
+        Here, the 'y convention' is employed, where the second rotation is with
+        respect to the y axis. When using the 'x convention', the second
+        rotation is instead with respect to the x axis. The relation between
+        the Euler angles in the x and y conventions is given by
 
-        (alpha, beta, gamma).
+        alpha_y=alpha_x-pi/2, beta_y=beta_x, and gamma_y=gamma_x+pi/2.
 
-        For a rotation of the physical body without rotation of the coordinate
-        system, use
+        To perform the inverse transform associated with the three angles
+        (alpha, beta, gamma), one would perform an additional rotation using
+        the angles (-gamma, -beta, -alpha).
 
-        (-gamma, -beta, -alpha).
-
-        To perform the inverse transform of (alpha, beta, gamma), use
-
-        (-gamma, -beta, -alpha).
-
-        Note that this routine uses the "y convention", where the second
-        rotation is with respect to the new y axis. If alpha, beta, and gamma
-        were orginally defined in terms of the "x convention", where the second
-        rotation was with respect to the new x axis, the Euler angles according
-        to the y convention would be
-
-        alpha_y=alpha_x-pi/2, beta_x=beta_y, and gamma_y=gamma_x+pi/2.
+        The rotations can be viewed either as a rotation of the coordinate
+        system or the physical body. To rotate the physical body without
+        rotation of the coordinate system, set the optional parameter body to
+        True. This rotation is accomplished by performing the inverse rotation
+        using the angles (-gamma, -beta, -alpha).
         """
+        if type(convention) != str:
+            raise ValueError('convention must be a string. ' +
+                             'Input type was {:s}'
+                             .format(str(type(convention))))
+
+        if convention.lower() not in ('x', 'y'):
+            raise ValueError(
+                "convention must be either 'x' or 'y'. " +
+                "Provided value was {:s}".format(repr(convention))
+                )
+
+        if convention is 'y':
+            if body is True:
+                angles = _np.array([-gamma, -beta, -alpha])
+            else:
+                angles = _np.array([alpha, beta, gamma])
+        elif convention is 'x':
+            if body is True:
+                angles = _np.array([-gamma - np.pi/2, -beta, -alpha + np.pi/2])
+            else:
+                angles = _np.array([alpha - np.pi/2, beta, gamma + np.pi/2])
+
         if degrees:
-            angles = _np.radians([alpha, beta, gamma])
-        else:
-            angles = _np.array([alpha, beta, gamma])
+            angles = _np.radians(angles)
+
+        if self.lmax > 1200:
+            _warnings.warn("The rotate() method is accurate only to about" +
+                           " spherical harmonic degree 1200. " +
+                           "lmax = {:d}".format(self.lmax),
+                           category=RuntimeWarning)
 
         rot = self._rotate(angles, dj_matrix)
         return rot

@@ -164,7 +164,7 @@ Each of these normalizations has slightly different definitions for the normaliz
 | $$\displaystyle \bar{P}_{l}^m(\mu) =  P_{lm}\left(\mu\right)$$ |
 | $$\displaystyle \int_{-1}^{1} \bar{P}_{l}^m(\mu) \,\bar{P}_{l'}^m(\mu)= \frac{2}{(2l+1)} \frac{(l+m)!}{(l-m)!} \, \delta_{ll'}$$ |
 | $$\displaystyle \int_\Omega Y_{l}^{*m}(\theta,\phi) \,Y_{l'}^{m'}(\theta,\phi)\, d\Omega = \frac{4\pi}{(2l+1)} \frac{(l+m)!}{(l-m)!}\,  \delta_{ll'}\, \delta_{mm'}$$ |
-| $$\displaystyle S_{fg}\left(l\right) = \frac{(l+m)!}{(2l+1)(l-m)!}\sum_{m=-l}^l f_l^m \, g_l^{*m}$$ |
+| $$\displaystyle S_{fg}\left(l\right) = \sum_{m=-l}^l \frac{(l+m)!}{(2l+1)(l-m)!} f_l^m \, g_l^{*m}$$ |
 
 ## References
 

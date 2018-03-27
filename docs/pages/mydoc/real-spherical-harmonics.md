@@ -153,7 +153,7 @@ Each of these normalizations has slightly different definitions for the normaliz
 | $$\displaystyle \bar{P}_{lm}(\mu) =  P_{lm}(\mu)$$ |
 | $$\displaystyle \int_{-1}^{1} \bar{P}_{lm}(\mu) \,\bar{P}_{l'm}(\mu)= \frac{2}{(2l+1)} \frac{(l+m)!}{(l-m)!} \, \delta_{ll'}$$ |
 | $$\displaystyle \int_\Omega Y_{lm}(\theta,\phi) \,Y_{l'm'}(\theta,\phi)\, d\Omega = \frac{4\pi\, (l+m)!}{(2-\delta_{0m})(2l+1) (l-m)!} \, \delta_{ll'}\, \delta_{mm'} $$ |
-| $$\displaystyle S_{fg}(l) = \frac{(l+m)!}{(2-\delta_{0m})(2l+1)(l-m)!}\sum\limits_{m=-l}^l f_{lm} \, g_{lm}$$ |
+| $$\displaystyle S_{fg}(l) = \sum\limits_{m=-l}^l \frac{(l+m)!}{(2-\delta_{0m})(2l+1)(l-m)!} f_{lm} \, g_{lm}$$ |
 
 ## References
 
