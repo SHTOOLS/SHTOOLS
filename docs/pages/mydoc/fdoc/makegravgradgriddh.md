@@ -6,6 +6,7 @@ permalink: makegravgradgriddh.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Create 2D cylindrical maps on a flattened ellipsoid of the components of the gravity "gradient" tensor in a local north-oriented reference frame.

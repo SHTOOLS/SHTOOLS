@@ -6,6 +6,7 @@ permalink: makegridglq.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Create a 2D map from a set of spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes.

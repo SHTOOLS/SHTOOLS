@@ -6,6 +6,7 @@ permalink: plon.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the orthonormalized Legendre polynomials.

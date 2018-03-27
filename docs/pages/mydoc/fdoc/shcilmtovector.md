@@ -6,6 +6,7 @@ permalink: shcilmtovector.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed vector.

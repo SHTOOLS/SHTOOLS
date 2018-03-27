@@ -6,6 +6,7 @@ permalink: pymakegriddh.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Create a 2D map from a set of spherical harmonic coefficients using the Driscoll and Healy (1994) sampling theorem.

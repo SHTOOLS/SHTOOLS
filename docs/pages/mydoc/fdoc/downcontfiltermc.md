@@ -6,6 +6,7 @@ permalink: downcontfiltermc.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree.

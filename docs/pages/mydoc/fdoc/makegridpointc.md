@@ -6,6 +6,7 @@ permalink: makegridpointc.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Evaluate a complex function expressed in complex spherical harmonics at a single point.

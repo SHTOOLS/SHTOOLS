@@ -6,6 +6,7 @@ permalink: pyshbiasadmitcorr.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the expected multitaper admittance and correlation spectra associated with the input global cross-power spectra of two functions.

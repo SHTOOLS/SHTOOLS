@@ -6,6 +6,7 @@ permalink: pyshmultiply.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Multiply two functions and determine the spherical harmonic coefficients of the resulting function.

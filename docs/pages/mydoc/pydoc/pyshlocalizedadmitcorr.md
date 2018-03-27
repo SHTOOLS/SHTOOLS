@@ -6,6 +6,7 @@ permalink: pyshlocalizedadmitcorr.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the localized admittance and correlation spectra of two functions at a given location using spherical cap localization windows.

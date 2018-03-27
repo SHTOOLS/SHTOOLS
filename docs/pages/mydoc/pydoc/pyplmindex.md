@@ -6,6 +6,7 @@ permalink: pyplmindex.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the index of a array of Legendre functions corresponding to degree `l` and angular order `m`.

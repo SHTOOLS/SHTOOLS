@@ -6,6 +6,7 @@ permalink: shpowerl.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the power of a real function for a single spherical harmonic degree.

@@ -6,6 +6,7 @@ permalink: pycilmminusdh.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the gravitational potential interior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998).

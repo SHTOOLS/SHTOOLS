@@ -6,6 +6,7 @@ permalink: makegeoidgrid.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Create a global map of the geoid.

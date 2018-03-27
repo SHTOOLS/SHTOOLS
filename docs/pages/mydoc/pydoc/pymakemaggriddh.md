@@ -6,6 +6,7 @@ permalink: pymakemaggriddh.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential.

@@ -6,6 +6,7 @@ permalink: shmtdebias.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Invert for the global power spectrum given a multitaper spectrum estimate formed with spherical cap localization windows.

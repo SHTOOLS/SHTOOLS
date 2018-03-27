@@ -6,6 +6,7 @@ permalink: pyshcilmtovector.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed vector.

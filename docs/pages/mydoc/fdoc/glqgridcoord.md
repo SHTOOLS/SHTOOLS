@@ -6,6 +6,7 @@ permalink: glqgridcoord.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids.

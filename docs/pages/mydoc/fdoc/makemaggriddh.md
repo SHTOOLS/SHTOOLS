@@ -6,6 +6,7 @@ permalink: makemaggriddh.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential.

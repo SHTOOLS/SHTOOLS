@@ -6,6 +6,7 @@ permalink: pyshreturntapersm.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order.

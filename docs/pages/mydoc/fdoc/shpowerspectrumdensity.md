@@ -6,6 +6,7 @@ permalink: shpowerspectrumdensity.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the power spectral density of a real function.

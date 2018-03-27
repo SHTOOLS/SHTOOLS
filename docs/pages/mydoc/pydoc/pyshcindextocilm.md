@@ -6,6 +6,7 @@ permalink: pyshcindextocilm.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array.

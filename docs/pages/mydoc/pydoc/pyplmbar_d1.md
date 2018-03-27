@@ -6,6 +6,7 @@ permalink: pyplmbar_d1.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute all the 4-pi (geodesy) normalized associated Legendre functions and first derivatives.

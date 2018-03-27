@@ -6,6 +6,7 @@ permalink: pymakegridpoint.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Evaluate a real function expressed in real spherical harmonics at a single point.

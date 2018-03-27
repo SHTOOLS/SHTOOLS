@@ -1,7 +1,7 @@
 ![LOGO](misc/logo.png)
 
 [![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.1067108.svg)](http://dx.doi.org/10.5281/zenodo.1067108)
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg)](http://dx.doi.org/10.5281/zenodo.592762)
 
 SHTOOLS/pysthools is a Fortran-95/Python library that can be used to perform
 spherical harmonic transforms and reconstructions, rotations of data expressed
@@ -26,10 +26,22 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
 
 ### INSTALLATION ###
 #### pyshtools for Python ####
+
 Binary install for linux/macOS/windows:
 ```bash
 pip install pyshtools
 ```
+
+#### pyshtools for Anaconda Python ####
+
+fftw3 with fortran bindings and pyshtools can be installed on anaconda like 
+this
+
+```bash
+conda install -c eumetsat fftw3
+pip install pyshtools
+```
+
 #### pyshtools for Python (developer install) ####
 Linux requirements:
 ```bash
@@ -87,4 +99,4 @@ available Fourier transform package
 [BLAS](http://www.netlib.org/blas/).
 
 ### CITATION ###
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS: Version 4.2, Zenodo, doi:[10.5281/zenodo.1067108](http://doi.org/10.5281/zenodo.1067108)
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS, Zenodo, doi:[10.5281/zenodo.592762](http://doi.org/10.5281/zenodo.592762)

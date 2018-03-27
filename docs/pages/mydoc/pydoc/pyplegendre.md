@@ -6,6 +6,7 @@ permalink: pyplegendre.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute all the unnormalized Legendre polynomials.

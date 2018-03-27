@@ -6,6 +6,7 @@ permalink: computedmap.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the space-concentration kernel of an arbitrary mask on the sphere.

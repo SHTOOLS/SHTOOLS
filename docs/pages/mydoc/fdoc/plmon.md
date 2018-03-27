@@ -6,6 +6,7 @@ permalink: plmon.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the orthonormalized associated Legendre functions.

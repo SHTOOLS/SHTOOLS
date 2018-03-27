@@ -6,6 +6,7 @@ permalink: randomgaussian.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Return a pseudo-Gaussian deviate of zero mean and unit variance.

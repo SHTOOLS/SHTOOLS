@@ -107,8 +107,6 @@ from .._SHTOOLS import DownContFilterMA
 from .._SHTOOLS import DownContFilterMC
 from .._SHTOOLS import NormalGravity
 from .._SHTOOLS import MakeMagGridDH
-from .._SHTOOLS import SHMagPowerSpectrum
-from .._SHTOOLS import SHMagPowerL
 
 # utils
 from .._SHTOOLS import MakeCircleCoord
@@ -138,12 +136,11 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
            'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
            'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
-           'SHMagPowerSpectrum', 'SHMagPowerL',
            'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j', 'DHaj']
 
 _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',
-                      'NormalGravity', 'SHConfidence', 'SHMagPowerL']
+                      'NormalGravity', 'SHConfidence']
 
 _fortran_subroutines = list(set(__all__) - set(_fortran_functions))
 
@@ -160,8 +157,8 @@ for _name in __all__:
     try:
         _path = _os.path.join(_pydocfolder, _name.lower() + '.doc')
 
-        with open(_path) as _pydocfile:
-            _pydoc = _pydocfile.read()
+        with open(_path, 'rb') as _pydocfile:
+            _pydoc = _pydocfile.read().decode('utf-8')
 
         setattr(locals()[_name], '__doc__', _pydoc)
 

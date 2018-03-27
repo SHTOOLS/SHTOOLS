@@ -6,6 +6,7 @@ permalink: shreturntapers.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the eigenfunctions of the spherical-cap concentration problem.

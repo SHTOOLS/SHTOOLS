@@ -109,7 +109,7 @@ class SHWindow(object):
 
     # ---- factory methods:
     @classmethod
-    def from_cap(self, theta, lwin, clat=None, clon=None, nwin=None,
+    def from_cap(cls, theta, lwin, clat=None, clon=None, nwin=None,
                  theta_degrees=True, coord_degrees=True, dj_matrix=None,
                  weights=None):
         """
@@ -157,7 +157,7 @@ class SHWindow(object):
                            dj_matrix, weights, copy=False)
 
     @classmethod
-    def from_mask(self, dh_mask, lwin, nwin=None, weights=None):
+    def from_mask(cls, dh_mask, lwin, nwin=None, weights=None):
         """
         Construct localization windows that are optimally concentrated within
         the region specified by a mask.
@@ -287,7 +287,7 @@ class SHWindow(object):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
                 "or 'schmidt'. Provided value was {:s}"
-                .format(repr(output_normalization))
+                .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
@@ -696,74 +696,105 @@ class SHWindow(object):
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
 
-    def plot_windows(self, nwin, show=True, fname=None):
+    def plot_windows(self, nwin, lmax=None, maxcolumns=5, show=True, ax=None,
+                     legend=True, fname=None):
         """
         Plot the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_windows(nwin, [show, fname])
+        x.plot_windows(nwin, [lmax, maxcolumns, show, ax, legend, fname])
 
         Parameters
         ----------
         nwin : int
             The number of localization windows to plot.
+        lmax : int, optional, default = self.lwin
+            The maximum degree to use when plotting the windows, which controls
+            the number of samples in latitude and longitude.
+        maxcolumns : int, optional, default = 5
+            The maximum number of columns to use when plotting multiple
+            localization windows.
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        ax : matplotlib axes object, optional, default = None
+            An array of matplotlib axes objects where the plots will appear.
+        legend : bool, optional, default = True
+            If True, plot a legend in each subplot providing the taper number
+            and 1 minus the concentration factor.
         fname : str, optional, default = None
-            If present, save the image to the file.
+            If present, save the image to the specified file.
         """
         if self.kind == 'cap':
             if self.nwinrot is not None and self.nwinrot <= nwin:
                 nwin = self.nwinrot
 
-        maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
-        fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
 
-        if nrows > 1:
-            for ax in axes[:-1, :].flatten():
-                for xlabel_i in ax.get_xticklabels():
-                    xlabel_i.set_visible(False)
-            for ax in axes[:, 1:].flatten():
-                for ylabel_i in ax.get_yticklabels():
-                    ylabel_i.set_visible(False)
-        elif nwin > 1:
-            for ax in axes[1:].flatten():
-                for ylabel_i in ax.get_yticklabels():
-                    ylabel_i.set_visible(False)
+        if ax is None:
+            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+        else:
+            if hasattr(ax, 'flatten') and ax.size < nwin:
+                raise ValueError('ax.size must be greater or equal to nwin. ' +
+                                 'nwin = {:s}'.format(repr(nwin)) +
+                                 ' and ax.size = {:s}.'.format(repr(ax.size)))
+            axes = ax
+
+        if ax is None:
+            if nrows > 1:
+                for axtemp in axes[:-1, :].flatten():
+                    for xlabel_i in axtemp.get_xticklabels():
+                        xlabel_i.set_visible(False)
+                for axtemp in axes[:, 1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
+            elif nwin > 1:
+                for axtemp in axes[1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
-            if min(self.nwin, nwin) == 1:
-                ax = axes
+            if min(self.nwin, nwin) == 1 and ax is None:
+                axtemp = axes
+            elif hasattr(axes, 'flatten'):
+                axtemp = axes.flatten()[itaper]
             else:
-                ax = axes.flatten()[itaper]
+                axtemp = axes[itaper]
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
-                                          norm=1, csphase=1)
-            ax.imshow(gridout, origin='upper',
-                      extent=(0., 360., -90., 90.))
-            ax.set_title('concentration: {:2.2f}'.format(evalue))
+                                          lmax=lmax, norm=1, csphase=1)
+            axtemp.imshow(gridout, origin='upper',
+                          extent=(0., 360., -90., 90.))
+            axtemp.set(xlabel='longitude', ylabel='latitude')
+            if legend is True:
+                axtemp.text(0.02, 0.95,
+                            '#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue),
+                            transform=axtemp.transAxes,
+                            va='top', ha='left', color='black',
+                            bbox={'boxstyle': 'round',  'edgecolor': 'none',
+                                  'facecolor': 'white'})
+        if ax is None:
+            if show:
+                _plt.show()
 
-        fig.tight_layout(pad=0.5)
-
-        if show:
-            _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, axes
+            fig.tight_layout(pad=0.5)
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
-                     xscale='lin', yscale='log', show=True, fname=None):
+                     maxcolumns=5, xscale='lin', yscale='log',
+                     xlim=(None, None), ylim=(None, None), show=True, ax=None,
+                     fname=None):
         """
         Plot the spectra of the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_spectra(nwin, [convention, unit, base, xscale, yscale,
-                              show, fname])
+        x.plot_spectra(nwin, [convention, unit, base, maxcolumns, xscale,
+                              yscale, xlim, ylim, show, ax, fname])
 
         Parameters
         ----------
@@ -780,12 +811,21 @@ class SHWindow(object):
             interval dlog_a(l).
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
+        maxcolumns : int, optional, default = 5
+            The maximum number of columns to use when plotting the spectra
+            of multiple localization windows.
         xscale : str, optional, default = 'lin'
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
             Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        xlim : tuple, optional, default = (None, None)
+            The upper and lower limits used for the x axis.
+        ylim : tuple, optional, default = (None, None)
+            The upper and lower limits used for the y axis.
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        ax : matplotlib axes object, optional, default = None
+            An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
             If present, save the image to the file.
         """
@@ -793,58 +833,72 @@ class SHWindow(object):
         spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
                                 base=base)
 
-        maxcolumns = 5
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
 
-        fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+        if ax is None:
+            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+        else:
+            if hasattr(ax, 'flatten') and ax.size < nwin:
+                raise ValueError('ax.size must be greater or equal to nwin. ' +
+                                 'nwin = {:s}'.format(repr(nwin)) +
+                                 ' and ax.size = {:s}.'.format(repr(ax.size)))
+            axes = ax
 
-        if nrows > 1:
-            for ax in axes[:-1, :].flatten():
-                for xlabel_i in ax.get_xticklabels():
-                    xlabel_i.set_visible(False)
-            for ax in axes[:, 1:].flatten():
-                for ylabel_i in ax.get_yticklabels():
-                    ylabel_i.set_visible(False)
-        elif nwin > 1:
-            for ax in axes[1:].flatten():
-                for ylabel_i in ax.get_yticklabels():
-                    ylabel_i.set_visible(False)
+        if ax is None:
+            if nrows > 1:
+                for axtemp in axes[:-1, :].flatten():
+                    for xlabel_i in axtemp.get_xticklabels():
+                        xlabel_i.set_visible(False)
+                    axtemp.set_xlabel('', visible=False)
+                for axtemp in axes[:, 1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
+                    axtemp.set_ylabel('', visible=False)
+            elif nwin > 1:
+                for axtemp in axes[1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
+                    axtemp.set_ylabel('', visible=False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
-            if min(self.nwin, nwin) == 1:
-                ax = axes
+            if min(self.nwin, nwin) == 1 and ax is None:
+                axtemp = axes
+            elif hasattr(axes, 'flatten'):
+                axtemp = axes.flatten()[itaper]
             else:
-                ax = axes.flatten()[itaper]
-            ax.set_xlabel('degree l')
+                axtemp = axes[itaper]
             if (convention == 'power'):
-                ax.set_ylabel('power')
+                axtemp.set_ylabel('power')
             else:
-                ax.set_ylabel('energy')
+                axtemp.set_ylabel('energy')
 
             if yscale == 'log':
-                ax.set_yscale('log', basey=base)
+                axtemp.set_yscale('log', basey=base)
 
             if xscale == 'log':
-                ax.set_xscale('log', basex=base)
-                ax.plot(degrees[1:], spectrum[1:, itaper])
+                axtemp.set_xscale('log', basex=base)
+                axtemp.plot(degrees[1:], spectrum[1:, itaper])
             else:
-                ax.plot(degrees[0:], spectrum[0:, itaper])
-            ax.grid(True, which='both')
-            ax.set_title('concentration: {:2.2f}'.format(evalue))
+                axtemp.plot(degrees[0:], spectrum[0:, itaper],
+                            label='#{:d}'.format(itaper))
+            axtemp.set(xlabel='degree l', xlim=xlim, ylim=ylim)
+            axtemp.grid(True, which='both')
+            axtemp.set_title('#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue))
 
-        fig.tight_layout(pad=0.5)
+        if ax is None:
+            if show:
+                _plt.show()
 
-        if show:
-            _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, axes
+            fig.tight_layout(pad=0.5)
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
-                             show=True, fname=None):
+                             show=True, ax=None, fname=None):
         """
         Plot the multitaper coupling matrix.
 
@@ -853,7 +907,7 @@ class SHWindow(object):
 
         Usage
         -----
-        x.plot_coupling_matrix(lmax, [nwin, weights, mode, show, fname])
+        x.plot_coupling_matrix(lmax, [nwin, weights, mode, show, ax, fname])
 
         Parameters
         ----------
@@ -874,24 +928,33 @@ class SHWindow(object):
             influenced by the input spectrum beyond degree lmax.
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        ax : matplotlib axes object, optional, default = None
+            An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
-            If present, save the image to the file.
+            If present, save the image to the specified file.
         """
         figsize = _mpl.rcParams['figure.figsize']
         figsize[0] = figsize[1]
-        fig = _plt.figure(figsize=figsize)
-        ax = fig.add_subplot(111)
-        ax.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
-                                       mode=mode), aspect='auto')
-        ax.set_xlabel('input power')  # matrix index 1 (columns)
-        ax.set_ylabel('output power')  # matrix index 0 (rows)
-        fig.tight_layout(pad=0.1)
+
+        if ax is None:
+            fig = _plt.figure(figsize=figsize)
+            axes = fig.add_subplot(111)
+        else:
+            axes = ax
+
+        axes.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
+                                         mode=mode), aspect='auto')
+        axes.set_xlabel('input power')  # matrix index 1 (columns)
+        axes.set_ylabel('output power')  # matrix index 0 (rows)
 
         if show:
             _plt.show()
-        if fname is not None:
-            fig.savefig(fname)
-        return fig, ax
+
+        if ax is None:
+            fig.tight_layout(pad=0.1)
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def info(self):
         """
@@ -1122,9 +1185,9 @@ class SHWindowCap(SHWindow):
         if (unit == 'per_l'):
             pass
         elif (unit == 'per_lm'):
-            l = _np.arange(len(mtse))
-            mtse /= (2.0 * l + 1.0)
-            sd /= (2.0 * l + 1.0)
+            degree_l = _np.arange(len(mtse))
+            mtse /= (2.0 * degree_l + 1.0)
+            sd /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1191,9 +1254,9 @@ class SHWindowCap(SHWindow):
         if (unit == 'per_l'):
             pass
         elif (unit == 'per_lm'):
-            l = _np.arange(len(mtse))
-            mtse /= (2.0 * l + 1.0)
-            sd /= (2.0 * l + 1.0)
+            degree_l = _np.arange(len(mtse))
+            mtse /= (2.0 * degree_l + 1.0)
+            sd /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1226,11 +1289,11 @@ class SHWindowCap(SHWindow):
             outspectrum = _shtools.SHBiasK(self.tapers, spectrum, k=k,
                                            **kwargs)
         elif (unit == 'per_lm'):
-            l = _np.arange(len(spectrum))
-            temp = spectrum * (2.0 * l + 1.0)
+            degree_l = _np.arange(len(spectrum))
+            temp = spectrum * (2.0 * degree_l + 1.0)
             outspectrum = _shtools.SHBiasK(self.tapers, temp, k=k,
                                            **kwargs)
-            outspectrum /= (2.0 * l + 1.0)
+            outspectrum /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1363,9 +1426,9 @@ class SHWindowMask(SHWindow):
         if (unit == 'per_l'):
             pass
         elif (unit == 'per_lm'):
-            l = _np.arange(len(mtse))
-            mtse /= (2.0 * l + 1.0)
-            sd /= (2.0 * l + 1.0)
+            degree_l = _np.arange(len(mtse))
+            mtse /= (2.0 * degree_l + 1.0)
+            sd /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1403,9 +1466,9 @@ class SHWindowMask(SHWindow):
         if (unit == 'per_l'):
             pass
         elif (unit == 'per_lm'):
-            l = _np.arange(len(mtse))
-            mtse /= (2.0 * l + 1.0)
-            sd /= (2.0 * l + 1.0)
+            degree_l = _np.arange(len(mtse))
+            mtse /= (2.0 * degree_l + 1.0)
+            sd /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
@@ -1438,11 +1501,11 @@ class SHWindowMask(SHWindow):
             outspectrum = _shtools.SHBiasKMask(self.tapers, spectrum, k=k,
                                                **kwargs)
         elif (unit == 'per_lm'):
-            l = _np.arange(len(spectrum))
-            temp = spectrum * (2.0 * l + 1.0)
+            degree_l = _np.arange(len(spectrum))
+            temp = spectrum * (2.0 * degree_l + 1.0)
             outspectrum = _shtools.SHBiasKMask(self.tapers, temp, k=k,
                                                **kwargs)
-            outspectrum /= (2.0 * l + 1.0)
+            outspectrum /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +

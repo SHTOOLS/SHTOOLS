@@ -6,6 +6,7 @@ permalink: makegridglqc.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Create a 2D complex map from a set of complex spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes.

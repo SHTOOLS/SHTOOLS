@@ -6,6 +6,7 @@ permalink: shcrosspowerl.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the cross-power of two real functions for a single spherical harmonic degree.

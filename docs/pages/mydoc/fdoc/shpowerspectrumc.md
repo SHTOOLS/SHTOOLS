@@ -6,6 +6,7 @@ permalink: shpowerspectrumc.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the power spectrum of a complex function.

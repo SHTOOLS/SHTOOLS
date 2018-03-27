@@ -6,6 +6,7 @@ permalink: pyshread.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Read spherical harmonic coefficients from an ascii-formatted file.

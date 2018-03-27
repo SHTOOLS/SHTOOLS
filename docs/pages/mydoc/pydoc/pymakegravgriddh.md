@@ -6,6 +6,7 @@ permalink: pymakegravgriddh.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential.

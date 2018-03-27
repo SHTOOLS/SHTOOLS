@@ -6,6 +6,7 @@ permalink: pyglqgridcoord.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids.

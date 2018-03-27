@@ -6,6 +6,7 @@ permalink: eigvalsym.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the eigenvalues of a real symmetric matrix.

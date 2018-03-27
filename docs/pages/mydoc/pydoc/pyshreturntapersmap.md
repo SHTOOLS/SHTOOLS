@@ -6,6 +6,7 @@ permalink: pyshreturntapersmap.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the eigenfunctions and eigenvalues of the space-concentration problem for an arbitrary region.
