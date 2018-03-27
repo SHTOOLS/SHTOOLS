@@ -162,11 +162,7 @@ def TestMakeMagGrid():
     fig.savefig('Mars_Mag.png')
 
     ls = np.arange(lmax + 1)
-    pspectrum = gravmag.SHMagPowerSpectrum(clm, r0)
-    pspectrum2 = np.array([gravmag.SHMagPowerL(clm, r0, l)
-                           for l in range(0, lmax + 1)])
-    print('Minimum and maximum difference in spectra = ',
-          (pspectrum - pspectrum2).min(), (pspectrum - pspectrum2).max())
+    pspectrum = gravmag.mag_spectrum(clm, r0, r0)
 
     fig_spectrum, ax = plt.subplots(1, 1)
     ax.set_xscale('linear')
