@@ -206,10 +206,12 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
 
                 if kind == 'real':
                     coeffs[0, l, m] = float(line.split()[2])
-                    coeffs[1, l, m] = float(line.split()[3])
+                    if m > 0:
+                        coeffs[1, l, m] = float(line.split()[3])
                 else:
                     coeffs[0, l, m] = complex(line.split()[2])
-                    coeffs[1, l, m] = complex(line.split()[3])
+                    if m > 0:
+                        coeffs[1, l, m] = complex(line.split()[3])
 
                 if error:
                     if len(line.split()) < 6:
