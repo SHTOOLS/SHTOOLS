@@ -15,6 +15,7 @@ import warnings as _warnings
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
+from ..shio import shread as _shread
 
 
 # =============================================================================
@@ -341,16 +342,17 @@ class SHCoeffs(object):
 
     @classmethod
     def from_file(self, fname, lmax=None, format='shtools', kind='real',
-                  normalization='4pi', csphase=1, **kwargs):
+                  normalization='4pi', skip=0, csphase=1, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
         Usage
         -----
-        x = SHCoeffs.from_file(filename, lmax, [format='shtools', kind,
-                                                normalization, csphase, skip])
-        x = SHCoeffs.from_file(filename, [format='npy', kind, normalization,
-                                          csphase, **kwargs])
+        x = SHCoeffs.from_file(filename, format='shtools', [lmax,
+                                                            normalization,
+                                                            csphase, skip])
+        x = SHCoeffs.from_file(filename, format='npy', [normalization,
+                                                        csphase, **kwargs])
 
         Returns
         -------
@@ -360,13 +362,11 @@ class SHCoeffs(object):
         ----------
         filename : str
             Name of the file, including path.
-        lmax : int, required when format = 'shtools'
-            Maximum spherical harmonic degree to read from the file when format
-            is 'shtools'.
         format : str, optional, default = 'shtools'
             'shtools' format or binary numpy 'npy' format.
-        kind : str, optional, default = 'real'
-            'real' or 'complex' spherical harmonic coefficients.
+        lmax : int, optional, default = None
+            The maximum spherical harmonic degree to read from 'shtools'
+            formatted files.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized,
             orthonormalized, or Schmidt semi-normalized coefficients,
@@ -374,7 +374,7 @@ class SHCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
-        skip : int, required when format = 'shtools'
+        skip : int, optional, default = 0
             Number of lines to skip at the beginning of the file when format is
             'shtools'.
         **kwargs : keyword argument list, optional for format = 'npy'
@@ -383,16 +383,17 @@ class SHCoeffs(object):
         Description
         -----------
         If format='shtools', spherical harmonic coefficients will be read from
-        an ascii-formatted file. The maximum spherical harmonic degree that is
-        read is determined by the input value lmax. If the optional value skip
-        is specified, parsing of the file will commence after the first skip
-        lines. For this format, each line of the file must contain
+        a text file. The optional parameter `skip` specifies how many lines
+        should be skipped before attempting to parse the file, and the optional
+        parameter `lmax` specifies the maximum degree to read from the file.
+        All lines that do not start with 2 integers and that are less than 4
+        words long will be treated as comments and ignored. For this format,
+        each line of the file must contain
 
-        l, m, cilm[0, l, m], cilm[1, l, m]
+        l, m, coeffs[0, l, m], coeffs[1, l, m]
 
-        For each value of increasing l, increasing from zero, all the angular
-        orders are listed in inceasing order, from 0 to l. For more
-        information, see SHRead.
+        For each value of increasing l, all the angular orders are listed in
+        inceasing order, from 0 to l. For more information, see `shread`.
 
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().
@@ -414,26 +415,22 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
-        if format.lower() == 'shtools' and lmax is None:
-            raise ValueError("lmax must be specified when format is 'shtools'")
-
         if format.lower() == 'shtools':
-            if kind.lower() == 'real':
-                coeffs, lmaxout = _shtools.SHRead(fname, lmax, **kwargs)
-            else:
-                raise NotImplementedError(
-                    "Complex coefficients are not yet implemented for "
-                    "format='shtools'")
+            coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
         elif format.lower() == 'npy':
             coeffs = _np.load(fname, **kwargs)
         else:
             raise NotImplementedError(
                 'format={:s} not yet implemented'.format(repr(format)))
 
+        if _np.iscomplexobj(coeffs):
+            kind = 'complex'
+        else:
+            kind = 'real'
+
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs[:, 0:lmaxout+1, 0:lmaxout+1],
-                           normalization=normalization.lower(),
+                return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase)
 
     def copy(self):

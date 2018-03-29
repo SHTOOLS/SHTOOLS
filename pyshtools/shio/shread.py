@@ -68,6 +68,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
 
     l, m, coeffs[0, l, m], coeffs[1, l, m], errors[0, l, m], errors[1, l, m]
 
+    For each value of increasing l, all the angular orders are listed in
+    inceasing order, from 0 to l.
+
     If a header line is to be read, it should be located directly after the
     first lines to be skipped, before the start of the spherical harmonic
     coefficents. The header values are returned as a list, where each value is
@@ -97,12 +100,14 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
 
             if f.tell() <= 1:
                 line = f.readline().decode()
+                line = line.replace(',', ' ')
                 if _iscomment(line):
                     raise RuntimeError('Encountered beginning of file ' +
                                        'while attempting to determine lmax.')
                 break
             else:
                 line = f.readline().decode()
+                line = line.replace(',', ' ')
                 try:
                     f.seek(-len(line)-2, os.SEEK_CUR)
                 except:
@@ -149,17 +154,20 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
             if line == '':
                     raise RuntimeError('End of file encountered when ' +
                                        'reading header line.')
+            line = line.replace(',', ' ')
             header_list = line.split()
 
         line = f.readline()
         if line == '':
             raise RuntimeError('End of file encountered when determining ' +
                                'value of lstart.')
+        line = line.replace(',', ' ')
         while _iscomment(line):
             line = f.readline()
             if line == '':
                 raise RuntimeError('End of file encountered when ' +
                                    'determining value of lstart.')
+            line = line.replace(',', ' ')
         lstart = int(line.split()[0])
 
     # read coefficients one line at a time
@@ -177,12 +185,14 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                     raise RuntimeError('End of file encountered at ' +
                                        'degree and order {:d}, {:d}.'
                                        .format(degree, order))
+                line = line.replace(',', ' ')
                 while _iscomment(line):
                     line = f.readline()
                     if line == '':
                         raise RuntimeError('End of file encountered at ' +
                                            'degree and order {:d}, {:d}.'
                                            .format(degree, order))
+                    line = line.replace(',', ' ')
 
                 l = int(line.split()[0])
                 m = int(line.split()[1])

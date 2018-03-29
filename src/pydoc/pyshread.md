@@ -53,6 +53,9 @@ where l and m are the spherical harmonic degree and order, respectively. If the 
 
 `l, m, coeffs[0, l, m], coeffs[1, l, m], errors[0, l, m], errors[1, l, m]`
 
+For each value of increasing l, all the angular orders are listed in inceasing
+order, from 0 to l.
+
 If a header line is to be read, it should be located directly after the first lines to be skipped, before the start of the spherical harmonic coefficents. The header values are returned as a list, where each value is formatted as a string.
 
 When reading the file, all lines that are "comments" will be ignored. A comment line is defined to be any line that has less than 4 words, and where the first two words are not integers.

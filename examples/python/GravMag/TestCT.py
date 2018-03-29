@@ -45,14 +45,14 @@ def TestCrustalThickness():
     half = 0
 
     gravfile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
-    pot, lmaxp, header = shio.SHReadH(gravfile, degmax, 2)
-    gm = header[1] * 1.e9
+    pot, header, lmaxp = shio.shread(gravfile, lmax=degmax, header=True)
+    gm = float(header[1]) * 1.e9
     mass = gm / constant.grav_constant
-    r_grav = header[0] * 1.e3
+    r_grav = float(header[0]) * 1.e3
     print(r_grav, gm, mass, lmaxp)
 
     topofile = '../../ExampleDataFiles/MarsTopo719.shape'
-    hlm, lmaxt = shio.SHRead(topofile, 719)
+    hlm, lmaxt = shio.shread(topofile)
     r0 = hlm[0, 0, 0]
     d = r0 - 45.217409924028445e3
     print(r0, lmaxt)
