@@ -1,44 +1,62 @@
-# SHRead
+# shread
 
-Read spherical harmonic coefficients from an ascii-formatted file.
+Read spherical harmonic coefficients from a text file.
 
 # Usage
 
-`cilm`, `lmax` = SHRead (`filename`,  `lmaxin`, [`skip`])
+`coeffs`, `lmaxout` = shread(`filename`, [`lmax`, `skip`])
+`coeffs`, `header`, `lmaxout` = shread(`filename`, `header`=True, [`lmax`, `skip`])
+`coeffs`, `errors`, `lmaxout` = shread(`filename`, `error`=True, [`lmax`, `skip`])
+`coeffs`, `errors`, `header`, `lmaxout` = shread(`filename`, `error`=True,
+                                             `header`=True, [`lmax`, `skip`])
 
 # Returns
 
-`cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
-:   The spherical harmonic coefficients contained in `filename`. Note that dimensions of the output array are determined by `lmaxin`, and not the output `lmax`
+`coeffs` : ndarray, dimension (2, `lmaxout`+1, `lmaxout`+1)
+:   The spherical harmonic coefficients.
 
-`lmax` : integer
-:   The maximum spherical harmonic degree of `cilm`. This is the minimum of the maximum spherical harmonic degree of `filename` and the dimension of `cilm`-1.
+`errors` : ndarray, dimension (2, `lmaxout`+1, `lmaxout`+1)
+:   The errors associated with the spherical harmonic coefficients.
+
+`header` : list of type str
+:   A list of values in the header line found before the start of the spherical harmonic coefficients.
+
+`lmaxout` : int
+:   The maximum spherical harmonic degree read from the file.
 
 # Parameters
 
-`filename` : character(:)
-:   The filename of the ascii file containing the spherical harmonic coefficients.
+`filename` : str
+:   Filename containing the text-formatted spherical harmonic coefficients.
 
-`lmaxin` : integer
-:   This spherical harmonic degree controls the dimension of the output array `cilm`. The coefficients between `lmax+1` and `lmaxin` will be set to zero.
+`lmax` : int, optional, default = None
+:   The maximum spherical harmonic degree to read from the file. The default is to read the entire file.
 
-`skip` : optional, integer, default = 0
-:   The number of lines to skip before parsing `filename`.
+`error` : bool, optional, default = False
+:   If True, return the errors associated with the spherical harmonic coefficients as a separate array.
+
+`header` : bool, optional, default = False
+:   If True, return a list of values in the header line found before the start of the spherical harmonic coefficients.
+
+`skip` : int, optional, default = 0
+:   The number of lines to skip before parsing the file.
 
 # Description
 
-`SHRead` will read spherical harmonic coefficients from an ascii-formatted file into an array `cilm`. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array `cilm`-1 and the maximum degree of the coefficients in the file. If the optional array `skip` is specified, parsing of the file will commence after the first `skip` lines.
+This function will read spherical harmonic coefficients from an ascii-formatted text file. The errors associated with the spherical harmonic coefficients, as well as the values in a single header line, can optionally be read by setting the optional parameters `error` and `header` to True. The optional parameter `skip` specifies how many lines should be skipped before attempting to parse the file, and the optional parameter `lmax` specifies the maximum degree to read from the file. Both real and complex spherical harmonic coefficients are supported.
 
-The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree `l` and angular order `m` according to the format
+The spherical harmonic coefficients in the file should be formatted as
 
-`l, m, cilm[0,l,m], cilm[1,l,m]`
+`l, m, coeffs[0, l, m], coeffs[1, l, m]`
 
-The ordering of the file is explcitly given by
+where l and m are the spherical harmonic degree and order, respectively. If the errors are to be read, the line should be formatted as
 
-`l, 0 / l, 1 / l, 2 /l, ... / l, m / l+1, 0 / l+1, 1 / ...`
+`l, m, coeffs[0, l, m], coeffs[1, l, m], errors[0, l, m], errors[1, l, m]`
 
-The first spherical harmonic degree of the filename does not have to be 0; this is determined from the first element after the `skip` and `header` lines. 
+If a header line is to be read, it should be located directly after the first lines to be skipped, before the start of the spherical harmonic coefficents. The header values are returned as a list, where each value is formatted as a string.
+
+When reading the file, all lines that are "comments" will be ignored. A comment line is defined to be any line that has less than 4 words, and where the first two words are not integers.
 
 # See also
 
-[shreadh](pyshreadh.html), [shreaderror](pyshreaderror.html), [shreaderrorh](pyshreaderrorh.html), [shread2](pyshread2.html), [shread2error](pyshread2error.html), [shreadjpl](pyshreadjpl.html) [shreadjplerror](pyshreadjplerror.html)
+[shread2](pyshread2.html), [shread2error](pyshread2error.html), [shreadjpl](pyshreadjpl.html) [shreadjplerror](pyshreadjplerror.html)

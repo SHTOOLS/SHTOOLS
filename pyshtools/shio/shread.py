@@ -22,9 +22,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
 
     Returns
     -------
-    coeffs : ndarray, size(2, lmax+1, lmax+1)
+    coeffs : ndarray, size(2, lmaxout+1, lmaxout+1)
         The spherical harmonic coefficients.
-    errors : ndarray, size(2, lmax+1, lmax+1)
+    errors : ndarray, size(2, lmaxout+1, lmaxout+1)
         The errors associated with the spherical harmonic coefficients.
     header : list of type str
         A list of values in the header line found before the start of the
@@ -37,7 +37,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     filename : str
         Filename containing the text-formatted spherical harmonic coefficients.
     lmax : int, optional, default = None
-        The maximum spherical harmonic degree to read from the file.
+        The maximum spherical harmonic degree to read from the file. The
+        default is to read the entire file.
     error : bool, optional, default = False
         If True, return the errors associated with the spherical harmonic
         coefficients as a separate array.
@@ -67,32 +68,46 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
 
     l, m, coeffs[0, l, m], coeffs[1, l, m], errors[0, l, m], errors[1, l, m]
 
-    If a header line is to be read, it should be located after the first lines
-    to be skipped and before the start of the spherical harmonic coefficents.
-    The header values are returned as a list, where each value is formatted as
-    a string.
+    If a header line is to be read, it should be located directly after the
+    first lines to be skipped, before the start of the spherical harmonic
+    coefficents. The header values are returned as a list, where each value is
+    formatted as a string.
 
     When reading the file, all lines that are "comments" will be ignored. A
     comment line is defined to be any line that has less than 4 words, and
     where the first two words are not integers.
     """
 
-    # determine lmax be reading the last non-comment line of the file.
+    # determine lmax by reading the last non-comment line of the file
     with open(filename, 'rb') as f:
         line = ''
-        f.seek(-2, os.SEEK_END)
-        # remove all repeating line breaks from the end of file
-        while f.read(1) == b'\n':
-            f.seek(-2, os.SEEK_CUR)
-        f.seek(-2, os.SEEK_CUR)
+        if f.seek(0, os.SEEK_END) == 0:
+            raise RuntimeError('File is empty.')
+        else:
+            f.seek(-1, os.SEEK_CUR)
+
         # read backwards to end of preceding line and then read the line
         while _iscomment(line):
             while f.read(1) != b'\n':
-                f.seek(-2, os.SEEK_CUR)
-            line = f.readline().decode()
-            f.seek(-len(line)-2, os.SEEK_CUR)
-            
-        print(line)
+                try:
+                    f.seek(-2, os.SEEK_CUR)
+                except:
+                    f.seek(-1, os.SEEK_CUR)  # beginning of file
+                    break
+
+            if f.tell() <= 1:
+                line = f.readline().decode()
+                if _iscomment(line):
+                    raise RuntimeError('Encountered beginning of file ' +
+                                       'while attempting to determine lmax.')
+                break
+            else:
+                line = f.readline().decode()
+                try:
+                    f.seek(-len(line)-2, os.SEEK_CUR)
+                except:
+                    raise RuntimeError('Encountered beginning of file ' +
+                                       'while attempting to determine lmax.')
 
     lmaxfile = int(line.split()[0])
     if lmax is not None:

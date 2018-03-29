@@ -21,10 +21,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Function name | Description |
 | ------------- | ----------- |
-| [SHRead](pyshread.html) | Read spherical harmonic coefficients from an ascii-formatted file. |
-| [SHReadH](pyshreadh.html) | Read spherical harmonic coefficients from an ascii-formatted file with a header line. |
-| [SHReadError](pyshreaderror.html) | Read spherical harmonic coefficients and associated errors from an ascii-formatted file. |
-| [SHReadErrorH](pyshreaderrorh.html) | Read spherical harmonic coefficients and associated errors from an ascii-formatted file with a header line. |
+| [shread](pyshread.html) | Read spherical harmonic coefficients from a text file. |
 | [SHRead2](pyshread2.html) | Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file. |
 | [SHRead2Error](pyshread2error.html) | Read spherical harmonic coefficients and associated errors from a CHAMP or GRACE-like ascii-formatted file. |
 | [SHReadJPL](pyshreadjpl.html) | Read spherical harmonic coefficients from a JPL ascii-formatted file. |

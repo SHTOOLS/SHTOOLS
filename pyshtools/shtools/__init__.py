@@ -47,10 +47,6 @@ from .._SHTOOLS import MakeGridPointC
 from .._SHTOOLS import SHMultiply
 
 # shio
-from .._SHTOOLS import SHRead
-from .._SHTOOLS import SHReadH
-from .._SHTOOLS import SHReadError
-from .._SHTOOLS import SHReadErrorH
 from .._SHTOOLS import SHRead2
 from .._SHTOOLS import SHRead2Error
 from .._SHTOOLS import SHReadJPL
@@ -123,14 +119,13 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
            'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ',
            'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
-           'SHRead', 'SHReadH', 'SHReadError', 'SHReadErrorH', 'SHRead2',
-           'SHRead2Error', 'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector',
-           'SHVectorToCilm', 'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc',
-           'SHctor', 'SHAdmitCorr', 'SHConfidence', 'SHMultiTaperSE',
-           'SHMultiTaperCSE', 'SHLocalizedAdmitCorr', 'SHReturnTapers',
-           'SHReturnTapersM', 'ComputeDm', 'ComputeDG82', 'SHFindLWin',
-           'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr', 'SHMTDebias',
-           'SHMTVarOpt', 'SHSjkPG', 'SHMultiTaperMaskSE',
+           'SHRead2', 'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
+           'SHCilmToVector', 'SHVectorToCilm', 'SHCilmToCindex',
+           'SHCindexToCilm', 'SHrtoc', 'SHctor', 'SHAdmitCorr', 'SHConfidence',
+           'SHMultiTaperSE', 'SHMultiTaperCSE', 'SHLocalizedAdmitCorr',
+           'SHReturnTapers', 'SHReturnTapersM', 'ComputeDm', 'ComputeDG82',
+           'SHFindLWin', 'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr',
+           'SHMTDebias', 'SHMTVarOpt', 'SHSjkPG', 'SHMultiTaperMaskSE',
            'SHMultiTaperMaskCSE', 'SHReturnTapersMap', 'SHBiasKMask',
            'ComputeDMap', 'Curve2Mask', 'SHBias', 'SphericalCapCoef',
            'djpi2', 'SHRotateCoef', 'SHRotateRealCoef',
