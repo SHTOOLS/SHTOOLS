@@ -64,7 +64,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     l, m, coeffs[0, l, m], coeffs[1, l, m]
 
     where l and m are the spherical harmonic degree and order, respectively.
-    If the errors are to be read, the line should be formatted as
+    The terms coeffs[1, l, 0] can be neglected as they are zero. If the errors
+    are to be read, the line should be formatted as
 
     l, m, coeffs[0, l, m], coeffs[1, l, m], errors[0, l, m], errors[1, l, m]
 
@@ -76,9 +77,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     coefficents. The header values are returned as a list, where each value is
     formatted as a string.
 
-    When reading the file, all lines that are "comments" will be ignored. A
-    comment line is defined to be any line that has less than 4 words, and
-    where the first two words are not integers.
+    A valid line must contain at least 3 words, and the first two words must be
+    integers. When reading the file, all other lines will be considered as
+    "comments" and will be ignored.
     """
 
     # determine lmax by reading the last non-comment line of the file
@@ -237,7 +238,7 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
 def _iscomment(line):
     if line.isspace():
         return True
-    elif len(line.split()) >= 4:
+    elif len(line.split()) >= 3:
         if line.split()[0].isdecimal() and line.split()[1].isdecimal():
             return False
         else:

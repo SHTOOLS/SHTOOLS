@@ -386,14 +386,15 @@ class SHCoeffs(object):
         a text file. The optional parameter `skip` specifies how many lines
         should be skipped before attempting to parse the file, and the optional
         parameter `lmax` specifies the maximum degree to read from the file.
-        All lines that do not start with 2 integers and that are less than 4
+        All lines that do not start with 2 integers and that are less than 3
         words long will be treated as comments and ignored. For this format,
         each line of the file must contain
 
         l, m, coeffs[0, l, m], coeffs[1, l, m]
 
-        For each value of increasing l, all the angular orders are listed in
-        inceasing order, from 0 to l. For more information, see `shread`.
+        where l and m are the spherical harmonic degree and order,
+        respectively. The terms coeffs[1, l, 0] can be neglected as they are
+        zero. For more information, see `shio.shread()`.
 
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().

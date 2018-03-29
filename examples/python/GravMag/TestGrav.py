@@ -141,7 +141,7 @@ def TestFilter():
 def TestMakeMagGrid():
     infile = '../../ExampleDataFiles/FSU_mars90.sh'
     clm, header, lmax = shio.shread(infile, header=True, skip=1)
-    r0 = header[0] * 1.e3
+    r0 = float(header[0]) * 1.e3
     a = constant.r_mars + 145.0e3  # radius to evaluate the field
 
     rad, theta, phi, total = gravmag.MakeMagGridDH(clm, r0, lmax=719, a=a,
