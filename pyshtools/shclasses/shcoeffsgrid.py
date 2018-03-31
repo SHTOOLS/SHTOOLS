@@ -2547,18 +2547,24 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, show=True, ax=None, ax2=None, fname=None):
+    def plot(self, tick_interval=[30, 30], ax=None, ax2=None, show=True,
+             fname=None, **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([show, ax, ax2, fname])
+        x.plot([tick_interval, ax, ax2, show, fname])
 
         Parameters
         ----------
-        show : bool, optional, default = True
-            If True, plot the image to the screen.
+        tick_interval : list or tuple, optional, default for DH = [30, 30]
+            Intervals to use when plotting the x and y ticks. If set to None,
+            ticks will not be plotted.
+        xlabel : str, optional, default = 'longitude' or 'GLQ longitude index'
+            Label for the longitude axis.
+        ylabel : str, optional, default = 'latitude' or 'GLQ latitude index'
+            Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear. If the
             grid is complex, the real component of the grid will be plotted
@@ -2567,19 +2573,37 @@ class SHGrid(object):
             A single matplotlib axes object where the plot will appear. If the
             grid is complex, the complex component of the grid will be plotted
             on this axes.
+        show : bool, optional, default = True
+            If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
         """
+        if tick_interval is None:
+            xticks = []
+            yticks = []
+        elif self.grid == 'GLQ':
+            xticks = _np.linspace(0, self.nlon-1,
+                                  num=self.nlon//tick_interval[0]+1,
+                                  endpoint=True, dtype=int)
+            yticks = _np.linspace(0, self.nlat-1,
+                                  num=self.nlat//tick_interval[1]+1,
+                                  endpoint=True, dtype=int)
+        else:
+            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
+                                  endpoint=True)
+            yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
+                                  endpoint=True)
+
         if ax is None and ax2 is None:
-            fig, axes = self._plot()
+            fig, axes = self._plot(xticks=xticks, yticks=yticks, **kwargs)
         else:
             if self.kind == 'complex':
                 if (ax is None and ax2 is not None) or (ax2 is None and
                                                         ax is not None):
                     raise ValueError('For complex grids, one must specify ' +
                                      'both optional arguments axes and axes2.')
-            self._plot(ax=ax, ax2=ax2)
+            self._plot(xticks=xticks, yticks=yticks, ax=ax, ax2=ax2, **kwargs)
 
         if ax is None:
             if show:
@@ -2726,7 +2750,8 @@ class DHRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, ax=None, ax2=None):
+    def _plot(self, xticks=[], yticks=[], xlabel='longitude',
+              ylabel='latitude', ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -2734,7 +2759,7 @@ class DHRealGrid(SHGrid):
             axes = ax
 
         axes.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
-        axes.set(xlabel='longitude', ylabel='latitude')
+        axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2820,7 +2845,8 @@ class DHComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, ax=None, ax2=None):
+    def _plot(self, xticks=[], yticks=[], xlabel='longitude',
+              ylabel='latitude', ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -2832,14 +2858,12 @@ class DHComplexGrid(SHGrid):
 
         axreal.imshow(self.data.real, origin='upper',
                       extent=(0., 360., -90., 90.))
-        axreal.set_title('Real component')
-        axreal.set_xlabel('longitude')
-        axreal.set_ylabel('latitude')
+        axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
+                   xticks=xticks, yticks=yticks)
         axcomplex.imshow(self.data.imag, origin='upper',
                          extent=(0., 360., -90., 90.))
-        axcomplex.set_title('Imaginary component')
-        axcomplex.set_xlabel('longitude')
-        axcomplex.set_ylabel('latitude')
+        axcomplex.set(title='Imaginary component', xlabel=xlabel, ylabel=ylabel,
+                   xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2923,7 +2947,8 @@ class GLQRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, ax=None, ax2=None):
+    def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
+              ylabel='GLQ latitude index', ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -2931,8 +2956,7 @@ class GLQRealGrid(SHGrid):
             axes = ax
 
         axes.imshow(self.data, origin='upper')
-        axes.set_xlabel('GLQ longitude index')
-        axes.set_ylabel('GLQ latitude index')
+        axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -3011,7 +3035,8 @@ class GLQComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, ax=None, ax2=None):
+    def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
+              ylabel='GLQ latitude index', ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -3022,13 +3047,11 @@ class GLQComplexGrid(SHGrid):
             axcomplex = ax2
 
         axreal.imshow(self.data.real, origin='upper')
-        axreal.set_title('Real component')
-        axreal.set_xlabel('longitude index')
-        axreal.set_ylabel('latitude index')
+        axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
+                   xticks=xticks, yticks=yticks)
         axcomplex.imshow(self.data.imag, origin='upper')
-        axcomplex.set_title('Imaginary component')
-        axcomplex.set_xlabel('GLQ longitude index')
-        axcomplex.set_ylabel('GLQ latitude index')
+        axcomplex.set(title='Imaginary component', xlabel=xlabel, ylabel=ylabel,
+                   xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
