@@ -39,6 +39,8 @@ YilmIndexVector  Determine the index of a 1D ordered vector of spherical
 
 Spherical harmonic conversions
 ------------------------------
+convert          Convert an array of spherical harmonic coefficients to a
+                 different normalization.
 SHrtoc           Convert real spherical harmonics to complex form.
 SHctor           Convert complex spherical harmonics to real form.
 """
@@ -62,5 +64,6 @@ from ..shtools import SHVectorToCilm
 from ..shtools import SHrtoc
 from ..shtools import SHctor
 
+from .convert import convert
 from .icgem import read_icgem_gfc
 from .yilm_index_vector import YilmIndexVector
