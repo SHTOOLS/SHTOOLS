@@ -696,14 +696,17 @@ class SHWindow(object):
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
 
-    def plot_windows(self, nwin, lmax=None, maxcolumns=5, show=True, ax=None,
-                     legend=True, fname=None):
+    def plot_windows(self, nwin, lmax=None, maxcolumns=5,
+                     tick_interval=[60, 45], xlabel='longitude',
+                     ylabel='latitude', show=True, ax=None, legend=True,
+                     fname=None):
         """
         Plot the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_windows(nwin, [lmax, maxcolumns, show, ax, legend, fname])
+        x.plot_windows(nwin, [lmax, maxcolumns, tick_interval, xlabel, ylabel,
+                              show, ax, legend, fname])
 
         Parameters
         ----------
@@ -715,6 +718,13 @@ class SHWindow(object):
         maxcolumns : int, optional, default = 5
             The maximum number of columns to use when plotting multiple
             localization windows.
+        tick_interval : list or tuple, optional, default = [60, 45]
+            Intervals to use when plotting the x and y ticks. If set to None,
+            ticks will not be plotted.
+        xlabel : str, optional, default = 'longitude'
+            Label for the longitude axis.
+        ylabel : str, optional, default = 'latitude'
+            Label for the latitude axis.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -742,6 +752,15 @@ class SHWindow(object):
                                  ' and ax.size = {:s}.'.format(repr(ax.size)))
             axes = ax
 
+        if tick_interval is None:
+            xticks = []
+            yticks = []
+        else:
+            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
+                                  endpoint=True)
+            yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
+                                  endpoint=True)
+
         if ax is None:
             if nrows > 1:
                 for axtemp in axes[:-1, :].flatten():
@@ -767,7 +786,8 @@ class SHWindow(object):
                                           lmax=lmax, norm=1, csphase=1)
             axtemp.imshow(gridout, origin='upper',
                           extent=(0., 360., -90., 90.))
-            axtemp.set(xlabel='longitude', ylabel='latitude')
+            axtemp.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks,
+                       yticks=yticks)
             if legend is True:
                 axtemp.text(0.02, 0.95,
                             '#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue),

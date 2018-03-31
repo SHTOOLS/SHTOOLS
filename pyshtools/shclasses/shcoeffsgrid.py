@@ -2558,7 +2558,7 @@ class SHGrid(object):
 
         Parameters
         ----------
-        tick_interval : list or tuple, optional, default for DH = [30, 30]
+        tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
         xlabel : str, optional, default = 'longitude' or 'GLQ longitude index'
