@@ -137,7 +137,7 @@ def convert(coeffs_in, normalization_in=None, normalization_out=None,
         else:
             coeffs = _np.zeros((2, lmaxout+1, lmaxout+1))
 
-        coeffs[:, :lmaxin+1, :lmaxin+1] = coeffs_in[:, :lmaxin+1, :lmaxin+1]
+        coeffs[:, :lconv+1, :lconv+1] = coeffs_in[:, :lconv+1, :lconv+1]
 
         if normalization_in == normalization_out:
             pass
@@ -205,6 +205,6 @@ def convert(coeffs_in, normalization_in=None, normalization_out=None,
         if csphase_in != csphase_out:
             for m in degrees:
                 if m % 2 == 1:
-                    coeffs[:, :, m] = - coeffs[:, :, m]
+                    coeffs[:, m:lconv+1, m] = - coeffs[:, m:lconv+1, m]
 
         return coeffs
