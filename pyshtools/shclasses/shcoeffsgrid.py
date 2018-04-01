@@ -1525,11 +1525,9 @@ class SHRealCoeffs(SHCoeffs):
             self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
-        # as the unrotated coefficients. The returned class can take
-        # coeffs as reference because it is already copied in the rotation
-        # routine.
+        # as the unrotated coefficients.
         if self.normalization != '4pi' or self.csphase != 1:
-            temp = SHCoeffs.from_array(coeffs, kind='real')
+            temp = SHCoeffs.from_array(coeffs, normalization='4pi', csphase=1)
             tempcoeffs = temp.to_array(
                 normalization=self.normalization, csphase=self.csphase)
             return SHCoeffs.from_array(
