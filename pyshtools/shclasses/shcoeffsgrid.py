@@ -16,6 +16,7 @@ from scipy.special import factorial as _factorial
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
+from ..shio import convert as _convert
 
 
 # =============================================================================
@@ -251,13 +252,6 @@ class SHCoeffs(object):
         Initialize the class with spherical harmonic coefficients as random
         variables.
 
-        This routine returns a random realization of spherical harmonic
-        coefficients obtained from a normal distribution. The variance of
-        each coefficient at degree l is equal to the total power at degree
-        l divided by the number of coefficients at that degree. The power
-        spectrum of the random realization can be fixed exactly to the input
-        spectrum using the keyword exact_power.
-
         Usage
         -----
         x = SHCoeffs.from_random(power, [lmax, kind, normalization, csphase,
@@ -289,6 +283,15 @@ class SHCoeffs(object):
             The total variance of the coefficients is set exactly to the input
             power. This means that the distribution of power at degree l
             amongst the angular orders is random, but the total power is fixed.
+
+        Description
+        -----------
+        This routine returns a random realization of spherical harmonic
+        coefficients obtained from a normal distribution. The variance of
+        each coefficient at degree l is equal to the total power at degree
+        l divided by the number of coefficients at that degree. The power
+        spectrum of the random realization can be fixed exactly to the input
+        spectrum using the keyword exact_power.
         """
         # check if all arguments are correct
         if type(normalization) != str:
@@ -867,36 +870,30 @@ class SHCoeffs(object):
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
+
+        Description
+        -----------
+        This method will return an array of the spherical harmonic coefficients
+        using a different normalization and Condon-Shortley phase convention,
+        and a different maximum spherical harmonic degree. If the maximum
+        degree is smaller than the maximum degree of the class instance, the
+        coefficients will be truncated. Conversely, if this degree is larger
+        than the maximum degree of the class instance, the output array will be
+        zero padded.
         """
         if normalization is None:
             normalization = self.normalization
-
         if csphase is None:
             csphase = self.csphase
-
-        if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
-                             'Input type was {:s}'
-                             .format(str(type(normalization))))
-
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
-            raise ValueError(
-                "normalization must be '4pi', 'ortho', 'schmidt', " +
-                "or 'unnorm'. Provided value was {:s}"
-                .format(repr(normalization))
-                )
-        if csphase != 1 and csphase != -1:
-            raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
-                .format(repr(csphase))
-                )
-
         if lmax is None:
             lmax = self.lmax
 
-        return self._to_array(
-            output_normalization=normalization.lower(),
-            output_csphase=csphase, lmax=lmax)
+        coeffs = _convert(self.coeffs, normalization_in=self.normalization,
+                          normalization_out=normalization,
+                          csphase_in=self.csphase, csphase_out=csphase,
+                          lmax=lmax)
+
+        return coeffs
 
     # ---- Rotate the coordinate system ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
@@ -1039,6 +1036,18 @@ class SHCoeffs(object):
         check : bool, optional, default = True
             When converting complex coefficients to real coefficients, if True,
             check if function is entirely real.
+
+        Description
+        -----------
+        This method will return a new class instance of the spherical
+        harmonic coefficients using a different normalization and
+        Condon-Shortley phase convention. The coefficients can be converted
+        between real and complex form, and a different maximum spherical
+        harmonic degree of the output coefficients can be specified. If this
+        maximum degree is smaller than the maximum degree of the original
+        class, the coefficients will be truncated. Conversely, if this degree
+        is larger than the maximum degree of the original class, the
+        coefficients of the new class will be zero padded.
         """
         if normalization is None:
             normalization = self.normalization
@@ -1058,13 +1067,11 @@ class SHCoeffs(object):
             raise ValueError(
                 "normalization must be '4pi', 'ortho', 'schmidt', or " +
                 "'unnorm'. Provided value was {:s}"
-                .format(repr(normalization))
-                )
+                .format(repr(normalization)))
         if csphase != 1 and csphase != -1:
             raise ValueError(
                 "csphase must be 1 or -1. Input value was {:s}"
-                .format(repr(csphase))
-                )
+                .format(repr(csphase)))
 
         if (kind != self.kind):
             if (kind == 'complex'):
@@ -1508,98 +1515,6 @@ class SHRealCoeffs(SHCoeffs):
                                    normalization=self.normalization,
                                    csphase=self.csphase, copy=False)
 
-    def _to_array(self, output_normalization, output_csphase, lmax):
-        """Return coefficients with a different normalization convention."""
-        if output_normalization == 'unnorm' and lmax > 85:
-            _warnings.warn("Conversion to unnormalized coefficients is " +
-                           "stable only for degrees less than or equal to " +
-                           "85. lmax for the output coefficients will be " +
-                           "set to 85. Input value was {:d}.".format(lmax),
-                           category=RuntimeWarning)
-            lmax = 85
-
-        if lmax <= self.lmax:
-            coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
-        else:
-            coeffs = _np.copy(self.coeffs[:, :self.lmax+1, :self.lmax+1])
-            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - self.lmax),
-                                      (0, lmax - self.lmax)), 'constant')
-
-        degrees = _np.arange(lmax + 1)
-
-        if self.normalization == output_normalization:
-            pass
-        elif (self.normalization == '4pi' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(2. * l + 1.)
-        elif self.normalization == '4pi' and output_normalization == 'ortho':
-            coeffs *= _np.sqrt(4.0 * _np.pi)
-        elif self.normalization == '4pi' and output_normalization == 'unnorm':
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = 2. * (2. * l + 1.) * _factorial(l-ms) / _factorial(l+ms)
-                conv[0] = conv[0] / 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'schmidt' and
-              output_normalization == '4pi'):
-            for l in degrees:
-                coeffs[:, l, :l+1] /= _np.sqrt(2. * l + 1.)
-        elif (self.normalization == 'schmidt' and
-              output_normalization == 'ortho'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(4. * _np.pi / (2. * l + 1.))
-        elif (self.normalization == 'schmidt' and
-              output_normalization == 'unnorm'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = 2. * _factorial(l-ms) / _factorial(l+ms)
-                conv[0] = conv[0] / 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif self.normalization == 'ortho' and output_normalization == '4pi':
-            coeffs /= _np.sqrt(4. * _np.pi)
-        elif (self.normalization == 'ortho' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt((2. * l + 1.) / (4. * _np.pi))
-        elif (self.normalization == 'ortho' and
-              output_normalization == 'unnorm'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = (2. * l + 1.) * _factorial(l-ms) \
-                    / 2. / _np.pi / _factorial(l+ms)
-                conv[0] = conv[0] / 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == '4pi'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms) / 2.
-                conv[0] = conv[0] * 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l+ms) / _factorial(l-ms) / 2.
-                conv[0] = conv[0] * 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == 'ortho'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = 2. * _np.pi * _factorial(l+ms) / (2. * l + 1.) / \
-                    _factorial(l-ms)
-                conv[0] = conv[0] * 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-
-        if output_csphase != self.csphase:
-            for m in degrees:
-                if m % 2 == 1:
-                    coeffs[:, :, m] = - coeffs[:, :, m]
-
-        return coeffs
-
     def _rotate(self, angles, dj_matrix):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if dj_matrix is None:
@@ -1799,92 +1714,6 @@ class SHComplexCoeffs(SHCoeffs):
         return SHCoeffs.from_array(real_coeffs,
                                    normalization=self.normalization,
                                    csphase=self.csphase)
-
-    def _to_array(self, output_normalization, output_csphase, lmax):
-        """Return coefficients with a different normalization convention."""
-        if output_normalization == 'unnorm' and lmax > 85:
-            _warnings.warn("Conversion to unnormalized coefficients is " +
-                           "stable only for degrees less than or equal to " +
-                           "85. lmax for the output coefficients will be " +
-                           "set to 85. Input value was {:d}.".format(lmax),
-                           category=RuntimeWarning)
-            lmax = 85
-
-        if lmax <= self.lmax:
-            coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
-        else:
-            coeffs = _np.copy(self.coeffs[:, :self.lmax+1, :self.lmax+1])
-            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - self.lmax),
-                                      (0, lmax - self.lmax)), 'constant')
-
-        degrees = _np.arange(lmax + 1)
-
-        if self.normalization == output_normalization:
-            pass
-        elif (self.normalization == '4pi' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(2. * l + 1.)
-        elif self.normalization == '4pi' and output_normalization == 'ortho':
-            coeffs *= _np.sqrt(4. * _np.pi)
-        elif self.normalization == '4pi' and output_normalization == 'unnorm':
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = (2. * l + 1.) * _factorial(l-ms) / _factorial(l+ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'schmidt' and
-              output_normalization == '4pi'):
-            for l in degrees:
-                coeffs[:, l, :l+1] /= _np.sqrt(2. * l + 1.)
-        elif (self.normalization == 'schmidt' and
-              output_normalization == 'ortho'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(4. * _np.pi / (2. * l + 1.))
-        elif (self.normalization == 'schmidt' and
-              output_normalization == 'unnorm'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l-ms) / _factorial(l+ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif self.normalization == 'ortho' and output_normalization == '4pi':
-            coeffs /= _np.sqrt(4. * _np.pi)
-        elif (self.normalization == 'ortho' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt((2. * l + 1.) / (4. * _np.pi))
-        elif (self.normalization == 'ortho' and
-              output_normalization == 'unnorm'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = (2. * l + 1.) * _factorial(l-ms) \
-                    / 4. / _np.pi / _factorial(l+ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == '4pi'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l+ms) / _factorial(l-ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == 'ortho'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = 4. * _np.pi * _factorial(l+ms) / (2. * l + 1.) / \
-                    _factorial(l-ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-
-        if output_csphase != self.csphase:
-            for m in degrees:
-                if m % 2 == 1:
-                    coeffs[:, :, m] = - coeffs[:, :, m]
-
-        return coeffs
 
     def _rotate(self, angles, dj_matrix):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
@@ -2862,8 +2691,8 @@ class DHComplexGrid(SHGrid):
                    xticks=xticks, yticks=yticks)
         axcomplex.imshow(self.data.imag, origin='upper',
                          extent=(0., 360., -90., 90.))
-        axcomplex.set(title='Imaginary component', xlabel=xlabel, ylabel=ylabel,
-                   xticks=xticks, yticks=yticks)
+        axcomplex.set(title='Imaginary component', xlabel=xlabel,
+                      ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -3050,8 +2879,8 @@ class GLQComplexGrid(SHGrid):
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
                    xticks=xticks, yticks=yticks)
         axcomplex.imshow(self.data.imag, origin='upper')
-        axcomplex.set(title='Imaginary component', xlabel=xlabel, ylabel=ylabel,
-                   xticks=xticks, yticks=yticks)
+        axcomplex.set(title='Imaginary component', xlabel=xlabel,
+                      ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
