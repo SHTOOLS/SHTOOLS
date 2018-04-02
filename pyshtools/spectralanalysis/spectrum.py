@@ -64,8 +64,8 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
     spectrum(l, 'per_dlogl) is equal to spectrum(l, 'per_l')*l*log(a).
     """
     if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
-        raise ValueError("The normalization must be '4pi', 'ortho' " +
-                         "'schmidt' or 'unnorm'. Input value was {:s}."
+        raise ValueError("The normalization must be '4pi', 'ortho', " +
+                         "'schmidt', or 'unnorm'. Input value was {:s}."
                          .format(repr(normalization)))
 
     if convention.lower() not in ('power', 'energy', 'l2norm'):

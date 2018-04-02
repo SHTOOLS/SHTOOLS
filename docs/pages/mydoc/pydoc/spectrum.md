@@ -26,7 +26,7 @@ Return the spectrum of the spherical harmonic coefficients as a function of sphe
 :   ndarray containing the spherical harmonic coefficients.
 
 `normalization` : str, optional, default = '4pi'
-:   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized, orthonormalized, or Schmidt semi-normalized, or unnormalized coefficients, respectively.
+:   '4pi', 'ortho', 'schmidt', or 'unnorm', for geodesy 4pi normalized, orthonormalized, Schmidt semi-normalized, or unnormalized coefficients, respectively.
 
 `lmax` : int, optional, default = len(clm[0,:,0]) - 1.
 :   Maximum spherical harmonic degree to output.

@@ -34,13 +34,12 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [DownContFilterMC](pydowncontfiltermc.html) | Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree. |
 | [NormalGravity](pynormalgravity.html) | Calculate the normal gravity on a flattened ellipsoid using the formula of Somigliana. |
 
-## Magnetics routines 
+## Magnetics routines
 
 | Function name | Description |
 | ------------- | ----------- |
 | [MakeMagGridDH](pymakemaggriddh.html) | Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential. |
-| [SHMagPowerSpectrum](pyshmagpowerspectrum.html) | Compute the power spectrum of the magnetic field given the Schmidt semi-normalized magnetic potential spherical harmonic coefficients. |
-| [SHMagPowerL](pyshmagpowerl.html) | Compute the power of the magnetic field for a single degree L given the Schmidt semi-normalized magnetic potential spherical harmonic coefficients. | 
+| [mag_spectrum](mag_spectrum.html) | Compute the spectrum of either the magnetic potential or magnetic field strength. |
 
 ## References
 
