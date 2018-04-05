@@ -5,14 +5,7 @@ This submodule of pyshtools defines the following functions:
 
 Spherical harmonic I/O
 ----------------------
-SHRead           Read spherical harmonic coefficients from an ascii-formatted
-                 file.
-SHReadH          Read spherical harmonic coefficients from an ascii-formatted
-                 file with a header line.
-SHReadError      Read spherical harmonic coefficients and associated errors
-                 from an ascii-formatted file.
-SHReadErrorH     Read spherical harmonic coefficients and associated errors
-                 from an ascii-formatted file with a header line.
+shread           Read spherical harmonic coefficients from a text file.
 SHRead2          Read spherical harmonic coefficients from a CHAMP or GRACE-
                  like ascii-formatted file.
 SHRead2Error     Read spherical harmonic coefficients and associated errors
@@ -49,10 +42,6 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-from ..shtools import SHRead
-from ..shtools import SHReadH
-from ..shtools import SHReadError
-from ..shtools import SHReadErrorH
 from ..shtools import SHRead2
 from ..shtools import SHRead2Error
 from ..shtools import SHReadJPL
@@ -65,5 +54,6 @@ from ..shtools import SHrtoc
 from ..shtools import SHctor
 
 from .convert import convert
+from .shread import shread
 from .icgem import read_icgem_gfc
 from .yilm_index_vector import YilmIndexVector
