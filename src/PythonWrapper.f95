@@ -526,7 +526,7 @@
     end function pyMakeGridPointC
 
     subroutine pySHMultiply(exitstatus,shout,sh1,lmax1,sh2,lmax2,precomp,norm,&
-                            csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2, &
+                            csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,&
                             shout_d0,shout_d1,shout_d2)
         use shtools, only: SHMultiply
         implicit none

@@ -14,10 +14,12 @@ Read spherical harmonic coefficients from a text file.
 ## Usage
 
 `coeffs`, `lmaxout` = shread(`filename`, [`lmax`, `skip`])
+
 `coeffs`, `header`, `lmaxout` = shread(`filename`, `header`=True, [`lmax`, `skip`])
+
 `coeffs`, `errors`, `lmaxout` = shread(`filename`, `error`=True, [`lmax`, `skip`])
-`coeffs`, `errors`, `header`, `lmaxout` = shread(`filename`, `error`=True,
-                                             `header`=True, [`lmax`, `skip`])
+
+`coeffs`, `errors`, `header`, `lmaxout` = shread(`filename`, `error`=True, `header`=True, [`lmax`, `skip`])
 
 ## Returns
 
@@ -58,7 +60,9 @@ The spherical harmonic coefficients in the file should be formatted as
 
 `l, m, coeffs[0, l, m], coeffs[1, l, m]`
 
-where l and m are the spherical harmonic degree and order, respectively. If the errors are to be read, the line should be formatted as
+where l and m are the spherical harmonic degree and order, respectively. The terms coeffs[1, l, 0] can be neglected as they are zero. If the errors are to be read, the line should be formatted as For more information, see `shread`.
+
+If the errors are to be read, the line should be formatted as
 
 `l, m, coeffs[0, l, m], coeffs[1, l, m], errors[0, l, m], errors[1, l, m]`
 
@@ -67,7 +71,7 @@ order, from 0 to l.
 
 If a header line is to be read, it should be located directly after the first lines to be skipped, before the start of the spherical harmonic coefficents. The header values are returned as a list, where each value is formatted as a string.
 
-When reading the file, all lines that are "comments" will be ignored. A comment line is defined to be any line that has less than 4 words, and where the first two words are not integers.
+A valid line must contain at least 3 words, and the first two words must be integers. When reading the file, all other lines will be considered as "comments" and will be ignored.
 
 ## See also
 

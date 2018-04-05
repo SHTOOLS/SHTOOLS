@@ -415,12 +415,12 @@ python module _SHTOOLS
             integer, intent(hide) :: precomp = 0
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1
-            integer, optional,intent(in),depend(sh1),intent(hide) :: sh1_d0=shape(sh1,0)
-            integer, optional,intent(in),depend(sh1),intent(hide) :: sh1_d1=shape(sh1,1)
-            integer, optional,intent(in),depend(sh1),intent(hide) :: sh1_d2=shape(sh1,2)
-            integer, optional,intent(in),depend(sh2),intent(hide) :: sh2_d0=shape(sh2,0)
-            integer, optional,intent(in),depend(sh2),intent(hide) :: sh2_d1=shape(sh2,1)
-            integer, optional,intent(in),depend(sh2),intent(hide) :: sh2_d2=shape(sh2,2)
+            integer, optional,intent(in),check(shape(sh1,0)==sh1_d0),depend(sh1),intent(hide) :: sh1_d0=shape(sh1,0)
+            integer, optional,intent(in),check(shape(sh1,1)==sh1_d1),depend(sh1),intent(hide) :: sh1_d1=shape(sh1,1)
+            integer, optional,intent(in),check(shape(sh1,2)==sh1_d2),depend(sh1),intent(hide) :: sh1_d2=shape(sh1,2)
+            integer, optional,intent(in),check(shape(sh2,0)==sh2_d0),depend(sh2),intent(hide) :: sh2_d0=shape(sh2,0)
+            integer, optional,intent(in),check(shape(sh2,1)==sh2_d1),depend(sh2),intent(hide) :: sh2_d1=shape(sh2,1)
+            integer, optional,intent(in),check(shape(sh2,2)==sh2_d2),depend(sh2),intent(hide) :: sh2_d2=shape(sh2,2)
             integer, optional,intent(in),intent(hide) :: shout_d0 = 2
             integer, optional,intent(in),depend(lmax1,lmax2),intent(hide) :: shout_d1 = lmax1+lmax2+1
             integer, optional,intent(in),depend(lmax1,lmax2),intent(hide) :: shout_d2 = lmax1+lmax2+1
