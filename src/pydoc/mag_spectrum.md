@@ -4,7 +4,7 @@ Return the spectrum of the magnetic field as a function of spherical harmonic de
 
 # Usage
 
-`array` = mag_spectrum (`clm`, a, r, [`potential`, `normalization`, `degrees`, `lmax`, `convention`, `unit`, `base`])
+`array` = mag_spectrum (`clm`, `a`, `r``, [`potential`, `normalization`, `degrees`, `lmax`, `convention`, `unit`, `base`])
 
 # Returns
 

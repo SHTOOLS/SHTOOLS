@@ -45,5 +45,6 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Function name | Description |
 | ------------- | ----------- |
+| [convert](convert.html) | Convert an array of spherical harmonic coefficients to a different normalization convention. |
 | [SHrtoc](pyshrtoc.html) | Convert real spherical harmonics to complex form. |
 | [SHctor](pyshctor.html) | Convert complex spherical harmonics to real form. |

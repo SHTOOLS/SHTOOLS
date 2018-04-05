@@ -16,7 +16,7 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, exitstatus)
 !       IN
 !           rcilm       Real "geodesy" spherical harmonic coefficients with
 !                       dimensions (2, lmax+1, lmax+1).
-!  
+!
 !       OUT
 !           ccilm       Complex unity-normalized spherical harmonic
 !                       coefficients, dimensioned as (2, lmax+1, lmax+1). The
@@ -37,7 +37,6 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, exitstatus)
 !                       2 = Improper bounds for input variable;
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
-
 !
 !   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.

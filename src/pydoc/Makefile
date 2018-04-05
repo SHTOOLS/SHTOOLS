@@ -44,7 +44,8 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md \
 	pybatohilmrhohdh.md pydowncontfilterma.md pydowndontfiltermc.md \
 	pynormalgravity.md pymakemaggriddh.md pyshmtcouplingmatrix.md \
 	pyshmultitapermaskcse.md pyshmultitapermaskse.md pyshbiaskmask.md \
-	read_icgem_gfc.md spectrum.md cross_spectrum.md pydhaj.md mag_spectrum.md
+	read_icgem_gfc.md spectrum.md cross_spectrum.md pydhaj.md mag_spectrum.md \
+	convert.md
 
 MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 \
 	pyplbar.1 pyplbar_d1.1 pyplon.1 pyplmon.1 pyplmon_d1.1 pyplon_d1.1 \
@@ -70,7 +71,7 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 \
 	pydowncontfilterma.1 pydowncontfiltermc.1 pynormalgravity.1 \
 	pymakemaggriddh.1 pyshmtcouplingmatrix.1 pyshmultitapermaskcse.1 \
 	pyshmultitapermaskse.1 pyshbiaskmask.1 read_icgem_gfc.1 spectrum.1 \
-	cross_spectrum.1 pydhaj.1 mag_spectrum.1)
+	cross_spectrum.1 pydhaj.1 mag_spectrum.1 convert.1)
 
 
 all: install-man

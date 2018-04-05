@@ -16,6 +16,7 @@ from scipy.special import factorial as _factorial
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
+from ..shio import convert as _convert
 
 
 # =============================================================================
@@ -251,13 +252,6 @@ class SHCoeffs(object):
         Initialize the class with spherical harmonic coefficients as random
         variables.
 
-        This routine returns a random realization of spherical harmonic
-        coefficients obtained from a normal distribution. The variance of
-        each coefficient at degree l is equal to the total power at degree
-        l divided by the number of coefficients at that degree. The power
-        spectrum of the random realization can be fixed exactly to the input
-        spectrum using the keyword exact_power.
-
         Usage
         -----
         x = SHCoeffs.from_random(power, [lmax, kind, normalization, csphase,
@@ -289,6 +283,15 @@ class SHCoeffs(object):
             The total variance of the coefficients is set exactly to the input
             power. This means that the distribution of power at degree l
             amongst the angular orders is random, but the total power is fixed.
+
+        Description
+        -----------
+        This routine returns a random realization of spherical harmonic
+        coefficients obtained from a normal distribution. The variance of
+        each coefficient at degree l is equal to the total power at degree
+        l divided by the number of coefficients at that degree. The power
+        spectrum of the random realization can be fixed exactly to the input
+        spectrum using the keyword exact_power.
         """
         # check if all arguments are correct
         if type(normalization) != str:
@@ -867,36 +870,30 @@ class SHCoeffs(object):
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
+
+        Description
+        -----------
+        This method will return an array of the spherical harmonic coefficients
+        using a different normalization and Condon-Shortley phase convention,
+        and a different maximum spherical harmonic degree. If the maximum
+        degree is smaller than the maximum degree of the class instance, the
+        coefficients will be truncated. Conversely, if this degree is larger
+        than the maximum degree of the class instance, the output array will be
+        zero padded.
         """
         if normalization is None:
             normalization = self.normalization
-
         if csphase is None:
             csphase = self.csphase
-
-        if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
-                             'Input type was {:s}'
-                             .format(str(type(normalization))))
-
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
-            raise ValueError(
-                "normalization must be '4pi', 'ortho', 'schmidt', " +
-                "or 'unnorm'. Provided value was {:s}"
-                .format(repr(normalization))
-                )
-        if csphase != 1 and csphase != -1:
-            raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
-                .format(repr(csphase))
-                )
-
         if lmax is None:
             lmax = self.lmax
 
-        return self._to_array(
-            output_normalization=normalization.lower(),
-            output_csphase=csphase, lmax=lmax)
+        coeffs = _convert(self.coeffs, normalization_in=self.normalization,
+                          normalization_out=normalization,
+                          csphase_in=self.csphase, csphase_out=csphase,
+                          lmax=lmax)
+
+        return coeffs
 
     # ---- Rotate the coordinate system ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
@@ -1039,6 +1036,18 @@ class SHCoeffs(object):
         check : bool, optional, default = True
             When converting complex coefficients to real coefficients, if True,
             check if function is entirely real.
+
+        Description
+        -----------
+        This method will return a new class instance of the spherical
+        harmonic coefficients using a different normalization and
+        Condon-Shortley phase convention. The coefficients can be converted
+        between real and complex form, and a different maximum spherical
+        harmonic degree of the output coefficients can be specified. If this
+        maximum degree is smaller than the maximum degree of the original
+        class, the coefficients will be truncated. Conversely, if this degree
+        is larger than the maximum degree of the original class, the
+        coefficients of the new class will be zero padded.
         """
         if normalization is None:
             normalization = self.normalization
@@ -1058,13 +1067,11 @@ class SHCoeffs(object):
             raise ValueError(
                 "normalization must be '4pi', 'ortho', 'schmidt', or " +
                 "'unnorm'. Provided value was {:s}"
-                .format(repr(normalization))
-                )
+                .format(repr(normalization)))
         if csphase != 1 and csphase != -1:
             raise ValueError(
                 "csphase must be 1 or -1. Input value was {:s}"
-                .format(repr(csphase))
-                )
+                .format(repr(csphase)))
 
         if (kind != self.kind):
             if (kind == 'complex'):
@@ -1508,98 +1515,6 @@ class SHRealCoeffs(SHCoeffs):
                                    normalization=self.normalization,
                                    csphase=self.csphase, copy=False)
 
-    def _to_array(self, output_normalization, output_csphase, lmax):
-        """Return coefficients with a different normalization convention."""
-        if output_normalization == 'unnorm' and lmax > 85:
-            _warnings.warn("Conversion to unnormalized coefficients is " +
-                           "stable only for degrees less than or equal to " +
-                           "85. lmax for the output coefficients will be " +
-                           "set to 85. Input value was {:d}.".format(lmax),
-                           category=RuntimeWarning)
-            lmax = 85
-
-        if lmax <= self.lmax:
-            coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
-        else:
-            coeffs = _np.copy(self.coeffs[:, :self.lmax+1, :self.lmax+1])
-            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - self.lmax),
-                                      (0, lmax - self.lmax)), 'constant')
-
-        degrees = _np.arange(lmax + 1)
-
-        if self.normalization == output_normalization:
-            pass
-        elif (self.normalization == '4pi' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(2. * l + 1.)
-        elif self.normalization == '4pi' and output_normalization == 'ortho':
-            coeffs *= _np.sqrt(4.0 * _np.pi)
-        elif self.normalization == '4pi' and output_normalization == 'unnorm':
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = 2. * (2. * l + 1.) * _factorial(l-ms) / _factorial(l+ms)
-                conv[0] = conv[0] / 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'schmidt' and
-              output_normalization == '4pi'):
-            for l in degrees:
-                coeffs[:, l, :l+1] /= _np.sqrt(2. * l + 1.)
-        elif (self.normalization == 'schmidt' and
-              output_normalization == 'ortho'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(4. * _np.pi / (2. * l + 1.))
-        elif (self.normalization == 'schmidt' and
-              output_normalization == 'unnorm'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = 2. * _factorial(l-ms) / _factorial(l+ms)
-                conv[0] = conv[0] / 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif self.normalization == 'ortho' and output_normalization == '4pi':
-            coeffs /= _np.sqrt(4. * _np.pi)
-        elif (self.normalization == 'ortho' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt((2. * l + 1.) / (4. * _np.pi))
-        elif (self.normalization == 'ortho' and
-              output_normalization == 'unnorm'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = (2. * l + 1.) * _factorial(l-ms) \
-                    / 2. / _np.pi / _factorial(l+ms)
-                conv[0] = conv[0] / 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == '4pi'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms) / 2.
-                conv[0] = conv[0] * 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l+ms) / _factorial(l-ms) / 2.
-                conv[0] = conv[0] * 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == 'ortho'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = 2. * _np.pi * _factorial(l+ms) / (2. * l + 1.) / \
-                    _factorial(l-ms)
-                conv[0] = conv[0] * 2.
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-
-        if output_csphase != self.csphase:
-            for m in degrees:
-                if m % 2 == 1:
-                    coeffs[:, :, m] = - coeffs[:, :, m]
-
-        return coeffs
-
     def _rotate(self, angles, dj_matrix):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if dj_matrix is None:
@@ -1610,11 +1525,9 @@ class SHRealCoeffs(SHCoeffs):
             self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
-        # as the unrotated coefficients. The returned class can take
-        # coeffs as reference because it is already copied in the rotation
-        # routine.
+        # as the unrotated coefficients.
         if self.normalization != '4pi' or self.csphase != 1:
-            temp = SHCoeffs.from_array(coeffs, kind='real')
+            temp = SHCoeffs.from_array(coeffs, normalization='4pi', csphase=1)
             tempcoeffs = temp.to_array(
                 normalization=self.normalization, csphase=self.csphase)
             return SHCoeffs.from_array(
@@ -1799,92 +1712,6 @@ class SHComplexCoeffs(SHCoeffs):
         return SHCoeffs.from_array(real_coeffs,
                                    normalization=self.normalization,
                                    csphase=self.csphase)
-
-    def _to_array(self, output_normalization, output_csphase, lmax):
-        """Return coefficients with a different normalization convention."""
-        if output_normalization == 'unnorm' and lmax > 85:
-            _warnings.warn("Conversion to unnormalized coefficients is " +
-                           "stable only for degrees less than or equal to " +
-                           "85. lmax for the output coefficients will be " +
-                           "set to 85. Input value was {:d}.".format(lmax),
-                           category=RuntimeWarning)
-            lmax = 85
-
-        if lmax <= self.lmax:
-            coeffs = _np.copy(self.coeffs[:, :lmax+1, :lmax+1])
-        else:
-            coeffs = _np.copy(self.coeffs[:, :self.lmax+1, :self.lmax+1])
-            coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - self.lmax),
-                                      (0, lmax - self.lmax)), 'constant')
-
-        degrees = _np.arange(lmax + 1)
-
-        if self.normalization == output_normalization:
-            pass
-        elif (self.normalization == '4pi' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(2. * l + 1.)
-        elif self.normalization == '4pi' and output_normalization == 'ortho':
-            coeffs *= _np.sqrt(4. * _np.pi)
-        elif self.normalization == '4pi' and output_normalization == 'unnorm':
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = (2. * l + 1.) * _factorial(l-ms) / _factorial(l+ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'schmidt' and
-              output_normalization == '4pi'):
-            for l in degrees:
-                coeffs[:, l, :l+1] /= _np.sqrt(2. * l + 1.)
-        elif (self.normalization == 'schmidt' and
-              output_normalization == 'ortho'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt(4. * _np.pi / (2. * l + 1.))
-        elif (self.normalization == 'schmidt' and
-              output_normalization == 'unnorm'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l-ms) / _factorial(l+ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif self.normalization == 'ortho' and output_normalization == '4pi':
-            coeffs /= _np.sqrt(4. * _np.pi)
-        elif (self.normalization == 'ortho' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                coeffs[:, l, :l+1] *= _np.sqrt((2. * l + 1.) / (4. * _np.pi))
-        elif (self.normalization == 'ortho' and
-              output_normalization == 'unnorm'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = (2. * l + 1.) * _factorial(l-ms) \
-                    / 4. / _np.pi / _factorial(l+ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == '4pi'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == 'schmidt'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = _factorial(l+ms) / _factorial(l-ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-        elif (self.normalization == 'unnorm' and
-              output_normalization == 'ortho'):
-            for l in degrees:
-                ms = _np.arange(l+1)
-                conv = 4. * _np.pi * _factorial(l+ms) / (2. * l + 1.) / \
-                    _factorial(l-ms)
-                coeffs[:, l, :l+1] *= _np.sqrt(conv)
-
-        if output_csphase != self.csphase:
-            for m in degrees:
-                if m % 2 == 1:
-                    coeffs[:, :, m] = - coeffs[:, :, m]
-
-        return coeffs
 
     def _rotate(self, angles, dj_matrix):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
@@ -2547,18 +2374,24 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, show=True, ax=None, ax2=None, fname=None):
+    def plot(self, tick_interval=[30, 30], ax=None, ax2=None, show=True,
+             fname=None, **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([show, ax, ax2, fname])
+        x.plot([tick_interval, ax, ax2, show, fname])
 
         Parameters
         ----------
-        show : bool, optional, default = True
-            If True, plot the image to the screen.
+        tick_interval : list or tuple, optional, default = [30, 30]
+            Intervals to use when plotting the x and y ticks. If set to None,
+            ticks will not be plotted.
+        xlabel : str, optional, default = 'longitude' or 'GLQ longitude index'
+            Label for the longitude axis.
+        ylabel : str, optional, default = 'latitude' or 'GLQ latitude index'
+            Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear. If the
             grid is complex, the real component of the grid will be plotted
@@ -2567,19 +2400,37 @@ class SHGrid(object):
             A single matplotlib axes object where the plot will appear. If the
             grid is complex, the complex component of the grid will be plotted
             on this axes.
+        show : bool, optional, default = True
+            If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
         """
+        if tick_interval is None:
+            xticks = []
+            yticks = []
+        elif self.grid == 'GLQ':
+            xticks = _np.linspace(0, self.nlon-1,
+                                  num=self.nlon//tick_interval[0]+1,
+                                  endpoint=True, dtype=int)
+            yticks = _np.linspace(0, self.nlat-1,
+                                  num=self.nlat//tick_interval[1]+1,
+                                  endpoint=True, dtype=int)
+        else:
+            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
+                                  endpoint=True)
+            yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
+                                  endpoint=True)
+
         if ax is None and ax2 is None:
-            fig, axes = self._plot()
+            fig, axes = self._plot(xticks=xticks, yticks=yticks, **kwargs)
         else:
             if self.kind == 'complex':
                 if (ax is None and ax2 is not None) or (ax2 is None and
                                                         ax is not None):
                     raise ValueError('For complex grids, one must specify ' +
                                      'both optional arguments axes and axes2.')
-            self._plot(ax=ax, ax2=ax2)
+            self._plot(xticks=xticks, yticks=yticks, ax=ax, ax2=ax2, **kwargs)
 
         if ax is None:
             if show:
@@ -2726,7 +2577,8 @@ class DHRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, ax=None, ax2=None):
+    def _plot(self, xticks=[], yticks=[], xlabel='longitude',
+              ylabel='latitude', ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -2734,7 +2586,7 @@ class DHRealGrid(SHGrid):
             axes = ax
 
         axes.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
-        axes.set(xlabel='longitude', ylabel='latitude')
+        axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2820,7 +2672,8 @@ class DHComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, ax=None, ax2=None):
+    def _plot(self, xticks=[], yticks=[], xlabel='longitude',
+              ylabel='latitude', ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -2832,14 +2685,12 @@ class DHComplexGrid(SHGrid):
 
         axreal.imshow(self.data.real, origin='upper',
                       extent=(0., 360., -90., 90.))
-        axreal.set_title('Real component')
-        axreal.set_xlabel('longitude')
-        axreal.set_ylabel('latitude')
+        axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
+                   xticks=xticks, yticks=yticks)
         axcomplex.imshow(self.data.imag, origin='upper',
                          extent=(0., 360., -90., 90.))
-        axcomplex.set_title('Imaginary component')
-        axcomplex.set_xlabel('longitude')
-        axcomplex.set_ylabel('latitude')
+        axcomplex.set(title='Imaginary component', xlabel=xlabel,
+                      ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2923,7 +2774,8 @@ class GLQRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, ax=None, ax2=None):
+    def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
+              ylabel='GLQ latitude index', ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -2931,8 +2783,7 @@ class GLQRealGrid(SHGrid):
             axes = ax
 
         axes.imshow(self.data, origin='upper')
-        axes.set_xlabel('GLQ longitude index')
-        axes.set_ylabel('GLQ latitude index')
+        axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -3011,7 +2862,8 @@ class GLQComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, ax=None, ax2=None):
+    def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
+              ylabel='GLQ latitude index', ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -3022,13 +2874,11 @@ class GLQComplexGrid(SHGrid):
             axcomplex = ax2
 
         axreal.imshow(self.data.real, origin='upper')
-        axreal.set_title('Real component')
-        axreal.set_xlabel('longitude index')
-        axreal.set_ylabel('latitude index')
+        axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
+                   xticks=xticks, yticks=yticks)
         axcomplex.imshow(self.data.imag, origin='upper')
-        axcomplex.set_title('Imaginary component')
-        axcomplex.set_xlabel('GLQ longitude index')
-        axcomplex.set_ylabel('GLQ latitude index')
+        axcomplex.set(title='Imaginary component', xlabel=xlabel,
+                      ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
