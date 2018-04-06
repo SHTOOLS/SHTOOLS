@@ -415,12 +415,12 @@ python module _SHTOOLS
             integer, intent(hide) :: precomp = 0
             integer, optional,intent(in) :: norm = 1
             integer, optional,intent(in) :: csphase = 1
-            integer, optional,intent(in),depend(sh1),intent(hide) :: sh1_d0=shape(sh1,0)
-            integer, optional,intent(in),depend(sh1),intent(hide) :: sh1_d1=shape(sh1,1)
-            integer, optional,intent(in),depend(sh1),intent(hide) :: sh1_d2=shape(sh1,2)
-            integer, optional,intent(in),depend(sh2),intent(hide) :: sh2_d0=shape(sh2,0)
-            integer, optional,intent(in),depend(sh2),intent(hide) :: sh2_d1=shape(sh2,1)
-            integer, optional,intent(in),depend(sh2),intent(hide) :: sh2_d2=shape(sh2,2)
+            integer, optional,intent(in),check(shape(sh1,0)==sh1_d0),depend(sh1),intent(hide) :: sh1_d0=shape(sh1,0)
+            integer, optional,intent(in),check(shape(sh1,1)==sh1_d1),depend(sh1),intent(hide) :: sh1_d1=shape(sh1,1)
+            integer, optional,intent(in),check(shape(sh1,2)==sh1_d2),depend(sh1),intent(hide) :: sh1_d2=shape(sh1,2)
+            integer, optional,intent(in),check(shape(sh2,0)==sh2_d0),depend(sh2),intent(hide) :: sh2_d0=shape(sh2,0)
+            integer, optional,intent(in),check(shape(sh2,1)==sh2_d1),depend(sh2),intent(hide) :: sh2_d1=shape(sh2,1)
+            integer, optional,intent(in),check(shape(sh2,2)==sh2_d2),depend(sh2),intent(hide) :: sh2_d2=shape(sh2,2)
             integer, optional,intent(in),intent(hide) :: shout_d0 = 2
             integer, optional,intent(in),depend(lmax1,lmax2),intent(hide) :: shout_d1 = lmax1+lmax2+1
             integer, optional,intent(in),depend(lmax1,lmax2),intent(hide) :: shout_d2 = lmax1+lmax2+1
@@ -450,70 +450,6 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(north,south,interval),intent(hide)  :: grid_d0 = (north-south)/interval + 1
             integer, optional,intent(in),depend(east,west,interval),intent(hide) :: grid_d1 = (east-west)/interval + 1
         end subroutine MakeGrid2d
-
-        subroutine SHRead(exitstatus,filename,cilm,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2)
-            fortranname pyshread
-            integer, intent(out) :: exitstatus
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer intent(out) :: lmax
-            integer intent(in)  :: lmax_in
-            integer, optional,intent(in) :: skip = 0
-            integer, optional,intent(in),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
-        end subroutine SHRead
-
-        subroutine SHReadH(exitstatus,filename,cilm,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2)
-            fortranname pyshreadh
-            integer, intent(out) :: exitstatus
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer intent(out) :: lmax
-            integer intent(in)  :: lmax_in
-            integer, intent(in) :: nheader
-            real*8 intent(out), dimension(nheader) :: header
-            integer, optional,intent(in) :: skip = 0
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
-        end subroutine SHReadH
-
-        subroutine SHReadError(exitstatus,filename,cilm,error,lmax,lmax_in,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
-            fortranname pyshreaderror
-            integer, intent(out) :: exitstatus
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            real*8 dimension(error_d0,error_d1,error_d2),intent(out) :: error
-            integer intent(out) :: lmax
-            integer intent(in)  :: lmax_in
-            integer, optional,intent(in) :: skip = 0
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
-            integer, optional,intent(in),depend(cilm_d0),intent(hide) :: error_d0 = cilm_d0
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1 = cilm_d1
-            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2 = cilm_d2
-        end subroutine SHReadError
-
-        subroutine SHReadErrorH(exitstatus,filename,cilm,error,lmax,lmax_in,nheader,header,skip,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
-            fortranname pyshreaderrorh
-            integer, intent(out) :: exitstatus
-            character*(*) intent(in) :: filename
-            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            real*8 dimension(error_d0,error_d1,error_d2),intent(out) :: error
-            integer intent(out) :: lmax
-            integer intent(in)  :: lmax_in
-            integer, intent(in) :: nheader
-            real*8, intent(out),dimension(nheader) :: header
-            integer, optional,intent(in) :: skip = 0
-            integer, optional,intent(in),depend(lmax),intent(hide) :: cilm_d0 = 2
-            integer, optional,intent(in),depend(lmax_in),intent(hide),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
-            integer, optional,intent(in),depend(lmax_in),intent(hide) :: cilm_d2 = lmax_in+1
-            integer, optional,intent(in),depend(cilm_d0),intent(hide) :: error_d0 = cilm_d0
-            integer, optional,intent(in),depend(cilm_d1),intent(hide) :: error_d1 = cilm_d1
-            integer, optional,intent(in),depend(cilm_d2),intent(hide) :: error_d2 = cilm_d2
-        end subroutine SHReadErrorH
 
         subroutine SHRead2(exitstatus,filename,cilm,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,dot_d0,dot_d1,dot_d2)
             fortranname pyshread2

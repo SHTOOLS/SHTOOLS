@@ -13,7 +13,7 @@ Multiply two functions and determine the spherical harmonic coefficients of the 
 
 ## Usage
 
-`shout` = SHMultiply (`sh1`, `lmax1`, `sh2`, `lmax2`, [`norm`, `csphase`])
+`shout` = SHMultiply (`sh1`, `sh2`, [`lmax1`, `lmax2`, `norm`, `csphase`])
 
 ## Returns
 
@@ -25,13 +25,13 @@ Multiply two functions and determine the spherical harmonic coefficients of the 
 `sh1` : float, dimension (2, `lmax1in`+1, `lmax1in`+1)
 :   The spherical harmonic coefficients of the first function.
 
-`lmax1` : integer
-:   The maximum spherical harmonic degree used in evaluting `sh1`.
-
 `sh2` : float, dimension (2, `lmax2in`+1, `lmax2in`+1)
 :   The spherical harmonic coefficients of the second function.
 
-`lmax2` : integer
+`lmax1` : integer, optional, default = `lmax1in`
+:   The maximum spherical harmonic degree used in evaluting `sh1`.
+
+`lmax2` : integer, optional, default = `lmax2in`
 :   The maximum spherical harmonic degree used in evaluting `sh2`.
 
 `norm` : optional, integer, default = 1

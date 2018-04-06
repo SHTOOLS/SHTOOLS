@@ -106,7 +106,7 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error, exitstatus)
 
     if (present(header) ) then
         read(fu,*, iostat=stat) (header(l), l=1, headlen,1)
-    
+
         if (stat /= 0 ) then
             print*, "Error --- SHRead"
             print*, "Problem reading header line ", filename 

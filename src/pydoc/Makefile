@@ -27,9 +27,8 @@ MDFILES = pyplmindex.md pyplmbar.md pyplmbar_d1.md pyplbar.md pyplbar_d1.md \
 	pymakegriddh.md pyshexpanddhc.md pymakegriddhc.md pyshglq.md \
 	pyglqgridcoord.md pyshexpandglq.md pymakegridglq.md pyshexpandglqc.md \
 	pymakegridglqc.md pyshexpandlsq.md pymakegrid2d.md pymakegridpoint.md \
-	pymakegridpointc.md pyshmultiply.md pyshread.md pyshreaderror.md \
-	pyshreadh.md pyshreaderrorh.md pyshread2.md pyshread2error.md \
-	pyshreadjpl.md pyshreadjplerror.md pyshcilmtocindex.md \
+	pymakegridpointc.md pyshmultiply.md pyshread.md pyshread2.md \
+	pyshread2error.md pyshreadjpl.md pyshreadjplerror.md pyshcilmtocindex.md \
 	pyshcindextocilm.md pyshcilmtovector.md pyshvectortocilm.md pyshrtoc.md \
 	pyshctor.md pyshadmitcorr.md pyshconfidence.md pyshmultitaperse.md \
 	pyshmultitapercse.md pyshlocalizedadmitcorr.md pyshreturntapers.md \
@@ -54,9 +53,8 @@ MANFILES = $(addprefix $(MANDIR)/, pyplmindex.1 pyplmbar.1 pyplmbar_d1.1 \
 	pyshexpanddh.1 pymakegriddh.1 pyshexpanddhc.1 pymakegriddhc.1 pyshglq.1 \
 	pyglqgridcoord.1 pyshexpandglq.1 pymakegridglq.1 pyshexpandglqc.1 \
 	pymakegridglqc.1 pyshexpandlsq.1 pymakegrid2d.1 pymakegridpoint.1 \
-	pymakegridpointc.1 pyshmultiply.1 pyshread.1 pyshreaderror.1 \
-	pyshreadh.1 pyshreaderrorh.1 pyshread2.1 pyshread2error.1 pyshreadjpl.1 \
-	pyshreadjplerror.1 pyshcilmtocindex.1 pyshcindextocilm.1 \
+	pymakegridpointc.1 pyshmultiply.1 pyshread.1 pyshread2.1 pyshread2error.1 \
+	pyshreadjpl.1 pyshreadjplerror.1 pyshcilmtocindex.1 pyshcindextocilm.1 \
 	pyshcilmtovector.1 pyshvectortocilm.1 pyshrtoc.1 pyshctor.1 \
 	pyshadmitcorr.1 pyshconfidence.1 pyshmultitaperse.1 pyshmultitapercse.1 \
 	pyshlocalizedadmitcorr.1 pyshreturntapers.1 pyshreturntapersm.1 \
