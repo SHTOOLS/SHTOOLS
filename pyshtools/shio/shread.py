@@ -15,9 +15,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     Usage
     -----
     coeffs, lmaxout = shread(filename, [lmax, skip])
-    coeffs, header, lmaxout = shread(filename, header=True, [lmax, skip])
+    coeffs, lmaxout, header = shread(filename, header=True, [lmax, skip])
     coeffs, errors, lmaxout = shread(filename, error=True, [lmax, skip])
-    coeffs, errors, header, lmaxout = shread(filename, error=True,
+    coeffs, errors, lmaxout, header = shread(filename, error=True,
                                              header=True, [lmax, skip])
 
     Returns
@@ -26,11 +26,11 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
         The spherical harmonic coefficients.
     errors : ndarray, size(2, lmaxout+1, lmaxout+1)
         The errors associated with the spherical harmonic coefficients.
+    lmaxout : int
+        The maximum spherical harmonic degree read from the file.
     header : list of type str
         A list of values in the header line found before the start of the
         spherical harmonic coefficients.
-    lmaxout : int
-        The maximum spherical harmonic degree read from the file.
 
     Parameters
     ----------
@@ -228,11 +228,11 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                         errors[1, l, m] = complex(line.split()[5])
 
     if error is True and header is True:
-        return coeffs, errors, header_list, lmaxout
+        return coeffs, errors, lmaxout, header_list
     elif error is True and header is False:
         return coeffs, errors, lmaxout
     elif error is False and header is True:
-        return coeffs, header_list, lmaxout
+        return coeffs, lmaxout, header_list
     else:
         return coeffs, lmaxout
 
