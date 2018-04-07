@@ -37,7 +37,7 @@ def main():
 
 def TestMakeGravGrid():
     infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
-    clm, header, lmax = shio.shread(infile, header=True)
+    clm, lmax, header = shio.shread(infile, header=True)
     r0 = float(header[0]) * 1.e3
     gm = float(header[1]) * 1.e9
     clm[0, 0, 0] = 1.0
@@ -140,7 +140,7 @@ def TestFilter():
 
 def TestMakeMagGrid():
     infile = '../../ExampleDataFiles/FSU_mars90.sh'
-    clm, header, lmax = shio.shread(infile, header=True, skip=1)
+    clm, lmax, header  = shio.shread(infile, header=True, skip=1)
     r0 = float(header[0]) * 1.e3
     a = constant.r_mars + 145.0e3  # radius to evaluate the field
 
