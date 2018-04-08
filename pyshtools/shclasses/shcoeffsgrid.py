@@ -753,13 +753,13 @@ class SHCoeffs(object):
         """
         return _np.arange(self.lmax + 1)
 
-    def spectrum(self, convention='power', unit='per_l', base=10.):
+    def spectrum(self, lmax=None, convention='power', unit='per_l', base=10.):
         """
         Return the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        power = x.spectrum([convention, unit, base])
+        power = x.spectrum([lmax, convention, unit, base])
 
         Returns
         -------
@@ -769,6 +769,8 @@ class SHCoeffs(object):
 
         Parameters
         ----------
+        lmax : int, optional, default = x.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
         convention : str, optional, default = 'power'
             The type of spectrum to return: 'power' for power spectrum,
             'energy' for energy spectrum, and 'l2norm' for the l2 norm
@@ -805,7 +807,8 @@ class SHCoeffs(object):
         spectrum(l, 'per_l')*l*log(a).
         """
         return _spectrum(self.coeffs, normalization=self.normalization,
-                         convention=convention, unit=unit, base=base)
+                         convention=convention, unit=unit, base=base,
+                         lmax=lmax)
 
     # ---- Set individual coefficients ----
     def set_coeffs(self, values, ls, ms):
