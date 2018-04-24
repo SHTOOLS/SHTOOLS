@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg)](http://dx.doi.org/10.5281/zenodo.592762)
-[![Documentation](https://img.shields.io/badge/documentation-https%3A%2F%2Fshtools.github.io%2FSHTOOLS%2F-yellow.svg)](shtools.github.io/SHTOOLS/)
+[![Documentation](https://img.shields.io/badge/documentation-shtools.github.io%2FSHTOOLS%2F-yellow.svg)](https://shtools.github.io/SHTOOLS/)
 [![Twitter](https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=pyshtools)
 
 SHTOOLS/pysthools is a Fortran-95/Python library that can be used to perform
