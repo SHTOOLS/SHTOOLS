@@ -7,6 +7,31 @@ summary:
 toc: true
 ---
 
+## Version 4.2
+
+**Change log:**
+
+* Full support added for the use of unnormalized harmonics in the classes `SHCoeffs` and `SHGrid`. To make use of this normalization, just specify `normalization='unnorm'`.
+* Added a new python native routine `mag_spectrum()` in the subpackage `gravmag` that replaces the original fortran wrapped routines. The old python wrapped functions have been removed from pyshtools. This new routine is nearly the same as `spectrum()`, and further allows one to compute the spectrum of the potential or magnetic intensity.
+* The old fortran based `SHRead` function has been replaced with a python native version `shread()`. The functionality is nearly identical as before, and combines the previous routines `SHRead`, `SHReadError`, `SHReadErrorH` and `SHReadH` into one. Differences include: (1) It is no longer necessary to specify the lmax of the file: This is determined automatically by reading the file from the end, (2) both real and complex coefficients are supported, (3) a header line can be output, but it is a simple list of type str that will need to be converted to the correct format by the user, and (4) "comment" lines are read and ignored: A valid line is one where there are 4 or more words, and where the first two words are integers.
+* A new python native function `convert()` was added in the subpackage `shio` that converts between arrays of spherical harmonic coefficients with different normalizations. The class `SHCoeffs` was then simplified by using this external function for all conversions involving `SHCoeffs` class instances.
+* The optional parameter lmax was added to `SHCoeffs.spectrum()`.
+* When plotting grid from the class `SHGrid`, one can now specify the label to use for the x and y axes with `xlabel` and `ylabel`, as well as the interval to use when plotting ticks on both axes using `tick_interval`.
+* The pyshtools rotation routines now allow you to specify the optional parameter `convention` to treat Euler angles in either the `x` or `y` conventions (i.e., which axes to use for the second rotation). Furthermore, the optional argument `body` allows you to specify if you want to rotate the body (True), or coordinate system (False, default). The tutorial number 3 was updated to clear up some inconsistencies in how the angles were defined.
+* New optional parameters added to `SHWindow.plot_windows()` and `SHWindow.plot_spectra()` that include `xlim` and `ylim` for the limits when plotting spectra, `maxcolumns` for the number of columns to use when plotting several windows, and `lmax` which controls the grid spacing when plotting the windows.
+* Added the optional argument `lmax` to `SHCoeffs.from_random()` that allows you to create coefficients with maximum bandwidths that are either greater or less than the bandwidth of the input power spectrum.
+* Added a warning message when using `SHCoeffs.rotate()` with degrees greater than 1200, as the routine is not accurate beyond this value.
+* Added an optional argument `legend` to `SHWindow.plot_windows()` to control whether the legend is plotted or not.
+* Fixed a minor bug in ClassExample.py file concerning the use of `SHCoeffs.rotate()`.
+* Added support for plotting to an already existing figure by allowing the user to specify an existing matplotlib axes.
+* Removed some non-standard ascii dashes in the documentation files, and forced all doc files to be opened as `utf-8`.
+* HTML documentation was completely redone using Jekyll. The markdown source files are now located in `pages/mydoc`. A static html web site is built using `jekyll`, whose files are located in `doc`. Github will automatically create the static pages and serve them on [shtools.github.io/SHTOOLS](https://shtools.github.io/SHTOOLS/). To build the static pages yourself, it is only necessary to execute `bundle exec jekyll build` in the directory `doc`, which will build the site into `_site` in the same directory. Alternatively, `make www` in the main directory will create a static site in the top-level directory `www` that could be used to deploy on a different web server. The site is based on the template [Jekyll documentation theme](https://github.com/tomjoht/documentation-theme-jekyll) by @tomjoht.
+
+**Citation:**
+
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS: Version 4.2, Zenodo, doi:[10.5281/zenodo.592762](http://doi.org/10.5281/zenodo.592762)
+
+
 ## Version 4.1
 
 This version adds improved functionality to SHTOOLS and fixes a couple of minor bugs. In addition, this release will be the first where pre-built wheels for unix/macOS/windows will be distributed via PYPI.
