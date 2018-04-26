@@ -48,7 +48,7 @@ def example2():
     lmax = 15
     nwins = 15
 
-    coeffs = pyshtools.shio.shread('../../ExampleDataFiles/srtmp300.msl')
+    coeffs = pyshtools.SHCoeffs.from_file('../../ExampleDataFiles/srtmp300.msl')
     topo = coeffs.expand(grid='DH2')
     dh_mask = topo.data > 0.
     print(dh_mask.shape)
