@@ -48,8 +48,9 @@ def example2():
     lmax = 15
     nwins = 15
 
-    topo = np.loadtxt('../../ExampleDataFiles/topo.dat.gz')
-    dh_mask = topo > 0.
+    coeffs = pyshtools.shio.shread('../../ExampleDataFiles/srtmp300.msl')
+    topo = coeffs.expand(grid='DH2')
+    dh_mask = topo.data > 0.
     print(dh_mask.shape)
     region = pyshtools.SHWindow.from_mask(dh_mask, lmax, nwins)
     region.info()
