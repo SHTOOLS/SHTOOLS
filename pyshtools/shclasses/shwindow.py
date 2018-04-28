@@ -841,7 +841,7 @@ class SHWindow(object):
         xlim : tuple, optional, default = (None, None)
             The upper and lower limits used for the x axis.
         ylim : tuple, optional, default = (None, None)
-            The upper and lower limits used for the y axis.
+            The lower and upper limits used for the y axis.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -856,6 +856,11 @@ class SHWindow(object):
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
+
+        if ylim == (None, None):
+            upper = spectrum[:, :min(self.nwin, nwin)].max()
+            lower = upper * 1.e-6
+            ylim = (lower, 5 * upper)
 
         if ax is None:
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
