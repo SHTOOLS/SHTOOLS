@@ -88,8 +88,8 @@ well as simple interfaces.
 
 To get started, check out the following Python tutorial notebooks:
 
-* Introduction 1: Grids and Spherical Harmonic Coefficients [\[ipynb\]](examples/notebooks/Introduction-1.ipynb)
-* Introduction 2: Localization Windows and Spectral Analysis [\[ipynb\]](examples/notebooks/Introduction-2.ipynb)
+* [Introduction 1: Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
+* [Introduction 2: Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
 
 You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/pyshtools).
 
