@@ -21,16 +21,16 @@ or on macOS using [brew](https://brew.sh/)
 ```bash
 brew install fftw --with-fortran
 ```
-Then build from source using the command:
+Then build from source using the command
 ```bash
 pip install pyshtools --no-binary pyshtools
 ```
 
-If you would like to modify the source code, you should clone the SHTOOLS repo
+If you would like to modify the source code, you should clone the SHTOOLS repo:
 ```bash
 git clone https://github.com/SHTOOLS/SHTOOLS.git
 ```
-Once the repo is cloned, enter the directory, and use the command
+Once the repo is cloned, enter the directory, and use either the command
 ```bash
 pip install .
 ```

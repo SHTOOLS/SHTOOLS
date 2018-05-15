@@ -1,8 +1,9 @@
 ![LOGO](misc/logo.png)
 
-[![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg)](http://dx.doi.org/10.5281/zenodo.592762)
 [![Documentation](https://img.shields.io/badge/documentation-shtools.github.io%2FSHTOOLS%2F-yellow.svg)](https://shtools.github.io/SHTOOLS/)
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg)](http://dx.doi.org/10.5281/zenodo.592762)
+[![Paper](https://img.shields.io/badge/paper-10.1029/2018GC007529-orange.svg)](http://doi.org/10.1029/2018GC007529)
+[![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=pyshtools)
 
 SHTOOLS/pysthools is a Fortran-95/Python library that can be used to perform
@@ -99,8 +100,6 @@ To get started, check out the following Python tutorial notebooks:
 * [Introduction 1: Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
 * [Introduction 2: Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
 
-You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/pyshtools).
-
 ### ACKNOWLEDGMENTS ###
 SHTOOLS is open source (revised BSD license) and makes use of the freely
 available Fourier transform package
@@ -109,4 +108,6 @@ available Fourier transform package
 [BLAS](http://www.netlib.org/blas/).
 
 ### CITATION ###
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS, Zenodo, doi:[10.5281/zenodo.592762](http://doi.org/10.5281/zenodo.592762)
+Mark A. Wieczorek and Matthias Meschede (2018). SHTools --- Tools for working with spherical harmonics, *Geochemistry, Geophysics, Geosystems*, doi:[10.1029/2018GC007529](http://doi.org/10.1029/2018GC007529).
+
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS, *Zenodo*, doi:[10.5281/zenodo.592762](http://doi.org/10.5281/zenodo.592762).
