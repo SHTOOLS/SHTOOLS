@@ -6,6 +6,7 @@ permalink: pymakecirclecoord.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the coordinates of a circle placed at a given latitude and longitude.

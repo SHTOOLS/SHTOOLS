@@ -6,6 +6,7 @@ permalink: pyshmultitapermaskse.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Perform a localized multitaper spectral analysis using arbitrary windows derived from a mask.

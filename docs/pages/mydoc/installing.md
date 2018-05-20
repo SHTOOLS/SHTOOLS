@@ -9,7 +9,7 @@ toc: true
 
 ## Python package installer (pip)
 
-The easiest way to install the Python components of SHTOOLS (pyshtools) is to use `pip`. On Linux, macOS and windows machines, the binary wheels can be installed by executing the following command:
+The easiest way to install the Python components of SHTOOLS (pyshtools) is to use `pip`. On Linux, macOS and windows machines, the binary wheels can be installed by executing the command
 ```bash
 pip install pyshtools
 ```
@@ -21,18 +21,25 @@ or on macOS using [brew](https://brew.sh/)
 ```bash
 brew install fftw --with-fortran
 ```
-Then clone the SHTOOLS repo
+Then build from source using the command
+```bash
+pip install pyshtools --no-binary pyshtools
+```
+
+If you would like to modify the source code, you should clone the SHTOOLS repo:
 ```bash
 git clone https://github.com/SHTOOLS/SHTOOLS.git
 ```
-To install pyshtools in the active Python environment lib folder, execute this command in the main directory:
+Once the repo is cloned, enter the directory, and use either the command
 ```bash
 pip install .
 ```
-To instead install the files in the current working directory and link them to the system Python directory, use
+to install pyshtools in the active Python environment lib folder, or use 
 ```bash
 pip install -e .
 ```
+to install the files in the current working directory and link them to the system Python directory.
+
 To uninstall pyshtools from your system directory, use the command
 ```bash
 pip uninstall pyshtools

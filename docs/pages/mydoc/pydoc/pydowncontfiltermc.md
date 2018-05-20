@@ -6,6 +6,7 @@ permalink: pydowncontfiltermc.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree.

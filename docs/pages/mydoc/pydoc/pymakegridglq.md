@@ -6,6 +6,7 @@ permalink: pymakegridglq.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Create a 2D map from a set of spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes.

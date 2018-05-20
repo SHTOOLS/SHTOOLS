@@ -6,6 +6,7 @@ permalink: shbiask.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the multitaper (cross-)power spectrum expectation of a function localized by spherical cap windows.

@@ -6,6 +6,7 @@ permalink: plschmidt.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the Schmidt-normalized Legendre polynomials.

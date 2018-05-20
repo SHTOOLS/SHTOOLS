@@ -6,6 +6,7 @@ permalink: shmultitaperse.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Perform a localized multitaper spectral analysis using spherical cap windows.

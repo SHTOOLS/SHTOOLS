@@ -6,6 +6,7 @@ permalink: pyshmtvaropt.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.

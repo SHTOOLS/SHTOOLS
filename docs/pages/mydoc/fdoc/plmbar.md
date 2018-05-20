@@ -6,6 +6,7 @@ permalink: plmbar.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the 4-pi (geodesy) normalized associated Legendre functions.

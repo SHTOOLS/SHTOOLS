@@ -6,6 +6,7 @@ permalink: shcrosspowerdensityl.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the cross-power spectral density of two real functions for a single spherical harmonic degree.

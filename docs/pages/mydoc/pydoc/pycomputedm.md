@@ -6,6 +6,7 @@ permalink: pycomputedm.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the space-concentration kernel of a spherical cap.

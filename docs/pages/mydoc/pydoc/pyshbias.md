@@ -6,6 +6,7 @@ permalink: pyshbias.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum.

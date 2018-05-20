@@ -6,6 +6,7 @@ permalink: pymakeellipsecoord.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the coordinates of an ellipse placed at a given latitude and longitude.

@@ -6,6 +6,7 @@ permalink: pycurve2mask.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Given a set of latitude and longitude coordinates representing a closed curve, output a gridded binary mask.

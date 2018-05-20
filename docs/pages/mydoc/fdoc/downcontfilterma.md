@@ -6,6 +6,7 @@ permalink: downcontfilterma.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the minimum-amplitude downward continuation filter of Wieczorek and Phillips (1998).

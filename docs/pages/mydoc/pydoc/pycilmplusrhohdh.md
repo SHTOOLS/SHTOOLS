@@ -6,6 +6,7 @@ permalink: pycilmplusrhohdh.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the gravitational potential exterior to relief with lateral variations in density referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998).

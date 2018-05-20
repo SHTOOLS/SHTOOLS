@@ -6,6 +6,7 @@ permalink: shreturntapersmap.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the eigenfunctions and eigenvalues of the space-concentration problem for an arbitrary region.

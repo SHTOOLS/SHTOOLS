@@ -6,6 +6,7 @@ permalink: pyshexpandglq.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics.

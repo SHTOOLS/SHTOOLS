@@ -6,6 +6,7 @@ permalink: pyshadmitcorr.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the admittance and correlation spectra of two real functions.

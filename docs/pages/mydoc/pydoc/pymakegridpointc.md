@@ -6,6 +6,7 @@ permalink: pymakegridpointc.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Evaluate a complex function expressed in complex spherical harmonics at a single point.

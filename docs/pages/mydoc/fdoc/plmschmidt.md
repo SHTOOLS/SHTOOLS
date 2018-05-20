@@ -6,6 +6,7 @@ permalink: plmschmidt.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the Schmidt semi-normalized associated Legendre functions.

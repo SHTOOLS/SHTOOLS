@@ -6,6 +6,7 @@ permalink: preglq.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate the weights and nodes used in integrating a function by Gauss-Legendre quadrature.

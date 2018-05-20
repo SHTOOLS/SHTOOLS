@@ -12,8 +12,12 @@ site_title: SHTOOLS - Tools for working with spherical harmonics
 company_name: SHTOOLS
 # this appears in the footer
 
-# gitlab_editme_path: tomjoht/documentation-theme-jekyll/blob/gh-pages/
-# if you're using GitLab, provide the basepath to the branch you've created for reviews, following the sample here. if not, leave this value blank.
+github_editme_path: SHTOOLS/SHTOOLS/blob/develop/docs
+# if you're using GitHub, provide the basepath to the branch you've created for reviews, following the sample here. if not, leave this value blank.
+
+github_fdoc_editme_path: SHTOOLS/SHTOOLS/tree/develop/src/fdoc
+github_pydoc_editme_path: SHTOOLS/SHTOOLS/tree/develop/src/pydoc
+# These are the paths for the origin Fortran and Python documentation files.
 
 disqus_shortname: 
 # if you're using disqus for comments, add the shortname here. if not, leave this value blank.
@@ -83,5 +87,6 @@ description: "SHTOOLS is an archive of Fortran 95 and Python software that can b
 # the description is used in the feed.xml file
 
 # needed for sitemap.xml file and github pages
-url : http://shtools.github.io
-baseurl: /SHTOOLS
+url : http://shtools.oca.eu
+
+baseurl: 

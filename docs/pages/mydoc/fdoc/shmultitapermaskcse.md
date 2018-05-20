@@ -6,6 +6,7 @@ permalink: shmultitapermaskcse.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Perform a localized multitaper cross-spectral analysis using using arbitrary windows derived from a mask.

@@ -8,4 +8,4 @@ Gravitational Constant.
 
 ## Reference
 
-Mohr, P.J., Taylor, B.N., Newell, D.B., 2012. CODATA recommended values of the fundamental physical constants, 2010. Rev. Modern Phys. 84, 1527–1605. doi:doi:10.1103/RevModPhys.84.1527.
+Mohr, P.J., Taylor, B.N., Newell, D.B., 2012. CODATA recommended values of the fundamental physical constants, 2010. Rev. Modern Phys. 84, 1527-1605. doi:doi:10.1103/RevModPhys.84.1527.

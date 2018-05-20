@@ -6,6 +6,7 @@ permalink: pyplmschmidt.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute all the Schmidt semi-normalized associated Legendre functions.

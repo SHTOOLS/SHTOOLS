@@ -6,6 +6,7 @@ permalink: pybatohilmdh.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate iteratively the relief along an interface of constant density contrast that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998).

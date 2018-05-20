@@ -6,6 +6,7 @@ permalink: makegridpoint.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Evaluate a real function expressed in real spherical harmonics at a single point.

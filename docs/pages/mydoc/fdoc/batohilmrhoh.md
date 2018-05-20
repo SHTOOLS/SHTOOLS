@@ -6,6 +6,7 @@ permalink: batohilmrhoh.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Calculate iteratively the relief along an interface with lateral density variations that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998).

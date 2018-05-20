@@ -6,6 +6,7 @@ permalink: pyshbiaskmask.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the multitaper (cross-)power spectrum expectation of a function localized by arbitrary windows derived from a mask.

@@ -6,6 +6,7 @@ permalink: shreadjpl.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Read spherical harmonic coefficients from a JPL ascii-formatted file.

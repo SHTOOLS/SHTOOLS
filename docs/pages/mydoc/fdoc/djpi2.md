@@ -6,6 +6,7 @@ permalink: djpi2.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical harmonics.

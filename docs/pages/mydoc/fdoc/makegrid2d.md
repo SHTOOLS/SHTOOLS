@@ -6,6 +6,7 @@ permalink: makegrid2d.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical harmonic coefficients.

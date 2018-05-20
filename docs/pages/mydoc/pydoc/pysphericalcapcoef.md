@@ -6,6 +6,7 @@ permalink: pysphericalcapcoef.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Calculate the spherical harmonic coefficients of a spherical cap.

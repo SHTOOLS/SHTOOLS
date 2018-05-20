@@ -6,6 +6,7 @@ permalink: plschmidt_d1.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the Schmidt-normalized Legendre polynomials and first derivatives.

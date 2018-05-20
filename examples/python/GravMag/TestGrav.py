@@ -37,9 +37,9 @@ def main():
 
 def TestMakeGravGrid():
     infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
-    clm, lmax, header = shio.SHReadH(infile, 110, 2)
-    r0 = header[0] * 1.e3
-    gm = header[1] * 1.e9
+    clm, lmax, header = shio.shread(infile, header=True)
+    r0 = float(header[0]) * 1.e3
+    gm = float(header[1]) * 1.e9
     clm[0, 0, 0] = 1.0
     print(gm, r0)
 
@@ -140,8 +140,8 @@ def TestFilter():
 
 def TestMakeMagGrid():
     infile = '../../ExampleDataFiles/FSU_mars90.sh'
-    clm, lmax, header = shio.SHReadH(infile, 90, 4, skip=1)
-    r0 = header[0] * 1.e3
+    clm, lmax, header  = shio.shread(infile, header=True, skip=1)
+    r0 = float(header[0]) * 1.e3
     a = constant.r_mars + 145.0e3  # radius to evaluate the field
 
     rad, theta, phi, total = gravmag.MakeMagGridDH(clm, r0, lmax=719, a=a,
@@ -162,11 +162,7 @@ def TestMakeMagGrid():
     fig.savefig('Mars_Mag.png')
 
     ls = np.arange(lmax + 1)
-    pspectrum = gravmag.SHMagPowerSpectrum(clm, r0)
-    pspectrum2 = np.array([gravmag.SHMagPowerL(clm, r0, l)
-                           for l in range(0, lmax + 1)])
-    print('Minimum and maximum difference in spectra = ',
-          (pspectrum - pspectrum2).min(), (pspectrum - pspectrum2).max())
+    pspectrum = gravmag.mag_spectrum(clm, r0, r0)
 
     fig_spectrum, ax = plt.subplots(1, 1)
     ax.set_xscale('linear')

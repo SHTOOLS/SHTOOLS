@@ -6,6 +6,7 @@ permalink: pyshmtdebias.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Invert for the global power spectrum given a multitaper spectrum estimate formed with spherical cap localization windows.

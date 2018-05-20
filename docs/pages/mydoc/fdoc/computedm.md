@@ -6,6 +6,7 @@ permalink: computedm.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the space-concentration kernel of a spherical cap.

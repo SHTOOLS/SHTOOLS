@@ -6,6 +6,7 @@ permalink: curve2mask.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Given a set of latitude and longitude coordinates representing a closed curve, output a gridded binary mask.

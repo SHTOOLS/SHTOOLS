@@ -27,8 +27,9 @@ for fn in pydocfiles:
                   'multitaper spectral analysis, fortran, Python, ' +
                   'gravity, magnetic field\n' + 'sidebar: mydoc_sidebar\n' +
                   'permalink: ' + name + '.html\n' + 'summary:\n' +
-                  'tags: [python]\n' + 'toc: false\n' + '---\n\n' + doc)
+                  'tags: [python]\n' + 'toc: false\n' + 'editdoc: pydoc\n' +
+                  '---\n\n' + doc)
 
-        with open('../../doc/pages/mydoc/pydoc/' + name +
+        with open('../../docs/pages/mydoc/pydoc/' + name +
                   '.md', 'w') as www:
             www.write(string)

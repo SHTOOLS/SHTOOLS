@@ -6,6 +6,7 @@ permalink: makecirclecoord.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the coordinates of a circle placed at a given latitude and longitude.

@@ -6,6 +6,7 @@ permalink: pydhaj.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the latitudinal weights used in the Driscoll and Healy (1994) spherical harmonic transform.

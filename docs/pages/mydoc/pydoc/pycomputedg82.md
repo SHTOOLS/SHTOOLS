@@ -6,6 +6,7 @@ permalink: pycomputedg82.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of a spherical cap.

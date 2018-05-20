@@ -6,6 +6,7 @@ permalink: pyshctor.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Convert complex spherical harmonics to real form.

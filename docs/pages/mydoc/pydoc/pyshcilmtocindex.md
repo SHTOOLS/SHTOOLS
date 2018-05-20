@@ -6,6 +6,7 @@ permalink: pyshcilmtocindex.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.

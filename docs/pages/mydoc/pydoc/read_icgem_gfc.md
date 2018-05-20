@@ -6,6 +6,7 @@ permalink: read_icgem_gfc.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted file.

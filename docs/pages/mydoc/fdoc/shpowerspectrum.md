@@ -6,6 +6,7 @@ permalink: shpowerspectrum.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute the power spectrum of a real function.

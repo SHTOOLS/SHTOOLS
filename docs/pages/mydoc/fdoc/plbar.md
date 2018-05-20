@@ -6,6 +6,7 @@ permalink: plbar.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the 4-pi (geodesy) normalized Legendre polynomials.

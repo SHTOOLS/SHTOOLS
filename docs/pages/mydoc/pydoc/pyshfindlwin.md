@@ -6,6 +6,7 @@ permalink: pyshfindlwin.html
 summary:
 tags: [python]
 toc: false
+editdoc: pydoc
 ---
 
 Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor.

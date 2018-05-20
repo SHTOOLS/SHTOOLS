@@ -45,7 +45,7 @@ def example():
     print('---- SHrtoc example ----')
     # --- input data filename ---
     infile = '../../ExampleDataFiles/MarsTopo719.shape'
-    coeffs1, lmax = shio.SHRead(infile, 719)
+    coeffs1, lmax = shio.shread(infile)
     coeffs1 = coeffs1[:, :lmax + 1, :lmax + 1]
 
     # --- convert to complex coefficients, fill negative order coefficients ---

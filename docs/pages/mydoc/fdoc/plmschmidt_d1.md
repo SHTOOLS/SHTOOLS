@@ -6,6 +6,7 @@ permalink: plmschmidt_d1.html
 summary:
 tags: [fortran]
 toc: false
+editdoc: fdoc
 ---
 
 Compute all the Schmidt semi-normalized associated Legendre functions and first derivatives.

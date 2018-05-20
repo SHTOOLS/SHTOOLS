@@ -151,7 +151,7 @@
 #
 ###############################################################################
 
-VERSION = 4.1.3
+VERSION = 4.2
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
@@ -181,7 +181,7 @@ INCDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
-WWWSRC = doc
+WWWSRC = docs
 WWWDEST = www
 
 LIBPATH = $(PWD)/$(LIBDIR)
