@@ -43,5 +43,5 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 ## References
 
-* Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, doi:[10.1029/97JE03136](https://dx.doi.org/10.1029/97JE03136), 1998.
-* Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, doi:[10.1016/B978-044452748-6/00156-5](https://dx.doi.org/10.1016/B978-044452748-6/00156-5), 2007.
+* Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, doi:[10.1029/97JE03136](https://doi.org/10.1029/97JE03136), 1998.
+* Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, doi:[10.1016/B978-044452748-6/00156-5](https://doi.org/10.1016/B978-044452748-6/00156-5), 2007.
