@@ -3,7 +3,6 @@ include LICENSE
 include VERSION
 include Contributors.txt
 include Makefile
-include index.html
 
 graft examples/ExampleDataFiles
 recursive-include examples/fortran *.f95 input* Makefile
@@ -15,4 +14,3 @@ graft src/fdoc
 recursive-include src *.py *.pyf
 
 graft man
-graft www
