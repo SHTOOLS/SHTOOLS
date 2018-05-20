@@ -554,7 +554,33 @@ $('#toc').on('click', 'a', function() {
 
     
 
-  <h2 id="version-41">Version 4.1</h2>
+  <h2 id="version-42">Version 4.2</h2>
+
+<p><strong>Change log:</strong></p>
+
+<ul>
+  <li>Full support added for the use of unnormalized harmonics in the classes <code class="highlighter-rouge">SHCoeffs</code> and <code class="highlighter-rouge">SHGrid</code>. To make use of this normalization, just specify <code class="highlighter-rouge">normalization='unnorm'</code>.</li>
+  <li>Added a new python native routine <code class="highlighter-rouge">mag_spectrum()</code> in the subpackage <code class="highlighter-rouge">gravmag</code> that replaces the original fortran wrapped routines. The old python wrapped functions have been removed from pyshtools. This new routine is nearly the same as <code class="highlighter-rouge">spectrum()</code>, and further allows one to compute the spectrum of the potential or magnetic intensity.</li>
+  <li>The old fortran based <code class="highlighter-rouge">SHRead</code> function has been replaced with a python native version <code class="highlighter-rouge">shread()</code>. The functionality is nearly identical as before, and combines the previous routines <code class="highlighter-rouge">SHRead</code>, <code class="highlighter-rouge">SHReadError</code>, <code class="highlighter-rouge">SHReadErrorH</code> and <code class="highlighter-rouge">SHReadH</code> into one. Differences include: (1) It is no longer necessary to specify the lmax of the file: This is determined automatically by reading the file from the end, (2) both real and complex coefficients are supported, (3) a header line can be output, but it is a simple list of type str that will need to be converted to the correct format by the user, and (4) “comment” lines are read and ignored: A valid line is one where there are 4 or more words, and where the first two words are integers.</li>
+  <li>A new python native function <code class="highlighter-rouge">convert()</code> was added in the subpackage <code class="highlighter-rouge">shio</code> that converts between arrays of spherical harmonic coefficients with different normalizations. The class <code class="highlighter-rouge">SHCoeffs</code> was then simplified by using this external function for all conversions involving <code class="highlighter-rouge">SHCoeffs</code> class instances.</li>
+  <li>The optional parameter lmax was added to <code class="highlighter-rouge">SHCoeffs.spectrum()</code>.</li>
+  <li>When plotting grid from the class <code class="highlighter-rouge">SHGrid</code>, one can now specify the label to use for the x and y axes with <code class="highlighter-rouge">xlabel</code> and <code class="highlighter-rouge">ylabel</code>, as well as the interval to use when plotting ticks on both axes using <code class="highlighter-rouge">tick_interval</code>.</li>
+  <li>The pyshtools rotation routines now allow you to specify the optional parameter <code class="highlighter-rouge">convention</code> to treat Euler angles in either the <code class="highlighter-rouge">x</code> or <code class="highlighter-rouge">y</code> conventions (i.e., which axes to use for the second rotation). Furthermore, the optional argument <code class="highlighter-rouge">body</code> allows you to specify if you want to rotate the body (True), or coordinate system (False, default). The tutorial number 3 was updated to clear up some inconsistencies in how the angles were defined.</li>
+  <li>New optional parameters added to <code class="highlighter-rouge">SHWindow.plot_windows()</code> and <code class="highlighter-rouge">SHWindow.plot_spectra()</code> that include <code class="highlighter-rouge">xlim</code> and <code class="highlighter-rouge">ylim</code> for the limits when plotting spectra, <code class="highlighter-rouge">maxcolumns</code> for the number of columns to use when plotting several windows, and <code class="highlighter-rouge">lmax</code> which controls the grid spacing when plotting the windows.</li>
+  <li>Added the optional argument <code class="highlighter-rouge">lmax</code> to <code class="highlighter-rouge">SHCoeffs.from_random()</code> that allows you to create coefficients with maximum bandwidths that are either greater or less than the bandwidth of the input power spectrum.</li>
+  <li>Added a warning message when using <code class="highlighter-rouge">SHCoeffs.rotate()</code> with degrees greater than 1200, as the routine is not accurate beyond this value.</li>
+  <li>Added an optional argument <code class="highlighter-rouge">legend</code> to <code class="highlighter-rouge">SHWindow.plot_windows()</code> to control whether the legend is plotted or not.</li>
+  <li>Fixed a minor bug in ClassExample.py file concerning the use of <code class="highlighter-rouge">SHCoeffs.rotate()</code>.</li>
+  <li>Added support for plotting to an already existing figure by allowing the user to specify an existing matplotlib axes.</li>
+  <li>Removed some non-standard ascii dashes in the documentation files, and forced all doc files to be opened as <code class="highlighter-rouge">utf-8</code>.</li>
+  <li>HTML documentation was completely redone using Jekyll. The markdown source files are now located in <code class="highlighter-rouge">pages/mydoc</code>. A static html web site is built using <code class="highlighter-rouge">jekyll</code>, whose files are located in <code class="highlighter-rouge">doc</code>. Github will automatically create the static pages and serve them on <a href="https://shtools.github.io/SHTOOLS/">shtools.github.io/SHTOOLS</a>. To build the static pages yourself, it is only necessary to execute <code class="highlighter-rouge">bundle exec jekyll build</code> in the directory <code class="highlighter-rouge">doc</code>, which will build the site into <code class="highlighter-rouge">_site</code> in the same directory. Alternatively, <code class="highlighter-rouge">make www</code> in the main directory will create a static site in the top-level directory <code class="highlighter-rouge">www</code> that could be used to deploy on a different web server. The site is based on the template <a href="https://github.com/tomjoht/documentation-theme-jekyll">Jekyll documentation theme</a> by @tomjoht.</li>
+</ul>
+
+<p><strong>Citation:</strong></p>
+
+<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS: Version 4.2, Zenodo, doi:<a href="http://doi.org/10.5281/zenodo.592762">10.5281/zenodo.592762</a></p>
+
+<h2 id="version-41">Version 4.1</h2>
 
 <p>This version adds improved functionality to SHTOOLS and fixes a couple of minor bugs. In addition, this release will be the first where pre-built wheels for unix/macOS/windows will be distributed via PYPI.</p>
 
@@ -625,7 +651,7 @@ $('#toc').on('click', 'a', function() {
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2017 SHTOOLS. All rights reserved. <br />
+               &copy;2018 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

@@ -103,6 +103,15 @@
 
 
 {
+"title": "convert (Python)",
+"url": "convert.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "cross_spectrum (Python)",
 "url": "cross_spectrum.html",
 "summary": ""
@@ -305,6 +314,15 @@
 {
 "title": "Localized spectral analysis",
 "url": "localized-spectral-analysis.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "spectrum (Python)",
+"url": "mag_spectrum.html",
 "summary": ""
 }
 ,
@@ -1205,24 +1223,6 @@
 
 
 {
-"title": "SHMagPowerL (Python)",
-"url": "pyshmagpowerl.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "SHMagPowerSpectrum (Python)",
-"url": "pyshmagpowerspectrum.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "SHMTCouplingMatrix (Python)",
 "url": "pyshmtcouplingmatrix.html",
 "summary": ""
@@ -1295,7 +1295,7 @@
 
 
 {
-"title": "SHRead (Python)",
+"title": "shread (Python)",
 "url": "pyshread.html",
 "summary": ""
 }

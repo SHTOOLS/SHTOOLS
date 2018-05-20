@@ -558,7 +558,7 @@ $('#toc').on('click', 'a', function() {
 
   <h2 id="python-package-installer-pip">Python package installer (pip)</h2>
 
-<p>The easiest way to install the Python components of SHTOOLS (pyshtools) is to use <code class="highlighter-rouge">pip</code>. On Linux, macOS and windows machines, the binary wheels can be installed by executing the following command:</p>
+<p>The easiest way to install the Python components of SHTOOLS (pyshtools) is to use <code class="highlighter-rouge">pip</code>. On Linux, macOS and windows machines, the binary wheels can be installed by executing the command</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pyshtools
 </code></pre></div></div>
 <p>If you wish to instead compile the archive yourself, first make sure that you have the necessary dependencies installed. On most linux distributions, this can be accomplished using</p>
@@ -567,15 +567,21 @@ $('#toc').on('click', 'a', function() {
 <p>or on macOS using <a href="https://brew.sh/">brew</a></p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install fftw <span class="nt">--with-fortran</span>
 </code></pre></div></div>
-<p>Then clone the SHTOOLS repo</p>
+<p>Then build from source using the command</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pyshtools <span class="nt">--no-binary</span> pyshtools
+</code></pre></div></div>
+
+<p>If you would like to modify the source code, you should clone the SHTOOLS repo:</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/SHTOOLS/SHTOOLS.git
 </code></pre></div></div>
-<p>To install pyshtools in the active Python environment lib folder, execute this command in the main directory:</p>
+<p>Once the repo is cloned, enter the directory, and use either the command</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nb">.</span>
 </code></pre></div></div>
-<p>To instead install the files in the current working directory and link them to the system Python directory, use</p>
+<p>to install pyshtools in the active Python environment lib folder, or use</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nt">-e</span> <span class="nb">.</span>
 </code></pre></div></div>
+<p>to install the files in the current working directory and link them to the system Python directory.</p>
+
 <p>To uninstall pyshtools from your system directory, use the command</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip uninstall pyshtools
 </code></pre></div></div>
@@ -701,7 +707,7 @@ LAPACK_UNDERSCORE <span class="o">=</span> 1  <span class="c"># to add an extra 
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2017 SHTOOLS. All rights reserved. <br />
+               &copy;2018 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

@@ -74,6 +74,12 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/convert.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/cross_spectrum.html</loc>
   </url>
   
@@ -209,6 +215,12 @@
   
   <url>
     <loc>http://shtools.oca.eu/localized-spectral-analysis.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/mag_spectrum.html</loc>
   </url>
   
   
@@ -805,18 +817,6 @@
   
   <url>
     <loc>http://shtools.oca.eu/pyshlocalizedadmitcorr.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://shtools.oca.eu/pyshmagpowerl.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://shtools.oca.eu/pyshmagpowerspectrum.html</loc>
   </url>
   
   

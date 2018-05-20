@@ -535,7 +535,7 @@ MathJax.Hub.Config({
 
 <h2 id="usage">Usage</h2>
 
-<p><code class="highlighter-rouge">shout</code> = SHMultiply (<code class="highlighter-rouge">sh1</code>, <code class="highlighter-rouge">lmax1</code>, <code class="highlighter-rouge">sh2</code>, <code class="highlighter-rouge">lmax2</code>, [<code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">csphase</code>])</p>
+<p><code class="highlighter-rouge">shout</code> = SHMultiply (<code class="highlighter-rouge">sh1</code>, <code class="highlighter-rouge">sh2</code>, [<code class="highlighter-rouge">lmax1</code>, <code class="highlighter-rouge">lmax2</code>, <code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">csphase</code>])</p>
 
 <h2 id="returns">Returns</h2>
 
@@ -549,11 +549,11 @@ MathJax.Hub.Config({
 <dl>
   <dt><code class="highlighter-rouge">sh1</code> : float, dimension (2, <code class="highlighter-rouge">lmax1in</code>+1, <code class="highlighter-rouge">lmax1in</code>+1)</dt>
   <dd>The spherical harmonic coefficients of the first function.</dd>
-  <dt><code class="highlighter-rouge">lmax1</code> : integer</dt>
-  <dd>The maximum spherical harmonic degree used in evaluting <code class="highlighter-rouge">sh1</code>.</dd>
   <dt><code class="highlighter-rouge">sh2</code> : float, dimension (2, <code class="highlighter-rouge">lmax2in</code>+1, <code class="highlighter-rouge">lmax2in</code>+1)</dt>
   <dd>The spherical harmonic coefficients of the second function.</dd>
-  <dt><code class="highlighter-rouge">lmax2</code> : integer</dt>
+  <dt><code class="highlighter-rouge">lmax1</code> : integer, optional, default = <code class="highlighter-rouge">lmax1in</code></dt>
+  <dd>The maximum spherical harmonic degree used in evaluting <code class="highlighter-rouge">sh1</code>.</dd>
+  <dt><code class="highlighter-rouge">lmax2</code> : integer, optional, default = <code class="highlighter-rouge">lmax2in</code></dt>
   <dd>The maximum spherical harmonic degree used in evaluting <code class="highlighter-rouge">sh2</code>.</dd>
   <dt><code class="highlighter-rouge">norm</code> : optional, integer, default = 1</dt>
   <dd>1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.</dd>
@@ -597,7 +597,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2017 SHTOOLS. All rights reserved. <br />
+               &copy;2018 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

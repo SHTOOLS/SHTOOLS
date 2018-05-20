@@ -614,6 +614,15 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
+        <tr><td><a href="convert.html">convert (Python)</a></td>
+          <td> Convert an array of spherical harmonic coefficients to a different normalization convention. Usage coeffs_out = convert(coeffs_in, [normalization_in, normalization_out, csphase_in, csphase_out, lmax]) Returns  coeffs_out : ndarray, size (2, lmax+1, lmax+1) An array of spherical harmonic coefficients with the new normalization... </td>
+        </tr>
+        
+     
+   
+    
+        
+
         <tr><td><a href="cross_spectrum.html">cross_spectrum (Python)</a></td>
           <td> Return the cross-spectrum of the spherical harmonic coefficients as a function of spherical harmonic degree. Usage array = cross_spectrum (clm1, clm2, [normalization, degrees, lmax, convention, unit, base]) Returns  array : ndarray, shape (len(degrees)) 1-D ndarray of the... </td>
         </tr>
@@ -683,6 +692,15 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
    
     
+   
+    
+        
+
+        <tr><td><a href="mag_spectrum.html">spectrum (Python)</a></td>
+          <td> Return the spectrum of the magnetic field as a function of spherical harmonic degree. Usage array = mag_spectrum (clm, a, r, [potential, normalization, degrees, lmax, convention, unit, base`]) Returns  array : ndarray, shape (len(degrees)) 1-D... </td>
+        </tr>
+        
+     
    
     
         
@@ -1401,24 +1419,6 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
-        <tr><td><a href="pyshmagpowerl.html">SHMagPowerL (Python)</a></td>
-          <td> Compute the power of the magnetic field for a single degree l given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage power = SHMagPowerL (c, a, l, [r]) Returns  power : float The power at degree l ... </td>
-        </tr>
-        
-     
-   
-    
-        
-
-        <tr><td><a href="pyshmagpowerspectrum.html">SHMagPowerSpectrum (Python)</a></td>
-          <td> Compute the power spectrum of the magnetic field given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage spectrum = SHMagPowerSpectrum (c, a, [r, lmax]) Returns  spectrum : float, dimension (lmax+1) The power spectrum of the magnetic field.  &lt;h2... </td>
-        </tr>
-        
-     
-   
-    
-        
-
         <tr><td><a href="pyshmtcouplingmatrix.html">SHMTCouplingMatrix (Python)</a></td>
           <td> This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum. Usage Mmt = SHMTCouplingMatrix (lmax, tapers_power, [lwin, k, taper_wt]) &lt;h2... </td>
         </tr>
@@ -1447,7 +1447,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="pyshmultiply.html">SHMultiply (Python)</a></td>
-          <td> Multiply two functions and determine the spherical harmonic coefficients of the resulting function. Usage shout = SHMultiply (sh1, lmax1, sh2, lmax2, [norm, csphase]) Returns  shout : float, dimension (2, lmax1+lmax2+1, lmax1+lmax2+1) The real spherical harmonic... </td>
+          <td> Multiply two functions and determine the spherical harmonic coefficients of the resulting function. Usage shout = SHMultiply (sh1, sh2, [lmax1, lmax2, norm, csphase]) Returns  shout : float, dimension (2, lmax1+lmax2+1, lmax1+lmax2+1) The real spherical harmonic... </td>
         </tr>
         
      
@@ -1491,8 +1491,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
-        <tr><td><a href="pyshread.html">SHRead (Python)</a></td>
-          <td> Read spherical harmonic coefficients from an ascii-formatted file. Usage cilm, lmax = SHRead (filename, lmaxin, [skip]) Returns  cilm : float, dimension (2, lmaxin+1, lmaxin+1) The spherical harmonic coefficients contained in filename. Note that dimensions of the output array... </td>
+        <tr><td><a href="pyshread.html">shread (Python)</a></td>
+          <td> Read spherical harmonic coefficients from a text file. Usage coeffs, lmaxout = shread(filename, [lmax, skip]) coeffs, header, lmaxout = shread(filename, header=True, [lmax, skip]) coeffs, errors, lmaxout = shread(filename, error=True, [lmax, &lt;code... </td>
         </tr>
         
      
@@ -2006,7 +2006,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2017 SHTOOLS. All rights reserved. <br />
+               &copy;2018 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

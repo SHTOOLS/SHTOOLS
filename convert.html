@@ -5,8 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
-<meta name="keywords" content="fortran,  spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field">
-<title>SHTOOLS (Fortran) | SHTOOLS - Tools for working with spherical harmonics</title>
+<meta name="keywords" content="python,  spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field">
+<title>convert (Python) | SHTOOLS - Tools for working with spherical harmonics</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -135,7 +135,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about SHTOOLS (Fortran) page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about convert (Python) page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -153,7 +153,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="SHTOOLS (Fortran)">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="convert (Python)">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -520,7 +520,7 @@ MathJax.Hub.Config({
 </script>
 
 <div class="post-header">
-   <h1 class="post-title-main">SHTOOLS (Fortran)</h1>
+   <h1 class="post-title-main">convert (Python)</h1>
 </div>
 
 
@@ -531,49 +531,39 @@ MathJax.Hub.Config({
 
     
 
-  <p>SHTOOLS is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.</p>
-
-<h2 id="features">Features</h2>
-
-<p>SHTOOLS is extremely versatile:</p>
-
-<ul>
-  <li>It can accommodate any standard normalization of the spherical harmonic functions (“geodesy” 4-pi; normalized,  Schmidt semi-normalized, orthonormalized, and unnormalized).</li>
-  <li>Both real and complex spherical harmonics are supported.</li>
-  <li>Spherical harmonic transforms are calculated by exact quadrature rules using either the sampling theorem of <em>Driscoll and Healy</em> (1994) where data are equally sampled (or spaced) in latitude and longitude, or Gauss-Legendre quadrature.</li>
-  <li>One can choose to use or exclude the Condon-Shortley phase factor of (-1)^m with the associated Legendre functions.</li>
-  <li>The spherical harmonic transforms are proven to be accurate to approximately degree 2800, corresponding to a spatial resolution of better than 4 arc minutes.</li>
-  <li>Routines are included for performing localized multitaper spectral analyses.</li>
-  <li>Routines are included for performing standard gravity and magnetic field calculations, such as computation of the geoid and the determination of the potential associated with finite-amplitude topography.</li>
-  <li>The routines are fast. Spherical harmonic transforms and reconstructions take on the order of 1 second for bandwidths less than 600 and about 3 minutes for bandwidths close to 2800.</li>
-</ul>
+  <p>Convert an array of spherical harmonic coefficients to a different normalization convention.</p>
 
 <h2 id="usage">Usage</h2>
 
-<p>To call the SHTOOLS routines from within a Fortran 95 program, you will need to place the command</p>
+<p><code class="highlighter-rouge">coeffs_out</code> = convert(<code class="highlighter-rouge">coeffs_in</code>, [<code class="highlighter-rouge">normalization_in</code>, <code class="highlighter-rouge">normalization_out</code>, <code class="highlighter-rouge">csphase_in</code>, <code class="highlighter-rouge">csphase_out</code>, <code class="highlighter-rouge">lmax</code>])</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>use SHTOOLS
-</code></pre></div></div>
+<h2 id="returns">Returns</h2>
 
-<p>immediately after the program/subroutine/function name. To compile the program, use</p>
+<dl>
+  <dt><code class="highlighter-rouge">coeffs_out</code> : ndarray, size (2, lmax+1, lmax+1)</dt>
+  <dd>An array of spherical harmonic coefficients with the new normalization convention.</dd>
+</dl>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gfortran -I/usr/local/include -m64 -fPIC -O3 -L/usr/local/lib -lSHTOOLS -lfftw3 -lm -llapack -lblas
-</code></pre></div></div>
+<h2 id="parameters">Parameters</h2>
 
-<p>To use SHTOOLS in Python, enter the following:</p>
+<dl>
+  <dt><code class="highlighter-rouge">coeffs_in</code> : ndarray</dt>
+  <dd>The array of imput spherical harmonic coefficients.</dd>
+  <dt><code class="highlighter-rouge">normalization_in</code> : str, optional, default = ‘None’</dt>
+  <dd>‘4pi’, ‘ortho’, ‘schmidt’, or ‘unnorm’, for geodesy 4pi normalized, orthonormalized, Schmidt semi-normalized, or unnormalized coefficients, respectively.</dd>
+  <dt><code class="highlighter-rouge">normalization_out</code> : str, optional, default = ‘None’</dt>
+  <dd>‘4pi’, ‘ortho’, ‘schmidt’, or ‘unnorm’, for geodesy 4pi normalized, orthonormalized, Schmidt semi-normalized, or unnormalized coefficients, respectively.</dd>
+  <dt><code class="highlighter-rouge">csphase_in</code> : int, optional, default = None</dt>
+  <dd>Condon-Shortley phase convention of the input coefficients: 1 to exclude the phase factor, or -1 to include it.</dd>
+  <dt><code class="highlighter-rouge">csphase_out</code> : int, optional, default = None</dt>
+  <dd>Condon-Shortley phase convention of the input coefficients: 1 to exclude the phase factor, or -1 to include it.</dd>
+  <dt><code class="highlighter-rouge">lmax</code> : int, optional, default = coeffs_in.shape[1] - 1.</dt>
+  <dd>Maximum spherical harmonic degree to output. If lmax is larger than that of the input coefficients, the output array will be zero padded.</dd>
+</dl>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys
-sys.path.append('/usr/local/lib/python2.7/site-packages')
-import pyshtools as shtools
-</code></pre></div></div>
+<h2 id="description">Description</h2>
 
-<h2 id="license">License</h2>
-
-<p>The SHTOOLS software package is entirely free and open source. It can be modified and distributed according to the revised BSD license.</p>
-
-<h2 id="see-also">See also</h2>
-
-<p><a href="shtools.oca.eu">SHTOOLS</a></p>
+<p>This routine will convert an array of spherical harmonic coefficients to a different normalization convention and different Condon-Shortley phase convention. Optionally, a different maximum spherical harmonic degree can be specified. If this degree is smaller than that of the input coefficients, the input coefficients will be truncated. If this degree is larger than the input coefficients, then the output coefficients will be zero padded.</p>
 
 
     <div class="tags">
@@ -582,7 +572,7 @@ import pyshtools as shtools
         
         
         
-        <a href="tag_fortran.html" class="btn btn-default navbar-btn cursorNorm" role="button">fortran</a>
+        <a href="tag_python.html" class="btn btn-default navbar-btn cursorNorm" role="button">python</a>
         
         
         
@@ -590,7 +580,7 @@ import pyshtools as shtools
 
     
 
-    <a target="_blank" href="https://github.com/SHTOOLS/SHTOOLS/tree/develop/src/fdoc/shtools.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    <a target="_blank" href="https://github.com/SHTOOLS/SHTOOLS/tree/develop/src/pydoc/convert.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
 
     
 

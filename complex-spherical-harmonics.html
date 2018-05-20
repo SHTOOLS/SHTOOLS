@@ -585,11 +585,10 @@ Y_l^m(\theta,\phi) = \bar{P}_l^m(\cos \theta) \, e^{im\phi},
 
 <script type="math/tex; mode=display">\begin{eqnarray}
 \bar{P}_l^m(\mu) = \sqrt{\left(2l+1\right)\frac{(l-m)!}{(l+m)!}}\, P_{lm}(\mu),
-\end{eqnarray}</script>
+\end{eqnarray}.</script>
 
-<p>and where <script type="math/tex">\delta_{ij}</script> is the Kronecker delta function. The unnormalized
-associated Legendre functions are derived from the standard Legendre
-polynomials using the relations
+<p>The unnormalized associated Legendre functions are derived from the standard
+Legendre polynomials using the relations
 \begin{equation}
 P_{lm}(\mu) = \left( 1-\mu^2\right)^{m/2} \frac{d^m}{d\mu^m} P_l(\mu)
 \end{equation}
@@ -654,7 +653,7 @@ S_{ff}(l) = \sum\limits_{m=-l}^l |f_l^m|^2.
 with</p>
 
 <script type="math/tex; mode=display">\begin{equation}
-S_{fg}(l) = \sum\limits_{m=-l}^l f_{lm} \, g_{l}^{*m}.
+S_{fg}(l) = \sum\limits_{m=-l}^l f_{l}^{m} \, g_{l}^{*m}.
 \end{equation}</script>
 
 <p>The power spectrum is unmodified by a rotation of the coordinate system. Furthermore, the numerical values of the power spectrum are independent of the normalization convention used for the spherical harmonic functions (though the mathematical formulae will be different, as given <a href="#supported-normalizations">below</a>). If the functions <script type="math/tex">f</script> and <script type="math/tex">g</script> have a zero mean, <script type="math/tex">S_{ff}</script> and <script type="math/tex">S_{fg}</script> represent the contribution to the variance and covariance, respectively, as a function of degree <script type="math/tex">l</script>. It should be noted that while the power spectrum of a function is inherently real, the cross power of two functions may be a complex quantity.</p>
@@ -764,7 +763,7 @@ Finally, SHTOOLS defines the <em>energy</em> of a function as the integral of it
       <td><script type="math/tex">\displaystyle \int_\Omega Y_{l}^{*m}(\theta,\phi) \,Y_{l'}^{m'}(\theta,\phi)\, d\Omega = \frac{4\pi}{(2l+1)} \frac{(l+m)!}{(l-m)!}\,  \delta_{ll'}\, \delta_{mm'}</script></td>
     </tr>
     <tr>
-      <td><script type="math/tex">\displaystyle S_{fg}\left(l\right) = \frac{(l+m)!}{(2l+1)(l-m)!}\sum_{m=-l}^l f_l^m \, g_l^{*m}</script></td>
+      <td><script type="math/tex">\displaystyle S_{fg}\left(l\right) = \sum_{m=-l}^l \frac{(l+m)!}{(2l+1)(l-m)!} f_l^m \, g_l^{*m}</script></td>
     </tr>
   </tbody>
 </table>
@@ -798,7 +797,7 @@ Finally, SHTOOLS defines the <em>energy</em> of a function as the integral of it
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2017 SHTOOLS. All rights reserved. <br />
+               &copy;2018 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

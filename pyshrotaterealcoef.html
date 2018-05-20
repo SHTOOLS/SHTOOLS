@@ -561,7 +561,7 @@ MathJax.Hub.Config({
 
 <p><code class="highlighter-rouge">SHRotateRealCoef</code> will take the real spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in <code class="highlighter-rouge">x</code>, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention. The input rotation matrix <code class="highlighter-rouge">dj</code> is computed by a call to <code class="highlighter-rouge">djpi2</code>.</p>
 
-<p>The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.</p>
+<p>The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same. This routine uses the ‘y convention’, where the second rotation axis corresponds to the y axis.</p>
 
 <p><code class="highlighter-rouge">Scheme A:</code></p>
 
@@ -583,9 +583,9 @@ MathJax.Hub.Config({
 
 <p><code class="highlighter-rouge">x(-gamma, -beta, -alpha)</code>.</p>
 
-<p>To perform the inverse transform of <code class="highlighter-rouge">x(alpha, beta, gamma)</code>, use <code class="highlighter-rouge">x(-gamma, -beta, -alpha)</code>.</p>
+<p>The inverse transform of <code class="highlighter-rouge">x(alpha, beta, gamma)</code> is <code class="highlighter-rouge">x(-gamma, -beta, -alpha)</code>.</p>
 
-<p>Note that this routine uses the “y convention”, where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the “x convention”, where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be <code class="highlighter-rouge">alpha_y=alpha_x-pi/2</code>, <code class="highlighter-rouge">beta_x=beta_y</code>, and <code class="highlighter-rouge">gamma_y=gamma_x+pi/2</code>.</p>
+<p>Note that this routine uses the “y convention”, where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were originally defined in terms of the “x convention”, where the second rotation was with respect to the new x axis, the Euler angles according to the y convention would be <code class="highlighter-rouge">alpha_y=alpha_x-pi/2</code>, <code class="highlighter-rouge">beta_x=beta_y</code>, and <code class="highlighter-rouge">gamma_y=gamma_x+pi/2</code>.</p>
 
 <p>This routine first converts the real coefficients to complex form using <code class="highlighter-rouge">SHrtoc</code>. Then the coefficients are converted to indexed form using <code class="highlighter-rouge">SHCilmToCindex</code>, these are sent to <code class="highlighter-rouge">SHRotateCoef</code>, the result if converted back to <code class="highlighter-rouge">cilm</code> complex form using <code class="highlighter-rouge">SHCindexToCilm</code>, and these are finally converted back to real form using <code class="highlighter-rouge">SHctor</code>.</p>
 
@@ -619,7 +619,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2017 SHTOOLS. All rights reserved. <br />
+               &copy;2018 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

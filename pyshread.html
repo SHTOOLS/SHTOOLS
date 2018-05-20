@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="keywords" content="python,  spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field">
-<title>SHRead (Python) | SHTOOLS - Tools for working with spherical harmonics</title>
+<title>shread (Python) | SHTOOLS - Tools for working with spherical harmonics</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -135,7 +135,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about SHRead (Python) page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about shread (Python) page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -153,7 +153,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="SHRead (Python)">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="shread (Python)">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -520,7 +520,7 @@ MathJax.Hub.Config({
 </script>
 
 <div class="post-header">
-   <h1 class="post-title-main">SHRead (Python)</h1>
+   <h1 class="post-title-main">shread (Python)</h1>
 </div>
 
 
@@ -531,49 +531,70 @@ MathJax.Hub.Config({
 
     
 
-  <p>Read spherical harmonic coefficients from an ascii-formatted file.</p>
+  <p>Read spherical harmonic coefficients from a text file.</p>
 
 <h2 id="usage">Usage</h2>
 
-<p><code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">lmax</code> = SHRead (<code class="highlighter-rouge">filename</code>,  <code class="highlighter-rouge">lmaxin</code>, [<code class="highlighter-rouge">skip</code>])</p>
+<p><code class="highlighter-rouge">coeffs</code>, <code class="highlighter-rouge">lmaxout</code> = shread(<code class="highlighter-rouge">filename</code>, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">skip</code>])</p>
+
+<p><code class="highlighter-rouge">coeffs</code>, <code class="highlighter-rouge">header</code>, <code class="highlighter-rouge">lmaxout</code> = shread(<code class="highlighter-rouge">filename</code>, <code class="highlighter-rouge">header</code>=True, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">skip</code>])</p>
+
+<p><code class="highlighter-rouge">coeffs</code>, <code class="highlighter-rouge">errors</code>, <code class="highlighter-rouge">lmaxout</code> = shread(<code class="highlighter-rouge">filename</code>, <code class="highlighter-rouge">error</code>=True, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">skip</code>])</p>
+
+<p><code class="highlighter-rouge">coeffs</code>, <code class="highlighter-rouge">errors</code>, <code class="highlighter-rouge">header</code>, <code class="highlighter-rouge">lmaxout</code> = shread(<code class="highlighter-rouge">filename</code>, <code class="highlighter-rouge">error</code>=True, <code class="highlighter-rouge">header</code>=True, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">skip</code>])</p>
 
 <h2 id="returns">Returns</h2>
 
 <dl>
-  <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
-  <dd>The spherical harmonic coefficients contained in <code class="highlighter-rouge">filename</code>. Note that dimensions of the output array are determined by <code class="highlighter-rouge">lmaxin</code>, and not the output <code class="highlighter-rouge">lmax</code></dd>
-  <dt><code class="highlighter-rouge">lmax</code> : integer</dt>
-  <dd>The maximum spherical harmonic degree of <code class="highlighter-rouge">cilm</code>. This is the minimum of the maximum spherical harmonic degree of <code class="highlighter-rouge">filename</code> and the dimension of <code class="highlighter-rouge">cilm</code>-1.</dd>
+  <dt><code class="highlighter-rouge">coeffs</code> : ndarray, dimension (2, <code class="highlighter-rouge">lmaxout</code>+1, <code class="highlighter-rouge">lmaxout</code>+1)</dt>
+  <dd>The spherical harmonic coefficients.</dd>
+  <dt><code class="highlighter-rouge">errors</code> : ndarray, dimension (2, <code class="highlighter-rouge">lmaxout</code>+1, <code class="highlighter-rouge">lmaxout</code>+1)</dt>
+  <dd>The errors associated with the spherical harmonic coefficients.</dd>
+  <dt><code class="highlighter-rouge">header</code> : list of type str</dt>
+  <dd>A list of values in the header line found before the start of the spherical harmonic coefficients.</dd>
+  <dt><code class="highlighter-rouge">lmaxout</code> : int</dt>
+  <dd>The maximum spherical harmonic degree read from the file.</dd>
 </dl>
 
 <h2 id="parameters">Parameters</h2>
 
 <dl>
-  <dt><code class="highlighter-rouge">filename</code> : character(:)</dt>
-  <dd>The filename of the ascii file containing the spherical harmonic coefficients.</dd>
-  <dt><code class="highlighter-rouge">lmaxin</code> : integer</dt>
-  <dd>This spherical harmonic degree controls the dimension of the output array <code class="highlighter-rouge">cilm</code>. The coefficients between <code class="highlighter-rouge">lmax+1</code> and <code class="highlighter-rouge">lmaxin</code> will be set to zero.</dd>
-  <dt><code class="highlighter-rouge">skip</code> : optional, integer, default = 0</dt>
-  <dd>The number of lines to skip before parsing <code class="highlighter-rouge">filename</code>.</dd>
+  <dt><code class="highlighter-rouge">filename</code> : str</dt>
+  <dd>Filename containing the text-formatted spherical harmonic coefficients.</dd>
+  <dt><code class="highlighter-rouge">lmax</code> : int, optional, default = None</dt>
+  <dd>The maximum spherical harmonic degree to read from the file. The default is to read the entire file.</dd>
+  <dt><code class="highlighter-rouge">error</code> : bool, optional, default = False</dt>
+  <dd>If True, return the errors associated with the spherical harmonic coefficients as a separate array.</dd>
+  <dt><code class="highlighter-rouge">header</code> : bool, optional, default = False</dt>
+  <dd>If True, return a list of values in the header line found before the start of the spherical harmonic coefficients.</dd>
+  <dt><code class="highlighter-rouge">skip</code> : int, optional, default = 0</dt>
+  <dd>The number of lines to skip before parsing the file.</dd>
 </dl>
 
 <h2 id="description">Description</h2>
 
-<p><code class="highlighter-rouge">SHRead</code> will read spherical harmonic coefficients from an ascii-formatted file into an array <code class="highlighter-rouge">cilm</code>. The maximum spherical harmonic degree that is read is determined by the minimum of the dimension of the input array <code class="highlighter-rouge">cilm</code>-1 and the maximum degree of the coefficients in the file. If the optional array <code class="highlighter-rouge">skip</code> is specified, parsing of the file will commence after the first <code class="highlighter-rouge">skip</code> lines.</p>
+<p>This function will read spherical harmonic coefficients from an ascii-formatted text file. The errors associated with the spherical harmonic coefficients, as well as the values in a single header line, can optionally be read by setting the optional parameters <code class="highlighter-rouge">error</code> and <code class="highlighter-rouge">header</code> to True. The optional parameter <code class="highlighter-rouge">skip</code> specifies how many lines should be skipped before attempting to parse the file, and the optional parameter <code class="highlighter-rouge">lmax</code> specifies the maximum degree to read from the file. Both real and complex spherical harmonic coefficients are supported.</p>
 
-<p>The spherical harmonic coefficients in the file are assumed to be ordered by increasing degree <code class="highlighter-rouge">l</code> and angular order <code class="highlighter-rouge">m</code> according to the format</p>
+<p>The spherical harmonic coefficients in the file should be formatted as</p>
 
-<p><code class="highlighter-rouge">l, m, cilm[0,l,m], cilm[1,l,m]</code></p>
+<p><code class="highlighter-rouge">l, m, coeffs[0, l, m], coeffs[1, l, m]</code></p>
 
-<p>The ordering of the file is explcitly given by</p>
+<p>where l and m are the spherical harmonic degree and order, respectively. The terms coeffs[1, l, 0] can be neglected as they are zero. If the errors are to be read, the line should be formatted as For more information, see <code class="highlighter-rouge">shread</code>.</p>
 
-<p><code class="highlighter-rouge">l, 0 / l, 1 / l, 2 /l, ... / l, m / l+1, 0 / l+1, 1 / ...</code></p>
+<p>If the errors are to be read, the line should be formatted as</p>
 
-<p>The first spherical harmonic degree of the filename does not have to be 0; this is determined from the first element after the <code class="highlighter-rouge">skip</code> and <code class="highlighter-rouge">header</code> lines.</p>
+<p><code class="highlighter-rouge">l, m, coeffs[0, l, m], coeffs[1, l, m], errors[0, l, m], errors[1, l, m]</code></p>
+
+<p>For each value of increasing l, all the angular orders are listed in inceasing
+order, from 0 to l.</p>
+
+<p>If a header line is to be read, it should be located directly after the first lines to be skipped, before the start of the spherical harmonic coefficents. The header values are returned as a list, where each value is formatted as a string.</p>
+
+<p>A valid line must contain at least 3 words, and the first two words must be integers. When reading the file, all other lines will be considered as “comments” and will be ignored.</p>
 
 <h2 id="see-also">See also</h2>
 
-<p><a href="pyshreadh.html">shreadh</a>, <a href="pyshreaderror.html">shreaderror</a>, <a href="pyshreaderrorh.html">shreaderrorh</a>, <a href="pyshread2.html">shread2</a>, <a href="pyshread2error.html">shread2error</a>, <a href="pyshreadjpl.html">shreadjpl</a> <a href="pyshreadjplerror.html">shreadjplerror</a></p>
+<p><a href="pyshread2.html">shread2</a>, <a href="pyshread2error.html">shread2error</a>, <a href="pyshreadjpl.html">shreadjpl</a> <a href="pyshreadjplerror.html">shreadjplerror</a></p>
 
 
     <div class="tags">
@@ -601,7 +622,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2017 SHTOOLS. All rights reserved. <br />
+               &copy;2018 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>
