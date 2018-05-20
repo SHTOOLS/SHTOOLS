@@ -31,7 +31,7 @@ from subprocess import CalledProcessError, check_output, check_call
 # pip install pypandoc
 try:
     import pypandoc
-    long_description = pypandoc.convert('README.md', 'rst')
+    long_description = pypandoc.convert_file('README.md', 'rst')
 except(IOError, ImportError):
     print('pandoc is not installed. PYPI description will not be '
           'formatted correctly.')
@@ -270,7 +270,7 @@ metadata = dict(
     version=VERSION,
     description='SHTOOLS - Tools for working with spherical harmonics',
     long_description=long_description,
-    url='http://shtools.oca.eu',
+    url='https://shtools.github.io/SHTOOLS/',
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
     author='The SHTOOLS developers',
     author_email="mark.a.wieczorek@gmail.com",
