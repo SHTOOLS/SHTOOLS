@@ -989,9 +989,11 @@ class SHCoeffs(object):
                 angles = _np.array([alpha, beta, gamma])
         elif convention is 'x':
             if body is True:
-                angles = _np.array([-gamma - np.pi/2, -beta, -alpha + np.pi/2])
+                angles = _np.array([-gamma - _np.pi/2,
+                                    -beta, -alpha + _np.pi/2])
             else:
-                angles = _np.array([alpha - np.pi/2, beta, gamma + np.pi/2])
+                angles = _np.array([alpha - _np.pi/2,
+                                    beta, gamma + _np.pi/2])
 
         if degrees:
             angles = _np.radians(angles)
@@ -2582,16 +2584,20 @@ class DHRealGrid(SHGrid):
               ylabel='latitude', ax=None, ax2=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            fig, axes = _plt.subplots(1, 1)
+            fig, axes = _plt.subplots(1, 1, figsize=(6, 4))
         else:
             axes = ax
 
-        axes.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
+        cim = axes.imshow(self.data, origin='upper',
+                          extent=(0., 360., -90., 90.))
         axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
+            _plt.colorbar(cim, orientation="horizontal", pad=0.2)
             fig.tight_layout(pad=0.5)
             return fig, axes
+        else:
+            _plt.colorbar(cim, ax=ax)
 
 
 # ---- Complex Driscoll and Healy grid class ----
