@@ -28,6 +28,7 @@ before_install:
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
+      export FFTW="/usr/local"
     else
       export OS="Linux";
     fi
