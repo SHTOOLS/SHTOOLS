@@ -31,6 +31,7 @@ install:
       export FFTW="/usr/local";
     else
       export OS="Linux";
+      export FFTW="/usr";
     fi
   - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-${OS}-x86_64.sh -O miniconda.sh;
