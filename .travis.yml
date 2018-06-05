@@ -24,7 +24,6 @@ before_install:
        sudo apt-get update;
        sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh;
     fi
-  - sudo python -m pip install --upgrade pip
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
@@ -35,6 +34,7 @@ install:
       export FFTW="$PATH";
       echo $PATH;
     fi
+  - sudo python -m pip install --upgrade pip
   - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-${OS}-x86_64.sh -O miniconda.sh;
     else
