@@ -49,8 +49,7 @@ install:
         matplotlib
         jupyter
         mkl
-  - conda install nbconvert
-  - conda install -n test-environment -c eumetsat fftw3
+        -c eumetsat fftw3
   - source activate test-environment
   - pip install --no-deps .
 
