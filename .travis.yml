@@ -20,7 +20,7 @@ before_install:
        brew install fftw --with-fortran;
     else
        sudo apt-get update;
-       sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh;
+       sudo apt-get install libblas-dev liblapack-dev g++ gfortran tcsh;
     fi
 
 install:
@@ -51,6 +51,7 @@ install:
         jupyter
         mkl
   - conda install nbconvert
+  - conda install -c eumetsat fftw3
   - source activate test-environment
   - pip install --no-deps .
 
