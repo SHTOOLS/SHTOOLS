@@ -31,10 +31,8 @@ install:
       export FFTW="/usr/local";
     else
       export OS="Linux";
-      export FFTW="$PATH";
-      echo $PATH;
+      export FFTW="/usr/lib";
     fi
-  - sudo python -m pip install --upgrade pip
   - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-${OS}-x86_64.sh -O miniconda.sh;
     else
