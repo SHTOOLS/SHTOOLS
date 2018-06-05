@@ -17,7 +17,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
        brew update;
        brew cask uninstall oclint;
-       brew install fftw --with-fortran;
+       brew install fftw;
     else
        sudo apt-get update;
        sudo apt-get install libblas-dev liblapack-dev g++ gfortran tcsh;

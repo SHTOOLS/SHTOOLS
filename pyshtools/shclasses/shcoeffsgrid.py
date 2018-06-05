@@ -989,9 +989,10 @@ class SHCoeffs(object):
                 angles = _np.array([alpha, beta, gamma])
         elif convention is 'x':
             if body is True:
-                angles = _np.array([-gamma - np.pi/2, -beta, -alpha + np.pi/2])
+                angles = _np.array([-gamma - _np.pi/2, -beta,
+                                    -alpha + _np.pi/2])
             else:
-                angles = _np.array([alpha - np.pi/2, beta, gamma + np.pi/2])
+                angles = _np.array([alpha - _np.pi/2, beta, gamma + _np.pi/2])
 
         if degrees:
             angles = _np.radians(angles)
