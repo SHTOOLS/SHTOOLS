@@ -24,7 +24,7 @@ before_install:
        sudo apt-get update;
        sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh;
     fi
-  - sudo pip install --upgrade pip
+  - sudo python -m pip install --upgrade pip
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
