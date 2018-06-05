@@ -2,9 +2,7 @@ language: c
 
 matrix:
   include:
-    # do one build run with our minimum dependencies
-    # (or, at least the lowest version number that is available through
-    #  anaconda)
+    # Test Python 2.7 and 3.6 on Linux and OSX
     - os: linux
       env: PYTHON_VERSION=2.7
     - os: linux
