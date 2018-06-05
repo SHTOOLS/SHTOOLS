@@ -24,6 +24,7 @@ before_install:
        sudo apt-get update;
        sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh;
     fi
+  - pip install --upgrade pip
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
@@ -39,7 +40,6 @@ install:
     else
       wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh;
     fi
-  -  python -m pip install --upgrade pip
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
