@@ -25,13 +25,15 @@ from numpy.distutils.system_info import get_info, dict_append
 from subprocess import CalledProcessError, check_output, check_call
 
 
-# convert markdown README.md to restructured text .rst for pypi
-# pandoc can be installed with
+# Convert markdown README.md to restructured text (.rst) for PyPi, and
+# remove the first 5 lines that contain a reference to the shtools LOGO.
+# pandoc can be installed either by conda or pip:
 # conda install -c conda-forge pandoc pypandoc
 # pip install pypandoc
 try:
     import pypandoc
-    long_description = pypandoc.convert_file('README.md', 'rst')
+    rst = pypandoc.convert_file('README.md', 'rst')
+    long_description = rst.split('\n', 5)[5]
 except(IOError, ImportError):
     print('pandoc is not installed. PYPI description will not be '
           'formatted correctly.')
@@ -47,9 +49,9 @@ ISRELEASED = False
 def get_version():
     """Get version from git and VERSION file.
 
-    In case that the version is not tagged in git, this function appends
+    In the case where the version is not tagged in git, this function appends
     .post0+commit if the version has been released and .dev0+commit if the
-    version has not been released yet.
+    version has not yet been released.
 
     Derived from: https://github.com/Changaco/version.py
     """
