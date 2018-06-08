@@ -63,6 +63,9 @@ class SHCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type: either 'complex' or 'real'.
+    header        : A list of values (of type str) from the header line of the
+                    input file used to initialize the class (for 'shtools'
+                    formatted files).
 
     Each class instance provides the following methods:
 
@@ -387,17 +390,18 @@ class SHCoeffs(object):
 
     @classmethod
     def from_file(self, fname, lmax=None, format='shtools', kind='real',
-                  normalization='4pi', skip=0, csphase=1, **kwargs):
+                  normalization='4pi', skip=0, header=False,
+                  csphase=1, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
         Usage
         -----
-        x = SHCoeffs.from_file(filename, format='shtools', [lmax,
-                                                            normalization,
-                                                            csphase, skip])
-        x = SHCoeffs.from_file(filename, format='npy', [normalization,
-                                                        csphase, **kwargs])
+        x = SHCoeffs.from_file(filename, [format='shtools', lmax,
+                                          normalization, csphase, skip,
+                                          header])
+        x = SHCoeffs.from_file(filename, [format='npy', normalization,
+                                          csphase, **kwargs])
 
         Returns
         -------
@@ -422,6 +426,9 @@ class SHCoeffs(object):
         skip : int, optional, default = 0
             Number of lines to skip at the beginning of the file when format is
             'shtools'.
+        header : bool, optional, default = False
+            If True, read a list of values from the header line of an 'shtools'
+            formatted file.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
@@ -429,11 +436,13 @@ class SHCoeffs(object):
         -----------
         If format='shtools', spherical harmonic coefficients will be read from
         a text file. The optional parameter `skip` specifies how many lines
-        should be skipped before attempting to parse the file, and the optional
-        parameter `lmax` specifies the maximum degree to read from the file.
-        All lines that do not start with 2 integers and that are less than 3
-        words long will be treated as comments and ignored. For this format,
-        each line of the file must contain
+        should be skipped before attempting to parse the file, the optional
+        parameter `header` specifies whether to read a list of values from a
+        header line, and the optional parameter `lmax` specifies the maximum
+        degree to read from the file. All lines that do not start with 2
+        integers and that are less than 3 words long will be treated as
+        comments and ignored. For this format, each line of the file must
+        contain
 
         l, m, coeffs[0, l, m], coeffs[1, l, m]
 
@@ -461,8 +470,13 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        header_list = None
         if format.lower() == 'shtools':
-            coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+            if header is True:
+                coeffs, lmaxout, header_list = _shread(fname, lmax=lmax,
+                                                       skip=skip, header=True)
+            else:
+                coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
         elif format.lower() == 'npy':
             coeffs = _np.load(fname, **kwargs)
         else:
@@ -485,19 +499,20 @@ class SHCoeffs(object):
         for cls in self.__subclasses__():
             if cls.istype(kind):
                 return cls(coeffs, normalization=normalization.lower(),
-                           csphase=csphase)
+                           csphase=csphase, header=header_list)
 
     def copy(self):
         """Return a deep copy of the class instance."""
         return _copy.deepcopy(self)
 
-    def to_file(self, filename, format='shtools', **kwargs):
+    def to_file(self, filename, format='shtools', header=None, **kwargs):
         """
         Save raw spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.to_file(filename, [format, **kwargs])
+        x.to_file(filename, [format='shtools', header])
+        x.to_file(filename, [format='npy', **kwargs])
 
         Parameters
         ----------
@@ -505,11 +520,16 @@ class SHCoeffs(object):
             Name of the output file.
         format : str, optional, default = 'shtools'
             'shtools' or 'npy'. See method from_file() for more information.
+        header : str, optional, default = None
+            A header string written to an 'shtools'-formatted file directly
+            before the spherical harmonic coefficients.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
         """
         if format is 'shtools':
             with open(filename, mode='w') as file:
+                if header is not None:
+                    file.write(header + '\n')
                 for l in range(self.lmax+1):
                     for m in range(l+1):
                         file.write('{:d}, {:d}, {:e}, {:e}\n'
@@ -519,7 +539,7 @@ class SHCoeffs(object):
             _np.save(filename, self.coeffs, **kwargs)
         else:
             raise NotImplementedError(
-                'format={:s} not yet implemented'.format(repr(format)))
+                'format={:s} not implemented'.format(repr(format)))
 
     # ---- Mathematical operators ----
     def __add__(self, other):
@@ -1459,9 +1479,10 @@ class SHCoeffs(object):
         x.info()
         """
         print('kind = {:s}\nnormalization = {:s}\n'
-              'csphase = {:d}\nlmax = {:d}'.format(
+              'csphase = {:d}\nlmax = {:d}\n'
+              'header = {:s}'.format(
                   repr(self.kind), repr(self.normalization), self.csphase,
-                  self.lmax))
+                  self.lmax, repr(self.header)))
 
 
 # ================== REAL SPHERICAL HARMONICS ================
@@ -1474,7 +1495,8 @@ class SHRealCoeffs(SHCoeffs):
         """Test if class is Real or Complex."""
         return kind == 'real'
 
-    def __init__(self, coeffs, normalization='4pi', csphase=1, copy=True):
+    def __init__(self, coeffs, normalization='4pi', csphase=1, copy=True,
+                 header=None):
         """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -1488,6 +1510,7 @@ class SHRealCoeffs(SHCoeffs):
         self.kind = 'real'
         self.normalization = normalization
         self.csphase = csphase
+        self.header = header
 
         if copy:
             self.coeffs = _np.copy(coeffs)
@@ -1652,7 +1675,8 @@ class SHComplexCoeffs(SHCoeffs):
         """Check if class has kind 'real' or 'complex'."""
         return kind == 'complex'
 
-    def __init__(self, coeffs, normalization='4pi', csphase=1, copy=True):
+    def __init__(self, coeffs, normalization='4pi', csphase=1, copy=True,
+                 header=None):
         """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -1667,6 +1691,7 @@ class SHComplexCoeffs(SHCoeffs):
         self.kind = 'complex'
         self.normalization = normalization
         self.csphase = csphase
+        self.header = header
 
         if copy:
             self.coeffs = _np.copy(coeffs)
