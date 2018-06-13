@@ -2,9 +2,7 @@ language: c
 
 matrix:
   include:
-    # do one build run with our minimum dependencies
-    # (or, at least the lowest version number that is available through
-    #  anaconda)
+    # Test Python 2.7 and 3.6 on Linux and OSX
     - os: linux
       env: PYTHON_VERSION=2.7
     - os: linux
@@ -19,15 +17,16 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
        brew update;
        brew cask uninstall oclint;
-       brew install fftw --with-fortran;
+       brew install fftw;
     else
        sudo apt-get update;
-       sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh;
+       sudo apt-get install libblas-dev liblapack-dev g++ gfortran tcsh;
     fi
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
+      export FFTW="/usr/local";
     else
       export OS="Linux";
     fi
@@ -50,7 +49,7 @@ install:
         matplotlib
         jupyter
         mkl
-  - conda install nbconvert
+  - conda install -n test-environment -c eumetsat fftw3
   - source activate test-environment
   - pip install --no-deps .
 

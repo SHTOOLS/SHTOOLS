@@ -62,8 +62,4 @@ To read the info string of an SHTOOLS constant, such as `a_mars`, enter
 ```python
 pyshtools.constant.a_mars.info()
 ```
-Documentation for the Python functions used in SHTOOLS can also be accessed by their unix man pages, appending `py` to the name and using all lower case letters. As an example, to access the python `MakeGridDH` man page, use
-```bash
-man pymakegriddh
-```
 Alternatively, the man pages can be accessed from the *Python components* menu item on this web site.
