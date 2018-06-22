@@ -95,13 +95,13 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
             epoch = _yyyymmdd_to_year_fraction(epoch)
 
         if 'earth_gravity_constant' in header:
-            gravity_constant = float(header['earth_gravity_constant'])
+            gravity_constant = float(header['earth_gravity_constant'].replace('D', 'E'))
         elif 'gravity_constant' in header:
-            gravity_constant = float(header['gravity_constant'])
+            gravity_constant = float(header['gravity_constant'].replace('D', 'E'))
         else:
             raise ValueError('No standard gravitational constant in the header.')
 
-        radius = float(header['radius'])
+        radius = float(header['radius'].replace('D', 'E'))
 
         lmax_model = int(header['max_degree'])
         if lmax is None or lmax < 0 or lmax > lmax_model:
