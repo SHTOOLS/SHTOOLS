@@ -439,7 +439,7 @@ www:
 	@cd $(WWWSRC) ; $(JEKYLL) build -d ../$(WWWDEST)
 
 remove-www:
-	@-rm -r $(WWWDEST)
+	@-rm -rf $(WWWDEST)
 
 notebooks2:
 	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER)
