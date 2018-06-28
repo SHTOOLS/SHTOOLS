@@ -19,13 +19,13 @@ try:
 
     G = Constant(
         abbrev='G',
-        name='Gravitational constant',
+        name='Gravitational constant  ',
         value=6.67384e-11,
         unit='m3 / (kg s2)',
         uncertainty=0.00080e-11,
         reference='Mohr, P. J., B. N. Taylor, and D. B.Newell (2012). '
         'CODATA recommended values of the fundamental physical '
-        'constants, 2010. Reviews of Modern Physics, 84, 1527–1605, '
+        'constants, 2010. Reviews of Modern Physics, 84, 1527-1605, '
         'doi:10.1103/RevModPhys.84.1527.')
 
     mu0 = Constant(
@@ -36,7 +36,7 @@ try:
         uncertainty=0.0,
         reference='Mohr, P. J., B. N. Taylor, and D. B.Newell (2012). '
         'CODATA recommended values of the fundamental physical constants, '
-        '2010. Reviews of Modern Physics, 84, 1527–1605, '
+        '2010. Reviews of Modern Physics, 84, 1527-1605, '
         'doi:10.1103/RevModPhys.84.1527.')
 
     # == Mercury ==
@@ -51,7 +51,7 @@ try:
         'Lemoine, G. A. Neumann, M. T. Zuber, D. E. Smith, and S. C. Solomon '
         '(2014), The gravity field, orientation, and ephemeris of Mercury '
         'from MESSENGER observations after three years in orbit, J. Geophys. '
-        'Res. Planets, 119, 2417–2436, doi:10.1002/2014JE004675.')
+        'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
     mass_mercury = Constant(
         abbrev='mass_mercury',
@@ -110,7 +110,7 @@ try:
         'Lemoine, G. A. Neumann, M. T. Zuber, D. E. Smith, and S. C. Solomon '
         '(2014), The gravity field, orientation, and ephemeris of Mercury '
         'from MESSENGER observations after three years in orbit, J. Geophys. '
-        'Res. Planets, 119, 2417–2436, doi:10.1002/2014JE004675.')
+        'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
     omega_orbit_mercury = Constant(
         abbrev='omega_orbit_mercury',
@@ -122,7 +122,7 @@ try:
         'Lemoine, G. A. Neumann, M. T. Zuber, D. E. Smith, and S. C. Solomon '
         '(2014), The gravity field, orientation, and ephemeris of Mercury '
         'from MESSENGER observations after three years in orbit, J. Geophys. '
-        'Res. Planets, 119, 2417–2436, doi:10.1002/2014JE004675.')
+        'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
     # == Venus ==
 
@@ -133,7 +133,7 @@ try:
         unit='m3 / s2',
         uncertainty=6376000.0,
         reference='MGNP180U: Konopliv A. S., W. B. Banerdt, and W. L. Sjogren '
-        '(1999) Venus gravity: 180th degree and order model. Icarus 139: 3–18.'
+        '(1999) Venus gravity: 180th degree and order model. Icarus 139: 3-18.'
         'doi:10.1006/icar.1999.6086.')
 
     mass_venus = Constant(
@@ -154,7 +154,7 @@ try:
         uncertainty=0.0,
         reference='VenusTopo719: Wieczorek, M. A. (2015). Gravity and '
         'topography of the terrestrial planets. In T. Spohn & G. Schubert '
-        '(Eds.), Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153–193). '
+        '(Eds.), Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153-193). '
         'Oxford, Elsevier-Pergamon, doi:10.1016/B978-0-444-53802-4.00169-X.')
 
     density_venus = Constant(
@@ -188,7 +188,7 @@ try:
         unit='rad / s',
         uncertainty=0.0002 * 2 * _np.pi / (243.0200**2 * 24 * 60 * 60),
         reference='MGNP180U: Konopliv A. S., W. B. Banerdt, and W. L. Sjogren '
-        '(1999) Venus gravity: 180th degree and order model. Icarus 139: 3–18.'
+        '(1999) Venus gravity: 180th degree and order model. Icarus 139: 3-18.'
         'doi:10.1006/icar.1999.6086.')
 
     # == Earth ==
@@ -344,7 +344,7 @@ try:
         'Wieczorek, J. C. Andrews-Hanna, J. W. Head, W. S. Kiefer, I. '
         'Matsuyama, P. J. McGovern, G. J. Taylor, and M. T. Zuber (2014). '
         'Lunar interior properties from the GRAIL mission, J. Geophys. Res. '
-        'Planets, 119, 1546–1578, doi:10.1002/2013JE004559.')
+        'Planets, 119, 1546-1578, doi:10.1002/2013JE004559.')
 
     mass_moon = Constant(
         abbrev='mass_moon',
@@ -364,7 +364,7 @@ try:
         uncertainty=0.0,
         reference='LOLA2600p: Wieczorek, M. A. (2015). Gravity and topography '
         'of the terrestrial planets. In T. Spohn & G. Schubert (Eds.), '
-        'Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153–193). Oxford, '
+        'Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153-193). Oxford, '
         'Elsevier-Pergamon, doi:10.1016/B978-0-444-53802-4.00169-X.')
 
     density_moon = Constant(
@@ -427,7 +427,7 @@ try:
         'Wieczorek, J. C. Andrews-Hanna, J. W. Head, W. S. Kiefer, I. '
         'Matsuyama, P. J. McGovern, G. J. Taylor, and M. T. Zuber (2014). '
         'Lunar interior properties from the GRAIL mission, J. Geophys. Res. '
-        'Planets, 119, 1546–1578, doi:10.1002/2013JE004559.')
+        'Planets, 119, 1546-1578, doi:10.1002/2013JE004559.')
 
     beta_moon = Constant(
         abbrev='beta_moon',
@@ -442,7 +442,7 @@ try:
         'Wieczorek, J. C. Andrews-Hanna, J. W. Head, W. S. Kiefer, I. '
         'Matsuyama, P. J. McGovern, G. J. Taylor, and M. T. Zuber (2014). '
         'Lunar interior properties from the GRAIL mission, J. Geophys. Res. '
-        'Planets, 119, 1546–1578, doi:10.1002/2013JE004559.')
+        'Planets, 119, 1546-1578, doi:10.1002/2013JE004559.')
 
     gamma_moon = Constant(
         abbrev='beta_moon',
@@ -457,7 +457,7 @@ try:
         'Wieczorek, J. C. Andrews-Hanna, J. W. Head, W. S. Kiefer, I. '
         'Matsuyama, P. J. McGovern, G. J. Taylor, and M. T. Zuber (2014). '
         'Lunar interior properties from the GRAIL mission, J. Geophys. Res. '
-        'Planets, 119, 1546–1578, doi:10.1002/2013JE004559.')
+        'Planets, 119, 1546-1578, doi:10.1002/2013JE004559.')
 
     # == Mars ==
 
@@ -469,7 +469,7 @@ try:
         uncertainty=0.18167460e+6,
         reference='Konopliv A. S., R. S. Park ,W. M. Folkner (2016). '
         'An improved JPL Mars gravity field and orientation from Mars orbiter '
-        'and lander tracking data, Icarus, 274, 253–260, '
+        'and lander tracking data, Icarus, 274, 253-260, '
         'doi:10.1016/j.icarus.2016.02.052')
 
     mass_mars = Constant(
@@ -490,7 +490,7 @@ try:
         uncertainty=0.0,
         reference='MarsTopo2600: Wieczorek, M. A. (2015). Gravity and '
         'topography of the terrestrial planets. In T. Spohn & G. Schubert '
-        '(Eds.), Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153–193). '
+        '(Eds.), Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153-193). '
         'Oxford, Elsevier-Pergamon, doi:10.1016/B978-0-444-53802-4.00169-X.')
 
     density_mars = Constant(
@@ -526,7 +526,7 @@ try:
         uncertainty=0.000000003 * 2 * _np.pi / 360 / (24 * 60 * 60),
         reference='Konopliv A. S., R. S. Park ,W. M. Folkner (2016). '
         'An improved JPL Mars gravity field and orientation from Mars orbiter '
-        'and lander tracking data, Icarus, 274, 253–260, '
+        'and lander tracking data, Icarus, 274, 253-260, '
         'doi:10.1016/j.icarus.2016.02.052')
 
     a_mars = Constant(
@@ -537,7 +537,7 @@ try:
         uncertainty=19.0,
         reference='Ardalan A. A, R. Karimi, and E. W. Grafarend (2010). '
         'A new reference equipotential surface, and reference ellipsoid for '
-        'the planet Mars. Earth, Moon, and Planets, 106, 1–13, '
+        'the planet Mars. Earth, Moon, and Planets, 106, 1-13, '
         'doi:10.1007/s11038-009-9342-7.')
 
     b_mars = Constant(
@@ -548,7 +548,7 @@ try:
         uncertainty=19.0,
         reference='Ardalan A. A, R. Karimi, and E. W. Grafarend (2010). '
         'A new reference equipotential surface, and reference ellipsoid for '
-        'the planet Mars. Earth, Moon, and Planets, 106, 1–13, '
+        'the planet Mars. Earth, Moon, and Planets, 106, 1-13, '
         'doi:10.1007/s11038-009-9342-7.')
 
     f_mars = Constant(
@@ -564,7 +564,7 @@ try:
                              ),
         reference='Ardalan A. A, R. Karimi, and E. W. Grafarend (2010). '
         'A new reference equipotential surface, and reference ellipsoid for '
-        'the planet Mars. Earth, Moon, and Planets, 106, 1–13, '
+        'the planet Mars. Earth, Moon, and Planets, 106, 1-13, '
         'doi:10.1007/s11038-009-9342-7.')
 
     u0_mars = Constant(
@@ -575,7 +575,7 @@ try:
         uncertainty=69.0,
         reference='Ardalan A. A, R. Karimi, and E. W. Grafarend (2010). '
         'A new reference equipotential surface, and reference ellipsoid for '
-        'the planet Mars. Earth, Moon, and Planets, 106, 1–13, '
+        'the planet Mars. Earth, Moon, and Planets, 106, 1-13, '
         'doi:10.1007/s11038-009-9342-7.')
 
 except ImportError:

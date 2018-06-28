@@ -173,7 +173,7 @@ KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
 INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
-    'matplotlib'
+    'matplotlib',
     'astropy'
 ]
 

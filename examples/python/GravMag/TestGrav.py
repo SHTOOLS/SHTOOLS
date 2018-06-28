@@ -43,7 +43,7 @@ def TestMakeGravGrid():
     clm[0, 0, 0] = 1.0
     print(gm, r0)
 
-    geoid = gravmag.MakeGeoidGridDH(clm, r0, gm, constant.w0_mars,
+    geoid = gravmag.MakeGeoidGridDH(clm, r0, gm, constant.u0_mars,
                                     a=constant.a_mars, f=constant.f_mars,
                                     omega=constant.omega_mars)
     geoid = geoid / 1.e3  # convert to meters
