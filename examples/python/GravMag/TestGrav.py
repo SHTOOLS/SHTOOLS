@@ -43,17 +43,19 @@ def TestMakeGravGrid():
     clm[0, 0, 0] = 1.0
     print(gm, r0)
 
-    geoid = gravmag.MakeGeoidGridDH(clm, r0, gm, constant.u0_mars,
-                                    a=constant.a_mars, f=constant.f_mars,
-                                    omega=constant.omega_mars)
+    geoid = gravmag.MakeGeoidGridDH(clm, r0, gm, constant.u0_mars.value,
+                                    a=constant.a_mars.value,
+                                    f=constant.f_mars.value,
+                                    omega=constant.omega_mars.value)
     geoid = geoid / 1.e3  # convert to meters
     fig_map = plt.figure()
     plt.imshow(geoid)
     fig_map.savefig('MarsGeoid.png')
 
     rad, theta, phi, total, pot = gravmag.MakeGravGridDH(
-        clm, gm, r0, lmax=719, a=constant.a_mars, f=constant.f_mars,
-        lmax_calc=85, omega=constant.omega_mars, normal_gravity=1)
+        clm, gm, r0, lmax=719, a=constant.a_mars.value,
+        f=constant.f_mars.value, lmax_calc=85,
+        omega=constant.omega_mars.value, normal_gravity=1)
     fig, axes = plt.subplots(2, 2)
 
     for num, vv, s in ((0, rad, "$g_{r}$"), (1, theta, "$g_{\\theta}$"),
@@ -72,10 +74,10 @@ def TestMakeGravGrid():
 
 
 def TestNormalGravity():
-    gm = constant.gm_mars
-    omega = constant.omega_mars
-    a = constant.a_mars
-    b = constant.b_mars
+    gm = constant.gm_mars.value
+    omega = constant.omega_mars.value
+    a = constant.a_mars.value
+    b = constant.b_mars.value
     lat = np.arange(-90., 90., 1.)
     ng = np.array([gravmag.NormalGravity(x, gm, omega, a, b) for x in lat])
     fig = plt.figure()
@@ -118,7 +120,7 @@ def TestGravGrad():
 
 def TestFilter():
     half = 80
-    r = constant.r_moon
+    r = constant.r_moon.value
     d = r - 40.e3
     deglist = np.arange(1, 200, 1)
     wl = np.zeros(len(deglist) + 1)
@@ -142,10 +144,10 @@ def TestMakeMagGrid():
     infile = '../../ExampleDataFiles/FSU_mars90.sh'
     clm, lmax, header  = shio.shread(infile, header=True, skip=1)
     r0 = float(header[0]) * 1.e3
-    a = constant.r_mars + 145.0e3  # radius to evaluate the field
+    a = constant.r_mars.value + 145.0e3  # radius to evaluate the field
 
     rad, theta, phi, total = gravmag.MakeMagGridDH(clm, r0, lmax=719, a=a,
-                                                   f=constant.f_mars,
+                                                   f=constant.f_mars.value,
                                                    lmax_calc=90)
     fig, axes = plt.subplots(2, 2)
 
