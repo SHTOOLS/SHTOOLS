@@ -47,7 +47,7 @@ def TestCrustalThickness():
     gravfile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
     pot, lmaxp, header = shio.shread(gravfile, lmax=degmax, header=True)
     gm = float(header[1]) * 1.e9
-    mass = gm / constant.grav_constant
+    mass = gm / constant.G
     r_grav = float(header[0]) * 1.e3
     print(r_grav, gm, mass, lmaxp)
 
