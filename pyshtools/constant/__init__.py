@@ -121,43 +121,61 @@ _sep = 22*'-' + ' ' + 58 * '-'
 _lines.append('{0:22}'.format('Fundamental constants'))
 _lines.append(_sep)
 for _c in _constants_fundamental:
+    _name = locals()[_c].name
+    if len(_name) > 58:
+        _name = _name[:55] + '...'
     _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, locals()[_c].name[:58]))
+        locals()[_c].abbrev, _name))
 
 _lines.append(_sep)
 _lines.append('{0:22}'.format('Mercury'))
 _lines.append(_sep)
 for _c in _constants_mercury:
+    _name = locals()[_c].name
+    if len(_name) > 58:
+        _name = _name[:55] + '...'
     _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, locals()[_c].name[:58]))
+        locals()[_c].abbrev, _name))
 
 _lines.append(_sep)
 _lines.append('{0:22}'.format('Venus'))
 _lines.append(_sep)
 for _c in _constants_venus:
+    _name = locals()[_c].name
+    if len(_name) > 58:
+        _name = _name[:55] + '...'
     _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, locals()[_c].name[:58]))
+        locals()[_c].abbrev, _name))
 
 _lines.append(_sep)
 _lines.append('{0:22}'.format('Earth'))
 _lines.append(_sep)
 for _c in _constants_earth:
+    _name = locals()[_c].name
+    if len(_name) > 58:
+        _name = _name[:55] + '...'
     _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, locals()[_c].name[:58]))
+        locals()[_c].abbrev, _name))
 
 _lines.append(_sep)
 _lines.append('{0:22}'.format('The Moon'))
 _lines.append(_sep)
 for _c in _constants_moon:
+    _name = locals()[_c].name
+    if len(_name) > 58:
+        _name = _name[:55] + '...'
     _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, locals()[_c].name[:58]))
+        locals()[_c].abbrev, _name))
 
 _lines.append(_sep)
 _lines.append('{0:22}'.format('Mars'))
 _lines.append(_sep)
 for _c in _constants_mars:
+    _name = locals()[_c].name
+    if len(_name) > 58:
+        _name = _name[:55] + '...'
     _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, locals()[_c].name[:58]))
+        locals()[_c].abbrev, _name))
 
 _lines.append(_lines[1])
 
