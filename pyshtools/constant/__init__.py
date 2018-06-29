@@ -85,17 +85,83 @@ from .Mars import b_mars
 from .Mars import f_mars
 from .Mars import u0_mars
 
-__all__ = ['Constant', 'G', 'mu0',
-           'Mercury', 'gm_mercury', 'mass_mercury', 'r_mercury',
-           'density_mercury', 'g0_mercury', 'omega_mercury',
-           'omega_orbit_mercury',
-           'Venus', 'gm_venus', 'mass_venus', 'r_venus', 'density_venus',
-           'g0_venus', 'omega_venus',
-           'Earth', 'gm_egm2008', 'mass_egm2008', 'omega_egm2008', 'a_wgs84',
-           'f_wgs84', 'gm_wgs84', 'mass_wgs84', 'omega_wgs84', 'gma_wgs84',
-           'b_wgs84', 'r3_wgs84', 'u0_wgs84'
-           'Moon', 'gm_moon', 'mass_moon', 'r_moon', 'density_moon', 'g0_moon',
-           'a_orbit_moon', 'omega_moon', 'i_solid_moon', 'beta_moon',
-           'gamma_moon'
-           'Mars', 'gm_mars', 'mass_mars', 'r_mars', 'density_mars', 'g0_mars',
-           'omega_mars', 'a_mars', 'b_mars', 'f_mars', 'u0_mars']
+# === Define groups of constants and __all__ ===
+
+_constants_fundamental = ['G', 'mu0']
+
+_constants_mercury = ['gm_mercury', 'mass_mercury', 'r_mercury',
+                      'density_mercury', 'g0_mercury', 'omega_mercury',
+                      'omega_orbit_mercury']
+
+_constants_venus = ['gm_venus', 'mass_venus', 'r_venus', 'density_venus',
+                    'g0_venus', 'omega_venus']
+
+_constants_earth = ['gm_egm2008', 'mass_egm2008', 'omega_egm2008', 'a_wgs84',
+                    'f_wgs84', 'gm_wgs84', 'mass_wgs84', 'omega_wgs84',
+                    'gma_wgs84', 'b_wgs84', 'r3_wgs84', 'u0_wgs84']
+_constants_moon = ['gm_moon', 'mass_moon', 'r_moon', 'density_moon',
+                   'g0_moon', 'a_orbit_moon', 'omega_moon', 'i_solid_moon',
+                   'beta_moon', 'gamma_moon']
+_constants_mars = ['gm_mars', 'mass_mars', 'r_mars', 'density_mars', 'g0_mars',
+                   'omega_mars', 'a_mars', 'b_mars', 'f_mars', 'u0_mars']
+
+_constants = _constants_fundamental + _constants_mercury + _constants_venus \
+             + _constants_earth + _constants_moon + _constants_mars
+
+__all__ = ['Constant', 'Mercury', 'Venus', 'Earth', 'Moon', 'Mars'] \
+          + _constants
+
+# === Update doc string to list all constants and short descriptions ===
+
+_lines = ['\nThe following constants are available:\n',
+          22 * '=' + ' ' + 58 * '=', 'Name                   Description',
+          22 * '=' + ' ' + 58 * '=']
+_sep = 22*'-' + ' ' + 58 * '-'
+
+_lines.append('{0:22}'.format('Fundamental constants'))
+_lines.append(_sep)
+for _c in _constants_fundamental:
+    _lines.append('{0:22} {1}'.format(
+        locals()[_c].abbrev, locals()[_c].name[:58]))
+
+_lines.append(_sep)
+_lines.append('{0:22}'.format('Mercury'))
+_lines.append(_sep)
+for _c in _constants_mercury:
+    _lines.append('{0:22} {1}'.format(
+        locals()[_c].abbrev, locals()[_c].name[:58]))
+
+_lines.append(_sep)
+_lines.append('{0:22}'.format('Venus'))
+_lines.append(_sep)
+for _c in _constants_venus:
+    _lines.append('{0:22} {1}'.format(
+        locals()[_c].abbrev, locals()[_c].name[:58]))
+
+_lines.append(_sep)
+_lines.append('{0:22}'.format('Earth'))
+_lines.append(_sep)
+for _c in _constants_earth:
+    _lines.append('{0:22} {1}'.format(
+        locals()[_c].abbrev, locals()[_c].name[:58]))
+
+_lines.append(_sep)
+_lines.append('{0:22}'.format('The Moon'))
+_lines.append(_sep)
+for _c in _constants_moon:
+    _lines.append('{0:22} {1}'.format(
+        locals()[_c].abbrev, locals()[_c].name[:58]))
+
+_lines.append(_sep)
+_lines.append('{0:22}'.format('Mars'))
+_lines.append(_sep)
+for _c in _constants_mars:
+    _lines.append('{0:22} {1}'.format(
+        locals()[_c].abbrev, locals()[_c].name[:58]))
+
+_lines.append(_lines[1])
+
+__doc__ += '\n'.join(_lines)
+
+del _lines
+del _sep
