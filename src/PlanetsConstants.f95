@@ -11,7 +11,7 @@ module PlanetsConstants
     implicit none
 
     real*8, parameter :: &
-        Grav_constant = 6.67384d-11, & ! CODATA, Mohr et al. (2012)
+        Grav_constant = 6.67408d-11, & ! CODATA 2014, Mohr et al. (2016)
         pi_constant =  3.14159265358979
     real*8, parameter :: &
         mu0_constant = pi_constant * 4.0d-7 ! magnetic constant
