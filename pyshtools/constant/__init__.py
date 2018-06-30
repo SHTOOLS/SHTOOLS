@@ -4,7 +4,27 @@ pyshtools constants.
 This subpackage defines several constants used in analyzing gravity,
 topography, and magnetic field data of the terrestrial planets. Each object is
 an astropy Constant that possesses the attributes name, value, unit,
-uncertainty, and reference.
+uncertainty, and reference. These constants can be used in arithmetic
+operations with objects of the astropy class Quantity.
+
+Examples
+
+Calculate the gravitational acceleration on the surface of Mars and
+then to convert this to mGals:
+
+    >>> gm_mars / r_mars**2
+    <Quantity 3.7278663 m / s2>
+    >>> (gm_mars / r_mars**2).to_value('mGal')
+    372786.6303857397
+
+Inspect a constant using the print function:
+
+    >>> print(G)
+      Name   = Gravitational constant
+      Value  = 6.67408e-11
+      Uncertainty  = 3.1e-15
+      Unit  = m3 / (kg s2)
+      Reference = CODATA 2014
 """
 
 from __future__ import absolute_import as _absolute_import
@@ -15,10 +35,11 @@ import numpy as _np
 
 try:
     from astropy.constants import Constant
-
+    from astropy.units.quantity import Quantity
 except ImportError:
     raise ImportError('To use the pyshtools constant subpackage, you must '
                       'install astropy.')
+
 
 # == Fundamental constants ==
 
@@ -85,6 +106,7 @@ from .Mars import b_mars
 from .Mars import f_mars
 from .Mars import u0_mars
 
+
 # === Define groups of constants and __all__ ===
 
 _constants_fundamental = ['G', 'mu0']
@@ -99,9 +121,11 @@ _constants_venus = ['gm_venus', 'mass_venus', 'r_venus', 'density_venus',
 _constants_earth = ['gm_egm2008', 'mass_egm2008', 'omega_egm2008', 'a_wgs84',
                     'f_wgs84', 'gm_wgs84', 'mass_wgs84', 'omega_wgs84',
                     'gma_wgs84', 'b_wgs84', 'r3_wgs84', 'u0_wgs84']
+
 _constants_moon = ['gm_moon', 'mass_moon', 'r_moon', 'density_moon',
                    'g0_moon', 'a_orbit_moon', 'omega_moon', 'i_solid_moon',
                    'beta_moon', 'gamma_moon']
+
 _constants_mars = ['gm_mars', 'mass_mars', 'r_mars', 'density_mars', 'g0_mars',
                    'omega_mars', 'a_mars', 'b_mars', 'f_mars', 'u0_mars']
 
@@ -109,77 +133,45 @@ _constants = _constants_fundamental + _constants_mercury + _constants_venus \
              + _constants_earth + _constants_moon + _constants_mars
 
 __all__ = ['Constant', 'Mercury', 'Venus', 'Earth', 'Moon', 'Mars'] \
-          + _constants
+           + _constants
 
-# === Update doc string to list all constants and short descriptions ===
 
-_lines = ['\nThe following constants are available:\n',
-          22 * '=' + ' ' + 58 * '=', 'Name                   Description',
-          22 * '=' + ' ' + 58 * '=']
-_sep = 22*'-' + ' ' + 58 * '-'
+# === Update doc string to list all constants with short descriptions ===
 
-_lines.append('{0:22}'.format('Fundamental constants'))
-_lines.append(_sep)
-for _c in _constants_fundamental:
-    _name = locals()[_c].name
-    if len(_name) > 58:
-        _name = _name[:55] + '...'
-    _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, _name))
+lines = ['\nThe following constants are available:\n',
+         22 * '=' + ' ' + 58 * '=',
+         'Name                   Description',
+         22 * '=' + ' ' + 58 * '=']
+sep = 22*'-' + ' ' + 58 * '-'
 
-_lines.append(_sep)
-_lines.append('{0:22}'.format('Mercury'))
-_lines.append(_sep)
-for _c in _constants_mercury:
-    _name = locals()[_c].name
-    if len(_name) > 58:
-        _name = _name[:55] + '...'
-    _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, _name))
+for module_name, module_list in [
+        ('Fundamental constants', _constants_fundamental),
+        ('Mercury', _constants_mercury),
+        ('Venus', _constants_venus),
+        ('Earth', _constants_earth),
+        ('Moon', _constants_moon),
+        ('Mars', _constants_mars)]:
+    if module_name != 'Fundamental constants':
+        lines.append(sep)
+    lines.append('{0:22}'.format(module_name))
+    lines.append(sep)
+    for c in module_list:
+        name = locals()[c].name
+        if len(name) > 58:
+            name = name[:55] + '...'
+        lines.append('{0:22} {1}'.format(
+            locals()[c].abbrev, name))
 
-_lines.append(_sep)
-_lines.append('{0:22}'.format('Venus'))
-_lines.append(_sep)
-for _c in _constants_venus:
-    _name = locals()[_c].name
-    if len(_name) > 58:
-        _name = _name[:55] + '...'
-    _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, _name))
+lines.append(lines[1])
 
-_lines.append(_sep)
-_lines.append('{0:22}'.format('Earth'))
-_lines.append(_sep)
-for _c in _constants_earth:
-    _name = locals()[_c].name
-    if len(_name) > 58:
-        _name = _name[:55] + '...'
-    _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, _name))
+__doc__ += '\n'.join(lines)
 
-_lines.append(_sep)
-_lines.append('{0:22}'.format('The Moon'))
-_lines.append(_sep)
-for _c in _constants_moon:
-    _name = locals()[_c].name
-    if len(_name) > 58:
-        _name = _name[:55] + '...'
-    _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, _name))
 
-_lines.append(_sep)
-_lines.append('{0:22}'.format('Mars'))
-_lines.append(_sep)
-for _c in _constants_mars:
-    _name = locals()[_c].name
-    if len(_name) > 58:
-        _name = _name[:55] + '...'
-    _lines.append('{0:22} {1}'.format(
-        locals()[_c].abbrev, _name))
+# == Clean up namespace ===
 
-_lines.append(_lines[1])
-
-__doc__ += '\n'.join(_lines)
-
-del _lines
-del _sep
+del lines
+del sep
+del c
+del name
+del module_name
+del module_list
