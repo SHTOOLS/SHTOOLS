@@ -25,4 +25,4 @@ Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature
 
 # See also
 
-[`shglq`](pyshglq.html), [`shexpandglq`](pyshexpandglq.html), [`makegridglq`](pymakegridglq.html), [`shexpandglqc`](pyshexpandglqc.html), [`makegridglqc`](pymakegridglqc.html)
+[shglq](pyshglq.html), [shexpandglq](pyshexpandglq.html), [makegridglq](pymakegridglq.html), [shexpandglqc](pyshexpandglqc.html), [makegridglqc](pymakegridglqc.html)

@@ -26,7 +26,7 @@ Given a set of latitude and longitude coordinates representing a closed curve, o
 :   The number of coordinates in the curve `profile`.
 
 `sampling` : optional, integer, default = 1
-:   For 1, `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples. 
+:   For 1, `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples.
 
 `centralmeridian` : optional, integer, default = 0
 :   If 1, the curve is assumed to pass through the central meridian: passing from < 360 degrees to > 0 degrees. The curve makes a complete circle about the planet in longitude.

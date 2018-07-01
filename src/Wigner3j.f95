@@ -29,7 +29,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 !   efficient algorithms might be found for specific cases (for instance, when
 !   all m's are zero).
 !
-!   Verification: 
+!   Verification:
 !
 !   The results have been verified against this routine run in quadruple
 !   precision. For 1.e7 acceptable random values of j2, j3, m2, and m3 between
@@ -66,7 +66,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 !
 !   Calling parameters
 !
-!       IN  
+!       IN
 !           j2, j3, m1, m2, m3      Integer values.
 !
 !       OUT 
@@ -181,7 +181,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         end if
 
-    else if ( xjmin * yjmin >= 0.0d0) then
+    else if (xjmin * yjmin >= 0.0d0) then
         ! The second term is outside of the non-classical region
         wl(jindex(jmin)) = 1.0d0
         wl(jindex(jmin+1)) = -yjmin / xjmin
@@ -194,7 +194,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
         jn = jmax
 
         do j = jmin + 1, jmax-1, 1
-            denom =  y(j) + z(j)*rs(jindex(j-1))
+            denom = y(j) + z(j)*rs(jindex(j-1))
             xj = x(j)
 
             if (abs(xj) > abs(denom) .or. xj * denom >= 0.0d0 .or. &
@@ -338,8 +338,8 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         wnmid = wl(jindex(jmid))
 
-        if (abs(wnmid/wl(jindex(jmid-1))) < 1.d-6 .and. &
-                wl(jindex(jmid-1)) /= 0.0d0) then
+        if (wl(jindex(jmid-1)) /= 0.0d0 .and. &
+                abs(wnmid / wl(jindex(jmid-1))) < 1.d-6) then
             ! Make sure that the stopping midpoint value is not a zero,
             ! or close to it!
             wnmid = wl(jindex(jmid-1))

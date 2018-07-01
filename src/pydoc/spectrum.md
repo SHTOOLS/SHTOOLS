@@ -17,7 +17,7 @@ Return the spectrum of the spherical harmonic coefficients as a function of sphe
 :   ndarray containing the spherical harmonic coefficients.
 
 `normalization` : str, optional, default = '4pi'
-:   '4pi', 'ortho' or 'schmidt' for geodesy 4pi normalized, orthonormalized, or Schmidt semi-normalized coefficients, respectively.
+:   '4pi', 'ortho', 'schmidt', or 'unnorm', for geodesy 4pi normalized, orthonormalized, Schmidt semi-normalized, or unnormalized coefficients, respectively.
 
 `lmax` : int, optional, default = len(clm[0,:,0]) - 1.
 :   Maximum spherical harmonic degree to output.
@@ -38,7 +38,7 @@ Return the spectrum of the spherical harmonic coefficients as a function of sphe
 
 This function returns either the power spectrum, energy spectrum, or l2-norm spectrum. Total power is defined as the integral of the function squared over all space, divided by the area the function spans. If the mean of the function is zero, this is equivalent to the variance of the function. The total energy is the integral of the function squared over all space and is 4pi times the total power. The l2-norm is the sum of the magnitude of the coefficients squared.
 
-The output spectrum can be expresed using one of three units. 'per_l' returns the contribution to the total spectrum from all angular orders at degree l. 'per_lm' returns the average contribution to the total spectrum from a single coefficient at degree l. The 'per_lm' spectrum is equal to the 'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the contribution to the total spectrum from all angular orders over an infinitessimal logarithmic degree band. The contrubution in the band dlog_a(l) is spectrum(l, 'per_dlogl')\*dlog_a(l), where a is the base, and where spectrum(l, 'per_dlogl') is equal to spectrum(l, 'per_l')\*l\*log(a).
+The output spectrum can be expresed using one of three units. 'per_l' returns the contribution to the total spectrum from all angular orders at degree l. 'per_lm' returns the average contribution to the total spectrum from a single coefficient at degree l, which is equal to the 'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the contribution to the total spectrum from all angular orders over an infinitessimal logarithmic degree band. The contrubution in the band dlog_a(l) is spectrum(l, 'per_dlogl')\*dlog_a(l), where a is the base, and where spectrum(l, 'per_dlogl') is equal to spectrum(l, 'per_l')\*l\*log(a).
 
 # See also
 

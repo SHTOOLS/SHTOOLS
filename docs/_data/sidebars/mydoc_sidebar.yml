@@ -1,0 +1,186 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  product: SHTOOLS
+  version: 4.2
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: /titlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: Getting started
+    output: web, pdf
+    folderitems:
+
+    - title: Overview
+      url: /index.html
+      output: web, pdf
+      type: homepage
+
+    - title: Installing
+      url: /installing.html
+      output: web, pdf
+
+    - title: Using with Fortran 95
+      url: /using-with-f95.html
+      output: web, pdf
+
+    - title: Using with Python
+      url: /using-with-python.html
+      output: web, pdf
+
+  - title: Spherical harmonics
+    output: web, pdf
+    folderitems:
+
+    - title: Real spherical harmonics
+      url: /real-spherical-harmonics.html
+      output: web, pdf
+
+    - title: Complex spherical harmonics
+      url: /complex-spherical-harmonics.html
+      output: web, pdf
+
+    - title: Implementation details
+      url: /implementation-details.html
+      output: web, pdf
+
+  - title: Fortran 95 Routines
+    output: web, pdf
+    folderitems:
+
+    - title: Modules
+      url: /f95-modules.html
+      output: web, pdf
+
+    - title: Legendre functions
+      url: /legendre-functions.html
+      output: web, pdf
+
+    - title: Spherical harmonic transformations
+      url: /spherical-harmonic-transforms.html
+      output: web, pdf
+
+    - title: I/O, storage, conversions
+      url: /io.html
+      output: web, pdf
+
+    - title: Global spectral analysis
+      url: /global-spectral-analysis.html
+      output: web, pdf
+
+    - title: Localized spectral analysis
+      url: /localized-spectral-analysis.html
+      output: web, pdf
+
+    - title: Spherical harmonic rotations
+      url: /spherical-harmonic-rotations.html
+      output: web, pdf
+
+    - title: Gravity and magnetics
+      url: /gravity-magnetics.html
+      output: web, pdf
+
+    - title: Miscellaneous
+      url: /miscellaneous-routines.html
+      output: web, pdf
+
+  - title: Python components
+    output: web, pdf
+    folderitems:
+
+    - title: Python classes
+      url: /python-classes.html
+      output: web, pdf
+
+    - title: Legendre functions
+      url: /python-legendre-functions.html
+      output: web, pdf
+
+    - title: Spherical harmonic transformations
+      url: /python-spherical-harmonic-transforms.html
+      output: web, pdf
+
+    - title: I/O, storage, conversions
+      url: /python-io.html
+      output: web, pdf
+
+    - title: Global and localized spectral analysis
+      url: /python-spectral-analysis.html
+      output: web, pdf
+
+    - title: Spherical harmonic rotations
+      url: /python-spherical-harmonic-rotations.html
+      output: web, pdf
+
+    - title: Gravity and magnetics
+      url: /python-gravity-magnetics.html
+      output: web, pdf
+
+    - title: Utilities
+      url: /python-utilities.html
+      output: web, pdf
+
+    - title: Constants
+      url: /python-constants.html
+      output: web, pdf
+
+  - title: Examples programs
+    output: web, pdf
+
+    folderitems:
+    - title: Python examples
+      url: /python-examples.html
+      output: web, pdf
+
+    - title: Fortran 95 examples
+      url: /fortran-examples.html
+      output: web, pdf
+
+  - title: Support
+    output: web, pdf
+
+    folderitems:
+    - title: FAQ
+      url: /faq.html
+      output: web, pdf
+
+    - title: Fortran 95 problems
+      url: /fortran-95-problems.html
+      output: web, pdf
+
+    - title: How to contribute
+      url: /how-to-contribute.html
+      output: web, pdf
+
+  - title: Release Notes
+    output: web, pdf
+    folderitems:
+
+    - title: Version 4
+      url: /release-notes-v4.html
+      output: web, pdf
+
+    - title: Version 3
+      url: /release-notes-v3.html
+      output: web, pdf
+
+    - title: License
+      url: /license.html
+      output: web, pdf
+
+    - title: Contributors
+      url: /contributors.html
+      output: web, pdf
+

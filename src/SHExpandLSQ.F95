@@ -201,16 +201,6 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     ncoef = (lmax+1)**2
 
-    if (nmax > ncoef) then
-        print*, "SHExpandLSQ --- Determining least squares solution " // &
-                "of an overdetermined system." 
-
-    else
-        print*, "SHExpandLSQ --- Determining minimum norm solution " // &
-                "of an underdetermined system."
-
-    end if
-
     !--------------------------------------------------------------------------
     !
     !   Calculate matrix G (nmax by ncoef)

@@ -526,7 +526,7 @@
     end function pyMakeGridPointC
 
     subroutine pySHMultiply(exitstatus,shout,sh1,lmax1,sh2,lmax2,precomp,norm,&
-                            csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2, &
+                            csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,&
                             shout_d0,shout_d1,shout_d2)
         use shtools, only: SHMultiply
         implicit none
@@ -551,87 +551,6 @@
         call SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp=precomp, &
                         norm=norm,csphase=csphase,exitstatus=exitstatus)
     end subroutine pySHMultiply
-
-    subroutine pySHRead(exitstatus,filename,cilm,lmax,lmax_in,skip,cilm_d0,&
-                        cilm_d1,cilm_d2)
-        use shtools, only: SHRead
-        implicit none
-        integer, intent(out) :: exitstatus
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(out) :: lmax
-        integer, intent(in)  :: lmax_in
-        integer, optional,intent(in) :: skip
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        call SHRead(filename,cilm,lmax,skip=skip, exitstatus=exitstatus)
-    end subroutine pySHRead
-
-    subroutine pySHReadH(exitstatus,filename,cilm,lmax,lmax_in,nheader,header,&
-                         skip,cilm_d0,cilm_d1,cilm_d2)
-        use shtools, only: SHRead
-        implicit none
-        integer, intent(out) :: exitstatus
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer, intent(out) :: lmax
-        integer, intent(in)  :: lmax_in
-        integer, intent(in) ::  nheader
-        real*8, intent(out), dimension(nheader) :: header
-        integer, optional,intent(in) :: skip
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        call SHRead(filename,cilm,lmax,skip=skip,header=header,&
-                    exitstatus=exitstatus)
-    end subroutine pySHReadH
-
-    subroutine pySHReadError(exitstatus,filename,cilm,error,lmax,lmax_in,skip,&
-                             cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,&
-                             error_d2)
-        use shtools, only: SHRead
-        implicit none
-        integer, intent(out) :: exitstatus
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
-        integer, intent(out) :: lmax
-        integer, intent(in)  :: lmax_in
-        integer, optional,intent(in) :: skip
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: error_d0
-        integer, intent(in) :: error_d1
-        integer, intent(in) :: error_d2
-        call SHRead(filename,cilm,lmax,skip=skip,error=error,&
-                    exitstatus=exitstatus)
-    end subroutine pySHReadError
-
-    subroutine pySHReadErrorH(exitstatus,filename,cilm,error,lmax,lmax_in,&
-                              nheader,header,skip,cilm_d0,cilm_d1,cilm_d2,&
-                              error_d0,error_d1,error_d2)
-        use shtools, only: SHRead
-        implicit none
-        integer, intent(out) :: exitstatus
-        character*(*), intent(in) :: filename
-        real*8, dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8, dimension(error_d0,error_d1,error_d2),intent(out) :: error
-        integer, intent(out) :: lmax
-        integer, intent(in)  :: lmax_in
-        integer, intent(in) :: nheader
-        real*8, dimension(nheader),intent(out) :: header
-        integer, optional,intent(in) :: skip
-        integer, intent(in) :: cilm_d0
-        integer, intent(in) :: cilm_d1
-        integer, intent(in) :: cilm_d2
-        integer, intent(in) :: error_d0
-        integer, intent(in) :: error_d1
-        integer, intent(in) :: error_d2
-        call SHRead(filename,cilm,lmax,skip=skip,error=error,header=header,&
-                    exitstatus=exitstatus)
-    end subroutine pySHReadErrorH
 
     subroutine pySHRead2(exitstatus,filename,cilm,lmax,lmax_in,gm,r0_pot,dot,&
                          doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,dot_d0,&
@@ -1720,7 +1639,7 @@
         endif
     end subroutine pyCilmMinusDH
 
-    subroutine pyCilmPlusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,&
+    subroutine pyCilmPlusRhoHDH(exitstatus,cilm,gridin,rho,lmax,nmax,mass,d,&
                                 sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,&
                                 cilm_d2,rho_d0,rho_d1)
         use shtools, only: CilmPlusRhoH
@@ -1820,10 +1739,10 @@
         endif
     end subroutine pyBAtoHilmDH
     
-    subroutine pyBAtoHilmRhoHDH(exitstatus,cilm,ba,griddh,lmax,nmax,mass,r0,&
-                                rho,sampling,filter_type,filter_deg,lmax_calc,&
+    subroutine pyBAtoHilmRhoHDH(exitstatus,cilm,ba,griddh,rho,lmax,nmax,mass,&
+                                r0,sampling,filter_type,filter_deg,lmax_calc,&
                                 ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,&
-                                cilm_d1,cilm_d2, rho_d0,rho_d1)
+                                cilm_d1,cilm_d2,rho_d0,rho_d1)
         use shtools, only: BAtoHilmRhoH
         implicit none
         integer, intent(out) :: exitstatus
@@ -1931,37 +1850,6 @@
                            total_grid,n,sampling=sampling,lmax_calc=lmax_calc,&
                            exitstatus=exitstatus)
     end subroutine pyMakeMagGridDH
-
-    subroutine pySHMagPowerSpectrum(exitstatus,c,a,r,lmax,spectra,c_d0,c_d1, &
-                                    c_d2,spectra_d0)
-        use shtools, only: SHMagPowerSpectrum
-        implicit none
-        integer, intent(out) :: exitstatus
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        real*8, intent(in) :: a
-        real*8, intent(in) :: r
-        integer, intent(in) :: lmax
-        real*8, dimension(spectra_d0),intent(out) :: spectra
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        integer, intent(in) :: spectra_d0
-        call SHMagPowerSpectrum(c,a,r,lmax,spectra,exitstatus=exitstatus)
-    end subroutine pySHMagPowerSpectrum
-
-   function pySHMagPowerL(c,a,r,l,c_d0,c_d1,c_d2)
-        use shtools, only: SHMagPowerL
-        implicit none
-        real*8, dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        real*8, intent(in) :: a
-        real*8, intent(in) :: r
-        integer, intent(in) :: l
-        integer, intent(in) :: c_d0
-        integer, intent(in) :: c_d1
-        integer, intent(in) :: c_d2
-        real*8 :: pySHMagPowerL
-        pySHMagPowerL=SHMagPowerL(c,a,r,l)
-    end function pySHMagPowerL
 
     subroutine pyMakeCircleCoord(exitstatus,coord,lat,lon,theta0,cinterval,cnum, &
                                  coord_d0,coord_d1)

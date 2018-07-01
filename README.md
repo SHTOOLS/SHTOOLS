@@ -1,9 +1,12 @@
 ![LOGO](misc/logo.png)
 
+[![Documentation](https://img.shields.io/badge/documentation-shtools.github.io%2FSHTOOLS%2F-yellow.svg)](https://shtools.github.io/SHTOOLS/)
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg)](http://dx.doi.org/10.5281/zenodo.592762)
+[![Paper](https://img.shields.io/badge/paper-10.1029/2018GC007529-orange.svg)](http://doi.org/10.1029/2018GC007529)
 [![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.206114.svg)](http://dx.doi.org/10.5281/zenodo.206114)
+[![Twitter](https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=pyshtools)
 
-SHTOOLS is a Fortran 95 / Python library that can be used to perform
+SHTOOLS/pysthools is a Fortran-95/Python library that can be used to perform
 spherical harmonic transforms and reconstructions, rotations of data expressed
 in spherical harmonics, and multitaper spectral analyses on the sphere.
 
@@ -11,7 +14,7 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
 
 * A wide range of supported spherical harmonic functions:
    * real and complex,
-   * different normalizations (Geodesy 4&pi;, Schmidt semi-normalized, orthonormalized, unnormalized),
+   * all standard normalizations (Geodesy 4&pi;, Schmidt semi-normalized, orthonormalized, unnormalized),
    * Condon-Shortley phase factor of (-1)<sup>m</sup>.
 
 * Selected applications and routines:
@@ -20,72 +23,82 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
    * standard gravity and magnetic field calculations, computation of the geoid, finite-amplitude potential from topography.
 
 * Clean implementation of the spherical harmonic transforms:
-  * Exact quadrature rules using either the sampling theorem of *Driscoll and Healy* (1994) where data are equally sampled (or spaced) in latitude and longitude, or Gauss-Legendre quadrature.
-
-  * Accurate and fast to approximately degree 2800, corresponding to a spatial
-    resolution higher than 4 arc minutes. Transforms and reconstructions take
-    on the order of 1 second for bandwidths less than 600 and about 3 minutes
-    for bandwidths close to 2800 on standard machines. The Fortran 95 routines are
-    OpenMP compatible and OpenMP thread-safe.
+  * exact quadrature rules using the sampling theorem of *Driscoll and Healy* (1994) or Gauss-Legendre quadrature,
+  * accurate and fast to approximately degree 2800 (spatial resolution higher than 4 arc minutes),
+  * Fortran 95 routines are OpenMP compatible and OpenMP thread-safe.
 
 ### INSTALLATION ###
-#### Requirements ####
-Linux:
-```bash
-sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
-```
-OSX:
-```bash
-brew install fftw --with-fortran
-```
+#### pyshtools for Python ####
 
-#### Python Library ####
+Binary install for linux/macOS/windows:
 ```bash
 pip install pyshtools
 ```
-Or, to install a developer version, [download](https://github.com/SHTOOLS/SHTOOLS/zipball/master) or clone the SHTOOLS repository, enter the SHTOOLS folder and then execute one of the following commands:
+Build from source:
+```bash
+pip install pyshtools --no-binary pyshtools
+```
+
+#### pyshtools for Anaconda Python ####
+
+Install fftw3 with fortran bindings and then install pyshtools using `pip`:
+
+```bash
+conda install -c eumetsat fftw3
+pip install pyshtools
+```
+
+#### pyshtools for Python (developer install) ####
+Linux requirements:
+```bash
+sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
+```
+macOS requirements:
+```bash
+brew install fftw --with-fortran
+```
+To install the develop branch use:
+```bash
+pip install git+https://github.com/SHTOOLS/SHTOOLS@develop
+```
+Alternatively, clone the shtools repo
+```bash
+git clone https://github.com/SHTOOLS/SHTOOLS.git
+```
+and then execute one of the following commands in the shtools directory:
 ```bash
 pip install .  # installs into the active python environment lib folder
 pip install -v -e .  # installs into the SHTOOLS/pyshtools folder and links to the active python environment
 ```
 
 #### Fortran Library ####
-To install the Fortran 95 library, enter one of the following
+Clone the shtools repo, and then execute one of the following commands in the shtools directory:
 ```bash
 make fortran
-make fortran-mp  # Open-MP Fortran routines
+make fortran-mp  # OpenMP Fortran routines
 ```
-
-Or, with OSX, use the [brew](http://brew.sh/) package manager:
+Or use the [brew](http://brew.sh/) package manager (macOS):
 ```bash
 brew tap shtools/shtools
 brew install shtools
+brew install shtools --with-openmp # to install shtools with the OpenMP components.
 ```
-To also install the OpenMP components, add ```--with-openmp``` to the last command.
 
-More installation instructions and options can be found in the [web documentation](https://shtools.oca.eu) and GitHub 
+More installation instructions and options can be found in the [web documentation](https://shtools.github.io/SHTOOLS/) and GitHub 
 [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki).
 
 
 ### HOW TO USE ###
 
-SHTOOLS can be invoked from Fortran 95, Python 2, or Python 3. The
+SHTOOLS can be invoked from Fortran 95, Python 2 or Python 3. The
 base SHTOOLS software is written in Fortran 95, and the Python library allows
 simple access to all fortran-compiled routines and offers helper routines as
 well as simple interfaces.
 
 To get started, check out the following Python tutorial notebooks:
 
-* Introduction 1: Grids and Spherical Harmonic Coefficients [\[ipynb\]](examples/notebooks/Introduction-1.ipynb)
-* Introduction 2: Localization Windows and Spectral Analysis [\[ipynb\]](examples/notebooks/Introduction-2.ipynb)
-* Tutorial 1: Simple Spherical Harmonic Analyses [\[ipynb\]](examples/notebooks/tutorial_1.ipynb)
-* Tutorial 2: Localized Spectral Analysis on the Sphere [\[ipynb\]](examples/notebooks/tutorial_2.ipynb)
-* Tutorial 3: The SHTOOLS Class Interface [\[ipynb\]](examples/notebooks/tutorial_3.ipynb)
-* Tutorial 4: Spherical Harmonic Normalizations and Parseval's theorem [\[ipynb\]](examples/notebooks/tutorial_4.ipynb)
-* Tutorial 5: Multitaper Spectral Analysis Class Interface [\[ipynb\]](examples/notebooks/tutorial_5.ipynb)
-* Tutorial 6: 3D Spherical Harmonic Plots [\[ipynb\]](examples/notebooks/tutorial_6.ipynb)
-
-You can keep up to date by following SHTOOLS on [Twitter](https://twitter.com/SH_tools).
+* [Introduction 1: Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
+* [Introduction 2: Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
 
 ### ACKNOWLEDGMENTS ###
 SHTOOLS is open source (revised BSD license) and makes use of the freely
@@ -95,4 +108,6 @@ available Fourier transform package
 [BLAS](http://www.netlib.org/blas/).
 
 ### CITATION ###
-Wieczorek, M. A., M. Meschede, I. Oshchepkov, E. Sales de Andrade, and heroxbd (2016). SHTOOLS: Version 4.0. Zenodo. doi:[10.5281/zenodo.206114](http://dx.doi.org/10.5281/zenodo.206114).
+Mark A. Wieczorek and Matthias Meschede (2018). SHTools --- Tools for working with spherical harmonics, *Geochemistry, Geophysics, Geosystems*, doi:[10.1029/2018GC007529](http://doi.org/10.1029/2018GC007529).
+
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS, *Zenodo*, doi:[10.5281/zenodo.592762](http://doi.org/10.5281/zenodo.592762).

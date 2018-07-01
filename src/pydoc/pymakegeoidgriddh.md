@@ -4,12 +4,12 @@ Create a global map of the geoid.
 
 # Usage
 
-`geoid` = MakeGeoidGridDH (`cilm`, `r0`, `gm`, `potref`, [`lmax` `omega`, `r`, `order`, `lmax_calc`, `a`, `f`])
+`geoid` = MakeGeoidGridDH (`cilm`, `r0`, `gm`, `potref`, [`lmax`, `omega`, `r`, `order`, `lmax_calc`, `a`, `f`])
 
 # Returns
 
 `geoid` : float, dimension (`2lmax+2`, `sampling`\*2`lmax+2`)
-:   A global grid of the height to the potential `potref` above a flattened ellipsoid or equatorial radius `a` and flattening `f`.
+:   A global grid of the height to the potential `potref` above a flattened ellipsoid of equatorial radius `a` and flattening `f`.
 
 # Parameters
 
