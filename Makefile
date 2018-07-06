@@ -192,7 +192,6 @@ SYSPYPATH = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_path("pl
 SYSPY3PATH = $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_path("platlib"))')
 PY3EXT = $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_config_var("SO"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
-SYSDOCPATH = $(PREFIX)/share/doc
 
 ifeq ($(F95), f95)
 # Default Absoft f95 flags
@@ -384,8 +383,6 @@ uninstall:
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
 	-rm -r $(SYSSHAREPATH)/shtools/examples/
-	-rm -r $(SYSDOCPATH)/shtools/index.html
-	-rm -r $(SYSDOCPATH)/shtools/www/
 	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 
@@ -402,9 +399,6 @@ install-fortran: fortran
 	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
-	mkdir -pv $(DESTDIR)$(SYSDOCPATH)/shtools
-	cp index.html $(DESTDIR)$(SYSDOCPATH)/shtools/index.html
-	cp -R www $(DESTDIR)$(SYSDOCPATH)/shtools/
 	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
 	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
 	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
