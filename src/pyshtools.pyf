@@ -1230,16 +1230,16 @@ python module _SHTOOLS
             integer,optional,intent(in),intent(hide),depend(lmax) :: cilm_d2 = lmax+1
         end subroutine CilmMinusDH
 
-        subroutine CilmPlusRhoHDH(exitstatus,cilm,gridin,rho,lmax,nmax,mass,d,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
+        subroutine CilmPlusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
             fortranname pycilmplusrhohdh
             integer, intent(out) :: exitstatus
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-            real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
             integer,optional,intent(in),depend(n) :: lmax = n/2 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(out) :: d
+            real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
             integer, optional,depend(gridin_d0,gridin_d1) :: sampling = gridin_d1/gridin_d0
             integer, optional,intent(in),depend(gridin_d0):: n = gridin_d0
             integer, optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0=shape(gridin,0)
@@ -1251,16 +1251,16 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(rho,1)==rho_d1),depend(rho) :: rho_d1=shape(rho,1)
         end subroutine CilmPlusRhoHDH
 
-        subroutine CilmMinusRhoHDH(exitstatus,cilm,gridin,rho,lmax,nmax,mass,d,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
+        subroutine CilmMinusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
             fortranname pycilmminusrhohdh
             integer, intent(out) :: exitstatus
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-            real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
             integer,optional,intent(in),depend(n) :: lmax = n/2 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(out) :: d
+            real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
             integer optional,depend(gridin_d0,gridin_d1), :: sampling = gridin_d1/gridin_d0
             integer, optional,intent(in),depend(gridin_d0) :: n = gridin_d0
             integer, optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0=shape(gridin,0)

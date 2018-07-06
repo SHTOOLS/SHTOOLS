@@ -1,5 +1,5 @@
 """
-    Spherical Harmonic Coefficients classes
+    Spherical Harmonic Coefficient classes
 
         SHCoeffs : SHRealCoeffs, SHComplexCoeffs
 """
@@ -99,10 +99,10 @@ class SHCoeffs(object):
     def __init__(self):
         """Unused constructor of the super class."""
         print('Initialize the class using one of the class methods:\n'
-              '>>> SHCoeffs.from_array?\n'
-              '>>> SHCoeffs.from_random?\n'
-              '>>> SHCoeffs.from_zeros?\n'
-              '>>> SHCoeffs.from_file?\n')
+              '>>> SHCoeffs.from_array\n'
+              '>>> SHCoeffs.from_random\n'
+              '>>> SHCoeffs.from_zeros\n'
+              '>>> SHCoeffs.from_file\n')
 
     # ---- Factory methods ----
     @classmethod
@@ -341,7 +341,7 @@ class SHCoeffs(object):
             lmax = 85
 
         # Create coefficients with unit variance, which returns an expected
-        # total power per degree of (2l+1).
+        # total power per degree of (2l+1) for 4pi normalized harmonics.
         if kind.lower() == 'real':
             coeffs = _np.empty((2, nl, nl))
             for l in degrees:
@@ -355,29 +355,24 @@ class SHCoeffs(object):
                                        ) / _np.sqrt(2.)
 
         if exact_power:
-            power_per_l = _spectrum(coeffs, normalization=normalization,
-                                    unit='per_l')
+            power_per_l = _spectrum(coeffs, normalization='4pi', unit='per_l')
             coeffs *= _np.sqrt(
                 power[0:nl] / power_per_l)[_np.newaxis, :, _np.newaxis]
         else:
-            if normalization.lower() == '4pi':
-                coeffs *= _np.sqrt(
-                    power[0:nl] / (2. * degrees + 1.))[_np.newaxis, :,
-                                                       _np.newaxis]
-            elif normalization.lower() == 'ortho':
-                coeffs *= _np.sqrt(
-                    4. * _np.pi * power[0:nl] / (2. * degrees + 1.)
-                    )[_np.newaxis, :, _np.newaxis]
-            elif normalization.lower() == 'schmidt':
-                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
-            elif normalization.lower() == 'unnorm':
-                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
-                for l in degrees:
-                    ms = _np.arange(l+1)
-                    coeffs[:, l, :l+1] *= _np.sqrt(_factorial(l-ms) /
-                                                   _factorial(l+ms))
-                if kind.lower() == 'real':
-                    coeffs[:, :, 1:] *= _np.sqrt(2.)
+            coeffs *= _np.sqrt(
+                power[0:nl] / (2. * degrees + 1.))[_np.newaxis, :, _np.newaxis]
+
+        if normalization.lower() == '4pi':
+            pass
+        elif normalization.lower() == 'ortho':
+            coeffs = _convert(coeffs, normalization_in='4pi',
+                              normalization_out='ortho')
+        elif normalization.lower() == 'schmidt':
+            coeffs = _convert(coeffs, normalization_in='4pi',
+                              normalization_out='schmidt')
+        elif normalization.lower() == 'unnorm':
+            coeffs = _convert(coeffs, normalization_in='4pi',
+                              normalization_out='unnorm')
 
         if lmax > nl - 1:
             coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - nl + 1),
@@ -481,7 +476,7 @@ class SHCoeffs(object):
             coeffs = _np.load(fname, **kwargs)
         else:
             raise NotImplementedError(
-                'format={:s} not yet implemented'.format(repr(format)))
+                'format={:s} not implemented'.format(repr(format)))
 
         if normalization.lower() == 'unnorm' and lmaxout > 85:
             _warnings.warn("Calculations using unnormalized coefficients " +
@@ -525,6 +520,21 @@ class SHCoeffs(object):
             before the spherical harmonic coefficients.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
+
+        Description
+        -----------
+        If format='shtools', the coefficients will be written to an ascii
+        formatted file. The first line of the file is an optional user provided
+        header line, and the spherical harmonic coefficients are then listed,
+        with increasing degree and order, with the format
+
+        l, m, coeffs[0, l, m], coeffs[1, l, m]
+
+        where l and m are the spherical harmonic degree and order,
+        respectively.
+
+        If format='npy', the spherical harmonic coefficients will be saved to
+        a binary numpy 'npy' file using numpy.save().
         """
         if format is 'shtools':
             with open(filename, mode='w') as file:
@@ -545,7 +555,8 @@ class SHCoeffs(object):
     def __add__(self, other):
         """
         Add two similar sets of coefficients or coefficients and a scalar:
-        self + other.
+        self + other. For the addition of a scalar, only the degree 0
+        term is modified.
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
@@ -557,33 +568,34 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
+                raise ValueError('The two sets of coefficients must be of '
+                                 'the same kind and have the same '
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not add a complex constant to real ' +
+                raise ValueError('Can not add a complex constant to real '
                                  'coefficients.')
-            coeffs[self.mask] = self.coeffs[self.mask] + other
+            coeffs = self.coeffs.copy()
+            coeffs[0, 0, 0] += other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __radd__(self, other):
         """
         Add two similar sets of coefficients or coefficients and a scalar:
-        other + self.
+        other + self. For the addition of a scalar, only the degree 0
+        term is modified.
         """
         return self.__add__(other)
 
     def __sub__(self, other):
         """
         Subtract two similar sets of coefficients or coefficients and a scalar:
-        self - other.
+        self - other. For the subtraction of a scalar, only the degree 0
+        term is modified.
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
@@ -595,26 +607,26 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
+                raise ValueError('The two sets of coefficients must be of '
+                                 'the same kind and have the same '
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not subtract a complex constant from ' +
+                raise ValueError('Can not subtract a complex constant from '
                                  'real coefficients.')
-            coeffs[self.mask] = self.coeffs[self.mask] - other
+            coeffs = self.coeffs.copy()
+            coeffs[0, 0, 0] -= other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __rsub__(self, other):
         """
         Subtract two similar sets of coefficients or coefficients and a scalar:
-        other - self.
+        other - self. For the subtraction from a scalar, self is multiplied by
+        -1 and then other is added to the degree 0 coefficient.
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
@@ -626,20 +638,19 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
+                raise ValueError('The two sets of coefficients must be of '
+                                 'the same kind and have the same '
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not subtract a complex constant from ' +
+                raise ValueError('Can not subtract a complex constant from '
                                  'real coefficients.')
-            coeffs[self.mask] = other - self.coeffs[self.mask]
+            coeffs = - self.coeffs.copy()
+            coeffs[0, 0, 0] += other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __mul__(self, other):
@@ -657,20 +668,20 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
+                raise ValueError('The two sets of coefficients must be of '
+                                 'the same kind and have the same '
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
             coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                dtype=self.coeffs.dtype)
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not multiply real coefficients by ' +
+                raise ValueError('Can not multiply real coefficients by '
                                  'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] * other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __rmul__(self, other):
@@ -695,20 +706,20 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
+                raise ValueError('The two sets of coefficients must be of '
+                                 'the same kind and have the same '
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
             coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                dtype=self.coeffs.dtype)
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide real coefficients by ' +
+                raise ValueError('Can not divide real coefficients by '
                                  'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] / other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __truediv__(self, other):
@@ -726,20 +737,20 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
+                raise ValueError('The two sets of coefficients must be of '
+                                 'the same kind and have the same '
                                  'normalization and csphase.')
         elif _np.isscalar(other) is True:
             coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                dtype=self.coeffs.dtype)
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not multiply real coefficients by ' +
+                raise ValueError('Can not multiply real coefficients by '
                                  'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] / other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __pow__(self, other):
@@ -752,8 +763,17 @@ class SHCoeffs(object):
                                        csphase=self.csphase,
                                        normalization=self.normalization)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
+
+    def __repr__(self):
+        return ('kind = {:s}\n'
+                'normalization = {:s}\n'
+                'csphase = {:d}\n'
+                'lmax = {:d}\n'
+                'header = {:s}'.format(
+                    repr(self.kind), repr(self.normalization), self.csphase,
+                    self.lmax, repr(self.header)))
 
     # ---- Extract data ----
     def degrees(self):
@@ -1478,11 +1498,7 @@ class SHCoeffs(object):
         -----
         x.info()
         """
-        print('kind = {:s}\nnormalization = {:s}\n'
-              'csphase = {:d}\nlmax = {:d}\n'
-              'header = {:s}'.format(
-                  repr(self.kind), repr(self.normalization), self.csphase,
-                  self.lmax, repr(self.header)))
+        print(repr(self))
 
 
 # ================== REAL SPHERICAL HARMONICS ================
@@ -2090,12 +2106,12 @@ class SHGrid(object):
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not add a complex constant to a ' +
+                raise ValueError('Can not add a complex constant to a '
                                  'real grid.')
             data = self.data + other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __radd__(self, other):
@@ -2110,16 +2126,16 @@ class SHGrid(object):
                 data = self.data - other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
-                raise ValueError('The two grids must be of the ' +
+                raise ValueError('The two grids must be of the '
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not subtract a complex constant from ' +
+                raise ValueError('Can not subtract a complex constant from '
                                  'a real grid.')
             data = self.data - other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __rsub__(self, other):
@@ -2134,12 +2150,12 @@ class SHGrid(object):
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not subtract a complex constant from ' +
+                raise ValueError('Can not subtract a complex constant from '
                                  'a real grid.')
             data = other - self.data
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __mul__(self, other):
@@ -2154,12 +2170,12 @@ class SHGrid(object):
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not multiply a real grid by a complex ' +
+                raise ValueError('Can not multiply a real grid by a complex '
                                  'constant.')
             data = self.data * other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __rmul__(self, other):
@@ -2181,12 +2197,12 @@ class SHGrid(object):
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide a real grid by a complex ' +
+                raise ValueError('Can not divide a real grid by a complex '
                                  'constant.')
             data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __truediv__(self, other):
@@ -2200,16 +2216,16 @@ class SHGrid(object):
                 data = self.data / other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
-                raise ValueError('The two grids must be of the ' +
+                raise ValueError('The two grids must be of the '
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide a real grid by a complex ' +
+                raise ValueError('Can not divide a real grid by a complex '
                                  'constant.')
             data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __pow__(self, other):
@@ -2217,12 +2233,22 @@ class SHGrid(object):
         if _np.isscalar(other) is True:
             return SHGrid.from_array(pow(self.data, other), grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __abs__(self):
         """Return the absolute value of the gridded data."""
         return SHGrid.from_array(abs(self.data), grid=self.grid)
+
+    def __repr__(self):
+        str = ('kind = {:s}\n'
+               'grid = {:s}\n'.format(repr(self.kind), repr(self.grid)))
+        if self.grid == 'DH':
+            str += 'sampling = {:d}\n'.format(self.sampling)
+        str += ('nlat = {:d}\n'
+                'nlon = {:d}\n'
+                'lmax = {:d}'.format(self.nlat, self.nlon, self.lmax))
+        return str
 
     # ---- Extract grid properties ----
     def lats(self, degrees=True):
@@ -2312,7 +2338,7 @@ class SHGrid(object):
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
-        from mpl_toolkits.mplot3d import Axes3D  # NOQA
+        from mpl_toolkits.mplot3d import Axes3D
 
         nlat, nlon = self.nlat, self.nlon
         cmap = _plt.get_cmap('RdBu_r')
@@ -2520,13 +2546,7 @@ class SHGrid(object):
         -----
         x.info()
         """
-        print('kind = {:s}\ngrid = {:s}\n'.format(repr(self.kind),
-                                                  repr(self.grid)), end='')
-        if self.grid == 'DH':
-            print('sampling = {:d}\n'.format(self.sampling), end='')
-        print('nlat = {:d}\nnlon = {:d}\nlmax = {:d}'.format(self.nlat,
-                                                             self.nlon,
-                                                             self.lmax))
+        print(repr(self))
 
 
 # ---- Real Driscoll and Healy grid class ----

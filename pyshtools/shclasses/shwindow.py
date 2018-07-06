@@ -1328,43 +1328,48 @@ class SHWindowCap(SHWindow):
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
-        print('kind = {:s}\n'.format(repr(self.kind)), end='')
+        print(repr(self))
+
+    def __repr__(self):
+        str = 'kind = {:s}\n'.format(repr(self.kind))
 
         if self.theta_degrees:
-            print('theta = {:f} degrees\n'.format(self.theta), end='')
+            str += 'theta = {:f} degrees\n'.format(self.theta)
         else:
-            print('theta = {:f} radians'.format(self.theta), end='')
+            str += 'theta = {:f} radians'.format(self.theta)
 
-        print('lwin = {:d}\n'.format(self.lwin), end='')
-        print('nwin = {:d}\n'.format(self.nwin), end='')
+        str += ('lwin = {:d}\n'
+                'nwin = {:d}\n'.format(self.lwin, self.nwin))
 
         if self.clat is not None:
             if self.coord_degrees:
-                print('clat = {:f} degrees\n'.format(self.clat), end='')
+                str += 'clat = {:f} degrees\n'.format(self.clat)
             else:
-                print('clat = {:f} radians\n'.format(self.clat), end='')
+                str += 'clat = {:f} radians\n'.format(self.clat)
         else:
-            print('clat is not specified')
+            str += 'clat is not specified\n'
 
         if self.clon is not None:
             if self.coord_degrees:
-                print('clon = {:f} degrees\n'.format(self.clon), end='')
+                str += 'clon = {:f} degrees\n'.format(self.clon)
             else:
-                print('clon = {:f} radians\n'.format(self.clon), end='')
+                str += 'clon = {:f} radians\n'.format(self.clon)
         else:
-            print('clon is not specified')
+            str += 'clon is not specified\n'
 
-        print('nwinrot = {:s}'.format(repr(self.nwinrot)))
+        str += 'nwinrot = {:s}\n'.format(repr(self.nwinrot))
 
         if self.dj_matrix is not None:
-            print('dj_matrix is stored')
+            str += 'dj_matrix is stored\n'
         else:
-            print('dj_matrix is not stored')
+            str += 'dj_matrix is not stored\n'
 
         if self.weights is None:
-            print('Taper weights are not set.')
+            str += 'Taper weights are not set'
         else:
-            print('Taper weights are set.')
+            str += 'Taper weights are set'
+
+        return str
 
 
 class SHWindowMask(SHWindow):
@@ -1540,12 +1545,16 @@ class SHWindowMask(SHWindow):
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
-        print('kind = {:s}\n'.format(repr(self.kind)), end='')
+        print(repr(self))
 
-        print('lwin = {:d}\n'.format(self.lwin), end='')
-        print('nwin = {:d}\n'.format(self.nwin), end='')
+    def __repr__():
+        str = ('kind = {:s}\n'
+               'lwin = {:d}\n'
+               'nwin = {:d}\n'.format(repr(self.kind), self.lwin, self.nwin))
 
         if self.weights is None:
-            print('Taper weights are not set.')
+            str += 'Taper weights are not set'
         else:
-            print('Taper weights are set.')
+            str += 'Taper weights are set'
+
+        return str

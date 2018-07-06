@@ -1,16 +1,16 @@
 """
-Class interface for SHTOOLS.
+Class interface for pyshtools.
 
-pyshtools defines several classes that facilitate the interactive
-examination of geographical gridded data and their associated
-spherical harmonic coefficients. Subclasses are used to handle different
-internal data types and superclasses are used to implement interface
-functions and documentation.
+pyshtools defines several classes that facilitate the interactive examination
+of geographical gridded data and their associated spherical harmonic
+coefficients. Superclasses are used to implement interface functions and
+documentation and subclasses are used to handle different internal data types.
 
 pyshtools class structure:
 
     SHCoeffs
         SHRealCoeffs
+
         SHComplexCoeffs
 
     SHGrid
@@ -22,6 +22,9 @@ pyshtools class structure:
     SHWindow
         SHWindowCap
         SHWindowMask
+
+    SHGravCoeffs
+        SHGravRealCoeffs
 
 For more information, see the documentation for the top level classes.
 """
@@ -43,3 +46,5 @@ from .shcoeffsgrid import GLQComplexGrid
 from .shwindow import SHWindow
 from .shwindow import SHWindowCap
 from .shwindow import SHWindowMask
+
+from .shgravcoeffs import SHGravCoeffs
