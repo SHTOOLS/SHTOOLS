@@ -58,8 +58,10 @@ To read the documentation of a routine in iPython, such as `MakeGridDH`, enter
 ```python
 pyshtools.expand.MakeGridDH?
 ```
-To read the info string of an SHTOOLS constant, such as `a_mars`, enter
+Alternatively, the documentation can be accessed from the *Python components* menu item on this web site.
+
+The `constant` subpackage defines physical constants related to the gravity, topography, and magnetic field of the terrestrial planets. Each of these is an instance of an [astropy](http://docs.astropy.org/en/stable/constants/index.html) `Constant` class, which has the attributes `name`, `value`, `uncertainty`, `unit`, and `reference`. To see all information about an individual constant, enter
 ```python
-pyshtools.constant.a_mars.info()
+print(pyshtools.constant.r_mars)
 ```
-Alternatively, the man pages can be accessed from the *Python components* menu item on this web site.
+

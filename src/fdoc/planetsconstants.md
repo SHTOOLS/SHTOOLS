@@ -4,7 +4,8 @@ SHTOOLS Module containing planetary constants.
 
 # Description
 
-`PlanetsConstants` defines several constants that are useful when working with gravity and topography data of the Earth, Mars, Venus, and Moon. All units are SI. Confer with the Python documentation or fortran source file for exact values and references.
+`PlanetsConstants` defines several constants that are used in analyzing gravity,
+topography, and magnetic field data of the terrestrial planets. All units are SI. Confer with the Python attributes of the constant for exact values and references.
 
 # Constants
 
@@ -13,10 +14,10 @@ SHTOOLS Module containing planetary constants.
 `Grav_constant`
 :   Gravitational Constant.
 
-`pi_constant`
+`Pi_constant`
 :   Pi.
 
-`mu0_constant`
+`Mu0_constant`
 :   Magnetic constant.
 
 
@@ -31,75 +32,64 @@ SHTOOLS Module containing planetary constants.
 `Mass_Moon`
 :   Mass of the Moon.
 
-`rho_bar_Moon`
+`Density_Moon`
 :   Average density of the Moon.
 
-`a_Moon`
+`A_Orbit_Moon`
 :   Semi-major axis of the lunar orbit.
-
-`g0_Moon`
-:   Mean gravitational acceleration of the Moon at the mean surface radius (R_Moon), not including rotation.
-
-`R0_pot_Moon`
-:   Reference radius of the gravitational-potential models of the Moon.
 
 `Omega_Moon`
 :   Angular rotation rate of the Moon.
 
-`C_MOI_Moon`
-:   Polar moment of inertia of the Moon, using R=1738 km.
+`I_Solid_Moon`
+:   Average moment of inertia of the solid portion of the Moon.
 
-`I_MOI_Moon`
-:   Average moment of inertia of the Moon, using R=1738 km.
-
-`Gamma_MOI_Moon`
+`Gamma_Moon`
 :   Libration parameter of the Moon, (B-A)/C.
 
-`Beta_MOI_Moon`
+`Beta_Moon`
 :   Libration parameter of the Moon, (C-A)/B.
+
+`G0_Moon`
+:   Mean gravitational acceleration of the Moon at the mean surface radius (R_Moon), not including rotation.
+
 
 ## Mars
 
 `R_Mars`
 :   Average radius of Mars.
 
-`GM_Mars` 
+`GM_Mars`
 :   Gravitational constant times the mass of the Mars.
 
 `Mass_Mars`
 :   Mass of Mars.
 
-`rho_bar_Mars`
+`Density_Mars`
 :   Average density of Mars.
-
-`g0_Mars`
-:   Gravitational acceleration of Mars at R_Mars, not including rotation.
-
-`R0_pot_Mars`
-:   Reference radius of the gravitational-potential models of Mars.
 
 `Omega_Mars`
 :   Angular rotation rate of Mars.
 
-`f_Mars`
+`F_Mars`
 :   Topographic flattening of Mars.
 
-`a_Mars`
+`A_Mars`
 :   Semi-major axis radius of Mars.
 
-`b_Mars`
+`B_Mars`
 :   Semi-minor axis radius of Mars.
 
-`W0_mars`
+`U0_mars`
 :   Reference potential of Mars.
+
+`G0_Mars`
+:   Gravitational acceleration of Mars at R_Mars, not including rotation.
 
 ## Venus
 
 `R_Venus`
 :   Average radius of Venus.
-
-`R0_pot_Venus`
-:   Reference radius of the gravitational-potential models of Venus.
 
 `GM_Venus`
 :   Gravitational constant times the mass of the Venus.
@@ -110,45 +100,45 @@ SHTOOLS Module containing planetary constants.
 `Omega_Venus`
 :   Angular rotation rate of Venus.
 
-`rho_bar_Venus`
+`Density_Venus`
 :   Average density of Venus.
 
-`g0_Venus`
+`G0_Venus`
 :   Gravitational acceleration at R_Venus, not including rotation.
 
 ## Earth
 
-`GM_Earth`
-:   Gravitational constant times the mass of the Earth.
+`GM_EGM2008`
+:   Gravitational constant times the mass of the Earth from the EGM2008 model.
 
-`R0_pot_Earth`
-:   Reference radius of the terrestrial gravitational-potential models.
+`Mass_EGM2008`
+:   The mass of the Earth from the EGM2008 model.
 
-`Mass_Earth`
-:   The mass of the Earth.
-
-`WGS84_a`
+`A_WGS84`
 :   The semi-major axis of the WGS84 ellipsoid.
 
-`WGS84_b`
+`B_WGS84`
 :   The semi-minor axis of the WGS84 ellipsoid.
 
-`WGS84_r3`
+`R3_WGS84`
 :   The radius of a sphere of Earth's volume.
 
-`WGS84_f`
+`F_WGS84`
 :   The flattening of the WGS84 ellipsoid.
 
-`WGS84_gm`
+`GM_WGS84`
 :   The adopted GM of the WGS84 model, which includes the atmosphere.
 
-`WGS84_gma`
+`Mass_WGS84`
+:   The mass of the Earth from the WGS84 model.
+
+`GMA_WGS84`
 :   The GM of the atmosphere adopted by the WGS84 model.
 
-`WGS84_omega`
+`Omega_WGS84`
 :   The adopted angular rotation rate of the Earth of the WGS84 model.
 
-`WGS84_U0`
+`U0_WGS84`
 :   The theoretical normal potential associated with the WGS84 model.
 
 ## Mercury
@@ -162,17 +152,14 @@ SHTOOLS Module containing planetary constants.
 `Mass_Mercury`
 :   Mass of Mercury.
 
-`R0_pot_Mercury`
-:   Reference radius used for the spherical harmonic gravity solutions.
-
-`Omega_Mercury_orbit`
+`Omega_Orbit_Mercury`
 :   Angular rotation rate of Mercury about the Sun.
 
-`Omega_Mercury_spin`
+`Omega_Mercury`
 :   Angular rotation rate of Mercury.
 
-`rho_bar_Mercury`
+`Density_Mercury`
 :   Average density of Mercury.
 
-`g0_Mercury`
+`G0_Mercury`
 :   Gravitational acceleration at R_Mercury, not including rotation.

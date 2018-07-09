@@ -7,8 +7,7 @@
 [![Twitter](https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=pyshtools)
 
 SHTOOLS/pysthools is a Fortran-95/Python library that can be used to perform
-spherical harmonic transforms and reconstructions, rotations of data expressed
-in spherical harmonics, and multitaper spectral analyses on the sphere.
+spherical harmonic transforms and reconstructions, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
 
 ### FEATURES ###
 
@@ -17,15 +16,17 @@ in spherical harmonics, and multitaper spectral analyses on the sphere.
    * all standard normalizations (Geodesy 4&pi;, Schmidt semi-normalized, orthonormalized, unnormalized),
    * Condon-Shortley phase factor of (-1)<sup>m</sup>.
 
-* Selected applications and routines:
-   * global spectral analysis, spherical harmonic rotations, Wigner 3j symbols,
-   * localized multitaper spectral analyses, optimal window generation, spherical harmonic coupling matrices,
-   * standard gravity and magnetic field calculations, computation of the geoid, finite-amplitude potential from topography.
-
 * Clean implementation of the spherical harmonic transforms:
   * exact quadrature rules using the sampling theorem of *Driscoll and Healy* (1994) or Gauss-Legendre quadrature,
-  * accurate and fast to approximately degree 2800 (spatial resolution higher than 4 arc minutes),
+  * accurate and fast to approximately degree 2800,
   * Fortran 95 routines are OpenMP compatible and OpenMP thread-safe.
+
+* Selected applications and routines:
+   * global spectral analysis, spherical harmonic rotations, Wigner 3j symbols,
+   * localized multitaper spectral analyses, expansions in Slepian basis functions, spherical harmonic coupling matrices,
+   * standard gravity and magnetic field calculations, computation of the geoid, finite-amplitude potential from topography.
+
+* SHTOOLS is open source software (3-clause BSD license).
 
 ### INSTALLATION ###
 #### pyshtools for Python ####
@@ -55,7 +56,7 @@ sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 ```
 macOS requirements:
 ```bash
-brew install fftw --with-fortran
+brew install fftw
 ```
 To install the develop branch use:
 ```bash
@@ -87,27 +88,14 @@ brew install shtools --with-openmp # to install shtools with the OpenMP componen
 More installation instructions and options can be found in the [web documentation](https://shtools.github.io/SHTOOLS/) and GitHub 
 [wiki](https://github.com/SHTOOLS/SHTOOLS/wiki).
 
-
 ### HOW TO USE ###
 
-SHTOOLS can be invoked from Fortran 95, Python 2 or Python 3. The
-base SHTOOLS software is written in Fortran 95, and the Python library allows
-simple access to all fortran-compiled routines and offers helper routines as
-well as simple interfaces.
+SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library.
 
 To get started, check out the following Python tutorial notebooks:
 
 * [Introduction 1: Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
 * [Introduction 2: Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
 
-### ACKNOWLEDGMENTS ###
-SHTOOLS is open source (revised BSD license) and makes use of the freely
-available Fourier transform package
-[FFTW](http://www.fftw.org) and the linear algebra packages
-[LAPACK](http://www.netlib.org/lapack/) and
-[BLAS](http://www.netlib.org/blas/).
-
 ### CITATION ###
 Mark A. Wieczorek and Matthias Meschede (2018). SHTools --- Tools for working with spherical harmonics, *Geochemistry, Geophysics, Geosystems*, doi:[10.1029/2018GC007529](https://doi.org/10.1029/2018GC007529).
-
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS, *Zenodo*, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762).

@@ -1,13 +1,11 @@
 ---
-title: "SHTOOLS - Tools for working with spherical harmonics"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: "Spherical Harmonic Tools"
+keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Slepian functions, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: index.html
-summary: SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.
+summary: SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
 toc: false
 ---
-
-![Logo](images/company_logo.png)
 
 <a href="https://twitter.com/pyshtools?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @pyshtools</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
@@ -23,9 +21,9 @@ SHTOOLS is extremely versatile:
 
 * One can choose to use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup> with the associated Legendre functions.
 
-* Localized multitaper spectral analyses are easily performed.
+* Localized multitaper spectral analyses and expansions of functions in localized Slepian bases are easily performed.
 
-* Routines are included for performing standard gravity and magnetic field calculations.
+* Standard operations on global gravitational and magnetic field data are supported.
 
 * The Fortran routines are OpenMP compatible and OpenMP thread-safe.
 
@@ -57,8 +55,8 @@ brew install shtools
 
 ## Using
 
-SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library.
+SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library. SHTOOLS is open source software (3-clause BSD license).
 
-## Acknowledgments
+## Citation
 
-SHTOOLS is open source software (3-clause BSD license) and makes use of the freely available packages [FFTW](http://www.fftw.org), [LAPACK](http://www.netlib.org/lapack/) and [BLAS](http://www.netlib.org/blas/).
+Mark A. Wieczorek and Matthias Meschede (2018). SHTools --- Tools for working with spherical harmonics, *Geochemistry, Geophysics, Geosystems*, doi:[10.1029/2018GC007529](https://doi.org/10.1029/2018GC007529).
