@@ -173,7 +173,8 @@ KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
 INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
-    'matplotlib'
+    'matplotlib',
+    'astropy'
 ]
 
 # configure python extension to be compiled with f2py
@@ -259,11 +260,6 @@ def configuration(parent_package='', top_path=None):
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
-                         **kwargs)
-
-    # constants
-    config.add_extension('pyshtools._constant',
-                         sources=['src/PlanetsConstants.f95'],
                          **kwargs)
 
     return config

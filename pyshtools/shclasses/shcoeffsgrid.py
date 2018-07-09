@@ -1170,29 +1170,33 @@ class SHCoeffs(object):
         return clm
 
     # ---- Expand the coefficients onto a grid ----
-    def expand(self, grid='DH', lat=None, lon=None, degrees=True, zeros=None,
-               lmax=None, lmax_calc=None):
+    def expand(self, grid='DH', lat=None, colat=None, lon=None, degrees=True,
+               zeros=None, lmax=None, lmax_calc=None):
         """
-        Evaluate the spherical harmonic coefficients either on a grid or for
-        a list of coordinates.
+        Evaluate the spherical harmonic coefficients either on a global grid
+        or for a list of coordinates.
 
         Usage
         -----
-        f = x.expand(lat, lon, [lmax_calc, degrees])
-        g = x.expand([grid, lmax, lmax_calc, zeros])
+        f = x.expand([grid, lmax, lmax_calc, zeros])
+        g = x.expand(lat, lon, [lmax_calc, degrees])
+        g = x.expand(colat, lon, [lmax_calc, degrees])
 
         Returns
         -------
-        f : float, ndarray, or list
-        g : SHGrid class instance
+        f : SHGrid class instance
+        g : float, ndarray, or list
 
         Parameters
         ----------
-        lat, lon : int, float, ndarray, or list, optional, default = None
-            Latitude and longitude coordinates where the function is to be
-            evaluated.
+        lat : int, float, ndarray, or list, optional, default = None
+            Latitude coordinates where the function is to be evaluated.
+        colat : int, float, ndarray, or list, optional, default = None
+            Colatitude coordinates where the function is to be evaluated.
+        lon : int, float, ndarray, or list, optional, default = None
+            Longitude coordinates where the function is to be evaluated.
         degrees : bool, optional, default = True
-            True if lat and lon are in degrees, False if in radians.
+            True if lat, colat and lon are in degrees, False if in radians.
         grid : str, optional, default = 'DH'
             'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon,
             'DH2' for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ'
@@ -1209,13 +1213,33 @@ class SHCoeffs(object):
 
         Description
         -----------
-        For more information concerning the spherical harmonic expansions and
-        the properties of the output grids, see the documentation for
-        SHExpandDH, SHExpandDHC, SHExpandGLQ and SHExpandGLQC.
+        This method either (1) evaluates the spherical harmonic coefficients on
+        a global grid and returns an SHGrid class instance, or (2) evaluates
+        the spherical harmonic coefficients for a list of (co)latitude and
+        longitude coordinates. For the first case, the grid type is defined
+        by the optional parameter grid, which can be 'DH', 'DH2' or 'GLQ'.For
+        the second case, the optional parameters lon and either colat or lat
+        must be provided.
         """
+        if lat is not None and colat is not None:
+            raise ValueError('lat and colat can not both be specified.')
+
         if lat is not None and lon is not None:
             if lmax_calc is None:
                 lmax_calc = self.lmax
+
+            values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
+                                        lmax_calc=lmax_calc)
+            return values
+
+        if colat is not None and lon is not None:
+            if lmax_calc is None:
+                lmax_calc = self.lmax
+
+            if type(colat) is list:
+                lat = list(map(lambda x: 90 - x, colat))
+            else:
+                lat = 90 - colat
 
             values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
                                         lmax_calc=lmax_calc)

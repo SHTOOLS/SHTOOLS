@@ -192,7 +192,6 @@ SYSPYPATH = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_path("pl
 SYSPY3PATH = $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_path("platlib"))')
 PY3EXT = $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_config_var("SO"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
-SYSDOCPATH = $(PREFIX)/share/doc
 
 ifeq ($(F95), f95)
 # Default Absoft f95 flags
@@ -312,7 +311,7 @@ else
 $(error $(PYTHON_VERSION) is unsupported.)
 endif
 
-python2: fortran pyshtools/_SHTOOLS.so pyshtools/_constant.so
+python2: fortran pyshtools/_SHTOOLS.so
 	mkdir -p pyshtools/doc
 	$(PYTHON) ./pyshtools/make_docs.py . .
 	@echo
@@ -325,7 +324,7 @@ python2: fortran pyshtools/_SHTOOLS.so pyshtools/_constant.so
 	@echo "import pyshtools"
 	@echo
 
-python3: fortran pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
+python3: fortran pyshtools/_SHTOOLS$(PY3EXT)
 	mkdir -p pyshtools/doc
 	$(PYTHON3) ./pyshtools/make_docs.py . .
 	@echo
@@ -344,19 +343,11 @@ pyshtools/_SHTOOLS.so: $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 fortr
 		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	mv _SHTOOLS.so pyshtools/.
 
-pyshtools/_constant.so: $(SRCDIR)/PlanetsConstants.f95
-	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _constant.so pyshtools/.
-
 pyshtools/_SHTOOLS$(PY3EXT): $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 fortran
 	$(F2PY3) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
 		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
 		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
 	mv _SHTOOLS$(PY3EXT) pyshtools/.
-
-pyshtools/_constant$(PY3EXT): $(SRCDIR)/PlanetsConstants.f95
-	$(F2PY3) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _constant$(PY3EXT) pyshtools/.
 
 install: install-fortran
 
@@ -392,8 +383,6 @@ uninstall:
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
 	-rm -r $(SYSSHAREPATH)/shtools/examples/
-	-rm -r $(SYSDOCPATH)/shtools/index.html
-	-rm -r $(SYSDOCPATH)/shtools/www/
 	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 
@@ -410,9 +399,6 @@ install-fortran: fortran
 	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
-	mkdir -pv $(DESTDIR)$(SYSDOCPATH)/shtools
-	cp index.html $(DESTDIR)$(SYSDOCPATH)/shtools/index.html
-	cp -R www $(DESTDIR)$(SYSDOCPATH)/shtools/
 	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
 	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
 	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
@@ -460,8 +446,8 @@ clean-python-tests:
 	@echo "--> Removed Python test suite executables and files"
 
 clean-python2:
-	@-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
-	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/ pyshtools/_constant.so.dSYM/
+	@-rm -rf _SHTOOLS.so.dSYM/
+	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/
 	@-rm -f *.so
 	@-rm -f pyshtools/*.so
 	@-rm -f pyshtools/*.pyc
@@ -470,10 +456,10 @@ clean-python2:
 	@echo "--> Removed Python 2 files"
 
 clean-python3:
-	@-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
-	@-rm -rf pyshtools/_SHTOOLS$(PY3EXT).dSYM/ pyshtools/_constant$(PY3EXT).dSYM/
-	@-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
-	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/ pyshtools/_constant.so.dSYM/
+	@-rm -rf _SHTOOLS$(PY3EXT).dSYM/
+	@-rm -rf pyshtools/_SHTOOLS$(PY3EXT).dSYM/
+	@-rm -rf _SHTOOLS.so.dSYM/
+	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/
 	@-rm -f *.so
 	@-rm -f pyshtools/*.so
 	@-rm -f pyshtools/*.pyc
