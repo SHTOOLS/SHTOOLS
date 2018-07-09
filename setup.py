@@ -165,14 +165,16 @@ CLASSIFIERS = [
 ]
 
 
-KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Wigner Symbols',
-            'Legendre Functions', 'Gravity Field', 'Magnetic Field']
+KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
+            'Wigner Symbols', 'Legendre Functions', 'Gravity Field',
+            'Magnetic Field']
 
 
 INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
-    'matplotlib'
+    'matplotlib',
+    'astropy'
 ]
 
 # configure python extension to be compiled with f2py
@@ -220,7 +222,8 @@ def configuration(parent_package='', top_path=None):
     files = os.listdir('src')
     exclude_sources = ['PlanetsConstants.f95', 'PythonWrapper.f95']
     sources = [os.path.join('src', file) for file in files if
-               file.lower().endswith(('.f95', '.c')) and file not in exclude_sources]
+               file.lower().endswith(('.f95', '.c')) and file not in
+               exclude_sources]
 
     # (from http://stackoverflow.com/questions/14320220/
     #              testing-python-c-libraries-get-build-path)):
@@ -257,11 +260,6 @@ def configuration(parent_package='', top_path=None):
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
-                         **kwargs)
-
-    # constants
-    config.add_extension('pyshtools._constant',
-                         sources=['src/PlanetsConstants.f95'],
                          **kwargs)
 
     return config
