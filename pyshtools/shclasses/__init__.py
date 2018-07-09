@@ -10,7 +10,6 @@ pyshtools class structure:
 
     SHCoeffs
         SHRealCoeffs
-
         SHComplexCoeffs
 
     SHGrid
@@ -25,6 +24,12 @@ pyshtools class structure:
 
     SHGravCoeffs
         SHGravRealCoeffs
+
+    SHGravGrid
+
+    SHGravTensor
+
+    SHGravGeoid
 
 For more information, see the documentation for the top level classes.
 """

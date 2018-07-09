@@ -10,6 +10,7 @@ from __future__ import print_function as _print_function
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import warnings as _warnings
 from scipy.special import factorial as _factorial
@@ -69,9 +70,6 @@ class SHCoeffs(object):
 
     Each class instance provides the following methods:
 
-    to_array()            : Return an array of spherical harmonic coefficients
-                            with a different normalization convention.
-    to_file()             : Save raw spherical harmonic coefficients as a file.
     degrees()             : Return an array listing the spherical harmonic
                             degrees from 0 to lmax.
     spectrum()            : Return the spectrum of the function as a function
@@ -87,11 +85,14 @@ class SHCoeffs(object):
     expand()              : Evaluate the coefficients either on a spherical
                             grid and return an SHGrid class instance, or for
                             a list of latitude and longitude coordinates.
-    copy()                : Return a copy of the class instance.
     plot_spectrum()       : Plot the  spectrum as a function of spherical
                             harmonic degree.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
                             coefficients.
+    to_array()            : Return an array of spherical harmonic coefficients
+                            with a different normalization convention.
+    to_file()             : Save raw spherical harmonic coefficients as a file.
+    copy()                : Return a copy of the class instance.
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
     """
@@ -496,10 +497,41 @@ class SHCoeffs(object):
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase, header=header_list)
 
-    def copy(self):
-        """Return a deep copy of the class instance."""
-        return _copy.deepcopy(self)
+    # ---- Define methods that modify internal variables ----
+    def set_coeffs(self, values, ls, ms):
+        """
+        Set spherical harmonic coefficients in-place to specified values.
 
+        Usage
+        -----
+        x.set_coeffs(values, ls, ms)
+
+        Parameters
+        ----------
+        values : float or complex (list)
+            The value(s) of the spherical harmonic coefficient(s).
+        ls : int (list)
+            The degree(s) of the coefficient(s) that should be set.
+        ms : int (list)
+            The order(s) of the coefficient(s) that should be set. Positive
+            and negative values correspond to the cosine and sine
+            components, respectively.
+
+        Examples
+        --------
+        x.set_coeffs(10.,1,1)               # x.coeffs[0,1,1] = 10.
+        x.set_coeffs([1.,2], [1,2], [0,-2]) # x.coeffs[0,1,0] = 1.
+                                            # x.coeffs[1,2,2] = 2.
+        """
+        # Ensure that the type is correct
+        values = _np.array(values)
+        ls = _np.array(ls)
+        ms = _np.array(ms)
+
+        mneg_mask = (ms < 0).astype(_np.int)
+        self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
+
+    # ---- IO Routines
     def to_file(self, filename, format='shtools', header=None, **kwargs):
         """
         Save raw spherical harmonic coefficients to a file.
@@ -550,6 +582,71 @@ class SHCoeffs(object):
         else:
             raise NotImplementedError(
                 'format={:s} not implemented'.format(repr(format)))
+
+    def to_array(self, normalization=None, csphase=None, lmax=None):
+        """
+        Return spherical harmonic coefficients as a numpy array.
+
+        Usage
+        -----
+        coeffs = x.to_array([normalization, csphase, lmax])
+
+        Returns
+        -------
+        coeffs : ndarry, shape (2, lmax+1, lmax+1)
+            numpy ndarray of the spherical harmonic coefficients.
+
+        Parameters
+        ----------
+        normalization : str, optional, default = x.normalization
+            Normalization of the output coefficients: '4pi', 'ortho',
+            'schmidt', or 'unnorm' for geodesy 4pi normalized, orthonormalized,
+            Schmidt semi-normalized, or unnormalized coefficients,
+            respectively.
+        csphase : int, optional, default = x.csphase
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
+        lmax : int, optional, default = x.lmax
+            Maximum spherical harmonic degree to output. If lmax is greater
+            than x.lmax, the array will be zero padded.
+
+        Description
+        -----------
+        This method will return an array of the spherical harmonic coefficients
+        using a different normalization and Condon-Shortley phase convention,
+        and a different maximum spherical harmonic degree. If the maximum
+        degree is smaller than the maximum degree of the class instance, the
+        coefficients will be truncated. Conversely, if this degree is larger
+        than the maximum degree of the class instance, the output array will be
+        zero padded.
+        """
+        if normalization is None:
+            normalization = self.normalization
+        if csphase is None:
+            csphase = self.csphase
+        if lmax is None:
+            lmax = self.lmax
+
+        coeffs = _convert(self.coeffs, normalization_in=self.normalization,
+                          normalization_out=normalization,
+                          csphase_in=self.csphase, csphase_out=csphase,
+                          lmax=lmax)
+
+        return coeffs
+
+    def copy(self):
+        """Return a deep copy of the class instance."""
+        return _copy.deepcopy(self)
+
+    def info(self):
+        """
+        Print a summary of the data stored in the SHCoeffs instance.
+
+        Usage
+        -----
+        x.info()
+        """
+        print(repr(self))
 
     # ---- Mathematical operators ----
     def __add__(self, other):
@@ -826,7 +923,7 @@ class SHCoeffs(object):
 
         Description
         -----------
-        This function returns either the power spectrum, energy spectrum, or
+        This method returns either the power spectrum, energy spectrum, or
         l2-norm spectrum. Total power is defined as the integral of the
         function squared over all space, divided by the area the function
         spans. If the mean of the function is zero, this is equivalent to the
@@ -850,93 +947,7 @@ class SHCoeffs(object):
                          convention=convention, unit=unit, base=base,
                          lmax=lmax)
 
-    # ---- Set individual coefficients ----
-    def set_coeffs(self, values, ls, ms):
-        """
-        Set spherical harmonic coefficients in-place to specified values.
-
-        Usage
-        -----
-        x.set_coeffs(values, ls, ms)
-
-        Parameters
-        ----------
-        values : float or complex (list)
-            The value(s) of the spherical harmonic coefficient(s).
-        ls : int (list)
-            The degree(s) of the coefficient(s) that should be set.
-        ms : int (list)
-            The order(s) of the coefficient(s) that should be set. Positive
-            and negative values correspond to the cosine and sine
-            components, respectively.
-
-        Examples
-        --------
-        x.set_coeffs(10.,1,1)               # x.coeffs[0,1,1] = 10.
-        x.set_coeffs([1.,2], [1,2], [0,-2]) # x.coeffs[0,1,0] = 1.
-                                            # x.coeffs[1,2,2] = 2.
-        """
-        # Ensure that the type is correct
-        values = _np.array(values)
-        ls = _np.array(ls)
-        ms = _np.array(ms)
-
-        mneg_mask = (ms < 0).astype(_np.int)
-        self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
-
-    # ---- Return coefficients with a different normalization convention ----
-    def to_array(self, normalization=None, csphase=None, lmax=None):
-        """
-        Return spherical harmonic coefficients as a numpy array.
-
-        Usage
-        -----
-        coeffs = x.to_array([normalization, csphase, lmax])
-
-        Returns
-        -------
-        coeffs : ndarry, shape (2, lmax+1, lmax+1)
-            numpy ndarray of the spherical harmonic coefficients.
-
-        Parameters
-        ----------
-        normalization : str, optional, default = x.normalization
-            Normalization of the output coefficients: '4pi', 'ortho',
-            'schmidt', or 'unnorm' for geodesy 4pi normalized, orthonormalized,
-            Schmidt semi-normalized, or unnormalized coefficients,
-            respectively.
-        csphase : int, optional, default = x.csphase
-            Condon-Shortley phase convention: 1 to exclude the phase factor,
-            or -1 to include it.
-        lmax : int, optional, default = x.lmax
-            Maximum spherical harmonic degree to output. If lmax is greater
-            than x.lmax, the array will be zero padded.
-
-        Description
-        -----------
-        This method will return an array of the spherical harmonic coefficients
-        using a different normalization and Condon-Shortley phase convention,
-        and a different maximum spherical harmonic degree. If the maximum
-        degree is smaller than the maximum degree of the class instance, the
-        coefficients will be truncated. Conversely, if this degree is larger
-        than the maximum degree of the class instance, the output array will be
-        zero padded.
-        """
-        if normalization is None:
-            normalization = self.normalization
-        if csphase is None:
-            csphase = self.csphase
-        if lmax is None:
-            lmax = self.lmax
-
-        coeffs = _convert(self.coeffs, normalization_in=self.normalization,
-                          normalization_out=normalization,
-                          csphase_in=self.csphase, csphase_out=csphase,
-                          lmax=lmax)
-
-        return coeffs
-
-    # ---- Rotate the coordinate system ----
+    # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
                body=False, dj_matrix=None):
         """
@@ -1046,7 +1057,6 @@ class SHCoeffs(object):
         rot = self._rotate(angles, dj_matrix)
         return rot
 
-    # ---- Convert spherical harmonic coefficients to a different normalization
     def convert(self, normalization=None, csphase=None, lmax=None, kind=None,
                 check=True):
         """
@@ -1130,7 +1140,6 @@ class SHCoeffs(object):
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    # ---- Return a SHCoeffs class instance zero padded up to lmax
     def pad(self, lmax):
         """
         Return a SHCoeffs class where the coefficients are zero padded or
@@ -1277,6 +1286,28 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
+
+        Description
+        -----------
+        This method plots either the power spectrum, energy spectrum, or
+        l2-norm spectrum. Total power is defined as the integral of the
+        function squared over all space, divided by the area the function
+        spans. If the mean of the function is zero, this is equivalent to the
+        variance of the function. The total energy is the integral of the
+        function squared over all space and is 4pi times the total power. For
+        normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm is
+        the sum of the magnitude of the coefficients squared.
+
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l, which is equal to the
+        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
+        contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
         """
         spectrum = self.spectrum(convention=convention, unit=unit, base=base)
         ls = self.degrees()
@@ -1365,6 +1396,18 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
+
+        Description
+        -----------
+        This method plots either the power, energy, or l2-norm for each
+        spherical harmonic degree and order of the function. Total power is
+        defined as the integral of the function squared over all space,
+        divided by the area the function spans. If the mean of the function is
+        zero, this is equivalent to the variance of the function. The total
+        energy is the integral of the function squared over all space and is
+        4pi times the total power. For normalized coefficients ('4pi',
+        'ortho', or 'schmidt'), the l2-norm is the sum of the magnitude of the
+        coefficients squared.
         """
         # Create the matrix of the spectrum for each coefficient
         spectrum = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
@@ -1462,22 +1505,14 @@ class SHCoeffs(object):
                 "yscale must be 'lin' or 'log'. " +
                 "Input value was {:s}".format(repr(yscale)))
 
-        if ax is None:
-            cb = _plt.colorbar(cmesh)
-            if (convention == 'energy'):
-                cb.set_label('energy per coefficient')
-            elif (convention == 'power'):
-                cb.set_label('power per coefficient')
-            else:
-                cb.set_label('magnitude-squared coefficient')
+        cb = _plt.colorbar(cmesh, ax=ax)
+
+        if (convention == 'energy'):
+            cb.set_label('energy per coefficient')
+        elif (convention == 'power'):
+            cb.set_label('power per coefficient')
         else:
-            cb = _plt.colorbar(cmesh, ax=ax)
-            if (convention == 'energy'):
-                cb.set_label('energy per coefficient')
-            elif (convention == 'power'):
-                cb.set_label('power per coefficient')
-            else:
-                cb.set_label('magnitude-squared coefficient')
+            cb.set_label('magnitude-squared coefficient')
 
         cb.ax.tick_params(width=0.2)
         axes.set(xlabel='degree l', ylabel='order m')
@@ -1489,16 +1524,6 @@ class SHCoeffs(object):
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
-
-    def info(self):
-        """
-        Print a summary of the data stored in the SHCoeffs instance.
-
-        Usage
-        -----
-        x.info()
-        """
-        print(repr(self))
 
 
 # ================== REAL SPHERICAL HARMONICS ================
@@ -1568,11 +1593,11 @@ class SHRealCoeffs(SHCoeffs):
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
         if self.normalization != '4pi' or self.csphase != 1:
-            temp = SHCoeffs.from_array(coeffs, normalization='4pi', csphase=1)
-            tempcoeffs = temp.to_array(
-                normalization=self.normalization, csphase=self.csphase)
+            temp = _convert(coeffs, normalization_in='4pi', csphase=1,
+                            normalization_out=self.normalization,
+                            csphase_out=self.csphase)
             return SHCoeffs.from_array(
-                tempcoeffs, normalization=self.normalization,
+                temp, normalization=self.normalization,
                 csphase=self.csphase, copy=False)
         else:
             return SHCoeffs.from_array(coeffs, copy=False)
@@ -2427,14 +2452,16 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, tick_interval=[30, 30], ax=None, ax2=None, show=True,
-             fname=None, **kwargs):
+    def plot(self, tick_interval=[30, 30], ax=None, ax2=None, colorbar=False,
+             cb_orientation='vertical', cb_label=None, show=True, fname=None,
+             **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([tick_interval, ax, ax2, show, fname])
+        x.plot([tick_interval, ax, ax2, colorbar, cb_orientation, cb_label,
+                show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2453,11 +2480,19 @@ class SHGrid(object):
             A single matplotlib axes object where the plot will appear. If the
             grid is complex, the complex component of the grid will be plotted
             on this axes.
+        colorbar : bool, optional, default = False
+            If True, plot a colorbar.
+        cb_orientation : str, optional, default = 'vertical'
+            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = None
+            Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
+        kwargs : optional
+            Keyword arguements that will be sent to plt.imshow().
         """
         if tick_interval is None:
             xticks = []
@@ -2476,14 +2511,19 @@ class SHGrid(object):
                                   endpoint=True)
 
         if ax is None and ax2 is None:
-            fig, axes = self._plot(xticks=xticks, yticks=yticks, **kwargs)
+            fig, axes = self._plot(xticks=xticks, yticks=yticks,
+                                   colorbar=colorbar,
+                                   cb_orientation=cb_orientation,
+                                   cb_label=cb_label, **kwargs)
         else:
             if self.kind == 'complex':
                 if (ax is None and ax2 is not None) or (ax2 is None and
                                                         ax is not None):
                     raise ValueError('For complex grids, one must specify ' +
                                      'both optional arguments axes and axes2.')
-            self._plot(xticks=xticks, yticks=yticks, ax=ax, ax2=ax2, **kwargs)
+            self._plot(xticks=xticks, yticks=yticks, ax=ax, ax2=ax2,
+                       colorbar=colorbar, cb_orientation=cb_orientation,
+                       cb_label=cb_label, **kwargs)
 
         if ax is None:
             if show:
@@ -2625,15 +2665,29 @@ class DHRealGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='longitude',
-              ylabel='latitude', ax=None, ax2=None):
+              ylabel='latitude', ax=None, ax2=None, colorbar=None,
+              cb_orientation=None, cb_label=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
         else:
             axes = ax
 
-        axes.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
+        cim = axes.imshow(self.data, origin='upper',
+                          extent=(0., 360., -90., 90.), **kwargs)
         axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+
+        if colorbar is True:
+            if cb_orientation == 'vertical':
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("right", size="2.5%", pad=0.15)
+                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
+            else:
+                cbar = _plt.colorbar(cim, orientation=cb_orientation, ax=ax,
+                                     aspect=30)
+
+            if cb_label is not None:
+                cbar.set_label(cb_label)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2720,7 +2774,8 @@ class DHComplexGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='longitude',
-              ylabel='latitude', ax=None, ax2=None):
+              ylabel='latitude', ax=None, ax2=None, colorbar=None,
+              cb_label=None, cb_orientation=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -2730,14 +2785,38 @@ class DHComplexGrid(SHGrid):
             axreal = ax
             axcomplex = ax2
 
-        axreal.imshow(self.data.real, origin='upper',
-                      extent=(0., 360., -90., 90.))
+        cim1 = axreal.imshow(self.data.real, origin='upper',
+                             extent=(0., 360., -90., 90.), **kwargs)
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
                    xticks=xticks, yticks=yticks)
-        axcomplex.imshow(self.data.imag, origin='upper',
-                         extent=(0., 360., -90., 90.))
+        cim2 = axcomplex.imshow(self.data.imag, origin='upper',
+                                extent=(0., 360., -90., 90.), **kwargs)
         axcomplex.set(title='Imaginary component', xlabel=xlabel,
                       ylabel=ylabel, xticks=xticks, yticks=yticks)
+
+        if colorbar is True:
+            if cb_orientation == 'vertical':
+                divider1 = _make_axes_locatable(axreal)
+                cax1 = divider1.append_axes("right", size="2.5%", pad=0.05)
+                cbar1 = _plt.colorbar(cim1, cax=cax1,
+                                      orientation=cb_orientation)
+                divider2 = _make_axes_locatable(axcomplex)
+                cax2 = divider2.append_axes("right", size="2.5%", pad=0.05)
+                cbar2 = _plt.colorbar(cim2, cax=cax2,
+                                      orientation=cb_orientation)
+            else:
+                divider1 = _make_axes_locatable(axreal)
+                cax1 = divider1.append_axes("bottom", size="5%", pad=0.5)
+                cbar1 = _plt.colorbar(cim1, cax=cax1,
+                                      orientation=cb_orientation)
+                divider2 = _make_axes_locatable(axcomplex)
+                cax2 = divider2.append_axes("bottom", size="5%", pad=0.5)
+                cbar2 = _plt.colorbar(cim2, cax=cax2,
+                                      orientation=cb_orientation)
+
+            if cb_label is not None:
+                cbar1.set_label(cb_label)
+                cbar2.set_label(cb_label)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2822,14 +2901,14 @@ class GLQRealGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None):
+              ylabel='GLQ latitude index', ax=None, ax2=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
         else:
             axes = ax
 
-        axes.imshow(self.data, origin='upper')
+        axes.imshow(self.data, origin='upper', **kwargs)
         axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
 
         if ax is None:
@@ -2910,7 +2989,7 @@ class GLQComplexGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None):
+              ylabel='GLQ latitude index', ax=None, ax2=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -2920,10 +2999,10 @@ class GLQComplexGrid(SHGrid):
             axreal = ax
             axcomplex = ax2
 
-        axreal.imshow(self.data.real, origin='upper')
+        axreal.imshow(self.data.real, origin='upper', **kwargs)
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
                    xticks=xticks, yticks=yticks)
-        axcomplex.imshow(self.data.imag, origin='upper')
+        axcomplex.imshow(self.data.imag, origin='upper', **kwargs)
         axcomplex.set(title='Imaginary component', xlabel=xlabel,
                       ylabel=ylabel, xticks=xticks, yticks=yticks)
 
