@@ -22,14 +22,13 @@ pyshtools class structure:
         SHWindowCap
         SHWindowMask
 
+    Gravity classes
+    ---------------
     SHGravCoeffs
         SHGravRealCoeffs
-
     SHGravGrid
-
     SHGravTensor
-
-    SHGravGeoid
+    SHGeoid
 
 For more information, see the documentation for the top level classes.
 """
@@ -53,3 +52,7 @@ from .shwindow import SHWindowCap
 from .shwindow import SHWindowMask
 
 from .shgravcoeffs import SHGravCoeffs
+from .shgravcoeffs import SHGravRealCoeffs
+from .shgravgrid import SHGravGrid
+from .shgravtensor import SHGravTensor
+from .shgeoid import SHGeoid

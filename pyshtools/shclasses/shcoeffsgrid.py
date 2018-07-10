@@ -2707,8 +2707,10 @@ class DHRealGrid(SHGrid):
                 cax = divider.append_axes("right", size="2.5%", pad=0.15)
                 cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
             else:
-                cbar = _plt.colorbar(cim, orientation=cb_orientation, ax=ax,
-                                     aspect=30)
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("bottom", size="5%", pad=0.5)
+                cbar = _plt.colorbar(cim, cax=cax,
+                                     orientation=cb_orientation)
 
             if cb_label is not None:
                 cbar.set_label(cb_label)
@@ -2925,15 +2927,30 @@ class GLQRealGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None, **kwargs):
+              ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
+              cb_orientation=None, cb_label=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
         else:
             axes = ax
 
-        axes.imshow(self.data, origin='upper', **kwargs)
+        cim = axes.imshow(self.data, origin='upper', **kwargs)
         axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+
+        if colorbar is True:
+            if cb_orientation == 'vertical':
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("right", size="2.5%", pad=0.15)
+                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
+            else:
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("bottom", size="5%", pad=0.5)
+                cbar = _plt.colorbar(cim, cax=cax,
+                                     orientation=cb_orientation)
+
+            if cb_label is not None:
+                cbar.set_label(cb_label)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -3013,7 +3030,8 @@ class GLQComplexGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None, **kwargs):
+              ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
+              cb_label=None, cb_orientation=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -3023,12 +3041,36 @@ class GLQComplexGrid(SHGrid):
             axreal = ax
             axcomplex = ax2
 
-        axreal.imshow(self.data.real, origin='upper', **kwargs)
+        cim1 = axreal.imshow(self.data.real, origin='upper', **kwargs)
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
                    xticks=xticks, yticks=yticks)
-        axcomplex.imshow(self.data.imag, origin='upper', **kwargs)
+        cim2 = axcomplex.imshow(self.data.imag, origin='upper', **kwargs)
         axcomplex.set(title='Imaginary component', xlabel=xlabel,
                       ylabel=ylabel, xticks=xticks, yticks=yticks)
+
+        if colorbar is True:
+            if cb_orientation == 'vertical':
+                divider1 = _make_axes_locatable(axreal)
+                cax1 = divider1.append_axes("right", size="2.5%", pad=0.05)
+                cbar1 = _plt.colorbar(cim1, cax=cax1,
+                                      orientation=cb_orientation)
+                divider2 = _make_axes_locatable(axcomplex)
+                cax2 = divider2.append_axes("right", size="2.5%", pad=0.05)
+                cbar2 = _plt.colorbar(cim2, cax=cax2,
+                                      orientation=cb_orientation)
+            else:
+                divider1 = _make_axes_locatable(axreal)
+                cax1 = divider1.append_axes("bottom", size="5%", pad=0.5)
+                cbar1 = _plt.colorbar(cim1, cax=cax1,
+                                      orientation=cb_orientation)
+                divider2 = _make_axes_locatable(axcomplex)
+                cax2 = divider2.append_axes("bottom", size="5%", pad=0.5)
+                cbar2 = _plt.colorbar(cim2, cax=cax2,
+                                      orientation=cb_orientation)
+
+            if cb_label is not None:
+                cbar1.set_label(cb_label)
+                cbar2.set_label(cb_label)
 
         if ax is None:
             fig.tight_layout(pad=0.5)

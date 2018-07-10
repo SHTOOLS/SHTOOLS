@@ -16,14 +16,18 @@ from .shcoeffsgrid import SHCoeffs as _SHCoeffs
 from .shcoeffsgrid import SHRealCoeffs as _SHRealCoeffs
 from .shcoeffsgrid import DHRealGrid as _DHRealGrid
 from .shgravgrid import SHGravGrid as _SHGravGrid
-from ..shtools import CilmPlusRhoHDH as _CilmPlusRhoHDH
-from ..shtools import CilmPlusDH as _CilmPlusDH
+from .shgravtensor import SHGravTensor as _SHGravTensor
+from .shgeoid import SHGeoid as _SHGeoid
 
-from ..constant import grav_constant as _G
+from ..constant import G as _G
 from ..spectralanalysis import spectrum as _spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+from ..shtools import CilmPlusRhoHDH as _CilmPlusRhoHDH
+from ..shtools import CilmPlusDH as _CilmPlusDH
 from ..shtools import MakeGravGridDH as _MakeGravGridDH
+from ..shtools import MakeGravGradGridDH as _MakeGravGradGridDH
+from ..shtools import MakeGeoidGridDH as _MakeGeoidGridDH
 
 
 # =============================================================================
@@ -96,9 +100,15 @@ class SHGravCoeffs(object):
                             truncated to a different lmax.
     change_ref()          : Return a new class instance referenced to a
                             different gm, r0, or omega.
-    expand()              : Evaluate the coefficients either on a spherical
-                            grid and return an SHGrid class instance, or for
-                            a list of latitude and longitude coordinates.
+    expand()              : Calculate the three vector components of the
+                            gravity field, the total field, and the
+                            gravitational potential, and return an SHGravGrid
+                            class instance.
+    tensor()              : Calculate the 9 components of the gravity
+                            'gradient' tensor and return an SHGravTensor class
+                            instance.
+    geoid()               : Calculate the height of the geoid and return an
+                            SHGeoid class instance.
     plot_spectrum()       : Plot the  spectrum as a function of spherical
                             harmonic degree.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
@@ -682,7 +692,7 @@ class SHGravCoeffs(object):
         only to be about three times the size of L, though this should be
         verified for each application.
         """
-        mass = gm / _G
+        mass = gm / _G.value
 
         if type(shape) is not _SHRealCoeffs and type(shape) is not _DHRealGrid:
             raise ValueError('shape must be of type SHRealCoeffs '
@@ -892,11 +902,11 @@ class SHGravCoeffs(object):
         print(repr(self))
 
     # -------------------------------------------------------------------------
-    # ---- Mathematical operators
-    # ----
-    # ---- Operations that involve a change of units are not permitted, such as
-    # ---- SHGravCoeffs*SHGravCoeffs, SHGravCoeffs/SHGravCoeffs, and
-    # ---- SHGravCoeffs+SHCoeffs.
+    #    Mathematical operators
+    #
+    #    Operations that involve a change of units are not permitted, such as
+    #    SHGravCoeffs*SHGravCoeffs, SHGravCoeffs/SHGravCoeffs, and
+    #    SHGravCoeffs+SHCoeffs.
     # -------------------------------------------------------------------------
     def __add__(self, other):
         """
@@ -915,10 +925,9 @@ class SHGravCoeffs(object):
                     coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                     csphase=self.csphase, normalization=self.normalization)
             else:
-                raise ValueError('Addition is permitted only for two sets of '
-                                 'coefficients must be of the same kind, have '
-                                 'the same normalization and csphase, and '
-                                 'have the same gm and r0.')
+                raise ValueError('Addition is permitted only when the two '
+                                 'SHGravCoeffs instances have the same kind, '
+                                 'normalization, csphase, gm and r0.')
         else:
             raise TypeError('Addition is permitted only for two SHGravCoeffs '
                             'instances. Type of other is {:s}'
@@ -948,10 +957,9 @@ class SHGravCoeffs(object):
                     coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                     csphase=self.csphase, normalization=self.normalization)
             else:
-                raise ValueError('Subtraction is permitted only for two sets '
-                                 'of coefficients must be of the same kind, '
-                                 'have the same normalization and csphase, '
-                                 'and have the same gm and r0.')
+                raise ValueError('Subtraction is permitted only when the two '
+                                 'SHGravCoeffs instances have the same kind, '
+                                 'normalization, csphase, gm and r0.')
         else:
             raise TypeError('Subtraction is permitted only for two '
                             'SHGravCoeffs instances. Type of other is {:s}'
@@ -974,10 +982,9 @@ class SHGravCoeffs(object):
                     coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                     csphase=self.csphase, normalization=self.normalization)
             else:
-                raise ValueError('Subtraction is permitted only for two sets '
-                                 'of coefficients must be of the same kind, '
-                                 'have the same normalization and csphase, '
-                                 'and have the same gm and r0.')
+                raise ValueError('Subtraction is permitted only when the two '
+                                 'SHGravCoeffs instances have the same kind, '
+                                 'normalization, csphase, gm and r0.')
         else:
             raise TypeError('Subtraction is permitted only for two '
                             'SHGravCoeffs instances. Type of other is {:s}'
@@ -1404,14 +1411,14 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        gm : float
+        gm : float, optional, default = None
             The mass times the gravitational constant that is associated with
             the gravitational potential coefficients.
-        r0 : float
+        r0 : float, optional, default = None
             The reference radius of the spherical harmonic coefficients.
         omega : float, optional, default = None
             The angular rotation rate of the body.
-        lmax : int
+        lmax : int, optional, default = None
             Maximum spherical harmonic degree to output.
 
         Description
@@ -1422,14 +1429,19 @@ class SHGravCoeffs(object):
         will be upward or downward continued under the assumption that the
         reference radius is exterior to the body.
         """
+        if lmax is None:
+            lmax = self.lmax
+
         clm = self.pad(lmax)
 
         if gm is not None and gm != self.gm:
             clm.coeffs *= self.gm / gm
+            clm.gm = gm
 
         if r0 is not None and r0 != self.r0:
             for l in self.degrees():
                 clm.coeffs[:, l, :l+1] *= (self.r0 / r0)**l
+            clm.r0 = r0
 
         if omega is not None:
             clm.omega = omega
@@ -1526,6 +1538,192 @@ class SHGravCoeffs(object):
 
         return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
                            self.omega, normal_gravity, lmax, lmax_calc)
+
+    def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, degree0=False,
+               sampling=2):
+        """
+        Create 2D cylindrical maps on a flattened ellipsoid of the 9
+        components of the gravity "gradient" tensor in a local north-oriented
+        reference frame, and return an SHGravTensor class instance.
+
+        Usage
+        -----
+        tensor = SHGravCoeffs.tensor([a, f, lmax, lmax_calc, sampling])
+
+        Returns
+        -------
+        tensor : SHGravTensor class instance.
+
+        Parameters
+        ----------
+        a : optional, float, default = self.r0
+            The semi-major axis of the flattened ellipsoid on which the field
+            is computed.
+        f : optional, float, default = 0
+            The flattening of the reference ellipsoid:
+            f=(R_equator-R_pole)/R_equator.
+        lmax : optional, integer, default = self.lmax
+            The maximum spherical harmonic degree of the coefficients cilm.
+            This determines the number of samples of the output grids,
+            n=2lmax+2, and the latitudinal sampling interval, 90/(lmax+1).
+        lmax_calc : optional, integer, default = lmax
+            The maximum spherical harmonic degree used in evaluating the
+            functions. This must be less than or equal to lmax.
+        degree0 : optional, default = False
+            If True, include the degree-0 term when calculating the tensor. If
+            False, set the degree-0 term to zero.
+        sampling : optional, integer, default = 2
+            If 1 the output grids are equally sampled (n by n). If 2 (default),
+            the grids are equally spaced (n by 2n).
+
+        Description
+        -----------
+        This method will create 2-dimensional cylindrical maps for the 9
+        components of the gravity 'gradient' tensor and return an SHGravTensor
+        class instance. The components are
+
+            (Vxx, Vxy, Vxz)
+            (Vyx, Vyy, Vyz)
+            (Vzx, Vzy, Vzz)
+
+        where the reference frame is north-oriented, where x points north, y
+        points west, and z points upward (all tangent or perpendicular to a
+        sphere of radius r, where r is the local radius of the flattened
+        ellipsoid). The gravitational potential is defined as
+
+            V = GM/r Sum_{l=0}^lmax (r0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm},
+
+        where r0 is the reference radius of the spherical harmonic coefficients
+        Clm, and the gravitational acceleration is
+
+            B = Grad V.
+
+        The components of the gravity tensor are calculated according to eq. 1
+        in Petrovskaya and Vershkov (2006), which is based on eq. 3.28 in Reed
+        (1973) (noting that Reed's equations are in terms of latitude and that
+        the y axis points east):
+
+            Vzz = Vrr
+            Vxx = 1/r Vr + 1/r^2 Vtt
+            Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
+            Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
+            Vxz = 1/r^2 Vt - 1/r Vrt
+            Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
+
+        where r, t, p stand for radius, theta, and phi, respectively, and
+        subscripts on V denote partial derivatives. The output grid are in
+        units of Eotvos (10^-9 s^-2).
+
+        References
+        ----------
+        Reed, G.B., Application of kinematical geodesy for determining
+        the short wave length components of the gravity field by satellite
+        gradiometry, Ohio State University, Dept. of Geod. Sciences, Rep. No.
+        201, Columbus, Ohio, 1973.
+
+        Petrovskaya, M.S. and A.N. Vershkov, Non-singular expressions for the
+        gravity gradients in the local north-oriented and orbital reference
+        frames, J. Geod., 80, 117-127, 2006.
+        """
+        if a is None:
+            a = self.r0
+        if f is None:
+            f = 0
+        if lmax is None:
+            lmax = self.lmax
+        if lmax_calc is None:
+            lmax_calc = lmax
+
+        coeffs = self.to_array(normalization='4pi', csphase=1)
+        if degree0 is False:
+            coeffs[0, 0, 0] = 0.
+
+        vxx, vyy, vzz, vxy, vxz, vyz = _MakeGravGradGridDH(
+            coeffs, self.gm, self.r0, a=a, f=f, lmax=lmax,
+            lmax_calc=lmax_calc, sampling=sampling)
+
+        return _SHGravTensor(1.e9*vxx, 1.e9*vyy, 1.e9*vzz, 1.e9*vxy, 1.e9*vxz,
+                             1.e9*vyz, self.gm, a, f, lmax, lmax_calc)
+
+    def geoid(self, potref, a=None, f=None, r=None, order=2, lmax=None,
+              lmax_calc=None, sampling=2):
+        """
+        Create a global map of the height of the geoid and return an SHGeoid
+        class instance
+
+        Usage
+        -----
+        grav = SHGravCoeffs.geoid(potref, [a, f, r, order, lmax, lmax_calc,
+                                           sampling])
+
+        Returns
+        -------
+        x : SHGeoid class instance.
+
+        Parameters
+        ----------
+        potref : float
+            The value of the potential on the chosen geoid, in SI units.
+        a : optional, float, default = self.r0
+            The semi-major axis of the flattened ellipsoid on which the field
+            is computed.
+        f : optional, float, default = 0
+            The flattening of the reference ellipsoid:
+            f=(R_equator-R_pole)/R_equator.
+        r : optional, float, default = self.r0
+            The radius of the reference sphere that the Taylor expansion of the
+            potential is performed on.
+        order : optional, integer, default = 2
+            The order of the Taylor series expansion of the potential about the
+            reference radius r. This can be either 1, 2, or 3.
+        lmax : optional, integer, default = self.lmax
+            The maximum spherical harmonic degree of the coefficients cilm.
+            This determines the number of samples of the output grid,
+            n=2lmax+2, and the latitudinal sampling interval, 90/(lmax+1).
+        lmax_calc : optional, integer, default = lmax
+            The maximum spherical harmonic degree used in evaluating the
+            functions. This must be less than or equal to lmax.
+        sampling : optional, integer, default = 2
+            If 1 the output grids are equally sampled (n by n). If 2 (default),
+            the grids are equally spaced (n by 2n).
+
+        Description
+        -----------
+        This method will create a global map of the geoid height, accurate to
+        either first, second, or third order, using the method described in
+        Wieczorek (2007; equation 19-20). The algorithm expands the potential
+        in a Taylor series on a spherical interface of radius r, and computes
+        the height above this interface to the potential potref exactly from
+        the linear, quadratic, or cubic equation at each grid point. If the
+        optional parameters a and f are specified, the geoid height will be
+        referenced to a flattened ellipsoid with semi-major axis a and
+        flattening f. The pseudo-rotational potential is explicitly accounted
+        for by specifying the angular rotation rate omega of the planet.
+
+        Reference
+        ----------
+        Wieczorek, M. A. Gravity and topography of the terrestrial planets,
+        Treatise on Geophysics, 10, 165-206, 2007.
+        """
+        if a is None:
+            a = self.r0
+        if f is None:
+            f = 0
+        if r is None:
+            r = self.r0
+        if lmax is None:
+            lmax = self.lmax
+        if lmax_calc is None:
+            lmax_calc = lmax
+
+        geoid = _MakeGeoidGridDH(self.to_array(normalization='4pi', csphase=1),
+                                 self.r0, self.gm, potref, lmax=lmax,
+                                 omega=self.omega, r=r, order=2,
+                                 lmax_calc=lmax_calc, a=a, f=f,
+                                 sampling=sampling)
+
+        return _SHGeoid(geoid, self.gm, potref, a, f, self.omega, r, order,
+                        lmax, lmax_calc)
 
     # ---- Plotting routines ----
     def plot_spectrum(self, function='geoid', unit='per_l', base=10.,
@@ -1788,10 +1986,6 @@ class SHGravCoeffs(object):
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
-
-# tensor
-# geoid
-# normal_gravity
 
 
 class SHGravRealCoeffs(SHGravCoeffs):

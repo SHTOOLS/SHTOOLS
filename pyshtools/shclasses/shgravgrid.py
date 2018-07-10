@@ -1,5 +1,5 @@
 """
-    Class for grids of the three components of the graivty field, the
+    Class for grids of the three components of the gravity field, the
     gravitational disturbance, and the gravitational potential.
 """
 from __future__ import absolute_import as _absolute_import
@@ -64,7 +64,7 @@ class SHGravGrid(object):
     def __init__(self, rad, theta, phi, total, pot, gm, a, f, omega,
                  normal_gravity, lmax, lmax_calc):
         """
-        Initialize the SHGravGradGrid class.
+        Initialize the SHGravGrid class.
         """
         self.rad = _SHGrid.from_array(rad, grid='DH')
         self.theta = _SHGrid.from_array(theta, grid='DH')
@@ -116,7 +116,8 @@ class SHGravGrid(object):
         return str
 
     def plot_rad(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='$g_r$,  m s$^{-2}$', **kwargs):
+                 cb_label='$g_r$, m s$^{-2}$', ax=None, show=True, fname=None,
+                 **kwargs):
         """
         Plot the radial component of the gravity field.
 
@@ -140,7 +141,7 @@ class SHGravGrid(object):
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = None
+        cb_label : str, optional, default = '$g_r$, m s$^{-2}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -151,11 +152,24 @@ class SHGravGrid(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        self.rad.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                      cb_label=cb_label, **kwargs)
+        if ax is None:
+            fig, axes = self.rad.plot(colorbar=colorbar,
+                                      cb_orientation=cb_orientation,
+                                      cb_label=cb_label, **kwargs)
+            if show:
+                _plt.show()
+
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
+        else:
+            self.rad.plot(colorbar=colorbar, cb_orientation=cb_orientation,
+                          cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_theta(self, colorbar=True, cb_orientation='vertical',
-                   cb_label='$g_\\theta$,  m s$^{-2}$', **kwargs):
+                   cb_label='$g_\\theta$, m s$^{-2}$', ax=None, show=True,
+                   fname=None, **kwargs):
         """
         Plot the theta component of the gravity field.
 
@@ -179,7 +193,7 @@ class SHGravGrid(object):
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = None
+        cb_label : str, optional, default = '$g_\\theta$, m s$^{-2}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -190,11 +204,24 @@ class SHGravGrid(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        self.theta.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                        cb_label=cb_label, **kwargs)
+        if ax is None:
+            fig, axes = self.theta.plot(colorbar=colorbar,
+                                        cb_orientation=cb_orientation,
+                                        cb_label=cb_label, **kwargs)
+            if show:
+                _plt.show()
+
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
+        else:
+            self.theta.plot(colorbar=colorbar, cb_orientation=cb_orientation,
+                            cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_phi(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='$g_\phi$,  m s$^{-2}$', **kwargs):
+                 cb_label='$g_\phi$, m s$^{-2}$', ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the phi component of the gravity field.
 
@@ -218,7 +245,7 @@ class SHGravGrid(object):
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = None
+        cb_label : str, optional, default = '$g_\phi$, m s$^{-2}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -229,11 +256,23 @@ class SHGravGrid(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        self.phi.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                      cb_label=cb_label, **kwargs)
+        if ax is None:
+            fig, axes = self.phi.plot(colorbar=colorbar,
+                                      cb_orientation=cb_orientation,
+                                      cb_label=cb_label, **kwargs)
+            if show:
+                _plt.show()
+
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
+        else:
+            self.phi.plot(colorbar=colorbar, cb_orientation=cb_orientation,
+                          cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_total(self, colorbar=True, cb_orientation='vertical',
-                   cb_label='gravity disturbance, m s$^{-2}$', **kwargs):
+                   cb_label=None, ax=None, show=True, fname=None, **kwargs):
         """
         Plot the total gravity disturbance.
 
@@ -255,9 +294,9 @@ class SHGravGrid(object):
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = False
             If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'horizontal'
+        cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = None
+        cb_label : str, optional, default = 'gravity disturbance'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -267,18 +306,59 @@ class SHGravGrid(object):
         kwargs : optional
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
+
+        Notes
+        -----
+        If the normal gravity is removed from the total gravitational
+        acceleration, the output will be displayed in mGals.
         """
-        if self.normal_gravity is True:
-            cb_label = 'gravity disturbance, mGal'
-            (self.total*1.e5).plot(colorbar=colorbar,
-                                   cb_orientation=cb_orientation,
-                                   cb_label=cb_label, **kwargs)
+        if ax is None:
+
+            if self.normal_gravity is True:
+                if cb_label is None:
+                    cb_label = 'gravity disturbance, mGal'
+                    fig, axes = (self.total*1.e5).plot(
+                        colorbar=colorbar, cb_orientation=cb_orientation,
+                        cb_label=cb_label, **kwargs)
+            else:
+                if cb_label is None:
+                    cb_label = 'gravity disturbance, m s$^{-2}$'
+                fig, axes = self.total.plot(
+                    colorbar=colorbar, cb_orientation=cb_orientation,
+                    cb_label=cb_label, **kwargs)
+
+            if show:
+                _plt.show()
+
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
         else:
-            self.total.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                            cb_label=cb_label, **kwargs)
+            if self.normal_gravity is True:
+                if cb_label is None:
+                    cb_label = 'gravity disturbance, mGal'
+                    (self.total*1.e5).plot(
+                        colorbar=colorbar, cb_orientation=cb_orientation,
+                        cb_label=cb_label, ax=ax, **kwargs)
+            else:
+                if cb_label is None:
+                    cb_label = 'gravity disturbance, m s$^{-2}$'
+                self.total.plot(
+                    colorbar=colorbar, cb_orientation=cb_orientation,
+                    cb_label=cb_label, ax=ax, **kwargs)
+
+        if ax is None:
+            if show:
+                _plt.show()
+
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
     def plot_pot(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='potential,  m s$^{-1}$', **kwargs):
+                 cb_label='potential, m s$^{-1}$', ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the gravitational potential.
 
@@ -302,7 +382,7 @@ class SHGravGrid(object):
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = None
+        cb_label : str, optional, default = 'potential, m s$^{-1}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -313,12 +393,24 @@ class SHGravGrid(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        self.rad.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                      cb_label=cb_label, **kwargs)
+        if ax is None:
+            fig, axes = self.pot.plot(colorbar=colorbar,
+                                      cb_orientation=cb_orientation,
+                                      cb_label=cb_label, **kwargs)
+            if show:
+                _plt.show()
+
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
+        else:
+            self.pot.plot(colorbar=colorbar, cb_orientation=cb_orientation,
+                          cb_label=cb_label, ax=ax, **kwargs)
 
     def plot(self, colorbar=True, cb_orientation='horizontal',
              tick_interval=[45, 45], xlabel='', ylabel='', show=True,
-             fname=None):
+             fname=None, **kwargs):
         """
         Plot the three components of the gravity field and the gravity
         disturbance.
@@ -335,8 +427,6 @@ class SHGravGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = ''
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = False
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
@@ -348,26 +438,28 @@ class SHGravGrid(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
+        kwargs : optional
+            Keyword arguements that will be sent to the SHGrid.plot()
+            and plt.imshow() methods.
         """
         fig, ax = _plt.subplots(2, 2)
         self.plot_rad(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[0], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel)
+                      xlabel=xlabel, ylabel=ylabel, **kwargs)
         self.plot_theta(colorbar=colorbar, cb_orientation=cb_orientation,
                         ax=ax.flat[1], tick_interval=tick_interval,
-                        xlabel=xlabel, ylabel=ylabel)
+                        xlabel=xlabel, ylabel=ylabel, **kwargs)
         self.plot_phi(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[2], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel)
+                      xlabel=xlabel, ylabel=ylabel, **kwargs)
         self.plot_total(colorbar=colorbar, cb_orientation=cb_orientation,
                         ax=ax.flat[3], tick_interval=tick_interval,
-                        xlabel=xlabel, ylabel=ylabel)
+                        xlabel=xlabel, ylabel=ylabel, **kwargs)
         fig.tight_layout(pad=0.5)
 
-        if ax is None:
-            if show:
-                _plt.show()
+        if show:
+            _plt.show()
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, ax
+        if fname is not None:
+            fig.savefig(fname)
+        return fig, ax

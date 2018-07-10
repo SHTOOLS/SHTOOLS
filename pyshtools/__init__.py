@@ -55,10 +55,17 @@ from . import rotate
 from . import gravmag
 from . import utils
 
-# ---- Import classes into pyshtools namespace
-from .shclasses import SHCoeffs, SHGrid, SHWindow, SHGravCoeffs
+# ---- Import principal classes into pyshtools namespace
+from .shclasses import SHCoeffs
+from .shclasses import SHGrid
+from .shclasses import SHWindow
+from .shclasses import SHGravCoeffs
+from .shclasses import SHGravGrid
+from .shclasses import SHGravTensor
+from .shclasses import SHGeoid
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
-           'SHGravCoeffs', 'legendre', 'expand', 'shio', 'spectralanalysis',
-           'rotate', 'gravmag', 'utils']
+           'SHGravCoeffs', 'SHGravGrid', 'SHGravTensor', 'SHGeoid',
+           'legendre', 'expand', 'shio', 'spectralanalysis', 'rotate',
+           'gravmag', 'utils']
