@@ -10,19 +10,26 @@ analyses on the sphere.
 This module imports the following classes and subpackages into the
 main namespace:
 
-    SHCoeffs - A high level class for spherical harmonic coefficients.
-    SHGrid - A high level classes for global grids.
-    SHWindow - A high level classes for localization windows.
-    shclasses - All pyshtools classes and subclasses.
-    shtools - All Python-wrapped Fortran 95 routines.
-    constant - pyshtools constants.
-    legendre - Legendre functions.
-    expand - Spherical harmonic expansion routines.
-    shio - Spherical harmonic I/O, storage, and conversion routines.
-    spectralanalysis - Global and localized spectral analysis routines.
-    rotate - Spherical harmonic rotation routines.
-    gravmag - Gravity and magnetics routines.
-    utils - pyshtools utilities.
+    SHCoeffs          : Class for spherical harmonic coefficients.
+    SHGrid            : Class for global grids.
+    SHWindow          : Class for localization windows.
+    SHGravCoeffs      : Class for gravitational potential spherical harmonic
+                        coefficients.
+    SHGravGrid        : Class for global gridded gravitational field data.
+    SHGravTensor      : Class for the gravity tensor and eigenvalues.
+    SHGeoid           : Class for the geoid.
+
+    shclasses         : All pyshtools classes and subclasses.
+    shtools           : All Python-wrapped Fortran 95 routines.
+    constant          : pyshtools constants.
+    legendre          : Legendre functions.
+    expand            : Spherical harmonic expansion routines.
+    shio              : Spherical harmonic I/O, storage, and conversion
+                        routines.
+    spectralanalysis  : Global and localized spectral analysis routines.
+    rotate            : Spherical harmonic rotation routines.
+    gravmag           : Gravity and magnetics routines.
+    utils             : pyshtools utilities.
 
 For further information, consult the web documentation at
 
@@ -65,7 +72,7 @@ from .shclasses import SHGravTensor
 from .shclasses import SHGeoid
 
 # ---- Define __all__ for use with: from pyshtools import * ----
-__all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
-           'SHGravCoeffs', 'SHGravGrid', 'SHGravTensor', 'SHGeoid',
-           'legendre', 'expand', 'shio', 'spectralanalysis', 'rotate',
-           'gravmag', 'utils']
+__all__ = ['constant', 'shclasses', 'legendre', 'expand', 'shio',
+           'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
+           'SHGrid', 'SHWindow', 'SHGravCoeffs', 'SHGravGrid', 'SHGravTensor',
+           'SHGeoid']

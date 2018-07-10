@@ -4,9 +4,10 @@ Class interface for pyshtools.
 pyshtools defines several classes that facilitate the interactive examination
 of geographical gridded data and their associated spherical harmonic
 coefficients. Superclasses are used to implement interface functions and
-documentation and subclasses are used to handle different internal data types.
+documentation whereas subclasses are used to handle different internal data
+types.
 
-pyshtools class structure:
+Class structure:
 
     SHCoeffs
         SHRealCoeffs
@@ -22,12 +23,13 @@ pyshtools class structure:
         SHWindowCap
         SHWindowMask
 
-    Gravity classes
-    ---------------
     SHGravCoeffs
         SHGravRealCoeffs
+
     SHGravGrid
+
     SHGravTensor
+
     SHGeoid
 
 For more information, see the documentation for the top level classes.

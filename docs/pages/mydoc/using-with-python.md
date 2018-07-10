@@ -28,9 +28,14 @@ This will load the following three classes and subpackages into the `pyshtools` 
 
 | Class | Description |
 | ----- | ----------- |
-| [SHCoeffs](python-shcoeffs.html) | A high-level class for spherical harmonic coefficients |
-| [SHGrid](python-shgrid.html) | A high level-class for global grids |
-| [SHWindow](python-shwindow.html) | A high-level class for localization windows |
+| [SHCoeffs](python-shcoeffs.html) | Class for spherical harmonic coefficients |
+| [SHGrid](python-shgrid.html) | Class for global grids |
+| [SHWindow](python-shwindow.html) | Class for localization windows |
+| [SHGravCoeffs](python-shgravcoeffs.html) | Class for gravitational potential spherical harmonic coefficients.|
+| [SHGravGrid](python-shgravgrid.html) | Class for global gridded gravitational field data.|
+| [SHGravTensor](python-shgravtensor.html) | Class for the gravity tensor and eigenvalues. |
+| [SHGeoid](python-shgeoid.html) | Class for the geoid.|
+
 
 
 | Subpackage | Description |

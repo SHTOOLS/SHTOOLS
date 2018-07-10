@@ -25,9 +25,9 @@ class SHGravGrid(object):
     rad            : SHGrid class instance of the radial component of the
                      gravitational acceleration evaluated on an ellipsoid.
     theta          : SHGrid class instance of the theta component of the
-                     gravitational acceleration evaluated on an ellipsoid..
+                     gravitational acceleration evaluated on an ellipsoid.
     phi            : SHGrid class instance of the phi component of the
-                     gravitational acceleration evaluated on an ellipsoid..
+                     gravitational acceleration evaluated on an ellipsoid.
     total          : SHGrid class instance of the total gravitational
                      acceleration with the normal gravity removed, on an
                      ellipsoid.
@@ -35,8 +35,7 @@ class SHGravGrid(object):
                      evaluated on an ellipsoid.
     gm             : Gravitational constant time the mass of the body.
     a              : Semimajor axis of the reference ellipsoid.
-    f              : Flattening of the reference ellipsoid,
-                     f=(R_equator-R_pole)/R_equator.
+    f              : Flattening of the reference ellipsoid, f=(a-b)/a.
     omega          : Angular rotation rate of the body.
     normal_gravity : True if the normal gravity is removed from the total
                      gravitational acceleration.
@@ -46,11 +45,11 @@ class SHGravGrid(object):
                      potential used in creating the grids.
     nlat, nlon     : The number of latitude and longitude bands in the grids.
     sampling       : The longitudinal sampling scheme of the grids: either 1
-                     for nlong=nlat or 2 for nlong=2*nlat.
+                     for nlon=nlat or 2 for nlon=2*nlat.
 
     Methods
 
-    plot()        : Plot all three components of the gravity field with the
+    plot()        : Plot all three components of the gravity field and the
                     total gravity disturbance.
     plot_rad()    : Plot the radial component of the gravity field.
     plot_theta()  : Plot the theta component of the gravity field.
@@ -58,7 +57,8 @@ class SHGravGrid(object):
     plot_total()  : Plot the total gravity disturbance.
     plot_pot()    : Plot the gravitational potential.
     copy()        : Return a copy of the class instance.
-    info()        : Print a summary of the data stored in the SHGrid instance.
+    info()        : Print a summary of the data stored in the SHGravGrid
+                    instance.
     """
 
     def __init__(self, rad, theta, phi, total, pot, gm, a, f, omega,

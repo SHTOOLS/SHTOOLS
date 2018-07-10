@@ -28,8 +28,7 @@ class SHGravTensor(object):
                        derived quantity that is bounded between 0 and 1.
     gm               : Gravitational constant time the mass of the body.
     a                : Semimajor axis of the reference ellipsoid.
-    f                : Flattening of the reference ellipsoid,
-                       f=(R_equator-R_pole)/R_equator.
+    f                : Flattening of the reference ellipsoid, f=(a-b)/a.
     lmax             : The maximum spherical harmonic degree resolvable by the
                        grids.
     lmax_calc        : The maximum spherical harmonic degree of the
@@ -51,11 +50,11 @@ class SHGravTensor(object):
     plot_vzy()      : Plot the vzy component of the gravity tensor.
     plot_vzz()      : Plot the vzz component of the gravity tensor.
 
-    compute_invar() : Compute the invariants.
+    compute_invar() : Compute the invariants of the gravity tensor.
     plot_i0()       : Plot the first invariant I0 of the gravity tensor.
     plot_i1()       : Plot the second invariant I1 of the gravity tensor.
     plot_i2()       : Plot the third invariant I2 of the gravity tensor.
-    plot_i()        : Plot -(I2/2)**2 / (I1/3)**3.
+    plot_i()        : Plot the derived quantity -(I2/2)**2 / (I1/3)**3.
 
     compute_eig()   : Compute the three eigenvalues of the gravity tensor.
     plot_eig()      : Plot the three eigenvalues of the gravity tensor.
@@ -63,15 +62,19 @@ class SHGravTensor(object):
     plot_eig2()     : Plot the second eigenvalue of the gravity tensor.
     plot_eig3()     : Plot the third eigenvalue of the gravity tensor.
 
-    compute_eigh()  : Compute the three eigenvalues of the gravity tensor.
-    plot_eigh()     : Plot the two eigenvalues and the combined maximum
-                      absolute eigenvalue of the gravity tensor.
-    plot_eigh1()    : Plot the first eigenvalue of the gravity tensor.
-    plot_eigh2()    : Plot the second eigenvalue of the gravity tensor.
-    plot_eighh()     : Plot the third eigenvalue of the gravity tensor.
+    compute_eigh()  : Compute the horizontal eigenvalues of the gravity tensor.
+    plot_eigh()     : Plot the two horizontal eigenvalues and the combined
+                      maximum absolute eigenvalue of the gravity tensor.
+    plot_eigh1()    : Plot the first horizontal eigenvalue of the gravity
+                      tensor.
+    plot_eigh2()    : Plot the second horizontal eigenvalue of the gravity
+                      tensor.
+    plot_eighh()    : Plot the combined maximum absolute eigenvalue of the
+                      gravity tensor.
 
     copy()         : Return a copy of the class instance.
-    info()         : Print a summary of the data stored in the SHGrid instance.
+    info()         : Print a summary of the data stored in the SHGravTensor
+                     instance.
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, gm, a, f, lmax,

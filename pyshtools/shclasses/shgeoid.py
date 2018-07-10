@@ -25,8 +25,7 @@ class SHGeoid(object):
     gm             : Gravitational constant time the mass of the body.
     potref         : Potential of the chosen geoid.
     a              : Semimajor axis of the reference ellipsoid.
-    f              : Flattening of the reference ellipsoid,
-                     f=(R_equator-R_pole)/R_equator.
+    f              : Flattening of the reference ellipsoid, f=(a-b)/a.
     omega          : Angular rotation rate of the body.
     r              : Reference radius of the Taylor expansion.
     order          : Order of the Taylor expansion.
@@ -40,8 +39,7 @@ class SHGeoid(object):
 
     Methods
 
-    plot()        : Plot all three components of the gravity field with the
-                    total gravity disturbance.
+    plot()        : Plot the geoid.
     copy()        : Return a copy of the class instance.
     info()        : Print a summary of the data stored in the SHGrid instance.
     """

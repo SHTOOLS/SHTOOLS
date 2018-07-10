@@ -67,7 +67,7 @@ class SHGravCoeffs(object):
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions.
-    gm            : The mass times the gravitational constant that is
+    gm            : The gravitational constant times the mass times that is
                     associated with the gravitational potential coefficients.
     r0            : The reference radius of the gravitational potential
                     coefficients.
@@ -91,6 +91,8 @@ class SHGravCoeffs(object):
                             of spherical harmonic degree.
     set_omega()           : Set the angular rotation rate of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
+    change_ref()          : Return a new class instance referenced to a
+                            different gm, r0, or omega.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
                             class instance.
@@ -98,8 +100,6 @@ class SHGravCoeffs(object):
                             normalization convention.
     pad()                 : Return a new class instance that is zero padded or
                             truncated to a different lmax.
-    change_ref()          : Return a new class instance referenced to a
-                            different gm, r0, or omega.
     expand()              : Calculate the three vector components of the
                             gravity field, the total field, and the
                             gravitational potential, and return an SHGravGrid
@@ -117,8 +117,8 @@ class SHGravCoeffs(object):
                             with a different normalization convention.
     to_file()             : Save raw spherical harmonic coefficients as a file.
     copy()                : Return a copy of the class instance.
-    info()                : Print a summary of the data stored in the SHCoeffs
-                            instance.
+    info()                : Print a summary of the data stored in the
+                            SHGravCoeffs instance.
     """
 
     def __init__(self):
