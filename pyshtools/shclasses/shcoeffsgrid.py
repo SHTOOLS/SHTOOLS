@@ -638,7 +638,13 @@ class SHCoeffs(object):
         return coeffs
 
     def copy(self):
-        """Return a deep copy of the class instance."""
+        """
+        Return a deep copy of the class instance.
+
+        Usage
+        -----
+        copy = x.copy()
+        """
         return _copy.deepcopy(self)
 
     def info(self):
@@ -660,7 +666,8 @@ class SHCoeffs(object):
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] +
@@ -668,9 +675,9 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of '
-                                 'the same kind and have the same '
-                                 'normalization and csphase.')
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
                 raise ValueError('Can not add a complex constant to real '
@@ -699,7 +706,8 @@ class SHCoeffs(object):
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] -
@@ -707,9 +715,9 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of '
-                                 'the same kind and have the same '
-                                 'normalization and csphase.')
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
                 raise ValueError('Can not subtract a complex constant from '
@@ -730,7 +738,8 @@ class SHCoeffs(object):
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (other.coeffs[self.mask] -
@@ -738,9 +747,9 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of '
-                                 'the same kind and have the same '
-                                 'normalization and csphase.')
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
                 raise ValueError('Can not subtract a complex constant from '
@@ -760,7 +769,8 @@ class SHCoeffs(object):
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] *
@@ -768,9 +778,9 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of '
-                                 'the same kind and have the same '
-                                 'normalization and csphase.')
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
         elif _np.isscalar(other) is True:
             coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                dtype=self.coeffs.dtype)
@@ -798,7 +808,8 @@ class SHCoeffs(object):
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] /
@@ -806,9 +817,9 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of '
-                                 'the same kind and have the same '
-                                 'normalization and csphase.')
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
         elif _np.isscalar(other) is True:
             coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                dtype=self.coeffs.dtype)
@@ -829,7 +840,8 @@ class SHCoeffs(object):
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] /
@@ -837,9 +849,9 @@ class SHCoeffs(object):
                 return SHCoeffs.from_array(coeffs, csphase=self.csphase,
                                            normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of '
-                                 'the same kind and have the same '
-                                 'normalization and csphase.')
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
         elif _np.isscalar(other) is True:
             coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                dtype=self.coeffs.dtype)
@@ -1407,7 +1419,7 @@ class SHCoeffs(object):
                         vscale='log', vrange=(1.e-5, 1.0), lmax=None,
                         show=True, ax=None, fname=None):
         """
-        Plot the spectrum of all spherical harmonic coefficients.
+        Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
@@ -2133,7 +2145,13 @@ class SHGrid(object):
                 return cls(data)
 
     def copy(self):
-        """Return a deep copy of the class instance."""
+        """
+        Return a deep copy of the class instance.
+
+        Usage
+        -----
+        copy = x.copy()
+        """
         return _copy.deepcopy(self)
 
     def to_file(self, filename, binary=False, **kwargs):

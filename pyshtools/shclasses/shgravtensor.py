@@ -1,5 +1,5 @@
 """
-    Class for grids of the 9 components of the gravity 'gradient' tensor.
+    Class for the gravity 'gradient' tensor.
 """
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
@@ -17,16 +17,17 @@ from .shcoeffsgrid import SHGrid as _SHGrid
 class SHGravTensor(object):
     """
     Class for the gravity 'gradient' tensor and eigenvalues. The class is
-    initialized using SHGravCoeffs.tensor().
+    initialized from a class instance of SHGravCoeffs using the method
+    tensor().
 
     Attributes:
 
-    vxx, vxy, vzz,
-    vyx, vyy, vyz,   : The 9 components of the gravity tensor.
+    vxx, vxy, vzz,   : The 9 components of the gravity tensor.
+    vyx, vyy, vyz,
     vzx, vzy, vzz
     i0, i1, i2, i    : The three invariants of the gravity tensor and a
                        derived quantity that is bounded between 0 and 1.
-    gm               : Gravitational constant time the mass of the body.
+    gm               : The gravitational constant times the mass of the body.
     a                : Semimajor axis of the reference ellipsoid.
     f                : Flattening of the reference ellipsoid, f=(a-b)/a.
     lmax             : The maximum spherical harmonic degree resolvable by the
@@ -54,7 +55,7 @@ class SHGravTensor(object):
     plot_i0()       : Plot the first invariant I0 of the gravity tensor.
     plot_i1()       : Plot the second invariant I1 of the gravity tensor.
     plot_i2()       : Plot the third invariant I2 of the gravity tensor.
-    plot_i()        : Plot the derived quantity -(I2/2)**2 / (I1/3)**3.
+    plot_i()        : Plot the derived quantity I = -(I2/2)**2 / (I1/3)**3.
 
     compute_eig()   : Compute the three eigenvalues of the gravity tensor.
     plot_eig()      : Plot the three eigenvalues of the gravity tensor.
@@ -113,8 +114,8 @@ class SHGravTensor(object):
 
     def compute_invar(self):
         """
-        Compute the three invariants (i0, i1, i2) of the gravity tensor, as
-        well as the quantity i = -(I2/2)**2 / (I1/3)**3.
+        Compute the three invariants (I0, I1, I2) of the gravity tensor, as
+        well as the quantity I = -(I2/2)**2 / (I1/3)**3.
         """
         self.i0 = self.vxx + self.vyy + self.vzz
         self.i1 = (self.vxx*self.vyy + self.vyy*self.vzz + self.vxx*self.vzz -
@@ -141,11 +142,11 @@ class SHGravTensor(object):
                 a = _np.array([[self.vxx.data[i, j],
                                 self.vxy.data[i, j],
                                 self.vxz.data[i, j]],
-                               [self.vxy.data[i, j],
+                               [self.vyx.data[i, j],
                                 self.vyy.data[i, j],
                                 self.vyz.data[i, j]],
-                               [self.vxz.data[i, j],
-                                self.vyz.data[i, j],
+                               [self.vzx.data[i, j],
+                                self.vzy.data[i, j],
                                 self.vzz.data[i, j]]])
 
                 eigs = _eigvalsh(a)
@@ -171,7 +172,7 @@ class SHGravTensor(object):
             for j in range(self.nlon):
                 a = _np.array([[self.vxx.data[i, j],
                                 self.vxy.data[i, j]],
-                               [self.vxy.data[i, j],
+                               [self.vyx.data[i, j],
                                 self.vyy.data[i, j]]])
 
                 eigs = _eigvalsh(a)
@@ -179,13 +180,19 @@ class SHGravTensor(object):
                 self.eigh1.data[i, j] = eigs[1]
                 self.eigh2.data[i, j] = eigs[0]
 
-                if abs(eigs[0]) >= eigs[1]:
+                if abs(eigs[0]) >= abs(eigs[1]):
                     self.eighh.data[i, j] = eigs[0]
                 else:
                     self.eighh.data[i, j] = eigs[1]
 
     def copy(self):
-        """Return a deep copy of the class instance."""
+        """
+        Return a deep copy of the class instance.
+
+        Usage
+        -----
+        copy = x.copy()
+        """
         return _copy.deepcopy(self)
 
     def info(self):
@@ -221,8 +228,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_vxx([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_vxx([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -238,7 +245,7 @@ class SHGravTensor(object):
         colorbar : bool, optional, default = False
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{xx}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -273,8 +280,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_vyy([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_vyy([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -287,10 +294,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{yy}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -325,8 +332,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_vzz([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_vzz([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -339,10 +346,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{zz}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -377,8 +384,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_vxy([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_vxy([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -391,10 +398,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{xy}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -429,8 +436,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_vyx([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_vyx([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -443,10 +450,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{yx}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -481,8 +488,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_vxz([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_vxz([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -495,10 +502,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{xz}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -533,8 +540,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_vzx([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_vzx([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -547,10 +554,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{zx}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -585,8 +592,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_vyz([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_vyz([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -599,10 +606,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{yz}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -637,8 +644,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_vzy([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_vzy([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -651,10 +658,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{zy}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -689,9 +696,11 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                show, fname])
+        x.plot([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
+                    cb_label, show, fname])
 
+        Parameters
+        ----------
         tick_interval : list or tuple, optional, default = None
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -699,10 +708,10 @@ class SHGravTensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = ''
             Label for the latitude axis.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+        cb_orientation : str, optional, default = 'horizontal'
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -764,8 +773,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_i0([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_i0([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
+                   cb_label, show, fname])
 
         Parameters
         ----------
@@ -778,10 +787,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'Tr $V_{ij}$, Eotvos'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -821,8 +830,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_i1([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_i1([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
+                   cb_label, show, fname])
 
         Parameters
         ----------
@@ -835,10 +844,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$I_1$, Eotvos$^2$'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -869,7 +878,7 @@ class SHGravTensor(object):
                          cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_i2(self, colorbar=True, cb_orientation='vertical',
-                cb_label='det $V_{ij}$,Eotvos$^3$', ax=None, show=True,
+                cb_label='det $V_{ij}$, Eotvos$^3$', ax=None, show=True,
                 fname=None, **kwargs):
         """
         Plot the third invariant I2 (the determinant) of the gravity tensor:
@@ -879,8 +888,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_i2([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_i2([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
+                   cb_label, show, fname])
 
         Parameters
         ----------
@@ -893,11 +902,11 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = 'det $V_{ij}$,Eotvos$^3$'
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = 'det $V_{ij}$, Eotvos$^3$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -938,8 +947,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_i([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_i([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
+                  cb_label, show, fname])
 
         Parameters
         ----------
@@ -952,10 +961,10 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$-(I_2/2)^{2} / (I_1/3)^{3}$,
                                              Eotvos$^{-1}$'
             Text label for the colorbar.
@@ -995,9 +1004,11 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_invar([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                show, fname])
+        x.plot_invar([tick_interval, xlabel, ylabel, ax, colorbar,
+                      cb_orientation, cb_label, show, fname])
 
+        Parameters
+        ----------
         tick_interval : list or tuple, optional, default = None
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -1005,10 +1016,10 @@ class SHGravTensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = ''
             Label for the latitude axis.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+        cb_orientation : str, optional, default = 'horizontal'
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -1051,8 +1062,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_eig1([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                     show, fname])
+        x.plot_eig1([tick_interval, xlabel, ylabel, ax, colorbar,
+                     cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -1065,11 +1076,11 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = '$\lambda_1$'
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = '$\lambda_1$, Eotvos$^{-1}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1106,8 +1117,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_eig2([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                     show, fname])
+        x.plot_eig2([tick_interval, xlabel, ylabel, ax, colorbar,
+                     cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -1120,11 +1131,11 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = '$\lambda_2$'
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = '$\lambda_2$, Eotvos$^{-1}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1161,8 +1172,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_eig3([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                     show, fname])
+        x.plot_eig3([tick_interval, xlabel, ylabel, ax, colorbar,
+                     cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -1175,11 +1186,11 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = '$\lambda_3$'
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = '$\lambda_3$, Eotvos$^{-1}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1216,9 +1227,11 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_eigs([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                     show, fname])
+        x.plot_eigs([tick_interval, xlabel, ylabel, ax, colorbar,
+                     cb_orientation, cb_label, show, fname])
 
+        Parameters
+        ----------
         tick_interval : list or tuple, optional, default = None
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -1229,7 +1242,7 @@ class SHGravTensor(object):
         colorbar : bool, optional, default = False
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -1270,8 +1283,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_eigh1([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                      show, fname])
+        x.plot_eigh1([tick_interval, xlabel, ylabel, ax, colorbar,
+                      cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -1284,11 +1297,11 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = '$\lambda_1$'
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = '$\lambda_{h1}$, Eotvos$^{-1}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1325,8 +1338,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_eigh2([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                      show, fname])
+        x.plot_eigh2([tick_interval, xlabel, ylabel, ax, colorbar,
+                      cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -1339,11 +1352,11 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = '$\lambda_2$'
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = '$\lambda_{h2}$, Eotvos$^{-1}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1381,8 +1394,8 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_eighh([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                      show, fname])
+        x.plot_eighh([tick_interval, xlabel, ylabel, ax, colorbar,
+                      cb_orientation, cb_label, show, fname])
 
         Parameters
         ----------
@@ -1395,11 +1408,11 @@ class SHGravTensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = '$\lambda_3$'
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = '$\lambda_{hh}$, Eotvos$^{-1}$'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1437,9 +1450,11 @@ class SHGravTensor(object):
 
         Usage
         -----
-        x.plot_eigs([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                     show, fname])
+        x.plot_eigs([tick_interval, xlabel, ylabel, ax, colorbar,
+                     cb_orientation, cb_label, show, fname])
 
+        Parameters
+        ----------
         tick_interval : list or tuple, optional, default = None
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -1447,10 +1462,10 @@ class SHGravTensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = ''
             Label for the latitude axis.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         show : bool, optional, default = True

@@ -16,11 +16,12 @@ from .shcoeffsgrid import SHGrid as _SHGrid
 
 class SHGravGrid(object):
     """
-    Class for grids of the gravitational potential, three components of the
-    gravity field, and the total gravitational disturbance. The class is
-    initialized using SHGravCoeffs.expand().
+    Class for grids of the gravitational potential, three vector components of
+    the gravity field, and the total gravitational disturbance. The class is
+    initialized from a class instance of SHGravCoeffs using the method
+    expand().
 
-    Attributes
+    Attributes:
 
     rad            : SHGrid class instance of the radial component of the
                      gravitational acceleration evaluated on an ellipsoid.
@@ -29,25 +30,25 @@ class SHGravGrid(object):
     phi            : SHGrid class instance of the phi component of the
                      gravitational acceleration evaluated on an ellipsoid.
     total          : SHGrid class instance of the total gravitational
-                     acceleration with the normal gravity removed, on an
-                     ellipsoid.
+                     acceleration on an ellipsoid.
     pot            : SHGrid class instance of the gravitational potential
                      evaluated on an ellipsoid.
-    gm             : Gravitational constant time the mass of the body.
+    gm             : Gravitational constant times the mass of the body.
     a              : Semimajor axis of the reference ellipsoid.
     f              : Flattening of the reference ellipsoid, f=(a-b)/a.
     omega          : Angular rotation rate of the body.
     normal_gravity : True if the normal gravity is removed from the total
                      gravitational acceleration.
     lmax           : The maximum spherical harmonic degree resolvable by the
-                     grids.
+                     geoid grid.
     lmax_calc      : The maximum spherical harmonic degree of the gravitational
-                     potential used in creating the grids.
-    nlat, nlon     : The number of latitude and longitude bands in the grids.
-    sampling       : The longitudinal sampling scheme of the grids: either 1
-                     for nlon=nlat or 2 for nlon=2*nlat.
+                     potential used in creating the geoid grid.
+    nlat, nlon     : The number of latitude and longitude bands in the geoid
+                     grid.
+    sampling       : The longitudinal sampling scheme of the geoid grid: either
+                     1 for nlon=nlat or 2 for nlon=2*nlat.
 
-    Methods
+    Methods:
 
     plot()        : Plot all three components of the gravity field and the
                     total gravity disturbance.
@@ -84,7 +85,13 @@ class SHGravGrid(object):
         self.lmax_calc = lmax_calc
 
     def copy(self):
-        """Return a deep copy of the class instance."""
+        """
+        Return a deep copy of the class instance.
+
+        Usage
+        -----
+        copy = x.copy()
+        """
         return _copy.deepcopy(self)
 
     def info(self):
@@ -109,7 +116,7 @@ class SHGravGrid(object):
                 'a (m)= {:e}\n'
                 'f = {:e}\n'
                 'omega (rad / s) = {:s}\n'
-                'normal gravity removed = {:s}'
+                'normal gravity is removed = {:s}'
                 .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
                         self.gm, self.a, self.f, repr(self.omega),
                         repr(self.normal_gravity)))
@@ -123,8 +130,8 @@ class SHGravGrid(object):
 
         Usage
         -----
-        x.plot_rad([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_rad([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -137,10 +144,10 @@ class SHGravGrid(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$g_r$, m s$^{-2}$'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -175,8 +182,8 @@ class SHGravGrid(object):
 
         Usage
         -----
-        x.plot_theta([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                      show, fname])
+        x.plot_theta([tick_interval, xlabel, ylabel, ax, colorbar,
+                      cb_orientation, cb_label, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -189,10 +196,10 @@ class SHGravGrid(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$g_\\theta$, m s$^{-2}$'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -227,8 +234,8 @@ class SHGravGrid(object):
 
         Usage
         -----
-        x.plot_phi([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_phi([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -241,10 +248,10 @@ class SHGravGrid(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$g_\phi$, m s$^{-2}$'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -278,8 +285,8 @@ class SHGravGrid(object):
 
         Usage
         -----
-        x.plot_total([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                      show, fname])
+        x.plot_total([tick_interval, xlabel, ylabel, ax, colorbar,
+                      cb_orientation, cb_label, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -292,10 +299,10 @@ class SHGravGrid(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'gravity disturbance'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -312,17 +319,19 @@ class SHGravGrid(object):
         If the normal gravity is removed from the total gravitational
         acceleration, the output will be displayed in mGals.
         """
-        if ax is None:
+        if self.normal_gravity is True:
+            if cb_label is None:
+                cb_label = 'gravity disturbance, mGal'
+        else:
+            if cb_label is None:
+                cb_label = 'gravity disturbance, m s$^{-2}$'
 
+        if ax is None:
             if self.normal_gravity is True:
-                if cb_label is None:
-                    cb_label = 'gravity disturbance, mGal'
-                    fig, axes = (self.total*1.e5).plot(
-                        colorbar=colorbar, cb_orientation=cb_orientation,
-                        cb_label=cb_label, **kwargs)
+                fig, axes = (self.total*1.e5).plot(
+                    colorbar=colorbar, cb_orientation=cb_orientation,
+                    cb_label=cb_label, **kwargs)
             else:
-                if cb_label is None:
-                    cb_label = 'gravity disturbance, m s$^{-2}$'
                 fig, axes = self.total.plot(
                     colorbar=colorbar, cb_orientation=cb_orientation,
                     cb_label=cb_label, **kwargs)
@@ -336,25 +345,13 @@ class SHGravGrid(object):
 
         else:
             if self.normal_gravity is True:
-                if cb_label is None:
-                    cb_label = 'gravity disturbance, mGal'
-                    (self.total*1.e5).plot(
-                        colorbar=colorbar, cb_orientation=cb_orientation,
-                        cb_label=cb_label, ax=ax, **kwargs)
+                (self.total*1.e5).plot(
+                    colorbar=colorbar, cb_orientation=cb_orientation,
+                    cb_label=cb_label, ax=ax, **kwargs)
             else:
-                if cb_label is None:
-                    cb_label = 'gravity disturbance, m s$^{-2}$'
                 self.total.plot(
                     colorbar=colorbar, cb_orientation=cb_orientation,
                     cb_label=cb_label, ax=ax, **kwargs)
-
-        if ax is None:
-            if show:
-                _plt.show()
-
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
 
     def plot_pot(self, colorbar=True, cb_orientation='vertical',
                  cb_label='potential, m s$^{-1}$', ax=None, show=True,
@@ -364,8 +361,8 @@ class SHGravGrid(object):
 
         Usage
         -----
-        x.plot_pot([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot_pot([tick_interval, xlabel, ylabel, ax, colorbar,
+                    cb_orientation, cb_label, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -378,10 +375,10 @@ class SHGravGrid(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'potential, m s$^{-1}$'
             Text label for the colorbar.
         show : bool, optional, default = True
@@ -412,14 +409,16 @@ class SHGravGrid(object):
              tick_interval=[45, 45], xlabel='', ylabel='', show=True,
              fname=None, **kwargs):
         """
-        Plot the three components of the gravity field and the gravity
+        Plot the three vector components of the gravity field and the gravity
         disturbance.
 
         Usage
         -----
-        x.plot([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                show, fname])
+        x.plot([tick_interval, xlabel, ylabel, ax, colorbar,
+                cb_orientation, cb_label, show, fname, **kwargs])
 
+        Parameters
+        ----------
         tick_interval : list or tuple, optional, default = [45, 45]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -427,10 +426,10 @@ class SHGravGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = ''
             Label for the latitude axis.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         show : bool, optional, default = True

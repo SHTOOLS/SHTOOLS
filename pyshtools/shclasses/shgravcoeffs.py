@@ -243,7 +243,7 @@ class SHGravCoeffs(object):
         return clm
 
     @classmethod
-    def from_zeros(self, lmax, gm, r0, omega=None, errors=True,
+    def from_zeros(self, lmax, gm, r0, omega=None, errors=False,
                    normalization='4pi', csphase=1):
         """
         Initialize the class with spherical harmonic coefficients set to zero
@@ -348,8 +348,8 @@ class SHGravCoeffs(object):
             If True, read a list of values from the header line of an 'shtools'
             formatted file.
         errors : bool, optional, default = False
-            If True, initialize the attribute errors with zeros (for 'shtools'
-            formatted files only).
+            If True, read errors from the file (for 'shtools' formatted files
+            only).
         r0_index : int, optional, default = 0
             For shtools formatted files, if header is True, r0 will be set
             using the value from the header line with this index.
@@ -852,7 +852,7 @@ class SHGravCoeffs(object):
         Description
         -----------
         If format='shtools', the coefficients and meta-data will be written to
-        and ascii formatted file. The first line is an optional user provided
+        an ascii formatted file. The first line is an optional user provided
         header line, and the following line provides the attributes r0, gm,
         omega, and lmax. The spherical harmonic coefficients are then listed,
         with increasing degree and order, with the format
@@ -860,22 +860,30 @@ class SHGravCoeffs(object):
         l, m, coeffs[0, l, m], coeffs[1, l, m]
 
         where l and m are the spherical harmonic degree and order,
-        respectively. If the errors are to be saved, the the format
-        of each line will be
+        respectively. If the errors are to be saved, the format of each line
+        will be
 
         l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
 
         If format='npy', the spherical harmonic coefficients (but not the
-        meta-data) will be saved to a binary numpy 'npy' file using
+        meta-data nor errors) will be saved to a binary numpy 'npy' file using
         numpy.save().
         """
         if format is 'shtools':
+            if errors is True and self.errors is None:
+                raise ValueError('Can not save errors when then have not been '
+                                 'initialized.')
+
+            if self.omega is None:
+                omega = 0.
+            else:
+                omega = self.omega
+
             with open(filename, mode='w') as file:
                 if header is not None:
                     file.write(header + '\n')
-                file.write('{:e}, {:e}, {:e}, {:d}'.format(self.r0, self.gm,
-                                                           self.omega,
-                                                           self.lmax))
+                file.write('{:e}, {:e}, {:e}, {:d}\n'.format(self.r0, self.gm,
+                                                             omega, self.lmax))
                 for l in range(self.lmax+1):
                     for m in range(l+1):
                         if errors is True:
@@ -884,7 +892,6 @@ class SHGravCoeffs(object):
                                                self.coeffs[1, l, m],
                                                self.errors[0, l, m],
                                                self.errors[1, l, m]))
-
                         else:
                             file.write('{:d}, {:d}, {:e}, {:e}\n'
                                        .format(l, m, self.coeffs[0, l, m],
@@ -897,7 +904,7 @@ class SHGravCoeffs(object):
 
     def to_array(self, normalization=None, csphase=None, lmax=None):
         """
-        Return spherical harmonic coefficients as a numpy array.
+        Return spherical harmonic coefficients (and errors) as a numpy array.
 
         Usage
         -----
@@ -909,7 +916,7 @@ class SHGravCoeffs(object):
             numpy ndarray of the spherical harmonic coefficients.
         errors : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the errors of the spherical harmonic
-            coefficients. Output only if errors is not None.
+            coefficients if they are not None.
 
         Parameters
         ----------
@@ -933,7 +940,8 @@ class SHGravCoeffs(object):
         degree is smaller than the maximum degree of the class instance, the
         coefficients will be truncated. Conversely, if this degree is larger
         than the maximum degree of the class instance, the output array will be
-        zero padded.
+        zero padded. If the errors of the coefficients are set, they will be
+        output as a separate array.
         """
         if normalization is None:
             normalization = self.normalization
@@ -957,7 +965,13 @@ class SHGravCoeffs(object):
             return coeffs
 
     def copy(self):
-        """Return a deep copy of the class instance."""
+        """
+        Return a deep copy of the class instance.
+
+        Usage
+        -----
+        copy = x.copy()
+        """
         return _copy.deepcopy(self)
 
     def info(self):
@@ -986,7 +1000,8 @@ class SHGravCoeffs(object):
         if isinstance(other, SHGravCoeffs):
             if (self.gm == other.gm and self.r0 == other.r0 and
                     self.normalization == other.normalization and
-                    self.csphase == other.csphase and self.kind == other.kind):
+                    self.csphase == other.csphase and self.kind == other.kind
+                    and self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] +
@@ -997,7 +1012,7 @@ class SHGravCoeffs(object):
             else:
                 raise ValueError('Addition is permitted only when the two '
                                  'SHGravCoeffs instances have the same kind, '
-                                 'normalization, csphase, gm and r0.')
+                                 'normalization, csphase, gm, r0, and lmax.')
         else:
             raise TypeError('Addition is permitted only for two SHGravCoeffs '
                             'instances. Type of other is {:s}'
@@ -1005,7 +1020,7 @@ class SHGravCoeffs(object):
 
     def __radd__(self, other):
         """
-        Add two similar sets of coefficients or coefficients and a scalar:
+        Add two similar sets of gravitational potential coefficients:
         other + self.
         """
         return self.__add__(other)
@@ -1018,7 +1033,8 @@ class SHGravCoeffs(object):
         if isinstance(other, SHGravCoeffs):
             if (self.gm == other.gm and self.r0 == other.r0 and
                     self.normalization == other.normalization and
-                    self.csphase == other.csphase and self.kind == other.kind):
+                    self.csphase == other.csphase and self.kind == other.kind
+                    and self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] -
@@ -1029,7 +1045,7 @@ class SHGravCoeffs(object):
             else:
                 raise ValueError('Subtraction is permitted only when the two '
                                  'SHGravCoeffs instances have the same kind, '
-                                 'normalization, csphase, gm and r0.')
+                                 'normalization, csphase, gm, r0, and lmax.')
         else:
             raise TypeError('Subtraction is permitted only for two '
                             'SHGravCoeffs instances. Type of other is {:s}'
@@ -1043,7 +1059,8 @@ class SHGravCoeffs(object):
         if isinstance(other, SHGravCoeffs):
             if (self.gm == other.gm and self.r0 == other.r0 and
                     self.normalization == other.normalization and
-                    self.csphase == other.csphase and self.kind == other.kind):
+                    self.csphase == other.csphase and self.kind == other.kind
+                    and self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (other.coeffs[self.mask] -
@@ -1054,7 +1071,7 @@ class SHGravCoeffs(object):
             else:
                 raise ValueError('Subtraction is permitted only when the two '
                                  'SHGravCoeffs instances have the same kind, '
-                                 'normalization, csphase, gm and r0.')
+                                 'normalization, csphase, gm, r0, and lmax.')
         else:
             raise TypeError('Subtraction is permitted only for two '
                             'SHGravCoeffs instances. Type of other is {:s}'
@@ -1067,7 +1084,8 @@ class SHGravCoeffs(object):
         """
         if isinstance(other, _SHCoeffs):
             if (self.normalization == other.normalization and
-                    self.csphase == other.csphase and self.kind == other.kind):
+                    self.csphase == other.csphase and self.kind == other.kind
+                    and self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] *
@@ -1076,15 +1094,16 @@ class SHGravCoeffs(object):
                     coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                     csphase=self.csphase, normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
-                                 'normalization and csphase.')
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase, and '
+                                 'lmax.')
         elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not multiply real gravitational '
+                                 'potential coefficients by a complex '
+                                 'constant.')
             coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not multiply real coefficients by ' +
-                                 'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] * other
             return SHGravCoeffs.from_array(
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
@@ -1109,7 +1128,8 @@ class SHGravCoeffs(object):
         """
         if isinstance(other, _SHCoeffs):
             if (self.normalization == other.normalization and
-                    self.csphase == other.csphase and self.kind == other.kind):
+                    self.csphase == other.csphase and self.kind == other.kind
+                    and self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] /
@@ -1118,15 +1138,16 @@ class SHGravCoeffs(object):
                     coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                     csphase=self.csphase, normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
-                                 'normalization and csphase.')
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase, and '
+                                 'lmax.')
         elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not divide real gravitational '
+                                 'potential coefficients by a complex '
+                                 'constant.')
             coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide real coefficients by ' +
-                                 'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] / other
             return SHGravCoeffs.from_array(
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
@@ -1144,7 +1165,8 @@ class SHGravCoeffs(object):
         """
         if isinstance(other, _SHCoeffs):
             if (self.normalization == other.normalization and
-                    self.csphase == other.csphase and self.kind == other.kind):
+                    self.csphase == other.csphase and self.kind == other.kind
+                    and self.lmax == other.lmax):
                 coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                    dtype=self.coeffs.dtype)
                 coeffs[self.mask] = (self.coeffs[self.mask] /
@@ -1153,15 +1175,16 @@ class SHGravCoeffs(object):
                     coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                     csphase=self.csphase, normalization=self.normalization)
             else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
-                                 'normalization and csphase.')
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase, and '
+                                 'lmax.')
         elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not divide real gravitational '
+                                 'potential coefficients by a complex '
+                                 'constant.')
             coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
                                dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not multiply real coefficients by ' +
-                                 'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] / other
             return SHGravCoeffs.from_array(
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
@@ -1211,10 +1234,10 @@ class SHGravCoeffs(object):
         ----------
         function : str, optional, default = 'geoid'
             The type of power spectrum to return: 'potential' for the
-            gravitational potential, 'geoid' for the geoid, or 'gravity' for
-            the radial gravity.
+            gravitational potential in m/s, 'geoid' for the geoid in m, or
+            'gravity' for the radial gravity in mGals.
         lmax : int, optional, default = x.lmax
-            Maximum spherical harmonic degree of the spectrum to output.
+            Maximum spherical harmonic degree of the spectrum to return.
         unit : str, optional, default = 'per_l'
             If 'per_l', return the total contribution to the spectrum for each
             spherical harmonic degree l. If 'per_lm', return the average
@@ -1227,7 +1250,7 @@ class SHGravCoeffs(object):
         Description
         -----------
         This method returns the power spectrum of the class instance, where the
-        type of function is defined by the parameter function: 'potential' for
+        type of function is defined by the function parameter: 'potential' for
         the gravitational potential, 'geoid' for the geoid, or 'gravity' for
         the radial gravity. Total power is defined as the integral of the
         function squared over all space, divided by the area the function
@@ -1247,8 +1270,8 @@ class SHGravCoeffs(object):
         """
         if function.lower() not in ('potential', 'geoid', 'gravity'):
             raise ValueError(
-                "function must be of type 'potential', "
-                "'geoid', or 'gravity'. Provided value was {:s}"
+                "function must be of type 'potential', 'geoid', or 'gravity'. "
+                "Provided value was {:s}"
                 .format(repr(function))
                 )
 
@@ -1354,13 +1377,13 @@ class SHGravCoeffs(object):
         using the angles (-gamma, -beta, -alpha).
         """
         if type(convention) != str:
-            raise ValueError('convention must be a string. ' +
+            raise ValueError('convention must be a string. '
                              'Input type was {:s}'
                              .format(str(type(convention))))
 
         if convention.lower() not in ('x', 'y'):
             raise ValueError(
-                "convention must be either 'x' or 'y'. " +
+                "convention must be either 'x' or 'y'. "
                 "Provided value was {:s}".format(repr(convention))
                 )
 
@@ -1380,8 +1403,8 @@ class SHGravCoeffs(object):
             angles = _np.radians(angles)
 
         if self.lmax > 1200:
-            _warnings.warn("The rotate() method is accurate only to about" +
-                           " spherical harmonic degree 1200. " +
+            _warnings.warn("The rotate() method is accurate only to about"
+                           " spherical harmonic degree 1200. "
                            "lmax = {:d}".format(self.lmax),
                            category=RuntimeWarning)
 
@@ -1434,12 +1457,12 @@ class SHGravCoeffs(object):
 
         # check argument consistency
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "normalization must be '4pi', 'ortho', 'schmidt', or "
                 "'unnorm'. Provided value was {:s}"
                 .format(repr(normalization)))
         if csphase != 1 and csphase != -1:
@@ -1510,20 +1533,20 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        x = SHGravCoeffs.change_ref([gm, r0, lmax])
+        clm = x.change_ref([gm, r0, lmax])
 
         Returns
         -------
-        x : SHGravCoeffs class instance.
+        clm : SHGravCoeffs class instance.
 
         Parameters
         ----------
-        gm : float, optional, default = None
-            The mass times the gravitational constant that is associated with
+        gm : float, optional, default = self.gm
+            The gravitational constant time the mass that is associated with
             the gravitational potential coefficients.
-        r0 : float, optional, default = None
+        r0 : float, optional, default = self.r0
             The reference radius of the spherical harmonic coefficients.
-        lmax : int, optional, default = None
+        lmax : int, optional, default = self.lmax
             Maximum spherical harmonic degree to output.
 
         Description
@@ -1546,7 +1569,7 @@ class SHGravCoeffs(object):
                 clm.errors *= self.gm / gm
 
         if r0 is not None and r0 != self.r0:
-            for l in self.degrees():
+            for l in _np.arange(lmax+1):
                 clm.coeffs[:, l, :l+1] *= (self.r0 / r0)**l
                 if self.errors is not None:
                     clm.errors[:, l, :l+1] *= (self.r0 / r0)**l
@@ -1564,12 +1587,11 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        grav = SHGravCoeffs.expand([a, f, lmax, lmax_calc, normal_gravity,
-                                    sampling])
+        grav = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling])
 
         Returns
         -------
-        x : SHGravGrid class instance.
+        grav : SHGravGrid class instance.
 
         Parameters
         ----------
@@ -1577,23 +1599,22 @@ class SHGravCoeffs(object):
             The semi-major axis of the flattened ellipsoid on which the field
             is computed.
         f : optional, float, default = 0
-            The flattening of the reference ellipsoid:
-            f=(R_equator-R_pole)/R_equator.
+            The flattening of the reference ellipsoid: f=(a-b)/a.
         lmax : optional, integer, default = self.lmax
-            The maximum spherical harmonic degree of the coefficients cilm.
-            This determines the number of samples of the output grids,
-            n=2lmax+2, and the latitudinal sampling interval, 90/(lmax+1).
+            The maximum spherical harmonic degree, which determines the number
+            of samples of the output grids, n=2lmax+2, and the latitudinal
+            sampling interval, 90/(lmax+1).
         lmax_calc : optional, integer, default = lmax
             The maximum spherical harmonic degree used in evaluating the
             functions. This must be less than or equal to lmax.
         normal_gravity : optional, bool, default = True
             If True, the normal gravity (the gravitational acceleration on the
-            ellipsoid will be subtracted from the total gravity, yielding the
+            ellipsoid) will be subtracted from the total gravity, yielding the
             "gravity disturbance." This is done using Somigliana's formula
             (after converting geocentric to geodetic coordinates).
         sampling : optional, integer, default = 2
             If 1 the output grids are equally sampled (n by n). If 2 (default),
-            the grids are equally spaced (n by 2n).
+            the grids are equally spaced in degrees (n by 2n).
 
         Description
         -----------
@@ -1627,7 +1648,7 @@ class SHGravCoeffs(object):
         if a is None:
             a = self.r0
         if f is None:
-            f = 0
+            f = 0.
         if normal_gravity is True:
             ng = 1
         else:
@@ -1637,10 +1658,15 @@ class SHGravCoeffs(object):
         if lmax_calc is None:
             lmax_calc = lmax
 
+        if self.errors is not None:
+            coeffs, errors = self.to_array(normalization='4pi', csphase=1)
+        else:
+            coeffs = self.to_array(normalization='4pi', csphase=1)
+
         rad, theta, phi, total, pot = _MakeGravGridDH(
-            self.to_array(normalization='4pi', csphase=1), self.gm, self.r0,
-            a=a, f=f, lmax=lmax, lmax_calc=lmax_calc, sampling=sampling,
-            omega=self.omega, normal_gravity=ng)
+            coeffs, self.gm, self.r0, a=a, f=f, lmax=lmax,
+            lmax_calc=lmax_calc, sampling=sampling, omega=self.omega,
+            normal_gravity=ng)
 
         return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
                            self.omega, normal_gravity, lmax, lmax_calc)
@@ -1654,7 +1680,7 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        tensor = SHGravCoeffs.tensor([a, f, lmax, lmax_calc, sampling])
+        tensor = x.tensor([a, f, lmax, lmax_calc, sampling])
 
         Returns
         -------
@@ -1666,12 +1692,11 @@ class SHGravCoeffs(object):
             The semi-major axis of the flattened ellipsoid on which the field
             is computed.
         f : optional, float, default = 0
-            The flattening of the reference ellipsoid:
-            f=(R_equator-R_pole)/R_equator.
+            The flattening of the reference ellipsoid: f=(a-b)/a.
         lmax : optional, integer, default = self.lmax
-            The maximum spherical harmonic degree of the coefficients cilm.
-            This determines the number of samples of the output grids,
-            n=2lmax+2, and the latitudinal sampling interval, 90/(lmax+1).
+            The maximum spherical harmonic degree that determines the number of
+            samples of the output grids, n=2lmax+2, and the latitudinal
+            sampling interval, 90/(lmax+1).
         lmax_calc : optional, integer, default = lmax
             The maximum spherical harmonic degree used in evaluating the
             functions. This must be less than or equal to lmax.
@@ -1680,7 +1705,7 @@ class SHGravCoeffs(object):
             False, set the degree-0 term to zero.
         sampling : optional, integer, default = 2
             If 1 the output grids are equally sampled (n by n). If 2 (default),
-            the grids are equally spaced (n by 2n).
+            the grids are equally spaced in degrees (n by 2n).
 
         Description
         -----------
@@ -1717,7 +1742,7 @@ class SHGravCoeffs(object):
             Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
 
         where r, t, p stand for radius, theta, and phi, respectively, and
-        subscripts on V denote partial derivatives. The output grid are in
+        subscripts on V denote partial derivatives. The output grids are in
         units of Eotvos (10^-9 s^-2).
 
         References
@@ -1734,13 +1759,17 @@ class SHGravCoeffs(object):
         if a is None:
             a = self.r0
         if f is None:
-            f = 0
+            f = 0.
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
 
-        coeffs = self.to_array(normalization='4pi', csphase=1)
+        if self.errors is not None:
+            coeffs, errors = self.to_array(normalization='4pi', csphase=1)
+        else:
+            coeffs = self.to_array(normalization='4pi', csphase=1)
+
         if degree0 is False:
             coeffs[0, 0, 0] = 0.
 
@@ -1755,16 +1784,15 @@ class SHGravCoeffs(object):
               lmax_calc=None, sampling=2):
         """
         Create a global map of the height of the geoid and return an SHGeoid
-        class instance
+        class instance.
 
         Usage
         -----
-        grav = SHGravCoeffs.geoid(potref, [a, f, r, order, lmax, lmax_calc,
-                                           sampling])
+        geoid = x.geoid(potref, [a, f, r, order, lmax, lmax_calc, sampling])
 
         Returns
         -------
-        x : SHGeoid class instance.
+        geoid : SHGeoid class instance.
 
         Parameters
         ----------
@@ -1774,24 +1802,23 @@ class SHGravCoeffs(object):
             The semi-major axis of the flattened ellipsoid on which the field
             is computed.
         f : optional, float, default = 0
-            The flattening of the reference ellipsoid:
-            f=(R_equator-R_pole)/R_equator.
+            The flattening of the reference ellipsoid: f=(a-b)/a.
         r : optional, float, default = self.r0
             The radius of the reference sphere that the Taylor expansion of the
-            potential is performed on.
+            potential is calculated on.
         order : optional, integer, default = 2
             The order of the Taylor series expansion of the potential about the
             reference radius r. This can be either 1, 2, or 3.
         lmax : optional, integer, default = self.lmax
-            The maximum spherical harmonic degree of the coefficients cilm.
-            This determines the number of samples of the output grid,
-            n=2lmax+2, and the latitudinal sampling interval, 90/(lmax+1).
+            The maximum spherical harmonic degree that determines the number
+            of samples of the output grid, n=2lmax+2, and the latitudinal
+            sampling interval, 90/(lmax+1).
         lmax_calc : optional, integer, default = lmax
             The maximum spherical harmonic degree used in evaluating the
             functions. This must be less than or equal to lmax.
         sampling : optional, integer, default = 2
             If 1 the output grids are equally sampled (n by n). If 2 (default),
-            the grids are equally spaced (n by 2n).
+            the grids are equally spaced in degrees (n by 2n).
 
         Description
         -----------
@@ -1814,7 +1841,7 @@ class SHGravCoeffs(object):
         if a is None:
             a = self.r0
         if f is None:
-            f = 0
+            f = 0.
         if r is None:
             r = self.r0
         if lmax is None:
@@ -1822,9 +1849,13 @@ class SHGravCoeffs(object):
         if lmax_calc is None:
             lmax_calc = lmax
 
-        geoid = _MakeGeoidGridDH(self.to_array(normalization='4pi', csphase=1),
-                                 self.r0, self.gm, potref, lmax=lmax,
-                                 omega=self.omega, r=r, order=2,
+        if self.errors is not None:
+            coeffs, errors = self.to_array(normalization='4pi', csphase=1)
+        else:
+            coeffs = self.to_array(normalization='4pi', csphase=1)
+
+        geoid = _MakeGeoidGridDH(coeffs, self.r0, self.gm, potref, lmax=lmax,
+                                 omega=self.omega, r=r, order=order,
                                  lmax_calc=lmax_calc, a=a, f=f,
                                  sampling=sampling)
 
@@ -1875,7 +1906,7 @@ class SHGravCoeffs(object):
         Description
         -----------
         This method plots the power (and error) spectrum of the class instance,
-        where the type of function is defined by the parameter function:
+        where the type of spectrum is defined by the parameter function:
         'potential' for the gravitational potential, 'geoid' for the geoid, or
         'gravity' for the radial gravity. The power for the degree 0 and 1
         terms are not plotted. Total power is defined as the integral of the
@@ -1938,7 +1969,7 @@ class SHGravCoeffs(object):
         if self.errors is not None:
             axes.plot(ls[2:lmax + 1], spectrum[2:lmax + 1], label=legend)
             axes.plot(ls[2:lmax + 1], error_spectrum[2:lmax + 1],
-                      label='error spectrum')
+                      label='error')
         else:
             axes.plot(ls[2:lmax + 1], spectrum[2: lmax + 1], label=legend)
 
@@ -1956,7 +1987,7 @@ class SHGravCoeffs(object):
                         vscale='log', vrange=(1.e-5, 1.0), lmax=None,
                         errors=False, show=True, ax=None, fname=None):
         """
-        Plot the spectrum of all spherical harmonic coefficients.
+        Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
@@ -1992,7 +2023,7 @@ class SHGravCoeffs(object):
         Description
         -----------
         This method plots the power of the class instance for each spherical
-        harmonic degree and order, where the type of function is defined by
+        harmonic degree and order, where the type of spectrum is defined by
         the parameter function: 'potential' for the gravitational potential,
         'geoid' for the geoid, or 'gravity' for the radial gravity. Total power
         is defined as the integral of the function squared over all space,
@@ -2126,12 +2157,12 @@ class SHGravCoeffs(object):
 
 class SHGravRealCoeffs(SHGravCoeffs):
     """
-    Real spherical harmonic coefficients class for the gravitational potential.
+    Real spherical harmonic coefficient class for the gravitational potential.
     """
 
     def __init__(self, coeffs, gm=None, r0=None, omega=None, errors=None,
                  normalization='4pi', csphase=1, copy=True, header=None):
-        """Initialize Real SH Coefficients."""
+        """Initialize real gravitational potential coefficients class."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
         mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
@@ -2148,7 +2179,6 @@ class SHGravRealCoeffs(SHGravCoeffs):
         self.gm = gm
         self.r0 = r0
         self.omega = omega
-        self.errors = errors
 
         if copy:
             self.coeffs = _np.copy(coeffs)
@@ -2156,7 +2186,21 @@ class SHGravRealCoeffs(SHGravCoeffs):
         else:
             self.coeffs = coeffs
 
+        if errors is not None:
+            if copy:
+                self.errors = _np.copy(errors)
+                self.errors[~mask] = 0.
+            else:
+                self.errors = errors
+        else:
+            self.errors = None
+
     def __repr__(self):
+        if self.errors is not None:
+            err_set = True
+        else:
+            err_set = False
+
         return ('kind = {:s}\n'
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
@@ -2164,10 +2208,11 @@ class SHGravRealCoeffs(SHGravCoeffs):
                 'GM (m3 / s2) = {:s}\n'
                 'r0 (m) = {:s}\n'
                 'Omega (rad / s) = {:s}\n'
-                'header = {:s}\n'
+                'errors are set: {:s}\n'
+                'header = {:s}'
                 .format(repr(self.kind), repr(self.normalization),
                         self.csphase, self.lmax, repr(self.gm), repr(self.r0),
-                        repr(self.omega), repr(self.header),))
+                        repr(self.omega), repr(err_set), repr(self.header)))
 
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""

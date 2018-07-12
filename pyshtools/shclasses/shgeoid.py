@@ -1,5 +1,5 @@
 """
-    Class for height of the geoid.
+    Class for the height of the geoid.
 """
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
@@ -15,11 +15,11 @@ from .shcoeffsgrid import SHGrid as _SHGrid
 
 class SHGeoid(object):
     """
-    Class for the geoid height. The class is initialized using
-    SHGravCoeffs.geoid(). Geoid heights are referenced to a flattened
-    ellipsoid of semimajor axis a and flattening f.
+    Class for the height of the geoid. The class is initialized from a class
+    instance of SHGravCoeffs using the method geoid(). Geoid heights are
+    referenced to a flattened ellipsoid of semimajor axis a and flattening f.
 
-    Attributes
+    Attributes:
 
     geoid          : SHGrid class instance of the geoid.
     gm             : Gravitational constant time the mass of the body.
@@ -30,18 +30,19 @@ class SHGeoid(object):
     r              : Reference radius of the Taylor expansion.
     order          : Order of the Taylor expansion.
     lmax           : The maximum spherical harmonic degree resolvable by the
-                     grids.
+                     geoid grid.
     lmax_calc      : The maximum spherical harmonic degree of the gravitational
-                     potential used in creating the grids.
-    nlat, nlon     : The number of latitude and longitude bands in the grids.
-    sampling       : The longitudinal sampling scheme of the grids: either 1
-                     for nlong=nlat or 2 for nlong=2*nlat.
+                     potential used in creating the geoid.
+    nlat, nlon     : The number of latitude and longitude bands in the geoid
+                     grid.
+    sampling       : The longitudinal sampling scheme of the geoid grid: either
+                     1 for nlong=nlat or 2 for nlong=2*nlat.
 
-    Methods
+    Methods:
 
-    plot()        : Plot the geoid.
-    copy()        : Return a copy of the class instance.
-    info()        : Print a summary of the data stored in the SHGrid instance.
+    plot()         : Plot the geoid.
+    copy()         : Return a copy of the class instance.
+    info()         : Print a summary of the data stored in the SHGrid instance.
     """
     def __init__(self, geoid, gm, potref, a, f, omega, r, order, lmax,
                  lmax_calc):
@@ -64,12 +65,18 @@ class SHGeoid(object):
         self.lmax_calc = lmax_calc
 
     def copy(self):
-        """Return a deep copy of the class instance."""
+        """
+        Return a deep copy of the class instance.
+
+        Usage
+        -----
+        copy = x.copy()
+        """
         return _copy.deepcopy(self)
 
     def info(self):
         """
-        Print a summary of the data stored in the SHGravGrid class instance.
+        Print a summary of the data stored in the SHGeoid class instance.
 
         Usage
         -----
@@ -104,8 +111,8 @@ class SHGeoid(object):
 
         Usage
         -----
-        x.plot([tick_interval, ax, colorbar, cb_orientation, cb_label,
-                    show, fname])
+        x.plot([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
+                cb_label, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -118,10 +125,10 @@ class SHGeoid(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+            Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'geoid, m'
             Text label for the colorbar.
         show : bool, optional, default = True
