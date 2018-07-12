@@ -20,71 +20,28 @@ topography, and magnetic field data of the terrestrial planets. All units are SI
 `Mu0_constant`
 :   Magnetic constant.
 
+## Mercury
 
-## The Moon
+`R_Mercury`
+:   Average radius of Mercury.
 
-`R_Moon`
-:   Mean radius of the Moon.
+`GM_Mercury`
+:   Gravitational constant times the mass of the Mercury.
 
-`GM_Moon`
-:   Gravitational constant times the mass of the Moon.
+`Mass_Mercury`
+:   Mass of Mercury.
 
-`Mass_Moon`
-:   Mass of the Moon.
+`Omega_Orbit_Mercury`
+:   Angular rotation rate of Mercury about the Sun.
 
-`Density_Moon`
-:   Average density of the Moon.
+`Omega_Mercury`
+:   Angular rotation rate of Mercury.
 
-`A_Orbit_Moon`
-:   Semi-major axis of the lunar orbit.
+`Density_Mercury`
+:   Average density of Mercury.
 
-`Omega_Moon`
-:   Angular rotation rate of the Moon.
-
-`I_Solid_Moon`
-:   Average moment of inertia of the solid portion of the Moon.
-
-`Gamma_Moon`
-:   Libration parameter of the Moon, (B-A)/C.
-
-`Beta_Moon`
-:   Libration parameter of the Moon, (C-A)/B.
-
-`G0_Moon`
-:   Mean gravitational acceleration of the Moon at the mean surface radius (R_Moon), not including rotation.
-
-
-## Mars
-
-`R_Mars`
-:   Average radius of Mars.
-
-`GM_Mars`
-:   Gravitational constant times the mass of the Mars.
-
-`Mass_Mars`
-:   Mass of Mars.
-
-`Density_Mars`
-:   Average density of Mars.
-
-`Omega_Mars`
-:   Angular rotation rate of Mars.
-
-`F_Mars`
-:   Topographic flattening of Mars.
-
-`A_Mars`
-:   Semi-major axis radius of Mars.
-
-`B_Mars`
-:   Semi-minor axis radius of Mars.
-
-`U0_mars`
-:   Reference potential of Mars.
-
-`G0_Mars`
-:   Gravitational acceleration of Mars at R_Mars, not including rotation.
+`G0_Mercury`
+:   Gravitational acceleration at R_Mercury, not including rotation.
 
 ## Venus
 
@@ -141,25 +98,67 @@ topography, and magnetic field data of the terrestrial planets. All units are SI
 `U0_WGS84`
 :   The theoretical normal potential associated with the WGS84 model.
 
-## Mercury
+## The Moon
 
-`R_Mercury`
-:   Average radius of Mercury.
+`R_Moon`
+:   Mean radius of the Moon.
 
-`GM_Mercury`
-:   Gravitational constant times the mass of the Mercury.
+`GM_Moon`
+:   Gravitational constant times the mass of the Moon.
 
-`Mass_Mercury`
-:   Mass of Mercury.
+`Mass_Moon`
+:   Mass of the Moon.
 
-`Omega_Orbit_Mercury`
-:   Angular rotation rate of Mercury about the Sun.
+`Density_Moon`
+:   Average density of the Moon.
 
-`Omega_Mercury`
-:   Angular rotation rate of Mercury.
+`A_Orbit_Moon`
+:   Semi-major axis of the lunar orbit.
 
-`Density_Mercury`
-:   Average density of Mercury.
+`Omega_Moon`
+:   Angular rotation rate of the Moon.
 
-`G0_Mercury`
-:   Gravitational acceleration at R_Mercury, not including rotation.
+`I_Solid_Moon`
+:   Average moment of inertia of the solid portion of the Moon.
+
+`Gamma_Moon`
+:   Libration parameter of the Moon, (B-A)/C.
+
+`Beta_Moon`
+:   Libration parameter of the Moon, (C-A)/B.
+
+`G0_Moon`
+:   Mean gravitational acceleration of the Moon at the mean surface radius (R_Moon), not including rotation.
+
+## Mars
+
+`R_Mars`
+:   Average radius of Mars.
+
+`GM_Mars`
+:   Gravitational constant times the mass of the Mars.
+
+`Mass_Mars`
+:   Mass of Mars.
+
+`Density_Mars`
+:   Average density of Mars.
+
+`Omega_Mars`
+:   Angular rotation rate of Mars.
+
+`F_Mars`
+:   Topographic flattening of Mars.
+
+`A_Mars`
+:   Semi-major axis radius of Mars.
+
+`B_Mars`
+:   Semi-minor axis radius of Mars.
+
+`U0_mars`
+:   Reference potential of Mars.
+
+`G0_Mars`
+:   Gravitational acceleration of Mars at R_Mars, not including rotation.
+

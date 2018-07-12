@@ -1,5 +1,5 @@
 """
-    Class for spherical harmonic coefficients of gravitational fields.
+    Class for spherical harmonic coefficients of the gravitational potential.
 """
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
@@ -38,12 +38,12 @@ class SHGravCoeffs(object):
     """
     Spherical harmonic coefficients class for the gravitational potential.
 
-    The coefficients of this class can be initialized using one of the
-    four constructor methods:
+    The coefficients of this class can be initialized using one of the four
+    constructor methods:
 
-        x = SHGravCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
-        x = SHGravCoeffs.from_random(powerspectrum[0:lmax+1])
-        x = SHGravCoeffs.from_zeros(lmax)
+        x = SHGravCoeffs.from_array(array, gm, r0)
+        x = SHGravCoeffs.from_random(powerspectrum, gm, r0)
+        x = SHGravCoeffs.from_zeros(lmax, gm, r0)
         x = SHGravCoeffs.from_file('fname.dat')
         x = SHGravCoeffs.from_shape(grid, rho, gm)
 
@@ -67,6 +67,7 @@ class SHGravCoeffs(object):
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions.
+    errors        : The uncertainties of the spherical harmonic coefficients.
     gm            : The gravitational constant times the mass times that is
                     associated with the gravitational potential coefficients.
     r0            : The reference radius of the gravitational potential
@@ -78,10 +79,10 @@ class SHGravCoeffs(object):
                     or not (-1).
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
-    kind          : The coefficient data type: either 'complex' or 'real'.
+    kind          : The coefficient data type (only 'real' is permissible).
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
-                    formatted files).
+                    formatted files only).
 
     Each class instance provides the following methods:
 
@@ -92,7 +93,7 @@ class SHGravCoeffs(object):
     set_omega()           : Set the angular rotation rate of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
     change_ref()          : Return a new class instance referenced to a
-                            different gm, r0, or omega.
+                            different gm, or r0.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
                             class instance.
@@ -104,15 +105,14 @@ class SHGravCoeffs(object):
                             gravity field, the total field, and the
                             gravitational potential, and return an SHGravGrid
                             class instance.
-    tensor()              : Calculate the 9 components of the gravity
-                            'gradient' tensor and return an SHGravTensor class
-                            instance.
+    tensor()              : Calculate the 9 components of the gravity tensor
+                            and return an SHGravTensor class instance.
     geoid()               : Calculate the height of the geoid and return an
                             SHGeoid class instance.
-    plot_spectrum()       : Plot the  spectrum as a function of spherical
+    plot_spectrum()       : Plot the spectrum as a function of spherical
                             harmonic degree.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
-                            coefficients.
+                            degrees and orders.
     to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     to_file()             : Save raw spherical harmonic coefficients as a file.
@@ -132,7 +132,7 @@ class SHGravCoeffs(object):
 
     # ---- Factory methods ----
     @classmethod
-    def from_array(self, coeffs, gm, r0, omega=None,
+    def from_array(self, coeffs, gm, r0, omega=None, errors=None,
                    normalization='4pi', csphase=1, lmax=None, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
@@ -140,8 +140,9 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        x = SHGravCoeffs.from_array(array, gm, r0, [omega, normalization,
-                                                    csphase, lmax, copy])
+        x = SHGravCoeffs.from_array(array, gm, r0, [omega, errors,
+                                                    normalization, csphase,
+                                                    lmax, copy])
 
         Returns
         -------
@@ -152,12 +153,14 @@ class SHGravCoeffs(object):
         array : ndarray, shape (2, lmaxin+1, lmaxin+1).
             The input spherical harmonic coefficients.
         gm : float
-            The mass times the gravitational constant that is associated with
+            The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
         r0 : float
             The reference radius of the spherical harmonic coefficients.
         omega : float, optional, default = None
             The angular rotation rate of the body.
+        errors : ndarray, optional, default = None
+            The uncertainties of the spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -181,13 +184,13 @@ class SHGravCoeffs(object):
             raise TypeError('The input array must be real.')
 
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "The normalization must be '4pi', 'ortho', 'schmidt', "
                 "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
@@ -197,6 +200,14 @@ class SHGravCoeffs(object):
                 "csphase must be either 1 or -1. Input value was {:s}."
                 .format(repr(csphase))
                 )
+
+        if errors is not None:
+            if coeffs.shape != errors.shape:
+                raise ValueError(
+                    "The shape of coeffs and errors must be the same."
+                    "Shape of coeffs = {:s}, shape of errors = {:s}"
+                    .format(repr(coeffs.shape), repr(coeffs.errors))
+                    )
 
         lmaxin = coeffs.shape[1] - 1
         if lmax is None:
@@ -206,36 +217,42 @@ class SHGravCoeffs(object):
                 lmax = lmaxin
 
         if normalization.lower() == 'unnorm' and lmax > 85:
-            _warnings.warn("Calculations using unnormalized coefficients " +
-                           "are stable only for degrees less than or equal " +
-                           "to 85. lmax for the coefficients will be set to " +
+            _warnings.warn("Calculations using unnormalized coefficients "
+                           "are stable only for degrees less than or equal "
+                           "to 85. lmax for the coefficients will be set to "
                            "85. Input value was {:d}.".format(lmax),
                            category=RuntimeWarning)
             lmax = 85
 
-        clm = SHGravRealCoeffs(coeffs[:, 0:lmax+1, 0:lmax+1],
-                               normalization=normalization.lower(),
-                               csphase=csphase, copy=copy, gm=gm, r0=r0,
-                               omega=omega)
-
-        if clm.coeffs[0, 0, 0] == 0:
+        if coeffs[0, 0, 0] == 0:
             _warnings.warn('The degree 0 term of the array was not set. This, '
                            'will be set to 1.', category=RuntimeWarning)
-            clm.coeffs[0, 0, 0] = 1.0
+            coeffs[0, 0, 0] = 1.0
 
+        if errors is not None:
+            clm = SHGravRealCoeffs(coeffs[:, 0:lmax+1, 0:lmax+1], gm=gm, r0=r0,
+                                   omega=omega, errors=errors[:, 0:lmax+1,
+                                                              0:lmax+1],
+                                   normalization=normalization.lower(),
+                                   csphase=csphase, copy=copy)
+        else:
+            clm = SHGravRealCoeffs(coeffs[:, 0:lmax+1, 0:lmax+1], gm=gm, r0=r0,
+                                   omega=omega,
+                                   normalization=normalization.lower(),
+                                   csphase=csphase, copy=copy)
         return clm
 
     @classmethod
-    def from_zeros(self, lmax, gm, r0, omega=None,
+    def from_zeros(self, lmax, gm, r0, omega=None, errors=True,
                    normalization='4pi', csphase=1):
         """
         Initialize the class with spherical harmonic coefficients set to zero
-        from degree 0 to lmax.
+        from degree 1 to lmax, and set the degree 0 term to 1.
 
         Usage
         -----
-        x = SHGravCoeffs.from_zeros(lmax, gm, r0, [omega, normalization,
-                                                   csphase])
+        x = SHGravCoeffs.from_zeros(lmax, gm, r0, [omega, errors,
+                                                   normalization, csphase])
 
         Returns
         -------
@@ -244,14 +261,16 @@ class SHGravCoeffs(object):
         Parameters
         ----------
         lmax : int
-            The highest spherical harmonic degree l of the coefficients.
+            The maximum spherical harmonic degree l of the coefficients.
         gm : float
-            The mass times the gravitational constant that is associated with
+            The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
         r0 : float
             The reference radius of the spherical harmonic coefficients.
         omega : float, optional, default = None
             The angular rotation rate of the body.
+        errors : bool, optional, default = False
+            If True, initialize the attribute errors with zeros.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -259,14 +278,10 @@ class SHGravCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
-
-        Notes
-        -----
-        The degree-0 term of the class instance is set equal to 1.
         """
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "The normalization must be '4pi', 'ortho', 'schmidt', "
                 "or 'unnorm'. Input value was {:s}."
                 .format(repr(normalization))
                 )
@@ -278,25 +293,32 @@ class SHGravCoeffs(object):
                 )
 
         if normalization.lower() == 'unnorm' and lmax > 85:
-            _warnings.warn("Calculations using unnormalized coefficients " +
-                           "are stable only for degrees less than or equal " +
-                           "to 85. lmax for the coefficients will be set to " +
+            _warnings.warn("Calculations using unnormalized coefficients "
+                           "are stable only for degrees less than or equal "
+                           "to 85. lmax for the coefficients will be set to "
                            "85. Input value was {:d}.".format(lmax),
                            category=RuntimeWarning)
             lmax = 85
 
         coeffs = _np.zeros((2, lmax + 1, lmax + 1))
-        clm = SHGravRealCoeffs(coeffs, normalization=normalization.lower(),
-                               csphase=csphase, gm=gm, r0=r0, omega=omega)
-        clm.coeffs[0, 0, 0] = 1.0
+        coeffs[0, 0, 0] = 1.0
 
+        if errors is False:
+            clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
+                                   normalization=normalization.lower(),
+                                   csphase=csphase)
+        else:
+            clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
+                                   errors=_np.zeros((2, lmax + 1, lmax + 1)),
+                                   normalization=normalization.lower(),
+                                   csphase=csphase)
         return clm
 
     @classmethod
     def from_file(self, fname, format='shtools', gm=None, r0=None,
-                  omega=None, lmax=None,
-                  normalization='4pi', skip=0, header=True, csphase=1,
-                  r0_index=0, gm_index=1, omega_index=None, **kwargs):
+                  omega=None, lmax=None, normalization='4pi', skip=0,
+                  header=True, errors=False, csphase=1, r0_index=0, gm_index=1,
+                  omega_index=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -304,8 +326,8 @@ class SHGravCoeffs(object):
         -----
         x = SHGravCoeffs.from_file(filename, [format='shtools', gm, r0, omega,
                                               lmax, normalization, csphase,
-                                              skip, header, gm_index, r0_index,
-                                              omega_index])
+                                              skip, header, errors, gm_index,
+                                              r0_index, omega_index])
         x = SHGravCoeffs.from_file(filename, format='npy', gm, r0,
                                    [omega, normalization, csphase, **kwargs])
 
@@ -325,6 +347,9 @@ class SHGravCoeffs(object):
         header : bool, optional, default = True
             If True, read a list of values from the header line of an 'shtools'
             formatted file.
+        errors : bool, optional, default = False
+            If True, initialize the attribute errors with zeros (for 'shtools'
+            formatted files only).
         r0_index : int, optional, default = 0
             For shtools formatted files, if header is True, r0 will be set
             using the value from the header line with this index.
@@ -335,7 +360,7 @@ class SHGravCoeffs(object):
             For shtools formatted files, if header is True, omega will be set
             using the value from the header line with this index.
         gm : float, optional, default = None
-            The mass times the gravitational constant that is associated with
+            The gravitational constant time the mass that is associated with
             the gravitational potential coefficients.
         r0 : float, optional, default = None
             The reference radius of the spherical harmonic coefficients.
@@ -374,7 +399,11 @@ class SHGravCoeffs(object):
 
         where l and m are the spherical harmonic degree and order,
         respectively. The terms coeffs[1, l, 0] can be neglected as they are
-        zero. For more information, see `shio.shread()`.
+        zero. For more information, see `shio.shread()`. If errors are read,
+        each line must contain:
+
+        l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
+
 
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().
@@ -382,42 +411,56 @@ class SHGravCoeffs(object):
         If the degree 0 term of the file is zero (or not specified), this will
         be set to 1.
         """
+        error = None
+
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho', 'schmidt', " +
+                "The input normalization must be '4pi', 'ortho', 'schmidt', "
                 "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
+
         if csphase != 1 and csphase != -1:
             raise ValueError(
                 "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase))
                 )
 
-        if r0_index is not None and r0 is not None:
-            raise ValueError('Can not specify both r0_index and r0')
-        if gm_index is not None and gm is not None:
-            raise ValueError('Can not specify both gm_index and gm')
-        if omega_index is not None and omega is not None:
-            raise ValueError('Can not specify both omega_index and omega')
+        if format == 'shtools':
+            if r0_index is not None and r0 is not None:
+                raise ValueError('Can not specify both r0_index and r0')
+            if gm_index is not None and gm is not None:
+                raise ValueError('Can not specify both gm_index and gm')
+            if omega_index is not None and omega is not None:
+                raise ValueError('Can not specify both omega_index and omega')
 
         header_list = None
         if format.lower() == 'shtools':
             if header is True:
-                coeffs, lmaxout, header_list = _shread(fname, lmax=lmax,
-                                                       skip=skip, header=True)
+                if errors is True:
+                    coeffs, error, lmaxout, header_list = _shread(
+                        fname, lmax=lmax, skip=skip, header=True, error=True)
+                else:
+                    coeffs, lmaxout, header_list = _shread(
+                        fname, lmax=lmax, skip=skip, header=True)
             else:
-                coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+                if errors is True:
+                    coeffs, error, lmaxout = _shread(
+                        fname, lmax=lmax, error=True, skip=skip)
+                else:
+                    coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+
         elif format.lower() == 'npy':
             if gm is None or r0 is None:
                 raise ValueError('For binary npy files, gm and r0 must be '
                                  'specified.')
             coeffs = _np.load(fname, **kwargs)
+            lmaxout = coeffs.shape[1] - 1
         else:
             raise NotImplementedError(
                 'format={:s} not implemented'.format(repr(format)))
@@ -426,37 +469,31 @@ class SHGravCoeffs(object):
             raise TypeError('The input coefficients must be real.')
 
         if normalization.lower() == 'unnorm' and lmaxout > 85:
-            _warnings.warn("Calculations using unnormalized coefficients " +
-                           "are stable only for degrees less than or equal " +
-                           "to 85. lmax for the coefficients will be set to " +
+            _warnings.warn("Calculations using unnormalized coefficients "
+                           "are stable only for degrees less than or equal "
+                           "to 85. lmax for the coefficients will be set to "
                            "85. Input value was {:d}.".format(lmaxout),
                            category=RuntimeWarning)
             lmaxout = 85
 
-        clm = SHGravRealCoeffs(coeffs, normalization=normalization.lower(),
-                               csphase=csphase, header=header_list)
-
-        if gm is not None:
-            clm.gm = gm
-        if r0 is not None:
-            clm.r0 = r0
-        if omega is not None:
-            clm.omega = omega
-
-        if format.lower() == 'shtools' and header is True:
-            if r0_index is not None:
-                clm.r0 = float(header_list[r0_index])
-            if gm_index is not None:
-                clm.gm = float(header_list[gm_index])
-            if omega_index is not None:
-                clm.omega = float(header_list[omega_index])
-
-        if clm.coeffs[0, 0, 0] == 0:
+        if coeffs[0, 0, 0] == 0:
             warnstr = ("The degree 0 term of the file was not set. "
                        "This will be set to 1.")
             _warnings.warn(warnstr, category=RuntimeWarning)
-            clm.coeffs[0, 0, 0] = 1.0
+            coeffs[0, 0, 0] = 1.0
 
+        if format.lower() == 'shtools' and header is True:
+            if r0_index is not None:
+                r0 = float(header_list[r0_index])
+            if gm_index is not None:
+                gm = float(header_list[gm_index])
+            if omega_index is not None:
+                omega = float(header_list[omega_index])
+
+        clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
+                               errors=error,
+                               normalization=normalization.lower(),
+                               csphase=csphase, header=header_list)
         return clm
 
     @classmethod
@@ -465,7 +502,7 @@ class SHGravCoeffs(object):
                     exact_power=False):
         """
         Initialize the class of gravitational potential spherical harmonic
-        coefficients as random variables.
+        coefficients as random variables with a given spectrum.
 
         Usage
         -----
@@ -484,7 +521,7 @@ class SHGravCoeffs(object):
             degree l of the gravitational potential coefficients, where L is
             the maximum spherical harmonic bandwidth.
         gm : float
-            The mass times the gravitational constant that is associated with
+            The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
         r0 : float
             The reference radius of the spherical harmonic coefficients.
@@ -495,7 +532,7 @@ class SHGravCoeffs(object):
             potential, 'geoid' for the geoid, or 'gravity' for the radial
             gravity.
         lmax : int, optional, default = len(power) - 1
-            The highest spherical harmonic degree l of the output coefficients.
+            The maximum spherical harmonic degree l of the output coefficients.
             The coefficients will be set to zero for degrees greater than L.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
@@ -506,8 +543,8 @@ class SHGravCoeffs(object):
             or -1 to include it.
         exact_power : bool, optional, default = False
             The total variance of the coefficients is set exactly to the input
-            power. This means that the distribution of power at degree l
-            amongst the angular orders is random, but the total power is fixed.
+            power. The distribution of power at degree l amongst the angular
+            orders is random, but the total power is fixed.
 
         Description
         -----------
@@ -517,14 +554,16 @@ class SHGravCoeffs(object):
         the total power at degree l divided by the number of coefficients at
         that degree (2l+1). These coefficients are then divided by a prefactor
         that depends upon the function being used to calculate the spectrum:
-        gm/r0 for the gravitiational 'potential', r0 for 'geoid', and
-        (l+1)*gm/(r**2) for the (radial) 'gravity'. The power spectrum of the
-        random realization can be fixed exactly to the input spectrum using the
-        keyword exact_power. The degree 0 term is set to 1, and the degree-1
-        terms are set to 0.
+        gm/r0 for the gravitiational potential, r0 for the geoid, and
+        (l+1)*gm/(r**2) for the radial gravity. The power spectrum of the
+        random realization can be fixed exactly to the input spectrum by
+        setting exact_power to True.
+
+        Note that the degree 0 term is set to 1, and the degree-1 terms are
+        set to 0.
         """
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
@@ -537,7 +576,7 @@ class SHGravCoeffs(object):
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho', 'schmidt', " +
+                "The input normalization must be '4pi', 'ortho', 'schmidt', "
                 "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
@@ -559,9 +598,9 @@ class SHGravCoeffs(object):
         degrees = _np.arange(nl)
 
         if normalization.lower() == 'unnorm' and nl - 1 > 85:
-            _warnings.warn("Calculations using unnormalized coefficients " +
-                           "are stable only for degrees less than or equal " +
-                           "to 85. lmax for the coefficients will be set to " +
+            _warnings.warn("Calculations using unnormalized coefficients "
+                           "are stable only for degrees less than or equal "
+                           "to 85. lmax for the coefficients will be set to "
                            "85. Input value was {:d}.".format(nl-1),
                            category=RuntimeWarning)
             nl = 85 + 1
@@ -579,7 +618,7 @@ class SHGravCoeffs(object):
                 power[0:nl] / power_per_l)[_np.newaxis, :, _np.newaxis]
         else:
             coeffs *= _np.sqrt(
-                power[0:nl] / (2. * degrees + 1.))[_np.newaxis, :, _np.newaxis]
+                power[0:nl] / (2 * degrees + 1))[_np.newaxis, :, _np.newaxis]
 
         if normalization.lower() == '4pi':
             pass
@@ -608,8 +647,9 @@ class SHGravCoeffs(object):
         coeffs[0, 0, 0] = 1.0
         coeffs[:, 1, :] = 0.0
 
-        clm = SHGravRealCoeffs(coeffs, normalization=normalization.lower(),
-                               csphase=csphase, gm=gm, r0=r0, omega=omega)
+        clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
+                               normalization=normalization.lower(),
+                               csphase=csphase)
         return clm
 
     @classmethod
@@ -642,7 +682,7 @@ class SHGravCoeffs(object):
             the input is an SHCoeffs or SHGrid class instance, the density
             contrast will vary laterally.
         gm : float
-            The mass times the gravitational constant that is associated with
+            The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
         nmax : integer, optional, default = 7
              The maximum order used in the Taylor-series expansion when
@@ -663,7 +703,7 @@ class SHGravCoeffs(object):
 
         Description
         -----------
-        Initialize an SHGravCoeffs class instance by calculatin the spherical
+        Initialize an SHGravCoeffs class instance by calculating the spherical
         harmonic coefficients of the gravitational potential associated with
         the shape of a density interface. The potential is calculated using the
         finite-amplitude technique of Wieczorek and Phillips (1998) for a
@@ -676,21 +716,25 @@ class SHGravCoeffs(object):
         either an SHGrid or SHCoeffs class instance. The routine makes direct
         use of gridded versions of these quantities, so if the input is of type
         SHCoeffs, it will first be expanded onto a grid. This exansion will be
-        performed on a grid that can resolves degrees up to lmax_grid, where
-        only the first lmax_calc coefficients are used. It should be emphasized
-        that the input shape must correspond to absolute radii as the degree 0
-        term determines the reference radius of the coefficients.
+        performed on a grid that can resolve degrees up to lmax_grid, with only
+        the first lmax_calc coefficients being used. The input shape must
+        correspond to absolute radii as the degree 0 term determines the
+        reference radius of the coefficients.
 
         As an intermediate step, this routine calculates the spherical harmonic
-        coefficients of the interface referenced raised to the nth power, i.e.,
+        coefficients of the interface raised to the nth power, i.e.,
         (shape-r0)**n, where r0 is the mean radius of shape. If the input shape
         is bandlimited to degree L, the resulting function will thus be
         bandlimited to degree L*nmax. This subroutine assumes implicitly that
-        the input shape has an effective spherical harmonic bandwidth
-        greater or equal to this value. If this is not the case, aliasing will
-        occur. In practice, for accurate results, the effective bandwidth needs
-        only to be about three times the size of L, though this should be
-        verified for each application.
+        the maximum spherical harmonic degree of the input shape (when
+        SHCoeffs) or maximum resolvable spherical harmonic degree of shape
+        (when SHGrid) is greater or equal to this value. If this is not the
+        case, aliasing will occur. In practice, for accurate results, the
+        effective bandwidth needs only to be about three times the size of L,
+        though this should be verified for each application. The effective
+        bandwidth of shape (when SHCoeffs) can be increased by preprocessing
+        with the method pad(), or by increaesing the value of lmax_grid (when
+        SHGrid).
         """
         mass = gm / _G.value
 
@@ -725,8 +769,8 @@ class SHGravCoeffs(object):
         else:
             cilm, d = _CilmPlusDH(shape.data, nmax, mass, rho, lmax=lmax)
 
-        clm = SHGravRealCoeffs(cilm, normalization='4pi', csphase=1, gm=gm,
-                               r0=d, omega=omega)
+        clm = SHGravRealCoeffs(cilm, gm=gm, r0=d, omega=omega,
+                               normalization='4pi', csphase=1)
         return clm
 
     # ---- Define methods that modify internal variables ----
@@ -766,9 +810,10 @@ class SHGravCoeffs(object):
 
         Examples
         --------
-        x.set_coeffs(10.,1,1)               # x.coeffs[0,1,1] = 10.
-        x.set_coeffs([1.,2], [1,2], [0,-2]) # x.coeffs[0,1,0] = 1.
-                                            # x.coeffs[1,2,2] = 2.
+        x.set_coeffs(10., 1, 1)                   # x.coeffs[0, 1, 1] = 10.
+        x.set_coeffs(5., 1, -1)                   # x.coeffs[1, 1, 1] = 5.
+        x.set_coeffs([1., 2], [1, 2], [0, -2])    # x.coeffs[0, 1, 0] = 1.
+                                                  # x.coeffs[1, 2, 2] = 2.
         """
         # Ensure that the type is correct
         values = _np.array(values)
@@ -779,13 +824,14 @@ class SHGravCoeffs(object):
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- IO routines ----
-    def to_file(self, filename, format='shtools', header=None, **kwargs):
+    def to_file(self, filename, format='shtools', header=None, errors=False,
+                **kwargs):
         """
         Save raw spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.to_file(filename, [format='shtools', header])
+        x.to_file(filename, [format='shtools', header, errors])
         x.to_file(filename, [format='npy', **kwargs])
 
         Parameters
@@ -797,6 +843,9 @@ class SHGravCoeffs(object):
         header : str, optional, default = None
             A header string written to an 'shtools'-formatted file directly
             before the spherical harmonic coefficients.
+        errors : bool, optional, default = False
+            If True, save the errors in the file (for 'shtools' formatted
+            files only).
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
@@ -804,15 +853,17 @@ class SHGravCoeffs(object):
         -----------
         If format='shtools', the coefficients and meta-data will be written to
         and ascii formatted file. The first line is an optional user provided
-        header line, and the following line provides the reference radius, GM,
-        angular rotation rate of the body, and the maximum spherical harmonic
-        degree. The spherical harmonic coefficients are then listed, with
-        increasing degree and order, with the format
+        header line, and the following line provides the attributes r0, gm,
+        omega, and lmax. The spherical harmonic coefficients are then listed,
+        with increasing degree and order, with the format
 
         l, m, coeffs[0, l, m], coeffs[1, l, m]
 
         where l and m are the spherical harmonic degree and order,
-        respectively.
+        respectively. If the errors are to be saved, the the format
+        of each line will be
+
+        l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
 
         If format='npy', the spherical harmonic coefficients (but not the
         meta-data) will be saved to a binary numpy 'npy' file using
@@ -827,9 +878,17 @@ class SHGravCoeffs(object):
                                                            self.lmax))
                 for l in range(self.lmax+1):
                     for m in range(l+1):
-                        file.write('{:d}, {:d}, {:e}, {:e}\n'
-                                   .format(l, m, self.coeffs[0, l, m],
-                                           self.coeffs[1, l, m]))
+                        if errors is True:
+                            file.write('{:d}, {:d}, {:e}, {:e}, {:e}, {:e}\n'
+                                       .format(l, m, self.coeffs[0, l, m],
+                                               self.coeffs[1, l, m],
+                                               self.errors[0, l, m],
+                                               self.errors[1, l, m]))
+
+                        else:
+                            file.write('{:d}, {:d}, {:e}, {:e}\n'
+                                       .format(l, m, self.coeffs[0, l, m],
+                                               self.coeffs[1, l, m]))
         elif format is 'npy':
             _np.save(filename, self.coeffs, **kwargs)
         else:
@@ -842,12 +901,15 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        coeffs = x.to_array([normalization, csphase, lmax])
+        coeffs, [errors] = x.to_array([normalization, csphase, lmax])
 
         Returns
         -------
         coeffs : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the spherical harmonic coefficients.
+        errors : ndarry, shape (2, lmax+1, lmax+1)
+            numpy ndarray of the errors of the spherical harmonic
+            coefficients. Output only if errors is not None.
 
         Parameters
         ----------
@@ -885,7 +947,14 @@ class SHGravCoeffs(object):
                           csphase_in=self.csphase, csphase_out=csphase,
                           lmax=lmax)
 
-        return coeffs
+        if self.errors is not None:
+            errors = _convert(self.errors, normalization_in=self.normalization,
+                              normalization_out=normalization,
+                              csphase_in=self.csphase, csphase_out=csphase,
+                              lmax=lmax)
+            return coeffs, errors
+        else:
+            return coeffs
 
     def copy(self):
         """Return a deep copy of the class instance."""
@@ -906,7 +975,8 @@ class SHGravCoeffs(object):
     #
     #    Operations that involve a change of units are not permitted, such as
     #    SHGravCoeffs*SHGravCoeffs, SHGravCoeffs/SHGravCoeffs, and
-    #    SHGravCoeffs+SHCoeffs.
+    #    SHGravCoeffs+SHCoeffs. All operations ignore the errors of the
+    #    coefficients.
     # -------------------------------------------------------------------------
     def __add__(self, other):
         """
@@ -1126,13 +1196,16 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        power = x.spectrum([function, lmax, unit, base])
+        spectrum, [error_spectrum] = x.spectrum([function, lmax, unit, base])
 
         Returns
         -------
-        power : ndarray, shape (lmax+1)
+        spectrum : ndarray, shape (lmax+1)
             1-D numpy ndarray of the spectrum, where lmax is the maximum
             spherical harmonic degree.
+        error_spectrum : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the error_spectrum (if the attribute errors
+            is not None).
 
         Parameters
         ----------
@@ -1182,15 +1255,28 @@ class SHGravCoeffs(object):
         s = _spectrum(self.coeffs, normalization=self.normalization,
                       convention='power', unit=unit, base=base, lmax=lmax)
 
+        if self.errors is not None:
+            es = _spectrum(self.errors, normalization=self.normalization,
+                           convention='power', unit=unit, base=base, lmax=lmax)
+
         if function.lower() == 'potential':
             s *= (self.gm / self.r0)**2
+            if self.errors is not None:
+                es *= (self.gm / self.r0)**2
         elif function.lower() == 'geoid':
             s *= self.r0**2
+            if self.errors is not None:
+                es *= self.r0**2
         elif function.lower() == 'gravity':
             degrees = _np.arange(len(s))
-            s *= (self.gm * (degrees + 1) / self.r0**2)**2
+            s *= 1.e10 * (self.gm * (degrees + 1) / self.r0**2)**2
+            if self.errors is not None:
+                es *= 1.e10 * (self.gm * (degrees + 1) / self.r0**2)**2
 
-        return s
+        if self.errors is not None:
+            return s, es
+        else:
+            return s
 
     # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
@@ -1361,11 +1447,20 @@ class SHGravCoeffs(object):
                 "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase)))
 
-        coeffs = self.to_array(normalization=normalization.lower(),
-                               csphase=csphase, lmax=lmax)
-        return SHGravCoeffs.from_array(
-            coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
-            normalization=normalization.lower(), csphase=csphase, copy=False)
+        if self.errors is not None:
+            coeffs, errors = self.to_array(normalization=normalization.lower(),
+                                           csphase=csphase, lmax=lmax)
+            return SHGravCoeffs.from_array(
+                coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
+                errors=errors, normalization=normalization.lower(),
+                csphase=csphase, copy=False)
+        else:
+            coeffs = self.to_array(normalization=normalization.lower(),
+                                   csphase=csphase, lmax=lmax)
+            return SHGravCoeffs.from_array(
+                coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
+                normalization=normalization.lower(), csphase=csphase,
+                copy=False)
 
     def pad(self, lmax):
         """
@@ -1389,21 +1484,33 @@ class SHGravCoeffs(object):
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
+            clm.mask = clm.mask[:, :lmax+1, :lmax+1]
+            if self.errors is not None:
+                clm.errors = clm.errors[:, :lmax+1, :lmax+1]
         else:
             clm.coeffs = _np.pad(clm.coeffs, ((0, 0), (0, lmax - self.lmax),
                                  (0, lmax - self.lmax)), 'constant')
+            if self.errors is not None:
+                clm.errors = _np.pad(
+                    clm.errors, ((0, 0), (0, lmax - self.lmax),
+                                 (0, lmax - self.lmax)), 'constant')
+            mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
+            for l in _np.arange(lmax + 1):
+                mask[:, l, :l + 1] = True
+            mask[1, :, 0] = False
+            clm.mask = mask
 
         clm.lmax = lmax
         return clm
 
-    def change_ref(self, gm=None, r0=None, omega=None, lmax=None):
+    def change_ref(self, gm=None, r0=None, lmax=None):
         """
-        Return a new SHGravCoeffs class instance with a different reference gm,
-        r0, or omega.
+        Return a new SHGravCoeffs class instance with a different reference gm
+        or r0.
 
         Usage
         -----
-        x = SHGravCoeffs.change_ref([gm, r0, omega, lmax])
+        x = SHGravCoeffs.change_ref([gm, r0, lmax])
 
         Returns
         -------
@@ -1416,15 +1523,13 @@ class SHGravCoeffs(object):
             the gravitational potential coefficients.
         r0 : float, optional, default = None
             The reference radius of the spherical harmonic coefficients.
-        omega : float, optional, default = None
-            The angular rotation rate of the body.
         lmax : int, optional, default = None
             Maximum spherical harmonic degree to output.
 
         Description
         -----------
         This method returns a new class instance of the gravitational
-        potential, but using a difference reference gm, r0, and omega. When
+        potential, but using a difference reference gm or r0. When
         changing the reference radius r0, the spherical harmonic coefficients
         will be upward or downward continued under the assumption that the
         reference radius is exterior to the body.
@@ -1437,14 +1542,15 @@ class SHGravCoeffs(object):
         if gm is not None and gm != self.gm:
             clm.coeffs *= self.gm / gm
             clm.gm = gm
+            if self.errors is not None:
+                clm.errors *= self.gm / gm
 
         if r0 is not None and r0 != self.r0:
             for l in self.degrees():
                 clm.coeffs[:, l, :l+1] *= (self.r0 / r0)**l
+                if self.errors is not None:
+                    clm.errors[:, l, :l+1] *= (self.r0 / r0)**l
             clm.r0 = r0
-
-        if omega is not None:
-            clm.omega = omega
 
         return clm
 
@@ -1727,14 +1833,14 @@ class SHGravCoeffs(object):
 
     # ---- Plotting routines ----
     def plot_spectrum(self, function='geoid', unit='per_l', base=10.,
-                      xscale='lin', yscale='log', show=True, ax=None,
-                      fname=None):
+                      lmax=None, xscale='lin', yscale='log', show=True,
+                      ax=None, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        x.plot_spectrum([function, unit, base, xscale, yscale, show, ax,
+        x.plot_spectrum([function, unit, base, lmax, xscale, yscale, show, ax,
                          fname])
 
         Parameters
@@ -1752,6 +1858,8 @@ class SHGravCoeffs(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum, and
             the base to use for logarithmic axes.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
         xscale : str, optional, default = 'lin'
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
@@ -1766,10 +1874,11 @@ class SHGravCoeffs(object):
 
         Description
         -----------
-        This method plots the power spectrum of the class instance, where the
-        type of function is defined by the parameter function: 'potential' for
-        the gravitational potential, 'geoid' for the geoid, or 'gravity' for
-        the radial gravity. Total power is defined as the integral of the
+        This method plots the power (and error) spectrum of the class instance,
+        where the type of function is defined by the parameter function:
+        'potential' for the gravitational potential, 'geoid' for the geoid, or
+        'gravity' for the radial gravity. The power for the degree 0 and 1
+        terms are not plotted. Total power is defined as the integral of the
         function squared over all space, divided by the area the function
         spans. If the mean of the function is zero, this is equivalent to the
         variance of the function.
@@ -1785,8 +1894,18 @@ class SHGravCoeffs(object):
         and where spectrum(l, 'per_dlogl) is equal to
         spectrum(l, 'per_l')*l*log(a).
         """
-        spectrum = self.spectrum(function=function, unit=unit, base=base)
-        ls = self.degrees()
+        if lmax is None:
+            lmax = self.lmax
+
+        if self.errors is not None:
+            spectrum, error_spectrum = self.spectrum(function=function,
+                                                     unit=unit, base=base,
+                                                     lmax=lmax)
+        else:
+            spectrum = self.spectrum(function=function, unit=unit, base=base,
+                                     lmax=lmax)
+
+        ls = _np.arange(lmax + 1)
 
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -1797,14 +1916,10 @@ class SHGravCoeffs(object):
 
         if function == 'geoid':
             axes.set_ylabel('$m^2$')
-            spectrum *= self.r0**2
         elif function == 'potential':
             axes.set_ylabel('m/s')
-            spectrum *= (self.gm / self.r0)**2
         elif function == 'gravity':
             axes.set_ylabel('mGal$^2$')
-            degrees = _np.arange(len(spectrum))
-            spectrum *= 1.e10 * (self.gm * (degrees + 1) / self.r0**2)**2
 
         if (unit == 'per_l'):
             legend = 'power per degree'
@@ -1820,10 +1935,13 @@ class SHGravCoeffs(object):
         if yscale == 'log':
             axes.set_yscale('log', basey=base)
 
-        if xscale == 'log':
-            axes.plot(ls[1:], spectrum[1:], label=legend)
+        if self.errors is not None:
+            axes.plot(ls[2:lmax + 1], spectrum[2:lmax + 1], label=legend)
+            axes.plot(ls[2:lmax + 1], error_spectrum[2:lmax + 1],
+                      label='error spectrum')
         else:
-            axes.plot(ls, spectrum, label=legend)
+            axes.plot(ls[2:lmax + 1], spectrum[2: lmax + 1], label=legend)
+
         axes.legend()
 
         if show:
@@ -1835,15 +1953,15 @@ class SHGravCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, function='geoid', xscale='lin', yscale='lin',
-                        vscale='log', vrange=(1.e-5, 1.0), show=True,
-                        ax=None, fname=None):
+                        vscale='log', vrange=(1.e-5, 1.0), lmax=None,
+                        errors=False, show=True, ax=None, fname=None):
         """
         Plot the spectrum of all spherical harmonic coefficients.
 
         Usage
         -----
-        x.plot_spectrum2d([function, xscale, yscale, vscale, vrange, show,
-                           ax, fname])
+        x.plot_spectrum2d([function, xscale, yscale, vscale, vrange, lmax,
+                           errors, show, ax, fname])
 
         Parameters
         ----------
@@ -1859,6 +1977,10 @@ class SHGravCoeffs(object):
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         vrange : (float, float), optional, default = (1.e-5, 1.)
             Colormap range relative to the maximum value.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        errors : bool, optional, default = False
+            If True, plot the spectrum of the errors.
         show : bool, optional, default = True
             If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -1877,32 +1999,45 @@ class SHGravCoeffs(object):
         divided by the area the function spans. If the mean of the function is
         zero, this is equivalent to the variance of the function.
         """
-        # Create the matrix of the spectrum for each coefficient
-        spectrum = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
-        mpositive = _np.abs(self.coeffs[0])**2
-        mpositive[~self.mask[0]] = _np.nan
-        mnegative = _np.abs(self.coeffs[1])**2
-        mnegative[~self.mask[1]] = _np.nan
+        if lmax is None:
+            lmax = self.lmax
+        degrees = _np.arange(lmax + 1)
 
-        spectrum[:, :self.lmax] = _np.fliplr(mnegative)[:, :self.lmax]
-        spectrum[:, self.lmax:] = mpositive
+        # Create the matrix of the spectrum for each coefficient
+        if errors is True:
+            if self.errors is None:
+                raise ValueError('Can not plot the error spectrum when the '
+                                 'errors are not set.')
+            coeffs = self.errors
+        else:
+            coeffs = self.coeffs
+
+        spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
+        mpositive = _np.abs(coeffs[0, :lmax + 1, :lmax + 1])**2
+        mpositive[0, 0] = 0.
+        mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
+        mnegative = _np.abs(coeffs[1, :lmax + 1, :lmax + 1])**2
+        mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
+
+        spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
+        spectrum[:, lmax:] = mpositive
 
         if self.normalization == '4pi':
             pass
         elif self.normalization == 'schmidt':
-            for l in self.degrees():
+            for l in degrees():
                 spectrum[l, :] /= (2. * l + 1.)
         elif self.normalization == 'ortho':
-            for l in self.degrees():
+            for l in degrees():
                 spectrum[l, :] /= (4. * _np.pi)
         elif self.normalization == 'unnorm':
-            for l in self.degrees():
+            for l in degrees():
                 ms = _np.arange(l+1)
                 conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
                 if self.kind == 'real':
                     conv[1:l + 1] = conv[1:l + 1] / 2.
-                spectrum[l, self.lmax-l:self.lmax] *= conv[::-1][0:l]
-                spectrum[l, self.lmax:self.lmax+l+1] *= conv[0:l+1]
+                spectrum[l, lmax-l:lmax] *= conv[::-1][0:l]
+                spectrum[l, lmax:lmax+l+1] *= conv[0:l+1]
         else:
             raise ValueError(
                 "normalization must be '4pi', 'ortho', 'schmidt', " +
@@ -1914,15 +2049,16 @@ class SHGravCoeffs(object):
         elif function == 'potential':
             spectrum *= (self.gm / self.r0)**2
         elif function == 'gravity':
-            degrees = _np.arange(len(spectrum))
-            spectrum *= 1.e10 * (self.gm * (degrees + 1) / self.r0**2)**2
+            for l in degrees:
+                spectrum[l, :] *= 1.e10 * (self.gm * (l + 1) /
+                                           self.r0**2)**2
 
         spectrum_masked = _np.ma.masked_invalid(spectrum)
 
         # need to add one extra value to each in order for pcolormesh
         # to plot the last row and column.
-        ls = _np.arange(self.lmax+2).astype(_np.float)
-        ms = _np.arange(-self.lmax, self.lmax + 2, dtype=_np.float)
+        ls = _np.arange(lmax+2).astype(_np.float)
+        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
         lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
         lgrid -= 0.5
         mgrid -= 0.5
@@ -1948,20 +2084,20 @@ class SHGravCoeffs(object):
         if (xscale == 'lin'):
             cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
                                     norm=norm, cmap='viridis')
-            axes.set(xlim=(-0.5, self.lmax + 0.5))
+            axes.set(xlim=(-0.5, lmax + 0.5))
         elif (xscale == 'log'):
             cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
                                     norm=norm, cmap='viridis')
-            axes.set(xscale='log', xlim=(1., self.lmax + 0.5))
+            axes.set(xscale='log', xlim=(1., lmax + 0.5))
         else:
             raise ValueError(
                 "xscale must be 'lin' or 'log'. " +
                 "Input value was {:s}".format(repr(xscale)))
 
         if (yscale == 'lin'):
-            axes.set(ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+            axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
         elif (yscale == 'log'):
-            axes.set(yscale='symlog', ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+            axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
         else:
             raise ValueError(
                 "yscale must be 'lin' or 'log'. " +
@@ -1993,8 +2129,8 @@ class SHGravRealCoeffs(SHGravCoeffs):
     Real spherical harmonic coefficients class for the gravitational potential.
     """
 
-    def __init__(self, coeffs, gm=None, r0=None, omega=None,
-                 normalization='4pi', csphase=1, copy=True, header=None, ):
+    def __init__(self, coeffs, gm=None, r0=None, omega=None, errors=None,
+                 normalization='4pi', csphase=1, copy=True, header=None):
         """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2012,6 +2148,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
         self.gm = gm
         self.r0 = r0
         self.omega = omega
+        self.errors = errors
 
         if copy:
             self.coeffs = _np.copy(coeffs)

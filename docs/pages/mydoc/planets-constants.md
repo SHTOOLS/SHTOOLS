@@ -18,7 +18,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
-The `PlanetsConstants` module defines several constants that are used in analyzing gravity, topography, and magnetic field data of the terrestrial planets. Confer with the Python attributes of the constant for exact values and references. All units are SI. 
+The `PlanetsConstants` module defines several constants that are used in analyzing gravity, topography, and magnetic field data of the terrestrial planets. Confer with the Python attributes of the constant for exact values and references. All units are SI.
 
 ## Fundamental constants
 

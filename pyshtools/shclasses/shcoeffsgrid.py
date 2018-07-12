@@ -29,11 +29,11 @@ class SHCoeffs(object):
     """
     Spherical Harmonics Coefficient class.
 
-    The coefficients of this class can be initialized using one of the
-    four constructor methods:
+    The coefficients of this class can be initialized using one of the four
+    constructor methods:
 
-        x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
-        x = SHCoeffs.from_random(powerspectrum[0:lmax+1])
+        x = SHCoeffs.from_array(array)
+        x = SHCoeffs.from_random(powerspectrum)
         x = SHCoeffs.from_zeros(lmax)
         x = SHCoeffs.from_file('fname.dat')
 
@@ -85,10 +85,10 @@ class SHCoeffs(object):
     expand()              : Evaluate the coefficients either on a spherical
                             grid and return an SHGrid class instance, or for
                             a list of latitude and longitude coordinates.
-    plot_spectrum()       : Plot the  spectrum as a function of spherical
+    plot_spectrum()       : Plot the spectrum as a function of spherical
                             harmonic degree.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
-                            coefficients.
+                            degrees and orders.
     to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     to_file()             : Save raw spherical harmonic coefficients as a file.
@@ -255,7 +255,7 @@ class SHCoeffs(object):
                     csphase=1, exact_power=False):
         """
         Initialize the class with spherical harmonic coefficients as random
-        variables.
+        variables with a given spectrum.
 
         Usage
         -----
@@ -273,7 +273,7 @@ class SHCoeffs(object):
             degree l of the random coefficients, where L is the maximum
             spherical harmonic bandwidth.
         lmax : int, optional, default = len(power) - 1
-            The highest spherical harmonic degree l of the output coefficients.
+            The maximum spherical harmonic degree l of the output coefficients.
             The coefficients will be set to zero for degrees greater than L.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
@@ -286,8 +286,8 @@ class SHCoeffs(object):
             or -1 to include it.
         exact_power : bool, optional, default = False
             The total variance of the coefficients is set exactly to the input
-            power. This means that the distribution of power at degree l
-            amongst the angular orders is random, but the total power is fixed.
+            power. The distribution of power at degree l amongst the angular
+            orders is random, but the total power is fixed.
 
         Description
         -----------
@@ -296,7 +296,7 @@ class SHCoeffs(object):
         each coefficient at degree l is equal to the total power at degree
         l divided by the number of coefficients at that degree. The power
         spectrum of the random realization can be fixed exactly to the input
-        spectrum using the keyword exact_power.
+        spectrum by setting exact_power to True.
         """
         # check if all arguments are correct
         if type(normalization) != str:
@@ -361,7 +361,7 @@ class SHCoeffs(object):
                 power[0:nl] / power_per_l)[_np.newaxis, :, _np.newaxis]
         else:
             coeffs *= _np.sqrt(
-                power[0:nl] / (2. * degrees + 1.))[_np.newaxis, :, _np.newaxis]
+                power[0:nl] / (2 * degrees + 1))[_np.newaxis, :, _np.newaxis]
 
         if normalization.lower() == '4pi':
             pass
@@ -450,16 +450,17 @@ class SHCoeffs(object):
         numpy.load().
         """
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho', 'schmidt', " +
+                "The input normalization must be '4pi', 'ortho', 'schmidt', "
                 "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
+
         if csphase != 1 and csphase != -1:
             raise ValueError(
                 "csphase must be 1 or -1. Input value was {:s}"
@@ -475,6 +476,7 @@ class SHCoeffs(object):
                 coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
         elif format.lower() == 'npy':
             coeffs = _np.load(fname, **kwargs)
+            lmaxout = coeffs.shape[1] - 1
         else:
             raise NotImplementedError(
                 'format={:s} not implemented'.format(repr(format)))
@@ -519,9 +521,10 @@ class SHCoeffs(object):
 
         Examples
         --------
-        x.set_coeffs(10.,1,1)               # x.coeffs[0,1,1] = 10.
-        x.set_coeffs([1.,2], [1,2], [0,-2]) # x.coeffs[0,1,0] = 1.
-                                            # x.coeffs[1,2,2] = 2.
+        x.set_coeffs(10., 1, 1)                   # x.coeffs[0, 1, 1] = 10.
+        x.set_coeffs(5., 1, -1)                   # x.coeffs[1, 1, 1] = 5.
+        x.set_coeffs([1., 2], [1, 2], [0, -2])    # x.coeffs[0, 1, 0] = 1.
+                                                  # x.coeffs[1, 2, 2] = 2.
         """
         # Ensure that the type is correct
         values = _np.array(values)
@@ -896,7 +899,7 @@ class SHCoeffs(object):
 
         Usage
         -----
-        power = x.spectrum([lmax, convention, unit, base])
+        spectrum = x.spectrum([lmax, convention, unit, base])
 
         Returns
         -------
@@ -1162,9 +1165,15 @@ class SHCoeffs(object):
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
+            clm.mask = clm.mask[:, :lmax+1, :lmax+1]
         else:
             clm.coeffs = _np.pad(clm.coeffs, ((0, 0), (0, lmax - self.lmax),
                                  (0, lmax - self.lmax)), 'constant')
+            mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
+            for l in _np.arange(lmax + 1):
+                mask[:, l, :l + 1] = True
+            mask[1, :, 0] = False
+            clm.mask = mask
 
         clm.lmax = lmax
         return clm
@@ -1274,15 +1283,15 @@ class SHCoeffs(object):
 
     # ---- Plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
-                      xscale='lin', yscale='log', show=True, ax=None,
-                      fname=None):
+                      lmax=None, xscale='lin', yscale='log', show=True,
+                      ax=None, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        x.plot_spectrum([convention, unit, base, xscale, yscale, show, ax,
-                         fname])
+        x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, show,
+                         ax, fname])
 
         Parameters
         ----------
@@ -1299,6 +1308,8 @@ class SHCoeffs(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum, and
             the base to use for logarithmic axes.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
         xscale : str, optional, default = 'lin'
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
@@ -1333,8 +1344,12 @@ class SHCoeffs(object):
         and where spectrum(l, 'per_dlogl) is equal to
         spectrum(l, 'per_l')*l*log(a).
         """
-        spectrum = self.spectrum(convention=convention, unit=unit, base=base)
-        ls = self.degrees()
+        if lmax is None:
+            lmax = self.lmax
+
+        spectrum = self.spectrum(convention=convention, unit=unit, base=base,
+                                 lmax=lmax)
+        ls = _np.arange(lmax + 1)
 
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -1375,9 +1390,9 @@ class SHCoeffs(object):
             axes.set_yscale('log', basey=base)
 
         if xscale == 'log':
-            axes.plot(ls[1:], spectrum[1:], label=legend)
+            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend)
         else:
-            axes.plot(ls, spectrum, label=legend)
+            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend)
         axes.legend()
 
         if show:
@@ -1389,15 +1404,15 @@ class SHCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
-                        vscale='log', vrange=(1.e-5, 1.0), show=True,
-                        ax=None, fname=None):
+                        vscale='log', vrange=(1.e-5, 1.0), lmax=None,
+                        show=True, ax=None, fname=None):
         """
         Plot the spectrum of all spherical harmonic coefficients.
 
         Usage
         -----
-        x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, show,
-                           ax, fname])
+        x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, lmax,
+                           show, ax, fname])
 
         Parameters
         ----------
@@ -1413,6 +1428,8 @@ class SHCoeffs(object):
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         vrange : (float, float), optional, default = (1.e-5, 1.)
             Colormap range relative to the maximum value.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
         show : bool, optional, default = True
             If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -1433,15 +1450,19 @@ class SHCoeffs(object):
         'ortho', or 'schmidt'), the l2-norm is the sum of the magnitude of the
         coefficients squared.
         """
-        # Create the matrix of the spectrum for each coefficient
-        spectrum = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
-        mpositive = _np.abs(self.coeffs[0])**2
-        mpositive[~self.mask[0]] = _np.nan
-        mnegative = _np.abs(self.coeffs[1])**2
-        mnegative[~self.mask[1]] = _np.nan
+        if lmax is None:
+            lmax = self.lmax
+        degrees = _np.arange(lmax + 1)
 
-        spectrum[:, :self.lmax] = _np.fliplr(mnegative)[:, :self.lmax]
-        spectrum[:, self.lmax:] = mpositive
+        # Create the matrix of the spectrum for each coefficient
+        spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
+        mpositive = _np.abs(self.coeffs[0, :lmax + 1, :lmax + 1])**2
+        mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
+        mnegative = _np.abs(self.coeffs[1, :lmax + 1, :lmax + 1])**2
+        mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
+
+        spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
+        spectrum[:, lmax:] = mpositive
 
         if (convention.lower() == 'l2norm'):
             if self.normalization == 'unnorm':
@@ -1453,19 +1474,19 @@ class SHCoeffs(object):
             if self.normalization == '4pi':
                 pass
             elif self.normalization == 'schmidt':
-                for l in self.degrees():
+                for l in degrees():
                     spectrum[l, :] /= (2. * l + 1.)
             elif self.normalization == 'ortho':
-                for l in self.degrees():
+                for l in degrees():
                     spectrum[l, :] /= (4. * _np.pi)
             elif self.normalization == 'unnorm':
-                for l in self.degrees():
+                for l in degrees():
                     ms = _np.arange(l+1)
                     conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
                     if self.kind == 'real':
                         conv[1:l + 1] = conv[1:l + 1] / 2.
-                    spectrum[l, self.lmax-l:self.lmax] *= conv[::-1][0:l]
-                    spectrum[l, self.lmax:self.lmax+l+1] *= conv[0:l+1]
+                    spectrum[l, lmax-l:lmax] *= conv[::-1][0:l]
+                    spectrum[l, lmax:lmax+l+1] *= conv[0:l+1]
             else:
                 raise ValueError(
                     "normalization must be '4pi', 'ortho', 'schmidt', " +
@@ -1483,8 +1504,8 @@ class SHCoeffs(object):
 
         # need to add one extra value to each in order for pcolormesh
         # to plot the last row and column.
-        ls = _np.arange(self.lmax+2).astype(_np.float)
-        ms = _np.arange(-self.lmax, self.lmax + 2, dtype=_np.float)
+        ls = _np.arange(lmax+2).astype(_np.float)
+        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
         lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
         lgrid -= 0.5
         mgrid -= 0.5
@@ -1510,20 +1531,20 @@ class SHCoeffs(object):
         if (xscale == 'lin'):
             cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
                                     norm=norm, cmap='viridis')
-            axes.set(xlim=(-0.5, self.lmax + 0.5))
+            axes.set(xlim=(-0.5, lmax + 0.5))
         elif (xscale == 'log'):
             cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
                                     norm=norm, cmap='viridis')
-            axes.set(xscale='log', xlim=(1., self.lmax + 0.5))
+            axes.set(xscale='log', xlim=(1., lmax + 0.5))
         else:
             raise ValueError(
                 "xscale must be 'lin' or 'log'. " +
                 "Input value was {:s}".format(repr(xscale)))
 
         if (yscale == 'lin'):
-            axes.set(ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+            axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
         elif (yscale == 'log'):
-            axes.set(yscale='symlog', ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+            axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
         else:
             raise ValueError(
                 "yscale must be 'lin' or 'log'. " +

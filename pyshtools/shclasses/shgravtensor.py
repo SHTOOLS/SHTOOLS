@@ -9,7 +9,7 @@ import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 import copy as _copy
-from numpy.linalg import eigvalsh as _eigvalsh
+from scipy.linalg import eigvalsh as _eigvalsh
 
 from .shcoeffsgrid import SHGrid as _SHGrid
 
