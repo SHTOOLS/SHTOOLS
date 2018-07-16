@@ -1546,7 +1546,7 @@ class SHWindowMask(SHWindow):
         """Print a summary of the data in the SHWindow instance."""
         print(repr(self))
 
-    def __repr__():
+    def __repr__(self):
         str = ('kind = {:s}\n'
                'lwin = {:d}\n'
                'nwin = {:d}\n'.format(repr(self.kind), self.lwin, self.nwin))
