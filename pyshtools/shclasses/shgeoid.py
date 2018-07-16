@@ -105,7 +105,7 @@ class SHGeoid(object):
         return str
 
     def plot(self, colorbar=True, cb_orientation='vertical',
-             cb_label='geoid, m', **kwargs):
+             cb_label='geoid, m', show=True, **kwargs):
         """
         Plot the geoid.
 
@@ -140,5 +140,6 @@ class SHGeoid(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        self.geoid.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                        cb_label=cb_label, **kwargs)
+        return self.geoid.plot(colorbar=colorbar,
+                               cb_orientation=cb_orientation,
+                               cb_label=cb_label, show=True, **kwargs)

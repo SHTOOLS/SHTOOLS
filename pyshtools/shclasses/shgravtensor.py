@@ -260,7 +260,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.vxx.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -312,7 +312,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.vyy.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -364,7 +364,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.vzz.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -416,7 +416,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.vxy.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -468,7 +468,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.vyx.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -520,7 +520,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.vxz.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -572,7 +572,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.vzx.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -624,7 +624,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.vyz.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -676,7 +676,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.vzy.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -808,7 +808,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.i0.plot(colorbar=colorbar,
                                      cb_orientation=cb_orientation,
-                                     cb_label=cb_label, **kwargs)
+                                     cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -865,7 +865,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.i1.plot(colorbar=colorbar,
                                      cb_orientation=cb_orientation,
-                                     cb_label=cb_label, **kwargs)
+                                     cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -923,7 +923,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.i2.plot(colorbar=colorbar,
                                      cb_orientation=cb_orientation,
-                                     cb_label=cb_label, **kwargs)
+                                     cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -983,7 +983,7 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.i.plot(colorbar=colorbar,
                                     cb_orientation=cb_orientation,
-                                    cb_label=cb_label, **kwargs)
+                                    cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -1097,7 +1097,8 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.eig1.plot(colorbar=colorbar,
                                        cb_orientation=cb_orientation,
-                                       cb_label=cb_label, **kwargs)
+                                       cb_label=cb_label, show=False,
+                                       **kwargs)
             if show:
                 _plt.show()
 
@@ -1152,7 +1153,8 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.eig2.plot(colorbar=colorbar,
                                        cb_orientation=cb_orientation,
-                                       cb_label=cb_label, **kwargs)
+                                       cb_label=cb_label, show=False,
+                                       **kwargs)
             if show:
                 _plt.show()
 
@@ -1207,7 +1209,8 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.eig3.plot(colorbar=colorbar,
                                        cb_orientation=cb_orientation,
-                                       cb_label=cb_label, **kwargs)
+                                       cb_label=cb_label, show=False,
+                                       **kwargs)
             if show:
                 _plt.show()
 
@@ -1318,7 +1321,8 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.eigh1.plot(colorbar=colorbar,
                                         cb_orientation=cb_orientation,
-                                        cb_label=cb_label, **kwargs)
+                                        cb_label=cb_label, show=False,
+                                        **kwargs)
             if show:
                 _plt.show()
 
@@ -1373,7 +1377,8 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.eigh2.plot(colorbar=colorbar,
                                         cb_orientation=cb_orientation,
-                                        cb_label=cb_label, **kwargs)
+                                        cb_label=cb_label, show=False,
+                                        **kwargs)
             if show:
                 _plt.show()
 
@@ -1429,7 +1434,8 @@ class SHGravTensor(object):
         if ax is None:
             fig, axes = self.eighh.plot(colorbar=colorbar,
                                         cb_orientation=cb_orientation,
-                                        cb_label=cb_label, **kwargs)
+                                        cb_label=cb_label, show=False,
+                                        **kwargs)
             if show:
                 _plt.show()
 

@@ -1407,16 +1407,15 @@ class SHCoeffs(object):
             axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend)
         axes.legend()
 
-        if show:
-            _plt.show()
-
         if ax is None:
+            if show:
+                _plt.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
 
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
-                        vscale='log', vrange=(1.e-5, 1.0), lmax=None,
+                        vscale='log', vrange=None, lmax=None,
                         show=True, ax=None, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
@@ -1438,8 +1437,9 @@ class SHCoeffs(object):
             Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
-        vrange : (float, float), optional, default = (1.e-5, 1.)
-            Colormap range relative to the maximum value.
+        vrange : (float, float), optional, default = None
+            Colormap range relative to the maximum value. If None, scale the
+            image to the maximum and minimum values.
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to plot.
         show : bool, optional, default = True
@@ -1527,8 +1527,14 @@ class SHCoeffs(object):
         else:
             axes = ax
 
-        vmin = _np.nanmax(spectrum) * vrange[0]
-        vmax = _np.nanmax(spectrum) * vrange[1]
+        if vrange is not None:
+            vmin = _np.nanmax(spectrum) * vrange[0]
+            vmax = _np.nanmax(spectrum) * vrange[1]
+        else:
+            _temp = spectrum
+            _temp[_temp == 0] = _np.NaN
+            vmin = _np.nanmin(_temp)
+            vmax = _np.nanmax(spectrum)
 
         if vscale.lower() == 'log':
             norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)

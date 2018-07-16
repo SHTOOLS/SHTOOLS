@@ -162,7 +162,7 @@ class SHGravGrid(object):
         if ax is None:
             fig, axes = self.rad.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -214,7 +214,8 @@ class SHGravGrid(object):
         if ax is None:
             fig, axes = self.theta.plot(colorbar=colorbar,
                                         cb_orientation=cb_orientation,
-                                        cb_label=cb_label, **kwargs)
+                                        cb_label=cb_label, show=False,
+                                        **kwargs)
             if show:
                 _plt.show()
 
@@ -266,7 +267,7 @@ class SHGravGrid(object):
         if ax is None:
             fig, axes = self.phi.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 
@@ -330,11 +331,11 @@ class SHGravGrid(object):
             if self.normal_gravity is True:
                 fig, axes = (self.total*1.e5).plot(
                     colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, **kwargs)
+                    cb_label=cb_label, show=False, **kwargs)
             else:
                 fig, axes = self.total.plot(
                     colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, **kwargs)
+                    cb_label=cb_label, show=False, **kwargs)
 
             if show:
                 _plt.show()
@@ -393,7 +394,7 @@ class SHGravGrid(object):
         if ax is None:
             fig, axes = self.pot.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, **kwargs)
+                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 _plt.show()
 

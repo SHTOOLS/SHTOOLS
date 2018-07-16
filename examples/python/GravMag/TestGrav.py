@@ -36,7 +36,7 @@ def main():
 # ==== TEST FUNCTIONS ====
 
 def TestMakeGravGrid():
-    infile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
+    infile = '../../ExampleDataFiles/gmm3_120_sha.tab'
     clm, lmax, header = shio.shread(infile, header=True)
     r0 = float(header[0]) * 1.e3
     gm = float(header[1]) * 1.e9

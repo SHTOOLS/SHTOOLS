@@ -1781,14 +1781,14 @@ class SHGravCoeffs(object):
                              1.e9*vyz, self.gm, a, f, lmax, lmax_calc)
 
     def geoid(self, potref, a=None, f=None, r=None, order=2, lmax=None,
-              lmax_calc=None, sampling=2):
+              lmax_calc=None, grid='DH2'):
         """
         Create a global map of the height of the geoid and return an SHGeoid
         class instance.
 
         Usage
         -----
-        geoid = x.geoid(potref, [a, f, r, order, lmax, lmax_calc, sampling])
+        geoid = x.geoid(potref, [a, f, r, order, lmax, lmax_calc, grid])
 
         Returns
         -------
@@ -1816,9 +1816,9 @@ class SHGravCoeffs(object):
         lmax_calc : optional, integer, default = lmax
             The maximum spherical harmonic degree used in evaluating the
             functions. This must be less than or equal to lmax.
-        sampling : optional, integer, default = 2
-            If 1 the output grids are equally sampled (n by n). If 2 (default),
-            the grids are equally spaced in degrees (n by 2n).
+        grid : str, optional, default = 'DH2'
+            'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon, or
+            'DH2' for an equidistant lat/lon grid with nlon=2*nlat.
 
         Description
         -----------
@@ -1848,6 +1848,15 @@ class SHGravCoeffs(object):
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
+
+        if grid.upper() in ('DH', 'DH1'):
+            sampling = 1
+        elif grid.upper() == 'DH2':
+            sampling = 2
+        else:
+            raise ValueError(
+                    "grid must be 'DH', 'DH1', or 'DH2'. "
+                    "Input value was {:s}".format(repr(grid)))
 
         if self.errors is not None:
             coeffs, errors = self.to_array(normalization='4pi', csphase=1)
@@ -1946,11 +1955,11 @@ class SHGravCoeffs(object):
         axes.set_xlabel('degree l')
 
         if function == 'geoid':
-            axes.set_ylabel('$m^2$')
+            axes.set_ylabel('power, $m^2$')
         elif function == 'potential':
-            axes.set_ylabel('m/s')
+            axes.set_ylabel('power, m/s')
         elif function == 'gravity':
-            axes.set_ylabel('mGal$^2$')
+            axes.set_ylabel('power, mGal$^2$')
 
         if (unit == 'per_l'):
             legend = 'power per degree'
@@ -1975,16 +1984,15 @@ class SHGravCoeffs(object):
 
         axes.legend()
 
-        if show:
-            _plt.show()
-
         if ax is None:
+            if show:
+                _plt.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
 
     def plot_spectrum2d(self, function='geoid', xscale='lin', yscale='lin',
-                        vscale='log', vrange=(1.e-5, 1.0), lmax=None,
+                        vscale='log', vrange=None, lmax=None,
                         errors=False, show=True, ax=None, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
@@ -2006,8 +2014,9 @@ class SHGravCoeffs(object):
             Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
-        vrange : (float, float), optional, default = (1.e-5, 1.)
-            Colormap range relative to the maximum value.
+        vrange : (float, float), optional, default = None
+            Colormap range relative to the maximum value. If None, scale the
+            image to the minimum and maximum values.
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to plot.
         errors : bool, optional, default = False
@@ -2099,8 +2108,14 @@ class SHGravCoeffs(object):
         else:
             axes = ax
 
-        vmin = _np.nanmax(spectrum) * vrange[0]
-        vmax = _np.nanmax(spectrum) * vrange[1]
+        if vrange is not None:
+            vmin = _np.nanmax(spectrum) * vrange[0]
+            vmax = _np.nanmax(spectrum) * vrange[1]
+        else:
+            _temp = spectrum
+            _temp[_temp == 0] = _np.NaN
+            vmin = _np.nanmin(_temp)
+            vmax = _np.nanmax(spectrum)
 
         if vscale.lower() == 'log':
             norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
@@ -2137,11 +2152,11 @@ class SHGravCoeffs(object):
         cb = _plt.colorbar(cmesh, ax=ax)
 
         if function == 'geoid':
-            cb.set_label('$m^2$')
+            cb.set_label('power, $m^2$')
         elif function == 'potential':
-            cb.set_label('m/s')
+            cb.set_label('power, m/s')
         elif function == 'gravity':
-            cb.set_label('mGal$^2$')
+            cb.set_label('power, mGal$^2$')
 
         cb.ax.tick_params(width=0.2)
         axes.set(xlabel='degree l', ylabel='order m')

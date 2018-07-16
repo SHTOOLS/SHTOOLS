@@ -972,10 +972,9 @@ class SHWindow(object):
         axes.set_xlabel('input power')  # matrix index 1 (columns)
         axes.set_ylabel('output power')  # matrix index 0 (rows)
 
-        if show:
-            _plt.show()
-
         if ax is None:
+            if show:
+                _plt.show()
             fig.tight_layout(pad=0.1)
             if fname is not None:
                 fig.savefig(fname)
