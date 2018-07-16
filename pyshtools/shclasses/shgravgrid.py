@@ -355,7 +355,7 @@ class SHGravGrid(object):
                     cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_pot(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='potential, m s$^{-1}$', ax=None, show=True,
+                 cb_label='potential, m$^2$ s$^{-2}$', ax=None, show=True,
                  fname=None, **kwargs):
         """
         Plot the gravitational potential.

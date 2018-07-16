@@ -1797,7 +1797,7 @@ class SHGravCoeffs(object):
         Parameters
         ----------
         potref : float
-            The value of the potential on the chosen geoid, in SI units.
+            The value of the potential on the chosen geoid, in m2 / s2.
         a : optional, float, default = self.r0
             The semi-major axis of the flattened ellipsoid on which the field
             is computed.

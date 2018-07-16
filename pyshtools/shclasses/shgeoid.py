@@ -23,7 +23,7 @@ class SHGeoid(object):
 
     geoid          : SHGrid class instance of the geoid.
     gm             : Gravitational constant time the mass of the body.
-    potref         : Potential of the chosen geoid.
+    potref         : Potential of the chosen geoid, in m2/s2.
     a              : Semimajor axis of the reference ellipsoid.
     f              : Flattening of the reference ellipsoid, f=(a-b)/a.
     omega          : Angular rotation rate of the body.
@@ -93,7 +93,7 @@ class SHGeoid(object):
                 'lmax = {:d}\n'
                 'lmax_calc = {:d}\n'
                 'gm (m3 / s2) = {:e}\n'
-                'reference potential (m /s) = {:e}\n'
+                'reference potential (m2 /s2) = {:e}\n'
                 'a (m)= {:e}\n'
                 'f = {:e}\n'
                 'omega (rad / s) = {:s}\n'
