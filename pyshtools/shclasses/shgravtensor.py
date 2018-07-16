@@ -1055,7 +1055,7 @@ class SHGravTensor(object):
         return fig, ax
 
     def plot_eig1(self, colorbar=True, cb_orientation='vertical',
-                  cb_label='$\lambda_1$, Eotvos$^{-1}$', ax=None, show=True,
+                  cb_label='$\lambda_1$, Eotvos', ax=None, show=True,
                   fname=None, **kwargs):
         """
         Plot the first eigenvalue of the gravity tensor.
@@ -1111,7 +1111,7 @@ class SHGravTensor(object):
                            cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_eig2(self, colorbar=True, cb_orientation='vertical',
-                  cb_label='$\lambda_2$, Eotvos$^{-1}$', ax=None, show=True,
+                  cb_label='$\lambda_2$, Eotvos', ax=None, show=True,
                   fname=None, **kwargs):
         """
         Plot the second eigenvalue of the gravity tensor.
@@ -1167,7 +1167,7 @@ class SHGravTensor(object):
                            cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_eig3(self, colorbar=True, cb_orientation='vertical',
-                  cb_label='$\lambda_3$, Eotvos$^{-1}$', ax=None, show=True,
+                  cb_label='$\lambda_3$, Eotvos', ax=None, show=True,
                   fname=None, **kwargs):
         """
         Plot the third eigenvalue of the gravity tensor.
@@ -1279,7 +1279,7 @@ class SHGravTensor(object):
         return fig, ax
 
     def plot_eigh1(self, colorbar=True, cb_orientation='vertical',
-                   cb_label='$\lambda_{h1}$, Eotvos$^{-1}$', ax=None,
+                   cb_label='$\lambda_{h1}$, Eotvos', ax=None,
                    show=True, fname=None, **kwargs):
         """
         Plot the first eigenvalue of the horizontal gravity tensor.
@@ -1335,7 +1335,7 @@ class SHGravTensor(object):
                             cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_eigh2(self, colorbar=True, cb_orientation='vertical',
-                   cb_label='$\lambda_{h2}$, Eotvos$^{-1}$', ax=None,
+                   cb_label='$\lambda_{h2}$, Eotvos', ax=None,
                    show=True, fname=None, **kwargs):
         """
         Plot the second eigenvalue of the horizontal gravity tensor.
@@ -1391,7 +1391,7 @@ class SHGravTensor(object):
                             cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_eighh(self, colorbar=True, cb_orientation='vertical',
-                   cb_label='$\lambda_{hh}$, Eotvos$^{-1}$', ax=None,
+                   cb_label='$\lambda_{hh}$, Eotvos', ax=None,
                    show=True, fname=None, **kwargs):
         """
         Plot the maximum absolute value eigenvalue of the horizontal gravity
