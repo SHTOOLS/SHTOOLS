@@ -965,7 +965,7 @@ class SHCoeffs(object):
 
     def volume(self, lmax=None):
         """
-        If the function is the shape of an object, calculate the volume
+        If the function is the real shape of an object, calculate the volume
         of the body.
 
         Usage
@@ -985,17 +985,21 @@ class SHCoeffs(object):
 
         Description
         -----------
-        If the function is the shape of an object, this method will calculate
-        the volume of the body exactly by integration. This routine raises
-        the function to the nth power, with n from 1 to 3, and calculates
-        the spherical harmonic degree and order 0 term. To avoid aliases, the
-        function is first expand on a grid that can resolve spherical harmonic
-        degrees up to 3*lmax.
+        If the function is the real shape of an object, this method will
+        calculate the volume of the body exactly by integration. This routine
+        raises the function to the nth power, with n from 1 to 3, and
+        calculates the spherical harmonic degree and order 0 term. To avoid
+        aliases, the function is first expand on a grid that can resolve
+        spherical harmonic degrees up to 3*lmax.
         """
         if self.coeffs[0, 0, 0] == 0:
             raise ValueError('The volume of the object can not be calculated '
                              'when the degree and order 0 term is equal to '
                              'zero.')
+
+        if self.kind == 'complex':
+            raise ValueError('The volume of the object can not be calculated '
+                             'for complex functions.')
 
         if lmax is None:
             lmax = self.lmax
