@@ -51,6 +51,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------ | ----------- |
 | `degrees()` | Return an array listing the spherical harmonic degrees from `0` to `lmax`. |
 | `spectrum()` | Return the spectrum of the function.|
+| `volume()` | Calculate the volume of the body.|
 | `set_coeffs()` | Set coefficients in-place to specified values.|
 | `rotate()` | Rotate the coordinate system used to express the spherical harmonics coefficients and return a new class instance.|
 | `convert()` | Return a new class instance using a different normalization convention. |

@@ -74,6 +74,7 @@ class SHCoeffs(object):
                             degrees from 0 to lmax.
     spectrum()            : Return the spectrum of the function as a function
                             of spherical harmonic degree.
+    volume()              : Calculate the volume of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
@@ -961,6 +962,51 @@ class SHCoeffs(object):
         return _spectrum(self.coeffs, normalization=self.normalization,
                          convention=convention, unit=unit, base=base,
                          lmax=lmax)
+
+    def volume(self, lmax=None):
+        """
+        If the function is the shape of an object, calculate the volume
+        of the body.
+
+        Usage
+        -----
+        volume = x.volume([lmax])
+
+        Returns
+        -------
+        volume : float
+            The volume of the object.
+
+        Parameters
+        ----------
+        lmax : int, optional, default = x.lmax
+            The maximum spherical harmonic degree to use when calculating the
+            volume.
+
+        Description
+        -----------
+        If the function is the shape of an object, this method will calculate
+        the volume of the body exactly by integration. This routine raises
+        the function to the nth power, with n from 1 to 3, and calculates
+        the spherical harmonic degree and order 0 term. To avoid aliases, the
+        function is first expand on a grid that can resolve spherical harmonic
+        degrees up to 3*lmax.
+        """
+        if self.coeffs[0, 0, 0] == 0:
+            raise ValueError('The volume of the object can not be calculated '
+                             'when the degree and order 0 term is equal to '
+                             'zero.')
+
+        if lmax is None:
+            lmax = self.lmax
+
+        r0 = self.coeffs[0, 0, 0]
+        grid = self.expand(lmax=3*lmax) - r0
+        h200 = (grid**2).expand(lmax_calc=0).coeffs[0, 0, 0]
+        h300 = (grid**3).expand(lmax_calc=0).coeffs[0, 0, 0]
+
+        volume = 4 * _np.pi / 3 * (h300 + 3 * r0 * h200 + r0**3)
+        return volume
 
     # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
