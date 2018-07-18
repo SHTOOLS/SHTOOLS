@@ -33,11 +33,11 @@ call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers_power`, `lwin`, `k`, `taper_wt`, 
 
 `SHMTCouplingMatrix` returns the multitaper coupling matrix that relates the global power spectrum (assumed to be stationary) to the expectation of the localized multitaper spectrum. This is given by eqs 4.5 and 4.6 in Wieczorek and Simons (2007):
 
-:   `< S_{Phi Phi}^(mt) > = M^(mt) S_{ff}`
+`< S_{Phi Phi}^(mt) > = M^(mt) S_{ff}`
 
 where `S_{Phi Phi}` is a vector containing the `lmax+lwin+1` localized multitaper power spectral estiamtes, `S_{ff}` is a vector of the global power spectrum up to degree `lmax`, and `< ... >` is the expectation operator. The coupling matrix is given explicitly by
 
-:   `M_{ij} = Sum_{l=0}^L Sum_{k=1}^K a_k S_{hh}^{k}(l) [ C_{l0j0}^{i0} ]^2`
+`M_{ij} = Sum_{l=0}^L Sum_{k=1}^K a_k S_{hh}^{k}(l) [ C_{l0j0}^{i0} ]^2`
 
 where `a_k` are the taper weights, `S_{hh}` is the power of the window, and `C` is a Clebsch-Gordon coefficient.
 

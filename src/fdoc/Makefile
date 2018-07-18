@@ -1,17 +1,13 @@
 ###############################################################################
 #
 #   make all
-#       Make man and html-man pages, and then move to their appropriate
-#       locations.
+#       Make man pages, and then move to their appropriate locations.
 #
 #   make install-man
 #       Make man pages from markdown source files.
 #
-#   make install-html
-#       Make html-man pages from markdown source files.
-#
 #   make clean
-#       Remove the man and html-man pages in the LOCAL directory.
+#       Remove the man pages in the LOCAL directory.
 #
 #   make uninstall
 #       Remove man pages from /usr/local
@@ -21,9 +17,8 @@
 SHELL=/bin/sh
 
 PANDOC = pandoc
-PDHTMLFLAGS = --base-header-level=1
 MANDIR = ../../man/man1
-WWWDIR = ../../www/man/fortran
+PYTHON = python3
 
 MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md \
 	plbar_d1.md plon.md plmon.md plmon_d1.md plon_d1.md plmschmidt.md \
@@ -78,130 +73,28 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 \
 	cilmplusrhoh.1 cilmminusrhoh.1 batohilm.1 batohilmrhoh.1 \
 	downcontfilterma.1 downcontfiltermc.1 normalgravity.1 makemaggriddh.1 \
 	shmagpowerspectrum.1 shmagpowerl.1 shmtcouplingmatrix.1 \
-	shmultitapermaskcse.1 shmultitapermaskse.1 shbiaskmask.1 dhaj.1 )
+	shmultitapermaskcse.1 shmultitapermaskse.1 shbiaskmask.1 dhaj.1 shglq.1)
 
-HTMLFILES_modules = $(addprefix $(WWWDIR)/, planetsconstants.html)
 
-HTMLFILES_legendre =  $(addprefix $(WWWDIR)/,plmbar.html plmbar_d1.html \
-	plbar.html plbar_d1.html plon.html plmon.html plmon_d1.html plon_d1.html \
-	plmschmidt.html plschmidt.html plmschmidt_d1.html plschmidt_d1.html \
-	plegendrea.html plegendrea_d1.html plegendre.html plegendre_d1.html \
-	plmindex.html)
-
-HTMLFILES_transformations = $(addprefix $(WWWDIR)/, shexpanddh.html \
-	makegriddh.html shexpanddhc.html makegriddhc.html shglq.html \
-	glqgridcoord.html shexpandglq.html makegridglq.html shexpandglqc.html \
-	makegridglqc.html shexpandlsq.html makegrid2d.html makegridpoint.html \
-	makegridpointc.html shmultiply.html)
-
-HTMLFILES_io = $(addprefix $(WWWDIR)/, shread.html shread2.html \
-	shreadjpl.html shcilmtocindex.html shcindextocilm.html \
-	shcilmtovector.html shvectortocilm.html yilmindexvector.html shrtoc.html \
-	shctor.html)
-	
-HTMLFILES_gspectra = $(addprefix $(WWWDIR)/, shpowerl.html \
-	shpowerdensityl.html shcrosspowerl.html shcrosspowerdensityl.html \
-	shpowerspectrum.html shpowerspectrumdensity.html \
-	shcrosspowerspectrum.html shcrosspowerspectrumdensity.html \
-	shadmitcorr.html shconfidence.html shpowerlc.html shpowerdensitylc.html \
-	shcrosspowerlc.html shcrosspowerdensitylc.html shpowerspectrumc.html \
-	shpowerspectrumdensityc.html shcrosspowerspectrumc.html \
-	shcrosspowerspectrumdensityc.html)
-
-HTMLFILES_localized = $(addprefix $(WWWDIR)/, shmultitaperse.html \
-	shmultitapercse.html shlocalizedadmitcorr.html shreturntapers.html \
-	shreturntapersm.html computedm.html computedg82.html shfindlwin.html \
-	shbiask.html shbiasadmitcorr.html shmtdebias.html shmtvaropt.html \
-	shsjkpg.html shreturntapersmap.html computedmap.html curve2mask.html \
-	shbias.html sphericalcapcoef.html shmtcouplingmatrix.html \
-	shmultitapermaskcse.html shmultitapermaskse.html shbiaskmask.html)
-
-HTMLFILES_rotations = $(addprefix $(WWWDIR)/, djpi2.html shrotatecoef.html \
-	shrotaterealcoef.html)
-
-HTMLFILES_gravmag = $(addprefix $(WWWDIR)/, makegravgriddh.html \
-	makegravgradgriddh.html makegeoidgrid.html cilmplus.html cilmminus.html \
-	cilmplusrhoh.html cilmminusrhoh.html batohilm.html batohilmrhoh.html \
-	downcontfilterma.html downcontfiltermc.html normalgravity.html \
-	makemaggriddh.html shmagpowerspectrum.html shmagpowerl.html)
-
-HTMLFILES_other = $(addprefix $(WWWDIR)/, makecirclecoord.html \
-	makeellipsecoord.html randomn.html randomgaussian.html preglq.html \
-	eigvalvecsym.html eigvalvecsymtri.html eigvalsym.html wigner3j.html \
-	dhaj.html)
-
-all: install-man install-html
-
+all: install-man
+	$(PYTHON) make_www_doc.py
 
 install-man: $(MANFILES)
 	@echo
 	@echo "--> Fortran 95 man pages created successfully"
 	@echo
 
-install-html: $(HTMLFILES_modules) $(HTMLFILES_legendre) \
-	$(HTMLFILES_transformations) $(HTMLFILES_io) $(HTMLFILES_gspectra) \
-	$(HTMLFILES_localized) $(HTMLFILES_rotations) $(HTMLFILES_gravmag) \
-	$(HTMLFILES_other)
-	@echo
-	@echo "--> Fortran 95 html web pages created successfully"
-	@echo
-
-$(HTMLFILES_modules) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_modules.html test.html tail_modules.html > $@
-	@rm -f test.html
-	
-$(HTMLFILES_legendre) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_legendre.html test.html tail_legendre.html > $@
-	@rm -f test.html
-
-$(HTMLFILES_transformations) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_transformations.html test.html tail_transformations.html > $@
-	@rm -f test.html
-
-$(HTMLFILES_io) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_io.html test.html tail_io.html > $@
-	@rm -f test.html
-
-$(HTMLFILES_gspectra) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_gspectra.html test.html tail_gspectra.html > $@
-	@rm -f test.html
-
-$(HTMLFILES_localized) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_localized.html test.html tail_localized.html > $@
-	@rm -f test.html
-
-$(HTMLFILES_rotations) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_rotations.html test.html tail_rotations.html > $@
-	@rm -f test.html
-
-$(HTMLFILES_gravmag) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_gravmag.html test.html tail_gravmag.html > $@
-	@rm -f test.html
-
-$(HTMLFILES_other) : $(WWWDIR)/%.html : %.md
-	$(PANDOC) $(PDHTMLFLAGS) $< -o test.html
-	cat header_other.html test.html tail_other.html > $@
-	@rm -f test.html
-
 
 .PHONY: clean uninstall
 
 clean:
-	-rm -f $(MANFILES) $(HTMLFILES)
+	-rm -f $(MANFILES)
 
 uninstall:
 	-cd /usr/local/share/man/man1/ ; rm $(MANFILES)
 
 
-.SUFFIXES: $(SUFFIXES) .md .html .1
+.SUFFIXES: $(SUFFIXES) .md .1
 
 $(MANDIR)/%.1 : %.md
 	printf "%% $(basename $<)(1) Fortran 95 | SHTOOLS $(VERSION)\n%%\n%% %s" > temp.md

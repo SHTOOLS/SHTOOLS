@@ -9,7 +9,7 @@ Create a 2D map from a set of spherical harmonic coefficients using the Driscoll
 # Returns
 
 `griddh` : float, dimension (2\*`lmax`+2, `sampling`\*(2\*`lmax`+2))
-:   A 2D equally sampled (default) or equally spaced map in degrees of the spherical harmonic coefficients `cilm` that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`m` for an equally spaced grid, respectively.
+:   A 2D equally sampled (default) or equally spaced map in degrees of the spherical harmonic coefficients `cilm` that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees, where `n` is 2\*`lmax`+2. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
 
 # Parameters
 
@@ -47,4 +47,4 @@ Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summat
 
 # See also
 
-[`shexpanddh`](pyshexpanddh.html), [`makegriddhc`](pymakegriddhc.html), [`shexpanddhc`](pyshexpanddhc.html), [`makegridglq`](pymakegridglq.html), [`shexpandglq`](pyshexpandglq.html), [`makegridglqc`](pymakegridglqc.html), [`shexpandglqc`](pyshexpandglqc.html), [`makegrid2d`](pymakegrid2d.html)
+[shexpanddh](pyshexpanddh.html), [makegriddhc](pymakegriddhc.html), [shexpanddhc](pyshexpanddhc.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), [makegrid2d](pymakegrid2d.html)

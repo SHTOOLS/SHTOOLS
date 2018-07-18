@@ -85,7 +85,7 @@ subroutine BAtoHilmRhoH(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, &
     integer, intent(in) :: lmax, nmax, gridtype
     integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
     integer, intent(out), optional :: exitstatus
-    real*8 :: prod, pi, d, depth, filter(lmax+1)
+    real*8 :: prod, pi, d, filter(lmax+1)
     real*8, allocatable :: cilmn(:, :, :), grid2(:,:)
     integer  :: j, l, n, nlong, nlat, astat(2), lmax_out, lmax_calc2, n_out
 
@@ -414,8 +414,6 @@ subroutine BAtoHilmRhoH(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, &
     end if
 
     d = cilmn(1,1,1)
-    depth = r0 - d
-    print*, "Average depth of Moho (km) = ", depth/1.d3
 
     ! calculate (rho*h)_00
     grid2(1:nlat,1:nlong) = (grid(1:nlat,1:nlong) - d) * rho(1:nlat,1:nlong)

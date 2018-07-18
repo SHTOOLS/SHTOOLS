@@ -38,8 +38,7 @@ def example():
     # --- input data filename ---
     infile = os.path.join(os.path.dirname(__file__),
                           '../../ExampleDataFiles/MarsTopo719.shape')
-    coeffs, lmax = shio.SHRead(infile, 719)
-    lmax = coeffs.shape[1] - 1
+    coeffs, lmax = shio.shread(infile)
 
     # --- plot grid ---
     grid = expand.MakeGridDH(coeffs, csphase=-1)

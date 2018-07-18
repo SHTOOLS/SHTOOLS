@@ -13,6 +13,7 @@ import sysconfig
 # the setuptools import dummy patches the distutil commands such that
 # python setup.py develop works
 import setuptools  # NOQA
+import numpy
 
 from numpy.distutils.core import setup
 from numpy.distutils.command.build import build as _build
@@ -20,17 +21,19 @@ from numpy.distutils.command.install import install as _install
 from numpy.distutils.command.develop import develop as _develop
 from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
 from numpy.distutils.misc_util import Configuration
+from numpy.distutils.system_info import get_info, dict_append
 from subprocess import CalledProcessError, check_output, check_call
 
 
 # convert markdown README.md to restructured text .rst for pypi
 # pandoc can be installed with
 # conda install -c conda-forge pandoc pypandoc
+# pip install pypandoc
 try:
     import pypandoc
     long_description = pypandoc.convert('README.md', 'rst')
 except(IOError, ImportError):
-    print('no pandoc installed. Careful, pypi description will not be '
+    print('pandoc is not installed. PYPI description will not be '
           'formatted correctly.')
     long_description = open('README.md').read()
 
@@ -68,12 +71,6 @@ def get_version():
 
         # PEP440 compatibility
         if '-' in git_version:
-            # check that the version string is a floating number
-            try:
-                version = '{:.1f}'.format(float(version))
-            except ValueError:
-                msg = 'VERSION string should be floating number'
-                raise ValueError(msg)
             git_revision = check_output(['git', 'rev-parse', 'HEAD'])
             git_revision = git_revision.strip().decode('ascii')
             # add post0 if the version is released
@@ -171,7 +168,10 @@ KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Wigner Symbols',
 
 
 INSTALL_REQUIRES = [
-    'numpy (>=1.0.0)']
+    'numpy>=' + str(numpy.__version__),
+    'scipy>=0.14.0',
+    'matplotlib'
+]
 
 # configure python extension to be compiled with f2py
 
@@ -201,7 +201,11 @@ def configuration(parent_package='', top_path=None):
 
     F95FLAGS = get_compiler_flags()
 
-    kwargs = {}
+    kwargs = {
+        'libraries': [],
+        'include_dirs': [],
+        'library_dirs': [],
+    }
     kwargs['extra_compile_args'] = F95FLAGS
     kwargs['f2py_options'] = ['--quiet']
 
@@ -214,7 +218,7 @@ def configuration(parent_package='', top_path=None):
     files = os.listdir('src')
     exclude_sources = ['PlanetsConstants.f95', 'PythonWrapper.f95']
     sources = [os.path.join('src', file) for file in files if
-               file.lower().endswith('.f95') and file not in exclude_sources]
+               file.lower().endswith(('.f95', '.c')) and file not in exclude_sources]
 
     # (from http://stackoverflow.com/questions/14320220/
     #              testing-python-c-libraries-get-build-path)):
@@ -231,10 +235,24 @@ def configuration(parent_package='', top_path=None):
                        **kwargs)
 
     # SHTOOLS
+    kwargs['libraries'].extend(['SHTOOLS'])
+    kwargs['include_dirs'].extend([libdir])
+    kwargs['library_dirs'].extend([libdir])
+
+    # FFTW info
+    fftw_info = get_info('fftw', notfound_action=2)
+    dict_append(kwargs, **fftw_info)
+
+    if sys.platform != 'win32':
+        kwargs['libraries'].extend(['m'])
+
+    # BLAS / Lapack info
+    lapack_info = get_info('lapack_opt', notfound_action=2)
+    blas_info = get_info('blas_opt', notfound_action=2)
+    dict_append(kwargs, **blas_info)
+    dict_append(kwargs, **lapack_info)
+
     config.add_extension('pyshtools._SHTOOLS',
-                         include_dirs=[libdir],
-                         library_dirs=[libdir],
-                         libraries=['SHTOOLS', 'fftw3', 'm', 'lapack', 'blas'],
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
                          **kwargs)
@@ -258,7 +276,7 @@ metadata = dict(
     author_email="mark.a.wieczorek@gmail.com",
     license='BSD',
     keywords=KEYWORDS,
-    requires=INSTALL_REQUIRES,
+    install_requires=INSTALL_REQUIRES,
     platforms='OS Independent',
     packages=setuptools.find_packages(),
     classifiers=CLASSIFIERS,

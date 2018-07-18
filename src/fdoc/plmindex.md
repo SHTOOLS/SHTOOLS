@@ -13,7 +13,7 @@ Compute the index of an array corresponding to degree `l` and angular order `m`.
 
 `l` : input, integer
 :   The spherical harmonic degree.
-	
+
 `m` : input, integer
 :   The angular order.
 
@@ -23,4 +23,4 @@ Compute the index of an array corresponding to degree `l` and angular order `m`.
 
 # See also
 
-[`plmbar`](plmbar.html), [`plmbar_d1`](plmbar_d1.html), [`plmschmidt`](plmschmidt.html), [`plmschmidt_d1`](plmschmidt_d1.html), [`plmon`](plmon.html), [`plmon_d1`](plmon_d1.html), [`plegendrea`](plegendrea.html), [`plegendrea_d1`](plegendrea_d1.html)
+[plmbar](plmbar.html), [plmbar_d1](plmbar_d1.html), [plmschmidt](plmschmidt.html), [plmschmidt_d1](plmschmidt_d1.html), [plmon](plmon.html), [plmon_d1](plmon_d1.html), [`plegendrea`](plegendrea.html), [plegendrea_d1](plegendrea_d1.html)

@@ -8,15 +8,17 @@ matrix:
     - os: linux
       env: PYTHON_VERSION=2.7
     - os: linux
-      env: PYTHON_VERSION=3.5
+      env: PYTHON_VERSION=3.6
 
     - os: osx
       env: PYTHON_VERSION=2.7
     - os: osx
-      env: PYTHON_VERSION=3.5
+      env: PYTHON_VERSION=3.6
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+       brew update;
+       brew cask uninstall oclint;
        brew install fftw --with-fortran;
     else
        sudo apt-get update;
@@ -30,7 +32,7 @@ install:
       export OS="Linux";
     fi
   - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda-latest-${OS}-x86_64.sh -O miniconda.sh;
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-${OS}-x86_64.sh -O miniconda.sh;
     else
       wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh;
     fi
@@ -47,6 +49,7 @@ install:
         scipy
         matplotlib
         jupyter
+        mkl
   - conda install nbconvert
   - source activate test-environment
   - pip install --no-deps .

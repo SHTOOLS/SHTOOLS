@@ -23,13 +23,13 @@ Determine the spherical harmonic coefficients of a complex function rotated by t
 :   The rotation matrix `dj(pi/2)` obtained from a call to `djpi2`.
 
 `lmax` : optional, integer, default = `lmaxin`
-:   The maximum spherical harmonic degree of the input and output coefficients. 
+:   The maximum spherical harmonic degree of the input and output coefficients.
 
 # Description
 
 `SHRotateCoef` will take the complex spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in `x`, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients are in an indexed form that can be converted to and from `cilm[:,:,:]` form by using the functions `SHCilmToCindex` and `SHCindexToCilm`. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention. Real spherical harmonics can be converted to and from complex form using `SHrtoc` and `SHctor`. The input rotation matrix `dj` is computed by a call to `djpi2`.
 
-The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.
+The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same. This routine uses the 'y convention', where the second rotation axis corresponds to the y axis.
 
 `Scheme A:`
 
@@ -51,9 +51,9 @@ For a rotation of the physical body without rotation of the coordinate system, u
 
 `x(-gamma, -beta, -alpha)`.
 
-To perform the inverse transform of `x(alpha, beta, gamma)`, use `x(-gamma, -beta, -alpha)`.
+The inverse transform of `x(alpha, beta, gamma)` is `x(-gamma, -beta, -alpha)`.
 
-Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were orginally defined in terms of the "x convention", where the second rotation was with respect to the newx axis, the Euler angles according to the y convention would be `alpha_y=alpha_x-pi/2`, `beta_x=beta_y`, and `gamma_y=gamma_x+pi/2`.
+Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were originally defined in terms of the "x convention", where the second rotation was with respect to the new x axis, the Euler angles according to the y convention would be `alpha_y=alpha_x-pi/2`, `beta_x=beta_y`, and `gamma_y=gamma_x+pi/2`.
 
 # See also
 

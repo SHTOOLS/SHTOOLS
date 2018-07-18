@@ -48,12 +48,8 @@ MakeMagGridDH       Create 2D cylindrical maps on a flattened ellipsoid of
                     all three vector components of the magnetic field, the
                     magnitude of the magnetic field, and the magnetic
                     potential.
-SHMagPowerSpectrum  Compute the power spectrum of the magnetic field given the
-                    Schmidt seminormalized magnetic potential spherical
-                    harmonic coefficients.
-SHMagPowerL         Compute the power of the magnetic field for a single
-                    degree L given the Schmidt seminormalized magnetic
-                    potential spherical harmonic coefficients.
+mag_spectrum        Compute the spectrum of either the magnetic potential
+                    or magnetic field strength.
 """
 
 from __future__ import absolute_import as _absolute_import
@@ -73,5 +69,5 @@ from ..shtools import DownContFilterMA
 from ..shtools import DownContFilterMC
 from ..shtools import NormalGravity
 from ..shtools import MakeMagGridDH
-from ..shtools import SHMagPowerSpectrum
-from ..shtools import SHMagPowerL
+
+from .mag_spectrum import mag_spectrum
