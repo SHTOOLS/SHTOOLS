@@ -410,9 +410,6 @@ install-fortran: fortran
 	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
-	mkdir -pv $(DESTDIR)$(SYSDOCPATH)/shtools
-	cp index.html $(DESTDIR)$(SYSDOCPATH)/shtools/index.html
-	cp -R www $(DESTDIR)$(SYSDOCPATH)/shtools/
 	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
 	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
 	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
