@@ -98,5 +98,9 @@ To get started, check out the following Python tutorial notebooks:
 * [Introduction 2: Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
 * [Introduction 3: Gravity fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-3.html)
 
+### DEVELOPERS ###
+
+We work on the `develop` branch and only push releases to `master`. Please base all pull requests on `develop`.
+
 ### CITATION ###
 Mark A. Wieczorek and Matthias Meschede (2018). SHTools --- Tools for working with spherical harmonics, *Geochemistry, Geophysics, Geosystems*, doi:[10.1029/2018GC007529](https://doi.org/10.1029/2018GC007529).

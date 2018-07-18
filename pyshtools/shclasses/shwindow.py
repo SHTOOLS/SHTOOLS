@@ -43,6 +43,9 @@ class SHWindow(object):
                       rotated spherical cap localization windows. These are
                       '4pi' normalized and do not use the Condon-Shortley phase
                       factor.
+    shannon         : The Shannon number, which approximates the number of
+                      well localized windows.
+    area            : Area of the concentration domain, in radians.
     eigenvalues     : Concentration factors of the localization windows.
     orders          : The angular orders for each of the spherical cap
                       localization windows.
@@ -105,7 +108,9 @@ class SHWindow(object):
 
     def __init__(self):
         """Initialize with a factory method."""
-        pass
+        print('Initialize the class using one of the class methods:\n'
+              '>>> SHWindow.from_cap()\n'
+              '>>> SHWindow.from_mask()')
 
     # ---- factory methods:
     @classmethod
@@ -198,15 +203,23 @@ class SHWindow(object):
             raise ValueError('The number of latitude bands in dh_mask ' +
                              'must be even. nlat = {:d}'
                              .format(dh_mask.shape[0]))
-        if (dh_mask.shape[1] != dh_mask.shape[0] and
-                dh_mask.shape[1] != 2 * dh_mask.shape[0]):
+
+        if dh_mask.shape[1] == dh_mask.shape[0]:
+            _sampling = 1
+        elif dh_mask.shape[1] == 2 * dh_mask.shape[0]:
+            _sampling = 2
+        else:
             raise ValueError('dh_mask must be dimensioned as (n, n) or ' +
                              '(n, 2 * n). Input shape is ({:d}, {:d})'
                              .format(dh_mask.shape[0], dh_mask.shape[1]))
 
+        mask_lm = _shtools.SHExpandDH(dh_mask, sampling=_sampling, lmax_calc=0)
+        area = mask_lm[0, 0, 0] * 4 * _np.pi
+
         tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
                                                          ntapers=nwin)
-        return SHWindowMask(tapers, eigenvalues, weights, copy=False)
+
+        return SHWindowMask(tapers, eigenvalues, weights, area, copy=False)
 
     def copy(self):
         """Return a deep copy of the class instance."""
@@ -1012,6 +1025,13 @@ class SHWindowCap(SHWindow):
         self.weights = weights
         self.nwinrot = None
 
+        if (self.theta_degrees):
+            self.area = 2 * _np.pi * (1 - _np.cos(_np.radians(self.theta)))
+        else:
+            self.area = 2 * _np.pi * (1 - _np.cos(self.theta))
+
+        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
+
         if nwin is not None:
             self.nwin = nwin
         else:
@@ -1338,7 +1358,10 @@ class SHWindowCap(SHWindow):
             str += 'theta = {:f} radians'.format(self.theta)
 
         str += ('lwin = {:d}\n'
-                'nwin = {:d}\n'.format(self.lwin, self.nwin))
+                'nwin = {:d}\n'
+                'shannon = {:e}\n'
+                'area (radians) = {:e}\n'
+                .format(self.lwin, self.nwin, self.shannon, self.area))
 
         if self.clat is not None:
             if self.coord_degrees:
@@ -1381,7 +1404,7 @@ class SHWindowMask(SHWindow):
     def istype(kind):
         return kind == 'mask'
 
-    def __init__(self, tapers, eigenvalues, weights, copy=True):
+    def __init__(self, tapers, eigenvalues, weights, area, copy=True):
         self.kind = 'mask'
         self.lwin = _np.sqrt(tapers.shape[0]).astype(int) - 1
         self.nwin = tapers.shape[1]
@@ -1393,6 +1416,9 @@ class SHWindowMask(SHWindow):
             self.weights = weights
             self.tapers = tapers
             self.eigenvalues = eigenvalues
+
+        self.area = area
+        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
 
     def _to_array(self, itaper, normalization='4pi', csphase=1):
         """
@@ -1549,7 +1575,11 @@ class SHWindowMask(SHWindow):
     def __repr__(self):
         str = ('kind = {:s}\n'
                'lwin = {:d}\n'
-               'nwin = {:d}\n'.format(repr(self.kind), self.lwin, self.nwin))
+               'nwin = {:d}\n'
+               'shannon = {:e}\n'
+               'area (radians) = {:e}\n'.format(repr(self.kind), self.lwin,
+                                                self.nwin, self.shannon,
+                                                self.area))
 
         if self.weights is None:
             str += 'Taper weights are not set'

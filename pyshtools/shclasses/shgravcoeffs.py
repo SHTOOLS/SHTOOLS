@@ -743,7 +743,7 @@ class SHGravCoeffs(object):
                              'or DHRealGrid. Input type is {:s}'
                              .format(repr(type(shape))))
 
-        if (type(rho) is not float and type(rho) is not int
+        if (not issubclass(type(rho), float) and type(rho) is not int
                 and type(rho) is not _np.ndarray and
                 type(rho) is not _SHRealCoeffs and
                 type(rho is not _DHRealGrid)):
