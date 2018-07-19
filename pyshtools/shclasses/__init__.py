@@ -28,7 +28,9 @@ Class structure:
 
     SHGravGrid
 
-    SHGravTensor
+    SHTensor
+        SHGravTensor
+        SHMagTensor
 
     SHGeoid
 
@@ -56,5 +58,6 @@ from .shwindow import SHWindowMask
 from .shgravcoeffs import SHGravCoeffs
 from .shgravcoeffs import SHGravRealCoeffs
 from .shgravgrid import SHGravGrid
-from .shgravtensor import SHGravTensor
+from .shtensor import SHGravTensor
+from .shtensor import SHMagTensor
 from .shgeoid import SHGeoid

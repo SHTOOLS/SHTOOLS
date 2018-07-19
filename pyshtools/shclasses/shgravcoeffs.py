@@ -16,7 +16,7 @@ from .shcoeffsgrid import SHCoeffs as _SHCoeffs
 from .shcoeffsgrid import SHRealCoeffs as _SHRealCoeffs
 from .shcoeffsgrid import DHRealGrid as _DHRealGrid
 from .shgravgrid import SHGravGrid as _SHGravGrid
-from .shgravtensor import SHGravTensor as _SHGravTensor
+from .shtensor import SHGravTensor as _SHGravTensor
 from .shgeoid import SHGeoid as _SHGeoid
 
 from ..constant import G as _G
