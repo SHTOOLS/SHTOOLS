@@ -17,14 +17,15 @@ from .shcoeffsgrid import SHGrid as _SHGrid
 class Tensor(object):
     """
     Generic class for gravity and magnetic field tensors. To initialize the
-    class, use either the method SHGravCoeffs.tensor() or SHMagCoeffs.tensor().
+    class, use the method tensor() of an SHGravCoeffs or SHMagCoeffs
+    class instance.
     """
 
     def __init__(self):
-        """Unused constructor of the super class."""
+        """Unused constructor of the main class."""
         print('Initialize the class using one of the two methods:\n'
-              '>>> pyshtools.SHGravCoeffs.tensor()\n'
-              '>>> pyshtools.SHMagCoeffs.tensor()\n')
+              '>>> pyshtools.SHGravCoeffs.tensor\n'
+              '>>> pyshtools.SHMagCoeffs.tensor\n')
 
     def compute_invar(self):
         """
@@ -1708,5 +1709,5 @@ class SHMagTensor(Tensor):
                 'a (m)= {:e}\n'
                 'f = {:e}'
                 .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.gm, self.a, self.f))
+                        self.a, self.f))
         return str

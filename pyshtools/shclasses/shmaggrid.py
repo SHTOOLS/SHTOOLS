@@ -1,6 +1,6 @@
 """
-    Class for grids of the three components of the gravity field, the
-    gravitational disturbance, and the gravitational potential.
+    Class for grids of the three components of the magnetic field, the
+    magnetic intensity, and the magnetic potential.
 """
 from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
@@ -14,57 +14,52 @@ import copy as _copy
 from .shcoeffsgrid import SHGrid as _SHGrid
 
 
-class SHGravGrid(object):
+class SHMagGrid(object):
     """
-    Class for grids of the gravitational potential, three vector components of
-    the gravity field, and the total gravitational disturbance. The class is
-    initialized from a class instance of SHGravCoeffs using the method
+    Class for grids of the magnetic potential, three vector components of
+    the magnetic field, and the total magnetic intensity. The class is
+    initialized from a class instance of SHMagCoeffs using the method
     expand().
 
     Attributes:
 
     rad            : SHGrid class instance of the radial component of the
-                     gravitational acceleration evaluated on an ellipsoid.
+                     magnetic field evaluated on an ellipsoid.
     theta          : SHGrid class instance of the theta component of the
-                     gravitational acceleration evaluated on an ellipsoid.
+                     magnetic field evaluated on an ellipsoid.
     phi            : SHGrid class instance of the phi component of the
-                     gravitational acceleration evaluated on an ellipsoid.
-    total          : SHGrid class instance of the total gravitational
-                     acceleration on an ellipsoid.
-    pot            : SHGrid class instance of the gravitational potential
+                     magnetic field evaluated on an ellipsoid.
+    total          : SHGrid class instance of the total magnetic intensity on
+                     an ellipsoid.
+    pot            : SHGrid class instance of the magnetic potential
                      evaluated on an ellipsoid.
-    gm             : Gravitational constant times the mass of the body.
     a              : Semimajor axis of the reference ellipsoid.
     f              : Flattening of the reference ellipsoid, f=(a-b)/a.
-    omega          : Angular rotation rate of the body.
-    normal_gravity : True if the normal gravity is removed from the total
-                     gravitational acceleration.
     lmax           : The maximum spherical harmonic degree resolvable by the
                      grids.
-    lmax_calc      : The maximum spherical harmonic degree of the gravitational
-                     potential used in creating the grid.
+    lmax_calc      : The maximum spherical harmonic degree of the magnetic
+                     potential used in creating the grids.
     nlat, nlon     : The number of latitude and longitude bands in the grids.
     sampling       : The longitudinal sampling scheme of the grids: either
                      1 for nlon=nlat or 2 for nlon=2*nlat.
 
     Methods:
 
-    plot()        : Plot all three components of the gravity field and the
-                    total gravity disturbance.
-    plot_rad()    : Plot the radial component of the gravity field.
-    plot_theta()  : Plot the theta component of the gravity field.
-    plot_phi()    : Plot the phi component of the gravity field.
-    plot_total()  : Plot the total gravity disturbance.
-    plot_pot()    : Plot the gravitational potential.
+    plot()        : Plot all three components of the magnetic field and the
+                    total magnetic intensity.
+    plot_rad()    : Plot the radial component of the magnetic field.
+    plot_theta()  : Plot the theta component of the magnetic field.
+    plot_phi()    : Plot the phi component of the magnetic field.
+    plot_total()  : Plot the total magnetic intensity.
+    plot_pot()    : Plot the magnetic potential.
     copy()        : Return a copy of the class instance.
-    info()        : Print a summary of the data stored in the SHGravGrid
+    info()        : Print a summary of the data stored in the SHMagGrid
                     instance.
     """
 
-    def __init__(self, rad, theta, phi, total, pot, gm, a, f, omega,
-                 normal_gravity, lmax, lmax_calc):
+    def __init__(self, rad, theta, phi, total, pot, a, f, lmax, lmax_calc):
         """
-        Initialize the SHGravGrid class.
+        Initialize the SHMagGrid class.
         """
         self.rad = _SHGrid.from_array(rad, grid='DH')
         self.theta = _SHGrid.from_array(theta, grid='DH')
@@ -75,11 +70,8 @@ class SHGravGrid(object):
         self.sampling = self.rad.sampling
         self.nlat = self.rad.nlat
         self.nlon = self.rad.nlon
-        self.gm = gm
         self.a = a
         self.f = f
-        self.omega = omega
-        self.normal_gravity = normal_gravity
         self.lmax = lmax
         self.lmax_calc = lmax_calc
 
@@ -95,7 +87,7 @@ class SHGravGrid(object):
 
     def info(self):
         """
-        Print a summary of the data stored in the SHGravGrid class instance.
+        Print a summary of the data stored in the SHMagGrid class instance.
 
         Usage
         -----
@@ -111,21 +103,17 @@ class SHGravGrid(object):
                 'nlon = {:d}\n'
                 'lmax = {:d}\n'
                 'lmax_calc = {:d}\n'
-                'gm (m3 / s2) = {:e}\n'
                 'a (m)= {:e}\n'
-                'f = {:e}\n'
-                'omega (rad / s) = {:s}\n'
-                'normal gravity is removed = {:s}'
+                'f = {:e}'
                 .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.gm, self.a, self.f, repr(self.omega),
-                        repr(self.normal_gravity)))
+                        self.a, self.f))
         return str
 
     def plot_rad(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='$g_r$, m s$^{-2}$', ax=None, show=True, fname=None,
+                 cb_label='$B_r$, nT', ax=None, show=True, fname=None,
                  **kwargs):
         """
-        Plot the radial component of the gravity field.
+        Plot the radial component of the magnetic field.
 
         Usage
         -----
@@ -147,7 +135,7 @@ class SHGravGrid(object):
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = '$g_r$, m s$^{-2}$'
+        cb_label : str, optional, default = '$B_r$, nT'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -174,10 +162,10 @@ class SHGravGrid(object):
                           cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_theta(self, colorbar=True, cb_orientation='vertical',
-                   cb_label='$g_\\theta$, m s$^{-2}$', ax=None, show=True,
+                   cb_label='$B_\\theta$, nT', ax=None, show=True,
                    fname=None, **kwargs):
         """
-        Plot the theta component of the gravity field.
+        Plot the theta component of the magnetic field.
 
         Usage
         -----
@@ -199,7 +187,7 @@ class SHGravGrid(object):
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = '$g_\\theta$, m s$^{-2}$'
+        cb_label : str, optional, default = '$B_\\theta$, nT'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -227,10 +215,10 @@ class SHGravGrid(object):
                             cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_phi(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='$g_\phi$, m s$^{-2}$', ax=None, show=True,
+                 cb_label='$B_\phi$, nT', ax=None, show=True,
                  fname=None, **kwargs):
         """
-        Plot the phi component of the gravity field.
+        Plot the phi component of the magnetic field.
 
         Usage
         -----
@@ -252,7 +240,7 @@ class SHGravGrid(object):
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = '$g_\phi$, m s$^{-2}$'
+        cb_label : str, optional, default = '$B_\phi$, nT'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -279,9 +267,10 @@ class SHGravGrid(object):
                           cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_total(self, colorbar=True, cb_orientation='vertical',
-                   cb_label=None, ax=None, show=True, fname=None, **kwargs):
+                   cb_label='$|B|$, nT', ax=None, show=True, fname=None,
+                   **kwargs):
         """
-        Plot the total gravity disturbance.
+        Plot the total magnetic intensity.
 
         Usage
         -----
@@ -303,7 +292,7 @@ class SHGravGrid(object):
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = 'gravity disturbance'
+        cb_label : str, optional, default = '$|B|$, nT'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -313,28 +302,11 @@ class SHGravGrid(object):
         kwargs : optional
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
-
-        Notes
-        -----
-        If the normal gravity is removed from the total gravitational
-        acceleration, the output will be displayed in mGals.
         """
-        if self.normal_gravity is True:
-            if cb_label is None:
-                cb_label = 'gravity disturbance, mGal'
-        else:
-            if cb_label is None:
-                cb_label = 'gravity disturbance, m s$^{-2}$'
-
         if ax is None:
-            if self.normal_gravity is True:
-                fig, axes = (self.total*1.e5).plot(
-                    colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, show=False, **kwargs)
-            else:
-                fig, axes = self.total.plot(
-                    colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, show=False, **kwargs)
+            fig, axes = self.total.plot(
+                colorbar=colorbar, cb_orientation=cb_orientation,
+                cb_label=cb_label, show=False, **kwargs)
 
             if show:
                 _plt.show()
@@ -344,20 +316,15 @@ class SHGravGrid(object):
             return fig, axes
 
         else:
-            if self.normal_gravity is True:
-                (self.total*1.e5).plot(
-                    colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, ax=ax, **kwargs)
-            else:
-                self.total.plot(
-                    colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, ax=ax, **kwargs)
+            self.total.plot(
+                colorbar=colorbar, cb_orientation=cb_orientation,
+                cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_pot(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='potential, m$^2$ s$^{-2}$', ax=None, show=True,
+                 cb_label='potential, nT m', ax=None, show=True,
                  fname=None, **kwargs):
         """
-        Plot the gravitational potential.
+        Plot the magnetic potential.
 
         Usage
         -----
@@ -379,7 +346,7 @@ class SHGravGrid(object):
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
-        cb_label : str, optional, default = 'potential, m s$^{-1}$'
+        cb_label : str, optional, default = 'potential, nT m'
             Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -409,8 +376,8 @@ class SHGravGrid(object):
              tick_interval=[45, 45], xlabel='', ylabel='', show=True,
              fname=None, **kwargs):
         """
-        Plot the three vector components of the gravity field and the gravity
-        disturbance.
+        Plot the three vector components of the magnetic field and the total
+        magnetic intensity.
 
         Usage
         -----

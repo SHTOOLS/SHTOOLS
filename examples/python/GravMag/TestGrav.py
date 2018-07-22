@@ -142,13 +142,12 @@ def TestFilter():
 
 def TestMakeMagGrid():
     infile = '../../ExampleDataFiles/FSU_mars90.sh'
-    clm, lmax, header  = shio.shread(infile, header=True, skip=1)
+    clm, lmax, header = shio.shread(infile, header=True, skip=1)
     r0 = float(header[0]) * 1.e3
     a = constant.r_mars.value + 145.0e3  # radius to evaluate the field
 
-    rad, theta, phi, total = gravmag.MakeMagGridDH(clm, r0, lmax=719, a=a,
-                                                   f=constant.f_mars.value,
-                                                   lmax_calc=90)
+    rad, theta, phi, total, pot = gravmag.MakeMagGridDH(
+        clm, r0, lmax=719, a=a, f=constant.f_mars.value, lmax_calc=90)
     fig, axes = plt.subplots(2, 2)
 
     for num, vv, s in ((0, rad, "$B_{r}$"), (1, theta, "$B_{\\theta}$"),
@@ -177,6 +176,7 @@ def TestMakeMagGrid():
     ax.legend()
 
     fig_spectrum.savefig('Mars_MagPowerSpectrum.png')
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

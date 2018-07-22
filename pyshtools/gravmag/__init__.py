@@ -48,6 +48,8 @@ MakeMagGridDH       Create 2D cylindrical maps on a flattened ellipsoid of
                     all three vector components of the magnetic field, the
                     magnitude of the magnetic field, and the magnetic
                     potential.
+MakeMagGradGridDH   Calculate the components of the magnetic field tensor
+                    on a flattened ellipsoid.
 mag_spectrum        Compute the spectrum of either the magnetic potential
                     or magnetic field strength.
 """
@@ -69,5 +71,6 @@ from ..shtools import DownContFilterMA
 from ..shtools import DownContFilterMC
 from ..shtools import NormalGravity
 from ..shtools import MakeMagGridDH
+from ..shtools import MakeMagGradGridDH
 
 from .mag_spectrum import mag_spectrum

@@ -18,6 +18,10 @@ main namespace:
     SHGravGrid        : Class for global gridded gravitational field data.
     SHGravTensor      : Class for the gravity tensor and eigenvalues.
     SHGeoid           : Class for the geoid.
+    SHMagCoeffs      : Class for gravitational potential spherical harmonic
+                        coefficients.
+    SHMagGrid        : Class for global gridded gravitational field data.
+    SHMagTensor      : Class for the gravity tensor and eigenvalues.
 
     shclasses         : All pyshtools classes and subclasses.
     shtools           : All Python-wrapped Fortran 95 routines.
@@ -70,9 +74,12 @@ from .shclasses import SHGravCoeffs
 from .shclasses import SHGravGrid
 from .shclasses import SHGravTensor
 from .shclasses import SHGeoid
+from .shclasses import SHMagCoeffs
+from .shclasses import SHMagGrid
+from .shclasses import SHMagTensor
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'legendre', 'expand', 'shio',
            'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
            'SHGrid', 'SHWindow', 'SHGravCoeffs', 'SHGravGrid', 'SHGravTensor',
-           'SHGeoid']
+           'SHGeoid', 'SHMagCoeffs', 'SHMagGrid', 'SHMagTensor']

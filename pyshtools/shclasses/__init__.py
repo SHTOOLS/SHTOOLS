@@ -26,7 +26,12 @@ Class structure:
     SHGravCoeffs
         SHGravRealCoeffs
 
+    SHMagCoeffs
+        SHMagRealCoeffs
+
     SHGravGrid
+
+    SHMagGrid
 
     SHTensor
         SHGravTensor
@@ -59,5 +64,9 @@ from .shgravcoeffs import SHGravCoeffs
 from .shgravcoeffs import SHGravRealCoeffs
 from .shgravgrid import SHGravGrid
 from .shtensor import SHGravTensor
-from .shtensor import SHMagTensor
 from .shgeoid import SHGeoid
+
+from .shmagcoeffs import SHMagCoeffs
+from .shmagcoeffs import SHMagRealCoeffs
+from .shmaggrid import SHMagGrid
+from .shtensor import SHMagTensor

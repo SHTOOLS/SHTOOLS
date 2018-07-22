@@ -1,22 +1,25 @@
-subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
+subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                               vxz, vyz, n, sampling, lmax_calc, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   Given the 4pi normalized gravitational spherical harmonic coefficients
-!   CILM, this subroutine will compute 2D Driscol and Healy sampled grids of
-!   the six components of the gravity "gradient" tensor in a local
-!   north-oriented reference frame:
+!   Given the magnetic potential spherical harmonic coefficients CILM, this
+!   subroutine will compute 2D Driscol and Healy sampled grids of the six
+!   components of the magnetic field tensor in a local north-oriented
+!   reference frame:
 !
 !       (Vxx,   Vxy,    Vxz)
 !       (Vyx,   Vyy,    Vyz)
 !       (Vzx,   Vzy,    Vzz)
 !   
-!   where X points NORTH, Y points WEST, and Z points UPWARD. The gravitational
+!   where X points NORTH, Y points WEST, and Z points UPWARD. The magnetic
 !   potential is defined as
 !
-!       V = GM/r Sum_{l=0}^LMAX (R0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm},
+!       V = R0 Sum_{l=0}^LMAX (R0/r)^(l+1) Sum_{m=-l}^l C_{lm} Y_{lm},
 !
-!   Laplaces equation implies that Vxx + Vyy + Vzz = 0, and the gravity tensor
+!   where the Gauss coefficients are in units of nT, and the spherical
+!   harmonic functions are Schmidt semi-normalized.
+!
+!   Laplaces equation implies that Vxx + Vyy + Vzz = 0, and the tensor
 !   is symmetric. The components are calculated according to eq. 1 in
 !   Petrovskaya and Vershkov (2006, J. Geod, 80, 117-127), which is based on the
 !   eq. 3.28 in Reed (1973, Ohio State Univ., Dept. Geod. Sci., Rep. 201,
@@ -33,27 +36,24 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !   where r, t, p stand for radius, theta, and phi, and subscripts on V denote
 !   partial derivatives.
 !
-!   The output grid are in units of 1/s and are cacluated on a flattened
-!   ellipsoid with semi-major axis A and flattening F. To obtain units of
-!   Eotvos (10^-9 s^-1), multiply by 10^9. The output grids contain N samples
-!   in latitude and longitude by default, but if the optional parameter SAMPLING
-!   is set to 2, the grids will contain N samples in latitude and 2N samples
-!   in longitude. The first latitudinal band of the grid corresponds to 90 N,
-!   the latitudinal band for 90 S is not calculated, and the latitudinal
-!   sampling interval is 180/N degrees. The first longitudinal band is 0 E,
-!   the longitudinal band for 360 E is not calculated, and the longitudinal
-!   sampling interval is 360/N for equally sampled and 180/N for equally spaced
-!   grids, respectively.
+!   The output grids are in units of nT / m and are cacluated on a flattened
+!   ellipsoid with semi-major axis A and flattening F. The output grids contain
+!   N samples in latitude and longitude by default, but if the optional
+!   parameter SAMPLING is set to 2, the grids will contain N samples in
+!   latitude and 2N samples in longitude. The first latitudinal band of the
+!   grid corresponds to 90 N, the latitudinal band for 90 S is not calculated,
+!   and the latitudinal sampling interval is 180/N degrees. The first
+!   longitudinal band is 0 E, the longitudinal band for 360 E is not
+!   calculated, and the longitudinal sampling interval is 360/N for equally
+!   sampled and 180/N for equally spaced grids, respectively.
 !
 !   Calling Parameters
 !
 !       IN
-!           cilm        The 4-pi normalized gravitational potential spherical
+!           cilm        Schmidth seminormalized magnetic potential spherical
 !                       harmonic coefficients.
 !           lmax        The maximum spherical harmonic degree of the function,
 !                       used to determine the number of samples N.
-!           GM          Product of the gravitatonal constant and the planet's
-!                       mass.
 !           r0          Reference radius of potential coefficients.
 !           a           The semimajor axis of the flattened ellipsoid.
 !           f           Flattening of the planet.
@@ -67,12 +67,12 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !                       the coefficients up to.
 !
 !       OUT
-!           Vxx         x-x component of the gravity gradient tensor.
-!           Vyy         y-y component of the gravity gradient tensor.
-!           Vzz         z-z component of the gravity gradient tensor.
-!           Vxy         x-y component of the gravity gradient tensor.
-!           Vxz         x-z component of the gravity gradient tensor.
-!           Vyz         y-z component of the gravity gradient tensor.
+!           Vxx         x-x component of the magnetic field tensor.
+!           Vyy         y-y component of the magnetic field tensor.
+!           Vzz         z-z component of the magnetic field tensor.
+!           Vxy         x-y component of the magnetic field tensor.
+!           Vxz         x-z component of the magnetic field tensor.
+!           Vyz         y-z component of the magnetic field tensor.
 !           N           Number of samples in latitude. Number of samples in
 !                       longitude is N when sampling is 1 (default), and is
 !                       2N when sampling is 2.
@@ -108,7 +108,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     implicit none
 
-    real*8, intent(in) :: cilm(:,:,:), gm, r0, a, f
+    real*8, intent(in) :: cilm(:,:,:), r0, a, f
     real*8, intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), vxz(:,:), &
                            vyz(:,:)
     integer, intent(in) :: lmax
@@ -143,7 +143,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     if (present(sampling)) then
         if (sampling /= 1 .and. sampling /=2) then
-            print*, "Error --- MakeGravGradGridDH"
+            print*, "Error --- MakeMagGradGridDH"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
             print*, "Input value is ", sampling
@@ -158,7 +158,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     end if
 
     if (size(cilm(:,1,1)) < 2) then
-        print*, "Error --- MakeGravGradGridDH"
+        print*, "Error --- MakeMagGradGridDH"
         print*, "CILM must be dimensioned as (2, *, *)."
         print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), &
                 size(cilm(1,1,:))
@@ -189,7 +189,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             size(vxy(1,:)) < nlong .or. size(vxz(:,1)) < n .or. &
             size(vxz(1,:)) < nlong  .or. size(vyz(:,1)) < n .or. &
             size(vyz(1,:)) < nlong) then
-        print*, "Error --- MakeGravGradGridDH"
+        print*, "Error --- MakeMagGradGridDH"
 
         if (present(sampling)) then
             if (sampling == 1) then
@@ -217,22 +217,13 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     end if
 
-    if (cilm(1,1,1) /= 1.0d0 .and. f /= 0.0d0) then
-        print*, "Warning --- MakeGravGradGridDH"
-        print*, "The degree-0 term of the spherical harmonic coefficients is not equal to 1."
-        print*, "The variation in gravity resulting from variations in radius of the flattened"
-        print*, "ellipsoid will not be taken into account."
-        print*, "C00 = ", cilm(1,1,1)
-        print*, "F = ", f
-    end if
-
     pi = acos(-1.0d0)
 
     scalef = 1.0d-280
 
     if (present(lmax_calc)) then
         if (lmax_calc > lmax) then
-            print*, "Error --- MakeGravGradGridDH"
+            print*, "Error --- MakeMagGradGridDH"
             print*, "LMAX_CALC must be less than or equal to LMAX."
             print*, "LMAX = ", lmax
             print*, "LMAX_CALC = ", lmax_calc
@@ -272,7 +263,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         allocate (fsymsign(lmax_comp+1,lmax_comp+1), stat=astat(4))
 
         if (sum(astat(1:4)) /= 0) then
-            print*, "Error --- MakeGravGradGridDH"
+            print*, "Error --- MakeMagGradGridDH"
             print*, "Problem allocating arrays SQR, FF1, FF2, or FSYMSIGN", &
                     astat(1), astat(2), astat(3), astat(4)
             if (present(exitstatus)) then
@@ -325,22 +316,21 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         !
         !----------------------------------------------------------------------
         if (lmax_comp /= 0) then
-            ff1(2,1) = sqr(3)
+            ff1(2,1) = 1.0d0
             ff2(2,1) = 0.0d0
 
-        end if
+        endif
 
         do l = 2, lmax_comp, 1
-            ff1(l+1,1) = sqr(2*l-1) * sqr(2*l+1) / dble(l)
-            ff2(l+1,1) = dble(l-1) * sqr(2*l+1) / sqr(2*l-3) / dble(l)
+            ff1(l+1,1) = dble(2*l-1) / dble(l)
+            ff2(l+1,1) = dble(l-1) / dble(l)
 
             do m = 1, l-2, 1
-                ff1(l+1,m+1) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-                ff2(l+1,m+1) = sqr(2*l+1) * sqr(l-m-1) * sqr(l+m-1) &
-                               / sqr(2*l-3) / sqr(l+m) / sqr(l-m)
+                ff1(l+1,m+1) = dble(2*l-1) / sqr(l+m) / sqr(l-m)
+                ff2(l+1,m+1) = sqr(l-m-1) * sqr(l+m-1) / sqr(l+m) / sqr(l-m)
             end do
 
-            ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
+            ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
             ff2(l+1,l) = 0.0d0
 
         end do
@@ -426,25 +416,19 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
         pm2 = 1.0d0
 
-        tempr = -cilm(1,1,1) * pm2 ! l = 0
-        coefr0 = coefr0 + tempr
-        coefrs0 = coefrs0 + tempr   ! fsymsign is always 1 for l=m=0
-
-        tempr = 2 * cilm(1,1,1) * pm2  ! l = 0
-        coefrr0 = coefrr0 + tempr
-        coefrrs0 = coefrrs0 + tempr
+        ! l = 0 terms are zero
 
         ! derivative in theta and phi of l=0 term is 0, so no need to
         ! calculate this
 
         if (lmax_comp /= 0) then    ! l = 1
-            prefactor(1) = r0 / r_ex
+            prefactor(1) = (r0 / r_ex)**2
 
             do l = 2, lmax_comp, 1
                 prefactor(l) = prefactor(l-1) * r0 / r_ex
             end do
 
-            pm1 =  ff1(2,1) * z
+            pm1 = ff1(2,1) * z
 
             ! -2 = (l+1) prefactor
             tempr = cilm(1,2,1) * pm1 * (-2) * prefactor(1)
@@ -491,7 +475,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coefrr0 = coefrr0 + tempr
             coefrrs0 = coefrrs0 + tempr * fsymsign(l1,1)
 
-            dp = l * ( sqr(2*l+1) / sqr(2*l-1) * pm1 - z * p ) / u**2
+            dp = l * (pm1 - z * p) / u**2
             tempr = cilm(1,l1,1) * dp * prefactor(l)
             coeft0 = coeft0 + tempr
             coefts0 = coefts0 - tempr * fsymsign(l1,1)  ! reverse fsymsign
@@ -521,7 +505,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             rescalem = rescalem * u
 
             pmm = pmm * sqr(2*m+1) / sqr(2*m)
-            pm2 = pmm
+            pm2 = pmm / sqr(2*m+1)
 
             tempc = dcmplx(cilm(1,m1,m1), - cilm(2,m1,m1)) * pm2 * (-m-1) &
                     * prefactor(m)    ! (m,m)
@@ -597,7 +581,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coefrp(m1) = coefrp(m1) + tempc
             coefrps(m1) = coefrps(m1) - tempc ! fsymsign = -1
 
-            dp =  (sqr(2*m+3) * pmm - z * (m+1) * pm1) / u**2
+            dp = (pm2 * sqr(2*m+1) - z * (m+1) * pm1) / u**2
             tempc = dcmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1)) * dp &
                     * prefactor(m+1)    ! (m+1,m)
             coeft(m1) = coeft(m1) + tempc
@@ -612,7 +596,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                     * prefactor(m+1) * m  ! (m+1,m)
             coeftp(m1) = coeftp(m1) + tempc
             coeftps(m1) = coeftps(m1) + tempc ! reverse fsymsign
-    
+
             dp2 = -(m1*(m1+1) - (m**2)/u**2) * pm1 + z * dp
             dp2s = (m1*(m1+1) - (m**2)/u**2) * pm1 + z * dp
             tempc = dcmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1)) &
@@ -648,8 +632,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 coefrp(m1) = coefrp(m1) + tempc
                 coefrps(m1) = coefrps(m1) + tempc * fsymsign(l1,m1)
 
-                dp = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) &
-                       * pm1 - z * l * p) / u**2
+                dp = ( sqr(l+m) * sqr(l-m) * pm1 - l * z * p ) / u**2
                 tempc = dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) * dp &
                         * prefactor(l)
                 coeft(m1) = coeft(m1) + tempc
@@ -713,7 +696,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
             rescalem = rescalem * u
 
-            pmm = pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
+            pmm = pmm / sqr(2*lmax_comp) * rescalem
             tempc = dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                             - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm &
                             * (-lmax_comp-1) * prefactor(lmax_comp)
@@ -779,59 +762,59 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         ! Note that the first angular derivatives are with repsect to z,
         ! but that the second is with respect to theta.
 
-        coefr0 = coefr0 * gm / r_ex**2
-        coefr(2:lmax+1) = coefr(2:lmax+1) * gm / r_ex**2
+        coefr0 = coefr0 * r0 / r_ex
+        coefr(2:lmax+1) = coefr(2:lmax+1) * r0 / r_ex
 
-        coefrs0 = coefrs0 * gm / r_ex**2
-        coefrs(2:lmax+1) = coefrs(2:lmax+1) * gm / r_ex**2
+        coefrs0 = coefrs0 * r0 / r_ex
+        coefrs(2:lmax+1) = coefrs(2:lmax+1) * r0 / r_ex
 
-        coefrt0 =  -sint * coefrt0 * gm / r_ex**2
-        coefrt(2:lmax+1) =  -sint * coefrt(2:lmax+1) * gm / r_ex**2
+        coefrt0 = -sint * coefrt0 * r0 / r_ex
+        coefrt(2:lmax+1) = -sint * coefrt(2:lmax+1) * r0 / r_ex
 
-        coefrts0 =  -sint * coefrts0 * gm / r_ex**2
-        coefrts(2:lmax+1) =  -sint * coefrts(2:lmax+1) * gm / r_ex**2
+        coefrts0 = -sint * coefrts0 * r0 / r_ex
+        coefrts(2:lmax+1) = -sint * coefrts(2:lmax+1) * r0 / r_ex
 
-        coefrr0 = coefrr0 * gm / r_ex**3
-        coefrr(2:lmax+1) = coefrr(2:lmax+1) * gm / r_ex**3
+        coefrr0 = coefrr0 * r0 / r_ex**2
+        coefrr(2:lmax+1) = coefrr(2:lmax+1) * r0 / r_ex**2
 
-        coefrrs0 = coefrrs0 * gm / r_ex**3
-        coefrrs(2:lmax+1) = coefrrs(2:lmax+1) * gm / r_ex**3
+        coefrrs0 = coefrrs0 * r0 / r_ex**2
+        coefrrs(2:lmax+1) = coefrrs(2:lmax+1) * r0 / r_ex**2
 
-        coeft0 = -sint * coeft0 * gm / r_ex
-        coeft(2:lmax+1) = -sint * coeft(2:lmax+1) * gm / r_ex
+        coeft0 = -sint * coeft0 * r0
+        coeft(2:lmax+1) = -sint * coeft(2:lmax+1) * r0
 
-        coefts0 = -sint * coefts0 * gm / r_ex
-        coefts(2:lmax+1) = -sint * coefts(2:lmax+1) * gm / r_ex
+        coefts0 = -sint * coefts0 * r0
+        coefts(2:lmax+1) = -sint * coefts(2:lmax+1) * r0
 
-        coeftt0 = coeftt0 * gm / r_ex
-        coeftt(2:lmax+1) = coeftt(2:lmax+1) * gm / r_ex
+        coeftt0 = coeftt0 * r0
+        coeftt(2:lmax+1) = coeftt(2:lmax+1) * r0
 
-        coeftts0 = coeftts0 * gm / r_ex
-        coeftts(2:lmax+1) = coeftts(2:lmax+1) * gm / r_ex
+        coeftts0 = coeftts0 * r0
+        coeftts(2:lmax+1) = coeftts(2:lmax+1) * r0
 
-        coeftp0 = -sint * coeftp0 * gm / r_ex
-        coeftp(2:lmax+1) = -sint * coeftp(2:lmax+1) * gm / r_ex
+        coeftp0 = -sint * coeftp0 * r0
+        coeftp(2:lmax+1) = -sint * coeftp(2:lmax+1) * r0
 
-        coeftps0 = -sint * coeftps0 * gm / r_ex
-        coeftps(2:lmax+1) = -sint * coeftps(2:lmax+1) * gm / r_ex
+        coeftps0 = -sint * coeftps0 * r0
+        coeftps(2:lmax+1) = -sint * coeftps(2:lmax+1) * r0
 
-        coefp0 = coefp0 * gm / r_ex
-        coefp(2:lmax+1) = coefp(2:lmax+1) * gm / r_ex
+        coefp0 = coefp0 * r0
+        coefp(2:lmax+1) = coefp(2:lmax+1) * r0
 
-        coefps0 = coefps0 * gm / r_ex
-        coefps(2:lmax+1) = coefps(2:lmax+1) * gm / r_ex
+        coefps0 = coefps0 * r0
+        coefps(2:lmax+1) = coefps(2:lmax+1) * r0
 
-        coefpp0 = coefpp0 * gm / r_ex
-        coefpp(2:lmax+1) = coefpp(2:lmax+1) * gm / r_ex
+        coefpp0 = coefpp0 * r0
+        coefpp(2:lmax+1) = coefpp(2:lmax+1) * r0
 
-        coefpps0 = coefpps0 * gm / r_ex
-        coefpps(2:lmax+1) = coefpps(2:lmax+1) * gm / r_ex
+        coefpps0 = coefpps0 * r0
+        coefpps(2:lmax+1) = coefpps(2:lmax+1) * r0
 
-        coefrp0 = coefrp0 * gm / r_ex**2
-        coefrp(2:lmax+1) = coefrp(2:lmax+1) * gm / r_ex**2
+        coefrp0 = coefrp0 * r0 / r_ex
+        coefrp(2:lmax+1) = coefrp(2:lmax+1) * r0 / r_ex
 
-        coefrps0 = coefrps0 * gm / r_ex**2
-        coefrps(2:lmax+1) = coefrps(2:lmax+1) * gm / r_ex**2
+        coefrps0 = coefrps0 * r0 / r_ex
+        coefrps(2:lmax+1) = coefrps(2:lmax+1) * r0 / r_ex
 
         ! Vzz = Vrr
         coef(1) = dcmplx(coefrr0,0.0d0)
@@ -1058,7 +1041,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     pm2 = 1.0d0
 
-    tempr =  -cilm(1,1,1) * pm2 ! l = 0
+    tempr = -cilm(1,1,1) * pm2 ! l = 0
     coefr0 = coefr0 + tempr
 
     tempr =  2 * cilm(1,1,1) * pm2  ! l = 0
@@ -1093,7 +1076,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         tempr = cilm(1,l1,1) * p * (l1) * (l1+1) * prefactor(l)
         coefrr0 = coefrr0 + tempr
 
-        dp = l * ( sqr(2*l+1) / sqr(2*l-1) * pm1 )
+        dp = l * (pm1)
         tempr = cilm(1,l1,1) * dp * prefactor(l)
         coeft0 = coeft0 + tempr
 
@@ -1114,11 +1097,11 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     rescalem = 1.0d0 / scalef
 
     do m = 1, lmax_comp-1, 1
-            
+
         m1 = m + 1
 
         pmm = pmm * sqr(2*m+1) / sqr(2*m)
-        pm2 = pmm
+        pm2 = pmm / sqr(2*m+1)
 
         tempc = dcmplx(cilm(1,m1,m1), - cilm(2,m1,m1)) * pm2 * (-m-1) &
                 * prefactor(m)    ! (m,m)
@@ -1147,7 +1130,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
         pm1 = 0.0d0
 
-        dp = ( sqr(2*m+3) * pmm )
+        dp = (pm2 * sqr(2*m+1))
         tempc = dcmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1)) * dp &
                 * prefactor(m+1)    ! (m+1,m)
         coeft(m1) = coeft(m1) + tempc
@@ -1162,7 +1145,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
         do l = m + 2, lmax_comp, 1
             l1 = l + 1
-            p =  - ff2(l1,m1) * pm2
+            p = - ff2(l1,m1) * pm2
             tempc = dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) * p * (-l1) &
                     * prefactor(l)
             coefr(m1) = coefr(m1) + tempc
@@ -1183,7 +1166,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                     * prefactor(l) * m
             coefrp(m1) = coefrp(m1) + tempc
 
-            dp = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1) 
+            dp = ( sqr(l+m) * sqr(l-m) * pm1)
             tempc = dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) * dp * prefactor(l)
             coeft(m1) = coeft(m1) + tempc
 
@@ -1217,7 +1200,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     if (lmax_comp /= 0) then
 
-        pmm = pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
+        pmm = pmm / sqr(2*lmax_comp) * rescalem
         tempc = dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                         - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm &
                         * (-lmax_comp-1) * prefactor(lmax_comp)
@@ -1243,7 +1226,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                         * (-lmax_comp-1) * prefactor(lmax_comp) * lmax_comp
         coefrp(lmax_comp+1) = coefrp(lmax_comp+1) + tempc
 
-        dp2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)) * pmm 
+        dp2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)) * pmm
         tempc = dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                         - cilm(2,lmax_comp+1,lmax_comp+1)) * dp2 &
                         * prefactor(lmax_comp)
@@ -1251,32 +1234,32 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     end if
 
-    coefr0 = coefr0 * gm / r_ex**2
-    coefr(2:lmax+1) = coefr(2:lmax+1) * gm / r_ex**2
+    coefr0 = coefr0 * r0 / r_ex
+    coefr(2:lmax+1) = coefr(2:lmax+1) * r0 / r_ex
 
-    coefrt0 = - coefrt0 * gm / r_ex**2
-    coefrt(2:lmax+1) = - coefrt(2:lmax+1) * gm / r_ex**2
+    coefrt0 = - coefrt0 * r0 / r_ex
+    coefrt(2:lmax+1) = - coefrt(2:lmax+1) * r0 / r_ex
 
-    coefrr0 = coefrr0 * gm / r_ex**3
-    coefrr(2:lmax+1) = coefrr(2:lmax+1) * gm / r_ex**3
+    coefrr0 = coefrr0 * r0 / r_ex**2
+    coefrr(2:lmax+1) = coefrr(2:lmax+1) * r0 / r_ex**2
 
-    coeft0 = - coeft0 * gm / r_ex
-    coeft(2:lmax+1) = - coeft(2:lmax+1) * gm / r_ex
+    coeft0 = - coeft0 * r0
+    coeft(2:lmax+1) = - coeft(2:lmax+1) * r0
 
-    coeftt0 = coeftt0 * gm / r_ex
-    coeftt(2:lmax+1) = coeftt(2:lmax+1) * gm / r_ex
+    coeftt0 = coeftt0 * r0
+    coeftt(2:lmax+1) = coeftt(2:lmax+1) * r0
 
-    coeftp0 = - coeftp0 * gm / r_ex
-    coeftp(2:lmax+1) = - coeftp(2:lmax+1) * gm / r_ex
+    coeftp0 = - coeftp0 * r0
+    coeftp(2:lmax+1) = - coeftp(2:lmax+1) * r0
 
-    coefp0 = coefp0 * gm / r_ex
-    coefp(2:lmax+1) = coefp(2:lmax+1) * gm / r_ex
+    coefp0 = coefp0 * r0
+    coefp(2:lmax+1) = coefp(2:lmax+1) * r0
 
-    coefpp0 = coefpp0 * gm / r_ex
-    coefpp(2:lmax+1) = coefpp(2:lmax+1) * gm / r_ex
+    coefpp0 = coefpp0 * r0
+    coefpp(2:lmax+1) = coefpp(2:lmax+1) * r0
 
-    coefrp0 = coefrp0 * gm / r_ex**2
-    coefrp(2:lmax+1) = coefrp(2:lmax+1) * gm / r_ex**2
+    coefrp0 = coefrp0 * r0 / r_ex
+    coefrp(2:lmax+1) = coefrp(2:lmax+1) * r0 / r_ex
 
     ! Vzz = Vrr
     coef(1) = dcmplx(coefrr0,0.0d0)
@@ -1361,4 +1344,4 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     call dfftw_destroy_plan(plan)
 
-end subroutine MakeGravGradGridDH
+end subroutine MakeMagGradGridDH

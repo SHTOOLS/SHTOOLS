@@ -109,8 +109,8 @@ class SHWindow(object):
     def __init__(self):
         """Initialize with a factory method."""
         print('Initialize the class using one of the class methods:\n'
-              '>>> SHWindow.from_cap()\n'
-              '>>> SHWindow.from_mask()')
+              '>>> pyshtools.SHWindow.from_cap\n'
+              '>>> pyshtools.SHWindow.from_mask')
 
     # ---- factory methods:
     @classmethod

@@ -101,10 +101,10 @@ class SHCoeffs(object):
     def __init__(self):
         """Unused constructor of the super class."""
         print('Initialize the class using one of the class methods:\n'
-              '>>> SHCoeffs.from_array\n'
-              '>>> SHCoeffs.from_random\n'
-              '>>> SHCoeffs.from_zeros\n'
-              '>>> SHCoeffs.from_file\n')
+              '>>> pyshtools.SHCoeffs.from_array\n'
+              '>>> pyshtools.SHCoeffs.from_random\n'
+              '>>> pyshtools.SHCoeffs.from_zeros\n'
+              '>>> pyshtools.SHCoeffs.from_file\n')
 
     # ---- Factory methods ----
     @classmethod
@@ -1536,13 +1536,13 @@ class SHCoeffs(object):
             if self.normalization == '4pi':
                 pass
             elif self.normalization == 'schmidt':
-                for l in degrees():
+                for l in degrees:
                     spectrum[l, :] /= (2. * l + 1.)
             elif self.normalization == 'ortho':
-                for l in degrees():
+                for l in degrees:
                     spectrum[l, :] /= (4. * _np.pi)
             elif self.normalization == 'unnorm':
-                for l in degrees():
+                for l in degrees:
                     ms = _np.arange(l+1)
                     conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
                     if self.kind == 'real':
@@ -2094,8 +2094,8 @@ class SHGrid(object):
     def __init__():
         """Unused constructor of the super class."""
         print('Initialize the class using one of the class methods:\n'
-              '>>> SHGrid.from_array?\n'
-              '>>> SHGrid.from_file?\n')
+              '>>> pyshtools.SHGrid.from_array\n'
+              '>>> pyshtools.SHGrid.from_file\n')
 
     # ---- Factory methods ----
     @classmethod

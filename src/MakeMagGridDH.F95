@@ -3,7 +3,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                          pot_grid, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   Given the Schmidt normalized magnetic potential spherical harmonic
+!   Given the Schmidt semi-normalized magnetic potential spherical harmonic
 !   coefficients CILM, this subroutine will compute a 2D Driscoll and Healy
 !   sampled grid of the three components and magnitude field. The output grids
 !   are cacluated on a flattened ellipsoid with semi-major axis A and flattening
@@ -27,13 +27,11 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
 !   360 E is not calculated, and the longitudinal sampling interval is 360/N for
 !   equally sampled and 180/N for equally spaced grids, respectively.
 !
-!   This routine assumes that the spherical harmonic coefficients of geodesy
-!   4-pi normalized.
-!
 !   Calling Parameters
 !
 !       IN
-!           cilm        Magnetic potential spherical harmonic coefficients.
+!           cilm        The Schmidt semi-normalized magnetic potential
+!                       spherical harmonic coefficients.
 !           lmax        The maximum spherical harmonic degree of the function,
 !                       used to determine the number of samples N.
 !           r0          Reference radius of potential coefficients.
@@ -420,7 +418,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
             prefactor(l) = prefactor(l-1) * r0 / r_ex
         end do
 
-        pm1 =  ff1(2,1) * z 
+        pm1 = ff1(2,1) * z
         tempr = cilm(1,2,1) * pm1 * (-2) * prefactor(1) ! -2 = (l+1) prefactor
         coefr0 = coefr0 + tempr
         coefrs0 = coefrs0 - tempr   ! fsymsign = -1
@@ -788,13 +786,13 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
 
         pm1 = 0.0d0
 
-        dp =  (pm2 * sqr(2*m+1))
+        dp = (pm2 * sqr(2*m+1))
         coeft(m1) = coeft(m1) + dcmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1)) &
                                 * dp * prefactor(m+1)
 
         do l = m+2, lmax_comp, 1
             l1 = l + 1
-            p =  - ff2(l1,m1) * pm2
+            p = - ff2(l1,m1) * pm2
             coefr(m1) = coefr(m1) + dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) &
                                     * p * (-l1) * prefactor(l)
 

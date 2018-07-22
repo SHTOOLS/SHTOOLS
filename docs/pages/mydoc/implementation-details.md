@@ -27,13 +27,13 @@ f\left(\theta,\phi\right) = \sum_{l=0}^{L} \sum_{m=-l}^l f_{lm} \, Y_{lm}\left(\
 Using the separate variables $$C_{lm}$$ and $$S_{lm}$$ for the cosine and sine spherical harmonic coefficients, respectively, and after interchanging the order of summations over $$l$$ and $$m$$, the function can be expressed equivalently as
 
 $$ \begin{equation}
-f\left(\theta,\phi\right) = \sum_{m=0}^L \sum_{m=l}^{L} \left( C_{lm} \, \bar{P}_{lm}(\cos \theta) \, \cos m\phi + S_{lm} \, \bar{P}_{lm}(\cos \theta) \, \sin m\phi\right).
+f\left(\theta,\phi\right) = \sum_{m=0}^L \sum_{l=m}^{L} \left( C_{lm} \, \bar{P}_{lm}(\cos \theta) \, \cos m\phi + S_{lm} \, \bar{P}_{lm}(\cos \theta) \, \sin m\phi\right).
 \end{equation} $$
 
 Defining the two component vector
 
 $$ \begin{equation}
-\left[a_m(\theta), b_m(\theta)\right] = \sum_{m=l}^{L} \left[C_{lm}, S_{lm}\right] \, \bar{P}_{lm}(\cos \theta),
+\left[a_m(\theta), b_m(\theta)\right] = \sum_{l=m}^{L} \left[C_{lm}, S_{lm}\right] \, \bar{P}_{lm}(\cos \theta),
 \end{equation} $$
 
 The function $$f$$ can be written more simply as
