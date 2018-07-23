@@ -1,5 +1,5 @@
 """
-    Spherical Harmonic Coefficients classes
+    Spherical Harmonic Coefficient classes
 
         SHCoeffs : SHRealCoeffs, SHComplexCoeffs
 """
@@ -10,6 +10,7 @@ from __future__ import print_function as _print_function
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import warnings as _warnings
 from scipy.special import factorial as _factorial
@@ -28,11 +29,11 @@ class SHCoeffs(object):
     """
     Spherical Harmonics Coefficient class.
 
-    The coefficients of this class can be initialized using one of the
-    four constructor methods:
+    The coefficients of this class can be initialized using one of the four
+    constructor methods:
 
-        x = SHCoeffs.from_array(numpy.zeros((2, lmax+1, lmax+1)))
-        x = SHCoeffs.from_random(powerspectrum[0:lmax+1])
+        x = SHCoeffs.from_array(array)
+        x = SHCoeffs.from_random(powerspectrum)
         x = SHCoeffs.from_zeros(lmax)
         x = SHCoeffs.from_file('fname.dat')
 
@@ -69,13 +70,11 @@ class SHCoeffs(object):
 
     Each class instance provides the following methods:
 
-    to_array()            : Return an array of spherical harmonic coefficients
-                            with a different normalization convention.
-    to_file()             : Save raw spherical harmonic coefficients as a file.
     degrees()             : Return an array listing the spherical harmonic
                             degrees from 0 to lmax.
     spectrum()            : Return the spectrum of the function as a function
                             of spherical harmonic degree.
+    volume()              : Calculate the volume of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
@@ -87,11 +86,14 @@ class SHCoeffs(object):
     expand()              : Evaluate the coefficients either on a spherical
                             grid and return an SHGrid class instance, or for
                             a list of latitude and longitude coordinates.
-    copy()                : Return a copy of the class instance.
-    plot_spectrum()       : Plot the  spectrum as a function of spherical
+    plot_spectrum()       : Plot the spectrum as a function of spherical
                             harmonic degree.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
-                            coefficients.
+                            degrees and orders.
+    to_array()            : Return an array of spherical harmonic coefficients
+                            with a different normalization convention.
+    to_file()             : Save raw spherical harmonic coefficients as a file.
+    copy()                : Return a copy of the class instance.
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
     """
@@ -99,10 +101,10 @@ class SHCoeffs(object):
     def __init__(self):
         """Unused constructor of the super class."""
         print('Initialize the class using one of the class methods:\n'
-              '>>> SHCoeffs.from_array?\n'
-              '>>> SHCoeffs.from_random?\n'
-              '>>> SHCoeffs.from_zeros?\n'
-              '>>> SHCoeffs.from_file?\n')
+              '>>> pyshtools.SHCoeffs.from_array\n'
+              '>>> pyshtools.SHCoeffs.from_random\n'
+              '>>> pyshtools.SHCoeffs.from_zeros\n'
+              '>>> pyshtools.SHCoeffs.from_file\n')
 
     # ---- Factory methods ----
     @classmethod
@@ -254,7 +256,7 @@ class SHCoeffs(object):
                     csphase=1, exact_power=False):
         """
         Initialize the class with spherical harmonic coefficients as random
-        variables.
+        variables with a given spectrum.
 
         Usage
         -----
@@ -272,7 +274,7 @@ class SHCoeffs(object):
             degree l of the random coefficients, where L is the maximum
             spherical harmonic bandwidth.
         lmax : int, optional, default = len(power) - 1
-            The highest spherical harmonic degree l of the output coefficients.
+            The maximum spherical harmonic degree l of the output coefficients.
             The coefficients will be set to zero for degrees greater than L.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
@@ -285,8 +287,8 @@ class SHCoeffs(object):
             or -1 to include it.
         exact_power : bool, optional, default = False
             The total variance of the coefficients is set exactly to the input
-            power. This means that the distribution of power at degree l
-            amongst the angular orders is random, but the total power is fixed.
+            power. The distribution of power at degree l amongst the angular
+            orders is random, but the total power is fixed.
 
         Description
         -----------
@@ -295,7 +297,7 @@ class SHCoeffs(object):
         each coefficient at degree l is equal to the total power at degree
         l divided by the number of coefficients at that degree. The power
         spectrum of the random realization can be fixed exactly to the input
-        spectrum using the keyword exact_power.
+        spectrum by setting exact_power to True.
         """
         # check if all arguments are correct
         if type(normalization) != str:
@@ -341,7 +343,7 @@ class SHCoeffs(object):
             lmax = 85
 
         # Create coefficients with unit variance, which returns an expected
-        # total power per degree of (2l+1).
+        # total power per degree of (2l+1) for 4pi normalized harmonics.
         if kind.lower() == 'real':
             coeffs = _np.empty((2, nl, nl))
             for l in degrees:
@@ -355,29 +357,24 @@ class SHCoeffs(object):
                                        ) / _np.sqrt(2.)
 
         if exact_power:
-            power_per_l = _spectrum(coeffs, normalization=normalization,
-                                    unit='per_l')
+            power_per_l = _spectrum(coeffs, normalization='4pi', unit='per_l')
             coeffs *= _np.sqrt(
                 power[0:nl] / power_per_l)[_np.newaxis, :, _np.newaxis]
         else:
-            if normalization.lower() == '4pi':
-                coeffs *= _np.sqrt(
-                    power[0:nl] / (2. * degrees + 1.))[_np.newaxis, :,
-                                                       _np.newaxis]
-            elif normalization.lower() == 'ortho':
-                coeffs *= _np.sqrt(
-                    4. * _np.pi * power[0:nl] / (2. * degrees + 1.)
-                    )[_np.newaxis, :, _np.newaxis]
-            elif normalization.lower() == 'schmidt':
-                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
-            elif normalization.lower() == 'unnorm':
-                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
-                for l in degrees:
-                    ms = _np.arange(l+1)
-                    coeffs[:, l, :l+1] *= _np.sqrt(_factorial(l-ms) /
-                                                   _factorial(l+ms))
-                if kind.lower() == 'real':
-                    coeffs[:, :, 1:] *= _np.sqrt(2.)
+            coeffs *= _np.sqrt(
+                power[0:nl] / (2 * degrees + 1))[_np.newaxis, :, _np.newaxis]
+
+        if normalization.lower() == '4pi':
+            pass
+        elif normalization.lower() == 'ortho':
+            coeffs = _convert(coeffs, normalization_in='4pi',
+                              normalization_out='ortho')
+        elif normalization.lower() == 'schmidt':
+            coeffs = _convert(coeffs, normalization_in='4pi',
+                              normalization_out='schmidt')
+        elif normalization.lower() == 'unnorm':
+            coeffs = _convert(coeffs, normalization_in='4pi',
+                              normalization_out='unnorm')
 
         if lmax > nl - 1:
             coeffs = _np.pad(coeffs, ((0, 0), (0, lmax - nl + 1),
@@ -454,16 +451,17 @@ class SHCoeffs(object):
         numpy.load().
         """
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho', 'schmidt', " +
+                "The input normalization must be '4pi', 'ortho', 'schmidt', "
                 "or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
+
         if csphase != 1 and csphase != -1:
             raise ValueError(
                 "csphase must be 1 or -1. Input value was {:s}"
@@ -479,9 +477,10 @@ class SHCoeffs(object):
                 coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
         elif format.lower() == 'npy':
             coeffs = _np.load(fname, **kwargs)
+            lmaxout = coeffs.shape[1] - 1
         else:
             raise NotImplementedError(
-                'format={:s} not yet implemented'.format(repr(format)))
+                'format={:s} not implemented'.format(repr(format)))
 
         if normalization.lower() == 'unnorm' and lmaxout > 85:
             _warnings.warn("Calculations using unnormalized coefficients " +
@@ -501,336 +500,7 @@ class SHCoeffs(object):
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase, header=header_list)
 
-    def copy(self):
-        """Return a deep copy of the class instance."""
-        return _copy.deepcopy(self)
-
-    def to_file(self, filename, format='shtools', header=None, **kwargs):
-        """
-        Save raw spherical harmonic coefficients to a file.
-
-        Usage
-        -----
-        x.to_file(filename, [format='shtools', header])
-        x.to_file(filename, [format='npy', **kwargs])
-
-        Parameters
-        ----------
-        filename : str
-            Name of the output file.
-        format : str, optional, default = 'shtools'
-            'shtools' or 'npy'. See method from_file() for more information.
-        header : str, optional, default = None
-            A header string written to an 'shtools'-formatted file directly
-            before the spherical harmonic coefficients.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.save().
-        """
-        if format is 'shtools':
-            with open(filename, mode='w') as file:
-                if header is not None:
-                    file.write(header + '\n')
-                for l in range(self.lmax+1):
-                    for m in range(l+1):
-                        file.write('{:d}, {:d}, {:e}, {:e}\n'
-                                   .format(l, m, self.coeffs[0, l, m],
-                                           self.coeffs[1, l, m]))
-        elif format is 'npy':
-            _np.save(filename, self.coeffs, **kwargs)
-        else:
-            raise NotImplementedError(
-                'format={:s} not implemented'.format(repr(format)))
-
-    # ---- Mathematical operators ----
-    def __add__(self, other):
-        """
-        Add two similar sets of coefficients or coefficients and a scalar:
-        self + other.
-        """
-        if isinstance(other, SHCoeffs):
-            if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
-                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                                   dtype=self.coeffs.dtype)
-                coeffs[self.mask] = (self.coeffs[self.mask] +
-                                     other.coeffs[self.mask])
-                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                           normalization=self.normalization)
-            else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
-                                 'normalization and csphase.')
-        elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not add a complex constant to real ' +
-                                 'coefficients.')
-            coeffs[self.mask] = self.coeffs[self.mask] + other
-            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                       normalization=self.normalization)
-        else:
-            raise NotImplementedError('Mathematical operator not implemented' +
-                                      'for these operands.')
-
-    def __radd__(self, other):
-        """
-        Add two similar sets of coefficients or coefficients and a scalar:
-        other + self.
-        """
-        return self.__add__(other)
-
-    def __sub__(self, other):
-        """
-        Subtract two similar sets of coefficients or coefficients and a scalar:
-        self - other.
-        """
-        if isinstance(other, SHCoeffs):
-            if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
-                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                                   dtype=self.coeffs.dtype)
-                coeffs[self.mask] = (self.coeffs[self.mask] -
-                                     other.coeffs[self.mask])
-                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                           normalization=self.normalization)
-            else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
-                                 'normalization and csphase.')
-        elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not subtract a complex constant from ' +
-                                 'real coefficients.')
-            coeffs[self.mask] = self.coeffs[self.mask] - other
-            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                       normalization=self.normalization)
-        else:
-            raise NotImplementedError('Mathematical operator not implemented' +
-                                      'for these operands.')
-
-    def __rsub__(self, other):
-        """
-        Subtract two similar sets of coefficients or coefficients and a scalar:
-        other - self.
-        """
-        if isinstance(other, SHCoeffs):
-            if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
-                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                                   dtype=self.coeffs.dtype)
-                coeffs[self.mask] = (other.coeffs[self.mask] -
-                                     self.coeffs[self.mask])
-                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                           normalization=self.normalization)
-            else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
-                                 'normalization and csphase.')
-        elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not subtract a complex constant from ' +
-                                 'real coefficients.')
-            coeffs[self.mask] = other - self.coeffs[self.mask]
-            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                       normalization=self.normalization)
-        else:
-            raise NotImplementedError('Mathematical operator not implemented' +
-                                      'for these operands.')
-
-    def __mul__(self, other):
-        """
-        Multiply two similar sets of coefficients or coefficients and a scalar:
-        self * other.
-        """
-        if isinstance(other, SHCoeffs):
-            if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
-                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                                   dtype=self.coeffs.dtype)
-                coeffs[self.mask] = (self.coeffs[self.mask] *
-                                     other.coeffs[self.mask])
-                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                           normalization=self.normalization)
-            else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
-                                 'normalization and csphase.')
-        elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not multiply real coefficients by ' +
-                                 'a complex constant.')
-            coeffs[self.mask] = self.coeffs[self.mask] * other
-            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                       normalization=self.normalization)
-        else:
-            raise NotImplementedError('Mathematical operator not implemented' +
-                                      'for these operands.')
-
-    def __rmul__(self, other):
-        """
-        Multiply two similar sets of coefficients or coefficients and a scalar:
-        other * self.
-        """
-        return self.__mul__(other)
-
-    def __div__(self, other):
-        """
-        Divide two similar sets of coefficients or coefficients and a scalar
-        when __future__.division is not in effect: self / other.
-        """
-        if isinstance(other, SHCoeffs):
-            if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
-                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                                   dtype=self.coeffs.dtype)
-                coeffs[self.mask] = (self.coeffs[self.mask] /
-                                     other.coeffs[self.mask])
-                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                           normalization=self.normalization)
-            else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
-                                 'normalization and csphase.')
-        elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide real coefficients by ' +
-                                 'a complex constant.')
-            coeffs[self.mask] = self.coeffs[self.mask] / other
-            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                       normalization=self.normalization)
-        else:
-            raise NotImplementedError('Mathematical operator not implemented' +
-                                      'for these operands.')
-
-    def __truediv__(self, other):
-        """
-        Divide two similar sets of coefficients or coefficients and a scalar
-        when __future__.division is in effect: self / other.
-        """
-        if isinstance(other, SHCoeffs):
-            if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind):
-                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                                   dtype=self.coeffs.dtype)
-                coeffs[self.mask] = (self.coeffs[self.mask] /
-                                     other.coeffs[self.mask])
-                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                           normalization=self.normalization)
-            else:
-                raise ValueError('The two sets of coefficients must be of ' +
-                                 'the same kind and have the same ' +
-                                 'normalization and csphase.')
-        elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not multiply real coefficients by ' +
-                                 'a complex constant.')
-            coeffs[self.mask] = self.coeffs[self.mask] / other
-            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                       normalization=self.normalization)
-        else:
-            raise NotImplementedError('Mathematical operator not implemented' +
-                                      'for these operands.')
-
-    def __pow__(self, other):
-        """
-        Raise the spherical harmonic coefficients to a scalar power:
-        pow(self, other).
-        """
-        if _np.isscalar(other) is True:
-            return SHCoeffs.from_array(pow(self.coeffs, other),
-                                       csphase=self.csphase,
-                                       normalization=self.normalization)
-        else:
-            raise NotImplementedError('Mathematical operator not implemented' +
-                                      'for these operands.')
-
-    # ---- Extract data ----
-    def degrees(self):
-        """
-        Return a numpy array with the spherical harmonic degrees from 0 to
-        lmax.
-
-        Usage
-        -----
-        degrees = x.degrees()
-
-        Returns
-        -------
-        degrees : ndarray, shape (lmax+1)
-            1-D numpy ndarray listing the spherical harmonic degrees, where
-            lmax is the maximum spherical harmonic degree.
-        """
-        return _np.arange(self.lmax + 1)
-
-    def spectrum(self, lmax=None, convention='power', unit='per_l', base=10.):
-        """
-        Return the spectrum as a function of spherical harmonic degree.
-
-        Usage
-        -----
-        power = x.spectrum([lmax, convention, unit, base])
-
-        Returns
-        -------
-        power : ndarray, shape (lmax+1)
-            1-D numpy ndarray of the spectrum, where lmax is the maximum
-            spherical harmonic degree.
-
-        Parameters
-        ----------
-        lmax : int, optional, default = x.lmax
-            Maximum spherical harmonic degree of the spectrum to output.
-        convention : str, optional, default = 'power'
-            The type of spectrum to return: 'power' for power spectrum,
-            'energy' for energy spectrum, and 'l2norm' for the l2 norm
-            spectrum.
-        unit : str, optional, default = 'per_l'
-            If 'per_l', return the total contribution to the spectrum for each
-            spherical harmonic degree l. If 'per_lm', return the average
-            contribution to the spectrum for each coefficient at spherical
-            harmonic degree l. If 'per_dlogl', return the spectrum per log
-            interval dlog_a(l).
-        base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' spectrum.
-
-        Description
-        -----------
-        This function returns either the power spectrum, energy spectrum, or
-        l2-norm spectrum. Total power is defined as the integral of the
-        function squared over all space, divided by the area the function
-        spans. If the mean of the function is zero, this is equivalent to the
-        variance of the function. The total energy is the integral of the
-        function squared over all space and is 4pi times the total power. For
-        normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm is
-        the sum of the magnitude of the coefficients squared.
-
-        The output spectrum can be expresed using one of three units. 'per_l'
-        returns the contribution to the total spectrum from all angular orders
-        at degree l. 'per_lm' returns the average contribution to the total
-        spectrum from a single coefficient at degree l, which is equal to the
-        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
-        contribution to the total spectrum from all angular orders over an
-        infinitessimal logarithmic degree band. The contrubution in the band
-        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
-        and where spectrum(l, 'per_dlogl) is equal to
-        spectrum(l, 'per_l')*l*log(a).
-        """
-        return _spectrum(self.coeffs, normalization=self.normalization,
-                         convention=convention, unit=unit, base=base,
-                         lmax=lmax)
-
-    # ---- Set individual coefficients ----
+    # ---- Define methods that modify internal variables ----
     def set_coeffs(self, values, ls, ms):
         """
         Set spherical harmonic coefficients in-place to specified values.
@@ -852,9 +522,10 @@ class SHCoeffs(object):
 
         Examples
         --------
-        x.set_coeffs(10.,1,1)               # x.coeffs[0,1,1] = 10.
-        x.set_coeffs([1.,2], [1,2], [0,-2]) # x.coeffs[0,1,0] = 1.
-                                            # x.coeffs[1,2,2] = 2.
+        x.set_coeffs(10., 1, 1)                   # x.coeffs[0, 1, 1] = 10.
+        x.set_coeffs(5., 1, -1)                   # x.coeffs[1, 1, 1] = 5.
+        x.set_coeffs([1., 2], [1, 2], [0, -2])    # x.coeffs[0, 1, 0] = 1.
+                                                  # x.coeffs[1, 2, 2] = 2.
         """
         # Ensure that the type is correct
         values = _np.array(values)
@@ -864,7 +535,58 @@ class SHCoeffs(object):
         mneg_mask = (ms < 0).astype(_np.int)
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
-    # ---- Return coefficients with a different normalization convention ----
+    # ---- IO Routines
+    def to_file(self, filename, format='shtools', header=None, **kwargs):
+        """
+        Save raw spherical harmonic coefficients to a file.
+
+        Usage
+        -----
+        x.to_file(filename, [format='shtools', header])
+        x.to_file(filename, [format='npy', **kwargs])
+
+        Parameters
+        ----------
+        filename : str
+            Name of the output file.
+        format : str, optional, default = 'shtools'
+            'shtools' or 'npy'. See method from_file() for more information.
+        header : str, optional, default = None
+            A header string written to an 'shtools'-formatted file directly
+            before the spherical harmonic coefficients.
+        **kwargs : keyword argument list, optional for format = 'npy'
+            Keyword arguments of numpy.save().
+
+        Description
+        -----------
+        If format='shtools', the coefficients will be written to an ascii
+        formatted file. The first line of the file is an optional user provided
+        header line, and the spherical harmonic coefficients are then listed,
+        with increasing degree and order, with the format
+
+        l, m, coeffs[0, l, m], coeffs[1, l, m]
+
+        where l and m are the spherical harmonic degree and order,
+        respectively.
+
+        If format='npy', the spherical harmonic coefficients will be saved to
+        a binary numpy 'npy' file using numpy.save().
+        """
+        if format is 'shtools':
+            with open(filename, mode='w') as file:
+                if header is not None:
+                    file.write(header + '\n')
+                for l in range(self.lmax+1):
+                    for m in range(l+1):
+                        file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
+                                   .format(l, m, self.coeffs[0, l, m],
+                                           self.coeffs[1, l, m]))
+        elif format is 'npy':
+            _np.save(filename, self.coeffs, **kwargs)
+        else:
+            raise NotImplementedError(
+                'format={:s} not implemented'.format(repr(format)))
+
     def to_array(self, normalization=None, csphase=None, lmax=None):
         """
         Return spherical harmonic coefficients as a numpy array.
@@ -916,7 +638,381 @@ class SHCoeffs(object):
 
         return coeffs
 
-    # ---- Rotate the coordinate system ----
+    def copy(self):
+        """
+        Return a deep copy of the class instance.
+
+        Usage
+        -----
+        copy = x.copy()
+        """
+        return _copy.deepcopy(self)
+
+    def info(self):
+        """
+        Print a summary of the data stored in the SHCoeffs instance.
+
+        Usage
+        -----
+        x.info()
+        """
+        print(repr(self))
+
+    # ---- Mathematical operators ----
+    def __add__(self, other):
+        """
+        Add two similar sets of coefficients or coefficients and a scalar:
+        self + other. For the addition of a scalar, only the degree 0
+        term is modified.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
+                coeffs[self.mask] = (self.coeffs[self.mask] +
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
+        elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not add a complex constant to real '
+                                 'coefficients.')
+            coeffs = self.coeffs.copy()
+            coeffs[0, 0, 0] += other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented '
+                                      'for these operands.')
+
+    def __radd__(self, other):
+        """
+        Add two similar sets of coefficients or coefficients and a scalar:
+        other + self. For the addition of a scalar, only the degree 0
+        term is modified.
+        """
+        return self.__add__(other)
+
+    def __sub__(self, other):
+        """
+        Subtract two similar sets of coefficients or coefficients and a scalar:
+        self - other. For the subtraction of a scalar, only the degree 0
+        term is modified.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
+                coeffs[self.mask] = (self.coeffs[self.mask] -
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
+        elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not subtract a complex constant from '
+                                 'real coefficients.')
+            coeffs = self.coeffs.copy()
+            coeffs[0, 0, 0] -= other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented '
+                                      'for these operands.')
+
+    def __rsub__(self, other):
+        """
+        Subtract two similar sets of coefficients or coefficients and a scalar:
+        other - self. For the subtraction from a scalar, self is multiplied by
+        -1 and then other is added to the degree 0 coefficient.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
+                coeffs[self.mask] = (other.coeffs[self.mask] -
+                                     self.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
+        elif _np.isscalar(other) is True:
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not subtract a complex constant from '
+                                 'real coefficients.')
+            coeffs = - self.coeffs.copy()
+            coeffs[0, 0, 0] += other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented '
+                                      'for these operands.')
+
+    def __mul__(self, other):
+        """
+        Multiply two similar sets of coefficients or coefficients and a scalar:
+        self * other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
+                coeffs[self.mask] = (self.coeffs[self.mask] *
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                               dtype=self.coeffs.dtype)
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not multiply real coefficients by '
+                                 'a complex constant.')
+            coeffs[self.mask] = self.coeffs[self.mask] * other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented '
+                                      'for these operands.')
+
+    def __rmul__(self, other):
+        """
+        Multiply two similar sets of coefficients or coefficients and a scalar:
+        other * self.
+        """
+        return self.__mul__(other)
+
+    def __div__(self, other):
+        """
+        Divide two similar sets of coefficients or coefficients and a scalar
+        when __future__.division is not in effect: self / other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
+                coeffs[self.mask] = (self.coeffs[self.mask] /
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                               dtype=self.coeffs.dtype)
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not divide real coefficients by '
+                                 'a complex constant.')
+            coeffs[self.mask] = self.coeffs[self.mask] / other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented '
+                                      'for these operands.')
+
+    def __truediv__(self, other):
+        """
+        Divide two similar sets of coefficients or coefficients and a scalar
+        when __future__.division is in effect: self / other.
+        """
+        if isinstance(other, SHCoeffs):
+            if (self.normalization == other.normalization and self.csphase ==
+                    other.csphase and self.kind == other.kind and
+                    self.lmax == other.lmax):
+                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                                   dtype=self.coeffs.dtype)
+                coeffs[self.mask] = (self.coeffs[self.mask] /
+                                     other.coeffs[self.mask])
+                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                           normalization=self.normalization)
+            else:
+                raise ValueError('The two sets of coefficients must have the '
+                                 'same kind, normalization, csphase and '
+                                 'lmax.')
+        elif _np.isscalar(other) is True:
+            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
+                               dtype=self.coeffs.dtype)
+            if self.kind == 'real' and _np.iscomplexobj(other):
+                raise ValueError('Can not multiply real coefficients by '
+                                 'a complex constant.')
+            coeffs[self.mask] = self.coeffs[self.mask] / other
+            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented '
+                                      'for these operands.')
+
+    def __pow__(self, other):
+        """
+        Raise the spherical harmonic coefficients to a scalar power:
+        pow(self, other).
+        """
+        if _np.isscalar(other) is True:
+            return SHCoeffs.from_array(pow(self.coeffs, other),
+                                       csphase=self.csphase,
+                                       normalization=self.normalization)
+        else:
+            raise NotImplementedError('Mathematical operator not implemented '
+                                      'for these operands.')
+
+    def __repr__(self):
+        return ('kind = {:s}\n'
+                'normalization = {:s}\n'
+                'csphase = {:d}\n'
+                'lmax = {:d}\n'
+                'header = {:s}'.format(
+                    repr(self.kind), repr(self.normalization), self.csphase,
+                    self.lmax, repr(self.header)))
+
+    # ---- Extract data ----
+    def degrees(self):
+        """
+        Return a numpy array with the spherical harmonic degrees from 0 to
+        lmax.
+
+        Usage
+        -----
+        degrees = x.degrees()
+
+        Returns
+        -------
+        degrees : ndarray, shape (lmax+1)
+            1-D numpy ndarray listing the spherical harmonic degrees, where
+            lmax is the maximum spherical harmonic degree.
+        """
+        return _np.arange(self.lmax + 1)
+
+    def spectrum(self, lmax=None, convention='power', unit='per_l', base=10.):
+        """
+        Return the spectrum as a function of spherical harmonic degree.
+
+        Usage
+        -----
+        spectrum = x.spectrum([lmax, convention, unit, base])
+
+        Returns
+        -------
+        power : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the spectrum, where lmax is the maximum
+            spherical harmonic degree.
+
+        Parameters
+        ----------
+        lmax : int, optional, default = x.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+        convention : str, optional, default = 'power'
+            The type of spectrum to return: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
+        unit : str, optional, default = 'per_l'
+            If 'per_l', return the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', return the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', return the spectrum per log
+            interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
+
+        Description
+        -----------
+        This method returns either the power spectrum, energy spectrum, or
+        l2-norm spectrum. Total power is defined as the integral of the
+        function squared over all space, divided by the area the function
+        spans. If the mean of the function is zero, this is equivalent to the
+        variance of the function. The total energy is the integral of the
+        function squared over all space and is 4pi times the total power. For
+        normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm is
+        the sum of the magnitude of the coefficients squared.
+
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l, which is equal to the
+        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
+        contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
+        """
+        return _spectrum(self.coeffs, normalization=self.normalization,
+                         convention=convention, unit=unit, base=base,
+                         lmax=lmax)
+
+    def volume(self, lmax=None):
+        """
+        If the function is the real shape of an object, calculate the volume
+        of the body.
+
+        Usage
+        -----
+        volume = x.volume([lmax])
+
+        Returns
+        -------
+        volume : float
+            The volume of the object.
+
+        Parameters
+        ----------
+        lmax : int, optional, default = x.lmax
+            The maximum spherical harmonic degree to use when calculating the
+            volume.
+
+        Description
+        -----------
+        If the function is the real shape of an object, this method will
+        calculate the volume of the body exactly by integration. This routine
+        raises the function to the nth power, with n from 1 to 3, and
+        calculates the spherical harmonic degree and order 0 term. To avoid
+        aliases, the function is first expand on a grid that can resolve
+        spherical harmonic degrees up to 3*lmax.
+        """
+        if self.coeffs[0, 0, 0] == 0:
+            raise ValueError('The volume of the object can not be calculated '
+                             'when the degree and order 0 term is equal to '
+                             'zero.')
+
+        if self.kind == 'complex':
+            raise ValueError('The volume of the object can not be calculated '
+                             'for complex functions.')
+
+        if lmax is None:
+            lmax = self.lmax
+
+        r0 = self.coeffs[0, 0, 0]
+        grid = self.expand(lmax=3*lmax) - r0
+        h200 = (grid**2).expand(lmax_calc=0).coeffs[0, 0, 0]
+        h300 = (grid**3).expand(lmax_calc=0).coeffs[0, 0, 0]
+
+        volume = 4 * _np.pi / 3 * (h300 + 3 * r0 * h200 + r0**3)
+        return volume
+
+    # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
                body=False, dj_matrix=None):
         """
@@ -1026,7 +1122,6 @@ class SHCoeffs(object):
         rot = self._rotate(angles, dj_matrix)
         return rot
 
-    # ---- Convert spherical harmonic coefficients to a different normalization
     def convert(self, normalization=None, csphase=None, lmax=None, kind=None,
                 check=True):
         """
@@ -1110,7 +1205,6 @@ class SHCoeffs(object):
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    # ---- Return a SHCoeffs class instance zero padded up to lmax
     def pad(self, lmax):
         """
         Return a SHCoeffs class where the coefficients are zero padded or
@@ -1133,37 +1227,47 @@ class SHCoeffs(object):
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
+            clm.mask = clm.mask[:, :lmax+1, :lmax+1]
         else:
             clm.coeffs = _np.pad(clm.coeffs, ((0, 0), (0, lmax - self.lmax),
                                  (0, lmax - self.lmax)), 'constant')
+            mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
+            for l in _np.arange(lmax + 1):
+                mask[:, l, :l + 1] = True
+            mask[1, :, 0] = False
+            clm.mask = mask
 
         clm.lmax = lmax
         return clm
 
     # ---- Expand the coefficients onto a grid ----
-    def expand(self, grid='DH', lat=None, lon=None, degrees=True, zeros=None,
-               lmax=None, lmax_calc=None):
+    def expand(self, grid='DH', lat=None, colat=None, lon=None, degrees=True,
+               zeros=None, lmax=None, lmax_calc=None):
         """
-        Evaluate the spherical harmonic coefficients either on a grid or for
-        a list of coordinates.
+        Evaluate the spherical harmonic coefficients either on a global grid
+        or for a list of coordinates.
 
         Usage
         -----
-        f = x.expand(lat, lon, [lmax_calc, degrees])
-        g = x.expand([grid, lmax, lmax_calc, zeros])
+        f = x.expand([grid, lmax, lmax_calc, zeros])
+        g = x.expand(lat, lon, [lmax_calc, degrees])
+        g = x.expand(colat, lon, [lmax_calc, degrees])
 
         Returns
         -------
-        f : float, ndarray, or list
-        g : SHGrid class instance
+        f : SHGrid class instance
+        g : float, ndarray, or list
 
         Parameters
         ----------
-        lat, lon : int, float, ndarray, or list, optional, default = None
-            Latitude and longitude coordinates where the function is to be
-            evaluated.
+        lat : int, float, ndarray, or list, optional, default = None
+            Latitude coordinates where the function is to be evaluated.
+        colat : int, float, ndarray, or list, optional, default = None
+            Colatitude coordinates where the function is to be evaluated.
+        lon : int, float, ndarray, or list, optional, default = None
+            Longitude coordinates where the function is to be evaluated.
         degrees : bool, optional, default = True
-            True if lat and lon are in degrees, False if in radians.
+            True if lat, colat and lon are in degrees, False if in radians.
         grid : str, optional, default = 'DH'
             'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon,
             'DH2' for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ'
@@ -1180,13 +1284,33 @@ class SHCoeffs(object):
 
         Description
         -----------
-        For more information concerning the spherical harmonic expansions and
-        the properties of the output grids, see the documentation for
-        SHExpandDH, SHExpandDHC, SHExpandGLQ and SHExpandGLQC.
+        This method either (1) evaluates the spherical harmonic coefficients on
+        a global grid and returns an SHGrid class instance, or (2) evaluates
+        the spherical harmonic coefficients for a list of (co)latitude and
+        longitude coordinates. For the first case, the grid type is defined
+        by the optional parameter grid, which can be 'DH', 'DH2' or 'GLQ'.For
+        the second case, the optional parameters lon and either colat or lat
+        must be provided.
         """
+        if lat is not None and colat is not None:
+            raise ValueError('lat and colat can not both be specified.')
+
         if lat is not None and lon is not None:
             if lmax_calc is None:
                 lmax_calc = self.lmax
+
+            values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
+                                        lmax_calc=lmax_calc)
+            return values
+
+        if colat is not None and lon is not None:
+            if lmax_calc is None:
+                lmax_calc = self.lmax
+
+            if type(colat) is list:
+                lat = list(map(lambda x: 90 - x, colat))
+            else:
+                lat = 90 - colat
 
             values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
                                         lmax_calc=lmax_calc)
@@ -1221,15 +1345,15 @@ class SHCoeffs(object):
 
     # ---- Plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
-                      xscale='lin', yscale='log', show=True, ax=None,
-                      fname=None):
+                      lmax=None, xscale='lin', yscale='log', show=True,
+                      ax=None, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        x.plot_spectrum([convention, unit, base, xscale, yscale, show, ax,
-                         fname])
+        x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, show,
+                         ax, fname])
 
         Parameters
         ----------
@@ -1246,6 +1370,8 @@ class SHCoeffs(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum, and
             the base to use for logarithmic axes.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
         xscale : str, optional, default = 'lin'
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
@@ -1257,9 +1383,35 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
+
+        Description
+        -----------
+        This method plots either the power spectrum, energy spectrum, or
+        l2-norm spectrum. Total power is defined as the integral of the
+        function squared over all space, divided by the area the function
+        spans. If the mean of the function is zero, this is equivalent to the
+        variance of the function. The total energy is the integral of the
+        function squared over all space and is 4pi times the total power. For
+        normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm is
+        the sum of the magnitude of the coefficients squared.
+
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l, which is equal to the
+        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
+        contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
         """
-        spectrum = self.spectrum(convention=convention, unit=unit, base=base)
-        ls = self.degrees()
+        if lmax is None:
+            lmax = self.lmax
+
+        spectrum = self.spectrum(convention=convention, unit=unit, base=base,
+                                 lmax=lmax)
+        ls = _np.arange(lmax + 1)
 
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -1300,29 +1452,28 @@ class SHCoeffs(object):
             axes.set_yscale('log', basey=base)
 
         if xscale == 'log':
-            axes.plot(ls[1:], spectrum[1:], label=legend)
+            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend)
         else:
-            axes.plot(ls, spectrum, label=legend)
+            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend)
         axes.legend()
 
-        if show:
-            _plt.show()
-
         if ax is None:
+            if show:
+                _plt.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
 
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
-                        vscale='log', vrange=(1.e-5, 1.0), show=True,
-                        ax=None, fname=None):
+                        vscale='log', vrange=None, vmin=None, vmax=None,
+                        lmax=None, show=True, ax=None, fname=None):
         """
-        Plot the spectrum of all spherical harmonic coefficients.
+        Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
-        x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, show,
-                           ax, fname])
+        x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, vmin,
+                           vmax, lmax, show, ax, fname])
 
         Parameters
         ----------
@@ -1336,8 +1487,17 @@ class SHCoeffs(object):
             Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
-        vrange : (float, float), optional, default = (1.e-5, 1.)
-            Colormap range relative to the maximum value.
+        vrange : (float, float), optional, default = None
+            Colormap range (min, max) relative to the maximum value. If None,
+            scale the image to the maximum and minimum values.
+        vmin : float, optional, default=None
+            The minmum range of the colormap. If None, the minimum value of the
+            spectrum will be used.
+        vmax : float, optional, default=None
+            The maximum range of the colormap. If None, the maximum value of
+            the spectrum will be used.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
         show : bool, optional, default = True
             If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -1345,16 +1505,32 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        """
-        # Create the matrix of the spectrum for each coefficient
-        spectrum = _np.empty((self.lmax + 1, 2 * self.lmax + 1))
-        mpositive = _np.abs(self.coeffs[0])**2
-        mpositive[~self.mask[0]] = _np.nan
-        mnegative = _np.abs(self.coeffs[1])**2
-        mnegative[~self.mask[1]] = _np.nan
 
-        spectrum[:, :self.lmax] = _np.fliplr(mnegative)[:, :self.lmax]
-        spectrum[:, self.lmax:] = mpositive
+        Description
+        -----------
+        This method plots either the power, energy, or l2-norm for each
+        spherical harmonic degree and order of the function. Total power is
+        defined as the integral of the function squared over all space,
+        divided by the area the function spans. If the mean of the function is
+        zero, this is equivalent to the variance of the function. The total
+        energy is the integral of the function squared over all space and is
+        4pi times the total power. For normalized coefficients ('4pi',
+        'ortho', or 'schmidt'), the l2-norm is the sum of the magnitude of the
+        coefficients squared.
+        """
+        if lmax is None:
+            lmax = self.lmax
+        degrees = _np.arange(lmax + 1)
+
+        # Create the matrix of the spectrum for each coefficient
+        spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
+        mpositive = _np.abs(self.coeffs[0, :lmax + 1, :lmax + 1])**2
+        mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
+        mnegative = _np.abs(self.coeffs[1, :lmax + 1, :lmax + 1])**2
+        mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
+
+        spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
+        spectrum[:, lmax:] = mpositive
 
         if (convention.lower() == 'l2norm'):
             if self.normalization == 'unnorm':
@@ -1366,19 +1542,19 @@ class SHCoeffs(object):
             if self.normalization == '4pi':
                 pass
             elif self.normalization == 'schmidt':
-                for l in self.degrees():
+                for l in degrees:
                     spectrum[l, :] /= (2. * l + 1.)
             elif self.normalization == 'ortho':
-                for l in self.degrees():
+                for l in degrees:
                     spectrum[l, :] /= (4. * _np.pi)
             elif self.normalization == 'unnorm':
-                for l in self.degrees():
+                for l in degrees:
                     ms = _np.arange(l+1)
                     conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
                     if self.kind == 'real':
                         conv[1:l + 1] = conv[1:l + 1] / 2.
-                    spectrum[l, self.lmax-l:self.lmax] *= conv[::-1][0:l]
-                    spectrum[l, self.lmax:self.lmax+l+1] *= conv[0:l+1]
+                    spectrum[l, lmax-l:lmax] *= conv[::-1][0:l]
+                    spectrum[l, lmax:lmax+l+1] *= conv[0:l+1]
             else:
                 raise ValueError(
                     "normalization must be '4pi', 'ortho', 'schmidt', " +
@@ -1396,8 +1572,8 @@ class SHCoeffs(object):
 
         # need to add one extra value to each in order for pcolormesh
         # to plot the last row and column.
-        ls = _np.arange(self.lmax+2).astype(_np.float)
-        ms = _np.arange(-self.lmax, self.lmax + 2, dtype=_np.float)
+        ls = _np.arange(lmax+2).astype(_np.float)
+        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
         lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
         lgrid -= 0.5
         mgrid -= 0.5
@@ -1407,8 +1583,16 @@ class SHCoeffs(object):
         else:
             axes = ax
 
-        vmin = _np.nanmax(spectrum) * vrange[0]
-        vmax = _np.nanmax(spectrum) * vrange[1]
+        if vrange is not None:
+            vmin = _np.nanmax(spectrum) * vrange[0]
+            vmax = _np.nanmax(spectrum) * vrange[1]
+        else:
+            if vmin is None:
+                _temp = spectrum
+                _temp[_temp == 0] = _np.NaN
+                vmin = _np.nanmin(_temp)
+            if vmax is None:
+                vmax = _np.nanmax(spectrum)
 
         if vscale.lower() == 'log':
             norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
@@ -1423,41 +1607,33 @@ class SHCoeffs(object):
         if (xscale == 'lin'):
             cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
                                     norm=norm, cmap='viridis')
-            axes.set(xlim=(-0.5, self.lmax + 0.5))
+            axes.set(xlim=(-0.5, lmax + 0.5))
         elif (xscale == 'log'):
             cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
                                     norm=norm, cmap='viridis')
-            axes.set(xscale='log', xlim=(1., self.lmax + 0.5))
+            axes.set(xscale='log', xlim=(1., lmax + 0.5))
         else:
             raise ValueError(
                 "xscale must be 'lin' or 'log'. " +
                 "Input value was {:s}".format(repr(xscale)))
 
         if (yscale == 'lin'):
-            axes.set(ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+            axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
         elif (yscale == 'log'):
-            axes.set(yscale='symlog', ylim=(-self.lmax - 0.5, self.lmax + 0.5))
+            axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
         else:
             raise ValueError(
                 "yscale must be 'lin' or 'log'. " +
                 "Input value was {:s}".format(repr(yscale)))
 
-        if ax is None:
-            cb = _plt.colorbar(cmesh)
-            if (convention == 'energy'):
-                cb.set_label('energy per coefficient')
-            elif (convention == 'power'):
-                cb.set_label('power per coefficient')
-            else:
-                cb.set_label('magnitude-squared coefficient')
+        cb = _plt.colorbar(cmesh, ax=ax)
+
+        if (convention == 'energy'):
+            cb.set_label('energy per coefficient')
+        elif (convention == 'power'):
+            cb.set_label('power per coefficient')
         else:
-            cb = _plt.colorbar(cmesh, ax=ax)
-            if (convention == 'energy'):
-                cb.set_label('energy per coefficient')
-            elif (convention == 'power'):
-                cb.set_label('power per coefficient')
-            else:
-                cb.set_label('magnitude-squared coefficient')
+            cb.set_label('magnitude-squared coefficient')
 
         cb.ax.tick_params(width=0.2)
         axes.set(xlabel='degree l', ylabel='order m')
@@ -1469,20 +1645,6 @@ class SHCoeffs(object):
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
-
-    def info(self):
-        """
-        Print a summary of the data stored in the SHCoeffs instance.
-
-        Usage
-        -----
-        x.info()
-        """
-        print('kind = {:s}\nnormalization = {:s}\n'
-              'csphase = {:d}\nlmax = {:d}\n'
-              'header = {:s}'.format(
-                  repr(self.kind), repr(self.normalization), self.csphase,
-                  self.lmax, repr(self.header)))
 
 
 # ================== REAL SPHERICAL HARMONICS ================
@@ -1552,11 +1714,11 @@ class SHRealCoeffs(SHCoeffs):
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
         if self.normalization != '4pi' or self.csphase != 1:
-            temp = SHCoeffs.from_array(coeffs, normalization='4pi', csphase=1)
-            tempcoeffs = temp.to_array(
-                normalization=self.normalization, csphase=self.csphase)
+            temp = _convert(coeffs, normalization_in='4pi', csphase=1,
+                            normalization_out=self.normalization,
+                            csphase_out=self.csphase)
             return SHCoeffs.from_array(
-                tempcoeffs, normalization=self.normalization,
+                temp, normalization=self.normalization,
                 csphase=self.csphase, copy=False)
         else:
             return SHCoeffs.from_array(coeffs, copy=False)
@@ -1912,7 +2074,8 @@ class SHGrid(object):
     lmax       : The maximum spherical harmonic degree that can be resolved
                  by the grid sampling.
     sampling   : For Driscoll and Healy grids, the longitudinal sampling
-                 of the grid. Either 1 for nlong=nlat or 2 for nlong=2*nlat.
+                 of the grid. Either 1 for nlong = nlat or 2 for
+                 nlong = 2 * nlat.
     kind       : Either 'complex' or 'real' for the data type.
     grid       : Either 'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-
                  Legendre Quadrature grids.
@@ -1939,8 +2102,8 @@ class SHGrid(object):
     def __init__():
         """Unused constructor of the super class."""
         print('Initialize the class using one of the class methods:\n'
-              '>>> SHGrid.from_array?\n'
-              '>>> SHGrid.from_file?\n')
+              '>>> pyshtools.SHGrid.from_array\n'
+              '>>> pyshtools.SHGrid.from_file\n')
 
     # ---- Factory methods ----
     @classmethod
@@ -2046,7 +2209,13 @@ class SHGrid(object):
                 return cls(data)
 
     def copy(self):
-        """Return a deep copy of the class instance."""
+        """
+        Return a deep copy of the class instance.
+
+        Usage
+        -----
+        copy = x.copy()
+        """
         return _copy.deepcopy(self)
 
     def to_file(self, filename, binary=False, **kwargs):
@@ -2090,12 +2259,12 @@ class SHGrid(object):
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not add a complex constant to a ' +
+                raise ValueError('Can not add a complex constant to a '
                                  'real grid.')
             data = self.data + other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __radd__(self, other):
@@ -2110,16 +2279,16 @@ class SHGrid(object):
                 data = self.data - other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
-                raise ValueError('The two grids must be of the ' +
+                raise ValueError('The two grids must be of the '
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not subtract a complex constant from ' +
+                raise ValueError('Can not subtract a complex constant from '
                                  'a real grid.')
             data = self.data - other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __rsub__(self, other):
@@ -2134,12 +2303,12 @@ class SHGrid(object):
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not subtract a complex constant from ' +
+                raise ValueError('Can not subtract a complex constant from '
                                  'a real grid.')
             data = other - self.data
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __mul__(self, other):
@@ -2154,12 +2323,12 @@ class SHGrid(object):
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not multiply a real grid by a complex ' +
+                raise ValueError('Can not multiply a real grid by a complex '
                                  'constant.')
             data = self.data * other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __rmul__(self, other):
@@ -2181,12 +2350,12 @@ class SHGrid(object):
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide a real grid by a complex ' +
+                raise ValueError('Can not divide a real grid by a complex '
                                  'constant.')
             data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __truediv__(self, other):
@@ -2200,16 +2369,16 @@ class SHGrid(object):
                 data = self.data / other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
-                raise ValueError('The two grids must be of the ' +
+                raise ValueError('The two grids must be of the '
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide a real grid by a complex ' +
+                raise ValueError('Can not divide a real grid by a complex '
                                  'constant.')
             data = self.data / other
             return SHGrid.from_array(data, grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __pow__(self, other):
@@ -2217,12 +2386,22 @@ class SHGrid(object):
         if _np.isscalar(other) is True:
             return SHGrid.from_array(pow(self.data, other), grid=self.grid)
         else:
-            raise NotImplementedError('Mathematical operator not implemented' +
+            raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
 
     def __abs__(self):
         """Return the absolute value of the gridded data."""
         return SHGrid.from_array(abs(self.data), grid=self.grid)
+
+    def __repr__(self):
+        str = ('kind = {:s}\n'
+               'grid = {:s}\n'.format(repr(self.kind), repr(self.grid)))
+        if self.grid == 'DH':
+            str += 'sampling = {:d}\n'.format(self.sampling)
+        str += ('nlat = {:d}\n'
+                'nlon = {:d}\n'
+                'lmax = {:d}'.format(self.nlat, self.nlon, self.lmax))
+        return str
 
     # ---- Extract grid properties ----
     def lats(self, degrees=True):
@@ -2312,7 +2491,7 @@ class SHGrid(object):
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
-        from mpl_toolkits.mplot3d import Axes3D  # NOQA
+        from mpl_toolkits.mplot3d import Axes3D
 
         nlat, nlon = self.nlat, self.nlon
         cmap = _plt.get_cmap('RdBu_r')
@@ -2401,14 +2580,16 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, tick_interval=[30, 30], ax=None, ax2=None, show=True,
-             fname=None, **kwargs):
+    def plot(self, tick_interval=[30, 30], ax=None, ax2=None, colorbar=False,
+             cb_orientation='vertical', cb_label=None, show=True, fname=None,
+             **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([tick_interval, ax, ax2, show, fname])
+        x.plot([tick_interval, ax, ax2, colorbar, cb_orientation, cb_label,
+                show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2427,11 +2608,19 @@ class SHGrid(object):
             A single matplotlib axes object where the plot will appear. If the
             grid is complex, the complex component of the grid will be plotted
             on this axes.
+        colorbar : bool, optional, default = False
+            If True, plot a colorbar.
+        cb_orientation : str, optional, default = 'vertical'
+            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = None
+            Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
+        kwargs : optional
+            Keyword arguements that will be sent to plt.imshow().
         """
         if tick_interval is None:
             xticks = []
@@ -2450,14 +2639,19 @@ class SHGrid(object):
                                   endpoint=True)
 
         if ax is None and ax2 is None:
-            fig, axes = self._plot(xticks=xticks, yticks=yticks, **kwargs)
+            fig, axes = self._plot(xticks=xticks, yticks=yticks,
+                                   colorbar=colorbar,
+                                   cb_orientation=cb_orientation,
+                                   cb_label=cb_label, **kwargs)
         else:
             if self.kind == 'complex':
                 if (ax is None and ax2 is not None) or (ax2 is None and
                                                         ax is not None):
                     raise ValueError('For complex grids, one must specify ' +
                                      'both optional arguments axes and axes2.')
-            self._plot(xticks=xticks, yticks=yticks, ax=ax, ax2=ax2, **kwargs)
+            self._plot(xticks=xticks, yticks=yticks, ax=ax, ax2=ax2,
+                       colorbar=colorbar, cb_orientation=cb_orientation,
+                       cb_label=cb_label, **kwargs)
 
         if ax is None:
             if show:
@@ -2520,13 +2714,7 @@ class SHGrid(object):
         -----
         x.info()
         """
-        print('kind = {:s}\ngrid = {:s}\n'.format(repr(self.kind),
-                                                  repr(self.grid)), end='')
-        if self.grid == 'DH':
-            print('sampling = {:d}\n'.format(self.sampling), end='')
-        print('nlat = {:d}\nnlon = {:d}\nlmax = {:d}'.format(self.nlat,
-                                                             self.nlon,
-                                                             self.lmax))
+        print(repr(self))
 
 
 # ---- Real Driscoll and Healy grid class ----
@@ -2605,15 +2793,31 @@ class DHRealGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='longitude',
-              ylabel='latitude', ax=None, ax2=None):
+              ylabel='latitude', ax=None, ax2=None, colorbar=None,
+              cb_orientation=None, cb_label=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
         else:
             axes = ax
 
-        axes.imshow(self.data, origin='upper', extent=(0., 360., -90., 90.))
+        cim = axes.imshow(self.data, origin='upper',
+                          extent=(0., 360., -90., 90.), **kwargs)
         axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+
+        if colorbar is True:
+            if cb_orientation == 'vertical':
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("right", size="2.5%", pad=0.15)
+                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
+            else:
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("bottom", size="5%", pad=0.5)
+                cbar = _plt.colorbar(cim, cax=cax,
+                                     orientation=cb_orientation)
+
+            if cb_label is not None:
+                cbar.set_label(cb_label)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2700,7 +2904,8 @@ class DHComplexGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='longitude',
-              ylabel='latitude', ax=None, ax2=None):
+              ylabel='latitude', ax=None, ax2=None, colorbar=None,
+              cb_label=None, cb_orientation=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -2710,14 +2915,38 @@ class DHComplexGrid(SHGrid):
             axreal = ax
             axcomplex = ax2
 
-        axreal.imshow(self.data.real, origin='upper',
-                      extent=(0., 360., -90., 90.))
+        cim1 = axreal.imshow(self.data.real, origin='upper',
+                             extent=(0., 360., -90., 90.), **kwargs)
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
                    xticks=xticks, yticks=yticks)
-        axcomplex.imshow(self.data.imag, origin='upper',
-                         extent=(0., 360., -90., 90.))
+        cim2 = axcomplex.imshow(self.data.imag, origin='upper',
+                                extent=(0., 360., -90., 90.), **kwargs)
         axcomplex.set(title='Imaginary component', xlabel=xlabel,
                       ylabel=ylabel, xticks=xticks, yticks=yticks)
+
+        if colorbar is True:
+            if cb_orientation == 'vertical':
+                divider1 = _make_axes_locatable(axreal)
+                cax1 = divider1.append_axes("right", size="2.5%", pad=0.05)
+                cbar1 = _plt.colorbar(cim1, cax=cax1,
+                                      orientation=cb_orientation)
+                divider2 = _make_axes_locatable(axcomplex)
+                cax2 = divider2.append_axes("right", size="2.5%", pad=0.05)
+                cbar2 = _plt.colorbar(cim2, cax=cax2,
+                                      orientation=cb_orientation)
+            else:
+                divider1 = _make_axes_locatable(axreal)
+                cax1 = divider1.append_axes("bottom", size="5%", pad=0.5)
+                cbar1 = _plt.colorbar(cim1, cax=cax1,
+                                      orientation=cb_orientation)
+                divider2 = _make_axes_locatable(axcomplex)
+                cax2 = divider2.append_axes("bottom", size="5%", pad=0.5)
+                cbar2 = _plt.colorbar(cim2, cax=cax2,
+                                      orientation=cb_orientation)
+
+            if cb_label is not None:
+                cbar1.set_label(cb_label)
+                cbar2.set_label(cb_label)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2802,15 +3031,30 @@ class GLQRealGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None):
+              ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
+              cb_orientation=None, cb_label=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
         else:
             axes = ax
 
-        axes.imshow(self.data, origin='upper')
+        cim = axes.imshow(self.data, origin='upper', **kwargs)
         axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+
+        if colorbar is True:
+            if cb_orientation == 'vertical':
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("right", size="2.5%", pad=0.15)
+                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
+            else:
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("bottom", size="5%", pad=0.5)
+                cbar = _plt.colorbar(cim, cax=cax,
+                                     orientation=cb_orientation)
+
+            if cb_label is not None:
+                cbar.set_label(cb_label)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2890,7 +3134,8 @@ class GLQComplexGrid(SHGrid):
         return coeffs
 
     def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None):
+              ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
+              cb_label=None, cb_orientation=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -2900,12 +3145,36 @@ class GLQComplexGrid(SHGrid):
             axreal = ax
             axcomplex = ax2
 
-        axreal.imshow(self.data.real, origin='upper')
+        cim1 = axreal.imshow(self.data.real, origin='upper', **kwargs)
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
                    xticks=xticks, yticks=yticks)
-        axcomplex.imshow(self.data.imag, origin='upper')
+        cim2 = axcomplex.imshow(self.data.imag, origin='upper', **kwargs)
         axcomplex.set(title='Imaginary component', xlabel=xlabel,
                       ylabel=ylabel, xticks=xticks, yticks=yticks)
+
+        if colorbar is True:
+            if cb_orientation == 'vertical':
+                divider1 = _make_axes_locatable(axreal)
+                cax1 = divider1.append_axes("right", size="2.5%", pad=0.05)
+                cbar1 = _plt.colorbar(cim1, cax=cax1,
+                                      orientation=cb_orientation)
+                divider2 = _make_axes_locatable(axcomplex)
+                cax2 = divider2.append_axes("right", size="2.5%", pad=0.05)
+                cbar2 = _plt.colorbar(cim2, cax=cax2,
+                                      orientation=cb_orientation)
+            else:
+                divider1 = _make_axes_locatable(axreal)
+                cax1 = divider1.append_axes("bottom", size="5%", pad=0.5)
+                cbar1 = _plt.colorbar(cim1, cax=cax1,
+                                      orientation=cb_orientation)
+                divider2 = _make_axes_locatable(axcomplex)
+                cax2 = divider2.append_axes("bottom", size="5%", pad=0.5)
+                cbar2 = _plt.colorbar(cim2, cax=cax2,
+                                      orientation=cb_orientation)
+
+            if cb_label is not None:
+                cbar1.set_label(cb_label)
+                cbar2.set_label(cb_label)
 
         if ax is None:
             fig.tight_layout(pad=0.5)

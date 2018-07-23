@@ -39,6 +39,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Routine name | Description |
 | ------------ | ----------- |
 | [MakeMagGridDH](makemaggriddh.html) | Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential. |
+| [MakeMagGradGridDH](makemaggradgriddh.html) | Calculate the components of the magnetic field tensor on a flattened ellipsoid. |
 | [SHMagPowerSpectrum](shmagpowerspectrum.html) | Compute the power spectrum of the magnetic field given the Schmidt semi-normalized magnetic potential spherical harmonic coefficients. |
 | [SHMagPowerL](shmagpowerl.html) | Compute the power of the magnetic field for a single degree L given the Schmidt semi-normalized magnetic potential spherical harmonic coefficients. |
 

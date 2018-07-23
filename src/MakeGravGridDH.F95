@@ -25,7 +25,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !   and the gravitational acceleration is
 !
 !       B = Grad V.
-!   
+!
 !   The first latitudinal band of the grid corresponds to 90 N, the latitudinal
 !   band for 90 S is not calculated, and the latitudinal sampling interval is
 !   180/N degrees. The first longitudinal band is 0 E, the longitudinal
@@ -59,7 +59,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !           normal_gravity
 !                       If 1, the magnitude of the normal gravity on the
 !                       ellipsoid will be removed from the magnitude of the
-!                       total gravity vector. This is the "gravity disturbance."
+!                       total gravity vector. This is the "gravity
+!                       disturbance."
 !
 !       OUT
 !           rad_grid    Gridded expansion of the radial component of the
@@ -184,7 +185,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             .or. size(phi_grid(:,1)) < n .or. size(phi_grid(1,:)) < nlong .or. &
             size(total_grid(:,1)) < n .or. size(total_grid(1,:)) < nlong) then
         print*, "Error --- MakeGravGridDH"
-        
+
         if (present(sampling)) then
             if (sampling == 1) then
                 print*, "RAD_GRID, THETA_GRID, PHI_GRID, and TOTAL_GRID " // &
@@ -239,10 +240,10 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     end if
 
-    if (cilm(1,1,1) /= 1.0d0 .and. f /= 0.0d0) then
+    if (cilm(1,1,1) == 0.0d0 .and. f /= 0.0d0) then
         print*, "Warning --- MakeGravGridDH"
         print*, "The degree-0 term of the spherical harmonic " // &
-                "coefficients is not equal to 1."
+                "coefficients is equal to zero."
         print*, "The variation in gravity resulting from variations in " // &
                 "radius of the flattened ellipsoid will not be " // &
                 "taken into account."
@@ -325,12 +326,12 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         if (allocated (ff1)) deallocate (ff1)
         if (allocated (ff2)) deallocate (ff2)
         if (allocated (fsymsign)) deallocate (fsymsign)
-        
+
         allocate (sqr(2 * lmax_comp + 1), stat=astat(1))
         allocate (ff1(lmax_comp+1,lmax_comp+1), stat=astat(2))
         allocate (ff2(lmax_comp+1,lmax_comp+1), stat=astat(3))
         allocate (fsymsign(lmax_comp+1,lmax_comp+1), stat=astat(4))
-        
+
         if (sum(astat(1:4)) /= 0) then
             print*, "Error --- MakeGravGridDH"
             print*, "Problem allocating arrays SQR, FF1, FF2, or FSYMSIGN", &
@@ -813,7 +814,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     coefr0 = coefr0 - cilm(1,1,1) * pm2
 
     if (calcu) coefu0 = coefu0 + cilm(1,1,1) * pm2
-    
+
     ! derivative of l=0 term is 0, so no need to calculate this
 
     if (lmax_comp /= 0) then    ! l = 1
@@ -823,7 +824,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             prefactor(l) = prefactor(l-1) *r0 / r_ex
         enddo
 
-        pm1 =  0.0d0
+        pm1 = 0.0d0
 
         if (calcu) coefu0 = coefu0 + cilm(1,2,1) * pm1 * prefactor(1)
 

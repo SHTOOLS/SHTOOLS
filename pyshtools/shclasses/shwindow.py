@@ -43,6 +43,9 @@ class SHWindow(object):
                       rotated spherical cap localization windows. These are
                       '4pi' normalized and do not use the Condon-Shortley phase
                       factor.
+    shannon         : The Shannon number, which approximates the number of
+                      well localized windows.
+    area            : Area of the concentration domain, in radians.
     eigenvalues     : Concentration factors of the localization windows.
     orders          : The angular orders for each of the spherical cap
                       localization windows.
@@ -105,7 +108,9 @@ class SHWindow(object):
 
     def __init__(self):
         """Initialize with a factory method."""
-        pass
+        print('Initialize the class using one of the class methods:\n'
+              '>>> pyshtools.SHWindow.from_cap\n'
+              '>>> pyshtools.SHWindow.from_mask')
 
     # ---- factory methods:
     @classmethod
@@ -198,15 +203,23 @@ class SHWindow(object):
             raise ValueError('The number of latitude bands in dh_mask ' +
                              'must be even. nlat = {:d}'
                              .format(dh_mask.shape[0]))
-        if (dh_mask.shape[1] != dh_mask.shape[0] and
-                dh_mask.shape[1] != 2 * dh_mask.shape[0]):
+
+        if dh_mask.shape[1] == dh_mask.shape[0]:
+            _sampling = 1
+        elif dh_mask.shape[1] == 2 * dh_mask.shape[0]:
+            _sampling = 2
+        else:
             raise ValueError('dh_mask must be dimensioned as (n, n) or ' +
                              '(n, 2 * n). Input shape is ({:d}, {:d})'
                              .format(dh_mask.shape[0], dh_mask.shape[1]))
 
+        mask_lm = _shtools.SHExpandDH(dh_mask, sampling=_sampling, lmax_calc=0)
+        area = mask_lm[0, 0, 0] * 4 * _np.pi
+
         tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
                                                          ntapers=nwin)
-        return SHWindowMask(tapers, eigenvalues, weights, copy=False)
+
+        return SHWindowMask(tapers, eigenvalues, weights, area, copy=False)
 
     def copy(self):
         """Return a deep copy of the class instance."""
@@ -972,10 +985,9 @@ class SHWindow(object):
         axes.set_xlabel('input power')  # matrix index 1 (columns)
         axes.set_ylabel('output power')  # matrix index 0 (rows)
 
-        if show:
-            _plt.show()
-
         if ax is None:
+            if show:
+                _plt.show()
             fig.tight_layout(pad=0.1)
             if fname is not None:
                 fig.savefig(fname)
@@ -1012,6 +1024,13 @@ class SHWindowCap(SHWindow):
         self.dj_matrix = dj_matrix
         self.weights = weights
         self.nwinrot = None
+
+        if (self.theta_degrees):
+            self.area = 2 * _np.pi * (1 - _np.cos(_np.radians(self.theta)))
+        else:
+            self.area = 2 * _np.pi * (1 - _np.cos(self.theta))
+
+        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
 
         if nwin is not None:
             self.nwin = nwin
@@ -1328,43 +1347,51 @@ class SHWindowCap(SHWindow):
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
-        print('kind = {:s}\n'.format(repr(self.kind)), end='')
+        print(repr(self))
+
+    def __repr__(self):
+        str = 'kind = {:s}\n'.format(repr(self.kind))
 
         if self.theta_degrees:
-            print('theta = {:f} degrees\n'.format(self.theta), end='')
+            str += 'theta = {:f} degrees\n'.format(self.theta)
         else:
-            print('theta = {:f} radians'.format(self.theta), end='')
+            str += 'theta = {:f} radians'.format(self.theta)
 
-        print('lwin = {:d}\n'.format(self.lwin), end='')
-        print('nwin = {:d}\n'.format(self.nwin), end='')
+        str += ('lwin = {:d}\n'
+                'nwin = {:d}\n'
+                'shannon = {:e}\n'
+                'area (radians) = {:e}\n'
+                .format(self.lwin, self.nwin, self.shannon, self.area))
 
         if self.clat is not None:
             if self.coord_degrees:
-                print('clat = {:f} degrees\n'.format(self.clat), end='')
+                str += 'clat = {:f} degrees\n'.format(self.clat)
             else:
-                print('clat = {:f} radians\n'.format(self.clat), end='')
+                str += 'clat = {:f} radians\n'.format(self.clat)
         else:
-            print('clat is not specified')
+            str += 'clat is not specified\n'
 
         if self.clon is not None:
             if self.coord_degrees:
-                print('clon = {:f} degrees\n'.format(self.clon), end='')
+                str += 'clon = {:f} degrees\n'.format(self.clon)
             else:
-                print('clon = {:f} radians\n'.format(self.clon), end='')
+                str += 'clon = {:f} radians\n'.format(self.clon)
         else:
-            print('clon is not specified')
+            str += 'clon is not specified\n'
 
-        print('nwinrot = {:s}'.format(repr(self.nwinrot)))
+        str += 'nwinrot = {:s}\n'.format(repr(self.nwinrot))
 
         if self.dj_matrix is not None:
-            print('dj_matrix is stored')
+            str += 'dj_matrix is stored\n'
         else:
-            print('dj_matrix is not stored')
+            str += 'dj_matrix is not stored\n'
 
         if self.weights is None:
-            print('Taper weights are not set.')
+            str += 'Taper weights are not set'
         else:
-            print('Taper weights are set.')
+            str += 'Taper weights are set'
+
+        return str
 
 
 class SHWindowMask(SHWindow):
@@ -1377,7 +1404,7 @@ class SHWindowMask(SHWindow):
     def istype(kind):
         return kind == 'mask'
 
-    def __init__(self, tapers, eigenvalues, weights, copy=True):
+    def __init__(self, tapers, eigenvalues, weights, area, copy=True):
         self.kind = 'mask'
         self.lwin = _np.sqrt(tapers.shape[0]).astype(int) - 1
         self.nwin = tapers.shape[1]
@@ -1389,6 +1416,9 @@ class SHWindowMask(SHWindow):
             self.weights = weights
             self.tapers = tapers
             self.eigenvalues = eigenvalues
+
+        self.area = area
+        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
 
     def _to_array(self, itaper, normalization='4pi', csphase=1):
         """
@@ -1540,12 +1570,20 @@ class SHWindowMask(SHWindow):
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
-        print('kind = {:s}\n'.format(repr(self.kind)), end='')
+        print(repr(self))
 
-        print('lwin = {:d}\n'.format(self.lwin), end='')
-        print('nwin = {:d}\n'.format(self.nwin), end='')
+    def __repr__(self):
+        str = ('kind = {:s}\n'
+               'lwin = {:d}\n'
+               'nwin = {:d}\n'
+               'shannon = {:e}\n'
+               'area (radians) = {:e}\n'.format(repr(self.kind), self.lwin,
+                                                self.nwin, self.shannon,
+                                                self.area))
 
         if self.weights is None:
-            print('Taper weights are not set.')
+            str += 'Taper weights are not set'
         else:
-            print('Taper weights are set.')
+            str += 'Taper weights are set'
+
+        return str

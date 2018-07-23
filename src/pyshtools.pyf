@@ -1167,6 +1167,40 @@ python module _SHTOOLS
             integer, optional,intent(in),depend(vxz_d0,sampling),intent(hide) :: vxz_d1=sampling*vxz_d0
         end subroutine MakeGravGradGridDH
 
+        subroutine MakeMagGradGridDH(exitstatus,cilm,lmax,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc,vyz_d0,vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1)
+            fortranname pymakemaggradgriddh
+            integer, intent(out) :: exitstatus
+            real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+            integer, optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
+            real*8 intent(in) :: r0
+            real*8 optional,intent(in) :: a=r0
+            real*8 optional,intent(in) :: f=0
+            real*8 dimension(vxx_d0,vxx_d1),intent(out) :: vxx
+            real*8 dimension(vyy_d0,vyy_d1),intent(out) :: vyy
+            real*8 dimension(vzz_d0,vzz_d1),intent(out) :: vzz
+            real*8 dimension(vxy_d0,vxy_d1),intent(out) :: vxy
+            real*8 dimension(vxz_d0,vxz_d1),intent(out) :: vxz
+            real*8 dimension(vyz_d0,vyz_d1),intent(out) :: vyz
+            integer intent(hide) :: n
+            integer, optional,intent(in) :: sampling = 2
+            integer, optional,intent(in),depend(lmax) :: lmax_calc=lmax
+            integer, optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: vyz_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vyz_d0,sampling),intent(hide) :: vyz_d1=sampling*vyz_d0
+            integer, optional,intent(in),depend(lmax),intent(hide) :: vyy_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vyy_d0,sampling),intent(hide) :: vyy_d1 = sampling*vyy_d0
+            integer, optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0=shape(cilm,0)
+            integer, optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1=shape(cilm,1)
+            integer, optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2=shape(cilm,2)
+            integer, optional,intent(in),depend(lmax),intent(hide) :: vzz_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vzz_d0,sampling),intent(hide) :: vzz_d1=sampling*vzz_d0
+            integer, optional,intent(in),depend(lmax),intent(hide) :: vxy_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vxy_d0,sampling),intent(hide) :: vxy_d1=sampling*vxy_d0
+            integer, optional,intent(in),depend(lmax),intent(hide) :: vxx_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vxx_d0,sampling),intent(hide) :: vxx_d1=sampling*vxx_d0
+            integer, optional,intent(in),depend(lmax),intent(hide) :: vxz_d0=2*(lmax+1)
+            integer, optional,intent(in),depend(vxz_d0,sampling),intent(hide) :: vxz_d1=sampling*vxz_d0
+        end subroutine MakeMagGradGridDH
+
         subroutine MakeGeoidGridDH(exitstatus,geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,sampling,order,nlat,nlong,lmax_calc,a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
             fortranname pymakegeoidgriddh
             integer, intent(out) :: exitstatus
@@ -1230,16 +1264,16 @@ python module _SHTOOLS
             integer,optional,intent(in),intent(hide),depend(lmax) :: cilm_d2 = lmax+1
         end subroutine CilmMinusDH
 
-        subroutine CilmPlusRhoHDH(exitstatus,cilm,gridin,rho,lmax,nmax,mass,d,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
+        subroutine CilmPlusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
             fortranname pycilmplusrhohdh
             integer, intent(out) :: exitstatus
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-            real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
             integer,optional,intent(in),depend(n) :: lmax = n/2 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(out) :: d
+            real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
             integer, optional,depend(gridin_d0,gridin_d1) :: sampling = gridin_d1/gridin_d0
             integer, optional,intent(in),depend(gridin_d0):: n = gridin_d0
             integer, optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0=shape(gridin,0)
@@ -1251,16 +1285,16 @@ python module _SHTOOLS
             integer, optional,intent(in),check(shape(rho,1)==rho_d1),depend(rho) :: rho_d1=shape(rho,1)
         end subroutine CilmPlusRhoHDH
 
-        subroutine CilmMinusRhoHDH(exitstatus,cilm,gridin,rho,lmax,nmax,mass,d,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
+        subroutine CilmMinusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
             fortranname pycilmminusrhohdh
             integer, intent(out) :: exitstatus
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             real*8 dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-            real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
             integer,optional,intent(in),depend(n) :: lmax = n/2 - 1
             integer intent(in) :: nmax
             real*8 intent(in) :: mass
             real*8 intent(out) :: d
+            real*8 dimension(rho_d0,rho_d1),intent(in) :: rho
             integer optional,depend(gridin_d0,gridin_d1), :: sampling = gridin_d1/gridin_d0
             integer, optional,intent(in),depend(gridin_d0) :: n = gridin_d0
             integer, optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0=shape(gridin,0)
@@ -1352,7 +1386,7 @@ python module _SHTOOLS
             real*8 :: NormalGravity
         end function NormalGravity
 
-        subroutine MakeMagGridDH(exitstatus,cilm,lmax,r0,a,f,rad,theta,phi,total,n,sampling,lmax_calc,total_d0,total_d1,cilm_d0,cilm_d1,cilm_d2,rad_d0,rad_d1,theta_d0,theta_d1,phi_d0,phi_d1)
+        subroutine MakeMagGridDH(exitstatus,cilm,lmax,r0,a,f,rad,theta,phi,total,pot,n,sampling,lmax_calc,total_d0,total_d1,cilm_d0,cilm_d1,cilm_d2,rad_d0,rad_d1,theta_d0,theta_d1,phi_d0,phi_d1,pot_d0,pot_d1)
             fortranname pymakemaggriddh
             integer, intent(out) :: exitstatus
             real*8 dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
@@ -1364,6 +1398,7 @@ python module _SHTOOLS
             real*8 dimension(theta_d0,theta_d1),intent(out) :: theta
             real*8 dimension(phi_d0,phi_d1),intent(out) :: phi
             real*8 dimension(total_d0,total_d1),intent(out) :: total
+            real*8 dimension(pot_d0,pot_d1),intent(out) :: pot
             integer intent(hide) :: n
             integer, optional,intent(in) :: sampling = 2
             integer, optional,intent(in),depend(lmax) :: lmax_calc = lmax
@@ -1378,6 +1413,8 @@ python module _SHTOOLS
             integer, optional,intent(in),intent(hide),depend(total_d1) :: theta_d1 = total_d1
             integer, optional,intent(in),intent(hide),depend(total_d0) :: phi_d0 = total_d0
             integer, optional,intent(in),intent(hide),depend(total_d1)  :: phi_d1 = total_d1
+            integer intent(in),intent(hide),depend(phi_d0) :: pot_d0 = phi_d0
+            integer intent(in),intent(hide),depend(phi_d1) :: pot_d1 = phi_d1
         end subroutine MakeMagGridDH
 
         subroutine MakeCircleCoord(exitstatus,coord,lat,lon,theta0,cinterval,cnum,coord_d0,coord_d1)

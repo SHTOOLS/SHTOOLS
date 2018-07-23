@@ -2,10 +2,10 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                               vxz, vyz, n, sampling, lmax_calc, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   Given the gravitational spherical harmonic coefficients CILM, this
-!   subroutine will compute 2D Driscol and Healy sampled grids of the six
-!   components of the gravity "gradient" tensor in a local north-oriented
-!   reference frame:
+!   Given the 4pi normalized gravitational spherical harmonic coefficients
+!   CILM, this subroutine will compute 2D Driscol and Healy sampled grids of
+!   the six components of the gravity "gradient" tensor in a local
+!   north-oriented reference frame:
 !
 !       (Vxx,   Vxy,    Vxz)
 !       (Vyx,   Vyy,    Vyz)
@@ -45,13 +45,11 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !   sampling interval is 360/N for equally sampled and 180/N for equally spaced
 !   grids, respectively.
 !
-!   This routine assumes that the spherical harmonic coefficients of geodesy
-!   4-pi normalized.
-!
 !   Calling Parameters
 !
 !       IN
-!           cilm        Gravitational spherical harmonic coefficients.
+!           cilm        The 4-pi normalized gravitational potential spherical
+!                       harmonic coefficients.
 !           lmax        The maximum spherical harmonic degree of the function,
 !                       used to determine the number of samples N.
 !           GM          Product of the gravitatonal constant and the planet's
@@ -428,11 +426,11 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
         pm2 = 1.0d0
 
-        tempr =  -cilm(1,1,1) * pm2 ! l = 0
+        tempr = -cilm(1,1,1) * pm2 ! l = 0
         coefr0 = coefr0 + tempr
         coefrs0 = coefrs0 + tempr   ! fsymsign is always 1 for l=m=0
 
-        tempr =  2 * cilm(1,1,1) * pm2  ! l = 0
+        tempr = 2 * cilm(1,1,1) * pm2  ! l = 0
         coefrr0 = coefrr0 + tempr
         coefrrs0 = coefrrs0 + tempr
 
@@ -471,7 +469,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
             ! dp2 is the second derivative with respect to THETA. Must
             ! multiply dp by -sin(theta) in the recurrence relation
-            ! note that the first term is symmetric about the equator accoring
+            ! note that the first term is symmetric about the equator according
             ! the fsymsign, whereas the second term differs
             ! by -1.
             dp2 = -2 * pm1 + z * dp
@@ -799,7 +797,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         coefrrs0 = coefrrs0 * gm / r_ex**3
         coefrrs(2:lmax+1) = coefrrs(2:lmax+1) * gm / r_ex**3
 
-        coeft0 = -sint * coeft0 * gm/r_ex
+        coeft0 = -sint * coeft0 * gm / r_ex
         coeft(2:lmax+1) = -sint * coeft(2:lmax+1) * gm / r_ex
 
         coefts0 = -sint * coefts0 * gm / r_ex

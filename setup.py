@@ -12,7 +12,7 @@ import sys
 import sysconfig
 # the setuptools import dummy patches the distutil commands such that
 # python setup.py develop works
-import setuptools  # NOQA
+import setuptools
 import numpy
 
 from numpy.distutils.core import setup

@@ -13,6 +13,7 @@ os.chdir(os.path.dirname(sys.argv[0]))
 
 notebooks = ('Introduction-1.ipynb',
              'Introduction-2.ipynb',
+             'Introduction-3.ipynb',
              'tutorial_1.ipynb',
              'tutorial_2.ipynb',
              'tutorial_3.ipynb',

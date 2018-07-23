@@ -26,7 +26,7 @@ Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three co
 # Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
-:   The real gravitational potential spherical harmonic coefficients. The coefficients c1lm and c2lm refer to the cosine and sine coefficients, respectively, with `c1lm=cilm[0,l,m]` and `c2lm=cilm[1,l,m]`.
+:   The real 4-pi normalized gravitational potential spherical harmonic coefficients. The coefficients c1lm and c2lm refer to the cosine and sine coefficients, respectively, with `c1lm=cilm[0,l,m]` and `c2lm=cilm[1,l,m]`.
 
 `gm` : float
 :   The gravitational constant multiplied by the mass of the planet.
@@ -69,7 +69,7 @@ The coefficients are referenced to a radius `r0`, and the function is computed o
 
 To remove the "normal gravity" (the total gravitational acceleration on the ellipsoid) from the magnitude of the total gravity field (to obtain the "gravity disturbance"), set `normal_gravity` to 1. To convert m/s^2 to mGals, multiply the gravity grids by 10^5.
 
-The calculated values should be considered exact only when the radii on the ellipsoid are less than the maximum radius of the planet (the potential coefficients are simply downward continued in the spectral domain). The components of the gravity vector are calculated using spherical coordinates whose origin is at the center of the planet, and the components are thus not normal to the reference ellipsoid.
+The calculated values should be considered exact only when the radii on the ellipsoid are greater than the maximum radius of the planet (the potential coefficients are simply downward continued in the spectral domain). The components of the gravity vector are calculated using spherical coordinates whose origin is at the center of the planet, and the components are thus not normal to the reference ellipsoid.
 
 The default is to calculate grids for use in the Driscoll and Healy routines that are equally spaced (`n` by `2n`), but this can be changed to calculate equally sampled grids (`n` by `n`) by setting the optional argument `sampling` to 1. The input value of `lmax` determines the number of samples, `n=2lmax+2`, and the latitudinal sampling interval, 90/(`lmax`+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/`n` for equally sampled and 180/`n` for equally spaced grids, respectively.
 

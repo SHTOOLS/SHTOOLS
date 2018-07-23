@@ -40,7 +40,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `data` | Array of the gridded data. |
 | `nlat`, `nlon` | The number of latitude and longitude bands in the grid.|
 | `lmax` | The maximum spherical harmonic degree that can be resolved by the grid sampling. |
-| `sampling` | For Driscoll and Healy grids, the longitudinal sampling of the grid. Either `nlong` = `nlat` or `nlong` = 2 * `nlat` |
+| `sampling` | For Driscoll and Healy grids, the longitudinal sampling of the grid. Either 1 for `nlon` = `nlat` or 2 for `nlon` = 2 * `nlat` |
 | `kind` | Either `'complex'` or `'real'` for the data type. |
 | `grid` | Either `'DH'` or `'GLQ'` for Driscoll and Healy grids or Gauss-Legendre quadrature grids. |
 | `zeros` | The $$\cos(\theta)$$ nodes used with Gauss-Legendre quadrature grids. Default is `None`.|

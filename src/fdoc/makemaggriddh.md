@@ -4,12 +4,12 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 
 # Usage
 
-call MakeMagGridDH (`cilm`, `lmax`, `r0`, `a`, `f`, `rad`, `theta`, `phi`, `total`, `n`, `sampling`, `lmaxcalc`, `potgrid`, `exitstatus`)
+call MakeMagGridDH (`cilm`, `lmax`, `r0`, `a`, `f`, `rad`, `theta`, `phi`, `total`, `n`, `sampling`, `lmax_calc`, `pot_grid`, `exitstatus`)
 
 # Parameters
 
 `cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
-:   The real Schmidt semi-normalized spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. Alternatively, `C1lm` and `C2lm` correspond to the positive and negative order coefficients, respectively.
+:   The real Schmidt semi-normalized spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. Alternatively, `C1lm` and `C2lm` correspond to the positive and negative order coefficients, respectively. The coefficients are assumed to have units of nT.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the coefficients `cilm`. This determines the number of samples of the output grids, `n=2*lmax+2`, and the latitudinal sampling interval, `90/(lmax+1)`.
