@@ -29,5 +29,11 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | [SHGravCoeffs](python-shgravcoeffs.html) | Class for gravitational potential spherical harmonic coefficients.|
 | [SHGravGrid](python-shgravgrid.html) | Class for global gridded gravitational field data.|
-| [SHGravTensor](python-shgravtensor.html) | Class for the gravity tensor and eigenvalues. |
+| [SHGravTensor](python-shtensor.html) | Class for the gravity field tensor and eigenvalues. |
 | [SHGeoid](python-shgeoid.html) | Class for the geoid.|
+
+## Classes for magnetic fields
+
+| [SHMagCoeffs](python-shmagcoeffs.html) | Class for magnetic potential spherical harmonic coefficients.|
+| [SHMagGrid](python-shmaggrid.html) | Class for global gridded magnetic field data.|
+| [SHMagTensor](python-shtensor.html) | Class for the magnetic field tensor and eigenvalues.|

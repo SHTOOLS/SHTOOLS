@@ -96,7 +96,7 @@ To get started, check out the following Python tutorial notebooks:
 
 * [Introduction 1: Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
 * [Introduction 2: Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
-* [Introduction 3: Gravity fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-3.html)
+* [Introduction 3: Gravity and Magnetic Fields fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-3.html)
 
 ### DEVELOPERS ###
 

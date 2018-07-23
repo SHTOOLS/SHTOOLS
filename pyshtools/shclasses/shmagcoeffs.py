@@ -83,7 +83,7 @@ class SHMagCoeffs(object):
                             of spherical harmonic degree.
     set_coeffs()          : Set coefficients in-place to specified values.
     change_ref()          : Return a new class instance referenced to a
-                            different r0.
+                            different reference radius.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
                             class instance.
@@ -281,7 +281,8 @@ class SHMagCoeffs(object):
     @classmethod
     def from_file(self, fname, format='shtools', r0=None, lmax=None,
                   normalization='schmidt', skip=0, header=True, errors=False,
-                  csphase=1, r0_index=0, **kwargs):
+                  csphase=1, r0_index=0, header_units='m', coeffs_units='nT',
+                  **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -289,7 +290,8 @@ class SHMagCoeffs(object):
         -----
         x = SHMagCoeffs.from_file(filename, [format='shtools', r0, lmax,
                                              normalization, csphase, skip,
-                                             header, errors, r0_index])
+                                             header, errors, r0_index,
+                                             header_units, coeffs_units])
         x = SHMagCoeffs.from_file(filename, format='npy', r0,
                                   [normalization, csphase, **kwargs])
 
@@ -317,6 +319,12 @@ class SHMagCoeffs(object):
             using the value from the header line with this index.
         r0 : float, optional, default = None
             The reference radius of the spherical harmonic coefficients.
+        header_units : str, optional, default = 'm'
+            The units of r0 in the header line of an shtools formatted file:
+            'm' or 'km'. If 'km', the value of r0 will be converted to meters.
+        coeffs_units : str, optional, default = 'nT'
+            The units of the coefficients read from the file: 'nT or 'T''. If
+            'T', the coefficients will be converted to nT.
         normalization : str, optional, default = 'schmidt'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -338,7 +346,11 @@ class SHMagCoeffs(object):
         parameter `header` specifies whether to read a list of values from a
         header line, and the optional parameter `lmax` specifies the maximum
         degree to read from the file. If a header line is read, r0_index is
-        used as the indice to set r0.
+        used as the indice to set r0. If header_unit is specified as 'km', the
+        value of r0 read from the header will be converted to meters. The
+        coefficients read from the file are assumed to have units of nT. If
+        coeffs_units is specified as 'T', the coefficients will be converted
+        to nT.
 
         For shtools formatted files, all lines that do not start with 2
         integers and that are less than 3 words long will be treated as
@@ -384,6 +396,16 @@ class SHMagCoeffs(object):
         if format == 'shtools':
             if r0_index is not None and r0 is not None:
                 raise ValueError('Can not specify both r0_index and r0')
+            if header is False and r0 is None:
+                raise ValueError('If header is False, r0 must be specified.')
+
+        if header_units.lower() not in ('m', 'km'):
+            raise ValueError("header_units can be only 'm' or 'km'. Input "
+                             "value is {:s}.".format(repr(header_units)))
+
+        if coeffs_units.lower() not in ('nt', 't'):
+            raise ValueError("coeffs_units can be only 'T' or 'nT'. Input "
+                             "value is {:s}.".format(repr(coeffs_units)))
 
         header_list = None
         if format.lower() == 'shtools':
@@ -424,6 +446,13 @@ class SHMagCoeffs(object):
         if format.lower() == 'shtools' and header is True:
             if r0_index is not None:
                 r0 = float(header_list[r0_index])
+                if header_units.lower() == 'km':
+                    r0 *= 1.e3
+
+        if coeffs_units.lower() == 't':
+            coeffs *= 1.e9
+            if errors is True:
+                error *= 1.e9
 
         clm = SHMagRealCoeffs(coeffs, r0=r0, errors=error,
                               normalization=normalization.lower(),
@@ -667,17 +696,18 @@ class SHMagCoeffs(object):
             with open(filename, mode='w') as file:
                 if header is not None:
                     file.write(header + '\n')
-                file.write('{:e}, {:d}\n'.format(self.r0, self.lmax))
+                file.write('{:.16e}, {:d}\n'.format(self.r0, self.lmax))
                 for l in range(self.lmax+1):
                     for m in range(l+1):
                         if errors is True:
-                            file.write('{:d}, {:d}, {:e}, {:e}, {:e}, {:e}\n'
+                            file.write('{:d}, {:d}, {:.16e}, {:.16e}, '
+                                       '{:.16e}, {:.16e}\n'
                                        .format(l, m, self.coeffs[0, l, m],
                                                self.coeffs[1, l, m],
                                                self.errors[0, l, m],
                                                self.errors[1, l, m]))
                         else:
-                            file.write('{:d}, {:d}, {:e}, {:e}\n'
+                            file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
                                        .format(l, m, self.coeffs[0, l, m],
                                                self.coeffs[1, l, m]))
         elif format is 'npy':
@@ -1652,15 +1682,16 @@ class SHMagCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, function='total', xscale='lin', yscale='lin',
-                        vscale='log', vrange=None, lmax=None,
-                        errors=False, show=True, ax=None, fname=None):
+                        vscale='log', vrange=None, vmin=None, vmax=None,
+                        lmax=None, errors=False, show=True, ax=None,
+                        fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
-        x.plot_spectrum2d([function, xscale, yscale, vscale, vrange, lmax,
-                           errors, show, ax, fname])
+        x.plot_spectrum2d([function, xscale, yscale, vscale, vrange, vmin,
+                           vmax, lmax, errors, show, ax, fname])
 
         Parameters
         ----------
@@ -1675,8 +1706,14 @@ class SHMagCoeffs(object):
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         vrange : (float, float), optional, default = None
-            Colormap range relative to the maximum value. If None, scale the
-            image to the minimum and maximum values.
+            Colormap range (min, max), relative to the maximum value. If None,
+            scale the image to the maximum and minimum values.
+        vmin : float, optional, default=None
+            The minmum range of the colormap. If None, the minimum value of the
+            spectrum will be used.
+        vmax : float, optional, default=None
+            The maximum range of the colormap. If None, the maximum value of
+            the spectrum will be used.
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to plot.
         errors : bool, optional, default = False
@@ -1774,10 +1811,12 @@ class SHMagCoeffs(object):
             vmin = _np.nanmax(spectrum) * vrange[0]
             vmax = _np.nanmax(spectrum) * vrange[1]
         else:
-            _temp = spectrum
-            _temp[_temp == 0] = _np.NaN
-            vmin = _np.nanmin(_temp)
-            vmax = _np.nanmax(spectrum)
+            if vmin is None:
+                _temp = spectrum
+                _temp[_temp == 0] = _np.NaN
+                vmin = _np.nanmin(_temp)
+            if vmax is None:
+                vmax = _np.nanmax(spectrum)
 
         if vscale.lower() == 'log':
             norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)

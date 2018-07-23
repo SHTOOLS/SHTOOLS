@@ -578,7 +578,7 @@ class SHCoeffs(object):
                     file.write(header + '\n')
                 for l in range(self.lmax+1):
                     for m in range(l+1):
-                        file.write('{:d}, {:d}, {:e}, {:e}\n'
+                        file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
                                    .format(l, m, self.coeffs[0, l, m],
                                            self.coeffs[1, l, m]))
         elif format is 'npy':
@@ -1465,15 +1465,15 @@ class SHCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
-                        vscale='log', vrange=None, lmax=None,
-                        show=True, ax=None, fname=None):
+                        vscale='log', vrange=None, vmin=None, vmax=None,
+                        lmax=None, show=True, ax=None, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
-        x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, lmax,
-                           show, ax, fname])
+        x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, vmin,
+                           vmax, lmax, show, ax, fname])
 
         Parameters
         ----------
@@ -1488,8 +1488,14 @@ class SHCoeffs(object):
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         vrange : (float, float), optional, default = None
-            Colormap range relative to the maximum value. If None, scale the
-            image to the maximum and minimum values.
+            Colormap range (min, max) relative to the maximum value. If None,
+            scale the image to the maximum and minimum values.
+        vmin : float, optional, default=None
+            The minmum range of the colormap. If None, the minimum value of the
+            spectrum will be used.
+        vmax : float, optional, default=None
+            The maximum range of the colormap. If None, the maximum value of
+            the spectrum will be used.
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to plot.
         show : bool, optional, default = True
@@ -1581,10 +1587,12 @@ class SHCoeffs(object):
             vmin = _np.nanmax(spectrum) * vrange[0]
             vmax = _np.nanmax(spectrum) * vrange[1]
         else:
-            _temp = spectrum
-            _temp[_temp == 0] = _np.NaN
-            vmin = _np.nanmin(_temp)
-            vmax = _np.nanmax(spectrum)
+            if vmin is None:
+                _temp = spectrum
+                _temp[_temp == 0] = _np.NaN
+                vmin = _np.nanmin(_temp)
+            if vmax is None:
+                vmax = _np.nanmax(spectrum)
 
         if vscale.lower() == 'log':
             norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)

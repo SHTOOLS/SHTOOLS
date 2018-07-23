@@ -318,7 +318,7 @@ class SHGravCoeffs(object):
     def from_file(self, fname, format='shtools', gm=None, r0=None,
                   omega=None, lmax=None, normalization='4pi', skip=0,
                   header=True, errors=False, csphase=1, r0_index=0, gm_index=1,
-                  omega_index=None, **kwargs):
+                  omega_index=None, header_units='m', **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -327,7 +327,8 @@ class SHGravCoeffs(object):
         x = SHGravCoeffs.from_file(filename, [format='shtools', gm, r0, omega,
                                               lmax, normalization, csphase,
                                               skip, header, errors, gm_index,
-                                              r0_index, omega_index])
+                                              r0_index, omega_index,
+                                              header_units])
         x = SHGravCoeffs.from_file(filename, format='npy', gm, r0,
                                    [omega, normalization, csphase, **kwargs])
 
@@ -366,6 +367,10 @@ class SHGravCoeffs(object):
             The reference radius of the spherical harmonic coefficients.
         omega : float, optional, default = None
             The angular rotation rate of the body.
+        header_units : str, optional, default = 'm'
+            The units used for r0 and gm in the header line of an shtools
+            formatted file: 'm' or 'km'. If 'km', the values of r0 and gm will
+            be converted to meters.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -388,7 +393,8 @@ class SHGravCoeffs(object):
         header line, and the optional parameter `lmax` specifies the maximum
         degree to read from the file. If a header line is read, r0_index,
         gm_index, and omega_index, are used as the indices to set r0, gm, and
-        omega.
+        omega. If header_unit is specified as 'km', the values of r0 and gm
+        that are read from the header will be converted to meters.
 
         For shtools formatted files, all lines that do not start with 2
         integers and that are less than 3 words long will be treated as
@@ -430,6 +436,10 @@ class SHGravCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        if header_units.lower() not in ('m', 'km'):
+            raise ValueError("header_units can be only 'm', or 'km'. Input "
+                             "value is {:s}.".format(repr(header_units)))
+
         if format == 'shtools':
             if r0_index is not None and r0 is not None:
                 raise ValueError('Can not specify both r0_index and r0')
@@ -437,6 +447,9 @@ class SHGravCoeffs(object):
                 raise ValueError('Can not specify both gm_index and gm')
             if omega_index is not None and omega is not None:
                 raise ValueError('Can not specify both omega_index and omega')
+            if header is False and (r0 is None or gm is None):
+                raise ValueError('If header is False, r0 and gm must be '
+                                 'specified.')
 
         header_list = None
         if format.lower() == 'shtools':
@@ -488,6 +501,9 @@ class SHGravCoeffs(object):
                 gm = float(header_list[gm_index])
             if omega_index is not None:
                 omega = float(header_list[omega_index])
+            if header_units.lower() == 'km':
+                r0 *= 1.e3
+                gm *= 1.e9
 
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
                                errors=error,
@@ -884,18 +900,19 @@ class SHGravCoeffs(object):
             with open(filename, mode='w') as file:
                 if header is not None:
                     file.write(header + '\n')
-                file.write('{:e}, {:e}, {:e}, {:d}\n'.format(self.r0, self.gm,
-                                                             omega, self.lmax))
+                file.write('{:.16e}, {:.16e}, {:.16e}, {:d}\n'.format(
+                    self.r0, self.gm, omega, self.lmax))
                 for l in range(self.lmax+1):
                     for m in range(l+1):
                         if errors is True:
-                            file.write('{:d}, {:d}, {:e}, {:e}, {:e}, {:e}\n'
+                            file.write('{:d}, {:d}, {:.16e}, {:.16e}, '
+                                       '{:.16e}, {:.16e}\n'
                                        .format(l, m, self.coeffs[0, l, m],
                                                self.coeffs[1, l, m],
                                                self.errors[0, l, m],
                                                self.errors[1, l, m]))
                         else:
-                            file.write('{:d}, {:d}, {:e}, {:e}\n'
+                            file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
                                        .format(l, m, self.coeffs[0, l, m],
                                                self.coeffs[1, l, m]))
         elif format is 'npy':
@@ -2009,15 +2026,16 @@ class SHGravCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, function='geoid', xscale='lin', yscale='lin',
-                        vscale='log', vrange=None, lmax=None,
-                        errors=False, show=True, ax=None, fname=None):
+                        vscale='log', vrange=None, vmin=None, vmax=None,
+                        lmax=None, errors=False, show=True, ax=None,
+                        fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
-        x.plot_spectrum2d([function, xscale, yscale, vscale, vrange, lmax,
-                           errors, show, ax, fname])
+        x.plot_spectrum2d([function, xscale, yscale, vscale, vrange, vmin,
+                           vmax, lmax, errors, show, ax, fname])
 
         Parameters
         ----------
@@ -2032,8 +2050,14 @@ class SHGravCoeffs(object):
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         vrange : (float, float), optional, default = None
-            Colormap range relative to the maximum value. If None, scale the
-            image to the minimum and maximum values.
+            Colormap range (min, max), relative to the maximum value. If None,
+            scale the image to the maximum and minimum values.
+        vmin : float, optional, default=None
+            The minmum range of the colormap. If None, the minimum value of the
+            spectrum will be used.
+        vmax : float, optional, default=None
+            The maximum range of the colormap. If None, the maximum value of
+            the spectrum will be used.
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to plot.
         errors : bool, optional, default = False
@@ -2134,10 +2158,12 @@ class SHGravCoeffs(object):
             vmin = _np.nanmax(spectrum) * vrange[0]
             vmax = _np.nanmax(spectrum) * vrange[1]
         else:
-            _temp = spectrum
-            _temp[_temp == 0] = _np.NaN
-            vmin = _np.nanmin(_temp)
-            vmax = _np.nanmax(spectrum)
+            if vmin is None:
+                _temp = spectrum
+                _temp[_temp == 0] = _np.NaN
+                vmin = _np.nanmin(_temp)
+            if vmax is None:
+                vmax = _np.nanmax(spectrum)
 
         if vscale.lower() == 'log':
             norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
