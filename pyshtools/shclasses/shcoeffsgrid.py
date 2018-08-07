@@ -1345,15 +1345,15 @@ class SHCoeffs(object):
 
     # ---- Plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
-                      lmax=None, xscale='lin', yscale='log', show=True,
-                      ax=None, fname=None):
+                      lmax=None, xscale='lin', yscale='log', grid=True,
+                      legend=None, show=True, ax=None, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, show,
-                         ax, fname])
+        x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, grid,
+                         legend, show, ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -1376,6 +1376,10 @@ class SHCoeffs(object):
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
             Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        legend : str, optional, default = None
+            Text to use for the legend.
         show : bool, optional, default = True
             If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -1383,6 +1387,8 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot().
 
         Description
         -----------
@@ -1418,33 +1424,36 @@ class SHCoeffs(object):
         else:
             axes = ax
 
-        axes.set_xlabel('degree l')
-        if convention == 'energy':
-            axes.set_ylabel('energy')
-            if (unit == 'per_l'):
-                legend = 'energy per degree'
-            elif (unit == 'per_lm'):
-                legend = 'energy per coefficient'
-            elif (unit == 'per_dlogl'):
-                legend = 'energy per log bandwidth'
+        axes.set_xlabel('Spherical harmonic degree')
+        if convention == 'Energy':
+            axes.set_ylabel('Energy')
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'Energy per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'Energy per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'Energy per log bandwidth'
         elif convention == 'l2norm':
             axes.set_ylabel('l2 norm')
-            if (unit == 'per_l'):
-                legend = 'l2 norm per degree'
-            elif (unit == 'per_lm'):
-                legend = 'l2 norm per coefficient'
-            elif (unit == 'per_dlogl'):
-                legend = 'l2 norm per log bandwidth'
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'l2 norm per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'l2 norm per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'l2 norm per log bandwidth'
         else:
-            axes.set_ylabel('power')
-            if (unit == 'per_l'):
-                legend = 'power per degree'
-            elif (unit == 'per_lm'):
-                legend = 'power per coefficient'
-            elif (unit == 'per_dlogl'):
-                legend = 'power per log bandwidth'
+            axes.set_ylabel('Power')
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'Power per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'Power per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'Power per log bandwidth'
 
-        axes.grid(True, which='both')
+        axes.grid(grid, which='both')
 
         if xscale == 'log':
             axes.set_xscale('log', basex=base)
@@ -1452,9 +1461,11 @@ class SHCoeffs(object):
             axes.set_yscale('log', basey=base)
 
         if xscale == 'log':
-            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend)
+            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
         else:
-            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend)
+            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
+            axes.set(xlim=(ls[0], ls[lmax]))
+
         axes.legend()
 
         if ax is None:
@@ -1465,15 +1476,15 @@ class SHCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
-                        vscale='log', vrange=None, vmin=None, vmax=None,
-                        lmax=None, show=True, ax=None, fname=None):
+                        grid=True, vscale='log', vrange=None, vmin=None,
+                        vmax=None, lmax=None, show=True, ax=None, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
-        x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, vmin,
-                           vmax, lmax, show, ax, fname])
+        x.plot_spectrum2d([convention, xscale, yscale, grid, vscale, vrange,
+                           vmin, vmax, lmax, show, ax, fname])
 
         Parameters
         ----------
@@ -1485,6 +1496,8 @@ class SHCoeffs(object):
             Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'lin'
             Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         vrange : (float, float), optional, default = None
@@ -1629,15 +1642,16 @@ class SHCoeffs(object):
         cb = _plt.colorbar(cmesh, ax=ax)
 
         if (convention == 'energy'):
-            cb.set_label('energy per coefficient')
+            cb.set_label('Energy per coefficient')
         elif (convention == 'power'):
-            cb.set_label('power per coefficient')
+            cb.set_label('Power per coefficient')
         else:
-            cb.set_label('magnitude-squared coefficient')
+            cb.set_label('Magnitude-squared coefficient')
 
         cb.ax.tick_params(width=0.2)
-        axes.set(xlabel='degree l', ylabel='order m')
-        axes.grid(True, which='both')
+        axes.set(xlabel='Spherical harmonic degree',
+                 ylabel='Spherical harmonic order')
+        axes.grid(grid, which='both')
 
         if ax is None:
             if show:
@@ -2581,15 +2595,15 @@ class SHGrid(object):
 
     # ---- Plotting routines ----
     def plot(self, tick_interval=[30, 30], ax=None, ax2=None, colorbar=False,
-             cb_orientation='vertical', cb_label=None, show=True, fname=None,
-             **kwargs):
+             cb_orientation='vertical', cb_label=None, grid=False, show=True,
+             fname=None, **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
         x.plot([tick_interval, ax, ax2, colorbar, cb_orientation, cb_label,
-                show, fname, **kwargs])
+                grid, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2614,6 +2628,8 @@ class SHGrid(object):
             Orientation of the colorbar; either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot grid lines.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -2642,7 +2658,7 @@ class SHGrid(object):
             fig, axes = self._plot(xticks=xticks, yticks=yticks,
                                    colorbar=colorbar,
                                    cb_orientation=cb_orientation,
-                                   cb_label=cb_label, **kwargs)
+                                   cb_label=cb_label, grid=grid, **kwargs)
         else:
             if self.kind == 'complex':
                 if (ax is None and ax2 is not None) or (ax2 is None and
@@ -2651,7 +2667,7 @@ class SHGrid(object):
                                      'both optional arguments axes and axes2.')
             self._plot(xticks=xticks, yticks=yticks, ax=ax, ax2=ax2,
                        colorbar=colorbar, cb_orientation=cb_orientation,
-                       cb_label=cb_label, **kwargs)
+                       cb_label=cb_label, grid=grid, **kwargs)
 
         if ax is None:
             if show:
@@ -2794,7 +2810,7 @@ class DHRealGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], xlabel='longitude',
               ylabel='latitude', ax=None, ax2=None, colorbar=None,
-              cb_orientation=None, cb_label=None, **kwargs):
+              cb_orientation=None, cb_label=None, grid=False, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -2804,6 +2820,7 @@ class DHRealGrid(SHGrid):
         cim = axes.imshow(self.data, origin='upper',
                           extent=(0., 360., -90., 90.), **kwargs)
         axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axes.grid(grid, which='both')
 
         if colorbar is True:
             if cb_orientation == 'vertical':
@@ -2905,7 +2922,7 @@ class DHComplexGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], xlabel='longitude',
               ylabel='latitude', ax=None, ax2=None, colorbar=None,
-              cb_label=None, cb_orientation=None, **kwargs):
+              cb_label=None, cb_orientation=None, grid=False, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -2919,10 +2936,12 @@ class DHComplexGrid(SHGrid):
                              extent=(0., 360., -90., 90.), **kwargs)
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
                    xticks=xticks, yticks=yticks)
+        axreal.grid(grid, which='both')
         cim2 = axcomplex.imshow(self.data.imag, origin='upper',
                                 extent=(0., 360., -90., 90.), **kwargs)
         axcomplex.set(title='Imaginary component', xlabel=xlabel,
                       ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axcomplex.grid(grid, which='both')
 
         if colorbar is True:
             if cb_orientation == 'vertical':
@@ -3032,7 +3051,7 @@ class GLQRealGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
               ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
-              cb_orientation=None, cb_label=None, **kwargs):
+              cb_orientation=None, cb_label=None, grid=False, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -3041,6 +3060,7 @@ class GLQRealGrid(SHGrid):
 
         cim = axes.imshow(self.data, origin='upper', **kwargs)
         axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axes.grid(grid, which='both')
 
         if colorbar is True:
             if cb_orientation == 'vertical':
@@ -3135,7 +3155,7 @@ class GLQComplexGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
               ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
-              cb_label=None, cb_orientation=None, **kwargs):
+              cb_label=None, cb_orientation=None, grid=False, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(2, 1)
@@ -3148,9 +3168,11 @@ class GLQComplexGrid(SHGrid):
         cim1 = axreal.imshow(self.data.real, origin='upper', **kwargs)
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
                    xticks=xticks, yticks=yticks)
+        axreal.grid(grid, which='both')
         cim2 = axcomplex.imshow(self.data.imag, origin='upper', **kwargs)
         axcomplex.set(title='Imaginary component', xlabel=xlabel,
                       ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axcomplex.grid(grid, which='both')
 
         if colorbar is True:
             if cb_orientation == 'vertical':

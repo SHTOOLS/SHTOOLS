@@ -16,11 +16,10 @@ from pyshtools import spectralanalysis
 from pyshtools import shio
 from pyshtools import expand
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
-from FigStyle import style_shtools
+from pyshtools.utils import figstyle
 
 # set shtools plot style:
-mpl.rcParams.update(style_shtools)
+plt.style.use(figstyle.shtools)
 
 
 # ==== MAIN FUNCTION ====
