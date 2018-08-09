@@ -9,33 +9,26 @@ toc: false
 editdoc: pydoc
 ---
 
-<style>
-table:nth-of-type(n) {
-    display:table;
-    width:100%;
-}
-table:nth-of-type(n) th:nth-of-type(2) {
-    width:75%;
-}
-</style>
-
-A collection of matplotlib style sheets for creating publication quality graphics.
+Set matplotlib parameters for creating publication quality graphics.
 
 ## Usage
 
-```python
-import matplotlib.pyplot as plt
-import pyshtools.utils.figstyle as figstyle
-plt.style.use(figstyle.shtools) # use the shtools style file
-plt.style.use([figstyle.shtools, figstyle.half]) # combine multiple style files
-```
+figstyle([`rel_width`, `screen_dpi`, `aspect_ratio`, `max_width`])
 
-## Styles
+## Parameters
 
-| Style | Description |
-| ----- | ----------- |
-| `shtools` | Core style file for pyshtools. |
-| `full` | Set the figure width and height for figures that span the entire width of a page. |
-| `threequarters` | Set the figure width and height for figures that span three-quarters of a page (default for `shtools` style). |
-| `half` | Set the figure width and height for figures that span half a page. |
-| `map` | Set parameters for plotting global maps. |
+`rel_width` : float, optional, default = 0.75
+:   The relative width of the plot (from 0 to 1) wih respect to `max_width``.
+
+`screen_dpi` : int, optional, default = 114
+:   The screen resolution of the display in dpi, which determines the size of the plot on the display.
+
+`aspect_ratio` : float, optional, default = 4/3
+:   The aspect ratio of the plot.
+
+`max_width` : float, optional, default = 7.48031
+:   The maximum width of the usable area of a journal page in inches.
+
+## Description
+
+This function sets a variety of matplotlib parameters for creating publication quality graphics. The default parameters are tailored to AGU/Wiley-Blackwell journals that accept relative widths of 0.5, 0.75, or 1.

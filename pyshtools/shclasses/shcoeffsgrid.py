@@ -1469,6 +1469,7 @@ class SHCoeffs(object):
         axes.legend()
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:
@@ -1654,6 +1655,7 @@ class SHCoeffs(object):
         axes.grid(grid, which='both')
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:
@@ -2594,25 +2596,28 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, tick_interval=[30, 30], ax=None, ax2=None, colorbar=False,
-             cb_orientation='vertical', cb_label=None, grid=False, show=True,
-             fname=None, **kwargs):
+    def plot(self, tick_interval=[30, 30], minor_tick_interval=[10, 10],
+             ax=None, ax2=None, colorbar=False, cb_orientation='vertical',
+             cb_label=None, grid=False, show=True, fname=None, **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([tick_interval, ax, ax2, colorbar, cb_orientation, cb_label,
-                grid, show, fname, **kwargs])
+        x.plot([tick_interval, minor_tick_interval, ax, ax2, colorbar,
+                cb_orientation, cb_label, grid, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        xlabel : str, optional, default = 'longitude' or 'GLQ longitude index'
+        minor_tick_interval : list or tuple, optional, default = [10, 10]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
+        xlabel : str, optional, default = 'Longitude' or 'GLQ longitude index'
             Label for the longitude axis.
-        ylabel : str, optional, default = 'latitude' or 'GLQ latitude index'
+        ylabel : str, optional, default = 'Latitude' or 'GLQ latitude index'
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear. If the
@@ -2654,8 +2659,26 @@ class SHGrid(object):
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
 
+        if minor_tick_interval is None:
+            minor_xticks = []
+            minor_yticks = []
+        elif self.grid == 'GLQ':
+            minor_xticks = _np.linspace(
+                0, self.nlon-1, num=self.nlon//minor_tick_interval[0]+1,
+                endpoint=True, dtype=int)
+            minor_yticks = _np.linspace(
+                0, self.nlat-1, num=self.nlat//minor_tick_interval[1]+1,
+                endpoint=True, dtype=int)
+        else:
+            minor_xticks = _np.linspace(
+                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
+            minor_yticks = _np.linspace(
+                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
+
         if ax is None and ax2 is None:
             fig, axes = self._plot(xticks=xticks, yticks=yticks,
+                                   minor_xticks=minor_xticks,
+                                   minor_yticks=minor_yticks,
                                    colorbar=colorbar,
                                    cb_orientation=cb_orientation,
                                    cb_label=cb_label, grid=grid, **kwargs)
@@ -2665,11 +2688,13 @@ class SHGrid(object):
                                                         ax is not None):
                     raise ValueError('For complex grids, one must specify ' +
                                      'both optional arguments axes and axes2.')
-            self._plot(xticks=xticks, yticks=yticks, ax=ax, ax2=ax2,
+            self._plot(xticks=xticks, yticks=yticks, minor_xticks=minor_xticks,
+                       minor_yticks=minor_yticks, ax=ax, ax2=ax2,
                        colorbar=colorbar, cb_orientation=cb_orientation,
                        cb_label=cb_label, grid=grid, **kwargs)
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
 
@@ -2808,18 +2833,26 @@ class DHRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, xticks=[], yticks=[], xlabel='longitude',
-              ylabel='latitude', ax=None, ax2=None, colorbar=None,
-              cb_orientation=None, cb_label=None, grid=False, **kwargs):
+    def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
+              xlabel='Longitude', ylabel='Latitude', ax=None, ax2=None,
+              colorbar=None, cb_orientation=None, cb_label=None, grid=False,
+              **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
         else:
             axes = ax
 
+        deg = '$^{\circ}$'
+        xticklabels = [str(int(y)) + deg for y in xticks]
+        yticklabels = [str(int(y)) + deg for y in yticks]
+
         cim = axes.imshow(self.data, origin='upper',
                           extent=(0., 360., -90., 90.), **kwargs)
-        axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks,
+                 xticklabels=xticklabels, yticklabels=yticklabels)
+        axes.set_xticks(minor_xticks, minor=True)
+        axes.set_yticks(minor_yticks, minor=True)
         axes.grid(grid, which='both')
 
         if colorbar is True:
@@ -2837,7 +2870,6 @@ class DHRealGrid(SHGrid):
                 cbar.set_label(cb_label)
 
         if ax is None:
-            fig.tight_layout(pad=0.5)
             return fig, axes
 
 
@@ -2920,27 +2952,40 @@ class DHComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, xticks=[], yticks=[], xlabel='longitude',
-              ylabel='latitude', ax=None, ax2=None, colorbar=None,
-              cb_label=None, cb_orientation=None, grid=False, **kwargs):
+    def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
+              xlabel='Longitude', ylabel='Latitude', ax=None, ax2=None,
+              colorbar=None, cb_label=None, cb_orientation=None, grid=False,
+              **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            fig, axes = _plt.subplots(2, 1)
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][1]*1.5)
+            fig, axes = _plt.subplots(2, 1, figsize=figsize)
             axreal = axes.flat[0]
             axcomplex = axes.flat[1]
         else:
             axreal = ax
             axcomplex = ax2
 
+        deg = '$^{\circ}$'
+        xticklabels = [str(int(y)) + deg for y in xticks]
+        yticklabels = [str(int(y)) + deg for y in yticks]
+
         cim1 = axreal.imshow(self.data.real, origin='upper',
                              extent=(0., 360., -90., 90.), **kwargs)
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
-                   xticks=xticks, yticks=yticks)
+                   xticks=xticks, yticks=yticks, xticklabels=xticklabels,
+                   yticklabels=yticklabels)
+        axreal.set_xticks(minor_xticks, minor=True)
+        axreal.set_yticks(minor_yticks, minor=True)
         axreal.grid(grid, which='both')
         cim2 = axcomplex.imshow(self.data.imag, origin='upper',
                                 extent=(0., 360., -90., 90.), **kwargs)
         axcomplex.set(title='Imaginary component', xlabel=xlabel,
-                      ylabel=ylabel, xticks=xticks, yticks=yticks)
+                      ylabel=ylabel, xticks=xticks, yticks=yticks,
+                      xticklabels=xticklabels, yticklabels=yticklabels)
+        axcomplex.set_xticks(minor_xticks, minor=True)
+        axcomplex.set_yticks(minor_yticks, minor=True)
         axcomplex.grid(grid, which='both')
 
         if colorbar is True:
@@ -2968,7 +3013,6 @@ class DHComplexGrid(SHGrid):
                 cbar2.set_label(cb_label)
 
         if ax is None:
-            fig.tight_layout(pad=0.5)
             return fig, axes
 
 
@@ -3049,9 +3093,10 @@ class GLQRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
-              cb_orientation=None, cb_label=None, grid=False, **kwargs):
+    def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
+              xlabel='GLQ longitude index', ylabel='GLQ latitude index',
+              ax=None, ax2=None, colorbar=None, cb_orientation=None,
+              cb_label=None, grid=False, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             fig, axes = _plt.subplots(1, 1)
@@ -3060,6 +3105,8 @@ class GLQRealGrid(SHGrid):
 
         cim = axes.imshow(self.data, origin='upper', **kwargs)
         axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axes.set_xticks(minor_xticks, minor=True)
+        axes.set_yticks(minor_yticks, minor=True)
         axes.grid(grid, which='both')
 
         if colorbar is True:
@@ -3077,7 +3124,6 @@ class GLQRealGrid(SHGrid):
                 cbar.set_label(cb_label)
 
         if ax is None:
-            fig.tight_layout(pad=0.5)
             return fig, axes
 
 
@@ -3153,12 +3199,15 @@ class GLQComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
-              cb_label=None, cb_orientation=None, grid=False, **kwargs):
+    def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
+              xlabel='GLQ longitude index', ylabel='GLQ latitude index',
+              ax=None, ax2=None, colorbar=None, cb_label=None,
+              cb_orientation=None, grid=False, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            fig, axes = _plt.subplots(2, 1)
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][1]*1.5)
+            fig, axes = _plt.subplots(2, 1, figsize=figsize)
             axreal = axes.flat[0]
             axcomplex = axes.flat[1]
         else:
@@ -3168,10 +3217,14 @@ class GLQComplexGrid(SHGrid):
         cim1 = axreal.imshow(self.data.real, origin='upper', **kwargs)
         axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
                    xticks=xticks, yticks=yticks)
+        axreal.set_xticks(minor_xticks, minor=True)
+        axreal.set_yticks(minor_yticks, minor=True)
         axreal.grid(grid, which='both')
         cim2 = axcomplex.imshow(self.data.imag, origin='upper', **kwargs)
         axcomplex.set(title='Imaginary component', xlabel=xlabel,
                       ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axcomplex.set_xticks(minor_xticks, minor=True)
+        axcomplex.set_yticks(minor_yticks, minor=True)
         axcomplex.grid(grid, which='both')
 
         if colorbar is True:
@@ -3199,5 +3252,4 @@ class GLQComplexGrid(SHGrid):
                 cbar2.set_label(cb_label)
 
         if ax is None:
-            fig.tight_layout(pad=0.5)
             return fig, axes

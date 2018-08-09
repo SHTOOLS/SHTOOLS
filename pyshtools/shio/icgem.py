@@ -11,7 +11,8 @@ from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
 
 
 def _time_variable_part(epoch, ref_epoch, trnd, periodic):
-    """Return sum of the time-variable part of the coefficients
+    """
+    Return sum of the time-variable part of the coefficients
 
     The formula is:
     G(t) = G(t0) + trnd*(t-t0) +
@@ -34,7 +35,9 @@ def _time_variable_part(epoch, ref_epoch, trnd, periodic):
 
 
 def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
-    """Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted file.
+    """
+    Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted
+    file.
 
     This function only reads files with the gravity field spherical
     harmonic coefficients.
@@ -55,7 +58,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
     Parameters
     ----------
     filename : str
-        The ascii-formatted filename containing the spherical harmonic coefficients.
+        The ascii-formatted filename containing the spherical harmonic
+        coefficients.
     errors : str, optional
         Which errors to read. Can be either "calibrated", "formal" or
         None. Default is None.
@@ -83,14 +87,16 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
                     header[key] = line.strip().split()[1]
 
         if header['product_type'] != 'gravity_field':
-            raise ValueError('This function reads only gravity_field data product.')
+            raise ValueError(
+                'This function reads only gravity_field data product.')
 
         is_v2 = False
         if 'format' in header and header['format'] == 'icgem2.0':
             is_v2 = True
 
         if epoch is None and is_v2:
-            raise ValueError('Epoch must be specified for the "icgem2.0" format.')
+            raise ValueError(
+                'Epoch must be specified for the "icgem2.0" format.')
         elif epoch is not None:
             epoch = _yyyymmdd_to_year_fraction(epoch)
 
@@ -99,7 +105,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
         elif 'gravity_constant' in header:
             gravity_constant = float(header['gravity_constant'])
         else:
-            raise ValueError('No standard gravitational constant in the header.')
+            raise ValueError(
+                'No standard gravitational constant in the header.')
 
         radius = float(header['radius'])
 
@@ -112,12 +119,14 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
             if header['errors'] == 'no':
                 raise ValueError('This model has no errors.')
             elif errors not in valid_err[:-1]:
-                raise ValueError('Errors can be either "formal", "calibrated" or None.')
+                raise ValueError(
+                    'Errors can be either "formal", "calibrated" or None.')
             elif header['errors'] in valid_err and errors in valid_err[:-1]:
                 if (errors, header['errors']) == valid_err[1:]:
                     err_cols = (7, 8)
                 elif header['errors'] != errors:
-                    raise ValueError('This model has no {} errors.'.format(errors))
+                    raise ValueError(
+                        'This model has no {} errors.'.format(errors))
                 else:
                     err_cols = (5, 6)
 

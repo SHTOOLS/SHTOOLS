@@ -2031,6 +2031,7 @@ class SHGravCoeffs(object):
         axes.legend()
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:
@@ -2046,8 +2047,8 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        x.plot_spectrum2d([function, xscale, yscale, grid, vscale, vrange, vmin,
-                           vmax, lmax, errors, show, ax, fname])
+        x.plot_spectrum2d([function, xscale, yscale, grid, vscale, vrange,
+                           vmin, vmax, lmax, errors, show, ax, fname])
 
         Parameters
         ----------
@@ -2228,6 +2229,7 @@ class SHGravCoeffs(object):
         axes.grid(grid, which='both')
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:

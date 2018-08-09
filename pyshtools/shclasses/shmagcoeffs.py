@@ -1687,6 +1687,7 @@ class SHMagCoeffs(object):
         axes.legend()
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:
@@ -1879,6 +1880,7 @@ class SHMagCoeffs(object):
         axes.grid(grid, which='both')
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:

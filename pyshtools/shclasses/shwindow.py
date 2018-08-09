@@ -709,17 +709,18 @@ class SHWindow(object):
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
 
-    def plot_windows(self, nwin, lmax=None, maxcolumns=5,
-                     tick_interval=[60, 45], xlabel='longitude',
-                     ylabel='latitude', show=True, ax=None, legend=True,
-                     fname=None):
+    def plot_windows(self, nwin, lmax=None, maxcolumns=3,
+                     tick_interval=[60, 45], minor_tick_interval=None,
+                     xlabel='Longitude', ylabel='Latitude', grid=False,
+                     show=True, ax=None, legend=True, fname=None):
         """
         Plot the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_windows(nwin, [lmax, maxcolumns, tick_interval, xlabel, ylabel,
-                              show, ax, legend, fname])
+        x.plot_windows(nwin, [lmax, maxcolumns, tick_interval,
+                              minor_tick_interval, xlabel, ylabel,
+                              grid, show, ax, legend, fname])
 
         Parameters
         ----------
@@ -728,23 +729,28 @@ class SHWindow(object):
         lmax : int, optional, default = self.lwin
             The maximum degree to use when plotting the windows, which controls
             the number of samples in latitude and longitude.
-        maxcolumns : int, optional, default = 5
+        maxcolumns : int, optional, default = 3
             The maximum number of columns to use when plotting multiple
             localization windows.
         tick_interval : list or tuple, optional, default = [60, 45]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = None
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        grid : bool, optional, default = False
+            If True, plot grid lines.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
         legend : bool, optional, default = True
-            If True, plot a legend in each subplot providing the taper number
-            and 1 minus the concentration factor.
+            If True, plot a legend on top of each subplot providing the taper
+            number and 1 minus the concentration factor.
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
@@ -754,7 +760,9 @@ class SHWindow(object):
 
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
-        figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                   _mpl.rcParams['figure.figsize'][0] / ncolumns
+                   / 2 * nrows + 1)
 
         if ax is None:
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
@@ -774,18 +782,34 @@ class SHWindow(object):
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
 
+        if minor_tick_interval is None:
+            minor_xticks = []
+            minor_yticks = []
+        else:
+            minor_xticks = _np.linspace(
+                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
+            minor_yticks = _np.linspace(
+                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
+
+        deg = '$^{\circ}$'
+        xticklabels = [str(int(y)) + deg for y in xticks]
+        yticklabels = [str(int(y)) + deg for y in yticks]
+
         if ax is None:
             if nrows > 1:
                 for axtemp in axes[:-1, :].flatten():
                     for xlabel_i in axtemp.get_xticklabels():
                         xlabel_i.set_visible(False)
+                    axtemp.set_xlabel('', visible=False)
                 for axtemp in axes[:, 1:].flatten():
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
+                    axtemp.set_ylabel('', visible=False)
             elif nwin > 1:
                 for axtemp in axes[1:].flatten():
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
+                    axtemp.set_ylabel('', visible=False)
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
@@ -800,34 +824,35 @@ class SHWindow(object):
             axtemp.imshow(gridout, origin='upper',
                           extent=(0., 360., -90., 90.))
             axtemp.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks,
-                       yticks=yticks)
+                       yticks=yticks, xticklabels=xticklabels,
+                       yticklabels=yticklabels)
+            axtemp.set_xticks(minor_xticks, minor=True)
+            axtemp.set_yticks(minor_yticks, minor=True)
+            axtemp.grid(grid, which='both')
             if legend is True:
-                axtemp.text(0.02, 0.95,
-                            '#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue),
-                            transform=axtemp.transAxes,
-                            va='top', ha='left', color='black',
-                            bbox={'boxstyle': 'round',  'edgecolor': 'none',
-                                  'facecolor': 'white'})
+                axtemp.set_title('#{:d} [loss={:2.2g}]'
+                                 .format(itaper, 1-evalue))
+
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
-
-            fig.tight_layout(pad=0.5)
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
 
     def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
-                     maxcolumns=5, xscale='lin', yscale='log',
+                     maxcolumns=3, xscale='lin', yscale='log', grid=True,
                      xlim=(None, None), ylim=(None, None), show=True, ax=None,
-                     fname=None):
+                     legend=True, fname=None):
         """
         Plot the spectra of the best-concentrated localization windows.
 
         Usage
         -----
         x.plot_spectra(nwin, [convention, unit, base, maxcolumns, xscale,
-                              yscale, xlim, ylim, show, ax, fname])
+                              yscale, grid, xlim, ylim, show, ax, legend,
+                              fname])
 
         Parameters
         ----------
@@ -844,13 +869,15 @@ class SHWindow(object):
             interval dlog_a(l).
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
-        maxcolumns : int, optional, default = 5
+        maxcolumns : int, optional, default = 3
             The maximum number of columns to use when plotting the spectra
             of multiple localization windows.
         xscale : str, optional, default = 'lin'
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
             Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
         xlim : tuple, optional, default = (None, None)
             The upper and lower limits used for the x axis.
         ylim : tuple, optional, default = (None, None)
@@ -859,6 +886,9 @@ class SHWindow(object):
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
+        legend : bool, optional, default = True
+            If True, plot a legend on top of each subplot providing the taper
+            number and 1 minus the concentration factor.
         fname : str, optional, default = None
             If present, save the image to the file.
         """
@@ -868,12 +898,17 @@ class SHWindow(object):
 
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
-        figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                   _mpl.rcParams['figure.figsize'][0] / ncolumns
+                    / 2 * nrows)
 
         if ylim == (None, None):
             upper = spectrum[:, :min(self.nwin, nwin)].max()
             lower = upper * 1.e-6
             ylim = (lower, 5 * upper)
+        if xlim == (None, None):
+            if xscale == 'lin':
+                xlim = (degrees[0], degrees[-1])
 
         if ax is None:
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
@@ -909,28 +944,33 @@ class SHWindow(object):
             else:
                 axtemp = axes[itaper]
             if (convention == 'power'):
-                axtemp.set_ylabel('power')
+                axtemp.set_ylabel('Power')
             else:
-                axtemp.set_ylabel('energy')
+                axtemp.set_ylabel('Energy')
 
             if yscale == 'log':
                 axtemp.set_yscale('log', basey=base)
 
             if xscale == 'log':
                 axtemp.set_xscale('log', basex=base)
-                axtemp.plot(degrees[1:], spectrum[1:, itaper])
+                axtemp.plot(degrees[1:], spectrum[1:, itaper],
+                            label='#{:d} [loss={:2.2g}]'
+                            .format(itaper, 1-evalue))
             else:
                 axtemp.plot(degrees[0:], spectrum[0:, itaper],
-                            label='#{:d}'.format(itaper))
-            axtemp.set(xlabel='degree l', xlim=xlim, ylim=ylim)
-            axtemp.grid(True, which='both')
-            axtemp.set_title('#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue))
+                            label='#{:d} [loss={:2.2g}]'
+                            .format(itaper, 1-evalue))
+            axtemp.set(xlabel='Spherical harmonic degree',
+                       xlim=xlim, ylim=ylim)
+            axtemp.grid(grid, which='both')
+            if legend is True:
+                axtemp.set_title('#{:d} [loss={:2.2g}]'
+                                 .format(itaper, 1-evalue))
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
-
-            fig.tight_layout(pad=0.5)
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -982,13 +1022,13 @@ class SHWindow(object):
 
         axes.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
                                          mode=mode), aspect='auto')
-        axes.set_xlabel('input power')  # matrix index 1 (columns)
-        axes.set_ylabel('output power')  # matrix index 0 (rows)
+        axes.set_xlabel('Input power')  # matrix index 1 (columns)
+        axes.set_ylabel('Output power')  # matrix index 0 (rows)
 
         if ax is None:
+            fig.tight_layout(pad=0.1)
             if show:
                 _plt.show()
-            fig.tight_layout(pad=0.1)
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
