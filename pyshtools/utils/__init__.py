@@ -10,8 +10,8 @@ MakeEllipseCoord   Compute coordinates of an ellipse placed at a given latitude
 Wigner3j           Compute the Wigner-3j symbols for all allowable values of J.
 DHaj               Compute the latitudinal weights used in the Driscoll and
                    Healy (1994) spherical harmonic transforms.
-figstyle           Set Matplotlib parameters for creating publication
-                   quality graphics.
+figstyle           Set Matplotlib parameters for creating publication quality
+                   graphics.
 """
 
 from __future__ import absolute_import as _absolute_import

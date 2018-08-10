@@ -711,16 +711,19 @@ class SHWindow(object):
 
     def plot_windows(self, nwin, lmax=None, maxcolumns=3,
                      tick_interval=[60, 45], minor_tick_interval=None,
-                     xlabel='Longitude', ylabel='Latitude', grid=False,
-                     show=True, ax=None, legend=True, fname=None):
+                     xlabel='Longitude', ylabel='Latitude',
+                     axes_labelsize=None, tick_labelsize=None,
+                     title_labelsize=None, grid=False, show=True, title=True,
+                     ax=None, fname=None):
         """
         Plot the best-concentrated localization windows.
 
         Usage
         -----
         x.plot_windows(nwin, [lmax, maxcolumns, tick_interval,
-                              minor_tick_interval, xlabel, ylabel,
-                              grid, show, ax, legend, fname])
+                              minor_tick_interval, xlabel, ylabel, grid, show,
+                              title, axes_labelsize, tick_labelsize,
+                              title_labelsize, ax, fname])
 
         Parameters
         ----------
@@ -746,11 +749,17 @@ class SHWindow(object):
             If True, plot grid lines.
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        title : bool, optional, default = True
+            If True, plot a title on top of each subplot providing the taper
+            number and 1 minus the concentration factor.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        title_labelsize : int, optional, default = None
+            The font size for the subplot titles.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
-        legend : bool, optional, default = True
-            If True, plot a legend on top of each subplot providing the taper
-            number and 1 minus the concentration factor.
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
@@ -781,6 +790,13 @@ class SHWindow(object):
                                   endpoint=True)
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
+
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+        if title_labelsize is None:
+            title_labelsize = _mpl.rcParams['axes.titlesize']
 
         if minor_tick_interval is None:
             minor_xticks = []
@@ -823,15 +839,18 @@ class SHWindow(object):
                                           lmax=lmax, norm=1, csphase=1)
             axtemp.imshow(gridout, origin='upper',
                           extent=(0., 360., -90., 90.))
-            axtemp.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks,
-                       yticks=yticks, xticklabels=xticklabels,
-                       yticklabels=yticklabels)
+            axtemp.set(xticks=xticks, yticks=yticks)
+            axtemp.set_xlabel(xlabel, fontsize=axes_labelsize)
+            axtemp.set_ylabel(ylabel, fontsize=axes_labelsize)
+            axtemp.set_xticklabels(xticklabels, fontsize=tick_labelsize)
+            axtemp.set_yticklabels(yticklabels, fontsize=tick_labelsize)
             axtemp.set_xticks(minor_xticks, minor=True)
             axtemp.set_yticks(minor_yticks, minor=True)
-            axtemp.grid(grid, which='both')
-            if legend is True:
+            axtemp.grid(grid, which='major')
+            if title is True:
                 axtemp.set_title('#{:d} [loss={:2.2g}]'
-                                 .format(itaper, 1-evalue))
+                                 .format(itaper, 1-evalue),
+                                 fontsize=title_labelsize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -843,16 +862,18 @@ class SHWindow(object):
 
     def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
                      maxcolumns=3, xscale='lin', yscale='log', grid=True,
-                     xlim=(None, None), ylim=(None, None), show=True, ax=None,
-                     legend=True, fname=None):
+                     xlim=(None, None), ylim=(None, None), show=True,
+                     title=True, axes_labelsize=None, tick_labelsize=None,
+                     title_labelsize=None, ax=None, fname=None):
         """
         Plot the spectra of the best-concentrated localization windows.
 
         Usage
         -----
         x.plot_spectra(nwin, [convention, unit, base, maxcolumns, xscale,
-                              yscale, grid, xlim, ylim, show, ax, legend,
-                              fname])
+                              yscale, grid, xlim, ylim, show, title,
+                              axes_labelsize, tick_labelsize, title_labelsize,
+                              ax, fname])
 
         Parameters
         ----------
@@ -884,14 +905,27 @@ class SHWindow(object):
             The lower and upper limits used for the y axis.
         show : bool, optional, default = True
             If True, plot the image to the screen.
-        ax : matplotlib axes object, optional, default = None
-            An array of matplotlib axes objects where the plots will appear.
-        legend : bool, optional, default = True
+        title : bool, optional, default = True
             If True, plot a legend on top of each subplot providing the taper
             number and 1 minus the concentration factor.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        title_labelsize : int, optional, default = None
+            The font size for the subplot titles.
+        ax : matplotlib axes object, optional, default = None
+            An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
             If present, save the image to the file.
         """
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+        if title_labelsize is None:
+            title_labelsize = _mpl.rcParams['axes.titlesize']
+
         degrees = self.degrees()
         spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
                                 base=base)
@@ -900,7 +934,7 @@ class SHWindow(object):
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = (_mpl.rcParams['figure.figsize'][0],
                    _mpl.rcParams['figure.figsize'][0] / ncolumns
-                    / 2 * nrows)
+                   / 2 * nrows)
 
         if ylim == (None, None):
             upper = spectrum[:, :min(self.nwin, nwin)].max()
@@ -944,9 +978,9 @@ class SHWindow(object):
             else:
                 axtemp = axes[itaper]
             if (convention == 'power'):
-                axtemp.set_ylabel('Power')
+                axtemp.set_ylabel('Power', fontsize=axes_labelsize)
             else:
-                axtemp.set_ylabel('Energy')
+                axtemp.set_ylabel('Energy', fontsize=axes_labelsize)
 
             if yscale == 'log':
                 axtemp.set_yscale('log', basey=base)
@@ -960,12 +994,16 @@ class SHWindow(object):
                 axtemp.plot(degrees[0:], spectrum[0:, itaper],
                             label='#{:d} [loss={:2.2g}]'
                             .format(itaper, 1-evalue))
-            axtemp.set(xlabel='Spherical harmonic degree',
-                       xlim=xlim, ylim=ylim)
-            axtemp.grid(grid, which='both')
-            if legend is True:
+            axtemp.set_xlabel('Spherical harmonic degree',
+                              fontsize=axes_labelsize)
+            axtemp.set(xlim=xlim, ylim=ylim)
+            axtemp.minorticks_on()
+            axtemp.grid(grid, which='major')
+            axtemp.tick_params(labelsize=tick_labelsize)
+            if title is True:
                 axtemp.set_title('#{:d} [loss={:2.2g}]'
-                                 .format(itaper, 1-evalue))
+                                 .format(itaper, 1-evalue),
+                                 fontsize=title_labelsize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -976,6 +1014,7 @@ class SHWindow(object):
             return fig, axes
 
     def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
+                             axes_labelsize=None, tick_labelsize=None,
                              show=True, ax=None, fname=None):
         """
         Plot the multitaper coupling matrix.
@@ -985,7 +1024,8 @@ class SHWindow(object):
 
         Usage
         -----
-        x.plot_coupling_matrix(lmax, [nwin, weights, mode, show, ax, fname])
+        x.plot_coupling_matrix(lmax, [nwin, weights, mode, axes_labelsize,
+                                      tick_labelsize, show, ax, fname])
 
         Parameters
         ----------
@@ -1004,6 +1044,10 @@ class SHWindow(object):
             'valid' returns a biased spectrum with size lmax-lwin+1. This
             returns only that part of the biased spectrum that is not
             influenced by the input spectrum beyond degree lmax.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -1014,6 +1058,11 @@ class SHWindow(object):
         figsize = _mpl.rcParams['figure.figsize']
         figsize[0] = figsize[1]
 
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
         if ax is None:
             fig = _plt.figure(figsize=figsize)
             axes = fig.add_subplot(111)
@@ -1022,11 +1071,12 @@ class SHWindow(object):
 
         axes.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
                                          mode=mode), aspect='auto')
-        axes.set_xlabel('Input power')  # matrix index 1 (columns)
-        axes.set_ylabel('Output power')  # matrix index 0 (rows)
+        axes.set_xlabel('Input power', fontsize=axes_labelsize)
+        axes.set_ylabel('Output power', fontsize=axes_labelsize)
+        axes.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
-            fig.tight_layout(pad=0.1)
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:

@@ -3,6 +3,7 @@ Set matplotlib parameters for creating publication quality graphics.
 """
 import matplotlib.pyplot as _plt
 
+
 def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
              max_width=7.48031):
     """
@@ -29,7 +30,9 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
     This function sets a variety of matplotlib parameters for creating
     publication quality graphics. The default parameters are tailored to
     AGU/Wiley-Blackwell journals that accept relative widths of 0.5, 0.75,
-    or 1.
+    and 1. To reset the maplotlib parameters to their default values, use
+
+        matplotlib.pyplot.style.use('default')
     """
     width_x = max_width * rel_width
     width_y = max_width * rel_width / aspect_ratio
@@ -38,37 +41,37 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
         # fonts
         'font.size': 10,
         'font.family': 'sans-serif',
-        'font.sans-serif' : ['Myriad Pro', 'DejaVu Sans',
-                             'Bitstream Vera Sans',
-                             'Verdana', 'Arial', 'Helvetica'],
+        'font.sans-serif': ['Myriad Pro', 'DejaVu Sans',
+                            'Bitstream Vera Sans',
+                            'Verdana', 'Arial', 'Helvetica'],
         'axes.titlesize': 10,
         'axes.labelsize': 10,
-        'xtick.labelsize': 9,
-        'ytick.labelsize': 9,
+        'xtick.labelsize': 8,
+        'ytick.labelsize': 8,
         'legend.fontsize': 9,
-        'text.usetex' : False,
+        'text.usetex': False,
         # figure
         'figure.dpi': screen_dpi,
-        'figure.figsize' : (width_x, width_y),
+        'figure.figsize': (width_x, width_y),
         # line and tick widths
-        'axes.linewidth' : 1,
-        'lines.linewidth' : 1.5,
-        'xtick.major.width' : 0.6,
-        'ytick.major.width' : 0.6,
-        'xtick.minor.width' : 0.6,
-        'xtick.minor.width' : 0.6,
+        'axes.linewidth': 1,
+        'lines.linewidth': 1.5,
+        'xtick.major.width': 0.6,
+        'ytick.major.width': 0.6,
+        'xtick.minor.width': 0.6,
+        'xtick.minor.width': 0.6,
         # grids
-        'grid.linewidth' : 0.25,
-        'grid.color' : 'k',
-        'grid.linestyle' : '-',
+        'grid.linewidth': 0.25,
+        'grid.color': 'k',
+        'grid.linestyle': '-',
         # legends
-        'legend.framealpha' : 1.,
-        'legend.edgecolor' : 'k',
+        'legend.framealpha': 1.,
+        'legend.edgecolor': 'k',
         # images
-        'image.lut' : 65536,  # 16 bit
+        'image.lut': 65536,  # 16 bit
         # savefig
-        'savefig.bbox' : 'tight',
-        'savefig.pad_inches' : 0,
+        'savefig.bbox': 'tight',
+        'savefig.pad_inches': 0,
         'savefig.dpi': 600
         }
 

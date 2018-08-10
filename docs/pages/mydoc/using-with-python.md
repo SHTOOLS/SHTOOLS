@@ -51,6 +51,12 @@ This will load the following three classes and subpackages into the `pyshtools` 
 | [constant](python-constants.html) | pyshtools constants |
 | [utils](python-utilities.html) | Utilities |
 
+To use the `pyshtools` matplotlib style parameters for publication quality graphics, input
+```python
+pyshtools.utils.figstyle()
+```
+This function takes optional parameters for specifying the screen resolution, the relative width of the figure, the physical width of the journal page in inches, and the aspect ratio of the figure.
+
 If you are using [iPython](http://ipython.org), which adds improved functionality to Python, the available `pyshtools` routines can be explored by typing
 ```python
 pyshtools.[tab]

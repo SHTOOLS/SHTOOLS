@@ -31,4 +31,6 @@ figstyle([`rel_width`, `screen_dpi`, `aspect_ratio`, `max_width`])
 
 ## Description
 
-This function sets a variety of matplotlib parameters for creating publication quality graphics. The default parameters are tailored to AGU/Wiley-Blackwell journals that accept relative widths of 0.5, 0.75, or 1.
+This function sets a variety of matplotlib parameters for creating publication quality graphics. The default parameters are tailored to AGU/Wiley-Blackwell journals that accept relative widths of 0.5, 0.75, or 1. To reset the maplotlib parameters to their default values, use
+
+`matplotlib.pyplot.style.use('default')`
