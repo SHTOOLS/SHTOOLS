@@ -2878,8 +2878,18 @@ class DHRealGrid(SHGrid):
               colorbar=None, cb_orientation=None, cb_label=None, grid=False,
               axes_labelsize=None, tick_labelsize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
+
         if ax is None:
-            fig, axes = _plt.subplots(1, 1)
+            if colorbar is True:
+                if cb_orientation == 'horizontal':
+                    scale = 0.67
+                else:
+                    scale = 0.5
+            else:
+                scale = 0.55
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0] * scale)
+            fig, axes = _plt.subplots(1, 1, figsize=figsize)
         else:
             axes = ax
 
@@ -3001,8 +3011,15 @@ class DHComplexGrid(SHGrid):
               axes_labelsize=None, tick_labelsize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
+            if colorbar is True:
+                if cb_orientation == 'horizontal':
+                    scale = 1.5
+                else:
+                    scale = 1.1
+            else:
+                scale = 1.2
             figsize = (_mpl.rcParams['figure.figsize'][0],
-                       _mpl.rcParams['figure.figsize'][1]*1.5)
+                       _mpl.rcParams['figure.figsize'][0]*scale)
             fig, axes = _plt.subplots(2, 1, figsize=figsize)
             axreal = axes.flat[0]
             axcomplex = axes.flat[1]
@@ -3150,9 +3167,19 @@ class GLQRealGrid(SHGrid):
               tick_labelsize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            fig, axes = _plt.subplots(1, 1)
+            if colorbar is True:
+                if cb_orientation == 'horizontal':
+                    scale = 0.67
+                else:
+                    scale = 0.5
+            else:
+                scale = 0.55
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0] * scale)
+            fig, axes = _plt.subplots(1, 1, figsize=figsize)
         else:
             axes = ax
+
 
         cim = axes.imshow(self.data, origin='upper', **kwargs)
         axes.set(xticks=xticks, yticks=yticks)
@@ -3262,9 +3289,17 @@ class GLQComplexGrid(SHGrid):
               tick_labelsize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
+            if colorbar is True:
+                if cb_orientation == 'horizontal':
+                    scale = 1.5
+                else:
+                    scale = 1.1
+            else:
+                scale = 1.2
             figsize = (_mpl.rcParams['figure.figsize'][0],
-                       _mpl.rcParams['figure.figsize'][1]*1.5)
+                       _mpl.rcParams['figure.figsize'][0]*scale)
             fig, axes = _plt.subplots(2, 1, figsize=figsize)
+
             axreal = axes.flat[0]
             axcomplex = axes.flat[1]
         else:

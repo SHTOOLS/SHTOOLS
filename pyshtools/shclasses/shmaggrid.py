@@ -373,25 +373,31 @@ class SHMagGrid(object):
                           cb_label=cb_label, ax=ax, **kwargs)
 
     def plot(self, colorbar=True, cb_orientation='horizontal',
-             tick_interval=[45, 45], xlabel='', ylabel='', show=True,
-             fname=None, **kwargs):
+             tick_interval=[60, 60], minor_tick_interval=[20, 20],
+             xlabel='Longitude', ylabel='Latitude',
+             axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
+             **kwargs):
         """
         Plot the three vector components of the magnetic field and the total
         magnetic intensity.
 
         Usage
         -----
-        x.plot([tick_interval, xlabel, ylabel, ax, colorbar,
-                cb_orientation, cb_label, show, fname, **kwargs])
+        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
+                colorbar, cb_orientation, cb_label, axes_labelsize,
+                tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
-        tick_interval : list or tuple, optional, default = [45, 45]
-            Intervals to use when plotting the x and y ticks. If set to None,
-            ticks will not be plotted.
-        xlabel : str, optional, default = ''
+        tick_interval : list or tuple, optional, default = [60, 60]
+            Intervals to use when plotting the major x and y ticks. If set to
+            None, major ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
+        xlabel : str, optional, default = 'Longitude'
             Label for the longitude axis.
-        ylabel : str, optional, default = ''
+        ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
         colorbar : bool, optional, default = True
             If True, plot a colorbar.
@@ -399,6 +405,10 @@ class SHMagGrid(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        axes_labelsize : int, optional, default = 9
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = 8
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -408,19 +418,44 @@ class SHMagGrid(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        fig, ax = _plt.subplots(2, 2)
+        if colorbar is True:
+            if cb_orientation == 'horizontal':
+                scale = 0.8
+            else:
+                scale = 0.5
+        else:
+            scale = 0.6
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                    _mpl.rcParams['figure.figsize'][0] * scale)
+
+        fig, ax = _plt.subplots(2, 2, figsize=figsize)
         self.plot_rad(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[0], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_theta(colorbar=colorbar, cb_orientation=cb_orientation,
                         ax=ax.flat[1], tick_interval=tick_interval,
-                        xlabel=xlabel, ylabel=ylabel, **kwargs)
+                        xlabel=xlabel, ylabel=ylabel,
+                        axes_labelsize=axes_labelsize,
+                        tick_labelsize=tick_labelsize,
+                        minor_tick_interval=minor_tick_interval,
+                        **kwargs)
         self.plot_phi(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[2], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      tick_labelsize=tick_labelsize,**kwargs)
         self.plot_total(colorbar=colorbar, cb_orientation=cb_orientation,
                         ax=ax.flat[3], tick_interval=tick_interval,
-                        xlabel=xlabel, ylabel=ylabel, **kwargs)
+                        xlabel=xlabel, ylabel=ylabel,
+                        axes_labelsize=axes_labelsize,
+                        tick_labelsize=tick_labelsize,
+                        minor_tick_interval=minor_tick_interval,
+                        **kwargs)
         fig.tight_layout(pad=0.5)
 
         if show:

@@ -770,11 +770,12 @@ class SHWindow(object):
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                   _mpl.rcParams['figure.figsize'][0] / ncolumns
-                   / 2 * nrows + 1)
+                   _mpl.rcParams['figure.figsize'][0]
+                   * 0.55 * nrows / ncolumns + 0.41)
 
         if ax is None:
-            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize,
+                                      sharex='all', sharey='all')
         else:
             if hasattr(ax, 'flatten') and ax.size < nwin:
                 raise ValueError('ax.size must be greater or equal to nwin. ' +
@@ -933,19 +934,12 @@ class SHWindow(object):
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                   _mpl.rcParams['figure.figsize'][0] / ncolumns
-                   / 2 * nrows)
-
-        if ylim == (None, None):
-            upper = spectrum[:, :min(self.nwin, nwin)].max()
-            lower = upper * 1.e-6
-            ylim = (lower, 5 * upper)
-        if xlim == (None, None):
-            if xscale == 'lin':
-                xlim = (degrees[0], degrees[-1])
+                   _mpl.rcParams['figure.figsize'][0]
+                   * 0.7 * nrows / ncolumns + 0.41)
 
         if ax is None:
-            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize,
+                                      sharex='all', sharey='all')
         else:
             if hasattr(ax, 'flatten') and ax.size < nwin:
                 raise ValueError('ax.size must be greater or equal to nwin. ' +
@@ -968,6 +962,14 @@ class SHWindow(object):
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
                     axtemp.set_ylabel('', visible=False)
+
+        if ylim == (None, None):
+            upper = spectrum[:, :min(self.nwin, nwin)].max()
+            lower = upper * 1.e-6
+            ylim = (lower, 5 * upper)
+        if xlim == (None, None):
+            if xscale == 'lin':
+                xlim = (degrees[0], degrees[-1])
 
         for itaper in range(min(self.nwin, nwin)):
             evalue = self.eigenvalues[itaper]
@@ -1074,6 +1076,7 @@ class SHWindow(object):
         axes.set_xlabel('Input power', fontsize=axes_labelsize)
         axes.set_ylabel('Output power', fontsize=axes_labelsize)
         axes.tick_params(labelsize=tick_labelsize)
+        axes.minorticks_on()
 
         if ax is None:
             fig.tight_layout(pad=0.5)

@@ -2004,7 +2004,7 @@ class SHGravCoeffs(object):
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
 
         if function == 'geoid':
-            axes.set_ylabel('Power, $m^2$', fontsize=axes_labelsize)
+            axes.set_ylabel('Power, m$^2$', fontsize=axes_labelsize)
         elif function == 'potential':
             axes.set_ylabel('Power, m$^4$ s$^{-4}$', fontsize=axes_labelsize)
         elif function == 'radial':
@@ -2238,7 +2238,7 @@ class SHGravCoeffs(object):
         cb = _plt.colorbar(cmesh, ax=ax)
 
         if function == 'geoid':
-            cb.set_label('Power, $m^2$', fontsize=axes_labelsize)
+            cb.set_label('Power, m$^2$', fontsize=axes_labelsize)
         elif function == 'potential':
             cb.set_label('Power, m$^4$ s$^{-4}$', fontsize=axes_labelsize)
         elif function == 'radial':
