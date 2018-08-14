@@ -321,7 +321,7 @@ class SHMagGrid(object):
                 cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_pot(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='potential, nT m', ax=None, show=True,
+                 cb_label='Potential, nT m', ax=None, show=True,
                  fname=None, **kwargs):
         """
         Plot the magnetic potential.

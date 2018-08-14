@@ -61,8 +61,10 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
         'ytick.major.width': 0.6,
         'xtick.minor.width': 0.6,
         'xtick.minor.width': 0.6,
+        'xtick.top': True,
+        'ytick.right': True,
         # grids
-        'grid.linewidth': 0.25,
+        'grid.linewidth': 0.3,
         'grid.color': 'k',
         'grid.linestyle': '-',
         # legends
@@ -72,8 +74,9 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
         'image.lut': 65536,  # 16 bit
         # savefig
         'savefig.bbox': 'tight',
-        'savefig.pad_inches': 0,
-        'savefig.dpi': 600
+        'savefig.pad_inches': 0.02,
+        'savefig.dpi': 600,
+        'savefig.format': 'pdf'
         }
 
     _plt.style.use([shtools])

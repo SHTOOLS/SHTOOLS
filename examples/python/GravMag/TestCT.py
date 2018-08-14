@@ -11,15 +11,13 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
+import pyshtools
 from pyshtools import shio
 from pyshtools import expand
 from pyshtools import gravmag
 from pyshtools import constant
 
-from pyshtools.utils import figstyle
-
-# set shtools plot style:
-plt.style.use(figstyle.shtools)
+pyshtools.utils.figstyle()
 
 
 # ==== MAIN FUNCTION ====

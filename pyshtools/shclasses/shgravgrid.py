@@ -321,10 +321,10 @@ class SHGravGrid(object):
         """
         if self.normal_gravity is True:
             if cb_label is None:
-                cb_label = 'gravity disturbance, mGal'
+                cb_label = 'Gravity disturbance, mGal'
         else:
             if cb_label is None:
-                cb_label = 'gravity disturbance, m s$^{-2}$'
+                cb_label = 'Gravity disturbance, m s$^{-2}$'
 
         if ax is None:
             if self.normal_gravity is True:
@@ -354,7 +354,7 @@ class SHGravGrid(object):
                     cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_pot(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='potential, m$^2$ s$^{-2}$', ax=None, show=True,
+                 cb_label='Potential, m$^2$ s$^{-2}$', ax=None, show=True,
                  fname=None, **kwargs):
         """
         Plot the gravitational potential.

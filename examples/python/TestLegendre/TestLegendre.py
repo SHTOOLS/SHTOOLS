@@ -12,12 +12,10 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
+import pyshtools
 from pyshtools import legendre
 
-from pyshtools.utils import figstyle
-
-# set shtools plot style:
-plt.style.use(figstyle.shtools)
+pyshtools.utils.figstyle()
 
 
 # ==== MAIN FUNCTION ====

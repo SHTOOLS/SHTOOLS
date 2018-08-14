@@ -253,7 +253,7 @@ class SHCoeffs(object):
 
     @classmethod
     def from_random(self, power, lmax=None, kind='real', normalization='4pi',
-                    csphase=1, exact_power=False):
+                    csphase=1, exact_power=False, seed=None):
         """
         Initialize the class with spherical harmonic coefficients as random
         variables with a given spectrum.
@@ -261,7 +261,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_random(power, [lmax, kind, normalization, csphase,
-                                         exact_power])
+                                         exact_power, seed])
 
         Returns
         -------
@@ -289,6 +289,8 @@ class SHCoeffs(object):
             The total variance of the coefficients is set exactly to the input
             power. The distribution of power at degree l amongst the angular
             orders is random, but the total power is fixed.
+        seed : int, optional, default = None
+            Set the seed for the numpy random number generator.
 
         Description
         -----------
@@ -344,6 +346,8 @@ class SHCoeffs(object):
 
         # Create coefficients with unit variance, which returns an expected
         # total power per degree of (2l+1) for 4pi normalized harmonics.
+        if seed is not None:
+            _np.random.seed(seed=seed)
         if kind.lower() == 'real':
             coeffs = _np.empty((2, nl, nl))
             for l in degrees:
@@ -2511,7 +2515,8 @@ class SHGrid(object):
         """
         return _np.copy(self.data)
 
-    def plot3d(self, elevation=0, azimuth=0, show=True, fname=None):
+    def plot3d(self, elevation=20, azimuth=30, cmap='RdBu_r', show=True,
+               fname=None):
         """
         Plot the raw data on a 3d sphere.
 
@@ -2524,10 +2529,12 @@ class SHGrid(object):
 
         Parameters
         ----------
-        elevation : float, optional, default = 0
+        elevation : float, optional, default = 20
             elev parameter for the 3d projection.
-        azimuth : float, optional, default = 0
+        azimuth : float, optional, default = 30
             azim parameter for the 3d projection.
+        cmap : str, optional, default = 'RdBu_r'
+            Name of the color map to use.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -2536,7 +2543,7 @@ class SHGrid(object):
         from mpl_toolkits.mplot3d import Axes3D
 
         nlat, nlon = self.nlat, self.nlon
-        cmap = _plt.get_cmap('RdBu_r')
+        cmap = _plt.get_cmap(cmap)
 
         if self.kind == 'real':
             data = self.data
@@ -2603,16 +2610,17 @@ class SHGrid(object):
         z = points[2].reshape(sshape)
 
         # plot 3d radiation pattern
-        fig = _plt.figure(figsize=(10, 10))
+        fig = _plt.figure()
         ax3d = fig.add_subplot(1, 1, 1, projection='3d')
 
         ax3d.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=colors)
-        ax3d.set(xlim=(-1.5, 1.5), ylim=(-1.5, 1.5), zlim=(-1.5, 1.5),
+        ax3d.set(xlim=(-1., 1.), ylim=(-1., 1.), zlim=(-1., 1.),
                  xticks=[-1, 1], yticks=[-1, 1], zticks=[-1, 1])
         ax3d.set_axis_off()
         ax3d.view_init(elev=elevation, azim=azimuth)
 
         # show or save output
+        fig.tight_layout(pad=0.5)
         if show:
             _plt.show()
 
@@ -2672,7 +2680,7 @@ class SHGrid(object):
             If present, and if axes is not specified, save the image to the
             specified file.
         kwargs : optional
-            Keyword arguements that will be sent to plt.imshow().
+            Keyword arguements that will be sent to plt.imshow(), such as cmap.
         """
         if tick_interval is None:
             xticks = []

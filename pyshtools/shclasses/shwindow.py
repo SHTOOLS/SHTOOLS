@@ -1057,8 +1057,8 @@ class SHWindow(object):
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
-        figsize = _mpl.rcParams['figure.figsize']
-        figsize[0] = figsize[1]
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                   _mpl.rcParams['figure.figsize'][0])
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
