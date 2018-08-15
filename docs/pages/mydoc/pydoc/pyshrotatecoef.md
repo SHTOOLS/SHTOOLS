@@ -9,7 +9,7 @@ toc: false
 editdoc: pydoc
 ---
 
-Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles.
+Determine the spherical harmonic coefficients of a real function expressed in complex harmonics rotated by three Euler angles.
 
 ## Usage
 
@@ -26,7 +26,7 @@ Determine the spherical harmonic coefficients of a complex function rotated by t
 :   The three Euler angles, alpha, beta, and gamma, in radians.
 
 `coef` : float, dimension (2, (`lmaxin`+1)\*(`lmaxin`+2)/2)
-:   The input complex spherical harmonic coefficients. This is an indexed array where the real and complex components are given by `coef[0,:]` and `coef[1,:]`, respectively. The functions `SHCilmToCindex` and `SHCindexToCilm` are used to convert to and from indexed and `cilm[:,:,:]` form. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention.
+:   The input complex spherical harmonic coefficients of the real function. This is an indexed array where the real and complex components are given by `coef[0,:]` and `coef[1,:]`, respectively. The functions `SHCilmToCindex` and `SHCindexToCilm` are used to convert to and from indexed and `cilm[:,:,:]` form. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention.
 
 `dj` : float, dimension (`lmaxin2`+1, `lmaxin2`+1, `lmaxin2`+1)
 :   The rotation matrix `dj(pi/2)` obtained from a call to `djpi2`.
@@ -36,7 +36,7 @@ Determine the spherical harmonic coefficients of a complex function rotated by t
 
 ## Description
 
-`SHRotateCoef` will take the complex spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in `x`, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients are in an indexed form that can be converted to and from `cilm[:,:,:]` form by using the functions `SHCilmToCindex` and `SHCindexToCilm`. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention. Real spherical harmonics can be converted to and from complex form using `SHrtoc` and `SHctor`. The input rotation matrix `dj` is computed by a call to `djpi2`.
+`SHRotateCoef` will take the complex spherical harmonic coefficients of a real function, rotate it according to the three Euler anlges in `x`, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients are in an indexed form that can be converted to and from `cilm[:,:,:]` form by using the functions `SHCilmToCindex` and `SHCindexToCilm`. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention. Real spherical harmonics can be converted to and from complex form using `SHrtoc` and `SHctor`. The input rotation matrix `dj` is computed by a call to `djpi2`.
 
 The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same. This routine uses the 'y convention', where the second rotation axis corresponds to the y axis.
 

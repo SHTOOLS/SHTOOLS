@@ -13,7 +13,7 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 
 ## Usage
 
-`rad`, `theta`, `phi`, `total` = MakeMagGridDH (`cilm`, `r0`, [`lmax`, `a`, `f`, `sampling`, `lmaxcalc`])
+`rad`, `theta`, `phi`, `total`, `pot` = MakeMagGridDH (`cilm`, `r0`, [`lmax`, `a`, `f`, `sampling`, `lmax_calc`])
 
 ## Returns
 
@@ -24,15 +24,18 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 :   A 2D equally sampled or equally spaced grid of the theta component of the magnetic field.
 
 `phi` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
-:   A 2D equally sampled or equally spaced grid of the phi component of the magnetic field. 
+:   A 2D equally sampled or equally spaced grid of the phi component of the magnetic field.
 
 `total` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
-:   A 2D equally sampled or equally spaced grid of the total magnetic field strength. 
+:   A 2D equally sampled or equally spaced grid of the total magnetic field strength.
+
+`pot` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
+:   A 2D equally sampled or equally spaced grid of the magnetic potential.
 
 ## Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
-:   The real Schmidt semi-normalized spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm[0,l,m]` and `Slm=cilm[1,l,m]`. Alternatively, `C1lm` and `C2lm` correspond to the positive and negative order coefficients, respectively.
+:   The real Schmidt semi-normalized spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm[0,l,m]` and `Slm=cilm[1,l,m]`. Alternatively, `C1lm` and `C2lm` correspond to the positive and negative order coefficients, respectively. The coefficients are assumed to have units of nT.
 
 `r0` : float
 :   The reference radius of the spherical harmonic coefficients.
@@ -49,7 +52,7 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 `sampling` : optional, integer, default = 2
 :   If 1 the output grids are equally sampled (`n` by `n`). If 2, the grids are equally spaced (`n` by 2`n`).
 
-`lmaxcalc` : optional, integer, default = `lmax`
+`lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to `lmax`.
 
 ## Description
