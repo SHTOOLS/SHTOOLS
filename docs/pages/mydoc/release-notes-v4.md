@@ -7,6 +7,52 @@ summary:
 toc: true
 ---
 
+## Version 4.3
+
+**New Gravity and Magnetic field classes**
+
+* Added gravity classes `SHGravCoeffs`, `SHGravGrid`, `SHGravTensor` and `SHGeoid`.
+* Added magnetic field classes `SHMagCoeffs`, `SHMagGrid`, and `SHMagTensor`.
+* Added new fortran subroutine `MakeMagGradGridDH`, which is analogous to `MakeGravGradGridDH`.
+* Reorded the arguments of `CilmPlusRhoHDH` to be consistent with `CilmPlusDH`.
+* The python routine `MakeMagGridDH` now also outputs the magnetic potential as a grid.
+
+**Better figures**
+
+* Addition of the function `pyshtools.utils.figstyle()`, that sets several matplotlib parameters for better figures. This function takes as optional parmeters the maximum useable width of a journal page, the relative width of the figure with respect to this value, and the screen resolution in dpi.
+* Most plotting routines have optional parameters to set minor tick intervals, grids, label font size, and tick font size.
+* Degree symbols are plotted on tick labels for maps.
+* `examples/python/Common/FigStyle.py` was removed from the examples.
+* Added the options `vmin` and `vmax` to the plotting methods `SHCoeffs.plot_spectrum2d()` in order to specify the limits of the color scale.
+* Added the option to plot colorbars on `SHGrid` plots, along with the option to specify their orientation and a text label.
+* All notebooks have been updated.
+
+**New constant subpackage**
+
+* The `constant` subpackage has been completely rewritten and now makes use of the [astropy](http://docs.astropy.org/en/latest/constants/index.html) `Constant` class. This class has attributes `name`, `value`, `uncertainty`, `unit`, and `reference`. The naming of the constants has changed in some cases for consistency. A few constants that are not necessary were removed. Many of the constants were updated with more recent values. `Constants` can be used in arithmetic operations with either other `Constants` or with objects of the astropy class `Quantity`.
+* Constants are organized into modules for each of the planets (`Mercury`, `Venus`, `Earth`, `Moon`, and `Mars`), and for convenience, these are all added to the main namespace. The fundamental constants `G` and `mu0` from the astropy constants package were added (as taken from CODATA 2014).
+
+**Other changes**
+
+* Fixed a bug in how the random coeffcients were determined for unnormalized coeffcients in SHCoeffs.
+* Optional parameter `seed` added to `SHCoeffs.from_random()` to allow for reproducibility.
+* One can now specify colat instead of lat for the method SHCoeffs.expand().
+* Added `__repr__` methods to all pyshtools classes.
+* Changed the mathematical operators of `SHCoeffs` such that addition and subtraction of a constant only affects the degree 0 term.
+* Added the optional parameter `lmax` to `SHCoeffs.plot_spectrum()` and `SHCoeffs.plot_spectrum2d()`.
+* Fixed a bug in `SHCoeffs.pad()` where the attribute `mask` was not similarly padded.
+* For mathematical operations with `SHCoeffs` grids, it is now required that the
+two class instances have the same `lmax`.
+* Clarified the documentation of `SHRotateCoef` to point out that this is only valid for intrinsically real functions that are expressed in complex harmonics.
+* Added the method `volume()` to the class SHCoeffs, that calculates the volume of the object.
+* Added the attributes `area` and `shannon` to `SHWindow`, which provides the area of the concentration domain and the shannon number.
+* Removed python installation support from Makefile: use pip instead.
+
+**Citation:**
+
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.3, Zenodo, doi:[10.5281/zenodo.1345510](https://doi.org/10.5281/zenodo.1345510)
+
+
 ## Version 4.2
 
 **Change log:**
@@ -29,7 +75,7 @@ toc: true
 
 **Citation:**
 
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.2, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.1250054)
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.2, Zenodo, doi:[10.5281/zenodo.1250054](https://doi.org/10.5281/zenodo.1250054)
 
 
 ## Version 4.1
