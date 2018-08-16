@@ -1562,15 +1562,17 @@ class SHMagCoeffs(object):
 
     # ---- Plotting routines ----
     def plot_spectrum(self, function='total', unit='per_l', base=10.,
-                      lmax=None, xscale='lin', yscale='log', show=True,
-                      ax=None, fname=None):
+                      lmax=None, xscale='lin', yscale='log', grid=True,
+                      legend=None,  axes_labelsize=None, tick_labelsize=None,
+                      show=True, ax=None, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        x.plot_spectrum([function, unit, base, lmax, xscale, yscale, show, ax,
-                         fname])
+        x.plot_spectrum([function, unit, base, lmax, xscale, yscale, grid,
+                         legend, axes_labelsize, tick_labelsize, show, ax,
+                         fname, **kwargs])
 
         Parameters
         ----------
@@ -1593,6 +1595,14 @@ class SHMagCoeffs(object):
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
             Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -1600,6 +1610,8 @@ class SHMagCoeffs(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot().
 
         Description
         -----------
@@ -1642,23 +1654,27 @@ class SHMagCoeffs(object):
         else:
             axes = ax
 
-        axes.set_xlabel('degree l')
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
+        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
 
         if function == 'potential':
-            axes.set_ylabel('power, nT$^2$ m$^2$')
+            axes.set_ylabel('Power, nT$^2$ m$^2$', fontsize=axes_labelsize)
         elif function == 'radial':
-            axes.set_ylabel('power, nT$^2$')
+            axes.set_ylabel('Power, nT$^2$', fontsize=axes_labelsize)
         elif function == 'total':
-            axes.set_ylabel('power, nT$^2$')
+            axes.set_ylabel('Power, nT$^2$', fontsize=axes_labelsize)
 
-        if (unit == 'per_l'):
-            legend = 'power per degree'
-        elif (unit == 'per_lm'):
-            legend = 'power per coefficient'
-        elif (unit == 'per_dlogl'):
-            legend = 'power per log bandwidth'
-
-        axes.grid(True, which='both')
+        if legend is None:
+            if (unit == 'per_l'):
+                legend = 'Power per degree'
+            elif (unit == 'per_lm'):
+                legend = 'Power per coefficient'
+            elif (unit == 'per_dlogl'):
+                legend = 'Power per log bandwidth'
 
         if xscale == 'log':
             axes.set_xscale('log', basex=base)
@@ -1666,15 +1682,24 @@ class SHMagCoeffs(object):
             axes.set_yscale('log', basey=base)
 
         if self.errors is not None:
-            axes.plot(ls[1:lmax + 1], spectrum[1:lmax + 1], label=legend)
+            axes.plot(ls[1:lmax + 1], spectrum[1:lmax + 1], label=legend,
+                      **kwargs)
             axes.plot(ls[1:lmax + 1], error_spectrum[1:lmax + 1],
-                      label='error')
+                      label='error', **kwargs)
         else:
-            axes.plot(ls[1:lmax + 1], spectrum[1: lmax + 1], label=legend)
+            axes.plot(ls[1:lmax + 1], spectrum[1: lmax + 1], label=legend,
+                      **kwargs)
 
+        if xscale == 'lin':
+            axes.set(xlim=(ls[0], ls[lmax]))
+
+        axes.grid(grid, which='major')
+        axes.minorticks_on()
+        axes.tick_params(labelsize=tick_labelsize)
         axes.legend()
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:
@@ -1682,6 +1707,7 @@ class SHMagCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, function='total', xscale='lin', yscale='lin',
+                        grid=True, axes_labelsize=None, tick_labelsize=None,
                         vscale='log', vrange=None, vmin=None, vmax=None,
                         lmax=None, errors=False, show=True, ax=None,
                         fname=None):
@@ -1690,8 +1716,9 @@ class SHMagCoeffs(object):
 
         Usage
         -----
-        x.plot_spectrum2d([function, xscale, yscale, vscale, vrange, vmin,
-                           vmax, lmax, errors, show, ax, fname])
+        x.plot_spectrum2d([function, xscale, yscale, grid, axes_labelsize,
+                           tick_labelsize, vscale, vrange, vmin, vmax, lmax,
+                           errors, show, ax, fname])
 
         Parameters
         ----------
@@ -1703,6 +1730,12 @@ class SHMagCoeffs(object):
             Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'lin'
             Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         vrange : (float, float), optional, default = None
@@ -1738,6 +1771,11 @@ class SHMagCoeffs(object):
         space, divided by the area the function spans. If the mean of the
         function is zero, this is equivalent to the variance of the function.
         """
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
         if lmax is None:
             lmax = self.lmax
         degrees = _np.arange(lmax + 1)
@@ -1853,17 +1891,20 @@ class SHMagCoeffs(object):
         cb = _plt.colorbar(cmesh, ax=ax)
 
         if function == 'potential':
-            cb.set_label('power, nT$^2$ m$^2$')
+            cb.set_label('Power, nT$^2$ m$^2$', fontsize=axes_labelsize)
         elif function == 'radial':
-            cb.set_label('power, nT$^2$')
+            cb.set_label('Power, nT$^2$', fontsize=axes_labelsize)
         elif function == 'total':
-            cb.set_label('power, nT$^2$')
+            cb.set_label('Power, nT$^2$', fontsize=axes_labelsize)
 
-        cb.ax.tick_params(width=0.2)
-        axes.set(xlabel='degree l', ylabel='order m')
-        axes.grid(True, which='both')
+        cb.ax.tick_params(labelsize=tick_labelsize)
+        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
+        axes.set_ylabel('Spherical harmonic order', fontsize=axes_labelsize)
+        axes.minorticks_on()
+        axes.grid(grid, which='major')
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:

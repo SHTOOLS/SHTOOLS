@@ -4,9 +4,9 @@
 #
 #   The normal user should only have to use the following commands
 #
-#       make (all, fortran) : Install the Fortran 95 components.
-#       make fortran-mp     : Install the Fortan OpenMP components.
-#       make fortran-tests  : Compile and run the Fortran test/example suite.
+#       make (all, fortran)   : Install the Fortran 95 components.
+#       make fortran-mp       : Install the Fortan OpenMP components.
+#       make fortran-tests    : Compile and run the Fortran test/example suite.
 #       make fortran-tests-mp : Compile and run the fortran test/example suite
 #                               with OpenMp support.
 #       make fortran-tests-no-timing    : Compile and run the Fortran
@@ -15,10 +15,14 @@
 #       make fortran-tests-no-timing-mp : Compile and run the Fortran OpenMP
 #                                         test/example suite (excluding timing
 #                                         tests).
-#       make python-tests   : Run the Python test/example suite (versions
-#                             determined by PYTHON_VERSION).
-#       make python2-tests  : Run the Python 2 test/example suite.
-#       make python3-tests  : Run the Python 3 test/example suite.
+#       make python-tests     : Run the Python test/example suite (versions
+#                               determined by PYTHON_VERSION).
+#       make python2-tests  :   Run the Python 2 test/example suite.
+#       make python3-tests  :   Run the Python 3 test/example suite.
+#       make python2-tests-no-timing  : Run the Python 2 test/example suite,
+#                                       (excluding timing tests).
+#       make python3-tests-no-timing  : Run the Python 3 test/example suite,
+#                                       (excluding timing tests).
 #       make install        : Place the compiled libraries and docs in
 #                             $(DESTDIR)$(PREFIX) [default is /usr/local].
 #       make uninstall      : Remove files copied to $(DESTDIR)$(PREFIX).

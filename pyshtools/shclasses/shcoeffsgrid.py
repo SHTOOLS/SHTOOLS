@@ -253,7 +253,7 @@ class SHCoeffs(object):
 
     @classmethod
     def from_random(self, power, lmax=None, kind='real', normalization='4pi',
-                    csphase=1, exact_power=False):
+                    csphase=1, exact_power=False, seed=None):
         """
         Initialize the class with spherical harmonic coefficients as random
         variables with a given spectrum.
@@ -261,7 +261,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_random(power, [lmax, kind, normalization, csphase,
-                                         exact_power])
+                                         exact_power, seed])
 
         Returns
         -------
@@ -289,6 +289,8 @@ class SHCoeffs(object):
             The total variance of the coefficients is set exactly to the input
             power. The distribution of power at degree l amongst the angular
             orders is random, but the total power is fixed.
+        seed : int, optional, default = None
+            Set the seed for the numpy random number generator.
 
         Description
         -----------
@@ -344,6 +346,8 @@ class SHCoeffs(object):
 
         # Create coefficients with unit variance, which returns an expected
         # total power per degree of (2l+1) for 4pi normalized harmonics.
+        if seed is not None:
+            _np.random.seed(seed=seed)
         if kind.lower() == 'real':
             coeffs = _np.empty((2, nl, nl))
             for l in degrees:
@@ -1345,15 +1349,17 @@ class SHCoeffs(object):
 
     # ---- Plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
-                      lmax=None, xscale='lin', yscale='log', show=True,
-                      ax=None, fname=None):
+                      lmax=None, xscale='lin', yscale='log', grid=True,
+                      legend=None, axes_labelsize=None, tick_labelsize=None,
+                      show=True, ax=None, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
-        x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, show,
-                         ax, fname])
+        x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, grid,
+                         axes_labelsize, tick_labelsize, legend, show, ax,
+                         fname, **kwargs])
 
         Parameters
         ----------
@@ -1376,6 +1382,14 @@ class SHCoeffs(object):
             Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'log'
             Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -1383,6 +1397,8 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot().
 
         Description
         -----------
@@ -1418,33 +1434,39 @@ class SHCoeffs(object):
         else:
             axes = ax
 
-        axes.set_xlabel('degree l')
-        if convention == 'energy':
-            axes.set_ylabel('energy')
-            if (unit == 'per_l'):
-                legend = 'energy per degree'
-            elif (unit == 'per_lm'):
-                legend = 'energy per coefficient'
-            elif (unit == 'per_dlogl'):
-                legend = 'energy per log bandwidth'
-        elif convention == 'l2norm':
-            axes.set_ylabel('l2 norm')
-            if (unit == 'per_l'):
-                legend = 'l2 norm per degree'
-            elif (unit == 'per_lm'):
-                legend = 'l2 norm per coefficient'
-            elif (unit == 'per_dlogl'):
-                legend = 'l2 norm per log bandwidth'
-        else:
-            axes.set_ylabel('power')
-            if (unit == 'per_l'):
-                legend = 'power per degree'
-            elif (unit == 'per_lm'):
-                legend = 'power per coefficient'
-            elif (unit == 'per_dlogl'):
-                legend = 'power per log bandwidth'
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
 
-        axes.grid(True, which='both')
+        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
+        if convention == 'Energy':
+            axes.set_ylabel('Energy', fontsize=axes_labelsize)
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'Energy per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'Energy per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'Energy per log bandwidth'
+        elif convention == 'l2norm':
+            axes.set_ylabel('l2 norm', fontsize=axes_labelsize)
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'l2 norm per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'l2 norm per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'l2 norm per log bandwidth'
+        else:
+            axes.set_ylabel('Power', fontsize=axes_labelsize)
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'Power per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'Power per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'Power per log bandwidth'
 
         if xscale == 'log':
             axes.set_xscale('log', basex=base)
@@ -1452,12 +1474,18 @@ class SHCoeffs(object):
             axes.set_yscale('log', basey=base)
 
         if xscale == 'log':
-            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend)
+            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
         else:
-            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend)
+            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
+            axes.set(xlim=(ls[0], ls[lmax]))
+
+        axes.grid(grid, which='major')
+        axes.minorticks_on()
+        axes.tick_params(labelsize=tick_labelsize)
         axes.legend()
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:
@@ -1465,6 +1493,7 @@ class SHCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
+                        grid=True, axes_labelsize=None, tick_labelsize=None,
                         vscale='log', vrange=None, vmin=None, vmax=None,
                         lmax=None, show=True, ax=None, fname=None):
         """
@@ -1472,8 +1501,9 @@ class SHCoeffs(object):
 
         Usage
         -----
-        x.plot_spectrum2d([convention, xscale, yscale, vscale, vrange, vmin,
-                           vmax, lmax, show, ax, fname])
+        x.plot_spectrum2d([convention, xscale, yscale, grid, axes_labelsize,
+                           tick_labelsize, vscale, vrange, vmin, vmax, lmax,
+                           show, ax, fname])
 
         Parameters
         ----------
@@ -1485,6 +1515,12 @@ class SHCoeffs(object):
             Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'lin'
             Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         vscale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         vrange : (float, float), optional, default = None
@@ -1518,6 +1554,11 @@ class SHCoeffs(object):
         'ortho', or 'schmidt'), the l2-norm is the sum of the magnitude of the
         coefficients squared.
         """
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
         if lmax is None:
             lmax = self.lmax
         degrees = _np.arange(lmax + 1)
@@ -1629,17 +1670,22 @@ class SHCoeffs(object):
         cb = _plt.colorbar(cmesh, ax=ax)
 
         if (convention == 'energy'):
-            cb.set_label('energy per coefficient')
+            cb.set_label('Energy per coefficient', fontsize=axes_labelsize)
         elif (convention == 'power'):
-            cb.set_label('power per coefficient')
+            cb.set_label('Power per coefficient', fontsize=axes_labelsize)
         else:
-            cb.set_label('magnitude-squared coefficient')
+            cb.set_label('Magnitude-squared coefficient',
+                         fontsize=axes_labelsize)
 
-        cb.ax.tick_params(width=0.2)
-        axes.set(xlabel='degree l', ylabel='order m')
-        axes.grid(True, which='both')
+        cb.ax.tick_params(labelsize=tick_labelsize)
+        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
+        axes.set_ylabel('Spherical harmonic order', fontsize=axes_labelsize)
+        axes.tick_params(labelsize=tick_labelsize)
+        axes.minorticks_on()
+        axes.grid(grid, which='major')
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
             if fname is not None:
@@ -2469,7 +2515,8 @@ class SHGrid(object):
         """
         return _np.copy(self.data)
 
-    def plot3d(self, elevation=0, azimuth=0, show=True, fname=None):
+    def plot3d(self, elevation=20, azimuth=30, cmap='RdBu_r', show=True,
+               fname=None):
         """
         Plot the raw data on a 3d sphere.
 
@@ -2482,10 +2529,12 @@ class SHGrid(object):
 
         Parameters
         ----------
-        elevation : float, optional, default = 0
+        elevation : float, optional, default = 20
             elev parameter for the 3d projection.
-        azimuth : float, optional, default = 0
+        azimuth : float, optional, default = 30
             azim parameter for the 3d projection.
+        cmap : str, optional, default = 'RdBu_r'
+            Name of the color map to use.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -2494,7 +2543,7 @@ class SHGrid(object):
         from mpl_toolkits.mplot3d import Axes3D
 
         nlat, nlon = self.nlat, self.nlon
-        cmap = _plt.get_cmap('RdBu_r')
+        cmap = _plt.get_cmap(cmap)
 
         if self.kind == 'real':
             data = self.data
@@ -2561,16 +2610,17 @@ class SHGrid(object):
         z = points[2].reshape(sshape)
 
         # plot 3d radiation pattern
-        fig = _plt.figure(figsize=(10, 10))
+        fig = _plt.figure()
         ax3d = fig.add_subplot(1, 1, 1, projection='3d')
 
         ax3d.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=colors)
-        ax3d.set(xlim=(-1.5, 1.5), ylim=(-1.5, 1.5), zlim=(-1.5, 1.5),
+        ax3d.set(xlim=(-1., 1.), ylim=(-1., 1.), zlim=(-1., 1.),
                  xticks=[-1, 1], yticks=[-1, 1], zticks=[-1, 1])
         ax3d.set_axis_off()
         ax3d.view_init(elev=elevation, azim=azimuth)
 
         # show or save output
+        fig.tight_layout(pad=0.5)
         if show:
             _plt.show()
 
@@ -2580,25 +2630,29 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, tick_interval=[30, 30], ax=None, ax2=None, colorbar=False,
-             cb_orientation='vertical', cb_label=None, show=True, fname=None,
-             **kwargs):
+    def plot(self, tick_interval=[30, 30], minor_tick_interval=[10, 10],
+             ax=None, ax2=None, colorbar=False, cb_orientation='vertical',
+             cb_label=None, grid=False, axes_labelsize=None,
+             tick_labelsize=None, show=True, fname=None, **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([tick_interval, ax, ax2, colorbar, cb_orientation, cb_label,
-                show, fname, **kwargs])
+        x.plot([tick_interval, minor_tick_interval, ax, ax2, colorbar,
+                cb_orientation, cb_label, grid, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        xlabel : str, optional, default = 'longitude' or 'GLQ longitude index'
+        minor_tick_interval : list or tuple, optional, default = [10, 10]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
+        xlabel : str, optional, default = 'Longitude' or 'GLQ longitude index'
             Label for the longitude axis.
-        ylabel : str, optional, default = 'latitude' or 'GLQ latitude index'
+        ylabel : str, optional, default = 'Latitude' or 'GLQ latitude index'
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear. If the
@@ -2614,13 +2668,19 @@ class SHGrid(object):
             Orientation of the colorbar; either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
         kwargs : optional
-            Keyword arguements that will be sent to plt.imshow().
+            Keyword arguements that will be sent to plt.imshow(), such as cmap.
         """
         if tick_interval is None:
             xticks = []
@@ -2638,22 +2698,51 @@ class SHGrid(object):
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
 
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
+        if minor_tick_interval is None:
+            minor_xticks = []
+            minor_yticks = []
+        elif self.grid == 'GLQ':
+            minor_xticks = _np.linspace(
+                0, self.nlon-1, num=self.nlon//minor_tick_interval[0]+1,
+                endpoint=True, dtype=int)
+            minor_yticks = _np.linspace(
+                0, self.nlat-1, num=self.nlat//minor_tick_interval[1]+1,
+                endpoint=True, dtype=int)
+        else:
+            minor_xticks = _np.linspace(
+                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
+            minor_yticks = _np.linspace(
+                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
+
         if ax is None and ax2 is None:
             fig, axes = self._plot(xticks=xticks, yticks=yticks,
+                                   minor_xticks=minor_xticks,
+                                   minor_yticks=minor_yticks,
                                    colorbar=colorbar,
                                    cb_orientation=cb_orientation,
-                                   cb_label=cb_label, **kwargs)
+                                   cb_label=cb_label, grid=grid,
+                                   axes_labelsize=axes_labelsize,
+                                   tick_labelsize=tick_labelsize, **kwargs)
         else:
             if self.kind == 'complex':
                 if (ax is None and ax2 is not None) or (ax2 is None and
                                                         ax is not None):
                     raise ValueError('For complex grids, one must specify ' +
                                      'both optional arguments axes and axes2.')
-            self._plot(xticks=xticks, yticks=yticks, ax=ax, ax2=ax2,
+            self._plot(xticks=xticks, yticks=yticks, minor_xticks=minor_xticks,
+                       minor_yticks=minor_yticks, ax=ax, ax2=ax2,
                        colorbar=colorbar, cb_orientation=cb_orientation,
-                       cb_label=cb_label, **kwargs)
+                       cb_label=cb_label, grid=grid,
+                       axes_labelsize=axes_labelsize,
+                       tick_labelsize=tick_labelsize, **kwargs)
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
 
@@ -2792,18 +2881,40 @@ class DHRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, xticks=[], yticks=[], xlabel='longitude',
-              ylabel='latitude', ax=None, ax2=None, colorbar=None,
-              cb_orientation=None, cb_label=None, **kwargs):
+    def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
+              xlabel='Longitude', ylabel='Latitude', ax=None, ax2=None,
+              colorbar=None, cb_orientation=None, cb_label=None, grid=False,
+              axes_labelsize=None, tick_labelsize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
+
         if ax is None:
-            fig, axes = _plt.subplots(1, 1)
+            if colorbar is True:
+                if cb_orientation == 'horizontal':
+                    scale = 0.67
+                else:
+                    scale = 0.5
+            else:
+                scale = 0.55
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0] * scale)
+            fig, axes = _plt.subplots(1, 1, figsize=figsize)
         else:
             axes = ax
 
+        deg = '$^{\circ}$'
+        xticklabels = [str(int(y)) + deg for y in xticks]
+        yticklabels = [str(int(y)) + deg for y in yticks]
+
         cim = axes.imshow(self.data, origin='upper',
                           extent=(0., 360., -90., 90.), **kwargs)
-        axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axes.set(xticks=xticks, yticks=yticks)
+        axes.set_xlabel(xlabel, fontsize=axes_labelsize)
+        axes.set_ylabel(ylabel, fontsize=axes_labelsize)
+        axes.set_xticklabels(xticklabels, fontsize=tick_labelsize)
+        axes.set_yticklabels(yticklabels, fontsize=tick_labelsize)
+        axes.set_xticks(minor_xticks, minor=True)
+        axes.set_yticks(minor_yticks, minor=True)
+        axes.grid(grid, which='major')
 
         if colorbar is True:
             if cb_orientation == 'vertical':
@@ -2815,12 +2926,11 @@ class DHRealGrid(SHGrid):
                 cax = divider.append_axes("bottom", size="5%", pad=0.5)
                 cbar = _plt.colorbar(cim, cax=cax,
                                      orientation=cb_orientation)
-
             if cb_label is not None:
-                cbar.set_label(cb_label)
+                cbar.set_label(cb_label, fontsize=axes_labelsize)
+            cbar.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
-            fig.tight_layout(pad=0.5)
             return fig, axes
 
 
@@ -2903,26 +3013,53 @@ class DHComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, xticks=[], yticks=[], xlabel='longitude',
-              ylabel='latitude', ax=None, ax2=None, colorbar=None,
-              cb_label=None, cb_orientation=None, **kwargs):
+    def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
+              xlabel='Longitude', ylabel='Latitude', ax=None, ax2=None,
+              colorbar=None, cb_label=None, cb_orientation=None, grid=False,
+              axes_labelsize=None, tick_labelsize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            fig, axes = _plt.subplots(2, 1)
+            if colorbar is True:
+                if cb_orientation == 'horizontal':
+                    scale = 1.5
+                else:
+                    scale = 1.1
+            else:
+                scale = 1.2
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0]*scale)
+            fig, axes = _plt.subplots(2, 1, figsize=figsize)
             axreal = axes.flat[0]
             axcomplex = axes.flat[1]
         else:
             axreal = ax
             axcomplex = ax2
 
+        deg = '$^{\circ}$'
+        xticklabels = [str(int(y)) + deg for y in xticks]
+        yticklabels = [str(int(y)) + deg for y in yticks]
+
         cim1 = axreal.imshow(self.data.real, origin='upper',
                              extent=(0., 360., -90., 90.), **kwargs)
-        axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
-                   xticks=xticks, yticks=yticks)
+        axreal.set(title='Real component', xticks=xticks, yticks=yticks)
+        axreal.set_xlabel(xlabel, fontsize=axes_labelsize)
+        axreal.set_ylabel(ylabel, fontsize=axes_labelsize)
+        axreal.set_xticklabels(xticklabels, fontsize=tick_labelsize)
+        axreal.set_yticklabels(yticklabels, fontsize=tick_labelsize)
+        axreal.set_xticks(minor_xticks, minor=True)
+        axreal.set_yticks(minor_yticks, minor=True)
+        axreal.grid(grid, which='major')
         cim2 = axcomplex.imshow(self.data.imag, origin='upper',
                                 extent=(0., 360., -90., 90.), **kwargs)
-        axcomplex.set(title='Imaginary component', xlabel=xlabel,
-                      ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axcomplex.set(title='Imaginary component', xticks=xticks,
+                      yticks=yticks)
+        axcomplex.set_xlabel(xlabel, fontsize=axes_labelsize)
+        axcomplex.set_ylabel(ylabel, fontsize=axes_labelsize)
+        axcomplex.set_xticklabels(xticklabels, fontsize=tick_labelsize)
+        axcomplex.set_yticklabels(yticklabels, fontsize=tick_labelsize)
+        axcomplex.set_xticks(minor_xticks, minor=True)
+        axcomplex.set_yticks(minor_yticks, minor=True)
+        axcomplex.grid(grid, which='major')
 
         if colorbar is True:
             if cb_orientation == 'vertical':
@@ -2945,11 +3082,12 @@ class DHComplexGrid(SHGrid):
                                       orientation=cb_orientation)
 
             if cb_label is not None:
-                cbar1.set_label(cb_label)
-                cbar2.set_label(cb_label)
+                cbar1.set_label(cb_label, fontsize=axes_labelsize)
+                cbar2.set_label(cb_label, fontsize=axes_labelsize)
+            cbar1.ax.tick_params(labelsize=tick_labelsize)
+            cbar2.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
-            fig.tight_layout(pad=0.5)
             return fig, axes
 
 
@@ -3030,17 +3168,36 @@ class GLQRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
-              cb_orientation=None, cb_label=None, **kwargs):
+    def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
+              xlabel='GLQ longitude index', ylabel='GLQ latitude index',
+              ax=None, ax2=None, colorbar=None, cb_orientation=None,
+              cb_label=None, grid=False, axes_labelsize=None,
+              tick_labelsize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            fig, axes = _plt.subplots(1, 1)
+            if colorbar is True:
+                if cb_orientation == 'horizontal':
+                    scale = 0.67
+                else:
+                    scale = 0.5
+            else:
+                scale = 0.55
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0] * scale)
+            fig, axes = _plt.subplots(1, 1, figsize=figsize)
         else:
             axes = ax
 
+
         cim = axes.imshow(self.data, origin='upper', **kwargs)
-        axes.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axes.set(xticks=xticks, yticks=yticks)
+        axes.set_xlabel(xlabel, fontsize=axes_labelsize)
+        axes.set_ylabel(ylabel, fontsize=axes_labelsize)
+        axes.set_xticklabels(xticks, fontsize=tick_labelsize)
+        axes.set_yticklabels(yticks, fontsize=tick_labelsize)
+        axes.set_xticks(minor_xticks, minor=True)
+        axes.set_yticks(minor_yticks, minor=True)
+        axes.grid(grid, which='major')
 
         if colorbar is True:
             if cb_orientation == 'vertical':
@@ -3054,10 +3211,10 @@ class GLQRealGrid(SHGrid):
                                      orientation=cb_orientation)
 
             if cb_label is not None:
-                cbar.set_label(cb_label)
+                cbar.set_label(cb_label, fontsize=axes_labelsize)
+            cbar.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
-            fig.tight_layout(pad=0.5)
             return fig, axes
 
 
@@ -3133,12 +3290,24 @@ class GLQComplexGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, xticks=[], yticks=[], xlabel='GLQ longitude index',
-              ylabel='GLQ latitude index', ax=None, ax2=None, colorbar=None,
-              cb_label=None, cb_orientation=None, **kwargs):
+    def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
+              xlabel='GLQ longitude index', ylabel='GLQ latitude index',
+              ax=None, ax2=None, colorbar=None, cb_label=None,
+              cb_orientation=None, grid=False, axes_labelsize=None,
+              tick_labelsize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            fig, axes = _plt.subplots(2, 1)
+            if colorbar is True:
+                if cb_orientation == 'horizontal':
+                    scale = 1.5
+                else:
+                    scale = 1.1
+            else:
+                scale = 1.2
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0]*scale)
+            fig, axes = _plt.subplots(2, 1, figsize=figsize)
+
             axreal = axes.flat[0]
             axcomplex = axes.flat[1]
         else:
@@ -3146,11 +3315,24 @@ class GLQComplexGrid(SHGrid):
             axcomplex = ax2
 
         cim1 = axreal.imshow(self.data.real, origin='upper', **kwargs)
-        axreal.set(title='Real component', xlabel=xlabel, ylabel=ylabel,
-                   xticks=xticks, yticks=yticks)
+        axreal.set(title='Real component', xticks=xticks, yticks=yticks)
+        axreal.set_xlabel(xlabel, fontsize=axes_labelsize)
+        axreal.set_ylabel(ylabel, fontsize=axes_labelsize)
+        axreal.set_xticklabels(xticks, fontsize=tick_labelsize)
+        axreal.set_yticklabels(yticks, fontsize=tick_labelsize)
+        axreal.set_xticks(minor_xticks, minor=True)
+        axreal.set_yticks(minor_yticks, minor=True)
+        axreal.grid(grid, which='major')
         cim2 = axcomplex.imshow(self.data.imag, origin='upper', **kwargs)
-        axcomplex.set(title='Imaginary component', xlabel=xlabel,
-                      ylabel=ylabel, xticks=xticks, yticks=yticks)
+        axcomplex.set(title='Imaginary component', xticks=xticks,
+                      yticks=yticks)
+        axcomplex.set_xlabel(xlabel, fontsize=axes_labelsize)
+        axcomplex.set_ylabel(ylabel, fontsize=axes_labelsize)
+        axcomplex.set_xticklabels(xticks, fontsize=tick_labelsize)
+        axcomplex.set_yticklabels(yticks, fontsize=tick_labelsize)
+        axcomplex.set_xticks(minor_xticks, minor=True)
+        axcomplex.set_yticks(minor_yticks, minor=True)
+        axcomplex.grid(grid, which='major')
 
         if colorbar is True:
             if cb_orientation == 'vertical':
@@ -3173,9 +3355,10 @@ class GLQComplexGrid(SHGrid):
                                       orientation=cb_orientation)
 
             if cb_label is not None:
-                cbar1.set_label(cb_label)
-                cbar2.set_label(cb_label)
+                cbar1.set_label(cb_label, fontsize=axes_labelsize)
+                cbar2.set_label(cb_label, fontsize=axes_labelsize)
+            cbar1.ax.tick_params(labelsize=tick_labelsize)
+            cbar2.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
-            fig.tight_layout(pad=0.5)
             return fig, axes

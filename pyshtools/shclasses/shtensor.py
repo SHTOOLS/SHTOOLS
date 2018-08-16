@@ -607,31 +607,41 @@ class Tensor(object):
                           cb_label=cb_label, ax=ax, **kwargs)
 
     def plot(self, colorbar=True, cb_orientation='horizontal',
-             tick_interval=None, xlabel='', ylabel='', show=True,
-             fname=None, **kwargs):
+             tick_interval=[90, 90], minor_tick_interval=[30, 30],
+             xlabel='Longitude', ylabel='Latitude',
+             axes_labelsize=8, tick_labelsize=8, show=True, fname=None,
+             **kwargs):
         """
         Plot the 9 components of the tensor.
 
         Usage
         -----
-        x.plot([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                    cb_label, show, fname])
+        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
+                colorbar, cb_orientation, cb_label, axes_labelsize,
+                tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
-        tick_interval : list or tuple, optional, default = None
-            Intervals to use when plotting the x and y ticks. If set to None,
-            ticks will not be plotted.
-        xlabel : str, optional, default = ''
+        tick_interval : list or tuple, optional, default = [90, 90]
+            Intervals to use when plotting the major x and y ticks. If set to
+            None, major ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [30, 30]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
+        xlabel : str, optional, default = 'Longitude'
             Label for the longitude axis.
-        ylabel : str, optional, default = ''
+        ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
         colorbar : bool, optional, default = True
             If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'horizontal'
+        cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        axes_labelsize : int, optional, default = 8
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = 8
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -640,35 +650,81 @@ class Tensor(object):
         kwargs : optional
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
-        """
-        fig, ax = _plt.subplots(3, 3)
+       """
+        if colorbar is True:
+            if cb_orientation == 'horizontal':
+                scale = 0.9
+            else:
+                scale = 0.45
+        else:
+            scale = 0.55
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                    _mpl.rcParams['figure.figsize'][0] * scale)
+
+        fig, ax = _plt.subplots(3, 3, figsize=figsize)
         self.plot_vxx(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[0], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_vxy(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[1], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_vxz(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[2], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_vyx(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[3], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_vyy(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[4], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_vyz(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[5], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_vzx(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[6], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_vzy(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[7], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_vzz(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[8], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel, **kwargs)
+                      xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
 
         fig.tight_layout(pad=0.5)
 
@@ -921,31 +977,41 @@ class Tensor(object):
                         cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_invar(self, colorbar=True, cb_orientation='horizontal',
-                   tick_interval=None, xlabel='', ylabel='', show=True,
-                   fname=None, **kwargs):
+             tick_interval=[60, 60], minor_tick_interval=[20, 20],
+             xlabel='Longitude', ylabel='Latitude',
+             axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
+             **kwargs):
         """
         Plot the three invariants of the tensor and the derived quantity I.
 
         Usage
         -----
-        x.plot_invar([tick_interval, xlabel, ylabel, ax, colorbar,
-                      cb_orientation, cb_label, show, fname])
+        x.plot_invar([tick_interval, minor_tick_interval, xlabel, ylabel,
+                colorbar, cb_orientation, cb_label, axes_labelsize,
+                tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
-        tick_interval : list or tuple, optional, default = None
-            Intervals to use when plotting the x and y ticks. If set to None,
-            ticks will not be plotted.
-        xlabel : str, optional, default = ''
+        tick_interval : list or tuple, optional, default = [60, 60]
+            Intervals to use when plotting the major x and y ticks. If set to
+            None, major ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
+        xlabel : str, optional, default = 'Longitude'
             Label for the longitude axis.
-        ylabel : str, optional, default = ''
+        ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
         colorbar : bool, optional, default = True
             If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'horizontal'
+        cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        axes_labelsize : int, optional, default = 9
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = 8
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -955,19 +1021,46 @@ class Tensor(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        fig, ax = _plt.subplots(2, 2)
+        if colorbar is True:
+            if cb_orientation == 'horizontal':
+                scale = 0.8
+            else:
+                scale = 0.5
+        else:
+            scale = 0.6
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                    _mpl.rcParams['figure.figsize'][0] * scale)
+
+        fig, ax = _plt.subplots(2, 2, figsize=figsize)
+
         self.plot_i0(colorbar=colorbar, cb_orientation=cb_orientation,
                      ax=ax.flat[0], tick_interval=tick_interval,
-                     xlabel=xlabel, ylabel=ylabel, **kwargs)
+                     xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_i1(colorbar=colorbar, cb_orientation=cb_orientation,
                      ax=ax.flat[1], tick_interval=tick_interval,
-                     xlabel=xlabel, ylabel=ylabel, **kwargs)
+                     xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_i2(colorbar=colorbar, cb_orientation=cb_orientation,
                      ax=ax.flat[2], tick_interval=tick_interval,
-                     xlabel=xlabel, ylabel=ylabel, **kwargs)
+                     xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
         self.plot_i(colorbar=colorbar, cb_orientation=cb_orientation,
                     ax=ax.flat[3], tick_interval=tick_interval,
-                    xlabel=xlabel, ylabel=ylabel, **kwargs)
+                    xlabel=xlabel, ylabel=ylabel,
+                      axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize,
+                      minor_tick_interval=minor_tick_interval,
+                      **kwargs)
 
         fig.tight_layout(pad=0.5)
 
@@ -1153,31 +1246,41 @@ class Tensor(object):
                            cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_eigs(self, colorbar=True, cb_orientation='vertical',
-                  tick_interval=[45, 45], xlabel='', ylabel='', show=True,
-                  fname=None, **kwargs):
+             tick_interval=[60, 60], minor_tick_interval=[20, 20],
+             xlabel='Longitude', ylabel='Latitude',
+             axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
+             **kwargs):
         """
         Plot the three eigenvalues of the tensor.
 
         Usage
         -----
-        x.plot_eigs([tick_interval, xlabel, ylabel, ax, colorbar,
-                     cb_orientation, cb_label, show, fname])
+        x.plot_eigs([tick_interval, minor_tick_interval, xlabel, ylabel,
+                     colorbar, cb_orientation, cb_label, axes_labelsize,
+                     tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
-        tick_interval : list or tuple, optional, default = None
-            Intervals to use when plotting the x and y ticks. If set to None,
-            ticks will not be plotted.
-        xlabel : str, optional, default = ''
+        tick_interval : list or tuple, optional, default = [60, 60]
+            Intervals to use when plotting the major x and y ticks. If set to
+            None, major ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
+        xlabel : str, optional, default = 'Longitude'
             Label for the longitude axis.
-        ylabel : str, optional, default = ''
+        ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : bool, optional, default = False
+        colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        axes_labelsize : int, optional, default = 9
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = 8
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1187,17 +1290,39 @@ class Tensor(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        fig, ax = _plt.subplots(3, 1)
+        if colorbar is True:
+            if cb_orientation == 'horizontal':
+                scale = 2.3
+            else:
+                scale = 1.4
+        else:
+            scale = 1.65
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                    _mpl.rcParams['figure.figsize'][0] * scale)
+
+        fig, ax = _plt.subplots(3, 1, figsize=figsize)
 
         self.plot_eig1(colorbar=colorbar, cb_orientation=cb_orientation,
                        ax=ax.flat[0], xlabel=xlabel, ylabel=ylabel,
-                       tick_interval=tick_interval, **kwargs)
+                       tick_interval=tick_interval,
+                       axes_labelsize=axes_labelsize,
+                       tick_labelsize=tick_labelsize,
+                       minor_tick_interval=minor_tick_interval,
+                       **kwargs)
         self.plot_eig2(colorbar=colorbar, cb_orientation=cb_orientation,
                        ax=ax.flat[1], xlabel=xlabel, ylabel=ylabel,
-                       tick_interval=tick_interval, **kwargs)
+                       tick_interval=tick_interval,
+                       axes_labelsize=axes_labelsize,
+                       tick_labelsize=tick_labelsize,
+                       minor_tick_interval=minor_tick_interval,
+                       **kwargs)
         self.plot_eig3(colorbar=colorbar, cb_orientation=cb_orientation,
                        ax=ax.flat[2], xlabel=xlabel, ylabel=ylabel,
-                       tick_interval=tick_interval, **kwargs)
+                       tick_interval=tick_interval,
+                       axes_labelsize=axes_labelsize,
+                       tick_labelsize=tick_labelsize,
+                       minor_tick_interval=minor_tick_interval,
+                       **kwargs)
 
         fig.tight_layout(pad=0.5)
 
@@ -1383,25 +1508,31 @@ class Tensor(object):
                             cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_eigh(self, colorbar=True, cb_orientation='vertical',
-                  tick_interval=[45, 45], xlabel='', ylabel='', show=True,
-                  fname=None, **kwargs):
+                  tick_interval=[60, 60], minor_tick_interval=[20, 20],
+                  xlabel='Longitude', ylabel='Latitude',
+                  axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
+                  **kwargs):
         """
         Plot the two eigenvalues and maximum absolute value eigenvalue of the
         horizontal tensor.
 
         Usage
         -----
-        x.plot_eigs([tick_interval, xlabel, ylabel, ax, colorbar,
-                     cb_orientation, cb_label, show, fname])
+        x.plot_eigh([tick_interval, minor_tick_interval, xlabel, ylabel,
+                     colorbar, cb_orientation, cb_label, axes_labelsize,
+                     tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
-        tick_interval : list or tuple, optional, default = None
-            Intervals to use when plotting the x and y ticks. If set to None,
-            ticks will not be plotted.
-        xlabel : str, optional, default = ''
+        tick_interval : list or tuple, optional, default = [60, 60]
+            Intervals to use when plotting the major x and y ticks. If set to
+            None, major ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
+        xlabel : str, optional, default = 'Longitude'
             Label for the longitude axis.
-        ylabel : str, optional, default = ''
+        ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
         colorbar : bool, optional, default = True
             If True, plot a colorbar.
@@ -1409,6 +1540,10 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        axes_labelsize : int, optional, default = 9
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = 8
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1418,17 +1553,36 @@ class Tensor(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        fig, ax = _plt.subplots(3, 1)
+        if colorbar is True:
+            if cb_orientation == 'horizontal':
+                scale = 2.3
+            else:
+                scale = 1.4
+        else:
+            scale = 1.65
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                    _mpl.rcParams['figure.figsize'][0] * scale)
+
+        fig, ax = _plt.subplots(3, 1, figsize=figsize)
 
         self.plot_eigh1(colorbar=colorbar, cb_orientation=cb_orientation,
                         ax=ax.flat[0], xlabel=xlabel, ylabel=ylabel,
-                        tick_interval=tick_interval, **kwargs)
+                        tick_interval=tick_interval,
+                        tick_labelsize=tick_labelsize,
+                        minor_tick_interval=minor_tick_interval,
+                        **kwargs)
         self.plot_eigh2(colorbar=colorbar, cb_orientation=cb_orientation,
                         ax=ax.flat[1], xlabel=xlabel, ylabel=ylabel,
-                        tick_interval=tick_interval, **kwargs)
+                        tick_interval=tick_interval,
+                        tick_labelsize=tick_labelsize,
+                        minor_tick_interval=minor_tick_interval,
+                        **kwargs)
         self.plot_eighh(colorbar=colorbar, cb_orientation=cb_orientation,
                         ax=ax.flat[2], xlabel=xlabel, ylabel=ylabel,
-                        tick_interval=tick_interval, **kwargs)
+                        tick_interval=tick_interval,
+                        tick_labelsize=tick_labelsize,
+                        minor_tick_interval=minor_tick_interval,
+                        **kwargs)
 
         fig.tight_layout(pad=0.5)
 
