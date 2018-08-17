@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  <li class="sidebarTitle">SHTOOLS 4.3</li>
   
   
   
@@ -554,7 +554,60 @@ $('#toc').on('click', 'a', function() {
 
     
 
-  <h2 id="version-42">Version 4.2</h2>
+  <h2 id="version-43">Version 4.3</h2>
+
+<p><strong>New Gravity and Magnetic field classes</strong></p>
+
+<ul>
+  <li>Added gravity classes <code class="highlighter-rouge">SHGravCoeffs</code>, <code class="highlighter-rouge">SHGravGrid</code>, <code class="highlighter-rouge">SHGravTensor</code> and <code class="highlighter-rouge">SHGeoid</code>.</li>
+  <li>Added magnetic field classes <code class="highlighter-rouge">SHMagCoeffs</code>, <code class="highlighter-rouge">SHMagGrid</code>, and <code class="highlighter-rouge">SHMagTensor</code>.</li>
+  <li>Added new fortran subroutine <code class="highlighter-rouge">MakeMagGradGridDH</code>, which is analogous to <code class="highlighter-rouge">MakeGravGradGridDH</code>.</li>
+  <li>Reorded the arguments of <code class="highlighter-rouge">CilmPlusRhoHDH</code> to be consistent with <code class="highlighter-rouge">CilmPlusDH</code>.</li>
+  <li>The python routine <code class="highlighter-rouge">MakeMagGridDH</code> now also outputs the magnetic potential as a grid.</li>
+</ul>
+
+<p><strong>Better figures</strong></p>
+
+<ul>
+  <li>Addition of the function <code class="highlighter-rouge">pyshtools.utils.figstyle()</code>, that sets several matplotlib parameters for better figures. This function takes as optional parmeters the maximum useable width of a journal page, the relative width of the figure with respect to this value, and the screen resolution in dpi.</li>
+  <li>Most plotting routines have optional parameters to set minor tick intervals, grids, label font size, and tick font size.</li>
+  <li>Degree symbols are plotted on tick labels for maps.</li>
+  <li><code class="highlighter-rouge">examples/python/Common/FigStyle.py</code> was removed from the examples.</li>
+  <li>Added the options <code class="highlighter-rouge">vmin</code> and <code class="highlighter-rouge">vmax</code> to the plotting methods <code class="highlighter-rouge">SHCoeffs.plot_spectrum2d()</code> in order to specify the limits of the color scale.</li>
+  <li>Added the option to plot colorbars on <code class="highlighter-rouge">SHGrid</code> plots, along with the option to specify their orientation and a text label.</li>
+  <li>All notebooks have been updated.</li>
+</ul>
+
+<p><strong>New constant subpackage</strong></p>
+
+<ul>
+  <li>The <code class="highlighter-rouge">constant</code> subpackage has been completely rewritten and now makes use of the <a href="http://docs.astropy.org/en/latest/constants/index.html">astropy</a> <code class="highlighter-rouge">Constant</code> class. This class has attributes <code class="highlighter-rouge">name</code>, <code class="highlighter-rouge">value</code>, <code class="highlighter-rouge">uncertainty</code>, <code class="highlighter-rouge">unit</code>, and <code class="highlighter-rouge">reference</code>. The naming of the constants has changed in some cases for consistency. A few constants that are not necessary were removed. Many of the constants were updated with more recent values. <code class="highlighter-rouge">Constants</code> can be used in arithmetic operations with either other <code class="highlighter-rouge">Constants</code> or with objects of the astropy class <code class="highlighter-rouge">Quantity</code>.</li>
+  <li>Constants are organized into modules for each of the planets (<code class="highlighter-rouge">Mercury</code>, <code class="highlighter-rouge">Venus</code>, <code class="highlighter-rouge">Earth</code>, <code class="highlighter-rouge">Moon</code>, and <code class="highlighter-rouge">Mars</code>), and for convenience, these are all added to the main namespace. The fundamental constants <code class="highlighter-rouge">G</code> and <code class="highlighter-rouge">mu0</code> from the astropy constants package were added (as taken from CODATA 2014).</li>
+</ul>
+
+<p><strong>Other changes</strong></p>
+
+<ul>
+  <li>Fixed a bug in how the random coeffcients were determined for unnormalized coeffcients in SHCoeffs.</li>
+  <li>Optional parameter <code class="highlighter-rouge">seed</code> added to <code class="highlighter-rouge">SHCoeffs.from_random()</code> to allow for reproducibility.</li>
+  <li>One can now specify colat instead of lat for the method SHCoeffs.expand().</li>
+  <li>Added <code class="highlighter-rouge">__repr__</code> methods to all pyshtools classes.</li>
+  <li>Changed the mathematical operators of <code class="highlighter-rouge">SHCoeffs</code> such that addition and subtraction of a constant only affects the degree 0 term.</li>
+  <li>Added the optional parameter <code class="highlighter-rouge">lmax</code> to <code class="highlighter-rouge">SHCoeffs.plot_spectrum()</code> and <code class="highlighter-rouge">SHCoeffs.plot_spectrum2d()</code>.</li>
+  <li>Fixed a bug in <code class="highlighter-rouge">SHCoeffs.pad()</code> where the attribute <code class="highlighter-rouge">mask</code> was not similarly padded.</li>
+  <li>For mathematical operations with <code class="highlighter-rouge">SHCoeffs</code> grids, it is now required that the
+two class instances have the same <code class="highlighter-rouge">lmax</code>.</li>
+  <li>Clarified the documentation of <code class="highlighter-rouge">SHRotateCoef</code> to point out that this is only valid for intrinsically real functions that are expressed in complex harmonics.</li>
+  <li>Added the method <code class="highlighter-rouge">volume()</code> to the class SHCoeffs, that calculates the volume of the object.</li>
+  <li>Added the attributes <code class="highlighter-rouge">area</code> and <code class="highlighter-rouge">shannon</code> to <code class="highlighter-rouge">SHWindow</code>, which provides the area of the concentration domain and the shannon number.</li>
+  <li>Removed python installation support from Makefile: use pip instead.</li>
+</ul>
+
+<p><strong>Citation:</strong></p>
+
+<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.3, Zenodo, doi:<a href="https://doi.org/10.5281/zenodo.1345510">10.5281/zenodo.1345510</a></p>
+
+<h2 id="version-42">Version 4.2</h2>
 
 <p><strong>Change log:</strong></p>
 
@@ -578,7 +631,7 @@ $('#toc').on('click', 'a', function() {
 
 <p><strong>Citation:</strong></p>
 
-<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS: Version 4.2, Zenodo, doi:<a href="http://doi.org/10.5281/zenodo.592762">10.5281/zenodo.592762</a></p>
+<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.2, Zenodo, doi:<a href="https://doi.org/10.5281/zenodo.1250054">10.5281/zenodo.1250054</a></p>
 
 <h2 id="version-41">Version 4.1</h2>
 
@@ -604,7 +657,7 @@ $('#toc').on('click', 'a', function() {
 
 <p><strong>Citation:</strong></p>
 
-<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS: Version 4.1, Zenodo, doi:<a href="http://doi.org/10.5281/zenodo.1067108">10.5281/zenodo.1067108</a></p>
+<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2017). SHTOOLS: Version 4.1, Zenodo, doi:<a href="https://doi.org/10.5281/zenodo.1067108">10.5281/zenodo.1067108</a></p>
 
 <h2 id="version-40">Version 4.0</h2>
 <p>This is a major update that fixes bugs, adds new functionality, and improves Python error handing. All users are requested to upgrade to 4.0.</p>
@@ -631,7 +684,7 @@ $('#toc').on('click', 'a', function() {
 
 <p><strong>Citation:</strong></p>
 
-<p>M. A. Wieczorek, M. Meschede, I. Oshchepkov, E. Sales de Andrade, and heroxbd  (2016). SHTOOLS: Version 4.0. Zenodo. doi:<a href="http://doi.org/10.5281/zenodo.206114">10.5281/zenodo.206114</a></p>
+<p>M. A. Wieczorek, M. Meschede, I. Oshchepkov, E. Sales de Andrade, and heroxbd  (2016). SHTOOLS: Version 4.0. Zenodo. doi:<a href="https://doi.org/10.5281/zenodo.206114">10.5281/zenodo.206114</a></p>
 
 
     <div class="tags">

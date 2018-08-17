@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  <li class="sidebarTitle">SHTOOLS 4.3</li>
   
   
   
@@ -583,15 +583,31 @@ table:nth-of-type(n) th:nth-of-type(2) {
   <tbody>
     <tr>
       <td><a href="python-shcoeffs.html">SHCoeffs</a></td>
-      <td>A high-level class for spherical harmonic coefficients</td>
+      <td>Class for spherical harmonic coefficients</td>
     </tr>
     <tr>
       <td><a href="python-shgrid.html">SHGrid</a></td>
-      <td>A high level-class for global grids</td>
+      <td>Class for global grids</td>
     </tr>
     <tr>
       <td><a href="python-shwindow.html">SHWindow</a></td>
-      <td>A high-level class for localization windows</td>
+      <td>Class for localization windows</td>
+    </tr>
+    <tr>
+      <td><a href="python-shgravcoeffs.html">SHGravCoeffs</a></td>
+      <td>Class for gravitational potential spherical harmonic coefficients.</td>
+    </tr>
+    <tr>
+      <td><a href="python-shgravgrid.html">SHGravGrid</a></td>
+      <td>Class for global gridded gravitational field data.</td>
+    </tr>
+    <tr>
+      <td><a href="python-shgravtensor.html">SHGravTensor</a></td>
+      <td>Class for the gravity tensor and eigenvalues.</td>
+    </tr>
+    <tr>
+      <td><a href="python-shgeoid.html">SHGeoid</a></td>
+      <td>Class for the geoid.</td>
     </tr>
   </tbody>
 </table>
@@ -647,6 +663,11 @@ table:nth-of-type(n) th:nth-of-type(2) {
   </tbody>
 </table>
 
+<p>To use the <code class="highlighter-rouge">pyshtools</code> matplotlib style parameters for publication quality graphics, input</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pyshtools</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">figstyle</span><span class="p">()</span>
+</code></pre></div></div>
+<p>This function takes optional parameters for specifying the screen resolution, the relative width of the figure, the physical width of the journal page in inches, and the aspect ratio of the figure.</p>
+
 <p>If you are using <a href="http://ipython.org">iPython</a>, which adds improved functionality to Python, the available <code class="highlighter-rouge">pyshtools</code> routines can be explored by typing</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pyshtools</span><span class="o">.</span><span class="p">[</span><span class="n">tab</span><span class="p">]</span>
 </code></pre></div></div>
@@ -657,13 +678,12 @@ table:nth-of-type(n) th:nth-of-type(2) {
 <p>To read the documentation of a routine in iPython, such as <code class="highlighter-rouge">MakeGridDH</code>, enter</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pyshtools</span><span class="o">.</span><span class="n">expand</span><span class="o">.</span><span class="n">MakeGridDH</span><span class="err">?</span>
 </code></pre></div></div>
-<p>To read the info string of an SHTOOLS constant, such as <code class="highlighter-rouge">a_mars</code>, enter</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pyshtools</span><span class="o">.</span><span class="n">constant</span><span class="o">.</span><span class="n">a_mars</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<p>Alternatively, the documentation can be accessed from the <em>Python components</em> menu item on this web site.</p>
+
+<p>The <code class="highlighter-rouge">constant</code> subpackage defines physical constants related to the gravity, topography, and magnetic field of the terrestrial planets. Each of these is an instance of an <a href="http://docs.astropy.org/en/stable/constants/index.html">astropy</a> <code class="highlighter-rouge">Constant</code> class, which has the attributes <code class="highlighter-rouge">name</code>, <code class="highlighter-rouge">value</code>, <code class="highlighter-rouge">uncertainty</code>, <code class="highlighter-rouge">unit</code>, and <code class="highlighter-rouge">reference</code>. To see all information about an individual constant, enter</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">pyshtools</span><span class="o">.</span><span class="n">constant</span><span class="o">.</span><span class="n">r_mars</span><span class="p">)</span>
 </code></pre></div></div>
-<p>Documentation for the Python functions used in SHTOOLS can also be accessed by their unix man pages, appending <code class="highlighter-rouge">py</code> to the name and using all lower case letters. As an example, to access the python <code class="highlighter-rouge">MakeGridDH</code> man page, use</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>man pymakegriddh
-</code></pre></div></div>
-<p>Alternatively, the man pages can be accessed from the <em>Python components</em> menu item on this web site.</p>
+
 
 
     <div class="tags">

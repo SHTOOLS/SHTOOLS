@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  <li class="sidebarTitle">SHTOOLS 4.3</li>
   
   
   
@@ -535,7 +535,7 @@ MathJax.Hub.Config({
 
 <h2 id="usage">Usage</h2>
 
-<p><code class="highlighter-rouge">vxx</code>, <code class="highlighter-rouge">vyy</code>, <code class="highlighter-rouge">vzz</code>, <code class="highlighter-rouge">vxy</code>, <code class="highlighter-rouge">vxz</code>, <code class="highlighter-rouge">vyz</code> = MakeGravGradGridDH (<code class="highlighter-rouge">cilm</code>,  <code class="highlighter-rouge">gm</code>, <code class="highlighter-rouge">r0</code>, [<code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">f</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">sampling</code>, <code class="highlighter-rouge">lmax_calc</code>])</p>
+<p><code class="highlighter-rouge">vxx</code>, <code class="highlighter-rouge">vyy</code>, <code class="highlighter-rouge">vzz</code>, <code class="highlighter-rouge">vxy</code>, <code class="highlighter-rouge">vxz</code>, <code class="highlighter-rouge">vyz</code> = MakeGravGradGridDH (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">gm</code>, <code class="highlighter-rouge">r0</code>, [<code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">f</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">sampling</code>, <code class="highlighter-rouge">lmax_calc</code>])</p>
 
 <h2 id="returns">Returns</h2>
 
@@ -558,7 +558,7 @@ MathJax.Hub.Config({
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : float, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
-  <dd>The real gravitational potential spherical harmonic coefficients. The coefficients <code class="highlighter-rouge">c1lm</code> and <code class="highlighter-rouge">c2lm</code> refer to the cosine and sine coefficients, respectively, with <code class="highlighter-rouge">c1lm=cilm[0,l,m]</code> and <code class="highlighter-rouge">c2lm=cilm[1,l,m]</code>.</dd>
+  <dd>The real 4-pi normalized gravitational potential spherical harmonic coefficients. The coefficients <code class="highlighter-rouge">c1lm</code> and <code class="highlighter-rouge">c2lm</code> refer to the cosine and sine coefficients, respectively, with <code class="highlighter-rouge">c1lm=cilm[0,l,m]</code> and <code class="highlighter-rouge">c2lm=cilm[1,l,m]</code>.</dd>
   <dt><code class="highlighter-rouge">gm</code> : float</dt>
   <dd>The gravitational constant multiplied by the mass of the planet.</dd>
   <dt><code class="highlighter-rouge">r0</code>: float</dt>
@@ -604,7 +604,7 @@ MathJax.Hub.Config({
 
 <p>where <code class="highlighter-rouge">r</code>, <code class="highlighter-rouge">t</code>, <code class="highlighter-rouge">p</code> stand for radius, theta, and phi, respectively, and subscripts on <code class="highlighter-rouge">V</code> denote partial derivatives.</p>
 
-<p>The output grid are in units of s^-2 and are cacluated on a flattened ellipsoid with semi-major axis <code class="highlighter-rouge">a</code> and flattening <code class="highlighter-rouge">f</code>. To obtain units of Eotvos (10^-9 s^-2), multiply the output by 10^9. The calculated values should be considered exact only when the radii on the ellipsoid are less than the maximum radius of the planet (the potential coefficients are simply downward continued in the spectral domain).</p>
+<p>The output grid are in units of s^-2 and are cacluated on a flattened ellipsoid with semi-major axis <code class="highlighter-rouge">a</code> and flattening <code class="highlighter-rouge">f</code>. To obtain units of Eotvos (10^-9 s^-2), multiply the output by 10^9. The calculated values should be considered exact only when the radii on the ellipsoid are greater than the maximum radius of the planet (the potential coefficients are simply downward/upward continued in the spectral domain).</p>
 
 <p>The default is to calculate grids for use in the Driscoll and Healy (1994) routines that are equally spaced (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">2n</code>), but this can be changed to calculate equally sampled grids (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>) by setting the optional argument <code class="highlighter-rouge">sampling</code> to 1. The input value of <code class="highlighter-rouge">lmax</code> determines the number of samples, <code class="highlighter-rouge">n=2lmax+2</code>, and the latitudinal sampling interval, 90/(<code class="highlighter-rouge">lmax</code>+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/<code class="highlighter-rouge">n</code> degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/<code class="highlighter-rouge">n</code> for equally sampled and 180/<code class="highlighter-rouge">n</code> for equally spaced grids, respectively.</p>
 

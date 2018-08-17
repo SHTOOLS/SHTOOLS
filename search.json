@@ -204,6 +204,15 @@
 
 
 {
+"title": "figstyle",
+"url": "figstyle.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "Fortran 95 problems",
 "url": "fortran-95-problems.html",
 "summary": ""
@@ -267,9 +276,9 @@
 
 
 {
-"title": "SHTOOLS - Tools for working with spherical harmonics",
+"title": "Spherical Harmonic Tools",
 "url": "index.html",
-"summary": "SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere."
+"summary": "SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data."
 }
 ,
 
@@ -431,6 +440,15 @@
 {
 "title": "MakeGridPointC (Fortran)",
 "url": "makegridpointc.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "MakeMagGradGridDH (Fortran)",
+"url": "makemaggradgriddh.html",
 "summary": ""
 }
 ,
@@ -883,6 +901,15 @@
 {
 "title": "MakeGridPointC (Python)",
 "url": "pymakegridpointc.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "MakeMagGradGridDH (Python)",
+"url": "pymakemaggradgriddh.html",
 "summary": ""
 }
 ,
@@ -1511,8 +1538,62 @@
 
 
 {
+"title": "SHGeoid class",
+"url": "python-shgeoid.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SHMagCoeffs class",
+"url": "python-shmagcoeffs.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SHGravGrid class",
+"url": "python-shgravgrid.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "SHGrid class",
 "url": "python-shgrid.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SHGravCoeffs class",
+"url": "python-shgravcoeffs.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SHMagGrid class",
+"url": "python-shmaggrid.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SHTensor class",
+"url": "python-shtensor.html",
 "summary": ""
 }
 ,

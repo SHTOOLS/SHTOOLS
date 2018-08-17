@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  <li class="sidebarTitle">SHTOOLS 4.3</li>
   
   
   
@@ -666,6 +666,15 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
    
     
+        
+
+        <tr><td><a href="figstyle.html">figstyle</a></td>
+          <td> Set matplotlib parameters for creating publication quality graphics. Usage figstyle([rel_width, screen_dpi, aspect_ratio, max_width]) Parameters  rel_width : float, optional, default = 0.75 The relative width of the plot (from 0 to 1) wih respect to max_width`. screen_dpi : int, optional, default... </td>
+        </tr>
+        
+     
+   
+    
    
     
    
@@ -699,6 +708,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
         <tr><td><a href="mag_spectrum.html">spectrum (Python)</a></td>
           <td> Return the spectrum of the magnetic field as a function of spherical harmonic degree. Usage array = mag_spectrum (clm, a, r, [potential, normalization, degrees, lmax, convention, unit, base`]) Returns  array : ndarray, shape (len(degrees)) 1-D... </td>
         </tr>
+        
+     
+   
+    
         
      
    
@@ -862,7 +875,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="pycilmminusdh.html">CilmMinusDH (Python)</a></td>
-          <td> Calculate the gravitational potential interior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmMinusDH (gridin, nmax, mass, rho, [lmax, n, dref, sampling]) Returns  cilm... </td>
+          <td> Calculate the gravitational potential interior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmMinusDH (gridin, nmax, mass, rho, [lmax, n, sampling]) Returns  cilm : float,... </td>
         </tr>
         
      
@@ -871,7 +884,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="pycilmminusrhohdh.html">CilmMinusRhoHDH (Python)</a></td>
-          <td> Calculate the gravitational potential interior to relief with lateral variations in density referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmMinusRhoHDH (gridin, rho, nmax, mass, [lmax, n, dref, sampling])... </td>
+          <td> Calculate the gravitational potential interior to relief with lateral variations in density referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmMinusRhoHDH (gridin, nmax, mass, rho, [lmax, n, sampling]) Returns... </td>
         </tr>
         
      
@@ -880,7 +893,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="pycilmplusdh.html">CilmPlusDH (Python)</a></td>
-          <td> Calculate the gravitational potential exterior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmPlusDH (gridin, nmax, mass, rho, [lmax, n, dref, sampling]) Returns  cilm... </td>
+          <td> Calculate the gravitational potential exterior to relief referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmPlusDH (gridin, nmax, mass, rho, [lmax, n, sampling]) Returns  cilm : float,... </td>
         </tr>
         
      
@@ -889,7 +902,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="pycilmplusrhohdh.html">CilmPlusRhoHDH (Python)</a></td>
-          <td> Calculate the gravitational potential exterior to relief with lateral variations in density referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmPlusRhoHDH (gridin, rho, nmax, mass, [lmax, n, dref, sampling])... </td>
+          <td> Calculate the gravitational potential exterior to relief with lateral variations in density referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998). Usage cilm, d = CilmPlusRhoHDH (gridin, nmax, mass, rho, [lmax, n, sampling]) Returns... </td>
         </tr>
         
      
@@ -997,7 +1010,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="pymakegeoidgriddh.html">MakeGeoidGridDH (Python)</a></td>
-          <td> Create a global map of the geoid. Usage geoid = MakeGeoidGridDH (cilm, r0, gm, potref, [lmax, omega, r, order, lmax_calc, a, f]) Returns  geoid : float, dimension (2lmax+2, sampling*2lmax+2) A global... </td>
+          <td> Create a global map of the geoid. Usage geoid = MakeGeoidGridDH (cilm, r0, gm, potref, [lmax, omega, r, order, lmax_calc, a, f, sampling]) Returns  geoid : float, dimension (2lmax+2, sampling*2lmax+2)... </td>
         </tr>
         
      
@@ -1086,8 +1099,17 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
+        <tr><td><a href="pymakemaggradgriddh.html">MakeMagGradGridDH (Python)</a></td>
+          <td> Create 2D cylindrical maps on a flattened ellipsoid of the components of the magnetic tensor in a local north-oriented reference frame. Usage vxx, vyy, vzz, vxy, vxz, vyz = MakeMagGradGridDH (cilm, r0, [a, f, lmax, sampling, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
         <tr><td><a href="pymakemaggriddh.html">MakeMagGridDH (Python)</a></td>
-          <td> Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential. Usage rad, theta, phi, total = MakeMagGridDH (cilm, r0, [lmax, a, f, &lt;code... </td>
+          <td> Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential. Usage rad, theta, phi, total, pot = MakeMagGridDH (cilm, r0, [lmax, a, &lt;code... </td>
         </tr>
         
      
@@ -1591,7 +1613,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="pyshrotatecoef.html">SHRotateCoef (Python)</a></td>
-          <td> Determine the spherical harmonic coefficients of a complex function rotated by three Euler angles. Usage rcoef = SHRotateCoef (x, coef, dj, [lmax]) Returns  rcoef : flaot, dimension (2, (lmax+1)*(lmax+2)/2) The spherical harmonic coefficients of the rotated function in indexed... </td>
+          <td> Determine the spherical harmonic coefficients of a real function expressed in complex harmonics rotated by three Euler angles. Usage rcoef = SHRotateCoef (x, coef, dj, [lmax]) Returns  rcoef : flaot, dimension (2, (lmax+1)*(lmax+2)/2) The spherical harmonic coefficients of the... </td>
         </tr>
         
      
@@ -1647,10 +1669,22 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="python-constants.html">Constants</a></td>
-          <td>  The constant subpackage defines several constants that are useful when working with gravity and topography data of the terrestrial planets. All units are SI. Confer with the constant’s info() method for exact values and references. &lt;h2... </td>
+          <td>  This subpackage defines several constants that are used in analyzing gravity, topography, and magnetic field data of the terrestrial planets. Each object is an astropy Constant that possesses the attributes name, value, unit, uncertainty, and reference. &lt;h2... </td>
         </tr>
         
      
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
+   
+    
    
     
    

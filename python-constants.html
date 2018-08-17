@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  <li class="sidebarTitle">SHTOOLS 4.3</li>
   
   
   
@@ -564,7 +564,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
-<p>The <code class="highlighter-rouge">constant</code> subpackage defines several constants that are useful when working with gravity and topography data of the terrestrial planets. All units are SI. Confer with the constant’s <code class="highlighter-rouge">info()</code> method for exact values and references.</p>
+<p>This subpackage defines several constants that are used in analyzing gravity,
+topography, and magnetic field data of the terrestrial planets. Each object is
+an astropy <code class="highlighter-rouge">Constant</code> that possesses the attributes name, value, unit,
+uncertainty, and reference.</p>
 
 <h2 id="fundamental-constants">Fundamental constants</h2>
 
@@ -577,15 +580,11 @@ table:nth-of-type(n) th:nth-of-type(2) {
   </thead>
   <tbody>
     <tr>
-      <td><code class="highlighter-rouge">grav_constant</code></td>
+      <td><code class="highlighter-rouge">G</code></td>
       <td>Gravitational Constant</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">pi_constant</code></td>
-      <td>Pi</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">mu0_constant</code></td>
+      <td><code class="highlighter-rouge">mu0</code></td>
       <td>Magnetic constant</td>
     </tr>
   </tbody>
@@ -607,26 +606,22 @@ table:nth-of-type(n) th:nth-of-type(2) {
     </tr>
     <tr>
       <td><code class="highlighter-rouge">gm_mercury</code></td>
-      <td>Gravitational constant times the mass of Mercury</td>
+      <td>Gravitational constant times the mass of the Mercury</td>
     </tr>
     <tr>
       <td><code class="highlighter-rouge">mass_mercury</code></td>
       <td>Mass of Mercury</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">r0_pot_mercury</code></td>
-      <td>Reference radius used for the spherical harmonic gravity solutions</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">omega_mercury_orbit</code></td>
+      <td><code class="highlighter-rouge">omega_orbit_mercury</code></td>
       <td>Angular rotation rate of Mercury about the Sun</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">omega_mercury_spin</code></td>
+      <td><code class="highlighter-rouge">omega_mercury</code></td>
       <td>Angular rotation rate of Mercury</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">rho_bar_mercury</code></td>
+      <td><code class="highlighter-rouge">density_mercury</code></td>
       <td>Average density of Mercury</td>
     </tr>
     <tr>
@@ -651,12 +646,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td>Average radius of Venus</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">r0_pot_venus</code></td>
-      <td>Reference radius of the gravitational-potential models of Venus</td>
-    </tr>
-    <tr>
       <td><code class="highlighter-rouge">gm_venus</code></td>
-      <td>Gravitational constant times the mass of Venus</td>
+      <td>Gravitational constant times the mass of the Venus</td>
     </tr>
     <tr>
       <td><code class="highlighter-rouge">mass_venus</code></td>
@@ -667,12 +658,12 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td>Angular rotation rate of Venus</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">rho_bar_venus</code></td>
+      <td><code class="highlighter-rouge">density_venus</code></td>
       <td>Average density of Venus</td>
     </tr>
     <tr>
       <td><code class="highlighter-rouge">g0_venus</code></td>
-      <td>Gravitational acceleration at R_Venus, not including rotation</td>
+      <td>Gravitational acceleration at <code class="highlighter-rouge">r_venus</code>, not including rotation</td>
     </tr>
   </tbody>
 </table>
@@ -688,47 +679,47 @@ table:nth-of-type(n) th:nth-of-type(2) {
   </thead>
   <tbody>
     <tr>
-      <td><code class="highlighter-rouge">gm_earth</code></td>
-      <td>Gravitational constant times the mass of Earth</td>
+      <td><code class="highlighter-rouge">gm_egm2008</code></td>
+      <td>Gravitational constant times the mass of Earth from the EGM2008 model</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">r0_pot_earth</code></td>
-      <td>Reference radius of the terrestrial gravitational-potential models</td>
+      <td><code class="highlighter-rouge">mass_egm2008</code></td>
+      <td>The mass of Earth from the EGM2008 model</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">mass_earth</code></td>
-      <td>The mass of Earth</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">wgs84_a</code></td>
+      <td><code class="highlighter-rouge">a_wgs84</code></td>
       <td>The semi-major axis of the WGS84 ellipsoid</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">wgs84_b</code></td>
+      <td><code class="highlighter-rouge">b_wgs84</code></td>
       <td>The semi-minor axis of the WGS84 ellipsoid</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">wgs84_r3</code></td>
+      <td><code class="highlighter-rouge">r3_wgs84</code></td>
       <td>The radius of a sphere of Earth’s volume</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">wgs84_f</code></td>
+      <td><code class="highlighter-rouge">f_wgs84</code></td>
       <td>The flattening of the WGS84 ellipsoid</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">wgs84_gm</code></td>
+      <td><code class="highlighter-rouge">gm_wgs84</code></td>
       <td>The adopted GM of the WGS84 model, which includes the atmosphere</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">wgs84_gma</code></td>
+      <td><code class="highlighter-rouge">mass_wgs84</code></td>
+      <td>The mass of Earth from the WGS84 model, which includes the atmosphere</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">gma_wgs84</code></td>
       <td>The GM of the atmosphere adopted by the WGS84 model</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">wgs84_omega</code></td>
-      <td>The adopted angular rotation rate of Earth of the WGS84 model</td>
+      <td><code class="highlighter-rouge">omega_wgs84</code></td>
+      <td>The adopted angular rotation rate of the Earth of the WGS84 model</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">wgs84_u0</code></td>
+      <td><code class="highlighter-rouge">u0_wgs84</code></td>
       <td>The theoretical normal potential associated with the WGS84 model</td>
     </tr>
   </tbody>
@@ -757,11 +748,11 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td>Mass of the Moon</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">rho_bar_moon</code></td>
+      <td><code class="highlighter-rouge">density_moon</code></td>
       <td>Average density of the Moon</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">a_moon</code></td>
+      <td><code class="highlighter-rouge">a_orbit_moon</code></td>
       <td>Semi-major axis of the lunar orbit</td>
     </tr>
     <tr>
@@ -769,27 +760,19 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td>Mean gravitational acceleration of the Moon at the mean surface radius (<code class="highlighter-rouge">r_moon</code>), not including rotation</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">r0_pot_moon</code></td>
-      <td>Reference radius of the gravitational-potential models of the Moon</td>
-    </tr>
-    <tr>
       <td><code class="highlighter-rouge">omega_moon</code></td>
       <td>Angular rotation rate of the Moon</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">c_moi_moon</code></td>
-      <td>Polar moment of inertia of the Moon, using R=1738 km</td>
+      <td><code class="highlighter-rouge">i_solid_moon</code></td>
+      <td>Average moment of inertial of the solid portion of the Moon</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">i_moi_moon</code></td>
-      <td>Average moment of inertia of the Moon, using R=1738 km</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">gamma_moi_moon</code></td>
+      <td><code class="highlighter-rouge">gamma_moon</code></td>
       <td>Libration parameter of the Moon, (B-A)/C</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">beta_moi_moon</code></td>
+      <td><code class="highlighter-rouge">beta_moon</code></td>
       <td>Libration parameter of the Moon, (C-A)/B</td>
     </tr>
   </tbody>
@@ -818,16 +801,12 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td>Mass of Mars</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">rho_bar_mars</code></td>
+      <td><code class="highlighter-rouge">density_mars</code></td>
       <td>Average density of Mars</td>
     </tr>
     <tr>
       <td><code class="highlighter-rouge">g0_mars</code></td>
       <td>Gravitational acceleration of Mars at <code class="highlighter-rouge">r_mars</code>, not including rotation</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">r0_pot_mars</code></td>
-      <td>Reference radius of the gravitational-potential models of Mars</td>
     </tr>
     <tr>
       <td><code class="highlighter-rouge">omega_mars</code></td>
@@ -846,7 +825,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td>Semi-minor axis radius of Mars</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">w0_mars</code></td>
+      <td><code class="highlighter-rouge">u0_mars</code></td>
       <td>Reference potential of Mars</td>
     </tr>
   </tbody>

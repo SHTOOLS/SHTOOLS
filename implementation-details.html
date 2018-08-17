@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  <li class="sidebarTitle">SHTOOLS 4.3</li>
   
   
   
@@ -576,13 +576,13 @@ f\left(\theta,\phi\right) = \sum_{l=0}^{L} \sum_{m=-l}^l f_{lm} \, Y_{lm}\left(\
 <p>Using the separate variables <script type="math/tex">C_{lm}</script> and <script type="math/tex">S_{lm}</script> for the cosine and sine spherical harmonic coefficients, respectively, and after interchanging the order of summations over <script type="math/tex">l</script> and <script type="math/tex">m</script>, the function can be expressed equivalently as</p>
 
 <script type="math/tex; mode=display">\begin{equation}
-f\left(\theta,\phi\right) = \sum_{m=0}^L \sum_{m=l}^{L} \left( C_{lm} \, \bar{P}_{lm}(\cos \theta) \, \cos m\phi + S_{lm} \, \bar{P}_{lm}(\cos \theta) \, \sin m\phi\right).
+f\left(\theta,\phi\right) = \sum_{m=0}^L \sum_{l=m}^{L} \left( C_{lm} \, \bar{P}_{lm}(\cos \theta) \, \cos m\phi + S_{lm} \, \bar{P}_{lm}(\cos \theta) \, \sin m\phi\right).
 \end{equation}</script>
 
 <p>Defining the two component vector</p>
 
 <script type="math/tex; mode=display">\begin{equation}
-\left[a_m(\theta), b_m(\theta)\right] = \sum_{m=l}^{L} \left[C_{lm}, S_{lm}\right] \, \bar{P}_{lm}(\cos \theta),
+\left[a_m(\theta), b_m(\theta)\right] = \sum_{l=m}^{L} \left[C_{lm}, S_{lm}\right] \, \bar{P}_{lm}(\cos \theta),
 \end{equation}</script>
 
 <p>The function <script type="math/tex">f</script> can be written more simply as</p>
@@ -703,13 +703,13 @@ using 64 bit executables and level 3 optimizations.</p>
 
 <ul>
   <li>
-    <p>Driscoll, J. R. and D. M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, doi:<a href="https://dx.doi.org/10.1006/aama.1994.1008">10.1006/aama.1994.1008</a>, 1994.</p>
+    <p>Driscoll, J. R. and D. M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, doi:<a href="https://doi.org/10.1006/aama.1994.1008">10.1006/aama.1994.1008</a>, 1994.</p>
   </li>
   <li>
-    <p>Frigo, M., and S. G. Johnson, The design and implementation of FFTW3, Proc. IEEE, 93, 216–231, doi:<a href="https://dx.doi.org/10.1109/JPROC.2004.840301">10.1109/JPROC.2004.840301</a>, 2005.</p>
+    <p>Frigo, M., and S. G. Johnson, The design and implementation of FFTW3, Proc. IEEE, 93, 216–231, doi:<a href="https://doi.org/10.1109/JPROC.2004.840301">10.1109/JPROC.2004.840301</a>, 2005.</p>
   </li>
   <li>
-    <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, doi:<a href="https://dx.doi.org/10.1007/s00190-002-0216-2">10.1007/s00190-002-0216-2</a>, 2002.</p>
+    <p>Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, doi:<a href="https://doi.org/10.1007/s00190-002-0216-2">10.1007/s00190-002-0216-2</a>, 2002.</p>
   </li>
   <li>
     <p>Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery, “Numerical Recipes in FORTRAN: The Art of Scientific Computing,” 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.</p>

@@ -142,6 +142,12 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/figstyle.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/fortran-95-problems.html</loc>
   </url>
   
@@ -293,6 +299,12 @@
   
   <url>
     <loc>http://shtools.oca.eu/makegridpointc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/makemaggradgriddh.html</loc>
   </url>
   
   
@@ -595,6 +607,12 @@
   
   <url>
     <loc>http://shtools.oca.eu/pymakegridpointc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/pymakemaggradgriddh.html</loc>
   </url>
   
   
@@ -1014,7 +1032,43 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/python-shgeoid.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/python-shmagcoeffs.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/python-shgravgrid.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/python-shgrid.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/python-shgravcoeffs.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/python-shmaggrid.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/python-shtensor.html</loc>
   </url>
   
   

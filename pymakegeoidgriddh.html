@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  <li class="sidebarTitle">SHTOOLS 4.3</li>
   
   
   
@@ -535,7 +535,7 @@ MathJax.Hub.Config({
 
 <h2 id="usage">Usage</h2>
 
-<p><code class="highlighter-rouge">geoid</code> = MakeGeoidGridDH (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">r0</code>, <code class="highlighter-rouge">gm</code>, <code class="highlighter-rouge">potref</code>, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">omega</code>, <code class="highlighter-rouge">r</code>, <code class="highlighter-rouge">order</code>, <code class="highlighter-rouge">lmax_calc</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">f</code>])</p>
+<p><code class="highlighter-rouge">geoid</code> = MakeGeoidGridDH (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">r0</code>, <code class="highlighter-rouge">gm</code>, <code class="highlighter-rouge">potref</code>, [<code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">omega</code>, <code class="highlighter-rouge">r</code>, <code class="highlighter-rouge">order</code>, <code class="highlighter-rouge">lmax_calc</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">f</code>, <code class="highlighter-rouge">sampling</code>])</p>
 
 <h2 id="returns">Returns</h2>
 
@@ -569,6 +569,8 @@ MathJax.Hub.Config({
   <dd>The semi-major axis of the flattened ellipsoid that the output grid <code class="highlighter-rouge">geoid</code> is referenced to. The optional parameter <code class="highlighter-rouge">f</code> must also be specified.</dd>
   <dt><code class="highlighter-rouge">f</code> : optional, float, default = 0</dt>
   <dd>The flattening <code class="highlighter-rouge">(R_equator-R_pole)/R_equator</code> of the reference ellipsoid. The optional parameter <code class="highlighter-rouge">a</code> (i.e., <code class="highlighter-rouge">R_equator</code>) must be specified.</dd>
+  <dt><code class="highlighter-rouge">sampling</code> : optional, integer, default = 2</dt>
+  <dd>If 1 (default) the output grids are equally sampled (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>). If 2, the grids are equally spaced (<code class="highlighter-rouge">n</code> by 2<code class="highlighter-rouge">n</code>).</dd>
 </dl>
 
 <h2 id="description">Description</h2>

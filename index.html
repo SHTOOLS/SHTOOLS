@@ -4,9 +4,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expr...">
-<meta name="keywords" content=" spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field">
-<title>SHTOOLS - Tools for working with spherical harmonics | SHTOOLS - Tools for working with spherical harmonics</title>
+<meta name="description" content="SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, multitaper spectral an...">
+<meta name="keywords" content=" spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Slepian functions, fortran, Python, gravity, magnetic field">
+<title>Spherical Harmonic Tools | SHTOOLS - Tools for working with spherical harmonics</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -135,7 +135,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about SHTOOLS - Tools for working with spherical harmonics page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:mark.wieczorek@oca.eu?subject=SHTOOLS feedback&body=I have some feedback about Spherical Harmonic Tools page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -153,7 +153,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="SHTOOLS - Tools for working with spherical harmonics">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Spherical Harmonic Tools">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  <li class="sidebarTitle">SHTOOLS 4.3</li>
   
   
   
@@ -520,7 +520,7 @@ MathJax.Hub.Config({
 </script>
 
 <div class="post-header">
-   <h1 class="post-title-main">SHTOOLS - Tools for working with spherical harmonics</h1>
+   <h1 class="post-title-main">Spherical Harmonic Tools</h1>
 </div>
 
 
@@ -528,14 +528,12 @@ MathJax.Hub.Config({
 <div class="post-content">
 
    
-    <div class="summary">SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.</div>
+    <div class="summary">SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.</div>
    
 
     
 
-  <p><img src="images/company_logo.png" alt="Logo" /></p>
-
-<p><a href="https://twitter.com/pyshtools?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @pyshtools</a><script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+  <p><a href="https://twitter.com/pyshtools?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @pyshtools</a><script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
 
 <h2 id="features">Features</h2>
 
@@ -555,10 +553,10 @@ MathJax.Hub.Config({
     <p>One can choose to use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup> with the associated Legendre functions.</p>
   </li>
   <li>
-    <p>Localized multitaper spectral analyses are easily performed.</p>
+    <p>Localized multitaper spectral analyses and expansions of functions in localized Slepian bases are easily performed.</p>
   </li>
   <li>
-    <p>Routines are included for performing standard gravity and magnetic field calculations.</p>
+    <p>Standard operations on global gravitational and magnetic field data are supported.</p>
   </li>
   <li>
     <p>The Fortran routines are OpenMP compatible and OpenMP thread-safe.</p>
@@ -592,11 +590,11 @@ brew install shtools
 
 <h2 id="using">Using</h2>
 
-<p>SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library.</p>
+<p>SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library. SHTOOLS is open source software (3-clause BSD license).</p>
 
-<h2 id="acknowledgments">Acknowledgments</h2>
+<h2 id="citation">Citation</h2>
 
-<p>SHTOOLS is open source software (3-clause BSD license) and makes use of the freely available packages <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a> and <a href="http://www.netlib.org/blas/">BLAS</a>.</p>
+<p>Mark A. Wieczorek and Matthias Meschede (2018). SHTools — Tools for working with spherical harmonics, <em>Geochemistry, Geophysics, Geosystems</em>, doi:<a href="https://doi.org/10.1029/2018GC007529">10.1029/2018GC007529</a>.</p>
 
 
     <div class="tags">

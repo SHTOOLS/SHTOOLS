@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.2</li>
+  <li class="sidebarTitle">SHTOOLS 4.3</li>
   
   
   
@@ -541,7 +541,7 @@ MathJax.Hub.Config({
 
 <dl>
   <dt><code class="highlighter-rouge">cilm</code> : input, real*8, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
-  <dd>The real gravitational potential spherical harmonic coefficients. The coefficients c1lm and c2lm refer to the cosine and sine coefficients, respectively, with <code class="highlighter-rouge">c1lm=cilm(1,l+1,m+1)</code> and <code class="highlighter-rouge">c2lm=cilm(2,l+1,m+1)</code>.</dd>
+  <dd>The real 4-pi normalized gravitational potential spherical harmonic coefficients. The coefficients c1lm and c2lm refer to the cosine and sine coefficients, respectively, with <code class="highlighter-rouge">c1lm=cilm(1,l+1,m+1)</code> and <code class="highlighter-rouge">c2lm=cilm(2,l+1,m+1)</code>.</dd>
   <dt><code class="highlighter-rouge">lmax</code> : input, integer</dt>
   <dd>The maximum spherical harmonic degree of the coefficients <code class="highlighter-rouge">cilm</code>. This determines the number of samples of the output grids, <code class="highlighter-rouge">n=2lmax+2</code>, and the latitudinal sampling interval, <code class="highlighter-rouge">90/(lmax+1)</code>.</dd>
   <dt><code class="highlighter-rouge">gm</code> : input, real*8</dt>
@@ -590,7 +590,7 @@ MathJax.Hub.Config({
 
 <p>To remove the “normal gravity” (the total gravitational acceleration on the ellipsoid) from the magnitude of the total gravity field (to obtain the “gravity disturbance”), set <code class="highlighter-rouge">normal_gravity</code> to 1. To convert m/s^2 to mGals, multiply the gravity grids by 10^5.</p>
 
-<p>The calculated values should be considered exact only when the radii on the ellipsoid are less than the maximum radius of the planet (the potential coefficients are simply downward continued in the spectral domain). The components of the gravity vector are calculated using spherical coordinates whose origin is at the center of the planet, and the components are thus not normal to the reference ellipsoid.</p>
+<p>The calculated values should be considered exact only when the radii on the ellipsoid are greater than the maximum radius of the planet (the potential coefficients are simply downward/upward continued in the spectral domain). The components of the gravity vector are calculated using spherical coordinates whose origin is at the center of the planet, and the components are thus not normal to the reference ellipsoid.</p>
 
 <p>The default is to calculate grids for use in the Driscoll and Healy routines that are equally sampled (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>), but this can be changed to calculate equally spaced grids (<code class="highlighter-rouge">n</code> by 2<code class="highlighter-rouge">n</code>) by setting the optional argument <code class="highlighter-rouge">sampling</code> to 2. The input value of <code class="highlighter-rouge">lmax</code> determines the number of samples, <code class="highlighter-rouge">n=2lmax+2</code>, and the latitudinal sampling interval, 90/(<code class="highlighter-rouge">lmax</code>+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/<code class="highlighter-rouge">n</code> degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/<code class="highlighter-rouge">n</code> for equally sampled and 180/<code class="highlighter-rouge">n</code> for equally spaced grids, respectively.</p>
 
