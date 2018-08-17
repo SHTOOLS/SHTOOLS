@@ -12,7 +12,7 @@ import sys
 import sysconfig
 # the setuptools import dummy patches the distutil commands such that
 # python setup.py develop works
-import setuptools  # NOQA
+import setuptools
 import numpy
 
 from numpy.distutils.core import setup
@@ -25,13 +25,15 @@ from numpy.distutils.system_info import get_info, dict_append
 from subprocess import CalledProcessError, check_output, check_call
 
 
-# convert markdown README.md to restructured text .rst for pypi
-# pandoc can be installed with
+# Convert markdown README.md to restructured text (.rst) for PyPi, and
+# remove the first 5 lines that contain a reference to the shtools LOGO.
+# pandoc can be installed either by conda or pip:
 # conda install -c conda-forge pandoc pypandoc
 # pip install pypandoc
 try:
     import pypandoc
-    long_description = pypandoc.convert('README.md', 'rst')
+    rst = pypandoc.convert_file('README.md', 'rst')
+    long_description = rst.split('\n', 5)[5]
 except(IOError, ImportError):
     print('pandoc is not installed. PYPI description will not be '
           'formatted correctly.')
@@ -47,9 +49,9 @@ ISRELEASED = True
 def get_version():
     """Get version from git and VERSION file.
 
-    In case that the version is not tagged in git, this function appends
+    In the case where the version is not tagged in git, this function appends
     .post0+commit if the version has been released and .dev0+commit if the
-    version has not been released yet.
+    version has not yet been released.
 
     Derived from: https://github.com/Changaco/version.py
     """
@@ -163,14 +165,16 @@ CLASSIFIERS = [
 ]
 
 
-KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Wigner Symbols',
-            'Legendre Functions', 'Gravity Field', 'Magnetic Field']
+KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
+            'Wigner Symbols', 'Legendre Functions', 'Gravity Field',
+            'Magnetic Field']
 
 
 INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
-    'matplotlib'
+    'matplotlib',
+    'astropy'
 ]
 
 # configure python extension to be compiled with f2py
@@ -218,7 +222,8 @@ def configuration(parent_package='', top_path=None):
     files = os.listdir('src')
     exclude_sources = ['PlanetsConstants.f95', 'PythonWrapper.f95']
     sources = [os.path.join('src', file) for file in files if
-               file.lower().endswith(('.f95', '.c')) and file not in exclude_sources]
+               file.lower().endswith(('.f95', '.c')) and file not in
+               exclude_sources]
 
     # (from http://stackoverflow.com/questions/14320220/
     #              testing-python-c-libraries-get-build-path)):
@@ -257,11 +262,6 @@ def configuration(parent_package='', top_path=None):
                                   'src/PythonWrapper.f95'],
                          **kwargs)
 
-    # constants
-    config.add_extension('pyshtools._constant',
-                         sources=['src/PlanetsConstants.f95'],
-                         **kwargs)
-
     return config
 
 
@@ -270,7 +270,7 @@ metadata = dict(
     version=VERSION,
     description='SHTOOLS - Tools for working with spherical harmonics',
     long_description=long_description,
-    url='http://shtools.oca.eu',
+    url='https://shtools.github.io/SHTOOLS/',
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
     author='The SHTOOLS developers',
     author_email="mark.a.wieczorek@gmail.com",

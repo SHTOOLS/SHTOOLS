@@ -39,25 +39,27 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | --------- | ----------- |
 | `lmax` | The maximum spherical harmonic degree of the coefficients. |
 | `coeffs` | The raw coefficients with the specified normalization and phase conventions. |
-| `normalization` | The normalization of the coefficients: `'4pi'`, `'ortho'`, or `'schmidt'`.|
+| `normalization` | The normalization of the coefficients: `'4pi'`, `'ortho'`, `'schmidt'`, or `'unnorm'`. |
 | `csphase` | Defines whether the Condon-Shortley phase is used (`1`) or not (`-1`). |
 | `mask` | A boolean mask that is `True` for the permissible values of degree `l` and order `m`. |
 | `kind` | The coefficient data type: either `'complex'` or `'real'`. |
+| `header` | A list of values from the header line of the input file used to initialize the class. |
 
 ## Class methods
 
 | Method | Description |
 | ------ | ----------- |
-| `to_file()` | Save raw spherical harmonic coefficients to a text or binary file. |
-| `to_array()` | Return an array of spherical harmonics coefficients with a different normalization convention. |
 | `degrees()` | Return an array listing the spherical harmonic degrees from `0` to `lmax`. |
 | `spectrum()` | Return the spectrum of the function.|
+| `volume()` | Calculate the volume of the body.|
 | `set_coeffs()` | Set coefficients in-place to specified values.|
 | `rotate()` | Rotate the coordinate system used to express the spherical harmonics coefficients and return a new class instance.|
 | `convert()` | Return a new class instance using a different normalization convention. |
 | `pad()` | Return a new class instance that is zero padded or truncated to a different `lmax`.|
-| `expand()` | Evaluate the coefficients either on a spherical grid and return an SHGrid class instance, or for a list of latitude and longitude coordinates.| 
-| `copy()` | Return a copy of the class instance. |
+| `expand()` | Evaluate the coefficients either on a spherical grid and return an SHGrid class instance, or for a list of latitude and longitude coordinates.|
 | `plot_spectrum()` | Plot the spectrum as a function of spherical harmonic degree. |
 | `plot_spectrum2d()` | Plot the spectrum of all spherical-harmonic coefficients. |
+| `to_array()` | Return an array of spherical harmonics coefficients with a different normalization convention. |
+| `to_file()` | Save raw spherical harmonic coefficients to a text or binary file. |
+| `copy()` | Return a copy of the class instance. |
 | `info()` | Print a summary of the data stored in the SHCoeffs instance.|

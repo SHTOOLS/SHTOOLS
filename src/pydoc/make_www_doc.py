@@ -13,7 +13,7 @@ reh1 = re.compile('\A# (.*?)\n', re.DOTALL)
 for fn in pydocfiles:
     name, ext = os.path.splitext(fn)
 
-    if ext == '.md' and name[0:9] != 'constant_':
+    if ext == '.md':
         with open(fn, 'r') as mdfile:
             line = mdfile.readline()
             title = reh1.search(line).group(1)

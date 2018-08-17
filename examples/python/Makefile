@@ -67,7 +67,6 @@ all: $(addsuffix .phony, $(EXAMPLES))
 no-timing: $(addsuffix .phony, $(EXAMPLES-NO-TIMING))
 
 clean:
-	@-rm -rf Common/*.pyc Common/__pycache__/
 	@-rm -f $(addsuffix *.pyc, $(dir $(EXAMPLES)))
 	@-rm -rf $(addsuffix __pycache__, $(dir $(EXAMPLES)))
 	@-rm -f $(addsuffix *.png, $(dir $(EXAMPLES)))

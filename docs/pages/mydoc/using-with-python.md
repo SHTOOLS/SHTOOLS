@@ -28,9 +28,14 @@ This will load the following three classes and subpackages into the `pyshtools` 
 
 | Class | Description |
 | ----- | ----------- |
-| [SHCoeffs](python-shcoeffs.html) | A high-level class for spherical harmonic coefficients |
-| [SHGrid](python-shgrid.html) | A high level-class for global grids |
-| [SHWindow](python-shwindow.html) | A high-level class for localization windows |
+| [SHCoeffs](python-shcoeffs.html) | Class for spherical harmonic coefficients |
+| [SHGrid](python-shgrid.html) | Class for global grids |
+| [SHWindow](python-shwindow.html) | Class for localization windows |
+| [SHGravCoeffs](python-shgravcoeffs.html) | Class for gravitational potential spherical harmonic coefficients.|
+| [SHGravGrid](python-shgravgrid.html) | Class for global gridded gravitational field data.|
+| [SHGravTensor](python-shgravtensor.html) | Class for the gravity tensor and eigenvalues. |
+| [SHGeoid](python-shgeoid.html) | Class for the geoid.|
+
 
 
 | Subpackage | Description |
@@ -46,6 +51,12 @@ This will load the following three classes and subpackages into the `pyshtools` 
 | [constant](python-constants.html) | pyshtools constants |
 | [utils](python-utilities.html) | Utilities |
 
+To use the `pyshtools` matplotlib style parameters for publication quality graphics, input
+```python
+pyshtools.utils.figstyle()
+```
+This function takes optional parameters for specifying the screen resolution, the relative width of the figure, the physical width of the journal page in inches, and the aspect ratio of the figure.
+
 If you are using [iPython](http://ipython.org), which adds improved functionality to Python, the available `pyshtools` routines can be explored by typing
 ```python
 pyshtools.[tab]
@@ -58,12 +69,10 @@ To read the documentation of a routine in iPython, such as `MakeGridDH`, enter
 ```python
 pyshtools.expand.MakeGridDH?
 ```
-To read the info string of an SHTOOLS constant, such as `a_mars`, enter
+Alternatively, the documentation can be accessed from the *Python components* menu item on this web site.
+
+The `constant` subpackage defines physical constants related to the gravity, topography, and magnetic field of the terrestrial planets. Each of these is an instance of an [astropy](http://docs.astropy.org/en/stable/constants/index.html) `Constant` class, which has the attributes `name`, `value`, `uncertainty`, `unit`, and `reference`. To see all information about an individual constant, enter
 ```python
-pyshtools.constant.a_mars.info()
+print(pyshtools.constant.r_mars)
 ```
-Documentation for the Python functions used in SHTOOLS can also be accessed by their unix man pages, appending `py` to the name and using all lower case letters. As an example, to access the python `MakeGridDH` man page, use
-```bash
-man pymakegriddh
-```
-Alternatively, the man pages can be accessed from the *Python components* menu item on this web site.
+

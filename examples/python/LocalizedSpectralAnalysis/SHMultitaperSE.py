@@ -12,13 +12,10 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
+import pyshtools
 from pyshtools import shtools
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
-from FigStyle import style_shtools
-
-# set shtools plot style:
-mpl.rcParams.update(style_shtools)
+pyshtools.utils.figstyle()
 
 
 def main():

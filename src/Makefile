@@ -78,7 +78,7 @@ OBJS0 = SHTOOLS.o FFTW3.o CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o \
 	YilmIndexVector.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o \
 	MakeEllipseCoord.o CilmPlusRhoH.o CilmMinusRhoH.o BAtoHilmRhoH.o \
 	NormalGravity.o SHMultiTaperMaskSE.o SHMultiTaperMaskCSE.o SHBiasKMask.o
-	
+
 SRCSLAPACK = EigValSym.F95 EigValVecSym.F95 EigValVecSymTri.F95 \
 	SHExpandLSQ.F95 SHMTDebias.F95 SHMTVarOpt.F95
 
@@ -87,11 +87,13 @@ OBJSLAPACK = EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o \
 
 SRCSFFTW = MakeGridDH.F95 MakeGridDHC.F95 MakeGridGLQ.F95 MakeGridGLQC.F95 \
 	SHExpandDH.F95 SHExpandDHC.F95 SHExpandGLQ.F95 SHExpandGLQC.F95 \
-	MakeGravGradGridDH.F95 MakeGravGridDH.F95 MakeMagGridDH.F95
-	
+	MakeGravGradGridDH.F95 MakeGravGridDH.F95 MakeMagGridDH.F95 \
+	MakeMagGradGridDH.F95
+
 OBJSFFTW = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
 	SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \
-	MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o
+	MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o \
+	MakeMagGradGridDH.o
 
 SRCS = $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
 OBJS = $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
@@ -143,13 +145,9 @@ BAtoHilm.o: SHTOOLS.o
 MakeGrid2D.o: SHTOOLS.o
 GLQGridCoord.o: SHTOOLS.o
 MakeGridGLQ.o: FFTW3.o SHTOOLS.o
-MakeGridGLQ2.o: FFTW3.o SHTOOLS.o
 MakeGridGLQC.o: FFTW3.o SHTOOLS.o
-MakeGridGLQC2.o: FFTW3.o SHTOOLS.o
 MakeGridDH.o: FFTW3.o SHTOOLS.o
-MakeGridDH2.o: FFTW3.o SHTOOLS.o
 MakeGridDHC.o: FFTW3.o SHTOOLS.o
-MakeGridDHC2.o: FFTW3.o SHTOOLS.o
 MakeGridPoint.o: SHTOOLS.o
 MakeGridPointC.o: SHTOOLS.o
 SHGLQ.o: SHTOOLS.o
@@ -158,15 +156,10 @@ SHBias.o: SHTOOLS.o
 SHBiasK.o: SHTOOLS.o
 SHBiasKMask.o: SHTOOLS.o
 SHExpandDH.o: FFTW3.o SHTOOLS.o
-SHExpandDH2.o: FFTW3.o SHTOOLS.o
 SHExpandDHC.o: FFTW3.o SHTOOLS.o
-SHExpandDHC2.o: FFTW3.o SHTOOLS.o
 SHExpandGLQ.o: FFTW3.o SHTOOLS.o
-SHExpandGLQ2.o: FFTW3.o SHTOOLS.o
 SHExpandGLQC.o: FFTW3.o SHTOOLS.o
-SHExpandGLQC2.o: FFTW3.o SHTOOLS.o
 SHExpandLSQ.o: SHTOOLS.o
-SHExpandLSQ2.o: SHTOOLS.o
 SHFindLWin.o: SHTOOLS.o
 SHLocalizedAdmitCorr.o: SHTOOLS.o
 SHMultiply.o: SHTOOLS.o
@@ -189,9 +182,7 @@ PlmON.o : SHTOOLS.o
 PlmON_d1.o : SHTOOLS.o
 SHMTCouplingMatrix.o : SHTOOLS.o
 SHMTDebias.o : SHTOOLS.o
-SHMTDebias2.o : SHTOOLS.o
 MakeGravGridDH.o : FFTW3.o SHTOOLS.o
-MakeGravGridDH2.o : SHTOOLS.o
 MakeMagGridDH.o: FFTW3.o SHTOOLS.o
 SHBiasAdmitCorr.o : SHTOOLS.o
 ComputeDMap.o : SHTOOLS.o
@@ -200,6 +191,6 @@ CilmPlusRhoH.o : SHTOOLS.o
 CilmMinusRhoH.o : SHTOOLS.o
 BAtoHilmRhoH.o : SHTOOLS.o
 MakeGravGradGridDH.o : FFTW3.o
-MakeGravGradGridDH2.o : FFTW3.o
+MakeMagGradGridDH.o : FFTW3.o
 SHMultiTaperMaskCSE.o: SHTOOLS.o
 SHMultiTaperMaskSE.o: SHTOOLS.o

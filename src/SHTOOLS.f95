@@ -713,6 +713,18 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGravGradGridDH
 
+        subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, &
+                                     vzz, vxy, vxz, vyz, n, sampling, &
+                                     lmax_calc, exitstatus)
+            real*8, intent(in) ::   cilm(:,:,:), r0, a, f
+            real*8, intent(out) ::  vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
+                                    vxz(:,:), vyz(:,:)
+            integer, intent(in) ::  lmax
+            integer, intent(out) :: n
+            integer, intent(in), optional :: sampling, lmax_calc
+            integer, intent(out), optional :: exitstatus
+        end subroutine MakeMagGradGridDH
+
         subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, &
                                  r, gridtype, order, nlat, nlong, interval, &
                                  lmax_calc, a, f, exitstatus)

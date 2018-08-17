@@ -13,7 +13,7 @@ Create a global map of the geoid.
 
 ## Usage
 
-`geoid` = MakeGeoidGridDH (`cilm`, `r0`, `gm`, `potref`, [`lmax`, `omega`, `r`, `order`, `lmax_calc`, `a`, `f`])
+`geoid` = MakeGeoidGridDH (`cilm`, `r0`, `gm`, `potref`, [`lmax`, `omega`, `r`, `order`, `lmax_calc`, `a`, `f`, `sampling`])
 
 ## Returns
 
@@ -54,6 +54,9 @@ Create a global map of the geoid.
 
 `f` : optional, float, default = 0
 :   The flattening `(R_equator-R_pole)/R_equator` of the reference ellipsoid. The optional parameter `a` (i.e., `R_equator`) must be specified.
+
+`sampling` : optional, integer, default = 2
+:   If 1 (default) the output grids are equally sampled (`n` by `n`). If 2, the grids are equally spaced (`n` by 2`n`).
 
 ## Description
 

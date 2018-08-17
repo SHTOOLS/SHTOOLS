@@ -11,16 +11,13 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
+import pyshtools
 from pyshtools import shio
 from pyshtools import expand
 from pyshtools import gravmag
 from pyshtools import constant
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../Common"))
-from FigStyle import style_shtools
-
-# set shtools plot style:
-mpl.rcParams.update(style_shtools)
+pyshtools.utils.figstyle()
 
 
 # ==== MAIN FUNCTION ====
@@ -44,10 +41,10 @@ def TestCrustalThickness():
     filter_type = 0
     half = 0
 
-    gravfile = '../../ExampleDataFiles/jgmro_110b_sha.tab'
+    gravfile = '../../ExampleDataFiles/gmm3_120_sha.tab'
     pot, lmaxp, header = shio.shread(gravfile, lmax=degmax, header=True)
     gm = float(header[1]) * 1.e9
-    mass = gm / constant.grav_constant
+    mass = gm / constant.G.value
     r_grav = float(header[0]) * 1.e3
     print(r_grav, gm, mass, lmaxp)
 

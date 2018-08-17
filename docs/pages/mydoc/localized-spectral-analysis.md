@@ -61,4 +61,4 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 ## References
 
-* Grünbaum, F.A., L. Longhi, and M. Perlstadt, Differential operators commuting with finite convolution integral operators: some non-abelian examples, SIAM J. Appl. Math., 42, 941-955, doi:[10.1137/0142067](https://dx.doi.org/10.1137/0142067), 1982.
+* Grünbaum, F.A., L. Longhi, and M. Perlstadt, Differential operators commuting with finite convolution integral operators: some non-abelian examples, SIAM J. Appl. Math., 42, 941-955, doi:[10.1137/0142067](https://doi.org/10.1137/0142067), 1982.

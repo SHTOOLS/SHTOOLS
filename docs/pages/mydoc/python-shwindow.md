@@ -37,6 +37,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | --------- | ----------- |
 | `kind` | Either `'cap'` or `'mask'`.
 | `coeffs` | Array of spherical harmonic coefficients of the rotated spherical-cap localization windows. |
+| `shannon` | The Shannon number, which approximates the number of well localized windows. |
+| `area` | Area of the concentration domain, in radians. |
 | `eigenvalues` | Concentration factors of the localization windows. |
 | `orders` | The angular orders for each of the spherical-cap localization windows. |
 | `weights` | Taper weights used with the multitaper spectral analyses. Default is `None`. |

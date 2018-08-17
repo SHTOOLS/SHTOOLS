@@ -43,6 +43,9 @@ class SHWindow(object):
                       rotated spherical cap localization windows. These are
                       '4pi' normalized and do not use the Condon-Shortley phase
                       factor.
+    shannon         : The Shannon number, which approximates the number of
+                      well localized windows.
+    area            : Area of the concentration domain, in radians.
     eigenvalues     : Concentration factors of the localization windows.
     orders          : The angular orders for each of the spherical cap
                       localization windows.
@@ -105,7 +108,9 @@ class SHWindow(object):
 
     def __init__(self):
         """Initialize with a factory method."""
-        pass
+        print('Initialize the class using one of the class methods:\n'
+              '>>> pyshtools.SHWindow.from_cap\n'
+              '>>> pyshtools.SHWindow.from_mask')
 
     # ---- factory methods:
     @classmethod
@@ -198,15 +203,23 @@ class SHWindow(object):
             raise ValueError('The number of latitude bands in dh_mask ' +
                              'must be even. nlat = {:d}'
                              .format(dh_mask.shape[0]))
-        if (dh_mask.shape[1] != dh_mask.shape[0] and
-                dh_mask.shape[1] != 2 * dh_mask.shape[0]):
+
+        if dh_mask.shape[1] == dh_mask.shape[0]:
+            _sampling = 1
+        elif dh_mask.shape[1] == 2 * dh_mask.shape[0]:
+            _sampling = 2
+        else:
             raise ValueError('dh_mask must be dimensioned as (n, n) or ' +
                              '(n, 2 * n). Input shape is ({:d}, {:d})'
                              .format(dh_mask.shape[0], dh_mask.shape[1]))
 
+        mask_lm = _shtools.SHExpandDH(dh_mask, sampling=_sampling, lmax_calc=0)
+        area = mask_lm[0, 0, 0] * 4 * _np.pi
+
         tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
                                                          ntapers=nwin)
-        return SHWindowMask(tapers, eigenvalues, weights, copy=False)
+
+        return SHWindowMask(tapers, eigenvalues, weights, area, copy=False)
 
     def copy(self):
         """Return a deep copy of the class instance."""
@@ -696,17 +709,21 @@ class SHWindow(object):
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
 
-    def plot_windows(self, nwin, lmax=None, maxcolumns=5,
-                     tick_interval=[60, 45], xlabel='longitude',
-                     ylabel='latitude', show=True, ax=None, legend=True,
-                     fname=None):
+    def plot_windows(self, nwin, lmax=None, maxcolumns=3,
+                     tick_interval=[60, 45], minor_tick_interval=None,
+                     xlabel='Longitude', ylabel='Latitude',
+                     axes_labelsize=None, tick_labelsize=None,
+                     title_labelsize=None, grid=False, show=True, title=True,
+                     ax=None, fname=None):
         """
         Plot the best-concentrated localization windows.
 
         Usage
         -----
-        x.plot_windows(nwin, [lmax, maxcolumns, tick_interval, xlabel, ylabel,
-                              show, ax, legend, fname])
+        x.plot_windows(nwin, [lmax, maxcolumns, tick_interval,
+                              minor_tick_interval, xlabel, ylabel, grid, show,
+                              title, axes_labelsize, tick_labelsize,
+                              title_labelsize, ax, fname])
 
         Parameters
         ----------
@@ -715,23 +732,34 @@ class SHWindow(object):
         lmax : int, optional, default = self.lwin
             The maximum degree to use when plotting the windows, which controls
             the number of samples in latitude and longitude.
-        maxcolumns : int, optional, default = 5
+        maxcolumns : int, optional, default = 3
             The maximum number of columns to use when plotting multiple
             localization windows.
         tick_interval : list or tuple, optional, default = [60, 45]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = None
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        grid : bool, optional, default = False
+            If True, plot grid lines.
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        title : bool, optional, default = True
+            If True, plot a title on top of each subplot providing the taper
+            number and 1 minus the concentration factor.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        title_labelsize : int, optional, default = None
+            The font size for the subplot titles.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
-        legend : bool, optional, default = True
-            If True, plot a legend in each subplot providing the taper number
-            and 1 minus the concentration factor.
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
@@ -741,10 +769,13 @@ class SHWindow(object):
 
         ncolumns = min(maxcolumns, nwin)
         nrows = _np.ceil(nwin / ncolumns).astype(int)
-        figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                   _mpl.rcParams['figure.figsize'][0]
+                   * 0.55 * nrows / ncolumns + 0.41)
 
         if ax is None:
-            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize,
+                                      sharex='all', sharey='all')
         else:
             if hasattr(ax, 'flatten') and ax.size < nwin:
                 raise ValueError('ax.size must be greater or equal to nwin. ' +
@@ -761,115 +792,25 @@ class SHWindow(object):
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
 
-        if ax is None:
-            if nrows > 1:
-                for axtemp in axes[:-1, :].flatten():
-                    for xlabel_i in axtemp.get_xticklabels():
-                        xlabel_i.set_visible(False)
-                for axtemp in axes[:, 1:].flatten():
-                    for ylabel_i in axtemp.get_yticklabels():
-                        ylabel_i.set_visible(False)
-            elif nwin > 1:
-                for axtemp in axes[1:].flatten():
-                    for ylabel_i in axtemp.get_yticklabels():
-                        ylabel_i.set_visible(False)
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+        if title_labelsize is None:
+            title_labelsize = _mpl.rcParams['axes.titlesize']
 
-        for itaper in range(min(self.nwin, nwin)):
-            evalue = self.eigenvalues[itaper]
-            if min(self.nwin, nwin) == 1 and ax is None:
-                axtemp = axes
-            elif hasattr(axes, 'flatten'):
-                axtemp = axes.flatten()[itaper]
-            else:
-                axtemp = axes[itaper]
-            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
-                                          lmax=lmax, norm=1, csphase=1)
-            axtemp.imshow(gridout, origin='upper',
-                          extent=(0., 360., -90., 90.))
-            axtemp.set(xlabel=xlabel, ylabel=ylabel, xticks=xticks,
-                       yticks=yticks)
-            if legend is True:
-                axtemp.text(0.02, 0.95,
-                            '#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue),
-                            transform=axtemp.transAxes,
-                            va='top', ha='left', color='black',
-                            bbox={'boxstyle': 'round',  'edgecolor': 'none',
-                                  'facecolor': 'white'})
-        if ax is None:
-            if show:
-                _plt.show()
-
-            fig.tight_layout(pad=0.5)
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-    def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
-                     maxcolumns=5, xscale='lin', yscale='log',
-                     xlim=(None, None), ylim=(None, None), show=True, ax=None,
-                     fname=None):
-        """
-        Plot the spectra of the best-concentrated localization windows.
-
-        Usage
-        -----
-        x.plot_spectra(nwin, [convention, unit, base, maxcolumns, xscale,
-                              yscale, xlim, ylim, show, ax, fname])
-
-        Parameters
-        ----------
-        nwin : int
-            The number of localization windows to plot.
-        convention : str, optional, default = 'power'
-            The type of spectra to plot: 'power' for power spectrum, and
-            'energy' for energy spectrum.
-        unit : str, optional, default = 'per_l'
-            If 'per_l', return the total contribution to the spectrum for each
-            spherical harmonic degree l. If 'per_lm', return the average
-            contribution to the spectrum for each coefficient at spherical
-            harmonic degree l. If 'per_dlogl', return the spectrum per log
-            interval dlog_a(l).
-        base : float, optional, default = 10.
-            The logarithm base when calculating the 'per_dlogl' spectrum.
-        maxcolumns : int, optional, default = 5
-            The maximum number of columns to use when plotting the spectra
-            of multiple localization windows.
-        xscale : str, optional, default = 'lin'
-            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
-        yscale : str, optional, default = 'log'
-            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
-        xlim : tuple, optional, default = (None, None)
-            The upper and lower limits used for the x axis.
-        ylim : tuple, optional, default = (None, None)
-            The lower and upper limits used for the y axis.
-        show : bool, optional, default = True
-            If True, plot the image to the screen.
-        ax : matplotlib axes object, optional, default = None
-            An array of matplotlib axes objects where the plots will appear.
-        fname : str, optional, default = None
-            If present, save the image to the file.
-        """
-        degrees = self.degrees()
-        spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
-                                base=base)
-
-        ncolumns = min(maxcolumns, nwin)
-        nrows = _np.ceil(nwin / ncolumns).astype(int)
-        figsize = ncolumns * 2.4, nrows * 1.2 + 0.5
-
-        if ylim == (None, None):
-            upper = spectrum[:, :min(self.nwin, nwin)].max()
-            lower = upper * 1.e-6
-            ylim = (lower, 5 * upper)
-
-        if ax is None:
-            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize)
+        if minor_tick_interval is None:
+            minor_xticks = []
+            minor_yticks = []
         else:
-            if hasattr(ax, 'flatten') and ax.size < nwin:
-                raise ValueError('ax.size must be greater or equal to nwin. ' +
-                                 'nwin = {:s}'.format(repr(nwin)) +
-                                 ' and ax.size = {:s}.'.format(repr(ax.size)))
-            axes = ax
+            minor_xticks = _np.linspace(
+                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
+            minor_yticks = _np.linspace(
+                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
+
+        deg = '$^{\circ}$'
+        xticklabels = [str(int(y)) + deg for y in xticks]
+        yticklabels = [str(int(y)) + deg for y in yticks]
 
         if ax is None:
             if nrows > 1:
@@ -895,34 +836,187 @@ class SHWindow(object):
                 axtemp = axes.flatten()[itaper]
             else:
                 axtemp = axes[itaper]
-            if (convention == 'power'):
-                axtemp.set_ylabel('power')
+            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
+                                          lmax=lmax, norm=1, csphase=1)
+            axtemp.imshow(gridout, origin='upper',
+                          extent=(0., 360., -90., 90.))
+            axtemp.set(xticks=xticks, yticks=yticks)
+            axtemp.set_xlabel(xlabel, fontsize=axes_labelsize)
+            axtemp.set_ylabel(ylabel, fontsize=axes_labelsize)
+            axtemp.set_xticklabels(xticklabels, fontsize=tick_labelsize)
+            axtemp.set_yticklabels(yticklabels, fontsize=tick_labelsize)
+            axtemp.set_xticks(minor_xticks, minor=True)
+            axtemp.set_yticks(minor_yticks, minor=True)
+            axtemp.grid(grid, which='major')
+            if title is True:
+                axtemp.set_title('#{:d} [loss={:2.2g}]'
+                                 .format(itaper, 1-evalue),
+                                 fontsize=title_labelsize)
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                _plt.show()
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
+    def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
+                     maxcolumns=3, xscale='lin', yscale='log', grid=True,
+                     xlim=(None, None), ylim=(None, None), show=True,
+                     title=True, axes_labelsize=None, tick_labelsize=None,
+                     title_labelsize=None, ax=None, fname=None):
+        """
+        Plot the spectra of the best-concentrated localization windows.
+
+        Usage
+        -----
+        x.plot_spectra(nwin, [convention, unit, base, maxcolumns, xscale,
+                              yscale, grid, xlim, ylim, show, title,
+                              axes_labelsize, tick_labelsize, title_labelsize,
+                              ax, fname])
+
+        Parameters
+        ----------
+        nwin : int
+            The number of localization windows to plot.
+        convention : str, optional, default = 'power'
+            The type of spectra to plot: 'power' for power spectrum, and
+            'energy' for energy spectrum.
+        unit : str, optional, default = 'per_l'
+            If 'per_l', return the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', return the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', return the spectrum per log
+            interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
+        maxcolumns : int, optional, default = 3
+            The maximum number of columns to use when plotting the spectra
+            of multiple localization windows.
+        xscale : str, optional, default = 'lin'
+            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'log'
+            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        xlim : tuple, optional, default = (None, None)
+            The upper and lower limits used for the x axis.
+        ylim : tuple, optional, default = (None, None)
+            The lower and upper limits used for the y axis.
+        show : bool, optional, default = True
+            If True, plot the image to the screen.
+        title : bool, optional, default = True
+            If True, plot a legend on top of each subplot providing the taper
+            number and 1 minus the concentration factor.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        title_labelsize : int, optional, default = None
+            The font size for the subplot titles.
+        ax : matplotlib axes object, optional, default = None
+            An array of matplotlib axes objects where the plots will appear.
+        fname : str, optional, default = None
+            If present, save the image to the file.
+        """
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+        if title_labelsize is None:
+            title_labelsize = _mpl.rcParams['axes.titlesize']
+
+        degrees = self.degrees()
+        spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
+                                base=base)
+
+        ncolumns = min(maxcolumns, nwin)
+        nrows = _np.ceil(nwin / ncolumns).astype(int)
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                   _mpl.rcParams['figure.figsize'][0]
+                   * 0.7 * nrows / ncolumns + 0.41)
+
+        if ax is None:
+            fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize,
+                                      sharex='all', sharey='all')
+        else:
+            if hasattr(ax, 'flatten') and ax.size < nwin:
+                raise ValueError('ax.size must be greater or equal to nwin. ' +
+                                 'nwin = {:s}'.format(repr(nwin)) +
+                                 ' and ax.size = {:s}.'.format(repr(ax.size)))
+            axes = ax
+
+        if ax is None:
+            if nrows > 1:
+                for axtemp in axes[:-1, :].flatten():
+                    for xlabel_i in axtemp.get_xticklabels():
+                        xlabel_i.set_visible(False)
+                    axtemp.set_xlabel('', visible=False)
+                for axtemp in axes[:, 1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
+                    axtemp.set_ylabel('', visible=False)
+            elif nwin > 1:
+                for axtemp in axes[1:].flatten():
+                    for ylabel_i in axtemp.get_yticklabels():
+                        ylabel_i.set_visible(False)
+                    axtemp.set_ylabel('', visible=False)
+
+        if ylim == (None, None):
+            upper = spectrum[:, :min(self.nwin, nwin)].max()
+            lower = upper * 1.e-6
+            ylim = (lower, 5 * upper)
+        if xlim == (None, None):
+            if xscale == 'lin':
+                xlim = (degrees[0], degrees[-1])
+
+        for itaper in range(min(self.nwin, nwin)):
+            evalue = self.eigenvalues[itaper]
+            if min(self.nwin, nwin) == 1 and ax is None:
+                axtemp = axes
+            elif hasattr(axes, 'flatten'):
+                axtemp = axes.flatten()[itaper]
             else:
-                axtemp.set_ylabel('energy')
+                axtemp = axes[itaper]
+            if (convention == 'power'):
+                axtemp.set_ylabel('Power', fontsize=axes_labelsize)
+            else:
+                axtemp.set_ylabel('Energy', fontsize=axes_labelsize)
 
             if yscale == 'log':
                 axtemp.set_yscale('log', basey=base)
 
             if xscale == 'log':
                 axtemp.set_xscale('log', basex=base)
-                axtemp.plot(degrees[1:], spectrum[1:, itaper])
+                axtemp.plot(degrees[1:], spectrum[1:, itaper],
+                            label='#{:d} [loss={:2.2g}]'
+                            .format(itaper, 1-evalue))
             else:
                 axtemp.plot(degrees[0:], spectrum[0:, itaper],
-                            label='#{:d}'.format(itaper))
-            axtemp.set(xlabel='degree l', xlim=xlim, ylim=ylim)
-            axtemp.grid(True, which='both')
-            axtemp.set_title('#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue))
+                            label='#{:d} [loss={:2.2g}]'
+                            .format(itaper, 1-evalue))
+            axtemp.set_xlabel('Spherical harmonic degree',
+                              fontsize=axes_labelsize)
+            axtemp.set(xlim=xlim, ylim=ylim)
+            axtemp.minorticks_on()
+            axtemp.grid(grid, which='major')
+            axtemp.tick_params(labelsize=tick_labelsize)
+            if title is True:
+                axtemp.set_title('#{:d} [loss={:2.2g}]'
+                                 .format(itaper, 1-evalue),
+                                 fontsize=title_labelsize)
 
         if ax is None:
+            fig.tight_layout(pad=0.5)
             if show:
                 _plt.show()
-
-            fig.tight_layout(pad=0.5)
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
 
     def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
+                             axes_labelsize=None, tick_labelsize=None,
                              show=True, ax=None, fname=None):
         """
         Plot the multitaper coupling matrix.
@@ -932,7 +1026,8 @@ class SHWindow(object):
 
         Usage
         -----
-        x.plot_coupling_matrix(lmax, [nwin, weights, mode, show, ax, fname])
+        x.plot_coupling_matrix(lmax, [nwin, weights, mode, axes_labelsize,
+                                      tick_labelsize, show, ax, fname])
 
         Parameters
         ----------
@@ -951,6 +1046,10 @@ class SHWindow(object):
             'valid' returns a biased spectrum with size lmax-lwin+1. This
             returns only that part of the biased spectrum that is not
             influenced by the input spectrum beyond degree lmax.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -958,8 +1057,13 @@ class SHWindow(object):
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
-        figsize = _mpl.rcParams['figure.figsize']
-        figsize[0] = figsize[1]
+        figsize = (_mpl.rcParams['figure.figsize'][0],
+                   _mpl.rcParams['figure.figsize'][0])
+
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
 
         if ax is None:
             fig = _plt.figure(figsize=figsize)
@@ -969,14 +1073,15 @@ class SHWindow(object):
 
         axes.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
                                          mode=mode), aspect='auto')
-        axes.set_xlabel('input power')  # matrix index 1 (columns)
-        axes.set_ylabel('output power')  # matrix index 0 (rows)
-
-        if show:
-            _plt.show()
+        axes.set_xlabel('Input power', fontsize=axes_labelsize)
+        axes.set_ylabel('Output power', fontsize=axes_labelsize)
+        axes.tick_params(labelsize=tick_labelsize)
+        axes.minorticks_on()
 
         if ax is None:
-            fig.tight_layout(pad=0.1)
+            fig.tight_layout(pad=0.5)
+            if show:
+                _plt.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -1012,6 +1117,13 @@ class SHWindowCap(SHWindow):
         self.dj_matrix = dj_matrix
         self.weights = weights
         self.nwinrot = None
+
+        if (self.theta_degrees):
+            self.area = 2 * _np.pi * (1 - _np.cos(_np.radians(self.theta)))
+        else:
+            self.area = 2 * _np.pi * (1 - _np.cos(self.theta))
+
+        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
 
         if nwin is not None:
             self.nwin = nwin
@@ -1328,43 +1440,51 @@ class SHWindowCap(SHWindow):
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
-        print('kind = {:s}\n'.format(repr(self.kind)), end='')
+        print(repr(self))
+
+    def __repr__(self):
+        str = 'kind = {:s}\n'.format(repr(self.kind))
 
         if self.theta_degrees:
-            print('theta = {:f} degrees\n'.format(self.theta), end='')
+            str += 'theta = {:f} degrees\n'.format(self.theta)
         else:
-            print('theta = {:f} radians'.format(self.theta), end='')
+            str += 'theta = {:f} radians'.format(self.theta)
 
-        print('lwin = {:d}\n'.format(self.lwin), end='')
-        print('nwin = {:d}\n'.format(self.nwin), end='')
+        str += ('lwin = {:d}\n'
+                'nwin = {:d}\n'
+                'shannon = {:e}\n'
+                'area (radians) = {:e}\n'
+                .format(self.lwin, self.nwin, self.shannon, self.area))
 
         if self.clat is not None:
             if self.coord_degrees:
-                print('clat = {:f} degrees\n'.format(self.clat), end='')
+                str += 'clat = {:f} degrees\n'.format(self.clat)
             else:
-                print('clat = {:f} radians\n'.format(self.clat), end='')
+                str += 'clat = {:f} radians\n'.format(self.clat)
         else:
-            print('clat is not specified')
+            str += 'clat is not specified\n'
 
         if self.clon is not None:
             if self.coord_degrees:
-                print('clon = {:f} degrees\n'.format(self.clon), end='')
+                str += 'clon = {:f} degrees\n'.format(self.clon)
             else:
-                print('clon = {:f} radians\n'.format(self.clon), end='')
+                str += 'clon = {:f} radians\n'.format(self.clon)
         else:
-            print('clon is not specified')
+            str += 'clon is not specified\n'
 
-        print('nwinrot = {:s}'.format(repr(self.nwinrot)))
+        str += 'nwinrot = {:s}\n'.format(repr(self.nwinrot))
 
         if self.dj_matrix is not None:
-            print('dj_matrix is stored')
+            str += 'dj_matrix is stored\n'
         else:
-            print('dj_matrix is not stored')
+            str += 'dj_matrix is not stored\n'
 
         if self.weights is None:
-            print('Taper weights are not set.')
+            str += 'Taper weights are not set'
         else:
-            print('Taper weights are set.')
+            str += 'Taper weights are set'
+
+        return str
 
 
 class SHWindowMask(SHWindow):
@@ -1377,7 +1497,7 @@ class SHWindowMask(SHWindow):
     def istype(kind):
         return kind == 'mask'
 
-    def __init__(self, tapers, eigenvalues, weights, copy=True):
+    def __init__(self, tapers, eigenvalues, weights, area, copy=True):
         self.kind = 'mask'
         self.lwin = _np.sqrt(tapers.shape[0]).astype(int) - 1
         self.nwin = tapers.shape[1]
@@ -1389,6 +1509,9 @@ class SHWindowMask(SHWindow):
             self.weights = weights
             self.tapers = tapers
             self.eigenvalues = eigenvalues
+
+        self.area = area
+        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
 
     def _to_array(self, itaper, normalization='4pi', csphase=1):
         """
@@ -1540,12 +1663,20 @@ class SHWindowMask(SHWindow):
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
-        print('kind = {:s}\n'.format(repr(self.kind)), end='')
+        print(repr(self))
 
-        print('lwin = {:d}\n'.format(self.lwin), end='')
-        print('nwin = {:d}\n'.format(self.nwin), end='')
+    def __repr__(self):
+        str = ('kind = {:s}\n'
+               'lwin = {:d}\n'
+               'nwin = {:d}\n'
+               'shannon = {:e}\n'
+               'area (radians) = {:e}\n'.format(repr(self.kind), self.lwin,
+                                                self.nwin, self.shannon,
+                                                self.area))
 
         if self.weights is None:
-            print('Taper weights are not set.')
+            str += 'Taper weights are not set'
         else:
-            print('Taper weights are set.')
+            str += 'Taper weights are set'
+
+        return str

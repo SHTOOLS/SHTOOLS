@@ -10,19 +10,30 @@ analyses on the sphere.
 This module imports the following classes and subpackages into the
 main namespace:
 
-    SHCoeffs - A high level class for spherical harmonic coefficients.
-    SHGrid - A high level classes for global grids.
-    SHWindow - A high level classes for localization windows.
-    shclasses - All pyshtools classes and subclasses.
-    shtools - All Python-wrapped Fortran 95 routines.
-    constant - pyshtools constants.
-    legendre - Legendre functions.
-    expand - Spherical harmonic expansion routines.
-    shio - Spherical harmonic I/O, storage, and conversion routines.
-    spectralanalysis - Global and localized spectral analysis routines.
-    rotate - Spherical harmonic rotation routines.
-    gravmag - Gravity and magnetics routines.
-    utils - pyshtools utilities.
+    SHCoeffs          : Class for spherical harmonic coefficients.
+    SHGrid            : Class for global grids.
+    SHWindow          : Class for localization windows.
+    SHGravCoeffs      : Class for gravitational potential spherical harmonic
+                        coefficients.
+    SHGravGrid        : Class for global gridded gravitational field data.
+    SHGravTensor      : Class for the gravity tensor and eigenvalues.
+    SHGeoid           : Class for the geoid.
+    SHMagCoeffs       : Class for magnetic potential spherical harmonic
+                        coefficients.
+    SHMagGrid         : Class for global gridded magnetic field data.
+    SHMagTensor       : Class for the magnetic field tensor and eigenvalues.
+
+    shclasses         : All pyshtools classes and subclasses.
+    shtools           : All Python-wrapped Fortran 95 routines.
+    constant          : pyshtools constants.
+    legendre          : Legendre functions.
+    expand            : Spherical harmonic expansion routines.
+    shio              : Spherical harmonic I/O, storage, and conversion
+                        routines.
+    spectralanalysis  : Global and localized spectral analysis routines.
+    rotate            : Spherical harmonic rotation routines.
+    gravmag           : Gravity and magnetics routines.
+    utils             : pyshtools utilities.
 
 For further information, consult the web documentation at
 
@@ -37,7 +48,7 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-__version__ = '4.2'
+__version__ = '4.3'
 __author__ = 'SHTOOLS developers'
 
 import os as _os
@@ -55,10 +66,20 @@ from . import rotate
 from . import gravmag
 from . import utils
 
-# ---- Import classes into pyshtools namespace
-from .shclasses import SHCoeffs, SHGrid, SHWindow
+# ---- Import principal classes into pyshtools namespace
+from .shclasses import SHCoeffs
+from .shclasses import SHGrid
+from .shclasses import SHWindow
+from .shclasses import SHGravCoeffs
+from .shclasses import SHGravGrid
+from .shclasses import SHGravTensor
+from .shclasses import SHGeoid
+from .shclasses import SHMagCoeffs
+from .shclasses import SHMagGrid
+from .shclasses import SHMagTensor
 
 # ---- Define __all__ for use with: from pyshtools import * ----
-__all__ = ['constant', 'shclasses', 'SHCoeffs', 'SHGrid', 'SHWindow',
-           'legendre', 'expand', 'shio', 'spectralanalysis',
-           'rotate', 'gravmag', 'utils']
+__all__ = ['constant', 'shclasses', 'legendre', 'expand', 'shio',
+           'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
+           'SHGrid', 'SHWindow', 'SHGravCoeffs', 'SHGravGrid', 'SHGravTensor',
+           'SHGeoid', 'SHMagCoeffs', 'SHMagGrid', 'SHMagTensor']

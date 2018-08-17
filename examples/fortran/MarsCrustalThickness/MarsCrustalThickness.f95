@@ -60,7 +60,7 @@ program MarsCrustalThickness
 		stop
 	endif
 
-	nmax = 6	! nmax of Wieczorek and Phillips (1998)
+	nmax = 7	! nmax of Wieczorek and Phillips (1998)
 	
 	print*, "Input filter type (1) Minimum amplitude, (2) minimum curvature, (0) no filter "
 	read(*,*) filter_type
@@ -69,7 +69,7 @@ program MarsCrustalThickness
 		read(*,*) half
 	endif
 		
-	grav_file = "../../ExampleDataFiles/jgmro_110b_sha.tab"
+	grav_file = "../../ExampleDataFiles/gmm3_120_sha.tab"
 	topo_file = "../../ExampleDataFiles/MarsTopo719.shape"
 	
 	print*, "Remove degree 1 topo coefficients from Bouguer Correction? (0:no, 1:yes) > "

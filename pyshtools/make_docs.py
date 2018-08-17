@@ -14,7 +14,7 @@ import re
 import textwrap
 
 import _SHTOOLS
-import _constant
+
 
 def main():
     # ---- input/output folders ----
@@ -54,23 +54,6 @@ def main():
             docstring = process_mddoc(fname_mddoc)
             # ---- save combined docstring in the pydoc folder--
             fname_pydoc = os.path.join(pydocfolder, name.lower() + '.doc')
-            with open(fname_pydoc, 'w') as pydocfile:
-                pydocfile.write(docstring)
-
-        except IOError as msg:
-            print(msg)
-
-    # ---- loop through the f2py constants and make docstrings ----
-    for name, value in _constant.planetsconstants.__dict__.items():
-        try:
-            # ---- read md file documentation:
-            fname_mddoc = os.path.join(mddocfolder, 'constant_' +
-                                       name.lower() + '.md')
-            docstring = process_mddoc(fname_mddoc)
-
-            # ---- save docstring in the pydoc folder----
-            fname_pydoc = os.path.join(pydocfolder, 'constant_' +
-                                       name.lower() + '.doc')
             with open(fname_pydoc, 'w') as pydocfile:
                 pydocfile.write(docstring)
 

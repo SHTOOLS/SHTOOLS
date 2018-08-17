@@ -4,13 +4,9 @@
 #
 #   The normal user should only have to use the following commands
 #
-#       make (all, fortran) : Install the Fortran 95 components.
-#       make fortran-mp     : Install the Fortan OpenMP components.
-#       make python         : Install the Python components (versions
-#                             determined by PYTHON_VERSION).
-#       make python2        : Install the Python 2 components.
-#       make python3        : Install the Python 3 components.
-#       make fortran-tests  : Compile and run the Fortran test/example suite.
+#       make (all, fortran)   : Install the Fortran 95 components.
+#       make fortran-mp       : Install the Fortan OpenMP components.
+#       make fortran-tests    : Compile and run the Fortran test/example suite.
 #       make fortran-tests-mp : Compile and run the fortran test/example suite
 #                               with OpenMp support.
 #       make fortran-tests-no-timing    : Compile and run the Fortran
@@ -19,10 +15,14 @@
 #       make fortran-tests-no-timing-mp : Compile and run the Fortran OpenMP
 #                                         test/example suite (excluding timing
 #                                         tests).
-#       make python-tests   : Run the Python test/example suite (versions
-#                             determined by PYTHON_VERSION).
-#       make python2-tests  : Run the Python 2 test/example suite.
-#       make python3-tests  : Run the Python 3 test/example suite.
+#       make python-tests     : Run the Python test/example suite (versions
+#                               determined by PYTHON_VERSION).
+#       make python2-tests  :   Run the Python 2 test/example suite.
+#       make python3-tests  :   Run the Python 3 test/example suite.
+#       make python2-tests-no-timing  : Run the Python 2 test/example suite,
+#                                       (excluding timing tests).
+#       make python3-tests-no-timing  : Run the Python 3 test/example suite,
+#                                       (excluding timing tests).
 #       make install        : Place the compiled libraries and docs in
 #                             $(DESTDIR)$(PREFIX) [default is /usr/local].
 #       make uninstall      : Remove files copied to $(DESTDIR)$(PREFIX).
@@ -43,11 +43,9 @@
 #       F95         : Name and path of the Fortran-95 compiler.
 #       F95FLAGS    : Fortran-95 compiler flags.
 #       OPENMPFLAGS : Fortran-95 OpenMP compiler flags.
-#       F2PY        : Name (including path) of the Python 2 f2py executable.
-#       F2PY3       : Name (including path) of the Python 3 f2py executable.
 #       PYTHON      : Name (including path) of the Python 2 executable.
 #       PYTHON3     : Name (including path) of the Python 3 executable.
-#       PYTHON_VERSION : Which Python versions of shtools to install: either
+#       PYTHON_VERSION : Which Python versions of shtools to use: either
 #                        2, 3, or all.
 #       FFTW        : Name and path of the FFTW3 library of the form
 #                     "-Lpath -lfftw3".
@@ -73,23 +71,9 @@
 #   make install-fortran
 #       Install only the fortran 95 component of SHTOOLS.
 #
-#   make python
-#       Compile the Python components of SHTOOLS with the f2py compiler. This
-#       should be done after the Fortran files are compiled. The variable
-#       PYTHON_VERSION will determine which versions to build. If set to "all",
-#       then both Python versions 2 and 3 will be created. If set to either 2
-#       or 3, then only the specified version is built. You can also build for
-#       one or the other directly with the python2 or python3 targets below.
-#
-#   make python2
-#       Compile the Python 2 SHTOOLS components with the f2py compiler.
-#
-#   make python3
-#       Compile the python 3 SHTOOLS components with the f2py3 compiler.
-#
 #   make clean
 #       Remove the compiled lib, module, object, and Python files. Also removes
-#      compiled fortran and Python tests.
+#       compiled fortran and Python tests.
 #
 #   make fortran-tests
 #       Compile and run example Fortran programs and test suite. Optional
@@ -151,13 +135,11 @@
 #
 ###############################################################################
 
-VERSION = 4.2
+VERSION = 4.3
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
 F95 = gfortran
-F2PY = f2py
-F2PY3 = f2py3
 PYTHON = python
 PYTHON3 = python3
 PYTHON_VERSION = all
@@ -188,11 +170,8 @@ LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
 SYSMODPATH = $(PREFIX)/include
-SYSPYPATH = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_path("platlib"))')
-SYSPY3PATH = $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_path("platlib"))')
-PY3EXT = $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_config_var("SO"))' || echo nopy3)
+PY3EXT = $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
-SYSDOCPATH = $(PREFIX)/share/doc
 
 ifeq ($(F95), f95)
 # Default Absoft f95 flags
@@ -254,11 +233,10 @@ FFTW3_FLAGS = -DFFTW3_UNDERSCORE
 endif
 
 
-.PHONY: all fortran python python2 python3 install doc remove-doc\
+.PHONY: all fortran install doc remove-doc\
 	fortran-tests run-fortran-tests python-tests\
 	python2-tests python3-tests python-tests-no-timing python2-tests-no-timing\
-	python3-tests-no-timing install-fortran install-python\
-	install-python2 install-python3 uninstall fortran-mp clean\
+	python3-tests-no-timing install-fortran uninstall fortran-mp clean\
 	clean-fortran-tests clean-python-tests clean-python2 clean-python3\
 	clean-libs remove-notebooks notebooks notebooks2 notebooks3 www remove-www
 
@@ -291,20 +269,14 @@ fortran-mp:
 	@echo
 
 ifeq ($(PYTHON_VERSION),all)
-python: python2 python3
-install-python: install-python2 install-python3
 python-tests: python2-tests python3-tests
 python-tests-no-timing: python2-tests-no-timing python3-tests-no-timing
 notebooks: notebooks3 notebooks2
 else ifeq ($(PYTHON_VERSION),2)
-python: python2
-install-python: install-python2
 python-tests: python2-tests
 python-tests-no-timing: python2-tests-no-timing
 notebooks: notebooks2
 else ifeq ($(PYTHON_VERSION),3)
-python: python3
-install-python: install-python3
 python-tests: python3-tests
 python-tests-no-timing: python3-tests-no-timing
 notebooks: notebooks3
@@ -312,88 +284,15 @@ else
 $(error $(PYTHON_VERSION) is unsupported.)
 endif
 
-python2: fortran pyshtools/_SHTOOLS.so pyshtools/_constant.so
-	mkdir -p pyshtools/doc
-	$(PYTHON) ./pyshtools/make_docs.py . .
-	@echo
-	@echo "--> make python2 successful!"
-	@echo
-	@echo "Import shtools into Python 2 with:"
-	@echo "----------------------------------"
-	@echo "import sys"
-	@echo "sys.path.append('$(PYPATH)')"
-	@echo "import pyshtools"
-	@echo
-
-python3: fortran pyshtools/_SHTOOLS$(PY3EXT) pyshtools/_constant$(PY3EXT)
-	mkdir -p pyshtools/doc
-	$(PYTHON3) ./pyshtools/make_docs.py . .
-	@echo
-	@echo "--> make python3 successful!"
-	@echo
-	@echo "Import shtools into Python 3 with:"
-	@echo "----------------------------------"
-	@echo "import sys"
-	@echo "sys.path.append('$(PYPATH)')"
-	@echo "import pyshtools"
-	@echo
-
-pyshtools/_SHTOOLS.so: $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 fortran
-	$(F2PY) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
-		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	mv _SHTOOLS.so pyshtools/.
-
-pyshtools/_constant.so: $(SRCDIR)/PlanetsConstants.f95
-	$(F2PY) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _constant.so pyshtools/.
-
-pyshtools/_SHTOOLS$(PY3EXT): $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95 fortran
-	$(F2PY3) --quiet -I$(INCDIR) -L$(LIBDIR) --f90flags="$(F95FLAGS)" \
-		-c $(SRCDIR)/pyshtools.pyf $(SRCDIR)/PythonWrapper.f95\
-		-l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
-	mv _SHTOOLS$(PY3EXT) pyshtools/.
-
-pyshtools/_constant$(PY3EXT): $(SRCDIR)/PlanetsConstants.f95
-	$(F2PY3) --quiet --f90flags="$(F95FLAGS)" -c $(SRCDIR)/PlanetsConstants.f95 -m _constant
-	mv _constant$(PY3EXT) pyshtools/.
-
 install: install-fortran
 
-install-python2: python2
-	mkdir -pv $(DESTDIR)$(SYSPYPATH)/pyshtools
-	cp -R $(filter-out %$(PY3EXT), $(wildcard pyshtools/*)) $(DESTDIR)$(SYSPYPATH)/pyshtools/
-	@echo
-	@echo "Import shtools into Python 2 with:"
-	@echo "----------------------------------"
-	@echo "import sys"
-	@echo "sys.path.append('$(SYSPYPATH)')"
-	@echo "import pyshtools"
-	@echo
-
-install-python3: python3
-	mkdir -pv $(DESTDIR)$(SYSPY3PATH)/pyshtools
-	cp -R $(filter-out %.so, $(wildcard pyshtools/*)) $(DESTDIR)$(SYSPY3PATH)/pyshtools/
-	cp -R $(filter %$(PY3EXT), $(wildcard pyshtools/*)) $(DESTDIR)$(SYSPY3PATH)/pyshtools/
-	@echo
-	@echo "Import shtools into Python 3 with:"
-	@echo "----------------------------------"
-	@echo "import sys"
-	@echo "sys.path.append('$(SYSPY3PATH)')"
-	@echo "import pyshtools"
-	@echo
-
 uninstall:
-	-rm -r $(SYSPYPATH)/pyshtools/
-	-rm -r $(SYSPY3PATH)/pyshtools/
 	-rm -r $(SYSLIBPATH)/lib$(LIBNAME).a
 	-rm -r $(SYSLIBPATH)/lib$(LIBNAMEMP).a
 	-rm -r $(SYSMODPATH)/fftw3.mod
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
 	-rm -r $(SYSSHAREPATH)/shtools/examples/
-	-rm -r $(SYSDOCPATH)/shtools/index.html
-	-rm -r $(SYSDOCPATH)/shtools/www/
 	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 
@@ -410,9 +309,6 @@ install-fortran: fortran
 	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
-	mkdir -pv $(DESTDIR)$(SYSDOCPATH)/shtools
-	cp index.html $(DESTDIR)$(SYSDOCPATH)/shtools/index.html
-	cp -R www $(DESTDIR)$(SYSDOCPATH)/shtools/
 	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
 	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
 	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
@@ -439,7 +335,7 @@ www:
 	@cd $(WWWSRC) ; $(JEKYLL) build -d ../$(WWWDEST)
 
 remove-www:
-	@-rm -r $(WWWDEST)
+	@-rm -rf $(WWWDEST)
 
 notebooks2:
 	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER)
@@ -460,8 +356,8 @@ clean-python-tests:
 	@echo "--> Removed Python test suite executables and files"
 
 clean-python2:
-	@-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
-	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/ pyshtools/_constant.so.dSYM/
+	@-rm -rf _SHTOOLS.so.dSYM/
+	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/
 	@-rm -f *.so
 	@-rm -f pyshtools/*.so
 	@-rm -f pyshtools/*.pyc
@@ -470,10 +366,10 @@ clean-python2:
 	@echo "--> Removed Python 2 files"
 
 clean-python3:
-	@-rm -rf _SHTOOLS$(PY3EXT).dSYM/ _constant$(PY3EXT).dSYM/
-	@-rm -rf pyshtools/_SHTOOLS$(PY3EXT).dSYM/ pyshtools/_constant$(PY3EXT).dSYM/
-	@-rm -rf _SHTOOLS.so.dSYM/ _constant.so.dSYM/
-	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/ pyshtools/_constant.so.dSYM/
+	@-rm -rf _SHTOOLS$(PY3EXT).dSYM/
+	@-rm -rf pyshtools/_SHTOOLS$(PY3EXT).dSYM/
+	@-rm -rf _SHTOOLS.so.dSYM/
+	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/
 	@-rm -f *.so
 	@-rm -f pyshtools/*.so
 	@-rm -f pyshtools/*.pyc
@@ -545,22 +441,22 @@ run-fortran-tests-no-timing: fortran
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 
-python2-tests: python2
+python2-tests:
 	@$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON)
 	@echo
 	@echo "--> Ran all Python 2 tests"
 
-python3-tests: python3
+python3-tests:
 	@$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON3)
 	@echo
 	@echo "--> Ran all Python 3 tests"
 
-python2-tests-no-timing: python2
+python2-tests-no-timing:
 	@$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON)
 	@echo
 	@echo "--> Ran all Python 2 tests"
 
-python3-tests-no-timing: python3
+python3-tests-no-timing:
 	@$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON3)
 	@echo
 	@echo "--> Ran all Python 3 tests"

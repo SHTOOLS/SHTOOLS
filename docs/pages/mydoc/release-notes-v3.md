@@ -28,7 +28,7 @@ This release adds missing functionality to the SHGrids, SHCoeffs, and SHWindow c
 
 **Citation:**
 
-M. A. Wieczorek, M. Meschede, I. Oshchepkov, E. Sales de Andrade  (2016). SHTOOLS: Version 3.4. Zenodo. doi:[10.5281/zenodo.61180](http://dx.doi.org/10.5281/zenodo.61180)
+M. A. Wieczorek, M. Meschede, I. Oshchepkov, E. Sales de Andrade  (2016). SHTOOLS: Version 3.4. Zenodo. doi:[10.5281/zenodo.61180](https://doi.org/10.5281/zenodo.61180)
 
 ## Version 3.3
 
@@ -54,7 +54,7 @@ This is a major upgrade to SHTOOLS. Full support for Python 3 has been added, a 
 
 **Citation:**
 
-Mark Wieczorek et al. (2016). SHTOOLS: Version 3.3. Zenodo. doi:[10.5281/zenodo.60010](http://dx.doi.org/10.5281/zenodo.60010)
+Mark Wieczorek et al. (2016). SHTOOLS: Version 3.3. Zenodo. doi:[10.5281/zenodo.60010](https://doi.org/10.5281/zenodo.60010)
 
 ## Version 3.2
 
@@ -68,7 +68,7 @@ Mark Wieczorek et al. (2016). SHTOOLS: Version 3.3. Zenodo. doi:[10.5281/zenodo.
 
 **Citation:**
 
-Mark Wieczorek et al.. (2016). SHTOOLS: Version 3.2. Zenodo. doi:[10.5281/zenodo.55790](http://dx.doi.org/10.5281/zenodo.55790)
+Mark Wieczorek et al.. (2016). SHTOOLS: Version 3.2. Zenodo. doi:[10.5281/zenodo.55790](https://doi.org/10.5281/zenodo.55790)
 
 ## Version 3.1
 
@@ -90,7 +90,7 @@ This release of SHTOOLS adds improved documentation for all Fortran 95 and Pytho
 
 **Citation:**
 
-Mark A. Wieczorek, Matthias Meschede and Ilya Oshchepkov (2015). SHTOOLS - Tools for working with spherical harmonics (v3.1), ZENODO, doi:[10.5281/zenodo.20920](http://dx.doi.org/10.5281/zenodo.20920).
+Mark A. Wieczorek, Matthias Meschede and Ilya Oshchepkov (2015). SHTOOLS - Tools for working with spherical harmonics (v3.1), ZENODO, doi:[10.5281/zenodo.20920](https://doi.org/10.5281/zenodo.20920).
 
 ## Version 3.0
 
@@ -106,6 +106,6 @@ This is a major release of SHTOOLS that adds full support for Python. In additio
 
 **Citation:**
 
-Mark A. Wieczorek and Matthias Meschede (2015). SHTOOLS - Tools for working with spherical harmonics (v3.0), ZENODO, doi:[10.5281/zenodo.15967](http://dx.doi.org/10.5281/zenodo.15967).
+Mark A. Wieczorek and Matthias Meschede (2015). SHTOOLS - Tools for working with spherical harmonics (v3.0), ZENODO, doi:[10.5281/zenodo.15967](https://doi.org/10.5281/zenodo.15967).
 
 

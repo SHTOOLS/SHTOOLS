@@ -39,10 +39,11 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Routine name | Description |
 | ------------ | ----------- |
 | [MakeMagGridDH](makemaggriddh.html) | Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential. |
+| [MakeMagGradGridDH](makemaggradgriddh.html) | Calculate the components of the magnetic field tensor on a flattened ellipsoid. |
 | [SHMagPowerSpectrum](shmagpowerspectrum.html) | Compute the power spectrum of the magnetic field given the Schmidt semi-normalized magnetic potential spherical harmonic coefficients. |
 | [SHMagPowerL](shmagpowerl.html) | Compute the power of the magnetic field for a single degree L given the Schmidt semi-normalized magnetic potential spherical harmonic coefficients. |
 
 ## References
 
-* Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, doi:[10.1029/97JE03136](https://dx.doi.org/10.1029/97JE03136), 1998.
-* Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, doi:[10.1016/B978-044452748-6/00156-5](https://dx.doi.org/10.1016/B978-044452748-6/00156-5), 2007.
+* Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, doi:[10.1029/97JE03136](https://doi.org/10.1029/97JE03136), 1998.
+* Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, doi:[10.1016/B978-044452748-6/00156-5](https://doi.org/10.1016/B978-044452748-6/00156-5), 2007.
