@@ -1487,7 +1487,7 @@ class SHCoeffs(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -1687,7 +1687,7 @@ class SHCoeffs(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -2622,7 +2622,7 @@ class SHGrid(object):
         # show or save output
         fig.tight_layout(pad=0.5)
         if show:
-            _plt.show()
+            fig.show()
 
         if fname is not None:
             fig.savefig(fname)
@@ -2744,7 +2744,7 @@ class SHGrid(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
 
             if fname is not None:
                 fig.savefig(fname)

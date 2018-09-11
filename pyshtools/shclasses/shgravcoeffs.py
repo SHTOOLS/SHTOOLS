@@ -2045,7 +2045,7 @@ class SHGravCoeffs(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -2255,7 +2255,7 @@ class SHGravCoeffs(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
