@@ -155,6 +155,8 @@ class SHGravCoeffs(object):
         gm : float
             The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
+        mass : float
+            The mass of the planet in kg.
         r0 : float
             The reference radius of the spherical harmonic coefficients.
         omega : float, optional, default = None
@@ -790,6 +792,12 @@ class SHGravCoeffs(object):
         clm = SHGravRealCoeffs(cilm, gm=gm, r0=d, omega=omega,
                                normalization='4pi', csphase=1)
         return clm
+
+    @property
+    def mass(self):
+        """Return the mass of the planet in kg.
+        """
+        return self.gm / _G.value
 
     # ---- Define methods that modify internal variables ----
     def set_omega(self, omega):
