@@ -1865,7 +1865,8 @@ class SHGravCoeffs(object):
         optional parameters a and f are specified, the geoid height will be
         referenced to a flattened ellipsoid with semi-major axis a and
         flattening f. The pseudo-rotational potential is explicitly accounted
-        for by specifying the angular rotation rate omega of the planet.
+        for by specifying the angular rotation rate omega of the planet in the
+        SHGravCoeffs class instance.
 
         Reference
         ----------
