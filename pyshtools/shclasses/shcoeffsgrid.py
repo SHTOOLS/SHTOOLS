@@ -1844,7 +1844,7 @@ class SHRealCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float:
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
             return _shtools.MakeGridPoint(self.coeffs, lat=latin, lon=lonin,
                                           lmax=lmax_calc, norm=norm,
                                           csphase=self.csphase)
@@ -2071,7 +2071,7 @@ class SHComplexCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float:
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
             return _shtools.MakeGridPointC(self.coeffs, lat=latin, lon=lonin,
                                            lmax=lmax_calc, norm=norm,
                                            csphase=self.csphase)
