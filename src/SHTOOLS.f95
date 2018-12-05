@@ -946,9 +946,9 @@ module SHTOOLS
         end subroutine SlepianCoeffs
 
         subroutine SlepianCoeffsToSH(flm, salpha, galpha, lmax, nalpha, &
-                                 exitstatus)
+                                     exitstatus)
             real*8, intent(out) :: flm(:,:,:)
-            real*8, intent(in) :: galpha(:,:), salpha(:)
+            real*8, intent(in) :: salpha(:), galpha(:,:)
             integer, intent(in) :: lmax, nalpha
             integer, intent(out), optional :: exitstatus
         end subroutine SlepianCoeffsToSH
