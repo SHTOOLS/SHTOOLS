@@ -11,7 +11,7 @@ subroutine SlepianCoeffsToSH(flm, salpha, galpha, lmax, nalpha, exitstatus)
 !   sum of the coefficients squared is 1), and the spherical harmonic
 !   coefficients are calculated as
 !
-!       f_lm = sum_{i}^{nalpha} sum_{lm}^{lmax} s(alpha) g_lm(alpha)
+!       f_lm = sum_{i}^{nalpha} s(alpha) g_lm(alpha)
 !
 !   Calling Parameters
 !

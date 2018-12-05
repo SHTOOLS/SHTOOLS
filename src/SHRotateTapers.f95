@@ -39,11 +39,11 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 !   Calling Parameters
 !
 !       IN
-!           tapers          An (lmax+1) by (lmax+1)**2 array containing
-!                           all the eigenfunctions of the space-
-!                           concentration kernel. Eigenfunctions
-!                           are listed by columns in decreasing order
-!                           corresponding to value of their eigenvalue.
+!           tapers          An (lmax+1) by nrot array containing
+!                           all the eigenfunctions of the spherical cap
+!                           concentration problem obtained from SHReturnTapers.
+!                           The functions are listed by columns, ordered from
+!                           best to worst concentrated.
 !           taper_order     A vector of dimension (lmax+1)**2 denoting which
 !                           order m corresponds to the column of tapers and
 !                           eigenvalues.

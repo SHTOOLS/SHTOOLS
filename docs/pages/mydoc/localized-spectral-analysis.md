@@ -35,6 +35,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [SHMTDebias](shmtdebias.html) | Invert for the global power spectrum given a localized multitaper spectrum estimate. |
 | [SHMTVarOpt](shmtvaropt.html) | Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate. |
 | [SHSjkPG](shsjkpg.html) | Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders. |
+| [SHRotateTapers](shrotatetapers.html) | Rotate orthogonal spherical-cap Slepian functions centered at the North pole to a different location. |
 
 ## Localization windows (arbitrary domain)
 
@@ -52,6 +53,13 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Routine name | Description |
 | ------------ | ----------- |
 | [SHBias](shbias.html) | Calculate the (cross-)power spectrum expectation of a windowed function. |
+
+## Slepian function expansions
+
+| Routine name | Description |
+| ------------ | ----------- |
+| [SlepianCoeffs](slepiancoeffs.html) | Determine the expansion coefficients of a function for a given set of input Slepian functions. |
+| [SlepianCoeffsToSH](slepiancoeffstosh.html) | Convert a function expressed in Slepian coefficients to spherical harmonic coefficients. |
 
 ## Other routines
 
