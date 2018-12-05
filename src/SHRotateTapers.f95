@@ -186,7 +186,7 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
         if (taper_order(i) >= 0) then
             cilm(1, 1:lmax+1, taper_order(i)+1) = tapers(1:lmax+1, i)
         else
-            cilm(2, 1:lmax+1, taper_order(i)+1) = tapers(1:lmax+1, i)
+            cilm(2, 1:lmax+1, abs(taper_order(i))+1) = tapers(1:lmax+1, i)
         endif
 
         if (CSPHASE_DEFAULT == 1) then

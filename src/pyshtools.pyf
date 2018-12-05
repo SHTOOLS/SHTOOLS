@@ -198,8 +198,8 @@ python module _SHTOOLS
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d1 = lmax_calc+1
             integer,optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d2 = lmax_calc+1
-            integer,optional,intent(in),check(shape(grid,0)==grid_d0),depend(grid),intent(hide) :: grid_d0 = shape(grid,0)
-            integer,optional,intent(in),check(shape(grid,1)==grid_d1),depend(grid),intent(hide) :: grid_d1 = shape(grid,1)
+            integer,optional,intent(in),depend(grid),intent(hide) :: grid_d0 = shape(grid,0)
+            integer,optional,intent(in),depend(grid),intent(hide) :: grid_d1 = shape(grid,1)
         end subroutine SHExpandDH
 
         subroutine MakeGridDH(exitstatus,griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
@@ -234,8 +234,8 @@ python module _SHTOOLS
             integer,optional,intent(in) :: cilm_d0 = 2
             integer,optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d1 = lmax_calc+1
             integer,optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d2 = lmax_calc+1
-            integer,optional,intent(in),check(shape(grid,0)==grid_d0),depend(grid),intent(hide) :: grid_d0 = shape(grid,0)
-            integer,optional,intent(in),check(shape(grid,1)==grid_d1),depend(grid),intent(hide) :: grid_d1 = shape(grid,1)
+            integer,optional,intent(in),depend(grid),intent(hide) :: grid_d0 = shape(grid,0)
+            integer,optional,intent(in),depend(grid),intent(hide) :: grid_d1 = shape(grid,1)
         end subroutine SHExpandDHC
 
         subroutine MakeGridDHC(exitstatus,griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
@@ -249,9 +249,9 @@ python module _SHTOOLS
             integer,optional,intent(in) :: sampling = 1
             integer,optional,intent(in) :: csphase = 1
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
             integer,optional,intent(in),depend(lmax),intent(hide) :: griddh_d0 = 2*(lmax+1)
             integer,optional,intent(in),depend(griddh_d0,sampling),intent(hide) :: griddh_d1 = sampling*griddh_d0
         end subroutine MakeGridDHC
@@ -280,10 +280,10 @@ python module _SHTOOLS
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d1 = lmax_calc+1
             integer,optional,intent(in),depend(lmax_calc),intent(hide) :: cilm_d2 = lmax_calc+1
-            integer,optional,intent(in),check(shape(gridglq,0)==gridglq_d0),depend(gridglq),intent(hide) :: gridglq_d0 = shape(gridglq,0)
-            integer,optional,intent(in),check(shape(gridglq,1)==gridglq_d1),depend(gridglq),intent(hide) :: gridglq_d1 = shape(gridglq,1)
-            integer,optional,intent(in),check(len(zero)>=zero_d0),depend(zero),intent(hide) :: zero_d0 = len(zero)
-            integer,optional,intent(in),check(len(w)>=w_d0),depend(w),intent(hide) :: w_d0 = len(w)
+            integer,optional,intent(in),depend(gridglq),intent(hide) :: gridglq_d0 = shape(gridglq,0)
+            integer,optional,intent(in),depend(gridglq),intent(hide) :: gridglq_d1 = shape(gridglq,1)
+            integer,optional,intent(in),depend(zero),intent(hide) :: zero_d0 = len(zero)
+            integer,optional,intent(in),depend(w),intent(hide) :: w_d0 = len(w)
         end subroutine SHExpandGLQ
 
         subroutine MakeGridGLQ(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
@@ -298,10 +298,10 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
             integer,optional,intent(in),depend(lmax),intent(hide) :: gridglq_d0 = lmax+1
             integer,optional,intent(in),depend(lmax),intent(hide) :: gridglq_d1 = 2*lmax+1
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
-            integer,optional,intent(in),check(len(zero)>=zero_d0),depend(zero),intent(hide) :: zero_d0 = len(zero)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(zero),intent(hide) :: zero_d0 = len(zero)
         end subroutine MakeGridGLQ
 
         subroutine SHExpandGLQC(exitstatus,cilm,lmax,gridglq,w,zero,norm,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0)
@@ -321,7 +321,7 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(gridglq),intent(hide) :: gridglq_d0 = shape(gridglq,0)
             integer,optional,intent(in),depend(gridglq),intent(hide) :: gridglq_d1 = shape(gridglq,1)
             integer,optional,intent(in),depend(zero),intent(hide) :: zero_d0 = len(zero)
-            integer,optional,intent(in),check(len(w)>=w_d0),depend(w),intent(hide) :: w_d0 = len(w)
+            integer,optional,intent(in),depend(w),intent(hide) :: w_d0 = len(w)
         end subroutine SHExpandGLQC
 
         subroutine MakeGridGLQC(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
@@ -336,10 +336,10 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
             integer,optional,intent(in),depend(lmax),intent(hide) :: gridglq_d0 = lmax+1
             integer,optional,intent(in),depend(lmax),intent(hide) :: gridglq_d1 = 2*lmax+1
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
-            integer,optional,intent(in),check(len(zero)>=zero_d0),depend(zero),intent(hide) :: zero_d0 = len(zero)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(zero),intent(hide) :: zero_d0 = len(zero)
         end subroutine MakeGridGLQC
 
         subroutine GLQGridCoord(exitstatus,latglq,longlq,lmax,nlat,nlong,latglq_d0,longlq_d0)
@@ -362,7 +362,7 @@ python module _SHTOOLS
             real*8,dimension(d_d0),intent(in) :: d
             real*8,dimension(lat_d0),intent(in) :: lat
             real*8,dimension(lon_d0),intent(in) :: lon
-            integer,intent(hide),check(lat_d0==d_d0 && lon_d0==d_d0) :: nmax = d_d0
+            integer,intent(hide) :: nmax = d_d0
             integer,intent(in) :: lmax
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
@@ -383,9 +383,9 @@ python module _SHTOOLS
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
             integer,optional,intent(in) :: dealloc = 0
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
             real*8 :: MakeGridPoint
         end function MakeGridPoint
 
@@ -398,9 +398,9 @@ python module _SHTOOLS
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
             integer,optional,intent(in) :: dealloc = 0
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
             complex*16 :: MakeGridPointC
         end function MakeGridPointC
 
@@ -415,12 +415,12 @@ python module _SHTOOLS
             integer,intent(hide) :: precomp = 0
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
-            integer,optional,intent(in),check(shape(sh1,0)==sh1_d0),depend(sh1),intent(hide) :: sh1_d0 = shape(sh1,0)
-            integer,optional,intent(in),check(shape(sh1,1)==sh1_d1),depend(sh1),intent(hide) :: sh1_d1 = shape(sh1,1)
-            integer,optional,intent(in),check(shape(sh1,2)==sh1_d2),depend(sh1),intent(hide) :: sh1_d2 = shape(sh1,2)
-            integer,optional,intent(in),check(shape(sh2,0)==sh2_d0),depend(sh2),intent(hide) :: sh2_d0 = shape(sh2,0)
-            integer,optional,intent(in),check(shape(sh2,1)==sh2_d1),depend(sh2),intent(hide) :: sh2_d1 = shape(sh2,1)
-            integer,optional,intent(in),check(shape(sh2,2)==sh2_d2),depend(sh2),intent(hide) :: sh2_d2 = shape(sh2,2)
+            integer,optional,intent(in),depend(sh1),intent(hide) :: sh1_d0 = shape(sh1,0)
+            integer,optional,intent(in),depend(sh1),intent(hide) :: sh1_d1 = shape(sh1,1)
+            integer,optional,intent(in),depend(sh1),intent(hide) :: sh1_d2 = shape(sh1,2)
+            integer,optional,intent(in),depend(sh2),intent(hide) :: sh2_d0 = shape(sh2,0)
+            integer,optional,intent(in),depend(sh2),intent(hide) :: sh2_d1 = shape(sh2,1)
+            integer,optional,intent(in),depend(sh2),intent(hide) :: sh2_d2 = shape(sh2,2)
             integer,optional,intent(in),intent(hide) :: shout_d0 = 2
             integer,optional,intent(in),depend(lmax1,lmax2),intent(hide) :: shout_d1 = lmax1+lmax2+1
             integer,optional,intent(in),depend(lmax1,lmax2),intent(hide) :: shout_d2 = lmax1+lmax2+1
@@ -444,9 +444,9 @@ python module _SHTOOLS
             real*8,optional,intent(in) :: east = 360.0
             real*8,optional,intent(in) :: west = 0.0
             integer,optional,intent(in) :: dealloc = 0
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
             integer,optional,intent(in),depend(north,south,interval),intent(hide) :: grid_d0 = (north-south)/interval + 1
             integer,optional,intent(in),depend(east,west,interval),intent(hide) :: grid_d1 = (east-west)/interval + 1
         end subroutine MakeGrid2d
@@ -536,9 +536,9 @@ python module _SHTOOLS
             real*8,dimension(vector_d0),intent(out) :: vector
             integer,optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: vector_d0 = (lmax+1)*(lmax+1)
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
         end subroutine SHCilmToVector
 
         subroutine SHVectorToCilm(exitstatus,vector,cilm,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2)
@@ -547,7 +547,7 @@ python module _SHTOOLS
             real*8,dimension(vector_d0),intent(in) :: vector
             real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer optional,intent(in),depend(vector_d0) :: lmax = sqrt(vector_d0)-1
-            integer,optional,intent(in),check(len(vector)>=vector_d0),depend(vector),intent(hide) :: vector_d0 = len(vector)
+            integer,optional,intent(in),depend(vector),intent(hide) :: vector_d0 = len(vector)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: cilm_d1 = lmax+1
             integer,optional,intent(in),depend(lmax),intent(hide) :: cilm_d2 = lmax+1
@@ -572,8 +572,8 @@ python module _SHTOOLS
             real*8,dimension(cindex_d0,cindex_d1),intent(in) :: cindex
             real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer,optional,intent(in),depend(cindex_d1) :: degmax = (-3+sqrt(1+8*cindex_d1))/2
-            integer,optional,intent(in),check(shape(cindex,0)==cindex_d0),depend(cindex),intent(hide) :: cindex_d0 = shape(cindex,0)
-            integer,optional,intent(in),check(shape(cindex,1)==cindex_d1),depend(cindex),intent(hide) :: cindex_d1 = shape(cindex,1)
+            integer,optional,intent(in),depend(cindex),intent(hide) :: cindex_d0 = shape(cindex,0)
+            integer,optional,intent(in),depend(cindex),intent(hide) :: cindex_d1 = shape(cindex,1)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),depend(degmax),intent(hide),check(degmax>=0) :: cilm_d1 = degmax+1
             integer,optional,intent(in),depend(degmax),intent(hide) :: cilm_d2 = degmax+1
@@ -587,9 +587,9 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(rcilm_d1) :: degmax = rcilm_d1-1
             integer,optional,intent(in) :: convention = 1
             integer,optional,intent(in) :: switchcs = 0
-            integer,optional,intent(in),check(shape(rcilm,0)==rcilm_d0),depend(rcilm),intent(hide) :: rcilm_d0 = shape(rcilm,0)
-            integer,optional,intent(in),check(shape(rcilm,1)==rcilm_d1),depend(rcilm),intent(hide) :: rcilm_d1 = shape(rcilm,1)
-            integer,optional,intent(in),check(shape(rcilm,2)==rcilm_d2),depend(rcilm),intent(hide) :: rcilm_d2 = shape(rcilm,2)
+            integer,optional,intent(in),depend(rcilm),intent(hide) :: rcilm_d0 = shape(rcilm,0)
+            integer,optional,intent(in),depend(rcilm),intent(hide) :: rcilm_d1 = shape(rcilm,1)
+            integer,optional,intent(in),depend(rcilm),intent(hide) :: rcilm_d2 = shape(rcilm,2)
             integer,optional,intent(in),depend(rcilm_d0),intent(hide) :: ccilm_d0 = rcilm_d0
             integer,optional,intent(in),depend(rcilm_d1),intent(hide) :: ccilm_d1 = rcilm_d1
             integer,optional,intent(in),depend(rcilm_d2),intent(hide) :: ccilm_d2 = rcilm_d2
@@ -606,9 +606,9 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(ccilm_d0),intent(hide) :: rcilm_d0 = ccilm_d0
             integer,optional,intent(in),depend(ccilm_d1),intent(hide) :: rcilm_d1 = ccilm_d1
             integer,optional,intent(in),depend(ccilm_d2),intent(hide) :: rcilm_d2 = ccilm_d2
-            integer,optional,intent(in),check(shape(ccilm,0)==ccilm_d0),depend(ccilm),intent(hide) :: ccilm_d0 = shape(ccilm,0)
-            integer,optional,intent(in),check(shape(ccilm,1)==ccilm_d1),depend(ccilm),intent(hide) :: ccilm_d1 = shape(ccilm,1)
-            integer,optional,intent(in),check(shape(ccilm,2)==ccilm_d2),depend(ccilm),intent(hide) :: ccilm_d2 = shape(ccilm,2)
+            integer,optional,intent(in),depend(ccilm),intent(hide) :: ccilm_d0 = shape(ccilm,0)
+            integer,optional,intent(in),depend(ccilm),intent(hide) :: ccilm_d1 = shape(ccilm,1)
+            integer,optional,intent(in),depend(ccilm),intent(hide) :: ccilm_d2 = shape(ccilm,2)
         end subroutine SHctor
 
         subroutine djpi2(exitstatus,dj,lmax,dj_d0,dj_d1,dj_d2)
@@ -631,11 +631,11 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(cof_d1) :: lmax = (-3+sqrt(1+8*cof_d1))/2
             integer,optional,intent(in),intent(hide) :: rcof_d0 = 2
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: rcof_d1 = (lmax+1)*(lmax+2)/2
-            integer,optional,intent(in),check(shape(dj,0)==dj_d0),depend(dj),intent(hide) :: dj_d0 = shape(dj,0)
-            integer,optional,intent(in),check(shape(dj,1)==dj_d1),depend(dj),intent(hide) :: dj_d1 = shape(dj,1)
-            integer,optional,intent(in),check(shape(dj,2)==dj_d2),depend(dj),intent(hide) :: dj_d2 = shape(dj,2)
-            integer,optional,intent(in),check(shape(cof,0)==cof_d0),depend(cof),intent(hide) :: cof_d0 = shape(cof,0)
-            integer,optional,intent(in),check(shape(cof,1)==cof_d1),depend(cof),intent(hide) :: cof_d1 = shape(cof,1)
+            integer,optional,intent(in),depend(dj),intent(hide) :: dj_d0 = shape(dj,0)
+            integer,optional,intent(in),depend(dj),intent(hide) :: dj_d1 = shape(dj,1)
+            integer,optional,intent(in),depend(dj),intent(hide) :: dj_d2 = shape(dj,2)
+            integer,optional,intent(in),depend(cof),intent(hide) :: cof_d0 = shape(cof,0)
+            integer,optional,intent(in),depend(cof),intent(hide) :: cof_d1 = shape(cof,1)
         end subroutine SHRotateCoef
 
         subroutine SHRotateRealCoef(exitstatus,cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2,cilmrot_d0,cilmrot_d1,cilmrot_d2)
@@ -646,13 +646,13 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
             real*8,dimension(x_d0),intent(in) :: x
             real*8,dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
-            integer,optional,intent(in),check(len(x)>=x_d0),depend(x),intent(hide) :: x_d0 = len(x)
-            integer,optional,intent(in),check(shape(dj,0)==dj_d0),depend(dj),intent(hide) :: dj_d0 = shape(dj,0)
-            integer,optional,intent(in),check(shape(dj,1)==dj_d1),depend(dj),intent(hide) :: dj_d1 = shape(dj,1)
-            integer,optional,intent(in),check(shape(dj,2)==dj_d2),depend(dj),intent(hide) :: dj_d2 = shape(dj,2)
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(x),intent(hide) :: x_d0 = len(x)
+            integer,optional,intent(in),depend(dj),intent(hide) :: dj_d0 = shape(dj,0)
+            integer,optional,intent(in),depend(dj),intent(hide) :: dj_d1 = shape(dj,1)
+            integer,optional,intent(in),depend(dj),intent(hide) :: dj_d2 = shape(dj,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
             integer,optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d0 = 2
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: cilmrot_d1 = lmax+1
             integer,optional,intent(in),depend(lmax),intent(hide) :: cilmrot_d2 = lmax+1
@@ -667,12 +667,12 @@ python module _SHTOOLS
             real*8,dimension(admit_d0),intent(out) :: admit
             real*8,dimension(admit_error_d0),intent(out) :: admit_error
             real*8,dimension(corr_d0),intent(out) :: corr
-            integer,optional,intent(in),check(shape(G,0)==G_d0),depend(G),intent(hide) :: G_d0 = shape(G,0)
-            integer,optional,intent(in),check(shape(G,1)==G_d1),depend(G),intent(hide) :: G_d1 = shape(G,1)
-            integer,optional,intent(in),check(shape(G,2)==G_d2),depend(G),intent(hide) :: G_d2 = shape(G,2)
-            integer,optional,intent(in),check(shape(T,0)==T_d0),depend(T),intent(hide) :: T_d0 = shape(T,0)
-            integer,optional,intent(in),check(shape(T,1)==T_d1),depend(T),intent(hide) :: T_d1 = shape(T,1)
-            integer,optional,intent(in),check(shape(T,2)==T_d2),depend(T),intent(hide) :: T_d2 = shape(T,2)
+            integer,optional,intent(in),depend(G),intent(hide) :: G_d0 = shape(G,0)
+            integer,optional,intent(in),depend(G),intent(hide) :: G_d1 = shape(G,1)
+            integer,optional,intent(in),depend(G),intent(hide) :: G_d2 = shape(G,2)
+            integer,optional,intent(in),depend(T),intent(hide) :: T_d0 = shape(T,0)
+            integer,optional,intent(in),depend(T),intent(hide) :: T_d1 = shape(T,1)
+            integer,optional,intent(in),depend(T),intent(hide) :: T_d2 = shape(T,2)
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: admit_d0 = lmax+1
             integer,optional,intent(in),depend(lmax),intent(hide) :: admit_error_d0 = lmax+1
             integer,optional,intent(in),depend(lmax),intent(hide) :: corr_d0 = lmax+1
@@ -701,15 +701,15 @@ python module _SHTOOLS
             real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
-            integer,optional,intent(in),check(taper_order_d0>0),depend(taper_order),intent(hide) :: taper_order_d0 = len(taper_order)
-            integer,optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
-            integer,optional,intent(in),check(sh_d0>0),depend(sh),intent(hide) :: sh_d0 = shape(sh,0)
-            integer,optional,intent(in),check(sh_d1>0),depend(sh),intent(hide) :: sh_d1 = shape(sh,1)
-            integer,optional,intent(in),check(sh_d2>0),depend(sh),intent(hide) :: sh_d2 = shape(sh,2)
-            integer,optional,intent(in),check(tapers_d0>0),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
-            integer,optional,intent(in),check(tapers_d1>0),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
-            integer,optional,intent(in),check(mtse_d0>0),depend(lmax,lmaxt),intent(hide) :: mtse_d0 = lmax-lmaxt+1
-            integer,optional,intent(in),check(sd_d0>0),depend(lmax,lmaxt),intent(hide) :: sd_d0 = lmax-lmaxt+1
+            integer,optional,intent(in),depend(taper_order),intent(hide) :: taper_order_d0 = len(taper_order)
+            integer,optional,intent(in),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
+            integer,optional,intent(in),depend(sh),intent(hide) :: sh_d0 = shape(sh,0)
+            integer,optional,intent(in),depend(sh),intent(hide) :: sh_d1 = shape(sh,1)
+            integer,optional,intent(in),depend(sh),intent(hide) :: sh_d2 = shape(sh,2)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+            integer,optional,intent(in),depend(lmax,lmaxt),intent(hide) :: mtse_d0 = lmax-lmaxt+1
+            integer,optional,intent(in),depend(lmax,lmaxt),intent(hide) :: sd_d0 = lmax-lmaxt+1
         end subroutine SHMultiTaperSE
 
         subroutine SHMultiTaperCSE(exitstatus,mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,k,lat,lon,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_order_d0,taper_wt_d0,tapers_d0,tapers_d1,sd_d0,mtse_d0)
@@ -730,18 +730,18 @@ python module _SHTOOLS
             real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
-            integer,optional,intent(in),check(sh1_d0>0),depend(sh1),intent(hide) :: sh1_d0 = shape(sh1,0)
-            integer,optional,intent(in),check(sh1_d1>0),depend(sh1),intent(hide) :: sh1_d1 = shape(sh1,1)
-            integer,optional,intent(in),check(sh1_d2>0),depend(sh1),intent(hide) :: sh1_d2 = shape(sh1,2)
-            integer,optional,intent(in),check(sh2_d0>0),depend(sh2),intent(hide) :: sh2_d0 = shape(sh2,0)
-            integer,optional,intent(in),check(sh2_d1>0),depend(sh2),intent(hide) :: sh2_d1 = shape(sh2,1)
-            integer,optional,intent(in),check(sh2_d2>0),depend(sh2),intent(hide) :: sh2_d2 = shape(sh2,2)
-            integer,optional,intent(in),check(taper_order_d0>0),depend(taper_order),intent(hide) :: taper_order_d0 = len(taper_order)
-            integer,optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
-            integer,optional,intent(in),check(tapers_d0>0),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
-            integer,optional,intent(in),check(tapers_d1>0),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
-            integer,optional,intent(in),check(sd_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: sd_d0 = min(lmax1,lmax2)-lmaxt+1
-            integer,optional,intent(in),check(mtse_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
+            integer,optional,intent(in),depend(sh1),intent(hide) :: sh1_d0 = shape(sh1,0)
+            integer,optional,intent(in),depend(sh1),intent(hide) :: sh1_d1 = shape(sh1,1)
+            integer,optional,intent(in),depend(sh1),intent(hide) :: sh1_d2 = shape(sh1,2)
+            integer,optional,intent(in),depend(sh2),intent(hide) :: sh2_d0 = shape(sh2,0)
+            integer,optional,intent(in),depend(sh2),intent(hide) :: sh2_d1 = shape(sh2,1)
+            integer,optional,intent(in),depend(sh2),intent(hide) :: sh2_d2 = shape(sh2,2)
+            integer,optional,intent(in),depend(taper_order),intent(hide) :: taper_order_d0 = len(taper_order)
+            integer,optional,intent(in),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+            integer,optional,intent(in),depend(lmax1,lmax2,lmaxt),intent(hide) :: sd_d0 = min(lmax1,lmax2)-lmaxt+1
+            integer,optional,intent(in),depend(lmax1,lmax2,lmaxt),intent(hide) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
         end subroutine SHMultiTaperCSE
 
         subroutine SHLocalizedAdmitCorr(exitstatus,g,t,tapers,taper_order,k,lat,lon,lwin,lmax,admit,corr,admit_error,corr_error,taper_wt,mtdef,k1linsig,taper_order_d0,g_d0,g_d1,g_d2,taper_wt_d0,corr_error_d0,admit_d0,admit_error_d0,corr_d0,tapers_d0,tapers_d1,t_d0,t_d1,t_d2)
@@ -763,16 +763,16 @@ python module _SHTOOLS
             real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
             integer,optional,intent(in) :: mtdef = 1
             integer,optional,intent(in) :: k1linsig = -1
-            integer,optional,intent(in),check(tapers_d0>0),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
-            integer,optional,intent(in),check(tapers_d1>0),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
-            integer,optional,intent(in),check(taper_order_d0>0),depend(taper_order),intent(hide) :: taper_order_d0 = len(taper_order)
-            integer,optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
-            integer,optional,intent(in),check(g_d0>0),depend(g),intent(hide) :: g_d0 = shape(g,0)
-            integer,optional,intent(in),check(g_d1>0),depend(g),intent(hide) :: g_d1 = shape(g,1)
-            integer,optional,intent(in),check(g_d2>0),depend(g),intent(hide) :: g_d2 = shape(g,2)
-            integer,optional,intent(in),check(t_d0>0),depend(t),intent(hide) :: t_d0 = shape(t,0)
-            integer,optional,intent(in),check(t_d1>0),depend(t),intent(hide) :: t_d1 = shape(t,1)
-            integer,optional,intent(in),check(t_d2>0),depend(t),intent(hide) :: t_d2 = shape(t,2)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+            integer,optional,intent(in),depend(taper_order),intent(hide) :: taper_order_d0 = len(taper_order)
+            integer,optional,intent(in),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
+            integer,optional,intent(in),depend(g),intent(hide) :: g_d0 = shape(g,0)
+            integer,optional,intent(in),depend(g),intent(hide) :: g_d1 = shape(g,1)
+            integer,optional,intent(in),depend(g),intent(hide) :: g_d2 = shape(g,2)
+            integer,optional,intent(in),depend(t),intent(hide) :: t_d0 = shape(t,0)
+            integer,optional,intent(in),depend(t),intent(hide) :: t_d1 = shape(t,1)
+            integer,optional,intent(in),depend(t),intent(hide) :: t_d2 = shape(t,2)
             integer,optional,intent(in),depend(lmax,lwin),intent(hide) :: corr_error_d0 = lmax-lwin+1
             integer,optional,intent(in),depend(lmax,lwin),intent(hide) :: admit_d0 = lmax-lwin+1
             integer,optional,intent(in),depend(lmax,lwin),intent(hide) :: admit_error_d0 = lmax-lwin+1
@@ -848,10 +848,10 @@ python module _SHTOOLS
             real*8,dimension(outcspectra_d0),intent(out) :: outcspectra
             real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
             integer,optional,intent(in) :: save_cg = 0
-            integer,optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
-            integer,optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
-            integer,optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
-            integer,optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra),intent(hide) :: incspectra_d0 = len(incspectra)
+            integer,optional,intent(in),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+            integer,optional,intent(in),depend(incspectra),intent(hide) :: incspectra_d0 = len(incspectra)
             integer,optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin+1
         end subroutine SHBiasK
 
@@ -931,14 +931,14 @@ python module _SHTOOLS
             real*8,dimension(var_unit_d0),intent(out) :: var_unit
             real*8,dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
             integer,optional,intent(in) :: nocross = 0
-            integer,optional,intent(in),check(len(taper_order)>=taper_order_d0),depend(kmax),intent(hide) :: taper_order_d0 = kmax
+            integer,optional,intent(in),depend(kmax),intent(hide) :: taper_order_d0 = kmax
             integer,intent(in),depend(kmax),intent(hide) :: weight_opt_d0 = kmax
             integer,intent(in),depend(kmax),intent(hide) :: weight_opt_d1 = kmax
             integer,intent(in),depend(kmax),intent(hide) :: var_unit_d0 = kmax
             integer,intent(in),depend(kmax),intent(hide) :: var_opt_d0 = kmax
-            integer,optional,intent(in),check(len(Sff)>=Sff_d0),depend(Sff),intent(hide) :: Sff_d0 = len(Sff)
-            integer,optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
-            integer,optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+            integer,optional,intent(in),depend(Sff),intent(hide) :: Sff_d0 = len(Sff)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
         end subroutine SHMTVarOpt
 
         function SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,hk_real_d0,incspectra_d0,hj_real_d0)
@@ -953,9 +953,9 @@ python module _SHTOOLS
             integer,intent(in) :: mk
             integer,intent(in) :: lwin
             integer,intent(in) :: hkcc
-            integer,optional,intent(in),check(len(hk_real)>=hk_real_d0),depend(hk_real),intent(hide) :: hk_real_d0 = len(hk_real)
-            integer,optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra),intent(hide) :: incspectra_d0 = len(incspectra)
-            integer,optional,intent(in),check(len(hj_real)>=hj_real_d0),depend(hj_real),intent(hide) :: hj_real_d0 = len(hj_real)
+            integer,optional,intent(in),depend(hk_real),intent(hide) :: hk_real_d0 = len(hk_real)
+            integer,optional,intent(in),depend(incspectra),intent(hide) :: incspectra_d0 = len(incspectra)
+            integer,optional,intent(in),depend(hj_real),intent(hide) :: hj_real_d0 = len(hj_real)
             complex*16 :: SHSjkPG
         end function SHSjkPG
 
@@ -969,8 +969,8 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(dh_mask_d1,dh_mask_d0) :: sampling = dh_mask_d1/dh_mask_d0
             integer,intent(in) :: lmax
             integer,optional,intent(in),depend(lmax) :: ntapers = (lmax+1)*(lmax+1)
-            integer,optional,intent(in),check(shape(dh_mask,0)==dh_mask_d0),depend(dh_mask),intent(hide) :: dh_mask_d0 = shape(dh_mask,0)
-            integer,optional,intent(in),check(shape(dh_mask,1)==dh_mask_d1),depend(dh_mask),intent(hide) :: dh_mask_d1 = shape(dh_mask,1)
+            integer,optional,intent(in),depend(dh_mask),intent(hide) :: dh_mask_d0 = shape(dh_mask,0)
+            integer,optional,intent(in),depend(dh_mask),intent(hide) :: dh_mask_d1 = shape(dh_mask,1)
             integer,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: tapers_d0 = (lmax+1)*(lmax+1)
             integer,intent(in),depend(ntapers),intent(hide) :: tapers_d1 = ntapers
             integer,intent(in),depend(ntapers),intent(hide) :: eigenvalues_d0 = ntapers
@@ -987,10 +987,10 @@ python module _SHTOOLS
             real*8,dimension(outcspectra_d0),intent(out) :: outcspectra
             real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
             integer,optional,intent(in) :: save_cg = 0
-            integer,optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
-            integer,optional,intent(in),check(shape(tapers,0)==tapers_d0),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
-            integer,optional,intent(in),check(shape(tapers,1)==tapers_d1),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
-            integer,optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra),intent(hide) :: incspectra_d0 = len(incspectra)
+            integer,optional,intent(in),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+            integer,optional,intent(in),depend(incspectra),intent(hide) :: incspectra_d0 = len(incspectra)
             integer,optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin+1
         end subroutine SHBiasKMask
 
@@ -1007,14 +1007,14 @@ python module _SHTOOLS
             real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
-            integer,optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
-            integer,optional,intent(in),check(sh_d0>0),depend(sh),intent(hide) :: sh_d0 = shape(sh,0)
-            integer,optional,intent(in),check(sh_d1>0),depend(sh),intent(hide) :: sh_d1 = shape(sh,1)
-            integer,optional,intent(in),check(sh_d2>0),depend(sh),intent(hide) :: sh_d2 = shape(sh,2)
-            integer,optional,intent(in),check(tapers_d0>0),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
-            integer,optional,intent(in),check(tapers_d1>0),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
-            integer,optional,intent(in),check(mtse_d0>0),depend(lmax,lmaxt),intent(hide) :: mtse_d0 = lmax-lmaxt+1
-            integer,optional,intent(in),check(sd_d0>0),depend(lmax,lmaxt),intent(hide) :: sd_d0 = lmax-lmaxt+1
+            integer,optional,intent(in),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
+            integer,optional,intent(in),depend(sh),intent(hide) :: sh_d0 = shape(sh,0)
+            integer,optional,intent(in),depend(sh),intent(hide) :: sh_d1 = shape(sh,1)
+            integer,optional,intent(in),depend(sh),intent(hide) :: sh_d2 = shape(sh,2)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+            integer,optional,intent(in),depend(lmax,lmaxt),intent(hide) :: mtse_d0 = lmax-lmaxt+1
+            integer,optional,intent(in),depend(lmax,lmaxt),intent(hide) :: sd_d0 = lmax-lmaxt+1
         end subroutine SHMultiTaperMaskSE
 
         subroutine SHMultiTaperMaskCSE(exitstatus,mtse,sd,sh1,lmax1,sh2,lmax2,tapers,lmaxt,k,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_wt_d0,tapers_d0,tapers_d1,sd_d0,mtse_d0)
@@ -1032,17 +1032,17 @@ python module _SHTOOLS
             real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1.0
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
-            integer,optional,intent(in),check(sh1_d0>0),depend(sh1),intent(hide) :: sh1_d0 = shape(sh1,0)
-            integer,optional,intent(in),check(sh1_d1>0),depend(sh1),intent(hide) :: sh1_d1 = shape(sh1,1)
-            integer,optional,intent(in),check(sh1_d2>0),depend(sh1),intent(hide) :: sh1_d2 = shape(sh1,2)
-            integer,optional,intent(in),check(sh2_d0>0),depend(sh2),intent(hide) :: sh2_d0 = shape(sh2,0)
-            integer,optional,intent(in),check(sh2_d1>0),depend(sh2),intent(hide) :: sh2_d1 = shape(sh2,1)
-            integer,optional,intent(in),check(sh2_d2>0),depend(sh2),intent(hide) :: sh2_d2 = shape(sh2,2)
-            integer,optional,intent(in),check(taper_wt_d0>0),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
-            integer,optional,intent(in),check(tapers_d0>0),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
-            integer,optional,intent(in),check(tapers_d1>0),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
-            integer,optional,intent(in),check(sd_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: sd_d0 = min(lmax1,lmax2)-lmaxt+1
-            integer,optional,intent(in),check(mtse_d0>0),depend(lmax1,lmax2,lmaxt),intent(hide) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
+            integer,optional,intent(in),depend(sh1),intent(hide) :: sh1_d0 = shape(sh1,0)
+            integer,optional,intent(in),depend(sh1),intent(hide) :: sh1_d1 = shape(sh1,1)
+            integer,optional,intent(in),depend(sh1),intent(hide) :: sh1_d2 = shape(sh1,2)
+            integer,optional,intent(in),depend(sh2),intent(hide) :: sh2_d0 = shape(sh2,0)
+            integer,optional,intent(in),depend(sh2),intent(hide) :: sh2_d1 = shape(sh2,1)
+            integer,optional,intent(in),depend(sh2),intent(hide) :: sh2_d2 = shape(sh2,2)
+            integer,optional,intent(in),depend(tapers_d1),intent(hide) :: taper_wt_d0 = tapers_d1
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+            integer,optional,intent(in),depend(lmax1,lmax2,lmaxt),intent(hide) :: sd_d0 = min(lmax1,lmax2)-lmaxt+1
+            integer,optional,intent(in),depend(lmax1,lmax2,lmaxt),intent(hide) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
         end subroutine SHMultiTaperMaskCSE
 
         subroutine ComputeDMap(exitstatus,Dij,dh_mask,n_dh,lmax,sampling,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1)
@@ -1053,8 +1053,8 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(dh_mask_d0) :: n_dh = dh_mask_d0
             integer,optional,intent(in),depend(dh_mask_d0,dh_mask_d1):: sampling = dh_mask_d1/dh_mask_d0
             integer,intent(in) :: lmax
-            integer,optional,intent(in),check(shape(dh_mask,0)==dh_mask_d0),depend(dh_mask),intent(hide) :: dh_mask_d0 = shape(dh_mask,0)
-            integer,optional,intent(in),check(shape(dh_mask,1)==dh_mask_d1),depend(dh_mask),intent(hide) :: dh_mask_d1 = shape(dh_mask,1)
+            integer,optional,intent(in),depend(dh_mask),intent(hide) :: dh_mask_d0 = shape(dh_mask,0)
+            integer,optional,intent(in),depend(dh_mask),intent(hide) :: dh_mask_d1 = shape(dh_mask,1)
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: Dij_d0 = (lmax+1)*(lmax+1)
             integer,optional,intent(in),depend(lmax),intent(hide) :: Dij_d1 = (lmax+1)*(lmax+1)
         end subroutine ComputeDMap
@@ -1069,8 +1069,8 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(profile_d0) :: nprofile = profile_d0
             integer,intent(in):: NP
             integer,optional,intent(in) :: centralmeridian = 0
-            integer,optional,intent(in),check(shape(profile,0)==profile_d0),depend(profile),intent(hide) :: profile_d0 = shape(profile,0)
-            integer,optional,intent(in),check(shape(profile,1)==profile_d1),depend(profile),intent(hide) :: profile_d1 = shape(profile,1)
+            integer,optional,intent(in),depend(profile),intent(hide) :: profile_d0 = shape(profile,0)
+            integer,optional,intent(in),depend(profile),intent(hide) :: profile_d1 = shape(profile,1)
             integer,optional,intent(in),depend(n),intent(hide) :: dhgrid_d0 = n
             integer,optional,intent(in),depend(n,sampling),intent(hide) :: dhgrid_d1 = n*sampling
         end subroutine Curve2Mask
@@ -1084,8 +1084,8 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(incspectra_d0) :: ldata = incspectra_d0-1
             real*8,dimension(outcspectra_d0),intent(out) :: outcspectra
             integer,optional,intent(in) :: save_cg = 0
-            integer,optional,intent(in),check(Shh_d0>0),depend(Shh),intent(hide) :: Shh_d0 = len(Shh)
-            integer,optional,intent(in),check(len(incspectra)>=incspectra_d0),depend(incspectra),intent(hide) :: incspectra_d0 = len(incspectra)
+            integer,optional,intent(in),depend(Shh),intent(hide) :: Shh_d0 = len(Shh)
+            integer,optional,intent(in),depend(incspectra),intent(hide) :: incspectra_d0 = len(incspectra)
             integer,optional,intent(in),depend(ldata,lwin),intent(hide) :: outcspectra_d0 = ldata+lwin+1
         end subroutine SHBias
 
@@ -1123,9 +1123,9 @@ python module _SHTOOLS
             integer,intent(in),intent(hide),depend(phi_d1) :: total_d1 = phi_d1
             integer,intent(in),intent(hide),depend(phi_d0) :: rad_d0 = phi_d0
             integer,intent(in),intent(hide),depend(phi_d1) :: rad_d1 = phi_d1
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
             integer,intent(in),intent(hide),depend(phi_d0) :: theta_d0 = phi_d0
             integer,intent(in),intent(hide),depend(phi_d1) :: theta_d1 = phi_d1
             integer,intent(in),intent(hide),depend(phi_d0) :: pot_d0 = phi_d0
@@ -1154,9 +1154,9 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(vyz_d0,sampling),intent(hide) :: vyz_d1 = sampling*vyz_d0
             integer,optional,intent(in),depend(lmax),intent(hide) :: vyy_d0 = 2*(lmax+1)
             integer,optional,intent(in),depend(vyy_d0,sampling),intent(hide) :: vyy_d1 = sampling*vyy_d0
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
             integer,optional,intent(in),depend(lmax),intent(hide) :: vzz_d0 = 2*(lmax+1)
             integer,optional,intent(in),depend(vzz_d0,sampling),intent(hide) :: vzz_d1 = sampling*vzz_d0
             integer,optional,intent(in),depend(lmax),intent(hide) :: vxy_d0 = 2*(lmax+1)
@@ -1188,9 +1188,9 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(vyz_d0,sampling),intent(hide) :: vyz_d1 = sampling*vyz_d0
             integer,optional,intent(in),depend(lmax),intent(hide) :: vyy_d0 = 2*(lmax+1)
             integer,optional,intent(in),depend(vyy_d0,sampling),intent(hide) :: vyy_d1 = sampling*vyy_d0
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 =shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 =shape(cilm,2)
             integer,optional,intent(in),depend(lmax),intent(hide) :: vzz_d0 = 2*(lmax+1)
             integer,optional,intent(in),depend(vzz_d0,sampling),intent(hide) :: vzz_d1 = sampling*vzz_d0
             integer,optional,intent(in),depend(lmax),intent(hide) :: vxy_d0 = 2*(lmax+1)
@@ -1219,9 +1219,9 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
             real*8,optional,intent(in) :: a = r
             real*8,optional,intent(in) :: f = 0.0
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
             integer optional,intent(in),intent(hide),depend(lmax),check(lmax>=0) :: geoid_d0 = 2*(lmax+1)
             integer optional,intent(in),intent(hide),depend(geoid_d0) :: geoid_d1 = sampling*geoid_d0
         end subroutine MakeGeoidGridDH
@@ -1238,8 +1238,8 @@ python module _SHTOOLS
             real*8,intent(in) :: rho
             integer optional,depend(gridin_d0,gridin_d1),intent(in) :: sampling = gridin_d1/gridin_d0
             integer,optional,intent(in),depend(gridin_d0),intent(hide) :: n = gridin_d0
-            integer,optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0 = shape(gridin,0)
-            integer,optional,intent(in),check(shape(gridin,1)==gridin_d1),depend(gridin) :: gridin_d1 = shape(gridin,1)
+            integer,optional,intent(in),depend(gridin) :: gridin_d0 = shape(gridin,0)
+            integer,optional,intent(in),depend(gridin) :: gridin_d1 = shape(gridin,1)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),intent(hide),depend(lmax),check(lmax>=0) :: cilm_d1 = lmax+1
             integer,optional,intent(in),intent(hide),depend(lmax) :: cilm_d2 = lmax+1
@@ -1257,8 +1257,8 @@ python module _SHTOOLS
             real*8,intent(in) :: rho
             integer depend(gridin_d0,gridin_d1),intent(hide) :: sampling = gridin_d1/gridin_d0
             integer,optional,intent(in),depend(gridin_d0) :: n = gridin_d0
-            integer,optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0 = shape(gridin,0)
-            integer,optional,intent(in),check(shape(gridin,1)==gridin_d1),depend(gridin) :: gridin_d1 = shape(gridin,1)
+            integer,optional,intent(in),depend(gridin) :: gridin_d0 = shape(gridin,0)
+            integer,optional,intent(in),depend(gridin) :: gridin_d1 = shape(gridin,1)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),intent(hide),depend(lmax),check(lmax>=0) :: cilm_d1 = lmax+1
             integer,optional,intent(in),intent(hide),depend(lmax) :: cilm_d2 = lmax+1
@@ -1276,13 +1276,13 @@ python module _SHTOOLS
             real*8,dimension(rho_d0,rho_d1),intent(in) :: rho
             integer,optional,depend(gridin_d0,gridin_d1) :: sampling = gridin_d1/gridin_d0
             integer,optional,intent(in),depend(gridin_d0):: n = gridin_d0
-            integer,optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0 = shape(gridin,0)
-            integer,optional,intent(in),check(shape(gridin,1)==gridin_d1),depend(gridin) :: gridin_d1 = shape(gridin,1)
+            integer,optional,intent(in),depend(gridin) :: gridin_d0 = shape(gridin,0)
+            integer,optional,intent(in),depend(gridin) :: gridin_d1 = shape(gridin,1)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),intent(hide),depend(lmax),check(lmax>=0) :: cilm_d1 = lmax+1
             integer,optional,intent(in),intent(hide),depend(lmax) :: cilm_d2 = lmax+1
-            integer,optional,intent(in),check(shape(rho,0)==rho_d0),depend(rho) :: rho_d0 = shape(rho,0)
-            integer,optional,intent(in),check(shape(rho,1)==rho_d1),depend(rho) :: rho_d1 = shape(rho,1)
+            integer,optional,intent(in),depend(rho) :: rho_d0 = shape(rho,0)
+            integer,optional,intent(in),depend(rho) :: rho_d1 = shape(rho,1)
         end subroutine CilmPlusRhoHDH
 
         subroutine CilmMinusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
@@ -1297,13 +1297,13 @@ python module _SHTOOLS
             real*8,dimension(rho_d0,rho_d1),intent(in) :: rho
             integer optional,depend(gridin_d0,gridin_d1) :: sampling = gridin_d1/gridin_d0
             integer,optional,intent(in),depend(gridin_d0) :: n = gridin_d0
-            integer,optional,intent(in),check(shape(gridin,0)==gridin_d0),depend(gridin) :: gridin_d0 = shape(gridin,0)
-            integer,optional,intent(in),check(shape(gridin,1)==gridin_d1),depend(gridin) :: gridin_d1 = shape(gridin,1)
+            integer,optional,intent(in),depend(gridin) :: gridin_d0 = shape(gridin,0)
+            integer,optional,intent(in),depend(gridin) :: gridin_d1 = shape(gridin,1)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),intent(hide),depend(lmax),check(lmax>=0) :: cilm_d1 = lmax+1
             integer,optional,intent(in),intent(hide),depend(lmax) :: cilm_d2 = lmax+1
-            integer,optional,intent(in),check(shape(rho,0)==rho_d0),depend(rho) :: rho_d0 = shape(rho,0)
-            integer,optional,intent(in),check(shape(rho,1)==rho_d1),depend(rho) :: rho_d1 = shape(rho,1)
+            integer,optional,intent(in),depend(rho) :: rho_d0 = shape(rho,0)
+            integer,optional,intent(in),depend(rho) :: rho_d1 = shape(rho,1)
         end subroutine CilmMinusRhoHDH
 
         subroutine BAtoHilmDH(exitstatus,cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2)
@@ -1321,11 +1321,11 @@ python module _SHTOOLS
             integer,optional,intent(in) :: filter_type = 0
             integer,optional,intent(in) :: filter_deg = 0
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
-            integer,optional,intent(in),check(shape(ba,0)==ba_d0),depend(ba) :: ba_d0 = shape(ba,0)
-            integer,optional,intent(in),check(shape(ba,1)==ba_d1),depend(ba) :: ba_d1 = shape(ba,1)
-            integer,optional,intent(in),check(shape(ba,2)==ba_d2),depend(ba) :: ba_d2 = shape(ba,2)
-            integer,optional,intent(in),check(shape(griddh,0)==griddh_d0),depend(griddh) :: griddh_d0 = shape(griddh,0)
-            integer,optional,intent(in),check(shape(griddh,1)==griddh_d1),depend(griddh) :: griddh_d1 = shape(griddh,1)
+            integer,optional,intent(in),depend(ba) :: ba_d0 = shape(ba,0)
+            integer,optional,intent(in),depend(ba) :: ba_d1 = shape(ba,1)
+            integer,optional,intent(in),depend(ba) :: ba_d2 = shape(ba,2)
+            integer,optional,intent(in),depend(griddh) :: griddh_d0 = shape(griddh,0)
+            integer,optional,intent(in),depend(griddh) :: griddh_d1 = shape(griddh,1)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),intent(hide),depend(lmax_calc),check(lmax_calc>=0) :: cilm_d1 = lmax_calc+1
             integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d2 = lmax_calc+1
@@ -1346,16 +1346,16 @@ python module _SHTOOLS
             integer,optional,intent(in) :: filter_type = 0
             integer,optional,intent(in) :: filter_deg = 0
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
-            integer,optional,intent(in),check(shape(ba,0)==ba_d0),depend(ba) :: ba_d0 = shape(ba,0)
-            integer,optional,intent(in),check(shape(ba,1)==ba_d1),depend(ba) :: ba_d1 = shape(ba,1)
-            integer,optional,intent(in),check(shape(ba,2)==ba_d2),depend(ba) :: ba_d2 = shape(ba,2)
-            integer,optional,intent(in),check(shape(griddh,0)==griddh_d0),depend(griddh) :: griddh_d0 = shape(griddh,0)
-            integer,optional,intent(in),check(shape(griddh,1)==griddh_d1),depend(griddh) :: griddh_d1 = shape(griddh,1)
+            integer,optional,intent(in),depend(ba) :: ba_d0 = shape(ba,0)
+            integer,optional,intent(in),depend(ba) :: ba_d1 = shape(ba,1)
+            integer,optional,intent(in),depend(ba) :: ba_d2 = shape(ba,2)
+            integer,optional,intent(in),depend(griddh) :: griddh_d0 = shape(griddh,0)
+            integer,optional,intent(in),depend(griddh) :: griddh_d1 = shape(griddh,1)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),intent(hide),depend(lmax_calc),check(lmax_calc>=0) :: cilm_d1 = lmax_calc+1
             integer,optional,intent(in),intent(hide),depend(lmax_calc) :: cilm_d2 = lmax_calc+1
-            integer,optional,intent(in),check(shape(rho,0)==rho_d0),depend(rho) :: rho_d0 = shape(rho,0)
-            integer,optional,intent(in),check(shape(rho,1)==rho_d1),depend(rho) :: rho_d1 = shape(rho,1)
+            integer,optional,intent(in),depend(rho) :: rho_d0 = shape(rho,0)
+            integer,optional,intent(in),depend(rho) :: rho_d1 = shape(rho,1)
         end subroutine BAtoHilmRhoHDH
 
         function DownContFilterMA(l,half,r,d)
@@ -1404,9 +1404,9 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: total_d0 = 2*(lmax+1)
             integer,optional,intent(in),depend(total_d0,sampling) :: total_d1 = total_d0*sampling
-            integer,optional,intent(in),check(shape(cilm,0)==cilm_d0),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
-            integer,optional,intent(in),check(shape(cilm,1)==cilm_d1),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
-            integer,optional,intent(in),check(shape(cilm,2)==cilm_d2),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
             integer,optional,intent(in),intent(hide),depend(total_d0) :: rad_d0 = total_d0
             integer,optional,intent(in),intent(hide),depend(total_d1) :: rad_d1 = total_d1
             integer,optional,intent(in),intent(hide),depend(total_d0) :: theta_d0 = total_d0
@@ -1464,7 +1464,7 @@ python module _SHTOOLS
             integer,intent(out) :: exitstatus
             integer,intent(in) :: n
             real*8,dimension(aj_d0),intent(out) :: aj
-            integer,optional,intent(in),depend(n),check(n%2==0),intent(hide) :: aj_d0 = n
+            integer,optional,intent(in),depend(n),intent(hide) :: aj_d0 = n
         end subroutine DHaj
 
         subroutine SHRotateTapers(exitstatus,tapersrot,tapers,taper_order,lmax,nrot,x,dj,tapersrot_d0,tapersrot_d1,tapers_d0,tapers_d1,taper_order_d0,dj_d0,dj_d1,dj_d2)
