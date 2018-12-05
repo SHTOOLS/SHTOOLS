@@ -5,8 +5,8 @@
         real*8,dimension(p_d0),intent(out) :: p
         integer,intent(in) :: lmax
         real*8,intent(in) :: z
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: cnorm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: cnorm
         integer,intent(in) :: p_d0
         call PlmBar(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine pyPlmBar
@@ -19,8 +19,8 @@
         real*8,dimension(dp_d0),intent(out) :: dp
         integer,intent(in) :: lmax
         real*8,intent(in) :: z
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: cnorm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: cnorm
         integer,intent(in) :: p_d0
         integer,intent(in) :: dp_d0
         call PlmBar_d1(p,dp,lmax,z,csphase=csphase,cnorm=cnorm,&
@@ -58,8 +58,8 @@
         real*8,dimension(p_d0),intent(out) :: p
         integer,intent(in) :: lmax
         real*8,intent(in) :: z
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: cnorm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: cnorm
         integer,intent(in) :: p_d0
         call PlmON(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine pyPlmON
@@ -72,8 +72,8 @@
         real*8,dimension(dp_d0),intent(out) :: dp
         integer,intent(in) :: lmax
         real*8,intent(in) :: z
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: cnorm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: cnorm
         integer,intent(in) :: p_d0
         integer,intent(in) :: dp_d0
         call PlmON_d1(p,dp,lmax,z,csphase=csphase,cnorm=cnorm,&
@@ -111,8 +111,8 @@
         real*8,dimension(p_d0),intent(out) :: p
         integer,intent(in) :: lmax
         real*8,intent(in) :: z
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: cnorm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: cnorm
         integer,intent(in) :: p_d0
         call PlmSchmidt(p,lmax,z,csphase=csphase,cnorm=cnorm,&
                         exitstatus=exitstatus)
@@ -126,8 +126,8 @@
         real*8,dimension(dp_d0),intent(out) :: dp
         integer,intent(in) :: lmax
         real*8,intent(in) :: z
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: cnorm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: cnorm
         integer,intent(in) :: p_d0
         integer,intent(in) :: dp_d0
         call PlmSchmidt_d1(p,dp,lmax,z,csphase=csphase,cnorm=cnorm,&
@@ -165,7 +165,7 @@
         real*8,dimension(p_d0),intent(out) :: p
         integer,intent(in) :: lmax
         real*8,intent(in) :: z
-        integer,optional,intent(in) :: csphase
+        integer,intent(in) :: csphase
         integer,intent(in) :: p_d0
         call PLegendreA(p,lmax,z,csphase=csphase,exitstatus=exitstatus)
     end subroutine pyPLegendreA
@@ -178,7 +178,7 @@
         real*8,dimension(dp_d0),intent(out) :: dp
         integer,intent(in) :: lmax
         real*8,intent(in) :: z
-        integer,optional,intent(in) :: csphase
+        integer,intent(in) :: csphase
         integer,intent(in) :: p_d0
         integer,intent(in) :: dp_d0
         call PLegendreA_d1(p,dp,lmax,z,csphase=csphase,exitstatus=exitstatus)
@@ -217,10 +217,10 @@
         integer,intent(in) :: n
         real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         integer,intent(out) :: lmax
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: sampling
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: lmax_calc
+        integer,intent(in) :: norm
+        integer,intent(in) :: sampling
+        integer,intent(in) :: csphase
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -241,10 +241,10 @@
         integer,intent(out) :: n
         real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer,intent(in) :: lmax
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: sampling
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: lmax_calc
+        integer,intent(in) :: norm
+        integer,intent(in) :: sampling
+        integer,intent(in) :: csphase
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -265,10 +265,10 @@
         integer,intent(in) :: n
         complex*16,dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         integer,intent(out) :: lmax
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: sampling
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: lmax_calc
+        integer,intent(in) :: norm
+        integer,intent(in) :: sampling
+        integer,intent(in) :: csphase
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -289,10 +289,10 @@
         integer,intent(out) :: n
         complex*16,dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer,intent(in) :: lmax
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: sampling
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: lmax_calc
+        integer,intent(in) :: norm
+        integer,intent(in) :: sampling
+        integer,intent(in) :: csphase
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -325,10 +325,10 @@
         integer,intent(in) :: lmax
         real*8,dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
         real*8,dimension(w_d0),intent(in) :: w
-        real*8,optional,dimension(zero_d0),intent(in) :: zero
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: lmax_calc
+        real*8,dimension(zero_d0),intent(in) :: zero
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -350,10 +350,10 @@
         real*8,dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
         real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer,intent(in) :: lmax
-        real*8,optional,dimension(zero_d0),intent(in) :: zero
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: lmax_calc
+        real*8,dimension(zero_d0),intent(in) :: zero
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: gridglq_d0
         integer,intent(in) :: gridglq_d1
         integer,intent(in) :: cilm_d0
@@ -375,10 +375,10 @@
         integer,intent(in) :: lmax
         complex*16,dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
         real*8,dimension(w_d0),intent(in) :: w
-        real*8,optional,dimension(zero_d0),intent(in) :: zero
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: lmax_calc
+        real*8,dimension(zero_d0),intent(in) :: zero
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -400,10 +400,10 @@
         complex*16,dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
         complex*16,dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         integer,intent(in) :: lmax
-        real*8,optional,dimension(zero_d0),intent(in) :: zero
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: lmax_calc
+        real*8,dimension(zero_d0),intent(in) :: zero
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: gridglq_d0
         integer,intent(in) :: gridglq_d1
         integer,intent(in) :: cilm_d0
@@ -442,9 +442,9 @@
         real*8,dimension(lon_d0),intent(in) :: lon
         integer,intent(in) :: nmax
         integer,intent(in) :: lmax
-        integer,optional,intent(in) :: norm
-        real*8,optional,intent(out) :: chi2
-        integer,optional,intent(in) :: csphase
+        integer,intent(in) :: norm
+        real*8,intent(out) :: chi2
+        integer,intent(in) :: csphase
         integer,intent(in) :: d_d0
         integer,intent(in) :: lon_d0
         integer,intent(in) :: cilm_d0
@@ -467,15 +467,15 @@
         real*8,intent(in) :: interval
         integer,intent(out) :: nlat
         integer,intent(out) :: nlong
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
-        real*8,optional,intent(in) :: f
-        real*8,optional,intent(in) :: a
-        real*8,optional,intent(in) :: north
-        real*8,optional,intent(in) :: south
-        real*8,optional,intent(in) :: east
-        real*8,optional,intent(in) :: west
-        integer,optional,intent(in) :: dealloc
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
+        real*8,intent(in) :: f
+        real*8,intent(in) :: a
+        real*8,intent(in) :: north
+        real*8,intent(in) :: south
+        real*8,intent(in) :: east
+        real*8,intent(in) :: west
+        integer,intent(in) :: dealloc
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -501,9 +501,9 @@
         integer,intent(in) :: lmax
         real*8,intent(in) :: lat
         real*8,intent(in) :: lon
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: dealloc
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: dealloc
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -520,9 +520,9 @@
         integer,intent(in) :: lmax
         real*8,intent(in) :: lat
         real*8,intent(in) :: lon
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
-        integer,optional,intent(in) :: dealloc
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
+        integer,intent(in) :: dealloc
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -542,9 +542,9 @@
         integer,intent(in) :: lmax1
         real*8,dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
         integer,intent(in) :: lmax2
-        integer,optional,intent(in) :: precomp
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
+        integer,intent(in) :: precomp
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
         integer,intent(in) :: sh1_d0
         integer,intent(in) :: sh1_d1
         integer,intent(in) :: sh1_d2
@@ -570,10 +570,10 @@
         integer,intent(in) :: lmax_in
         real*8,intent(out) :: gm
         real*8,intent(out) :: r0_pot
-        real*8,optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
-        real*8,optional,intent(out) :: doystart
-        real*8,optional,intent(out) :: doyend
-        real*8,optional,intent(out) :: epoch
+        real*8,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
+        real*8,intent(out) :: doystart
+        real*8,intent(out) :: doyend
+        real*8,intent(out) :: epoch
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -593,16 +593,16 @@
         integer,intent(out) :: exitstatus
         character*(*),intent(in) :: filename
         real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8,optional,dimension(error_d0,error_d1,error_d2),intent(out) ::&
+        real*8,dimension(error_d0,error_d1,error_d2),intent(out) ::&
                                                                           error
         integer,intent(out) :: lmax
         integer,intent(in) :: lmax_in
         real*8,intent(out) :: gm
         real*8,intent(out) :: r0_pot
-        real*8,optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
-        real*8,optional,intent(out) :: doystart
-        real*8,optional,intent(out) :: doyend
-        real*8,optional,intent(out) :: epoch
+        real*8,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
+        real*8,intent(out) :: doystart
+        real*8,intent(out) :: doyend
+        real*8,intent(out) :: epoch
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -626,8 +626,8 @@
         real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         integer,intent(out) :: lmax
         integer,intent(in) :: lmax_in
-        real*8,optional,dimension(2),intent(out) :: gm
-        character*6,optional,intent(in) :: formatstring
+        real*8,dimension(2),intent(out) :: gm
+        character*6,intent(in) :: formatstring
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -643,12 +643,12 @@
         integer,intent(out) :: exitstatus
         character*(*),intent(in) :: filename
         real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real*8,optional,dimension(error_d0,error_d1,error_d2),intent(out) ::&
+        real*8,dimension(error_d0,error_d1,error_d2),intent(out) ::&
                                                                           error
         integer,intent(in) :: lmax
         integer,intent(in) :: lmax_in
-        real*8,optional,dimension(2),intent(out) :: gm
-        character*6,optional,intent(in) :: formatstring
+        real*8,dimension(2),intent(out) :: gm
+        character*6,intent(in) :: formatstring
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -696,7 +696,7 @@
         integer,intent(out) :: exitstatus
         real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         real*8,dimension(cindex_d0,cindex_d1),intent(out) :: cindex
-        integer,optional,intent(in) :: degmax
+        integer,intent(in) :: degmax
         integer,intent(in) :: cindex_d0
         integer,intent(in) :: cindex_d1
         integer,intent(in) :: cilm_d0
@@ -712,7 +712,7 @@
         integer,intent(out) :: exitstatus
         real*8,dimension(cindex_d0,cindex_d1),intent(in) :: cindex
         real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer,optional,intent(in) :: degmax
+        integer,intent(in) :: degmax
         integer,intent(in) :: cindex_d0
         integer,intent(in) :: cindex_d1
         integer,intent(in) :: cilm_d0
@@ -728,9 +728,9 @@
         integer,intent(out) :: exitstatus
         real*8,dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
         real*8,dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
-        integer,optional,intent(in) :: degmax
-        integer,optional,intent(in) :: convention
-        integer,optional,intent(in) :: switchcs
+        integer,intent(in) :: degmax
+        integer,intent(in) :: convention
+        integer,intent(in) :: switchcs
         integer,intent(in) :: rcilm_d0
         integer,intent(in) :: rcilm_d1
         integer,intent(in) :: rcilm_d2
@@ -748,9 +748,9 @@
         integer,intent(out) :: exitstatus
         real*8,dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
         real*8,dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
-        integer,optional,intent(in) :: degmax
-        integer,optional,intent(in) :: convention
-        integer,optional,intent(in) :: switchcs
+        integer,intent(in) :: degmax
+        integer,intent(in) :: convention
+        integer,intent(in) :: switchcs
         integer,intent(in) :: rcilm_d0
         integer,intent(in) :: rcilm_d1
         integer,intent(in) :: rcilm_d2
@@ -828,7 +828,7 @@
         real*8,dimension(T_d0,T_d1,T_d2),intent(in) :: T
         integer,intent(in) :: lmax
         real*8,dimension(admit_d0),intent(out) :: admit
-        real*8,optional,dimension(admit_error_d0),intent(out) :: admit_error
+        real*8,dimension(admit_error_d0),intent(out) :: admit_error
         real*8,dimension(corr_d0),intent(out) :: corr
         integer,intent(in) :: G_d0
         integer,intent(in) :: G_d1
@@ -867,11 +867,11 @@
         integer,dimension(taper_order_d0),intent(in) :: taper_order
         integer,intent(in) :: lmaxt
         integer,intent(in) :: k
-        real*8,optional,intent(in) :: lat
-        real*8,optional,intent(in) :: lon
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
+        real*8,intent(in) :: lat
+        real*8,intent(in) :: lon
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
         integer,intent(in) :: taper_order_d0
         integer,intent(in) :: taper_wt_d0
         integer,intent(in) :: sh_d0
@@ -910,11 +910,11 @@
         integer,dimension(taper_order_d0),intent(in) :: taper_order
         integer,intent(in) :: lmaxt
         integer,intent(in) :: k
-        real*8,optional,intent(in) :: lat
-        real*8,optional,intent(in) :: lon
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
+        real*8,intent(in) :: lat
+        real*8,intent(in) :: lon
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
         integer,intent(in) :: sh1_d0
         integer,intent(in) :: sh1_d1
         integer,intent(in) :: sh1_d2
@@ -961,11 +961,11 @@
         real*8,dimension(admit_d0),intent(out) :: admit
         real*8,dimension(corr_d0),intent(out) :: corr
         integer,intent(in) :: k
-        real*8,optional,dimension(admit_error_d0),intent(out) :: admit_error
-        real*8,optional,dimension(corr_error_d0),intent(out) :: corr_error
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,optional,intent(in) :: mtdef
-        integer,optional,intent(in) :: k1linsig
+        real*8,dimension(admit_error_d0),intent(out) :: admit_error
+        real*8,dimension(corr_error_d0),intent(out) :: corr_error
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: mtdef
+        integer,intent(in) :: k1linsig
         integer,intent(in) :: taper_order_d0
         integer,intent(in) :: g_d0
         integer,intent(in) :: g_d1
@@ -1083,7 +1083,7 @@
         real*8,intent(in) :: theta0
         integer,intent(in) :: m
         real*8,intent(in) :: alpha
-        integer,optional,intent(in) :: taper_number
+        integer,intent(in) :: taper_number
         integer :: pySHFindLWin
         pySHFindLWin=SHFindLWin(theta0,m,alpha,taper_number=taper_number)
     end function pySHFindLWin
@@ -1100,8 +1100,8 @@
         real*8,dimension(incspectra_d0),intent(in) :: incspectra
         integer,intent(in) :: ldata
         real*8,dimension(outcspectra_d0),intent(out) :: outcspectra
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,optional,intent(in) :: save_cg
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: save_cg
         integer,intent(in) :: taper_wt_d0
         integer,intent(in) :: tapers_d0
         integer,intent(in) :: tapers_d1
@@ -1127,7 +1127,7 @@
         integer,intent(in) :: lmax,k,lwin
         real*8,intent(out) :: Mmt(Mmt_d0,Mmt_d1)
         real*8,intent(in) :: tapers_power(tapers_power_d0,tapers_power_d1)
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer,intent(in) :: Mmt_d0
         integer,intent(in) :: Mmt_d1
         integer,intent(in) :: tapers_power_d0
@@ -1159,8 +1159,8 @@
         integer,intent(in) :: k
         real*8,dimension(admit_d0),intent(out) :: admit
         real*8,dimension(corr_d0),intent(out) :: corr
-        integer,optional,intent(in) :: mtdef
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: mtdef
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer,intent(in) :: taper_wt_d0
         integer,intent(in) :: sgt_d0
         integer,intent(in) :: stt_d0
@@ -1195,7 +1195,7 @@
         integer,intent(in) :: nl
         real*8,dimension(lmid_d0),intent(out) :: lmid
         integer,intent(out) :: n
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer,intent(in) :: mtdebias_d0
         integer,intent(in) :: mtdebias_d1
         integer,intent(in) :: taper_wt_d0
@@ -1228,9 +1228,9 @@
         real*8,dimension(Sff_d0),intent(in) :: Sff
         real*8,dimension(var_opt_d0),intent(out) :: var_opt
         real*8,dimension(var_unit_d0),intent(out) :: var_unit
-        real*8,optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) ::&
+        real*8,dimension(weight_opt_d0,weight_opt_d1),intent(out) ::&
                                                                      weight_opt
-        integer,optional,intent(in) :: nocross
+        integer,intent(in) :: nocross
         integer,intent(in) :: taper_order_d0
         integer,intent(in) :: weight_opt_d0
         integer,intent(in) :: weight_opt_d1
@@ -1277,9 +1277,9 @@
         real*8,dimension(eigenvalues_d0),intent(out) :: eigenvalues
         integer,dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
         integer,intent(in) :: n_dh
-        integer,intent(in),optional :: sampling
+        integer,intent(in) :: sampling
         integer,intent(in) :: lmax
-        integer,optional,intent(in) :: ntapers
+        integer,intent(in) :: ntapers
         integer,intent(in) :: dh_mask_d0
         integer,intent(in) :: dh_mask_d1
         integer,intent(in) :: tapers_d0
@@ -1302,8 +1302,8 @@
         real*8,dimension(incspectra_d0),intent(in) :: incspectra
         integer,intent(in) :: ldata
         real*8,dimension(outcspectra_d0),intent(out) :: outcspectra
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,optional,intent(in) :: save_cg
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: save_cg
         integer,intent(in) :: taper_wt_d0
         integer,intent(in) :: tapers_d0
         integer,intent(in) :: tapers_d1
@@ -1333,9 +1333,9 @@
         real*8,dimension(tapers_d0,tapers_d1),intent(in) :: tapers
         integer,intent(in) :: lmaxt
         integer,intent(in) :: k
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
         integer,intent(in) :: taper_wt_d0
         integer,intent(in) :: sh_d0
         integer,intent(in) :: sh_d1
@@ -1371,9 +1371,9 @@
         real*8,dimension(tapers_d0,tapers_d1),intent(in) :: tapers
         integer,intent(in) :: lmaxt
         integer,intent(in) :: k
-        real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,optional,intent(in) :: norm
-        integer,optional,intent(in) :: csphase
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: norm
+        integer,intent(in) :: csphase
         integer,intent(in) :: sh1_d0
         integer,intent(in) :: sh1_d1
         integer,intent(in) :: sh1_d2
@@ -1404,7 +1404,7 @@
         real*8,dimension(Dij_d0,Dij_d1),intent(out) :: Dij
         integer,dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
         integer,intent(in) :: n_dh
-        integer,intent(in),optional :: sampling
+        integer,intent(in) :: sampling
         integer,intent(in) :: lmax
         integer,intent(in) :: dh_mask_d0
         integer,intent(in) :: dh_mask_d1
@@ -1426,7 +1426,7 @@
         real*8,dimension(profile_d0,profile_d1),intent(in) :: profile
         integer,intent(in) :: nprofile
         integer,intent(in) :: NP
-        integer,optional,intent(in) :: centralmeridian
+        integer,intent(in) :: centralmeridian
         integer,intent(in) :: profile_d0
         integer,intent(in) :: profile_d1
         integer,intent(in) :: dhgrid_d0
@@ -1446,7 +1446,7 @@
         real*8,dimension(incspectra_d0),intent(in) :: incspectra
         integer,intent(in) :: ldata
         real*8,dimension(outcspectra_d0),intent(out) :: outcspectra
-        integer,optional,intent(in) :: save_cg
+        integer,intent(in) :: save_cg
         integer,intent(in) :: Shh_d0
         integer,intent(in) :: incspectra_d0
         integer,intent(in) :: outcspectra_d0
@@ -1460,16 +1460,16 @@
         integer,intent(out) :: exitstatus
         real*8,dimension(coef_d0),intent(out) :: coef
         real*8,intent(in) :: theta
-        integer,optional,intent(in) :: lmax
+        integer,intent(in) :: lmax
         integer,intent(in) :: coef_d0
         call SphericalCapCoef(coef,theta,lmax=lmax,exitstatus=exitstatus)
     end subroutine pySphericalCapCoef
 
     subroutine pyMakeGravGridDH(exitstatus,cilm,lmax,gm,r0,a,f,rad,theta,phi,&
                                 total,pot,n,sampling,lmax_calc,omega,&
-                                normal_gravity,phi_d0,phi_d1,total_d0,total_d1,&
-                                rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,&
-                                theta_d0,theta_d1,pot_d0,pot_d1)
+                                normal_gravity,phi_d0,phi_d1,total_d0,&
+                                total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,&
+                                cilm_d2,theta_d0,theta_d1,pot_d0,pot_d1)
         use shtools, only: MakeGravGridDH
         implicit none
         integer,intent(out) :: exitstatus
@@ -1485,10 +1485,10 @@
         real*8,dimension(total_d0,total_d1),intent(out) :: total
         real*8,dimension(pot_d0,pot_d1),intent(out) :: pot
         integer,intent(out) :: n
-        integer,optional,intent(in) :: sampling
-        integer,optional,intent(in) :: lmax_calc
-        real*8,optional,intent(in) :: omega
-        integer,optional,intent(in) :: normal_gravity
+        integer,intent(in) :: sampling
+        integer,intent(in) :: lmax_calc
+        real*8,intent(in) :: omega
+        integer,intent(in) :: normal_gravity
         integer,intent(in) :: phi_d0
         integer,intent(in) :: phi_d1
         integer,intent(in) :: total_d0
@@ -1529,8 +1529,8 @@
         real*8,dimension(vxz_d0,vxz_d1),intent(out) :: vxz
         real*8,dimension(vyz_d0,vyz_d1),intent(out) :: vyz
         integer,intent(out) :: n
-        integer,optional,intent(in) :: sampling
-        integer,optional,intent(in) :: lmax_calc
+        integer,intent(in) :: sampling
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: vyz_d0
         integer,intent(in) :: vyz_d1
         integer,intent(in) :: vyy_d0
@@ -1554,8 +1554,8 @@
     subroutine pyMakeMagGradGridDH(exitstatus,cilm,lmax,r0,a,f,vxx,vyy,vzz,&
                                     vxy,vxz,vyz,n,sampling,lmax_calc,vyz_d0,&
                                     vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,&
-                                    cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0,&
-                                    vxx_d1,vxz_d0,vxz_d1)
+                                    cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,&
+                                    vxx_d0,vxx_d1,vxz_d0,vxz_d1)
         use shtools, only: MakeMagGradGridDH
         implicit none
         integer,intent(out) :: exitstatus
@@ -1571,8 +1571,8 @@
         real*8,dimension(vxz_d0,vxz_d1),intent(out) :: vxz
         real*8,dimension(vyz_d0,vyz_d1),intent(out) :: vyz
         integer,intent(out) :: n
-        integer,optional,intent(in) :: sampling
-        integer,optional,intent(in) :: lmax_calc
+        integer,intent(in) :: sampling
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: vyz_d0
         integer,intent(in) :: vyz_d1
         integer,intent(in) :: vyy_d0
@@ -1611,9 +1611,9 @@
         integer,intent(in) :: order
         integer,intent(out) :: nlat
         integer,intent(out) :: nlong
-        integer,optional,intent(in) :: lmax_calc
-        real*8,optional,intent(in) :: a
-        real*8,optional,intent(in) :: f
+        integer,intent(in) :: lmax_calc
+        real*8,intent(in) :: a
+        real*8,intent(in) :: f
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
@@ -1644,7 +1644,7 @@
         real*8,intent(out) :: d
         real*8,intent(in) :: rho
         integer,intent(in) :: sampling
-        integer,optional,intent(in) :: n
+        integer,intent(in) :: n
         integer,intent(in) :: gridin_d0
         integer,intent(in) :: gridin_d1
         integer,intent(in) :: cilm_d0
@@ -1673,7 +1673,7 @@
         real*8,intent(out) :: d
         real*8,intent(in) :: rho
         integer,intent(in) :: sampling
-        integer,optional,intent(in) :: n
+        integer,intent(in) :: n
         integer,intent(in) :: gridin_d0
         integer,intent(in) :: gridin_d1
         integer,intent(in) :: cilm_d0
@@ -1702,7 +1702,7 @@
         real*8,intent(out) :: d
         real*8,dimension(rho_d0,rho_d1),intent(in) :: rho
         integer,intent(in) :: sampling
-        integer,optional,intent(in) :: n
+        integer,intent(in) :: n
         integer,intent(in) :: gridin_d0
         integer,intent(in) :: gridin_d1
         integer,intent(in) :: cilm_d0
@@ -1733,7 +1733,7 @@
         real*8,intent(out) :: d
         real*8,dimension(rho_d0,rho_d1),intent(in) :: rho
         integer,intent(in) :: sampling
-        integer,optional,intent(in) :: n
+        integer,intent(in) :: n
         integer,intent(in) :: gridin_d0
         integer,intent(in) :: gridin_d1
         integer,intent(in) :: cilm_d0
@@ -1766,9 +1766,9 @@
         real*8,intent(in) :: r0
         real*8,intent(in) :: rho
         integer,intent(in) :: sampling
-        integer,optional,intent(in) :: filter_type
-        integer,optional,intent(in) :: filter_deg
-        integer,optional,intent(in) :: lmax_calc
+        integer,intent(in) :: filter_type
+        integer,intent(in) :: filter_deg
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: ba_d0
         integer,intent(in) :: ba_d1
         integer,intent(in) :: ba_d2
@@ -1803,10 +1803,10 @@
         real*8,intent(in) :: mass
         real*8,intent(in) :: r0
         real*8,dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer,optional,intent(in) :: sampling
-        integer,optional,intent(in) :: filter_type
-        integer,optional,intent(in) :: filter_deg
-        integer,optional,intent(in) :: lmax_calc
+        integer,intent(in) :: sampling
+        integer,intent(in) :: filter_type
+        integer,intent(in) :: filter_deg
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: ba_d0
         integer,intent(in) :: ba_d1
         integer,intent(in) :: ba_d2
@@ -1884,8 +1884,8 @@
                                                                      total_grid
         real*8,dimension(pot_grid_d0,pot_grid_d1),intent(out) :: pot_grid
         integer,intent(out) :: n
-        integer,optional,intent(in) :: sampling
-        integer,optional,intent(in) :: lmax_calc
+        integer,intent(in) :: sampling
+        integer,intent(in) :: lmax_calc
         integer,intent(in) :: total_grid_d0
         integer,intent(in) :: total_grid_d1
         integer,intent(in) :: cilm_d0
@@ -1913,8 +1913,8 @@
         real*8,intent(in) :: lat
         real*8,intent(in) :: lon
         real*8,intent(in) :: theta0
-        real*8,optional,intent(in) :: cinterval
-        integer,optional,intent(out) :: cnum
+        real*8,intent(in) :: cinterval
+        integer,intent(out) :: cnum
         integer,intent(in) :: coord_d0
         integer,intent(in) :: coord_d1
         call MakeCircleCoord(coord,lat,lon,theta0,cinterval=cinterval,&
@@ -1932,8 +1932,8 @@
         real*8,intent(in) :: dec
         real*8,intent(in) :: A_theta
         real*8,intent(in) :: B_theta
-        real*8,optional,intent(in) :: cinterval
-        integer,optional,intent(out) :: cnum
+        real*8,intent(in) :: cinterval
+        integer,intent(out) :: cnum
         integer,intent(in) :: coord_d0
         integer,intent(in) :: coord_d1
         call MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,&
