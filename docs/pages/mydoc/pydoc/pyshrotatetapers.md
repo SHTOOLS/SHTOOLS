@@ -1,43 +1,45 @@
 ---
-title: SHRotateRealCoef (Fortran)
+title: SHRotateTapers (Python)
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
-permalink: shrotaterealcoef.html
+permalink: pyshrotatetapers.html
 summary:
-tags: [fortran]
+tags: [python]
 toc: false
-editdoc: fdoc
+editdoc: pydoc
 ---
 
-Determine the spherical harmonic coefficients of a real function rotated by three Euler angles.
+Rotate orthogonal spherical-cap Slepian functions centered at the North pole to a different location.
 
 ## Usage
 
-call SHRotateRealCoef (`cilmrot`, `cilm`, `lmax`, `x`, `dj`, `exitstatus`)
+`tapersrot` = SHRotateTapers(`tapers`, `taper_order`, `nrot`, `x`, `dj`)
+
+## Returns
+
+`tapersrot` : float, dimension ((`lmax`+1)\*\*2, `nrot`)
+:   An array containing the spherical harmonic coefficients of the rotated spherical-cap functions, where `lmax` is the spherical harmonic bandwidth of the functions. Each column corresponds to a single function of which the spherical harmonic coefficients can be unpacked with `SHVectorToCilm`.
 
 ## Parameters
 
-`cilmrot` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
-:   The spherical harmonic coefficients of the rotated function, normalized for use with the geodesy 4-pi spherical harmonics.
+`tapers` : float, dimension (`lmax`+1, `nrot`)
+:   An array containing the eigenfunctions of the spherical-cap concentration problem obtained from `SHReturnTapers`. The functions are listed by columns, ordered from best to worst concentrated.
 
-`cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
-:   The input real spherical harmonic coefficients. The coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention.
+`taper_order` : integer, dimension (`nrot`)
+:   The angular order of the non-zero spherical harmonic coefficients in each column of `tapers`.
 
-`x` : input, real\*8, dimension(3)
+`nrot` : integer
+:   The number of functions to rotate, which must be less than or equal to (`lmax`+1)\*\*2.
+
+`x` : float, dimension(3)
 :   The three Euler angles, alpha, beta, and gamma, in radians.
 
-`dj` : input, real\*8, dimension (`lmax`+1, `lmax`+1, `lmax`+1)
+`dj` : float, dimension (`lmax`+1, `lmax`+1, `lmax`+1)
 :   The rotation matrix `dj(pi/2)`, obtained from a call to `djpi2`.
-
-`lmax` : input, integer
-:   The maximum spherical harmonic degree of the input and output coefficients.
-
-`exitstatus` : output, optional, integer
-:   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description
 
-`SHRotateRealCoef` will take the real spherical harmonic coefficients of a function, rotate it according to the three Euler anlges in `x`, and output the spherical harmonic coefficients of the rotated function. The input and output coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention. The input rotation matrix `dj` is computed by a call to `djpi2`.
+`SHRotateTapers` will rotate a set of orthogonal spherical-cap Slepian functions originally centered at the North pole to a different location according to the three Euler angles in the vector `x`. The original matrix `tapers` is computed by a call to `SHReturnTapers`. Only the first `nrot` tapers are rotated, each of which is returned in a column of the output matrix `tapersrot`. The spherical harmonic coefficients are geodesy 4pi normalized, and each column of `tapersrot` can be unpacked using `SHVectorCilm`. The input rotation matrix `dj` is computed by a call to `djpi2`.
 
 The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.
 
@@ -69,4 +71,4 @@ This routine first converts the real coefficients to complex form using `SHrtoc`
 
 ## See also
 
-[djpi2](djpi2.html), [shrotatecoef](shrotatecoef.html), [shctor](shctor.html), [shrtoc](shrtoc.html), [shcilmtocindex](shcilmtocindex.html), [shcindextocilm](shcindextocilm.html)
+[djpi2](pydjpi2.html), [shreturntapers](pyshreturntapers.html), [shctor](pyshctor.html), [shrtoc](pyshrtoc.html), [shcilmtocindex](pyshcilmtocindex.html), [shcindextocilm](pyshcindextocilm.html), [shvectortocilm](pyshvectortocilm.html)
