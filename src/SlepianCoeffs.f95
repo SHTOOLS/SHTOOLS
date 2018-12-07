@@ -1,4 +1,4 @@
-subroutine SlepianCoeffs(salpha, galpha, flm, lmax, nalpha, exitstatus)
+subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the Slepian coefficients of an input function
@@ -10,22 +10,22 @@ subroutine SlepianCoeffs(salpha, galpha, flm, lmax, nalpha, exitstatus)
 !   have unit power (that is the sum of the coefficients squared is 1), and the
 !   Slepian coefficients are calculated as
 !
-!       s(alpha) = sum_{lm}^{lmax} f_lm g_lm(alpha)
+!       f_alpha = sum_{lm}^{lmax} f_lm g(alpha)_lm
 !
 !   Calling Parameters
 !
 !       IN
-!           galpha  Matrix of dimension ( (LMAX+1)**2, NALPHA) containing the
+!           galpha  Matrix of dimension ( (LMAX+1)**2, nmax) containing the
 !                   spherical harmonic coefficients of the Slepian functions.
 !                   Each column corresponds to a Slepian function ordered from
 !                   best to worst concentrated.
 !           flm     Input spherical harmonic coefficients with dimension
 !                      (2, LMAX+1, LMAX+1).
 !           lmax    Maximum spherical harmonic degree of the Slepian functions.
-!           nalpha  Maximum number of Slepian coefficients to return.
+!           nmax    Maximum number of Slepian coefficients to return.
 !
 !       OUT
-!           salpha  1D vector of dimension NALPHA containing the Slepian
+!           falpha  1D vector of dimension nmax containing the Slepian
 !                   coefficients of the function FLM.
 !
 !       OPTIONAL (OUT)
@@ -45,20 +45,20 @@ subroutine SlepianCoeffs(salpha, galpha, flm, lmax, nalpha, exitstatus)
     use SHTOOLS, only: SHCilmToVector
 
     implicit none
-    real*8, intent(out) :: salpha(:)
+    real*8, intent(out) :: falpha(:)
     real*8, intent(in) :: galpha(:,:), flm(:,:,:)
-    integer, intent(in) :: lmax, nalpha
+    integer, intent(in) :: lmax, nmax
     integer, intent(out), optional :: exitstatus
     real*8, allocatable :: f(:)
     integer :: i, astat
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(salpha) < nalpha) then
+    if (size(falpha) < nmax) then
         print*, "Error --- SlepianCoeffs"
-        print*, "SALPHA must be dimensioned as (NALPHA)."
-        print*, "NALPHA = ", NALPHA
-        print*, "Dimension of SALPHA = ", size(salpha)
+        print*, "FALPHA must be dimensioned as (NMAX)."
+        print*, "NMAX = ", nmax
+        print*, "Dimension of FALPHA = ", size(falpha)
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -67,10 +67,10 @@ subroutine SlepianCoeffs(salpha, galpha, flm, lmax, nalpha, exitstatus)
         end if
 
     else if (size(galpha(:,1)) < (lmax+1)**2 .or. &
-            size(galpha(1,:)) < nalpha) then
+            size(galpha(1,:)) < nmax) then
         print*, "Error --- SlepianCoeffs"
         print*, "GALPHA must be dimensioned as ( (LMAX+1)**2, " // &
-                "NALPHA ), where LMAX = ", lmax, "and NALPHA = ", nalpha
+                "NMAX ), where LMAX = ", lmax, "and NMAX = ", nmax
         print*, "Input array is dimensioned as ", size(galpha(:,1)), &
                 size(galpha(1,:))
         if (present(exitstatus)) then
@@ -115,10 +115,10 @@ subroutine SlepianCoeffs(salpha, galpha, flm, lmax, nalpha, exitstatus)
         call SHCilmToVector(flm, f, lmax)
     end if
 
-    salpha = 0.0d0
+    falpha = 0.0d0
 
-    do i=1, nalpha, 1
-        salpha(i) = dot_product(f(1:(lmax+1)**2), galpha(1:(lmax+1)**2, i))
+    do i=1, nmax, 1
+        falpha(i) = dot_product(f(1:(lmax+1)**2), galpha(1:(lmax+1)**2, i))
     end do
 
     deallocate(f)

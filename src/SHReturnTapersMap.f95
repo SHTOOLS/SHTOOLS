@@ -1,4 +1,4 @@
-subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh,lmax, &
+subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
                              sampling, ntapers, exitstatus)
 !------------------------------------------------------------------------------
 !

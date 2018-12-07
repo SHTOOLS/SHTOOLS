@@ -30,7 +30,7 @@ class Slepian(object):
 
     The Slepian class can be initialized from:
 
-    >>>  x = Slepian.from_cap(theta, lwin, [clat, clon, nwin])
+    >>>  x = Slepian.from_cap(theta, lmax, [clat, clon, nmax])
     >>>  x = Slepian.from_mask(SHGrid)
 
     Each class instance defines the following class attributes:
@@ -50,12 +50,12 @@ class Slepian(object):
     eigenvalues     : Concentration factors of the Slepian functions.
     orders          : The angular orders for each of the spherical cap Slepian
                       functions.
-    lwin            : Spherical harmonic bandwidth of the Slepian functions.
+    lmax            : Spherical harmonic bandwidth of the Slepian functions.
     theta           : Angular radius of the spherical cap localization domain
                       (default in degrees).
     theta_degrees   : True (default) if theta is in degrees.
-    nwin            : The number of Slepian functions. Default is (lwin+1)**2.
-    nwinrot         : The number of best-concentrated spherical cap Slepian
+    nmax            : The number of Slepian functions. Default is (lmax+1)**2.
+    nrot            : The number of best-concentrated spherical cap Slepian
                       functions that were rotated and whose coefficients are
                       stored in coeffs.
     clat, clon      : Latitude and longitude of the center of the rotated
@@ -66,20 +66,21 @@ class Slepian(object):
 
     expand()              : Expand the input function in Slepian functions.
     to_array()            : Return an array of the spherical harmonic
-                            coefficients for function i, where i=0 is the best
-                            concentrated, optionally using a different
+                            coefficients for function alpha, where alpha=0 is
+                            the best concentrated, optionally using a different
                             normalization convention.
     to_shcoeffs()         : Return the spherical harmonic coefficients of
-                            function i, where i=0 is the best concentrated, as
-                            a new SHCoeffs class instance, optionally using a
-                            different normalization convention.
+                            function alpha, where alpha=0 is the best
+                            concentrated, as a new SHCoeffs class instance,
+                            optionally using a different normalization
+                            convention.
     to_shgrid()           : Return as a new SHGrid instance a grid of function
-                            i, where i=0 is the best concentrated function.
+                            alpha, where alpha=0 is the best concentrated.
     number_concentrated() : Return the number of functions that have
                             concentration factors greater or equal to a
                             specified value.
     degrees()             : Return an array containing the spherical harmonic
-                            degrees of the Slepian functions, from 0 to lwin.
+                            degrees of the Slepian functions, from 0 to lmax.
     spectra()             : Return the spectra of one or more Slepian function.
     rotate()              : Rotate the spherical cap Slepian functions,
                             originally located at the North pole, to clat and
@@ -102,14 +103,14 @@ class Slepian(object):
 
     # ---- factory methods:
     @classmethod
-    def from_cap(cls, theta, lwin, clat=None, clon=None, nwin=None,
+    def from_cap(cls, theta, lmax, clat=None, clon=None, nmax=None,
                  theta_degrees=True, coord_degrees=True, dj_matrix=None):
         """
         Construct spherical cap Slepian functions.
 
         Usage
         -----
-        x = Slepian.from_cap(theta, lwin, [clat, clon, nwin, theta_degrees,
+        x = Slepian.from_cap(theta, lmax, [clat, clon, nmax, theta_degrees,
                                            coord_degrees, dj_matrix])
 
         Returns
@@ -121,12 +122,12 @@ class Slepian(object):
         theta : float
             Angular radius of the spherical-cap localization domain (default
             in degrees).
-        lwin : int
+        lmax : int
             Spherical harmonic bandwidth of the Slepian functions.
         clat, clon : float, optional, default = None
             Latitude and longitude of the center of the rotated spherical-cap
             Slepian functions (default in degrees).
-        nwin : int, optional, default (lwin+1)**2
+        nmax : int, optional, default (lmax+1)**2
             Number of Slepian functions to compute.
         theta_degrees : bool, optional, default = True
             True if theta is in degrees.
@@ -137,24 +138,24 @@ class Slepian(object):
         """
         if theta_degrees:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
-                _np.radians(theta), lwin)
+                _np.radians(theta), lmax)
         else:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
-                theta, lwin)
+                theta, lmax)
 
         return SlepianCap(theta, tapers, eigenvalues, taper_order, clat, clon,
-                          nwin, theta_degrees, coord_degrees, dj_matrix,
+                          nmax, theta_degrees, coord_degrees, dj_matrix,
                           copy=False)
 
     @classmethod
-    def from_mask(cls, dh_mask, lwin, nwin=None):
+    def from_mask(cls, dh_mask, lmax, nmax=None):
         """
         Construct Slepian functions that are optimally concentrated within
         the region specified by a mask.
 
         Usage
         -----
-        x = Slepian.from_mask(dh_mask, lwin, [nwin])
+        x = Slepian.from_mask(dh_mask, lmax, [nmax])
 
         Returns
         -------
@@ -168,19 +169,19 @@ class Slepian(object):
             the concentration region) or 0 (for outside the concentration
             region). The grid must have dimensions nlon=nlat or nlon=2*nlat,
             where nlat is even.
-        lwin : int
+        lmax : int
             The spherical harmonic bandwidth of the Slepian functions.
-        nwin : int, optional, default = (lwin+1)**2
+        nmax : int, optional, default = (lmax+1)**2
             The number of best-concentrated eigenvalues and eigenfunctions to
             return.
         """
-        if nwin is None:
-            nwin = (lwin + 1)**2
+        if nmax is None:
+            nmax = (lmax + 1)**2
         else:
-            if nwin > (lwin + 1)**2:
-                raise ValueError('nwin must be less than or equal to ' +
-                                 '(lwin + 1)**2. lwin = {:d} and nwin = {:d}'
-                                 .format(lwin, nwin))
+            if nmax > (lmax + 1)**2:
+                raise ValueError('nmax must be less than or equal to ' +
+                                 '(lmax + 1)**2. lmax = {:d} and nmax = {:d}'
+                                 .format(lmax, nmax))
 
         if dh_mask.shape[0] % 2 != 0:
             raise ValueError('The number of latitude bands in dh_mask ' +
@@ -199,8 +200,8 @@ class Slepian(object):
         mask_lm = _shtools.SHExpandDH(dh_mask, sampling=_sampling, lmax_calc=0)
         area = mask_lm[0, 0, 0] * 4 * _np.pi
 
-        tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
-                                                         ntapers=nwin)
+        tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lmax,
+                                                         ntapers=nmax)
 
         return SlepianMask(tapers, eigenvalues, area, copy=False)
 
@@ -211,7 +212,7 @@ class Slepian(object):
     def degrees(self):
         """
         Return a numpy array listing the spherical harmonic degrees of the
-        Slepian functions from 0 to lwin.
+        Slepian functions from 0 to lmax.
 
         Usage
         -----
@@ -219,10 +220,10 @@ class Slepian(object):
 
         Returns
         -------
-        degrees : ndarray, shape (lwin+1)
+        degrees : ndarray, shape (lmax+1)
             numpy ndarray containing a list of the spherical harmonic degrees.
         """
-        return _np.arange(self.lwin + 1)
+        return _np.arange(self.lmax + 1)
 
     def number_concentrated(self, concentration):
         """
@@ -247,13 +248,13 @@ class Slepian(object):
         """
         return len(self.eigenvalues[self.eigenvalues >= concentration])
 
-    def expand(self, flm, nalpha=None):
+    def expand(self, flm, nmax=None):
         """
         Return the Slepian expansion coefficients of the input function.
 
         Usage
         -----
-        s = x.expand(flm, [nalpha])
+        s = x.expand(flm, [nmax])
 
         Returns
         -------
@@ -264,21 +265,29 @@ class Slepian(object):
         ----------
         flm : SHCoeffs class instance
             The input function to expand in Slepian functions.
-        nalpha : int, optional, default = (x.lwin+1)**2
+        nmax : int, optional, default = (x.lmax+1)**2
             The number of Slepian expansion coefficients to compute.
+
+        Description
+        -----------
+        The global function f is input using its spherical harmonic
+        expansion coefficients flm. The expansion coefficients of the function
+        f using Slepian functions g is given by
+        
+        f_alpha = sum_{lm}^{lmax} f_lm g(alpha)_lm
         """
-        if nalpha is None:
-            nalpha = (self.lwin+1)**2
-        elif nalpha is not None and nalpha > (self.lwin+1)**2:
+        if nmax is None:
+            nmax = (self.lmax+1)**2
+        elif nmax is not None and nmax > (self.lmax+1)**2:
             raise ValueError(
-                "nalpha must be less than or equal to (lwin+1)**2 " +
-                "where lwin is {:s}. Input value is {:s}"
-                .format(repr(self.lwin), repr(nalpha))
+                "nmax must be less than or equal to (lmax+1)**2 " +
+                "where lmax is {:s}. Input value is {:s}"
+                .format(repr(self.lmax), repr(nmax))
                 )
 
-        coeffsin = flm.to_array(normalization='4pi', csphase=1, lmax=self.lwin)
+        coeffsin = flm.to_array(normalization='4pi', csphase=1, lmax=self.lmax)
 
-        return self._expand(coeffsin, nalpha)
+        return self._expand(coeffsin, nmax)
 
     def to_array(self, alpha, normalization='4pi', csphase=1):
         """
@@ -291,7 +300,7 @@ class Slepian(object):
 
         Returns
         -------
-        coeffs : ndarray, shape (2, lwin+1, lwin+11)
+        coeffs : ndarray, shape (2, lmax+1, lmax+11)
             3-D numpy ndarray of the spherical harmonic coefficients
             of the Slepian function.
 
@@ -423,7 +432,7 @@ class Slepian(object):
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
-                zeros, weights = _shtools.SHGLQ(self.lwin)
+                zeros, weights = _shtools.SHGLQ(self.lmax)
             gridout = _shtools.MakeGridGLQ(self.to_array(alpha), zeros,
                                            norm=1, csphase=1)
             return SHGrid.from_array(gridout, grid='GLQ', copy=False)
@@ -432,22 +441,22 @@ class Slepian(object):
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
                 "Input value was {:s}".format(repr(grid)))
 
-    def spectra(self, alpha=None, nwin=None, convention='power', unit='per_l',
+    def spectra(self, alpha=None, nmax=None, convention='power', unit='per_l',
                 base=10.):
         """
         Return the spectra of one or more Slepian functions.
 
         Usage
         -----
-        spectra = x.spectra([alpha, nwin, convention, unit, base])
+        spectra = x.spectra([alpha, nmax, convention, unit, base])
 
         Returns
         -------
-        spectra : ndarray, shape (lwin+1, nwin)
+        spectra : ndarray, shape (lmax+1, nmax)
              A matrix with each column containing the spectrum of a Slepian
              function, and where the functions are arranged with increasing
              concentration factors. If alpha is set, only a single vector is
-             returned, whereas if nwin is set, the first nwin spectra are
+             returned, whereas if nmax is set, the first nmax spectra are
              returned.
 
         Parameters
@@ -455,7 +464,7 @@ class Slepian(object):
         alpha : int, optional, default = None
             The function number of the output spectrum, where alpha=0
             corresponds to the best concentrated Slepian function.
-        nwin : int, optional, default = 1
+        nmax : int, optional, default = 1
             The number of best concentrated Slepian function power spectra
             to return.
         convention : str, optional, default = 'power'
@@ -495,11 +504,11 @@ class Slepian(object):
 
          """
         if alpha is None:
-            if nwin is None:
-                nwin = self.nwin
-            spectra = _np.zeros((self.lwin+1, nwin))
+            if nmax is None:
+                nmax = self.nmax
+            spectra = _np.zeros((self.lmax+1, nmax))
 
-            for iwin in range(nwin):
+            for iwin in range(nmax):
                 coeffs = self.to_array(iwin)
                 spectra[:, iwin] = _spectrum(coeffs, normalization='4pi',
                                              convention=convention, unit=unit,
@@ -511,7 +520,7 @@ class Slepian(object):
 
         return spectra
 
-    def plot(self, nwin, lmax=None, maxcolumns=3,
+    def plot(self, nmax, lmax=None, maxcolumns=3,
              tick_interval=[60, 45], minor_tick_interval=None,
              xlabel='Longitude', ylabel='Latitude',
              axes_labelsize=None, tick_labelsize=None,
@@ -522,15 +531,15 @@ class Slepian(object):
 
         Usage
         -----
-        x.plot(nwin, [lmax, maxcolumns, tick_interval, minor_tick_interval,
+        x.plot(nmax, [lmax, maxcolumns, tick_interval, minor_tick_interval,
                       xlabel, ylabel, grid, show, title, axes_labelsize,
                       tick_labelsize, title_labelsize, ax, fname])
 
         Parameters
         ----------
-        nwin : int
+        nmax : int
             The number of Slepian functions to plot.
-        lmax : int, optional, default = self.lwin
+        lmax : int, optional, default = self.lmax
             The maximum degree to use when plotting the Slepian function, which
             controls the number of samples in latitude and longitude.
         maxcolumns : int, optional, default = 3
@@ -565,11 +574,11 @@ class Slepian(object):
             If present, save the image to the specified file.
         """
         if self.kind == 'cap':
-            if self.nwinrot is not None and self.nwinrot <= nwin:
-                nwin = self.nwinrot
+            if self.nrot is not None and self.nrot <= nmax:
+                nmax = self.nrot
 
-        ncolumns = min(maxcolumns, nwin)
-        nrows = _np.ceil(nwin / ncolumns).astype(int)
+        ncolumns = min(maxcolumns, nmax)
+        nrows = _np.ceil(nmax / ncolumns).astype(int)
         figsize = (_mpl.rcParams['figure.figsize'][0],
                    _mpl.rcParams['figure.figsize'][0]
                    * 0.55 * nrows / ncolumns + 0.41)
@@ -578,9 +587,9 @@ class Slepian(object):
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize,
                                       sharex='all', sharey='all')
         else:
-            if hasattr(ax, 'flatten') and ax.size < nwin:
-                raise ValueError('ax.size must be greater or equal to nwin. ' +
-                                 'nwin = {:s}'.format(repr(nwin)) +
+            if hasattr(ax, 'flatten') and ax.size < nmax:
+                raise ValueError('ax.size must be greater or equal to nmax. ' +
+                                 'nmax = {:s}'.format(repr(nmax)) +
                                  ' and ax.size = {:s}.'.format(repr(ax.size)))
             axes = ax
 
@@ -623,15 +632,15 @@ class Slepian(object):
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
                     axtemp.set_ylabel('', visible=False)
-            elif nwin > 1:
+            elif nmax > 1:
                 for axtemp in axes[1:].flatten():
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
                     axtemp.set_ylabel('', visible=False)
 
-        for alpha in range(min(self.nwin, nwin)):
+        for alpha in range(min(self.nmax, nmax)):
             evalue = self.eigenvalues[alpha]
-            if min(self.nwin, nwin) == 1 and ax is None:
+            if min(self.nmax, nmax) == 1 and ax is None:
                 axtemp = axes
             elif hasattr(axes, 'flatten'):
                 axtemp = axes.flatten()[alpha]
@@ -662,7 +671,7 @@ class Slepian(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plot_spectra(self, nwin, convention='power', unit='per_l', base=10.,
+    def plot_spectra(self, nmax, convention='power', unit='per_l', base=10.,
                      maxcolumns=3, xscale='lin', yscale='log', grid=True,
                      xlim=(None, None), ylim=(None, None), show=True,
                      title=True, axes_labelsize=None, tick_labelsize=None,
@@ -672,14 +681,14 @@ class Slepian(object):
 
         Usage
         -----
-        x.plot_spectra(nwin, [convention, unit, base, maxcolumns, xscale,
+        x.plot_spectra(nmax, [convention, unit, base, maxcolumns, xscale,
                               yscale, grid, xlim, ylim, show, title,
                               axes_labelsize, tick_labelsize, title_labelsize,
                               ax, fname])
 
         Parameters
         ----------
-        nwin : int
+        nmax : int
             The number of Slepian functions to plot.
         convention : str, optional, default = 'power'
             The type of spectra to plot: 'power' for power spectrum, and
@@ -729,11 +738,11 @@ class Slepian(object):
             title_labelsize = _mpl.rcParams['axes.titlesize']
 
         degrees = self.degrees()
-        spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
+        spectrum = self.spectra(nmax=nmax, convention=convention, unit=unit,
                                 base=base)
 
-        ncolumns = min(maxcolumns, nwin)
-        nrows = _np.ceil(nwin / ncolumns).astype(int)
+        ncolumns = min(maxcolumns, nmax)
+        nrows = _np.ceil(nmax / ncolumns).astype(int)
         figsize = (_mpl.rcParams['figure.figsize'][0],
                    _mpl.rcParams['figure.figsize'][0]
                    * 0.7 * nrows / ncolumns + 0.41)
@@ -742,9 +751,9 @@ class Slepian(object):
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize,
                                       sharex='all', sharey='all')
         else:
-            if hasattr(ax, 'flatten') and ax.size < nwin:
-                raise ValueError('ax.size must be greater or equal to nwin. ' +
-                                 'nwin = {:s}'.format(repr(nwin)) +
+            if hasattr(ax, 'flatten') and ax.size < nmax:
+                raise ValueError('ax.size must be greater or equal to nmax. ' +
+                                 'nmax = {:s}'.format(repr(nmax)) +
                                  ' and ax.size = {:s}.'.format(repr(ax.size)))
             axes = ax
 
@@ -758,23 +767,23 @@ class Slepian(object):
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
                     axtemp.set_ylabel('', visible=False)
-            elif nwin > 1:
+            elif nmax > 1:
                 for axtemp in axes[1:].flatten():
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
                     axtemp.set_ylabel('', visible=False)
 
         if ylim == (None, None):
-            upper = spectrum[:, :min(self.nwin, nwin)].max()
+            upper = spectrum[:, :min(self.nmax, nmax)].max()
             lower = upper * 1.e-6
             ylim = (lower, 5 * upper)
         if xlim == (None, None):
             if xscale == 'lin':
                 xlim = (degrees[0], degrees[-1])
 
-        for alpha in range(min(self.nwin, nwin)):
+        for alpha in range(min(self.nmax, nmax)):
             evalue = self.eigenvalues[alpha]
-            if min(self.nwin, nwin) == 1 and ax is None:
+            if min(self.nmax, nmax) == 1 and ax is None:
                 axtemp = axes
             elif hasattr(axes, 'flatten'):
                 axtemp = axes.flatten()[alpha]
@@ -835,42 +844,42 @@ class SlepianCap(Slepian):
         return kind == 'cap'
 
     def __init__(self, theta, tapers, eigenvalues, taper_order, clat, clon,
-                 nwin, theta_degrees, coord_degrees, dj_matrix, copy=True):
+                 nmax, theta_degrees, coord_degrees, dj_matrix, copy=True):
         self.kind = 'cap'
         self.theta = theta
         self.clat = clat
         self.clon = clon
-        self.lwin = tapers.shape[0] - 1
+        self.lmax = tapers.shape[0] - 1
         self.theta_degrees = theta_degrees
         self.coord_degrees = coord_degrees
         self.dj_matrix = dj_matrix
-        self.nwinrot = None
+        self.nrot = None
 
         if (self.theta_degrees):
             self.area = 2 * _np.pi * (1 - _np.cos(_np.radians(self.theta)))
         else:
             self.area = 2 * _np.pi * (1 - _np.cos(self.theta))
 
-        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
+        self.shannon = (self.lmax + 1)**2 / (4 * _np.pi) * self.area
 
-        if nwin is not None:
-            self.nwin = nwin
+        if nmax is not None:
+            self.nmax = nmax
         else:
-            self.nwin = tapers.shape[1]
+            self.nmax = tapers.shape[1]
 
-        if self.nwin > (self.lwin + 1)**2:
-            raise ValueError('nwin must be less than or equal to ' +
-                             '(lwin+1)**2. nwin = {:s} and lwin = {:s}.'
-                             .format(repr(self.nwin), repr(self.lwin)))
+        if self.nmax > (self.lmax + 1)**2:
+            raise ValueError('nmax must be less than or equal to ' +
+                             '(lmax+1)**2. nmax = {:s} and lmax = {:s}.'
+                             .format(repr(self.nmax), repr(self.lmax)))
 
         if copy:
-            self.tapers = _np.copy(tapers[:, :self.nwin])
-            self.eigenvalues = _np.copy(eigenvalues[:self.nwin])
-            self.orders = _np.copy(taper_order[:self.nwin])
+            self.tapers = _np.copy(tapers[:, :self.nmax])
+            self.eigenvalues = _np.copy(eigenvalues[:self.nmax])
+            self.orders = _np.copy(taper_order[:self.nmax])
         else:
-            self.tapers = tapers[:, :self.nwin]
-            self.eigenvalues = eigenvalues[:self.nwin]
-            self.orders = taper_order[:self.nwin]
+            self.tapers = tapers[:, :self.nmax]
+            self.eigenvalues = eigenvalues[:self.nmax]
+            self.orders = taper_order[:self.nmax]
 
         # If the windows aren't rotated, don't store them.
         if self.clat is None and self.clon is None:
@@ -880,17 +889,17 @@ class SlepianCap(Slepian):
                         coord_degrees=self.coord_degrees,
                         dj_matrix=self.dj_matrix)
 
-    def _expand(self, coeffsin, nalpha):
+    def _expand(self, coeffsin, nmax):
         """
         Determine the Slepian expansion coefficients of a function.
         """
         if self.coeffs is None:
-            self.rotate(clat=90., clon=0., nwinrot=nalpha)
-            salpha = _shtools.SlepianCoeffs(self.coeffs, coeffsin, nalpha)
+            self.rotate(clat=90., clon=0., nrot=nmax)
+            falpha = _shtools.SlepianCoeffs(self.coeffs, coeffsin, self.nrot)
         else:
-            salpha = _shtools.SlepianCoeffs(self.coeffs, coeffsin, nalpha)
+            falpha = _shtools.SlepianCoeffs(self.coeffs, coeffsin, self.nrot)
 
-        return SlepianCoeffs(salpha, self)
+        return SlepianCoeffs(falpha, self)
 
     def _taper2coeffs(self, alpha):
         """
@@ -898,7 +907,7 @@ class SlepianCap(Slepian):
         function i as an array, where i = 0 is the best concentrated function.
         """
         taperm = self.orders[alpha]
-        coeffs = _np.zeros((2, self.lwin + 1, self.lwin + 1))
+        coeffs = _np.zeros((2, self.lmax + 1, self.lmax + 1))
         if taperm < 0:
             coeffs[1, :, abs(taperm)] = self.tapers[:, alpha]
         else:
@@ -914,27 +923,27 @@ class SlepianCap(Slepian):
         if self.coeffs is None:
             coeffs = _np.copy(self._taper2coeffs(alpha))
         else:
-            if alpha > self.nwinrot - 1:
+            if alpha > self.nrot - 1:
                 raise ValueError('alpha must be less than or equal to ' +
-                                 'nwinrot - 1. alpha = {:d}, nwinrot = {:d}'
-                                 .format(alpha, self.nwinrot))
+                                 'nrot - 1. alpha = {:d}, nrot = {:d}'
+                                 .format(alpha, self.nrot))
             coeffs = _shtools.SHVectorToCilm(self.coeffs[:, alpha])
 
         if normalization == 'schmidt':
-            for l in range(self.lwin + 1):
+            for l in range(self.lmax + 1):
                 coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
         elif normalization == 'ortho':
             coeffs *= _np.sqrt(4.0 * _np.pi)
 
         if csphase == -1:
-            for m in range(self.lwin + 1):
+            for m in range(self.lmax + 1):
                 if m % 2 == 1:
                     coeffs[:, :, m] = - coeffs[:, :, m]
 
         return coeffs
 
     def rotate(self, clat, clon, coord_degrees=True, dj_matrix=None,
-               nwinrot=None):
+               nrot=None):
         """"
         Rotate the spherical-cap Slepian functions centered on the North pole
         to clat and clon, and save the spherical harmonic coefficients in the
@@ -942,7 +951,7 @@ class SlepianCap(Slepian):
 
         Usage
         -----
-        x.rotate(clat, clon [coord_degrees, dj_matrix, nwinrot])
+        x.rotate(clat, clon [coord_degrees, dj_matrix, nrot])
 
         Parameters
         ----------
@@ -953,9 +962,9 @@ class SlepianCap(Slepian):
             True if clat and clon are in degrees.
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2.
-        nwinrot : int, optional, default = (lwin+1)**2
+        nrot : int, optional, default = (lmax+1)**2
             The number of best-concentrated Slepian functions to rotate, where
-            lwin is the spherical harmonic bandwidth of the functions.
+            lmax is the spherical harmonic bandwidth of the functions.
 
         Description
         -----------
@@ -966,15 +975,15 @@ class SlepianCap(Slepian):
         contains a single Slepian function, and the coefficients are ordered
         according to the convention in SHCilmToVector.
         """
-        self.coeffs = _np.zeros(((self.lwin + 1)**2, self.nwin))
+        self.coeffs = _np.zeros(((self.lmax + 1)**2, self.nmax))
         self.clat = clat
         self.clon = clon
         self.coord_degrees = coord_degrees
 
-        if nwinrot is not None:
-            self.nwinrot = nwinrot
+        if nrot is not None:
+            self.nrot = nrot
         else:
-            self.nwinrot = self.nwin
+            self.nrot = self.nmax
 
         if self.coord_degrees:
             angles = _np.radians(_np.array([0., -(90. - clat), -clon]))
@@ -983,20 +992,20 @@ class SlepianCap(Slepian):
 
         if dj_matrix is None:
             if self.dj_matrix is None:
-                self.dj_matrix = _shtools.djpi2(self.lwin + 1)
+                self.dj_matrix = _shtools.djpi2(self.lmax + 1)
                 dj_matrix = self.dj_matrix
             else:
                 dj_matrix = self.dj_matrix
 
         if ((coord_degrees is True and clat == 90. and clon == 0.) or
                 (coord_degrees is False and clat == _np.pi/2. and clon == 0.)):
-            for i in range(self.nwinrot):
+            for i in range(self.nrot):
                 coeffs = self._taper2coeffs(i)
                 self.coeffs[:, i] = _shtools.SHCilmToVector(coeffs)
 
         else:
             coeffs = _shtools.SHRotateTapers(self.tapers, self.orders,
-                                             self.nwinrot, angles, dj_matrix)
+                                             self.nrot, angles, dj_matrix)
             self.coeffs = coeffs
 
     def _info(self):
@@ -1011,11 +1020,13 @@ class SlepianCap(Slepian):
         else:
             str += 'theta = {:f} radians'.format(self.theta)
 
-        str += ('lwin = {:d}\n'
-                'nwin = {:d}\n'
+        str += ('lmax = {:d}\n'
+                'nmax = {:d}\n'
+                'nrot = {:s}\n'
                 'shannon = {:e}\n'
                 'area (radians) = {:e}\n'
-                .format(self.lwin, self.nwin, self.shannon, self.area))
+                .format(self.lmax, self.nmax, repr(self.nrot), self.shannon,
+                        self.area))
 
         if self.clat is not None:
             if self.coord_degrees:
@@ -1032,8 +1043,6 @@ class SlepianCap(Slepian):
                 str += 'clon = {:f} radians\n'.format(self.clon)
         else:
             str += 'clon is not specified\n'
-
-        str += 'nwinrot = {:s}\n'.format(repr(self.nwinrot))
 
         if self.dj_matrix is not None:
             str += 'dj_matrix is stored\n'
@@ -1055,8 +1064,8 @@ class SlepianMask(Slepian):
 
     def __init__(self, tapers, eigenvalues, area, copy=True):
         self.kind = 'mask'
-        self.lwin = _np.sqrt(tapers.shape[0]).astype(int) - 1
-        self.nwin = tapers.shape[1]
+        self.lmax = _np.sqrt(tapers.shape[0]).astype(int) - 1
+        self.nmax = tapers.shape[1]
         if copy:
             self.tapers = _np.copy(tapers)
             self.eigenvalues = _np.copy(eigenvalues)
@@ -1065,15 +1074,15 @@ class SlepianMask(Slepian):
             self.eigenvalues = eigenvalues
 
         self.area = area
-        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
+        self.shannon = (self.lmax + 1)**2 / (4 * _np.pi) * self.area
 
-    def _expand(self, coeffsin, nalpha):
+    def _expand(self, coeffsin, nmax):
         """
         Determine the Slepian expansion coefficients of a function.
         """
-        salpha = _shtools.SlepianCoeffs(self.tapers, coeffsin, nalpha)
+        falpha = _shtools.SlepianCoeffs(self.tapers, coeffsin, nmax)
 
-        return SlepianCoeffs(salpha, self)
+        return SlepianCoeffs(falpha, self)
 
     def _to_array(self, alpha, normalization='4pi', csphase=1):
         """
@@ -1083,13 +1092,13 @@ class SlepianMask(Slepian):
         coeffs = _shtools.SHVectorToCilm(self.tapers[:, alpha])
 
         if normalization == 'schmidt':
-            for l in range(self.lwin + 1):
+            for l in range(self.lmax + 1):
                 coeffs[:, l, :l+1] *= _np.sqrt(2.0 * l + 1.0)
         elif normalization == 'ortho':
             coeffs *= _np.sqrt(4.0 * _np.pi)
 
         if csphase == -1:
-            for m in range(self.lwin + 1):
+            for m in range(self.lmax + 1):
                 if m % 2 == 1:
                     coeffs[:, :, m] = - coeffs[:, :, m]
 
@@ -1101,11 +1110,11 @@ class SlepianMask(Slepian):
 
     def __repr__(self):
         str = ('kind = {:s}\n'
-               'lwin = {:d}\n'
-               'nwin = {:d}\n'
+               'lmax = {:d}\n'
+               'nmax = {:d}\n'
                'shannon = {:e}\n'
-               'area (radians) = {:e}\n'.format(repr(self.kind), self.lwin,
-                                                self.nwin, self.shannon,
+               'area (radians) = {:e}\n'.format(repr(self.kind), self.lmax,
+                                                self.nmax, self.shannon,
                                                 self.area))
 
         return str

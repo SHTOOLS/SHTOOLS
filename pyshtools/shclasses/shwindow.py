@@ -1453,9 +1453,11 @@ class SHWindowCap(SHWindow):
 
         str += ('lwin = {:d}\n'
                 'nwin = {:d}\n'
+                'nwinrot = {:s}\n'
                 'shannon = {:e}\n'
                 'area (radians) = {:e}\n'
-                .format(self.lwin, self.nwin, self.shannon, self.area))
+                .format(self.lwin, self.nwin, repr(self.nwinrot), self.shannon,
+                        self.area))
 
         if self.clat is not None:
             if self.coord_degrees:
@@ -1472,8 +1474,6 @@ class SHWindowCap(SHWindow):
                 str += 'clon = {:f} radians\n'.format(self.clon)
         else:
             str += 'clon is not specified\n'
-
-        str += 'nwinrot = {:s}\n'.format(repr(self.nwinrot))
 
         if self.dj_matrix is not None:
             str += 'dj_matrix is stored\n'

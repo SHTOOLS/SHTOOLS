@@ -21,9 +21,11 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Class name | Description |
 | ---------- | ----------- |
-| [SHCoeffs](python-shcoeffs.html) | Class for spherical harmonic coefficients. |
-| [SHGrid](python-shgrid.html) | Class for global gridded data. |
-| [SHWindow](python-shwindow.html) | Class for localization windows and Slepian functions.|
+| [SHCoeffs](python-shcoeffs.html) | Class for spherical harmonic coefficients.|
+| [SHGrid](python-shgrid.html) | Class for global gridded data.|
+| [SHWindow](python-shwindow.html) | Class for localized spectral analyses.|
+| [Slepian](python-slepian.html) | Class for Slepian functions.|
+| [SlepianCoeffs](python-slepiancoeffs.html) | Class for Slepian expansion coefficients.|
 
 ## Classes for gravity fields
 

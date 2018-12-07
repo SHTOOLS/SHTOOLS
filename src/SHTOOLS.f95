@@ -937,19 +937,19 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHRotateTapers
 
-        subroutine SlepianCoeffs(salpha, galpha, flm, lmax, nalpha, &
+        subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, &
                                  exitstatus)
-            real*8, intent(out) :: salpha(:)
+            real*8, intent(out) :: falpha(:)
             real*8, intent(in) :: galpha(:,:), flm(:,:,:)
-            integer, intent(in) :: lmax, nalpha
+            integer, intent(in) :: lmax, nmax
             integer, intent(out), optional :: exitstatus
         end subroutine SlepianCoeffs
 
-        subroutine SlepianCoeffsToSH(flm, salpha, galpha, lmax, nalpha, &
+        subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, &
                                      exitstatus)
             real*8, intent(out) :: flm(:,:,:)
-            real*8, intent(in) :: salpha(:), galpha(:,:)
-            integer, intent(in) :: lmax, nalpha
+            real*8, intent(in) :: falpha(:), galpha(:,:)
+            integer, intent(in) :: lmax, nmax
             integer, intent(out), optional :: exitstatus
         end subroutine SlepianCoeffsToSH
 

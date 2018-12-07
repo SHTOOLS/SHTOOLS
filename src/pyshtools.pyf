@@ -1487,15 +1487,15 @@ python module _SHTOOLS
             integer,optional,intent(in),intent(hide),depend(dj) :: dj_d2 = shape(dj,2)
         end subroutine SHRotateTapers
 
-        subroutine SlepianCoeffs(exitstatus,salpha,galpha,flm,lmax,nalpha,salpha_d0,galpha_d0,galpha_d1,flm_d0,flm_d1,flm_d2)
+        subroutine SlepianCoeffs(exitstatus,falpha,galpha,flm,lmax,nmax,falpha_d0,galpha_d0,galpha_d1,flm_d0,flm_d1,flm_d2)
             fortranname pyslepiancoeffs
             integer,intent(out) :: exitstatus
-            real*8,dimension(salpha_d0),intent(out) :: salpha
+            real*8,dimension(falpha_d0),intent(out) :: falpha
             real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
             real*8,dimension(flm_d0,flm_d1,flm_d2),intent(in) :: flm
             integer,optional,intent(in),intent(hide),depend(galpha_d0) :: lmax = sqrt(galpha_d0)-1
-            integer,intent(in) :: nalpha
-            integer,optional,intent(in),intent(hide),depend(nalpha) :: salpha_d0 = nalpha
+            integer,intent(in) :: nmax
+            integer,optional,intent(in),intent(hide),depend(nmax) :: falpha_d0 = nmax
             integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d0 = shape(galpha,0)
             integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d1 = shape(galpha,1)
             integer,optional,intent(in),intent(hide),depend(flm) :: flm_d0 = shape(flm,0)
@@ -1503,18 +1503,18 @@ python module _SHTOOLS
             integer,optional,intent(in),intent(hide),depend(flm) :: flm_d2 = shape(flm,2)
         end subroutine SlepianCoeffs
 
-        subroutine SlepianCoeffsToSH(exitstatus,flm,salpha,galpha,lmax,nalpha,flm_d0,flm_d1,flm_d2,salpha_d0,galpha_d0,galpha_d1)
+        subroutine SlepianCoeffsToSH(exitstatus,flm,falpha,galpha,lmax,nmax,flm_d0,flm_d1,flm_d2,falpha_d0,galpha_d0,galpha_d1)
             fortranname pyslepiancoeffstosh
             integer,intent(out) :: exitstatus
             real*8,dimension(flm_d0,flm_d1,flm_d2),intent(out) :: flm
             real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-            real*8,dimension(salpha_d0),intent(in) :: salpha
+            real*8,dimension(falpha_d0),intent(in) :: falpha
             integer,optional,intent(in),intent(hide),depend(galpha_d0) :: lmax = sqrt(galpha_d0)-1
-            integer,intent(in) :: nalpha
+            integer,intent(in) :: nmax
             integer,optional,intent(in),intent(hide) :: flm_d0 = 2
             integer,optional,intent(in),intent(hide),depend(lmax) :: flm_d1 = lmax+1
             integer,optional,intent(in),intent(hide),depend(lmax) :: flm_d2 = lmax+1
-            integer,optional,intent(in),intent(hide),depend(salpha) :: salpha_d0 = len(salpha)
+            integer,optional,intent(in),intent(hide),depend(falpha) :: falpha_d0 = len(falpha)
             integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d0 = shape(galpha,0)
             integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d1 = shape(galpha,1)
         end subroutine SlepianCoeffsToSH

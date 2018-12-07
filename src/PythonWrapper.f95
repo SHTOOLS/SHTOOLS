@@ -1993,44 +1993,44 @@
                             x,dj,exitstatus=exitstatus)
     end subroutine pySHRotateTapers
 
-    subroutine pySlepianCoeffs(exitstatus,salpha,galpha,flm,lmax,nalpha,&
-                               salpha_d0,galpha_d0,galpha_d1,flm_d0,flm_d1,&
+    subroutine pySlepianCoeffs(exitstatus,falpha,galpha,flm,lmax,nmax,&
+                               falpha_d0,galpha_d0,galpha_d1,flm_d0,flm_d1,&
                                flm_d2)
         use shtools, only: SlepianCoeffs
         implicit none
         integer,intent(out) :: exitstatus
-        real*8,dimension(salpha_d0),intent(out) :: salpha
+        real*8,dimension(falpha_d0),intent(out) :: falpha
         real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
         real*8,dimension(flm_d0,flm_d1,flm_d2),intent(in) :: flm
         integer,intent(in) :: lmax
-        integer,intent(in) :: nalpha
-        integer,intent(in) :: salpha_d0
+        integer,intent(in) :: nmax
+        integer,intent(in) :: falpha_d0
         integer,intent(in) :: galpha_d0
         integer,intent(in) :: galpha_d1
         integer,intent(in) :: flm_d0
         integer,intent(in) :: flm_d1
         integer,intent(in) :: flm_d2
-        call SlepianCoeffs(salpha,galpha,flm,lmax,nalpha,&
+        call SlepianCoeffs(falpha,galpha,flm,lmax,nmax,&
                            exitstatus=exitstatus)
     end subroutine pySlepianCoeffs
 
-    subroutine pySlepianCoeffsToSH(exitstatus,flm,salpha,galpha,lmax,nalpha,&
-                                   flm_d0,flm_d1,flm_d2,salpha_d0,galpha_d0,&
+    subroutine pySlepianCoeffsToSH(exitstatus,flm,falpha,galpha,lmax,nmax,&
+                                   flm_d0,flm_d1,flm_d2,falpha_d0,galpha_d0,&
                                    galpha_d1)
         use shtools, only: SlepianCoeffsToSH
         implicit none
         integer,intent(out) :: exitstatus
         real*8,dimension(flm_d0,flm_d1,flm_d2),intent(out) :: flm
         real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-        real*8,dimension(salpha_d0),intent(in) :: salpha
+        real*8,dimension(falpha_d0),intent(in) :: falpha
         integer,intent(in) :: lmax
-        integer,intent(in) :: nalpha
+        integer,intent(in) :: nmax
         integer,intent(in) :: flm_d0
         integer,intent(in) :: flm_d1
         integer,intent(in) :: flm_d2
-        integer,intent(in) :: salpha_d0
+        integer,intent(in) :: falpha_d0
         integer,intent(in) :: galpha_d0
         integer,intent(in) :: galpha_d1
-        call SlepianCoeffsToSH(flm,salpha,galpha,lmax,nalpha,&
+        call SlepianCoeffsToSH(flm,falpha,galpha,lmax,nmax,&
                                exitstatus=exitstatus)
     end subroutine pySlepianCoeffsToSH

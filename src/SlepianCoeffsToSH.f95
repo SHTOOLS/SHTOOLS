@@ -1,9 +1,9 @@
-subroutine SlepianCoeffsToSH(flm, salpha, galpha, lmax, nalpha, exitstatus)
+subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the spherical harmonic coefficients of a
 !   function FLM given the input Slepian functions GALPHA and associated
-!   coefficients SALPHA. The Slepian functions are determined by a call to
+!   coefficients FALPHA. The Slepian functions are determined by a call to
 !   SHReturnTapers and then SHRotateTapers, or SHReturnTapersMap. Each row of
 !   GALPHA contains the (LMAX+1)**2 spherical harmonic coefficients of the
 !   Slepian function ordered according to the subroutine SHCilmToVector.
@@ -11,19 +11,19 @@ subroutine SlepianCoeffsToSH(flm, salpha, galpha, lmax, nalpha, exitstatus)
 !   sum of the coefficients squared is 1), and the spherical harmonic
 !   coefficients are calculated as
 !
-!       f_lm = sum_{i}^{nalpha} s(alpha) g_lm(alpha)
+!       f_lm = sum_{alpha}^{nmax} f_alpha g(alpha)_lm
 !
 !   Calling Parameters
 !
 !       IN
-!           salpha  1D vector of dimension NALPHA containing the Slepian
+!           falpha  1D vector of dimension nmax containing the Slepian
 !                   coefficients of the function FLM.
-!           galpha  Matrix of dimension ( (LMAX+1)**2, NALPHA) containing the
+!           galpha  Matrix of dimension ( (LMAX+1)**2, nmax) containing the
 !                   spherical harmonic coefficients of the Slepian functions.
 !                   Each column corresponds to a Slepian function ordered from
 !                   best to worst concentrated.
 !           lmax    Maximum spherical harmonic degree of the Slepian functions.
-!           nalpha  Maximum number of Slepian coefficients used to construct
+!           nmax    Maximum number of Slepian coefficients used to construct
 !                   the function.
 !
 !       OUT
@@ -48,8 +48,8 @@ subroutine SlepianCoeffsToSH(flm, salpha, galpha, lmax, nalpha, exitstatus)
 
     implicit none
     real*8, intent(out) :: flm(:,:,:)
-    real*8, intent(in) :: salpha(:), galpha(:,:)
-    integer, intent(in) :: lmax, nalpha
+    real*8, intent(in) :: falpha(:), galpha(:,:)
+    integer, intent(in) :: lmax, nmax
     integer, intent(out), optional :: exitstatus
     real*8, allocatable :: f(:)
     integer :: i, astat
@@ -70,11 +70,11 @@ subroutine SlepianCoeffsToSH(flm, salpha, galpha, lmax, nalpha, exitstatus)
             stop
         end if
 
-    else if (size(salpha) < nalpha) then
+    else if (size(falpha) < nmax) then
         print*, "Error --- SlepianCoeffsToSH"
-        print*, "SALPHA must be dimensioned as (NALPHA)."
-        print*, "NALPHA = ", NALPHA
-        print*, "Dimension of SALPHA = ", size(salpha)
+        print*, "FALPHA must be dimensioned as (NMAX)."
+        print*, "NMAX = ", nmax
+        print*, "Dimension of FALPHA = ", size(falpha)
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -83,10 +83,10 @@ subroutine SlepianCoeffsToSH(flm, salpha, galpha, lmax, nalpha, exitstatus)
         end if
 
     else if (size(galpha(:,1)) < (lmax+1)**2 .or. &
-            size(galpha(1,:)) < nalpha) then
+            size(galpha(1,:)) < nmax) then
         print*, "Error --- SlepianCoeffsToSH"
         print*, "GALPHA must be dimensioned as ( (LMAX+1)**2, " // &
-                "NALPHA ), where LMAX = ", lmax, "and NALPHA = ", nalpha
+                "nmax ), where LMAX = ", lmax, "and NMAX = ", nmax
         print*, "Input array is dimensioned as ", size(galpha(:,1)), &
                 size(galpha(1,:))
         if (present(exitstatus)) then
@@ -112,9 +112,9 @@ subroutine SlepianCoeffsToSH(flm, salpha, galpha, lmax, nalpha, exitstatus)
 
     f = 0.0d0
 
-    do i=1, nalpha, 1
+    do i=1, nmax, 1
         f(1:(lmax+1)**2) = f(1:(lmax+1)**2) + &
-                           salpha(i) * galpha(1:(lmax+1)**2, i)
+                           falpha(i) * galpha(1:(lmax+1)**2, i)
     end do
 
     if (present(exitstatus)) then

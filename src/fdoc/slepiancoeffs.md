@@ -4,14 +4,14 @@ Determine the expansion coefficients of a function for a given set of input Slep
 
 # Usage
 
-call SlepianCoeffs(`salpha`, `galpha`, `flm`, `lmax`, `nalpha`, `exitstatus`)
+call SlepianCoeffs(`falpha`, `galpha`, `flm`, `lmax`, `nmax`, `exitstatus`)
 
 # Parameters
 
-`salpha` : output, real\*8, dimension (`nalpha`)
+`falpha` : output, real\*8, dimension (`nmax`)
 :   A vector containing the Slepian coefficients of the input function `flm`.
 
-`galpha` : input, real\*8, dimension ((`lmax`+1)**2, `nalpha`)
+`galpha` : input, real\*8, dimension ((`lmax`+1)**2, `nmax`)
 :   An array containing the spherical harmonic coefficients of the Slepian functions. Each column corresponds to a single function of which the spherical harmonic coefficients can be unpacked with `SHVectorToCilm`.
 
 `flm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
@@ -20,7 +20,7 @@ call SlepianCoeffs(`salpha`, `galpha`, `flm`, `lmax`, `nalpha`, `exitstatus`)
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of the Slepian functions.
 
-`nalpha` : input, integer
+`nmax` : input, integer
 :   The number of expansion coefficients to compute.
 
 `exitstatus` : output, optional, integer
@@ -30,8 +30,8 @@ call SlepianCoeffs(`salpha`, `galpha`, `flm`, `lmax`, `nalpha`, `exitstatus`)
 
 `SlepianCoeffs` will compute the Slepian coefficients of a global input function `flm` given the Slepian functions `galpha`. The Slepian functions are determined by a call to either (1) `SHReturnTapers` and then `SHRotateTapers`, or (2) `SHReturnTapersMap`. Each row of `galpha` contains the (`lmax`+1)**2 spherical harmonic coefficients of a Slepian function that can be unpacked using `SHVectorToCilm`. The Slepian functions must be normalized to have unit power (that is the sum of the coefficients squared is 1), and the Slepian coefficients are calculated as
 
-`s(alpha) = sum_{lm}^{lmax} f_lm g_lm(alpha)`  
+`f_alpha = sum_{lm}^{lmax} f_lm g(alpha)_lm`  
 
 # See also
 
-[shreturntapers](shreturntapers.html), [shreturntapersmap](shreturntapersmap.html), [shrotatetapers](shrotatetapers.html), [shvectortocilm](shvectortocilm.html)
+[slepiancoeffstosh](slepiancoeffstosh.html), [shreturntapers](shreturntapers.html), [shreturntapersmap](shreturntapersmap.html), [shrotatetapers](shrotatetapers.html), [shvectortocilm](shvectortocilm.html)

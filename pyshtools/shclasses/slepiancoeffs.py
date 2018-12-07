@@ -30,36 +30,35 @@ class SlepianCoeffs(object):
 
     Each class instance defines the following class attributes:
 
-    salpha         : Array of the Slepian expansion coefficients.
-    galpha         : A Slepian class instance that contains the associated
-                     Slepian functions.
-    nalpha         : The number of Slepian expansion coefficients
+    falpha          : Array of the Slepian expansion coefficients.
+    galpha          : A Slepian class instance that contains the associated
+                      Slepian functions.
+    nmax            : The number of Slepian expansion coefficients.
 
     Each class instance provides the following methods:
 
-    expand()              : Expand the function of a grid an return an SHGrid
-                            class instance.
-    to_shcoeffs()         : Return the spherical harmonic coefficients of the
-                            function.
-    copy()                : Return a copy of the class instance.
-    info()                : Print a summary of the data stored in the
-                            SlepianCoeffs instance.
+    expand()        : Expand the function on a grid an return an SHGrid class
+                      instance.
+    to_shcoeffs()   : Return the spherical harmonic coefficients of the
+                      function as an SHCoeffs class instance.
+    plot_spectrum() : Plot the spectrum as a function of spherical harmonic
+                      degree.
+    copy()          : Return a copy of the class instance.
+    info()          : Print a summary of the data stored in the SlepianCoeffs
+                      instance.
 """
-    def __init__(self, salpha, galpha, copy=True):
+    def __init__(self, falpha, galpha, copy=True):
         """
         Initialize the SlepianCoeffs class.
         """
         if copy:
-            self.salpha = _np.copy(salpha)
+            self.falpha = _np.copy(falpha)
             self.galpha = _copy.deepcopy(galpha)
         else:
-            self.salpha = salpha
+            self.falpha = falpha
             self.galpha = galpha
 
-        if self.galpha.kind is 'cap':
-            self.nalpha = self.galpha.nwinrot
-        else:
-            self.nalpha = self.galpha.nwin
+        self.nmax = len(self.falpha)
 
     def copy(self):
         """
@@ -82,18 +81,19 @@ class SlepianCoeffs(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('Number of coefficients = {:d}\n'
-               'L = {:d}\n'
-               .format(self.nalpha, self.galpha.lwin))
+        str = ('nmax = {:d}\n'
+               'lmax = {:d}\n'
+               .format(self.nmax, self.galpha.lmax))
+        str += '\nSlepian functions:\n' + self.galpha.__repr__()
         return str
 
-    def expand(self, n=None, grid='DH2', zeros=None):
+    def expand(self, nmax=None, grid='DH2', zeros=None):
         """
         Expand the function on a grid using the first n Slepian coefficients.
 
         Usage
         -----
-        f = x.expand([n, grid, zeros])
+        f = x.expand([nmax, grid, zeros])
 
         Returns
         -------
@@ -101,7 +101,7 @@ class SlepianCoeffs(object):
 
         Parameters
         ----------
-        n : int, optional, default = x.nalpha
+        nmax : int, optional, default = x.nmax
             The number of expansion coefficients to use when calculating the
             spherical harmonic coefficients.
         grid : str, optional, default = 'DH2'
@@ -117,15 +117,15 @@ class SlepianCoeffs(object):
                              'Input type was {:s}'
                              .format(str(type(grid))))
 
-        if n is None:
-            n = self.nalpha
+        if nmax is None:
+            nmax = self.nmax
 
         if self.galpha.kind == 'cap':
-            shcoeffs = _shtools.SlepianCoeffsToSH(self.salpha,
-                                                  self.galpha.coeffs, n)
+            shcoeffs = _shtools.SlepianCoeffsToSH(self.falpha,
+                                                  self.galpha.coeffs, nmax)
         else:
-            shcoeffs = _shtools.SlepianCoeffsToSH(self.salpha,
-                                                  self.galpha.tapers, n)
+            shcoeffs = _shtools.SlepianCoeffsToSH(self.falpha,
+                                                  self.galpha.tapers, nmax)
 
         if grid.upper() in ('DH', 'DH1'):
             gridout = _shtools.MakeGridDH(shcoeffs, sampling=1,
@@ -137,7 +137,7 @@ class SlepianCoeffs(object):
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
-                zeros, weights = _shtools.SHGLQ(self.galpha.lwin)
+                zeros, weights = _shtools.SHGLQ(self.galpha.lmax)
             gridout = _shtools.MakeGridGLQ(shcoeffs, zeros,
                                            norm=1, csphase=1)
             return SHGrid.from_array(gridout, grid='GLQ', copy=False)
@@ -146,7 +146,7 @@ class SlepianCoeffs(object):
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
                 "Input value was {:s}".format(repr(grid)))
 
-    def to_shcoeffs(self, n=None, normalization='4pi', csphase=1):
+    def to_shcoeffs(self, nmax=None, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients using the first n Slepian
         coefficients.
@@ -154,7 +154,7 @@ class SlepianCoeffs(object):
         Usage
         -----
 
-        s = x.to_shcoeffs([n])
+        s = x.to_shcoeffs([nmax])
 
         Returns
         -------
@@ -164,9 +164,9 @@ class SlepianCoeffs(object):
 
         Parameters
         ----------
-        n : int, optional, default = x.nalpha
-            The number of expansion coefficients to use when calculating the
-            spherical harmonic coefficients.
+        nmax : int, optional, default = x.nmax
+            The maximum number of expansion coefficients to use when
+            calculating the spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
             Normalization of the output class: '4pi', 'ortho' or 'schmidt' for
             geodesy 4pi-normalized, orthonormalized, or Schmidt semi-normalized
@@ -192,15 +192,15 @@ class SlepianCoeffs(object):
                 .format(repr(csphase))
                 )
 
-        if n is None:
-            n = self.nalpha
+        if nmax is None:
+            nmax = self.nmax
 
         if self.galpha.kind == 'cap':
-            shcoeffs = _shtools.SlepianCoeffsToSH(self.salpha,
-                                                  self.galpha.coeffs, n)
+            shcoeffs = _shtools.SlepianCoeffsToSH(self.falpha,
+                                                  self.galpha.coeffs, nmax)
         else:
-            shcoeffs = _shtools.SlepianCoeffsToSH(self.salpha,
-                                                  self.galpha.tapers, n)
+            shcoeffs = _shtools.SlepianCoeffsToSH(self.falpha,
+                                                  self.galpha.tapers, nmax)
 
         temp = SHCoeffs.from_array(shcoeffs, normalization='4pi', csphase=1)
 
@@ -208,3 +208,101 @@ class SlepianCoeffs(object):
             return temp.convert(normalization=normalization, csphase=csphase)
         else:
             return temp
+
+    def plot_spectrum(self, nmax=None, convention='power', unit='per_l',
+                      base=10., lmax=None, xscale='lin', yscale='log',
+                      grid=True, legend=None, axes_labelsize=None,
+                      tick_labelsize=None, show=True, ax=None, fname=None,
+                      **kwargs):
+        """
+        Plot the spectrum as a function of spherical harmonic degree.
+
+        Usage
+        -----
+        x.plot_spectrum([nmax, convention, unit, base, lmax, xscale, yscale,
+                         grid, axes_labelsize, tick_labelsize, legend, show,
+                         ax, fname, **kwargs])
+
+        Parameters
+        ----------
+        nmax : int, optional, default = x.nmax
+            The maximum number of expansion coefficients to use when
+            calculating the spherical harmonic coefficients.
+        convention : str, optional, default = 'power'
+            The type of spectrum to plot: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
+        unit : str, optional, default = 'per_l'
+            If 'per_l', plot the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', plot the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', plot the spectrum per log
+            interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' spectrum, and
+            the base to use for logarithmic axes.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        xscale : str, optional, default = 'lin'
+            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'log'
+            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot().
+
+        Description
+        -----------
+        This method plots either the power spectrum, energy spectrum, or
+        l2-norm spectrum. Total power is defined as the integral of the
+        function squared over all space, divided by the area the function
+        spans. If the mean of the function is zero, this is equivalent to the
+        variance of the function. The total energy is the integral of the
+        function squared over all space and is 4pi times the total power. For
+        normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm is
+        the sum of the magnitude of the coefficients squared.
+
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l, which is equal to the
+        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
+        contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
+        """
+        temp = self.to_shcoeffs(nmax=nmax)
+
+        if ax is None:
+            fig, axes = temp.plot_spectrum(convention=convention, unit=unit,
+                                           base=base, lmax=lmax, xscale=xscale,
+                                           yscale=yscale, grid=grid,
+                                           axes_labelsize=axes_labelsize,
+                                           tick_labelsize=tick_labelsize,
+                                           legend=legend, show=show, ax=ax,
+                                           fname=fname, **kwargs)
+            return fig, axes
+        else:
+            temp.plot_spectrum(convention=convention, unit=unit,
+                               base=base, lmax=lmax, xscale=xscale,
+                               yscale=yscale, grid=grid,
+                               axes_labelsize=axes_labelsize,
+                               tick_labelsize=tick_labelsize,
+                               legend=legend, show=show, ax=ax,
+                               fname=fname, **kwargs)
