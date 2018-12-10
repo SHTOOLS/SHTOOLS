@@ -2,16 +2,16 @@ language: c
 
 matrix:
   include:
-    # Test Python 2.7 and 3.6 on Linux and OSX
+    # Test Python 2.7 and 3.7 on Linux and OSX
     - os: linux
       env: PYTHON_VERSION=2.7
     - os: linux
-      env: PYTHON_VERSION=3.6
+      env: PYTHON_VERSION=3.7
 
     - os: osx
       env: PYTHON_VERSION=2.7
     - os: osx
-      env: PYTHON_VERSION=3.6
+      env: PYTHON_VERSION=3.7
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
