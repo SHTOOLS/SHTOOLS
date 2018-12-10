@@ -3,6 +3,13 @@ pyshtools Legendre Functions.
 
 This subpackage of pyshtools defines the following functions:
 
+Convenience functions
+---------------------
+legendre      Compute all the associated Legendre functions up to a maximum
+              degree and order.
+legendre_lm   Compute the associated Legendre function for a specific degree l
+              and order m.
+
 "Geodesy" 4-pi normalized
 -----------------------
 PlmBar        Compute all the geodesy-normalized associated Legendre functions.
@@ -66,4 +73,6 @@ from ..shtools import PLegendreA_d1
 from ..shtools import PLegendre
 from ..shtools import PLegendre_d1
 
+from .legendre_functions import legendre
+from .legendre_functions import legendre_lm
 from .plm_index import PlmIndex
