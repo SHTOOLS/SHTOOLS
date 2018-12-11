@@ -85,6 +85,12 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
     spherical harmonics, Geochem., Geophys., Geosyst., 19, 2574-2592,
     doi:10.1029/2018GC007529, 2018.
     """
+    if lmax < 0:
+        raise ValueError(
+            "lmax must be greater or equal to 0. Input value was {:s}."
+            .format(repr(lmax))
+            )
+
     if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
         raise ValueError(
             "The normalization must be '4pi', 'ortho', 'schmidt', " +
@@ -189,18 +195,28 @@ def legendre_lm(l, m, z, normalization='4pi', csphase=1, cnorm=0):
     Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
     summation and the recursive computation of very high degree and order
     normalised associated Legendre functions, J. Geodesy, 76, 279-299,
-    doi:doi:10.1007/s00190-002-0216-2, 2002.
+    doi:10.1007/s00190-002-0216-2, 2002.
 
     Wieczorek, M. A., and M. Meschede. SHTools — Tools for working with
     spherical harmonics, Geochem., Geophys., Geosyst., 19, 2574-2592,
     doi:10.1029/2018GC007529, 2018.
     """
+    if l < 0:
+        raise ValueError(
+            "The degree l must be greater or equal to 0. Input value was {:s}."
+            .format(repr(l))
+            )
+
+    if m < 0:
+        raise ValueError(
+            "The order m must be greater or equal to 0. Input value was {:s}."
+            .format(repr(m))
+            )
 
     if m > l:
         raise ValueError(
-            "The degree l must be greater or equal than the order m. " +
-            "Input degree and order are {:s} and {:s}."
-            .format(repr(l), repr(m))
+            "The order m must be less than or equal to the degree l. " +
+            "Input values were l={:s} and m={:s}.".format(repr(l), repr(m))
             )
 
     if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
