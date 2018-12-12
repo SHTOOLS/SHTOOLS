@@ -431,8 +431,8 @@
     end subroutine pyGLQGridCoord
 
     subroutine pySHExpandLSQ(exitstatus,cilm,d,lat,lon,nmax,lmax,norm,chi2,&
-                             csphase,d_d0,lon_d0,cilm_d0,cilm_d1,cilm_d2,&
-                             lat_d0)
+                             csphase,cilm_d0,cilm_d1,cilm_d2,d_d0,lat_d0,&
+                             lon_d0)
         use shtools, only: SHExpandLSQ
         implicit none
         integer,intent(out) :: exitstatus
@@ -445,15 +445,42 @@
         integer,intent(in) :: norm
         real*8,intent(out) :: chi2
         integer,intent(in) :: csphase
-        integer,intent(in) :: d_d0
-        integer,intent(in) :: lon_d0
         integer,intent(in) :: cilm_d0
         integer,intent(in) :: cilm_d1
         integer,intent(in) :: cilm_d2
+        integer,intent(in) :: d_d0
         integer,intent(in) :: lat_d0
+        integer,intent(in) :: lon_d0
         call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,&
                          csphase=csphase,exitstatus=exitstatus)
     end subroutine pySHExpandLSQ
+
+    subroutine pySHExpandWLSQ(exitstatus,cilm,d,w,lat,lon,nmax,lmax,norm,chi2,&
+                             csphase,cilm_d0,cilm_d1,cilm_d2,d_d0,w_d0,lat_d0,&
+                             lon_d0)
+        use shtools, only: SHExpandLSQ
+        implicit none
+        integer,intent(out) :: exitstatus
+        real*8,dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real*8,dimension(d_d0),intent(in) :: d
+        real*8,dimension(w_d0),intent(in) :: w
+        real*8,dimension(lat_d0),intent(in) :: lat
+        real*8,dimension(lon_d0),intent(in) :: lon
+        integer,intent(in) :: nmax
+        integer,intent(in) :: lmax
+        integer,intent(in) :: norm
+        real*8,intent(out) :: chi2
+        integer,intent(in) :: csphase
+        integer,intent(in) :: cilm_d0
+        integer,intent(in) :: cilm_d1
+        integer,intent(in) :: cilm_d2
+        integer,intent(in) :: d_d0
+        integer,intent(in) :: w_d0
+        integer,intent(in) :: lat_d0
+        integer,intent(in) :: lon_d0
+        call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,&
+                         csphase=csphase,weights=w,exitstatus=exitstatus)
+    end subroutine pySHExpandWLSQ
 
     subroutine pyMakeGrid2d(exitstatus,grid,cilm,lmax,interval,nlat,nlong,&
                             norm,csphase,f,a,north,south,east,west,dealloc,&

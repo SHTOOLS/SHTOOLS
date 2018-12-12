@@ -237,12 +237,13 @@ module SHTOOLS
         end subroutine GLQGridCoord
 
         subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, &
-                               chi2, csphase, exitstatus)
+                               chi2, csphase, weights, exitstatus)
             real*8, intent(in) :: d(:), lat(:), lon(:)
             real*8, intent(out) :: cilm(:,:,:)
             integer, intent(in) :: nmax, lmax
             integer, intent(in), optional :: norm, csphase
             real*8, intent(out), optional :: chi2
+            real*8, intent(in), optional :: weights(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHExpandLSQ
 

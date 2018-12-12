@@ -22,6 +22,7 @@ pyshtools.utils.figstyle()
 def main():
     TestCircle()
     TestWigner()
+    TestSHExpandWLSQ()
 
 
 # ==== TEST FUNCTIONS ====
@@ -52,6 +53,37 @@ def TestWigner():
     print("jmin = ", jmin)
     print("jmax = ", jmax)
     print(w3j)
+
+
+def TestSHExpandWLSQ():
+    file = "../../ExampleDataFiles/MarsTopo719.shape"
+    clm = pyshtools.SHCoeffs.from_file(file, lmax=9)
+    lmax = clm.lmax
+    nmax = 100
+    np.random.seed(seed=123456)
+    x = 2*np.random.random_sample(nmax)-1
+    y = 2*np.random.random_sample(nmax)-1
+    z = 2*np.random.random_sample(nmax)-1
+
+    lat = np.rad2deg(np.arctan2(z, np.sqrt(x**2 + y**2)))
+    lon = np.rad2deg(np.arctan2(y, x))
+    d = clm.expand(lat=lat, lon=lon)
+    print('Minimum and maximum d (km) ', d.max()/1.e3, d.min()/1.e3)
+    w = np.ones(nmax)
+
+    print('Least squares inversion misit: chi2, chi2' +
+          '(weighted, uniform weights),')
+    for l in range(10):
+        hilm, chi2 = pyshtools.expand.SHExpandLSQ(d, lat, lon, l)
+        hlm = pyshtools.SHCoeffs.from_array(hilm)
+        d2 = hlm.expand(lat=lat, lon=lon)
+
+        hilmw, chi2w = pyshtools.expand.SHExpandWLSQ(d, w, lat, lon, l)
+        hlmw = pyshtools.SHCoeffs.from_array(hilmw)
+        d2w = hlmw.expand(lat=lat, lon=lon)
+
+        print('L = {:d}, chi2 = {:e}, chi2w = {:e}'
+              .format(l, chi2, chi2w))
 
 
 # ==== EXECUTE SCRIPT ====
