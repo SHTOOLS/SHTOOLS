@@ -36,7 +36,7 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 
 # Description
 
-`SHExpandLSQ` will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When there are more data points than spherical harmonic coefficients (i.e., `nmax>(lmax+1)**2`), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. See the LAPACK documentation concerning DGELS for further information.
+`SHExpandLSQ` will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When the number of data points is greater or equal to the number of spherical harmonic coefficients (i.e., `nmax>=(lmax+1)**2`), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. The inversions are performed using the LAPACK routine DGELS.
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
