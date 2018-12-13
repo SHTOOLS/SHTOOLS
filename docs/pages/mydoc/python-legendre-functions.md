@@ -17,6 +17,13 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
+## Convenience functions
+
+| Function name | Description |
+| ------------- | ----------- |
+| [legendre](pylegendre.html) | Compute all the associated Legendre functions up to a maximum degree and order. |
+| [legendre_lm](pylegendre_lm.html) | Compute the associated Legendre function for a specific degree l and order m. |
+
 ## 4&pi; normalized
 
 | Function name | Description |
