@@ -41,7 +41,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Function name | Description |
 | ------------- | ----------- |
-|[SHExpandLSQ](pyshexpandlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion. |
+| [SHExpandLSQ](pyshexpandlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion. |
+| [SHExpandWLSQ](pyshexpandwlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a weighted least squares inversion. |
 | [MakeGrid2D](pymakegrid2d.html) | Create a 2D cylindrical map with arbitrary grid spacing from a set of spherical harmonic coefficients. |
 | [MakeGridPoint](pymakegridpoint.html) | Evaluate a real function expressed in real spherical harmonics at a single point. |
 | [MakeGridPointC](pymakegridpointc.html) | Evaluate a complex function expressed in complex spherical harmonics at a single point. |

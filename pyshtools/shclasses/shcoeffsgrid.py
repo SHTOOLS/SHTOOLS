@@ -1254,8 +1254,8 @@ class SHCoeffs(object):
         Usage
         -----
         f = x.expand([grid, lmax, lmax_calc, zeros])
-        g = x.expand(lat, lon, [lmax_calc, degrees])
-        g = x.expand(colat, lon, [lmax_calc, degrees])
+        g = x.expand(lat=lat, lon=lon, [lmax_calc, degrees])
+        g = x.expand(colat=colat, lon=lon, [lmax_calc, degrees])
 
         Returns
         -------

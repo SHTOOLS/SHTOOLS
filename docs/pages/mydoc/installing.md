@@ -9,9 +9,10 @@ toc: true
 
 ## Python package installer (pip)
 
-The easiest way to install the Python components of SHTOOLS (pyshtools) is to use `pip`. On Linux, macOS and windows machines, the binary wheels can be installed by executing the command
+The easiest way to install the Python components of SHTOOLS (pyshtools) is to use `pip`. On Linux, macOS and windows machines, the binary wheels can be installed by executing one of the following commands
 ```bash
 pip install pyshtools
+pip install --upgrade pyshtools  # to upgrade a pre-existing installation
 ```
 If you wish to instead compile the archive yourself, first make sure that you have the necessary dependencies installed. On most linux distributions, this can be accomplished using
 ```bash
@@ -19,7 +20,7 @@ sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 ```
 or on macOS using [brew](https://brew.sh/)
 ```bash
-brew install fftw --with-fortran
+brew install fftw
 ```
 Then build from source using the command
 ```bash

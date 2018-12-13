@@ -7,6 +7,27 @@ summary:
 toc: true
 ---
 
+## Version 4.4
+
+**New Slepian expansion routines**
+
+* Added the new Fortran 95 functions `SHRotateTapers` for rotating spherical cap Slepian functions, `SlepianCoeffs` for expanding a function in a Slepian basis, and `SlepianCoeffsToSH` to convert the Slepian coefficients into spherical harmonic coefficients.
+* Added two python classes `Slepian` and `SlepianCoeffs` for managing Slepian basis functions and the Slepian expansion coefficients of a function.
+
+**Legendre and spherical harmonic convenience functions**
+
+* Added 4 python convenience functions for computing Legendre and spherical harmonic functions: `legendre()` to compute all the legendre functions, `legendre_lm()` to compute the legendre function for a specified degree and order, `spharm()` to compute all the spherical harmonic functions, and `spharm_lm()` to compute the spherical harmonic functions for a specific degree and order.
+
+**Other improvements**
+
+* Added the option to perform a weighted least squares inversion in the fortran routine `SHExpandLSQ`, and added a python wrapped function `SHExpandWLSQ()`.
+* Added `min()` and `max()` methods to the `SHGrid` class, to return the minimum and maximum value of the gridded data.
+* Added the property `mass` to the `SHGravCoeffs` class, which is computed by the input GM and the codata value for `G`.
+* Add the optional parameter `omega` to `SHGravCoeffs.geoid()` to override the value provided in the class instance.
+* Fixed some minor typos and usability issues, and cleaned up the python wrapper and signature files.
+
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.4, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
 ## Version 4.3
 
 **New Gravity and Magnetic field classes**

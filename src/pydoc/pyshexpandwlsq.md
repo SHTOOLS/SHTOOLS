@@ -1,10 +1,10 @@
-# SHExpandLSQ
+# SHExpandWLSQ
 
-Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.
+Expand a set of irregularly sampled data points into spherical harmonics using a weighted least squares inversion.
 
 # Usage
 
-`cilm`, `chi2` = SHExpandLSQ (`d`, `lat`, `lon`, `lmax`, [`norm`,  `csphase`])
+`cilm`, `chi2` = SHExpandLSQ (`d`, `w`, `lat`, `lon`, `lmax`, [`norm`,  `csphase`])
 
 # Returns
 
@@ -18,6 +18,9 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 
 `d` : float, dimension (`nmax`)
 :   The value of the function at the coordinates (`lat`, `lon`).
+
+`w` : float, dimension (`nmax`)
+:   The weights used in the weighted least squares inversion.
 
 `lat` : float, dimension (`nmax`)
 :   The latitude in DEGREES corresponding to the value in `d`.
@@ -36,10 +39,14 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 
 # Description
 
-`SHExpandLSQ` will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When the number of data points is greater or equal to the number of spherical harmonic coefficients (i.e., `nmax>=(lmax+1)**2`), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. The inversions are performed using the LAPACK routine DGELS.
+`SHExpandLSQ` will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When there are more data points than spherical harmonic coefficients (i.e., `nmax>(lmax+1)**2`), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. See the LAPACK documentation concerning DGELS for further information.
+
+A weighted least squares inversion will be performed if the optional vector
+`weights` is specified. In this case, the problem must be overdetermined, and it is assumed that each measurement is statistically independent (i.e., the weighting matrix is diagonal). The inversion is performed using the LAPACK routine DGGGLM.
+
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
 # See also
 
-[makegriddh](pymakegriddh.html), [shexpanddh](pyshexpanddh.html), [makegriddhc](pymakegriddhc.html), [shexpanddhc](pyshexpanddhc.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), dgels(1)
+[makegriddh](pymakegriddh.html), [shexpanddh](pyshexpanddh.html), [makegriddhc](pymakegriddhc.html), [shexpanddhc](pyshexpanddhc.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), dgels(1), dggglm(1)
