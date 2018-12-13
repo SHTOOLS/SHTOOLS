@@ -3,7 +3,7 @@ title: "Spherical Harmonic Tools"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Slepian functions, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: index.html
-summary: SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
+summary: SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
 toc: false
 ---
 
@@ -13,23 +13,19 @@ toc: false
 
 SHTOOLS is extremely versatile:
 
-* All standard normalizations of the spherical harmonic functions are supported (4&pi; normalized, Schmidt semi-normalized, orthonormalized, and unnormalized).
+* All standard normalizations of the spherical harmonic functions are supported: 4&pi; normalized, Schmidt semi-normalized, orthonormalized, and unnormalized.
 
-* Both real and complex spherical harmonics are supported.
+* Both real and complex spherical harmonics are supported, and one can choose to either use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup>.
 
 * Spherical harmonic transforms are calculated by exact quadrature rules using either the sampling theorem of *Driscoll and Healy* (1994) or Gauss-Legendre quadrature.
 
-* One can choose to use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup> with the associated Legendre functions.
+* The spherical harmonic transforms are fast and accurate to approximately degree 2800.
 
 * Localized multitaper spectral analyses and expansions of functions in localized Slepian bases are easily performed.
 
 * Standard operations on global gravitational and magnetic field data are supported.
 
 * The Fortran routines are OpenMP compatible and OpenMP thread-safe.
-
-* The spherical harmonic transforms are accurate to approximately degree 2800.
-
-* The routines are fast. Spherical harmonic transforms and reconstructions take on the order of 1 second for bandwidths close to 800 and about 30 seconds for bandwidths close to 2600.
 
 ## Installation
 
@@ -39,14 +35,19 @@ The Python components of SHTOOLS can be installed using the Python package manag
 pip install pyshtools
 ```
 
-To install the Fortran 95 components for use in your Fortran programs, installation can be as simple as executing the following command in the SHTOOLS directory
+To upgrade a pre-existing installation use
+```bash
+pip install --upgrade pyshtools
+```
+
+To install the Fortran 95 components for use in your Fortran programs, execute the following command in the SHTOOLS directory
 
 ```bash
 make fortran
-make fortran-mp  # (for OpenMP)
+make fortran-mp  # for OpenMP
 ```
 
-or by using the brew package manager (macOS)
+or alternatively install using the brew package manager (macOS)
 
 ```bash
 brew tap shtools/shtools
@@ -59,4 +60,4 @@ SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is
 
 ## Citation
 
-Mark A. Wieczorek and Matthias Meschede (2018). SHTools --- Tools for working with spherical harmonics, *Geochemistry, Geophysics, Geosystems*, doi:[10.1029/2018GC007529](https://doi.org/10.1029/2018GC007529).
+Mark A. Wieczorek and Matthias Meschede (2018). SHTools --- Tools for working with spherical harmonics, *Geochemistry, Geophysics, Geosystems*, 19, 2574-2592, doi:[10.1029/2018GC007529](https://doi.org/10.1029/2018GC007529).

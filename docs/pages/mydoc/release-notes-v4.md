@@ -20,13 +20,13 @@ toc: true
 
 **Other improvements**
 
-* Added the option to perform a weighted least squares inversion in the fortran routine `SHExpandLSQ`, and added a python wrapped function `SHExpandWLSQ`.
-* Added `min()` and `max()` methods to the `SHGrid` class, in order to return the minimum and maximum value of the gridded data.
+* Added the option to perform a weighted least squares inversion in the fortran routine `SHExpandLSQ`, and added a python wrapped function `SHExpandWLSQ()`.
+* Added `min()` and `max()` methods to the `SHGrid` class, to return the minimum and maximum value of the gridded data.
 * Added the property `mass` to the `SHGravCoeffs` class, which is computed by the input GM and the codata value for `G`.
-* Add the optional parameter `omega` to `SHGravCoeffs.geoid()` in order to override the value provided in the class instance.
+* Add the optional parameter `omega` to `SHGravCoeffs.geoid()` to override the value provided in the class instance.
 * Fixed some minor typos and usability issues, and cleaned up the python wrapper and signature files.
 
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.4, Zenodo, doi:[10.5281/zenodo.2203845](https://doi.org/10.5281/zenodo.2203845)
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.4, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
 
 ## Version 4.3
 
