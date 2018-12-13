@@ -83,6 +83,9 @@ from .._SHTOOLS import ComputeDMap
 from .._SHTOOLS import Curve2Mask
 from .._SHTOOLS import SHBias
 from .._SHTOOLS import SphericalCapCoef
+from .._SHTOOLS import SHRotateTapers
+from .._SHTOOLS import SlepianCoeffs
+from .._SHTOOLS import SlepianCoeffsToSH
 
 # rotate
 from .._SHTOOLS import djpi2
@@ -133,7 +136,8 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
            'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
            'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j', 'DHaj',
-           'MakeMagGradGridDH']
+           'MakeMagGradGridDH', 'SHRotateTapers', 'SlepianCoeffs',
+           'SlepianCoeffsToSH']
 
 _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',

@@ -151,7 +151,7 @@ class SHMagGrid(object):
                                       cb_orientation=cb_orientation,
                                       cb_label=cb_label, show=False, **kwargs)
             if show:
-                _plt.show()
+                fig.show()
 
             if fname is not None:
                 fig.savefig(fname)
@@ -204,7 +204,7 @@ class SHMagGrid(object):
                                         cb_label=cb_label, show=False,
                                         **kwargs)
             if show:
-                _plt.show()
+                fig.show()
 
             if fname is not None:
                 fig.savefig(fname)
@@ -256,7 +256,7 @@ class SHMagGrid(object):
                                       cb_orientation=cb_orientation,
                                       cb_label=cb_label, show=False, **kwargs)
             if show:
-                _plt.show()
+                fig.show()
 
             if fname is not None:
                 fig.savefig(fname)
@@ -309,7 +309,7 @@ class SHMagGrid(object):
                 cb_label=cb_label, show=False, **kwargs)
 
             if show:
-                _plt.show()
+                fig.show()
 
             if fname is not None:
                 fig.savefig(fname)
@@ -362,7 +362,7 @@ class SHMagGrid(object):
                                       cb_orientation=cb_orientation,
                                       cb_label=cb_label, show=False, **kwargs)
             if show:
-                _plt.show()
+                fig.show()
 
             if fname is not None:
                 fig.savefig(fname)
@@ -459,7 +459,7 @@ class SHMagGrid(object):
         fig.tight_layout(pad=0.5)
 
         if show:
-            _plt.show()
+            fig.show()
 
         if fname is not None:
             fig.savefig(fname)

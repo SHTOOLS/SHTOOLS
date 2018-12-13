@@ -55,6 +55,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `lats()` | Return a vector containing the latitudes of each row of the gridded data. |
 | `lons()` | Return a vector containing the longitudes of each column of the gridded data. |
 | `expand()` | Expand the grid into spherical harmonics. |
+| `min()` | Return the minimum value of data. |
+| `max()` | Return the maximum value of data. |
 | `copy()` | Return a copy of the class instance. |
 | `plot()` | Plot the raw data using a simple cylindrical projection. |
 | `plot3d()` | Plot the raw data on a 3d sphere. |

@@ -46,6 +46,7 @@ SHSjkPG                Calculate the expectation of the product of two
                        functions, each multiplied by a different data taper,
                        for a given spherical harmonic degree and two different
                        angular orders.
+SHRotateTapers         Rotate the spherical cap tapers by three Euler angles.
 
 Localization windows (arbitrary domain)
 ---------------------------------------
@@ -67,6 +68,13 @@ Localization Bias (General)
 ---------------------------
 SHBias                 Calculate the (cross-)power spectrum expectation of a
                        windowed function.
+
+Slepian function expansions
+---------------------------
+SlepianCoeffs          Determine the expansion coefficients of a function for
+                       a given set of input Slepian functions.
+SlepianCoeffsToSH      Convert a function expressed in Slepian coefficients to
+                       spherical harmonic coefficients.
 
 Other
 -----
@@ -106,3 +114,6 @@ from ..shtools import ComputeDMap
 from ..shtools import Curve2Mask
 from ..shtools import SHBias
 from ..shtools import SphericalCapCoef
+from ..shtools import SHRotateTapers
+from ..shtools import SlepianCoeffs
+from ..shtools import SlepianCoeffsToSH

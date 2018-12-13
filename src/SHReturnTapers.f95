@@ -20,7 +20,7 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
 !                           for the concentration problem.
 !
 !       OUT
-!           tapers          An (lmax+1) by (lmax+1) array containing
+!           tapers          An (lmax+1) by (lmax+1)**2 array containing
 !                           all the eigenfunctions of the space-
 !                           concentration kernel. Eigenfunctions
 !                           are listed by columns in decreasing order
@@ -28,8 +28,8 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
 !           eigenvalues     A vector of length lmax+1 containing the
 !                           eigenvalued corresponding to the individual
 !                           eigenfunctions.
-!           taper_order     A vector of dimension X denoting which order m
-!                           corresponds to the column of tapers and
+!           taper_order     A vector of dimension (lmax+1)**2 denoting which
+!                           order m corresponds to the column of tapers and
 !                           eigenvalues.
 !
 !       OPTIONAL (OUT)

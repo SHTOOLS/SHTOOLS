@@ -50,7 +50,7 @@ two class instances have the same `lmax`.
 
 **Citation:**
 
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.3, Zenodo, doi:[10.5281/zenodo.1345510](https://doi.org/10.5281/zenodo.1345510)
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.3, Zenodo, doi:[10.5281/zenodo.1346663](https://doi.org/10.5281/zenodo.1346663)
 
 
 ## Version 4.2

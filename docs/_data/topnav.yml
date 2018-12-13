@@ -5,6 +5,6 @@ topnav:
   items:
     - title: GitHub
       external_url: https://github.com/SHTOOLS/SHTOOLS/
-    - title: Wiki
-      external_url: https://github.com/SHTOOLS/SHTOOLS/wiki
+    - title: Releases
+      external_url: https://github.com/SHTOOLS/SHTOOLS/releases
 

@@ -1,5 +1,5 @@
 """
-    Spherical Harmonic Window classes
+    Class for localized spectral analyses on the sphere.
 
         SHWindow: SHWindowCap, SHWindowMask
 """
@@ -25,7 +25,7 @@ __all__ = ['SHWindow', 'SHWindowCap', 'SHWindowMask']
 
 class SHWindow(object):
     """
-    Class for spatio-spectral localization windows on the sphere.
+    Class for localized spectral analyses on the sphere.
 
     The windows can be initialized from:
 
@@ -55,8 +55,10 @@ class SHWindow(object):
     theta           : Angular radius of the spherical cap localization domain
                       (default in degrees).
     theta_degrees   : True (default) if theta is in degrees.
-    nwin            : Number of localization windows. Default is (lwin+1)**2.
-    nwinrot         : The number of best concentrated windows that were rotated
+    nwin            : The number of localization windows. Default is
+                      (lwin+1)**2.
+    nwinrot         : The number of best-concentrated spherical cap
+                      localization windows that were rotated
                       and whose coefficients are stored in coeffs.
     clat, clon      : Latitude and longitude of the center of the rotated
                       spherical cap localization windows (default in degrees).
@@ -241,7 +243,7 @@ class SHWindow(object):
         """
         return _np.arange(self.lwin + 1)
 
-    def number_concentrated(self, alpha):
+    def number_concentrated(self, concentration):
         """
         Return the number of localization windows that have concentration
         factors greater or equal to alpha.
@@ -262,7 +264,7 @@ class SHWindow(object):
             The concentration factor, which is the power of the window within
             the concentration region divided by the total power.
         """
-        return len(self.eigenvalues[self.eigenvalues >= alpha])
+        return len(self.eigenvalues[self.eigenvalues >= concentration])
 
     def to_array(self, itaper, normalization='4pi', csphase=1):
         """
@@ -276,8 +278,8 @@ class SHWindow(object):
         Returns
         -------
         coeffs : ndarray, shape (2, lwin+1, lwin+11)
-            3-D numpy ndarray of size of the spherical harmonic coefficients
-            of the window.
+            3-D numpy ndarray of the spherical harmonic coefficients of the
+            window.
 
         Parameters
         ----------
@@ -856,7 +858,7 @@ class SHWindow(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -1010,7 +1012,7 @@ class SHWindow(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -1081,7 +1083,7 @@ class SHWindow(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -1196,7 +1198,7 @@ class SHWindowCap(SHWindow):
     def rotate(self, clat, clon, coord_degrees=True, dj_matrix=None,
                nwinrot=None):
         """"
-        Rotate the spherical-cap windows centered on the north pole to clat
+        Rotate the spherical-cap windows centered on the North pole to clat
         and clon, and save the spherical harmonic coefficients in the
         attribute coeffs.
 
@@ -1220,11 +1222,11 @@ class SHWindowCap(SHWindow):
         Description
         -----------
         This function will take the spherical-cap localization windows
-        centered at the north pole (and saved in the attributes tapers and
+        centered at the North pole (and saved in the attributes tapers and
         orders), rotate each function to the coordinate (clat, clon), and save
         the spherical harmonic coefficients in the attribute coeffs. Each
-        column of coeffs contains a single window, and is ordered according to
-        the convention in SHCilmToVector.
+        column of coeffs contains a single window, and the coefficients are
+        ordered according to the convention in SHCilmToVector.
         """
         self.coeffs = _np.zeros(((self.lwin + 1)**2, self.nwin))
         self.clat = clat
@@ -1248,17 +1250,16 @@ class SHWindowCap(SHWindow):
             else:
                 dj_matrix = self.dj_matrix
 
-        for i in range(self.nwinrot):
-            if ((coord_degrees is True and clat == 90. and clon == 0.) or
-                    (coord_degrees is False and clat == _np.pi/2. and
-                     clon == 0.)):
+        if ((coord_degrees is True and clat == 90. and clon == 0.) or
+                (coord_degrees is False and clat == _np.pi/2. and clon == 0.)):
+            for i in range(self.nwinrot):
                 coeffs = self._taper2coeffs(i)
                 self.coeffs[:, i] = _shtools.SHCilmToVector(coeffs)
 
-            else:
-                coeffs = _shtools.SHRotateRealCoef(self._taper2coeffs(i),
-                                                   angles, dj_matrix)
-                self.coeffs[:, i] = _shtools.SHCilmToVector(coeffs)
+        else:
+            coeffs = _shtools.SHRotateTapers(self.tapers, self.orders,
+                                             self.nwinrot, angles, dj_matrix)
+            self.coeffs = coeffs
 
     def _coupling_matrix(self, lmax, nwin=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
@@ -1452,9 +1453,11 @@ class SHWindowCap(SHWindow):
 
         str += ('lwin = {:d}\n'
                 'nwin = {:d}\n'
+                'nwinrot = {:s}\n'
                 'shannon = {:e}\n'
                 'area (radians) = {:e}\n'
-                .format(self.lwin, self.nwin, self.shannon, self.area))
+                .format(self.lwin, self.nwin, repr(self.nwinrot), self.shannon,
+                        self.area))
 
         if self.clat is not None:
             if self.coord_degrees:
@@ -1471,8 +1474,6 @@ class SHWindowCap(SHWindow):
                 str += 'clon = {:f} radians\n'.format(self.clon)
         else:
             str += 'clon is not specified\n'
-
-        str += 'nwinrot = {:s}\n'.format(repr(self.nwinrot))
 
         if self.dj_matrix is not None:
             str += 'dj_matrix is stored\n'

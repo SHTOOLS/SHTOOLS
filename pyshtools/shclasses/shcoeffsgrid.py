@@ -1487,7 +1487,7 @@ class SHCoeffs(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -1687,7 +1687,7 @@ class SHCoeffs(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -1844,7 +1844,7 @@ class SHRealCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float:
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
             return _shtools.MakeGridPoint(self.coeffs, lat=latin, lon=lonin,
                                           lmax=lmax_calc, norm=norm,
                                           csphase=self.csphase)
@@ -2071,7 +2071,7 @@ class SHComplexCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float:
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
             return _shtools.MakeGridPointC(self.coeffs, lat=latin, lon=lonin,
                                            lmax=lmax_calc, norm=norm,
                                            csphase=self.csphase)
@@ -2139,6 +2139,8 @@ class SHGrid(object):
     lons()      : Return a vector containing the longitudes of each column
                   of the gridded data.
     expand()    : Expand the grid into spherical harmonics.
+    max()       : Return the maximum value of data using numpy.max().
+    min()       : Return the minimum value of data using numpy.min().
     copy()      : Return a copy of the class instance.
     plot()      : Plot the raw data using a simple cylindrical projection.
     plot3d()    : Plot the raw data on a 3d sphere.
@@ -2293,6 +2295,26 @@ class SHGrid(object):
                              'Input value is {:s}'.format(binary))
 
     # ---- Mathematical operators ----
+    def min(self):
+        """
+        Return the minimum value of self.data using numpy.min().
+
+        Usage
+        -----
+        x.min()
+        """
+        return _np.min(self.data)
+
+    def max(self):
+        """
+        Return the maximum value of self.data using numpy.max().
+
+        Usage
+        -----
+        x.max()
+        """
+        return _np.max(self.data)
+
     def __add__(self, other):
         """Add two similar grids or a grid and a scaler: self + other."""
         if isinstance(other, SHGrid):
@@ -2622,7 +2644,7 @@ class SHGrid(object):
         # show or save output
         fig.tight_layout(pad=0.5)
         if show:
-            _plt.show()
+            fig.show()
 
         if fname is not None:
             fig.savefig(fname)
@@ -2630,7 +2652,7 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, tick_interval=[30, 30], minor_tick_interval=[10, 10],
+    def plot(self, tick_interval=[30, 30], minor_tick_interval=None,
              ax=None, ax2=None, colorbar=False, cb_orientation='vertical',
              cb_label=None, grid=False, axes_labelsize=None,
              tick_labelsize=None, show=True, fname=None, **kwargs):
@@ -2647,7 +2669,7 @@ class SHGrid(object):
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [10, 10]
+        minor_tick_interval : list or tuple, optional, default = None
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'Longitude' or 'GLQ longitude index'
@@ -2744,7 +2766,7 @@ class SHGrid(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
 
             if fname is not None:
                 fig.savefig(fname)
@@ -3187,7 +3209,6 @@ class GLQRealGrid(SHGrid):
             fig, axes = _plt.subplots(1, 1, figsize=figsize)
         else:
             axes = ax
-
 
         cim = axes.imshow(self.data, origin='upper', **kwargs)
         axes.set(xticks=xticks, yticks=yticks)
