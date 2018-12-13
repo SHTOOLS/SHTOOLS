@@ -46,3 +46,5 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [MakeGridPoint](pymakegridpoint.html) | Evaluate a real function expressed in real spherical harmonics at a single point. |
 | [MakeGridPointC](pymakegridpointc.html) | Evaluate a complex function expressed in complex spherical harmonics at a single point. |
 | [SHMultiply](pyshmultiply.html) | Multiply two functions and determine the spherical harmonic coefficients of the resulting function. |
+| [spharm](pyspharm.html) | Compute all the spherical harmonic functions up to a maximum degree and order. |
+| [spharm_lm](pyspharm_lm.html) | Compute the spherical harmonic function for a specific degree l and order m. |
