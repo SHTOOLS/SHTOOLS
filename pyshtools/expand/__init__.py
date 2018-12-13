@@ -35,6 +35,8 @@ Other
 -----
 SHExpandLSQ    Expand a set of irregularly sampled data points into spherical
                harmonics using a least squares inversion.
+SHExpandWLSQ   Expand a set of irregularly sampled data points into spherical
+               harmonics using a weighted least squares inversion.
 MakeGrid2D     Create a 2D cylindrical map with arbitrary grid spacing from a
                set of spherical harmonic coefficients.
 MakeGridPoint  Evaluate a real function expressed in real spherical harmonics
@@ -65,6 +67,7 @@ from ..shtools import SHExpandGLQC
 from ..shtools import MakeGridGLQC
 from ..shtools import GLQGridCoord
 from ..shtools import SHExpandLSQ
+from ..shtools import SHExpandWLSQ
 from ..shtools import MakeGrid2D
 from ..shtools import MakeGridPoint
 from ..shtools import MakeGridPointC

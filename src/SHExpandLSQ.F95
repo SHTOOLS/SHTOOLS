@@ -1,21 +1,26 @@
 subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
-                       csphase, exitstatus)
+                       csphase, weights, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   This subroutine will expand a set of discrete data points into
-!   spherical harmonics using a least squares inversion. When there are
-!   more data points than spherical harmonic coefficients (nmax > (lmax+1)**2)
-!   the solution of the overdetermined system will be determined by least
-!   squares. If there are more coefficients than data points, then the solution
-!   of the underdetermined system will be determined by minimizing the solution
-!   norm. (See LAPACK DGELS documentation).
+!   This subroutine will expand a set of discrete data points into spherical
+!   harmonics using a least squares inversion. When there are more data points
+!   than spherical harmonic coefficients (nmax > (lmax+1)**2), the solution of
+!   the overdetermined system will be determined by least squares. If there are
+!   more coefficients than data points, then the solution of the
+!   underdetermined system will be determined by minimizing the solution
+!   norm. The inversion is performed using the LAPACK routine DGELS.
+!
+!   A weighted least squares inversion will be performed if the optional vector
+!   weights is specified. In this case, the problem must be overdetermined, and
+!   it is assumed that each measurement is statistically independent. The
+!   inversion is performed using the LAPACK routine DGGGLM.
 !
 !   The default normalization convention for the output spherical harmonics
-!   (and the calculation of the matrix G) is the "geodesy" normalization, though
-!   this can be modified by supplying the optional argument norm.
+!   (and the calculation of the matrix G) is the "geodesy" 4pi normalization,
+!   though this can be modified by supplying the optional argument norm.
 !
-!   Note that this routine takes lots of memory (~8*nmax*(lmax+1)**2 bytes) and
-!   is very slow for large lmax
+!   Note that this routine requires a lot of memory (~8*nmax*(lmax+1)**2 bytes)
+!   and is very slow for large lmax
 !
 !   Calling Parameters
 !
@@ -29,7 +34,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !           lmax    Maximum degree of spherical harmonic expansion.
 !
 !       OUT 
-!           cilm    Spherical harmonic coefficients.
+!           cilm    The spherical harmonic coefficients.
 !
 !       OPTIONAL (IN)
 !           norm    Spherical harmonic normalizaton for output coefficients and
@@ -38,8 +43,10 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !                       2. PlmSchmidt
 !                       3. PLegendreA (unnormalized)
 !                       4. PlmBar/sqrt(4 pi) (orthonormalized)
-!           csphase:    1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m
 !                       -1: Apply the phase factor of (-1)^m.
+!           weights  The weights to be used when performing the weighted least
+!                    squares inversion.
 !
 !       OPTIONAL (OUT)
 !           chi2        This is the residual sum of squares misfit for an
@@ -56,7 +63,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !   Dependencies:   LAPACK, PlmBar, PLegendreA, PlmSchmidt, PlmON,
 !                   CSPHASE_DEFAULT
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2018, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -69,16 +76,20 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     integer, intent(in) :: nmax, lmax
     integer, intent(in), optional :: norm, csphase
     real*8, intent(out), optional :: chi2
+    real*8, intent(in), optional :: weights(:)
     integer, intent(out), optional :: exitstatus
     integer, parameter :: opt = 80
     integer :: ncoef, i, l, m, ind1, ind2, info, lwork, opt1, phase, &
-               astat(4), lnorm
-    real*8 :: pi, lonr
-    real*8, allocatable :: mm(:), gg(:, :), p(:), work(:)
+               astat(7), lnorm
+    real*8 :: pi, lonr, small
+    real*8, allocatable :: mm(:), gg(:, :), p(:), work(:), b(:, :), y(:), &
+                           din(:)
 #ifdef LAPACK_UNDERSCORE
 #define dgels dgels_
 #endif
-    external :: dgels
+    external :: dgels, dggglm
+
+    small = 1.d-12
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -175,16 +186,61 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     end if
 
-    allocate (mm(max((lmax+1)**2, nmax)), stat = astat(1))
-    allocate (gg(nmax, (lmax+1)**2), stat = astat(2))
+    if (present(weights)) then
+        if (size(weights) < nmax) then
+            print*, "Error --- SHExpandLSQ"
+            print*, "WEIGHTS must be dimensioned as (NMAX) where NMAX is ", &
+                nmax
+            print*, "Input array is dimensioned ", size(weights)
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
+
+        else if (nmax < (lmax+1)**2) then
+            print*, "Error --- SHExpandLSQ"
+            print*, "When performing a weighted least-squares inversion, "
+            print*, "NMAX must be greater or equal to (LMAX+1)**2, where"
+            print*, "NMAX = ", nmax
+            print*, "LMAX = ", lmax
+            print*, "Input array is dimensioned ", size(weights)
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
+
+        end if
+
+    end if
+
+    ncoef = (lmax+1)**2
+    if (present(weights)) then
+        lwork = ncoef + nmax*(1+opt)
+    else
+        lwork = min(ncoef, nmax)*(1+opt)
+    end if
+
+    astat = 0
+    allocate (mm(max(ncoef, nmax)), stat = astat(1))
+    allocate (gg(nmax, ncoef), stat = astat(2))
     allocate (p((lmax+1)*(lmax+2)/2), stat = astat(3))
-    allocate (work(min((lmax+1)**2, nmax)*(1+opt)), stat = astat(4))
+    allocate (work(lwork), stat = astat(4))
+    allocate(din(nmax), stat = astat(5))
+    if (present(weights)) then
+        allocate (b(nmax, nmax), stat = astat(6))
+        allocate (y(nmax), stat = astat(7))
+    end if
 
     if (astat(1) /= 0 .or. astat(2) /= 0 .or. astat(3) /= 0 &
-            .or. astat(4) /= 0) then
+            .or. astat(4) /= 0 .or. astat(5) /= 0 .or. astat(6) /= 0) then
         print*, "Error --- SHExpandLSQ"
-        print*, "Problem allocating arrays MM, GG, P, and WORK", astat(1), &
-                astat(2), astat(3), astat(4)
+        print*, "Problem allocating arrays MM, GG, P, WORK, DIN, B and Y: ", &
+                astat(1), astat(2), astat(3), astat(4), astat(5), astat(6), &
+                astat(7)
         if (present(exitstatus)) then
             exitstatus = 3
             return
@@ -194,12 +250,9 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     end if
 
-    lwork = min((lmax+1)**2, nmax)*(1+opt)
     pi = acos(-1.0d0)
     mm = 0.0d0
     gg = 0.0d0
-
-    ncoef = (lmax+1)**2
 
     !--------------------------------------------------------------------------
     !
@@ -267,8 +320,47 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     end do
 
-    mm(1:nmax) = d(1:nmax)
+    !--------------------------------------------------------------------------
+    !
+    !   Compute B^(-1) = W^(1/2) and do inversion using DGGGLM, which requires
+    !   the nmax by nmax matrix B. If any of the weights are zero, set them to
+    !   an arbitrarily small number given by the parameter SMALL. Note that the
+    !   data are assumed to be uncorrelated, and that W, B, and B^(-1) are
+    !   hence all diagonal.
+    !
+    !--------------------------------------------------------------------------
+    if (present(weights)) then
+        din(1:nmax) = d(1:nmax)
+        b = 0.0d0
 
+        do i = 1, nmax
+            if (weights(i) == 0.0d0) then
+                b(i, i) = 1.0d0 / sqrt(small)
+
+            else
+                b(i, i) = 1.0d0 / sqrt(weights(i))
+
+            end if
+
+       end do
+
+        call dggglm(nmax, ncoef, nmax, gg, nmax, b, nmax, din(1:nmax), mm, y, &
+                    work, lwork, info)
+
+        if (info /= 0) then
+            print*, "Error --- SHExpandLSQ"
+            print*, "Problem performing the weighted least squares inversion."
+            print*, "DGGGLM INFO = ", info
+            if (present(exitstatus)) then
+                exitstatus = 5
+                return
+            else
+                stop
+            end if
+
+        end if
+
+    end if
     !--------------------------------------------------------------------------
     !
     !   Do least squares inversion, i.e.,
@@ -276,29 +368,33 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     !   using LAPACK routine DGELS.
     !
     !--------------------------------------------------------------------------
-    call dgels('N', nmax, ncoef, 1, gg, nmax, mm, max((lmax+1)**2, nmax), &
-                work, lwork, info)
+    if (.not. present(weights)) then
+        mm(1:nmax) = d(1:nmax)
 
-    if (info /= 0) then
-        print*, "Error --- SHExpandLSQ"
-        print*, "DGELS: Problem performing least squares inversion."
-        print*, "DGELS INFO = ", info
-        if (present(exitstatus)) then
-            exitstatus = 5
-            return
-        else
-            stop
+        call dgels('N', nmax, ncoef, 1, gg, nmax, mm, max((lmax+1)**2, nmax), &
+                   work, lwork, info)
+
+        if (info /= 0) then
+            print*, "Error --- SHExpandLSQ"
+            print*, "Problem performing the least squares inversion."
+            print*, "DGELS INFO = ", info
+            if (present(exitstatus)) then
+                exitstatus = 5
+                return
+            else
+                stop
+            end if
+
+        end if
+
+        if (work(1) >  dble(lwork)) then
+            opt1 = int(work(1) / min((lmax+1)**2, nmax) - 1)
+            print*, "Warning --- SHExpandLSQ"
+            print*, "Consider changing parameter value of OPT to ", opt1, &
+                    " and recompiling the SHTOOLS archive."
         end if
 
     end if
-
-    if (work(1) >  dble(lwork)) then
-        opt1 = int(work(1) / min((lmax+1)**2, nmax) - 1)
-        print*, "Warning --- SHExpandLSQ"
-        print*, "Consider changing parameter value of OPT to ", opt1, &
-                " and recompiling the SHTOOLS archive."
-    end if
-
     !--------------------------------------------------------------------------
     !
     !   Convert mm into cilm
@@ -328,24 +424,29 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     !   Compute residual sum of sqaures misfit for the overdetermined case.
     !
     !--------------------------------------------------------------------------
-    if (present(chi2) .and. nmax > ncoef) then
+    if (present(chi2) .and. nmax >= ncoef) then
         chi2 = 0.0d0
 
-        do i = ncoef + 1, nmax
-            chi2 = chi2 + mm(i)**2
-
-        end do
+        if (present(weights)) then
+            do i = 1, nmax
+                chi2 = chi2 + y(i)**2
+            end do
+        else
+            do i = ncoef + 1, nmax, 1
+                chi2 = chi2 + mm(i)**2
+            end do
+        end if
 
     end if
 
     ! deallocate memory
     select case(lnorm)
         case(1)
-            call PlmBar(p, -1, sin(lat(1) * pi / 180.0d0), csphase = phase)
+            call PlmBar(p, -1, 0.0d0)
         case(2)
-            call PlmSchmidt(p, -1, sin(lat(1) * pi / 180.0d0), csphase = phase)
+            call PlmSchmidt(p, -1, 0.0d0)
         case(4)
-            call PlmON(p, -1, sin(lat(1) * pi / 180.0d0), csphase = phase)
+            call PlmON(p, -1, 0.0d0)
 
     end select
 
@@ -353,5 +454,10 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     deallocate (gg)
     deallocate (p)
     deallocate (work)
+
+    if (present(weights)) then
+        deallocate(b)
+        deallocate(y)
+    end if
 
 end subroutine SHExpandLSQ
