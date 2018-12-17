@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, multitaper spectral an...">
+<meta name="description" content="SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms, multitaper spectral analyses on the sphere...">
 <meta name="keywords" content=" spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Slepian functions, fortran, Python, gravity, magnetic field">
 <title>Spherical Harmonic Tools | SHTOOLS - Tools for working with spherical harmonics</title>
 <link rel="stylesheet" href="css/syntax.css">
@@ -123,7 +123,7 @@
                 
                 
                 
-                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/releases" target="_blank">Releases</a></li>
                 
                 
                 
@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.3</li>
+  <li class="sidebarTitle">SHTOOLS 4.4</li>
   
   
   
@@ -528,7 +528,7 @@ MathJax.Hub.Config({
 <div class="post-content">
 
    
-    <div class="summary">SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.</div>
+    <div class="summary">SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.</div>
    
 
     
@@ -541,16 +541,16 @@ MathJax.Hub.Config({
 
 <ul>
   <li>
-    <p>All standard normalizations of the spherical harmonic functions are supported (4π normalized, Schmidt semi-normalized, orthonormalized, and unnormalized).</p>
+    <p>All standard normalizations of the spherical harmonic functions are supported: 4π normalized, Schmidt semi-normalized, orthonormalized, and unnormalized.</p>
   </li>
   <li>
-    <p>Both real and complex spherical harmonics are supported.</p>
+    <p>Both real and complex spherical harmonics are supported, and one can choose to either use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup>.</p>
   </li>
   <li>
     <p>Spherical harmonic transforms are calculated by exact quadrature rules using either the sampling theorem of <em>Driscoll and Healy</em> (1994) or Gauss-Legendre quadrature.</p>
   </li>
   <li>
-    <p>One can choose to use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup> with the associated Legendre functions.</p>
+    <p>The spherical harmonic transforms are fast and accurate to approximately degree 2800.</p>
   </li>
   <li>
     <p>Localized multitaper spectral analyses and expansions of functions in localized Slepian bases are easily performed.</p>
@@ -561,12 +561,6 @@ MathJax.Hub.Config({
   <li>
     <p>The Fortran routines are OpenMP compatible and OpenMP thread-safe.</p>
   </li>
-  <li>
-    <p>The spherical harmonic transforms are accurate to approximately degree 2800.</p>
-  </li>
-  <li>
-    <p>The routines are fast. Spherical harmonic transforms and reconstructions take on the order of 1 second for bandwidths close to 800 and about 30 seconds for bandwidths close to 2600.</p>
-  </li>
 </ul>
 
 <h2 id="installation">Installation</h2>
@@ -576,13 +570,17 @@ MathJax.Hub.Config({
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pyshtools
 </code></pre></div></div>
 
-<p>To install the Fortran 95 components for use in your Fortran programs, installation can be as simple as executing the following command in the SHTOOLS directory</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make fortran
-make fortran-mp  <span class="c"># (for OpenMP)</span>
+<p>To upgrade a pre-existing installation use</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nt">--upgrade</span> pyshtools
 </code></pre></div></div>
 
-<p>or by using the brew package manager (macOS)</p>
+<p>To install the Fortran 95 components for use in your Fortran programs, execute the following command in the SHTOOLS directory</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make fortran
+make fortran-mp  <span class="c"># for OpenMP</span>
+</code></pre></div></div>
+
+<p>or alternatively install using the brew package manager (macOS)</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew tap shtools/shtools
 brew install shtools
@@ -594,7 +592,7 @@ brew install shtools
 
 <h2 id="citation">Citation</h2>
 
-<p>Mark A. Wieczorek and Matthias Meschede (2018). SHTools — Tools for working with spherical harmonics, <em>Geochemistry, Geophysics, Geosystems</em>, doi:<a href="https://doi.org/10.1029/2018GC007529">10.1029/2018GC007529</a>.</p>
+<p>Mark A. Wieczorek and Matthias Meschede (2018). SHTools — Tools for working with spherical harmonics, <em>Geochemistry, Geophysics, Geosystems</em>, 19, 2574-2592, doi:<a href="https://doi.org/10.1029/2018GC007529">10.1029/2018GC007529</a>.</p>
 
 
     <div class="tags">

@@ -540,6 +540,18 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/pylegendre.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/pylegendre_lm.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/pymakecirclecoord.html</loc>
   </url>
   
@@ -822,6 +834,12 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/pyshexpandwlsq.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/pyshfindlwin.html</loc>
   </url>
   
@@ -966,6 +984,12 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/pyshrotatetapers.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/pyshrtoc.html</loc>
   </url>
   
@@ -979,6 +1003,30 @@
   
   <url>
     <loc>http://shtools.oca.eu/pyshvectortocilm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/pyslepiancoeffs.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/pyslepiancoeffstosh.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/pyspharm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/pyspharm_lm.html</loc>
   </url>
   
   
@@ -1075,6 +1123,18 @@
   
   <url>
     <loc>http://shtools.oca.eu/python-shwindow.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/python-slepian.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/python-slepiancoeffs.html</loc>
   </url>
   
   
@@ -1466,6 +1526,12 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/shrotatetapers.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/shrtoc.html</loc>
   </url>
   
@@ -1488,6 +1554,18 @@
   </url>
   
   
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/slepiancoeffs.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/slepiancoeffstosh.html</loc>
+  </url>
   
   
   

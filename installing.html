@@ -123,7 +123,7 @@
                 
                 
                 
-                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/releases" target="_blank">Releases</a></li>
                 
                 
                 
@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.3</li>
+  <li class="sidebarTitle">SHTOOLS 4.4</li>
   
   
   
@@ -558,14 +558,15 @@ $('#toc').on('click', 'a', function() {
 
   <h2 id="python-package-installer-pip">Python package installer (pip)</h2>
 
-<p>The easiest way to install the Python components of SHTOOLS (pyshtools) is to use <code class="highlighter-rouge">pip</code>. On Linux, macOS and windows machines, the binary wheels can be installed by executing the command</p>
+<p>The easiest way to install the Python components of SHTOOLS (pyshtools) is to use <code class="highlighter-rouge">pip</code>. On Linux, macOS and windows machines, the binary wheels can be installed by executing one of the following commands</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pyshtools
+pip install <span class="nt">--upgrade</span> pyshtools  <span class="c"># to upgrade a pre-existing installation</span>
 </code></pre></div></div>
 <p>If you wish to instead compile the archive yourself, first make sure that you have the necessary dependencies installed. On most linux distributions, this can be accomplished using</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 </code></pre></div></div>
 <p>or on macOS using <a href="https://brew.sh/">brew</a></p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install fftw <span class="nt">--with-fortran</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install fftw
 </code></pre></div></div>
 <p>Then build from source using the command</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pyshtools <span class="nt">--no-binary</span> pyshtools

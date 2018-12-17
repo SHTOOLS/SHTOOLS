@@ -278,7 +278,7 @@
 {
 "title": "Spherical Harmonic Tools",
 "url": "index.html",
-"summary": "SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms and reconstructions, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data."
+"summary": "SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data."
 }
 ,
 
@@ -800,6 +800,24 @@
 
 
 {
+"title": "legendre (Python)",
+"url": "pylegendre.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "legendre_lm (Python)",
+"url": "pylegendre_lm.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "MakeCircleCoord (Python)",
 "url": "pymakecirclecoord.html",
 "summary": ""
@@ -1223,6 +1241,15 @@
 
 
 {
+"title": "SHExpandWLSQ (Python)",
+"url": "pyshexpandwlsq.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "SHFindLWin (Python)",
 "url": "pyshfindlwin.html",
 "summary": ""
@@ -1439,6 +1466,15 @@
 
 
 {
+"title": "SHRotateTapers (Python)",
+"url": "pyshrotatetapers.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "SHrtoc (Python)",
 "url": "pyshrtoc.html",
 "summary": ""
@@ -1459,6 +1495,42 @@
 {
 "title": "SHVectorToCilm (Python)",
 "url": "pyshvectortocilm.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SlepianCoeffs (Python)",
+"url": "pyslepiancoeffs.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SlepianCoeffsToSH (Python)",
+"url": "pyslepiancoeffstosh.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "spharm (Python)",
+"url": "pyspharm.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "spharm_lm_ (Python)",
+"url": "pyspharm_lm.html",
 "summary": ""
 }
 ,
@@ -1603,6 +1675,24 @@
 {
 "title": "SHWindow class",
 "url": "python-shwindow.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Slepian class",
+"url": "python-slepian.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SlepianCoeffs class",
+"url": "python-slepiancoeffs.html",
 "summary": ""
 }
 ,
@@ -2188,6 +2278,15 @@
 
 
 {
+"title": "SHRotateTapers (Fortran)",
+"url": "shrotatetapers.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "SHrtoc (Fortran)",
 "url": "shrtoc.html",
 "summary": ""
@@ -2222,6 +2321,24 @@
 ,
 
 
+
+
+
+{
+"title": "SlepianCoeffs (Fortran)",
+"url": "slepiancoeffs.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SlepianCoeffsToSH (Fortran)",
+"url": "slepiancoeffstosh.html",
+"summary": ""
+}
+,
 
 
 

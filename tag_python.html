@@ -123,7 +123,7 @@
                 
                 
                 
-                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/releases" target="_blank">Releases</a></li>
                 
                 
                 
@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.3</li>
+  <li class="sidebarTitle">SHTOOLS 4.4</li>
   
   
   
@@ -991,6 +991,24 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
+        <tr><td><a href="pylegendre.html">legendre (Python)</a></td>
+          <td> Compute all the associated Legendre functions up to a maximum degree and order. Usage plm = legendre (lmax, z, [normalization, csphase, cnorm, packed]) Returns  plm : float, dimension (lmax+1, lmax+1) or ((lmax+1)*(lmax+2)/2) An array of... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pylegendre_lm.html">legendre_lm (Python)</a></td>
+          <td> Compute the associated Legendre function for a specific degree and order. Usage plm = legendre_lm (l, m, z, [normalization, csphase, cnorm]) Returns  plm : float The associated Legendre functions for degree l and order m.  &lt;h2... </td>
+        </tr>
+        
+     
+   
+    
+        
+
         <tr><td><a href="pymakecirclecoord.html">MakeCircleCoord (Python)</a></td>
           <td> Compute the coordinates of a circle placed at a given latitude and longitude. Usage coord = MakeCircleCoord (lat, lon, theta0, [cinterval]) Returns  coord : float, dimension(360/cinterval, 2) The latitude [:,0] and longitude [:,1] coordinates of the circle in degrees. ... </td>
         </tr>
@@ -1414,6 +1432,15 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
+        <tr><td><a href="pyshexpandwlsq.html">SHExpandWLSQ (Python)</a></td>
+          <td> Expand a set of irregularly sampled data points into spherical harmonics using a weighted least squares inversion. Usage cilm, chi2 = SHExpandLSQ (d, w, lat, lon, lmax, [norm, csphase]) Returns  cilm : float, dimension (2, lmax+1,... </td>
+        </tr>
+        
+     
+   
+    
+        
+
         <tr><td><a href="pyshfindlwin.html">SHFindLWin (Python)</a></td>
           <td> Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor. Usage lwin = SHFindLWin (theta0, m, alpha, [taper_number]) Returns  lwin : integer The spherical harmonic bandwidth  Parameters  theta0 : float The angular radius of... </td>
         </tr>
@@ -1630,6 +1657,15 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
+        <tr><td><a href="pyshrotatetapers.html">SHRotateTapers (Python)</a></td>
+          <td> Rotate orthogonal spherical-cap Slepian functions centered at the North pole to a different location. Usage tapersrot = SHRotateTapers(tapers, taper_order, nrot, x, dj) Returns  tapersrot : float, dimension ((lmax+1)**2, nrot) An array containing the spherical harmonic coefficients of the... </td>
+        </tr>
+        
+     
+   
+    
+        
+
         <tr><td><a href="pyshrtoc.html">SHrtoc (Python)</a></td>
           <td> Convert real spherical harmonics to complex form. Usage ccilm = SHrtoc (rcilm, [lmax, convention, switchcs]) Returns  ccilm : float, dimension (2, lmax+1, lmax+1) The output complex spherical harmonic coefficients. ccilm[0,:,:] and ccilm[1,:,:] correspond to the real and... </td>
         </tr>
@@ -1657,6 +1693,42 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
+        <tr><td><a href="pyslepiancoeffs.html">SlepianCoeffs (Python)</a></td>
+          <td> Determine the expansion coefficients of a function for a given set of input Slepian functions. Usage falpha = SlepianCoeffs(galpha, flm, nmax) Returns  falpha : float, dimension (nmax) A vector containing the Slepian coefficients of the input function flm.  &lt;h2... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyslepiancoeffstosh.html">SlepianCoeffsToSH (Python)</a></td>
+          <td> Convert a function expressed in Slepian coefficients to spherical harmonic coefficients. Usage flm = SlepianCoeffsToSH(falpha, galpha, nmax) Returns  flm :float, dimension (2, lmax+1, lmax+1) The spherical harmonic coefficients of the global function.  Parameters  falpha :float, dimension... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyspharm.html">spharm (Python)</a></td>
+          <td> Compute all the spherical harmonic functions up to a maximum degree and order. Usage ylm = spharm (lmax, theta, phi, [normalization, kind, csphase, packed, degrees]) Returns  ylm : float or complex, dimension (2, lmax+1, lmax+1)... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="pyspharm_lm.html">spharm_lm_ (Python)</a></td>
+          <td> Compute the spherical harmonic function for a specific degree and order. Usage ylm = spharm (l, m, theta, phi, [normalization, kind, csphase, degrees]) Returns  ylm : float or complex The spherical harmonic function ylm, where l... </td>
+        </tr>
+        
+     
+   
+    
+        
+
         <tr><td><a href="pysphericalcapcoef.html">SphericalCapCoef (Python)</a></td>
           <td> Calculate the spherical harmonic coefficients of a spherical cap. Usage coef = SphericalCapCoef (theta, lmax) Returns  coef : float, dimension(lmax+1) The zonal spherical harmonic coefficients of a spherical cap centered over the north pole.  Parameters  theta : float... </td>
         </tr>
@@ -1673,6 +1745,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
         </tr>
         
      
+   
+    
+   
+    
    
     
    
@@ -1976,6 +2052,18 @@ table:nth-of-type(n) th:nth-of-type(2) {
      
    
     
+        
+     
+   
+    
+   
+    
+        
+     
+   
+    
+        
+     
    
     
         

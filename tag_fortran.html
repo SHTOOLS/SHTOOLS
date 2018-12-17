@@ -123,7 +123,7 @@
                 
                 
                 
-                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/releases" target="_blank">Releases</a></li>
                 
                 
                 
@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.3</li>
+  <li class="sidebarTitle">SHTOOLS 4.4</li>
   
   
   
@@ -1454,10 +1454,46 @@ table:nth-of-type(n) th:nth-of-type(2) {
      
    
     
+        
+     
    
     
         
      
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+   
+    
+        
+     
+   
+    
+   
+    
    
     
    
@@ -1733,7 +1769,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shexpandlsq.html">SHExpandLSQ (Fortran)</a></td>
-          <td> Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion. Usage call SHExpandLSQ (cilm, d, lat, lon, nmax, lmax, norm, chi2, csphase, exitstatus) Parameters  cilm : output, real*8, dimension (2,... </td>
+          <td> Expand a set of irregularly sampled data points into spherical harmonics using a (weighted) least squares inversion. Usage call SHExpandLSQ (cilm, d, lat, lon, nmax, lmax, norm, chi2, csphase, weights, exitstatus) Parameters  cilm : output,... </td>
         </tr>
         
      
@@ -2002,6 +2038,15 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
+        <tr><td><a href="shrotatetapers.html">SHRotateTapers (Fortran)</a></td>
+          <td> Rotate orthogonal spherical-cap Slepian functions centered at the North pole to a different location. Usage call SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, exitstatus) Parameters  tapersrot : output, real*8, dimension ((lmax+1)**2, nrot) An array containing the... </td>
+        </tr>
+        
+     
+   
+    
+        
+
         <tr><td><a href="shrtoc.html">SHrtoc (Fortran)</a></td>
           <td> Convert real spherical harmonics to complex form. Usage call SHrtoc (rcilm, ccilm, degmax, convention, switchcs, exitstatus) Parameters  rcilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The input real spherical harmonic coefficients. rcilm(1,:,:) and rcilm(2,:,:) correspond to... </td>
         </tr>
@@ -2036,6 +2081,24 @@ table:nth-of-type(n) th:nth-of-type(2) {
      
    
     
+   
+    
+        
+
+        <tr><td><a href="slepiancoeffs.html">SlepianCoeffs (Fortran)</a></td>
+          <td> Determine the expansion coefficients of a function for a given set of input Slepian functions. Usage call SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus) Parameters  falpha : output, real*8, dimension (nmax) A vector containing the Slepian coefficients of the input... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="slepiancoeffstosh.html">SlepianCoeffsToSH (Fortran)</a></td>
+          <td> Convert a function expressed in Slepian coefficients to spherical harmonic coefficients. Usage call SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus) Parameters  flm : output, real*8, dimension (2, lmax+1, lmax+1) The spherical harmonic coefficients of the global function. falpha... </td>
+        </tr>
+        
+     
    
     
         

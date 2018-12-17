@@ -123,7 +123,7 @@
                 
                 
                 
-                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/releases" target="_blank">Releases</a></li>
                 
                 
                 
@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.3</li>
+  <li class="sidebarTitle">SHTOOLS 4.4</li>
   
   
   
@@ -554,7 +554,34 @@ $('#toc').on('click', 'a', function() {
 
     
 
-  <h2 id="version-43">Version 4.3</h2>
+  <h2 id="version-44">Version 4.4</h2>
+
+<p><strong>New Slepian expansion routines</strong></p>
+
+<ul>
+  <li>Added the new Fortran 95 functions <code class="highlighter-rouge">SHRotateTapers</code> for rotating spherical cap Slepian functions, <code class="highlighter-rouge">SlepianCoeffs</code> for expanding a function in a Slepian basis, and <code class="highlighter-rouge">SlepianCoeffsToSH</code> to convert the Slepian coefficients into spherical harmonic coefficients.</li>
+  <li>Added two python classes <code class="highlighter-rouge">Slepian</code> and <code class="highlighter-rouge">SlepianCoeffs</code> for managing Slepian basis functions and the Slepian expansion coefficients of a function.</li>
+</ul>
+
+<p><strong>Legendre and spherical harmonic convenience functions</strong></p>
+
+<ul>
+  <li>Added 4 python convenience functions for computing Legendre and spherical harmonic functions: <code class="highlighter-rouge">legendre()</code> to compute all the legendre functions, <code class="highlighter-rouge">legendre_lm()</code> to compute the legendre function for a specified degree and order, <code class="highlighter-rouge">spharm()</code> to compute all the spherical harmonic functions, and <code class="highlighter-rouge">spharm_lm()</code> to compute the spherical harmonic functions for a specific degree and order.</li>
+</ul>
+
+<p><strong>Other improvements</strong></p>
+
+<ul>
+  <li>Added the option to perform a weighted least squares inversion in the fortran routine <code class="highlighter-rouge">SHExpandLSQ</code>, and added a python wrapped function <code class="highlighter-rouge">SHExpandWLSQ()</code>.</li>
+  <li>Added <code class="highlighter-rouge">min()</code> and <code class="highlighter-rouge">max()</code> methods to the <code class="highlighter-rouge">SHGrid</code> class, to return the minimum and maximum value of the gridded data.</li>
+  <li>Added the property <code class="highlighter-rouge">mass</code> to the <code class="highlighter-rouge">SHGravCoeffs</code> class, which is computed by the input GM and the codata value for <code class="highlighter-rouge">G</code>.</li>
+  <li>Add the optional parameter <code class="highlighter-rouge">omega</code> to <code class="highlighter-rouge">SHGravCoeffs.geoid()</code> to override the value provided in the class instance.</li>
+  <li>Fixed some minor typos and usability issues, and cleaned up the python wrapper and signature files.</li>
+</ul>
+
+<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.4, Zenodo, doi:<a href="https://doi.org/10.5281/zenodo.592762">10.5281/zenodo.592762</a></p>
+
+<h2 id="version-43">Version 4.3</h2>
 
 <p><strong>New Gravity and Magnetic field classes</strong></p>
 
@@ -605,7 +632,7 @@ two class instances have the same <code class="highlighter-rouge">lmax</code>.</
 
 <p><strong>Citation:</strong></p>
 
-<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.3, Zenodo, doi:<a href="https://doi.org/10.5281/zenodo.1345510">10.5281/zenodo.1345510</a></p>
+<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.3, Zenodo, doi:<a href="https://doi.org/10.5281/zenodo.1346663">10.5281/zenodo.1346663</a></p>
 
 <h2 id="version-42">Version 4.2</h2>
 

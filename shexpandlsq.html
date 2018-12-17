@@ -123,7 +123,7 @@
                 
                 
                 
-                <li><a href="https://github.com/SHTOOLS/SHTOOLS/wiki" target="_blank">Wiki</a></li>
+                <li><a href="https://github.com/SHTOOLS/SHTOOLS/releases" target="_blank">Releases</a></li>
                 
                 
                 
@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.3</li>
+  <li class="sidebarTitle">SHTOOLS 4.4</li>
   
   
   
@@ -531,11 +531,11 @@ MathJax.Hub.Config({
 
     
 
-  <p>Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion.</p>
+  <p>Expand a set of irregularly sampled data points into spherical harmonics using a (weighted) least squares inversion.</p>
 
 <h2 id="usage">Usage</h2>
 
-<p>call SHExpandLSQ (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">d</code>, <code class="highlighter-rouge">lat</code>, <code class="highlighter-rouge">lon</code>, <code class="highlighter-rouge">nmax</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">chi2</code>, <code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
+<p>call SHExpandLSQ (<code class="highlighter-rouge">cilm</code>, <code class="highlighter-rouge">d</code>, <code class="highlighter-rouge">lat</code>, <code class="highlighter-rouge">lon</code>, <code class="highlighter-rouge">nmax</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">norm</code>, <code class="highlighter-rouge">chi2</code>, <code class="highlighter-rouge">csphase</code>, <code class="highlighter-rouge">weights</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
 <h2 id="parameters">Parameters</h2>
 
@@ -558,20 +558,24 @@ MathJax.Hub.Config({
   <dd>The residual sum of squares misfit for an overdetermined inversion.</dd>
   <dt><code class="highlighter-rouge">csphase</code> : input, optional, integer, default = 1</dt>
   <dd>1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.</dd>
+  <dt><code class="highlighter-rouge">weights</code> : input, real*8, dimension (<code class="highlighter-rouge">nmax</code>)</dt>
+  <dd>The weights to be applied in a weighted least squares inversion.</dd>
   <dt><code class="highlighter-rouge">exitstatus</code> : output, optional, integer</dt>
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
 <h2 id="description">Description</h2>
 
-<p><code class="highlighter-rouge">SHExpandLSQ</code> will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When there are more data points than spherical harmonic coefficients (i.e., <code class="highlighter-rouge">nmax&gt;(lmax+1)**2</code>), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. See the LAPACK documentation concerning DGELS for further information.</p>
+<p><code class="highlighter-rouge">SHExpandLSQ</code> will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When the number of data points is greater or equal to the number of spherical harmonic coefficients (i.e., <code class="highlighter-rouge">nmax&gt;=(lmax+1)**2</code>), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. The inversions are performed using the LAPACK routine DGELS.</p>
+
+<p>A weighted least squares inversion will be performed if the optional vector
+<code class="highlighter-rouge">weights</code> is specified. In this case, the problem must be overdetermined, and it is assumed that each measurement is statistically independent (i.e., the weighting matrix is diagonal). The inversion is performed using the LAPACK routine DGGGLM.</p>
 
 <p>The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments <code class="highlighter-rouge">norm</code> and <code class="highlighter-rouge">csphase</code>; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.</p>
 
 <h2 id="see-also">See also</h2>
 
-<p><a href="makegriddh.html">makegriddh</a>, <a href="shexpanddh.html">shexpanddh</a>, <a href="makegriddhc.html">makegriddhc</a>, <a href="shexpanddhc.html">shexpanddhc</a>, <a href="makegridglq.html">makegridglq</a>, <a href="shexpandglq.html">shexpandglq</a>, <a href="makegridglqc.html">makegridglqc</a>, <a href="shexpandglqc.html">shexpandglqc</a>, dgels(1)</p>
-
+<p><a href="makegriddh.html">makegriddh</a>, <a href="shexpanddh.html">shexpanddh</a>, <a href="makegriddhc.html">makegriddhc</a>, <a href="shexpanddhc.html">shexpanddhc</a>, <a href="makegridglq.html">makegridglq</a>, <a href="shexpandglq.html">shexpandglq</a>, <a href="makegridglqc.html">makegridglqc</a>, <a href="shexpandglqc.html">shexpandglqc</a>, dgels(1), dggglm(1)</p>
 
 
     <div class="tags">
