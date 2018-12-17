@@ -12,7 +12,9 @@ main namespace:
 
     SHCoeffs          : Class for spherical harmonic coefficients.
     SHGrid            : Class for global grids.
-    SHWindow          : Class for localization windows.
+    SHWindow          : Class for localized spectral analyses.
+    Slepian           : Class for Slepian functions.
+    SlepianCoeffs     : Class for Slepian expansion coefficients.
     SHGravCoeffs      : Class for gravitational potential spherical harmonic
                         coefficients.
     SHGravGrid        : Class for global gridded gravitational field data.
@@ -48,7 +50,7 @@ from __future__ import absolute_import as _absolute_import
 from __future__ import division as _division
 from __future__ import print_function as _print_function
 
-__version__ = '4.3'
+__version__ = '4.4'
 __author__ = 'SHTOOLS developers'
 
 import os as _os
@@ -70,6 +72,8 @@ from . import utils
 from .shclasses import SHCoeffs
 from .shclasses import SHGrid
 from .shclasses import SHWindow
+from .shclasses import Slepian
+from .shclasses import SlepianCoeffs
 from .shclasses import SHGravCoeffs
 from .shclasses import SHGravGrid
 from .shclasses import SHGravTensor
@@ -81,5 +85,6 @@ from .shclasses import SHMagTensor
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constant', 'shclasses', 'legendre', 'expand', 'shio',
            'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
-           'SHGrid', 'SHWindow', 'SHGravCoeffs', 'SHGravGrid', 'SHGravTensor',
-           'SHGeoid', 'SHMagCoeffs', 'SHMagGrid', 'SHMagTensor']
+           'SHGrid', 'SHWindow', 'Slepian', 'SlepianCoeffs', 'SHGravCoeffs',
+           'SHGravGrid', 'SHGravTensor', 'SHGeoid', 'SHMagCoeffs', 'SHMagGrid',
+           'SHMagTensor']

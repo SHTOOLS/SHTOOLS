@@ -32,7 +32,7 @@ call SHRotateRealCoef (`cilmrot`, `cilm`, `lmax`, `x`, `dj`, `exitstatus`)
 
 The rotation of a coordinate system or body can be viewed in two complementary ways involving three successive rotations. Both methods have the same initial and final configurations, and the angles listed in both schemes are the same.
 
-`Scheme A:` 
+`Scheme A:`
 
 (I) Rotation about the z axis by alpha.
 (II) Rotation about the new y axis by beta.

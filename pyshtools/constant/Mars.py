@@ -20,7 +20,7 @@ gm_mars = _Constant(
     value=0.4282837581575610e+14,
     unit='m3 / s2',
     uncertainty=0.18167460e+6,
-    reference='Konopliv A. S., R. S. Park ,W. M. Folkner (2016). '
+    reference='Konopliv A. S., R. S. Park, W. M. Folkner (2016). '
     'An improved JPL Mars gravity field and orientation from Mars orbiter '
     'and lander tracking data, Icarus, 274, 253-260, '
     'doi:10.1016/j.icarus.2016.02.052')
@@ -77,7 +77,7 @@ omega_mars = _Constant(
     value=350.891985307 * 2 * _np.pi / 360 / (24 * 60 * 60),
     unit='rad / s',
     uncertainty=0.000000003 * 2 * _np.pi / 360 / (24 * 60 * 60),
-    reference='Konopliv A. S., R. S. Park ,W. M. Folkner (2016). '
+    reference='Konopliv A. S., R. S. Park, W. M. Folkner (2016). '
     'An improved JPL Mars gravity field and orientation from Mars orbiter '
     'and lander tracking data, Icarus, 274, 253-260, '
     'doi:10.1016/j.icarus.2016.02.052')

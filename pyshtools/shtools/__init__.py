@@ -41,6 +41,7 @@ from .._SHTOOLS import SHExpandGLQC
 from .._SHTOOLS import MakeGridGLQC
 from .._SHTOOLS import GLQGridCoord
 from .._SHTOOLS import SHExpandLSQ
+from .._SHTOOLS import SHExpandWLSQ
 from .._SHTOOLS import MakeGrid2D
 from .._SHTOOLS import MakeGridPoint
 from .._SHTOOLS import MakeGridPointC
@@ -83,6 +84,9 @@ from .._SHTOOLS import ComputeDMap
 from .._SHTOOLS import Curve2Mask
 from .._SHTOOLS import SHBias
 from .._SHTOOLS import SphericalCapCoef
+from .._SHTOOLS import SHRotateTapers
+from .._SHTOOLS import SlepianCoeffs
+from .._SHTOOLS import SlepianCoeffsToSH
 
 # rotate
 from .._SHTOOLS import djpi2
@@ -117,23 +121,24 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'PLegendre_d1', 'SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
            'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
            'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ',
-           'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
-           'SHRead2', 'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
-           'SHCilmToVector', 'SHVectorToCilm', 'SHCilmToCindex',
-           'SHCindexToCilm', 'SHrtoc', 'SHctor', 'SHAdmitCorr', 'SHConfidence',
-           'SHMultiTaperSE', 'SHMultiTaperCSE', 'SHLocalizedAdmitCorr',
-           'SHReturnTapers', 'SHReturnTapersM', 'ComputeDm', 'ComputeDG82',
-           'SHFindLWin', 'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr',
-           'SHMTDebias', 'SHMTVarOpt', 'SHSjkPG', 'SHMultiTaperMaskSE',
-           'SHMultiTaperMaskCSE', 'SHReturnTapersMap', 'SHBiasKMask',
-           'ComputeDMap', 'Curve2Mask', 'SHBias', 'SphericalCapCoef',
-           'djpi2', 'SHRotateCoef', 'SHRotateRealCoef',
-           'MakeGravGridDH', 'MakeGravGradGridDH', 'MakeGeoidGridDH',
-           'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
-           'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
-           'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
-           'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j', 'DHaj',
-           'MakeMagGradGridDH']
+           'SHExpandWLSQ', 'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC',
+           'SHMultiply', 'SHRead2', 'SHRead2Error', 'SHReadJPL',
+           'SHReadJPLError', 'SHCilmToVector', 'SHVectorToCilm',
+           'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc', 'SHctor',
+           'SHAdmitCorr', 'SHConfidence', 'SHMultiTaperSE', 'SHMultiTaperCSE',
+           'SHLocalizedAdmitCorr', 'SHReturnTapers', 'SHReturnTapersM',
+           'ComputeDm', 'ComputeDG82', 'SHFindLWin', 'SHBiasK',
+           'SHMTCouplingMatrix', 'SHBiasAdmitCorr', 'SHMTDebias', 'SHMTVarOpt',
+           'SHSjkPG', 'SHMultiTaperMaskSE', 'SHMultiTaperMaskCSE',
+           'SHReturnTapersMap', 'SHBiasKMask', 'ComputeDMap', 'Curve2Mask',
+           'SHBias', 'SphericalCapCoef', 'djpi2', 'SHRotateCoef',
+           'SHRotateRealCoef', 'MakeGravGridDH', 'MakeGravGradGridDH',
+           'MakeGeoidGridDH', 'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH',
+           'CilmMinusRhoHDH', 'BAtoHilmDH', 'BAtoHilmRhoHDH',
+           'DownContFilterMA', 'DownContFilterMC', 'NormalGravity',
+           'MakeMagGridDH', 'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j',
+           'DHaj', 'MakeMagGradGridDH', 'SHRotateTapers', 'SlepianCoeffs',
+           'SlepianCoeffsToSH']
 
 _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',

@@ -41,7 +41,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Routine name | Description |
 | ------------ | ----------- |
-| [SHExpandLSQ](shexpandlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion. |
+| [SHExpandLSQ](shexpandlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a (weighted) least squares inversion. |
 | [MakeGrid2D](makegrid2d.html) | Create a 2D cylindrical map with arbitrary grid spacing from a set of spherical harmonic coefficients. |
 | [MakeGridPoint](makegridpoint.html) | Evaluate a real function expressed in real spherical harmonics at a single point. |
 | [MakeGridPointC](makegridpointc.html) | Evaluate a complex function expressed in complex spherical harmonics at a single point. |

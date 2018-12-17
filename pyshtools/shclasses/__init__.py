@@ -23,6 +23,12 @@ Class structure:
         SHWindowCap
         SHWindowMask
 
+    Slepian
+        SlepianCap
+        SlepianMask
+
+    SlepianCoeffs
+
     SHGravCoeffs
         SHGravRealCoeffs
 
@@ -59,6 +65,12 @@ from .shcoeffsgrid import GLQComplexGrid
 from .shwindow import SHWindow
 from .shwindow import SHWindowCap
 from .shwindow import SHWindowMask
+
+from .slepian import Slepian
+from .slepian import SlepianCap
+from .slepian import SlepianMask
+
+from .slepiancoeffs import SlepianCoeffs
 
 from .shgravcoeffs import SHGravCoeffs
 from .shgravcoeffs import SHGravRealCoeffs

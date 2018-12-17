@@ -155,6 +155,8 @@ class SHGravCoeffs(object):
         gm : float
             The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
+        mass : float
+            The mass of the planet in kg.
         r0 : float
             The reference radius of the spherical harmonic coefficients.
         omega : float, optional, default = None
@@ -790,6 +792,12 @@ class SHGravCoeffs(object):
         clm = SHGravRealCoeffs(cilm, gm=gm, r0=d, omega=omega,
                                normalization='4pi', csphase=1)
         return clm
+
+    @property
+    def mass(self):
+        """Return the mass of the planet in kg.
+        """
+        return self.gm / _G.value
 
     # ---- Define methods that modify internal variables ----
     def set_omega(self, omega):
@@ -1806,15 +1814,15 @@ class SHGravCoeffs(object):
         return _SHGravTensor(1.e9*vxx, 1.e9*vyy, 1.e9*vzz, 1.e9*vxy, 1.e9*vxz,
                              1.e9*vyz, self.gm, a, f, lmax, lmax_calc)
 
-    def geoid(self, potref, a=None, f=None, r=None, order=2, lmax=None,
-              lmax_calc=None, grid='DH2'):
+    def geoid(self, potref, a=None, f=None, r=None, omega=None, order=2,
+              lmax=None, lmax_calc=None, grid='DH2'):
         """
         Create a global map of the height of the geoid and return an SHGeoid
         class instance.
 
         Usage
         -----
-        geoid = x.geoid(potref, [a, f, r, order, lmax, lmax_calc, grid])
+        geoid = x.geoid(potref, [a, f, r, omega, order, lmax, lmax_calc, grid])
 
         Returns
         -------
@@ -1835,6 +1843,8 @@ class SHGravCoeffs(object):
         order : optional, integer, default = 2
             The order of the Taylor series expansion of the potential about the
             reference radius r. This can be either 1, 2, or 3.
+        omega : optional, float, default = self.omega
+            The angular rotation rate of the planet.
         lmax : optional, integer, default = self.lmax
             The maximum spherical harmonic degree that determines the number
             of samples of the output grid, n=2lmax+2, and the latitudinal
@@ -1857,7 +1867,9 @@ class SHGravCoeffs(object):
         optional parameters a and f are specified, the geoid height will be
         referenced to a flattened ellipsoid with semi-major axis a and
         flattening f. The pseudo-rotational potential is explicitly accounted
-        for by specifying the angular rotation rate omega of the planet.
+        for by using the angular rotation rate omega of the planet in the
+        SHGravCoeffs class instance. If omega is explicitly specified for this
+        method, it will override the value present in the class instance.
 
         Reference
         ----------
@@ -1889,12 +1901,15 @@ class SHGravCoeffs(object):
         else:
             coeffs = self.to_array(normalization='4pi', csphase=1)
 
+        if omega is None:
+            omega = self.omega
+
         geoid = _MakeGeoidGridDH(coeffs, self.r0, self.gm, potref, lmax=lmax,
-                                 omega=self.omega, r=r, order=order,
+                                 omega=omega, r=r, order=order,
                                  lmax_calc=lmax_calc, a=a, f=f,
                                  sampling=sampling)
 
-        return _SHGeoid(geoid, self.gm, potref, a, f, self.omega, r, order,
+        return _SHGeoid(geoid, self.gm, potref, a, f, omega, r, order,
                         lmax, lmax_calc)
 
     # ---- Plotting routines ----
@@ -2045,7 +2060,7 @@ class SHGravCoeffs(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
@@ -2255,7 +2270,7 @@ class SHGravCoeffs(object):
         if ax is None:
             fig.tight_layout(pad=0.5)
             if show:
-                _plt.show()
+                fig.show()
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes

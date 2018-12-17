@@ -35,6 +35,8 @@ Other
 -----
 SHExpandLSQ    Expand a set of irregularly sampled data points into spherical
                harmonics using a least squares inversion.
+SHExpandWLSQ   Expand a set of irregularly sampled data points into spherical
+               harmonics using a weighted least squares inversion.
 MakeGrid2D     Create a 2D cylindrical map with arbitrary grid spacing from a
                set of spherical harmonic coefficients.
 MakeGridPoint  Evaluate a real function expressed in real spherical harmonics
@@ -43,6 +45,10 @@ MakeGridPointC Evaluate a complex function expressed in complex spherical
                harmonics at a single point.
 SHMultiply     Multiply two functions and determine the spherical harmonic
                coefficients of the resulting function.
+spharm         Compute all the spherical harmonic functions up to a maximum
+               degree and order.
+spharm_lm      Compute the spherical harmonic function for a specific degree l
+               and order m.
 """
 
 from __future__ import absolute_import as _absolute_import
@@ -61,7 +67,11 @@ from ..shtools import SHExpandGLQC
 from ..shtools import MakeGridGLQC
 from ..shtools import GLQGridCoord
 from ..shtools import SHExpandLSQ
+from ..shtools import SHExpandWLSQ
 from ..shtools import MakeGrid2D
 from ..shtools import MakeGridPoint
 from ..shtools import MakeGridPointC
 from ..shtools import SHMultiply
+
+from .spharm_functions import spharm
+from .spharm_functions import spharm_lm

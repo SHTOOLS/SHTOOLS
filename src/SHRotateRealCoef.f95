@@ -175,26 +175,26 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
     end if
 
     if (present(exitstatus)) then
-        ! Re-order complex coefficients to form a vector
-        call SHcilmtocindex(ccilm, cof, lmax, exitstatus)
+        ! Re-order complex coefficients to form a 2D vector
+        call SHcilmtocindex(ccilm, cof, lmax, exitstatus=exitstatus)
         if (exitstatus /= 0) return
 
         ! Rotate complex re-ordered coefficients
-        call SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
+        call SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus=exitstatus)
         if (exitstatus /= 0) return
 
-        ! Convert ordered coefficients back to an array
-        call SHcindextocilm(rcof, ccilm, lmax, exitstatus)
+        ! Convert ordered coefficients back to a 3D array
+        call SHcindextocilm(rcof, ccilm, lmax, exitstatus=exitstatus)
         if (exitstatus /= 0) return
 
     else
-        ! Re-order complex coefficients to form a vector
+        ! Re-order complex coefficients to form a 2D vector
         call SHcilmtocindex(ccilm, cof, lmax)
 
         ! Rotate complex re-ordered coefficients
         call SHRotateCoef(x, cof, rcof, dj, lmax)
 
-        ! Convert ordered coefficients back to an array
+        ! Convert ordered coefficients back to a 3D array
         call SHcindextocilm(rcof, ccilm, lmax)
 
     endif
@@ -213,7 +213,7 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
     else
         if (present(exitstatus)) then
             call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=0, &
-                        exitstatus = exitstatus)
+                        exitstatus=exitstatus)
             if (exitstatus /= 0) return
         else
             call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=0)

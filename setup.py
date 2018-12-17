@@ -35,8 +35,8 @@ try:
     rst = pypandoc.convert_file('README.md', 'rst')
     long_description = rst.split('\n', 5)[5]
 except(IOError, ImportError):
-    print('pandoc is not installed. PYPI description will not be '
-          'formatted correctly.')
+    print('*** pypandoc is not installed. PYPI description will not be '
+          'formatted correctly. ***')
     long_description = open('README.md').read()
 
 
@@ -268,7 +268,7 @@ def configuration(parent_package='', top_path=None):
 metadata = dict(
     name='pyshtools',
     version=VERSION,
-    description='SHTOOLS - Tools for working with spherical harmonics',
+    description='SHTOOLS - Spherical Harmonic Tools',
     long_description=long_description,
     url='https://shtools.github.io/SHTOOLS/',
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
