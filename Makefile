@@ -130,14 +130,16 @@
 #   make www
 #       Make the static html web documention in the directory www using Jekyll.
 #       You will first need to run `bundle install` in the doc/ directory, then
-#       `bundle exec serve`, and then open http://127.0.0.1:4000
+#       `bundle exec serve`, and then open http://127.0.0.1:4000. If you need
+#       to update the dependences, remove the file Gemfile.lock, and then run
+#       "bundle install".
 #
 #   make remove-www
 #       Remove the directory containing the static html web site.
 #
 ###############################################################################
 
-VERSION = 4.4
+VERSION = 4.5
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
