@@ -33,8 +33,8 @@ SHFindLWin             Determine the spherical-harmonic bandwidth that is
                        necessary to achieve a certain concentration factor.
 SHBiasK                Calculate the multitaper (cross-)power spectrum
                        expectation of a windowed function.
-SHMTCouplingMatrix     Calculate the multitaper coupling matrix for a given
-                       set of localization windows.
+SHMTCouplingMatrix     Compute the multitaper coupling matrix for a given set
+                       of localization windows.
 SHBiasAdmitCorr        Calculate the expected multitaper admittance and
                        correlation spectra associated with the input global
                        cross-power spectra of two functions.
@@ -75,6 +75,8 @@ SlepianCoeffs          Determine the expansion coefficients of a function for
                        a given set of input Slepian functions.
 SlepianCoeffsToSH      Convert a function expressed in Slepian coefficients to
                        spherical harmonic coefficients.
+SHSCouplingMatrix      Compute the spherical harmonic coupling matrix for a
+                       given set of Slepian functions.
 
 Other
 -----
@@ -117,3 +119,4 @@ from ..shtools import SphericalCapCoef
 from ..shtools import SHRotateTapers
 from ..shtools import SlepianCoeffs
 from ..shtools import SlepianCoeffsToSH
+from ..shtools import SHSCouplingMatrix

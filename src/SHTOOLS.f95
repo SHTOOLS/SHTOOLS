@@ -954,6 +954,13 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SlepianCoeffsToSH
 
+        subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
+            real*8, intent(out) :: kij(:,:)
+            real*8, intent(in) :: galpha(:,:)
+            integer, intent(in) :: lmax, nmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHSCouplingMatrix
+
     end interface
 
 end module SHTOOLS

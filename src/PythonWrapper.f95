@@ -2061,3 +2061,19 @@
         call SlepianCoeffsToSH(flm,falpha,galpha,lmax,nmax,&
                                exitstatus=exitstatus)
     end subroutine pySlepianCoeffsToSH
+
+    subroutine pySHSCouplingMatrix(exitstatus,kij,galpha,lmax,nmax,kij_d0,&
+                                   kij_d1,galpha_d0,galpha_d1)
+        use shtools, only: SHSCouplingMatrix
+        implicit none
+        integer,intent(out) :: exitstatus
+        real*8,dimension(kij_d0,kij_d1),intent(out) :: kij
+        real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+        integer,intent(in) :: lmax
+        integer,intent(in) :: nmax
+        integer,intent(in) :: kij_d0
+        integer,intent(in) :: kij_d1
+        integer,intent(in) :: galpha_d0
+        integer,intent(in) :: galpha_d1
+        call SHSCouplingMatrix(kij,galpha,lmax,nmax,exitstatus=exitstatus)
+    end subroutine pySHSCouplingMatrix
