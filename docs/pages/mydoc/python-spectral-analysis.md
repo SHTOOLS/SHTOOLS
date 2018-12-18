@@ -63,12 +63,13 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------------- | ----------- |
 | [SHBias](pyshbias.html) | Calculate the (cross-)power spectrum expectation of a windowed function. |
 
-## Slepian function expansions
+## Slepian function expansions (general)
 
 | Routine name | Description |
 | ------------ | ----------- |
 | [SlepianCoeffs](pyslepiancoeffs.html) | Determine the expansion coefficients of a function for a given set of input Slepian functions. |
 | [SlepianCoeffsToSH](pyslepiancoeffstosh.html) | Convert a function expressed in Slepian coefficients to spherical harmonic coefficients. |
+| [SHSCouplingMatrix](pyshscouplingmatrix.html) | Compute the spherical harmonic coupling matrix for a given set of Slepian functions. |
 
 ## Other routines
 
