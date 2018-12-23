@@ -98,18 +98,18 @@ subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
         do lp = l, lmax, 1
             do m = -l, l, 1
 
-                if (m >=0) then
+                if (m >= 0) then
                     ind = l**2+m+1
                 else
-                    ind = l**2+l+m+1
+                    ind = l**2+l+abs(m)+1
                 end if
 
                 do mp = -lp, lp, 1
 
-                    if (mp >=0) then
+                    if (mp >= 0) then
                         indp = lp**2+mp+1
                     else
-                        indp = lp**2+lp+mp+1
+                        indp = lp**2+lp+abs(mp)+1
                     end if
 
                     temp = 0.0d0
@@ -143,7 +143,7 @@ subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
     ! Multiply by 1/(2lp+1)
     do lp=0, lmax
 
-        kij(1:lmax+1, lp) = kij(1:lmax+1, lp) / dble(2*lp+1)
+        kij(1:lmax+1, lp+1) = kij(1:lmax+1, lp+1) / dble(2*lp+1)
 
     end do
 

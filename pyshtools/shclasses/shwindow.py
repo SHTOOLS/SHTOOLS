@@ -11,6 +11,7 @@ from __future__ import print_function as _print_function
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 
 from .. import shtools as _shtools
@@ -1018,8 +1019,12 @@ class SHWindow(object):
             return fig, axes
 
     def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
+                             vmin=None, vmax=None, xlabel='Input power',
+                             ylabel='Output power', title=None,
                              axes_labelsize=None, tick_labelsize=None,
-                             show=True, ax=None, fname=None):
+                             title_labelsize=None, colorbar=False,
+                             cb_orientation='vertical', cb_label=None,
+                             show=True, ax=None, fname=None, **kwargs):
         """
         Plot the multitaper coupling matrix.
 
@@ -1028,8 +1033,11 @@ class SHWindow(object):
 
         Usage
         -----
-        x.plot_coupling_matrix(lmax, [nwin, weights, mode, axes_labelsize,
-                                      tick_labelsize, show, ax, fname])
+        x.plot_coupling_matrix(lmax, [nwin, weights, mode, vmin, vmax, xlabel,
+                                      ylabel, title, axes_labelsize,
+                                      tick_labelsize, title_labelsize,
+                                      colorbar, cb_orientation, cb_label,
+                                      show, ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -1048,37 +1056,86 @@ class SHWindow(object):
             'valid' returns a biased spectrum with size lmax-lwin+1. This
             returns only that part of the biased spectrum that is not
             influenced by the input spectrum beyond degree lmax.
+        vmin : float, optional, default=None
+            The minmum range of the colormap. If None, the minimum value of the
+            spectrum will be used.
+        vmax : float, optional, default=None
+            The maximum range of the colormap. If None, the maximum value of
+            the spectrum will be used.
+        xlabel : str, optional, default = 'Input power'
+            Label for the x axis.
+        ylabel : str, optional, default = 'Output power'
+            Label for the y axis.
+        title : str, optional, default = None
+            Add a title to the plot.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        title_labelsize : int, optional, default = None
+            The font size for the title.
+        colorbar : bool, optional, default = False
+            If True, plot a colorbar.
+        cb_orientation : str, optional, default = 'vertical'
+            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+        cb_label : str, optional, default = None
+            Text label for the colorbar.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
             If present, save the image to the specified file.
+        kwargs : optional
+            Keyword arguements that will be sent to plt.imshow(), such as cmap.
         """
-        figsize = (_mpl.rcParams['figure.figsize'][0],
-                   _mpl.rcParams['figure.figsize'][0])
-
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+        if title_labelsize is None:
+            tick_labelsize = _mpl.rcParams['axes.titlesize']
 
         if ax is None:
-            fig = _plt.figure(figsize=figsize)
-            axes = fig.add_subplot(111)
+            if colorbar is True:
+                if cb_orientation == 'horizontal':
+                    scale = 1.1
+                else:
+                    scale = 0.85
+            else:
+                scale = 1
+
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0] * scale)
+            fig, axes = _plt.subplots(1, 1, figsize=figsize)
         else:
             axes = ax
 
-        axes.imshow(self.coupling_matrix(lmax, nwin=nwin, weights=weights,
-                                         mode=mode), aspect='auto')
-        axes.set_xlabel('Input power', fontsize=axes_labelsize)
-        axes.set_ylabel('Output power', fontsize=axes_labelsize)
+        cim = axes.imshow(self.coupling_matrix(lmax, nwin=nwin,
+                                               weights=weights, mode=mode),
+                          aspect='equal', vmin=vmin, vmax=vmax, **kwargs)
+        if xlabel is not None:
+            axes.set_xlabel(xlabel, fontsize=axes_labelsize)
+        if ylabel is not None:
+            axes.set_ylabel(ylabel, fontsize=axes_labelsize)
+        if title is not None:
+            axes.set_title(title, fontsize=title_labelsize)
         axes.tick_params(labelsize=tick_labelsize)
         axes.minorticks_on()
+
+        if colorbar is True:
+            if cb_orientation == 'vertical':
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("right", size="2.5%", pad=0.15)
+                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
+            else:
+                divider = _make_axes_locatable(axes)
+                cax = divider.append_axes("bottom", size="2.5%", pad=0.5)
+                cbar = _plt.colorbar(cim, cax=cax,
+                                     orientation=cb_orientation)
+            if cb_label is not None:
+                cbar.set_label(cb_label, fontsize=axes_labelsize)
+            cbar.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -1454,7 +1511,7 @@ class SHWindowCap(SHWindow):
         str += ('lwin = {:d}\n'
                 'nwin = {:d}\n'
                 'nwinrot = {:s}\n'
-                'shannon = {:e}\n'
+                'shannon = {:f}\n'
                 'area (radians) = {:e}\n'
                 .format(self.lwin, self.nwin, repr(self.nwinrot), self.shannon,
                         self.area))
@@ -1670,7 +1727,7 @@ class SHWindowMask(SHWindow):
         str = ('kind = {:s}\n'
                'lwin = {:d}\n'
                'nwin = {:d}\n'
-               'shannon = {:e}\n'
+               'shannon = {:f}\n'
                'area (radians) = {:e}\n'.format(repr(self.kind), self.lwin,
                                                 self.nwin, self.shannon,
                                                 self.area))

@@ -2653,16 +2653,17 @@ class SHGrid(object):
 
     # ---- Plotting routines ----
     def plot(self, tick_interval=[30, 30], minor_tick_interval=None,
-             ax=None, ax2=None, colorbar=False, cb_orientation='vertical',
+             colorbar=False, cb_orientation='vertical',
              cb_label=None, grid=False, axes_labelsize=None,
-             tick_labelsize=None, show=True, fname=None, **kwargs):
+             tick_labelsize=None, ax=None, ax2=None, show=True, fname=None,
+             **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([tick_interval, minor_tick_interval, ax, ax2, colorbar,
-                cb_orientation, cb_label, grid, show, fname, **kwargs])
+        x.plot([tick_interval, minor_tick_interval, colorbar, cb_orientation,
+                cb_label, grid, ax, ax2, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2676,14 +2677,6 @@ class SHGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude' or 'GLQ latitude index'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear. If the
-            grid is complex, the real component of the grid will be plotted
-            on this axes.
-        ax2 : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear. If the
-            grid is complex, the complex component of the grid will be plotted
-            on this axes.
         colorbar : bool, optional, default = False
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
@@ -2696,6 +2689,14 @@ class SHGrid(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear. If the
+            grid is complex, the real component of the grid will be plotted
+            on this axes.
+        ax2 : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear. If the
+            grid is complex, the complex component of the grid will be plotted
+            on this axes.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None

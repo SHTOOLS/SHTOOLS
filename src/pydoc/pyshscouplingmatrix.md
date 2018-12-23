@@ -8,7 +8,7 @@ This routine returns the spherical harmonic coupling matrix for a given set of S
 
 # Returns
 
-`kij` : float, dimension (`lmax`+1, `nmax`)
+`kij` : float, dimension (`lmax`+1, `lmax`+1`)
 :   The coupling matrix that relates the power spectrum expectation of the function expressed in a subset of the best-localized Slepian functions to the expectation of the global power spectrum.
 
 # Parameters
