@@ -36,6 +36,7 @@ class SHCoeffs(object):
         x = SHCoeffs.from_random(powerspectrum)
         x = SHCoeffs.from_zeros(lmax)
         x = SHCoeffs.from_file('fname.dat')
+        x = SHCoeffs.from_cap(theta, lmax)
 
     The normalization convention of the input coefficents is specified
     by the normalization and csphase parameters, which take the following
@@ -104,7 +105,9 @@ class SHCoeffs(object):
               '>>> pyshtools.SHCoeffs.from_array\n'
               '>>> pyshtools.SHCoeffs.from_random\n'
               '>>> pyshtools.SHCoeffs.from_zeros\n'
-              '>>> pyshtools.SHCoeffs.from_file\n')
+              '>>> pyshtools.SHCoeffs.from_file\n'
+              '>>> pyshtools.SHCoeffs.from_cap\n'
+              )
 
     # ---- Factory methods ----
     @classmethod
@@ -503,6 +506,94 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase, header=header_list)
+
+    @classmethod
+    def from_cap(self, theta, lmax, normalization='4pi', csphase=1,
+                 kind='real', degrees=True, copy=True):
+        """
+        Initialize the class with spherical harmonic coefficients of a
+        spherical cap centered at the north pole.
+
+        Usage
+        -----
+        x = SHCoeffs.from_cap(theta, lmax, [normalization, csphase, kind
+                                            degrees, copy])
+
+        Returns
+        -------
+        x : SHCoeffs class instance.
+
+        Parameters
+        ----------
+        theta : float
+            The angular radius of the spherical cap, default in degrees.
+        lmax : int
+            The maximum spherical harmonic degree of the coefficients.
+        normalization : str, optional, default = '4pi'
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+            coefficients, respectively.
+        csphase : int, optional, default = 1
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
+        kind : str, optional, default = 'real'
+            'real' or 'complex' spherical harmonic coefficients.
+        degrees : bool, optional = True
+            If True, theta is in degrees. If False, degrees is in radians.
+        copy : bool, optional, default = True
+            If True, make a copy of array when initializing the class instance.
+            If False, initialize the class instance with a reference to array.
+
+        Description
+        -----------
+        The spherical harmonic coefficients are normalized such that the
+        average value of the function is equal to 1. To rotate the cap to a
+        point (lat, lon), use
+
+            cap.rotate(0., -90 + lat, -lon)
+        """
+        if type(normalization) != str:
+            raise ValueError('normalization must be a string. ' +
+                             'Input type was {:s}'
+                             .format(str(type(normalization))))
+
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
+            raise ValueError(
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "or 'unnorm'. Input value was {:s}."
+                .format(repr(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be either 1 or -1. Input value was {:s}."
+                .format(repr(csphase))
+                )
+
+        if kind.lower() not in ('real', 'complex'):
+            raise ValueError(
+                "kind must be 'real' or 'complex'. " +
+                "Input value was {:s}.".format(repr(kind)))
+
+        if degrees is True:
+            theta = _np.deg2rad(theta)
+
+        cl = _shtools.SphericalCapCoef(theta, lmax)
+        coeffs = _np.zeros((2, lmax+1, lmax+1))
+        coeffs[0, 0:lmax+1, 0] = cl[0:lmax+1]
+        coeffs = _convert(coeffs, normalization_in='4pi',
+                          normalization_out=normalization,
+                          csphase_in=1, csphase_out=csphase
+                          )
+
+        if kind == 'complex':
+            coeffs = _shtools.SHrtoc(coeffs)
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind):
+                return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
+                           normalization=normalization.lower(),
+                           csphase=csphase, copy=copy)
 
     # ---- Define methods that modify internal variables ----
     def set_coeffs(self, values, ls, ms):

@@ -32,6 +32,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `x = SHCoeffs.from_random()` | Initialize using random coefficients with a prescribed power spectrum. |
 | `x = SHCoeffs.from_zeros()` | Initialize with coefficients set to zero. |
 | `x = SHCoeffs.from_file()` | Initialize using coefficients from a file. |
+| `x = SHCoeffs.from_cap()` | Initialize using coefficients of a spherical cap. |
 
 ## Class attributes
 
