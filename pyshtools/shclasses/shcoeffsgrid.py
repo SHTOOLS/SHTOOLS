@@ -17,6 +17,7 @@ from scipy.special import factorial as _factorial
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
+from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
 
@@ -75,6 +76,8 @@ class SHCoeffs(object):
                             degrees from 0 to lmax.
     spectrum()            : Return the spectrum of the function as a function
                             of spherical harmonic degree.
+    cross_spectrum()      : Return the cross-spectrum of two functions as a
+                            function of spherical harmonic degree.
     volume()              : Calculate the volume of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
@@ -89,8 +92,11 @@ class SHCoeffs(object):
                             a list of latitude and longitude coordinates.
     plot_spectrum()       : Plot the spectrum as a function of spherical
                             harmonic degree.
+    plot_cross_spectrum() : Plot the cross-spectrum of two functions.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
                             degrees and orders.
+    plot_cross_spectrum2d() : Plot the 2D cross-spectrum of all spherical
+                              harmonic degrees and orders.
     to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     to_file()             : Save raw spherical harmonic coefficients as a file.
@@ -508,16 +514,16 @@ class SHCoeffs(object):
                            csphase=csphase, header=header_list)
 
     @classmethod
-    def from_cap(self, theta, lmax, normalization='4pi', csphase=1,
-                 kind='real', degrees=True, copy=True):
+    def from_cap(self, theta, lmax, clat=None, clon=None, normalization='4pi',
+                 csphase=1, kind='real', degrees=True, copy=True):
         """
         Initialize the class with spherical harmonic coefficients of a
         spherical cap centered at the north pole.
 
         Usage
         -----
-        x = SHCoeffs.from_cap(theta, lmax, [normalization, csphase, kind
-                                            degrees, copy])
+        x = SHCoeffs.from_cap(theta, lmax, [clat, clon, normalization, csphase,
+                                            kind, degrees, copy])
 
         Returns
         -------
@@ -529,6 +535,9 @@ class SHCoeffs(object):
             The angular radius of the spherical cap, default in degrees.
         lmax : int
             The maximum spherical harmonic degree of the coefficients.
+        clat, clon : float, optional, default = None
+            Latitude and longitude of the center of the rotated spherical cap
+            (default in degrees).
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -539,7 +548,7 @@ class SHCoeffs(object):
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
         degrees : bool, optional = True
-            If True, theta is in degrees. If False, degrees is in radians.
+            If True, theta, clat, and clon are in degrees.
         copy : bool, optional, default = True
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
@@ -548,9 +557,8 @@ class SHCoeffs(object):
         -----------
         The spherical harmonic coefficients are normalized such that the
         average value of the function is equal to 1. To rotate the cap to a
-        point (lat, lon), use
-
-            cap.rotate(0., -90 + lat, -lon)
+        specified latitude and longitude, specify the optional parameters clat
+        and clon.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
@@ -575,6 +583,12 @@ class SHCoeffs(object):
                 "kind must be 'real' or 'complex'. " +
                 "Input value was {:s}.".format(repr(kind)))
 
+        if (clat is None and clon is not None) or \
+                (clat is not None and clon is None):
+            raise ValueError('clat and clon must both be input. ' +
+                             'clat = {:s}, clon = {:s}'
+                             .format(repr(clat), repr(clon)))
+
         if degrees is True:
             theta = _np.deg2rad(theta)
 
@@ -591,9 +605,18 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
+                temp = cls(coeffs[:, 0:lmax+1, 0:lmax+1],
                            normalization=normalization.lower(),
                            csphase=csphase, copy=copy)
+
+        if clat is not None and clon is not None:
+            if degrees is True:
+                temp = temp.rotate(0., -90 + clat, -clon, degrees=True)
+            else:
+                temp = temp.rotate(0., -_np.pi/2. + clat, -clon,
+                                   degrees=False)
+
+        return temp
 
     # ---- Define methods that modify internal variables ----
     def set_coeffs(self, values, ls, ms):
@@ -1011,7 +1034,7 @@ class SHCoeffs(object):
 
         Returns
         -------
-        power : ndarray, shape (lmax+1)
+        spectrum : ndarray, shape (lmax+1)
             1-D numpy ndarray of the spectrum, where lmax is the maximum
             spherical harmonic degree.
 
@@ -1057,6 +1080,75 @@ class SHCoeffs(object):
         return _spectrum(self.coeffs, normalization=self.normalization,
                          convention=convention, unit=unit, base=base,
                          lmax=lmax)
+
+    def cross_spectrum(self, clm, lmax=None, convention='power', unit='per_l',
+                       base=10.):
+        """
+        Return the cross-spectrum of two functions.
+
+        Usage
+        -----
+        cross_spectrum = x.cross_spectrum(clm, [lmax, convention, unit, base])
+
+        Returns
+        -------
+        cross_spectrum : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the cross-spectrum, where lmax is the maximum
+            spherical harmonic degree.
+
+        Parameters
+        ----------
+        clm : SHCoeffs class instance.
+            The second function used in computing the cross-spectrum.
+        lmax : int, optional, default = x.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+        convention : str, optional, default = 'power'
+            The type of spectrum to return: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
+        unit : str, optional, default = 'per_l'
+            If 'per_l', return the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', return the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', return the spectrum per log
+            interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
+
+        Description
+        -----------
+        This method returns either the cross-power spectrum, cross-energy
+        spectrum, or l2-cross-norm spectrum. Total cross-power is defined as
+        the integral of the function times the conjugate of clm over all space,
+        divided by the area the functions span. If the means of the functions
+        are zero, this is equivalent to the covariance of the two functions.
+        The total cross-energy is the integral of this function times the
+        conjugate of clm over all space and is 4pi times the total power. The
+        l2-cross-norm is the sum of this function times the conjugate of clm
+        over all angular orders as a function of spherical harmonic degree.
+
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l, and is equal to the
+        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
+        contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
+        """
+        if not isinstance(clm, SHCoeffs):
+            raise ValueError('clm must be an SHCoeffs class instance. Input '
+                             'type is {:s}'.format(repr(type(clm))))
+
+        return _cross_spectrum(self.coeffs,
+                               clm.to_array(normalization=self.normalization,
+                                            csphase=self.csphase,
+                                            lmax=self.lmax),
+                               normalization=self.normalization,
+                               convention=convention, unit=unit, base=base,
+                               lmax=lmax)
 
     def volume(self, lmax=None):
         """
@@ -1583,6 +1675,159 @@ class SHCoeffs(object):
                 fig.savefig(fname)
             return fig, axes
 
+    def plot_cross_spectrum(self, clm, convention='power', unit='per_l',
+                            base=10., lmax=None, xscale='lin', yscale='log',
+                            grid=True, legend=None, axes_labelsize=None,
+                            tick_labelsize=None, show=True, ax=None,
+                            fname=None, **kwargs):
+        """
+        Plot the cross-spectrum of two functions.
+
+        Usage
+        -----
+        x.plot_cross_spectrum(clm, [convention, unit, base, lmax, xscale,
+                                    yscale, grid, axes_labelsize,
+                                    tick_labelsize, legend, show, ax,
+                                    fname, **kwargs])
+
+        Parameters
+        ----------
+        clm : SHCoeffs class instance.
+            The second function used in computing the cross-spectrum.
+        convention : str, optional, default = 'power'
+            The type of spectrum to plot: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
+        unit : str, optional, default = 'per_l'
+            If 'per_l', plot the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', plot the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', plot the spectrum per log
+            interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' spectrum, and
+            the base to use for logarithmic axes.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        xscale : str, optional, default = 'lin'
+            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'log'
+            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot().
+
+        Description
+        -----------
+        This method plots either the cross-power spectrum, cross-energy
+        spectrum, or l2-cross-norm spectrum. Total cross-power is defined as
+        the integral of the function times the conjugate of clm over all space,
+        divided by the area the functions span. If the means of the functions
+        are zero, this is equivalent to the covariance of the two functions.
+        The total cross-energy is the integral of this function times the
+        conjugate of clm over all space and is 4pi times the total power. The
+        l2-cross-norm is the sum of this function times the conjugate of clm
+        over all angular orders as a function of spherical harmonic degree.
+
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l, and is equal to the
+        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
+        contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
+        """
+        if not isinstance(clm, SHCoeffs):
+            raise ValueError('clm must be an SHCoeffs class instance. Input '
+                             'type is {:s}'.format(repr(type(clm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, clm.lmax)
+
+        spectrum = self.cross_spectrum(clm, convention=convention, unit=unit,
+                                       base=base, lmax=lmax)
+        ls = _np.arange(lmax + 1)
+
+        if ax is None:
+            fig, axes = _plt.subplots(1, 1)
+        else:
+            axes = ax
+
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
+        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
+        if convention == 'Energy':
+            axes.set_ylabel('Energy', fontsize=axes_labelsize)
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'Energy per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'Energy per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'Energy per log bandwidth'
+        elif convention == 'l2norm':
+            axes.set_ylabel('l2 norm', fontsize=axes_labelsize)
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'l2 norm per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'l2 norm per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'l2 norm per log bandwidth'
+        else:
+            axes.set_ylabel('Power', fontsize=axes_labelsize)
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'Power per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'Power per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'Power per log bandwidth'
+
+        if xscale == 'log':
+            axes.set_xscale('log', basex=base)
+        if yscale == 'log':
+            axes.set_yscale('log', basey=base)
+
+        if xscale == 'log':
+            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
+        else:
+            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
+            axes.set(xlim=(ls[0], ls[lmax]))
+
+        axes.grid(grid, which='major')
+        axes.minorticks_on()
+        axes.tick_params(labelsize=tick_labelsize)
+        axes.legend()
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                fig.show()
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
                         grid=True, axes_labelsize=None, tick_labelsize=None,
                         vscale='log', vrange=None, vmin=None, vmax=None,
@@ -1659,6 +1904,222 @@ class SHCoeffs(object):
         mpositive = _np.abs(self.coeffs[0, :lmax + 1, :lmax + 1])**2
         mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
         mnegative = _np.abs(self.coeffs[1, :lmax + 1, :lmax + 1])**2
+        mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
+
+        spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
+        spectrum[:, lmax:] = mpositive
+
+        if (convention.lower() == 'l2norm'):
+            if self.normalization == 'unnorm':
+                raise ValueError("convention can not be set to 'l2norm' " +
+                                 "when using unnormalized harmonics.")
+            else:
+                pass
+        elif convention.lower() in ('power', 'energy'):
+            if self.normalization == '4pi':
+                pass
+            elif self.normalization == 'schmidt':
+                for l in degrees:
+                    spectrum[l, :] /= (2. * l + 1.)
+            elif self.normalization == 'ortho':
+                for l in degrees:
+                    spectrum[l, :] /= (4. * _np.pi)
+            elif self.normalization == 'unnorm':
+                for l in degrees:
+                    ms = _np.arange(l+1)
+                    conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
+                    if self.kind == 'real':
+                        conv[1:l + 1] = conv[1:l + 1] / 2.
+                    spectrum[l, lmax-l:lmax] *= conv[::-1][0:l]
+                    spectrum[l, lmax:lmax+l+1] *= conv[0:l+1]
+            else:
+                raise ValueError(
+                    "normalization must be '4pi', 'ortho', 'schmidt', " +
+                    "or 'unnorm'. Input value was {:s}"
+                    .format(repr(self.normalization)))
+        else:
+            raise ValueError(
+                "convention must be 'power', 'energy', or 'l2norm'. " +
+                "Input value was {:s}".format(repr(convention)))
+
+        if convention == 'energy':
+            spectrum *= 4.0 * _np.pi
+
+        spectrum_masked = _np.ma.masked_invalid(spectrum)
+
+        # need to add one extra value to each in order for pcolormesh
+        # to plot the last row and column.
+        ls = _np.arange(lmax+2).astype(_np.float)
+        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
+        lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
+        lgrid -= 0.5
+        mgrid -= 0.5
+
+        if ax is None:
+            fig, axes = _plt.subplots()
+        else:
+            axes = ax
+
+        if vrange is not None:
+            vmin = _np.nanmax(spectrum) * vrange[0]
+            vmax = _np.nanmax(spectrum) * vrange[1]
+        else:
+            if vmin is None:
+                _temp = spectrum
+                _temp[_temp == 0] = _np.NaN
+                vmin = _np.nanmin(_temp)
+            if vmax is None:
+                vmax = _np.nanmax(spectrum)
+
+        if vscale.lower() == 'log':
+            norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
+            # Clipping is required to avoid an invalid value error
+        elif vscale.lower() == 'lin':
+            norm = _plt.Normalize(vmin, vmax)
+        else:
+            raise ValueError(
+                "vscale must be 'lin' or 'log'. " +
+                "Input value was {:s}".format(repr(vscale)))
+
+        if (xscale == 'lin'):
+            cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
+                                    norm=norm, cmap='viridis')
+            axes.set(xlim=(-0.5, lmax + 0.5))
+        elif (xscale == 'log'):
+            cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
+                                    norm=norm, cmap='viridis')
+            axes.set(xscale='log', xlim=(1., lmax + 0.5))
+        else:
+            raise ValueError(
+                "xscale must be 'lin' or 'log'. " +
+                "Input value was {:s}".format(repr(xscale)))
+
+        if (yscale == 'lin'):
+            axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+        elif (yscale == 'log'):
+            axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
+        else:
+            raise ValueError(
+                "yscale must be 'lin' or 'log'. " +
+                "Input value was {:s}".format(repr(yscale)))
+
+        cb = _plt.colorbar(cmesh, ax=ax)
+
+        if (convention == 'energy'):
+            cb.set_label('Energy per coefficient', fontsize=axes_labelsize)
+        elif (convention == 'power'):
+            cb.set_label('Power per coefficient', fontsize=axes_labelsize)
+        else:
+            cb.set_label('Magnitude-squared coefficient',
+                         fontsize=axes_labelsize)
+
+        cb.ax.tick_params(labelsize=tick_labelsize)
+        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
+        axes.set_ylabel('Spherical harmonic order', fontsize=axes_labelsize)
+        axes.tick_params(labelsize=tick_labelsize)
+        axes.minorticks_on()
+        axes.grid(grid, which='major')
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                fig.show()
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
+    def plot_cross_spectrum2d(self, clm, convention='power', xscale='lin',
+                              yscale='lin', grid=True, axes_labelsize=None,
+                              tick_labelsize=None, vscale='log', vrange=None,
+                              vmin=None, vmax=None, lmax=None, show=True,
+                              ax=None, fname=None):
+        """
+        Plot the cross-spectrum of two functions as a function of spherical
+        harmonic degree and order.
+
+        Usage
+        -----
+        x.plot_cross_spectrum2d(clm, [convention, xscale, yscale, grid,
+                                      axes_labelsize, tick_labelsize, vscale,
+                                      vrange, vmin, vmax, lmax, show, ax,
+                                      fname])
+
+        Parameters
+        ----------
+        clm : SHCoeffs class instance.
+            The second function used in computing the cross-spectrum.
+        convention : str, optional, default = 'power'
+            The type of spectrum to plot: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
+        xscale : str, optional, default = 'lin'
+            Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'lin'
+            Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        vscale : str, optional, default = 'log'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
+        vrange : (float, float), optional, default = None
+            Colormap range (min, max) relative to the maximum value. If None,
+            scale the image to the maximum and minimum values.
+        vmin : float, optional, default=None
+            The minmum range of the colormap. If None, the minimum value of the
+            spectrum will be used.
+        vmax : float, optional, default=None
+            The maximum range of the colormap. If None, the maximum value of
+            the spectrum will be used.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+
+        Description
+        -----------
+        This method plots either the power, energy, or l2-norm for each
+        spherical harmonic degree and order of the function. Total power is
+        defined as the integral of the function squared over all space,
+        divided by the area the function spans. If the mean of the function is
+        zero, this is equivalent to the variance of the function. The total
+        energy is the integral of the function squared over all space and is
+        4pi times the total power. For normalized coefficients ('4pi',
+        'ortho', or 'schmidt'), the l2-norm is the sum of the magnitude of the
+        coefficients squared.
+        """
+        if not isinstance(clm, SHCoeffs):
+            raise ValueError('clm must be an SHCoeffs class instance. Input '
+                             'type is {:s}'.format(repr(type(clm))))
+
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
+        if lmax is None:
+            lmax = min(self.lmax, clm.lmax)
+
+        degrees = _np.arange(lmax + 1)
+
+        coeffs = clm.to_array(normalization=self.normalization,
+                              csphase=self.csphase,
+                              lmax=self.lmax)
+
+        # Create the matrix of the spectrum for each coefficient
+        spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
+        mpositive = _np.abs(self.coeffs[0, :lmax + 1, :lmax + 1] *
+                            coeffs[0, :lmax + 1, :lmax + 1])
+        mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
+        mnegative = _np.abs(self.coeffs[1, :lmax + 1, :lmax + 1] *
+                            coeffs[1, :lmax + 1, :lmax + 1])
         mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
 
         spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
