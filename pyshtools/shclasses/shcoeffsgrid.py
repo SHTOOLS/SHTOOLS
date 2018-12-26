@@ -2674,6 +2674,7 @@ class SHGrid(object):
         x = SHGrid.from_array(array)
         x = SHGrid.from_file('fname.dat')
         x = SHGrid.from_zeros(lmax)
+        x = SHGrid.from_cap(theta, clat, clon, lmax)
 
     The class instance defines the following class attributes:
 
@@ -2714,7 +2715,8 @@ class SHGrid(object):
         print('Initialize the class using one of the class methods:\n'
               '>>> pyshtools.SHGrid.from_array\n'
               '>>> pyshtools.SHGrid.from_file\n'
-              '>>> pyshtools.SHGrid.from_zeros\n')
+              '>>> pyshtools.SHGrid.from_zeros\n'
+              '>>> pyshtools.SHGrid.from_cap\n')
 
     # ---- Factory methods ----
     @classmethod
@@ -2816,7 +2818,106 @@ class SHGrid(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
-                return cls(array, copy=True)
+                return cls(array, copy=False)
+
+    @classmethod
+    def from_cap(self, theta, clat, clon, lmax, grid='DH', kind='real',
+                 sampling=1, degrees=True):
+        """
+        Initialize the class instance with an array equal to unity within
+        a spherical cap and zero elsewhere.
+
+        Usage
+        -----
+        x = SHGrid.from_cap(theta, clat, clon, lmax, [grid, kind, sampling,
+                            degrees])
+
+        Returns
+        -------
+        x : SHGrid class instance
+
+        Parameters
+        ----------
+        theta : float
+            The angular radius of the spherical cap, default in degrees.
+        clat, clon : float
+            Latitude and longitude of the center of the rotated spherical cap
+            (default in degrees).
+        lmax : int
+            The maximum spherical harmonic degree resolvable by the grid.
+        grid : str, optional, default = 'DH'
+            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss Legendre
+            Quadrature grids, respectively.
+        kind : str, optional, default = 'real'
+            'real' or 'complex' spherical harmonic coefficients.
+        sampling : int, optional, default = 1
+            For Driscoll and Healy grids, the longitudinal sampling of the
+            grid. Either 1 for nlong = nlat or 2 for nlong = 2 * nlat.
+        degrees : bool, optional = True
+            If True, theta, clat, and clon are in degrees.
+        """
+        if type(grid) != str:
+            raise ValueError('grid must be a string. ' +
+                             'Input type was {:s}'
+                             .format(str(type(grid))))
+
+        if grid.upper() not in set(['DH', 'GLQ']):
+                raise ValueError(
+                    "grid must be 'DH' or 'GLQ'. " +
+                    "Input value was {:s}".format(repr(grid)))
+
+        if degrees is True:
+            theta = _np.deg2rad(theta)
+            clat = _np.deg2rad(clat)
+            clon = _np.deg2rad(clon)
+
+        if grid.upper() == 'DH':
+            nlat = 2 * lmax + 2
+            if sampling == 1:
+                nlon = nlat
+            else:
+                nlon = nlat * 2
+        elif grid.upper() == 'GLQ':
+            nlat = lmax + 1
+            nlon = 2 * nlat - 1
+
+        if kind == 'real':
+            array = _np.zeros((nlat, nlon), dtype=_np.float_)
+        else:
+            array = _np.zeros((nlat, nlon), dtype=_np.complex_)
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind) and cls.isgrid(grid):
+                temp = cls(array, copy=False)
+
+        # Set array equal to 1 within the cap
+        lats = temp.lats(degrees=False)
+        lons = temp.lons(degrees=False)
+        imin = _np.inf
+        imax = 0
+        for i, lat in enumerate(lats):
+            if lat <= clat + theta:
+                if i <= imin:
+                    imin = i
+            if lat >= clat - theta:
+                if i >= imax:
+                    imax = i
+
+        x = _np.cos(clat) * _np.cos(clon)
+        y = _np.cos(clat) * _np.sin(clon)
+        z = _np.sin(clat)
+
+        coslon = _np.cos(lons)
+        sinlon = _np.sin(lons)
+        for i in range(imin, imax+1):
+            coslat = _np.cos(lats[i])
+            sinlat = _np.sin(lats[i])
+            for j in range(0, nlon):
+                dist = coslat * (x * coslon[j] + y * sinlon[j]) + z * sinlat
+                if _np.arccos(dist) <= theta:
+                    temp.data[i, j] = 1.
+
+        return temp
 
     @classmethod
     def from_file(self, fname, binary=False, **kwargs):
