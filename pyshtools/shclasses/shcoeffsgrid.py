@@ -1142,10 +1142,13 @@ class SHCoeffs(object):
             raise ValueError('clm must be an SHCoeffs class instance. Input '
                              'type is {:s}'.format(repr(type(clm))))
 
+        if lmax is None:
+            lmax = min(self.lmax, clm.lmax)
+
         return _cross_spectrum(self.coeffs,
                                clm.to_array(normalization=self.normalization,
                                             csphase=self.csphase,
-                                            lmax=self.lmax),
+                                            lmax=lmax),
                                normalization=self.normalization,
                                convention=convention, unit=unit, base=base,
                                lmax=lmax)
@@ -1752,7 +1755,8 @@ class SHCoeffs(object):
         infinitessimal logarithmic degree band. The contrubution in the band
         dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
         and where spectrum(l, 'per_dlogl) is equal to
-        spectrum(l, 'per_l')*l*log(a).
+        spectrum(l, 'per_l')*l*log(a). If the input fields are complex, the
+        absolute value of the cross-spectrum will be plotted.
         """
         if not isinstance(clm, SHCoeffs):
             raise ValueError('clm must be an SHCoeffs class instance. Input '
@@ -1763,6 +1767,8 @@ class SHCoeffs(object):
 
         spectrum = self.cross_spectrum(clm, convention=convention, unit=unit,
                                        base=base, lmax=lmax)
+        spectrum = abs(spectrum)
+
         ls = _np.arange(lmax + 1)
 
         if ax is None:
@@ -1901,9 +1907,11 @@ class SHCoeffs(object):
 
         # Create the matrix of the spectrum for each coefficient
         spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
-        mpositive = _np.abs(self.coeffs[0, :lmax + 1, :lmax + 1])**2
+        mpositive = self.coeffs[0, :lmax + 1, :lmax + 1] * \
+            self.coeffs[0, :lmax + 1, :lmax + 1].conj()
         mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
-        mnegative = _np.abs(self.coeffs[1, :lmax + 1, :lmax + 1])**2
+        mnegative = self.coeffs[1, :lmax + 1, :lmax + 1] * \
+            self.coeffs[1, :lmax + 1, :lmax + 1].conj()
         mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
 
         spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
@@ -2093,7 +2101,8 @@ class SHCoeffs(object):
         energy is the integral of the function squared over all space and is
         4pi times the total power. For normalized coefficients ('4pi',
         'ortho', or 'schmidt'), the l2-norm is the sum of the magnitude of the
-        coefficients squared.
+        coefficients squared. If the input fields are complex, the absolute
+        value of the cross-spectrum will be plotted.
         """
         if not isinstance(clm, SHCoeffs):
             raise ValueError('clm must be an SHCoeffs class instance. Input '
@@ -2116,10 +2125,10 @@ class SHCoeffs(object):
         # Create the matrix of the spectrum for each coefficient
         spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
         mpositive = _np.abs(self.coeffs[0, :lmax + 1, :lmax + 1] *
-                            coeffs[0, :lmax + 1, :lmax + 1])
+                            coeffs[0, :lmax + 1, :lmax + 1].conj())
         mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
         mnegative = _np.abs(self.coeffs[1, :lmax + 1, :lmax + 1] *
-                            coeffs[1, :lmax + 1, :lmax + 1])
+                            coeffs[1, :lmax + 1, :lmax + 1].conj())
         mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
 
         spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
@@ -2664,6 +2673,7 @@ class SHGrid(object):
 
         x = SHGrid.from_array(array)
         x = SHGrid.from_file('fname.dat')
+        x = SHGrid.from_zeros(lmax)
 
     The class instance defines the following class attributes:
 
@@ -2703,7 +2713,8 @@ class SHGrid(object):
         """Unused constructor of the super class."""
         print('Initialize the class using one of the class methods:\n'
               '>>> pyshtools.SHGrid.from_array\n'
-              '>>> pyshtools.SHGrid.from_file\n')
+              '>>> pyshtools.SHGrid.from_file\n'
+              '>>> pyshtools.SHGrid.from_zeros\n')
 
     # ---- Factory methods ----
     @classmethod
@@ -2751,6 +2762,61 @@ class SHGrid(object):
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
                 return cls(array, copy=copy)
+
+    @classmethod
+    def from_zeros(self, lmax, grid='DH', kind='real', sampling=1):
+        """
+        Initialize the class instance using an array of zeros.
+
+        Usage
+        -----
+        x = SHGrid.from_zeros(lmax, [grid, kind, sampling])
+
+        Returns
+        -------
+        x : SHGrid class instance
+
+        Parameters
+        ----------
+        lmax : int
+            The maximum spherical harmonic degree resolvable by the grid.
+        grid : str, optional, default = 'DH'
+            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss Legendre
+            Quadrature grids, respectively.
+        kind : str, optional, default = 'real'
+            'real' or 'complex' spherical harmonic coefficients.
+        sampling : int, optional, default = 1
+            For Driscoll and Healy grids, the longitudinal sampling of the
+            grid. Either 1 for nlong = nlat or 2 for nlong = 2 * nlat.
+        """
+        if type(grid) != str:
+            raise ValueError('grid must be a string. ' +
+                             'Input type was {:s}'
+                             .format(str(type(grid))))
+
+        if grid.upper() not in set(['DH', 'GLQ']):
+                raise ValueError(
+                    "grid must be 'DH' or 'GLQ'. " +
+                    "Input value was {:s}".format(repr(grid)))
+
+        if grid.upper() == 'DH':
+            nlat = 2 * lmax + 2
+            if sampling == 1:
+                nlon = nlat
+            else:
+                nlon = nlat * 2
+        elif grid.upper() == 'GLQ':
+            nlat = lmax + 1
+            nlon = 2 * nlat - 1
+
+        if kind == 'real':
+            array = _np.zeros((nlat, nlon), dtype=_np.float_)
+        else:
+            array = _np.zeros((nlat, nlon), dtype=_np.complex_)
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind) and cls.isgrid(grid):
+                return cls(array, copy=True)
 
     @classmethod
     def from_file(self, fname, binary=False, **kwargs):

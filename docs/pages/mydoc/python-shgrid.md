@@ -32,6 +32,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | --------------------- | ----------- |
 | `x = SHGrid.from_array()` | Initialize using an array. |
 | `x = SHGrid.from_file()` | Initialize using an array from a file. |
+| `x = SHGrid.from_zeros()` | Initialize using an array of zeros. |
 
 ## Class attributes
 
