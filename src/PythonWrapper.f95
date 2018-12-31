@@ -1078,7 +1078,7 @@
                              exitstatus=exitstatus)
     end subroutine pySHReturnTapersM
 
-    subroutine pyComputeDm(exitstatus,dllm,lmax,m,theta0,dllm_d0,dllm_d1)
+    subroutine pyComputeDm(exitstatus,dllm,lmax,m,theta0,degrees,dllm_d0,dllm_d1,degrees_d0)
         use shtools, only: ComputeDm
         implicit none
         integer,intent(out) :: exitstatus
@@ -1086,9 +1086,11 @@
         integer,intent(in) :: lmax
         integer,intent(in) :: m
         real*8,intent(in) :: theta0
+        integer,dimension(degrees_d0),intent(in) :: degrees
         integer,intent(in) :: dllm_d0
         integer,intent(in) :: dllm_d1
-        call ComputeDm(dllm,lmax,m,theta0,exitstatus=exitstatus)
+        integer,intent(in) :: degrees_d0
+        call ComputeDm(dllm,lmax,m,theta0,degrees=degrees,exitstatus=exitstatus)
     end subroutine pyComputeDm
 
     subroutine pyComputeDG82(exitstatus,dG82,lmax,m,theta0,dG82_d0,dG82_d1)
@@ -1424,21 +1426,24 @@
     end subroutine pySHMultiTaperMaskCSE
 
     subroutine pyComputeDMap(exitstatus,Dij,dh_mask,n_dh,lmax,sampling,&
-                             dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1)
+                             degrees,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1,&
+                             degrees_d0)
         use shtools, only: ComputeDMap
         implicit none
         integer,intent(out) :: exitstatus
         real*8,dimension(Dij_d0,Dij_d1),intent(out) :: Dij
         integer,dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
         integer,intent(in) :: n_dh
-        integer,intent(in) :: sampling
         integer,intent(in) :: lmax
+        integer,intent(in) :: sampling
+        integer,intent(in),dimension(degrees_d0) :: degrees
         integer,intent(in) :: dh_mask_d0
         integer,intent(in) :: dh_mask_d1
         integer,intent(in) :: Dij_d0
         integer,intent(in) :: Dij_d1
+        integer,intent(in) :: degrees_d0
         call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling=sampling,&
-                         exitstatus=exitstatus)
+                         degrees=degrees,exitstatus=exitstatus)
     end subroutine pyComputeDMap
 
     subroutine pyCurve2Mask(exitstatus,dhgrid,n,sampling,profile,nprofile,NP,&

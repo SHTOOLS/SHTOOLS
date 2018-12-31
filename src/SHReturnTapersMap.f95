@@ -275,7 +275,8 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
         end if
 
         if (present(ntapers)) then
-            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, k = ntapers)
+            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, &
+                              k = ntapers)
         else
             call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers)
         endif

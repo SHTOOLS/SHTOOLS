@@ -542,10 +542,11 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHReturnTapersM
 
-        subroutine ComputeDm(dllm, lmax, m, theta0, exitstatus)
+        subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
             real*8, intent(out) :: dllm(:,:)
             real*8, intent(in) :: theta0
             integer, intent(in) :: lmax, m
+            integer, intent(in), optional :: degrees(:)
             integer, intent(out), optional :: exitstatus
         end subroutine ComputeDm
 
@@ -659,10 +660,11 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHMultiTaperMaskCSE
 
-        subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
+        subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, &
+                               exitstatus)
             real*8, intent(out) :: Dij(:,:)
             integer, intent(in) :: dh_mask(:,:), n_dh, lmax
-            integer, intent(in), optional :: sampling
+            integer, intent(in), optional :: sampling, degrees(:)
             integer, intent(out), optional :: exitstatus
         end subroutine ComputeDMap
 
