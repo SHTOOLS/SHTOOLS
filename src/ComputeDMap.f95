@@ -26,8 +26,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
 !   will not be true. However, if L is larger than LMAX, then we might expect
 !   that the spherical harmonic expansions will be good approximations. This
 !   needs to be verified by chosing different values of N_DH and comparing
-!   the results. A simple comparison is to see how good the D(1,1) element
-!   approximates the area of the concentration region.
+!   the results.
 !
 !   Calling Parameters
 !
@@ -66,7 +65,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -327,11 +326,14 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
                                         sampling = sampling, lmax_calc = l, &
                                         exitstatus = exitstatus)
                         if (exitstatus /= 0) return
+
                     else
                         call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = 1, &
                                         lmax_calc = l, exitstatus = exitstatus)
                         if (exitstatus /= 0) return
+
                     end if
+
                     call SHCilmToVector(clm, vec, l, exitstatus = exitstatus)
                     if (exitstatus /= 0) return
 
@@ -339,10 +341,13 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
                     if (present(sampling)) then
                         call SHExpandDH(f, n_dh, clm, lmax_dh, &
                                         sampling = sampling, lmax_calc = l)
+
                     else
                         call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = 1, &
                                         lmax_calc = l)
+
                     end if
+
                     call SHCilmToVector(clm, vec, l)
 
                 end if

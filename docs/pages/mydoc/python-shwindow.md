@@ -49,6 +49,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `nwinrot` | The number of best-concentrated spherical cap windows that were rotated and whose coefficients are stored in `coeffs`. |
 | `clat`, `clon` | Latitude and longitude of the center of the rotated spherical-cap localization windows (default in degrees). |
 | `coord_degrees` | `True` (default) if `clat` and `clon` are in degrees. |
+| `taper_degrees` | Boolean or int array defining which spherical harmonic degrees were used to construct the windows. |
 
 ## Methods
 

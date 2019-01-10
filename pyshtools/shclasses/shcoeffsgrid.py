@@ -1431,7 +1431,7 @@ class SHCoeffs(object):
         return clm
 
     # ---- Expand the coefficients onto a grid ----
-    def expand(self, grid='DH', lat=None, colat=None, lon=None, degrees=True,
+    def expand(self, grid='DH2', lat=None, colat=None, lon=None, degrees=True,
                zeros=None, lmax=None, lmax_calc=None):
         """
         Evaluate the spherical harmonic coefficients either on a global grid
@@ -1458,7 +1458,7 @@ class SHCoeffs(object):
             Longitude coordinates where the function is to be evaluated.
         degrees : bool, optional, default = True
             True if lat, colat and lon are in degrees, False if in radians.
-        grid : str, optional, default = 'DH'
+        grid : str, optional, default = 'DH2'
             'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon,
             'DH2' for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ'
             for a Gauss-Legendre quadrature grid.
@@ -2766,7 +2766,7 @@ class SHGrid(object):
                 return cls(array, copy=copy)
 
     @classmethod
-    def from_zeros(self, lmax, grid='DH', kind='real', sampling=1):
+    def from_zeros(self, lmax, grid='DH', kind='real', sampling=2):
         """
         Initialize the class instance using an array of zeros.
 
@@ -2787,7 +2787,7 @@ class SHGrid(object):
             Quadrature grids, respectively.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
-        sampling : int, optional, default = 1
+        sampling : int, optional, default = 3
             For Driscoll and Healy grids, the longitudinal sampling of the
             grid. Either 1 for nlong = nlat or 2 for nlong = 2 * nlat.
         """
@@ -2822,7 +2822,7 @@ class SHGrid(object):
 
     @classmethod
     def from_cap(self, theta, clat, clon, lmax, grid='DH', kind='real',
-                 sampling=1, degrees=True):
+                 sampling=2, degrees=True):
         """
         Initialize the class instance with an array equal to unity within
         a spherical cap and zero elsewhere.
@@ -2850,7 +2850,7 @@ class SHGrid(object):
             Quadrature grids, respectively.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
-        sampling : int, optional, default = 1
+        sampling : int, optional, default = 2
             For Driscoll and Healy grids, the longitudinal sampling of the
             grid. Either 1 for nlong = nlat or 2 for nlong = 2 * nlat.
         degrees : bool, optional = True

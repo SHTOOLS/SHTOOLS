@@ -45,9 +45,9 @@ subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
     real*8, intent(out) ::  dllm(:,:)
     real*8, intent(in) ::   theta0
     integer, intent(in) ::  lmax, m
-    integer, intent(in), optional :: degrees(:)
-    integer, intent(out), optional :: exitstatus
-    real*8 ::   upper, zero(2*lmax+1), w(2*lmax+1), x
+    integer, intent(in), optional ::  degrees(:)
+    integer, intent(out), optional ::  exitstatus
+    real*8 ::  upper, zero(2*lmax+1), w(2*lmax+1), x
     real*8, allocatable ::  plm(:)
     integer ::  l, lp, i, n, astat
 

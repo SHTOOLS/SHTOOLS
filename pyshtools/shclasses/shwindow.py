@@ -30,8 +30,8 @@ class SHWindow(object):
 
     The windows can be initialized from:
 
-    >>>  x = SHWindow.from_cap(theta, lwin, [clat, clon, nwin])
-    >>>  x = SHWindow.from_mask(SHGrid)
+    >>>  x = SHWindow.from_cap()
+    >>>  x = SHWindow.from_mask()
 
     Each class instance defines the following class attributes:
 
@@ -64,6 +64,8 @@ class SHWindow(object):
     clat, clon      : Latitude and longitude of the center of the rotated
                       spherical cap localization windows (default in degrees).
     coord_degrees   : True (default) if clat and clon are in degrees.
+    taper_degrees   : Boolean or int array defining which spherical harmonic
+                      degrees were used to construct the windows.
 
     Each class instance provides the following methods:
 
@@ -119,14 +121,15 @@ class SHWindow(object):
     @classmethod
     def from_cap(cls, theta, lwin, clat=None, clon=None, nwin=None,
                  theta_degrees=True, coord_degrees=True, dj_matrix=None,
-                 weights=None):
+                 weights=None, taper_degrees=None):
         """
         Construct spherical cap localization windows.
 
         Usage
         -----
         x = SHWindow.from_cap(theta, lwin, [clat, clon, nwin, theta_degrees,
-                                            coord_degrees, dj_matrix, weights])
+                                            coord_degrees, dj_matrix, weights,
+                                            taper_degrees])
 
         Returns
         -------
@@ -142,7 +145,7 @@ class SHWindow(object):
         clat, clon : float, optional, default = None
             Latitude and longitude of the center of the rotated spherical cap
             localization windows (default in degrees).
-        nwin : int, optional, default (lwin+1)**2
+        nwin : int, optional, default = (lwin+1)**2
             Number of localization windows.
         theta_degrees : bool, optional, default = True
             True if theta is in degrees.
@@ -152,27 +155,32 @@ class SHWindow(object):
             The djpi2 rotation matrix computed by a call to djpi2.
         weights : ndarray, optional, default = None
             Taper weights used with the multitaper spectral analyses.
+        taper_degrees : bool or int, optional, dimension (lmax+1),
+                        default = None
+            Boolean or int array defining which spherical harmonic degrees were
+            used (True or 1) to construct the windows.
         """
         if theta_degrees:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
-                _np.radians(theta), lwin)
+                _np.radians(theta), lwin, degrees=taper_degrees)
         else:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
-                theta, lwin)
+                theta, lwin, degrees=taper_degrees)
 
         return SHWindowCap(theta, tapers, eigenvalues, taper_order,
                            clat, clon, nwin, theta_degrees, coord_degrees,
-                           dj_matrix, weights, copy=False)
+                           dj_matrix, weights, taper_degrees, copy=False)
 
     @classmethod
-    def from_mask(cls, dh_mask, lwin, nwin=None, weights=None):
+    def from_mask(cls, dh_mask, lwin, nwin=None, weights=None,
+                  taper_degrees=None):
         """
         Construct localization windows that are optimally concentrated within
         the region specified by a mask.
 
         Usage
         -----
-        x = SHWindow.from_mask(dh_mask, lwin, [nwin, weights])
+        x = SHWindow.from_mask(dh_mask, lwin, [nwin, weights, taper_degrees])
 
         Returns
         -------
@@ -193,6 +201,10 @@ class SHWindow(object):
             return.
         weights ndarray, optional, default = None
             Taper weights used with the multitaper spectral analyses.
+        taper_degrees : bool or int, optional, dimension (lmax+1),
+                        default = None
+            Boolean or int array defining which spherical harmonic degrees were
+            used (True or 1) to construct the windows.
         """
         if nwin is None:
             nwin = (lwin + 1)**2
@@ -220,9 +232,11 @@ class SHWindow(object):
         area = mask_lm[0, 0, 0] * 4 * _np.pi
 
         tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
-                                                         ntapers=nwin)
+                                                         ntapers=nwin,
+                                                         degrees=taper_degrees)
 
-        return SHWindowMask(tapers, eigenvalues, weights, area, copy=False)
+        return SHWindowMask(tapers, eigenvalues, weights, area, taper_degrees,
+                            copy=False)
 
     def copy(self):
         """Return a deep copy of the class instance."""
@@ -1165,7 +1179,7 @@ class SHWindowCap(SHWindow):
 
     def __init__(self, theta, tapers, eigenvalues, taper_order,
                  clat, clon, nwin, theta_degrees, coord_degrees, dj_matrix,
-                 weights, copy=True):
+                 weights, taper_degrees, copy=True):
         self.kind = 'cap'
         self.theta = theta
         self.clat = clat
@@ -1176,13 +1190,12 @@ class SHWindowCap(SHWindow):
         self.dj_matrix = dj_matrix
         self.weights = weights
         self.nwinrot = None
+        self.taper_degrees = taper_degrees
 
         if (self.theta_degrees):
             self.area = 2 * _np.pi * (1 - _np.cos(_np.radians(self.theta)))
         else:
             self.area = 2 * _np.pi * (1 - _np.cos(self.theta))
-
-        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
 
         if nwin is not None:
             self.nwin = nwin
@@ -1210,6 +1223,11 @@ class SHWindowCap(SHWindow):
             self.rotate(clat=self.clat, clon=self.clon,
                         coord_degrees=self.coord_degrees,
                         dj_matrix=self.dj_matrix)
+
+        if self.taper_degrees is None:
+            self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
+        else:
+            self.shannon = sum(self.eigenvalues)
 
     def _taper2coeffs(self, itaper):
         """
@@ -1555,10 +1573,13 @@ class SHWindowMask(SHWindow):
     def istype(kind):
         return kind == 'mask'
 
-    def __init__(self, tapers, eigenvalues, weights, area, copy=True):
+    def __init__(self, tapers, eigenvalues, weights, area, taper_degrees,
+                 copy=True):
         self.kind = 'mask'
         self.lwin = _np.sqrt(tapers.shape[0]).astype(int) - 1
         self.nwin = tapers.shape[1]
+        self.taper_degrees = taper_degrees
+
         if copy:
             self.weights = weights
             self.tapers = _np.copy(tapers)
@@ -1569,7 +1590,11 @@ class SHWindowMask(SHWindow):
             self.eigenvalues = eigenvalues
 
         self.area = area
-        self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
+
+        if self.taper_degrees is None:
+            self.shannon = (self.lwin + 1)**2 / (4 * _np.pi) * self.area
+        else:
+            self.shannon = sum(self.eigenvalues)
 
     def _to_array(self, itaper, normalization='4pi', csphase=1):
         """

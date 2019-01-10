@@ -1043,8 +1043,8 @@
     end subroutine pySHLocalizedAdmitCorr
 
     subroutine pySHReturnTapers(exitstatus,theta0,lmax,tapers,eigenvalues,&
-                                taper_order,eigenvalues_d0,tapers_d0,&
-                                tapers_d1,taper_order_d0)
+                                taper_order,degrees,eigenvalues_d0,tapers_d0,&
+                                tapers_d1,taper_order_d0,degrees_d0)
         use shtools, only: SHReturnTapers
         implicit none
         integer,intent(out) :: exitstatus
@@ -1053,16 +1053,19 @@
         real*8,dimension(tapers_d0,tapers_d1),intent(out) :: tapers
         real*8,dimension(eigenvalues_d0),intent(out) :: eigenvalues
         integer,dimension(taper_order_d0),intent(out) :: taper_order
+        integer,dimension(degrees_d0),intent(in) :: degrees
         integer,intent(in) :: eigenvalues_d0
         integer,intent(in) :: tapers_d0
         integer,intent(in) :: tapers_d1
         integer,intent(in) :: taper_order_d0
+        integer,intent(in) :: degrees_d0
         call SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,&
-                            exitstatus=exitstatus)
+                            degrees=degrees,exitstatus=exitstatus)
     end subroutine pySHReturnTapers
 
     subroutine pySHReturnTapersM(exitstatus,theta0,lmax,m,tapers,eigenvalues,&
-                                 tapers_d0,tapers_d1,eigenvalues_d0)
+                                 degrees,tapers_d0,tapers_d1,eigenvalues_d0,&
+                                 degrees_d0)
         use shtools, only: SHReturnTapersM
         implicit none
         integer,intent(out) :: exitstatus
@@ -1071,11 +1074,13 @@
         integer,intent(in) :: m
         real*8,dimension(tapers_d0,tapers_d1),intent(out) :: tapers
         real*8,dimension(eigenvalues_d0),intent(out) :: eigenvalues
+        integer,dimension(degrees_d0),intent(in) :: degrees
         integer,intent(in) :: tapers_d0
         integer,intent(in) :: tapers_d1
         integer,intent(in) :: eigenvalues_d0
+        integer,intent(in) :: degrees_d0
         call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,&
-                             exitstatus=exitstatus)
+                             degrees=degrees,exitstatus=exitstatus)
     end subroutine pySHReturnTapersM
 
     subroutine pyComputeDm(exitstatus,dllm,lmax,m,theta0,degrees,dllm_d0,dllm_d1,degrees_d0)
@@ -1296,9 +1301,9 @@
     end function pySHSjkPG
 
     subroutine pySHReturnTapersMap(exitstatus,tapers,eigenvalues,dh_mask,n_dh,&
-                                   lmax,sampling,ntapers,dh_mask_d0,&
+                                   lmax,sampling,ntapers,degrees,dh_mask_d0,&
                                    dh_mask_d1,tapers_d0,tapers_d1,&
-                                   eigenvalues_d0)
+                                   eigenvalues_d0,degrees_d0)
         use shtools, only: SHReturnTapersMap
         implicit none
         integer,intent(out) :: exitstatus
@@ -1309,14 +1314,16 @@
         integer,intent(in) :: sampling
         integer,intent(in) :: lmax
         integer,intent(in) :: ntapers
+        integer,dimension(degrees_d0),intent(in) :: degrees
         integer,intent(in) :: dh_mask_d0
         integer,intent(in) :: dh_mask_d1
         integer,intent(in) :: tapers_d0
         integer,intent(in) :: tapers_d1
         integer,intent(in) :: eigenvalues_d0
+        integer,intent(in) :: degrees_d0
         call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,&
                                sampling=sampling,ntapers=ntapers,&
-                               exitstatus=exitstatus)
+                               degrees=degrees,exitstatus=exitstatus)
     end subroutine pySHReturnTapersMap
 
     subroutine pySHBiasKMask(exitstatus,tapers,lwin,k,incspectra,ldata,&

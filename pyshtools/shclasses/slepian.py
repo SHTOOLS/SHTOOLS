@@ -31,8 +31,8 @@ class Slepian(object):
 
     The Slepian class can be initialized from:
 
-    >>>  x = Slepian.from_cap(theta, lmax, [clat, clon, nmax])
-    >>>  x = Slepian.from_mask(SHGrid)
+    >>>  x = Slepian.from_cap()
+    >>>  x = Slepian.from_mask()
 
     Each class instance defines the following class attributes:
 
@@ -62,6 +62,8 @@ class Slepian(object):
     clat, clon      : Latitude and longitude of the center of the rotated
                       spherical cap Slepian functions (default in degrees).
     coord_degrees   : True (default) if clat and clon are in degrees.
+    slepian_degrees : Boolean or int array defining which spherical harmonic
+                      degrees were used to construct the Slepian functions.
 
     Each class instance provides the following methods:
 
@@ -108,14 +110,16 @@ class Slepian(object):
     # ---- factory methods:
     @classmethod
     def from_cap(cls, theta, lmax, clat=None, clon=None, nmax=None,
-                 theta_degrees=True, coord_degrees=True, dj_matrix=None):
+                 theta_degrees=True, coord_degrees=True, dj_matrix=None,
+                 slepian_degrees=None):
         """
         Construct spherical cap Slepian functions.
 
         Usage
         -----
         x = Slepian.from_cap(theta, lmax, [clat, clon, nmax, theta_degrees,
-                                           coord_degrees, dj_matrix])
+                                           coord_degrees, dj_matrix,
+                                           slepian_degrees])
 
         Returns
         -------
@@ -139,27 +143,31 @@ class Slepian(object):
             True if clat and clon are in degrees.
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2.
+        slepian_degrees : bool or int, optional, dimension (lmax+1),
+                          default = None
+            Boolean or int array defining which spherical harmonic degrees were
+            used (True or 1) to construct the Slepian functions.
         """
         if theta_degrees:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
-                _np.radians(theta), lmax)
+                _np.radians(theta), lmax, degrees=slepian_degrees)
         else:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
-                theta, lmax)
+                theta, lmax, degrees=slepian_degrees)
 
         return SlepianCap(theta, tapers, eigenvalues, taper_order, clat, clon,
                           nmax, theta_degrees, coord_degrees, dj_matrix,
-                          copy=False)
+                          slepian_degrees, copy=False)
 
     @classmethod
-    def from_mask(cls, dh_mask, lmax, nmax=None):
+    def from_mask(cls, dh_mask, lmax, nmax=None, slepian_degrees=None):
         """
         Construct Slepian functions that are optimally concentrated within
         the region specified by a mask.
 
         Usage
         -----
-        x = Slepian.from_mask(dh_mask, lmax, [nmax])
+        x = Slepian.from_mask(dh_mask, lmax, [nmax, slepian_degrees])
 
         Returns
         -------
@@ -178,6 +186,10 @@ class Slepian(object):
         nmax : int, optional, default = (lmax+1)**2
             The number of best-concentrated eigenvalues and eigenfunctions to
             return.
+        slepian_degrees : bool or int, optional, dimension (lmax+1),
+                          default = None
+            Boolean or int array defining which spherical harmonic degrees were
+            used (True or 1) to construct the Slepian functions.
         """
         if nmax is None:
             nmax = (lmax + 1)**2
@@ -204,10 +216,11 @@ class Slepian(object):
         mask_lm = _shtools.SHExpandDH(dh_mask, sampling=_sampling, lmax_calc=0)
         area = mask_lm[0, 0, 0] * 4 * _np.pi
 
-        tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lmax,
-                                                         ntapers=nmax)
+        tapers, eigenvalues = _shtools.SHReturnTapersMap(
+            dh_mask, lmax, ntapers=nmax, degrees=slepian_degrees)
 
-        return SlepianMask(tapers, eigenvalues, area, copy=False)
+        return SlepianMask(tapers, eigenvalues, area, slepian_degrees,
+                           copy=False)
 
     def copy(self):
         """Return a deep copy of the class instance."""
@@ -1000,7 +1013,8 @@ class SlepianCap(Slepian):
         return kind == 'cap'
 
     def __init__(self, theta, tapers, eigenvalues, taper_order, clat, clon,
-                 nmax, theta_degrees, coord_degrees, dj_matrix, copy=True):
+                 nmax, theta_degrees, coord_degrees, dj_matrix,
+                 slepian_degrees, copy=True):
         self.kind = 'cap'
         self.theta = theta
         self.clat = clat
@@ -1010,13 +1024,12 @@ class SlepianCap(Slepian):
         self.coord_degrees = coord_degrees
         self.dj_matrix = dj_matrix
         self.nrot = None
+        self.slepian_degrees = slepian_degrees
 
         if (self.theta_degrees):
             self.area = 2 * _np.pi * (1 - _np.cos(_np.radians(self.theta)))
         else:
             self.area = 2 * _np.pi * (1 - _np.cos(self.theta))
-
-        self.shannon = (self.lmax + 1)**2 / (4 * _np.pi) * self.area
 
         if nmax is not None:
             self.nmax = nmax
@@ -1036,6 +1049,11 @@ class SlepianCap(Slepian):
             self.tapers = tapers[:, :self.nmax]
             self.eigenvalues = eigenvalues[:self.nmax]
             self.orders = taper_order[:self.nmax]
+
+        if self.slepian_degrees is None:
+            self.shannon = (self.lmax + 1)**2 / (4 * _np.pi) * self.area
+        else:
+            self.shannon = sum(self.eigenvalues)
 
         # If the windows aren't rotated, don't store them.
         if self.clat is None and self.clon is None:
@@ -1226,10 +1244,12 @@ class SlepianMask(Slepian):
     def istype(kind):
         return kind == 'mask'
 
-    def __init__(self, tapers, eigenvalues, area, copy=True):
+    def __init__(self, tapers, eigenvalues, area, slepian_degrees, copy=True):
         self.kind = 'mask'
         self.lmax = _np.sqrt(tapers.shape[0]).astype(int) - 1
         self.nmax = tapers.shape[1]
+        self.slepian_degrees = slepian_degrees
+
         if copy:
             self.tapers = _np.copy(tapers)
             self.eigenvalues = _np.copy(eigenvalues)
@@ -1238,7 +1258,11 @@ class SlepianMask(Slepian):
             self.eigenvalues = eigenvalues
 
         self.area = area
-        self.shannon = (self.lmax + 1)**2 / (4 * _np.pi) * self.area
+
+        if self.slepian_degrees is None:
+            self.shannon = (self.lmax + 1)**2 / (4 * _np.pi) * self.area
+        else:
+            self.shannon = sum(self.eigenvalues)
 
     def _expand(self, coeffsin, nmax):
         """

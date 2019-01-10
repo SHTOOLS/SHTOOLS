@@ -23,7 +23,7 @@ Compute the space-concentration kernel of a spherical cap.
 :   The angular radius of the spherical cap in radians.
 
 `degrees` : integer, optional, dimension (`lmax`+1), default = 1
-:   List of degrees to compute. If degrees(l) is 0, do not compute the degree l of the kernel.
+:   List of degrees to use when computing the space-concentration kernel. Only those degrees where `degrees[l]` is non-zero will be employed.
 
 # Description
 

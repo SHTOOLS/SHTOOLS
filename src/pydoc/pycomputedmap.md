@@ -23,7 +23,7 @@ Compute the space-concentration kernel of an arbitrary mask on the sphere.
 :   The number of latitudinal samples in `dh_mask`. The effective spherical harmonic bandwidth of this grid is `L=n/2-1`.
 
 `degrees` : integer, optional, dimension (`lmax`+1), default = 1
-:   List of degrees to compute. If degrees(l) is 0, do not compute degree l of the kernel.
+:   List of degrees to use when computing the space-concentration kernel. Only those degrees where `degrees[l]` is non-zero will be employed.
 
 `sampling` : optional, integer, default determined by dimensions of `dh_mask`
 :   For 1, `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples. 

@@ -525,20 +525,23 @@ module SHTOOLS
         end subroutine SHLocalizedAdmitCorr
 
         subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, &
-                                  taper_order, exitstatus)
+                                  taper_order, degrees, exitstatus)
             real*8, intent(in) :: theta0
             integer, intent(in) :: lmax
             real*8, intent(out) :: tapers(:,:), eigenvalues(:)
             integer, intent(out) :: taper_order(:)
+            integer, intent(in), optional :: degrees(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHReturnTapers
 
-        subroutine SHReturnTapersM(theta0, lmax, m, tapers, &
-                                   eigenvalues, shannon, exitstatus)
+        subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, &
+                                   shannon, degrees, ntapers, exitstatus)
             real*8, intent(in) :: theta0
             integer, intent(in) :: lmax, m
             real*8, intent(out) :: tapers(:,:), eigenvalues(:)
             real*8, intent(out), optional :: shannon
+            integer, intent(in), optional :: degrees(:)
+            integer, intent(out), optional :: ntapers
             integer, intent(out), optional :: exitstatus
         end subroutine SHReturnTapersM
 
@@ -621,10 +624,11 @@ module SHTOOLS
         end function SHSjkPG
 
         subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, &
-                                        lmax, sampling, ntapers, exitstatus)
+                                     lmax, sampling, ntapers, degrees, &
+                                     exitstatus)
             real*8, intent(out) :: tapers(:,:), eigenvalues(:)
-            integer, intent(in) :: dh_mask(:,:), n_dh, lmax
-            integer, intent(in), optional :: sampling, ntapers
+            integer, intent(in) :: dh_mask(:,:), n_dh, lmax, sampling
+            integer, intent(in), optional :: ntapers, degrees(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHReturnTapersMap
 
