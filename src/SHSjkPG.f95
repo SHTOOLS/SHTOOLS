@@ -16,13 +16,13 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
 !   Calling Parameteters
 !
 !       IN
-!           incspectra      Knonw input (cross) power spectra
+!           incspectra      Known input (cross) power spectra
 !                           as a function of degree.
 !           l, m, mprime    Angular degree and order.
 !           hj, hk          Real vectors of length lwin+1 containing the
-!                            the real spherical harmonic coefficients of the
+!                           the real spherical harmonic coefficients of the
 !                           spherical cap concentration problem.
-!           mj, mk          Angular order of the two windows
+!           mj, mk          Angular orders of the two windows
 !           lwin            Spherical harmonic bandwidth of the windows.
 !           hkcc            If 1, the complex conjugate of the second window hk
 !                           will be taken. If 2, it will remain as is.
@@ -43,7 +43,8 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
                l10min, l10max, l1min, l1max, l30min, l30max, l3min, l3max
     complex*16 :: hj(lwin+1), hk(lwin+1), tj(lwin+1), tk(lwin+1), sum2, &
                   sum3, sum4
-    real*8 :: wl10(lwin+l+1), wl30(lwin+l+1), wl1(lwin+l+1), wl3(lwin+l+1), sum1
+    real*8 :: wl10(lwin+l+1), wl30(lwin+l+1), wl1(lwin+l+1), wl3(lwin+l+1), &
+              sum1
 
     if (size(hj_real) < lwin+1) then
         print*, "Error --- SHSjkPG"
@@ -154,7 +155,8 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
                             ! both mod(i+l1+l,2) and mod(i+l3+l,2) must be 0
 
                             do i = imin, imax, 2
-                                sum1 = sum1 + incspectra(i+1) * wl10(i-l10min+1) * &
+                                sum1 = sum1 + incspectra(i+1) * &
+                                       wl10(i-l10min+1) * &
                                        wl30(i-l30min+1) * wl1(i-l1min+1) &
                                        * wl3(i-l3min+1)
                             enddo

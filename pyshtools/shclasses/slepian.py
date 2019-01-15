@@ -882,12 +882,12 @@ class Slepian(object):
             return fig, axes
 
     def plot_coupling_matrix(self, nmax=None, vmin=None, vmax=None,
-                             xlabel='Input power', ylabel='Output power',
+                             xlabel='Input degree', ylabel='Output degree',
                              title=None, axes_labelsize=None,
                              tick_labelsize=None, title_labelsize=None,
                              colorbar=False, cb_orientation='vertical',
-                             cb_label=None, show=True, ax=None, fname=None,
-                             **kwargs):
+                             cb_label=None, normalize=False, show=True,
+                             ax=None, fname=None, **kwargs):
         """
         Plot the spherical harmonic coupling matrix. This matrix relates the
         power spectrum expectation of the function expressed in a subset of the
@@ -899,7 +899,8 @@ class Slepian(object):
         x.plot_coupling_matrix([nmax, vmin, vmax, xlabel, ylabel, title
                                 axes_labelsize, tick_labelsize,
                                 title_labelsize, colorbar, cb_orientation,
-                                cb_label, show, ax, fname, **kwargs])
+                                cb_label, normalize, show, ax, fname,
+                                **kwargs])
 
         Parameters
         ----------
@@ -912,9 +913,9 @@ class Slepian(object):
         vmax : float, optional, default=None
             The maximum range of the colormap. If None, the maximum value of
             the spectrum will be used.
-        xlabel : str, optional, default = 'Input power'
+        xlabel : str, optional, default = 'Input degree'
             Label for the x axis.
-        ylabel : str, optional, default = 'Output power'
+        ylabel : str, optional, default = 'Output degree'
             Label for the y axis.
         title : str, optional, default = None
             Add a title to the plot.
@@ -930,6 +931,8 @@ class Slepian(object):
             Orientation of the colorbar; either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        normalize : bool, optional, default = False
+            Normalize the coupling maxtrix such that the maximum value is 1.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -961,8 +964,11 @@ class Slepian(object):
         else:
             axes = ax
 
-        cim = axes.imshow(self.coupling_matrix(nmax=nmax), aspect='equal',
-                          vmin=vmin, vmax=vmax, **kwargs)
+        kll = self.coupling_matrix(nmax=nmax)
+        if normalize:
+            kll = kll / kll.max()
+
+        cim = axes.imshow(kll, aspect='equal', vmin=vmin, vmax=vmax, **kwargs)
         if xlabel is not None:
             axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         if ylabel is not None:

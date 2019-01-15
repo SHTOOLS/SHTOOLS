@@ -1033,12 +1033,13 @@ class SHWindow(object):
             return fig, axes
 
     def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
-                             vmin=None, vmax=None, xlabel='Input power',
-                             ylabel='Output power', title=None,
+                             vmin=None, vmax=None, xlabel='Input degree',
+                             ylabel='Output degree', title=None,
                              axes_labelsize=None, tick_labelsize=None,
                              title_labelsize=None, colorbar=False,
                              cb_orientation='vertical', cb_label=None,
-                             show=True, ax=None, fname=None, **kwargs):
+                             normalize=False, show=True, ax=None, fname=None,
+                             **kwargs):
         """
         Plot the multitaper coupling matrix.
 
@@ -1051,7 +1052,7 @@ class SHWindow(object):
                                       ylabel, title, axes_labelsize,
                                       tick_labelsize, title_labelsize,
                                       colorbar, cb_orientation, cb_label,
-                                      show, ax, fname, **kwargs])
+                                      normalize, show, ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -1076,9 +1077,9 @@ class SHWindow(object):
         vmax : float, optional, default=None
             The maximum range of the colormap. If None, the maximum value of
             the spectrum will be used.
-        xlabel : str, optional, default = 'Input power'
+        xlabel : str, optional, default = 'Input degree'
             Label for the x axis.
-        ylabel : str, optional, default = 'Output power'
+        ylabel : str, optional, default = 'Output degree'
             Label for the y axis.
         title : str, optional, default = None
             Add a title to the plot.
@@ -1094,6 +1095,8 @@ class SHWindow(object):
             Orientation of the colorbar; either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        normalize : bool, optional, default = False
+            Normalize the coupling maxtrix such that the maximum value is 1.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -1125,9 +1128,12 @@ class SHWindow(object):
         else:
             axes = ax
 
-        cim = axes.imshow(self.coupling_matrix(lmax, nwin=nwin,
-                                               weights=weights, mode=mode),
-                          aspect='equal', vmin=vmin, vmax=vmax, **kwargs)
+        mmt = self.coupling_matrix(lmax, nwin=nwin,
+                                   weights=weights, mode=mode)
+        if normalize:
+            mmt = mmt / mmt.max()
+
+        cim = axes.imshow(mmt, aspect='equal', vmin=vmin, vmax=vmax, **kwargs)
         if xlabel is not None:
             axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         if ylabel is not None:
