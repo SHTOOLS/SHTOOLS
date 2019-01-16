@@ -101,6 +101,8 @@ class SHWindow(object):
     multitaper_cross_spectrum() : Return the multitaper cross-power
                                   spectrum estimate and uncertainty for
                                   two input SHCoeffs class instances.
+    variance()             : Compute the theoretical variance of a windowed
+                             function for a given input power spectrum.
     copy()                 : Return a copy of the class instance.
     plot_windows()         : Plot the best concentrated localization windows
                              using a simple cylindrical projection.
@@ -725,6 +727,57 @@ class SHWindow(object):
         else:
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
+
+    def variance(self, power, nwin, lmax=None, weights=None):
+        """
+        Compute the theoretical variance of a windowed function for a given
+        input power spectrum (using spherical-cap localization windows only).
+
+        Usage
+        -----
+        variance = x.variance(power, nwin, [lmax, weights])
+
+        Returns
+        -------
+        variance : ndarray, shape (min(lmax+1, lmax_in+1-lwin))
+            The theoretical variance of the windowed function.
+
+        Parameters
+        ----------
+        power : ndarray, dimension (lmax_in+1)
+            The input power spectrum
+        nwin : int
+            The number of tapers to use in the mutlitaper spectral analysis.
+        lmax : int, optional, default = lmax_in
+            The maximum spherical harmonic degree of the variance to compute.
+        weights : ndarray, optional, default = x.weights
+            Taper weights used with the multitaper spectral analyses.
+        """
+        if weights is not None:
+            if nwin is not None:
+                if len(weights) != nwin:
+                    raise ValueError(
+                        'Length of weights must be equal to nwin. ' +
+                        'len(weights) = {:d}, nwin = {:d}'.format(len(weights),
+                                                                  nwin))
+            else:
+                if len(weights) != self.nwin:
+                    raise ValueError(
+                        'Length of weights must be equal to nwin. ' +
+                        'len(weights) = {:d}, nwin = {:d}'.format(len(weights),
+                                                                  self.nwin))
+
+        if lmax is None:
+            lmax = len(power) - 1 - self.lwin
+        else:
+            if lmax > len(power) - 1 - self.lwin:
+                raise ValueError('lmax must be less than or equal to '
+                                 'len(power) - 1 - lwin.')
+
+        if weights is None:
+            weights = self.weights
+
+        return self._variance(power, nwin, lmax=lmax, weights=weights)
 
     def plot_windows(self, nwin, lmax=None, maxcolumns=3,
                      tick_interval=[60, 45], minor_tick_interval=None,
@@ -1520,6 +1573,14 @@ class SHWindowCap(SHWindow):
 
         return outspectrum
 
+    def _variance(self, power, nwin, lmax=None, weights=None):
+        """
+        Compute the theoretical variance of a windowed function.
+        """
+
+        raise RuntimeError('Computation of the theoretical variance is '
+                           'not yet implemented for arbitrary windows.')
+
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
         print(repr(self))
@@ -1749,6 +1810,14 @@ class SHWindowMask(SHWindow):
                 "Input value was {:s}".format(repr(unit)))
 
         return outspectrum
+
+    def _variance(self, power, nwin, lmax=None, weights=None):
+        """
+        Compute the theoretical variance of a windowed function.
+        """
+
+        raise RuntimeError('Computation of the theoretical variance is '
+                           'not yet implemented for arbitrary windows.')
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""

@@ -1,42 +1,41 @@
-subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
-                      var_unit, weight_opt, unweighted_covar, nocross, &
-                      exitstatus)
+subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
+                   taper_wt, unweighted_covar, nocross, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   Given the first Kmax tapers of a matrix TAPERS, and an input global power
-!   spectrum Sff, this subroutine will compute the variance of the multitaper
-!   spectral estimate assuming that the weights are equal to 1/kmax, and by
-!   using the optimal weights that minimize the variance. This routine only
-!   works using the tapers of the spherical cap concentration problem.
+!   spectrum Sff, this subroutine will compute the theoretical variance of a
+!   multitaper spectral estimate at a given degree l, and for a given set of
+!   optional input taper weights. This routine only works using the tapers of
+!   the spherical cap concentration problem.
 !
 !   Calling Parameters
 !
 !       IN
-!           l               Spherical harmonic degree to compute variances.
+!           l               The single spherical harmonic degree to compute.
 !           tapers          An array of (lwin+1, kmax) tapers (arranged in
 !                           columns).
 !           taper_order     An array of dimension kmax containing the REAL
 !                           angular order of the tapers.
-!           lwin            Maximum spherical harmonic degree of the bandlimited
-!                           tapers.
+!           lwin            Maximum spherical harmonic degree of the
+!                           bandlimited tapers.
 !           kmax            Maximum number of tapers to be used in making the
 !                           spectral estimate.
-!           Sff             Known global power spectrum of the unwindowed field.
+!           Sff             Known global power spectrum of the unwindowed
+!                           field.
 !
 !       OUT
-!           var_opt         Array of dimension kmax containing the variance
-!                           computed using the optimal weights when using the
-!                           first 1 to kmax tapers.
-!           var_unit        Array of dimension kmax containg the variance
-!                           computed using equal weights when using the first 1
-!                           to kmax tapers.
+!           variance        The variance at spherical harmonic degree l.
+!
+!       OPTIONAL (IN)
+!           taper_wt        Vector of dimension (kmax) containing the numerical
+!                           values of the weights to be applied to each
+!                           spectral estimate.
+!           nocross         If present and equal to 1, then the off-diagonal
+!                           terms of the covariance matrix will be assumed to
+!                           be zero.
 !
 !       OPTIONAL (OUT)
-!           weight_opt      Matrix of dimension (kmax, kmax) containing the
-!                           numerical values of the optimal weights to be
-!                           applied to each spectral estimate (arranged by
-!                           columns).
-!           unweighted_covar    Unweighted covariance matrix, Fij
+!           unweighted_covar   Unweighted covariance matrix, Fij
 !           exitstatus  If present, instead of executing a STOP when an error
 !                       is encountered, the variable exitstatus will be
 !                       returned describing the error.
@@ -46,13 +45,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!       OPTIONAL (IN)
-!           nocross     If present and equal to 1, then the off-diagonal terms
-!                       of the covariance matrix will be assumed to be zero.
-!
-!   Dependencies: SHSjkPG, SSYSV (LAPACK)
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -61,27 +54,22 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
     implicit none
 
     real*8, intent(in) :: tapers(:,:), Sff(:)
-    real*8, intent(out) :: var_opt(:), var_unit(:)
+    real*8, intent(out) :: variance
     integer, intent(in) :: l, lwin, kmax, taper_order(:)
-    real*8, intent(out), optional :: weight_opt(:,:), unweighted_covar(:,:)
+    real*8, intent(in), optional :: taper_wt(:)
     integer, intent(in), optional :: nocross
     integer, intent(out), optional :: exitstatus
-    integer, parameter :: nb = 64
-    real*8 :: Fij(kmax, kmax), ww(kmax), bb(kmax+1), MM(kmax+1, kmax+1), &
-              work((kmax+1)*nb)
-    integer :: i,j, m, mp, k, ipiv(kmax+1), info, lwork
+    real*8, intent(out), optional :: unweighted_covar(:, :)
+    real*8 :: Fij(kmax, kmax)
+    integer :: i, j, m, mp
     complex*16 :: temp1
-#ifdef LAPACK_UNDERSCORE
-#define DSYSV DSYSV_
-#endif
-    external :: DSYSV
 
     if (present(exitstatus)) exitstatus = 0
 
     if (size(Sff) < l+lwin + 1) then
-        print*, "Error --- SHMTVarOpt"
-        print*, "Sff must be dimensioned (L+LWIN+1) where L and LWIN are ", &
-                l, lwin
+        print*, "Error --- SHMTVar"
+        print*, "Sff must be dimensioned (L+LWIN+1) where L and LWIN " // &
+                "are ", l, lwin
         print*, "Input array is dimensioned ", size(Sff)
         if (present(exitstatus)) then
             exitstatus = 1
@@ -91,7 +79,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
         end if
 
     else if (size(tapers(:,1)) < lwin+1 .or. size(tapers(1,:)) < kmax) then
-        print*, "Error --- SHMTVarOpt"
+        print*, "Error --- SHMTVar"
         print*, "TAPERS must be dimensioned as (LWIN+1, KMAX) where " // &
                 "LWIN and KMAX are ", lwin, kmax
         print*, "Input array is dimensioned ", size(tapers(:,1)), &
@@ -103,31 +91,10 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
             stop
         end if
 
-    else if ( size(var_opt) < kmax) then
-        print*, "Error --- SHMTVarOpt"
-        print*, "VAR_OPT must be dimensioned (KMAX) where KMAX is ", kmax
-        print*, "Input array is dimensioned ",  size(var_opt)
-        if (present(exitstatus)) then
-            exitstatus = 1
-            return
-        else
-            stop
-        end if
-
-    else if ( size(var_unit) < kmax) then
-        print*, "Error --- SHMTVarOpt"
-        print*, "VAR_UNIT must be dimensioned (KMAX) where KMAX is ", kmax
-        print*, "Input array is dimensioned ",  size(var_unit)
-        if (present(exitstatus)) then
-            exitstatus = 1
-            return
-        else
-            stop
-        end if
-
     else if (size(taper_order) < kmax) then
-        print*, "Error --- SHMTVarOpt"
-        print*, "TAPER_ORDER must be dimensioned as (KMAX) where KMAX is ", kmax
+        print*, "Error --- SHMTVar"
+        print*, "TAPER_ORDER must be dimensioned as (KMAX) where KMAX is ", &
+                kmax
         print*, "Input array is dimensioned ", size(taper_order)
         if (present(exitstatus)) then
             exitstatus = 1
@@ -138,10 +105,10 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
     end if
 
-    if (present(weight_opt)) then
-        if (size(weight_opt(:,1)) < kmax .or. size(weight_opt(1,:)) < kmax) then
-            print*, "Error --- SHMTVarOpt"
-            print*, "WEIGHT_OPT must be dimensioned (KMAX, KMAX) " // &
+    if (present(taper_wt)) then
+        if (size(taper_wt(:)) < kmax) then
+            print*, "Error --- SHMTVar"
+            print*, "TAPER_WT must be dimensioned (KMAX) " // &
                     "where KMAX is ", kmax
             if (present(exitstatus)) then
                 exitstatus = 1
@@ -157,7 +124,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
     if (present(unweighted_covar)) then
         if (size(unweighted_covar(:,1)) < kmax .or. &
                 size(unweighted_covar(1,:)) < kmax) then
-            print*, "Error --- SHMTVarOpt"
+            print*, "Error --- SHMTVar"
             print*, "UNWEIGHTED_COVAR must be dimensioned (KMAX, KMAX) " // &
                     "where KMAX is ", kmax
             print*, "Input array is dimensioned ", &
@@ -175,7 +142,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
     if (present(nocross)) then
         if (nocross /= 1 .and. nocross /= 0) then
-            print*, "Error --- SHMTVarOpt"
+            print*, "Error --- SHMTVar"
             print*, "NOCROSS must be either 0 (use all elements of " // &
                     "covariance matrix) or"
             print*, "1 (set off-diagonal elements of " // &
@@ -193,19 +160,11 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
     end if
 
     Fij = 0.0d0
-
-    lwork = (kmax+1) * nb
-
-    var_opt = 0.0d0
-    var_unit = 0.0d0
-
-    if (present(weight_opt)) then
-        weight_opt = 0.0d0
-    end if
+    variance = 0.0d0
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate matrix Fij, bb
+    !   Calculate matrix Fij
     !
     !--------------------------------------------------------------------------
     if (present(nocross)) then
@@ -277,71 +236,22 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
     end if
 
-    !--------------------------------------------------------------------------
+    !----------------------------------------------------------------------
     !
-    !   Calculate variance using equal weights
+    !   Calculate variances either using input weights, or equal weights.
     !
-    !--------------------------------------------------------------------------
-    do k = 1, kmax
-        var_unit(k) = sum(Fij(1:k,1:k)) / dble(k)**2
-        
-    end do
-
-    !--------------------------------------------------------------------------
-    !
-    !   Calculate optimal weights and variance using optimal weights
-    !
-    !--------------------------------------------------------------------------
-    do k = 1, kmax
-        MM(1:k,1:k) = 2.0d0 * Fij(1:k,1:k)
-        MM(k+1,1:k) = 1.0d0
-        MM(1:k,k+1) = 1.0d0
-        MM(k+1,k+1) = 0.0d0
-        bb(1:k) = 0.0d0
-        bb(k+1) = 1.0d0
-
-        call DSYSV("u", k+1, 1, MM, kmax+1, ipiv,  bb,  kmax+1,  work, &
-                    lwork, info)
-
-        if (info /= 0) then
-            print*, "Error --- SHMTVarOpt"
-            print*, "Problem with call to DSYSV." 
-            print*, "DSYSV info = ", info
-            if (present(exitstatus)) then
-                exitstatus = 5
-                return
-            else
-                stop
-            end if
-
-        end if
-
-        if (work(1) / (k+1) > nb) then
-            print*, "Warning --- SHMTVarOpt0"
-            print*, "The optimal size of nb is ", work(1)/(k+1)
-            print*, "Present size is ", nb
-            print*, "Please consider changing this parameter and " // &
-                    "recompiling SHTOOLS"
-
-        end if
-
-        do i = 1, k
-            ww(i) = bb(i)
-        end do
-
-        if (present(weight_opt)) then
-            weight_opt(1:k,k) = ww(1:k)
-
-        end if
-
-        do i = 1, k
-            do j = 1, k
-                var_opt(k) = var_opt(k) + ww(i) * ww(j) * Fij(i,j)
+    !----------------------------------------------------------------------
+    if (present(taper_wt)) then
+        do i = 1, kmax
+            do j = 1, kmax
+                variance = variance + Fij(i, j) * taper_wt(i) * taper_wt(j)
 
             end do
-
         end do
 
-    enddo
+    else
+        variance = sum(Fij(1:kmax,1:kmax)) / dble(kmax)**2
 
-end subroutine SHMTVarOpt
+    end if
+
+end subroutine SHMTVar

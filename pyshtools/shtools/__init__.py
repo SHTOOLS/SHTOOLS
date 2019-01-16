@@ -75,6 +75,7 @@ from .._SHTOOLS import SHMTCouplingMatrix
 from .._SHTOOLS import SHBiasAdmitCorr
 from .._SHTOOLS import SHMTDebias
 from .._SHTOOLS import SHMTVarOpt
+from .._SHTOOLS import SHMTVar
 from .._SHTOOLS import SHSjkPG
 from .._SHTOOLS import SHMultiTaperMaskSE
 from .._SHTOOLS import SHMultiTaperMaskCSE
@@ -139,7 +140,7 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'DownContFilterMA', 'DownContFilterMC', 'NormalGravity',
            'MakeMagGridDH', 'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j',
            'DHaj', 'MakeMagGradGridDH', 'SHRotateTapers', 'SlepianCoeffs',
-           'SlepianCoeffsToSH', 'SHSCouplingMatrix']
+           'SlepianCoeffsToSH', 'SHSCouplingMatrix', 'SHMTVar']
 
 _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',

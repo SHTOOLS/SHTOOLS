@@ -1,6 +1,6 @@
 # SHMTVarOpt
 
-Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.
+Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum.
 
 # Usage
 
@@ -9,13 +9,13 @@ call SHMTVarOpt (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `var_opt`,
 # Parameters
 
 `l` : input, integer
-:   The angular degree to determine the minimum variance and optimal weights.
+:   The spherical harmonic used degree to determine the minimum variance and optimal weights.
 
 `tapers` : input, real\*8, dimension (`lwin`+1, `kmax`)
 :   A matrix of localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
 `taper_order` : input, integer, dimension (`kmax`)
-:   The angular order of the windowing coefficients in TAPERS. If this matrix was created using `SHReturnTapersM`, then this array must be composed of zeros.
+:   The angular order of the windowing coefficients in `tapers`.
 
 `lwin` : input, integer
 :   The spherical harmonic bandwidth of the localizing windows.
@@ -56,4 +56,4 @@ Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimati
 
 # See also
 
-[shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [shmultitaperse](shmultitaperse.html), [shmultitapercse](shmultitapercse.html); [shlocalizedadmitcorr](shlocalizedadmitcorr.html), [shbiasadmitcorr](shbiasadmitcorr.html), [shbiask](shbiask.html), [shmtdebias](shmtdebias.html)
+[shmtvar](shmtvar.html), [shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [shmultitaperse](shmultitaperse.html), [shmultitapercse](shmultitapercse.html), [shlocalizedadmitcorr](shlocalizedadmitcorr.html), [shbiasadmitcorr](shbiasadmitcorr.html), [shbiask](shbiask.html), [shmtdebias](shmtdebias.html)

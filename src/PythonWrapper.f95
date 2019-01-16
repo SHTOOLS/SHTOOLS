@@ -1278,6 +1278,37 @@
                         exitstatus=exitstatus)
     end subroutine pySHMTVarOpt
 
+    subroutine pySHMTVar(exitstatus,l,tapers,taper_order,Sff,kmax,lwin,&
+                            variance,taper_wt,nocross,taper_order_d0,&
+                            taper_wt_d0,Sff_d0,tapers_d0,tapers_d1)
+        use shtools, only: SHMTVar
+        implicit none
+        integer,intent(out) :: exitstatus
+        integer,intent(in) :: l
+        real*8,dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer,dimension(taper_order_d0),intent(in) :: taper_order
+        real*8,dimension(Sff_d0),intent(in) :: Sff
+        integer,intent(in) :: kmax
+        integer,intent(in) :: lwin
+        real*8,intent(out) :: variance
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: nocross
+        integer,intent(in) :: taper_order_d0
+        integer,intent(in) :: taper_wt_d0
+        integer,intent(in) :: Sff_d0
+        integer,intent(in) :: tapers_d0
+        integer,intent(in) :: tapers_d1
+
+        if (taper_wt(1) < 0) then
+            call SHMTVar(l,tapers,taper_order,lwin,kmax,Sff,variance,&
+                         nocross=nocross,exitstatus=exitstatus)
+        else
+            call SHMTVar(l,tapers,taper_order,lwin,kmax,Sff,variance,&
+                         taper_wt=taper_wt,nocross=nocross,&
+                         exitstatus=exitstatus)
+        end if
+    end subroutine pySHMTVar
+
     function pySHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,&
                        hk_real_d0,incspectra_d0,hj_real_d0)
         use shtools, only: SHSjkPG

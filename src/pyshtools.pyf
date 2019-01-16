@@ -951,9 +951,9 @@ python module _SHTOOLS
             integer,intent(out) :: exitstatus
             integer,intent(in) :: l
             real*8,dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer dimension(taper_order_d0),intent(in) :: taper_order
-            integer optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0 - 1
-            integer optional,intent(in),depend(tapers_d1) :: kmax = tapers_d1
+            integer,dimension(taper_order_d0),intent(in) :: taper_order
+            integer,optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0 - 1
+            integer,optional,intent(in),depend(tapers_d1) :: kmax = tapers_d1
             real*8,dimension(Sff_d0),intent(in) :: Sff
             real*8,dimension(var_opt_d0),intent(out) :: var_opt
             real*8,dimension(var_unit_d0),intent(out) :: var_unit
@@ -968,6 +968,25 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
             integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
         end subroutine SHMTVarOpt
+
+        subroutine SHMTVar(exitstatus,l,tapers,taper_order,Sff,kmax,lwin,variance,taper_wt,nocross,taper_order_d0,taper_wt_d0,Sff_d0,tapers_d0,tapers_d1)
+            fortranname pyshmtvar
+            integer,intent(out) :: exitstatus
+            integer,intent(in) :: l
+            real*8,dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+            integer,dimension(taper_order_d0),intent(in) :: taper_order
+            real*8,dimension(Sff_d0),intent(in) :: Sff
+            integer,optional,intent(in),depend(tapers_d1) :: kmax = tapers_d1
+            integer,optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0 - 1
+            real*8,intent(out) :: variance
+            real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
+            integer,optional,intent(in) :: nocross = 0
+            integer,optional,intent(in),depend(kmax),intent(hide) :: taper_order_d0 = kmax
+            integer,optional,intent(in),depend(kmax),intent(hide) :: taper_wt_d0 = kmax
+            integer,optional,intent(in),depend(Sff),intent(hide) :: Sff_d0 = len(Sff)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+        end subroutine SHMTVar
 
         function SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,hk_real_d0,incspectra_d0,hj_real_d0)
             fortranname pyshsjkpg

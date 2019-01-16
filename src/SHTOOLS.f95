@@ -617,6 +617,18 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHMTVarOpt
 
+        subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, &
+                              variance, taper_wt, unweighted_covar, nocross, &
+                              exitstatus)
+            real*8, intent(in) :: tapers(:,:), Sff(:)
+            real*8, intent(out) :: variance
+            integer, intent(in) :: l, lwin, kmax, taper_order(:)
+            real*8, intent(in), optional :: taper_wt(:)
+            real*8, intent(out), optional :: unweighted_covar(:,:)
+            integer, intent(in), optional :: nocross
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHMTVar
+
         complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, &
                                     hk_real, mj, mk, lwin, hkcc)
             real*8, intent(in) :: incspectra(:), hj_real(:), hk_real(:)

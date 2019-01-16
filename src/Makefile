@@ -60,7 +60,7 @@ SRCS0 = SHTOOLS.f95 FFTW3.f95 CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 \
 	CilmPlusRhoH.f95 CilmMinusRhoH.f95 BAtoHilmRhoH.f95 NormalGravity.f95 \
 	SHMultiTaperMaskSE.f95 SHMultiTaperMaskCSE.f95 SHBiasKMask.f95 \
 	SHRotateTapers.f95 SlepianCoeffs.f95 SlepianCoeffsToSH.f95 \
-	SHSCouplingMatrix.f95
+	SHSCouplingMatrix.f95 SHMTVar.f95
 
 OBJS0 = SHTOOLS.o FFTW3.o CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o \
 	DHaj.o djpi2.o BAtoHilm.o MakeGrid2D.o GLQGridCoord.o MakeGridPoint.o \
@@ -80,7 +80,8 @@ OBJS0 = SHTOOLS.o FFTW3.o CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o \
 	YilmIndexVector.o ComputeDMap.o SHReturnTapersMap.o Curve2Mask.o \
 	MakeEllipseCoord.o CilmPlusRhoH.o CilmMinusRhoH.o BAtoHilmRhoH.o \
 	NormalGravity.o SHMultiTaperMaskSE.o SHMultiTaperMaskCSE.o SHBiasKMask.o \
-	SHRotateTapers.o SlepianCoeffs.o SlepianCoeffsToSH.o SHSCouplingMatrix.o
+	SHRotateTapers.o SlepianCoeffs.o SlepianCoeffsToSH.o SHSCouplingMatrix.o \
+	SHMTVar.o
 
 SRCSLAPACK = EigValSym.F95 EigValVecSym.F95 EigValVecSymTri.F95 \
 	SHExpandLSQ.F95 SHMTDebias.F95 SHMTVarOpt.F95
@@ -200,3 +201,4 @@ SHMultiTaperMaskSE.o: SHTOOLS.o
 SHRotateTapers.o: SHTOOLS.o
 SlepianCoeffs.o: SHTOOLS.o
 SlepianCoeffsToSH.o :: SHTOOLS.o
+SHMTVar.o :: SHTOOLS.o

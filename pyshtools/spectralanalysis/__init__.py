@@ -42,6 +42,8 @@ SHMTDebias             Invert for the global power spectrum given a localized
                        multitaper spectrum estimate.
 SHMTVarOpt             Calculate the minimum variance and corresponding optimal
                        weights of a localized multitaper spectral estimate.
+SHMTVar                Calculate the theoretical variance of a multitaper
+                       spectral estimate for a given input power spectrum.
 SHSjkPG                Calculate the expectation of the product of two
                        functions, each multiplied by a different data taper,
                        for a given spherical harmonic degree and two different
@@ -107,6 +109,7 @@ from ..shtools import SHMTCouplingMatrix
 from ..shtools import SHBiasAdmitCorr
 from ..shtools import SHMTDebias
 from ..shtools import SHMTVarOpt
+from ..shtools import SHMTVar
 from ..shtools import SHSjkPG
 from ..shtools import SHMultiTaperMaskSE
 from ..shtools import SHMultiTaperMaskCSE
