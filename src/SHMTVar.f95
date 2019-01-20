@@ -57,9 +57,9 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
     real*8, intent(out) :: variance
     integer, intent(in) :: l, lwin, kmax, taper_order(:)
     real*8, intent(in), optional :: taper_wt(:)
+    real*8, intent(out), optional :: unweighted_covar(:, :)
     integer, intent(in), optional :: nocross
     integer, intent(out), optional :: exitstatus
-    real*8, intent(out), optional :: unweighted_covar(:, :)
     real*8 :: Fij(kmax, kmax)
     integer :: i, j, m, mp
     complex*16 :: temp1
@@ -253,5 +253,6 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
         variance = sum(Fij(1:kmax,1:kmax)) / dble(kmax)**2
 
     end if
+
 
 end subroutine SHMTVar

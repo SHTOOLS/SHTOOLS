@@ -124,10 +124,10 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
                 call Wigner3j(wl30, l30min, l30max, l, l3, 0, 0, 0)
 
                 do m1 = -abs(mj), abs(mj), max(2*abs(mj), 1)
-                    sum2 = dcmplx(0.0d0,0.0d0)
+                    sum2 = dcmplx(0.0d0, 0.0d0)
 
                     if (m1 < 0) then
-                        tj = conjg(hj) * (-1)**m1
+                        tj = dconjg(hj) * (-1)**m1
                     else
                         tj = hj
                     end if
@@ -137,7 +137,7 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
 
                         if (m - m1 == mprime - m3) then
                             if (m3 < 0) then
-                                tk = conjg(hk) * (-1)**m3
+                                tk = dconjg(hk) * (-1)**m3
                             else
                                 tk = hk
                             end if
@@ -151,7 +151,7 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
                             imin = max(l1min, l3min)
                             imax = min(l1max, l3max)
 
-                            if (mod(imin+l1+l,2) /= 0) imin = imin + 1 
+                            if (mod(imin+l1+l,2) /= 0) imin = imin + 1
                             ! both mod(i+l1+l,2) and mod(i+l3+l,2) must be 0
 
                             do i = imin, imax, 2
@@ -161,9 +161,9 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
                                        * wl3(i-l3min+1)
                             enddo
 
-                        end if
+                            sum2 = sum2 + sum1 * tk(l3+1)
 
-                        sum2 = sum2 + sum1 * tk(l3+1)
+                        end if
 
                     end do
 
@@ -177,7 +177,7 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
 
         end do
 
-        SHSjkPG = SHSjkPG + sum4 * sqrt(2.0d0*l1+1.0d0)
+        SHSjkPG = SHSjkPG + sum4 * sqrt(2.0d0 * l1 + 1.0d0)
 
     end do
 

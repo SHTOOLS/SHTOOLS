@@ -924,12 +924,12 @@ module SHTOOLS
             integer, intent(in) :: i, l, m
         end function YilmIndexVector
 
-        subroutine EigValVecSym(ain, n, eig, evec, ul, k, exitstatus)
+        subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
             real*8, intent(in) :: ain(:,:)
             integer, intent(in) :: n
             real*8, intent(out) :: eig(:), evec(:,:)
             character, intent(in), optional :: ul
-            integer, intent(in), optional :: k
+            integer, intent(in), optional :: K
             integer, intent(out), optional :: exitstatus
         end subroutine EigValVecSym
 

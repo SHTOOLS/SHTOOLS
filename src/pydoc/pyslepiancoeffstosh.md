@@ -20,7 +20,7 @@ Convert a function expressed in Slepian coefficients to spherical harmonic coeff
 :   An array containing the spherical harmonic coefficients of the Slepian functions, where `lmax` is the spherical harmonic bandwidth of the functions. Each column corresponds to a single function of which the spherical harmonic coefficients can be unpacked with `SHVectorToCilm`.
 
 `nmax` : input, integer
-:   The number of expansion coefficients to compute.
+:   The number of expansion coefficients to compute. This must be less than or equal to (`lmax`+1)\*\*2.
 
 # Description
 

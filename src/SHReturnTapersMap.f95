@@ -72,7 +72,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
     integer, intent(out), optional :: exitstatus
     real*8, allocatable :: dij(:,:), dijex(:, :), evec(:, :)
     integer :: nlat, nlong, lmax_dh, astat(2), i, j, l, m, exclude, n, &
-               ind((lmax+1)**2)
+               ind((lmax+1)**2), numk
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -264,7 +264,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
     n = (lmax+1)**2
 
     if (present(degrees)) then
-        if (sum(degrees(1:lmax+1)) /= lmax +1 .and. &
+        if (sum(degrees(1:lmax+1)) /= lmax + 1 .and. &
                 sum(degrees(1:lmax+1)) /= 0) then
             exclude = 1
             ind = 0
@@ -333,12 +333,18 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 
     end if
 
+    if (present(ntapers)) then
+        numk = min(ntapers, n)
+    else
+        numk = n
+    end if
+
     if (exclude == 0) then
-        tapers(1:n, 1:n) = evec(1:n, 1:n)
+        tapers(1:n, 1:numk) = evec(1:n, 1:numk)
 
     else
         do i = 1, n
-            tapers(ind(i), 1:n) = evec(i, 1:n)
+            tapers(ind(i), 1:numk) = evec(i, 1:numk)
 
         end do
 

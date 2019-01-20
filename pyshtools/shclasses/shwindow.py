@@ -201,7 +201,7 @@ class SHWindow(object):
         nwin : int, optional, default = (lwin+1)**2
             The number of best concentrated eigenvalues and eigenfunctions to
             return.
-        weights ndarray, optional, default = None
+        weights : ndarray, optional, default = None
             Taper weights used with the multitaper spectral analyses.
         taper_degrees : bool or int, optional, dimension (lmax+1),
                         default = None
@@ -433,14 +433,15 @@ class SHWindow(object):
                 "Input value was {:s}".format(repr(grid)))
 
     def multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
-                            **kwargs):
+                            lmax=None, weights=None, clat=None, clon=None,
+                            coord_degrees=True):
         """
         Return the multitaper spectrum estimate and standard error.
 
         Usage
         -----
         mtse, sd = x.multitaper_spectrum(clm, k, [convention, unit, lmax,
-                                                  taper_wt, clat, clon,
+                                                  clat, clon, weights
                                                   coord_degrees])
 
         Returns
@@ -471,7 +472,7 @@ class SHWindow(object):
             coefficient at spherical harmonic degree l.
         lmax : int, optional, default = clm.lmax
             The maximum spherical-harmonic degree of clm to use.
-        taper_wt : ndarray, optional, default = None
+        weights : ndarray, optional, dimension (k), default = x.weights
             1-D numpy array of the weights used in calculating the multitaper
             spectral estimates and standard error.
         clat, clon : float, optional, default = 90., 0.
@@ -480,18 +481,30 @@ class SHWindow(object):
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
+        if weights is not None:
+            if len(weights) != k:
+                    raise ValueError(
+                        'Length of weights must be equal to k. '
+                        'len(weights) = {:d}, k = {:d}'
+                        .format(len(weights), k))
+        else:
+            weights = self.weights
+
         return self._multitaper_spectrum(clm, k, convention=convention,
-                                         unit=unit, **kwargs)
+                                         unit=unit, lmax=lmax, weights=weights,
+                                         clat=clat, clon=clon,
+                                         coord_degrees=coord_degrees)
 
     def multitaper_cross_spectrum(self, clm, slm, k, convention='power',
-                                  unit='per_l', **kwargs):
+                                  unit='per_l', lmax=None, weights=None,
+                                  clat=None, clon=None, coord_degrees=True):
         """
         Return the multitaper cross-spectrum estimate and standard error.
 
         Usage
         -----
         mtse, sd = x.multitaper_cross_spectrum(clm, slm, k, [convention, unit,
-                                                             lmax, taper_wt,
+                                                             lmax, weights,
                                                              clat, clon,
                                                              coord_degrees])
 
@@ -528,7 +541,7 @@ class SHWindow(object):
         lmax : int, optional, default = min(clm.lmax, slm.lmax)
             The maximum spherical-harmonic degree of the input coefficients
             to use.
-        taper_wt : ndarray, optional, default = None
+        weights : ndarray, optional, dimension (k), default = x.weights
             The weights used in calculating the multitaper cross-spectral
             estimates and standard error.
         clat, clon : float, optional, default = 90., 0.
@@ -537,20 +550,32 @@ class SHWindow(object):
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
+        if weights is not None:
+            if len(weights) != k:
+                    raise ValueError(
+                        'Length of weights must be equal to k. '
+                        'len(weights) = {:d}, k = {:d}'
+                        .format(len(weights), k))
+        else:
+            weights = self.weights
+
         return self._multitaper_cross_spectrum(clm, slm, k,
                                                convention=convention,
-                                               unit=unit, **kwargs)
+                                               unit=unit, lmax=lmax,
+                                               weights=weights,
+                                               clat=clat, clon=clon,
+                                               coord_degrees=coord_degrees)
 
     def biased_spectrum(self, power, k, convention='power', unit='per_l',
-                        **kwargs):
+                        weights=None, save_cg=None, ldata=None):
         """
         Calculate the multitaper (cross-)spectrum expectation of a
         localized function.
 
         Usage
         -----
-        outspectrum = x.biased_spectrum(spectrum, k, [unit, power, taper_wt,
-                                                      save_cg, ldata])
+        outspectrum = x.biased_spectrum(spectrum, k, [convention, unit,
+                                                      weights, save_cg, ldata])
 
         Returns
         -------
@@ -575,7 +600,7 @@ class SHWindow(object):
             spherical harmonic degree l. If 'per_lm', the spectra contain the
             average contribution for each coefficient at spherical harmonic
             degree l.
-        taper_wt : ndarray, optional, default = None
+        weights : ndarray, optional, dimension (k), default = x.weights
             The weights used in calculating the multitaper spectral estimates
             and standard error.
         save_cg : int, optional, default = 0
@@ -585,8 +610,18 @@ class SHWindow(object):
         ldata : int, optional, default = len(power)-1
             The maximum degree of the global unwindowed spectrum.
         """
+        if weights is not None:
+            if len(weights) != k:
+                    raise ValueError(
+                        'Length of weights must be equal to k. '
+                        'len(weights) = {:d}, k = {:d}'
+                        .format(len(weights), k))
+        else:
+            weights = self.weights
+
         return self._biased_spectrum(power, k, convention=convention,
-                                     unit=unit, **kwargs)
+                                     unit=unit, weights=weights,
+                                     save_cg=save_cg, ldata=ldata)
 
     def spectra(self, itaper=None, nwin=None, convention='power', unit='per_l',
                 base=10.):
@@ -667,7 +702,7 @@ class SHWindow(object):
 
         return spectra
 
-    def coupling_matrix(self, lmax, nwin=None, weights=None, mode='full'):
+    def coupling_matrix(self, lmax, k=None, weights=None, mode='full'):
         """
         Return the coupling matrix of the first nwin tapers. This matrix
         relates the global power spectrum to the expectation of the localized
@@ -675,7 +710,7 @@ class SHWindow(object):
 
         Usage
         -----
-        Mmt = x.coupling_matrix(lmax, [nwin, weights, mode])
+        Mmt = x.coupling_matrix(lmax, [k, weights, mode])
 
         Returns
         -------
@@ -686,9 +721,9 @@ class SHWindow(object):
         ----------
         lmax : int
             Spherical harmonic bandwidth of the global power spectrum.
-        nwin : int, optional, default = x.nwin
+        k : int, optional, default = x.nwin
             Number of tapers used in the mutlitaper spectral analysis.
-        weights : ndarray, optional, default = x.weights
+        weights : ndarray, optional, dimension (k), default = x.weights
             Taper weights used with the multitaper spectral analyses.
         mode : str, opitonal, default = 'full'
             'full' returns a biased output spectrum of size lmax+lwin+1. The
@@ -701,41 +736,41 @@ class SHWindow(object):
             influenced by the input spectrum beyond degree lmax.
         """
         if weights is not None:
-            if nwin is not None:
-                if len(weights) != nwin:
+            if k is not None:
+                if len(weights) != k:
                     raise ValueError(
-                        'Length of weights must be equal to nwin. ' +
-                        'len(weights) = {:d}, nwin = {:d}'.format(len(weights),
-                                                                  nwin))
+                        'Length of weights must be equal to k. '
+                        'len(weights) = {:d}, k = {:d}'
+                        .format(len(weights), k))
             else:
                 if len(weights) != self.nwin:
                     raise ValueError(
-                        'Length of weights must be equal to nwin. ' +
-                        'len(weights) = {:d}, nwin = {:d}'.format(len(weights),
-                                                                  self.nwin))
+                        'Length of weights must be equal to nwin when k is '
+                        'not specified. len(weights) = {:d}, nwin = {:d}'
+                        .format(len(weights), self.nwin))
+        else:
+            weights = self.weights
 
         if mode == 'full':
-            return self._coupling_matrix(lmax, nwin=nwin, weights=weights)
+            return self._coupling_matrix(lmax, k=k, weights=weights)
         elif mode == 'same':
-            cmatrix = self._coupling_matrix(lmax, nwin=nwin,
-                                            weights=weights)
+            cmatrix = self._coupling_matrix(lmax, k=k, weights=weights)
             return cmatrix[:lmax+1, :]
         elif mode == 'valid':
-            cmatrix = self._coupling_matrix(lmax, nwin=nwin,
-                                            weights=weights)
+            cmatrix = self._coupling_matrix(lmax, k=k, weights=weights)
             return cmatrix[:lmax - self.lwin+1, :]
         else:
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
                              "{}".format(mode))
 
-    def variance(self, power, nwin, lmax=None, weights=None):
+    def variance(self, power, k, lmax=None, weights=None):
         """
         Compute the theoretical variance of a windowed function for a given
         input power spectrum (using spherical-cap localization windows only).
 
         Usage
         -----
-        variance = x.variance(power, nwin, [lmax, weights])
+        variance = x.variance(power, k, [lmax, weights])
 
         Returns
         -------
@@ -746,26 +781,22 @@ class SHWindow(object):
         ----------
         power : ndarray, dimension (lmax_in+1)
             The input power spectrum
-        nwin : int
-            The number of tapers to use in the mutlitaper spectral analysis.
+        k : int
+            The number of tapers to be utilized in performing the multitaper
+            spectral analysis.
         lmax : int, optional, default = lmax_in
             The maximum spherical harmonic degree of the variance to compute.
-        weights : ndarray, optional, default = x.weights
+        weights : ndarray, optional, dimension (k), default = x.weights
             Taper weights used with the multitaper spectral analyses.
         """
         if weights is not None:
-            if nwin is not None:
-                if len(weights) != nwin:
-                    raise ValueError(
-                        'Length of weights must be equal to nwin. ' +
-                        'len(weights) = {:d}, nwin = {:d}'.format(len(weights),
-                                                                  nwin))
-            else:
-                if len(weights) != self.nwin:
-                    raise ValueError(
-                        'Length of weights must be equal to nwin. ' +
-                        'len(weights) = {:d}, nwin = {:d}'.format(len(weights),
-                                                                  self.nwin))
+            if len(weights) != k:
+                raise ValueError(
+                    'Length of weights must be equal to k. '
+                    'len(weights) = {:d}, k = {:d}'
+                    .format(len(weights), k))
+        else:
+            weights = self.weights
 
         if lmax is None:
             lmax = len(power) - 1 - self.lwin
@@ -774,10 +805,7 @@ class SHWindow(object):
                 raise ValueError('lmax must be less than or equal to '
                                  'len(power) - 1 - lwin.')
 
-        if weights is None:
-            weights = self.weights
-
-        return self._variance(power, nwin, lmax=lmax, weights=weights)
+        return self._variance(power, k, lmax=lmax, weights=weights)
 
     def plot_windows(self, nwin, lmax=None, maxcolumns=3,
                      tick_interval=[60, 45], minor_tick_interval=None,
@@ -1085,7 +1113,7 @@ class SHWindow(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plot_coupling_matrix(self, lmax, nwin=None, weights=None, mode='full',
+    def plot_coupling_matrix(self, lmax, k=None, weights=None, mode='full',
                              vmin=None, vmax=None, xlabel='Input degree',
                              ylabel='Output degree', title=None,
                              axes_labelsize=None, tick_labelsize=None,
@@ -1101,19 +1129,20 @@ class SHWindow(object):
 
         Usage
         -----
-        x.plot_coupling_matrix(lmax, [nwin, weights, mode, vmin, vmax, xlabel,
+        x.plot_coupling_matrix(lmax, [k, weights, mode, vmin, vmax, xlabel,
                                       ylabel, title, axes_labelsize,
                                       tick_labelsize, title_labelsize,
                                       colorbar, cb_orientation, cb_label,
-                                      normalize, show, ax, fname, **kwargs])
+                                      normalize, show, ax, fname, weights,
+                                      **kwargs])
 
         Parameters
         ----------
         lmax : int
             Spherical harmonic bandwidth of the global power spectrum.
-        nwin : int, optional, default = x.nwin
+        k : int, optional, default = x.nwin
             Number of tapers used in the mutlitaper spectral analysis.
-        weights : ndarray, optional, default = x.weights
+        weights : ndarray, optional, dimension (k), default = x.weights
             Taper weights used with the multitaper spectral analyses.
         mode : str, opitonal, default = 'full'
             'full' returns a biased output spectrum of size lmax+lwin+1. The
@@ -1159,6 +1188,22 @@ class SHWindow(object):
         kwargs : optional
             Keyword arguements that will be sent to plt.imshow(), such as cmap.
         """
+        if weights is not None:
+            if k is not None:
+                if len(weights) != k:
+                    raise ValueError(
+                        'Length of weights must be equal to k. '
+                        'len(weights) = {:d}, k = {:d}'
+                        .format(len(weights), k))
+            else:
+                if len(weights) != self.nwin:
+                    raise ValueError(
+                        'Length of weights must be equal to nwin when k is '
+                        'not specified. len(weights) = {:d}, nwin = {:d}'
+                        .format(len(weights), self.nwin))
+        else:
+            weights = self.weights
+
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
         if tick_labelsize is None:
@@ -1181,8 +1226,7 @@ class SHWindow(object):
         else:
             axes = ax
 
-        mmt = self.coupling_matrix(lmax, nwin=nwin,
-                                   weights=weights, mode=mode)
+        mmt = self.coupling_matrix(lmax, k=k, weights=weights, mode=mode)
         if normalize:
             mmt = mmt / mmt.max()
 
@@ -1395,29 +1439,29 @@ class SHWindowCap(SHWindow):
                                              self.nwinrot, angles, dj_matrix)
             self.coeffs = coeffs
 
-    def _coupling_matrix(self, lmax, nwin=None, weights=None):
+    def _coupling_matrix(self, lmax, k=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
-        if nwin is None:
-            nwin = self.nwin
+        if k is None:
+            k = self.nwin
 
         if weights is None:
             weights = self.weights
 
-        if weights is None:
-            return _shtools.SHMTCouplingMatrix(lmax, self.tapers**2, k=nwin)
-        else:
-            return _shtools.SHMTCouplingMatrix(lmax, self.tapers**2, k=nwin,
-                                               taper_wt=self.weights)
+        return _shtools.SHMTCouplingMatrix(lmax, self.tapers**2, k=k,
+                                           taper_wt=weights)
 
     def _multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
                              clat=None, clon=None, coord_degrees=True,
-                             lmax=None, taper_wt=None):
+                             lmax=None, weights=None):
         """
         Return the multitaper spectrum estimate and standard error for an
         input SHCoeffs class instance.
         """
         if lmax is None:
             lmax = clm.lmax
+
+        if weights is None:
+            weights = self.weights
 
         if (clat is not None and clon is not None and clat == self.clat and
                 clon == self.clon and coord_degrees is self.coord_degrees and
@@ -1447,12 +1491,8 @@ class SHWindowCap(SHWindow):
 
         sh = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
-        if taper_wt is None:
-            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.coeffs,
-                                                   lmax=lmax, k=k)
-        else:
-            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax,
-                                                   k=k, taper_wt=taper_wt)
+        mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.coeffs, lmax=lmax,
+                                               k=k, taper_wt=weights)
 
         if (unit == 'per_l'):
             pass
@@ -1477,13 +1517,16 @@ class SHWindowCap(SHWindow):
     def _multitaper_cross_spectrum(self, clm, slm, k, convention='power',
                                    unit='per_l', clat=None, clon=None,
                                    coord_degrees=True, lmax=None,
-                                   taper_wt=None):
+                                   weights=None):
         """
         Return the multitaper cross-spectrum estimate and standard error for
         two input SHCoeffs class instances.
         """
         if lmax is None:
             lmax = min(clm.lmax, slm.lmax)
+
+        if weights is None:
+            weights = self.weights
 
         if (clat is not None and clon is not None and clat == self.clat and
                 clon == self.clon and coord_degrees is self.coord_degrees and
@@ -1514,14 +1557,9 @@ class SHWindowCap(SHWindow):
         sh1 = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
         sh2 = slm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
-        if taper_wt is None:
-            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
-                                                    lmax1=lmax, lmax2=lmax,
-                                                    k=k)
-        else:
-            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
-                                                    lmax1=lmax, lmax2=lmax,
-                                                    k=k, taper_wt=taper_wt)
+        mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.coeffs,
+                                                lmax1=lmax, lmax2=lmax, k=k,
+                                                taper_wt=weights)
 
         if (unit == 'per_l'):
             pass
@@ -1544,7 +1582,7 @@ class SHWindowCap(SHWindow):
                 "Input value was {:s}".format(repr(convention)))
 
     def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
-                         **kwargs):
+                         weights=None, save_cg=None, ldata=None):
         """
         Calculate the multitaper (cross-) spectrum expectation of a function
         localized by spherical cap windows.
@@ -1559,12 +1597,14 @@ class SHWindowCap(SHWindow):
 
         if (unit == 'per_l'):
             outspectrum = _shtools.SHBiasK(self.tapers, spectrum, k=k,
-                                           **kwargs)
+                                           taper_wt=weights, save_cg=save_cg,
+                                           ldata=ldata)
         elif (unit == 'per_lm'):
             degree_l = _np.arange(len(spectrum))
             temp = spectrum * (2.0 * degree_l + 1.0)
             outspectrum = _shtools.SHBiasK(self.tapers, temp, k=k,
-                                           **kwargs)
+                                           taper_wt=weights, save_cg=save_cg,
+                                           ldata=ldata)
             outspectrum /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
@@ -1573,13 +1613,16 @@ class SHWindowCap(SHWindow):
 
         return outspectrum
 
-    def _variance(self, power, nwin, lmax=None, weights=None):
+    def _variance(self, power, k, lmax=None, weights=None):
         """
         Compute the theoretical variance of a windowed function.
         """
+        var = _np.zeros(lmax+1)
+        for l in range(lmax+1):
+            var[l] = _shtools.SHMTVar(l, self.tapers, self.orders, power,
+                                      kmax=k, taper_wt=weights)
 
-        raise RuntimeError('Computation of the theoretical variance is '
-                           'not yet implemented for arbitrary windows.')
+        return var
 
     def _info(self):
         """Print a summary of the data in the SHWindow instance."""
@@ -1683,28 +1726,26 @@ class SHWindowMask(SHWindow):
 
         return coeffs
 
-    def _coupling_matrix(self, lmax, nwin=None, weights=None):
+    def _coupling_matrix(self, lmax, k=None, weights=None):
         """Return the coupling matrix of the first nwin tapers."""
-        if nwin is None:
-            nwin = self.nwin
+        if k is None:
+            k = self.nwin
 
         if weights is None:
             weights = self.weights
 
-        tapers_power = _np.zeros((self.lwin+1, nwin))
-        for i in range(nwin):
+        tapers_power = _np.zeros((self.lwin+1, k))
+        for i in range(k):
             tapers_power[:, i] = _spectrum(self.to_array(i),
                                            normalization='4pi',
                                            convention='power', unit='per_l')
 
-        if weights is None:
-            return _shtools.SHMTCouplingMatrix(lmax, tapers_power, k=nwin)
-        else:
-            return _shtools.SHMTCouplingMatrix(lmax, tapers_power, k=nwin,
-                                               taper_wt=self.weights)
+        return _shtools.SHMTCouplingMatrix(lmax, tapers_power, k=k,
+                                           taper_wt=weights)
 
     def _multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
-                             lmax=None, taper_wt=None):
+                             lmax=None, weights=None, clat=None, clon=None,
+                             coord_degrees=True):
         """
         Return the multitaper spectrum estimate and standard error for an
         input SHCoeffs class instance.
@@ -1712,14 +1753,13 @@ class SHWindowMask(SHWindow):
         if lmax is None:
             lmax = clm.lmax
 
+        if weights is None:
+            weights = self.weights
+
         sh = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
-        if taper_wt is None:
-            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
-                                                   k=k)
-        else:
-            mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
-                                                   k=k, taper_wt=taper_wt)
+        mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
+                                               k=k, taper_wt=weights)
 
         if (unit == 'per_l'):
             pass
@@ -1742,7 +1782,8 @@ class SHWindowMask(SHWindow):
                 "Input value was {:s}".format(repr(convention)))
 
     def _multitaper_cross_spectrum(self, clm, slm, k, convention='power',
-                                   unit='per_l', lmax=None, taper_wt=None):
+                                   unit='per_l', lmax=None, weights=None,
+                                   clat=None, clon=None, coord_degrees=True):
         """
         Return the multitaper cross-spectrum estimate and standard error for
         two input SHCoeffs class instances.
@@ -1750,16 +1791,15 @@ class SHWindowMask(SHWindow):
         if lmax is None:
             lmax = min(clm.lmax, slm.lmax)
 
+        if weights is None:
+            weights = self.weights
+
         sh1 = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
         sh2 = slm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
-        if taper_wt is None:
-            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
-                                                    lmax=lmax, k=k)
-        else:
-            mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
-                                                    lmax=lmax, k=k,
-                                                    taper_wt=taper_wt)
+        mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
+                                                lmax=lmax, k=k,
+                                                taper_wt=weights)
 
         if (unit == 'per_l'):
             pass
@@ -1782,7 +1822,7 @@ class SHWindowMask(SHWindow):
                 "Input value was {:s}".format(repr(convention)))
 
     def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
-                         **kwargs):
+                         weights=None, save_cg=None, ldata=None):
         """
         Calculate the multitaper (cross-) spectrum expectation of a function
         localized by arbitary windows.
@@ -1797,12 +1837,14 @@ class SHWindowMask(SHWindow):
 
         if (unit == 'per_l'):
             outspectrum = _shtools.SHBiasKMask(self.tapers, spectrum, k=k,
-                                               **kwargs)
+                                               taper_wt=weights,
+                                               save_cg=save_cg, ldata=ldata)
         elif (unit == 'per_lm'):
             degree_l = _np.arange(len(spectrum))
             temp = spectrum * (2.0 * degree_l + 1.0)
             outspectrum = _shtools.SHBiasKMask(self.tapers, temp, k=k,
-                                               **kwargs)
+                                               taper_wt=weights,
+                                               save_cg=save_cg, ldata=ldata)
             outspectrum /= (2.0 * degree_l + 1.0)
         else:
             raise ValueError(
