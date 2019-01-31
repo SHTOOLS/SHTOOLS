@@ -15,7 +15,7 @@ call SHMTVar (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `variance`, `
 :   A matrix of localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
 `taper_order` : input, integer, dimension (`kmax`)
-:   The angular order of the windowing coefficients in `tapers`. If this matrix was created using `SHReturnTapersM`, then this array must be composed of zeros.
+:   The angular order of the windowing coefficients in `tapers`.
 
 `lwin` : input, integer
 :   The spherical harmonic bandwidth of the localizing windows.

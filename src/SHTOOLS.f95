@@ -979,6 +979,14 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHSCouplingMatrix
 
+        subroutine SHSlepianVar(l, galpha, galpha_order, lmax, kmax, Sff, &
+                               variance, exitstatus)
+            real*8, intent(in) :: galpha(:,:), Sff(:)
+            real*8, intent(out) :: variance
+            integer, intent(in) :: l, lmax, kmax, galpha_order(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHSlepianVar
+
     end interface
 
 end module SHTOOLS
