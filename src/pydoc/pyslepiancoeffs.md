@@ -30,4 +30,4 @@ Determine the expansion coefficients of a function for a given set of input Slep
 
 # See also
 
-[slepiancoeffstosh](pyslepiancoeffstosh.html), [shreturntapers](pyshreturntapers.html), [shreturntapersmap](pyshreturntapersmap.html), [shrotatetapers](pyshrotatetapers.html), [shvectortocilm](pyshvectortocilm.html)
+[slepiancoeffstosh](pyslepiancoeffstosh.html), [shslepianvar](pyshslepianvar.html), [shreturntapers](pyshreturntapers.html), [shreturntapersmap](pyshreturntapersmap.html), [shrotatetapers](pyshrotatetapers.html), [shvectortocilm](pyshvectortocilm.html)

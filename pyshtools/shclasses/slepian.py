@@ -91,6 +91,9 @@ class Slepian(object):
                              originally located at the North pole, to clat and
                              clon and save the spherical harmonic coefficients
                              in the attribute coeffs.
+    variance()             : Calculate the theoretical variance of the power of
+                             a function expanded in spherical-cap Slepian
+                             functions.
     copy()                 : Return a copy of the class instance.
     plot()                 : Plot the best concentrated Slepian functions using
                              a simple cylindrical projection.
@@ -575,6 +578,40 @@ class Slepian(object):
                                 convention=convention, unit=unit, base=base)
 
         return spectra
+
+    def variance(self, power, k, lmax=None):
+        """
+        Calculate the theoretical variance of the power of a function expanded
+        in spherical-cap Slepian functions.
+
+        Usage
+        -----
+        variance = x.variance(power, k, [lmax])
+
+        Returns
+        -------
+        variance : ndarray, shape (lmax+1)
+            The theoretical variance of the spectrum estimate.
+
+        Parameters
+        ----------
+        power : ndarray, dimension (lmax_in+1)
+            The input global power spectrum.
+        k : int
+            The number of Slepian functions used to represent the function.
+        lmax : int, optional, default = min(lmax_in, self.lmax)
+            The maximum spherical harmonic degree of the variance to compute.
+        """
+        if lmax is None:
+            lmax = min(len(power) - 1, self.lmax)
+        else:
+            if lmax > self.lmax:
+                raise ValueError('lmax must be less than or equal to '
+                                 'self.lmax. Input value is {:s}, and '
+                                 'self.lmax is {:s}'.format(repr(lmax),
+                                                            repr(self.lmax)))
+
+        return self._variance(power, k, lmax=lmax)
 
     def plot(self, nmax, lmax=None, maxcolumns=3,
              tick_interval=[60, 45], minor_tick_interval=None,
@@ -1196,6 +1233,18 @@ class SlepianCap(Slepian):
                                              self.nrot, angles, dj_matrix)
             self.coeffs = coeffs
 
+    def _variance(self, power, k, lmax=None):
+        """
+        Compute the theoretical variance of the power of a function expanded in
+        Slepian functions.
+        """
+        var = _np.zeros(lmax+1)
+        for l in range(lmax+1):
+            var[l] = _shtools.SHSlepianVar(l, self.tapers, self.orders, power,
+                                           kmax=k)
+
+        return var
+
     def _info(self):
         """Print a summary of the data in the Slepian instance."""
         print(repr(self))
@@ -1301,6 +1350,14 @@ class SlepianMask(Slepian):
                     coeffs[:, :, m] = - coeffs[:, :, m]
 
         return coeffs
+
+    def _variance(self, power, nwin, lmax=None):
+        """
+        Compute the theoretical variance of the power of a function expanded in
+        Slepian functions.
+        """
+        raise RuntimeError('Computation of the theoretical variance is '
+                           'not yet implemented for arbitrary windows.')
 
     def _info(self):
         """Print a summary of the data in the Slepian instance."""

@@ -2120,3 +2120,25 @@
         integer,intent(in) :: galpha_d1
         call SHSCouplingMatrix(kij,galpha,lmax,nmax,exitstatus=exitstatus)
     end subroutine pySHSCouplingMatrix
+
+    subroutine pySHSlepianVar(exitstatus,l,galpha,galpha_order,Sff,kmax,lmax,&
+                              variance,galpha_order_d0,Sff_d0,galpha_d0,&
+                              galpha_d1)
+        use shtools, only: SHSlepianVar
+        implicit none
+        integer,intent(out) :: exitstatus
+        integer,intent(in) :: l
+        real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+        integer,dimension(galpha_order_d0),intent(in) :: galpha_order
+        real*8,dimension(Sff_d0),intent(in) :: Sff
+        integer,intent(in) :: kmax
+        integer,intent(in) :: lmax
+        real*8,intent(out) :: variance
+        integer,intent(in) :: galpha_order_d0
+        integer,intent(in) :: Sff_d0
+        integer,intent(in) :: galpha_d0
+        integer,intent(in) :: galpha_d1
+        call SHSlepianVar(l,galpha,galpha_order,lmax,kmax,Sff,variance,&
+                          exitstatus=exitstatus)
+    end subroutine pySHSlepianVar
+

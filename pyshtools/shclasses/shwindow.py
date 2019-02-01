@@ -780,7 +780,7 @@ class SHWindow(object):
         Parameters
         ----------
         power : ndarray, dimension (lmax_in+1)
-            The input power spectrum
+            The input global power spectrum.
         k : int
             The number of tapers to be utilized in performing the multitaper
             spectral analysis.
@@ -1857,7 +1857,6 @@ class SHWindowMask(SHWindow):
         """
         Compute the theoretical variance of a windowed function.
         """
-
         raise RuntimeError('Computation of the theoretical variance is '
                            'not yet implemented for arbitrary windows.')
 

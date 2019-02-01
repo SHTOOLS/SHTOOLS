@@ -5,8 +5,8 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
 !   Given the first Kmax tapers of a matrix TAPERS, and an input global power
 !   spectrum Sff, this subroutine will compute the theoretical variance of a
 !   multitaper spectral estimate at a given degree l, and for a given set of
-!   optional input taper weights. This routine only works using the tapers of
-!   the spherical cap concentration problem.
+!   optional input taper weights. This routine works only using the tapers of
+!   the spherical-cap concentration problem.
 !
 !   Calling Parameters
 !

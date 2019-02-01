@@ -79,6 +79,8 @@ SlepianCoeffsToSH      Convert a function expressed in Slepian coefficients to
                        spherical harmonic coefficients.
 SHSCouplingMatrix      Compute the spherical harmonic coupling matrix for a
                        given set of Slepian functions.
+SHSlepianVar           Calculate the theoretical variance of the power of a
+                       function expanded in spherical-cap Slepian functions.
 
 Other
 -----
@@ -123,3 +125,4 @@ from ..shtools import SHRotateTapers
 from ..shtools import SlepianCoeffs
 from ..shtools import SlepianCoeffsToSH
 from ..shtools import SHSCouplingMatrix
+from ..shtools import SHSlepianVar

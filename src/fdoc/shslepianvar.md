@@ -34,7 +34,7 @@ call SHSlepianVar (`l`, `galpha`, `galpha_order`, `lmax`, `kmax`, `sff`, `varian
 
 # Description
 
-`SHSlepianVar` will compute the theoretical variance of the power of a function expanded in spherical-cap Slepian functions for a given spherical harmonic degree. This routine takes as input the spherical harmonic coefficients of spherical-cap Slepian functions as obtained by a call to `SHReturnTapers`, and only the first `KMAX` Slepian functions in the matrix `GALPHA` are used to compute the variance.
+`SHSlepianVar` will compute the theoretical variance of the power of a function expanded in spherical-cap Slepian functions for a given spherical harmonic degree. This routine takes as input the spherical harmonic coefficients of the spherical-cap Slepian functions as obtained by a call to `SHReturnTapers`, and only the first `KMAX` Slepian functions in the matrix `GALPHA` are used to compute the variance.
 
 # See also
 

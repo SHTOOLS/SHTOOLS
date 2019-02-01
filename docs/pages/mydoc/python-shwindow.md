@@ -66,6 +66,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `biased_spectrum()` | Calculate the multitaper (cross-) spectrum expectation of a localized function. |
 | `multitaper_spectrum()` | Return the multitaper spectrum estimate and uncertainty for the input SHCoeffs class instance. |
 | `multitaper_cross_spectrum()` | Return the multitaper cross-spectrum estimate and uncertainty for two input SHCoeffs class instances. |
+| `variance()` | Compute the theoretical variance of a windowed function for a given input power spectrum. |
 | `copy()` | Return a copy of the class instance. |
 | `plot_windows()` | Plot the best concentrated localization windows using a simple cylindrical projection. |
 | `plot_spectra()` | Plot the spectra of the best concentrated localization windows. |

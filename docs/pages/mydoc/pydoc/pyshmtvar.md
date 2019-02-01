@@ -13,12 +13,12 @@ Calculate the theoretical variance of a multitaper spectral estimate for a given
 
 ## Usage
 
-`variance` = SHMTVarOpt (`l`, `tapers`, `taper_order`, `sff`, [`kmax`, `lwin`, `taper_wt`, `nocross`])
+`variance` = SHMTVar (`l`, `tapers`, `taper_order`, `sff`, [`kmax`, `lwin`, `taper_wt`, `nocross`])
 
 ## Returns
 
 `variance` : float
-:   The minimum variance of the multitaper spectral estimate for degree `l`.
+:   The variance of the multitaper spectral estimate for degree `l`.
 
 ## Parameters
 

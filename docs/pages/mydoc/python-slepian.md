@@ -62,6 +62,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `degrees()` | Return an array containing the spherical harmonic degrees of the Slepian functions, from `0` to `lmax`. |
 | `spectra()` | Return the spectra of one or more Slepian functions.|
 | `rotate()` | Rotate the spherical cap Slepian functions, originally located at the North pole, to `clat` and `clon` and save the spherical harmonic coefficients in `coeffs`.|
+| `variance()` | Calculate the theoretical variance of the power of a function expanded in spherical-cap Slepian functions. |
 | `copy()` | Return a copy of the class instance. |
 | `plot()` | Plot the best concentrated Slepian functions using a simple cylindrical projection. |
 | `plot_spectra()` | Plot the spectra of the best concentrated Slepian functions. |
