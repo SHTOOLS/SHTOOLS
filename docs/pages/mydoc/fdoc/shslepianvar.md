@@ -21,10 +21,10 @@ call SHSlepianVar (`l`, `galpha`, `galpha_order`, `lmax`, `kmax`, `sff`, `varian
 :   The spherical harmonic degree used to calculate the theoretical variance.
 
 `galpha` : input, real\*8, dimension (`lmax`+1, `kmax`)
-:   A matrix of Slepian functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
+:   A matrix of spherical-cap Slepian functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
 `galpha_order` : input, integer, dimension (`kmax`)
-:   The angular order of the Slepian functions in `galpha`.
+:   The angular orders of the spherical-cap Slepian functions in `galpha`.
 
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of the Slepian functions.
@@ -47,4 +47,4 @@ call SHSlepianVar (`l`, `galpha`, `galpha_order`, `lmax`, `kmax`, `sff`, `varian
 
 ## See also
 
-[shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [slepiancoeffs](slepiancoeffs.html), [slepiancoeffstosh](slepiancoeffstosh.html)
+[shreturntapers](shreturntapers.html), [shreturntapersm](shreturntapersm.html), [slepiancoeffs](slepiancoeffs.html), [slepiancoeffstosh](slepiancoeffstosh.html), [shscouplingmatrixcap](shscouplingmatrixcap.html)

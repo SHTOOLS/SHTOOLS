@@ -1600,6 +1600,22 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(galpha),intent(hide) :: galpha_d1 = shape(galpha,1)
         end subroutine SHSlepianVar
 
+        subroutine SHSCouplingMatrixCap(exitstatus,kij,galpha,galpha_order,lmax,nmax,kij_d0,kij_d1,galpha_d0,galpha_d1,galpha_order_d0)
+            fortranname pyshscouplingmatrixcap
+            integer,intent(out) :: exitstatus
+            real*8,dimension(kij_d0,kij_d1),intent(out) :: kij
+            real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+            integer,dimension(galpha_order_d0),intent(in) :: galpha_order
+            real*8,dimension(falpha_d0),intent(in) :: falpha
+            integer,optional,intent(in),intent(hide),depend(galpha_d0) :: lmax = galpha_d0-1
+            integer,intent(in) :: nmax
+            integer,optional,intent(in),intent(hide),depend(lmax) :: kij_d0 = lmax+1
+            integer,optional,intent(in),intent(hide),depend(kij_d0) :: kij_d1 = kij_d0
+            integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d0 = shape(galpha,0)
+            integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d1 = shape(galpha,1)
+            integer,optional,intent(in),depend(galpha_order),intent(hide) :: galpha_order_d0 = len(galpha_order)
+        end subroutine SHSCouplingMatrixCap
+
     end interface
 
 end python module _SHTOOLS

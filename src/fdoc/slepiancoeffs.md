@@ -34,4 +34,4 @@ call SlepianCoeffs(`falpha`, `galpha`, `flm`, `lmax`, `nmax`, `exitstatus`)
 
 # See also
 
-[slepiancoeffstosh](slepiancoeffstosh.html), [shreturntapers](shreturntapers.html), [shslepianvar](shslepianvar.html), [shreturntapersmap](shreturntapersmap.html), [shrotatetapers](shrotatetapers.html), [shvectortocilm](shvectortocilm.html)
+[slepiancoeffstosh](slepiancoeffstosh.html), [shreturntapers](shreturntapers.html), [shslepianvar](shslepianvar.html), [shreturntapersmap](shreturntapersmap.html), [shrotatetapers](shrotatetapers.html), [shvectortocilm](shvectortocilm.html), [shscouplingmatrix](shscouplingmatrix.html), [shscouplingmatrixcap](shscouplingmatrixcap.html), [shmtcouplingmatrixcap](shmtcouplingmatrixcap.html)

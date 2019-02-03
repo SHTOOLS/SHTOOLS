@@ -2142,3 +2142,22 @@
                           exitstatus=exitstatus)
     end subroutine pySHSlepianVar
 
+    subroutine pySHSCouplingMatrixCap(exitstatus,kij,galpha,galpha_order,lmax,&
+                                      nmax,kij_d0,kij_d1,galpha_d0,galpha_d1,&
+                                      galpha_order_d0)
+        use shtools, only: SHSCouplingMatrixCap
+        implicit none
+        integer,intent(out) :: exitstatus
+        real*8,dimension(kij_d0,kij_d1),intent(out) :: kij
+        real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+        integer,dimension(galpha_order_d0),intent(in) :: galpha_order
+        integer,intent(in) :: lmax
+        integer,intent(in) :: nmax
+        integer,intent(in) :: kij_d0
+        integer,intent(in) :: kij_d1
+        integer,intent(in) :: galpha_d0
+        integer,intent(in) :: galpha_d1
+        integer,intent(in) :: galpha_order_d0
+        call SHSCouplingMatrixCap(kij,galpha,galpha_order,lmax,nmax,&
+                                  exitstatus=exitstatus)
+    end subroutine pySHSCouplingMatrixCap

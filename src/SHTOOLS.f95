@@ -987,6 +987,14 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHSlepianVar
 
+        subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
+                                     exitstatus)
+            real*8, intent(out) :: kij(:,:)
+            real*8, intent(in) :: galpha(:,:)
+            integer, intent(in) :: galpha_order(:), lmax, nmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHSCouplingMatrixCap
+
     end interface
 
 end module SHTOOLS

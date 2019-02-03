@@ -30,4 +30,4 @@ Convert a function expressed in Slepian coefficients to spherical harmonic coeff
 
 # See also
 
-[slepiancoeffst](pyslepiancoeffs.html), [shslepianvar](pyshslepianvar.html), [shreturntapers](pyshreturntapers.html), [shreturntapersmap](pyshreturntapersmap.html), [shrotatetapers](pyshrotatetapers.html), [shvectortocilm](pyshvectortocilm.html)
+[slepiancoeffst](pyslepiancoeffs.html), [shslepianvar](pyshslepianvar.html), [shreturntapers](pyshreturntapers.html), [shreturntapersmap](pyshreturntapersmap.html), [shrotatetapers](pyshrotatetapers.html), [shvectortocilm](pyshvectortocilm.html), [shscouplingmatrix](pyshscouplingmatrix.html), [shscouplingmatrixcap](pyshscouplingmatrixcap.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)

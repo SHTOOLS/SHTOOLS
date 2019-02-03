@@ -33,8 +33,8 @@ The relationship between the global and localized power spectra is given by:
 
 where `S_{\tilde{f}}` is the expectation of the power spectrum at degree l of the function expressed in Slepian functions, `S_{f}(l')` is the expectation of the global power spectrum, and `< ... >` is the expectation operator. The coupling matrix is given explicitly by
 
-`K_{ij} = \frac{1}{2l'+1} Sum_{m=-l}^l Sum_{m'=-l'}^l' ( Sum_{alpha=1}^nmax g_{l'm'}(alpha) g_{lm}(alpha) )**2`
+`K_{ll'} = \frac{1}{2l'+1} Sum_{m=-l}^l Sum_{m'=-l'}^l' ( Sum_{alpha=1}^nmax g_{l'm'}(alpha) g_{lm}(alpha) )**2`
 
 # See also
 
-[shreturntapers](shreturntapers.html), [shrotatetapers](shrotatetapers.html), [shreturntapersmap](shreturntapersmap.html), [shvectorrocilm](shvectortocilm.html), [shmtcouplingmatrix](shmtcouplingmatrix.html)
+[shreturntapers](shreturntapers.html), [shrotatetapers](shrotatetapers.html), [shreturntapersmap](shreturntapersmap.html), [shvectorrocilm](shvectortocilm.html), [shscouplingmatrixcap](shmtcouplingmatrixcap.html), [shmtcouplingmatrix](shmtcouplingmatrix.html)

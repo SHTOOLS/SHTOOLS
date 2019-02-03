@@ -1119,12 +1119,7 @@ class SlepianCap(Slepian):
 
     def _coupling_matrix(self, nmax):
         """Return the coupling matrix."""
-        if self.coeffs is None:
-            self.rotate(clat=90., clon=0., nrot=nmax)
-        if self.nrot < nmax:
-            self.rotate(clat=90., clon=0., nrot=nmax)
-
-        return _shtools.SHSCouplingMatrix(self.coeffs, nmax)
+        return _shtools.SHSCouplingMatrixCap(self.tapers, self.orders, nmax)
 
     def _taper2coeffs(self, alpha):
         """
