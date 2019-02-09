@@ -808,7 +808,7 @@ class SHWindow(object):
         return self._variance(power, k, lmax=lmax, weights=weights)
 
     def plot_windows(self, nwin, lmax=None, maxcolumns=3,
-                     tick_interval=[60, 45], minor_tick_interval=None,
+                     tick_interval=[60, 45], minor_tick_interval=[None, None],
                      xlabel='Longitude', ylabel='Latitude',
                      axes_labelsize=None, tick_labelsize=None,
                      title_labelsize=None, grid=False, show=True, title=True,
@@ -836,7 +836,7 @@ class SHWindow(object):
         tick_interval : list or tuple, optional, default = [60, 45]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = None
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
@@ -882,13 +882,50 @@ class SHWindow(object):
             axes = ax
 
         if tick_interval is None:
+            tick_interval = [None, None]
+
+        if minor_tick_interval is None:
+            minor_tick_interval = [None, None]
+
+        if tick_interval[0] is None:
             xticks = []
-            yticks = []
+        elif self.grid == 'GLQ':
+            xticks = _np.linspace(0, self.nlon-1,
+                                  num=self.nlon//tick_interval[0]+1,
+                                  endpoint=True, dtype=int)
         else:
             xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
                                   endpoint=True)
+
+        if tick_interval[1] is None:
+            yticks = []
+        elif self.grid == 'GLQ':
+            yticks = _np.linspace(0, self.nlat-1,
+                                  num=self.nlat//tick_interval[1]+1,
+                                  endpoint=True, dtype=int)
+        else:
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
+
+        if minor_tick_interval[0] is None:
+            minor_xticks = []
+        elif self.grid == 'GLQ':
+            minor_xticks = _np.linspace(
+                0, self.nlon-1, num=self.nlon//minor_tick_interval[0]+1,
+                endpoint=True, dtype=int)
+        else:
+            minor_xticks = _np.linspace(
+                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
+
+        if minor_tick_interval[1] is None:
+            minor_yticks = []
+        elif self.grid == 'GLQ':
+            minor_yticks = _np.linspace(
+                0, self.nlat-1, num=self.nlat//minor_tick_interval[1]+1,
+                endpoint=True, dtype=int)
+        else:
+            minor_yticks = _np.linspace(
+                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
@@ -896,15 +933,6 @@ class SHWindow(object):
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
         if title_labelsize is None:
             title_labelsize = _mpl.rcParams['axes.titlesize']
-
-        if minor_tick_interval is None:
-            minor_xticks = []
-            minor_yticks = []
-        else:
-            minor_xticks = _np.linspace(
-                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
-            minor_yticks = _np.linspace(
-                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
         deg = '$^{\circ}$'
         xticklabels = [str(int(y)) + deg for y in xticks]

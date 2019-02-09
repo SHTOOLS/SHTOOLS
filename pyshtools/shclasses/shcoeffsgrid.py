@@ -3371,7 +3371,7 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, tick_interval=[30, 30], minor_tick_interval=None,
+    def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
              colorbar=False, cb_orientation='vertical',
              cb_label=None, grid=False, axes_labelsize=None,
              tick_labelsize=None, ax=None, ax2=None, show=True, fname=None,
@@ -3381,15 +3381,16 @@ class SHGrid(object):
 
         Usage
         -----
-        x.plot([tick_interval, minor_tick_interval, colorbar, cb_orientation,
-                cb_label, grid, ax, ax2, show, fname, **kwargs])
+        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, colorbar,
+                cb_orientation, cb_label, grid, axes_labelsize, tick_labelsize,
+                ax, ax2, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = None
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'Longitude' or 'GLQ longitude index'
@@ -3422,44 +3423,59 @@ class SHGrid(object):
             If present, and if axes is not specified, save the image to the
             specified file.
         kwargs : optional
-            Keyword arguements that will be sent to plt.imshow(), such as cmap.
+            Keyword arguements that will be sent to plt.imshow(), such as cmap,
+            vmin, and vmax.
         """
         if tick_interval is None:
+            tick_interval = [None, None]
+
+        if minor_tick_interval is None:
+            minor_tick_interval = [None, None]
+
+        if tick_interval[0] is None:
             xticks = []
-            yticks = []
         elif self.grid == 'GLQ':
             xticks = _np.linspace(0, self.nlon-1,
                                   num=self.nlon//tick_interval[0]+1,
                                   endpoint=True, dtype=int)
+        else:
+            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
+                                  endpoint=True)
+
+        if tick_interval[1] is None:
+            yticks = []
+        elif self.grid == 'GLQ':
             yticks = _np.linspace(0, self.nlat-1,
                                   num=self.nlat//tick_interval[1]+1,
                                   endpoint=True, dtype=int)
         else:
-            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
-                                  endpoint=True)
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
+
+        if minor_tick_interval[0] is None:
+            minor_xticks = []
+        elif self.grid == 'GLQ':
+            minor_xticks = _np.linspace(
+                0, self.nlon-1, num=self.nlon//minor_tick_interval[0]+1,
+                endpoint=True, dtype=int)
+        else:
+            minor_xticks = _np.linspace(
+                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
+
+        if minor_tick_interval[1] is None:
+            minor_yticks = []
+        elif self.grid == 'GLQ':
+            minor_yticks = _np.linspace(
+                0, self.nlat-1, num=self.nlat//minor_tick_interval[1]+1,
+                endpoint=True, dtype=int)
+        else:
+            minor_yticks = _np.linspace(
+                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-
-        if minor_tick_interval is None:
-            minor_xticks = []
-            minor_yticks = []
-        elif self.grid == 'GLQ':
-            minor_xticks = _np.linspace(
-                0, self.nlon-1, num=self.nlon//minor_tick_interval[0]+1,
-                endpoint=True, dtype=int)
-            minor_yticks = _np.linspace(
-                0, self.nlat-1, num=self.nlat//minor_tick_interval[1]+1,
-                endpoint=True, dtype=int)
-        else:
-            minor_xticks = _np.linspace(
-                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
-            minor_yticks = _np.linspace(
-                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
         if ax is None and ax2 is None:
             fig, axes = self._plot(xticks=xticks, yticks=yticks,

@@ -127,14 +127,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vxx([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vxx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -146,7 +150,13 @@ class Tensor(object):
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{xx}$'
-            Text label for the colorbar..
+            Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -181,14 +191,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vyy([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vyy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -201,6 +215,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{yy}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -235,14 +255,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vzz([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vzz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -255,6 +279,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{zz}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -289,14 +319,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vxy([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vxy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -309,6 +343,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{xy}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -343,14 +383,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vyx([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vyx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -363,6 +407,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{yx}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -397,14 +447,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vxz([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vxz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -417,6 +471,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{xz}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -451,14 +511,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vzx([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vzx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -471,6 +535,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{zx}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -505,14 +575,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vyz([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vyz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -525,6 +599,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{yz}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -559,14 +639,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vzy([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vzy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -579,6 +663,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{zy}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -617,7 +707,7 @@ class Tensor(object):
         Usage
         -----
         x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
-                colorbar, cb_orientation, cb_label, axes_labelsize,
+                colorbar, cb_orientation, cb_label, grid, axes_labelsize,
                 tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -638,9 +728,11 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
-        axes_labelsize : int, optional, default = 8
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = 8
+        tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -659,7 +751,7 @@ class Tensor(object):
         else:
             scale = 0.55
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                    _mpl.rcParams['figure.figsize'][0] * scale)
+                   _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(3, 3, figsize=figsize)
         self.plot_vxx(colorbar=colorbar, cb_orientation=cb_orientation,
@@ -746,14 +838,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i0([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                   cb_label, show, fname])
+        x.plot_i0([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                   colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                   tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -766,6 +862,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'Tr $V_{ij}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -805,14 +907,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i1([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                   cb_label, show, fname])
+        x.plot_i1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                   colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                   tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -825,6 +931,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$I_1$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -865,14 +977,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i2([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                   cb_label, show, fname])
+        x.plot_i2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                   colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                   tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -885,6 +1001,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'det $V_{ij}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -926,14 +1048,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                  cb_label, show, fname])
+        x.plot_i([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                  colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                  tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -946,6 +1072,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -977,17 +1109,17 @@ class Tensor(object):
                         cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_invar(self, colorbar=True, cb_orientation='horizontal',
-             tick_interval=[60, 60], minor_tick_interval=[20, 20],
-             xlabel='Longitude', ylabel='Latitude',
-             axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
-             **kwargs):
+                   tick_interval=[60, 60], minor_tick_interval=[20, 20],
+                   xlabel='Longitude', ylabel='Latitude',
+                   axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
+                   **kwargs):
         """
         Plot the three invariants of the tensor and the derived quantity I.
 
         Usage
         -----
         x.plot_invar([tick_interval, minor_tick_interval, xlabel, ylabel,
-                colorbar, cb_orientation, cb_label, axes_labelsize,
+                colorbar, cb_orientation, cb_label, grid, axes_labelsize,
                 tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -1008,9 +1140,11 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
-        axes_labelsize : int, optional, default = 9
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = 8
+        tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1029,38 +1163,38 @@ class Tensor(object):
         else:
             scale = 0.6
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                    _mpl.rcParams['figure.figsize'][0] * scale)
+                   _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(2, 2, figsize=figsize)
 
         self.plot_i0(colorbar=colorbar, cb_orientation=cb_orientation,
                      ax=ax.flat[0], tick_interval=tick_interval,
                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
-                      minor_tick_interval=minor_tick_interval,
-                      **kwargs)
+                     axes_labelsize=axes_labelsize,
+                     tick_labelsize=tick_labelsize,
+                     minor_tick_interval=minor_tick_interval,
+                     **kwargs)
         self.plot_i1(colorbar=colorbar, cb_orientation=cb_orientation,
                      ax=ax.flat[1], tick_interval=tick_interval,
                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
-                      minor_tick_interval=minor_tick_interval,
-                      **kwargs)
+                     axes_labelsize=axes_labelsize,
+                     tick_labelsize=tick_labelsize,
+                     minor_tick_interval=minor_tick_interval,
+                     **kwargs)
         self.plot_i2(colorbar=colorbar, cb_orientation=cb_orientation,
                      ax=ax.flat[2], tick_interval=tick_interval,
                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
-                      minor_tick_interval=minor_tick_interval,
-                      **kwargs)
+                     axes_labelsize=axes_labelsize,
+                     tick_labelsize=tick_labelsize,
+                     minor_tick_interval=minor_tick_interval,
+                     **kwargs)
         self.plot_i(colorbar=colorbar, cb_orientation=cb_orientation,
                     ax=ax.flat[3], tick_interval=tick_interval,
                     xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
-                      minor_tick_interval=minor_tick_interval,
-                      **kwargs)
+                    axes_labelsize=axes_labelsize,
+                    tick_labelsize=tick_labelsize,
+                    minor_tick_interval=minor_tick_interval,
+                    **kwargs)
 
         fig.tight_layout(pad=0.5)
 
@@ -1078,14 +1212,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eig1([tick_interval, xlabel, ylabel, ax, colorbar,
-                     cb_orientation, cb_label, show, fname])
+        x.plot_eig1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                     tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1098,6 +1236,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_1$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1136,14 +1280,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eig2([tick_interval, xlabel, ylabel, ax, colorbar,
-                     cb_orientation, cb_label, show, fname])
+        x.plot_eig2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                     tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1156,6 +1304,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_2$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1194,14 +1348,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eig3([tick_interval, xlabel, ylabel, ax, colorbar,
-                     cb_orientation, cb_label, show, fname])
+        x.plot_eig3([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                     tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1214,6 +1372,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_3$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1246,17 +1410,17 @@ class Tensor(object):
                            cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_eigs(self, colorbar=True, cb_orientation='vertical',
-             tick_interval=[60, 60], minor_tick_interval=[20, 20],
-             xlabel='Longitude', ylabel='Latitude',
-             axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
-             **kwargs):
+                  tick_interval=[60, 60], minor_tick_interval=[20, 20],
+                  xlabel='Longitude', ylabel='Latitude',
+                  axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
+                  **kwargs):
         """
         Plot the three eigenvalues of the tensor.
 
         Usage
         -----
         x.plot_eigs([tick_interval, minor_tick_interval, xlabel, ylabel,
-                     colorbar, cb_orientation, cb_label, axes_labelsize,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
                      tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -1277,9 +1441,11 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
-        axes_labelsize : int, optional, default = 9
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = 8
+        tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1298,7 +1464,7 @@ class Tensor(object):
         else:
             scale = 1.65
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                    _mpl.rcParams['figure.figsize'][0] * scale)
+                   _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(3, 1, figsize=figsize)
 
@@ -1340,14 +1506,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eigh1([tick_interval, xlabel, ylabel, ax, colorbar,
-                      cb_orientation, cb_label, show, fname])
+        x.plot_eigh1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1360,6 +1530,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_{h1}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1398,14 +1574,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eigh2([tick_interval, xlabel, ylabel, ax, colorbar,
-                      cb_orientation, cb_label, show, fname])
+        x.plot_eigh2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1418,6 +1598,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_{h2}$, Eotvos$^{-1}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1456,14 +1642,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eighh([tick_interval, xlabel, ylabel, ax, colorbar,
-                      cb_orientation, cb_label, show, fname])
+        x.plot_eighh([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1476,6 +1666,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_{hh}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1519,7 +1715,7 @@ class Tensor(object):
         Usage
         -----
         x.plot_eigh([tick_interval, minor_tick_interval, xlabel, ylabel,
-                     colorbar, cb_orientation, cb_label, axes_labelsize,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
                      tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -1540,9 +1736,11 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
-        axes_labelsize : int, optional, default = 9
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = 8
+        tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1561,7 +1759,7 @@ class Tensor(object):
         else:
             scale = 1.65
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                    _mpl.rcParams['figure.figsize'][0] * scale)
+                   _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(3, 1, figsize=figsize)
 
