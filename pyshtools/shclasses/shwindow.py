@@ -889,40 +889,24 @@ class SHWindow(object):
 
         if tick_interval[0] is None:
             xticks = []
-        elif self.grid == 'GLQ':
-            xticks = _np.linspace(0, self.nlon-1,
-                                  num=self.nlon//tick_interval[0]+1,
-                                  endpoint=True, dtype=int)
         else:
             xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
                                   endpoint=True)
 
         if tick_interval[1] is None:
             yticks = []
-        elif self.grid == 'GLQ':
-            yticks = _np.linspace(0, self.nlat-1,
-                                  num=self.nlat//tick_interval[1]+1,
-                                  endpoint=True, dtype=int)
         else:
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
 
         if minor_tick_interval[0] is None:
             minor_xticks = []
-        elif self.grid == 'GLQ':
-            minor_xticks = _np.linspace(
-                0, self.nlon-1, num=self.nlon//minor_tick_interval[0]+1,
-                endpoint=True, dtype=int)
         else:
             minor_xticks = _np.linspace(
                 0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
 
         if minor_tick_interval[1] is None:
             minor_yticks = []
-        elif self.grid == 'GLQ':
-            minor_yticks = _np.linspace(
-                0, self.nlat-1, num=self.nlat//minor_tick_interval[1]+1,
-                endpoint=True, dtype=int)
         else:
             minor_yticks = _np.linspace(
                 -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
