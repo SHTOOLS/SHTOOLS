@@ -1,4 +1,4 @@
-subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
+subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the matrix D(lm,l'm') for the spatiospectral
@@ -9,7 +9,8 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
 !   in latitude, and either N_DH samples in longitude for SAMPLING=1
 !   or 2*N_DH samples in longitude for SAMPLING=2. Elements of the matrix D
 !   (which are ordered accoring to YilmIndex) are computed up to a maximum
-!   degree LMAX.
+!   degree LMAX. If the optional vector DEGREES is specified, then the matrix
+!   will be computed only for degrees l where DEGREES(l+1) is not zero.
 !
 !   It should be noted that the elements of D are computed approximately.
 !   These are explicitly calculated using
@@ -25,8 +26,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
 !   will not be true. However, if L is larger than LMAX, then we might expect
 !   that the spherical harmonic expansions will be good approximations. This
 !   needs to be verified by chosing different values of N_DH and comparing
-!   the results. A simple comparison is to see how good the D(1,1) element
-!   approximates the area of the concentration region.
+!   the results.
 !
 !   Calling Parameters
 !
@@ -46,7 +46,9 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
 !           SAMPLING    1 (default) corresponds to equal sampling (n_dh, n_dh),
 !                       whereas 2 corresponds to equal spaced grids
 !                       (n_dh, 2*n_dh).
-!
+!           degrees     Specify those degrees of the coupling matrix to
+!                       compute. If degrees(l+1) is zero, degree l will not
+!                       be computed.
 !       OUT
 !           Dij         Elements of the matrix D, which is symmetric, and
 !                       whose elements are packed into a 1D array according
@@ -63,7 +65,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -74,7 +76,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
 
     real*8, intent(out) :: Dij(:,:)
     integer, intent(in) :: dh_mask(:,:), n_dh, lmax
-    integer, intent(in), optional:: sampling
+    integer, intent(in), optional:: sampling, degrees(:)
     integer, intent(out), optional :: exitstatus
     integer :: nlat, nlong, lmax_dh, astat, i, j, k, l, m, max_mask, min_mask
     real*8, allocatable :: f(:,:), plm(:), clm(:,:,:), vec(:)
@@ -172,6 +174,20 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
 
     endif
 
+    if (present(degrees)) then
+        if (size(degrees) < lmax+1) then
+            print*, "Error --- ComputeDm"
+            print*, "DEGREES must have dimension LMAX+1, where LMAX is ", lmax
+            print*, "Input array is dimensioned as ", size(degrees)
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
+        end if
+    end if
+
     allocate (f(nlat,nlong), stat = astat)
 
     if (astat /= 0) then
@@ -261,6 +277,10 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
     dij = 0.0d0
 
     do l = lmax, 0, -1
+        if (present(degrees)) then
+            if (degrees(l+1) == 0) cycle
+        end if
+
         do m = 0, l
             do j = 1, 2
 
@@ -306,11 +326,14 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
                                         sampling = sampling, lmax_calc = l, &
                                         exitstatus = exitstatus)
                         if (exitstatus /= 0) return
+
                     else
                         call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = 1, &
                                         lmax_calc = l, exitstatus = exitstatus)
                         if (exitstatus /= 0) return
+
                     end if
+
                     call SHCilmToVector(clm, vec, l, exitstatus = exitstatus)
                     if (exitstatus /= 0) return
 
@@ -318,10 +341,13 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
                     if (present(sampling)) then
                         call SHExpandDH(f, n_dh, clm, lmax_dh, &
                                         sampling = sampling, lmax_calc = l)
+
                     else
                         call SHExpandDH(f, n_dh, clm, lmax_dh, sampling = 1, &
                                         lmax_calc = l)
+
                     end if
+
                     call SHCilmToVector(clm, vec, l)
 
                 end if
@@ -335,6 +361,21 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
         end do
 
     end do
+
+    if (present(degrees)) then
+        do l=0, lmax
+            do m=0, l
+                if (degrees(l+1) == 0) then
+                    dij(:, YilmIndexVector(1, l, m)) = 0.0d0
+                    dij(YilmIndexVector(1, l, m), :) = 0.0d0
+                    if (m > 0) then
+                        dij(:, YilmIndexVector(2, l, m)) = 0.0d0
+                        dij(YilmIndexVector(2, l, m), :) = 0.0d0
+                    end if
+                end if
+            end do
+        end do
+    end if
 
     call plmbar(plm, -1, cos(colat))
 

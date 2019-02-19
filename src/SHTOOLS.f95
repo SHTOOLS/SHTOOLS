@@ -525,27 +525,31 @@ module SHTOOLS
         end subroutine SHLocalizedAdmitCorr
 
         subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, &
-                                  taper_order, exitstatus)
+                                  taper_order, degrees, exitstatus)
             real*8, intent(in) :: theta0
             integer, intent(in) :: lmax
             real*8, intent(out) :: tapers(:,:), eigenvalues(:)
             integer, intent(out) :: taper_order(:)
+            integer, intent(in), optional :: degrees(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHReturnTapers
 
-        subroutine SHReturnTapersM(theta0, lmax, m, tapers, &
-                                   eigenvalues, shannon, exitstatus)
+        subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, &
+                                   shannon, degrees, ntapers, exitstatus)
             real*8, intent(in) :: theta0
             integer, intent(in) :: lmax, m
             real*8, intent(out) :: tapers(:,:), eigenvalues(:)
             real*8, intent(out), optional :: shannon
+            integer, intent(in), optional :: degrees(:)
+            integer, intent(out), optional :: ntapers
             integer, intent(out), optional :: exitstatus
         end subroutine SHReturnTapersM
 
-        subroutine ComputeDm(dllm, lmax, m, theta0, exitstatus)
+        subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
             real*8, intent(out) :: dllm(:,:)
             real*8, intent(in) :: theta0
             integer, intent(in) :: lmax, m
+            integer, intent(in), optional :: degrees(:)
             integer, intent(out), optional :: exitstatus
         end subroutine ComputeDm
 
@@ -613,6 +617,18 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHMTVarOpt
 
+        subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, &
+                              variance, taper_wt, unweighted_covar, nocross, &
+                              exitstatus)
+            real*8, intent(in) :: tapers(:,:), Sff(:)
+            real*8, intent(out) :: variance
+            integer, intent(in) :: l, lwin, kmax, taper_order(:)
+            real*8, intent(in), optional :: taper_wt(:)
+            real*8, intent(out), optional :: unweighted_covar(:,:)
+            integer, intent(in), optional :: nocross
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHMTVar
+
         complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, &
                                     hk_real, mj, mk, lwin, hkcc)
             real*8, intent(in) :: incspectra(:), hj_real(:), hk_real(:)
@@ -620,10 +636,11 @@ module SHTOOLS
         end function SHSjkPG
 
         subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, &
-                                        lmax, sampling, ntapers, exitstatus)
+                                     lmax, sampling, ntapers, degrees, &
+                                     exitstatus)
             real*8, intent(out) :: tapers(:,:), eigenvalues(:)
-            integer, intent(in) :: dh_mask(:,:), n_dh, lmax
-            integer, intent(in), optional :: sampling, ntapers
+            integer, intent(in) :: dh_mask(:,:), n_dh, lmax, sampling
+            integer, intent(in), optional :: ntapers, degrees(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHReturnTapersMap
 
@@ -659,10 +676,11 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHMultiTaperMaskCSE
 
-        subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, exitstatus)
+        subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, &
+                               exitstatus)
             real*8, intent(out) :: Dij(:,:)
             integer, intent(in) :: dh_mask(:,:), n_dh, lmax
-            integer, intent(in), optional :: sampling
+            integer, intent(in), optional :: sampling, degrees(:)
             integer, intent(out), optional :: exitstatus
         end subroutine ComputeDMap
 
@@ -906,12 +924,12 @@ module SHTOOLS
             integer, intent(in) :: i, l, m
         end function YilmIndexVector
 
-        subroutine EigValVecSym(ain, n, eig, evec, ul, k, exitstatus)
+        subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
             real*8, intent(in) :: ain(:,:)
             integer, intent(in) :: n
             real*8, intent(out) :: eig(:), evec(:,:)
             character, intent(in), optional :: ul
-            integer, intent(in), optional :: k
+            integer, intent(in), optional :: K
             integer, intent(out), optional :: exitstatus
         end subroutine EigValVecSym
 
@@ -953,6 +971,29 @@ module SHTOOLS
             integer, intent(in) :: lmax, nmax
             integer, intent(out), optional :: exitstatus
         end subroutine SlepianCoeffsToSH
+
+        subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
+            real*8, intent(out) :: kij(:,:)
+            real*8, intent(in) :: galpha(:,:)
+            integer, intent(in) :: lmax, nmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHSCouplingMatrix
+
+        subroutine SHSlepianVar(l, galpha, galpha_order, lmax, kmax, Sff, &
+                               variance, exitstatus)
+            real*8, intent(in) :: galpha(:,:), Sff(:)
+            real*8, intent(out) :: variance
+            integer, intent(in) :: l, lmax, kmax, galpha_order(:)
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHSlepianVar
+
+        subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
+                                     exitstatus)
+            real*8, intent(out) :: kij(:,:)
+            real*8, intent(in) :: galpha(:,:)
+            integer, intent(in) :: galpha_order(:), lmax, nmax
+            integer, intent(out), optional :: exitstatus
+        end subroutine SHSCouplingMatrixCap
 
     end interface
 

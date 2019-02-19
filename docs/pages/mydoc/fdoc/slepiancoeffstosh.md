@@ -30,7 +30,7 @@ call SlepianCoeffsToSH(`flm`, `falpha`, `galpha`, `lmax`, `nmax`, `exitstatus`)
 :   The spherical harmonic bandwidth of the Slepian functions.
 
 `nmax` : input, integer
-:   The number of expansion coefficients to compute.
+:   The number of expansion coefficients to compute. This must be less than or equal to (`lmax`+1)\*\*2.
 
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
@@ -43,4 +43,4 @@ call SlepianCoeffsToSH(`flm`, `falpha`, `galpha`, `lmax`, `nmax`, `exitstatus`)
 
 ## See also
 
-[slepiancoeffs](slepiancoeffs.html), [shreturntapers](shreturntapers.html), [shreturntapersmap](shreturntapersmap.html), [shrotatetapers](shrotatetapers.html), [shvectortocilm](shvectortocilm.html)
+[slepiancoeffs](slepiancoeffs.html), [shslepianvar](shslepianvar.html), [shreturntapers](shreturntapers.html), [shreturntapersmap](shreturntapersmap.html), [shrotatetapers](shrotatetapers.html), [shvectortocilm](shvectortocilm.html), [shscouplingmatrix](shscouplingmatrix.html), [shscouplingmatrixcap](shscouplingmatrixcap.html), [shmtcouplingmatrix](shmtcouplingmatrix.html),

@@ -117,14 +117,18 @@ class SHMagGrid(object):
 
         Usage
         -----
-        x.plot_rad([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname, **kwargs])
+        x.plot_rad([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -137,6 +141,12 @@ class SHMagGrid(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$B_r$, nT'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -169,14 +179,18 @@ class SHMagGrid(object):
 
         Usage
         -----
-        x.plot_theta([tick_interval, xlabel, ylabel, ax, colorbar,
-                      cb_orientation, cb_label, show, fname, **kwargs])
+        x.plot_theta([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -189,6 +203,12 @@ class SHMagGrid(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$B_\\theta$, nT'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -222,14 +242,18 @@ class SHMagGrid(object):
 
         Usage
         -----
-        x.plot_phi([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname, **kwargs])
+        x.plot_phi([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -242,6 +266,12 @@ class SHMagGrid(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$B_\phi$, nT'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -274,14 +304,18 @@ class SHMagGrid(object):
 
         Usage
         -----
-        x.plot_total([tick_interval, xlabel, ylabel, ax, colorbar,
-                      cb_orientation, cb_label, show, fname, **kwargs])
+        x.plot_total([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -294,6 +328,12 @@ class SHMagGrid(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$|B|$, nT'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -328,14 +368,18 @@ class SHMagGrid(object):
 
         Usage
         -----
-        x.plot_pot([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname, **kwargs])
+        x.plot_pot([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -348,6 +392,12 @@ class SHMagGrid(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'potential, nT m'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -355,7 +405,7 @@ class SHMagGrid(object):
             specified file.
         kwargs : optional
             Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
+            and plt.imshow() methods, such as cmap, vmin and vmax.
         """
         if ax is None:
             fig, axes = self.pot.plot(colorbar=colorbar,
@@ -374,7 +424,7 @@ class SHMagGrid(object):
 
     def plot(self, colorbar=True, cb_orientation='horizontal',
              tick_interval=[60, 60], minor_tick_interval=[20, 20],
-             xlabel='Longitude', ylabel='Latitude',
+             xlabel='Longitude', ylabel='Latitude', grid=False,
              axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
              **kwargs):
         """
@@ -383,8 +433,8 @@ class SHMagGrid(object):
 
         Usage
         -----
-        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
-                colorbar, cb_orientation, cb_label, axes_labelsize,
+        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, grid,
+                colorbar, cb_orientation, cb_label, grid, axes_labelsize,
                 tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -405,6 +455,8 @@ class SHMagGrid(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
         axes_labelsize : int, optional, default = 9
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = 8
@@ -415,8 +467,8 @@ class SHMagGrid(object):
             If present, and if axes is not specified, save the image to the
             specified file.
         kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
+            Keyword arguements that will be sent to plt.imshow(), such as cmap,
+            vmin and vmax.
         """
         if colorbar is True:
             if cb_orientation == 'horizontal':
@@ -426,32 +478,32 @@ class SHMagGrid(object):
         else:
             scale = 0.6
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                    _mpl.rcParams['figure.figsize'][0] * scale)
+                   _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(2, 2, figsize=figsize)
         self.plot_rad(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[0], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
+                      xlabel=xlabel, ylabel=ylabel, grid=grid,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
         self.plot_theta(colorbar=colorbar, cb_orientation=cb_orientation,
                         ax=ax.flat[1], tick_interval=tick_interval,
-                        xlabel=xlabel, ylabel=ylabel,
+                        xlabel=xlabel, ylabel=ylabel, grid=grid,
                         axes_labelsize=axes_labelsize,
                         tick_labelsize=tick_labelsize,
                         minor_tick_interval=minor_tick_interval,
                         **kwargs)
         self.plot_phi(colorbar=colorbar, cb_orientation=cb_orientation,
                       ax=ax.flat[2], tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
+                      xlabel=xlabel, ylabel=ylabel, grid=grid,
                       axes_labelsize=axes_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      tick_labelsize=tick_labelsize,**kwargs)
+                      tick_labelsize=tick_labelsize, **kwargs)
         self.plot_total(colorbar=colorbar, cb_orientation=cb_orientation,
                         ax=ax.flat[3], tick_interval=tick_interval,
-                        xlabel=xlabel, ylabel=ylabel,
+                        xlabel=xlabel, ylabel=ylabel, grid=grid,
                         axes_labelsize=axes_labelsize,
                         tick_labelsize=tick_labelsize,
                         minor_tick_interval=minor_tick_interval,

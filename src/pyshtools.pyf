@@ -801,7 +801,7 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(lmax,lwin),intent(hide) :: corr_d0 = lmax-lwin+1
         end subroutine SHLocalizedAdmitCorr
 
-        subroutine SHReturnTapers(exitstatus,theta0,lmax,tapers,eigenvalues,taper_order,eigenvalues_d0,tapers_d0,tapers_d1,taper_order_d0)
+        subroutine SHReturnTapers(exitstatus,theta0,lmax,tapers,eigenvalues,taper_order,degrees,eigenvalues_d0,tapers_d0,tapers_d1,taper_order_d0,degrees_d0)
             fortranname pyshreturntapers
             integer,intent(out) :: exitstatus
             real*8,intent(in) :: theta0
@@ -809,13 +809,15 @@ python module _SHTOOLS
             real*8,dimension(tapers_d0,tapers_d1),intent(out) :: tapers
             real*8,dimension(eigenvalues_d0),intent(out) :: eigenvalues
             integer dimension(taper_order_d0),intent(out) :: taper_order
+            integer,optional,intent(in),dimension(degrees_d0) :: degrees = 1
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: eigenvalues_d0 = (lmax+1)*(lmax+1)
             integer,optional,intent(in),depend(lmax),intent(hide) :: tapers_d0 = (lmax+1)
             integer,optional,intent(in),depend(lmax),intent(hide) :: tapers_d1 = (lmax+1)*(lmax+1)
             integer,optional,intent(in),depend(lmax),intent(hide) :: taper_order_d0 = (lmax+1)*(lmax+1)
+            integer,optional,intent(in),intent(hide),depend(lmax) :: degrees_d0 = lmax+1
         end subroutine SHReturnTapers
 
-        subroutine SHReturnTapersM(exitstatus,theta0,lmax,m,tapers,eigenvalues,tapers_d0,tapers_d1,eigenvalues_d0)
+        subroutine SHReturnTapersM(exitstatus,theta0,lmax,m,tapers,eigenvalues,degrees,tapers_d0,tapers_d1,eigenvalues_d0,degrees_d0)
             fortranname pyshreturntapersm
             integer,intent(out) :: exitstatus
             real*8,intent(in) :: theta0
@@ -823,20 +825,24 @@ python module _SHTOOLS
             integer,intent(in) :: m
             real*8,dimension(tapers_d0,tapers_d1),intent(out) :: tapers
             real*8,dimension(eigenvalues_d0),intent(out) :: eigenvalues
-            integer,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: tapers_d0 = lmax+1
-            integer,intent(in),depend(lmax),intent(hide) :: tapers_d1 = lmax+1
-            integer,intent(in),depend(lmax),intent(hide) :: eigenvalues_d0 = lmax+1
+            integer,optional,intent(in),dimension(degrees_d0) :: degrees = 1
+            integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: tapers_d0 = lmax+1
+            integer,optional,intent(in),depend(lmax),intent(hide) :: tapers_d1 = lmax+1-abs(m)
+            integer,optional,intent(in),depend(degrees),intent(hide) :: eigenvalues_d0 = lmax+1-abs(m)
+            integer,optional,intent(in),depend(lmax),intent(hide) :: degrees_d0 = lmax+1
         end subroutine SHReturnTapersM
 
-        subroutine ComputeDm(exitstatus,dllm,lmax,m,theta0,dllm_d0,dllm_d1)
+        subroutine ComputeDm(exitstatus,dllm,lmax,m,theta0,degrees,dllm_d0,dllm_d1,degrees_d0)
             fortranname pycomputedm
             integer,intent(out) :: exitstatus
             real*8,dimension(dllm_d0,dllm_d1),intent(out) :: dllm
             integer,intent(in) :: lmax
             integer,intent(in) :: m
             real*8,intent(in) :: theta0
+            integer,optional,intent(in),dimension(degrees_d0) :: degrees = 1
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: dllm_d0 = lmax+1
             integer,optional,intent(in),depend(lmax),intent(hide) :: dllm_d1 = lmax+1
+            integer,optional,intent(in),depend(lmax),intent(hide) :: degrees_d0 = lmax+1
         end subroutine ComputeDm
 
         subroutine ComputeDG82(exitstatus,dG82,lmax,m,theta0,dG82_d0,dG82_d1)
@@ -945,15 +951,15 @@ python module _SHTOOLS
             integer,intent(out) :: exitstatus
             integer,intent(in) :: l
             real*8,dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer dimension(taper_order_d0),intent(in) :: taper_order
-            integer optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0 - 1
-            integer optional,intent(in),depend(tapers_d1) :: kmax = tapers_d1
+            integer,dimension(taper_order_d0),intent(in) :: taper_order
+            integer,optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
+            integer,optional,intent(in),depend(tapers_d1) :: kmax = tapers_d1
             real*8,dimension(Sff_d0),intent(in) :: Sff
             real*8,dimension(var_opt_d0),intent(out) :: var_opt
             real*8,dimension(var_unit_d0),intent(out) :: var_unit
             real*8,dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
             integer,optional,intent(in) :: nocross = 0
-            integer,optional,intent(in),depend(kmax),intent(hide) :: taper_order_d0 = kmax
+            integer,optional,intent(in),intent(hide) :: taper_order_d0 = len(taper_order)
             integer,intent(in),depend(kmax),intent(hide) :: weight_opt_d0 = kmax
             integer,intent(in),depend(kmax),intent(hide) :: weight_opt_d1 = kmax
             integer,intent(in),depend(kmax),intent(hide) :: var_unit_d0 = kmax
@@ -962,6 +968,25 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
             integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
         end subroutine SHMTVarOpt
+
+        subroutine SHMTVar(exitstatus,l,tapers,taper_order,Sff,kmax,lwin,variance,taper_wt,nocross,taper_order_d0,taper_wt_d0,Sff_d0,tapers_d0,tapers_d1)
+            fortranname pyshmtvar
+            integer,intent(out) :: exitstatus
+            integer,intent(in) :: l
+            real*8,dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+            integer,dimension(taper_order_d0),intent(in) :: taper_order
+            real*8,dimension(Sff_d0),intent(in) :: Sff
+            integer,optional,intent(in),depend(tapers_d1) :: kmax = tapers_d1
+            integer,optional,intent(in),depend(tapers_d0) :: lwin = tapers_d0-1
+            real*8,intent(out) :: variance
+            real*8,optional,dimension(taper_wt_d0),intent(in) :: taper_wt = -1
+            integer,optional,intent(in) :: nocross = 0
+            integer,optional,intent(in),depend(taper_order),intent(hide) :: taper_order_d0 = len(taper_order)
+            integer,optional,intent(in),depend(kmax),intent(hide) :: taper_wt_d0 = kmax
+            integer,optional,intent(in),depend(Sff),intent(hide) :: Sff_d0 = len(Sff)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d0 = shape(tapers,0)
+            integer,optional,intent(in),depend(tapers),intent(hide) :: tapers_d1 = shape(tapers,1)
+        end subroutine SHMTVar
 
         function SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,hk_real_d0,incspectra_d0,hj_real_d0)
             fortranname pyshsjkpg
@@ -981,7 +1006,7 @@ python module _SHTOOLS
             complex*16 :: SHSjkPG
         end function SHSjkPG
 
-        subroutine SHReturnTapersMap(exitstatus,tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,ntapers,dh_mask_d0,dh_mask_d1,tapers_d0,tapers_d1,eigenvalues_d0)
+        subroutine SHReturnTapersMap(exitstatus,tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,ntapers,degrees,dh_mask_d0,dh_mask_d1,tapers_d0,tapers_d1,eigenvalues_d0,degrees_d0)
             fortranname pyshreturntapersmap
             integer,intent(out) :: exitstatus
             real*8,dimension(tapers_d0,tapers_d1),intent(out) :: tapers
@@ -991,11 +1016,13 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(dh_mask_d1,dh_mask_d0) :: sampling = dh_mask_d1/dh_mask_d0
             integer,intent(in) :: lmax
             integer,optional,intent(in),depend(lmax) :: ntapers = (lmax+1)*(lmax+1)
+            integer,optional,intent(in),dimension(degrees_d0) :: degrees = 1
             integer,optional,intent(in),depend(dh_mask),intent(hide) :: dh_mask_d0 = shape(dh_mask,0)
             integer,optional,intent(in),depend(dh_mask),intent(hide) :: dh_mask_d1 = shape(dh_mask,1)
             integer,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: tapers_d0 = (lmax+1)*(lmax+1)
             integer,intent(in),depend(ntapers),intent(hide) :: tapers_d1 = ntapers
             integer,intent(in),depend(ntapers),intent(hide) :: eigenvalues_d0 = ntapers
+            integer,optional,intent(in),intent(hide),depend(lmax) :: degrees_d0 = lmax+1
         end subroutine SHReturnTapersMap
 
         subroutine SHBiasKMask(exitstatus,tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
@@ -1067,7 +1094,7 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(lmax1,lmax2,lmaxt),intent(hide) :: mtse_d0 = min(lmax1,lmax2)-lmaxt+1
         end subroutine SHMultiTaperMaskCSE
 
-        subroutine ComputeDMap(exitstatus,Dij,dh_mask,n_dh,lmax,sampling,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1)
+        subroutine ComputeDMap(exitstatus,Dij,dh_mask,n_dh,lmax,sampling,degrees,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1,degrees_d0)
             fortranname pycomputedmap
             integer,intent(out) :: exitstatus
             real*8,dimension(Dij_d0,Dij_d1),intent(out) :: Dij
@@ -1075,10 +1102,12 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(dh_mask_d0) :: n_dh = dh_mask_d0
             integer,optional,intent(in),depend(dh_mask_d0,dh_mask_d1):: sampling = dh_mask_d1/dh_mask_d0
             integer,intent(in) :: lmax
+            integer,optional,intent(in),dimension(degrees_d0) :: degrees = 1
             integer,optional,intent(in),depend(dh_mask),intent(hide) :: dh_mask_d0 = shape(dh_mask,0)
             integer,optional,intent(in),depend(dh_mask),intent(hide) :: dh_mask_d1 = shape(dh_mask,1)
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: Dij_d0 = (lmax+1)*(lmax+1)
             integer,optional,intent(in),depend(lmax),intent(hide) :: Dij_d1 = (lmax+1)*(lmax+1)
+            integer,optional,intent(in),intent(hide) :: degrees_d0 = lmax+1
         end subroutine ComputeDMap
 
         subroutine Curve2Mask(exitstatus,dhgrid,n,sampling,profile,nprofile,NP,centralmeridian,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
@@ -1540,6 +1569,52 @@ python module _SHTOOLS
             integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d0 = shape(galpha,0)
             integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d1 = shape(galpha,1)
         end subroutine SlepianCoeffsToSH
+
+        subroutine SHSCouplingMatrix(exitstatus,kij,galpha,lmax,nmax,kij_d0,kij_d1,galpha_d0,galpha_d1)
+            fortranname pyshscouplingmatrix
+            integer,intent(out) :: exitstatus
+            real*8,dimension(kij_d0,kij_d1),intent(out) :: kij
+            real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+            real*8,dimension(falpha_d0),intent(in) :: falpha
+            integer,optional,intent(in),intent(hide),depend(galpha_d0) :: lmax = sqrt(galpha_d0)-1
+            integer,intent(in) :: nmax
+            integer,optional,intent(in),intent(hide),depend(lmax) :: kij_d0 = lmax+1
+            integer,optional,intent(in),intent(hide),depend(kij_d0) :: kij_d1 = kij_d0
+            integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d0 = shape(galpha,0)
+            integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d1 = shape(galpha,1)
+        end subroutine SHSCouplingMatrix
+
+        subroutine SHSlepianVar(exitstatus,l,galpha,galpha_order,Sff,kmax,lmax,variance,galpha_order_d0,Sff_d0,galpha_d0,galpha_d1)
+            fortranname pyshslepianvar
+            integer,intent(out) :: exitstatus
+            integer,intent(in) :: l
+            real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+            integer,dimension(galpha_order_d0),intent(in) :: galpha_order
+            real*8,dimension(Sff_d0),intent(in) :: Sff
+            integer,optional,intent(in),depend(galpha_d1) :: kmax = galpha_d1
+            integer,optional,intent(in),depend(galpha_d0),intent(hide) :: lmax = galpha_d0-1
+            real*8,intent(out) :: variance
+            integer,optional,intent(in),depend(galpha_order),intent(hide) :: galpha_order_d0 = len(galpha_order)
+            integer,optional,intent(in),depend(Sff),intent(hide) :: Sff_d0 = len(Sff)
+            integer,optional,intent(in),depend(galpha),intent(hide) :: galpha_d0 = shape(galpha,0)
+            integer,optional,intent(in),depend(galpha),intent(hide) :: galpha_d1 = shape(galpha,1)
+        end subroutine SHSlepianVar
+
+        subroutine SHSCouplingMatrixCap(exitstatus,kij,galpha,galpha_order,lmax,nmax,kij_d0,kij_d1,galpha_d0,galpha_d1,galpha_order_d0)
+            fortranname pyshscouplingmatrixcap
+            integer,intent(out) :: exitstatus
+            real*8,dimension(kij_d0,kij_d1),intent(out) :: kij
+            real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+            integer,dimension(galpha_order_d0),intent(in) :: galpha_order
+            real*8,dimension(falpha_d0),intent(in) :: falpha
+            integer,optional,intent(in),intent(hide),depend(galpha_d0) :: lmax = galpha_d0-1
+            integer,intent(in) :: nmax
+            integer,optional,intent(in),intent(hide),depend(lmax) :: kij_d0 = lmax+1
+            integer,optional,intent(in),intent(hide),depend(kij_d0) :: kij_d1 = kij_d0
+            integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d0 = shape(galpha,0)
+            integer,optional,intent(in),intent(hide),depend(galpha) :: galpha_d1 = shape(galpha,1)
+            integer,optional,intent(in),depend(galpha_order),intent(hide) :: galpha_order_d0 = len(galpha_order)
+        end subroutine SHSCouplingMatrixCap
 
     end interface
 

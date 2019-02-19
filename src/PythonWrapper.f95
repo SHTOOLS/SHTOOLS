@@ -1043,8 +1043,8 @@
     end subroutine pySHLocalizedAdmitCorr
 
     subroutine pySHReturnTapers(exitstatus,theta0,lmax,tapers,eigenvalues,&
-                                taper_order,eigenvalues_d0,tapers_d0,&
-                                tapers_d1,taper_order_d0)
+                                taper_order,degrees,eigenvalues_d0,tapers_d0,&
+                                tapers_d1,taper_order_d0,degrees_d0)
         use shtools, only: SHReturnTapers
         implicit none
         integer,intent(out) :: exitstatus
@@ -1053,16 +1053,19 @@
         real*8,dimension(tapers_d0,tapers_d1),intent(out) :: tapers
         real*8,dimension(eigenvalues_d0),intent(out) :: eigenvalues
         integer,dimension(taper_order_d0),intent(out) :: taper_order
+        integer,dimension(degrees_d0),intent(in) :: degrees
         integer,intent(in) :: eigenvalues_d0
         integer,intent(in) :: tapers_d0
         integer,intent(in) :: tapers_d1
         integer,intent(in) :: taper_order_d0
+        integer,intent(in) :: degrees_d0
         call SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,&
-                            exitstatus=exitstatus)
+                            degrees=degrees,exitstatus=exitstatus)
     end subroutine pySHReturnTapers
 
     subroutine pySHReturnTapersM(exitstatus,theta0,lmax,m,tapers,eigenvalues,&
-                                 tapers_d0,tapers_d1,eigenvalues_d0)
+                                 degrees,tapers_d0,tapers_d1,eigenvalues_d0,&
+                                 degrees_d0)
         use shtools, only: SHReturnTapersM
         implicit none
         integer,intent(out) :: exitstatus
@@ -1071,14 +1074,16 @@
         integer,intent(in) :: m
         real*8,dimension(tapers_d0,tapers_d1),intent(out) :: tapers
         real*8,dimension(eigenvalues_d0),intent(out) :: eigenvalues
+        integer,dimension(degrees_d0),intent(in) :: degrees
         integer,intent(in) :: tapers_d0
         integer,intent(in) :: tapers_d1
         integer,intent(in) :: eigenvalues_d0
+        integer,intent(in) :: degrees_d0
         call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,&
-                             exitstatus=exitstatus)
+                             degrees=degrees,exitstatus=exitstatus)
     end subroutine pySHReturnTapersM
 
-    subroutine pyComputeDm(exitstatus,dllm,lmax,m,theta0,dllm_d0,dllm_d1)
+    subroutine pyComputeDm(exitstatus,dllm,lmax,m,theta0,degrees,dllm_d0,dllm_d1,degrees_d0)
         use shtools, only: ComputeDm
         implicit none
         integer,intent(out) :: exitstatus
@@ -1086,9 +1091,11 @@
         integer,intent(in) :: lmax
         integer,intent(in) :: m
         real*8,intent(in) :: theta0
+        integer,dimension(degrees_d0),intent(in) :: degrees
         integer,intent(in) :: dllm_d0
         integer,intent(in) :: dllm_d1
-        call ComputeDm(dllm,lmax,m,theta0,exitstatus=exitstatus)
+        integer,intent(in) :: degrees_d0
+        call ComputeDm(dllm,lmax,m,theta0,degrees=degrees,exitstatus=exitstatus)
     end subroutine pyComputeDm
 
     subroutine pyComputeDG82(exitstatus,dG82,lmax,m,theta0,dG82_d0,dG82_d1)
@@ -1271,6 +1278,37 @@
                         exitstatus=exitstatus)
     end subroutine pySHMTVarOpt
 
+    subroutine pySHMTVar(exitstatus,l,tapers,taper_order,Sff,kmax,lwin,&
+                            variance,taper_wt,nocross,taper_order_d0,&
+                            taper_wt_d0,Sff_d0,tapers_d0,tapers_d1)
+        use shtools, only: SHMTVar
+        implicit none
+        integer,intent(out) :: exitstatus
+        integer,intent(in) :: l
+        real*8,dimension(tapers_d0,tapers_d1),intent(in) :: tapers
+        integer,dimension(taper_order_d0),intent(in) :: taper_order
+        real*8,dimension(Sff_d0),intent(in) :: Sff
+        integer,intent(in) :: kmax
+        integer,intent(in) :: lwin
+        real*8,intent(out) :: variance
+        real*8,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer,intent(in) :: nocross
+        integer,intent(in) :: taper_order_d0
+        integer,intent(in) :: taper_wt_d0
+        integer,intent(in) :: Sff_d0
+        integer,intent(in) :: tapers_d0
+        integer,intent(in) :: tapers_d1
+
+        if (taper_wt(1) < 0) then
+            call SHMTVar(l,tapers,taper_order,lwin,kmax,Sff,variance,&
+                         nocross=nocross,exitstatus=exitstatus)
+        else
+            call SHMTVar(l,tapers,taper_order,lwin,kmax,Sff,variance,&
+                         taper_wt=taper_wt,nocross=nocross,&
+                         exitstatus=exitstatus)
+        end if
+    end subroutine pySHMTVar
+
     function pySHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,&
                        hk_real_d0,incspectra_d0,hj_real_d0)
         use shtools, only: SHSjkPG
@@ -1294,9 +1332,9 @@
     end function pySHSjkPG
 
     subroutine pySHReturnTapersMap(exitstatus,tapers,eigenvalues,dh_mask,n_dh,&
-                                   lmax,sampling,ntapers,dh_mask_d0,&
+                                   lmax,sampling,ntapers,degrees,dh_mask_d0,&
                                    dh_mask_d1,tapers_d0,tapers_d1,&
-                                   eigenvalues_d0)
+                                   eigenvalues_d0,degrees_d0)
         use shtools, only: SHReturnTapersMap
         implicit none
         integer,intent(out) :: exitstatus
@@ -1307,14 +1345,16 @@
         integer,intent(in) :: sampling
         integer,intent(in) :: lmax
         integer,intent(in) :: ntapers
+        integer,dimension(degrees_d0),intent(in) :: degrees
         integer,intent(in) :: dh_mask_d0
         integer,intent(in) :: dh_mask_d1
         integer,intent(in) :: tapers_d0
         integer,intent(in) :: tapers_d1
         integer,intent(in) :: eigenvalues_d0
+        integer,intent(in) :: degrees_d0
         call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,&
                                sampling=sampling,ntapers=ntapers,&
-                               exitstatus=exitstatus)
+                               degrees=degrees,exitstatus=exitstatus)
     end subroutine pySHReturnTapersMap
 
     subroutine pySHBiasKMask(exitstatus,tapers,lwin,k,incspectra,ldata,&
@@ -1424,21 +1464,24 @@
     end subroutine pySHMultiTaperMaskCSE
 
     subroutine pyComputeDMap(exitstatus,Dij,dh_mask,n_dh,lmax,sampling,&
-                             dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1)
+                             degrees,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1,&
+                             degrees_d0)
         use shtools, only: ComputeDMap
         implicit none
         integer,intent(out) :: exitstatus
         real*8,dimension(Dij_d0,Dij_d1),intent(out) :: Dij
         integer,dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
         integer,intent(in) :: n_dh
-        integer,intent(in) :: sampling
         integer,intent(in) :: lmax
+        integer,intent(in) :: sampling
+        integer,intent(in),dimension(degrees_d0) :: degrees
         integer,intent(in) :: dh_mask_d0
         integer,intent(in) :: dh_mask_d1
         integer,intent(in) :: Dij_d0
         integer,intent(in) :: Dij_d1
+        integer,intent(in) :: degrees_d0
         call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling=sampling,&
-                         exitstatus=exitstatus)
+                         degrees=degrees,exitstatus=exitstatus)
     end subroutine pyComputeDMap
 
     subroutine pyCurve2Mask(exitstatus,dhgrid,n,sampling,profile,nprofile,NP,&
@@ -2061,3 +2104,60 @@
         call SlepianCoeffsToSH(flm,falpha,galpha,lmax,nmax,&
                                exitstatus=exitstatus)
     end subroutine pySlepianCoeffsToSH
+
+    subroutine pySHSCouplingMatrix(exitstatus,kij,galpha,lmax,nmax,kij_d0,&
+                                   kij_d1,galpha_d0,galpha_d1)
+        use shtools, only: SHSCouplingMatrix
+        implicit none
+        integer,intent(out) :: exitstatus
+        real*8,dimension(kij_d0,kij_d1),intent(out) :: kij
+        real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+        integer,intent(in) :: lmax
+        integer,intent(in) :: nmax
+        integer,intent(in) :: kij_d0
+        integer,intent(in) :: kij_d1
+        integer,intent(in) :: galpha_d0
+        integer,intent(in) :: galpha_d1
+        call SHSCouplingMatrix(kij,galpha,lmax,nmax,exitstatus=exitstatus)
+    end subroutine pySHSCouplingMatrix
+
+    subroutine pySHSlepianVar(exitstatus,l,galpha,galpha_order,Sff,kmax,lmax,&
+                              variance,galpha_order_d0,Sff_d0,galpha_d0,&
+                              galpha_d1)
+        use shtools, only: SHSlepianVar
+        implicit none
+        integer,intent(out) :: exitstatus
+        integer,intent(in) :: l
+        real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+        integer,dimension(galpha_order_d0),intent(in) :: galpha_order
+        real*8,dimension(Sff_d0),intent(in) :: Sff
+        integer,intent(in) :: kmax
+        integer,intent(in) :: lmax
+        real*8,intent(out) :: variance
+        integer,intent(in) :: galpha_order_d0
+        integer,intent(in) :: Sff_d0
+        integer,intent(in) :: galpha_d0
+        integer,intent(in) :: galpha_d1
+        call SHSlepianVar(l,galpha,galpha_order,lmax,kmax,Sff,variance,&
+                          exitstatus=exitstatus)
+    end subroutine pySHSlepianVar
+
+    subroutine pySHSCouplingMatrixCap(exitstatus,kij,galpha,galpha_order,lmax,&
+                                      nmax,kij_d0,kij_d1,galpha_d0,galpha_d1,&
+                                      galpha_order_d0)
+        use shtools, only: SHSCouplingMatrixCap
+        implicit none
+        integer,intent(out) :: exitstatus
+        real*8,dimension(kij_d0,kij_d1),intent(out) :: kij
+        real*8,dimension(galpha_d0,galpha_d1),intent(in) :: galpha
+        integer,dimension(galpha_order_d0),intent(in) :: galpha_order
+        integer,intent(in) :: lmax
+        integer,intent(in) :: nmax
+        integer,intent(in) :: kij_d0
+        integer,intent(in) :: kij_d1
+        integer,intent(in) :: galpha_d0
+        integer,intent(in) :: galpha_d1
+        integer,intent(in) :: galpha_order_d0
+        call SHSCouplingMatrixCap(kij,galpha,galpha_order,lmax,nmax,&
+                                  exitstatus=exitstatus)
+    end subroutine pySHSCouplingMatrixCap

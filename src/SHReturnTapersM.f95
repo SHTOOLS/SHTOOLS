@@ -1,21 +1,27 @@
 subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
-                           exitstatus)
+                           degrees, ntapers, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will return all the eigenvalues and eigenfunctions for the
-!   space concentration problem of a spherical cap of angular radius theta0. The
-!   returned eigenfunctions correspond to "geodesy" normalized spherical
+!   space-concentration problem of a spherical cap of angular radius theta0.
+!   The returned eigenfunctions correspond to "geodesy" normalized spherical
 !   harmonic coefficients, and the eigenfunctions are further normalized such
 !   that they have unit power (i.e., the integral of the function squared over
 !   the sphere divided by 4 pi is 1, and the sum of the squares of their
-!   coefficients is 1).
+!   coefficients is 1). If the optional vector DEGREES is specified, then the
+!   eigenfunctions will be computed using only those degrees where DEGREES(l+1)
+!   is not zero.
 !
-!   Note that the eigenfunctions are calculated using the kernel of Grunbaum et
-!   al. 1982, and that the eigenvalues are then calculated using the definition
-!   of the the space concentration problem with its corresponding space
-!   concentration kerel. This is done because the eigenfunctions of the former
-!   are unreliable when the there are several eigenvalues identical (to machine
-!   precision) to either 1 or zero.
+!   When possible, the eigenfunctions are calculated using the kernel of
+!   Grunbaum et al. 1982 and the eigenvalues are then calculated by integration
+!   using the definition of the space-concentration problem. Use of the
+!   Grunbaum et al. kernel is prefered over the space-concentration kernel as
+!   the eigenfunctions of the later are unreliable when there are several
+!   eigenvalues identical (within machine precision) to either 1 or zero. If,
+!   the optional parameter DEGREES is specified, and at least one element is
+!   zero for degrees greater or equal to abs(m), then the eigenfunctions and
+!   eigenvalues will instead be computed directly using the space-concentration
+!   kernel.
 !
 !   Calling Parameters
 !
@@ -27,20 +33,25 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
 !                           problem (m=0 corresponds to isotropic case).
 !
 !       OUT
-!           tapers          An (lmax+1) by (lmax+1) array containing
+!           tapers          An (lmax+1) by (lmax+1-abs(m)) array containing
 !                           all the eigenfunctions of the space-
 !                           concentration kernel. Eigenfunctions
 !                           are listed by columns in decreasing order
 !                           corresponding to value of their eigenvalue.
-!           eigenvalues     A vector of length lmax+1 containing the
+!                           Only the first ntapers columns are non-zero.
+!           eigenvalues     A vector of length lmax+1-abs(m) containing the
 !                           eigenvalued corresponding to the individual
 !                           eigenfunctions.
 !
-!       OPTIONAL
-!           shannon         Shannon number as calculated from the trace of the 
-!                           kernel.
+!       OPTIONAL (IN)
+!           degrees     Specify those degrees of the coupling matrix to
+!                       compute. If degrees(l+1) is zero, degree l will not
+!                       be computed.
 !
 !       OPTIONAL (OUT)
+!           shannon     Shannon number as calculated from the trace of the
+!                       kernel.
+!           ntapers     The number of non-zero tapers.
 !           exitstatus  If present, instead of executing a STOP when an error
 !                       is encountered, the variable exitstatus will be
 !                       returned describing the error.
@@ -50,13 +61,15 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies: LAPACK, BLAS, ComputeDG82, EigValVecSymTri, PreGLQ, PlmBar
+!   Dependencies: LAPACK, BLAS, ComputeDG82, EigValVecSymTri, PreGLQ, &
+!                 PlmBar, ComputeDm, EigValVecSym
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: ComputeDG82, EigValVecSymTri, PreGLQ, PlmBar, PlmIndex
+    use SHTOOLS, only: ComputeDG82, ComputeDm, EigValVecSymTri, EigValVecSym, &
+                       PreGLQ, PlmBar, PlmIndex
 
     implicit none
 
@@ -64,16 +77,21 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
     integer, intent(in) :: lmax, m
     real*8, intent(out) :: tapers(:,:), eigenvalues(:)
     real*8, intent(out), optional :: shannon
+    integer, intent(in), optional :: degrees(:)
+    integer, intent(out), optional :: ntapers
     integer, intent(out), optional :: exitstatus
-    integer ::  l, n, n_int, j, i, astat(3)
+    integer :: l, n, n_int, j, i, astat(3), ind(lmax+1), use_dg82
     real*8 :: eval(lmax+1), pi, upper, lower, zero(lmax+1), w(lmax+1), h
-    real*8, allocatable :: evec(:,:), dllmtri(:,:), p(:)
+    real*8, allocatable :: evec(:,:), dllmtri(:,:), p(:), dllm(:,:)
+
+    use_dg82 = 1
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(tapers(:,1)) < (lmax+1) .or. size(tapers(1,:)) < (lmax+1) ) then
+    if (size(tapers(:,1)) < (lmax+1) .or. &
+            size(tapers(1,:)) < (lmax+1-abs(m)) ) then
         print*, "Error --- SHReturnTapersM"
-        print*, "TAPERS must be dimensioned as ( LMAX+1, LMAX+1) " // &
+        print*, "TAPERS must be dimensioned as (LMAX+1, LMAX+1-ABS(M)) " // &
                 "where LMAX is ", lmax
         print*, "Input array is dimensioned as ", size(tapers(:,1)), &
                 size(tapers(1,:))
@@ -84,9 +102,9 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
             stop
         end if
 
-    else if(size(eigenvalues) < (lmax+1) ) then
+    else if(size(eigenvalues) < (lmax+1-abs(m)) ) then
         print*, "Error --- SHReturnTapersM"
-        print*, "EIGENVALUES must be dimensioned as (LMAX+1) " // &
+        print*, "EIGENVALUES must be dimensioned as (LMAX+1-ABS(m)) " // &
                 "where LMAX is ", lmax
         print*, "Input array is dimensioned as ", size(eigenvalues)
         if (present(exitstatus)) then
@@ -109,11 +127,29 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
         end if
 
     end if
-    
-    allocate (evec(lmax+1, lmax+1), stat = astat(1))
+
+    if (present(degrees)) then
+        if (size(degrees) < lmax+1) then
+            print*, "Error --- SHReturnTapersM"
+            print*, "DEGREES must have dimension LMAX+1, where LMAX is ", lmax
+            print*, "Input array is dimensioned as ", size(degrees)
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
+        end if
+    end if
+
+    if (present(degrees)) then
+        if (sum(degrees(1+abs(m):lmax+1)) /= lmax + 1 - abs(m)) use_dg82 = 0
+    end if
+
+    allocate (evec(lmax+1, lmax+1-abs(m)), stat = astat(1))
     allocate (dllmtri(lmax+1, lmax+1), stat = astat(2))
     allocate (p((lmax+1)*(lmax+2)/2), stat = astat(3))
-    
+
     if (astat(1) /= 0 .or. astat(2) /= 0 .or. astat(3) /= 0) then
         print*, "Error --- SHReturnTapersM"
         print*, "Problem allocating arrays EVEC, DLLMTRI, and P", &
@@ -134,111 +170,156 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
     eval = 0.0d0
     evec = 0.0d0
 
-    !--------------------------------------------------------------------------
-    !
-    !   Calculate space concentration Kernel, and the
-    !   corresponding eigenfunctions of the Grunbaum et al. kernel.
-    !   Calculate eigenvalues using concentration criter.
-    !
-    !--------------------------------------------------------------------------
-    n = lmax + 1 - abs(m)
+    if (use_dg82 == 1) then
+        !----------------------------------------------------------------------
+        !
+        !   Calculate space-concentration kernel and the corresponding
+        !   eigenfunctions of the Grunbaum et al. kernel.
+        !
+        !----------------------------------------------------------------------
+        n = lmax + 1 - abs(m)
 
-    if (present(exitstatus)) then
-        call ComputeDG82(dllmtri(1:n,1:n), lmax, m, theta0, &
-                         exitstatus = exitstatus)
-        if (exitstatus /= 0) return
-        call EigValVecSymTri(dllmtri(1:n,1:n), n, eval(1:n), &
-                             evec(1+abs(m):lmax+1,1:n), &
+        if (present(exitstatus)) then
+            call ComputeDG82(dllmtri(1:n,1:n), lmax, m, theta0, &
                              exitstatus = exitstatus)
         if (exitstatus /= 0) return
-    else
-        call ComputeDG82(dllmtri(1:n,1:n), lmax, m, theta0)
-        call EigValVecSymTri(dllmtri(1:n,1:n), n, eval(1:n), &
-                             evec(1+abs(m):lmax+1,1:n))
-    end if
-
-    !---------------------------------------------------------------------------
-    !
-    !   Calculate true eigenvalues
-    !
-    !---------------------------------------------------------------------------
-    upper = 1.0d0
-    lower = cos(theta0)
-    n_int = lmax + 1
-
-    if (present(exitstatus)) then
-        call PreGLQ(lower, upper, n_int, zero, w, exitstatus = exitstatus)
-        if (exitstatus /= 0) return
-    else
-        call PreGLQ(lower, upper, n_int, zero, w)
-    end if
-
-    do i=1, n_int
-        if (present(exitstatus)) then
-            call PlmBar(p, lmax, zero(i), exitstatus = exitstatus)
+            call EigValVecSymTri(dllmtri(1:n,1:n), n, eval(1:n), &
+                                 tapers(1+abs(m):lmax+1,1:n), &
+                                 exitstatus = exitstatus)
             if (exitstatus /= 0) return
         else
-            call PlmBar(p, lmax, zero(i))
+            call ComputeDG82(dllmtri(1:n,1:n), lmax, m, theta0)
+            call EigValVecSymTri(dllmtri(1:n,1:n), n, eval(1:n), &
+                                 tapers(1+abs(m):lmax+1,1:n))
         end if
 
-        do j = 1, lmax + 1
-            h = 0.0d0
+        !----------------------------------------------------------------------
+        !
+        !   Calculate true eigenvalues
+        !
+        !----------------------------------------------------------------------
+        upper = 1.0d0
+        lower = cos(theta0)
+        n_int = lmax + 1
 
-            do l = abs(m), lmax
-                h = h + p(PlmIndex(l, abs(m))) * evec(l+1, j)
+        if (present(exitstatus)) then
+            call PreGLQ(lower, upper, n_int, zero, w, exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call PreGLQ(lower, upper, n_int, zero, w)
+        end if
+
+        do i=1, n_int
+            if (present(exitstatus)) then
+                call PlmBar(p, lmax, zero(i), exitstatus = exitstatus)
+                if (exitstatus /= 0) return
+            else
+                call PlmBar(p, lmax, zero(i))
+            end if
+
+            do j = 1, n
+                h = 0.0d0
+
+                do l = abs(m), lmax
+                    h = h + p(PlmIndex(l, abs(m))) * tapers(l+1, j)
+
+                end do
+
+                eigenvalues(j) = eigenvalues(j) + w(i) * h**2
 
             end do
-
-            eigenvalues(j) = eigenvalues(j) + w(i) * h**2
-
         end do
 
-    end do
+        if (m == 0) then
+            eigenvalues(1:n) = eigenvalues(1:n) / 2.0d0
 
-    if (m == 0) then
-        eigenvalues(1:lmax+1) = eigenvalues(1:lmax+1) / 2.0d0
+        else
+            eigenvalues(1:n) = eigenvalues(1:n) / 4.0d0
+
+        end if
 
     else
-        eigenvalues(1:lmax+1) = eigenvalues(1:lmax+1) / 4.0d0
+        !----------------------------------------------------------------------
+        !
+        !   Calculate space-concentration kernel and the corresponding
+        !   eigenfunctions.
+        !
+        !----------------------------------------------------------------------
+        ind = 0
+        i = 0
+
+        do l=abs(m), lmax, 1
+            if (degrees(l+1) /= 0) then
+                i = i + 1
+                ind(i) = l + 1
+            end if
+        end do
+
+        n = i
+
+        if (n /= 0) then
+
+            allocate (dllm(n, n), stat = astat(1))
+            if (astat(1) /= 0) then
+                print*, "Error --- SHReturnTapersM"
+                print*, "Problem allocating array DLLM ", astat(1)
+                if (present(exitstatus)) then
+                    exitstatus = 3
+                    return
+                else
+                    stop
+                end if
+            end if
+
+            dllm = 0.0d0
+
+            if (present(exitstatus)) then
+                call ComputeDm(dllmtri, lmax, m, theta0, degrees=degrees, &
+                               exitstatus=exitstatus)
+                if (exitstatus /= 0) return
+            else
+                call ComputeDm(dllmtri, lmax, m, theta0, degrees=degrees)
+            end if
+
+            do i=1, n
+                do j=1, n
+                    dllm(i, j) = dllmtri(ind(i), ind(j))
+                end do
+            end do
+
+            if (present(exitstatus)) then
+                call EigValVecSym(dllm(1:n, 1:n), n, &
+                                  eval(1:n), evec(1:n,1:n), &
+                                exitstatus = exitstatus)
+                if (exitstatus /= 0) return
+            else
+                call EigValVecSym(dllm, n, eval(1:n),&
+                                  evec(1:n,1:n))
+            end if
+
+            do i=1, n
+                tapers(ind(i), 1:n) = evec(i, 1:n)
+            end do
+
+            eigenvalues(1:n) = eval(1:n)
+
+        end if
 
     end if
 
     if (present(shannon)) then
-        shannon = sum(eigenvalues(1:lmax+1))
-
+        shannon = sum(eigenvalues(1:lmax+1-abs(m)))
     end if
 
-    !--------------------------------------------------------------------------
-    !
-    !   Normalize eigenvectors. By default, the eigenvectors have
-    !   an L2 norm of 1, which corresponds to a total unit power
-    !   (function^2 integreated over all space / 4pi = 1) when
-    !   using the geodesy spherical harmonic normalization convenction.
-    !   Modify sign convention of the eigenvectors such that the eigenfunction
-    !   has a positive value at the north pole (form m=0 only).
-    !
-    !--------------------------------------------------------------------------
-    if (m == 0) then
-        do l = 0, lmax
-            p(l+1) = sqrt(dble(2*l+1))
-            ! values of normalized Legendre Polynomials at north pole
-
-        end do
-
-        do l = 1, lmax+1
-            if (dot_product(evec(1:lmax+1,l), p(1:lmax+1)) < 0.0d0) &
-                evec(:,l) = -evec(:,l)
-
-        end do
-
+    if (present(ntapers)) then
+        ntapers = n
     end if
-
-    tapers(1:lmax+1,1:lmax+1) = evec(1:lmax+1,1:lmax+1)
 
     ! deallocate memory
     call PlmBar (p, -1, zero(1))
     deallocate (evec)
     deallocate (dllmtri)
     deallocate (p)
+    if (use_dg82 == 0 .and. n /= 0) deallocate (dllm)
 
 end subroutine SHReturnTapersM

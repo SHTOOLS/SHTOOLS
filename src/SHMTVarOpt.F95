@@ -175,7 +175,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
     if (present(nocross)) then
         if (nocross /= 1 .and. nocross /= 0) then
-            print*, "Error --- SHMTVarOpt0"
+            print*, "Error --- SHMTVarOpt"
             print*, "NOCROSS must be either 0 (use all elements of " // &
                     "covariance matrix) or"
             print*, "1 (set off-diagonal elements of " // &
@@ -211,11 +211,11 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
     if (present(nocross)) then
         if (nocross == 1) then
             do i = 1, kmax, 1
-                do m= -l, l
+                do m = -l, l
                     do mp = -l, l
                         temp1 = SHSjkPG(Sff, l, m, mp, tapers(1:lwin+1,i), &
-                                        tapers(1:lwin+1,i),&
-                                        taper_order(i), taper_order(i), lwin, 1)
+                                        tapers(1:lwin+1,i), taper_order(i), &
+                                        taper_order(i), lwin, 1)
                         Fij(i,i) = Fij(i,i) + 2.0d0 * dble(temp1*dconjg(temp1))
 
                     end do
@@ -229,10 +229,13 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
                 do j = i, kmax, 1
                     do m = -l, l
                         do mp = -l, l
-                            temp1 = SHSjkPG(Sff, l, m, mp, tapers(1:lwin+1,i), &
-                                            tapers(1:lwin+1,j), taper_order(i),&
-                                            taper_order(j), lwin, 1)
-                            Fij(i,j) = Fij(i,j) + 2.0d0 * dble(temp1*dconjg(temp1))
+                            temp1 = SHSjkPG(Sff, l, m, mp, &
+                                            tapers(1:lwin+1,i), &
+                                            tapers(1:lwin+1,j), &
+                                            taper_order(i), taper_order(j), &
+                                            lwin, 1)
+                            Fij(i,j) = Fij(i,j) + &
+                                       2.0d0 * dble(temp1*dconjg(temp1))
 
                         end do
 
