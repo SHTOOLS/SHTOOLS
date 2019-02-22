@@ -14,6 +14,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import warnings as _warnings
 from scipy.special import factorial as _factorial
+import xarray as _xr
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
@@ -2697,6 +2698,7 @@ class SHGrid(object):
 
     to_array()  : Return the raw gridded data as a numpy array.
     to_file()   : Save gridded data to a text or binary file.
+    to_netcdf() : Save gridded data to a netcdf formatted file.
     lats()      : Return a vector containing the latitudes of each row
                   of the gridded data.
     lons()      : Return a vector containing the longitudes of each column
@@ -3012,6 +3014,50 @@ class SHGrid(object):
         else:
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}'.format(binary))
+
+    def to_netcdf(self, filename, title='', description='',
+                  name='data', dtype='f'):
+        """
+        Save gridded data to a netcdf formatted file.
+
+        Usage
+        -----
+        x.to_file(filename, [title, description, name, dtype])
+
+        Parameters
+        ----------
+        filename : str
+            Name of output file.
+        title : str, optional, default = ''
+            Title of the dataset.
+        description : str, optional, default = ''
+            Description of the dataset ('Remark' in gmt grd files).
+        name : str, optional, default = 'data'
+            Name of the data array.
+        dtype : str, optional, default = 'f'
+            Data type of the output array. Either 'f' or 'd' for single or
+            double precision floating point, respectively.
+        """
+        if self.kind == 'complex':
+            raise RuntimeError('netcdf files do not support complex data '
+                               'formats.')
+
+        if dtype == 'f':
+            _nparray = self.to_array().astype(_np.float32)
+        elif dtype == 'd':
+            _nparray = self.to_array()
+        else:
+            raise ValueError("dtype must be either 'f' or 'd' for single or "
+                             "double precision floating point.")
+
+        _data = _xr.DataArray(_nparray, dims=('latitude', 'longitude'),
+                              coords={'latitude': self.lats(),
+                                      'longitude': self.lons()},
+                              attrs={'actual_range': [self.min(), self.max()]})
+        _dataset = _xr.Dataset({name: data},
+                               attrs={'title': title,
+                                      'description': description})
+        _dataset.to_netcdf(filename)
 
     # ---- Mathematical operators ----
     def min(self):
