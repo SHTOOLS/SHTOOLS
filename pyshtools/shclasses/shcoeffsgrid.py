@@ -2699,7 +2699,7 @@ class SHGrid(object):
     to_array()  : Return the raw gridded data as a numpy array.
     to_xarray() : Return the gridded data as an xarray DataArray.
     to_file()   : Save gridded data to a text or binary file.
-    to_netcdf() : Save gridded data to a netcdf formatted file.
+    to_netcdf() : Return the gridded data as a netcdf formatted file or object.
     lats()      : Return a vector containing the latitudes of each row
                   of the gridded data.
     lons()      : Return a vector containing the longitudes of each column
@@ -3016,18 +3016,18 @@ class SHGrid(object):
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}'.format(binary))
 
-    def to_netcdf(self, filename, title='', description='',
+    def to_netcdf(self, filename=None, title='', description='',
                   name='data', dtype='f'):
         """
-        Save gridded data to a netcdf formatted file.
+        Return the gridded data as a netcdf formatted file or object.
 
         Usage
         -----
-        x.to_netcdf(filename, [title, description, name, dtype])
+        x.to_netcdf([filename, title, description, name, dtype])
 
         Parameters
         ----------
-        filename : str
+        filename : str, optional, default = None
             Name of output file.
         title : str, optional, default = ''
             Title of the dataset.
@@ -3058,7 +3058,10 @@ class SHGrid(object):
         _dataset = _xr.Dataset({name: _data},
                                attrs={'title': title,
                                       'description': description})
-        _dataset.to_netcdf(filename)
+        if filename is None:
+            return _dataset.to_netcdf()
+        else:
+            _dataset.to_netcdf(filename)
 
     def to_xarray(self):
         """
