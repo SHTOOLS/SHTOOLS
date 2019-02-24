@@ -2697,6 +2697,7 @@ class SHGrid(object):
     Each class instance provides the following methods:
 
     to_array()  : Return the raw gridded data as a numpy array.
+    to_xarray() : Return the gridded data as an xarray DataArray.
     to_file()   : Save gridded data to a text or binary file.
     to_netcdf() : Save gridded data to a netcdf formatted file.
     lats()      : Return a vector containing the latitudes of each row
@@ -3022,7 +3023,7 @@ class SHGrid(object):
 
         Usage
         -----
-        x.to_file(filename, [title, description, name, dtype])
+        x.to_netcdf(filename, [title, description, name, dtype])
 
         Parameters
         ----------
@@ -3054,10 +3055,23 @@ class SHGrid(object):
                               coords={'latitude': self.lats(),
                                       'longitude': self.lons()},
                               attrs={'actual_range': [self.min(), self.max()]})
-        _dataset = _xr.Dataset({name: data},
+        _dataset = _xr.Dataset({name: _data},
                                attrs={'title': title,
                                       'description': description})
         _dataset.to_netcdf(filename)
+
+    def to_xarray(self):
+        """
+        Return the gridded data as an xarray DataArray.
+
+        Usage
+        -----
+        x.to_xarray()
+        """
+        return _xr.DataArray(self.to_array(), dims=('latitude', 'longitude'),
+                             coords={'latitude': self.lats(),
+                                     'longitude': self.lons()},
+                             attrs={'actual_range': [self.min(), self.max()]})
 
     # ---- Mathematical operators ----
     def min(self):
