@@ -114,22 +114,23 @@ def convert(coeffs_in, normalization_in=None, normalization_out=None,
 
         lmaxin = coeffs_in.shape[1] - 1
 
-        if ((normalization_in == 'unnorm' or normalization_out ==
-                'unnorm') and lmaxin > 85):
-            _warnings.warn("Conversions with unnormalized coefficients are " +
-                           "stable only for degrees less than or equal to " +
-                           "85. lmax of the input coefficients will be " +
-                           "truncated after degree 85. The spherical " +
-                           "harmonic degree of the input coefficients was " +
-                           "{:d}.".format(lmaxin), category=RuntimeWarning)
-            lmaxin = 85
-
         if lmax is None:
             lmaxout = lmaxin
         else:
             lmaxout = lmax
 
         lconv = min(lmaxin, lmaxout)
+
+        if ((normalization_in == 'unnorm' or normalization_out ==
+                'unnorm') and lconv > 85):
+            _warnings.warn("Conversions with unnormalized coefficients are " +
+                           "stable only for degrees less than or equal to " +
+                           "85. lmax of the output coefficients will be " +
+                           "truncated after degree 85. The spherical " +
+                           "harmonic degree of the input coefficients was " +
+                           "{:d}.".format(lmaxin), category=RuntimeWarning)
+            lconv = 85
+
         degrees = _np.arange(lconv + 1)
 
         if _np.iscomplexobj(coeffs_in):
