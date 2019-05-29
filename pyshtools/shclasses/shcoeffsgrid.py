@@ -2638,7 +2638,7 @@ class SHComplexCoeffs(SHCoeffs):
                                            lmax=lmax_calc, norm=norm,
                                            csphase=self.csphase)
         elif type(lat) is _np.ndarray:
-            values = _np.empty_like(lat, dtype=float)
+            values = _np.empty_like(lat, dtype=_np.complex)
             for v, latitude, longitude in _np.nditer([values, latin, lonin],
                                                      op_flags=['readwrite']):
                 v[...] = _shtools.MakeGridPointC(self.coeffs, lat=latitude,
