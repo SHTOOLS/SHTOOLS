@@ -29,7 +29,7 @@ SHTOOLS is extremely versatile:
 
 ## Installation
 
-The Python components of SHTOOLS can be installed using the Python package manager `pip`. Binaries are pre-built for linux, macOS, and windows architectures, and you need only to execute the following command in a unix terminal:
+The Python components of SHTOOLS can be installed using the Python package manager `pip`. Binaries are pre-built for linux and macOS architectures, and you need only to execute the following command in a unix terminal:
 
 ```bash
 pip install pyshtools

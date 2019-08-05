@@ -2322,7 +2322,7 @@ class SHRealCoeffs(SHCoeffs):
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
         if self.normalization != '4pi' or self.csphase != 1:
-            temp = _convert(coeffs, normalization_in='4pi', csphase=1,
+            temp = _convert(coeffs, normalization_in='4pi', csphase_in=1,
                             normalization_out=self.normalization,
                             csphase_out=self.csphase)
             return SHCoeffs.from_array(

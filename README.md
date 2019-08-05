@@ -31,7 +31,7 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
 ### INSTALLATION ###
 #### pyshtools for Python ####
 
-Binary install for linux/macOS/windows:
+Binary install for linux and macOS:
 ```bash
 pip install pyshtools
 ```
