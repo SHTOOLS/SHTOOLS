@@ -41,16 +41,17 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
 !------------------------------------------------------------------------------
     implicit none
 
-    real*8, intent(in) :: lat, lon, theta0
-    real*8, intent(out) :: coord(:,:)
-    real*8, intent(in), optional :: cinterval
+    integer, parameter :: dp = selected_real_kind(p=15)
+    real(dp), intent(in) :: lat, lon, theta0
+    real(dp), intent(out) :: coord(:,:)
+    real(dp), intent(in), optional :: cinterval
     integer, intent(out), optional :: cnum, exitstatus
-    real*8 ::  pi, interval, xold, yold, zold, x, y, z, x1, phi
+    real(dp) :: pi, interval, xold, yold, zold, x, y, z, x1, phi
     integer :: k, num
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (theta0 == 0.0d0) then
+    if (theta0 == 0.0_dp) then
         coord(1,1) = lat
         coord(1,2) = lon
         
@@ -65,10 +66,10 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
     if (present(cinterval)) then
         interval = cinterval
     else
-        interval = 1.0d0
+        interval = 1.0_dp
     end if
 
-    num = int(360.0d0 / interval)
+    num = int(360.0_dp / interval)
 
     if (present(cnum)) then
         cnum = num
@@ -87,7 +88,7 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
         end if
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     !--------------------------------------------------------------------------
     !
@@ -96,28 +97,28 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
     !
     !--------------------------------------------------------------------------
 
-    zold = cos(theta0 * pi / 180.0d0)
+    zold = cos(theta0 * pi / 180.0_dp)
 
     do k = 1, num
-        phi = pi - dble(k-1) * (2.0d0 * pi / dble(num))
-        xold = sin(theta0 * pi / 180.0d0) * cos(phi)
-        yold = sin(theta0 * pi / 180.0d0) * sin(phi)
+        phi = pi - dble(k-1) * (2.0_dp * pi / dble(num))
+        xold = sin(theta0 * pi / 180.0_dp) * cos(phi)
+        yold = sin(theta0 * pi / 180.0_dp) * sin(phi)
 
         ! rotate coordinate system 90-lat degrees about y axis
 
-        x1 = xold * cos(pi / 2.0 - lat * pi / 180.0d0) + &
-             zold * sin(pi / 2.0 - lat * pi / 180.0d0)
-        z = -xold * sin(pi / 2.0 - lat * pi / 180.0d0) + &
-             zold * cos(pi / 2.0 - lat * pi / 180.0d0)
+        x1 = xold * cos(pi / 2.0_dp - lat * pi / 180.0_dp) + &
+             zold * sin(pi / 2.0_dp - lat * pi / 180.0_dp)
+        z = -xold * sin(pi / 2.0_dp - lat * pi / 180.0_dp) + &
+             zold * cos(pi / 2.0_dp - lat * pi / 180.0_dp)
 
         ! rotate coordinate system lon degrees about z axis
 
-        x = x1 * cos(lon * pi / 180.0d0) - yold * sin(lon * pi / 180.0d0)
-        y = x1 * sin(lon * pi / 180.0d0) + yold * cos(lon * pi / 180.0d0)
+        x = x1 * cos(lon * pi / 180.0_dp) - yold * sin(lon * pi / 180.0_dp)
+        y = x1 * sin(lon * pi / 180.0_dp) + yold * cos(lon * pi / 180.0_dp)
 
-        coord(k,1) = (pi / 2.0d0 - acos(z / sqrt(x**2 + y**2 + z**2))) * &
-                     180.0d0 / pi
-        coord(k,2) = atan2(y, x) * 180.0d0 / pi
+        coord(k,1) = (pi / 2.0_dp - acos(z / sqrt(x**2 + y**2 + z**2))) * &
+                     180.0_dp / pi
+        coord(k,2) = atan2(y, x) * 180.0_dp / pi
 
     end do
 

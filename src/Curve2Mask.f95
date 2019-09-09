@@ -44,19 +44,20 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
 !------------------------------------------------------------------------------
     implicit none
 
+    integer, parameter :: dp = selected_real_kind(p=15)
     integer, intent(out) :: dhgrid(:,:)
-    real*8, intent(in) ::   profile(:,:)
-    integer, intent(in) ::  n, sampling, nprofile, np
+    real(dp), intent(in) :: profile(:,:)
+    integer, intent(in) :: n, sampling, nprofile, np
     integer, intent(in), optional :: centralmeridian
     integer, intent(out), optional :: exitstatus
-    integer, parameter ::   maxcross = 2000
-    integer ::  i, j, k, k_loc, nlat, nlong, numcross, next, ind1, ind2, cm
-    real*8 :: lat_int, long_int, lon, cross(maxcross), cross_sort(maxcross)
+    integer, parameter :: maxcross = 2000
+    integer :: i, j, k, k_loc, nlat, nlong, numcross, next, ind1, ind2, cm
+    real(dp) :: lat_int, long_int, lon, cross(maxcross), cross_sort(maxcross)
 
     if (present(exitstatus)) exitstatus = 0
 
     nlat = n
-    lat_int = 180.0d0 / dble(nlat)
+    lat_int = 180.0_dp / dble(nlat)
     dhgrid = 0
 
     if (mod(n,2) /= 0) then 
@@ -73,7 +74,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
     
     if (sampling == 1) then 
         nlong = nlat
-        long_int = 2.0d0 * lat_int
+        long_int = 2.0_dp * lat_int
         
     else if (sampling == 2) then
         nlong = 2 * nlat
@@ -92,7 +93,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
 
     end if
     
-    if (NP /=1 .and. NP /= 0) then
+    if (NP /= 1 .and. NP /= 0) then
         print*, "Error --- Curve2Mask"
         print*, "NP must be 0 if the North pole is outside of curve,"
         print*, "or 1 if the North pole is inside of the curve."
@@ -191,7 +192,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
 
             else if (profile(i,2) > lon .and. profile(i+1,2) <= lon) then
                 numcross = numcross + 1
-    
+
                 if (numcross > maxcross) then
                     print*, "Error --- Curve2Mask"
                     print*, "Internal variable MAXCROSS needs to be increased."
@@ -267,7 +268,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
             do k = 1, numcross
                 k_loc = maxloc(cross(1:numcross), 1)
                 cross_sort(k) = cross(k_loc)
-                cross(k_loc) = -999.0d0
+                cross(k_loc) = -999.0_dp
             end do
         end if
 
@@ -275,7 +276,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
             dhgrid(1:nlat, j) = np
 
         else if (numcross == 1) then
-            ind1 = int( (90.0d0 - cross_sort(1)) / lat_int) + 1
+            ind1 = int( (90.0_dp - cross_sort(1)) / lat_int) + 1
             dhgrid(1:ind1, j) = np
 
             if (ind1 == nlat) then
@@ -290,7 +291,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
             ind1 = 1
             next = np
             do k = 1, numcross
-                ind2 = int( (90.0d0 - cross_sort(k)) / lat_int) + 1
+                ind2 = int( (90.0_dp - cross_sort(k)) / lat_int) + 1
                 if (ind2 >= ind1) dhgrid(ind1:ind2, j) = next
 
                 if (next == 0) then

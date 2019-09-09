@@ -58,18 +58,19 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
 !------------------------------------------------------------------------------
     implicit none
 
-    real*8, intent(in) :: ain(:,:)
+    integer, parameter :: dp = selected_real_kind(p=15)
+    real(dp), intent(in) :: ain(:,:)
     integer, intent(in) :: n
-    real*8, intent(out) :: eig(:), evec(:,:)
+    real(dp), intent(out) :: eig(:), evec(:,:)
     character, intent(in), optional :: ul
     integer, intent(in), optional :: K
     integer, intent(out), optional :: exitstatus
     integer, parameter :: nb = 80, nbl = 10
     character :: uplo
-    real*8 :: d(n), e(n), tau(n-1), work(nb*n), vl, vu, abstol, w(n)
-    real*8, allocatable ::  a(:,:), z(:,:)
-    integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
-                i, astat(2)
+    real(dp) :: d(n), e(n), tau(n-1), work(nb*n), vl, vu, abstol, w(n)
+    real(dp), allocatable :: a(:,:), z(:,:)
+    integer :: lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
+               i, astat(2)
 #ifdef LAPACK_UNDERSCORE
 #define dsytrd dsytrd_
 #define dstegr dstegr_
@@ -181,8 +182,8 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
     lwork = nb * n
     liwork = nbl * n
 
-    eig = 0.0d0
-    evec = 0.0d0
+    eig = 0.0_dp
+    evec = 0.0_dp
     a(1:n,1:n) = ain(1:n,1:n)
 
     if (present(ul)) then
@@ -225,7 +226,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
     !
     !--------------------------------------------------------------------------
 
-    abstol = 0.0d0
+    abstol = 0.0_dp
 
     if (present(K)) then
         call dstegr('v','i', n, d, e, vl, vu, n-K+1, n, abstol, m, w, &

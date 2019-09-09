@@ -74,13 +74,14 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
 
     implicit none
 
-    real*8, intent(out) :: Dij(:,:)
+    integer, parameter :: dp = selected_real_kind(p=15)
+    real(dp), intent(out) :: Dij(:,:)
     integer, intent(in) :: dh_mask(:,:), n_dh, lmax
     integer, intent(in), optional:: sampling, degrees(:)
     integer, intent(out), optional :: exitstatus
     integer :: nlat, nlong, lmax_dh, astat, i, j, k, l, m, max_mask, min_mask
-    real*8, allocatable :: f(:,:), plm(:), clm(:,:,:), vec(:)
-    real*8 :: colat, lat_int, temp(2*n_dh), lon, lon_int
+    real(dp), allocatable :: f(:,:), plm(:), clm(:,:,:), vec(:)
+    real(dp) :: colat, lat_int, temp(2*n_dh), lon, lon_int
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -112,12 +113,12 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
     end if
 
     nlat = n_dh
-    lat_int = acos(-1.0d0) / dble(nlat)
+    lat_int = acos(-1.0_dp) / dble(nlat)
 
     if (present(sampling)) then
         if (sampling == 1) then
             nlong = nlat
-            lon_int = 2.0d0 * lat_int
+            lon_int = 2.0_dp * lat_int
 
         else if (sampling == 2) then
             nlong = 2 * nlat
@@ -139,7 +140,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
 
     else
         nlong = nlat
-        lon_int = 2.0d0 * lat_int
+        lon_int = 2.0_dp * lat_int
 
     end if
 
@@ -274,7 +275,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
     !
     !--------------------------------------------------------------------------
 
-    dij = 0.0d0
+    dij = 0.0_dp
 
     do l = lmax, 0, -1
         if (present(degrees)) then
@@ -366,11 +367,11 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
         do l=0, lmax
             do m=0, l
                 if (degrees(l+1) == 0) then
-                    dij(:, YilmIndexVector(1, l, m)) = 0.0d0
-                    dij(YilmIndexVector(1, l, m), :) = 0.0d0
+                    dij(:, YilmIndexVector(1, l, m)) = 0.0_dp
+                    dij(YilmIndexVector(1, l, m), :) = 0.0_dp
                     if (m > 0) then
-                        dij(:, YilmIndexVector(2, l, m)) = 0.0d0
-                        dij(YilmIndexVector(2, l, m), :) = 0.0d0
+                        dij(:, YilmIndexVector(2, l, m)) = 0.0_dp
+                        dij(YilmIndexVector(2, l, m), :) = 0.0_dp
                     end if
                 end if
             end do

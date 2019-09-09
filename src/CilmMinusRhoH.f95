@@ -76,19 +76,20 @@ subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
 
     implicit none
 
-    real*8, intent(in) :: gridin(:,:), mass, rho(:,:)
-    real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
-    real*8, intent(out) :: cilm(:,:,:), d
+    integer, parameter :: dp = selected_real_kind(p=15)
+    real(dp), intent(in) :: gridin(:,:), mass, rho(:,:)
+    real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
+    real(dp), intent(out) :: cilm(:,:,:), d
     integer, intent(in) :: lmax, nmax, gridtype
     integer, intent(in), optional :: n
     integer, intent(out), optional :: exitstatus
-    real*8 :: prod, pi, scalef
-    real*8, allocatable :: cilmn(:, :, :), grid(:, :)
+    real(dp) :: prod, pi, scalef
+    real(dp), allocatable :: cilmn(:, :, :), grid(:, :)
     integer :: j, l, k, nlat, nlong, astat(2), lmax_dh
 
     if (present(exitstatus)) exitstatus = 0
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
         size(cilm(1,1,:)) < lmax+1) then
@@ -271,7 +272,7 @@ subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
         nlat = N
         nlong = N
         lmax_dh = N / 2 - 1
-        
+
         if (lmax > lmax_dh) then
             print*, "Error --- CilmMinusRhoH"
             print*, "For Driscoll-Healy grids, LMAX must be less " // &
@@ -374,8 +375,8 @@ subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
     !
     !--------------------------------------------------------------------------
     grid(1:nlat, 1:nlong) = gridin(1:nlat,1:nlong)
-    cilm = 0.0d0
-    cilmn = 0.0d0
+    cilm = 0.0_dp
+    cilmn = 0.0_dp
 
     ! Determine reference radius, if necessary
     if (present(dref)) then
@@ -508,7 +509,7 @@ subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
     end select
 
     do l = 0, lmax
-        cilm(1:2,l+1,1:l+1) = 4.0d0 * pi * (d**3) * cilmn(1:2,l+1,1:l+1) &
+        cilm(1:2,l+1,1:l+1) = 4.0_dp * pi * (d**3) * cilmn(1:2,l+1,1:l+1) &
                               / mass / dble(2*l+1)
     end do
 
@@ -576,10 +577,10 @@ subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
         end select
 
         do l = 0, lmax
-            prod = 4.0d0 * pi * (d**3) / mass * (scalef / d)**k
+            prod = 4.0_dp * pi * (d**3) / mass * (scalef / d)**k
 
             do j = 2, k, 1
-                prod = prod * (l+j-3)
+                prod = prod * dble(l+j-3)
             end do
             prod = prod / (dble(2*l+1) * dble(fact(k)))
 
@@ -603,10 +604,10 @@ subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
         !----------------------------------------------------------------------
             implicit none
             integer :: i, j
-            real*8 :: fact
+            real(dp) :: fact
 
             if (i == 0) then
-                fact = 1.0d0
+                fact = 1.0_dp
             else if (i < 0) then
                 print*, "Argument to FACT must be positive"
                 if (present(exitstatus)) then
@@ -617,7 +618,7 @@ subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
                 end if
 
             else
-                fact = 1.0d0
+                fact = 1.0_dp
 
                 do j = 1, i
                     fact = fact * j

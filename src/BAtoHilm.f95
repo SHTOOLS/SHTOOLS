@@ -76,14 +76,15 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
 
     implicit none
 
-    real*8, intent(out) :: cilm(:,:,:)
-    real*8, intent(in) :: ba(:,:,:), grid(:,:), mass, r0, rho
-    real*8, intent(in), optional ::  plx(:,:), zero(:), w(:)
+    integer, parameter :: dp = selected_real_kind(p=15)
+    real(dp), intent(out) :: cilm(:,:,:)
+    real(dp), intent(in) :: ba(:,:,:), grid(:,:), mass, r0, rho
+    real(dp), intent(in), optional ::  plx(:,:), zero(:), w(:)
     integer, intent(in) :: lmax, nmax, gridtype
     integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
     integer, intent(out), optional :: exitstatus
-    real*8 :: prod, pi, d, filter(lmax+1)
-    real*8, allocatable ::  cilmn(:, :, :), grid2(:,:)
+    real(dp) :: prod, pi, d, filter(lmax+1)
+    real(dp), allocatable ::  cilmn(:, :, :), grid2(:,:)
     integer :: j, l, n, nlong, nlat, astat(2), lmax_out, lmax_calc2
 
     if (present(exitstatus)) exitstatus = 0
@@ -101,7 +102,7 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
                 stop
             end if
 
-        endif
+        end if
 
         lmax_calc2 = lmax_calc
 
@@ -164,7 +165,7 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
             stop
         end if
 
-    endif
+    end if
 
     if (size(grid(1,:)) < nlong .or. size(grid(:,1)) <  nlat) then
         print*, "Error --- BAtoHilm"
@@ -348,9 +349,9 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
     !   Do the expansions
     !
     !--------------------------------------------------------------------------
-    cilm = 0.0d0
-    cilmn = 0.0d0
-    pi = acos(-1.0d0)
+    cilm = 0.0_dp
+    cilmn = 0.0_dp
+    pi = acos(-1.0_dp)
 
     grid2(1:nlat,1:nlong) = grid(1:nlat,1:nlong)
 
@@ -411,7 +412,7 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
 
     cilm(1,1,1) = d
 
-    filter = 1.0d0
+    filter = 1.0_dp
 
     if (present(filter_type) .and. present(filter_deg)) then
         do l = 1, lmax_calc2
@@ -430,7 +431,7 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
     do l = 1, lmax_calc2
         cilm(1:2,l+1,1:l+1) = filter(l+1)*ba(1:2,l+1,1:l+1) * mass &
                               * dble(2*l+1) * ((r0 / d)**l) &
-                              / (4.0d0 * pi * rho * d**2)
+                              / (4.0_dp * pi * rho * d**2)
     end do
 
     do n = 2, nmax
@@ -497,7 +498,7 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
         end if
 
         do l = 1, lmax_calc2
-            prod = 1.0d0
+            prod = 1.0_dp
             do j = 1, n
                 prod = prod * dble(l+4-j)
             end do
@@ -525,10 +526,10 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
         !----------------------------------------------------------------------
             implicit none
             integer ::  i, j
-            real*8 :: fact
+            real(dp) :: fact
 
             if (i == 0) then
-                fact = 1.0d0
+                fact = 1.0_dp
 
             else if (i < 0) then
                 print*, "Argument to FACT must be positive"
@@ -540,7 +541,7 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
                 end if
 
             else
-                fact = 1.0d0
+                fact = 1.0_dp
                 do j = 1, i
                     fact = fact * j
                 end do
