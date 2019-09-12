@@ -91,26 +91,27 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     use SHTOOLS, only:  djpi2, SHRotateRealCoef, &
                         SHCrossPowerSpectrum, SHPowerSpectrum, MakeGridGLQ, &
                         SHGLQ, SHExpandGLQ
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: tapers(:,:), lat, lon, g(:,:,:), t(:,:,:)
+    real(dp), intent(in) :: tapers(:,:), lat, lon, g(:,:,:), t(:,:,:)
     integer, intent(in) :: lwin, lmax, K, taper_order(:)
-    real*8, intent(out) ::  admit(:), corr(:)
-    real*8, intent(out), optional :: admit_error(:), corr_error(:)
+    real(dp), intent(out) :: admit(:), corr(:)
+    real(dp), intent(out), optional :: admit_error(:), corr_error(:)
     integer, intent(in), optional :: mtdef, k1linsig
-    real*8, intent(in), optional :: taper_wt(:)
+    real(dp), intent(in), optional :: taper_wt(:)
     integer, intent(out), optional :: exitstatus
     integer :: lmaxwin, l, def, astat(9), phase, norm, i, nlat, nlong
     integer, save :: first = 1, lmaxwin_last = -1, lwin_last = -1
-    real*8 ::  pi, g_power(2,lwin+lmax+1), t_power(2,lwin+lmax+1), &
-               gt_power(2,lwin+lmax+1), x(3), sgt(lmax-lwin+1, K), &
-               sgg(lmax-lwin+1, K), stt(lmax-lwin+1, K), &
-               admit_k(lmax-lwin+1, K), corr_k(lmax-lwin+1, K), factor
-    real*8, allocatable :: shwin(:,:,:), shwinrot(:,:,:), shloc_g(:,:,:), &
-                           shloc_t(:,:,:), gridtglq(:,:), gridgglq(:,:), &
-                           gridwinglq(:,:), temp(:,:)
-    real*8, allocatable, save :: dj(:,:,:), zero(:), w(:)
+    real(dp) :: pi, g_power(2,lwin+lmax+1), t_power(2,lwin+lmax+1), &
+                gt_power(2,lwin+lmax+1), x(3), sgt(lmax-lwin+1, K), &
+                sgg(lmax-lwin+1, K), stt(lmax-lwin+1, K), &
+                admit_k(lmax-lwin+1, K), corr_k(lmax-lwin+1, K), factor
+    real(dp), allocatable :: shwin(:,:,:), shwinrot(:,:,:), shloc_g(:,:,:), &
+                             shloc_t(:,:,:), gridtglq(:,:), gridgglq(:,:), &
+                             gridwinglq(:,:), temp(:,:)
+    real(dp), allocatable, save :: dj(:,:,:), zero(:), w(:)
 
 !$OMP   threadprivate(first, lmaxwin_last, lwin_last, dj)
 
@@ -119,7 +120,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     phase = 1
     norm = 1
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
     lmaxwin = lmax + lwin
 
     if (present(k1linsig) .and. K /= 1) then
@@ -304,15 +305,15 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     end if
 
 
-    admit = 0.0d0
-    corr = 0.0d0
+    admit = 0.0_dp
+    corr = 0.0_dp
 
     if (present(admit_error)) then
-        admit_error = 0.0d0
+        admit_error = 0.0_dp
     endif
 
     if (present(corr_error)) then
-        corr_error = 0.0d0
+        corr_error = 0.0_dp
     endif
 
     !--------------------------------------------------------------------------
@@ -327,9 +328,9 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     !   than Lmax - lwin should be interpretted.
     !
     !--------------------------------------------------------------------------
-    x(1) = 0.0d0
-    x(2) = -(90.0d0 - lat) * pi / 180.0d0
-    x(3) =  -lon * pi / 180.0d0
+    x(1) = 0.0_dp
+    x(2) = -(90.0_dp - lat) * pi / 180.0_dp
+    x(3) = -lon * pi / 180.0_dp
         
     if (first == 1) then
         lwin_last = lwin
@@ -357,12 +358,12 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
             call SHGLQ(lmaxwin, zero, w, csphase = phase, norm = 1, &
                        exitstatus = exitstatus)
             if (exitstatus /= 0) return
-            dj = 0.0d0
+            dj = 0.0_dp
             call djpi2(dj, lwin, exitstatus = exitstatus)
             if (exitstatus /= 0) return
         else
             call SHGLQ(lmaxwin, zero, w, csphase = phase, norm = 1)
-            dj = 0.0d0
+            dj = 0.0_dp
             call djpi2(dj, lwin)
         end if
 
@@ -386,7 +387,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 
         end if
 
-        dj = 0.0d0
+        dj = 0.0_dp
 
         if (present(exitstatus)) then
             call djpi2(dj, lwin, exitstatus = exitstatus)
@@ -396,10 +397,10 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
         end if
 
     end if
-    
+
     if (lmaxwin /= lmaxwin_last) then
         lmaxwin_last = lmaxwin
-        
+
         deallocate (zero)
         deallocate (w)
         allocate (zero(lmaxwin+1), stat = astat(1))
@@ -436,9 +437,9 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     allocate (shloc_t(2, lmaxwin+1, lmaxwin+1), stat= astat(4))
     allocate (gridtglq(nlat,nlong), stat = astat(5))
     allocate (gridgglq(nlat,nlong), stat = astat(6))
-    allocate (gridwinglq(nlat,nlong), stat = astat(7))    
-    allocate (temp(nlat,nlong), stat = astat(8))    
-        
+    allocate (gridwinglq(nlat,nlong), stat = astat(7))
+    allocate (temp(nlat,nlong), stat = astat(8))
+
     if (sum(astat(1:8)) /= 0) then
         print*, "Error --- SHLocalizedAdmitCorr"
         print*, "Problem allocating arrays SHWIN, SHWINROT, SHLOC_G, " // &
@@ -472,7 +473,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 
     if (def == 1) then
         do i = 1, K
-            shwin = 0.0d0
+            shwin = 0.0_dp
 
             if (taper_order(i) < 0) then
                 shwin(2,1:lwin+1,abs(taper_order(i))+1) = tapers(1:lwin+1,i)
@@ -593,8 +594,8 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
         admit(1:lmax-lwin+1) = gt_power(1,1:lmax-lwin+1) &
                                / t_power(1,1:lmax-lwin+1)
         corr(1:lmax-lwin+1) = gt_power(1,1:lmax-lwin+1) &
-                              / sqrt(t_power(1,1:lmax-lwin+1) * &
-                                     g_power(1,1:lmax-lwin+1))
+                              / sqrt(t_power(1,1:lmax-lwin+1) &
+                              * g_power(1,1:lmax-lwin+1))
 
         if (K > 1 .and. present(admit_error)) then
             admit_error(1:lmax-lwin+1) = ( gt_power(2,1:lmax-lwin+1) &
@@ -612,22 +613,22 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
                                         / g_power(1,1:lmax-lwin+1) + &
                                         ( gt_power(1,1:lwin-lmax+1) &
                                         * t_power(2,1:lwin-lmax+1) / &
-                                        sqrt(g_power(1,1:lmax-lwin+1)) / 2.0d0 &
-                                        / t_power(1,1:lmax-lwin+1)**(3.d0/2.d0))**2 + &
+                                        sqrt(g_power(1,1:lmax-lwin+1)) / 2.0_dp &
+                                        / t_power(1,1:lmax-lwin+1)**(3.0_dp/2.0_dp))**2 + &
                                         ( gt_power(1,1:lwin-lmax+1) &
                                         * g_power(2,1:lwin-lmax+1) &
-                                        / sqrt(t_power(1,1:lmax-lwin+1)) / 2.0d0 &
-                                        / g_power(1,1:lmax-lwin+1)**(3.d0/2.d0))**2
+                                        / sqrt(t_power(1,1:lmax-lwin+1)) / 2.0_dp &
+                                        / g_power(1,1:lmax-lwin+1)**(3.0_dp/2.0_dp))**2
             corr_error(1:lmax-lwin+1) = sqrt(corr_error(1:lmax-lwin+1))
 
         end if
 
         if (K == 1 .and. present(k1linsig) .and. present(admit_error)) then
-            admit_error = 0.0d0
+            admit_error = 0.0_dp
 
             if (k1linsig == 1) then
                 do l = 1, lmax-lwin
-                    admit_error(l+1) = g_power(1,l+1)*(1.0d0 - corr(l+1)**2) &
+                    admit_error(l+1) = g_power(1,l+1)*(1.0_dp - corr(l+1)**2) &
                                        / ( t_power(1,l+1) * dble(2*l) )
                 end do
 
@@ -646,7 +647,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     !--------------------------------------------------------------------------
     else
         do i = 1, K
-            shwin = 0.0d0
+            shwin = 0.0_dp
 
             if (taper_order(i) < 0) then
                 shwin(2,1:lwin+1,abs(taper_order(i))+1) = tapers(1:lwin+1,i)
@@ -730,10 +731,10 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
                     else if (K == 1 .and. present(k1linsig)) then
                         if (k1linsig == 1) then
                             if (l == 0) then
-                                admit_error(1) = 0.0d0
+                                admit_error(1) = 0.0_dp
 
                             else
-                                admit_error(l+1) = sgg(l+1,1)*(1.0d0 &
+                                admit_error(l+1) = sgg(l+1,1)*(1.0_dp &
                                                    - corr(l+1)**2) &
                                                    / (stt(l+1,1) * dble(2*l))
                                 admit_error(l+1) = sqrt(admit_error(l+1))

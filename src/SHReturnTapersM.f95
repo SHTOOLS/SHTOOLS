@@ -70,19 +70,20 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
 !------------------------------------------------------------------------------
     use SHTOOLS, only: ComputeDG82, ComputeDm, EigValVecSymTri, EigValVecSym, &
                        PreGLQ, PlmBar, PlmIndex
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: theta0
+    real(dp), intent(in) :: theta0
     integer, intent(in) :: lmax, m
-    real*8, intent(out) :: tapers(:,:), eigenvalues(:)
-    real*8, intent(out), optional :: shannon
+    real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
+    real(dp), intent(out), optional :: shannon
     integer, intent(in), optional :: degrees(:)
     integer, intent(out), optional :: ntapers
     integer, intent(out), optional :: exitstatus
     integer :: l, n, n_int, j, i, astat(3), ind(lmax+1), use_dg82
-    real*8 :: eval(lmax+1), pi, upper, lower, zero(lmax+1), w(lmax+1), h
-    real*8, allocatable :: evec(:,:), dllmtri(:,:), p(:), dllm(:,:)
+    real(dp) :: eval(lmax+1), pi, upper, lower, zero(lmax+1), w(lmax+1), h
+    real(dp), allocatable :: evec(:,:), dllmtri(:,:), p(:), dllm(:,:)
 
     use_dg82 = 1
 
@@ -163,12 +164,12 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    tapers = 0.0d0
-    eigenvalues = 0.0d0
-    eval = 0.0d0
-    evec = 0.0d0
+    tapers = 0.0_dp
+    eigenvalues = 0.0_dp
+    eval = 0.0_dp
+    evec = 0.0_dp
 
     if (use_dg82 == 1) then
         !----------------------------------------------------------------------
@@ -198,7 +199,7 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
         !   Calculate true eigenvalues
         !
         !----------------------------------------------------------------------
-        upper = 1.0d0
+        upper = 1.0_dp
         lower = cos(theta0)
         n_int = lmax + 1
 
@@ -218,7 +219,7 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
             end if
 
             do j = 1, n
-                h = 0.0d0
+                h = 0.0_dp
 
                 do l = abs(m), lmax
                     h = h + p(PlmIndex(l, abs(m))) * tapers(l+1, j)
@@ -231,10 +232,10 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
         end do
 
         if (m == 0) then
-            eigenvalues(1:n) = eigenvalues(1:n) / 2.0d0
+            eigenvalues(1:n) = eigenvalues(1:n) / 2.0_dp
 
         else
-            eigenvalues(1:n) = eigenvalues(1:n) / 4.0d0
+            eigenvalues(1:n) = eigenvalues(1:n) / 4.0_dp
 
         end if
 
@@ -271,7 +272,7 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
                 end if
             end if
 
-            dllm = 0.0d0
+            dllm = 0.0_dp
 
             if (present(exitstatus)) then
                 call ComputeDm(dllmtri, lmax, m, theta0, degrees=degrees, &

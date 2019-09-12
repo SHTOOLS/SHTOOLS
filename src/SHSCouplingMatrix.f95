@@ -52,13 +52,16 @@ subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
-    real*8, intent(out) :: kij(:,:)
-    real*8, intent(in) :: galpha(:,:)
+
+    real(dp), intent(out) :: kij(:,:)
+    real(dp), intent(in) :: galpha(:,:)
     integer, intent(in) :: lmax, nmax
     integer, intent(out), optional :: exitstatus
     integer :: l, lp, m, mp, alpha, ind, indp
-    real*8 :: temp
+    real(dp) :: temp
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -91,10 +94,10 @@ subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
 
     end if
 
-    kij = 0.0d0
+    kij = 0.0_dp
 
     ! Calculate k(l, lp) * (2lp +1 ), which is symmetric
-    do l=0, lmax
+    do l = 0, lmax
         do lp = l, lmax, 1
             do m = -l, l, 1
 
@@ -112,7 +115,7 @@ subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
                         indp = lp**2+lp+abs(mp)+1
                     end if
 
-                    temp = 0.0d0
+                    temp = 0.0_dp
                     do alpha = 1, nmax, 1
 
                        temp = temp + galpha(indp, alpha) * galpha(ind, alpha)
@@ -130,9 +133,9 @@ subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
     end do
 
     ! Fill lower half of matrix
-    do l=1, lmax, 1
+    do l = 1, lmax, 1
 
-        do lp=0, l-1, 1
+        do lp = 0, l-1, 1
 
             kij(l+1, lp+1) = kij(lp+1, l+1)
 
@@ -141,7 +144,7 @@ subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
     end do
 
     ! Multiply by 1/(2lp+1)
-    do lp=0, lmax
+    do lp = 0, lmax
 
         kij(1:lmax+1, lp+1) = kij(1:lmax+1, lp+1) / dble(2*lp+1)
 

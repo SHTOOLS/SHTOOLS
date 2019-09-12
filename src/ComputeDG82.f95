@@ -37,9 +37,10 @@ subroutine ComputeDG82(DG82, lmax, m, theta0, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     real(dp), intent(out) :: DG82(:,:)
     real(dp), intent(in) :: theta0
     integer, intent(in) :: lmax, m

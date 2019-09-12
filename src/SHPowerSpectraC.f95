@@ -1,4 +1,4 @@
-real*8 function SHPowerLC(c, l)
+function SHPowerLC(c, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power at
@@ -17,11 +17,14 @@ real*8 function SHPowerLC(c, l)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c(:,:,:)
+    real(dp) :: SHPowerLC
+    complex(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -51,7 +54,7 @@ real*8 function SHPowerLC(c, l)
 end function SHPowerLC
 
 
-real*8 function SHPowerDensityLC(c, l)
+function SHPowerDensityLC(c, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power per coefficient
@@ -70,11 +73,14 @@ real*8 function SHPowerDensityLC(c, l)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c(:,:,:)
+    real(dp) :: SHPowerDensityLC
+    complex(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -105,7 +111,7 @@ real*8 function SHPowerDensityLC(c, l)
 end function SHPowerDensityLC
 
 
-complex*16 function SHCrossPowerLC(c1, c2, l)
+function SHCrossPowerLC(c1, c2, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power at
@@ -126,11 +132,14 @@ complex*16 function SHCrossPowerLC(c1, c2, l)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp) :: SHCrossPowerLC
+    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -167,7 +176,7 @@ complex*16 function SHCrossPowerLC(c1, c2, l)
 end function SHCrossPowerLC
 
 
-complex*16 function SHCrossPowerDensityLC(c1, c2, l)
+function SHCrossPowerDensityLC(c1, c2, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power
@@ -188,11 +197,14 @@ complex*16 function SHCrossPowerDensityLC(c1, c2, l)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp) :: SHCrossPowerDensityLC
+    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -265,13 +277,15 @@ subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c(:,:,:)
+    complex(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: lmax
-    real*8, intent(out) ::  spectra(:)
+    real(dp), intent(out) :: spectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -302,7 +316,7 @@ subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
 
     end if
 
-    spectra = 0.0d0
+    spectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
@@ -357,13 +371,15 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
-    
-    complex*16, intent(in) :: c(:,:,:)
+
+    complex(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: lmax
-    real*8, intent(out) ::  spectra(:)
+    real(dp), intent(out) :: spectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -394,7 +410,7 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
 
     end if
 
-    spectra = 0.0d0
+    spectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
@@ -454,13 +470,15 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
-    
-    complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+
+    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: lmax
-    complex*16, intent(out) ::  cspectra(:)
+    complex(dp), intent(out) :: cspectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -504,7 +522,7 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 
     end if
 
-    cspectra = 0.0d0
+    cspectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
@@ -563,13 +581,15 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: lmax
-    complex*16, intent(out) ::  cspectra(:)
+    complex(dp), intent(out) :: cspectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -613,7 +633,7 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
 
     end if
 
-    cspectra = 0.0d0
+    cspectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1

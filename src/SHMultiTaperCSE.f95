@@ -59,8 +59,8 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 !   (lat, long) given in degrees, use
 !
 !       alpha(1) = 0.0
-!       alpha(2) = -(90.0d0 - lat)*pi/180.0d0
-!       alpha(3) = -lon*pi/180.0d0
+!       alpha(2) = -(90.0_dp - lat)*pi/180.0_dp
+!       alpha(3) = -lon*pi/180.0_dp
 !
 !   See documentation in file ShRotateRealCoef for further information on
 !   spherical harmonic rotations.
@@ -74,28 +74,29 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 !------------------------------------------------------------------------------
     use SHTOOLS, only:  SHCrossPowerSpectrum, SHRotateRealCoef, &
                         djpi2, CSPHASE_DEFAULT, MakeGridGLQ, SHGLQ, SHExpandGLQ
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: mtse(:), sd(:)
-    real*8, intent(in) ::  sh1(:,:,:), sh2(:,:,:), tapers(:,:)
+    real(dp), intent(out) :: mtse(:), sd(:)
+    real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax1, lmax2, lmaxt, K, taper_order(:)
-    real*8, intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
+    real(dp), intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
     integer, intent(in), optional :: csphase, norm
     integer, intent(out), optional :: exitstatus
-    integer ::  i, l, lmax, phase, mnorm, astat(9), lmaxmul, nlat, nlong
-    real*8, allocatable, save :: zero(:), w(:)
+    integer :: i, l, lmax, phase, mnorm, astat(9), lmaxmul, nlat, nlong
+    real(dp), allocatable, save :: zero(:), w(:)
     integer, save :: first = 1, lmaxmul_last = -1
-    real*8 :: se(lmax1-lmaxt+1,K), x(3), pi, factor
-    real*8, allocatable ::  shwin(:,:,:), shloc1(:,:,:),  shloc2(:,:,:), &
-                            dj(:,:,:), shwinrot(:,:,:), grid1glq(:,:), &
-                            grid2glq(:,:), gridwinglq(:,:), temp(:,:)
+    real(dp) :: se(lmax1-lmaxt+1,K), x(3), pi, factor
+    real(dp), allocatable :: shwin(:,:,:), shloc1(:,:,:),  shloc2(:,:,:), &
+                             dj(:,:,:), shwinrot(:,:,:), grid1glq(:,:), &
+                             grid2glq(:,:), gridwinglq(:,:), temp(:,:)
 
 !$OMP   threadprivate(zero, w, first, lmaxmul_last)
 
     if (present(exitstatus)) exitstatus = 0
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     lmax = min(lmax1, lmax2)
 
@@ -282,9 +283,9 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     end if
 
     if (present(lat) .and. present(lon)) then
-        x(1) = 0.0d0
-        x(2) = -(90.0d0 - lat) * pi / 180.0d0
-        x(3) =  -lon * pi / 180.0d0
+        x(1) = 0.0_dp
+        x(2) = -(90.0_dp - lat) * pi / 180.0_dp
+        x(3) = -lon * pi / 180.0_dp
 
     else if (present(alpha)) then
         if (size(alpha) < 3) then
@@ -317,7 +318,7 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     allocate (grid2glq(nlat,nlong), stat = astat(7))
     allocate (gridwinglq(nlat,nlong), stat = astat(8))
     allocate (temp(nlat,nlong), stat = astat(9))
-    
+
     if (sum(astat(1:9)) /= 0) then
         print*, "Error --- SHMultiTaperCSE"
         print*, "Problem allocating arrays SHWIN, SHLOC1, " // &
@@ -392,8 +393,8 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 
     end if
 
-    mtse = 0.0d0
-    sd = 0.0d0
+    mtse = 0.0_dp
+    sd = 0.0_dp
 
     !--------------------------------------------------------------------------
     !
@@ -428,7 +429,7 @@ subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     end if
 
     do i = 1, K
-        shwin = 0.0d0
+        shwin = 0.0_dp
         if (taper_order(i) < 0) then
             shwin(2,1:lmaxt+1,abs(taper_order(i))+1) = tapers(1:lmaxt+1,i)
 

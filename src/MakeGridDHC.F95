@@ -82,6 +82,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 !------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_1d dfftw_plan_dft_1d_
 #define dfftw_execute dfftw_execute_
@@ -90,19 +91,18 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 
     implicit none
 
-    complex*16, intent(in) :: cilm(:,:,:)
-    complex*16, intent(out) :: griddh(:,:)
+    complex(dp), intent(in) :: cilm(:,:,:)
+    complex(dp), intent(out) :: griddh(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: n
     integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
     integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, nlong
-    real*8 ::  pi, theta, scalef, rescalem, u, p, pmm, &
-               pm1, pm2, z
-    complex*16 :: coef(4*lmax+4), coefs(4*lmax+4), tempc, grid(4*lmax+4)
-    integer*8 :: plan
-    real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer*1, save, allocatable :: fsymsign(:,:)
+    real(dp) :: pi, theta, scalef, rescalem, u, p, pmm, pm1, pm2, z
+    complex(dp) :: coef(4*lmax+4), coefs(4*lmax+4), tempc, grid(4*lmax+4)
+    integer(int8) :: plan
+    real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
+    integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
     external :: dfftw_plan_dft_1d, dfftw_execute, dfftw_destroy_plan
@@ -114,7 +114,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
     n = 2 * lmax + 2
 
     if (present(sampling)) then
-        if (sampling /= 1 .and. sampling /=2) then
+        if (sampling /= 1 .and. sampling /= 2) then
             print*, "Error --- MakeGridDHC"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
@@ -229,9 +229,9 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (present(lmax_calc)) then
         if (lmax_calc > lmax) then
@@ -340,7 +340,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
             case (1,4)
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
-                    ff2(2,1) = 0.0d0
+                    ff2(2,1) = 0.0_dp
                 end if
 
                 do l = 2, lmax_comp, 1
@@ -355,14 +355,14 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
                     end do
 
                     ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
             case (2)
                 if (lmax_comp /= 0) then
-                    ff1(2,1) = 1.0d0
-                    ff2(2,1) = 0.0d0
+                    ff1(2,1) = 1.0_dp
+                    ff2(2,1) = 0.0_dp
                 end if
 
                 do l = 2, lmax_comp, 1
@@ -376,7 +376,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
                     end do
 
                     ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
@@ -406,8 +406,8 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
     !--------------------------------------------------------------------------
     if (lmax_comp == 0) then
         select case(lnorm)
-            case (1,2,3); pm2 = 1.0d0
-            case (4); pm2 = 1.0d0 / sqrt(4.0d0 * pi)
+            case (1,2,3); pm2 = 1.0_dp
+            case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
         end select
 
         if (present(sampling)) then
@@ -443,14 +443,14 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 
         theta = pi * dble(i-1) / dble(n)
         z = cos(theta)
-        u = sqrt( (1.0d0-z) * (1.0d0+z) )
+        u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
-        coef(1:nlong) = dcmplx(0.0d0,0.0d0)
-        coefs(1:nlong) = dcmplx(0.0d0,0.0d0)
+        coef(1:nlong) = dcmplx(0.0_dp,0.0_dp)
+        coefs(1:nlong) = dcmplx(0.0_dp,0.0_dp)
 
         select case (lnorm)
-            case (1,2,3); pm2 = 1.0d0
-            case (4); pm2 = 1.0d0 / sqrt(4*pi)
+            case (1,2,3); pm2 = 1.0_dp
+            case (4); pm2 = 1.0_dp / sqrt(4*pi)
         end select
 
         tempc = cilm(1,1,1) * pm2
@@ -478,7 +478,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
             case (4);    pmm = scalef / sqrt(4*pi)
         end select
 
-        rescalem = 1.0d0 / scalef
+        rescalem = 1.0_dp / scalef
 
         do m = 1, lmax_comp-1, 1
             m1 = m + 1
@@ -568,14 +568,14 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
     end do
 
     ! Finally, do equator
-    z = 0.0d0
-    u = 1.0d0
+    z = 0.0_dp
+    u = 1.0_dp
 
-    coef(1:nlong) = dcmplx(0.0d0,0.0d0)
+    coef(1:nlong) = dcmplx(0.0_dp,0.0_dp)
 
     select case (lnorm)
-        case (1,2,3); pm2 = 1.0d0
-        case (4); pm2 = 1.0d0 / sqrt(4*pi)
+        case (1,2,3); pm2 = 1.0_dp
+        case (4); pm2 = 1.0_dp / sqrt(4*pi)
     end select
 
     coef(1) = coef(1) + cilm(1,1,1) * pm2
@@ -593,7 +593,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
         case (4);    pmm = scalef / sqrt(4*pi)
     end select
 
-    rescalem = 1.0d0/scalef
+    rescalem = 1.0_dp / scalef
 
     do m = 1, lmax_comp-1, 1
         m1 = m + 1

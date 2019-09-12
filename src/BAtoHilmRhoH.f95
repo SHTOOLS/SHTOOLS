@@ -76,10 +76,10 @@ subroutine BAtoHilmRhoH(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, &
 !------------------------------------------------------------------------------
     use SHTOOLS, only:  SHExpandGLQ, SHExpandDH, DownContFilterMA, &
                         DownContFilterMC, MakeGridGLQ, MakeGridDH
+    use ftypes
 
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     real(dp), intent(out) :: cilm(:,:,:)
     real(dp), intent(in) :: ba(:,:,:), grid(:,:), mass, r0, rho(:,:)
     real(dp), intent(in), optional :: plx(:,:), zero(:), w(:)

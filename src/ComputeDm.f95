@@ -39,10 +39,10 @@ subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
 !
 !------------------------------------------------------------------------------ 
     use SHTOOLS, only: PreGLQ, PlmBar, NGLQ, PlmIndex
+    use ftypes
 
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     real(dp), intent(out) :: dllm(:,:)
     real(dp), intent(in) :: theta0
     integer, intent(in) :: lmax, m

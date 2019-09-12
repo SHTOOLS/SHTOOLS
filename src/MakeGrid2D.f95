@@ -71,21 +71,22 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 !------------------------------------------------------------------------------
     use SHTOOLS, only:  PlmBar, PlBar, PlmSchmidt, PlSchmidt, PLegendreA, &
                         PLegendre, PlmON, PlON, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: cilm(:,:,:), interval
-    real*8, intent(out) :: grid(:,:)
+    real(dp), intent(in) :: cilm(:,:,:), interval
+    real(dp), intent(out) :: grid(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: nlat, nlong
     integer, intent(in), optional :: norm, csphase, dealloc
-    real*8, intent(in), optional :: f, a, north, south, east, west
+    real(dp), intent(in), optional :: f, a, north, south, east, west
     integer, intent(out), optional :: exitstatus
     integer :: l, m, j, k, index, l1, m1, lmax_comp, phase, lnorm, temp, &
                astat(4)
-    real*8 :: pi, latmax, latmin, longmin, longmax, lat, longitude, &
+    real(dp) :: pi, latmax, latmin, longmin, longmax, lat, longitude, &
               x, intervalrad, r_ref
-    real*8, allocatable :: pl(:), cosm(:, :), sinm(:, :), cilm2(:,:, :)
+    real(dp), allocatable :: pl(:), cosm(:, :), sinm(:, :), cilm2(:,:, :)
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -96,7 +97,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
     if (present(east)) temp = temp + 1
     if (present(west)) temp = temp + 1
     
-    if (temp /=0 .and. temp /=4) then
+    if (temp /= 0 .and. temp /= 4) then
         print*, "Error --- MakeGrid2d"
         print*, "The optional parameters NORTH, SOUTH, EAST, and WEST " // &
                 "must all be specified", present(north), present(south), &
@@ -106,7 +107,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
             return
         else
             stop
-        endif
+        end if
 
     end if
 
@@ -126,10 +127,10 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
                 return
             else
                 stop
-            endif
+            end if
         end if
         
-        if (latmax > 90.0d0 .or. latmin < -90.0d0) then
+        if (latmax > 90.0_dp .or. latmin < -90.0_dp) then
             print*, "Error --- MakeGrid2d"
             print*, "NORTH and SOUTH must lie between 90 and -90."
             print*, "NORTH = ", latmax
@@ -139,16 +140,16 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
                 return
             else
                 stop
-            endif
+            end if
 
         end if
 
-        if (longmin > longmax) longmax = longmax + 360.0d0
+        if (longmin > longmax) longmax = longmax + 360.0_dp
 
     else
-        latmax = 90.0d0
-        latmin = -90.0d0
-        longmin = 0.0d0
+        latmax = 90.0_dp
+        latmin = -90.0_dp
+        longmin = 0.0_dp
         longmax = 360.d0
 
     end if
@@ -167,7 +168,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
                 return
             else
                 stop
-            endif
+            end if
         end if
 
         lnorm = norm
@@ -213,9 +214,9 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
             return
         else
             stop
-        endif
+        end if
 
-    elseif (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
+    else if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
                 size(cilm(1,1,:)) < lmax+1) then
         print*, "Error --- MakeGrid2D"
         print*, "CILM must be dimensioned as (2, LMAX+1, LMAX+1) " // &
@@ -227,7 +228,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
             return
         else
             stop
-        endif
+        end if
 
     end if
 
@@ -242,13 +243,13 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
             return
         else
             stop
-        endif
+        end if
 
     end if
 
     allocate (pl(((lmax+1) * (lmax+2)) / 2), stat = astat(1))
-    allocate (cosm(lmax+1, int(360./interval + 1)), stat = astat(2))
-    allocate (sinm(lmax+1, int(360./interval + 1)), stat = astat(3))
+    allocate (cosm(lmax+1, int(360.0_dp/interval + 1)), stat = astat(2))
+    allocate (sinm(lmax+1, int(360.0_dp/interval + 1)), stat = astat(3))
     allocate (cilm2(2,lmax+1,lmax+1), stat = astat(4))
 
     if (astat(1) /= 0 .or. astat(2) /= 0 .or. astat(3) /=0 &
@@ -265,12 +266,12 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 
     end if
 
-    pi = acos(-1.0d0)
-    grid = 0.0d0
+    pi = acos(-1.0_dp)
+    grid = 0.0_dp
 
     lmax_comp = min(lmax, size(cilm(1,1,:))-1)
 
-    intervalrad = interval*pi/180.0d0
+    intervalrad = interval*pi/180.0_dp
 
     cilm2(1:2,1:lmax+1,1:lmax+1) = cilm(1:2,1:lmax+1,1:lmax+1)
 
@@ -283,9 +284,9 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
     !--------------------------------------------------------------------------
 
     do k = 1, nlong
-        longitude = longmin * pi / 180.0d0 + dble(k-1) * intervalrad
-        sinm(1,k) = 0.0d0
-        cosm(1,k) = 1.0d0
+        longitude = longmin * pi / 180.0_dp + dble(k-1) * intervalrad
+        sinm(1,k) = 0.0_dp
+        cosm(1,k) = 1.0_dp
 
         if (lmax > 0) then
             sinm(2,k) = sin(longitude)
@@ -301,9 +302,9 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 
     do j = 1, nlat
         lat = latmax - (j-1)*interval
-        x = sin(lat*pi/180.0d0)
+        x = sin(lat*pi/180.0_dp)
 
-        if (lat == 90.0d0 .or. lat == -90.0d0) then
+        if (lat == 90.0_dp .or. lat == -90.0_dp) then
 
             if (present(exitstatus)) then
                 select case (lnorm)
@@ -334,7 +335,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 
             grid(j, 2:nlong) = grid(j,1)
 
-            if (present(f)) grid(j,1:nlong) = grid(j,1:nlong) - a * (1.0d0 - f)
+            if (present(f)) grid(j,1:nlong) = grid(j,1:nlong) - a * (1.0_dp - f)
 
         else
 
@@ -387,8 +388,8 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
             end do
 
             if (present(f)) then
-                r_ref = a**2 * (1.0d0 + tan(lat * pi / 180.0d0)**2) / &
-                    (1.0d0 + tan(lat * pi / 180.0d0)**2 / (1.0d0 - f)**2)
+                r_ref = a**2 * (1.0_dp + tan(lat * pi / 180.0_dp)**2) / &
+                    (1.0_dp + tan(lat * pi / 180.0_dp)**2 / (1.0_dp - f)**2)
                 r_ref = sqrt(r_ref)
                 grid(j,1:nlong) = grid(j,1:nlong) - r_ref
             end if

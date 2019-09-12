@@ -17,122 +17,138 @@ module SHTOOLS
     interface
 
         subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:)
+            real(dp), intent(in) :: z
             integer, intent(in), optional :: csphase, cnorm
             integer, intent(out), optional :: exitstatus
         end subroutine PlmBar
 
-        subroutine PlmBar_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
+        subroutine PlmBar_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:), dp(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:), dp1(:)
+            real(dp), intent(in) :: z
             integer, intent(in), optional :: csphase, cnorm
             integer, intent(out), optional :: exitstatus
         end subroutine PlmBar_d1
 
         subroutine PlBar(p, lmax, z, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:)
+            real(dp), intent(in) :: z
             integer, intent(out), optional :: exitstatus
         end subroutine PlBar
 
-        subroutine PlBar_d1(p, dp, lmax, z, exitstatus)
+        subroutine PlBar_d1(p, dp1, lmax, z, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:), dp(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:), dp1(:)
+            real(dp), intent(in) :: z
             integer, intent(out), optional :: exitstatus
         end subroutine PlBar_d1
 
         subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:)
+            real(dp), intent(in) :: z
             integer, intent(in), optional :: csphase, cnorm
             integer, intent(out), optional :: exitstatus
         end subroutine PlmON
 
-        subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
+        subroutine PlmON_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:), dp(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:), dp1(:)
+            real(dp), intent(in) :: z
             integer, intent(in), optional :: csphase, cnorm
             integer, intent(out), optional :: exitstatus
         end subroutine PlmON_d1
 
         subroutine PlON(p, lmax, z, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:)
+            real(dp), intent(in) :: z
             integer, intent(out), optional :: exitstatus
         end subroutine PlON
 
-        subroutine PlON_d1(p, dp, lmax, z, exitstatus)
+        subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:), dp(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:), dp1(:)
+            real(dp), intent(in) :: z
             integer, intent(out), optional :: exitstatus
             end subroutine PlON_d1
 
-        subroutine PlmSchmidt(p,lmax,z, csphase, cnorm, exitstatus)
+        subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:)
+            real(dp), intent(in) :: z
             integer, intent(in), optional :: csphase, cnorm
             integer, intent(out), optional :: exitstatus
         end subroutine PlmSchmidt
 
-        subroutine PlmSchmidt_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
+        subroutine PlmSchmidt_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:), dp(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:), dp1(:)
+            real(dp), intent(in) :: z
             integer, intent(in), optional :: csphase, cnorm
             integer, intent(out), optional :: exitstatus
         end subroutine PlmSchmidt_d1
 
-        subroutine PlSchmidt(p,lmax,z, exitstatus)
+        subroutine PlSchmidt(p, lmax, z, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:)
+            real(dp), intent(in) :: z
             integer, intent(out), optional :: exitstatus
         end subroutine PlSchmidt
 
-        subroutine PlSchmidt_d1(p, dp, lmax, z, exitstatus)
+        subroutine PlSchmidt_d1(p, dp1, lmax, z, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:), dp(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:), dp1(:)
+            real(dp), intent(in) :: z
             integer, intent(out), optional :: exitstatus
         end subroutine PlSchmidt_d1
 
         subroutine PLegendreA(p,lmax,z, csphase, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:)
+            real(dp), intent(in) :: z
             integer, intent(in), optional :: csphase
             integer, intent(out), optional :: exitstatus
         end subroutine PLegendreA
 
-        subroutine PLegendreA_d1(p, dp, lmax, z, csphase, exitstatus)
+        subroutine PLegendreA_d1(p, dp1, lmax, z, csphase, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:), dp(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:), dp1(:)
+            real(dp), intent(in) :: z
             integer, intent(in), optional :: csphase
             integer, intent(out), optional :: exitstatus
         end subroutine PLegendreA_d1
 
         subroutine PLegendre(p,lmax,z, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:)
+            real(dp), intent(in) :: z
             integer, intent(out), optional :: exitstatus
         end subroutine PLegendre
 
-        subroutine PLegendre_d1(p, dp, lmax, z, exitstatus)
+        subroutine PLegendre_d1(p, dp1, lmax, z, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: p(:), dp(:)
-            real*8, intent(in) :: z
+            real(dp), intent(out) :: p(:), dp1(:)
+            real(dp), intent(in) :: z
             integer, intent(out), optional :: exitstatus
         end subroutine PLegendre_d1
 
@@ -142,8 +158,9 @@ module SHTOOLS
 
         subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, &
                               csphase, lmax_calc, exitstatus)
-            real*8, intent(in) :: grid(:,:)
-            real*8, intent(out) :: cilm(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: grid(:,:)
+            real(dp), intent(out) :: cilm(:,:,:)
             integer, intent(in) :: n
             integer, intent(out) :: lmax
             integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
@@ -152,8 +169,9 @@ module SHTOOLS
 
         subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, &
                               csphase, lmax_calc, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:)
-            real*8, intent(out) :: griddh(:,:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:)
+            real(dp), intent(out) :: griddh(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
             integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
@@ -162,8 +180,9 @@ module SHTOOLS
 
         subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, &
                                csphase, lmax_calc, exitstatus)
-            complex*16, intent(in) :: grid(:,:)
-            complex*16, intent(out) :: cilm(:,:,:)
+            use ftypes
+            complex(dp), intent(in) :: grid(:,:)
+            complex(dp), intent(out) :: cilm(:,:,:)
             integer, intent(in) :: n
             integer, intent(out) :: lmax
             integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
@@ -172,8 +191,9 @@ module SHTOOLS
 
         subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
                                csphase, lmax_calc, exitstatus)
-            complex*16, intent(in) :: cilm(:,:,:)
-            complex*16, intent(out) :: griddh(:,:)
+            use ftypes
+            complex(dp), intent(in) :: cilm(:,:,:)
+            complex(dp), intent(out) :: griddh(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
             integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
@@ -181,18 +201,20 @@ module SHTOOLS
         end subroutine MakeGridDHC
 
         subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: zero(:), w(:)
-            real*8, intent(out), optional :: plx(:,:)
+            real(dp), intent(out) :: zero(:), w(:)
+            real(dp), intent(out), optional :: plx(:,:)
             integer, intent(in), optional :: norm, csphase, cnorm
             integer, intent(out), optional :: exitstatus
         end subroutine SHGLQ
 
         subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, &
                                csphase, lmax_calc, exitstatus)
-            real*8, intent(in) :: w(:), gridglq(:,:)
-            real*8, intent(in), optional :: plx(:,:), zero(:)
-            real*8, intent(out) :: cilm(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: w(:), gridglq(:,:)
+            real(dp), intent(in), optional :: plx(:,:), zero(:)
+            real(dp), intent(out) :: cilm(:,:,:)
             integer, intent(in) :: lmax
             integer, intent(in), optional :: norm, csphase, lmax_calc
             integer, intent(out), optional :: exitstatus
@@ -200,9 +222,10 @@ module SHTOOLS
 
         subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, &
                                csphase, lmax_calc, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:)
-            real*8, intent(in), optional :: plx(:,:), zero(:)
-            real*8, intent(out) :: gridglq(:,:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:)
+            real(dp), intent(in), optional :: plx(:,:), zero(:)
+            real(dp), intent(out) :: gridglq(:,:)
             integer, intent(in) :: lmax
             integer, intent(in), optional :: norm, csphase, lmax_calc
             integer, intent(out), optional :: exitstatus
@@ -210,10 +233,11 @@ module SHTOOLS
 
         subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, &
                                 csphase, lmax_calc, exitstatus)
-            real*8, intent(in) :: w(:)
-            complex*16, intent(in) :: gridglq(:,:)
-            real*8, intent(in), optional :: plx(:,:), zero(:)
-            complex*16, intent(out) :: cilm(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: w(:)
+            complex(dp), intent(in) :: gridglq(:,:)
+            real(dp), intent(in), optional :: plx(:,:), zero(:)
+            complex(dp), intent(out) :: cilm(:,:,:)
             integer, intent(in) :: lmax
             integer, intent(in), optional :: norm, csphase, lmax_calc
             integer, intent(out), optional :: exitstatus
@@ -221,63 +245,69 @@ module SHTOOLS
 
         subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, &
                                 csphase, lmax_calc, exitstatus)
-            complex*16, intent(in) :: cilm(:,:,:)
-            real*8, intent(in), optional :: plx(:,:), zero(:)
-            complex*16, intent(out) :: gridglq(:,:)
+            use ftypes
+            complex(dp), intent(in) :: cilm(:,:,:)
+            real(dp), intent(in), optional :: plx(:,:), zero(:)
+            complex(dp), intent(out) :: gridglq(:,:)
             integer, intent(in) :: lmax
             integer, intent(in), optional :: norm, csphase, lmax_calc
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGridGLQC
 
         subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
             integer, intent(out) :: nlat, nlong
-            real*8, intent(out) :: latglq(:), longlq(:)
+            real(dp), intent(out) :: latglq(:), longlq(:)
             integer, intent(out), optional :: exitstatus
         end subroutine GLQGridCoord
 
         subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, &
                                chi2, csphase, weights, exitstatus)
-            real*8, intent(in) :: d(:), lat(:), lon(:)
-            real*8, intent(out) :: cilm(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: d(:), lat(:), lon(:)
+            real(dp), intent(out) :: cilm(:,:,:)
             integer, intent(in) :: nmax, lmax
             integer, intent(in), optional :: norm, csphase
-            real*8, intent(out), optional :: chi2
-            real*8, intent(in), optional :: weights(:)
+            real(dp), intent(out), optional :: chi2
+            real(dp), intent(in), optional :: weights(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHExpandLSQ
 
         subroutine MakeGrid2d(grid, cilm, lmax, interval, nlat, nlong, &
                               norm, csphase, f, a, north, south, east, west, &
                               dealloc, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:), interval
-            real*8, intent(out) :: grid(:,:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:), interval
+            real(dp), intent(out) :: grid(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: nlat, nlong
             integer, intent(in), optional :: norm, csphase, dealloc
-            real*8, intent(in), optional :: f, a, north, south, east, west
+            real(dp), intent(in), optional :: f, a, north, south, east, west
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGrid2D
 
-        real*8 function MakeGridPoint(cilm, lmax, lat, lon, norm, &
-                                      csphase, dealloc)
-            real*8, intent(in) :: cilm(:,:,:), lat, lon
+        function MakeGridPoint(cilm, lmax, lat, lon, norm, csphase, dealloc)
+            use ftypes
+            real(dp) :: MakeGridPoint
+            real(dp), intent(in) :: cilm(:,:,:), lat, lon
             integer, intent(in) :: lmax
             integer, intent(in), optional :: norm, csphase, dealloc
         end function MakeGridPoint
 
-        complex*16 function MakeGridPointC(cilm, lmax, lat, lon, norm, &
-                                           csphase, dealloc)
-            complex*16, intent(in) :: cilm(:,:,:)
-            real*8, intent(in) :: lat, lon
+        function MakeGridPointC(cilm, lmax, lat, lon, norm, csphase, dealloc)
+            use ftypes
+            complex(dp), intent(in) :: cilm(:,:,:)
+            real(dp), intent(in) :: lat, lon
             integer, intent(in) :: lmax
             integer, intent(in), optional :: norm, csphase, dealloc
         end function MakeGridPointC
 
         subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, &
                               norm, csphase, exitstatus)
-            real*8, intent(out) :: shout(:,:,:)
-            real*8, intent(in) :: sh1(:,:,:), sh2(:,:,:)
+            use ftypes
+            real(dp), intent(out) :: shout(:,:,:)
+            real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:)
             integer, intent(in) :: lmax1, lmax2
             integer, intent(in), optional :: precomp, norm, csphase
             integer, intent(out), optional :: exitstatus
@@ -285,217 +315,257 @@ module SHTOOLS
 
         subroutine SHRead(filename, cilm, lmax, skip, header, error, &
                           exitstatus)
+            use ftypes
             character(*), intent(in) :: filename
             integer, intent(out) :: lmax
-            real*8, intent(out) :: cilm(:,:,:)
-            real*8, intent(out), optional :: header(:), error(:,:,:)
+            real(dp), intent(out) :: cilm(:,:,:)
+            real(dp), intent(out), optional :: header(:), error(:,:,:)
             integer, intent(in), optional :: skip
             integer, intent(out), optional :: exitstatus
         end subroutine SHRead
 
         subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, &
                            doystart, doyend, epoch, exitstatus)
+            use ftypes
             character(*), intent(in) :: filename
             integer, intent(out) :: lmax
-            real*8, intent(out) :: cilm(:,:,:), gm, r0_pot
-            real*8, intent(out), optional :: error(:,:,:), dot(:,:,:), &
-                                             doystart, doyend, epoch
+            real(dp), intent(out) :: cilm(:,:,:), gm, r0_pot
+            real(dp), intent(out), optional :: error(:,:,:), dot(:,:,:), &
+                                               doystart, doyend, epoch
             integer, intent(out), optional :: exitstatus
         end subroutine SHRead2
 
         subroutine SHReadJPL(filename, cilm, lmax, error, gm, formatstring, &
                              exitstatus)
+            use ftypes
             character(*), intent(in) :: filename
             integer, intent(in) :: lmax
-            real*8, intent(out) :: cilm(:,:,:)
-            real*8, intent(out), optional :: error(:,:,:), gm(2)
-            character, intent(in), optional :: formatstring*6
+            real(dp), intent(out) :: cilm(:,:,:)
+            real(dp), intent(out), optional :: error(:,:,:), gm(2)
+            character(6), intent(in), optional :: formatstring
             integer, intent(out), optional :: exitstatus
         end subroutine SHReadJPL
 
         subroutine SHCilmToVector(cilm, vector, lmax, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:)
-            real*8, intent(out) :: vector(:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:)
+            real(dp), intent(out) :: vector(:)
             integer, intent(in) :: lmax
             integer, intent(out), optional :: exitstatus
         end subroutine SHCilmToVector
 
         subroutine SHVectorToCilm(vector, cilm, lmax, exitstatus)
-            real*8, intent(out) :: cilm(:,:,:)
-            real*8, intent(in) :: vector(:)
+            use ftypes
+            real(dp), intent(out) :: cilm(:,:,:)
+            real(dp), intent(in) :: vector(:)
             integer, intent(in) :: lmax
             integer, intent(out), optional :: exitstatus
         end subroutine SHVectorToCilm
 
         subroutine SHCilmToCindex(cilm, cindex, degmax, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:)
-            real*8, intent(out) :: cindex(:,:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:)
+            real(dp), intent(out) :: cindex(:,:)
             integer, intent(in), optional :: degmax
             integer, intent(out), optional :: exitstatus
         end subroutine SHCilmToCindex
 
         subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
-            real*8, intent(out) :: cilm(:,:,:)
-            real*8, intent(in) :: cindex(:,:)
+            use ftypes
+            real(dp), intent(out) :: cilm(:,:,:)
+            real(dp), intent(in) :: cindex(:,:)
             integer, intent(in), optional :: degmax
             integer, intent(out), optional :: exitstatus
         end subroutine SHCindexToCilm
 
         subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, &
                           exitstatus)
-            real*8, intent(in) :: rcilm(:,:,:)
-            real*8, intent(out) :: ccilm(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: rcilm(:,:,:)
+            real(dp), intent(out) :: ccilm(:,:,:)
             integer, intent(in), optional :: degmax, convention, switchcs
             integer, intent(out), optional :: exitstatus
         end subroutine SHrtoc
 
         subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs, &
                           exitstatus)
-            real*8, intent(in) :: ccilm(:,:,:)
-            real*8, intent(out) :: rcilm(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: ccilm(:,:,:)
+            real(dp), intent(out) :: rcilm(:,:,:)
             integer, intent(in), optional :: degmax, convention, switchcs
             integer, intent(out), optional :: exitstatus
         end subroutine SHctor
 
         subroutine djpi2(dj, lmax, exitstatus)
+            use ftypes
             integer, intent(in) :: lmax
-            real*8, intent(out) :: dj(:,:,:)
+            real(dp), intent(out) :: dj(:,:,:)
             integer, intent(out), optional :: exitstatus
         end subroutine djpi2
 
         subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
-            real*8, intent(in) :: cof(:,:), dj(:,:,:), x(3)
-            real*8, intent(out) :: rcof(:,:)
+            use ftypes
+            real(dp), intent(in) :: cof(:,:), dj(:,:,:), x(3)
+            real(dp), intent(out) :: rcof(:,:)
             integer, intent(in) :: lmax
             integer, intent(out), optional :: exitstatus
         end subroutine SHRotateCoef
 
         subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:), x(:), dj(:,:,:)
-            real*8, intent(out) :: cilmrot(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:), x(:), dj(:,:,:)
+            real(dp), intent(out) :: cilmrot(:,:,:)
             integer, intent(in) :: lmax
             integer, intent(out), optional :: exitstatus
         end subroutine SHRotateRealCoef
 
-        real*8 function SHPowerL(c, l)
-            real*8, intent(in) :: c(:,:,:)
+        function SHPowerL(c, l)
+            use ftypes
+            real(dp) :: SHPowerL
+            real(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: l
         end function SHPowerL
 
-        real*8 function SHPowerDensityL(c, l)
-            real*8, intent(in) :: c(:,:,:)
+        function SHPowerDensityL(c, l)
+            use ftypes
+            real(dp) :: SHPowerDensityL
+            real(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: l
         end function SHPowerDensityL
 
-        real*8 function SHCrossPowerL(c1, c2, l)
-            real*8, intent(in) :: c1(:,:,:), c2(:,:,:)
+        function SHCrossPowerL(c1, c2, l)
+            use ftypes
+            real(dp) :: SHCrossPowerL
+            real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: l
         end function SHCrossPowerL
 
-        real*8 function SHCrossPowerDensityL(c1, c2, l)
-            real*8, intent(in) :: c1(:,:,:), c2(:,:,:)
+        function SHCrossPowerDensityL(c1, c2, l)
+            use ftypes
+            real(dp) :: SHCrossPowerDensityL
+            real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: l
         end function SHCrossPowerDensityL
 
         subroutine SHPowerSpectrum(c, lmax, spectra, exitstatus)
-            real*8, intent(in) :: c(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: lmax
-            real*8, intent(out) :: spectra(:)
+            real(dp), intent(out) :: spectra(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHPowerSpectrum
 
         subroutine SHPowerSpectrumDensity(c, lmax, spectra, exitstatus)
-            real*8, intent(in) :: c(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: lmax
-            real*8, intent(out) :: spectra(:)
+            real(dp), intent(out) :: spectra(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHPowerSpectrumDensity
 
         subroutine SHCrossPowerSpectrum(c1, c2, lmax, cspectra, exitstatus)
-            real*8, intent(in) :: c1(:,:,:), c2(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: lmax
-            real*8, intent(out) :: cspectra(:)
+            real(dp), intent(out) :: cspectra(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHCrossPowerSpectrum
 
         subroutine SHCrossPowerSpectrumDensity(c1, c2, lmax, cspectra, &
                                                exitstatus)
-            real*8, intent(in) :: c1(:,:,:), c2(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: lmax
-            real*8, intent(out) :: cspectra(:)
+            real(dp), intent(out) :: cspectra(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHCrossPowerSpectrumDensity
 
         subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, &
                                exitstatus)
-            real*8, intent(in) :: G(:,:,:), T(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: G(:,:,:), T(:,:,:)
             integer, intent(in) :: lmax
-            real*8, intent(out) :: admit(:), corr(:)
-            real*8, intent(out), optional :: admit_error(:)
+            real(dp), intent(out) :: admit(:), corr(:)
+            real(dp), intent(out), optional :: admit_error(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHAdmitCorr
 
-        real*8 function SHConfidence(l_conf, r)
-            real*8, intent(in) :: r
+        function SHConfidence(l_conf, r)
+            use ftypes
+            real(dp) :: SHConfidence
+            real(dp), intent(in) :: r
             integer, intent(in) :: l_conf
         end function SHConfidence
 
-        real*8 function SHPowerLC(c, l)
-            complex*16, intent(in) :: c(:,:,:)
+        function SHPowerLC(c, l)
+            use ftypes
+            real(dp) :: SHPowerLC
+            complex(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: l
         end function SHPowerLC
 
-        real*8 function SHPowerDensityLC(c, l)
-            complex*16, intent(in) :: c(:,:,:)
+        function SHPowerDensityLC(c, l)
+            use ftypes
+            real(dp) :: SHPowerDensityLC
+            complex(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: l
         end function SHPowerDensityLC
 
-        complex*16 function SHCrossPowerLC(c1, c2, l)
-            complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+        function SHCrossPowerLC(c1, c2, l)
+            use ftypes
+            complex(dp) :: SHCrossPowerLC
+            complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: l
         end function SHCrossPowerLC
 
-        Complex*16 function SHCrossPowerDensityLC(c1, c2, l)
-            complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+        function SHCrossPowerDensityLC(c1, c2, l)
+            use ftypes
+            complex(dp) :: SHCrossPowerDensityLC
+            complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: l
         end function SHCrossPowerDensityLC
 
         subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
-            complex*16, intent(in) :: c(:,:,:)
+            use ftypes
+            complex(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: lmax
-            real*8, intent(out) :: spectra(:)
+            real(dp), intent(out) :: spectra(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHPowerSpectrumC
 
         subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
-            complex*16, intent(in) :: c(:,:,:)
+            use ftypes
+            complex(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: lmax
-            real*8, intent(out) :: spectra(:)
+            real(dp), intent(out) :: spectra(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHPowerSpectrumDensityC
 
         subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
-            complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+            use ftypes
+            complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: lmax
-            complex*16, intent(out) :: cspectra(:)
+            complex(dp), intent(out) :: cspectra(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHCrossPowerSpectrumC
 
         subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra,&
                                                 exitstatus)
-            complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+            use ftypes
+            complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: lmax
-            complex*16, intent(out) :: cspectra(:)
+            complex(dp), intent(out) :: cspectra(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHCrossPowerSpectrumDensityC
 
         subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, &
                                   lmaxt, k, alpha, lat, lon, taper_wt, norm, &
                                   csphase, exitstatus)
-            real*8, intent(out) :: mtse(:), sd(:)
-            real*8, intent(in) :: sh(:,:,:), tapers(:,:)
+            use ftypes
+            real(dp), intent(out) :: mtse(:), sd(:)
+            real(dp), intent(in) :: sh(:,:,:), tapers(:,:)
             integer, intent(in) :: lmax, lmaxt, k, taper_order(:)
-            real*8, intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
+            real(dp), intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
             integer, intent(in), optional :: csphase, norm
             integer, intent(out), optional :: exitstatus
         end subroutine SHMultiTaperSE
@@ -503,10 +573,11 @@ module SHTOOLS
         subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
                                    taper_order, lmaxt, k, alpha, lat, lon, &
                                    taper_wt, norm, csphase, exitstatus)
-            real*8, intent(out) :: mtse(:), sd(:)
-            real*8, intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
+            use ftypes
+            real(dp), intent(out) :: mtse(:), sd(:)
+            real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
             integer, intent(in) :: lmax1, lmax2, lmaxt, k, taper_order(:)
-            real*8, intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
+            real(dp), intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
             integer, intent(in), optional :: csphase, norm
             integer, intent(out), optional :: exitstatus
         end subroutine SHMultiTaperCSE
@@ -515,20 +586,22 @@ module SHTOOLS
                                         g, t, lmax, admit, corr, k, &
                                         admit_error, corr_error, taper_wt, &
                                         mtdef, k1linsig, exitstatus)
-            real*8, intent(in) :: tapers(:,:), lat, lon, g(:,:,:), t(:,:,:)
+            use ftypes
+            real(dp), intent(in) :: tapers(:,:), lat, lon, g(:,:,:), t(:,:,:)
             integer, intent(in) :: lwin, lmax, k, taper_order(:)
-            real*8, intent(out) :: admit(:), corr(:)
-            real*8, intent(out), optional :: admit_error(:), corr_error(:)
+            real(dp), intent(out) :: admit(:), corr(:)
+            real(dp), intent(out), optional :: admit_error(:), corr_error(:)
             integer, intent(in), optional :: mtdef, k1linsig
-            real*8, intent(in), optional :: taper_wt(:)
+            real(dp), intent(in), optional :: taper_wt(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHLocalizedAdmitCorr
 
         subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, &
                                   taper_order, degrees, exitstatus)
-            real*8, intent(in) :: theta0
+            use ftypes
+            real(dp), intent(in) :: theta0
             integer, intent(in) :: lmax
-            real*8, intent(out) :: tapers(:,:), eigenvalues(:)
+            real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
             integer, intent(out) :: taper_order(:)
             integer, intent(in), optional :: degrees(:)
             integer, intent(out), optional :: exitstatus
@@ -536,70 +609,79 @@ module SHTOOLS
 
         subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, &
                                    shannon, degrees, ntapers, exitstatus)
-            real*8, intent(in) :: theta0
+            use ftypes
+            real(dp), intent(in) :: theta0
             integer, intent(in) :: lmax, m
-            real*8, intent(out) :: tapers(:,:), eigenvalues(:)
-            real*8, intent(out), optional :: shannon
+            real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
+            real(dp), intent(out), optional :: shannon
             integer, intent(in), optional :: degrees(:)
             integer, intent(out), optional :: ntapers
             integer, intent(out), optional :: exitstatus
         end subroutine SHReturnTapersM
 
         subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
-            real*8, intent(out) :: dllm(:,:)
-            real*8, intent(in) :: theta0
+            use ftypes
+            real(dp), intent(out) :: dllm(:,:)
+            real(dp), intent(in) :: theta0
             integer, intent(in) :: lmax, m
             integer, intent(in), optional :: degrees(:)
             integer, intent(out), optional :: exitstatus
         end subroutine ComputeDm
 
         subroutine ComputeDG82(dG82, lmax, m, theta0, exitstatus)
-            real*8, intent(out) :: dG82(:,:)
-            real*8, intent(in) :: theta0
+            use ftypes
+            real(dp), intent(out) :: dG82(:,:)
+            real(dp), intent(in) :: theta0
             integer, intent(in) :: lmax, m
             integer, intent(out), optional :: exitstatus
         end subroutine ComputeDG82
 
-        integer function SHFindLWin(theta0, m, alpha, taper_number)
-            real*8, intent(in) :: theta0, alpha
+        function SHFindLWin(theta0, m, alpha, taper_number)
+            use ftypes
+            integer :: SHFindLWin
+            real(dp), intent(in) :: theta0, alpha
             integer, intent(in) :: m
             integer, intent(in), optional :: taper_number
         end function SHFindLWin
 
         subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, &
                            outcspectra, taper_wt, save_cg, exitstatus)
-            real*8, intent(in) :: tapers(:,:), incspectra(:)
-            real*8, intent(out) :: outcspectra(:)
+            use ftypes
+            real(dp), intent(in) :: tapers(:,:), incspectra(:)
+            real(dp), intent(out) :: outcspectra(:)
             integer, intent(in) :: lwin, ldata, k
-            real*8, intent(in), optional :: taper_wt(:)
+            real(dp), intent(in), optional :: taper_wt(:)
             integer, intent(in), optional :: save_cg
             integer, intent(out), optional :: exitstatus
         end subroutine SHBiasK
 
         subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, &
                                       taper_wt, exitstatus)
-            real*8, intent(out) :: Mmt(:,:)
-            real*8, intent(in) :: tapers_power(:,:)
-            real*8, intent(in), optional :: taper_wt(:)
+            use ftypes
+            real(dp), intent(out) :: Mmt(:,:)
+            real(dp), intent(in) :: tapers_power(:,:)
+            real(dp), intent(in), optional :: taper_wt(:)
             integer, intent(in) :: lmax, k, lwin
             integer, intent(out), optional :: exitstatus
         end subroutine
 
         subroutine SHBiasAdmitCorr(sgt, sgg, stt, lmax, tapers, lwin, k, &
                                    admit, corr, mtdef, taper_wt, exitstatus)
-            real*8, intent(in) :: sgt(:), sgg(:), stt(:), tapers(:,:)
+            use ftypes
+            real(dp), intent(in) :: sgt(:), sgg(:), stt(:), tapers(:,:)
             integer, intent(in) :: lmax, lwin, k
-            real*8, intent(out) :: admit(:), corr(:)
+            real(dp), intent(out) :: admit(:), corr(:)
             integer, intent(in), optional :: mtdef
-            real*8, intent(in), optional :: taper_wt(:)
+            real(dp), intent(in), optional :: taper_wt(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHBiasAdmitCorr
 
         subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, k, &
                                nl, lmid, n, taper_wt, exitstatus)
-            real*8, intent(out) :: mtdebias(:,:), lmid(:)
-            real*8, intent(in) :: mtspectra(:,:), tapers(:,:)
-            real*8, intent(in), optional :: taper_wt(:)
+            use ftypes
+            real(dp), intent(out) :: mtdebias(:,:), lmid(:)
+            real(dp), intent(in) :: mtspectra(:,:), tapers(:,:)
+            real(dp), intent(in), optional :: taper_wt(:)
             integer, intent(in) :: lmax, k, lwin, nl
             integer, intent(out) :: n
             integer, intent(out), optional :: exitstatus
@@ -608,11 +690,12 @@ module SHTOOLS
         subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, &
                               var_opt, var_unit, weight_opt, &
                               unweighted_covar, nocross, exitstatus)
-            real*8, intent(in) :: tapers(:,:), Sff(:)
-            real*8, intent(out) :: var_opt(:), var_unit(:)
+            use ftypes
+            real(dp), intent(in) :: tapers(:,:), Sff(:)
+            real(dp), intent(out) :: var_opt(:), var_unit(:)
             integer, intent(in) :: l, lwin, kmax, taper_order(:)
-            real*8, intent(out), optional :: weight_opt(:,:), &
-                                             unweighted_covar(:,:)
+            real(dp), intent(out), optional :: weight_opt(:,:), &
+                                               unweighted_covar(:,:)
             integer, intent(in), optional :: nocross
             integer, intent(out), optional :: exitstatus
         end subroutine SHMTVarOpt
@@ -620,25 +703,29 @@ module SHTOOLS
         subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, &
                               variance, taper_wt, unweighted_covar, nocross, &
                               exitstatus)
-            real*8, intent(in) :: tapers(:,:), Sff(:)
-            real*8, intent(out) :: variance
+            use ftypes
+            real(dp), intent(in) :: tapers(:,:), Sff(:)
+            real(dp), intent(out) :: variance
             integer, intent(in) :: l, lwin, kmax, taper_order(:)
-            real*8, intent(in), optional :: taper_wt(:)
-            real*8, intent(out), optional :: unweighted_covar(:,:)
+            real(dp), intent(in), optional :: taper_wt(:)
+            real(dp), intent(out), optional :: unweighted_covar(:,:)
             integer, intent(in), optional :: nocross
             integer, intent(out), optional :: exitstatus
         end subroutine SHMTVar
 
-        complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, &
-                                    hk_real, mj, mk, lwin, hkcc)
-            real*8, intent(in) :: incspectra(:), hj_real(:), hk_real(:)
+        function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, &
+                         lwin, hkcc)
+            use ftypes
+            complex(dp) :: SHSjkPG
+            real(dp), intent(in) :: incspectra(:), hj_real(:), hk_real(:)
             integer, intent(in) :: lwin, l, m, mprime, mj, mk, hkcc
         end function SHSjkPG
 
         subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, &
                                      lmax, sampling, ntapers, degrees, &
                                      exitstatus)
-            real*8, intent(out) :: tapers(:,:), eigenvalues(:)
+            use ftypes
+            real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
             integer, intent(in) :: dh_mask(:,:), n_dh, lmax, sampling
             integer, intent(in), optional :: ntapers, degrees(:)
             integer, intent(out), optional :: exitstatus
@@ -646,10 +733,11 @@ module SHTOOLS
 
         subroutine SHBiasKMask(tapers, lwin, k, incspectra, ldata, &
                            outcspectra, taper_wt, save_cg, exitstatus)
-            real*8, intent(in) :: tapers(:,:), incspectra(:)
-            real*8, intent(out) :: outcspectra(:)
+            use ftypes
+            real(dp), intent(in) :: tapers(:,:), incspectra(:)
+            real(dp), intent(out) :: outcspectra(:)
             integer, intent(in) :: lwin, ldata, k
-            real*8, intent(in), optional :: taper_wt(:)
+            real(dp), intent(in), optional :: taper_wt(:)
             integer, intent(in), optional :: save_cg
             integer, intent(out), optional :: exitstatus
         end subroutine SHBiasKMask
@@ -657,10 +745,11 @@ module SHTOOLS
         subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, &
                                       lmaxt, k, taper_wt, norm, csphase, &
                                       exitstatus)
-            real*8, intent(out) :: mtse(:), sd(:)
-            real*8, intent(in) :: sh(:,:,:), tapers(:,:)
+            use ftypes
+            real(dp), intent(out) :: mtse(:), sd(:)
+            real(dp), intent(in) :: sh(:,:,:), tapers(:,:)
             integer, intent(in) :: lmax, lmaxt, k
-            real*8, intent(in), optional :: taper_wt(:)
+            real(dp), intent(in), optional :: taper_wt(:)
             integer, intent(in), optional :: csphase, norm
             integer, intent(out), optional :: exitstatus
         end subroutine SHMultiTaperMaskSE
@@ -668,17 +757,19 @@ module SHTOOLS
         subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, &
                                        tapers, lmaxt, k, taper_wt, norm, &
                                        csphase, exitstatus)
-            real*8, intent(out) :: mtse(:), sd(:)
-            real*8, intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
+            use ftypes
+            real(dp), intent(out) :: mtse(:), sd(:)
+            real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
             integer, intent(in) :: lmax1, lmax2, lmaxt, k
-            real*8, intent(in), optional :: taper_wt(:)
+            real(dp), intent(in), optional :: taper_wt(:)
             integer, intent(in), optional :: csphase, norm
             integer, intent(out), optional :: exitstatus
         end subroutine SHMultiTaperMaskCSE
 
         subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, &
                                exitstatus)
-            real*8, intent(out) :: Dij(:,:)
+            use ftypes
+            real(dp), intent(out) :: Dij(:,:)
             integer, intent(in) :: dh_mask(:,:), n_dh, lmax
             integer, intent(in), optional :: sampling, degrees(:)
             integer, intent(out), optional :: exitstatus
@@ -686,8 +777,9 @@ module SHTOOLS
 
         subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
                               centralmeridian, exitstatus)
+            use ftypes
             integer, intent(out) :: dhgrid(:,:)
-            real*8, intent(in) :: profile(:,:)
+            real(dp), intent(in) :: profile(:,:)
             integer, intent(in) :: n, sampling, nprofile, np
             integer, intent(in), optional :: centralmeridian
             integer, intent(out), optional :: exitstatus
@@ -695,16 +787,18 @@ module SHTOOLS
 
         subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg, &
                           exitstatus)
-            real*8, intent(in) :: Shh(:), incspectra(:)
-            real*8, intent(out) :: outcspectra(:)
+            use ftypes
+            real(dp), intent(in) :: Shh(:), incspectra(:)
+            real(dp), intent(out) :: outcspectra(:)
             integer, intent(in) :: lwin, ldata
             integer, intent(in), optional :: save_cg
             integer, intent(out), optional :: exitstatus
         end subroutine SHBias
 
         subroutine SphericalCapCoef(coef, theta, lmax, exitstatus)
-            real*8, intent(out) :: coef(:)
-            real*8, intent(in) :: theta
+            use ftypes
+            real(dp), intent(out) :: coef(:)
+            real(dp), intent(in) :: theta
             integer, intent(in), optional :: lmax
             integer, intent(out), optional :: exitstatus
         end subroutine SphericalCapCoef
@@ -712,10 +806,11 @@ module SHTOOLS
         subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad, theta, phi, &
                                   total, n, sampling, lmax_calc, omega, &
                                   normal_gravity, pot, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:), gm, r0, a, f
-            real*8, intent(out) :: rad(:,:), theta(:,:), phi(:,:), total(:,:)
-            real*8, intent(in), optional :: omega
-            real*8, intent(out), optional :: pot(:,:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
+            real(dp), intent(out) :: rad(:,:), theta(:,:), phi(:,:), total(:,:)
+            real(dp), intent(in), optional :: omega
+            real(dp), intent(out), optional :: pot(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
             integer, intent(in), optional :: sampling, lmax_calc, &
@@ -726,9 +821,10 @@ module SHTOOLS
         subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, &
                                       vzz, vxy, vxz, vyz, n, sampling, &
                                       lmax_calc, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:), gm, r0, a, f
-            real*8, intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
-                                   vxz(:,:), vyz(:,:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
+            real(dp), intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
+                                     vxz(:,:), vyz(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
             integer, intent(in), optional :: sampling, lmax_calc
@@ -738,9 +834,10 @@ module SHTOOLS
         subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, &
                                      vzz, vxy, vxz, vyz, n, sampling, &
                                      lmax_calc, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:), r0, a, f
-            real*8, intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
-                                   vxz(:,:), vyz(:,:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:), r0, a, f
+            real(dp), intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
+                                     vxz(:,:), vyz(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
             integer, intent(in), optional :: sampling, lmax_calc
@@ -750,20 +847,22 @@ module SHTOOLS
         subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, &
                                  r, gridtype, order, nlat, nlong, interval, &
                                  lmax_calc, a, f, exitstatus)
-            real*8, intent(out) :: geoid(:,:)
-            real*8, intent(in) :: cilm(:,:,:), r0pot, GM, r, PotRef, omega
+            use ftypes
+            real(dp), intent(out) :: geoid(:,:)
+            real(dp), intent(in) :: cilm(:,:,:), r0pot, GM, r, PotRef, omega
             integer, intent(in) :: lmax, order, gridtype
             integer, intent(in), optional :: lmax_calc
             integer, intent(out) :: nlat, nlong
-            real*8, intent(in), optional :: interval, a, f
+            real(dp), intent(in), optional :: interval, a, f
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGeoidGrid
 
         subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, &
                             w, zero, plx, n, dref, exitstatus)
-            real*8, intent(in) :: gridin(:,:), mass, rho
-            real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
-            real*8, intent(out) :: cilm(:,:,:), d
+            use ftypes
+            real(dp), intent(in) :: gridin(:,:), mass, rho
+            real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
+            real(dp), intent(out) :: cilm(:,:,:), d
             integer, intent(in) :: lmax, nmax, gridtype
             integer, intent(in), optional :: n
             integer, intent(out), optional :: exitstatus
@@ -771,9 +870,10 @@ module SHTOOLS
 
         subroutine CilmMinus(cilm, gridin, lmax, nmax, mass, d, rho, &
                              gridtype, w, zero, plx, n, dref, exitstatus)
-            real*8, intent(in) :: gridin(:,:), mass, rho
-            real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
-            real*8, intent(out) :: cilm(:,:,:), d
+            use ftypes
+            real(dp), intent(in) :: gridin(:,:), mass, rho
+            real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
+            real(dp), intent(out) :: cilm(:,:,:), d
             integer, intent(in) :: lmax, nmax, gridtype
             integer, intent(in), optional :: n
             integer, intent(out), optional :: exitstatus
@@ -781,9 +881,10 @@ module SHTOOLS
 
         subroutine CilmPlusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, &
                                 gridtype, w, zero, plx, n, dref, exitstatus)
-            real*8, intent(in) :: gridin(:,:), mass, rho(:,:)
-            real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
-            real*8, intent(out) :: cilm(:,:,:), d
+            use ftypes
+            real(dp), intent(in) :: gridin(:,:), mass, rho(:,:)
+            real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
+            real(dp), intent(out) :: cilm(:,:,:), d
             integer, intent(in) :: lmax, nmax, gridtype
             integer, intent(in), optional :: n
             integer, intent(out), optional :: exitstatus
@@ -791,9 +892,10 @@ module SHTOOLS
 
         subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, &
                                  gridtype, w, zero, plx, n, dref, exitstatus)
-            real*8, intent(in) :: gridin(:,:), mass, rho(:,:)
-            real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
-            real*8, intent(out) :: cilm(:,:,:), d
+            use ftypes
+            real(dp), intent(in) :: gridin(:,:), mass, rho(:,:)
+            real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
+            real(dp), intent(out) :: cilm(:,:,:), d
             integer, intent(in) :: lmax, nmax, gridtype
             integer, intent(in), optional :: n
             integer, intent(out), optional :: exitstatus
@@ -802,9 +904,10 @@ module SHTOOLS
         subroutine BAtoHilm(cilm, ba, gridglq, lmax, nmax, mass, r0, rho, &
                             gridtype, w, plx, zero, filter_type, filter_deg, &
                             lmax_calc, exitstatus)
-            real*8, intent(out) :: cilm(:,:,:)
-            real*8, intent(in) :: ba(:,:,:), gridglq(:,:), mass, r0, rho
-            real*8, intent(in), optional :: plx(:,:), zero(:), w(:)
+            use ftypes
+            real(dp), intent(out) :: cilm(:,:,:)
+            real(dp), intent(in) :: ba(:,:,:), gridglq(:,:), mass, r0, rho
+            real(dp), intent(in), optional :: plx(:,:), zero(:), w(:)
             integer, intent(in) :: lmax, nmax, gridtype
             integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
             integer, intent(out), optional :: exitstatus
@@ -813,35 +916,43 @@ module SHTOOLS
         subroutine BAtoHilmRhoH(cilm, ba, gridglq, lmax, nmax, mass, r0, &
                                 rho, gridtype, w, plx, zero, filter_type, &
                                 filter_deg, lmax_calc, exitstatus)
-            real*8, intent(out) :: cilm(:,:,:)
-            real*8, intent(in) :: ba(:,:,:), gridglq(:,:), mass, r0, rho(:,:)
-            real*8, intent(in), optional :: plx(:,:), zero(:), w(:)
+            use ftypes
+            real(dp), intent(out) :: cilm(:,:,:)
+            real(dp), intent(in) :: ba(:,:,:), gridglq(:,:), mass, r0, rho(:,:)
+            real(dp), intent(in), optional :: plx(:,:), zero(:), w(:)
             integer, intent(in) :: lmax, nmax, gridtype
             integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
             integer, intent(out), optional :: exitstatus
         end subroutine BAtoHilmRhoH
 
-        real*8 function DownContFilterMA(l, half, r, d)
+        function DownContFilterMA(l, half, r, d)
+            use ftypes
+            real(dp) :: DownContFilterMA
             integer, intent(in) :: l, half
-            real*8, intent(in) :: r, d
+            real(dp), intent(in) :: r, d
         end function DownContFilterMA
 
-        real*8 function DownContFilterMC(l, half, r, d)
+        function DownContFilterMC(l, half, r, d)
+            use ftypes
+            real(dp) :: DownContFilterMC
             integer, intent(in) :: l, half
-            real*8, intent(in) :: r, d
+            real(dp), intent(in) :: r, d
         end function DownContFilterMC
 
-        real*8 function NormalGravity(geocentric_lat, gm, omega, a, b)
-            real*8, intent(in) :: geocentric_lat, gm, omega, a, b
+        function NormalGravity(geocentric_lat, gm, omega, a, b)
+            use ftypes
+            real(dp) :: NormalGravity
+            real(dp), intent(in) :: geocentric_lat, gm, omega, a, b
         end function NormalGravity
 
         subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                                  phi_grid, total_grid, n, sampling, &
                                  lmax_calc, pot_grid, exitstatus)
-            real*8, intent(in) :: cilm(:,:,:), r0, a, f
-            real*8, intent(out) :: rad_grid(:,:), theta_grid(:,:), &
-                                   phi_grid(:,:), total_grid(:,:)
-            real*8, intent(out), optional :: pot_grid(:,:)
+            use ftypes
+            real(dp), intent(in) :: cilm(:,:,:), r0, a, f
+            real(dp), intent(out) :: rad_grid(:,:), theta_grid(:,:), &
+                                     phi_grid(:,:), total_grid(:,:)
+            real(dp), intent(out), optional :: pot_grid(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
             integer, intent(in), optional :: sampling, lmax_calc
@@ -849,55 +960,64 @@ module SHTOOLS
         end subroutine MakeMagGridDH
 
         subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
-            real*8, intent(in) :: c(:,:,:)
-            real*8, intent(in) :: a, r
+            use ftypes
+            real(dp), intent(in) :: c(:,:,:)
+            real(dp), intent(in) :: a, r
             integer, intent(in) :: lmax
-            real*8, intent(out) :: spectra(:)
+            real(dp), intent(out) :: spectra(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHMagPowerSpectrum
 
-        real*8 function SHMagPowerL(c, a, r, l)
-            real*8, intent(in) :: c(:,:,:)
-            real*8, intent(in) :: a, r
+        function SHMagPowerL(c, a, r, l)
+            use ftypes
+            real(dp) :: SHMagPowerL
+            real(dp), intent(in) :: c(:,:,:)
+            real(dp), intent(in) :: a, r
             integer, intent(in) :: l
         end function SHMagPowerL
 
         subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
                                    exitstatus)
-            real*8, intent(in) :: lat, lon, theta0
-            real*8, intent(out) :: coord(:,:)
-            real*8, intent(in), optional :: cinterval
+            use ftypes
+            real(dp), intent(in) :: lat, lon, theta0
+            real(dp), intent(out) :: coord(:,:)
+            real(dp), intent(in), optional :: cinterval
             integer, intent(out), optional :: cnum, exitstatus
         end subroutine MakeCircleCoord
 
         subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
                                     cinterval, cnum, exitstatus)
-            real*8, intent(in) :: lat, lon, A_theta, B_theta, dec
-            real*8, intent(out) :: coord(:,:)
-            real*8, intent(in), optional :: cinterval
+            use ftypes
+            real(dp), intent(in) :: lat, lon, A_theta, B_theta, dec
+            real(dp), intent(out) :: coord(:,:)
+            real(dp), intent(in), optional :: cinterval
             integer, intent(out), optional :: cnum, exitstatus
         end subroutine MakeEllipseCoord
 
         subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
+            use ftypes
             integer, intent(in) :: j2, j3, m1, m2, m3
             integer, intent(out) :: jmin, jmax
-            real*8, intent(out) :: w3j(:)
+            real(dp), intent(out) :: w3j(:)
             integer, intent(out), optional :: exitstatus
         end subroutine Wigner3j
 
-        real*8 function RandomN(idum)
-            integer, parameter :: K4B=selected_int_kind(9)
-            integer(K4B), intent(inout) :: idum
+        function RandomN(idum)
+            use ftypes
+            real(dp) :: RandomN
+            integer(int4), intent(inout) :: idum
         end function RandomN
 
-        real*8 function RandomGaussian(idum)
-            integer, parameter :: K4B=selected_int_kind(9)
-            integer(K4B), intent(inout) :: idum
+        function RandomGaussian(idum)
+            use ftypes
+            real(dp) :: RandomGaussian
+            integer(int4), intent(inout) :: idum
         end function RandomGaussian
 
         subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
-            real*8, intent(in) :: x1, x2
-            real*8, intent(out) :: zero(:), w(:)
+            use ftypes
+            real(dp), intent(in) :: x1, x2
+            real(dp), intent(out) :: zero(:), w(:)
             integer, intent(in) :: n
             integer, intent(out), optional :: exitstatus
         end subroutine PreGLQ
@@ -915,8 +1035,9 @@ module SHTOOLS
         end function NGLQSHN
 
         subroutine DHaj(n, aj, exitstatus)
+            use ftypes
             integer, intent(in) :: n
-            real*8, intent(out) :: aj(:)
+            real(dp), intent(out) :: aj(:)
             integer, intent(out), optional :: exitstatus
         end subroutine DHaj
 
@@ -925,72 +1046,81 @@ module SHTOOLS
         end function YilmIndexVector
 
         subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
-            real*8, intent(in) :: ain(:,:)
+            use ftypes
+            real(dp), intent(in) :: ain(:,:)
             integer, intent(in) :: n
-            real*8, intent(out) :: eig(:), evec(:,:)
+            real(dp), intent(out) :: eig(:), evec(:,:)
             character, intent(in), optional :: ul
             integer, intent(in), optional :: K
             integer, intent(out), optional :: exitstatus
         end subroutine EigValVecSym
 
         subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
-            real*8, intent(in) :: ain(:,:)
+            use ftypes
+            real(dp), intent(in) :: ain(:,:)
             integer, intent(in) :: n
-            real*8, intent(out) :: eig(:), evec(:,:)
+            real(dp), intent(out) :: eig(:), evec(:,:)
             character, intent(in), optional :: ul
             integer, intent(out), optional :: exitstatus
         end subroutine EigValVecSymTri
 
         subroutine EigValSym(ain, n, eval, ul)
-            real*8, intent(in) :: ain(:,:)
+            use ftypes
+            real(dp), intent(in) :: ain(:,:)
             integer, intent(in) :: n
-            real*8, intent(out) :: eval(:)
+            real(dp), intent(out) :: eval(:)
             character, intent(in), optional :: ul
         end subroutine EigValSym
 
         subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, &
                                   x, dj, exitstatus)
-            real*8, intent(in) :: tapers(:,:), x(:), dj(:,:,:)
-            real*8, intent(out) :: tapersrot(:,:)
+            use ftypes
+            real(dp), intent(in) :: tapers(:,:), x(:), dj(:,:,:)
+            real(dp), intent(out) :: tapersrot(:,:)
             integer, intent(in) :: taper_order(:), lmax, nrot
             integer, intent(out), optional :: exitstatus
         end subroutine SHRotateTapers
 
         subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, &
                                  exitstatus)
-            real*8, intent(out) :: falpha(:)
-            real*8, intent(in) :: galpha(:,:), flm(:,:,:)
+            use ftypes
+            real(dp), intent(out) :: falpha(:)
+            real(dp), intent(in) :: galpha(:,:), flm(:,:,:)
             integer, intent(in) :: lmax, nmax
             integer, intent(out), optional :: exitstatus
         end subroutine SlepianCoeffs
 
         subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, &
                                      exitstatus)
-            real*8, intent(out) :: flm(:,:,:)
-            real*8, intent(in) :: falpha(:), galpha(:,:)
+            use ftypes
+            real(dp), intent(out) :: flm(:,:,:)
+            real(dp), intent(in) :: falpha(:), galpha(:,:)
             integer, intent(in) :: lmax, nmax
             integer, intent(out), optional :: exitstatus
         end subroutine SlepianCoeffsToSH
 
         subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
-            real*8, intent(out) :: kij(:,:)
-            real*8, intent(in) :: galpha(:,:)
+            use ftypes
+            real(dp), intent(out) :: kij(:,:)
+            real(dp), intent(in) :: galpha(:,:)
             integer, intent(in) :: lmax, nmax
             integer, intent(out), optional :: exitstatus
         end subroutine SHSCouplingMatrix
 
         subroutine SHSlepianVar(l, galpha, galpha_order, lmax, kmax, Sff, &
                                variance, exitstatus)
-            real*8, intent(in) :: galpha(:,:), Sff(:)
-            real*8, intent(out) :: variance
+            use ftypes
+            real(dp), intent(in) :: galpha(:,:), Sff(:)
+            real(dp), intent(out) :: variance
             integer, intent(in) :: l, lmax, kmax, galpha_order(:)
             integer, intent(out), optional :: exitstatus
         end subroutine SHSlepianVar
 
         subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
                                      exitstatus)
-            real*8, intent(out) :: kij(:,:)
-            real*8, intent(in) :: galpha(:,:)
+            use ftypes
+            real(dp), intent(out) :: kij(:,:)
+            real(dp), intent(in) :: galpha(:,:)
             integer, intent(in) :: galpha_order(:), lmax, nmax
             integer, intent(out), optional :: exitstatus
         end subroutine SHSCouplingMatrixCap

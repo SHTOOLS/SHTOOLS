@@ -74,6 +74,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 !------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_1d dfftw_plan_dft_1d_
 #define dfftw_execute dfftw_execute_
@@ -82,20 +83,20 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 
     implicit none
 
-    real*8, intent(in) :: w(:)
-    complex*16, intent(in) :: gridglq(:,:)
-    real*8, intent(in), optional :: plx(:,:), zero(:)
-    complex*16, intent(out) :: cilm(:,:,:)
-    integer, intent(in) ::  lmax
+    real(dp), intent(in) :: w(:)
+    complex(dp), intent(in) :: gridglq(:,:)
+    real(dp), intent(in), optional :: plx(:,:), zero(:)
+    complex(dp), intent(out) :: cilm(:,:,:)
+    integer, intent(in) :: lmax
     integer, intent(in), optional :: norm, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
-    integer ::  nlong, nlat, i, l, m, k, l1, m1, i_s, astat(4), lnorm, lmax_comp
-    real*8 ::  pi, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z
-    complex*16 :: cc(2*lmax+1), gridl(2*lmax+1),  fcoef1(2*lmax+1), &
-                  fcoef2(2*lmax+1), ffc1(-1:1), ffc2(-1:1)
-    integer*8 :: plan
-    real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer*1, save, allocatable :: fsymsign(:,:)
+    integer :: nlong, nlat, i, l, m, k, l1, m1, i_s, astat(4), lnorm, lmax_comp
+    real(dp) :: pi, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z
+    complex(dp) :: cc(2*lmax+1), gridl(2*lmax+1),  fcoef1(2*lmax+1), &
+                   fcoef2(2*lmax+1), ffc1(-1:1), ffc2(-1:1)
+    integer(int8) :: plan
+    real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
+    integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
     external :: dfftw_plan_dft_1d, dfftw_execute, dfftw_destroy_plan
@@ -262,11 +263,11 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 
     nlat = lmax + 1
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    cilm = (0.0d0, 0.0d0)
+    cilm = dcmplx(0.0_dp, 0.0_dp)
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     !--------------------------------------------------------------------------
     !
@@ -342,7 +343,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
             case (1,4)
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
-                    ff2(2,1) = 0.0d0
+                    ff2(2,1) = 0.0_dp
 
                 end if
 
@@ -359,14 +360,14 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     end do
 
                     ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
             case (2)
                 if (lmax_comp /= 0) then
-                    ff1(2,1) = 1.0d0
-                    ff2(2,1) = 0.0d0
+                    ff1(2,1) = 1.0_dp
+                    ff2(2,1) = 0.0_dp
                 end if
 
                 do l = 2, lmax_comp, 1
@@ -380,7 +381,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     enddo
 
                     ff1(l+1,l) = dble(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
@@ -459,11 +460,11 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 call dfftw_execute(plan)   ! take fourier transform
                 fcoef1(1:nlong) = 2 * w(i) * pi * cc(1:nlong) / dble(nlong)
 
-                u = 1.0d0
+                u = 1.0_dp
 
                 select case (lnorm)
-                    case (1,2,3); pm2 = 1.0d0
-                    case (4);     pm2 = 1.0d0 / sqrt(4*pi)
+                    case (1,2,3); pm2 = 1.0_dp
+                    case (4);     pm2 = 1.0_dp / sqrt(4*pi)
                 end select
 
                 cilm(1,1,1) = cilm(1,1,1) + pm2 * fcoef1(1)
@@ -483,7 +484,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     case (4); pmm = scalef / sqrt(4*pi)
                 end select
 
-                rescalem = 1.0d0 / scalef
+                rescalem = 1.0_dp / scalef
 
                 do m = 1, lmax_comp-1, 1
                     m1 = m + 1
@@ -534,11 +535,11 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 cilm(2,lmax_comp+1,lmax_comp+1) = &
                                 cilm(2,lmax_comp+1,lmax_comp+1) &
                                 + ((-1)**mod(lmax_comp,2)) * pmm &
-                                * fcoef1(nlong-(lmax_comp-1)) 
+                                * fcoef1(nlong-(lmax_comp-1))
 
             else
                 z = zero(i)
-                u = sqrt( (1.0d0-z) * (1.0d0+z) )
+                u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
                 gridl(1:nlong) = gridglq(i,1:nlong)
                 call dfftw_execute(plan)
@@ -551,8 +552,8 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 fcoef2(1:nlong) = 2 * w(i_s) * pi * cc(1:nlong) / dble(nlong)
 
                 select case (lnorm)
-                    case (1,2,3); pm2 = 1.0d0
-                    case (4);     pm2 = 1.0d0 / sqrt(4*pi)
+                    case (1,2,3); pm2 = 1.0_dp
+                    case (4);     pm2 = 1.0_dp / sqrt(4*pi)
                 end select
 
                 cilm(1,1,1) = cilm(1,1,1) + pm2 * (fcoef1(1) + fcoef2(1))
@@ -580,7 +581,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     case (4); pmm = scalef / sqrt(4*pi)
                 end select
 
-                rescalem = 1.0d0 / scalef
+                rescalem = 1.0_dp / scalef
 
                 do m = 1, lmax_comp-1, 1
                     m1 = m + 1

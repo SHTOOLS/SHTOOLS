@@ -67,19 +67,20 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: p(:)
-    real*8, intent(in) :: z
+    real(dp), intent(out) :: p(:)
+    real(dp), intent(in) :: z
     integer, intent(in), optional :: csphase, cnorm
     integer, intent(out), optional :: exitstatus
-    real*8 :: pmm, rescalem, u, scalef
-    real*8, save, allocatable :: f1(:), f2(:), sqr(:)
+    real(dp) :: pmm, rescalem, u, scalef
+    real(dp), save, allocatable :: f1(:), f2(:), sqr(:)
     integer :: k, kstart, m, l, astat(3)
     integer, save :: lmax_old = 0
-    integer*1 :: phase
+    integer(int1) :: phase
 
 !$OMP    threadprivate(f1, f2, sqr, lmax_old)
 
@@ -116,7 +117,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
             stop
         end if
 
-    else if(abs(z) > 1.0d0) then
+    else if(abs(z) > 1.0_dp) then
         print*, "Error --- PlmBar"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
@@ -152,7 +153,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
 
     end if
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (lmax > lmax_old) then
         if (allocated (sqr)) deallocate (sqr)
@@ -221,9 +222,9 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
     !   Calculate P(l,0). These are not scaled.
     !
     !--------------------------------------------------------------------------
-    u = sqrt((1.0d0 - z) * (1.0d0 + z)) ! sin(theta)
+    u = sqrt((1.0_dp - z) * (1.0_dp + z)) ! sin(theta)
 
-    p(1) = 1.0d0
+    p(1) = 1.0_dp
 
     if (lmax == 0) return
 
@@ -255,7 +256,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
 
     end if
 
-    rescalem = 1.0d0/scalef
+    rescalem = 1.0_dp / scalef
     kstart = 1
 
     do m = 1, lmax - 1, 1

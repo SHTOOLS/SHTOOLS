@@ -100,6 +100,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: normalgravity
+    use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
 #define dfftw_execute dfftw_execute_
@@ -108,25 +109,25 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     implicit none
 
-    real*8, intent(in) :: cilm(:,:,:), gm, r0, a, f
-    real*8, intent(out) :: rad_grid(:,:), theta_grid(:,:), phi_grid(:,:), &
-                           total_grid(:,:)
-    real*8, intent(in), optional :: omega
-    real*8, intent(out), optional :: pot_grid(:,:)
+    real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
+    real(dp), intent(out) :: rad_grid(:,:), theta_grid(:,:), phi_grid(:,:), &
+                             total_grid(:,:)
+    real(dp), intent(in), optional :: omega
+    real(dp), intent(out), optional :: pot_grid(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: n
     integer, intent(in), optional :: sampling, lmax_calc, normal_gravity
     integer, intent(out), optional :: exitstatus
     integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong
-    real*8 ::  grid(4*lmax+4), pi, theta, scalef, rescalem, u, p, dp, pmm, &
-               pm1, pm2, z, tempr, r_ex, lat, prefactor(lmax), coefr0, coefu0, &
-               coefrs0, coeft0, coefts0, coefp0, coefps0, coefus0, b
-    complex*16 :: coef(2*lmax+3), coefr(2*lmax+3), coefrs(2*lmax+3), &
-                coeft(2*lmax+3), coefts(2*lmax+3), coefp(2*lmax+3), &
-                coefps(2*lmax+3), coefu(2*lmax+3), coefus(2*lmax+3), tempc
-    integer*8 :: plan
-    real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer*1, save, allocatable :: fsymsign(:,:)
+    real(dp) :: grid(4*lmax+4), pi, theta, scalef, rescalem, u, p, dpl, pmm, &
+                pm1, pm2, z, tempr, r_ex, lat, prefactor(lmax), coefr0, coefu0, &
+                coefrs0, coeft0, coefts0, coefp0, coefps0, coefus0, b
+    complex(dp) :: coef(2*lmax+3), coefr(2*lmax+3), coefrs(2*lmax+3), &
+                   coeft(2*lmax+3), coefts(2*lmax+3), coefp(2*lmax+3), &
+                   coefps(2*lmax+3), coefu(2*lmax+3), coefus(2*lmax+3), tempc
+    integer(int8) :: plan
+    real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
+    integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0
     logical :: calcu
     external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
@@ -240,7 +241,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     end if
 
-    if (cilm(1,1,1) == 0.0d0 .and. f /= 0.0d0) then
+    if (cilm(1,1,1) == 0.0_dp .and. f /= 0.0_dp) then
         print*, "Warning --- MakeGravGridDH"
         print*, "The degree-0 term of the spherical harmonic " // &
                 "coefficients is equal to zero."
@@ -287,9 +288,9 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (present(lmax_calc)) then
         if (lmax_calc > lmax) then
@@ -387,7 +388,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         !----------------------------------------------------------------------
         if (lmax_comp /= 0) then
             ff1(2,1) = sqr(3)
-            ff2(2,1) = 0.0d0
+            ff2(2,1) = 0.0_dp
         end if
 
         do l = 2, lmax_comp, 1
@@ -402,7 +403,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             end do
 
             ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-            ff2(l+1,l) = 0.0d0
+            ff2(l+1,l) = 0.0_dp
 
         end do
 
@@ -426,50 +427,50 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         theta = pi * dble(i-1) / dble(n)
         z = cos(theta)
-        u = sqrt( (1.0d0-z) * (1.0d0+z) )
+        u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
-        lat = pi / 2.0d0 - theta
+        lat = pi / 2.0_dp - theta
 
         if (i == 1) then      ! Reference ellipsoid radius
-            r_ex = a * (1.0d0 - f)
+            r_ex = a * (1.0_dp - f)
 
         else
-            r_ex = (1.0d0 + tan(lat)**2) / &
-                    (1.0d0  + tan(lat)**2 / (1.0d0 - f)**2 )
+            r_ex = (1.0_dp + tan(lat)**2) / &
+                    (1.0_dp  + tan(lat)**2 / (1.0_dp - f)**2 )
             r_ex = a * sqrt(r_ex)
 
         end if
 
-        coefr(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-        coefr0 = 0.0d0
-        coefrs(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-        coefrs0 = 0.0d0
+        coefr(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+        coefr0 = 0.0_dp
+        coefrs(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+        coefrs0 = 0.0_dp
 
-        coeft(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-        coeft0 = 0.0d0
-        coefts(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-        coefts0 = 0.0d0
+        coeft(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+        coeft0 = 0.0_dp
+        coefts(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+        coefts0 = 0.0_dp
 
-        coefp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-        coefp0 = 0.0d0
-        coefps(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-        coefps0 = 0.0d0
+        coefp(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+        coefp0 = 0.0_dp
+        coefps(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+        coefps0 = 0.0_dp
 
         if (calcu) then
-            coefu(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-            coefu0 = 0.0d0
-            coefus(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-            coefus0 = 0.0d0
+            coefu(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+            coefu0 = 0.0_dp
+            coefus(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+            coefus0 = 0.0_dp
         end if
 
-        pm2 = 1.0d0
+        pm2 = 1.0_dp
 
-        tempr =  -cilm(1,1,1) * pm2 ! l = 0 
+        tempr = -cilm(1,1,1) * pm2 ! l = 0 
         coefr0 = coefr0 + tempr
         coefrs0 = coefrs0 + tempr   ! fsymsign is always 1 for l=m=0
 
         if (calcu) then
-            tempr =  cilm(1,1,1) * pm2  ! l = 0 
+            tempr = cilm(1,1,1) * pm2  ! l = 0 
             coefu0 = coefu0 + tempr
             coefus0 = coefus0 + tempr   ! fsymsign is always 1 for l=m=0
         end if
@@ -483,7 +484,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 prefactor(l) = prefactor(l-1) * r0 / r_ex
             end do
 
-            pm1 =  ff1(2,1) * z 
+            pm1 = ff1(2,1) * z 
             ! -2 = (l+1) prefactor
             tempr = cilm(1,2,1) * pm1 * (-2) * prefactor(1) 
             coefr0 = coefr0 + tempr
@@ -495,8 +496,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 coefus0 = coefus0 - tempr   ! fsymsign = -1
             end if
 
-            dp = ff1(2,1)
-            tempr = cilm(1,2,1) * dp * prefactor(1)
+            dpl = ff1(2,1)
+            tempr = cilm(1,2,1) * dpl * prefactor(1)
             coeft0 = coeft0 + tempr
             coefts0 = coefts0 + tempr   ! reverse fsymsign
 
@@ -515,8 +516,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 coefus0 = coefus0 + tempr * fsymsign(l1,1)
             end if
 
-            dp = l * ( sqr(2*l+1) / sqr(2*l-1) * pm1 - z * p ) / u**2
-            tempr = cilm(1,l1,1) * dp * prefactor(l)
+            dpl = l * ( sqr(2*l+1) / sqr(2*l-1) * pm1 - z * p ) / u**2
+            tempr = cilm(1,l1,1) * dpl * prefactor(l)
             coeft0 = coeft0 + tempr
             coefts0 = coefts0 - tempr * fsymsign(l1,1)  ! reverse fsymsign
 
@@ -527,7 +528,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         pmm = sqr(2) * scalef
 
-        rescalem = 1.0d0/scalef
+        rescalem = 1.0_dp/scalef
 
         do m = 1, lmax_comp-1, 1
 
@@ -557,8 +558,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             coefps(m1) = coefps(m1) + tempc
             ! fsymsign = 1
 
-            dp = -m * z * pm2 / u**2
-            tempc = dcmplx(cilm(1,m1,m1), - cilm(2,m1,m1)) * dp &
+            dpl = -m * z * pm2 / u**2
+            tempc = dcmplx(cilm(1,m1,m1), - cilm(2,m1,m1)) * dpl &
                     * prefactor(m)  ! (m,m)
             coeft(m1) = coeft(m1) + tempc
             coefts(m1) = coefts(m1) - tempc ! reverse fsymsign
@@ -583,8 +584,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             coefps(m1) = coefps(m1) - tempc
             ! fsymsign = -1
 
-            dp =  ( sqr(2*m+3) * pmm - z * (m+1) * pm1) / u**2
-            tempc = dcmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1)) * dp &
+            dpl =  ( sqr(2*m+3) * pmm - z * (m+1) * pm1) / u**2
+            tempc = dcmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1)) * dpl &
                     * prefactor(m+1)    ! (m+1,m)
             coeft(m1) = coeft(m1) + tempc
             coefts(m1) = coefts(m1) + tempc ! reverse fsymsign
@@ -609,9 +610,9 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 coefp(m1) = coefp(m1) + tempc
                 coefps(m1) = coefps(m1) + tempc * fsymsign(l1,m1)
 
-                dp = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1 &
+                dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1 &
                        - z * l * p) / u**2
-                tempc = dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) * dp &
+                tempc = dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) * dpl &
                         * prefactor(l)
                 coeft(m1) = coeft(m1) + tempc
                 ! reverse fsymsign
@@ -665,9 +666,9 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             coefps(lmax_comp+1) = coefps(lmax_comp+1) + tempc
             ! fsymsign = 1
 
-            dp = -lmax_comp * z * pmm / u**2
+            dpl = -lmax_comp * z * pmm / u**2
             tempc = dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                            - cilm(2,lmax_comp+1,lmax_comp+1)) * dp &
+                            - cilm(2,lmax_comp+1,lmax_comp+1)) * dpl &
                             * prefactor(lmax_comp)
             coeft(lmax_comp+1) = coeft(lmax_comp+1) + tempc
             ! reverse fsymsign
@@ -675,12 +676,12 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         end if
 
-        coef(1) = dcmplx(coefr0,0.0d0)
-        coef(2:lmax+1) = coefr(2:lmax+1) / 2.0d0
+        coef(1) = dcmplx(coefr0,0.0_dp)
+        coef(2:lmax+1) = coefr(2:lmax+1) / 2.0_dp
 
         if (present(sampling)) then
             if (sampling == 2) then
-                coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0) 
+                coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp) 
             end if
         endif
 
@@ -688,12 +689,12 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         rad_grid(i,1:nlong) = grid(1:nlong) * gm / r_ex**2
 
         if (calcu) then
-            coef(1) = dcmplx(coefu0,0.0d0)
-            coef(2:lmax+1) = coefu(2:lmax+1) / 2.0d0
+            coef(1) = dcmplx(coefu0,0.0_dp)
+            coef(2:lmax+1) = coefu(2:lmax+1) / 2.0_dp
 
             if (present(sampling)) then
                 if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+                    coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
                 end if
             end if
 
@@ -702,28 +703,28 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         end if
 
         if (i==1) then
-            theta_grid(1,1:nlong) = 0.0d0   ! These derivatives are
-            phi_grid(1,1:nlong) = 0.0d0     ! undefined at the pole
+            theta_grid(1,1:nlong) = 0.0_dp   ! These derivatives are
+            phi_grid(1,1:nlong) = 0.0_dp     ! undefined at the pole
 
         else
-            coef(1) = dcmplx(coeft0,0.0d0)
-            coef(2:lmax+1) = coeft(2:lmax+1) / 2.0d0
+            coef(1) = dcmplx(coeft0,0.0_dp)
+            coef(2:lmax+1) = coeft(2:lmax+1) / 2.0_dp
 
             if (present(sampling)) then
                 if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+                    coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
                 end if
             end if 
 
             call dfftw_execute(plan)    ! take fourier transform
             theta_grid(i,1:nlong) = -sin(theta)*grid(1:nlong) * gm / r_ex**2
 
-            coef(1) = dcmplx(coefp0,0.0d0)
-            coef(2:lmax+1) = coefp(2:lmax+1) / 2.0d0
+            coef(1) = dcmplx(coefp0,0.0_dp)
+            coef(2:lmax+1) = coefp(2:lmax+1) / 2.0_dp
 
             if (present(sampling)) then
                 if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+                    coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
                 end if
             end if
 
@@ -733,12 +734,12 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         end if
 
         if (i /= 1) then    ! don't compute value for south pole.
-            coef(1) = dcmplx(coefrs0,0.0d0)
-            coef(2:lmax+1) = coefrs(2:lmax+1) / 2.0d0
+            coef(1) = dcmplx(coefrs0,0.0_dp)
+            coef(2:lmax+1) = coefrs(2:lmax+1) / 2.0_dp
 
             if (present(sampling)) then
                 if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+                    coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
                 end if
             end if
 
@@ -746,12 +747,12 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             rad_grid(i_s,1:nlong) = grid(1:nlong) * gm / r_ex**2
 
             if (calcu) then
-                coef(1) = dcmplx(coefus0,0.0d0)
-                coef(2:lmax+1) = coefus(2:lmax+1) / 2.0d0
+                coef(1) = dcmplx(coefus0,0.0_dp)
+                coef(2:lmax+1) = coefus(2:lmax+1) / 2.0_dp
 
                 if (present(sampling)) then
                     if (sampling == 2) then
-                        coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0) 
+                        coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
                     end if
                 end if
 
@@ -759,12 +760,12 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 pot_grid(i_s,1:nlong) = grid(1:nlong) * gm / r_ex
             end if
 
-            coef(1) = dcmplx(coefts0,0.0d0)
-            coef(2:lmax+1) = coefts(2:lmax+1) / 2.0d0
+            coef(1) = dcmplx(coefts0,0.0_dp)
+            coef(2:lmax+1) = coefts(2:lmax+1) / 2.0_dp
 
             if (present(sampling)) then
                 if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+                    coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
                 end if
             end if
 
@@ -772,11 +773,11 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             theta_grid(i_s,1:nlong) = -sin(theta) * grid(1:nlong) &
                                       * gm / r_ex**2
 
-            coef(1) = dcmplx(coefps0,0.0d0)
-            coef(2:lmax+1) = coefps(2:lmax+1) / 2.0d0
+            coef(1) = dcmplx(coefps0,0.0_dp)
+            coef(2:lmax+1) = coefps(2:lmax+1) / 2.0_dp
             if (present(sampling)) then
                 if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+                    coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
                 end if
             end if
 
@@ -789,27 +790,27 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     ! Finally, do equator
     r_ex = a
-    theta = pi / 2.0d0
-    z = 0.0d0
-    u = 1.0d0
+    theta = pi / 2.0_dp
+    z = 0.0_dp
+    u = 1.0_dp
 
-    lat = 0.0d0
+    lat = 0.0_dp
 
-    coefr(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-    coefr0 = 0.0d0
+    coefr(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+    coefr0 = 0.0_dp
 
     if (calcu) then
-        coefu(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-        coefu0 = 0.0d0
+        coefu(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+        coefu0 = 0.0_dp
     end if
 
-    coeft(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-    coeft0 = 0.0d0
+    coeft(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+    coeft0 = 0.0_dp
 
-    coefp(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-    coefp0 = 0.0d0
+    coefp(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+    coefp0 = 0.0_dp
 
-    pm2 = 1.0d0
+    pm2 = 1.0_dp
 
     coefr0 = coefr0 - cilm(1,1,1) * pm2
 
@@ -824,24 +825,24 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             prefactor(l) = prefactor(l-1) *r0 / r_ex
         enddo
 
-        pm1 = 0.0d0
+        pm1 = 0.0_dp
 
         if (calcu) coefu0 = coefu0 + cilm(1,2,1) * pm1 * prefactor(1)
 
-        dp = ff1(2,1)
-        coeft0 = coeft0 + cilm(1,2,1) * dp * prefactor(1)
+        dpl = ff1(2,1)
+        coeft0 = coeft0 + cilm(1,2,1) * dpl * prefactor(1)
 
     end if
 
     do l = 2, lmax_comp, 1
         l1 = l + 1
-        p =  - ff2(l1,1) * pm2
+        p = - ff2(l1,1) * pm2
         coefr0 = coefr0 + cilm(1,l1,1) * p * (-l1) * prefactor(l)
 
         if (calcu) coefu0 = coefu0 + cilm(1,l1,1) * p * prefactor(l)
 
-        dp = l * (sqr(2*l+1) / sqr(2*l-1) * pm1)
-        coeft0 = coeft0 + cilm(1,l1,1) * dp * prefactor(l)
+        dpl = l * (sqr(2*l+1) / sqr(2*l-1) * pm1)
+        coeft0 = coeft0 + cilm(1,l1,1) * dpl * prefactor(l)
 
         pm2 = pm1
         pm1 = p
@@ -850,7 +851,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     pmm = sqr(2) * scalef
 
-    rescalem = 1.0d0 / scalef
+    rescalem = 1.0_dp / scalef
 
     do m = 1, lmax_comp-1, 1
 
@@ -868,11 +869,11 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         coefp(m1) = coefp(m1) + dcmplx(cilm(2,m1,m1), cilm(1,m1,m1)) &
                                 * pm2 * prefactor(m) * m
 
-        pm1 = 0.0d0
+        pm1 = 0.0_dp
 
-        dp =  (sqr(2*m+3) * pmm)
+        dpl =  (sqr(2*m+3) * pmm)
         coeft(m1) = coeft(m1) + dcmplx(cilm(1,m1+1,m1), &
-                                - cilm(2,m1+1,m1)) * dp * prefactor(m+1)
+                                - cilm(2,m1+1,m1)) * dpl * prefactor(m+1)
 
         do l = m + 2, lmax_comp, 1
             l1 = l + 1
@@ -886,9 +887,9 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             coefp(m1) = coefp(m1) + dcmplx(cilm(2,l1,m1), cilm(1,l1,m1)) &
                                     * p * prefactor(l) * m
 
-            dp = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1)
+            dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1)
             coeft(m1) = coeft(m1) + dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) &
-                                    * dp * prefactor(l)
+                                    * dpl * prefactor(l)
 
             pm2 = pm1
             pm1 = p
@@ -920,20 +921,20 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                             cilm(1,lmax_comp+1,lmax_comp+1)) &
                             * pmm * prefactor(lmax_comp) * lmax_comp
 
-        dp = -lmax_comp * z * pmm / u**2
+        dpl = -lmax_comp * z * pmm / u**2
         coeft(lmax_comp+1) = coeft(lmax_comp+1) + &
                             dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                             - cilm(2,lmax_comp+1,lmax_comp+1)) &
-                            * dp * prefactor(lmax_comp)
+                            * dpl * prefactor(lmax_comp)
 
     end if
 
-    coef(1) = dcmplx(coefr0,0.0d0)
-    coef(2:lmax+1) = coefr(2:lmax+1) / 2.0d0
+    coef(1) = dcmplx(coefr0,0.0_dp)
+    coef(2:lmax+1) = coefr(2:lmax+1) / 2.0_dp
 
     if (present(sampling)) then
         if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+            coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
         end if
     end if
 
@@ -941,12 +942,12 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     rad_grid(i_eq,1:nlong) = grid(1:nlong) * gm / r_ex**2
 
     if (calcu) then
-        coef(1) = dcmplx(coefu0,0.0d0)
-        coef(2:lmax+1) = coefu(2:lmax+1) / 2.0d0
+        coef(1) = dcmplx(coefu0,0.0_dp)
+        coef(2:lmax+1) = coefu(2:lmax+1) / 2.0_dp
 
         if (present(sampling)) then
             if (sampling == 2) then
-                coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+                coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
             end if
 
         end if
@@ -955,24 +956,24 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         pot_grid(i_eq,1:nlong) = grid(1:nlong) * gm / r_ex
     end if
 
-    coef(1) = dcmplx(coeft0,0.0d0)
-    coef(2:lmax+1) = coeft(2:lmax+1) / 2.0d0
+    coef(1) = dcmplx(coeft0,0.0_dp)
+    coef(2:lmax+1) = coeft(2:lmax+1) / 2.0_dp
 
     if (present(sampling)) then
         if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+            coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
         end if
     end if
 
     call dfftw_execute(plan)    ! take fourier transform
     theta_grid(i_eq,1:nlong) = -sin(theta) * grid(1:nlong) * gm / r_ex**2
 
-    coef(1) = dcmplx(coefp0,0.0d0)
-    coef(2:lmax+1) = coefp(2:lmax+1) / 2.0d0
+    coef(1) = dcmplx(coefp0,0.0_dp)
+    coef(2:lmax+1) = coefp(2:lmax+1) / 2.0_dp
 
     if (present(sampling)) then
         if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+            coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
         end if
     end if
 
@@ -992,10 +993,10 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         do i = 1, n
 
             theta = pi * dble(i-1)/dble(n)
-            lat = (pi/2.0d0 - theta)
+            lat = (pi/2.0_dp - theta)
 
-            r_ex = (1.0d0 + tan(lat)**2) / &
-                   (1.0d0  + tan(lat)**2 / (1.0d0 - f)**2)
+            r_ex = (1.0_dp + tan(lat)**2) / &
+                   (1.0_dp  + tan(lat)**2 / (1.0_dp - f)**2)
             r_ex = a * sqrt(r_ex)
 
             rad_grid(i,1:nlong) = rad_grid(i,1:nlong)  &
@@ -1006,7 +1007,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
             if (calcu) then
                 pot_grid(i,1:nlong) = pot_grid(i,1:nlong) &
-                                      + 0.50d0 &
+                                      + 0.50_dp &
                                       * ( r_ex * sin(theta) * omega )**2
             end if
 
@@ -1021,11 +1022,11 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     ! remove normal gravity from total gravitational acceleration
     if (present(normal_gravity)) then
         if (normal_gravity == 1) then
-            b = a * ( 1.0d0 - f)
+            b = a * (1.0_dp - f)
 
             do i = 1, n
                 theta = pi * dble(i-1) / dble(n)
-                lat = (pi / 2.0d0 - theta) * 180.0d0 / pi
+                lat = (pi / 2.0_dp - theta) * 180.0_dp / pi
                 total_grid(i,1:nlong) = total_grid(i,1:nlong) - &
                                         NormalGravity(lat, GM, omega, a, b)
             end do

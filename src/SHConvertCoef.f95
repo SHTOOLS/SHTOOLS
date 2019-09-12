@@ -42,14 +42,16 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: rcilm(:,:,:)
-    real*8, intent(out) :: ccilm(:,:,:) 
+    real(dp), intent(in) :: rcilm(:,:,:)
+    real(dp), intent(out) :: ccilm(:,:,:)
     integer, intent(in), optional :: degmax, convention, switchcs
     integer, intent(out), optional :: exitstatus
     integer :: lmax, l, m, convention_flag, switchcs_flag
-    real*8 :: pi
+    real(dp) :: pi
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -159,24 +161,24 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, exitstatus)
 
     end if
 
-    pi = acos(-1.0d0)
-    ccilm = 0.0d0
+    pi = acos(-1.0_dp)
+    ccilm = 0.0_dp
 
     do l = 0, lmax, 1
         if (convention_flag == 2) then
-            ccilm(1,l+1, 1) = sqrt(4.0d0*pi) * rcilm(1,l+1,1)
-            ccilm(2,l+1, 1) = 0.0d0
+            ccilm(1,l+1, 1) = sqrt(4.0_dp*pi) * rcilm(1,l+1,1)
+            ccilm(2,l+1, 1) = 0.0_dp
 
             do m = 1, l, 1
                 if (switchcs_flag == 1) then
-                    ccilm(1, l+1, m+1) = sqrt(2.0d0*pi) * rcilm(1,l+1,m+1) &
-                                         * (-1.0d0)**m
-                    ccilm(2, l+1, m+1) = -sqrt(2.0d0*pi) * rcilm(2,l+1,m+1) &
-                                         * (-1.0d0)**m
+                    ccilm(1, l+1, m+1) = sqrt(2.0_dp*pi) * rcilm(1,l+1,m+1) &
+                                         * (-1)**m
+                    ccilm(2, l+1, m+1) = -sqrt(2.0_dp*pi) * rcilm(2,l+1,m+1) &
+                                         * (-1)**m
 
                 else
-                    ccilm(1, l+1, m+1) = sqrt(2.0d0*pi) * rcilm(1,l+1,m+1)
-                    ccilm(2, l+1, m+1) = -sqrt(2.0d0*pi) * rcilm(2,l+1,m+1)
+                    ccilm(1, l+1, m+1) = sqrt(2.0_dp*pi) * rcilm(1,l+1,m+1)
+                    ccilm(2, l+1, m+1) = -sqrt(2.0_dp*pi) * rcilm(2,l+1,m+1)
 
                 end if
 
@@ -184,18 +186,18 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, exitstatus)
 
         else
             ccilm(1,l+1, 1) = rcilm(1,l+1,1)
-            ccilm(2,l+1, 1) = 0.0d0
+            ccilm(2,l+1, 1) = 0.0_dp
 
             do m = 1, l, 1
                 if (switchcs_flag == 1) then
-                    ccilm(1, l+1, m+1) = rcilm(1,l+1,m+1) / sqrt(2.0d0) &
-                                         * (-1.0d0)**m
-                    ccilm(2, l+1, m+1) = -rcilm(2,l+1,m+1) / sqrt(2.0d0) &
-                                         * (-1.0d0)**m
+                    ccilm(1, l+1, m+1) = rcilm(1,l+1,m+1) / sqrt(2.0_dp) &
+                                         * (-1)**m
+                    ccilm(2, l+1, m+1) = -rcilm(2,l+1,m+1) / sqrt(2.0_dp) &
+                                         * (-1)**m
 
                 else
-                    ccilm(1, l+1, m+1) = rcilm(1,l+1,m+1) / sqrt(2.0d0)
-                    ccilm(2, l+1, m+1) = -rcilm(2,l+1,m+1) / sqrt(2.0d0)
+                    ccilm(1, l+1, m+1) = rcilm(1,l+1,m+1) / sqrt(2.0_dp)
+                    ccilm(2, l+1, m+1) = -rcilm(2,l+1,m+1) / sqrt(2.0_dp)
 
                 end if
 
@@ -248,21 +250,23 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs, exitstatus)
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: ccilm(:,:,:)
-    real*8, intent(out) :: rcilm(:,:,:)
+    real(dp), intent(in) :: ccilm(:,:,:)
+    real(dp), intent(out) :: rcilm(:,:,:)
     integer, intent(in), optional :: degmax, convention, switchcs
     integer, intent(out), optional :: exitstatus
     integer :: lmax, l, m, convention_flag, switchcs_flag
-    real*8 :: pi
+    real(dp) :: pi
 
     if (present(exitstatus)) exitstatus = 0
 
     switchcs_flag = 0
 
     if (present(switchcs)) then
-        if (switchcs /= 1 .and. switchcs /=0) then
+        if (switchcs /= 1 .and. switchcs /= 0) then
             print*, "Error --- SHrtoc"
             print*, "switchcs must be equal to either 0 (keep same " // &
                     "convention) of 1 (change Condon-Shortley phase)"
@@ -283,7 +287,7 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs, exitstatus)
     convention_flag = 1
 
     if (present(convention) ) then
-        if (convention /=1 .and. convention /=2) then
+        if (convention /= 1 .and. convention /= 2) then
             print*, "Error --- SHrtoc"
             print*, "CONVENTION must be 1 or 2."
             print*, "Input valuse is ", convention
@@ -364,24 +368,24 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs, exitstatus)
 
     end if
 
-    pi = acos(-1.0d0)
-    rcilm = 0.0d0
+    pi = acos(-1.0_dp)
+    rcilm = 0.0_dp
 
     do l = 0, lmax, 1
         if (convention == 2) then
-            rcilm(1,l+1,1) = ccilm(1,l+1,1) / sqrt(4.0d0*pi)
-            rcilm(2, l+1, 1) = 0.0d0
+            rcilm(1,l+1,1) = ccilm(1,l+1,1) / sqrt(4.0_dp*pi)
+            rcilm(2, l+1, 1) = 0.0_dp
 
             do m = 1, l, 1
                 if (switchcs == 1) then
-                    rcilm(1,l+1, m+1) =  ccilm(1, l+1, m+1) / sqrt(2.0d0*pi) &
-                                         * (-1.0d0)**m
-                    rcilm(2,l+1, m+1) =  - ccilm(2,l+1,m+1) / sqrt(2.0d0*pi) &
-                                         * (-1.0d0)**m
+                    rcilm(1,l+1, m+1) = ccilm(1, l+1, m+1) / sqrt(2.0_dp*pi) &
+                                        * (-1)**m
+                    rcilm(2,l+1, m+1) =  - ccilm(2,l+1,m+1) / sqrt(2.0_dp*pi) &
+                                         * (-1)**m
 
                 else
-                    rcilm(1,l+1, m+1) =  ccilm(1, l+1, m+1) / sqrt(2.0d0*pi)
-                    rcilm(2,l+1, m+1) =  - ccilm(2,l+1,m+1) / sqrt(2.0d0*pi)
+                    rcilm(1,l+1, m+1) = ccilm(1, l+1, m+1) / sqrt(2.0_dp*pi)
+                    rcilm(2,l+1, m+1) = - ccilm(2,l+1,m+1) / sqrt(2.0_dp*pi)
 
                 end if
 
@@ -389,17 +393,17 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs, exitstatus)
 
         else
             rcilm(1,l+1,1) = ccilm(1,l+1,1)
-            rcilm(2, l+1, 1) = 0.0d0
+            rcilm(2, l+1, 1) = 0.0_dp
 
             do m = 1, l, 1
                 if(switchcs == 1) then
-                    rcilm(1,l+1, m+1) = sqrt(2.0d0) * ccilm(1, l+1, m+1) &
-                                        * (-1.0d0)**m
-                    rcilm(2,l+1, m+1) = -sqrt(2.0d0) * ccilm(2, l+1, m+1) &
-                                        * (-1.0d0)**m
+                    rcilm(1,l+1, m+1) = sqrt(2.0_dp) * ccilm(1, l+1, m+1) &
+                                        * (-1)**m
+                    rcilm(2,l+1, m+1) = -sqrt(2.0_dp) * ccilm(2, l+1, m+1) &
+                                        * (-1)**m
                 else
-                    rcilm(1,l+1, m+1) = sqrt(2.0d0) * ccilm(1, l+1, m+1)
-                    rcilm(2,l+1, m+1) = -sqrt(2.0d0) * ccilm(2, l+1, m+1)
+                    rcilm(1,l+1, m+1) = sqrt(2.0_dp) * ccilm(1, l+1, m+1)
+                    rcilm(2,l+1, m+1) = -sqrt(2.0_dp) * ccilm(2, l+1, m+1)
 
                 end if
 
@@ -441,10 +445,12 @@ subroutine SHCilmToCindex(cilm, cindex, degmax, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: cilm(:,:,:)
-    real*8, intent(out) :: cindex(:,:)
+    real(dp), intent(in) :: cilm(:,:,:)
+    real(dp), intent(out) :: cindex(:,:)
     integer, intent(in), optional :: degmax
     integer, intent(out), optional :: exitstatus
     integer :: lmax, l, m, index
@@ -515,7 +521,7 @@ subroutine SHCilmToCindex(cilm, cindex, degmax, exitstatus)
 
     end if
 
-    cindex = 0.0d0
+    cindex = 0.0_dp
 
     do l = 0, lmax
         do m = 0, l
@@ -557,10 +563,12 @@ subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(out) :: cilm(:,:,:)
-    real*8, intent(in) :: cindex(:,:)
+    real(dp), intent(out) :: cilm(:,:,:)
+    real(dp), intent(in) :: cindex(:,:)
     integer, intent(in), optional :: degmax
     integer, intent(out), optional :: exitstatus
     integer :: lmax, l, m, index, n
@@ -572,13 +580,13 @@ subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
     if (present(degmax)) then
         lmax = degmax
 
-        if (lmax > nint((-3.0d0 + sqrt(1.0d0 + 8.0d0*n) ) / 2.0d0) ) then
+        if (lmax > nint((-3.0_dp + sqrt(1.0_dp + 8.0_dp*n) ) / 2.0_dp) ) then
             print*, "Error - SHCindextocilm"
             print*, "The output spherical harmonic degree DEGMAX is larger " // &
                     "than the input coefficients."
             print*, "Input value of DEGMAX ", degmax
             print*, "Maximum spherical harmonic degree of CINDEX ", &
-                    nint((-3.0d0 + sqrt(1.0d0 + 8.0d0*n) )/2.0d0)
+                    nint((-3.0_dp + sqrt(1.0_dp + 8.0_dp*n) )/2.0_dp)
             if (present(exitstatus)) then
                 exitstatus = 2
                 return
@@ -603,7 +611,7 @@ subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
         end if
 
     else
-        lmax = nint((-3.0d0 + sqrt(1.0d0 + 8.0d0*n) )/2.0d0)
+        lmax = nint((-3.0_dp + sqrt(1.0_dp + 8.0_dp*n) )/2.0_dp)
         
         if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax + 1 .or. &
                 size(cilm(1,1,:)) < lmax+1 ) then
@@ -623,7 +631,7 @@ subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
 
     end if
 
-    cilm = 0.0d0
+    cilm = 0.0_dp
 
     do l = 0, lmax
         do m = 0, l

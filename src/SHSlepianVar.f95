@@ -43,18 +43,20 @@ subroutine SHSlepianVar(l, galpha, galpha_order, lmax, kmax, Sff, variance, &
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: galpha(:,:), Sff(:)
-    real*8, intent(out) :: variance
+    real(dp), intent(in) :: galpha(:,:), Sff(:)
+    real(dp), intent(out) :: variance
     integer, intent(in) :: l, lmax, kmax, galpha_order(:)
     integer, intent(out), optional :: exitstatus
     integer :: m, lp, alpha, beta
-    real*8 :: fmm
+    real(dp) :: fmm
 
     if (present(exitstatus)) exitstatus = 0
 
-    variance = 0.0d0
+    variance = 0.0_dp
 
     if (size(Sff) < lmax + 1) then
         print*, "Error --- SHSlepianVar"
@@ -109,7 +111,7 @@ subroutine SHSlepianVar(l, galpha, galpha_order, lmax, kmax, Sff, variance, &
     !--------------------------------------------------------------------------
     do m = -l, l, 1
 
-        fmm = 0.0d0
+        fmm = 0.0_dp
 
         do lp = 0, lmax
 
@@ -129,7 +131,7 @@ subroutine SHSlepianVar(l, galpha, galpha_order, lmax, kmax, Sff, variance, &
 
         end do
 
-        variance = variance + 2.0d0 * fmm**2
+        variance = variance + 2.0_dp * fmm**2
 
     end do
 

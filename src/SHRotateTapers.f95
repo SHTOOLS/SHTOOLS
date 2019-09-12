@@ -82,16 +82,17 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 !-------------------------------------------------------------------------------
     use SHTOOLS, only: SHrtoc, SHctor, SHcilmtocindex, SHcindextocilm, &
                        SHRotateCoef, SHCilmToVector, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: tapers(:,:), x(:), dj(:,:,:)
-    real*8, intent(out) :: tapersrot(:,:)
+    real(dp), intent(in) :: tapers(:,:), x(:), dj(:,:,:)
+    real(dp), intent(out) :: tapersrot(:,:)
     integer, intent(in) :: taper_order(:), lmax, nrot
     integer, intent(out), optional :: exitstatus
     integer :: astat(5), i
-    real*8, allocatable :: ccilm(:,:,:), cilm(:,:,:), cof(:,:), rcof(:,:), &
-                           vec(:)
+    real(dp), allocatable :: ccilm(:,:,:), cilm(:,:,:), cof(:,:), rcof(:,:), &
+                             vec(:)
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -182,7 +183,7 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 
     do i=1, nrot, 1
 
-        cilm = 0.0d0
+        cilm = 0.0_dp
         if (taper_order(i) >= 0) then
             cilm(1, 1:lmax+1, taper_order(i)+1) = tapers(1:lmax+1, i)
         else

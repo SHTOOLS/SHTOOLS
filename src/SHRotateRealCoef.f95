@@ -69,15 +69,16 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
 !-------------------------------------------------------------------------------
     use SHTOOLS, only: SHrtoc, SHctor, SHcilmtocindex, SHcindextocilm, &
                        SHRotateCoef, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: cilm(:,:,:), x(:), dj(:,:,:)
-    real*8, intent(out) :: cilmrot(:,:,:)
+    real(dp), intent(in) :: cilm(:,:,:), x(:), dj(:,:,:)
+    real(dp), intent(out) :: cilmrot(:,:,:)
     integer, intent(in) :: lmax
     integer, intent(out), optional :: exitstatus
     integer :: astat(3)
-    real*8, allocatable :: ccilm(:,:,:), cof(:,:), rcof(:,:)
+    real(dp), allocatable :: ccilm(:,:,:), cof(:,:), rcof(:,:)
 
     if (present(exitstatus)) exitstatus = 0
 

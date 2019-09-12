@@ -42,9 +42,10 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     integer, intent(out) :: dhgrid(:,:)
     real(dp), intent(in) :: profile(:,:)
     integer, intent(in) :: n, sampling, nprofile, np

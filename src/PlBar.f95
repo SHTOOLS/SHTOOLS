@@ -37,13 +37,15 @@ subroutine PlBar(p, lmax, z, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: p(:)
-    real*8, intent(in) :: z
+    real(dp), intent(out) :: p(:)
+    real(dp), intent(in) :: z
     integer, intent(out), optional :: exitstatus
-    real*8 :: pm2, pm1, pl
+    real(dp) :: pm2, pm1, pl
     integer :: l
 
     if (present(exitstatus)) exitstatus = 0
@@ -57,7 +59,7 @@ subroutine PlBar(p, lmax, z, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     else if (lmax < 0) then 
         print*, "Error --- PlBar"
@@ -68,9 +70,9 @@ subroutine PlBar(p, lmax, z, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    else if (abs(z) > 1.0d0) then
+    else if (abs(z) > 1.0_dp) then
         print*, "Error --- PlBar"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
@@ -79,14 +81,14 @@ subroutine PlBar(p, lmax, z, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     end if
 
     pm2 = 1.d0
     p(1) = 1.d0
 
-    pm1 = sqrt(3.0d0) * z
+    pm1 = sqrt(3.0_dp) * z
     p(2) = pm1
 
     do l = 2, lmax, 1

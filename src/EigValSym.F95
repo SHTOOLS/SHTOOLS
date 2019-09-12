@@ -39,9 +39,10 @@ subroutine EigValSym(ain, n, eval, ul)
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     real(dp), intent(in) :: ain(:,:)
     integer, intent(in) :: n
     real(dp), intent(out) :: eval(:)

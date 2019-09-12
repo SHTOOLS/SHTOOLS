@@ -1,4 +1,4 @@
-real*8 function RandomN(idum)
+function RandomN(idum)
 !------------------------------------------------------------------------------
 !
 !   Minimal random number generator of Park and Miller combined with a
@@ -18,15 +18,17 @@ real*8 function RandomN(idum)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: K4B=selected_int_kind(9)
-    integer(K4B), intent(inout) :: idum
-    integer(K4B), parameter :: IA = 16807, IM = 2147483647, IQ = 127773, &
+    real(dp) :: RandomN
+    integer(int4), intent(inout) :: idum
+    integer(int4), parameter :: IA = 16807, IM = 2147483647, IQ = 127773, &
                                IR = 2836, one = 1, param1 = 888889999, &
                                param2 = 777755555
-    real*8, save :: am
-    integer(K4B), save :: ix = -1, iy = -1, k
+    real(dp), save :: am
+    integer(int4), save :: ix = -1, iy = -1, k
 
 !$OMP   threadprivate(am, ix, iy, k)
 
@@ -55,7 +57,7 @@ real*8 function RandomN(idum)
 end function RandomN
 
 
-real*8 function RandomGaussian(idum)
+function RandomGaussian(idum)
 !------------------------------------------------------------------------------
 !
 !   Returns a normally distributed deviate with
@@ -73,12 +75,14 @@ real*8 function RandomGaussian(idum)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: K4B=selected_int_kind(9)
-    integer(K4B), intent(inout) :: idum
-    real*8 :: rsq, v1, v2, RandomN
-    real*8, save :: gset
+    real(dp) :: RandomGaussian
+    integer(int4), intent(inout) :: idum
+    real(dp) :: rsq, v1, v2, RandomN
+    real(dp), save :: gset
     external RandomN
     logical, save :: gaus_stored = .false.
 
@@ -98,19 +102,19 @@ real*8 function RandomGaussian(idum)
         do
             v1 = RandomN(idum)
             v2 = RandomN(idum)
-            v1 = 2.0d0*v1 -1.0d0
-            v2 = 2.0d0*v2 -1.0d0
+            v1 = 2.0_dp * v1 -1.0_dp
+            v2 = 2.0_dp * v2 -1.0_dp
             rsq = v1**2 + v2**2
-            if (rsq > 0.0d0 .and. rsq < 1.0d0) exit
+            if (rsq > 0.0_dp .and. rsq < 1.0_dp) exit
 
         end do
 
         ! Now make the Box-Muller transformation to get two normal deviates.
         ! Return one and save the other for next time.
-        rsq = sqrt(-2.0d0*log(rsq)/rsq)
+        rsq = sqrt(-2.0_dp * log(rsq) / rsq)
 
         RandomGaussian = v1 * rsq
-        gset = v2*rsq
+        gset = v2 * rsq
         gaus_stored = .true.
 
     end if

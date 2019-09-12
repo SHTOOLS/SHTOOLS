@@ -89,6 +89,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 !------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: dhaj, csphase_default
+    use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_r2c_1d dfftw_plan_dft_r2c_1d_
 #define dfftw_execute dfftw_execute_
@@ -97,20 +98,20 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
     implicit none
 
-    real*8, intent(in) :: grid(:,:)
-    real*8, intent(out) :: cilm(:,:,:)
+    real(dp), intent(in) :: grid(:,:)
+    real(dp), intent(out) :: cilm(:,:,:)
     integer, intent(in) :: n
     integer, intent(out) :: lmax
     integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
-    complex*16 :: cc(n+1)
+    complex(dp) :: cc(n+1)
     integer :: l, m, i, l1, m1, i_eq, i_s, lnorm, astat(4), lmax_comp, nlong
-    integer*8 :: plan
-    real*8 :: pi, gridl(2*n), aj(n), fcoef1(2, n/2+1), fcoef2(2, n/2+1), &
-              theta, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z, &
-              ffc(1:2,-1:1)
-    real*8, save, allocatable :: sqr(:), ff1(:,:), ff2(:,:)
-    integer*1, save, allocatable :: fsymsign(:,:)
+    integer(int8) :: plan
+    real(dp) :: pi, gridl(2*n), aj(n), fcoef1(2, n/2+1), fcoef2(2, n/2+1), &
+                theta, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z, &
+                ffc(1:2,-1:1)
+    real(dp), save, allocatable :: sqr(:), ff1(:,:), ff2(:,:)
+    integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
     external :: dfftw_plan_dft_r2c_1d, dfftw_execute, dfftw_destroy_plan
@@ -282,11 +283,11 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    cilm = 0.0d0
+    cilm = 0.0_dp
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (present(exitstatus)) then
         call DHaj(n, aj, exitstatus=exitstatus)
@@ -295,7 +296,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
         call DHaj(n, aj)
     endif
 
-    aj(1:n) = aj(1:n) * sqrt(4.0d0*pi)
+    aj(1:n) = aj(1:n) * sqrt(4.0_dp*pi)
     ! Driscoll and Heally use unity normalized spherical harmonics
 
     if (present(sampling)) then
@@ -384,7 +385,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
             case(1,4)
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
-                    ff2(2,1) = 0.0d0
+                    ff2(2,1) = 0.0_dp
 
                 end if
 
@@ -401,14 +402,14 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
                     end do
 
                     ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
             case(2)
                 if (lmax_comp /= 0) then
-                    ff1(2,1) = 1.0d0
-                    ff2(2,1) = 0.0d0
+                    ff1(2,1) = 1.0_dp
+                    ff2(2,1) = 0.0_dp
 
                 end if
 
@@ -424,7 +425,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
                     end do
 
                     ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
@@ -467,7 +468,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
     do i = 2, i_eq - 1, 1
         theta = (i-1) * pi / dble(n)
         z = cos(theta)
-        u = sqrt( (1.0d0-z) * (1.0d0+z) )
+        u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
         gridl(1:nlong) = grid(i,1:nlong)
         call dfftw_execute(plan)    ! take fourier transform
@@ -483,8 +484,8 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
                           dble(nlong)
 
         select case (lnorm)
-            case (1,2,3);    pm2 = 1.0d0
-            case (4);        pm2 = 1.0d0 / sqrt(4*pi)
+            case (1,2,3);    pm2 = 1.0_dp
+            case (4);        pm2 = 1.0_dp / sqrt(4*pi)
 
         end select
 
@@ -516,7 +517,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
         end select
 
-        rescalem = 1.0d0 / scalef
+        rescalem = 1.0_dp / scalef
 
         do m = 1, lmax_comp-1, 1
             m1 = m + 1
@@ -587,8 +588,8 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
     ! finally, do equator
     i = i_eq
 
-    z = 0.0d0
-    u = 1.0d0
+    z = 0.0_dp
+    u = 1.0_dp
 
     gridl(1:nlong) = grid(i,1:nlong)
     call dfftw_execute(plan)    ! take fourier transform
@@ -596,8 +597,8 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
     fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * dimag(cc(1:n/2)) / dble(nlong)
 
     select case (lnorm)
-        case (1,2,3); pm2 = 1.0d0
-        case (4);     pm2 = 1.0d0 / sqrt(4*pi)
+        case (1,2,3); pm2 = 1.0_dp
+        case (4);     pm2 = 1.0_dp / sqrt(4*pi)
     end select
 
     cilm(1,1,1) = cilm(1,1,1) + pm2 * fcoef1(1,1)
@@ -617,7 +618,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
             case (4);    pmm = sqr(2) * scalef / sqrt(4 * pi)
         end select
 
-        rescalem = 1.0d0 / scalef
+        rescalem = 1.0_dp / scalef
 
         do m = 1, lmax_comp-1, 1
             m1 = m + 1
@@ -689,7 +690,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
             do l = 0, lmax_comp, 1
                 prod = 4 * pi / dble(2*l+1)
                 cilm(1,l+1,1) = cilm(1,l+1,1) / prod
-                prod = prod / 2.0d0
+                prod = prod / 2.0_dp
 
                 do m = 1, l-1, 1
                     prod = prod * (l+m) * (l-m+1)

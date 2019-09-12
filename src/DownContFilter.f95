@@ -18,9 +18,10 @@ function DownContFilterMA(l, half, r, d)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     real(dp) :: DownContFilterMA
     integer, intent(in) :: l, half
     real(dp), intent(in) ::  r, d
@@ -71,9 +72,10 @@ function DownContFilterMC(l, half, r, d)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     real(dp) :: DownContFilterMC
     integer, intent(in) :: l, half
     real(dp), intent(in) :: r, d

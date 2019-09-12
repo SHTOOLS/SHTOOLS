@@ -19,9 +19,10 @@ subroutine DHaj(n, aj, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     integer, intent(in) :: n
     real(dp), intent(out) :: aj(:)
     integer, intent(out), optional :: exitstatus

@@ -77,6 +77,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
 #define dfftw_execute dfftw_execute_
@@ -85,19 +86,19 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
     implicit none
 
-    real*8, intent(in) :: cilm(:,:,:)
-    real*8, intent(out) :: griddh(:,:)
+    real(dp), intent(in) :: cilm(:,:,:)
+    real(dp), intent(out) :: griddh(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: n
     integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
     integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, nlong
-    real*8 :: grid(4*lmax+4), pi, theta, coef0, scalef, rescalem, u, p, pmm, &
+    real(dp) :: grid(4*lmax+4), pi, theta, coef0, scalef, rescalem, u, p, pmm, &
               pm1, pm2, z, coef0s, tempr
-    complex*16 :: coef(2*lmax+3), coefs(2*lmax+3), tempc
-    integer*8 :: plan
-    real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer*1, save, allocatable :: fsymsign(:,:)
+    complex(dp) :: coef(2*lmax+3), coefs(2*lmax+3), tempc
+    integer(int8) :: plan
+    real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
+    integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
     external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
@@ -109,7 +110,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     n = 2 * lmax + 2
 
     if (present(sampling)) then
-        if (sampling /= 1 .and. sampling /=2) then
+        if (sampling /= 1 .and. sampling /= 2) then
             print*, "Error --- MakeGridDH"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
@@ -123,7 +124,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
         end if
     end if
-    
+
     if (size(cilm(:,1,1)) < 2) then
         print*, "Error --- MakeGridDH"
         print*, "CILM must be dimensioned as (2, *, *)."
@@ -135,8 +136,8 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         else
             stop
         end if
-    end if 
-    
+    end if
+
     if (present(sampling)) then
         if (sampling == 1) then
             if (size(griddh(:,1)) < n .or. size(griddh(1,:)) < n) then
@@ -181,7 +182,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         end if
 
     end if
-        
+
     if (present(norm)) then
         if (norm > 4 .or. norm < 1) then
             print*, "Error --- MakeGridDH"
@@ -218,15 +219,15 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         else
             phase = csphase
 
-        endif
+        end if
     else
         phase = CSPHASE_DEFAULT
 
-    endif
+    end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (present(lmax_calc)) then
         if (lmax_calc > lmax) then
@@ -277,12 +278,12 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         if (allocated (ff1)) deallocate (ff1)
         if (allocated (ff2)) deallocate (ff2)
         if (allocated (fsymsign)) deallocate (fsymsign)
-    
+
         allocate (sqr(2 * lmax_comp +1 ), stat=astat(1))
         allocate (ff1(lmax_comp+1,lmax_comp+1), stat=astat(2))
         allocate (ff2(lmax_comp+1,lmax_comp+1), stat=astat(3))
         allocate (fsymsign(lmax_comp+1,lmax_comp+1), stat=astat(4))
-    
+
         if (sum(astat(1:4)) /= 0) then
             print*, "MakeGridDH --- Error"
             print*, "Problem allocating arrays SQR, FF1, FF2, or FSYMSIGN", &
@@ -340,7 +341,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
-                    ff2(2,1) = 0.0d0
+                    ff2(2,1) = 0.0_dp
                 end if
 
                 do l = 2, lmax_comp, 1
@@ -355,15 +356,15 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                     end do
 
                     ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
             case (2)
 
                 if (lmax_comp /= 0) then
-                    ff1(2,1) = 1.0d0
-                    ff2(2,1) = 0.0d0
+                    ff1(2,1) = 1.0_dp
+                    ff2(2,1) = 0.0_dp
                 end if
 
                 do l = 2, lmax_comp, 1
@@ -377,7 +378,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                     end do
 
                     ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
@@ -409,8 +410,8 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     if (lmax_comp == 0) then
 
         select case (lnorm)
-            case (1,2,3); pm2 = 1.0d0
-            case (4); pm2 = 1.0d0 / sqrt(4.0d0 * pi)
+            case (1,2,3); pm2 = 1.0_dp
+            case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
         end select
     
         if (present(sampling)) then
@@ -446,17 +447,17 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
         theta = pi * dble(i-1) / dble(n)
         z = cos(theta)
-        u = sqrt( (1.0d0-z) * (1.0d0+z) )
+        u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
-        coef(1:lmax+2) = dcmplx(0.0d0,0.0d0)    ! lmax+2 is included in the 
-                                                ! input array to FFTW
-        coef0 = 0.0d0
-        coefs(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-        coef0s = 0.0d0
+        coef(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)    ! lmax+2 is included in the
+                                                  ! input array to FFTW
+        coef0 = 0.0_dp
+        coefs(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+        coef0s = 0.0_dp
 
         select case (lnorm)
-            case (1,2,3); pm2 = 1.0d0
-            case (4); pm2 = 1.0d0 / sqrt(4.0d0 * pi)
+            case (1,2,3); pm2 = 1.0_dp
+            case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
         end select
 
         tempr =  cilm(1,1,1) * pm2
@@ -481,10 +482,10 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         select case (lnorm)
             case (1,2);  pmm = sqr(2) * scalef
             case (3);    pmm = scalef
-            case (4);    pmm = sqr(2) * scalef / sqrt(4.0d0 * pi)
+            case (4);    pmm = sqr(2) * scalef / sqrt(4.0_dp * pi)
         end select
 
-        rescalem = 1.0d0 / scalef
+        rescalem = 1.0_dp / scalef
 
         do m = 1, lmax_comp-1, 1
             m1 = m + 1
@@ -547,12 +548,12 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         coefs(lmax_comp+1) = coefs(lmax_comp+1) + tempc
         ! fsymsign = 1
 
-        coef(1) = dcmplx(coef0,0.0d0)
-        coef(2:lmax+1) = coef(2:lmax+1) / 2.0d0
+        coef(1) = dcmplx(coef0,0.0_dp)
+        coef(2:lmax+1) = coef(2:lmax+1) / 2.0_dp
     
         if (present(sampling)) then
             if (sampling == 2) then
-                coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0)
+                coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
             end if
         end if
 
@@ -560,12 +561,12 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         griddh(i,1:nlong) = grid(1:nlong)
 
         if (i /= 1) then    ! don't compute value for south pole.
-            coef(1) = dcmplx(coef0s,0.0d0)
-            coef(2:lmax+1) = coefs(2:lmax+1) / 2.0d0
+            coef(1) = dcmplx(coef0s,0.0_dp)
+            coef(2:lmax+1) = coefs(2:lmax+1) / 2.0_dp
 
             if (present(sampling)) then
                 if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0) 
+                    coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp) 
                 end if
             end if
 
@@ -578,15 +579,15 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
     ! Finally, do equator
 
-    z = 0.0d0
-    u = 1.0d0
+    z = 0.0_dp
+    u = 1.0_dp
 
-    coef(1:lmax+2) = dcmplx(0.0d0,0.0d0)
-    coef0 = 0.0d0
+    coef(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+    coef0 = 0.0_dp
 
     select case(lnorm)
-        case (1,2,3); pm2 = 1.0d0
-        case (4); pm2 = 1.0d0 / sqrt(4.0d0 * pi)
+        case (1,2,3); pm2 = 1.0_dp
+        case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
     end select
 
     coef0 = coef0 + cilm(1,1,1) * pm2
@@ -601,10 +602,10 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     select case (lnorm)
         case (1,2);  pmm = sqr(2) * scalef
         case (3);    pmm = scalef
-        case (4);    pmm = sqr(2) * scalef / sqrt(4.0d0 * pi)
+        case (4);    pmm = sqr(2) * scalef / sqrt(4.0_dp * pi)
     end select
 
-    rescalem = 1.0d0 / scalef
+    rescalem = 1.0_dp / scalef
 
     do m = 1, lmax_comp-1, 1
         m1 = m + 1
@@ -647,12 +648,12 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                         dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                         - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm
 
-    coef(1) = dcmplx(coef0,0.0d0)
-    coef(2:lmax+1) = coef(2:lmax+1) * rescalem / 2.0d0
+    coef(1) = dcmplx(coef0,0.0_dp)
+    coef(2:lmax+1) = coef(2:lmax+1) * rescalem / 2.0_dp
 
     if (present(sampling)) then
         if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = dcmplx(0.0d0,0.0d0) 
+            coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp) 
         end if
     end if
 

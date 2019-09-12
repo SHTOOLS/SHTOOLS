@@ -40,16 +40,18 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: x1, x2
-    real*8, intent(out) :: zero(:), w(:)
+    real(dp), intent(in) :: x1, x2
+    real(dp), intent(out) :: zero(:), w(:)
     integer, intent(in) ::  n
     integer, intent(out), optional :: exitstatus
     integer :: i, j, m, iter
     integer, parameter :: itermax = 1000
-    real*8, parameter :: eps=1.0d-15
-    real*8 :: p1, p2, p3, pp, z, z1, xm, xu
+    real(dp), parameter :: eps=1.0e-15_dp
+    real(dp) :: p1, p2, p3, pp, z, z1, xm, xu, pi
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -62,7 +64,7 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     else if (size(w) < n) then
         print*, "Error --- PreGLQ"
@@ -73,12 +75,14 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     end if
 
-    zero = 0.0d0
-    w = 0.0d0
+    pi = acos(-1.0_dp)
+
+    zero = 0.0_dp
+    w = 0.0_dp
 
 !------------------------------------------------------------------------------
 !
@@ -89,21 +93,21 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
 !
 !------------------------------------------------------------------------------
     m = (n+1) / 2
-    xm = (x2 + x1) / 2.0d0
-    xu = (x2 - x1) / 2.0d0
+    xm = (x2 + x1) / 2.0_dp
+    xu = (x2 - x1) / 2.0_dp
 
     !   Compute roots and weights
     do i = 1, m
         iter = 0
         ! Approximation for the ith root
-        z=cos(3.141592654d0 * (i-.25d0) / (n+.5d0))
+        z=cos(pi * (i-0.25_dp) / (n+0.5_dp))
 
         ! Find the true value using Newton's method
         do
             iter = iter + 1
 
-            p1 = 1.0d0
-            p2 = 0.0d0
+            p1 = 1.0_dp
+            p2 = 0.0_dp
 
             ! Determine the Legendre polynomial evaluated at z (p1) using
             ! recurrence relationships.
@@ -116,11 +120,11 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
 
             ! This is the derivative of the legendre polynomial using 
             ! recurrence relationships.
-            pp = dble(n) * (z * p1 - p2) / (z * z-1.0d0)
+            pp = dble(n) * (z * p1 - p2) / (z * z-1.0_dp)
 
             ! This is Newton's method here
             z1 = z
-            z = z1-p1 /pp
+            z = z1-p1 / pp
 
             if (abs(z-z1) <= eps) exit
 
@@ -133,7 +137,7 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
                     return
                 else
                     stop
-                endif
+                end if
 
             end if
 
@@ -141,10 +145,10 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
 
         zero(i) = xm + xu * z
         zero(n+1-i) = xm - xu * z
-        w(i) = 2.0d0 * xu / ((1.0d0-z * z) * pp *pp)
+        w(i) = 2.0_dp * xu / ((1.0_dp-z * z) * pp *pp)
         w(n+1-i) = w (i)
 
-    enddo
+    end do
 
 end subroutine PreGLQ
 
@@ -157,6 +161,8 @@ integer function NGLQ(degree)
 !   are needed in order to integrate the function exactly.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
     integer, intent(in) :: degree
@@ -166,9 +172,9 @@ integer function NGLQ(degree)
         print*, "DEGREE must be greater or equal to zero"
         print*, "DEGREE = ", degree
         stop
-    endif
+    end if
 
-    nglq = ceiling((degree+1.0d0) / 2.0d0)
+    nglq = ceiling((degree+1.0_dp) / 2.0_dp)
 
 end function NGLQ
 
@@ -206,6 +212,8 @@ integer function NGLQSHN(degree, n)
 !   of the integrand is n*lmax + lmax, or (n+1)*lmax
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
     integer, intent(in) ::  degree, n
@@ -217,6 +225,6 @@ integer function NGLQSHN(degree, n)
         stop
     endif
 
-    nglqshn = ceiling(((n+1.0d0)*degree + 1.0d0)/2.0d0)
+    nglqshn = ceiling(((n+1.0_dp)*degree + 1.0_dp)/2.0_dp)
 
 end function NGLQSHN

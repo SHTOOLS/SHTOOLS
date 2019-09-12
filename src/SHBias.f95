@@ -46,24 +46,25 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: Wigner3j
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: Shh(:), incspectra(:)
-    real*8, intent(out) :: outcspectra(:)
+    real(dp), intent(in) :: Shh(:), incspectra(:)
+    real(dp), intent(out) :: outcspectra(:)
     integer, intent(in) :: lwin, ldata
     integer, intent(in), optional :: save_cg
     integer, intent(out), optional :: exitstatus
     integer :: l, i, j, lmax, imin, imax, astat
-    real*8 :: wig(2*lwin+ldata+1)
-    real*8, allocatable, save :: cg2(:,:,:)
+    real(dp) :: wig(2*lwin+ldata+1)
+    real(dp), allocatable, save :: cg2(:,:,:)
 
 !$OMP   threadprivate(cg2)
 
     if (present(exitstatus)) exitstatus = 0
 
     lmax = ldata + lwin
-    outcspectra = 0.0d0
+    outcspectra = 0.0_dp
 
     if (size(Shh) < lwin+1) then
         print*, "Error --- SHBias"
@@ -131,7 +132,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg, &
 
                     do i = imin, min(imax, ldata), 2
                         outcspectra(l+1) = outcspectra(l+1) + Shh(j+1) &
-                                           * incspectra(i+1) * (2.0d0*l+1.0d0) &
+                                           * incspectra(i+1) * (2.0_dp*l+1.0_dp) &
                                            * wig(i-imin+1)**2
                     end do
 
@@ -162,7 +163,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg, &
 
             end if
 
-            cg2 = 0.0d0
+            cg2 = 0.0_dp
 
             do l = 0, lmax
                 do j = 0, lwin
@@ -174,7 +175,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg, &
                         call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
                     end if
 
-                    cg2(l+1,j+1,1:imax-imin+1) = (2.0d0*l+1.0d0) &
+                    cg2(l+1,j+1,1:imax-imin+1) = (2.0_dp*l+1.0_dp) &
                                                  * wig(1:imax-imin+1)**2
                 end do
             end do
@@ -209,7 +210,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg, &
 
                 do i = imin, min(imax, ldata), 2
                     outcspectra(l+1) = outcspectra(l+1) + Shh(j+1) &
-                                       * incspectra(i+1) * (2.0d0*l+1.0d0) &
+                                       * incspectra(i+1) * (2.0_dp*l+1.0_dp) &
                                        * wig(i-imin+1)**2
                 end do
 

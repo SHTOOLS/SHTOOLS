@@ -44,13 +44,15 @@ subroutine djpi2(dj, lmax, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: dj(:,:,:)
+    real(dp), intent(out) :: dj(:,:,:)
     integer, intent(out), optional :: exitstatus
     integer :: i, l, n, lp1, j, m, isn, np
-    real*8 :: f((lmax+1)*8), f1, f2, g1, g2, en2, fl2p1
+    real(dp) :: f((lmax+1)*8), f1, f2, g1, g2, en2, fl2p1
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -70,14 +72,14 @@ subroutine djpi2(dj, lmax, exitstatus)
 
     end if
 
-    dj = 0.0d0
+    dj = 0.0_dp
 
-    dj(1,1,1) = 1.d0
-    dj(1,1,2) = 0.d0
-    dj(1,2,2) = -1.0d0 / sqrt(2.0d0)
+    dj(1,1,1) = 1.0_dp
+    dj(1,1,2) = 0.0_dp
+    dj(1,2,2) = -1.0_dp / sqrt(2.0_dp)
     dj(2,1,2) = -dj(1,2,2)
-    dj(2,2,2) = 0.5d0
-    f1        = 0.5d0
+    dj(2,2,2) = 0.5_dp
+    f1        = 0.5_dp
 
     do l = 2, lmax
 
@@ -88,11 +90,11 @@ subroutine djpi2(dj, lmax, exitstatus)
             f(i) = dsqrt(i * (fl2p1-i))
         end do
 
-            f1 = f1 * (l+l-1.0d0) / (l+l)
+            f1 = f1 * (l+l-1.0_dp) / (l+l)
 
         ! Do N = 0 terms
         dj(lp1,1,lp1) = -dsqrt(f1)
-        dj(l,1,lp1)   = 0.0d0
+        dj(l,1,lp1)   = 0.0_dp
 
         do i = 2, l
             j = lp1 - i
@@ -107,8 +109,8 @@ subroutine djpi2(dj, lmax, exitstatus)
         do n = 1, l
             np = n + 1
             en2 = n + n
-            g1 = g1 + 1.0d0
-            g2 = g2 - 1.0d0
+            g1 = g1 + 1.0_dp
+            g2 = g2 - 1.0_dp
             f2 = f2 * g2 / g1
             dj(lp1,np,lp1) = -dsqrt(f2)
             dj(l,np,lp1) = dj(lp1,np,lp1) * en2 / f(1)

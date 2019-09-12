@@ -38,13 +38,15 @@ subroutine PLegendre(p, lmax, z, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: p(:)
-    real*8, intent(in) :: z
+    real(dp), intent(out) :: p(:)
+    real(dp), intent(in) :: z
     integer, intent(out), optional :: exitstatus
-    real*8 :: pm2, pm1, pl
+    real(dp) :: pm2, pm1, pl
     integer :: l
 
     if (present(exitstatus)) exitstatus = 0
@@ -58,9 +60,9 @@ subroutine PLegendre(p, lmax, z, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    else if (lmax < 0) then 
+    else if (lmax < 0) then
         print*, "Error --- PlegendreL"
         print*, "LMAX must be greater than or equal to 0."
         print*, "Input value is ", lmax
@@ -69,9 +71,9 @@ subroutine PLegendre(p, lmax, z, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    else if (abs(z) > 1.0d0) then
+    else if (abs(z) > 1.0_dp) then
         print*, "Error --- PlegendreL"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
@@ -80,7 +82,7 @@ subroutine PLegendre(p, lmax, z, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     end if
 

@@ -1,5 +1,5 @@
-real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
-                              csphase, dealloc)
+function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
+                       csphase, dealloc)
 !------------------------------------------------------------------------------
 !
 !   This function will determine the value at a given latitude and
@@ -38,15 +38,17 @@ real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    real*8, intent(in):: cilm(:,:,:), lat, longitude
+    real(dp) :: MakeGridPoint
+    real(dp), intent(in):: cilm(:,:,:), lat, longitude
     integer, intent(in) :: lmax
     integer, intent(in), optional :: norm, csphase, dealloc
-    real*8 :: pi, x, expand, lon
+    real(dp) :: pi, x, expand, lon
     integer :: index, l, m, l1, m1, lmax_comp, phase, astat(3)
-    real*8, allocatable :: pl(:), cosm(:), sinm(:)
+    real(dp), allocatable :: pl(:), cosm(:), sinm(:)
 
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
             size(cilm(1,1,:)) < lmax+1) then
@@ -59,7 +61,7 @@ real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
     end if
 
     if (present(norm)) then
-        if (norm >4 .or. norm < 1) then
+        if (norm > 4 .or. norm < 1) then
             print*, "Error - MakeGridPoint"
             print*, "Parameter NORM must be 1, 2, 3, or 4"
             stop
@@ -68,9 +70,9 @@ real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 
     if (present(csphase)) then
         if (csphase == -1) then
-             phase = -1.0d0
+             phase = -1.0_dp
         else if (csphase == 1) then
-                phase = 1.0d0
+                phase = 1.0_dp
         else
             print*, "Error --- MakeGridPoint"
             print*, "CSPHASE must be 1 (exclude) or -1 (include)."
@@ -94,9 +96,9 @@ real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
         stop
     end if
 
-    pi = acos(-1.0d0)
-    x = sin(lat * pi / 180.0d0)
-    lon = longitude * pi / 180.0d0
+    pi = acos(-1.0_dp)
+    x = sin(lat * pi / 180.0_dp)
+    lon = longitude * pi / 180.0_dp
 
     lmax_comp = min(lmax, size(cilm(1,1,:)) - 1)
 
@@ -111,12 +113,12 @@ real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 
     end if
 
-    expand = 0.0d0
+    expand = 0.0_dp
 
     ! Precompute sines and cosines. Use multiple angle identity to minimize
     ! number of calls to SIN and COS.
-    sinm(1) = 0.0d0
-    cosm(1) = 1.0d0
+    sinm(1) = 0.0_dp
+    cosm(1) = 1.0_dp
 
     if (lmax_comp > 0) then
         sinm(2) = sin(lon)

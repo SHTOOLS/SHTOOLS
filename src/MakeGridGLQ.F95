@@ -78,6 +78,7 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
 #define dfftw_execute dfftw_execute_
@@ -86,19 +87,19 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     implicit none
 
-    real*8, intent(in) :: cilm(:,:,:)
-    real*8, intent(in), optional :: plx(:,:), zero(:)
-    real*8, intent(out) :: gridglq(:,:)
+    real(dp), intent(in) :: cilm(:,:,:)
+    real(dp), intent(in), optional :: plx(:,:), zero(:)
+    real(dp), intent(out) :: gridglq(:,:)
     integer, intent(in) :: lmax
     integer, intent(in), optional :: norm, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
     integer :: l, m, i, nlat, nlong, l1, m1, lmax_comp, i_s, astat(4), lnorm, k
-    real*8 :: grid(2*lmax+1), pi, coef0, coef0s, scalef, rescalem, u, p, pmm, &
-              pm1, pm2, z
-    complex*16 :: coef(lmax+1), coefs(lmax+1)
-    integer*8 :: plan
-    real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer*1, save, allocatable :: fsymsign(:,:)
+    real(dp) :: grid(2*lmax+1), pi, coef0, coef0s, scalef, rescalem, u, p, &
+                pmm, pm1, pm2, z
+    complex(dp) :: coef(lmax+1), coefs(lmax+1)
+    integer(int8) :: plan
+    real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
+    integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
     external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
@@ -216,13 +217,13 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     nlong = 2 * lmax + 1
 
     nlat = lmax + 1
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (present(lmax_calc)) then
         if (lmax_calc > lmax) then
@@ -317,7 +318,7 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
             case (1,4)
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
-                    ff2(2,1) = 0.0d0
+                    ff2(2,1) = 0.0_dp
                 end if
 
                 do l = 2, lmax_comp, 1
@@ -328,18 +329,18 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                         ff1(l+1,m+1) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) &
                                        / sqr(l-m)
                         ff2(l+1,m+1) = sqr(2*l+1) * sqr(l-m-1) * sqr(l+m-1) &
-                                       / sqr(2*l-3) / sqr(l+m) / sqr(l-m) 
+                                       / sqr(2*l-3) / sqr(l+m) / sqr(l-m)
                     end do
 
                     ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
             case (2)
                 if (lmax_comp /= 0) then
-                    ff1(2,1) = 1.0d0
-                    ff2(2,1) = 0.0d0
+                    ff1(2,1) = 1.0_dp
+                    ff2(2,1) = 0.0_dp
                 end if
 
                 do l = 2, lmax_comp, 1
@@ -353,7 +354,7 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                     end do
 
                     ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
@@ -383,8 +384,8 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     !--------------------------------------------------------------------------
     if (lmax_comp == 0) then
         select case (lnorm)
-            case (1,2,3); pm2 = 1.0d0
-            case (4); pm2 = 1.0d0 / sqrt(4 * pi)
+            case (1,2,3); pm2 = 1.0_dp
+            case (4); pm2 = 1.0_dp / sqrt(4 * pi)
         end select
 
         gridglq(1:nlat, 1:nlong) = cilm(1,1,1) * pm2
@@ -407,25 +408,25 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     if (present(plx)) then
         do i = 1, nlat
-            coef0 = 0.0d0
-            coef = dcmplx(0.0d0,0.0d0)
+            coef0 = 0.0_dp
+            coef = dcmplx(0.0_dp,0.0_dp)
             ! This summation order is intended to add the smallest terms first
 
             do l = lmax_comp, 0, -1
                 l1 = l + 1
-                k =  (l1 * l) / 2 + 1   ! m=0
+                k = (l1 * l) / 2 + 1   ! m=0
                 coef0 = coef0 + cilm(1,l1,1) * plx(i,k)
 
                 do m = 1, l, 1
                     m1 = m + 1
                     k = (l1*l)/2 + m1
                     coef(m1) = coef(m1) + dcmplx(cilm(1,l1,m1), &
-                               - cilm(2,l1,m1)) * plx(i,k)/2.0d0
+                               - cilm(2,l1,m1)) * plx(i,k)/2.0_dp
                 end do
 
             end do
 
-            coef(1) = dcmplx(coef0, 0.0d0)
+            coef(1) = dcmplx(coef0, 0.0_dp)
             call dfftw_execute(plan)    ! take fourier transform
             gridglq(i,1:nlong) = grid(1:nlong)
 
@@ -433,16 +434,16 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     else
         do i = 1, (nlat+1) / 2
-            coef = dcmplx(0.0d0,0.0d0)
-            coef0 = 0.0d0
+            coef = dcmplx(0.0_dp,0.0_dp)
+            coef0 = 0.0_dp
 
             if (i==(nlat+1)/2 .and. mod(nlat,2) /= 0) then
                 ! This latitude is the equator; z=0, u=1
-                u = 1.0d0
+                u = 1.0_dp
 
                 select case (lnorm)
-                    case (1,2,3); pm2 = 1.0d0
-                    case (4); pm2 = 1.0d0 / sqrt(4 * pi)
+                    case (1,2,3); pm2 = 1.0_dp
+                    case (4); pm2 = 1.0_dp / sqrt(4 * pi)
                 end select
 
                 coef0 = coef0 + cilm(1,1,1) * pm2
@@ -460,7 +461,7 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                     case (4);    pmm = sqr(2) * scalef / sqrt(4 * pi)
                 end select
 
-                rescalem = 1.0d0 / scalef
+                rescalem = 1.0_dp / scalef
 
                 do m = 1, lmax_comp - 1, 1
                     m1 = m + 1
@@ -504,24 +505,24 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                                     + dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                                     - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm
 
-                coef(1) = dcmplx(coef0,0.0d0)
-                coef(2:lmax_comp+1) = coef(2:lmax_comp+1) * rescalem / 2.0d0
+                coef(1) = dcmplx(coef0,0.0_dp)
+                coef(2:lmax_comp+1) = coef(2:lmax_comp+1) * rescalem / 2.0_dp
                 call dfftw_execute(plan)    ! take fourier transform
 
                 gridglq(i,1:nlong) = grid(1:nlong)
 
             else
                 z = zero(i)
-                u = sqrt( (1.0d0-z) * (1.0d0+z) )
+                u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
                 i_s = nlat + 1 - i
 
-                coefs = dcmplx(0.0d0,0.0d0)
-                coef0s = 0.0d0
+                coefs = dcmplx(0.0_dp,0.0_dp)
+                coef0s = 0.0_dp
 
                 select case (lnorm)
-                    case (1,2,3); pm2 = 1.0d0
-                    case (4); pm2 = 1.0d0 / sqrt(4 * pi)
+                    case (1,2,3); pm2 = 1.0_dp
+                    case (4); pm2 = 1.0_dp / sqrt(4 * pi)
                 end select
 
                 coef0 = coef0 + cilm(1,1,1) * pm2
@@ -547,7 +548,7 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                     case (4);    pmm = sqr(2) * scalef / sqrt(4 * pi)
                 end select
 
-                rescalem = 1.0d0 / scalef
+                rescalem = 1.0_dp / scalef
 
                 do m = 1, lmax_comp-1, 1
                     m1 = m + 1
@@ -615,14 +616,14 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                                      - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm
                 ! fsymsign = 1
 
-                coef(1) = dcmplx(coef0,0.0d0)
-                coef(2:lmax_comp+1) = coef(2:lmax_comp+1) / 2.0d0
+                coef(1) = dcmplx(coef0,0.0_dp)
+                coef(2:lmax_comp+1) = coef(2:lmax_comp+1) / 2.0_dp
 
                 call dfftw_execute(plan)    ! take fourier transform
                 gridglq(i,1:nlong) = grid(1:nlong)
 
-                coef(1) = dcmplx(coef0s,0.0d0)
-                coef(2:lmax_comp+1) = coefs(2:lmax_comp+1)/2.0d0
+                coef(1) = dcmplx(coef0s,0.0_dp)
+                coef(2:lmax_comp+1) = coefs(2:lmax_comp+1)/2.0_dp
 
                 call dfftw_execute(plan)    ! take fourier transform
                 gridglq(i_s,1:nlong) = grid(1:nlong)

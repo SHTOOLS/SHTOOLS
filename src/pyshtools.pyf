@@ -21,17 +21,17 @@ python module _SHTOOLS
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PlmBar
 
-        subroutine PlmBar_d1(exitstatus,p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
+        subroutine PlmBar_d1(exitstatus,p,dp1,lmax,z,csphase,cnorm,p_d0,dp1_d0)
             fortranname pyplmbar_d1
             integer,intent(out) :: exitstatus
             real*8,dimension(p_d0),intent(out) :: p
-            real*8,dimension(dp_d0),intent(out) :: dp
+            real*8,dimension(dp1_d0),intent(out) :: dp1
             integer,intent(in) :: lmax
             real*8,intent(in) :: z
             integer,optional,intent(in) :: csphase = 1
             integer,optional,intent(in) :: cnorm = 0
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = (lmax+1)*(lmax+2)/2
-            integer,intent(hide),depend(lmax) :: dp_d0 = (lmax+1)*(lmax+2)/2
+            integer,intent(hide),depend(lmax) :: dp1_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PlmBar_d1
 
         subroutine PlBar(exitstatus,p,lmax,z,p_d0)
@@ -43,15 +43,15 @@ python module _SHTOOLS
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = lmax+1
         end subroutine PlBar
 
-        subroutine PlBar_d1(exitstatus,p,dp,lmax,z,p_d0,dp_d0)
+        subroutine PlBar_d1(exitstatus,p,dp1,lmax,z,p_d0,dp1_d0)
             fortranname pyplbar_d1
             integer,intent(out) :: exitstatus
             real*8,dimension(p_d0),intent(out) :: p
-            real*8,dimension(dp_d0),intent(out):: dp
+            real*8,dimension(dp1_d0),intent(out):: dp1
             integer,intent(in) :: lmax
             real*8,intent(in) :: z
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = lmax+1
-            integer,intent(hide),depend(lmax) :: dp_d0 = lmax+1
+            integer,intent(hide),depend(lmax) :: dp1_d0 = lmax+1
         end subroutine PlBar_d1
 
         subroutine PlmON(exitstatus,p,lmax,z,csphase,cnorm,p_d0)
@@ -65,17 +65,17 @@ python module _SHTOOLS
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PlmON
 
-        subroutine PlmON_d1(exitstatus,p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
+        subroutine PlmON_d1(exitstatus,p,dp1,lmax,z,csphase,cnorm,p_d0,dp1_d0)
             fortranname pyplmon_d1
             integer,intent(out) :: exitstatus
             real*8,dimension(p_d0),intent(out) :: p
-            real*8,dimension(dp_d0),intent(out) :: dp
+            real*8,dimension(dp1_d0),intent(out) :: dp1
             integer,intent(in) :: lmax
             real*8,intent(in) :: z
             integer,optional,intent(in) :: csphase = 1
             integer,optional,intent(in) :: cnorm = 0
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = (lmax+1)*(lmax+2)/2
-            integer,intent(hide),depend(lmax) :: dp_d0 = (lmax+1)*(lmax+2)/2
+            integer,intent(hide),depend(lmax) :: dp1_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PlmON_d1
 
         subroutine PlON(exitstatus,p,lmax,z,p_d0)
@@ -87,15 +87,15 @@ python module _SHTOOLS
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = lmax+1
         end subroutine PlON
 
-        subroutine PlON_d1(exitstatus,p,dp,lmax,z,p_d0,dp_d0)
+        subroutine PlON_d1(exitstatus,p,dp1,lmax,z,p_d0,dp1_d0)
             fortranname pyplon_d1
             integer,intent(out) :: exitstatus
             real*8,dimension(p_d0),intent(out) :: p
-            real*8,dimension(dp_d0),intent(out) :: dp
+            real*8,dimension(dp1_d0),intent(out) :: dp1
             integer,intent(in) :: lmax
             real*8,intent(in) :: z
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = lmax+1
-            integer,intent(hide),depend(lmax) :: dp_d0 = lmax+1
+            integer,intent(hide),depend(lmax) :: dp1_d0 = lmax+1
         end subroutine PlON_d1
 
         subroutine PlmSchmidt(exitstatus,p,lmax,z,csphase,cnorm,p_d0)
@@ -109,17 +109,17 @@ python module _SHTOOLS
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PlmSchmidt
 
-        subroutine PlmSchmidt_d1(exitstatus,p,dp,lmax,z,csphase,cnorm,p_d0,dp_d0)
+        subroutine PlmSchmidt_d1(exitstatus,p,dp1,lmax,z,csphase,cnorm,p_d0,dp1_d0)
             fortranname pyplmschmidt_d1
             integer,intent(out) :: exitstatus
             real*8,dimension(p_d0),intent(out):: p
-            real*8,dimension(dp_d0),intent(out) :: dp
+            real*8,dimension(dp1_d0),intent(out) :: dp1
             integer,intent(in) :: lmax
             real*8,intent(in) :: z
             integer,optional,intent(in) :: csphase = 1
             integer,optional,intent(in) :: cnorm = 0
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = (lmax+1)*(lmax+2)/2
-            integer,intent(hide),depend(lmax) :: dp_d0 = (lmax+1)*(lmax+2)/2
+            integer,intent(hide),depend(lmax) :: dp1_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PlmSchmidt_d1
 
         subroutine PlSchmidt(exitstatus,p,lmax,z,p_d0)
@@ -131,15 +131,15 @@ python module _SHTOOLS
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = lmax+1
         end subroutine PlSchmidt
 
-        subroutine PlSchmidt_d1(exitstatus,p,dp,lmax,z,p_d0,dp_d0)
+        subroutine PlSchmidt_d1(exitstatus,p,dp1,lmax,z,p_d0,dp1_d0)
             fortranname pyplschmidt_d1
             integer,intent(out) :: exitstatus
             real*8,dimension(p_d0),intent(out) :: p
-            real*8,dimension(dp_d0),intent(out) :: dp
+            real*8,dimension(dp1_d0),intent(out) :: dp1
             integer,intent(in) :: lmax
             real*8,intent(in) :: z
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = lmax+1
-            integer,intent(hide),depend(lmax) :: dp_d0 = lmax+1
+            integer,intent(hide),depend(lmax) :: dp1_d0 = lmax+1
         end subroutine PlSchmidt_d1
 
         subroutine PLegendreA(exitstatus,p,lmax,z,csphase,p_d0)
@@ -161,27 +161,27 @@ python module _SHTOOLS
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = lmax+1
         end subroutine PLegendre
 
-        subroutine PLegendreA_d1(exitstatus,p,dp,lmax,z,csphase,p_d0,dp_d0)
+        subroutine PLegendreA_d1(exitstatus,p,dp1,lmax,z,csphase,p_d0,dp1_d0)
             fortranname pyplegendrea_d1
             integer,intent(out) :: exitstatus
             real*8,dimension(p_d0),intent(out) :: p
-            real*8,dimension(dp_d0),intent(out) :: dp
+            real*8,dimension(dp1_d0),intent(out) :: dp1
             integer,intent(in) :: lmax
             real*8,intent(in) :: z
             integer,optional,intent(in) :: csphase = 1
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = (lmax+1)*(lmax+2)/2
-            integer,intent(hide),depend(lmax) :: dp_d0 = (lmax+1)*(lmax+2)/2
+            integer,intent(hide),depend(lmax) :: dp1_d0 = (lmax+1)*(lmax+2)/2
         end subroutine PLegendreA_d1
 
-        subroutine PLegendre_d1(exitstatus,p,dp,lmax,z,p_d0,dp_d0)
+        subroutine PLegendre_d1(exitstatus,p,dp1,lmax,z,p_d0,dp1_d0)
             fortranname pyplegendre_d1
             integer,intent(out) :: exitstatus
             real*8,dimension(p_d0),intent(out) :: p
-            real*8,dimension(dp_d0),intent(out) :: dp
+            real*8,dimension(dp1_d0),intent(out) :: dp1
             integer,intent(in) :: lmax
             real*8,intent(in) :: z
             integer,intent(hide),depend(lmax),check(lmax>=0) :: p_d0 = lmax+1
-            integer,intent(hide),depend(lmax) :: dp_d0 = lmax+1
+            integer,intent(hide),depend(lmax) :: dp1_d0 = lmax+1
         end subroutine PLegendre_d1
 
         subroutine SHExpandDH(exitstatus,grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)

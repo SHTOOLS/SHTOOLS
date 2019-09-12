@@ -39,9 +39,10 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     real(dp), intent(in) :: lat, lon, theta0
     real(dp), intent(out) :: coord(:,:)
     real(dp), intent(in), optional :: cinterval

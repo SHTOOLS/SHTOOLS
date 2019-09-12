@@ -52,18 +52,19 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHGLQ, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: shout(:,:,:)
-    real*8, intent(in) :: sh1(:,:,:), sh2(:,:,:)
+    real(dp), intent(out) :: shout(:,:,:)
+    real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:)
     integer, intent(in) :: lmax1, lmax2
     integer, intent(in), optional :: precomp, norm, csphase
     integer, intent(out), optional :: exitstatus
     integer ::  lmaxout, phase, mnorm, astat(2), nlat, nlong
-    real*8, allocatable, save :: zero(:), w(:)
+    real(dp), allocatable, save :: zero(:), w(:)
     integer, save :: first = 1, lmaxout_last = -1
-    real*8, allocatable :: grid1glq(:,:), grid2glq(:,:), plx(:,:)
+    real(dp), allocatable :: grid1glq(:,:), grid2glq(:,:), plx(:,:)
 
 !$OMP   threadprivate(zero, w, first, lmaxout_last)
 
@@ -209,7 +210,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
 
     if (lmaxout /= lmaxout_last) then
         lmaxout_last = lmaxout
-    
+
         deallocate (zero)
         deallocate (w)
         allocate (zero(lmaxout+1), stat = astat(1))

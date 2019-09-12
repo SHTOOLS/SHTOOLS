@@ -74,19 +74,20 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: MakeGrid2D, MakeGridGLQ, MakeGridDH, SHGLQ
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: geoid(:,:)
-    real*8, intent(in) :: cilm(:,:,:), r0pot, GM, r, PotRef, omega
+    real(dp), intent(out) :: geoid(:,:)
+    real(dp), intent(in) :: cilm(:,:,:), r0pot, GM, r, PotRef, omega
     integer, intent(in) :: lmax, order, gridtype
     integer, intent(in), optional :: lmax_calc
     integer, intent(out) :: nlat, nlong
-    real*8, intent(in), optional :: interval, a, f
+    real(dp), intent(in), optional :: interval, a, f
     integer, intent(out), optional :: exitstatus
-    real*8 :: pi, r_ex, lat
-    integer ::  l, nlat1, nlong1, lmax_comp, astat, n, i, astat1, astat2
-    real*8, allocatable :: grida(:,:), gridb(:,:), gridc(:,:), gridd(:,:), &
+    real(dp) :: pi, r_ex, lat
+    integer :: l, nlat1, nlong1, lmax_comp, astat, n, i, astat1, astat2
+    real(dp), allocatable :: grida(:,:), gridb(:,:), gridc(:,:), gridd(:,:), &
                            zero(:), w(:), qq(:,:), pp(:,:), uu(:,:), &
                            cilm1(:,:,:), cilm2(:,:,:)
 
@@ -177,8 +178,8 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
         nlong = 2 * nlat
 
     else if (gridtype == 4) then
-        nlat = int(180.0d0 / interval + 1)
-        nlong = int(360.0d0 / interval + 1)
+        nlat = int(180.0_dp / interval + 1)
+        nlong = int(360.0_dp / interval + 1)
 
     end if
 
@@ -252,7 +253,7 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
             if (exitstatus /= 0) return
         else
             call SHGLQ(lmax, zero, w, norm = 1, csphase = 1)
-        endif
+        end if
 
     end if
 
@@ -270,11 +271,11 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     cilm1(1:2,1:lmax_comp+1, 1:lmax_comp+1) = cilm(1:2,1:lmax_comp+1, &
                                                    1:lmax_comp+1)
-    cilm1(1,1,1) = 1.0d0    ! Make sure that the degree-0 term is included
+    cilm1(1,1,1) = 1.0_dp    ! Make sure that the degree-0 term is included
 
     !--------------------------------------------------------------------------
     !
@@ -288,8 +289,8 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
     end do
 
     ! add rotation and subtract reference field
-    cilm2(1,1,1) = cilm2(1,1,1) + (omega * r)**2 / 3.0d0 - PotRef
-    cilm2(1,3,1) = cilm2(1,3,1) - (omega * r)**2 / (3.0d0 * sqrt(5.0d0))
+    cilm2(1,1,1) = cilm2(1,1,1) + (omega * r)**2 / 3.0_dp - PotRef
+    cilm2(1,3,1) = cilm2(1,3,1) - (omega * r)**2 / (3.0_dp * sqrt(5.0_dp))
 
     allocate (grida(nlat, nlong), stat = astat)
     if (astat /= 0) then
@@ -358,8 +359,8 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
     end do
 
     ! add rotational terms
-    cilm2(1,1,1) = cilm2(1,1,1) + 2.0d0 * r * omega**2 / 3.0d0
-    cilm2(1,3,1) = cilm2(1,3,1) - 2.0d0 * r * omega**2 / (3.0d0 * sqrt(5.0d0))
+    cilm2(1,1,1) = cilm2(1,1,1) + 2.0_dp * r * omega**2 / 3.0_dp
+    cilm2(1,3,1) = cilm2(1,3,1) - 2.0_dp * r * omega**2 / (3.0_dp * sqrt(5.0_dp))
 
     allocate (gridb(nlat, nlong), stat = astat)
     if (astat /= 0) then
@@ -425,14 +426,14 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
     if (order == 2 .or. order == 3) then
 
         do l = 0, lmax_comp
-            cilm2(1:2,l+1,1:l+1) = GM / (2.0d0 * r**3) * dble(l+1) &
+            cilm2(1:2,l+1,1:l+1) = GM / (2.0_dp * r**3) * dble(l+1) &
                                    * dble(l+2) * cilm1(1:2,l+1,1:l+1) &
                                    * (r0pot / r)**l
         end do
 
         ! add rotational terms
-        cilm2(1,1,1) = cilm2(1,1,1) + omega**2 / 3.0d0
-        cilm2(1,3,1) = cilm2(1,3,1) - omega**2 / (3.0d0 * sqrt(5.0d0))
+        cilm2(1,1,1) = cilm2(1,1,1) + omega**2 / 3.0_dp
+        cilm2(1,3,1) = cilm2(1,3,1) - omega**2 / (3.0_dp * sqrt(5.0_dp))
 
         allocate (gridc(nlat, nlong), stat = astat)
         if (astat /= 0) then
@@ -500,7 +501,7 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
     if (order == 3) then
 
         do l = 0, lmax_comp
-            cilm2(1:2,l+1,1:l+1) = -GM / (6.0d0 * r**4) * dble(l+1) &
+            cilm2(1:2,l+1,1:l+1) = -GM / (6.0_dp * r**4) * dble(l+1) &
                                    * dble(l+2) * dble(l+3) * &
                                     cilm1(1:2,l+1,1:l+1) * (r0pot / r)**l
         end do
@@ -574,9 +575,9 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
     else if (order == 2) then
         geoid(1:nlat, 1:nlong) = (-gridb(1:nlat, 1:nlong) - &
                                   sqrt(gridb(1:nlat, 1:nlong)**2 &
-                                  - 4.0d0 * gridc(1:nlat,1:nlong) * &
+                                  - 4.0_dp * gridc(1:nlat,1:nlong) * &
                                   grida(1:nlat, 1:nlong)) ) &
-                                  / (2.0d0 * gridc(1:nlat,1:nlong))
+                                  / (2.0_dp * gridc(1:nlat,1:nlong))
 
     else if (order == 3) then
         allocate (qq(nlat, nlong), stat = astat)
@@ -620,18 +621,18 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 
         pp(1:nlat,1:nlong) = gridb(1:nlat,1:nlong) / gridd(1:nlat,1:nlong) &
                              - ((gridc(1:nlat,1:nlong) &
-                             / gridd(1:nlat,1:nlong))**2) / 3.0d0
+                             / gridd(1:nlat,1:nlong))**2) / 3.0_dp
         qq = grida(1:nlat,1:nlong)/gridd(1:nlat,1:nlong) &
-             + 2.0d0 * ((gridc(1:nlat,1:nlong) / gridd(1:nlat,1:nlong))**3) &
-             / 27.0d0 - 9.0d0 * gridc(1:nlat,1:nlong) * gridb(1:nlat,1:nlong) &
-             / (gridd(1:nlat,1:nlong)**2) / 27.0d0
-        uu(1:nlat,1:nlong) = (qq(1:nlat,1:nlong) / 2.0d0 &
-                             + sqrt((qq(1:nlat,1:nlong)**2) / 4.0d0 &
-                             + (pp(1:nlat,1:nlong)**3)/27.0d0) )**(1.0d0 / 3.0d0)
-        geoid(1:nlat,1:nlong) = pp(1:nlat,1:nlong) / 3.0d0 &
+             + 2.0_dp * ((gridc(1:nlat,1:nlong) / gridd(1:nlat,1:nlong))**3) &
+             / 27.0_dp - 9.0_dp * gridc(1:nlat,1:nlong) * gridb(1:nlat,1:nlong) &
+             / (gridd(1:nlat,1:nlong)**2) / 27.0_dp
+        uu(1:nlat,1:nlong) = (qq(1:nlat,1:nlong) / 2.0_dp &
+                             + sqrt((qq(1:nlat,1:nlong)**2) / 4.0_dp &
+                             + (pp(1:nlat,1:nlong)**3)/27.0_dp) )**(1.0_dp / 3.0_dp)
+        geoid(1:nlat,1:nlong) = pp(1:nlat,1:nlong) / 3.0_dp &
                                 / uu(1:nlat,1:nlong) - uu(1:nlat,1:nlong) &
                                 - gridc(1:nlat,1:nlong) &
-                                / gridd(1:nlat,1:nlong) / 3.0d0
+                                / gridd(1:nlat,1:nlong) / 3.0_dp
 
         deallocate (qq)
         deallocate (pp)
@@ -648,18 +649,18 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 
         do i = 1, nlat
             if (gridtype == 4) then
-                lat = 90.0d0 - dble(i-1) * interval
+                lat = 90.0_dp - dble(i-1) * interval
 
             else if (gridtype == 1) then
-                lat = asin(zero(i)) * 180.0d0 / pi
+                lat = asin(zero(i)) * 180.0_dp / pi
 
             else if (gridtype == 2 .or. gridtype == 3) then
-                lat = 90.0d0 - 180.0d0 * dble(i-1) / dble(nlat)
+                lat = 90.0_dp - 180.0_dp * dble(i-1) / dble(nlat)
 
             end if
 
-            r_ex = a**2 * (1.0d0 + tan(lat * pi / 180.0d0)**2) &
-                   / (1.0d0  + tan(lat * pi / 180.0d0)**2 / (1.0d0 - f)**2)
+            r_ex = a**2 * (1.0_dp + tan(lat * pi / 180.0_dp)**2) &
+                   / (1.0_dp + tan(lat * pi / 180.0_dp)**2 / (1.0_dp - f)**2)
             r_ex = sqrt(r_ex)
 
             geoid(i,1:nlong) = geoid(i,1:nlong) + r - r_ex

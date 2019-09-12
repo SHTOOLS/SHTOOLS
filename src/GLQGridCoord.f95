@@ -35,10 +35,10 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: PreGLQ
+    use ftypes
 
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     integer, intent(in) :: lmax
     integer, intent(out) :: nlat, nlong
     real(dp), intent(out) :: latglq(:), longlq(:)

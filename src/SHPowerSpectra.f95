@@ -1,4 +1,4 @@
-real*8 function SHPowerL(c, l)
+function SHPowerL(c, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power at
@@ -18,9 +18,12 @@ real*8 function SHPowerL(c, l)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c(:,:,:)
+    real(dp) :: SHPowerL
+    real(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: l
     integer i, m, l1, m1
 
@@ -51,7 +54,7 @@ real*8 function SHPowerL(c, l)
 end function SHPowerL
 
 
-real*8 function SHPowerDensityL(c, l)
+function SHPowerDensityL(c, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power per coefficient
@@ -69,11 +72,14 @@ real*8 function SHPowerDensityL(c, l)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c(:,:,:)
+    real(dp) :: SHPowerDensityL
+    real(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -100,12 +106,12 @@ real*8 function SHPowerDensityL(c, l)
 
     end do
 
-    SHPowerDensityL = SHPowerDensityL/dble(2*l+1)
+    SHPowerDensityL = SHPowerDensityL / dble(2*l+1)
 
 end function SHPowerDensityL
 
 
-real*8 function SHCrossPowerL(c1, c2, l)
+function SHCrossPowerL(c1, c2, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power at
@@ -126,11 +132,14 @@ real*8 function SHCrossPowerL(c1, c2, l)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c1(:,:,:), c2(:,:,:)
+    real(dp) :: SHCrossPowerL
+    real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -167,7 +176,7 @@ real*8 function SHCrossPowerL(c1, c2, l)
 end function SHCrossPowerL
 
 
-real*8 function SHCrossPowerDensityL(c1, c2, l)
+function SHCrossPowerDensityL(c1, c2, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power
@@ -188,11 +197,14 @@ real*8 function SHCrossPowerDensityL(c1, c2, l)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c1(:,:,:), c2(:,:,:)
+    real(dp) :: SHCrossPowerDensityL
+    real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -220,7 +232,7 @@ real*8 function SHCrossPowerDensityL(c1, c2, l)
         m1 = m + 1
         do i = 1, 2
             SHCrossPowerDensityL = SHCrossPowerDensityL &
-                                   + c1(i,l1,m1)*c2(i,l1,m1)
+                                   + c1(i,l1,m1) * c2(i,l1,m1)
 
         end do
 
@@ -264,13 +276,15 @@ subroutine SHPowerSpectrum(c, lmax, spectra, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c(:,:,:)
+    real(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: lmax
-    real*8, intent(out) ::  spectra(:)
+    real(dp), intent(out) :: spectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -301,7 +315,7 @@ subroutine SHPowerSpectrum(c, lmax, spectra, exitstatus)
 
     end if
 
-    spectra = 0.0d0
+    spectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
@@ -356,13 +370,15 @@ subroutine SHPowerSpectrumDensity(c, lmax, spectra, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c(:,:,:)
+    real(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: lmax
-    real*8, intent(out) ::  spectra(:)
+    real(dp), intent(out) :: spectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -393,7 +409,7 @@ subroutine SHPowerSpectrumDensity(c, lmax, spectra, exitstatus)
 
     end if
 
-    spectra = 0.0d0
+    spectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
@@ -451,13 +467,15 @@ subroutine SHCrossPowerSpectrum(c1, c2, lmax, cspectra, exitstatus)
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c1(:,:,:), c2(:,:,:)
+    real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: lmax
-    real*8, intent(out) ::  cspectra(:)
+    real(dp), intent(out) :: cspectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -501,7 +519,7 @@ subroutine SHCrossPowerSpectrum(c1, c2, lmax, cspectra, exitstatus)
 
     end if
 
-    cspectra = 0.0d0
+    cspectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
@@ -559,13 +577,15 @@ subroutine SHCrossPowerSpectrumDensity(c1, c2, lmax, cspectra, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c1(:,:,:), c2(:,:,:)
+    real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: lmax
-    real*8, intent(out) ::  cspectra(:)
+    real(dp), intent(out) :: cspectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (size(c1(:,1,1)) < 2 .or. size(c1(1,:,1)) < lmax+1 &
             .or. size(c1(1,1,:)) < lmax+1) then
@@ -607,7 +627,7 @@ subroutine SHCrossPowerSpectrumDensity(c1, c2, lmax, cspectra, exitstatus)
 
     end if
 
-    cspectra = 0.0d0
+    cspectra = 0.0_dp
     
     do l = 0, lmax
         l1 = l + 1

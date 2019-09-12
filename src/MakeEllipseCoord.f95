@@ -39,9 +39,10 @@ subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     real(dp), intent(in) :: lat, lon, A_theta, B_theta, dec
     real(dp), intent(out) :: coord(:,:)
     real(dp), intent(in), optional :: cinterval

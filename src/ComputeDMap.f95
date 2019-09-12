@@ -71,10 +71,10 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
 !------------------------------------------------------------------------------
     use SHTOOLS, only : SHExpandDH, PlmIndex, PlmBar, SHCilmToVector, &
                         YilmIndexVector
+    use ftypes
 
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
     real(dp), intent(out) :: Dij(:,:)
     integer, intent(in) :: dh_mask(:,:), n_dh, lmax
     integer, intent(in), optional:: sampling, degrees(:)

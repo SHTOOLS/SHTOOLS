@@ -68,11 +68,11 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHExpandGLQ, SHExpandDH
+    use ftypes
 
     implicit none
 
-    integer, parameter :: dp = selected_real_kind(p=15)
-    real(dp), intent(in) ::  gridin(:,:), mass, rho
+    real(dp), intent(in) :: gridin(:,:), mass, rho
     real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
     real(dp), intent(out) :: cilm(:,:,:), d
     integer, intent(in) :: lmax, nmax, gridtype
