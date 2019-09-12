@@ -445,8 +445,8 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
         z = cos(theta)
         u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
-        coef(1:nlong) = dcmplx(0.0_dp,0.0_dp)
-        coefs(1:nlong) = dcmplx(0.0_dp,0.0_dp)
+        coef(1:nlong) = cmplx(0.0_dp, 0.0_dp, dp)
+        coefs(1:nlong) = cmplx(0.0_dp, 0.0_dp, dp)
 
         select case (lnorm)
             case (1,2,3); pm2 = 1.0_dp
@@ -571,7 +571,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
     z = 0.0_dp
     u = 1.0_dp
 
-    coef(1:nlong) = dcmplx(0.0_dp,0.0_dp)
+    coef(1:nlong) = cmplx(0.0_dp, 0.0_dp, dp)
 
     select case (lnorm)
         case (1,2,3); pm2 = 1.0_dp

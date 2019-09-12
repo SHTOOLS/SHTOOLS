@@ -449,10 +449,10 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         z = cos(theta)
         u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
-        coef(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)    ! lmax+2 is included in the
-                                                  ! input array to FFTW
+        coef(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)   ! lmax+2 is included in the
+                                                    ! input array to FFTW
         coef0 = 0.0_dp
-        coefs(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+        coefs(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
         coef0s = 0.0_dp
 
         select case (lnorm)
@@ -503,14 +503,14 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                     pm2 = pmm
             end select
 
-            tempc = dcmplx(cilm(1,m1,m1), - cilm(2,m1,m1)) * pm2
+            tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2
             coef(m1) = coef(m1) + tempc
             coefs(m1) = coefs(m1) + tempc
             ! fsymsign = 1
 
             pm1 = z * ff1(m1+1,m1) * pm2
 
-            tempc = dcmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1)) * pm1
+            tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1
             coef(m1) = coef(m1) + tempc 
             coefs(m1) = coefs(m1) - tempc
             ! fsymsign = -1
@@ -520,7 +520,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                 p = z * ff1(l1,m1) * pm1 - ff2(l1,m1) * pm2
                 pm2 = pm1
                 pm1 = p
-                tempc = dcmplx(cilm(1,l1,m1), - cilm(2,l1,m1)) * p
+                tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p
                 coef(m1) = coef(m1) + tempc
                 coefs(m1) = coefs(m1) + tempc * fsymsign(l1,m1)
             end do
@@ -542,18 +542,18 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                 pmm = phase * pmm * dble(2*lmax_comp-1) * rescalem
         end select
 
-        tempc = dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                       - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm
+        tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+                      - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm
         coef(lmax_comp+1) = coef(lmax_comp+1) + tempc
         coefs(lmax_comp+1) = coefs(lmax_comp+1) + tempc
         ! fsymsign = 1
 
-        coef(1) = dcmplx(coef0,0.0_dp)
+        coef(1) = cmplx(coef0, 0.0_dp, dp)
         coef(2:lmax+1) = coef(2:lmax+1) / 2.0_dp
-    
+
         if (present(sampling)) then
             if (sampling == 2) then
-                coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp)
+                coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
             end if
         end if
 
@@ -561,12 +561,12 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         griddh(i,1:nlong) = grid(1:nlong)
 
         if (i /= 1) then    ! don't compute value for south pole.
-            coef(1) = dcmplx(coef0s,0.0_dp)
+            coef(1) = cmplx(coef0s, 0.0_dp, dp)
             coef(2:lmax+1) = coefs(2:lmax+1) / 2.0_dp
 
             if (present(sampling)) then
                 if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp) 
+                    coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
                 end if
             end if
 
@@ -582,7 +582,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     z = 0.0_dp
     u = 1.0_dp
 
-    coef(1:lmax+2) = dcmplx(0.0_dp,0.0_dp)
+    coef(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
     coef0 = 0.0_dp
 
     select case(lnorm)
@@ -622,14 +622,12 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                 pm2 = pmm
         end select
 
-        coef(m1) = coef(m1) + dcmplx(cilm(1,m1,m1), &
-                    - cilm(2,m1,m1)) * pm2
+        coef(m1) = coef(m1) + cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2
 
         do l = m + 2, lmax_comp, 2
             l1 = l + 1
             p = - ff2(l1,m1) * pm2
-            coef(m1) = coef(m1) + dcmplx(cilm(1,l1,m1), &
-                       - cilm(2,l1,m1)) * p
+            coef(m1) = coef(m1) + cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p
             pm2 = p
         end do
 
@@ -645,15 +643,15 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     end select
 
     coef(lmax_comp+1) = coef(lmax_comp+1) + &
-                        dcmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                        - cilm(2,lmax_comp+1,lmax_comp+1)) * pmm
+                        cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+                        - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm
 
-    coef(1) = dcmplx(coef0,0.0_dp)
+    coef(1) = cmplx(coef0, 0.0_dp, dp)
     coef(2:lmax+1) = coef(2:lmax+1) * rescalem / 2.0_dp
 
     if (present(sampling)) then
         if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = dcmplx(0.0_dp,0.0_dp) 
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
         end if
     end if
 

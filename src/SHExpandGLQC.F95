@@ -265,7 +265,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 
     pi = acos(-1.0_dp)
 
-    cilm = dcmplx(0.0_dp, 0.0_dp)
+    cilm = cmplx(0.0_dp, 0.0_dp, dp)
 
     scalef = 1.0e-280_dp
 

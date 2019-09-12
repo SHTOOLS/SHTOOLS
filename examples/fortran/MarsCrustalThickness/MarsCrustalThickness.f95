@@ -42,8 +42,8 @@ program MarsCrustalThickness
                              pot(:,:,:), misfit(:,:,:)
     integer :: l, m, lmax, i, nmax, nlat, nlong, gridtype, astat(12), n_out, &
                iter, j, r1, lmaxp, lmaxt, filter_type, half, degmax, sampling
-    character*120 :: grav_file, moho_out, thick_grid_out, topo_file, &
-                     misfit_file
+    character(120) :: grav_file, moho_out, thick_grid_out, topo_file, &
+                      misfit_file
 
     print*,  "rho_crust (kg/m3) > "
     read(*,*) rho_crust

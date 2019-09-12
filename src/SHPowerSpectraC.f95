@@ -161,13 +161,13 @@ function SHCrossPowerLC(c1, c2, l)
 
     end if
 
-    SHCrossPowerLC = c1(1, l1, 1) * dconjg(c2(1,l1,1))
+    SHCrossPowerLC = c1(1, l1, 1) * conjg(c2(1,l1,1))
 
     do m = 1, l, 1
         m1 = m + 1
 
         do i = 1, 2
-            SHCrossPowerLC = SHCrossPowerLC + c1(i,l1,m1) * dconjg(c2(i,l1,m1))
+            SHCrossPowerLC = SHCrossPowerLC + c1(i,l1,m1) * conjg(c2(i,l1,m1))
 
         end do
 
@@ -226,14 +226,14 @@ function SHCrossPowerDensityLC(c1, c2, l)
 
     end if
 
-    SHCrossPowerDensityLC =  c1(1, l1, 1) * dconjg(c2(1,l1,1))
+    SHCrossPowerDensityLC =  c1(1, l1, 1) * conjg(c2(1,l1,1))
 
     do m = 1, l, 1
         m1 = m + 1
 
         do i = 1, 2
             SHCrossPowerDensityLC = SHCrossPowerDensityLC &
-                                    + c1(i, l1, m1)*dconjg(c2(i,l1,m1))
+                                    + c1(i, l1, m1) * conjg(c2(i,l1,m1))
 
         end do
 
@@ -527,14 +527,14 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
     do l = 0, lmax
         l1 = l + 1
 
-        cspectra(l1) = c1(1, l1, 1) * dconjg(c2(1, l1, 1))
+        cspectra(l1) = c1(1, l1, 1) * conjg(c2(1, l1, 1))
 
         do m = 1, l, 1
             m1 = m + 1
 
             do i = 1, 2
                 cspectra(l1) = cspectra(l1) &
-                               + c1(i, l1, m1) * dconjg(c2(i, l1, m1))
+                               + c1(i, l1, m1) * conjg(c2(i, l1, m1))
 
             end do
 
@@ -638,14 +638,14 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
     do l = 0, lmax
         l1 = l + 1
 
-        cspectra(l1) = c1(1, l1, 1) * dconjg(c2(1, l1, 1))
+        cspectra(l1) = c1(1, l1, 1) * conjg(c2(1, l1, 1))
 
         do m = 1, l, 1
             m1 = m + 1
 
             do i = 1, 2
                 cspectra(l1) = cspectra(l1) &
-                               + c1(i, l1, m1) * dconjg(c2(i, l1, m1))
+                               + c1(i, l1, m1) * conjg(c2(i, l1, m1))
 
             end do
 

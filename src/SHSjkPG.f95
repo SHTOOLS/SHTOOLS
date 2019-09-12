@@ -75,7 +75,7 @@ function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, &
 
     end if
 
-    SHSjkPG = dcmplx(0.0_dp, 0.0_dp)
+    SHSjkPG = cmplx(0.0_dp, 0.0_dp, dp)
 
     if (l < abs(m) .or. l < abs(mprime)) return
     !--------------------------------------------------------------------------
@@ -86,28 +86,28 @@ function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, &
     !
     !--------------------------------------------------------------------------
     if (mj == 0) then
-        hj(1:lwin+1) = dcmplx(hj_real(1:lwin+1), 0.0_dp)
+        hj(1:lwin+1) = cmplx(hj_real(1:lwin+1), 0.0_dp, dp)
 
     else if (mj > 0) then
-        hj(1:lwin+1) = dcmplx(hj_real(1:lwin+1), 0.0_dp) / sqrt(2.0_dp)
+        hj(1:lwin+1) = cmplx(hj_real(1:lwin+1), 0.0_dp, dp) / sqrt(2.0_dp)
 
     else
-        hj(1:lwin+1) = dcmplx(0.0_dp, -hj_real(1:lwin+1)) / sqrt(2.0_dp)
+        hj(1:lwin+1) = cmplx(0.0_dp, -hj_real(1:lwin+1), dp) / sqrt(2.0_dp)
 
     end if
 
     if (mk == 0) then
-        hk(1:lwin+1) = dcmplx(hk_real(1:lwin+1), 0.0_dp)
+        hk(1:lwin+1) = cmplx(hk_real(1:lwin+1), 0.0_dp, dp)
 
     elseif (mk > 0) then
-        hk(1:lwin+1) = dcmplx(hk_real(1:lwin+1), 0.0_dp) / sqrt(2.0_dp)
+        hk(1:lwin+1) = cmplx(hk_real(1:lwin+1), 0.0_dp, dp) / sqrt(2.0_dp)
 
     else
-        hk(1:lwin+1) = dcmplx(0.0_dp, -hk_real(1:lwin+1)) / sqrt(2.0_dp)
+        hk(1:lwin+1) = cmplx(0.0_dp, -hk_real(1:lwin+1), dp) / sqrt(2.0_dp)
 
     end if
 
-    if (hkcc == 1) hk = dconjg(hk)
+    if (hkcc == 1) hk = conjg(hk)
 
     !--------------------------------------------------------------------------
     !
@@ -115,21 +115,21 @@ function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, &
     !
     !--------------------------------------------------------------------------
     do l1 = abs(mj), lwin, 1
-        sum4 = dcmplx(0.0_dp, 0.0_dp)
+        sum4 = cmplx(0.0_dp, 0.0_dp, dp)
 
         call Wigner3j(wl10, l10min, l10max, l, l1, 0, 0, 0)
 
         do l3 = abs(mj), lwin, 1
-            sum3 = dcmplx(0.0_dp, 0.0_dp)
+            sum3 = cmplx(0.0_dp, 0.0_dp, dp)
 
             if (mod(l1+l3,2) == 0) then
                 call Wigner3j(wl30, l30min, l30max, l, l3, 0, 0, 0)
 
                 do m1 = -abs(mj), abs(mj), max(2*abs(mj), 1)
-                    sum2 = dcmplx(0.0_dp, 0.0_dp)
+                    sum2 = cmplx(0.0_dp, 0.0_dp, dp)
 
                     if (m1 < 0) then
-                        tj = dconjg(hj) * (-1)**m1
+                        tj = conjg(hj) * (-1)**m1
                     else
                         tj = hj
                     end if
@@ -139,7 +139,7 @@ function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, &
 
                         if (m - m1 == mprime - m3) then
                             if (m3 < 0) then
-                                tk = dconjg(hk) * (-1)**m3
+                                tk = conjg(hk) * (-1)**m3
                             else
                                 tk = hk
                             end if

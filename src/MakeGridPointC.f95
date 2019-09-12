@@ -52,7 +52,7 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
     integer :: index, l, m, l1, m1, lmax_comp, phase, astat(4)
     real(dp), allocatable :: pl(:), cosm(:), sinm(:), onem(:)
 
-    i_imag = dcmplx(0.0_dp, 1.0_dp)
+    i_imag = cmplx(0.0_dp, 1.0_dp, dp)
 
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
             size(cilm(1,1,:)) < lmax+1) then
@@ -121,7 +121,7 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
 
     end if
 
-    expand = dcmplx(0.0_dp, 0.0_dp)
+    expand = cmplx(0.0_dp, 0.0_dp, dp)
 
     do m = 0, lmax
         m1 = m + 1

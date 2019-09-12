@@ -428,7 +428,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
             call dfftw_execute(plan)    ! take fourier transform
             fcoef1(1,1:lmax+1) = 2 * w(i) * pi * dble(cc(1:lmax+1)) &
                                  / dble(nlong)
-            fcoef1(2,1:lmax+1) = -2 * w(i) * pi * dimag(cc(1:lmax+1)) &
+            fcoef1(2,1:lmax+1) = -2 * w(i) * pi * aimag(cc(1:lmax+1)) &
                                  / dble(nlong)
 
             k = 0
@@ -457,7 +457,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 call dfftw_execute(plan)   ! take fourier transform
                 fcoef1(1,1:lmax+1) = 2 * w(i) * pi * dble(cc(1:lmax+1)) &
                                      / dble(nlong)
-                fcoef1(2,1:lmax+1) = -2 * w(i) * pi * dimag(cc(1:lmax+1)) &
+                fcoef1(2,1:lmax+1) = -2 * w(i) * pi * aimag(cc(1:lmax+1)) &
                                      / dble(nlong)
 
                 u = 1.0_dp
@@ -540,7 +540,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 call dfftw_execute(plan)
                 fcoef1(1,1:lmax+1) = 2 * w(i) * pi * dble(cc(1:lmax+1)) &
                                      / dble(nlong)
-                fcoef1(2,1:lmax+1) = -2 * w(i) * pi * dimag(cc(1:lmax+1)) &
+                fcoef1(2,1:lmax+1) = -2 * w(i) * pi * aimag(cc(1:lmax+1)) &
                                      / dble(nlong)
 
                 i_s = nlat + 1 - i  ! point symmetric about the equator
@@ -549,7 +549,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 call dfftw_execute(plan)
                 fcoef2(1,1:lmax+1) = 2 * w(i_s) * pi * dble(cc(1:lmax+1)) &
                                      / dble(nlong)
-                fcoef2(2,1:lmax+1) = -2 * w(i_s) * pi * dimag(cc(1:lmax+1)) &
+                fcoef2(2,1:lmax+1) = -2 * w(i_s) * pi * aimag(cc(1:lmax+1)) &
                                      / dble(nlong)
 
                 select case (lnorm)

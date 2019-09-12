@@ -473,14 +473,14 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
         gridl(1:nlong) = grid(i,1:nlong)
         call dfftw_execute(plan)    ! take fourier transform
         fcoef1(1,1:n/2) = sqrt(2*pi) * aj(i) * dble(cc(1:n/2)) / dble(nlong)
-        fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * dimag(cc(1:n/2)) / dble(nlong)
+        fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * aimag(cc(1:n/2)) / dble(nlong)
 
         i_s = 2 * i_eq - i
 
         gridl(1:nlong) = grid(i_s,1:nlong)
         call dfftw_execute(plan)    ! take fourier transform
         fcoef2(1,1:n/2) = sqrt(2*pi) * aj(i_s) * dble(cc(1:n/2)) / dble(nlong)
-        fcoef2(2,1:n/2) = -sqrt(2*pi) * aj(i_s) * dimag(cc(1:n/2)) / &
+        fcoef2(2,1:n/2) = -sqrt(2*pi) * aj(i_s) * aimag(cc(1:n/2)) / &
                           dble(nlong)
 
         select case (lnorm)
@@ -594,7 +594,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
     gridl(1:nlong) = grid(i,1:nlong)
     call dfftw_execute(plan)    ! take fourier transform
     fcoef1(1,1:n/2) = sqrt(2*pi) * aj(i) * dble(cc(1:n/2)) / dble(nlong)
-    fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * dimag(cc(1:n/2)) / dble(nlong)
+    fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * aimag(cc(1:n/2)) / dble(nlong)
 
     select case (lnorm)
         case (1,2,3); pm2 = 1.0_dp

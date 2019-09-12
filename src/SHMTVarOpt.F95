@@ -217,7 +217,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
                         temp1 = SHSjkPG(Sff, l, m, mp, tapers(1:lwin+1,i), &
                                         tapers(1:lwin+1,i), taper_order(i), &
                                         taper_order(i), lwin, 1)
-                        Fij(i,i) = Fij(i,i) + 2.0_dp * dble(temp1*dconjg(temp1))
+                        Fij(i,i) = Fij(i,i) + 2.0_dp * dble(temp1 * conjg(temp1))
 
                     end do
 
@@ -236,7 +236,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
                                             taper_order(i), taper_order(j), &
                                             lwin, 1)
                             Fij(i,j) = Fij(i,j) + &
-                                       2.0_dp * dble(temp1*dconjg(temp1))
+                                       2.0_dp * dble(temp1 * conjg(temp1))
 
                         end do
 
@@ -258,7 +258,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
                         temp1 = SHSjkPG(Sff, l, m, mp, tapers(1:lwin+1,i), &
                                         tapers(1:lwin+1,j), taper_order(i), &
                                         taper_order(j), lwin, 1)
-                        Fij(i,j) = Fij(i,j) + 2.0_dp * dble(temp1*dconjg(temp1))
+                        Fij(i,j) = Fij(i,j) + 2.0_dp * dble(temp1 * conjg(temp1))
 
                     end do
 

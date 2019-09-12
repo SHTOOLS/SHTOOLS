@@ -416,7 +416,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     if (present(plx)) then
         do i = 1, nlat
-            coef = dcmplx(0.0_dp,0.0_dp)
+            coef = cmplx(0.0_dp, 0.0_dp, dp)
             ! This summation order is intended to add the smallest terms first
 
             do l = lmax_comp, 0, -1
@@ -442,7 +442,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     else
         do i = 1, (nlat+1) / 2
-            coef = dcmplx(0.0_dp,0.0_dp)
+            coef = cmplx(0.0_dp, 0.0_dp, dp)
 
             if ( i == (nlat+1)/2 .and. mod(nlat,2) /= 0) then
                 ! This latitude is the equator; z=0, u=1
@@ -527,7 +527,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
                 i_s = nlat + 1 - i
 
-                coefs = dcmplx(0.0_dp,0.0_dp)
+                coefs = cmplx(0.0_dp, 0.0_dp, dp)
 
                 select case (lnorm)
                     case (1,2,3); pm2 = 1.0_dp

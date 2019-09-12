@@ -47,16 +47,19 @@ Program TimingAccuracyDHC
 
     seed = -1053253
 
-    cilm = dcmplx(0.0_dp, 0.0_dp)
+    cilm = cmplx(0.0_dp, 0.0_dp, dp)
 
     do l = 1, maxdeg
 
         do m = 0, l
             if (m == 0) then
-                cilm(1,l+1,m+1) = dcmplx(RandomGaussian(seed), RandomGaussian(seed))
+                cilm(1,l+1,m+1) = cmplx(RandomGaussian(seed), &
+                                        RandomGaussian(seed), dp)
             else
-                cilm(1,l+1,m+1) = dcmplx(RandomGaussian(seed), RandomGaussian(seed))
-                cilm(2,l+1,m+1) = dcmplx(RandomGaussian(seed), RandomGaussian(seed))
+                cilm(1,l+1,m+1) = cmplx(RandomGaussian(seed), &
+                                        RandomGaussian(seed), dp)
+                cilm(2,l+1,m+1) = cmplx(RandomGaussian(seed), &
+                                        RandomGaussian(seed), dp)
             end if
         end do
         cilm(1:2, l+1, 1:l+1) = cilm(1:2, l+1, 1:l+1) * sqrt(dble(l)**beta) &
