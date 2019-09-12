@@ -417,7 +417,7 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
                 call SHRotateRealCoef(shwinrot, shwin, lmaxt, x, dj)
             end if
 
-            shwin = shwinrot
+            shwin(1:2,1:lmaxt+1,1:lmaxt+1) = shwinrot(1:2,1:lmaxt+1,1:lmaxt+1)
 
         end if
 

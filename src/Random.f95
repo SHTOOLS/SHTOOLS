@@ -25,8 +25,8 @@ function RandomN(idum)
     real(dp) :: RandomN
     integer(int4), intent(inout) :: idum
     integer(int4), parameter :: IA = 16807, IM = 2147483647, IQ = 127773, &
-                               IR = 2836, one = 1, param1 = 888889999, &
-                               param2 = 777755555
+                                IR = 2836, one = 1, param1 = 888889999, &
+                                param2 = 777755555
     real(dp), save :: am
     integer(int4), save :: ix = -1, iy = -1, k
 
@@ -34,7 +34,7 @@ function RandomN(idum)
 
     if (idum <= 0 .or.iy < 0) then
         ! Initialize.
-        am = nearest(1.0,-1.0) / dble(IM)
+        am = nearest(1.0_dp,-1.0_dp) / dble(IM)
         iy = ior(ieor(param1, abs(idum)), one)
         ix = ieor(param2, abs(idum))
         idum = abs(idum) + 1    ! Set idum positive.
@@ -75,15 +75,15 @@ function RandomGaussian(idum)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use SHTOOLS, only: RandomN
     use ftypes
 
     implicit none
 
     real(dp) :: RandomGaussian
     integer(int4), intent(inout) :: idum
-    real(dp) :: rsq, v1, v2, RandomN
+    real(dp) :: rsq, v1, v2
     real(dp), save :: gset
-    external RandomN
     logical, save :: gaus_stored = .false.
 
 !$OMP   threadprivate(gset, gaus_stored)

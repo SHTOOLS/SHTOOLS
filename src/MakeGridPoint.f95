@@ -70,9 +70,9 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 
     if (present(csphase)) then
         if (csphase == -1) then
-             phase = -1.0_dp
+             phase = -1
         else if (csphase == 1) then
-                phase = 1.0_dp
+                phase = 1
         else
             print*, "Error --- MakeGridPoint"
             print*, "CSPHASE must be 1 (exclude) or -1 (include)."
@@ -81,7 +81,7 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
         end if
 
     else
-        phase = dble(CSPHASE_DEFAULT)
+        phase = CSPHASE_DEFAULT
 
     end if
 

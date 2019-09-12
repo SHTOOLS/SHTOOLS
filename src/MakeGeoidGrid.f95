@@ -622,13 +622,13 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
         pp(1:nlat,1:nlong) = gridb(1:nlat,1:nlong) / gridd(1:nlat,1:nlong) &
                              - ((gridc(1:nlat,1:nlong) &
                              / gridd(1:nlat,1:nlong))**2) / 3.0_dp
-        qq = grida(1:nlat,1:nlong)/gridd(1:nlat,1:nlong) &
+        qq(1:nlat,1:nlong) = grida(1:nlat,1:nlong) / gridd(1:nlat,1:nlong) &
              + 2.0_dp * ((gridc(1:nlat,1:nlong) / gridd(1:nlat,1:nlong))**3) &
              / 27.0_dp - 9.0_dp * gridc(1:nlat,1:nlong) * gridb(1:nlat,1:nlong) &
              / (gridd(1:nlat,1:nlong)**2) / 27.0_dp
         uu(1:nlat,1:nlong) = (qq(1:nlat,1:nlong) / 2.0_dp &
                              + sqrt((qq(1:nlat,1:nlong)**2) / 4.0_dp &
-                             + (pp(1:nlat,1:nlong)**3)/27.0_dp) )**(1.0_dp / 3.0_dp)
+                             + (pp(1:nlat,1:nlong)**3) / 27.0_dp) )**(1.0_dp / 3.0_dp)
         geoid(1:nlat,1:nlong) = pp(1:nlat,1:nlong) / 3.0_dp &
                                 / uu(1:nlat,1:nlong) - uu(1:nlat,1:nlong) &
                                 - gridc(1:nlat,1:nlong) &

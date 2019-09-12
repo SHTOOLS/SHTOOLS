@@ -191,7 +191,7 @@ PlmON_d1.o : ftypes.o SHTOOLS.o
 PlmSchmidt.o : ftypes.o SHTOOLS.o
 PlmSchmidt_d1.o : ftypes.o SHTOOLS.o
 PreGLQ.o : ftypes.o
-Random.o : ftypes.o
+Random.o : ftypes.o SHTOOLS.o
 SHAdmitCorr.o : ftypes.o SHTOOLS.o
 SHBias.o : ftypes.o SHTOOLS.o
 SHBiasAdmitCorr.o : ftypes.o SHTOOLS.o
