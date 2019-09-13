@@ -19,7 +19,7 @@ Program TimingAccuracyGLQC
     character(200) :: outfile1, outfile2, outfile3, outfile4, outfile
     complex(dp), allocatable :: cilm(:,:,:), cilm2(:,:,:), gridglq(:,:)
     real(dp), allocatable :: zero(:), w(:)
-    real(dp) :: huge8, maxerror, err1, err2, beta, rms, timein(3), timeout(3)
+    real(dp) :: maxerror, err1, err2, beta, rms, timein(3), timeout(3)
     integer :: lmax, l, m, seed, astat(5)
 
     allocate(cilm(2,maxdeg+1,maxdeg+1), stat=astat(1))
@@ -44,8 +44,6 @@ Program TimingAccuracyGLQC
     outfile2 = trim(outfile) // ".timei"
     outfile3 = trim(outfile) // ".maxerror"
     outfile4 = trim(outfile) // ".rmserror"
-
-    huge8 = huge(maxerror)
 
     seed = -1053253
 
@@ -133,17 +131,10 @@ Program TimingAccuracyGLQC
         write(14,*) lmax, maxerror
         write(15,*) lmax, rms
 
-        if (maxerror > huge8) then
-            print*, "Overflow problems"
-            print*, "Overflow problems"
-            close(12)
-            close(13)
-            close(14)
-            close(15)
-            stop
-        end if
-
-        if (maxerror > 10.0_dp) then
+        if (maxerror > 100.0_dp) then
+            print*, "TESTS FAILED"
+            print*, "Degree = ", lmax
+            print*, "Maximum relative error = ", maxerror
             close(12)
             close(13)
             close(14)
