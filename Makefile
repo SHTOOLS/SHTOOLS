@@ -250,7 +250,7 @@ all: fortran
 fortran:
 	mkdir -pv lib
 	mkdir -pv modules
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
 	@echo "--> make fortran successful!"
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
@@ -263,7 +263,7 @@ fortran-mp:
 	mkdir -pv lib
 	mkdir -pv modules
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	@echo "--> make fortran-mp successful!"
 	@echo
@@ -400,7 +400,7 @@ remove-notebooks:
 	@echo "--> Removed notebook html files"
 
 fortran-tests: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -409,7 +409,7 @@ fortran-tests: fortran
 	@echo "--> Ran all Fortran examples and tests"
 
 fortran-tests-no-timing: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -418,7 +418,7 @@ fortran-tests-no-timing: fortran
 	@echo "--> Ran all Fortran examples and tests"
 
 fortran-tests-mp: fortran-mp
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -427,7 +427,7 @@ fortran-tests-mp: fortran-mp
 	@echo "--> Ran all Fortran examples and tests"
 
 fortran-tests-no-timing-mp: fortran-mp
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
