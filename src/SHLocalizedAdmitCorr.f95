@@ -310,11 +310,11 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 
     if (present(admit_error)) then
         admit_error = 0.0_dp
-    endif
+    end if
 
     if (present(corr_error)) then
         corr_error = 0.0_dp
-    endif
+    end if
 
     !--------------------------------------------------------------------------
     !
@@ -453,7 +453,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
                 stop
             end if
 
-    endif
+    end if
 
     if (present(exitstatus)) then
         call MakeGridGLQ(gridtglq, t(1:2,1:lmax+1, 1:lmax+1), &
@@ -705,9 +705,9 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
                 call SHPowerSpectrum(shloc_t, lmax-lwin, stt(:,i))
             end if
 
-            admit_k(1:lmax-lwin+1, i) =  sgt(1:lmax-lwin+1, i) &
+            admit_k(1:lmax-lwin+1, i) = sgt(1:lmax-lwin+1, i) &
                                          / stt(1:lmax-lwin+1, i)
-            corr_k(1:lmax-lwin+1, i) =  sgt(1:lmax-lwin+1, i) &
+            corr_k(1:lmax-lwin+1, i) = sgt(1:lmax-lwin+1, i) &
                                         / sqrt(stt(1:lmax-lwin+1, i)) &
                                         / sqrt(sgg(1:lmax-lwin+1, i))
 

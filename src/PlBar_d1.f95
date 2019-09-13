@@ -52,7 +52,7 @@ subroutine PlBar_d1(p, dp1, lmax, z, exitstatus)
 
     integer, intent(in) :: lmax
     real(dp), intent(out) :: p(:), dp1(:)
-    real(dp), intent(in) ::  z
+    real(dp), intent(in) :: z
     integer, intent(out), optional :: exitstatus
     real(dp) :: pm2, pm1, pl, sinsq
     integer :: l

@@ -57,7 +57,7 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
 !
 !       alpha(1) = 0.0
 !       alpha(2) = -(90.0_dp - lat)*pi/180.0_dp
-!       alpha(3) =  -lon*pi/180.0_dp
+!       alpha(3) = -lon*pi/180.0_dp
 !
 !   See documentation in file ShRotateRealCoef for further information on
 !   spherical harmonic rotations.
@@ -76,7 +76,7 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
     implicit none
 
     real(dp), intent(out) :: mtse(:), sd(:)
-    real(dp), intent(in) ::  sh(:,:,:), tapers(:,:)
+    real(dp), intent(in) :: sh(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax, lmaxt, K, taper_order(:)
     real(dp), intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
     integer, intent(in), optional :: csphase, norm
@@ -396,7 +396,7 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
     else
         call MakeGridGLQ(grid1glq, sh(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxmul, zero = zero, csphase = phase, norm = mnorm)
-    endif
+    end if
 
     do i = 1, K
         shwin = 0.0_dp

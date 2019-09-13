@@ -149,7 +149,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
 
         end if
 
-    endif
+    end if
 
     !--------------------------------------------------------------------------
     !
@@ -252,7 +252,7 @@ subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, outcspectra, &
                         if (exitstatus /= 0) return
                     else
                         call Wigner3j(wig, imin, imax, j, l, 0, 0, 0)
-                    endif
+                    end if
 
                     cg2(l+1,j+1,1:imax-imin+1) = (2.0_dp*l+1.0_dp) &
                                                  * wig(1:imax-imin+1)**2

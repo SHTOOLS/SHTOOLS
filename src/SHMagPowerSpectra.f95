@@ -148,8 +148,8 @@ subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
 
             do i = 1, 2
                 spectra(l1) = spectra(l1) + c(i, l1, m1)**2
-            enddo
-        enddo
+            end do
+        end do
 
         spectra(l1) = spectra(l1) * dble(l+1) * (a / r)**(2*l+4)
 

@@ -99,7 +99,7 @@ function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, &
     if (mk == 0) then
         hk(1:lwin+1) = cmplx(hk_real(1:lwin+1), 0.0_dp, dp)
 
-    elseif (mk > 0) then
+    else if (mk > 0) then
         hk(1:lwin+1) = cmplx(hk_real(1:lwin+1), 0.0_dp, dp) / sqrt(2.0_dp)
 
     else
@@ -161,7 +161,7 @@ function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, &
                                        wl10(i-l10min+1) * &
                                        wl30(i-l30min+1) * wl1(i-l1min+1) &
                                        * wl3(i-l3min+1)
-                            enddo
+                            end do
 
                             sum2 = sum2 + sum1 * tk(l3+1)
 

@@ -191,7 +191,7 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
                 call SHReturnTapersM(theta0, lmax, m, evec, eval, ntapers=n)
             end if
 
-        endif
+        end if
 
         if (n /= 0) then
             tapers_unordered(1:lmax+1, nt+1:nt+n) = evec(1:lmax+1,1:n)
@@ -200,7 +200,7 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
 
             nt = nt + n
 
-        endif
+        end if
 
     end do
 

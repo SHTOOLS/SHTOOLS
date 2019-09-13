@@ -148,13 +148,13 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
                 stop
             end if
 
-        endif
+        end if
         cm = centralmeridian
 
     else
         cm = 0
 
-    endif
+    end if
 
     !--------------------------------------------------------------------------
     !

@@ -184,7 +184,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
 
         end do
 
-    endif
+    end if
 
     ! Divide linear equations by their uncertainty.
     do i = 1, m
@@ -203,13 +203,13 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
 
     do j = 1, n
 
-        nstart =  1 + (j-1) * nl
+        nstart = 1 + (j-1) * nl
 
         if (j == n) then
             nstop = lmax + lwin + 1
 
         else
-            nstop =  nstart + nl - 1
+            nstop = nstart + nl - 1
 
         end if
 

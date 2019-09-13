@@ -361,7 +361,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
             stop
         end if
 
-    endif
+    end if
 
     cilm = 0.0_dp
     cilmn = 0.0_dp
@@ -447,7 +447,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
     do l = 0, lmax
         cilm(1:2,l+1,1:l+1) = 4.0_dp * pi * rho * (d**2) * cilmn(1:2,l+1,1:l+1)&
                               / mass / dble(2*l+1)
-    enddo
+    end do
 
     grid(1:nlat, 1:nlong) = grid(1:nlat, 1:nlong) - d
     scalef = maxval(abs(grid(1:nlat,1:nlong)))

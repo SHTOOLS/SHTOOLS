@@ -96,7 +96,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
     real(dp), intent(out) :: rad_grid(:,:), theta_grid(:,:), phi_grid(:,:), &
                              total_grid(:,:)
     real(dp), intent(out), optional :: pot_grid(:,:)
-    integer, intent(in) ::  lmax
+    integer, intent(in) :: lmax
     integer, intent(out) :: n
     integer, intent(in), optional :: sampling, lmax_calc
     integer, intent(out), optional :: exitstatus
@@ -111,7 +111,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
     integer(int8) :: plan
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
-    integer, save ::  lmax_old = 0
+    integer, save :: lmax_old = 0
     logical :: calcu
     external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
 
@@ -134,7 +134,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                 stop
             end if
 
-        endif
+        end if
     end if
 
     if (size(cilm(:,1,1)) < 2) then
@@ -262,7 +262,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
         total_grid(1:n,1:nlong) = 0.0_dp
         if (calcu) pot_grid(1:n,1:nlong) = 0.0_dp
         return
-    endif
+    end if
 
     !--------------------------------------------------------------------------
     !
@@ -292,7 +292,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                 stop
             end if
 
-        endif
+        end if
 
         !----------------------------------------------------------------------
         !
@@ -338,7 +338,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
             ff1(2,1) = 1.0_dp
             ff2(2,1) = 0.0_dp
 
-        endif
+        end if
 
         do l = 2, lmax_comp, 1
             ff1(l+1,1) = dble(2*l-1) / dble(l)
@@ -661,7 +661,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
 
             call dfftw_execute(plan)   ! take fourier transform
                 phi_grid(i,1:nlong) = - grid(1:nlong) * (r0/r_ex) / sin(theta)
-            endif
+            end if
 
             if (i /= 1) then    ! don't compute value for south pole.
                 coef(1) = cmplx(coefrs0, 0.0_dp, dp)

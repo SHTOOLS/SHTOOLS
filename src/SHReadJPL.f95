@@ -360,7 +360,7 @@ subroutine SHReadJPL(filename, cilm, lmax, error, gm, formatstring, exitstatus)
 
             end if
 
-        enddo
+        end do
 
         do l = 1, lmax
             do m = 1, l

@@ -46,7 +46,7 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
 
     real(dp), intent(in) :: x1, x2
     real(dp), intent(out) :: zero(:), w(:)
-    integer, intent(in) ::  n
+    integer, intent(in) :: n
     integer, intent(out), optional :: exitstatus
     integer :: i, j, m, iter
     integer, parameter :: itermax = 1000
@@ -196,7 +196,7 @@ integer function NGLQSH(degree)
         print*, "DEGREE must be greater or equal to zero"
         print*, "DEGREE = ", degree
         stop
-    endif
+    end if
 
     nglqsh = degree + 1
 
@@ -216,14 +216,14 @@ integer function NGLQSHN(degree, n)
 
     implicit none
 
-    integer, intent(in) ::  degree, n
+    integer, intent(in) :: degree, n
 
     if (degree < 0) then
         print*, "Error --- NGLQSHN"
         print*, "DEGREE must be greater or equal to zero"
         print*, "DEGREE = ", degree
         stop
-    endif
+    end if
 
     nglqshn = ceiling(((n+1.0_dp)*degree + 1.0_dp)/2.0_dp)
 

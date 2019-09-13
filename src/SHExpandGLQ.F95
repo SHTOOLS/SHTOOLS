@@ -684,7 +684,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     prod = prod * (l+m) * (l-m+1)
                     cilm(1:2,l+1,m+1) = cilm(1:2,l+1,m+1) / prod
 
-                enddo
+                end do
 
                 !do m=l case
                 if (l /= 0) cilm(1:2,l+1,l+1) = cilm(1:2,l+1, l+1) / (prod*2*l)

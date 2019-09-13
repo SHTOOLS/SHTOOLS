@@ -23,7 +23,7 @@ call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`, `exit
 `gm` : output, optional, real\*8, dimension(2)
 :   The mass-gravitational constant and error.
 
-`formatstring` : input character*6, optional, default = "E19.12"
+`formatstring` : input character(6), optional, default = "E19.12"
 :   The format string used to read the elements of `cilm` and `cilm_error`. The default is "E19.12".
 
 `exitstatus` : output, optional, integer

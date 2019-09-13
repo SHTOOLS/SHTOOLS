@@ -105,7 +105,7 @@ subroutine PLegendreA_d1(p, dp1, lmax, z, csphase, exitstatus)
             stop
         end if
 
-    elseif(abs(z) > 1.0_dp) then
+    else if(abs(z) > 1.0_dp) then
         print*, "Error --- PLegendreA_d1"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z

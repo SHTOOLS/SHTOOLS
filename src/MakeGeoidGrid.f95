@@ -686,7 +686,7 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
     if (order == 3) then
         deallocate (gridc)
         deallocate (gridd)
-    endif
+    end if
 
     deallocate (cilm1)
     deallocate (cilm2)

@@ -118,7 +118,7 @@ function SHCrossPowerLC(c1, c2, l)
 !   degree l for the complex 4-pi normalized spherical harmonic
 !   coefficients c1(i, l, m) and c2(i,l,m).
 !
-!   CrossPower =  Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
+!   CrossPower = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
 !
 !   Calling Parameters
 !
@@ -183,7 +183,7 @@ function SHCrossPowerDensityLC(c1, c2, l)
 !   (density) at degree l of the complex 4-pi normalized spherical harmonic
 !   coefficients c1(i, l, m) and c2(i,l,m).
 !
-!   CrossPower(l) =  Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
+!   CrossPower(l) = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
 !
 !   Calling Parameters
 !
@@ -226,7 +226,7 @@ function SHCrossPowerDensityLC(c1, c2, l)
 
     end if
 
-    SHCrossPowerDensityLC =  c1(1, l1, 1) * conjg(c2(1,l1,1))
+    SHCrossPowerDensityLC = c1(1, l1, 1) * conjg(c2(1,l1,1))
 
     do m = 1, l, 1
         m1 = m + 1
@@ -442,7 +442,7 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 !   of the complex 4-pi normalized spherical harmonic coefficients c1(i, l, m)
 !   and c2(1,l,m).
 !
-!   CrossPower(l) =  Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
+!   CrossPower(l) = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
 !
 !   Calling Parameters
 !
@@ -552,7 +552,7 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
 !   density of the complex 4-pi normalized spherical harmonic coefficients
 !   c1(i, l, m) and c2(i,l,m).
 !
-!   CrossPower(l) =  Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
+!   CrossPower(l) = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
 !
 !   Calling Parameters
 !

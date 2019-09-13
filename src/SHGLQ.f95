@@ -66,7 +66,7 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
     integer, intent(out), optional :: exitstatus
     integer :: n, i, astat, phase, l, m, i_s, cnormin, lnorm
     real(dp) :: upper, lower, pi
-    real(dp), allocatable ::  pl(:)
+    real(dp), allocatable :: pl(:)
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -193,7 +193,7 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
         if (exitstatus /= 0) return
     else
         call PreGLQ(lower, upper, n, zero, w)
-    endif
+    end if
 
     !--------------------------------------------------------------------------
     !

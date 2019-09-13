@@ -216,7 +216,7 @@ subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
                 stop
             end if
 
-        elseif (.not. present(N)) then
+        else if (.not. present(N)) then
             print*, "Error --- CilmMinusRhoH"
             print*, "N must be present when GRIDTYPE is 2 or 3."
             if (present(exitstatus)) then

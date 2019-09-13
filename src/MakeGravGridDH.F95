@@ -175,7 +175,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         else
             nlong = 2 * n
 
-        endif
+        end if
     else
         nlong = n
 
@@ -683,7 +683,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             if (sampling == 2) then
                 coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
             end if
-        endif
+        end if
 
         call dfftw_execute(plan)    ! take fourier transform
         rad_grid(i,1:nlong) = grid(1:nlong) * gm / r_ex**2
@@ -823,7 +823,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         do l = 2, lmax_comp,1
             prefactor(l) = prefactor(l-1) *r0 / r_ex
-        enddo
+        end do
 
         pm1 = 0.0_dp
 
@@ -871,13 +871,13 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         pm1 = 0.0_dp
 
-        dpl =  (sqr(2*m+3) * pmm)
+        dpl = (sqr(2*m+3) * pmm)
         coeft(m1) = coeft(m1) + cmplx(cilm(1,m1+1,m1), &
                                 - cilm(2,m1+1,m1), dp) * dpl * prefactor(m+1)
 
         do l = m + 2, lmax_comp, 1
             l1 = l + 1
-            p =  - ff2(l1,m1) * pm2
+            p = - ff2(l1,m1) * pm2
             coefr(m1) = coefr(m1) + cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
                                     * p * (-l1) * prefactor(l)
 

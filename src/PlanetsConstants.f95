@@ -14,7 +14,7 @@ module PlanetsConstants
 
     real(dp), parameter :: &
         Grav_constant = 6.67408e-11_dp, & ! CODATA 2014, Mohr et al. (2016)
-        pi_constant =  3.14159265358979_dp
+        pi_constant = 3.14159265358979_dp
     real(dp), parameter :: &
         mu0_constant = pi_constant * 4.0e-7_dp ! magnetic constant
 
@@ -28,7 +28,7 @@ module PlanetsConstants
         I_Solid_Moon = 0.3931120_dp, & ! Williams et al. (2016)
         gamma_Moon = 227.7317e-6_dp, & ! (B-A)/C, Williams et al. (2014)
         beta_Moon = 631.0213e-6_dp ! (C-A)/B, Williams et al. (2014)
-    real(dp), parameter ::  &
+    real(dp), parameter :: &
         density_Moon = Mass_Moon * 3.0_dp / 4.0_dp / pi_constant / R_Moon**3, &
         g0_Moon = GM_Moon / R_Moon**2 ! gravitational acceleration at R_Moon, not including rotation.
 

@@ -207,7 +207,7 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
 
             end do
 
-        endif
+        end if
 
     else
         do i = 1, kmax, 1
@@ -229,7 +229,7 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
 
         end do
 
-    endif
+    end if
 
     if (present(unweighted_covar)) then
         unweighted_covar = 0.0_dp

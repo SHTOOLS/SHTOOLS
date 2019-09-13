@@ -42,8 +42,8 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 !   as the number of times this occured
 !
 !   1.d-7 < error  <=1.d-8 = 103    # = 483
-!   1.d-6 < error <= 1.d-7 =  116   # = 240
-!   1.d-5 < error <= 1.d-6 =  165   # = 93
+!   1.d-6 < error <= 1.d-7 = 116   # = 240
+!   1.d-5 < error <= 1.d-6 = 165   # = 93
 !   1.d-4 < error <= 1.d-5 = 167    # = 36
 !
 !   Many times (maybe always), the large relative errors occur when the 3j
@@ -388,7 +388,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         w3j(1:jnum) = wu(1:jnum)
 
-    elseif (flag2 == 1 .and. flag1 == 0) then
+    else if (flag2 == 1 .and. flag1 == 0) then
         ! iterature in upward direction only
 
         do j = jn, jp - 1, 1

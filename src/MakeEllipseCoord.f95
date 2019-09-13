@@ -111,6 +111,6 @@ subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
                       180.0_dp / pi
         coord(k, 2) = atan2(y, x) * 180.0_dp / pi
 
-    enddo
+    end do
 
 end subroutine MakeEllipseCoord

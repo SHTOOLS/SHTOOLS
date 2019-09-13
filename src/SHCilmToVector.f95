@@ -215,6 +215,6 @@ subroutine SHVectorToCilm(vector, cilm, lmax, exitstatus)
 
         cilm(i,l+1,m+1) = vector(k)
 
-    enddo
+    end do
 
 end subroutine SHVectorToCilm

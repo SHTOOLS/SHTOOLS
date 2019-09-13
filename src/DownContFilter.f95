@@ -24,7 +24,7 @@ function DownContFilterMA(l, half, r, d)
 
     real(dp) :: DownContFilterMA
     integer, intent(in) :: l, half
-    real(dp), intent(in) ::  r, d
+    real(dp), intent(in) :: r, d
     real(dp) :: const
 
     if (l < 0) then
@@ -98,6 +98,6 @@ function DownContFilterMC(l, half, r, d)
         DownContFilterMC = 1.0_dp + const * dble(l*l+l) * (dble(2*l+1) * (r/d)**l)**2
         DownContFilterMC = 1.0_dp / DownContFilterMC
 
-    endif
+    end if
 
 end function DownContFilterMC

@@ -248,7 +248,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
             end do
 
-        endif
+        end if
 
     else
         do i = 1, kmax, 1
@@ -270,7 +270,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
         end do
 
-    endif
+    end if
 
     if (present(unweighted_covar)) then
         unweighted_covar = 0.0_dp
@@ -343,6 +343,6 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
         end do
 
-    enddo
+    end do
 
 end subroutine SHMTVarOpt

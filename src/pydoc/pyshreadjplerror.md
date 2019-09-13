@@ -28,7 +28,7 @@ Read spherical harmonic coefficients from a JPL ascii-formatted file.
 `lmaxin` : integer
 :   This spherical harmonic degree controls the dimension of the output array `cilm`. The coefficients between `lmax+1` and `lmaxin` will be set to zero.
 
-`formatstring` : character*6, optional, default = "E19.12"
+`formatstring` : character(6), optional, default = "E19.12"
 :   The format string used to read the elements of `cilm` and `error`. The default is "E19.12".
 
 # Description

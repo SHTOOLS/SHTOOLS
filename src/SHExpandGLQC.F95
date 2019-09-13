@@ -255,7 +255,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     else
         phase = CSPHASE_DEFAULT
 
-    endif
+    end if
 
     nlong = 2 * (lmax + 1) - 1
     ! This is the number of points (and period) used
@@ -378,7 +378,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                         ff1(l+1,m+1) = dble(2*l-1) / sqr(l+m) / sqr(l-m)
                         ff2(l+1,m+1) = sqr(l-m-1) * sqr(l+m-1) / sqr(l+m) &
                                        / sqr(l-m)
-                    enddo
+                    end do
 
                     ff1(l+1,l) = dble(2*l-1) / sqr(l+m) / sqr(l-m)
                     ff2(l+1,l) = 0.0_dp
@@ -574,7 +574,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     pm2 = pm1
                     pm1 = p
                     cilm(1,l1,1) = cilm(1,l1,1) + p * ffc1(fsymsign(l1,1))
-                enddo
+                end do
 
                 select case (lnorm)
                     case (1,2,3); pmm = scalef

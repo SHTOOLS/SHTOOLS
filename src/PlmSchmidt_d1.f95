@@ -179,7 +179,7 @@ subroutine PlmSchmidt_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
                 return
             else
                 stop
-            endif
+            end if
 
         end if
 

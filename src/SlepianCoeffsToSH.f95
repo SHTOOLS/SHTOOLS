@@ -110,7 +110,7 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
         else
             stop
         end if
-    endif
+    end if
 
     f = 0.0_dp
 
@@ -124,7 +124,7 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
         if (exitstatus /= 0) return
     else
         call SHVectorToCilm(f, flm, lmax)
-    endif
+    end if
 
     deallocate(f)
 

@@ -118,7 +118,7 @@ function SHCrossPowerL(c1, c2, l)
 !   degree l for the 4pi spherical harmonic coefficients c1(i, l, m)
 !   and c2(i,l,m).
 !
-!   CrossPower =  Sum_{m=0}^l ( A1lm*B1lm + A2lm*B2lm )
+!   CrossPower = Sum_{m=0}^l ( A1lm*B1lm + A2lm*B2lm )
 !
 !   Calling Parameters
 !
@@ -183,7 +183,7 @@ function SHCrossPowerDensityL(c1, c2, l)
 !   (density) at degree l of the 4pi spherical harmonic coefficients 
 !   c1(i, l, m) and c2(i,l,m).
 !
-!   CrossPower =  Sum_{m=0}^l ( A1lm*B1lm + A2lm*B2lm ) / (2l+1)
+!   CrossPower = Sum_{m=0}^l ( A1lm*B1lm + A2lm*B2lm ) / (2l+1)
 !
 !   Calling Parameters
 !
@@ -428,7 +428,7 @@ subroutine SHPowerSpectrumDensity(c, lmax, spectra, exitstatus)
 
         spectra(l1) = spectra(l1) / dble(2*l+1)
 
-    enddo
+    end do
 
 end subroutine SHPowerSpectrumDensity
 
@@ -439,7 +439,7 @@ subroutine SHCrossPowerSpectrum(c1, c2, lmax, cspectra, exitstatus)
 !   This function will compute the dimensionless cross power spectrum
 !   of the 4pi spherical harmonic coefficients c1(i, l, m) and c2(1,l,m).
 !
-!   CrossPower(l) =  Sum_{m=0}^l ( A1lm*B1lm + A2lm*B2lm )
+!   CrossPower(l) = Sum_{m=0}^l ( A1lm*B1lm + A2lm*B2lm )
 !
 !   Calling Parameters
 !
@@ -548,7 +548,7 @@ subroutine SHCrossPowerSpectrumDensity(c1, c2, lmax, cspectra, exitstatus)
 !   density of the 4pi spherical harmonic coefficients c1(i, l, m) and
 !   c2(i,l,m).
 !
-!   CrossPower =  Sum_{m=0}^l ( A1lm*B1lm + A2lm*B2lm ) / (2l+1)
+!   CrossPower = Sum_{m=0}^l ( A1lm*B1lm + A2lm*B2lm ) / (2l+1)
 !
 !   Calling Parameters
 !

@@ -240,10 +240,10 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
         else
             lmax_comp = min(lmax, size(cilm(1,1,:))-1, size(cilm(1,:,1))-1, &
                             lmax_calc)
-        endif
+        end if
     else
         lmax_comp = min(lmax, size(cilm(1,1,:))-1, size(cilm(1,:,1))-1)
-    endif
+    end if
 
     !--------------------------------------------------------------------------
     !

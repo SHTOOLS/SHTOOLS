@@ -358,7 +358,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                         ff1(l+1,m+1) = dble(2*l-1) / sqr(l+m) / sqr(l-m)
                         ff2(l+1,m+1) = sqr(l-m-1) * sqr(l+m-1) / sqr(l+m) &
                                        / sqr(l-m)
-                    enddo
+                    end do
 
                     ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
                     ff2(l+1,l) = 0.0_dp
@@ -421,7 +421,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
             do l = lmax_comp, 0, -1
                 l1 = l + 1
-                k =  (l1 * l) / 2 + 1   ! m=0
+                k = (l1 * l) / 2 + 1   ! m=0
                 coef(1) = coef(1) + cilm(1,l1,1) * plx(i,k)
 
                 do m = 1, l, 1
@@ -538,7 +538,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                 coefs(1) = coefs(1) + cilm(1,1,1) * pm2
                 ! fsymsign is always 1 for l=m=0
 
-                pm1 =  ff1(2,1) * z * pm2
+                pm1 = ff1(2,1) * z * pm2
                 coef(1) = coef(1) + cilm(1,2,1) * pm1
                 coefs(1) = coefs(1) - cilm(1,2,1) * pm1 ! fsymsign = -1
 

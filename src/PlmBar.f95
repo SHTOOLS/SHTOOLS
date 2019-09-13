@@ -133,7 +133,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
     if (present(csphase)) then
         if (csphase == -1) then
                 phase = -1
-        elseif (csphase == 1) then
+        else if (csphase == 1) then
                 phase = 1
         else
             print*, "Error --- PlmBar"
@@ -211,7 +211,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
 
             k = k + 2
 
-        enddo
+        end do
 
         lmax_old = lmax
 

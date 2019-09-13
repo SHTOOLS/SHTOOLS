@@ -126,7 +126,7 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
     do m = 0, lmax
         m1 = m + 1
         onem(m1) = (-1)**m
-    enddo
+    end do
 
     ! Precompute sines and cosines. Use multiple angle identity to minimize
     ! number of calls to SIN and COS.
@@ -174,7 +174,7 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
                 call PlmBar(pl, -1, x, csphase = phase)
             end if
         end if
-    endif
+    end if
 
     deallocate (pl)
     deallocate (cosm)

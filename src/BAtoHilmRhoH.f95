@@ -241,7 +241,7 @@ subroutine BAtoHilmRhoH(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, &
                 stop
             end if
 
-        endif
+        end if
 
     end if
 

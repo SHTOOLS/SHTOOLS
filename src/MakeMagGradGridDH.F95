@@ -320,7 +320,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             ff1(2,1) = 1.0_dp
             ff2(2,1) = 0.0_dp
 
-        endif
+        end if
 
         do l = 2, lmax_comp, 1
             ff1(l+1,1) = dble(2*l-1) / dble(l)
@@ -1071,7 +1071,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
     do l = 2, lmax_comp, 1
         l1 = l + 1
-        p =  - ff2(l1,1) * pm2
+        p = - ff2(l1,1) * pm2
         tempr = cilm(1,l1,1) * p * (-l1) * prefactor(l)
         coefr0 = coefr0 + tempr
 
@@ -1264,7 +1264,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     coefrp(2:lmax+1) = coefrp(2:lmax+1) * r0 / r_ex
 
     ! Vzz = Vrr
-    coef(1) = cmplx(coefrr0, 0.0_dp)
+    coef(1) = cmplx(coefrr0, 0.0_dp, dp)
     coef(2:lmax+1) = coefrr(2:lmax+1) / 2.0_dp
 
     if (present(sampling)) then
@@ -1324,7 +1324,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     if (present(sampling)) then
         if (sampling == 2) then
             coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        endif
+        end if
     end if
 
     call dfftw_execute(plan)    ! take fourier transform

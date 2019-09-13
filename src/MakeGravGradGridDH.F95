@@ -445,7 +445,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 prefactor(l) = prefactor(l-1) * r0 / r_ex
             end do
 
-            pm1 =  ff1(2,1) * z
+            pm1 = ff1(2,1) * z
 
             ! -2 = (l+1) prefactor
             tempr = cilm(1,2,1) * pm1 * (-2) * prefactor(1)
@@ -598,7 +598,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coefrp(m1) = coefrp(m1) + tempc
             coefrps(m1) = coefrps(m1) - tempc ! fsymsign = -1
 
-            dpl =  (sqr(2*m+3) * pmm - z * (m+1) * pm1) / u**2
+            dpl = (sqr(2*m+3) * pmm - z * (m+1) * pm1) / u**2
             tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * dpl &
                     * prefactor(m+1)    ! (m+1,m)
             coeft(m1) = coeft(m1) + tempc
@@ -1341,7 +1341,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     if (present(sampling)) then
         if (sampling == 2) then
             coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        endif
+        end if
     end if
 
     call dfftw_execute(plan)    ! take fourier transform

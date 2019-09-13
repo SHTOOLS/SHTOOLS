@@ -460,7 +460,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
             case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
         end select
 
-        tempr =  cilm(1,1,1) * pm2
+        tempr = cilm(1,1,1) * pm2
         coef0 = coef0 + tempr
         coef0s = coef0s + tempr     ! fsymsign is always 1 for l=m=0
 

@@ -54,9 +54,9 @@ subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
     integer, intent(in) :: lmax
     integer, intent(out), optional :: exitstatus
     real(dp) :: sum(2), temp(2,lmax+1), temp2(2,lmax+1), cgam(lmax+1), &
-               sgam(lmax+1), calf(lmax+1), salf(lmax+1), cbet(lmax+1), &
-               sbet(lmax+1), pi2, alpha, beta, gamma
-    integer ::  ind, lp1, l, mp1, jp1, isgn, ii, indx
+                sgam(lmax+1), calf(lmax+1), salf(lmax+1), cbet(lmax+1), &
+                sbet(lmax+1), pi2, alpha, beta, gamma
+    integer :: ind, lp1, l, mp1, jp1, isgn, ii, indx
 
     if (present(exitstatus)) exitstatus = 0
 

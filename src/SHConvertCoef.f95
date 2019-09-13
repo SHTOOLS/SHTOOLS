@@ -182,7 +182,7 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, exitstatus)
 
                 end if
 
-            enddo
+            end do
 
         else
             ccilm(1,l+1, 1) = rcilm(1,l+1,1)
@@ -205,7 +205,7 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, exitstatus)
 
         end if
 
-    enddo
+    end do
 
 end subroutine SHrtoc
 
@@ -380,7 +380,7 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs, exitstatus)
                 if (switchcs == 1) then
                     rcilm(1,l+1, m+1) = ccilm(1, l+1, m+1) / sqrt(2.0_dp*pi) &
                                         * (-1)**m
-                    rcilm(2,l+1, m+1) =  - ccilm(2,l+1,m+1) / sqrt(2.0_dp*pi) &
+                    rcilm(2,l+1, m+1) = - ccilm(2,l+1,m+1) / sqrt(2.0_dp*pi) &
                                          * (-1)**m
 
                 else
@@ -594,7 +594,7 @@ subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
                 stop
             end if
 
-        elseif (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax + 1 &
+        else if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax + 1 &
                 .or. size(cilm(1,1,:)) < lmax+1 ) then
             print*, "Error --- SHCindextocilm"
             print*, "CILM must be dimensioned as (2, DEGMAX+1, DEGMAX+1) " // &
@@ -638,7 +638,7 @@ subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
             index = (l * (l + 1)) / 2 + m + 1
             cilm(1,l+1,m+1) = cindex(1, index)
             cilm(2,l+1,m+1) = cindex(2, index)
-        enddo
-    enddo
+        end do
+    end do
 
 end subroutine SHCindexToCilm

@@ -173,7 +173,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
             stop
         end if
 
-    endif
+    end if
 
     if (present(degrees)) then
         if (size(degrees) < lmax+1) then
@@ -378,7 +378,7 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
         end do
     end if
 
-    call plmbar(plm, -1, cos(colat))
+    call plmbar(plm, -1, -1.0_dp)
 
     deallocate (f)
     deallocate (plm)

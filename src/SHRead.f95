@@ -152,7 +152,7 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error, exitstatus)
 
         end do
 
-    endif
+    end if
 
     if (present(header)) then
         read(fu,*, iostat=stat) (header(l), l=1, headlen)

@@ -298,7 +298,7 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
         if (exitstatus /= 0) return
     else
         call DHaj(n, aj)
-    endif
+    end if
 
     aj(1:n) = aj(1:n) * sqrt(4.0_dp * pi)
     ! Driscoll and Heally use unity normalized spherical harmonics

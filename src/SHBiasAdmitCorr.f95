@@ -203,7 +203,7 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
     else
         def = 1
 
-    endif
+    end if
 
     lmax_calc = lmax - lwin
     
@@ -275,7 +275,7 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
                               / sqrt(stt_bias(1:lmax_calc+1)) &
                               / sqrt(sgg_bias(1:lmax_calc+1))
 
-    elseif (def == 2) then
+    else if (def == 2) then
         do i = 1, K
             shh(1:lwin+1) = tapers(1:lwin+1, i)**2
 

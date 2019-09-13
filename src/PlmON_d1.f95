@@ -117,7 +117,7 @@ subroutine PlmON_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
             stop
         end if
 
-    elseif (size(dp1) < sdim) then
+    else if (size(dp1) < sdim) then
         print*, "Error --- PlmBar_d1"
         print*, "DP1 must be dimensioned as (LMAX+1)*(LMAX+2)/2 " // &
                 "where LMAX is ", lmax
@@ -129,7 +129,7 @@ subroutine PlmON_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
             stop
         end if
 
-    elseif (lmax < 0) then
+    else if (lmax < 0) then
         print*, "Error --- PlmBar_d1"
         print*, "LMAX must be greater than or equal to 0."
         print*, "Input value is ", lmax
@@ -179,7 +179,7 @@ subroutine PlmON_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
                 return
             else
                 stop
-            endif
+            end if
 
         end if
 
@@ -241,7 +241,7 @@ subroutine PlmON_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
                 f1(k) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
                 f2(k) = sqr(2*l+1) * sqr(l-m-1) * sqr(l+m-1) &
                         / sqr(2*l-3) / sqr(l+m) / sqr(l-m)
-            enddo
+            end do
 
             k = k + 2
 

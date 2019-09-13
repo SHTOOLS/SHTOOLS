@@ -96,7 +96,7 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
             stop
         end if
 
-    elseif (size(cilmrot(:,1,1)) < 2 .or. size(cilmrot(1,:,1)) < lmax+1 &
+    else if (size(cilmrot(:,1,1)) < 2 .or. size(cilmrot(1,:,1)) < lmax+1 &
             .or. size(cilmrot(1,1,:)) < lmax+1) then
         print*, "Error --- SHRotateRealCoef"
         print*, "CILMROT must be dimensioned as (2, LMAX+1, LMAX+1) " // &
@@ -162,7 +162,7 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
             if (exitstatus /= 0) return
         else
             call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=1)
-        endif
+        end if
 
     else
         if (present(exitstatus)) then
@@ -171,7 +171,7 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
             if (exitstatus /= 0) return
         else
             call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=0)
-        endif
+        end if
 
     end if
 
@@ -198,7 +198,7 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
         ! Convert ordered coefficients back to a 3D array
         call SHcindextocilm(rcof, ccilm, lmax)
 
-    endif
+    end if
 
     if (CSPHASE_DEFAULT == 1) then
         ! Convert Varshalovich et al complex coefficients back to geodesy form
@@ -209,7 +209,7 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
         else
             call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=1)
 
-        endif
+        end if
 
     else
         if (present(exitstatus)) then
@@ -218,7 +218,7 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
             if (exitstatus /= 0) return
         else
             call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=0)
-        endif
+        end if
 
     end if
 

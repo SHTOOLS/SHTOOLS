@@ -107,7 +107,7 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
                 do l = wmin, min(wmax,lwin), 2
                     sum1 = sum1 + dot_product(taper_wt(1:K), &
                            tapers_power(l+1,1:K)) * w3j(l-wmin+1)**2
-                enddo
+                end do
 
                 Mmt(i+1,j+1) = sum1 * dble(2*i+1)
 
@@ -129,7 +129,7 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
 
                 do l = wmin, min(wmax,lwin), 2
                     sum1 = sum1 + sum(tapers_power(l+1,1:K)) * w3j(l-wmin+1)**2
-                enddo
+                end do
 
                 Mmt(i+1,j+1) = sum1 * dble(2*i+1) / dble(K)
 

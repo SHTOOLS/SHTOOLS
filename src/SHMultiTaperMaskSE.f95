@@ -63,7 +63,7 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
     implicit none
 
     real(dp), intent(out) :: mtse(:), sd(:)
-    real(dp), intent(in) ::  sh(:,:,:), tapers(:,:)
+    real(dp), intent(in) :: sh(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax, lmaxt, K
     real(dp), intent(in), optional :: taper_wt(:)
     integer, intent(in), optional :: csphase, norm

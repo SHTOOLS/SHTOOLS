@@ -304,7 +304,7 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
             if (exitstatus /= 0) return
         else
             call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
-        endif
+        end if
 
     end if
 

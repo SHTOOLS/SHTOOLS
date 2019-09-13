@@ -134,7 +134,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
         if (c == "EARTH " .or. c(1:3) == "GGM") then
             read(13,*) gm, r0_pot
 
-        elseif(c == "SHM   ") then 
+        else if(c == "SHM   ") then 
             read(13,*) lmax, mmax, error_scale
 
             if (mmax /= lmax) then
@@ -228,7 +228,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 
                 end if
 
-            endif
+            end if
 
             if (l > temp_max) temp_max = l
 
@@ -426,12 +426,12 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
     if (present(doystart)) then
         doystart = doy1
 
-    endif
+    end if
 
     if (present(doyend)) then
         doyend = doy2
 
-    endif
+    end if
 
     if (present(epoch)) then
         epoch = epoch_temp

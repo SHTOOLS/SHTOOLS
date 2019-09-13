@@ -149,7 +149,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 
         end if
 
-    endif
+    end if
 
     if (mod(n_dh,2) /= 0) then
         print*, "Error --- SHReturnTapersMap"
@@ -322,7 +322,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
             call EigValVecSym(Dij(1:n, 1:n), n, eigenvalues, evec, &
                               exitstatus = exitstatus)
             if (exitstatus /= 0) return
-        endif
+        end if
 
     else
         if (present(ntapers)) then
@@ -330,7 +330,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
                               k = min(ntapers, n))
         else
             call EigValVecSym(Dij(1:n, 1:n), n, eigenvalues, evec)
-        endif
+        end if
 
     end if
 

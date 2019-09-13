@@ -207,7 +207,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
             end if
 
-        elseif (sampling == 2) then
+        else if (sampling == 2) then
             if (size(grid(:,1)) < n .or. size(grid(1,:)) < 2*n) then
                 print*, "Error --- SHExpandDH"
                 print*, "GRIDDH must be dimensioned as (N, 2*N) where N is ", n
@@ -294,7 +294,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
         if (exitstatus /= 0) return
     else
         call DHaj(n, aj)
-    endif
+    end if
 
     aj(1:n) = aj(1:n) * sqrt(4.0_dp*pi)
     ! Driscoll and Heally use unity normalized spherical harmonics
@@ -306,7 +306,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
         else
             nlong = 2 * n
 
-        endif
+        end if
 
     else
         nlong = n
@@ -696,7 +696,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
                     prod = prod * (l+m) * (l-m+1)
                     cilm(1:2,l+1,m+1) = cilm(1:2,l+1,m+1) / prod
 
-                enddo
+                end do
 
                 !do m=l case
                 if (l /= 0) cilm(1:2,l+1,l+1) = cilm(1:2,l+1, l+1) / (prod*2*l)

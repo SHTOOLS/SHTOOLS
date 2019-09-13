@@ -188,7 +188,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
                     return
                 else
                     stop
-                endif
+                end if
 
             else
                 phase = csphase
@@ -262,7 +262,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
             return
         else
             stop
-        endif
+        end if
 
     end if
 
@@ -326,7 +326,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
                     case (3); call PLegendre(pl, lmax_comp, x)
                     case (4); call PlON(pl, lmax_comp, x)
                 end select
-            endif
+            end if
 
             do l = lmax_comp, 0, -1
                 l1 = l + 1
@@ -361,7 +361,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
                     case (3); call PLegendreA(pl, lmax_comp, x, csphase = phase)
                     case (4); call PlmON(pl, lmax_comp, x, csphase = phase)
                 end select
-            endif
+            end if
 
             do k = 1, nlong
 

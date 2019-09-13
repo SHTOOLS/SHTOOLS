@@ -263,7 +263,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
         else
             nlong = 2 * n
 
-        endif
+        end if
     else
         nlong = n
 

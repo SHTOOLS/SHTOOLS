@@ -158,7 +158,7 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
                 call PlmBar(pl, -1, x, csphase = phase)
             end if
         end if
-    endif
+    end if
 
     deallocate (pl)
     deallocate (cosm)
