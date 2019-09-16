@@ -141,16 +141,17 @@ clean-prog-mod:
 %.o: %.F95
 	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $(FFTW3_FLAGS) $<
 
-
-BAtoHilm.o: ftypes.o SHTOOLS.o
+SHTOOLS.o : ftypes.o
+FFTW3.o : ftypes.o
+BAtoHilm.o : ftypes.o SHTOOLS.o
 BAtoHilmRhoH.o : ftypes.o SHTOOLS.o
-CilmMinus.o: ftypes.o SHTOOLS.o
+CilmMinus.o : ftypes.o SHTOOLS.o
 CilmMinusRhoH.o : ftypes.o SHTOOLS.o
-CilmPlus.o: ftypes.o SHTOOLS.o
+CilmPlus.o : ftypes.o SHTOOLS.o
 CilmPlusRhoH.o : ftypes.o SHTOOLS.o
 ComputeDG82.o : ftypes.o
 ComputeDMap.o : ftypes.o SHTOOLS.o
-ComputeDm.o: ftypes.o SHTOOLS.o
+ComputeDm.o : ftypes.o SHTOOLS.o
 Curve2Mask.o : ftypes.o
 DHaj.o : ftypes.o
 DownContFilter.o : ftypes.o

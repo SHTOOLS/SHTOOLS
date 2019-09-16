@@ -9,6 +9,10 @@ module SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
+    implicit none
+
     integer, parameter :: CSPHASE_DEFAULT = 1
                           ! The default for all routines is to EXCLUDE
                           ! the Condon-Shortley phase of (-1)^m
