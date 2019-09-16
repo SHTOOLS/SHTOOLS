@@ -18,8 +18,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !
 !   Laplaces equation implies that Vxx + Vyy + Vzz = 0, and the gravity tensor
 !   is symmetric. The components are calculated according to eq. 1 in
-!   Petrovskaya and Vershkov (2006, J. Geod, 80, 117-127), which is based on the
-!   eq. 3.28 in Reed (1973, Ohio State Univ., Dept. Geod. Sci., Rep. 201,
+!   Petrovskaya and Vershkov (2006, J. Geod, 80, 117-127), which is based on
+!   the eq. 3.28 in Reed (1973, Ohio State Univ., Dept. Geod. Sci., Rep. 201,
 !   Columbus, OH). Note that Reed's equations are in terms of latitude, and
 !   that the Y axis points East.
 !
@@ -36,10 +36,10 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !   The output grid are in units of 1/s and are cacluated on a flattened
 !   ellipsoid with semi-major axis A and flattening F. To obtain units of
 !   Eotvos (10^-9 s^-1), multiply by 10^9. The output grids contain N samples
-!   in latitude and longitude by default, but if the optional parameter SAMPLING
-!   is set to 2, the grids will contain N samples in latitude and 2N samples
-!   in longitude. The first latitudinal band of the grid corresponds to 90 N,
-!   the latitudinal band for 90 S is not calculated, and the latitudinal
+!   in latitude and longitude by default, but if the optional parameter
+!   SAMPLING is set to 2, the grids will contain N samples in latitude and 2N
+!   samples in longitude. The first latitudinal band of the grid corresponds to
+!   90 N, the latitudinal band for 90 S is not calculated, and the latitudinal
 !   sampling interval is 180/N degrees. The first longitudinal band is 0 E,
 !   the longitudinal band for 360 E is not calculated, and the longitudinal
 !   sampling interval is 360/N for equally sampled and 180/N for equally spaced
@@ -220,9 +220,10 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     if (cilm(1,1,1) /= 1.0_dp .and. f /= 0.0_dp) then
         print*, "Warning --- MakeGravGradGridDH"
-        print*, "The degree-0 term of the spherical harmonic coefficients is not equal to 1."
-        print*, "The variation in gravity resulting from variations in radius of the flattened"
-        print*, "ellipsoid will not be taken into account."
+        print*, "The degree-0 term of the spherical harmonic coefficients is "
+        print*, "not equal to 1. The variation in gravity resulting from "
+        print*, "variations in radius of the flattened ellipsoid will not be "
+        print*, "taken into account."
         print*, "C00 = ", cilm(1,1,1)
         print*, "F = ", f
     end if
@@ -257,7 +258,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate recursion constants used in computing Legendre polynomials
+    !   Calculate recursion constants used in computing Legendre functions.
     !
     !--------------------------------------------------------------------------
     if (lmax_comp /= lmax_old) then
@@ -352,13 +353,356 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     !--------------------------------------------------------------------------
     !
-    !   Determine Clms one l at a time by intergrating over latitude.
-    !   
+    !   Create generic plan for grid.
+    !
     !--------------------------------------------------------------------------
     call dfftw_plan_dft_c2r_1d(plan, nlong, coef(1:nlong/2+1), grid(1:nlong), &
                                FFTW_MEASURE)
 
+    !--------------------------------------------------------------------------
+    !
+    !   Determine Clms one l at a time by intergrating over latitude.
+    !
+    !--------------------------------------------------------------------------
     i_eq = n / 2 + 1  ! Index correspondong to zero latitude
+
+    ! First do equator
+
+    r_ex = a
+    theta = pi / 2.0_dp
+    z = 0.0_dp
+    u = 1.0_dp
+    lat = 0.0_dp
+
+    coefr(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coefr0 = 0.0_dp
+
+    coefrr(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coefrr0 = 0.0_dp
+
+    coeft(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coeft0 = 0.0_dp
+
+    coeftp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coeftp0 = 0.0_dp
+
+    coefp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coefp0 = 0.0_dp
+
+    coefrt(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coefrt0 = 0.0_dp
+
+    coefrp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coefrp0 = 0.0_dp
+
+    coefpp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coefpp0 = 0.0_dp
+
+    coeftt(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coeftt0 = 0.0_dp
+
+    pm2 = 1.0_dp
+
+    tempr = -cilm(1,1,1) * pm2 ! l = 0
+    coefr0 = coefr0 + tempr
+
+    tempr = 2 * cilm(1,1,1) * pm2  ! l = 0
+    coefrr0 = coefrr0 + tempr
+
+    ! derivative in theta and phi of l=0 term is 0, so no need to calculate this
+
+    if (lmax_comp /= 0) then    ! l = 1
+        prefactor(1) = r0 / r_ex
+
+        do l = 2, lmax_comp, 1
+            prefactor(l) = prefactor(l-1) * r0 / r_ex
+        end do
+
+        pm1 = 0.0_dp
+
+        dpl = ff1(2,1)
+        tempr = cilm(1,2,1) * dpl * prefactor(1)
+        coeft0 = coeft0 + tempr
+
+        tempr = cilm(1,2,1) * dpl * (-2) * prefactor(1)  ! -2 = (l+1) prefactor
+        coefrt0 = coefrt0 + tempr
+
+    end if
+
+    do l = 2, lmax_comp, 1
+        l1 = l + 1
+        p = - ff2(l1,1) * pm2
+        tempr = cilm(1,l1,1) * p * (-l1) * prefactor(l)
+        coefr0 = coefr0 + tempr
+
+        tempr = cilm(1,l1,1) * p * (l1) * (l1+1) * prefactor(l)
+        coefrr0 = coefrr0 + tempr
+
+        dpl = l * ( sqr(2*l+1) / sqr(2*l-1) * pm1 )
+        tempr = cilm(1,l1,1) * dpl * prefactor(l)
+        coeft0 = coeft0 + tempr
+
+        tempr = cilm(1,l1,1) * dpl * (-l1) * prefactor(l)
+        coefrt0 = coefrt0 + tempr
+
+        dpl2 = -l*l1 * p
+        tempr = cilm(1,l1,1) * dpl2 * prefactor(l)
+        coeftt0 = coeftt0 + tempr
+
+        pm2 = pm1
+        pm1 = p
+
+    end do
+
+    pmm = sqr(2) * scalef
+
+    rescalem = 1.0_dp / scalef
+
+    do m = 1, lmax_comp-1, 1
+
+        m1 = m + 1
+
+        pmm = pmm * sqr(2*m+1) / sqr(2*m)
+        pm2 = pmm
+
+        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (-m-1) &
+                * prefactor(m)    ! (m,m)
+        coefr(m1) = coefr(m1) + tempc
+
+        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (m+1) * (m+2) &
+                * prefactor(m) ! (m,m)
+        coefrr(m1) = coefrr(m1) + tempc
+
+        tempc = cmplx(cilm(2,m1,m1), cilm(1,m1,m1), dp) * pm2 &
+                * prefactor(m) * m ! (m,m)
+        coefp(m1) = coefp(m1) + tempc
+
+        tempc = -cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
+                * prefactor(m) * m**2 ! (m,m)
+        coefpp(m1) = coefpp(m1) + tempc
+
+        tempc = cmplx(cilm(2,m1,m1), cilm(1,m1,m1), dp) * pm2 *(-m-1) &
+                * prefactor(m) * m ! (m,m)
+        coefrp(m1) = coefrp(m1) + tempc
+
+        dpl2 = -(m*m1 -(m**2)) * pm2
+        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * dpl2 &
+                * prefactor(m) ! (m,m)
+        coeftt(m1) = coeftt(m1) + tempc
+
+        pm1 = 0.0_dp
+
+        dpl = ( sqr(2*m+3) * pmm )
+        tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * dpl &
+                * prefactor(m+1)    ! (m+1,m)
+        coeft(m1) = coeft(m1) + tempc
+
+        tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * dpl * (-m-2) &
+                * prefactor(m+1)   ! (m+1,m)
+        coefrt(m1) = coefrt(m1) + tempc
+
+        tempc = cmplx(cilm(2,m1+1,m1), cilm(1,m1+1,m1), dp) * dpl &
+                * prefactor(m+1) * m  ! (m+1,m)
+        coeftp(m1) = coeftp(m1) + tempc
+
+        do l = m + 2, lmax_comp, 1
+            l1 = l + 1
+            p = - ff2(l1,m1) * pm2
+            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p * (-l1) &
+                    * prefactor(l)
+            coefr(m1) = coefr(m1) + tempc
+
+            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p * (l1) &
+                    * (l1+1) * prefactor(l)
+            coefrr(m1) = coefrr(m1) + tempc
+
+            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * p &
+                    * prefactor(l) * m
+            coefp(m1) = coefp(m1) + tempc
+
+            tempc = -cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
+                    * prefactor(l) * m**2
+            coefpp(m1) = coefpp(m1) + tempc
+
+            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * p * (-l1) &
+                    * prefactor(l) * m
+            coefrp(m1) = coefrp(m1) + tempc
+
+            dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1) 
+            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * prefactor(l)
+            coeft(m1) = coeft(m1) + tempc
+
+            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * (-l1) &
+                    * prefactor(l)
+            coefrt(m1) = coefrt(m1) + tempc
+
+            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * dpl * prefactor(l) * m
+            coeftp(m1) = coeftp(m1) + tempc
+
+            dpl2 = -(l * l1 -(m**2) / u**2) * p
+            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl2 * prefactor(l)
+            coeftt(m1) = coeftt(m1) + tempc
+
+            pm2 = pm1
+            pm1 = p
+
+        end do
+
+        coefr(m1) = coefr(m1) * rescalem
+        coefrr(m1) = coefrr(m1) * rescalem
+        coeft(m1) = coeft(m1) * rescalem
+        coeftt(m1) = coeftt(m1) * rescalem
+        coefrt(m1) = coefrt(m1) * rescalem
+        coefp(m1) = coefp(m1) * rescalem
+        coefpp(m1) = coefpp(m1) * rescalem
+        coeftp(m1) = coeftp(m1) * rescalem
+        coefrp(m1) = coefrp(m1) * rescalem
+
+    end do
+
+    if (lmax_comp /= 0) then
+
+        pmm = pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
+        tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+                        - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
+                        * (-lmax_comp-1) * prefactor(lmax_comp)
+        coefr(lmax_comp+1) = coefr(lmax_comp+1) + tempc
+
+        tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+                        - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
+                        * (lmax_comp+1) * (lmax_comp+2) * prefactor(lmax_comp)
+        coefrr(lmax_comp+1) = coefrr(lmax_comp+1) + tempc
+
+        tempc = cmplx(cilm(2,lmax_comp+1,lmax_comp+1), &
+                        cilm(1,lmax_comp+1,lmax_comp+1), dp) * pmm &
+                        * prefactor(lmax_comp) * lmax_comp
+        coefp(lmax_comp+1) = coefp(lmax_comp+1) + tempc
+
+        tempc = -cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+                        - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
+                        * prefactor(lmax_comp) * lmax_comp**2
+        coefpp(lmax_comp+1) = coefpp(lmax_comp+1) + tempc
+
+        tempc = cmplx(cilm(2,lmax_comp+1,lmax_comp+1), &
+                        cilm(1,lmax_comp+1,lmax_comp+1), dp) * pmm &
+                        * (-lmax_comp-1) * prefactor(lmax_comp) * lmax_comp
+        coefrp(lmax_comp+1) = coefrp(lmax_comp+1) + tempc
+
+        dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)) * pmm 
+        tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+                        - cilm(2,lmax_comp+1,lmax_comp+1), dp) * dpl2 &
+                        * prefactor(lmax_comp)
+        coeftt(lmax_comp+1) = coeftt(lmax_comp+1) + tempc
+
+    end if
+
+    coefr0 = coefr0 * gm / r_ex**2
+    coefr(2:lmax+1) = coefr(2:lmax+1) * gm / r_ex**2
+
+    coefrt0 = - coefrt0 * gm / r_ex**2
+    coefrt(2:lmax+1) = - coefrt(2:lmax+1) * gm / r_ex**2
+
+    coefrr0 = coefrr0 * gm / r_ex**3
+    coefrr(2:lmax+1) = coefrr(2:lmax+1) * gm / r_ex**3
+
+    coeft0 = - coeft0 * gm / r_ex
+    coeft(2:lmax+1) = - coeft(2:lmax+1) * gm / r_ex
+
+    coeftt0 = coeftt0 * gm / r_ex
+    coeftt(2:lmax+1) = coeftt(2:lmax+1) * gm / r_ex
+
+    coeftp0 = - coeftp0 * gm / r_ex
+    coeftp(2:lmax+1) = - coeftp(2:lmax+1) * gm / r_ex
+
+    coefp0 = coefp0 * gm / r_ex
+    coefp(2:lmax+1) = coefp(2:lmax+1) * gm / r_ex
+
+    coefpp0 = coefpp0 * gm / r_ex
+    coefpp(2:lmax+1) = coefpp(2:lmax+1) * gm / r_ex
+
+    coefrp0 = coefrp0 * gm / r_ex**2
+    coefrp(2:lmax+1) = coefrp(2:lmax+1) * gm / r_ex**2
+
+    ! Vzz = Vrr
+    coef(1) = cmplx(coefrr0, 0.0_dp, dp)
+    coef(2:lmax+1) = coefrr(2:lmax+1) / 2.0_dp
+
+    if (present(sampling)) then
+        if (sampling == 2) then
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+        end if
+    end if
+
+    call dfftw_execute(plan)    ! take fourier transform
+    vzz(i_eq,1:nlong) = grid(1:nlong)
+
+    ! Vxx = 1/r Vr + 1/r^2 Vtt
+    coef(1) = cmplx(coefr0/r_ex + coeftt0/r_ex**2, 0.0_dp, dp)
+    coef(2:lmax+1) = (coefr(2:lmax+1)/r_ex + coeftt(2:lmax+1)/r_ex**2 ) / 2.0_dp
+
+    if (present(sampling)) then
+        if (sampling == 2) then
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+        end if
+    end if
+
+    call dfftw_execute(plan)    ! take fourier transform
+    vxx(i_eq,1:nlong) = grid(1:nlong)
+
+    ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
+    coef(1) = cmplx(coefr0/r_ex  + coefpp0/(r_ex**2), 0.0_dp, dp)
+    coef(2:lmax+1) = (coefr(2:lmax+1)/r_ex &
+                     + coefpp(2:lmax+1)/(r_ex**2) ) / 2.0_dp
+
+    if (present(sampling)) then
+        if (sampling == 2) then
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+        end if
+    end if
+
+    call dfftw_execute(plan)    ! take fourier transform
+    vyy(i_eq,1:nlong) = grid(1:nlong)
+
+    ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
+    coef(1) = cmplx(coeftp0/r_ex**2, 0.0_dp, dp)
+    coef(2:lmax+1) = (coeftp(2:lmax+1)/r_ex**2 ) / 2.0_dp
+
+    if (present(sampling)) then
+        if (sampling == 2) then
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+        end if
+    end if
+
+    call dfftw_execute(plan)    ! take fourier transform
+    vxy(i_eq,1:nlong) = grid(1:nlong)
+
+    ! Vxz = 1/r^2 Vt - 1/r Vrt
+    coef(1) = cmplx(coeft0/r_ex**2 - coefrt0/r_ex, 0.0_dp, dp)
+    coef(2:lmax+1) = (coeft(2:lmax+1) / r_ex**2 &
+                    - coefrt(2:lmax+1)/r_ex ) / 2.0_dp
+
+    if (present(sampling)) then
+        if (sampling == 2) then
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+        end if
+    end if
+
+    call dfftw_execute(plan)    ! take fourier transform
+    vxz(i_eq,1:nlong) = grid(1:nlong)
+
+    ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
+    coef(1) = cmplx(coefp0/r_ex**2 - coefrp0/r_ex, 0.0_dp, dp)
+    coef(2:lmax+1) = (coefp(2:lmax+1) / r_ex**2 &
+                    - coefrp(2:lmax+1)/r_ex ) / 2.0_dp
+
+    if (present(sampling)) then
+        if (sampling == 2) then
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+        end if
+    end if
+
+    call dfftw_execute(plan)    ! take fourier transform
+    vyz(i_eq,1:nlong) = grid(1:nlong)
 
     do i = 1, i_eq - 1, 1
 
@@ -865,7 +1209,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 if (sampling == 2) then
                     coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
                 end if
-            end if 
+            end if
 
             call dfftw_execute(plan)    ! take fourier transform
             vxx(i,1:nlong) = grid(1:nlong)
@@ -1022,344 +1366,6 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
 
     end do
-
-    ! Finally, do equator
-
-    r_ex = a
-    theta = pi / 2.0_dp
-    z = 0.0_dp
-    u = 1.0_dp
-    lat = 0.0_dp
-
-    coefr(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coefr0 = 0.0_dp
-
-    coefrr(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coefrr0 = 0.0_dp
-
-    coeft(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coeft0 = 0.0_dp
-
-    coeftp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coeftp0 = 0.0_dp
-
-    coefp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coefp0 = 0.0_dp
-
-    coefrt(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coefrt0 = 0.0_dp
-
-    coefrp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coefrp0 = 0.0_dp
-
-    coefpp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coefpp0 = 0.0_dp
-
-    coeftt(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coeftt0 = 0.0_dp
-
-    pm2 = 1.0_dp
-
-    tempr = -cilm(1,1,1) * pm2 ! l = 0
-    coefr0 = coefr0 + tempr
-
-    tempr = 2 * cilm(1,1,1) * pm2  ! l = 0
-    coefrr0 = coefrr0 + tempr
-
-    ! derivative in theta and phi of l=0 term is 0, so no need to calculate this
-
-    if (lmax_comp /= 0) then    ! l = 1
-        prefactor(1) = r0 / r_ex
-
-        do l = 2, lmax_comp, 1
-            prefactor(l) = prefactor(l-1) * r0 / r_ex
-        end do
-
-        pm1 = 0.0_dp
-
-        dpl = ff1(2,1)
-        tempr = cilm(1,2,1) * dpl * prefactor(1)
-        coeft0 = coeft0 + tempr
-
-        tempr = cilm(1,2,1) * dpl * (-2) * prefactor(1)  ! -2 = (l+1) prefactor
-        coefrt0 = coefrt0 + tempr
-
-    end if
-
-    do l = 2, lmax_comp, 1
-        l1 = l + 1
-        p = - ff2(l1,1) * pm2
-        tempr = cilm(1,l1,1) * p * (-l1) * prefactor(l)
-        coefr0 = coefr0 + tempr
-
-        tempr = cilm(1,l1,1) * p * (l1) * (l1+1) * prefactor(l)
-        coefrr0 = coefrr0 + tempr
-
-        dpl = l * ( sqr(2*l+1) / sqr(2*l-1) * pm1 )
-        tempr = cilm(1,l1,1) * dpl * prefactor(l)
-        coeft0 = coeft0 + tempr
-
-        tempr = cilm(1,l1,1) * dpl * (-l1) * prefactor(l)
-        coefrt0 = coefrt0 + tempr
-
-        dpl2 = -l*l1 * p
-        tempr = cilm(1,l1,1) * dpl2 * prefactor(l)
-        coeftt0 = coeftt0 + tempr
-
-        pm2 = pm1
-        pm1 = p
-
-    end do
-
-    pmm = sqr(2) * scalef
-
-    rescalem = 1.0_dp / scalef
-
-    do m = 1, lmax_comp-1, 1
-            
-        m1 = m + 1
-
-        pmm = pmm * sqr(2*m+1) / sqr(2*m)
-        pm2 = pmm
-
-        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (-m-1) &
-                * prefactor(m)    ! (m,m)
-        coefr(m1) = coefr(m1) + tempc
-
-        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (m+1) * (m+2) &
-                * prefactor(m) ! (m,m)
-        coefrr(m1) = coefrr(m1) + tempc
-
-        tempc = cmplx(cilm(2,m1,m1), cilm(1,m1,m1), dp) * pm2 &
-                * prefactor(m) * m ! (m,m)
-        coefp(m1) = coefp(m1) + tempc
-
-        tempc = -cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
-                * prefactor(m) * m**2 ! (m,m)
-        coefpp(m1) = coefpp(m1) + tempc
-
-        tempc = cmplx(cilm(2,m1,m1), cilm(1,m1,m1), dp) * pm2 *(-m-1) &
-                * prefactor(m) * m ! (m,m)
-        coefrp(m1) = coefrp(m1) + tempc
-
-        dpl2 = -(m*m1 -(m**2)) * pm2
-        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * dpl2 &
-                * prefactor(m) ! (m,m)
-        coeftt(m1) = coeftt(m1) + tempc
-
-        pm1 = 0.0_dp
-
-        dpl = ( sqr(2*m+3) * pmm )
-        tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * dpl &
-                * prefactor(m+1)    ! (m+1,m)
-        coeft(m1) = coeft(m1) + tempc
-
-        tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * dpl * (-m-2) &
-                * prefactor(m+1)   ! (m+1,m)
-        coefrt(m1) = coefrt(m1) + tempc
-
-        tempc = cmplx(cilm(2,m1+1,m1), cilm(1,m1+1,m1), dp) * dpl &
-                * prefactor(m+1) * m  ! (m+1,m)
-        coeftp(m1) = coeftp(m1) + tempc
-
-        do l = m + 2, lmax_comp, 1
-            l1 = l + 1
-            p = - ff2(l1,m1) * pm2
-            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p * (-l1) &
-                    * prefactor(l)
-            coefr(m1) = coefr(m1) + tempc
-
-            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p * (l1) &
-                    * (l1+1) * prefactor(l)
-            coefrr(m1) = coefrr(m1) + tempc
-
-            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * p &
-                    * prefactor(l) * m
-            coefp(m1) = coefp(m1) + tempc
-
-            tempc = -cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
-                    * prefactor(l) * m**2
-            coefpp(m1) = coefpp(m1) + tempc
-
-            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * p * (-l1) &
-                    * prefactor(l) * m
-            coefrp(m1) = coefrp(m1) + tempc
-
-            dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1) 
-            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * prefactor(l)
-            coeft(m1) = coeft(m1) + tempc
-
-            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * (-l1) &
-                    * prefactor(l)
-            coefrt(m1) = coefrt(m1) + tempc
-
-            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * dpl * prefactor(l) * m
-            coeftp(m1) = coeftp(m1) + tempc
-
-            dpl2 = -(l * l1 -(m**2) / u**2) * p
-            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl2 * prefactor(l)
-            coeftt(m1) = coeftt(m1) + tempc
-
-            pm2 = pm1
-            pm1 = p
-
-        end do
-
-        coefr(m1) = coefr(m1) * rescalem
-        coefrr(m1) = coefrr(m1) * rescalem
-        coeft(m1) = coeft(m1) * rescalem
-        coeftt(m1) = coeftt(m1) * rescalem
-        coefrt(m1) = coefrt(m1) * rescalem
-        coefp(m1) = coefp(m1) * rescalem
-        coefpp(m1) = coefpp(m1) * rescalem
-        coeftp(m1) = coeftp(m1) * rescalem
-        coefrp(m1) = coefrp(m1) * rescalem
-
-    end do
-
-    if (lmax_comp /= 0) then
-
-        pmm = pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
-        tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                        - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
-                        * (-lmax_comp-1) * prefactor(lmax_comp)
-        coefr(lmax_comp+1) = coefr(lmax_comp+1) + tempc
-
-        tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                        - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
-                        * (lmax_comp+1) * (lmax_comp+2) * prefactor(lmax_comp)
-        coefrr(lmax_comp+1) = coefrr(lmax_comp+1) + tempc
-
-        tempc = cmplx(cilm(2,lmax_comp+1,lmax_comp+1), &
-                        cilm(1,lmax_comp+1,lmax_comp+1), dp) * pmm &
-                        * prefactor(lmax_comp) * lmax_comp
-        coefp(lmax_comp+1) = coefp(lmax_comp+1) + tempc
-
-        tempc = -cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                        - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
-                        * prefactor(lmax_comp) * lmax_comp**2
-        coefpp(lmax_comp+1) = coefpp(lmax_comp+1) + tempc
-
-        tempc = cmplx(cilm(2,lmax_comp+1,lmax_comp+1), &
-                        cilm(1,lmax_comp+1,lmax_comp+1), dp) * pmm &
-                        * (-lmax_comp-1) * prefactor(lmax_comp) * lmax_comp
-        coefrp(lmax_comp+1) = coefrp(lmax_comp+1) + tempc
-
-        dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)) * pmm 
-        tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                        - cilm(2,lmax_comp+1,lmax_comp+1), dp) * dpl2 &
-                        * prefactor(lmax_comp)
-        coeftt(lmax_comp+1) = coeftt(lmax_comp+1) + tempc
-
-    end if
-
-    coefr0 = coefr0 * gm / r_ex**2
-    coefr(2:lmax+1) = coefr(2:lmax+1) * gm / r_ex**2
-
-    coefrt0 = - coefrt0 * gm / r_ex**2
-    coefrt(2:lmax+1) = - coefrt(2:lmax+1) * gm / r_ex**2
-
-    coefrr0 = coefrr0 * gm / r_ex**3
-    coefrr(2:lmax+1) = coefrr(2:lmax+1) * gm / r_ex**3
-
-    coeft0 = - coeft0 * gm / r_ex
-    coeft(2:lmax+1) = - coeft(2:lmax+1) * gm / r_ex
-
-    coeftt0 = coeftt0 * gm / r_ex
-    coeftt(2:lmax+1) = coeftt(2:lmax+1) * gm / r_ex
-
-    coeftp0 = - coeftp0 * gm / r_ex
-    coeftp(2:lmax+1) = - coeftp(2:lmax+1) * gm / r_ex
-
-    coefp0 = coefp0 * gm / r_ex
-    coefp(2:lmax+1) = coefp(2:lmax+1) * gm / r_ex
-
-    coefpp0 = coefpp0 * gm / r_ex
-    coefpp(2:lmax+1) = coefpp(2:lmax+1) * gm / r_ex
-
-    coefrp0 = coefrp0 * gm / r_ex**2
-    coefrp(2:lmax+1) = coefrp(2:lmax+1) * gm / r_ex**2
-
-    ! Vzz = Vrr
-    coef(1) = cmplx(coefrr0, 0.0_dp, dp)
-    coef(2:lmax+1) = coefrr(2:lmax+1) / 2.0_dp
-
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        end if
-    end if
-
-    call dfftw_execute(plan)    ! take fourier transform
-    vzz(i_eq,1:nlong) = grid(1:nlong)
-
-    ! Vxx = 1/r Vr + 1/r^2 Vtt
-    coef(1) = cmplx(coefr0/r_ex + coeftt0/r_ex**2, 0.0_dp, dp)
-    coef(2:lmax+1) = (coefr(2:lmax+1)/r_ex + coeftt(2:lmax+1)/r_ex**2 ) / 2.0_dp
-
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        end if
-    end if
-
-    call dfftw_execute(plan)    ! take fourier transform
-    vxx(i_eq,1:nlong) = grid(1:nlong)
-
-    ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
-    coef(1) = cmplx(coefr0/r_ex  + coefpp0/(r_ex**2), 0.0_dp, dp)
-    coef(2:lmax+1) = (coefr(2:lmax+1)/r_ex &
-                     + coefpp(2:lmax+1)/(r_ex**2) ) / 2.0_dp
-
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        end if
-    end if
-
-    call dfftw_execute(plan)    ! take fourier transform
-    vyy(i_eq,1:nlong) = grid(1:nlong)
-
-    ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
-    coef(1) = cmplx(coeftp0/r_ex**2, 0.0_dp, dp)
-    coef(2:lmax+1) = (coeftp(2:lmax+1)/r_ex**2 ) / 2.0_dp
-
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        end if
-    end if
-
-    call dfftw_execute(plan)    ! take fourier transform
-    vxy(i_eq,1:nlong) = grid(1:nlong)
-
-    ! Vxz = 1/r^2 Vt - 1/r Vrt
-    coef(1) = cmplx(coeft0/r_ex**2 - coefrt0/r_ex, 0.0_dp, dp)
-    coef(2:lmax+1) = (coeft(2:lmax+1) / r_ex**2 &
-                    - coefrt(2:lmax+1)/r_ex ) / 2.0_dp
-
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        end if
-    end if
-
-    call dfftw_execute(plan)    ! take fourier transform
-    vxz(i_eq,1:nlong) = grid(1:nlong)
-
-    ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
-    coef(1) = cmplx(coefp0/r_ex**2 - coefrp0/r_ex, 0.0_dp, dp)
-    coef(2:lmax+1) = (coefp(2:lmax+1) / r_ex**2 &
-                    - coefrp(2:lmax+1)/r_ex ) / 2.0_dp
-
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        end if
-    end if
-
-    call dfftw_execute(plan)    ! take fourier transform
-    vyz(i_eq,1:nlong) = grid(1:nlong)
 
     call dfftw_destroy_plan(plan)
 

@@ -9,11 +9,12 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
 !   samples, N, must be EVEN for this routine to work, and the spherical
 !   harmonic expansion is exact if the function is bandlimited to degree N/2-1.
 !   Legendre functions are computed on the fly using the scaling methodology
-!   presented in Holmes and Featherston (2002). When NORM is 1,2 or 4, these are
-!   accurate to about degree 2800. When NORM is 3, the routine is only stable
-!   to about degree 15. If the optional parameter LMAX_CALC is specified, the
-!   spherical harmonic coefficients will only be calculated up to this degree.
-!   
+!   presented in Holmes and Featherston (2002). When NORM is 1, 2 or 4, these
+!   are accurate to about degree 2800. When NORM is 3, the routine is only
+!   stable to about degree 15! If the optional parameter LMAX_CALC is
+!   specified, the spherical harmonic coefficients will only be calculated up
+!   to this degree.
+!
 !   If SAMPLING is 1 (default), the input grid contains N samples in latitude
 !   from 90 to -90+interval, and N samples in longitude from 0 to
 !   360-2*interval, where interval is the latitudinal sampling interval 180/N.
@@ -26,9 +27,9 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
 !   discarded to prevent aliasing.
 !
 !   The complex spherical harmonics are output in the array cilm. Cilm(1,,)
-!   contains the positive m term, wheras cilm(2,,) contains the negative m term.
-!   The negative order Legendre functions are calculated making use of the
-!   identity Y_{lm}^* = (-1)^m Y_{l,-m}.
+!   contains the positive m term, wheras cilm(2,,) contains the negative m
+!   term. The negative order Legendre functions are calculated making use of
+!   the identity Y_{lm}^* = (-1)^m Y_{l,-m}.
 !
 !   Calling Parameters
 !
@@ -46,8 +47,8 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
 !                       (2, LMAX_CALC+1, LMAX_CALC+1).
 !           lmax        Spherical harmonic bandwidth of the grid. This
 !                       corresponds to the maximum spherical harmonic degree of
-!                       the expansion if the optional parameter LMAX_CALC is not
-!                       specified.
+!                       the expansion if the optional parameter LMAX_CALC is
+!                       not specified.
 !
 !       OPTIONAL (IN)
 !           norm        Normalization to be used when calculating Legendre
@@ -109,10 +110,10 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
     integer, intent(out) :: lmax
     integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
-    complex(dp) :: cc(2*n), gridl(2*n), fcoef1(2*n), fcoef2(2*n), ffc1(-1:1), &
-                   ffc2(-1:1)
+    complex(dp) :: cc(2*n), ccs(2*n), gridl(2*n), gridls(2*n), fcoef1(2*n), &
+                   fcoef2(2*n), ffc1(-1:1), ffc2(-1:1)
     integer :: l, m, i, l1, m1, i_eq, i_s, lnorm, astat(5), lmax_comp, nlong
-    integer(int8) :: plan
+    integer(int8) :: plan, plans
     real(dp) :: pi, aj(n), theta, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
@@ -181,8 +182,8 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
     else if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax_comp+1 .or. &
              size(cilm(1,1,:)) < lmax_comp+1) then
         print*, "Error --- SHExpandDHC"
-        print*, "CILM must be dimensioned as (2, LMAX_COMP+1, LMAX_COMP+1) where"
-        print*, "LMAX_COMP = MIN(N/2, LMAX_CALC+1)"
+        print*, "CILM must be dimensioned as (2, LMAX_COMP+1, LMAX_COMP+1)"
+        print*, "where LMAX_COMP = MIN(N/2, LMAX_CALC+1)"
         print*, "N = ", n
         if (present(lmax_calc)) print*, "LMAX_CALC = ", lmax_calc
         print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), &
@@ -319,7 +320,7 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate recursion constants used in computing the Legendre polynomials
+    !   Calculate recursion constants used in computing the Legendre functions.
     !
     !--------------------------------------------------------------------------
     if (lmax_comp /= lmax_old .or. lnorm /= norm_old) then
@@ -453,10 +454,12 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
 
     !--------------------------------------------------------------------------
     !
-    !   Create generic plan for grid
+    !   Create generic plan for gridl and gridls.
     !
     !--------------------------------------------------------------------------
     call dfftw_plan_dft_1d(plan, nlong, gridl(1:nlong), cc(1:nlong), &
+                           FFTW_FORWARD, FFTW_MEASURE)
+    call dfftw_plan_dft_1d(plans, nlong, gridls(1:nlong), ccs(1:nlong), &
                            FFTW_FORWARD, FFTW_MEASURE)
 
     !--------------------------------------------------------------------------
@@ -480,9 +483,9 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
 
         i_s = 2 * i_eq - i
 
-        gridl(1:nlong) = grid(i_s,1:nlong)
-        call dfftw_execute(plan)    ! take fourier transform
-        fcoef2(1:nlong) = cc(1:nlong) * sqrt(2*pi) * aj(i_s) / dble(nlong)
+        gridls(1:nlong) = grid(i_s,1:nlong)
+        call dfftw_execute(plans)    ! take fourier transform
+        fcoef2(1:nlong) = ccs(1:nlong) * sqrt(2*pi) * aj(i_s) / dble(nlong)
 
         select case (lnorm)
             case (1,2,3); pm2 = 1.0_dp
@@ -685,6 +688,7 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
     end if
 
     call dfftw_destroy_plan(plan)
+    call dfftw_destroy_plan(plans)
 
     !--------------------------------------------------------------------------
     !

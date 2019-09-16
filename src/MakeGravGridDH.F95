@@ -120,8 +120,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     integer, intent(out), optional :: exitstatus
     integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong
     real(dp) :: grid(4*lmax+4), pi, theta, scalef, rescalem, u, p, dpl, pmm, &
-                pm1, pm2, z, tempr, r_ex, lat, prefactor(lmax), coefr0, coefu0, &
-                coefrs0, coeft0, coefts0, coefp0, coefps0, coefus0, b
+                pm1, pm2, z, tempr, r_ex, lat, prefactor(lmax), coefr0, &
+                coefu0, coefrs0, coeft0, coefts0, coefp0, coefps0, coefus0, b
     complex(dp) :: coef(2*lmax+3), coefr(2*lmax+3), coefrs(2*lmax+3), &
                    coeft(2*lmax+3), coefts(2*lmax+3), coefp(2*lmax+3), &
                    coefps(2*lmax+3), coefu(2*lmax+3), coefus(2*lmax+3), tempc
@@ -318,7 +318,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate recursion constants used in computing Legendre polynomials
+    !   Calculate recursion constants used in computing Legendre functions.
     !
     !--------------------------------------------------------------------------
     if (lmax_comp /= lmax_old) then
@@ -413,13 +413,210 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     !--------------------------------------------------------------------------
     !
-    !   Determine Clms one l at a time by intergrating over latitude.
-    !   
+    !   Create generic plan for grid.
+    !
     !--------------------------------------------------------------------------
     call dfftw_plan_dft_c2r_1d(plan, nlong, coef(1:nlong/2+1), grid(1:nlong), &
                                 FFTW_MEASURE)
 
+    !--------------------------------------------------------------------------
+    !
+    !   Determine Clms one l at a time by intergrating over latitude.
+    !
+    !--------------------------------------------------------------------------
     i_eq = n/2 + 1  ! Index correspondong to zero latitude
+
+    ! First do equator
+    r_ex = a
+    theta = pi / 2.0_dp
+    z = 0.0_dp
+    u = 1.0_dp
+
+    lat = 0.0_dp
+
+    coefr(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coefr0 = 0.0_dp
+
+    if (calcu) then
+        coefu(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+        coefu0 = 0.0_dp
+    end if
+
+    coeft(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coeft0 = 0.0_dp
+
+    coefp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
+    coefp0 = 0.0_dp
+
+    pm2 = 1.0_dp
+
+    coefr0 = coefr0 - cilm(1,1,1) * pm2
+
+    if (calcu) coefu0 = coefu0 + cilm(1,1,1) * pm2
+
+    ! derivative of l=0 term is 0, so no need to calculate this
+
+    if (lmax_comp /= 0) then    ! l = 1
+        prefactor(1) = r0 / r_ex
+
+        do l = 2, lmax_comp,1
+            prefactor(l) = prefactor(l-1) *r0 / r_ex
+        end do
+
+        pm1 = 0.0_dp
+
+        if (calcu) coefu0 = coefu0 + cilm(1,2,1) * pm1 * prefactor(1)
+
+        dpl = ff1(2,1)
+        coeft0 = coeft0 + cilm(1,2,1) * dpl * prefactor(1)
+
+    end if
+
+    do l = 2, lmax_comp, 1
+        l1 = l + 1
+        p = - ff2(l1,1) * pm2
+        coefr0 = coefr0 + cilm(1,l1,1) * p * (-l1) * prefactor(l)
+
+        if (calcu) coefu0 = coefu0 + cilm(1,l1,1) * p * prefactor(l)
+
+        dpl = l * (sqr(2*l+1) / sqr(2*l-1) * pm1)
+        coeft0 = coeft0 + cilm(1,l1,1) * dpl * prefactor(l)
+
+        pm2 = pm1
+        pm1 = p
+
+    end do
+
+    pmm = sqr(2) * scalef
+
+    rescalem = 1.0_dp / scalef
+
+    do m = 1, lmax_comp-1, 1
+
+        m1 = m + 1
+
+        pmm = pmm * sqr(2*m+1) / sqr(2*m)
+        pm2 = pmm
+
+        coefr(m1) = coefr(m1) + cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) &
+                                * pm2 * (-m-1) * prefactor(m)
+
+        if (calcu) coefu(m1) = coefu(m1) + cmplx(cilm(1,m1,m1), &
+                                - cilm(2,m1,m1), dp) * pm2 * prefactor(m)
+
+        coefp(m1) = coefp(m1) + cmplx(cilm(2,m1,m1), cilm(1,m1,m1), dp) &
+                                * pm2 * prefactor(m) * m
+
+        pm1 = 0.0_dp
+
+        dpl = (sqr(2*m+3) * pmm)
+        coeft(m1) = coeft(m1) + cmplx(cilm(1,m1+1,m1), &
+                                - cilm(2,m1+1,m1), dp) * dpl * prefactor(m+1)
+
+        do l = m + 2, lmax_comp, 1
+            l1 = l + 1
+            p = - ff2(l1,m1) * pm2
+            coefr(m1) = coefr(m1) + cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
+                                    * p * (-l1) * prefactor(l)
+
+            if (calcu) coefu(m1) = coefu(m1) + cmplx(cilm(1,l1,m1), &
+                                    - cilm(2,l1,m1), dp) * p * prefactor(l)
+
+            coefp(m1) = coefp(m1) + cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) &
+                                    * p * prefactor(l) * m
+
+            dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1)
+            coeft(m1) = coeft(m1) + cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
+                                    * dpl * prefactor(l)
+
+            pm2 = pm1
+            pm1 = p
+
+        end do
+
+        coefr(m1) = coefr(m1) * rescalem
+        if (calcu) coefu(m1) = coefu(m1) * rescalem
+        coefp(m1) = coefp(m1) * rescalem
+        coeft(m1) = coeft(m1) * rescalem
+
+    end do
+
+    if (lmax_comp /= 0) then
+
+        pmm = pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
+        coefr(lmax_comp+1) = coefr(lmax_comp+1) + &
+                            cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+                            - cilm(2,lmax_comp+1,lmax_comp+1), dp) &
+                            * pmm * (-lmax_comp-1) * prefactor(lmax_comp)
+
+        if (calcu) coefu(lmax_comp+1) = coefu(lmax_comp+1) + &
+                            cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+                            - cilm(2,lmax_comp+1,lmax_comp+1), dp) &
+                            * pmm * prefactor(lmax_comp)
+
+        coefp(lmax_comp+1) = coefp(lmax_comp+1) &
+                            + cmplx(cilm(2,lmax_comp+1,lmax_comp+1), &
+                            cilm(1,lmax_comp+1,lmax_comp+1), dp) &
+                            * pmm * prefactor(lmax_comp) * lmax_comp
+
+        dpl = -lmax_comp * z * pmm / u**2
+        coeft(lmax_comp+1) = coeft(lmax_comp+1) + &
+                            cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+                            - cilm(2,lmax_comp+1,lmax_comp+1), dp) &
+                            * dpl * prefactor(lmax_comp)
+
+    end if
+
+    coef(1) = cmplx(coefr0, 0.0_dp, dp)
+    coef(2:lmax+1) = coefr(2:lmax+1) / 2.0_dp
+
+    if (present(sampling)) then
+        if (sampling == 2) then
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+        end if
+    end if
+
+    call dfftw_execute(plan)    ! take fourier transform
+    rad_grid(i_eq,1:nlong) = grid(1:nlong) * gm / r_ex**2
+
+    if (calcu) then
+        coef(1) = cmplx(coefu0, 0.0_dp, dp)
+        coef(2:lmax+1) = coefu(2:lmax+1) / 2.0_dp
+
+        if (present(sampling)) then
+            if (sampling == 2) then
+                coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+            end if
+
+        end if
+
+        call dfftw_execute(plan)    ! take fourier transform
+        pot_grid(i_eq,1:nlong) = grid(1:nlong) * gm / r_ex
+    end if
+
+    coef(1) = cmplx(coeft0, 0.0_dp, dp)
+    coef(2:lmax+1) = coeft(2:lmax+1) / 2.0_dp
+
+    if (present(sampling)) then
+        if (sampling == 2) then
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+        end if
+    end if
+
+    call dfftw_execute(plan)    ! take fourier transform
+    theta_grid(i_eq,1:nlong) = -sin(theta) * grid(1:nlong) * gm / r_ex**2
+
+    coef(1) = cmplx(coefp0, 0.0_dp, dp)
+    coef(2:lmax+1) = coefp(2:lmax+1) / 2.0_dp
+
+    if (present(sampling)) then
+        if (sampling == 2) then
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+        end if
+    end if
+
+    call dfftw_execute(plan)    ! take fourier transform
+    phi_grid(i_eq,1:nlong) = grid(1:nlong) * (gm / r_ex**2) / sin(theta)
 
     do i=1, i_eq - 1, 1
 
@@ -787,198 +984,6 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         end if
 
     end do
-
-    ! Finally, do equator
-    r_ex = a
-    theta = pi / 2.0_dp
-    z = 0.0_dp
-    u = 1.0_dp
-
-    lat = 0.0_dp
-
-    coefr(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coefr0 = 0.0_dp
-
-    if (calcu) then
-        coefu(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-        coefu0 = 0.0_dp
-    end if
-
-    coeft(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coeft0 = 0.0_dp
-
-    coefp(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
-    coefp0 = 0.0_dp
-
-    pm2 = 1.0_dp
-
-    coefr0 = coefr0 - cilm(1,1,1) * pm2
-
-    if (calcu) coefu0 = coefu0 + cilm(1,1,1) * pm2
-
-    ! derivative of l=0 term is 0, so no need to calculate this
-
-    if (lmax_comp /= 0) then    ! l = 1
-        prefactor(1) = r0 / r_ex
-
-        do l = 2, lmax_comp,1
-            prefactor(l) = prefactor(l-1) *r0 / r_ex
-        end do
-
-        pm1 = 0.0_dp
-
-        if (calcu) coefu0 = coefu0 + cilm(1,2,1) * pm1 * prefactor(1)
-
-        dpl = ff1(2,1)
-        coeft0 = coeft0 + cilm(1,2,1) * dpl * prefactor(1)
-
-    end if
-
-    do l = 2, lmax_comp, 1
-        l1 = l + 1
-        p = - ff2(l1,1) * pm2
-        coefr0 = coefr0 + cilm(1,l1,1) * p * (-l1) * prefactor(l)
-
-        if (calcu) coefu0 = coefu0 + cilm(1,l1,1) * p * prefactor(l)
-
-        dpl = l * (sqr(2*l+1) / sqr(2*l-1) * pm1)
-        coeft0 = coeft0 + cilm(1,l1,1) * dpl * prefactor(l)
-
-        pm2 = pm1
-        pm1 = p
-
-    end do
-
-    pmm = sqr(2) * scalef
-
-    rescalem = 1.0_dp / scalef
-
-    do m = 1, lmax_comp-1, 1
-
-        m1 = m + 1
-
-        pmm = pmm * sqr(2*m+1) / sqr(2*m)
-        pm2 = pmm
-
-        coefr(m1) = coefr(m1) + cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) &
-                                * pm2 * (-m-1) * prefactor(m)
-
-        if (calcu) coefu(m1) = coefu(m1) + cmplx(cilm(1,m1,m1), &
-                                - cilm(2,m1,m1), dp) * pm2 * prefactor(m)
-
-        coefp(m1) = coefp(m1) + cmplx(cilm(2,m1,m1), cilm(1,m1,m1), dp) &
-                                * pm2 * prefactor(m) * m
-
-        pm1 = 0.0_dp
-
-        dpl = (sqr(2*m+3) * pmm)
-        coeft(m1) = coeft(m1) + cmplx(cilm(1,m1+1,m1), &
-                                - cilm(2,m1+1,m1), dp) * dpl * prefactor(m+1)
-
-        do l = m + 2, lmax_comp, 1
-            l1 = l + 1
-            p = - ff2(l1,m1) * pm2
-            coefr(m1) = coefr(m1) + cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
-                                    * p * (-l1) * prefactor(l)
-
-            if (calcu) coefu(m1) = coefu(m1) + cmplx(cilm(1,l1,m1), &
-                                    - cilm(2,l1,m1), dp) * p * prefactor(l)
-
-            coefp(m1) = coefp(m1) + cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) &
-                                    * p * prefactor(l) * m
-
-            dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1)
-            coeft(m1) = coeft(m1) + cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
-                                    * dpl * prefactor(l)
-
-            pm2 = pm1
-            pm1 = p
-
-        end do
-
-        coefr(m1) = coefr(m1) * rescalem
-        if (calcu) coefu(m1) = coefu(m1) * rescalem
-        coefp(m1) = coefp(m1) * rescalem
-        coeft(m1) = coeft(m1) * rescalem
-
-    end do
-
-    if (lmax_comp /= 0) then
-
-        pmm = pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
-        coefr(lmax_comp+1) = coefr(lmax_comp+1) + &
-                            cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                            - cilm(2,lmax_comp+1,lmax_comp+1), dp) &
-                            * pmm * (-lmax_comp-1) * prefactor(lmax_comp)
-
-        if (calcu) coefu(lmax_comp+1) = coefu(lmax_comp+1) + &
-                            cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                            - cilm(2,lmax_comp+1,lmax_comp+1), dp) &
-                            * pmm * prefactor(lmax_comp)
-
-        coefp(lmax_comp+1) = coefp(lmax_comp+1) &
-                            + cmplx(cilm(2,lmax_comp+1,lmax_comp+1), &
-                            cilm(1,lmax_comp+1,lmax_comp+1), dp) &
-                            * pmm * prefactor(lmax_comp) * lmax_comp
-
-        dpl = -lmax_comp * z * pmm / u**2
-        coeft(lmax_comp+1) = coeft(lmax_comp+1) + &
-                            cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
-                            - cilm(2,lmax_comp+1,lmax_comp+1), dp) &
-                            * dpl * prefactor(lmax_comp)
-
-    end if
-
-    coef(1) = cmplx(coefr0, 0.0_dp, dp)
-    coef(2:lmax+1) = coefr(2:lmax+1) / 2.0_dp
-
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        end if
-    end if
-
-    call dfftw_execute(plan)    ! take fourier transform
-    rad_grid(i_eq,1:nlong) = grid(1:nlong) * gm / r_ex**2
-
-    if (calcu) then
-        coef(1) = cmplx(coefu0, 0.0_dp, dp)
-        coef(2:lmax+1) = coefu(2:lmax+1) / 2.0_dp
-
-        if (present(sampling)) then
-            if (sampling == 2) then
-                coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-            end if
-
-        end if
-
-        call dfftw_execute(plan)    ! take fourier transform
-        pot_grid(i_eq,1:nlong) = grid(1:nlong) * gm / r_ex
-    end if
-
-    coef(1) = cmplx(coeft0, 0.0_dp, dp)
-    coef(2:lmax+1) = coeft(2:lmax+1) / 2.0_dp
-
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        end if
-    end if
-
-    call dfftw_execute(plan)    ! take fourier transform
-    theta_grid(i_eq,1:nlong) = -sin(theta) * grid(1:nlong) * gm / r_ex**2
-
-    coef(1) = cmplx(coefp0, 0.0_dp, dp)
-    coef(2:lmax+1) = coefp(2:lmax+1) / 2.0_dp
-
-    if (present(sampling)) then
-        if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
-        end if
-    end if
-
-    call dfftw_execute(plan)    ! take fourier transform
-    phi_grid(i_eq,1:nlong) = grid(1:nlong) * (gm / r_ex**2) / sin(theta)
 
     call dfftw_destroy_plan(plan)
 

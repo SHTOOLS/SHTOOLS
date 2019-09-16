@@ -2,13 +2,13 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                        lmax_calc, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   Given the Spherical Harmonic coefficients CILM, this subroutine
-!   will evalate these coefficients on a grid with equal spacing in
+!   Given the Spherical Harmonic coefficients CILM of a function, this
+!   subroutine will evalate the function on a grid with equal spacing in
 !   longitude and with latitude points appropriate for Gauss-Legendre
-!   quadrature integrations. Note that this is done using FFTs for each degree
+!   quadrature integrations. This is done using FFTs for each degree
 !   of each latitude band. The grid spacing is determined by the spherical
-!   harmonic bandwidth LMAX. Nevertheless, the coefficients can be evaluated up
-!   to smaller spherical harmonic degree by specifying the optional parameter
+!   harmonic bandwidth LMAX, but the coefficients can be evaluated up
+!   to a smaller spherical harmonic degree by specifying the optional parameter
 !   LMAX_CALC.
 !
 !   The optional array PLX contains precomputed associated legendre functions
@@ -16,17 +16,17 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !   and should not be precomputed when memory is an issue (i.e., lmax>360).
 !   If PLX is not present, the Legendre functions are computed on the fly
 !   using the scaling methodolgy presented in Holmes and Featherston (2002).
-!   When NORM=1,2 or 4, these are accurate to degree 2800. When NORM=3, the
-!   routine is only stable to about degree 15!
+!   When NORM = 1, 2 or 4, these are accurate to degree 2800. When NORM = 3,
+!   the routine is only stable to about degree 15!
 !
 !   Calling Parameters
 !
 !       IN
 !           cilm        Input spherical harmonic coefficients with
 !                       dimensions (2, LMAX+1, LMAX+1).
-!           lmax        Maximum spherical harmonic degree used in the expansion.
-!                       This value determines the grid spacing of the output
-!                       function.
+!           lmax        Maximum spherical harmonic degree used in the
+!                       expansion. This value determines the grid spacing of
+!                       the output function.
 !
 !       OUT
 !           gridglq     Gridded data of the spherical harmonic
@@ -94,10 +94,10 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     integer, intent(in), optional :: norm, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
     integer :: l, m, i, nlat, nlong, l1, m1, lmax_comp, i_s, astat(4), lnorm, k
-    real(dp) :: grid(2*lmax+1), pi, coef0, coef0s, scalef, rescalem, u, p, &
-                pmm, pm1, pm2, z
+    real(dp) :: grid(2*lmax+1), grids(2*lmax+1), pi, coef0, coef0s, scalef, &
+                rescalem, u, p, pmm, pm1, pm2, z
     complex(dp) :: coef(lmax+1), coefs(lmax+1)
-    integer(int8) :: plan
+    integer(int8) :: plan, plans
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
@@ -123,8 +123,10 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     else if (size(gridglq(1,:)) < 2*lmax+1 .or. &
                 size(gridglq(:,1)) < lmax+1 ) then
         print*, "Error --- MakeGridGLQ"
-        print*, "GRIDGLQ must be dimensioned as (LMAX+1, 2*LMAX+1) where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(gridglq(:,1)), size(gridglq(1,:))
+        print*, "GRIDGLQ must be dimensioned as (LMAX+1, 2*LMAX+1)"
+        print*, "where LMAX is ", lmax
+        print*, "Input array is dimensioned ", size(gridglq(:,1)), &
+                                               size(gridglq(1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -247,7 +249,7 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate recursion constants used in computing the Legendre polynomials
+    !   Calculate recursion constants used in computing the Legendre functions.
     !
     !--------------------------------------------------------------------------
     if ((lmax_comp /= lmax_old .or. lnorm /= norm_old) .and. &
@@ -396,6 +398,14 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     !--------------------------------------------------------------------------
     !
+    !   Create generic plan for grid and grids.
+    !
+    !--------------------------------------------------------------------------
+    call dfftw_plan_dft_c2r_1d(plan, nlong, coef, grid, FFTW_MEASURE)
+    call dfftw_plan_dft_c2r_1d(plans, nlong, coefs, grids, FFTW_MEASURE)
+
+    !--------------------------------------------------------------------------
+    !
     !   Determine Cilms, one l at a time I by integrating over all
     !   latitudes using Gauss-Legendre Quadrature. When PLX is not
     !   present, the Legendre functions are computed on the fly
@@ -404,8 +414,6 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     !   exception of the m=0 terms that do not need to be scaled
     !
     !--------------------------------------------------------------------------
-    call dfftw_plan_dft_c2r_1d(plan, nlong, coef, grid, FFTW_MEASURE)
-
     if (present(plx)) then
         do i = 1, nlat
             coef0 = 0.0_dp
@@ -622,11 +630,11 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                 call dfftw_execute(plan)    ! take fourier transform
                 gridglq(i,1:nlong) = grid(1:nlong)
 
-                coef(1) = cmplx(coef0s, 0.0_dp, dp)
-                coef(2:lmax_comp+1) = coefs(2:lmax_comp+1) / 2.0_dp
+                coefs(1) = cmplx(coef0s, 0.0_dp, dp)
+                coefs(2:lmax_comp+1) = coefs(2:lmax_comp+1) / 2.0_dp
 
-                call dfftw_execute(plan)    ! take fourier transform
-                gridglq(i_s,1:nlong) = grid(1:nlong)
+                call dfftw_execute(plans)    ! take fourier transform
+                gridglq(i_s,1:nlong) = grids(1:nlong)
 
             end if
 
@@ -635,5 +643,6 @@ subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     end if
 
     call dfftw_destroy_plan(plan)
+    call dfftw_destroy_plan(plans)
 
 end subroutine MakeGridGLQ
