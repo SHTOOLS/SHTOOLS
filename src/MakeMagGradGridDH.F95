@@ -103,7 +103,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
-#define dfftw_execute dfftw_execute_
+#define dfftw_execute_dft_c2r dfftw_execute_dft_c2r_
 #define dfftw_destroy_plan dfftw_destroy_plan_
 #endif
 
@@ -134,7 +134,8 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0
-    external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
+    external :: dfftw_plan_dft_c2r_1d, dfftw_execute_dft_c2r, &
+                dfftw_destroy_plan
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
 
@@ -398,7 +399,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     tempr = 2 * cilm(1,1,1) * pm2  ! l = 0
     coefrr0 = coefrr0 + tempr
 
-    ! derivative in theta and phi of l=0 term is 0, so no need to calculate this
+    ! derivative in theta and phi of l=0 term is 0, so no need to calculate
 
     if (lmax_comp /= 0) then    ! l = 1
         prefactor(1) = r0 / r_ex
@@ -518,18 +519,21 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coefrp(m1) = coefrp(m1) + tempc
 
             dpl = ( sqr(l+m) * sqr(l-m) * pm1)
-            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * prefactor(l)
+            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl &
+                    * prefactor(l)
             coeft(m1) = coeft(m1) + tempc
 
             tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * (-l1) &
                     * prefactor(l)
             coefrt(m1) = coefrt(m1) + tempc
 
-            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * dpl * prefactor(l) * m
+            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * dpl &
+                    * prefactor(l) * m
             coeftp(m1) = coeftp(m1) + tempc
 
             dpl2 = -(l * l1 -(m**2) / u**2) * p
-            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl2 * prefactor(l)
+            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl2 &
+                    * prefactor(l)
             coeftt(m1) = coeftt(m1) + tempc
 
             pm2 = pm1
@@ -622,7 +626,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vzz(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vxx = 1/r Vr + 1/r^2 Vtt
@@ -635,7 +639,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vxx(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -649,7 +653,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vyy(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -662,7 +666,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vxy(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -676,7 +680,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vxz(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -690,7 +694,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vyz(i_eq,1:nlong) = grid(1:nlong)
 
     do i = 1, i_eq - 1, 1
@@ -1171,7 +1175,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
         end if
 
-        call dfftw_execute(plan)    ! take fourier transform
+        call dfftw_execute_dft_c2r(plan, coef, grid)
         vzz(i,1:nlong) = grid(1:nlong)
 
         if (i == 1) then
@@ -1193,7 +1197,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxx(i,1:nlong) = grid(1:nlong)
 
             ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -1209,7 +1213,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vyy(i,1:nlong) = grid(1:nlong)
 
             ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -1224,7 +1228,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxy(i,1:nlong) = grid(1:nlong)
 
             ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -1238,7 +1242,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxz(i,1:nlong) = grid(1:nlong)
 
             ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -1252,7 +1256,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vyz(i,1:nlong) = grid(1:nlong)
 
         end if
@@ -1268,7 +1272,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vzz(i_s,1:nlong) = grid(1:nlong)
 
             ! Vxx = 1/r Vr + 1/r^2 Vtt
@@ -1282,7 +1286,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxx(i_s,1:nlong) = grid(1:nlong)
 
             ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -1298,7 +1302,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vyy(i_s,1:nlong) = grid(1:nlong)
 
             ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -1313,7 +1317,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxy(i_s,1:nlong) = grid(1:nlong)
 
             ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -1327,7 +1331,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxz(i_s,1:nlong) = grid(1:nlong)
 
             ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -1342,7 +1346,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vyz(i_s,1:nlong) = grid(1:nlong)
 
         end if

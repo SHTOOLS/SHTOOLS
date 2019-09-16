@@ -93,7 +93,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
     use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_r2c_1d dfftw_plan_dft_r2c_1d_
-#define dfftw_execute dfftw_execute_
+#define dfftw_execute_dft_r2c dfftw_execute_dft_r2c_
 #define dfftw_destroy_plan dfftw_destroy_plan_
 #endif
 
@@ -115,7 +115,8 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
-    external :: dfftw_plan_dft_r2c_1d, dfftw_execute, dfftw_destroy_plan
+    external :: dfftw_plan_dft_r2c_1d, dfftw_execute_dft_r2c, &
+                dfftw_destroy_plan
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 
@@ -473,14 +474,14 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
         u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
         gridl(1:nlong) = grid(i,1:nlong)
-        call dfftw_execute(plan)    ! take fourier transform
+        call dfftw_execute_dft_r2c(plan, gridl, cc)   ! take fourier transform
         fcoef1(1,1:n/2) = sqrt(2*pi) * aj(i) * dble(cc(1:n/2)) / dble(nlong)
         fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * aimag(cc(1:n/2)) / dble(nlong)
 
         i_s = 2 * i_eq - i
 
         gridls(1:nlong) = grid(i_s,1:nlong)
-        call dfftw_execute(plans)    ! take fourier transform
+        call dfftw_execute_dft_r2c(plans, gridls, ccs)
         fcoef2(1,1:n/2) = sqrt(2*pi) * aj(i_s) * dble(ccs(1:n/2)) / dble(nlong)
         fcoef2(2,1:n/2) = -sqrt(2*pi) * aj(i_s) * aimag(ccs(1:n/2)) / &
                           dble(nlong)
@@ -594,7 +595,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
     u = 1.0_dp
 
     gridl(1:nlong) = grid(i,1:nlong)
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_r2c(plan, gridl, cc)
     fcoef1(1,1:n/2) = sqrt(2*pi) * aj(i) * dble(cc(1:n/2)) / dble(nlong)
     fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * aimag(cc(1:n/2)) / dble(nlong)
 

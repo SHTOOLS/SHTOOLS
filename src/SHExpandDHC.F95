@@ -98,7 +98,7 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
     use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_1d dfftw_plan_dft_1d_
-#define dfftw_execute dfftw_execute_
+#define dfftw_execute_dft dfftw_execute_dft_
 #define dfftw_destroy_plan dfftw_destroy_plan_
 #endif
 
@@ -114,12 +114,13 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
                    fcoef2(2*n), ffc1(-1:1), ffc2(-1:1)
     integer :: l, m, i, l1, m1, i_eq, i_s, lnorm, astat(5), lmax_comp, nlong
     integer(int8) :: plan, plans
-    real(dp) :: pi, aj(n), theta, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z
+    real(dp) :: pi, aj(n), theta, prod, scalef, rescalem, u, p, pmm, pm1, &
+                pm2, z
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
-    external :: dfftw_plan_dft_1d, dfftw_execute, dfftw_destroy_plan
+    external :: dfftw_plan_dft_1d, dfftw_execute_dft, dfftw_destroy_plan
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 
@@ -470,13 +471,103 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
     !--------------------------------------------------------------------------
     i_eq = n / 2 + 1  ! Index correspondong to the equator
 
+    ! First do equator
+    i = i_eq
+
+    z = 0.0_dp
+    u = 1.0_dp
+
+    gridl(1:nlong) = grid(i,1:nlong)
+    call dfftw_execute_dft(plan, gridl, cc)    ! take fourier transform
+    fcoef1(1:nlong) = cc(1:nlong) * sqrt(2*pi) * aj(i) / dble(nlong)
+
+    select case (lnorm)
+        case (1,2,3); pm2 = 1.0_dp
+        case (4);     pm2 = 1.0_dp / sqrt(4 * pi)
+    end select
+
+    cilm(1,1,1) = cilm(1,1,1) + pm2 * fcoef1(1)
+
+    if (lmax_comp /= 0) then
+        do l = 2, lmax_comp, 2
+            l1 = l + 1
+            p = - ff2(l1,1) * pm2
+            pm2 = p
+            cilm(1,l1,1) = cilm(1,l1,1) + p * fcoef1(1)
+
+        end do
+
+        select case (lnorm)
+            case (1,2,3); pmm = scalef
+            case (4);     pmm = scalef / sqrt(4 * pi)
+        end select
+
+        rescalem = 1.0_dp / scalef
+
+        do m = 1, lmax_comp-1, 1
+            m1 = m + 1
+
+            select case (lnorm)
+                case (1,4)
+                    pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
+                    pm2 = pmm
+
+                case (2)
+                    pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
+                    pm2 = pmm / sqr(2*m+1)
+
+                case (3)
+                    pmm = phase * pmm * (2*m-1)
+                    pm2 = pmm
+
+            end select
+
+            fcoef1(m1) = fcoef1(m1) * rescalem
+            fcoef1(nlong-(m-1)) = fcoef1(nlong-(m-1)) * rescalem &
+                                  * ((-1)**mod(m,2))
+
+            cilm(1,m1,m1) = cilm(1,m1,m1) + pm2 * fcoef1(m1)
+            cilm(2,m1,m1) = cilm(2,m1,m1) + pm2 * fcoef1(nlong-(m-1))
+
+            do l = m + 2, lmax_comp, 2
+                l1 = l + 1
+                p = - ff2(l1,m1) * pm2
+                pm2 = p
+                cilm(1,l1,m1) = cilm(1,l1,m1) + p * fcoef1(m1)
+                cilm(2,l1,m1) = cilm(2,l1,m1) + p * fcoef1(nlong-(m-1))
+
+            end do
+
+        end do
+
+        select case (lnorm)
+            case (1,4)
+                pmm = phase * pmm * sqr(2*lmax_comp+1) &
+                      / sqr(2*lmax_comp) * rescalem
+
+            case(2)
+                pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
+
+            case(3)
+                pmm = phase * pmm * (2*lmax_comp-1) * rescalem
+
+        end select
+
+        cilm(1,lmax_comp+1,lmax_comp+1) = cilm(1,lmax_comp+1,lmax_comp+1) &
+                                          + pmm * fcoef1(lmax_comp+1)
+        cilm(2,lmax_comp+1,lmax_comp+1) = cilm(2,lmax_comp+1,lmax_comp+1) &
+                                          + ((-1)**mod(lmax_comp,2)) * pmm &
+                                          * fcoef1(nlong-(lmax_comp-1))
+
+    end if
+
     do i = 2, i_eq - 1, 1
         theta = (i-1) * pi /dble(n)
         z = cos(theta)
         u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
         gridl(1:nlong) = grid(i,1:nlong)
-        call dfftw_execute(plan)    ! take fourier transform
+        call dfftw_execute_dft(plan, gridl, cc)    ! take fourier transform
         fcoef1(1:nlong) = cc(1:nlong) * sqrt(2*pi) * aj(i) / dble(nlong)
         ! positive frequencies up to n/2,
         ! negative frequencies beyond in oposite order
@@ -484,7 +575,7 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
         i_s = 2 * i_eq - i
 
         gridls(1:nlong) = grid(i_s,1:nlong)
-        call dfftw_execute(plans)    ! take fourier transform
+        call dfftw_execute_dft(plans, gridls, ccs)    ! take fourier transform
         fcoef2(1:nlong) = ccs(1:nlong) * sqrt(2*pi) * aj(i_s) / dble(nlong)
 
         select case (lnorm)
@@ -596,96 +687,6 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
                                           ! fsymsign = 1
 
     end do
-
-    ! Finally, do equator
-    i = i_eq
-
-    z = 0.0_dp
-    u = 1.0_dp
-
-    gridl(1:nlong) = grid(i,1:nlong)
-    call dfftw_execute(plan)    ! take fourier transform
-    fcoef1(1:nlong) = cc(1:nlong) * sqrt(2*pi) * aj(i) / dble(nlong)
-
-    select case (lnorm)
-        case (1,2,3); pm2 = 1.0_dp
-        case (4);     pm2 = 1.0_dp / sqrt(4 * pi)
-    end select
-
-    cilm(1,1,1) = cilm(1,1,1) + pm2 * fcoef1(1)
-
-    if (lmax_comp /= 0) then
-        do l = 2, lmax_comp, 2
-            l1 = l + 1
-            p = - ff2(l1,1) * pm2
-            pm2 = p
-            cilm(1,l1,1) = cilm(1,l1,1) + p * fcoef1(1)
-
-        end do
-
-        select case (lnorm)
-            case (1,2,3); pmm = scalef
-            case (4);     pmm = scalef / sqrt(4 * pi)
-        end select
-
-        rescalem = 1.0_dp / scalef
-
-        do m = 1, lmax_comp-1, 1
-            m1 = m + 1
-
-            select case (lnorm)
-                case (1,4)
-                    pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
-                    pm2 = pmm
-
-                case (2)
-                    pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
-                    pm2 = pmm / sqr(2*m+1)
-
-                case (3)
-                    pmm = phase * pmm * (2*m-1)
-                    pm2 = pmm
-
-            end select
-
-            fcoef1(m1) = fcoef1(m1) * rescalem
-            fcoef1(nlong-(m-1)) = fcoef1(nlong-(m-1)) * rescalem &
-                                  * ((-1)**mod(m,2))
-
-            cilm(1,m1,m1) = cilm(1,m1,m1) + pm2 * fcoef1(m1)
-            cilm(2,m1,m1) = cilm(2,m1,m1) + pm2 * fcoef1(nlong-(m-1))
-
-            do l = m + 2, lmax_comp, 2
-                l1 = l + 1
-                p = - ff2(l1,m1) * pm2
-                pm2 = p
-                cilm(1,l1,m1) = cilm(1,l1,m1) + p * fcoef1(m1)
-                cilm(2,l1,m1) = cilm(2,l1,m1) + p * fcoef1(nlong-(m-1))
-
-            end do
-
-        end do
-
-        select case (lnorm)
-            case (1,4)
-                pmm = phase * pmm * sqr(2*lmax_comp+1) &
-                      / sqr(2*lmax_comp) * rescalem
-
-            case(2)
-                pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
-
-            case(3)
-                pmm = phase * pmm * (2*lmax_comp-1) * rescalem
-
-        end select
-
-        cilm(1,lmax_comp+1,lmax_comp+1) = cilm(1,lmax_comp+1,lmax_comp+1) &
-                                          + pmm * fcoef1(lmax_comp+1)
-        cilm(2,lmax_comp+1,lmax_comp+1) = cilm(2,lmax_comp+1,lmax_comp+1) &
-                                          + ((-1)**mod(lmax_comp,2)) * pmm &
-                                          * fcoef1(nlong-(lmax_comp-1))
-
-    end if
 
     call dfftw_destroy_plan(plan)
     call dfftw_destroy_plan(plans)

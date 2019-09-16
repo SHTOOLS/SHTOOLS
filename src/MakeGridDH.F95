@@ -82,7 +82,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
-#define dfftw_execute dfftw_execute_
+#define dfftw_execute_dft_c2r dfftw_execute_dft_c2r_
 #define dfftw_destroy_plan dfftw_destroy_plan_
 #endif
 
@@ -103,7 +103,8 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
-    external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
+    external :: dfftw_plan_dft_c2r_1d, dfftw_execute_dft_c2r, &
+                dfftw_destroy_plan
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
 
@@ -526,7 +527,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
 
     griddh(i_eq,1:nlong) = grid(1:nlong)
 
@@ -646,7 +647,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
             end if
         end if
 
-        call dfftw_execute(plan)    ! take fourier transform
+        call dfftw_execute_dft_c2r(plan, coef, grid)
         griddh(i,1:nlong) = grid(1:nlong)
 
         if (i /= 1) then    ! don't compute value for south pole.
@@ -659,7 +660,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
                 end if
             end if
 
-            call dfftw_execute(plans)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plans, coefs, grids)
             griddh(i_s,1:nlong) = grids(1:nlong)
 
         end if

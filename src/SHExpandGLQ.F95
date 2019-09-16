@@ -76,7 +76,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_r2c_1d dfftw_plan_dft_r2c_1d_
-#define dfftw_execute dfftw_execute_
+#define dfftw_execute_dft_r2c dfftw_execute_dft_r2c_
 #define dfftw_destroy_plan dfftw_destroy_plan_
 #endif
 
@@ -99,7 +99,8 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
-    external :: dfftw_plan_dft_r2c_1d, dfftw_execute, dfftw_destroy_plan
+    external :: dfftw_plan_dft_r2c_1d, dfftw_execute_dft_r2c, &
+                dfftw_destroy_plan
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 
@@ -131,8 +132,8 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax_comp+1 &
             .or. size(cilm(1,1,:)) < lmax_comp+1) then
         print*, "Error --- SHExpandGLQ"
-        print*, "CILM must be dimensioned as (2, LMAX_COMP+1, LMAX_COMP+1) where"
-        print*, "LMAX_COMP = MIN(LMAX+1, LMAX_CALC+1)"
+        print*, "CILM must be dimensioned as (2, LMAX_COMP+1, LMAX_COMP+1)"
+        print*, "where LMAX_COMP = MIN(LMAX+1, LMAX_CALC+1)"
         print*, "LMAX = ", lmax
         if (present(lmax_calc)) print*, "LMAX_CALC = ", lmax_calc
         print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), &
@@ -427,7 +428,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     if (present(plx)) then
         do i = 1, nlat
             gridl(1:nlong) = gridglq(i,1:nlong)
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_r2c(plan, gridl, cc)
             fcoef1(1,1:lmax+1) = 2 * w(i) * pi * dble(cc(1:lmax+1)) &
                                  / dble(nlong)
             fcoef1(2,1:lmax+1) = -2 * w(i) * pi * aimag(cc(1:lmax+1)) &
@@ -456,7 +457,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
             ! This latitude is the equator; z=0, u=1
 
                 gridl(1:nlong) = gridglq(i,1:nlong)
-                call dfftw_execute(plan)   ! take fourier transform
+                call dfftw_execute_dft_r2c(plan, gridl, cc)
                 fcoef1(1,1:lmax+1) = 2 * w(i) * pi * dble(cc(1:lmax+1)) &
                                      / dble(nlong)
                 fcoef1(2,1:lmax+1) = -2 * w(i) * pi * aimag(cc(1:lmax+1)) &
@@ -539,7 +540,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
                 gridl(1:nlong) = gridglq(i,1:nlong)
-                call dfftw_execute(plan)
+                call dfftw_execute_dft_r2c(plan, gridl, cc)
                 fcoef1(1,1:lmax+1) = 2 * w(i) * pi * dble(cc(1:lmax+1)) &
                                      / dble(nlong)
                 fcoef1(2,1:lmax+1) = -2 * w(i) * pi * aimag(cc(1:lmax+1)) &
@@ -548,7 +549,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 i_s = nlat + 1 - i  ! point symmetric about the equator
 
                 gridls(1:nlong) = gridglq(i_s,1:nlong)
-                call dfftw_execute(plans)
+                call dfftw_execute_dft_r2c(plans, gridls, ccs)
                 fcoef2(1,1:lmax+1) = 2 * w(i_s) * pi * dble(ccs(1:lmax+1)) &
                                      / dble(nlong)
                 fcoef2(2,1:lmax+1) = -2 * w(i_s) * pi * aimag(ccs(1:lmax+1)) &

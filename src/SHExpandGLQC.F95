@@ -77,7 +77,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_1d dfftw_plan_dft_1d_
-#define dfftw_execute dfftw_execute_
+#define dfftw_execute_dft dfftw_execute_dft_
 #define dfftw_destroy_plan dfftw_destroy_plan_
 #endif
 
@@ -100,7 +100,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
-    external :: dfftw_plan_dft_1d, dfftw_execute, dfftw_destroy_plan
+    external :: dfftw_plan_dft_1d, dfftw_execute_dft, dfftw_destroy_plan
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 
@@ -430,7 +430,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
         do i = 1, nlat
 
             gridl(1:nlong) = gridglq(i,1:nlong)
-            call dfftw_execute(plan)   ! take fourier transform
+            call dfftw_execute_dft(plan, gridl, cc)   ! take fourier transform
             fcoef1(1:nlong) = 2 * cc(1:nlong) * w(i) * pi / dble(nlong)
 
             k = 0
@@ -460,7 +460,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
             ! This latitude is the equator; z=0, u=1
 
                 gridl(1:nlong) = gridglq(i,1:nlong)
-                call dfftw_execute(plan)   ! take fourier transform
+                call dfftw_execute_dft(plan, gridl, cc)
                 fcoef1(1:nlong) = 2 * w(i) * pi * cc(1:nlong) / dble(nlong)
 
                 u = 1.0_dp
@@ -545,13 +545,13 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                 u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
                 gridl(1:nlong) = gridglq(i,1:nlong)
-                call dfftw_execute(plan)
+                call dfftw_execute_dft(plan, gridl, cc)
                 fcoef1(1:nlong) = 2 * w(i) * pi * cc(1:nlong) / dble(nlong)
 
                 i_s = nlat + 1 - i  ! point symmetric about the equator
 
                 gridls(1:nlong) = gridglq(i_s,1:nlong)
-                call dfftw_execute(plans)
+                call dfftw_execute_dft(plans, gridls, ccs)
                 fcoef2(1:nlong) = 2 * w(i_s) * pi * ccs(1:nlong) / dble(nlong)
 
                 select case (lnorm)

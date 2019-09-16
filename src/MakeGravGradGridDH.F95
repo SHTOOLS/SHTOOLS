@@ -103,7 +103,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
-#define dfftw_execute dfftw_execute_
+#define dfftw_execute_dft_c2r dfftw_execute_dft_c2r_
 #define dfftw_destroy_plan dfftw_destroy_plan_
 #endif
 
@@ -134,7 +134,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0
-    external :: dfftw_plan_dft_c2r_1d, dfftw_execute, dfftw_destroy_plan
+    external :: dfftw_plan_dft_c2r_1d, dfftw_execute_dft_c2r, &
+                dfftw_destroy_plan
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
 
@@ -469,8 +470,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 * prefactor(m)    ! (m,m)
         coefr(m1) = coefr(m1) + tempc
 
-        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (m+1) * (m+2) &
-                * prefactor(m) ! (m,m)
+        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (m+1) &
+                * (m+2) * prefactor(m) ! (m,m)
         coefrr(m1) = coefrr(m1) + tempc
 
         tempc = cmplx(cilm(2,m1,m1), cilm(1,m1,m1), dp) * pm2 &
@@ -528,19 +529,22 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                     * prefactor(l) * m
             coefrp(m1) = coefrp(m1) + tempc
 
-            dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1) 
-            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * prefactor(l)
+            dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1)
+            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl &
+                    * prefactor(l)
             coeft(m1) = coeft(m1) + tempc
 
             tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * (-l1) &
                     * prefactor(l)
             coefrt(m1) = coefrt(m1) + tempc
 
-            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * dpl * prefactor(l) * m
+            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * dpl * &
+                    prefactor(l) * m
             coeftp(m1) = coeftp(m1) + tempc
 
             dpl2 = -(l * l1 -(m**2) / u**2) * p
-            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl2 * prefactor(l)
+            tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl2 &
+                    * prefactor(l)
             coeftt(m1) = coeftt(m1) + tempc
 
             pm2 = pm1
@@ -633,7 +637,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vzz(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vxx = 1/r Vr + 1/r^2 Vtt
@@ -646,7 +650,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vxx(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -660,7 +664,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vyy(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -673,7 +677,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vxy(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -687,7 +691,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vxz(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -701,7 +705,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute(plan)    ! take fourier transform
+    call dfftw_execute_dft_c2r(plan, coef, grid)
     vyz(i_eq,1:nlong) = grid(1:nlong)
 
     do i = 1, i_eq - 1, 1
@@ -922,8 +926,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coefr(m1) = coefr(m1) + tempc 
             coefrs(m1) = coefrs(m1) - tempc ! fsymsign = -1
 
-            tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 * (m+2) &
-                    * (m+3) * prefactor(m+1)   ! (m+1,m)
+            tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 &
+                    * (m+2) * (m+3) * prefactor(m+1)   ! (m+1,m)
             coefrr(m1) = coefrr(m1) + tempc
             coefrrs(m1) = coefrrs(m1) - tempc ! fsymsign = -1
 
@@ -937,8 +941,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coefpp(m1) = coefpp(m1) + tempc
             coefpps(m1) = coefpps(m1) - tempc ! fsymsign = -1
 
-            tempc = cmplx(cilm(2,m1+1,m1), cilm(1,m1+1,m1), dp) * pm1 * (-m-2) &
-                    * prefactor(m+1) * m    ! (m+1,m)
+            tempc = cmplx(cilm(2,m1+1,m1), cilm(1,m1+1,m1), dp) * pm1 &
+                    * (-m-2) * prefactor(m+1) * m    ! (m+1,m)
             coefrp(m1) = coefrp(m1) + tempc
             coefrps(m1) = coefrps(m1) - tempc ! fsymsign = -1
 
@@ -1001,8 +1005,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 ! reverse fsymsign
                 coefts(m1) = coefts(m1) - tempc * fsymsign(l1,m1)
 
-                tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * (-l1) &
-                        * prefactor(l)
+                tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl &
+                        * (-l1) * prefactor(l)
                 coefrt(m1) = coefrt(m1) + tempc
                 ! reverse fsymsign
                 coefrts(m1) = coefrts(m1) - tempc * fsymsign(l1,m1)
@@ -1016,7 +1020,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 dpl2 = -(l * l1 -(m**2)/u**2) * p + z * dpl
                 dpl2s = -(l * l1 -(m**2)/u**2) * p * fsymsign(l1,m1) &
                        - z * dpl * fsymsign(l1,m1) 
-                tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * prefactor(l)
+                tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
+                        * prefactor(l)
                 coeftt(m1) = coeftt(m1) + tempc * dpl2
                 coeftts(m1) = coeftts(m1) +  tempc * dpl2s
 
@@ -1111,8 +1116,10 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coeftp(lmax_comp+1) = coeftp(lmax_comp+1) + tempc
             coeftps(lmax_comp+1) = coeftps(lmax_comp+1) - tempc
 
-            dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm + z * dpl
-            dpl2s = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm - z * dpl
+            dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm &
+                   + z * dpl
+            dpl2s = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm &
+                    - z * dpl
             tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                             - cilm(2,lmax_comp+1,lmax_comp+1), dp) &
                             * prefactor(lmax_comp)
@@ -1189,7 +1196,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
         end if
 
-        call dfftw_execute(plan)    ! take fourier transform
+        call dfftw_execute_dft_c2r(plan, coef, grid)
         vzz(i,1:nlong) = grid(1:nlong)
 
         if (i == 1) then
@@ -1211,7 +1218,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxx(i,1:nlong) = grid(1:nlong)
 
             ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -1227,7 +1234,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vyy(i,1:nlong) = grid(1:nlong)
 
             ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -1242,7 +1249,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxy(i,1:nlong) = grid(1:nlong)
 
             ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -1256,7 +1263,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxz(i,1:nlong) = grid(1:nlong)
 
             ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -1270,7 +1277,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vyz(i,1:nlong) = grid(1:nlong)
 
         end if
@@ -1286,7 +1293,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vzz(i_s,1:nlong) = grid(1:nlong)
 
             ! Vxx = 1/r Vr + 1/r^2 Vtt
@@ -1300,7 +1307,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxx(i_s,1:nlong) = grid(1:nlong)
 
             ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -1316,7 +1323,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vyy(i_s,1:nlong) = grid(1:nlong)
 
             ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -1331,7 +1338,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxy(i_s,1:nlong) = grid(1:nlong)
 
             ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -1345,7 +1352,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vxz(i_s,1:nlong) = grid(1:nlong)
 
             ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -1360,7 +1367,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_c2r(plan, coef, grid)
             vyz(i_s,1:nlong) = grid(1:nlong)
 
         end if
