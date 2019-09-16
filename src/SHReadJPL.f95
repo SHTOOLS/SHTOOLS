@@ -73,7 +73,7 @@ subroutine SHReadJPL(filename, cilm, lmax, error, gm, formatstring, exitstatus)
             stop
         end if
 
-    end if 
+    end if
 
     if (present(error)) then
         if (size(error(:,1,1)) < 2 .or. size(error(1,:,1)) < lmax+1 .or. &

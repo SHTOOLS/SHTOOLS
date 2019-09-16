@@ -1191,7 +1191,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 if (sampling == 2) then
                     coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
                 end if
-            end if 
+            end if
 
             call dfftw_execute(plan)    ! take fourier transform
             vxx(i,1:nlong) = grid(1:nlong)

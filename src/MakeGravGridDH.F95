@@ -417,7 +417,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     !
     !--------------------------------------------------------------------------
     call dfftw_plan_dft_c2r_1d(plan, nlong, coef(1:nlong/2+1), grid(1:nlong), &
-                                FFTW_MEASURE)
+                               FFTW_MEASURE)
 
     !--------------------------------------------------------------------------
     !
@@ -911,7 +911,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 if (sampling == 2) then
                     coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
                 end if
-            end if 
+            end if
 
             call dfftw_execute(plan)    ! take fourier transform
             theta_grid(i,1:nlong) = -sin(theta)*grid(1:nlong) * gm / r_ex**2
