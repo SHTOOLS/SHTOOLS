@@ -385,7 +385,7 @@ python module _SHTOOLS
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
             real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            real(dp) intent(out) :: chi2
+            real(dp),intent(out) :: chi2
             real(dp),dimension(d_d0),intent(in) :: d
             real(dp),dimension(lat_d0),intent(in) :: lat
             real(dp),dimension(lon_d0),intent(in) :: lon
@@ -406,7 +406,7 @@ python module _SHTOOLS
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
             real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            real(dp) intent(out) :: chi2
+            real(dp),intent(out) :: chi2
             real(dp),dimension(d_d0),intent(in) :: d
             real(dp),dimension(w_d0),intent(in) :: w
             real(dp),dimension(lat_d0),intent(in) :: lat
@@ -513,8 +513,8 @@ python module _SHTOOLS
             real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer,intent(out) :: lmax
             integer,intent(in) :: lmax_in
-            real(dp) intent(out) :: gm
-            real(dp) intent(out) :: r0_pot
+            real(dp),intent(out) :: gm
+            real(dp),intent(out) :: r0_pot
             real(dp),dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
             real(dp),intent(out) :: doystart
             real(dp),intent(out) :: doyend
@@ -536,14 +536,14 @@ python module _SHTOOLS
             real(dp),dimension(error_d0,error_d1,error_d2),intent(out) :: error
             integer,intent(out) :: lmax
             integer,intent(in) :: lmax_in
-            real(dp) intent(out) :: gm
-            real(dp) intent(out) :: r0_pot
+            real(dp),intent(out) :: gm
+            real(dp),intent(out) :: r0_pot
             real(dp),dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
             real(dp),intent(out) :: doystart
             real(dp),intent(out) :: doyend
             real(dp),intent(out) :: epoch
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
-            integer optional,intent(in),intent(hide),depend(lmax_in),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
+            integer,optional,intent(in),intent(hide),depend(lmax_in),check(lmax_in>=0) :: cilm_d1 = lmax_in+1
             integer,optional,intent(in),intent(hide),depend(cilm_d1) :: cilm_d2 = cilm_d1
             integer,optional,intent(in),intent(hide) :: error_d0 = 2
             integer,optioanl,intent(in),depend(cilm_d1),intent(hide) :: error_d1 = cilm_d1
@@ -606,7 +606,7 @@ python module _SHTOOLS
             integer,intent(out) :: exitstatus
             real(dp),dimension(vector_d0),intent(in) :: vector
             real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer optional,intent(in),depend(vector_d0) :: lmax = sqrt(vector_d0)-1
+            integer,optional,intent(in),depend(vector_d0) :: lmax = sqrt(vector_d0)-1
             integer,optional,intent(in),depend(vector),intent(hide) :: vector_d0 = len(vector)
             integer,optional,intent(in),intent(hide) :: cilm_d0 = 2
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: cilm_d1 = lmax+1
@@ -763,7 +763,7 @@ python module _SHTOOLS
             real(dp),dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
             integer,optional,intent(in),depend(sh_d1) :: lmax = sh_d1-1
             real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer dimension(taper_order_d0),intent(in) :: taper_order
+            integer,dimension(taper_order_d0),intent(in) :: taper_order
             integer,optional,intent(in),depend(tapers_d0) :: lmaxt = tapers_d0-1
             integer,optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             real(dp),optional,intent(in) :: lat = 0.0
@@ -793,7 +793,7 @@ python module _SHTOOLS
             real(dp),dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
             integer,optional,intent(in),depend(sh2_d1) :: lmax2 = sh2_d1-1
             real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer dimension(taper_order_d0),intent(in) :: taper_order
+            integer,dimension(taper_order_d0),intent(in) :: taper_order
             integer,optional,intent(in),depend(tapers_d0) :: lmaxt = tapers_d0-1
             integer,optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             real(dp),optional,intent(in) :: lat = 0.0
@@ -822,7 +822,7 @@ python module _SHTOOLS
             real(dp),dimension(g_d0,g_d1,g_d2),intent(in) :: g
             real(dp),dimension(t_d0,t_d1,t_d2),intent(in) :: t
             real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-            integer dimension(taper_order_d0),intent(in) :: taper_order
+            integer,dimension(taper_order_d0),intent(in) :: taper_order
             integer,optional,intent(in),depend(tapers_d1) :: k = tapers_d1
             real(dp),intent(in) :: lat
             real(dp),intent(in) :: lon
@@ -859,7 +859,7 @@ python module _SHTOOLS
             integer,intent(in) :: lmax
             real(dp),dimension(tapers_d0,tapers_d1),intent(out) :: tapers
             real(dp),dimension(eigenvalues_d0),intent(out) :: eigenvalues
-            integer dimension(taper_order_d0),intent(out) :: taper_order
+            integer,dimension(taper_order_d0),intent(out) :: taper_order
             integer,optional,intent(in),dimension(degrees_d0) :: degrees = 1
             integer,optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: eigenvalues_d0 = (lmax+1)*(lmax+1)
             integer,optional,intent(in),depend(lmax),intent(hide) :: tapers_d0 = (lmax+1)
@@ -1019,7 +1019,7 @@ python module _SHTOOLS
             real(dp),dimension(var_unit_d0),intent(out) :: var_unit
             real(dp),dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
             integer,optional,intent(in) :: nocross = 0
-            integer,optional,intent(in),intent(hide) :: taper_order_d0 = len(taper_order)
+            integer,optional,intent(in),depend(taper_order),intent(hide) :: taper_order_d0 = len(taper_order)
             integer,intent(in),depend(kmax),intent(hide) :: weight_opt_d0 = kmax
             integer,intent(in),depend(kmax),intent(hide) :: weight_opt_d1 = kmax
             integer,intent(in),depend(kmax),intent(hide) :: var_unit_d0 = kmax
@@ -1074,7 +1074,7 @@ python module _SHTOOLS
             integer,intent(out) :: exitstatus
             real(dp),dimension(tapers_d0,tapers_d1),intent(out) :: tapers
             real(dp),dimension(eigenvalues_d0),intent(out) :: eigenvalues
-            integer dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
+            integer,dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
             integer,optional,intent(in),depend(dh_mask_d0) :: n_dh = dh_mask_d0
             integer,optional,intent(in),depend(dh_mask_d1,dh_mask_d0) :: sampling = dh_mask_d1/dh_mask_d0
             integer,intent(in) :: lmax
@@ -1165,7 +1165,7 @@ python module _SHTOOLS
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
             real(dp),dimension(Dij_d0,Dij_d1),intent(out) :: Dij
-            integer dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
+            integer,dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
             integer,optional,intent(in),depend(dh_mask_d0) :: n_dh = dh_mask_d0
             integer,optional,intent(in),depend(dh_mask_d0,dh_mask_d1):: sampling = dh_mask_d1/dh_mask_d0
             integer,intent(in) :: lmax
@@ -1181,7 +1181,7 @@ python module _SHTOOLS
             fortranname pycurve2mask
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
-            integer dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
+            integer,dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
             integer,intent(in) :: n
             integer,optional,intent(in) :: sampling = 1
             real(dp),dimension(profile_d0,profile_d1),intent(in) :: profile
@@ -1227,8 +1227,8 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
             real(dp),intent(in) :: gm
             real(dp),intent(in) :: r0
-            real(dp) optional,intent(in),depend(r0) :: a = r0
-            real(dp) optional,intent(in) :: f = 0.0
+            real(dp),optional,intent(in),depend(r0) :: a = r0
+            real(dp),optional,intent(in) :: f = 0.0
             real(dp),dimension(rad_d0,rad_d1),intent(out) :: rad
             real(dp),dimension(theta_d0,theta_d1),intent(out) :: theta
             real(dp),dimension(phi_d0,phi_d1),intent(out) :: phi
@@ -1262,8 +1262,8 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
             real(dp),intent(in) :: gm
             real(dp),intent(in) :: r0
-            real(dp) optional,intent(in) :: a=r0
-            real(dp) optional,intent(in) :: f=0
+            real(dp),optional,intent(in) :: a=r0
+            real(dp),optional,intent(in) :: f=0
             real(dp),dimension(vxx_d0,vxx_d1),intent(out) :: vxx
             real(dp),dimension(vyy_d0,vyy_d1),intent(out) :: vyy
             real(dp),dimension(vzz_d0,vzz_d1),intent(out) :: vzz
@@ -1297,8 +1297,8 @@ python module _SHTOOLS
             real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer,optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
             real(dp),intent(in) :: r0
-            real(dp) optional,intent(in) :: a=r0
-            real(dp) optional,intent(in) :: f=0
+            real(dp),optional,intent(in) :: a=r0
+            real(dp),optional,intent(in) :: f=0
             real(dp),dimension(vxx_d0,vxx_d1),intent(out) :: vxx
             real(dp),dimension(vyy_d0,vyy_d1),intent(out) :: vyy
             real(dp),dimension(vzz_d0,vzz_d1),intent(out) :: vzz
@@ -1347,8 +1347,8 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
-            integer optional,intent(in),intent(hide),depend(lmax),check(lmax>=0) :: geoid_d0 = 2*(lmax+1)
-            integer optional,intent(in),intent(hide),depend(geoid_d0) :: geoid_d1 = sampling*geoid_d0
+            integer,optional,intent(in),intent(hide),depend(lmax),check(lmax>=0) :: geoid_d0 = 2*(lmax+1)
+            integer,optional,intent(in),intent(hide),depend(geoid_d0) :: geoid_d1 = sampling*geoid_d0
         end subroutine MakeGeoidGridDH
 
         subroutine CilmPlusDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
@@ -1360,9 +1360,9 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(n) :: lmax = n/2-1
             integer,intent(in) :: nmax
             real(dp),intent(in) :: mass
-            real(dp) intent(out) :: d
+            real(dp),intent(out) :: d
             real(dp),intent(in) :: rho
-            integer optional,depend(gridin_d0,gridin_d1),intent(in) :: sampling = gridin_d1/gridin_d0
+            integer,optional,depend(gridin_d0,gridin_d1),intent(in) :: sampling = gridin_d1/gridin_d0
             integer,optional,intent(in),depend(gridin_d0),intent(hide) :: n = gridin_d0
             integer,optional,intent(in),depend(gridin) :: gridin_d0 = shape(gridin,0)
             integer,optional,intent(in),depend(gridin) :: gridin_d1 = shape(gridin,1)
@@ -1380,9 +1380,9 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(n) :: lmax = n/2-1
             integer,intent(in) :: nmax
             real(dp),intent(in) :: mass
-            real(dp) intent(out) :: d
+            real(dp),intent(out) :: d
             real(dp),intent(in) :: rho
-            integer depend(gridin_d0,gridin_d1),intent(hide) :: sampling = gridin_d1/gridin_d0
+            integer,depend(gridin_d0,gridin_d1),intent(hide) :: sampling = gridin_d1/gridin_d0
             integer,optional,intent(in),depend(gridin_d0) :: n = gridin_d0
             integer,optional,intent(in),depend(gridin) :: gridin_d0 = shape(gridin,0)
             integer,optional,intent(in),depend(gridin) :: gridin_d1 = shape(gridin,1)
@@ -1400,7 +1400,7 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(n) :: lmax = n/2-1
             integer,intent(in) :: nmax
             real(dp),intent(in) :: mass
-            real(dp) intent(out) :: d
+            real(dp),intent(out) :: d
             real(dp),dimension(rho_d0,rho_d1),intent(in) :: rho
             integer,optional,depend(gridin_d0,gridin_d1) :: sampling = gridin_d1/gridin_d0
             integer,optional,intent(in),depend(gridin_d0):: n = gridin_d0
@@ -1422,9 +1422,9 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(n) :: lmax = n/2-1
             integer,intent(in) :: nmax
             real(dp),intent(in) :: mass
-            real(dp) intent(out) :: d
+            real(dp),intent(out) :: d
             real(dp),dimension(rho_d0,rho_d1),intent(in) :: rho
-            integer optional,depend(gridin_d0,gridin_d1) :: sampling = gridin_d1/gridin_d0
+            integer,optional,depend(gridin_d0,gridin_d1) :: sampling = gridin_d1/gridin_d0
             integer,optional,intent(in),depend(gridin_d0) :: n = gridin_d0
             integer,optional,intent(in),depend(gridin) :: gridin_d0 = shape(gridin,0)
             integer,optional,intent(in),depend(gridin) :: gridin_d1 = shape(gridin,1)
@@ -1447,7 +1447,7 @@ python module _SHTOOLS
             real(dp),intent(in) :: mass
             real(dp),intent(in) :: r0
             real(dp),intent(in) :: rho
-            integer optional,intent(in),depend(griddh_d0,griddh_d1) :: sampling = griddh_d1/griddh_d0
+            integer,optional,intent(in),depend(griddh_d0,griddh_d1) :: sampling = griddh_d1/griddh_d0
             integer,optional,intent(in) :: filter_type = 0
             integer,optional,intent(in) :: filter_deg = 0
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
@@ -1473,7 +1473,7 @@ python module _SHTOOLS
             integer,intent(in) :: nmax
             real(dp),intent(in) :: mass
             real(dp),intent(in) :: r0
-            integer optional,intent(in),depend(griddh_d0,griddh_d1) :: sampling = griddh_d1/griddh_d0
+            integer,optional,intent(in),depend(griddh_d0,griddh_d1) :: sampling = griddh_d1/griddh_d0
             integer,optional,intent(in) :: filter_type = 0
             integer,optional,intent(in) :: filter_deg = 0
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
