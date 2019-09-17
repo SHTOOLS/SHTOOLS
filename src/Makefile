@@ -39,7 +39,7 @@ else ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
 endif
 
-SRCS0 = ftypes.f95 SHTOOLS.f95 FFTW3.f03 CilmPlus.f95 CilmMinus.f95 \
+SRCS0 = ftypes.f95 SHTOOLS.f95 FFTW3.f95 CilmPlus.f95 CilmMinus.f95 \
 	ComputeDG82.f95 ComputeDm.f95 DHaj.f95 djpi2.f95 BAtoHilm.f95 \
 	MakeGrid2D.f95 GLQGridCoord.f95 MakeGridPoint.f95 MakeGridPointC.f95 \
 	PlanetsConstants.f95 PlBar.f95 PlBar_d1.f95 PLegendre.f95 \
@@ -140,9 +140,6 @@ clean-prog-mod:
 	$(F95) -c $(F95FLAGS) $<
 %.o: %.F95
 	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $<
-
-%.o: %.f03
-	$(F95) -c $(F95FLAGS) $<
 
 
 SHTOOLS.o : ftypes.o
