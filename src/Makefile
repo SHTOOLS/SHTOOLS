@@ -89,10 +89,10 @@ SRCSLAPACK = EigValSym.F95 EigValVecSym.F95 EigValVecSymTri.F95 \
 OBJSLAPACK = EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o \
 	SHMTDebias.o SHMTVarOpt.o
 
-SRCSFFTW = MakeGridDH.f03 MakeGridDHC.f03 MakeGridGLQ.f03 MakeGridGLQC.f03 \
-	SHExpandDH.f03 SHExpandDHC.f03 SHExpandGLQ.f03 SHExpandGLQC.f03 \
-	MakeGravGradGridDH.f03 MakeGravGridDH.f03 MakeMagGridDH.f03 \
-	MakeMagGradGridDH.f03
+SRCSFFTW = MakeGridDH.f95 MakeGridDHC.f95 MakeGridGLQ.f95 MakeGridGLQC.f95 \
+	SHExpandDH.f95 SHExpandDHC.f95 SHExpandGLQ.f95 SHExpandGLQC.f95 \
+	MakeGravGradGridDH.f95 MakeGravGridDH.f95 MakeMagGridDH.f95 \
+	MakeMagGradGridDH.f95
 
 OBJSFFTW = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
 	SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \

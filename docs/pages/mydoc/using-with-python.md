@@ -37,7 +37,6 @@ This will load the following three classes and subpackages into the `pyshtools` 
 | [SHGeoid](python-shgeoid.html) | Class for the geoid.|
 
 
-
 | Subpackage | Description |
 | ---------- | ----------- |
 | [shclasses](python-classes.html) | All pyshtools classes and subclasses |
@@ -75,4 +74,3 @@ The `constant` subpackage defines physical constants related to the gravity, top
 ```python
 print(pyshtools.constant.r_mars)
 ```
-

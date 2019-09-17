@@ -219,14 +219,12 @@ def configuration(parent_package='', top_path=None):
     compiler = FCompiler(get_default_fcompiler())
     compiler.src_extensions.append('.F95')
     compiler.language_map['.F95'] = 'f90'
-    compiler.src_extensions.append('.f03')
-    compiler.language_map['.f03'] = 'f90'
 
     # collect all Fortran sources
     files = os.listdir('src')
     exclude_sources = ['PlanetsConstants.f95', 'PythonWrapper.f95']
     sources = [os.path.join('src', file) for file in files if
-               file.lower().endswith(('.f95', '.f03', '.c')) and file not in
+               file.lower().endswith(('.f95', '.c')) and file not in
                exclude_sources]
 
     # (from http://stackoverflow.com/questions/14320220/
