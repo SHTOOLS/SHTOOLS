@@ -1112,7 +1112,7 @@ module SHTOOLS
         end subroutine SHSCouplingMatrix
 
         subroutine SHSlepianVar(l, galpha, galpha_order, lmax, kmax, Sff, &
-                               variance, exitstatus)
+                                variance, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: galpha(:,:), Sff(:)
             real(dp), intent(out) :: variance
@@ -1120,8 +1120,8 @@ module SHTOOLS
             integer, intent(out), optional :: exitstatus
         end subroutine SHSlepianVar
 
-        subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
-                                     exitstatus)
+        subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, &
+                                        nmax, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: kij(:,:)
             real(dp), intent(in) :: galpha(:,:)

@@ -159,4 +159,4 @@ class SHGeoid(object):
                                cb_label=cb_label,
                                grid=grid, axes_labelsize=axes_labelsize,
                                tick_labelsize=tick_labelsize,
-                               show=True, **kwargs)
+                               show=show, **kwargs)
