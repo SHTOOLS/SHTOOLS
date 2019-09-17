@@ -84,11 +84,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
 !------------------------------------------------------------------------------
     use FFTW3
     use ftypes
-#ifdef FFTW3_UNDERSCORE
-#define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
-#define dfftw_execute_dft_c2r dfftw_execute_dft_c2r_
-#define dfftw_destroy_plan dfftw_destroy_plan_
-#endif
+    use, intrinsic :: iso_c_binding
 
     implicit none
 
@@ -108,13 +104,11 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
     complex(dp) :: coef(2*lmax+3), coefr(2*lmax+3), coefrs(2*lmax+3), &
                   coeft(2*lmax+3), coefts(2*lmax+3), coefp(2*lmax+3), &
                   coefps(2*lmax+3), coefu(2*lmax+3), coefus(2*lmax+3), tempc
-    integer(int8) :: plan
+    type(C_PTR) :: plan
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0
     logical :: calcu
-    external :: dfftw_plan_dft_c2r_1d, dfftw_execute_dft_c2r, &
-                dfftw_destroy_plan
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
 
@@ -364,8 +358,8 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
     !   Create generic plan for grid.
     !
     !--------------------------------------------------------------------------
-    call dfftw_plan_dft_c2r_1d(plan, nlong, coef(1:nlong/2+1), grid(1:nlong), &
-                               FFTW_MEASURE)
+    plan = fftw_plan_dft_c2r_1d(nlong, coef(1:nlong/2+1), grid(1:nlong), &
+                                FFTW_MEASURE)
 
     !--------------------------------------------------------------------------
     !
@@ -510,7 +504,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     rad_grid(i_eq,1:nlong) = - grid(1:nlong) * r0 / r_ex
 
     if (calcu) then
@@ -523,7 +517,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
             end if
         end if
 
-        call dfftw_execute_dft_c2r(plan, coef, grid)
+        call fftw_execute_dft_c2r(plan, coef, grid)
         pot_grid(i_eq,1:nlong) = grid(1:nlong) * r0
 
     end if
@@ -537,7 +531,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     theta_grid(i_eq,1:nlong) = sin(theta) * grid(1:nlong) * r0 / r_ex
 
     coef(1) = cmplx(coefp0, 0.0_dp, dp)
@@ -549,7 +543,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)   ! take fourier transform
+    call fftw_execute_dft_c2r(plan, coef, grid)   ! take fourier transform
     phi_grid(i_eq,1:nlong) = - grid(1:nlong) * (r0/r_ex) / sin(theta)
 
     do i = 1, i_eq - 1, 1
@@ -798,7 +792,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
             end if
         end if
 
-        call dfftw_execute_dft_c2r(plan, coef, grid)
+        call fftw_execute_dft_c2r(plan, coef, grid)
         rad_grid(i,1:nlong) = - grid(1:nlong) * r0 / r_ex
 
         if (calcu) then
@@ -811,7 +805,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             pot_grid(i,1:nlong) = grid(1:nlong) * r0
 
         end if
@@ -831,7 +825,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             theta_grid(i,1:nlong) = sin(theta) * grid(1:nlong) * r0 / r_ex
 
             coef(1) = cmplx(coefp0, 0.0_dp, dp)
@@ -843,7 +837,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
                 phi_grid(i,1:nlong) = - grid(1:nlong) * (r0/r_ex) / sin(theta)
             end if
 
@@ -857,7 +851,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             rad_grid(i_s,1:nlong) = - grid(1:nlong) * r0 / r_ex
 
             if (calcu) then
@@ -870,7 +864,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                     end if
                 end if
 
-                call dfftw_execute_dft_c2r(plan, coef, grid)
+                call fftw_execute_dft_c2r(plan, coef, grid)
                 pot_grid(i_s,1:nlong) = grid(1:nlong) * r0
             end if
 
@@ -883,7 +877,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             theta_grid(i_s,1:nlong) = sin(theta)*grid(1:nlong) * r0 / r_ex
 
             coef(1) = cmplx(coefps0, 0.0_dp, dp)
@@ -895,14 +889,14 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             phi_grid(i_s,1:nlong) = - grid(1:nlong) * (r0 / r_ex) / sin(theta)
 
         end if
 
     end do
 
-    call dfftw_destroy_plan(plan)
+    call fftw_destroy_plan(plan)
 
     total_grid(1:n, 1:nlong) = sqrt(rad_grid(1:n,1:nlong)**2 &
                                     + phi_grid(1:n,1:nlong)**2 &
