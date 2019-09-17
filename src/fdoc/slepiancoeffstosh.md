@@ -8,13 +8,13 @@ call SlepianCoeffsToSH(`flm`, `falpha`, `galpha`, `lmax`, `nmax`, `exitstatus`)
 
 # Parameters
 
-`flm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`flm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the global function.
 
-`falpha` : input, real\*8, dimension (`nmax`)
+`falpha` : input, real(dp), dimension (`nmax`)
 :   A vector containing the Slepian coefficients of the function.
 
-`galpha` : input, real\*8, dimension ((`lmax`+1)**2, `nmax`)
+`galpha` : input, real(dp), dimension ((`lmax`+1)**2, `nmax`)
 :   An array containing the spherical harmonic coefficients of the Slepian functions. Each column corresponds to a single function of which the spherical harmonic coefficients can be unpacked with `SHVectorToCilm`.
 
 `lmax` : input, integer

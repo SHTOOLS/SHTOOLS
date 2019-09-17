@@ -8,16 +8,16 @@ Compute the power of the magnetic field for a single degree `l` given the Schmid
 
 # Parameters
 
-`power` : output, real\*8
+`power` : output, real(dp)
 :   The power at degree `l`
 
-`c` : input, real\*8, dimension (2, l+1, l+1)
+`c` : input, real(dp), dimension (2, l+1, l+1)
 :   The Schmidt seminormalized spherical harmonic coefficients of the magnetic potential.
 
-`a` : input, real\*8
+`a` : input, real(dp)
 :   The reference radius of the magnetic potential spherical harmonic coefficients.
 
-`r` : input, real\*8
+`r` : input, real(dp)
 :   The radius to evaluate the magnetic field.
 
 `l` : input, integer

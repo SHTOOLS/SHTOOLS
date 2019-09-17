@@ -8,16 +8,16 @@ call SHReturnTapers (`theta0`, `lmax`, `tapers`, `eigenvalues`, `taper_order`, `
 
 # Parameters
 
-`theta0` : input, real\*8
+`theta0` : input, real(dp)
 :   The angular radius of the spherical cap in radians.
 
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of the localization windows.
 
-`tapers` : output, real\*8, dimension (`lmax`+1, (`lmax`+1)\*\*2)
+`tapers` : output, real(dp), dimension (`lmax`+1, (`lmax`+1)\*\*2)
 :   The spherical harmonic coefficients of the `(lmax+1)**2` localization windows. Each column contains the coefficients of a single window that possesses non-zero coefficients for the single angular order specified in `taper_order`. The first and last rows of each column correspond to spherical harmonic degrees 0 and `lmax`, respectively, and the columns are arranged from best to worst concentrated.
 
-`eigenvalues` : output, real\*8, dimension ((`lmax`+1)\*\*2)
+`eigenvalues` : output, real(dp), dimension ((`lmax`+1)\*\*2)
 :   The concentration factors of the localization windows.
 
 `taper_order` : output, integer, dimension ((`lmax`+1)\*\*2)

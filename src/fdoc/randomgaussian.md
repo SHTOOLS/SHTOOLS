@@ -8,7 +8,7 @@ Return a pseudo-Gaussian deviate of zero mean and unit variance.
 
 # Parameters
 
-`rg` : output, real\*8
+`rg` : output, real(dp)
 :   The radom Gaussian deviate.
 
 `seed` : input/output, integer

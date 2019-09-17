@@ -8,10 +8,10 @@ call SHSCouplingMatrixCap (`kij`, `galpha`, `galpha_order`, `lmax`, `nmax`, `exi
 
 # Parameters
 
-`kij` : output, real\*8, dimension (`lmax`+1, `lmax`+1)
+`kij` : output, real(dp), dimension (`lmax`+1, `lmax`+1)
 :   The coupling matrix that relates the power spectrum expectation of the function expressed in a subset of the best-localized spherical-cap Slepian functions to the expectation of the global power spectrum.
 
-`galpha` : input, real\*8, dimension (`lmax`+1, `nmax`)
+`galpha` : input, real(dp), dimension (`lmax`+1, `nmax`)
 :   An array of spherical-cap Slepian functions arranged in columns from best to worst localized and obtained from a call to `SHReturnTapers`.
 
 `galpha_order` : input, integer, dimension (`kmax`)

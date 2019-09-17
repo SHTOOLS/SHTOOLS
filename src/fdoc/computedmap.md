@@ -8,7 +8,7 @@ call ComputeDMap (`dij`, `dh_mask`, `n`, `lmax`, `sampling`, `degrees`, `exitsta
 
 # Parameters
 
-`dij` : output, real\*8, dimension ( (`lmax`+1)\*\*2, (`lmax`+1)\*\*2 )
+`dij` : output, real(dp), dimension ( (`lmax`+1)\*\*2, (`lmax`+1)\*\*2 )
 :   The space-concentration kernel corresponding to the mask dh_mask.
 
 `dh_mask` : input, integer, dimension (`n`, `sampling`\*`n`)

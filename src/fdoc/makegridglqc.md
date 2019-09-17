@@ -8,19 +8,19 @@ call MakeGridGLQC (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, 
 
 # Parameters
 
-`gridglq` : output, complex\*16, dimension (`lmax`+1, 2\*`lmax`+1)
+`gridglq` : output, complex(dp), dimension (`lmax`+1, 2\*`lmax`+1)
 :   A 2D complex map of the function sampled on the Gauss-Legendre quadrature nodes.
 
-`cilm` : input, complex\*16, dimension (2, `lmaxin`+1, `lmaxin`+1)
+`cilm` : input, complex(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of `lmax`, `lmaxin`, or `lmax_calc` (if specified). The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm(1,l+1,m+1)` and `Cl,-m=cilm(2,l+1,m+1)`.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic bandwidth of the function. This determines the sampling nodes and dimensions of the output grid.
 
-`plx` : input, optional, real\*8, dimension (`lmax`+1, (`lmax`+1)*(`lmax`+2)/2)
+`plx` : input, optional, real(dp), dimension (`lmax`+1, (`lmax`+1)*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the Gauss-Legendre quadrature nodes. These are determined from a call to `SHGLQ` with the option `cnorm=1`. Either `plx` or `zero` must be present, but not both.
 
-`zero` : input, optional, real\*8, dimension (`lmax`+1)
+`zero` : input, optional, real(dp), dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.  Either `plx` or `zero` must be present, but not both.
 
 `norm` : input, optional, integer, default = 1

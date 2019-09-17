@@ -8,16 +8,16 @@ call SHMTDebias (`mtdebias`, `mtspectra`, `lmax`, `tapers`, `lwin`, `k`, `nl`, `
 
 # Parameters
 
-`mtdebias` : output, real\*8, dimension (2, ceiling((`lmax`+1)/`nl`))
+`mtdebias` : output, real(dp), dimension (2, ceiling((`lmax`+1)/`nl`))
 :   The global power spectrum (column 1) and uncertainty (column 2). The midpoints of the N spherical harmonic bins are given in `lmid`.
 
-`mtspectra` : input, real\*8, dimension (2, `lmax`+1)
+`mtspectra` : input, real(dp), dimension (2, `lmax`+1)
 :   The localized multitaper spectrum estimate and uncertainty, obtained from a routine such as `SHMultitaperCSE` or `SHMultitaperSE`.
 
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of the localized multitaper spectrum estimates.
 
-`tapers` : input, real\*8, dimension (`lmaxt`+1, `k`)
+`tapers` : input, real(dp), dimension (`lmaxt`+1, `k`)
 :   An array of the K windowing functions, arranged in columns, obtained from a call to `SHReturnTapers`.
 
 `lwin` : input, integer
@@ -29,13 +29,13 @@ call SHMTDebias (`mtdebias`, `mtspectra`, `lmax`, `tapers`, `lwin`, `k`, `nl`, `
 `nl` : input, integer
 :   The global power spectrum is assumed to be constant within bins of spherical harmonic wdith `nl`. In addition, the global power spectrum will be assumed to be constant beyond `lmax`.
 
-`lmid` : output, real\*8, dimension ((`lmax`+1)/`nl`+1)
+`lmid` : output, real(dp), dimension ((`lmax`+1)/`nl`+1)
 :   The midpoints of the spherical harmonic bins for which the global power spectrum is constant.
 
 `n` : output, integer
 :   The number of bins used in `mtdebias` and `lmid`.
 
-`taper_wt` : input, optional, real\*8, dimension (`k`)
+`taper_wt` : input, optional, real(dp), dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 
 `exitstatus` : output, optional, integer
