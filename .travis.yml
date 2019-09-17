@@ -16,7 +16,6 @@ matrix:
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
        brew update;
-       brew cask uninstall oclint;
        brew install fftw;
     else
        sudo apt-get update;
@@ -51,7 +50,7 @@ install:
         mkl
         astropy
         xarray
-  - conda install -n test-environment -c eumetsat fftw3
+  - conda install -n test-environment -c anaconda fftw
   - source activate test-environment
   - pip install --no-deps .
 
