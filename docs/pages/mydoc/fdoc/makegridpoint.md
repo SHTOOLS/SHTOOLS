@@ -17,19 +17,19 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 
 ## Parameters
 
-`value` : output, real\*8
+`value` : output, real(dp)
 :   Value of the function at (`lat`, `lon`).
 
-`cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree used in evaluating the function.
 
-`lat` : input, real\*8
+`lat` : input, real(dp)
 :   The latitude of the point in DEGREES.
 
-`lon` : input, real\*8
+`lon` : input, real(dp)
 :   The longitude of the point in DEGREES.
 
 `norm` : input, optional, integer, default = 1

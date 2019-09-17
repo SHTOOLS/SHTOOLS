@@ -17,7 +17,7 @@ call ComputeDG82 (`dg82`, `lmax`, `m`, `theta0`, `exitstatus`)
 
 ## Parameters
 
-`dg82` : output, real\*8, dimension (`lmax`-abs(`m`)+1, `lmax`-abs(`m`)+1)
+`dg82` : output, real(dp), dimension (`lmax`-abs(`m`)+1, `lmax`-abs(`m`)+1)
 :   The tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of order M of a spherical cap.
 
 `lmax` : input, integer
@@ -26,7 +26,7 @@ call ComputeDG82 (`dg82`, `lmax`, `m`, `theta0`, `exitstatus`)
 `m` : input, integer
 :   The angular order of the concentration problem.
 
-`theta0` : input, real\*8
+`theta0` : input, real(dp)
 :   The angular radius of the spherical cap in radians.
 
 `exitstatus` : output, optional, integer

@@ -17,10 +17,10 @@ call GLQGridCoord (`latglq`, `longlq`, `lmax`, `nlat`, `nlong`, `exitstatus`)
 
 ## Parameters
 
-`latglq` : output, real\*8, dimension (`lmax`+1)
+`latglq` : output, real(dp), dimension (`lmax`+1)
 :   The latitude coordinates of a grid, corresponding to the indices (:,1), in DEGREES.
 
-`longlq` : output, real\*8, dimension (2\*`lmax`+1)
+`longlq` : output, real(dp), dimension (2\*`lmax`+1)
 :   The longitude coordinates of a grid, corresponding to the indices (1,:), in DEGREES. The first node is 0 E.
 
 `lmax` : input, integer

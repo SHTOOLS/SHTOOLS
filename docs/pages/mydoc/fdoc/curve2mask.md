@@ -26,7 +26,7 @@ call Curve2Mask (`mask_dh`, `n`, `sampling`, `profile`, `nprofile`, `np`, `centr
 `sampling` : input, integer
 :   For 1, `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples.
 
-`profile` : input, real\*8, dimension (`nprofile`, 2)
+`profile` : input, real(dp), dimension (`nprofile`, 2)
 :   List of latitude (:,1) and longitude (:,2) coordinates in degrees specifying a single closed curve.
 
 `nprofile` : input, integer

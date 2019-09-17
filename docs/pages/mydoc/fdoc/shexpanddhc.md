@@ -17,13 +17,13 @@ call SHExpandDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, 
 
 ## Parameters
 
-`griddh` : input, complex\*16, dimension (`n`, `n`) or (`n`, 2\*`n`)
+`griddh` : input, complex(dp), dimension (`n`, `n`) or (`n`, 2\*`n`)
 :   A 2D equally sampled (default) or equally spaced complex grid that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitude band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally and 180/`n` for an equally spaced grid, respectively.
 
 `n` : input, integer
 :   The number of samples in latitude of `griddh`. If `sampling` is 1 (default) then the number of samples in longitude is `n`. If `sampling` is 2 then the number of longitudinal samples is `2n`. `n` must be even.
 
-`cilm` : output, complex\*16, dimension (2, `n`/2, `n`/2) or (2, `lmax_calc`+1, `lmax_calc`+1)
+`cilm` : output, complex(dp), dimension (2, `n`/2, `n`/2) or (2, `lmax_calc`+1, `lmax_calc`+1)
 :   The complex spherical harmonic coefficients of the function. These will be exact if the function is bandlimited to degree `lmax=n/2-1`. The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm(1,l+1,m+1)` and `Cl,-m=cilm(2,l+1,m+1)`.
 
 `lmax` : output, integer

@@ -17,22 +17,22 @@ call SHExpandGLQ (`cilm`, `lmax`, `gridglq`, `w`, `plx`, `zero`, `norm`, `csphas
 
 ## Parameters
 
-`cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1) or (2, `lmax_calc`+1, `lmax_calc`+1)
+`cilm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1) or (2, `lmax_calc`+1, `lmax_calc`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `C1lm` and `C2lm` refer to the "cosine" (`Clm`) and "sine" (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`.
 
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of the grid. If `lmax_calc` is not specified, this also corresponds to the maximum spherical harmonic degree of the coefficients `cilm`.
 
-`gridglq` : input, real\*8, dimension (`lmax`+1, 2\*`lmax`+1)
+`gridglq` : input, real(dp), dimension (`lmax`+1, 2\*`lmax`+1)
 :   A 2D grid of data sampled on the Gauss-Legendre quadrature nodes. The latitudinal nodes correspond to the zeros of the Legendre polynomial of degree LMAX+1, and the longitudinal nodes are equally spaced with an interval of `360/(2*lmax+1)` degrees. See also `GLQGridCoord`.
 
-`w` : input, real\*8, dimension (`lmax`+1)
+`w` : input, real(dp), dimension (`lmax`+1)
 :   The Gauss-Legendre quadrature weights used in the integration over latitude. These are obtained from a call to `SHGLQ`.
 
-`plx` : input, optional, real\*8, dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
+`plx` : input, optional, real(dp), dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the Gauss-Legendre quadrature nodes. These are determined from a call to `SHGLQ`. Either `plx` or `zero` must be present, but not both.
 
-`zero` : input, optional, real\*8, dimension (`lmax`+1)
+`zero` : input, optional, real(dp), dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.  Either `plx` or `zero` must be present, but not both.
 
 `norm` : input, optional, integer, default = 1

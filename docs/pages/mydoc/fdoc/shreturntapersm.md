@@ -17,7 +17,7 @@ call SHReturnTapersM (`theta0`, `lmax`, `m`, `tapers`, `eigenvalues`, `shannon`,
 
 ## Parameters
 
-`theta0` : input, real\*8
+`theta0` : input, real(dp)
 :   The angular radius of the spherical cap in radians.
 
 `lmax` : input, integer
@@ -26,13 +26,13 @@ call SHReturnTapersM (`theta0`, `lmax`, `m`, `tapers`, `eigenvalues`, `shannon`,
 `m` : input, integer
 :   The angular order of the localization windows.
 
-`tapers` : output, real\*8, dimension (`lmax`+1, `lmax`+1)
+`tapers` : output, real(dp), dimension (`lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the `lmax+1` localization windows, arranged in columns. The first and last rows of each column correspond to spherical harmonic degrees 0 and `lmax`, respectively, and the columns are arranged from best to worst concentrated. Only the first `ntapers` columns are non-zero.
 
-`eigenvalues` : output, real\*8, dimension (`lmax`+1)
+`eigenvalues` : output, real(dp), dimension (`lmax`+1)
 :   The concentration factors of the localization windows.
 
-`shannon` : output, optional, real\*8
+`shannon` : output, optional, real(dp)
 :   The Shannon number, which is the trace of the concentration kernel.
 
 `degrees` : input, integer, optional, dimension (`lmax`+1)

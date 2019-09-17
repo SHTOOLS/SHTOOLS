@@ -17,10 +17,10 @@ Compute the power of a complex function for a single spherical harmonic degree.
 
 ## Parameters
 
-`power` : output, real\*8
+`power` : output, real(dp)
 :   Power of the complex function for spherical harmonic degree `l`.
 
-`cilm` : input, complex\*16, dimension (2, `lmaxin`+1, `lmaxin`+1)
+`cilm` : input, complex(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex spherical harmonics of the complex function.
 
 `l` : input, integer

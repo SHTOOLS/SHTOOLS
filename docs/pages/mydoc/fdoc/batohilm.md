@@ -17,13 +17,13 @@ call BAtoHilm (`cilm`, `ba`, `grid`, `lmax`, `nmax`, `mass`, `r0`, `rho`, `gridt
 
 ## Parameters
 
-`cilm` : output, real\*8, dimension (2, `lmaxcalc`+1, `lmaxcalc`+1)
+`cilm` : output, real(dp), dimension (2, `lmaxcalc`+1, `lmaxcalc`+1)
 :   An estimate of the real spherical harmonic coefficients (geodesy normalized) of relief along an interface with density contrast `rho` that satisfies the Bouguer anomaly `ba`. The degree zero term corresponds to the mean radius of the relief.
 
-`ba` : input, real\*8, dimension (2, `lmaxcalc`+1, `lmaxcalc`+1)
+`ba` : input, real(dp), dimension (2, `lmaxcalc`+1, `lmaxcalc`+1)
 :   The real spherical harmonic coefficients of the Bouguer anomaly referenced to a spherical interface `r0`.
 
-`grid` : input, real\*8, dimension (`lmax`+1, 2\*`lmax`+1) for `gridtype` 1, (2\*`lmax`+2, 2\*`lmax`+2) for `gridtype` 2, (2\*`lmax`+2, 4\*`lmax`+4) for `gridtype` 3
+`grid` : input, real(dp), dimension (`lmax`+1, 2\*`lmax`+1) for `gridtype` 1, (2\*`lmax`+2, 2\*`lmax`+2) for `gridtype` 2, (2\*`lmax`+2, 4\*`lmax`+4) for `gridtype` 3
 :   The initial estimate for the radii of the interface evaluated on a grid corresponding to a function of maximum spherical harmonic degree `lmax`. This is calculated by a call to either `MakeGridGLQ` or `MakeGridDH`. This grid must contain the degree-0 average radius of the interface.
 
 `lmax` : input, integer
@@ -32,25 +32,25 @@ call BAtoHilm (`cilm`, `ba`, `grid`, `lmax`, `nmax`, `mass`, `r0`, `rho`, `gridt
 `nmax` : input, integer
 :   The maximum order used in the Taylor-series expansion used in calculating the potential coefficients.
 
-`mass` : input, real\*8
+`mass` : input, real(dp)
 :   The mass of the planet in kg.
 
-`r0` : input, real\*8
+`r0` : input, real(dp)
 :   The reference radius of the Bouguer anomaly `ba`.
 
-`rho` : input, real\*8
+`rho` : input, real(dp)
 :   The density contrast of the relief in kg/m^3.
 
 `gridtype` : input, integer
 :   1 = Gauss-Legendre grids, calculated using `SHGLQ` and `MakeGridGLQ`. 2 = Equally sampled Driscoll-Healy grids, `n` by `n`, calculated using `MakeGridDH`. 3 = Equally spaced Driscoll-Healy grids, `n` by 2`n`, calculated using `MakeGridDH`.
 
-`w` : optional, input, real\*8, dimension (`lmax`+1)
+`w` : optional, input, real(dp), dimension (`lmax`+1)
 :   The weights used in the Gauss-Legendre quadrature. These are calculated from a call to `SHGLQ`. If present, one of `plx` or `zero` must also be present.
 
-`plx` : optional, input, real\*8, dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
+`plx` : optional, input, real(dp), dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the nodes used in the Gauss-Legendre quadrature. These are determined from a call to `SHGLQ`.
 
-`zero` : optional, input, real\*8, dimension (`lmax`+1)
+`zero` : optional, input, real(dp), dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.
 
 `filtertype` : optional, input, integer, default = 0

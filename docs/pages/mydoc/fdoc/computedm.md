@@ -17,7 +17,7 @@ call ComputeDM (`dm`, `lmax`, `m`, `theta0`, `degrees`, `exitstatus`)
 
 ## Parameters
 
-`dm` : output, real\*8, dimension (`lmax`+1, `lmax`+1)
+`dm` : output, real(dp), dimension (`lmax`+1, `lmax`+1)
 :   The space-concentration kernel of angular order `m`.
 
 `lmax` : input, integer
@@ -26,7 +26,7 @@ call ComputeDM (`dm`, `lmax`, `m`, `theta0`, `degrees`, `exitstatus`)
 `m` : input, integer
 :   The angular order of the concentration problem.
 
-`theta0` : input, real\*8
+`theta0` : input, real(dp)
 :   The angular radius of the spherical cap in radians.
 
 `degrees` : input, integer, optional, dimension (`lmax`+1)
