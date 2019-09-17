@@ -9,8 +9,6 @@ module SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use ftypes
-
     implicit none
 
     integer, parameter :: CSPHASE_DEFAULT = 1
@@ -21,7 +19,7 @@ module SHTOOLS
     interface
 
         subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:)
             real(dp), intent(in) :: z
@@ -30,7 +28,7 @@ module SHTOOLS
         end subroutine PlmBar
 
         subroutine PlmBar_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:), dp1(:)
             real(dp), intent(in) :: z
@@ -39,7 +37,7 @@ module SHTOOLS
         end subroutine PlmBar_d1
 
         subroutine PlBar(p, lmax, z, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:)
             real(dp), intent(in) :: z
@@ -47,7 +45,7 @@ module SHTOOLS
         end subroutine PlBar
 
         subroutine PlBar_d1(p, dp1, lmax, z, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:), dp1(:)
             real(dp), intent(in) :: z
@@ -55,7 +53,7 @@ module SHTOOLS
         end subroutine PlBar_d1
 
         subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:)
             real(dp), intent(in) :: z
@@ -64,7 +62,7 @@ module SHTOOLS
         end subroutine PlmON
 
         subroutine PlmON_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:), dp1(:)
             real(dp), intent(in) :: z
@@ -73,7 +71,7 @@ module SHTOOLS
         end subroutine PlmON_d1
 
         subroutine PlON(p, lmax, z, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:)
             real(dp), intent(in) :: z
@@ -81,7 +79,7 @@ module SHTOOLS
         end subroutine PlON
 
         subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:), dp1(:)
             real(dp), intent(in) :: z
@@ -89,7 +87,7 @@ module SHTOOLS
             end subroutine PlON_d1
 
         subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:)
             real(dp), intent(in) :: z
@@ -98,7 +96,7 @@ module SHTOOLS
         end subroutine PlmSchmidt
 
         subroutine PlmSchmidt_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:), dp1(:)
             real(dp), intent(in) :: z
@@ -107,7 +105,7 @@ module SHTOOLS
         end subroutine PlmSchmidt_d1
 
         subroutine PlSchmidt(p, lmax, z, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:)
             real(dp), intent(in) :: z
@@ -115,7 +113,7 @@ module SHTOOLS
         end subroutine PlSchmidt
 
         subroutine PlSchmidt_d1(p, dp1, lmax, z, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:), dp1(:)
             real(dp), intent(in) :: z
@@ -123,7 +121,7 @@ module SHTOOLS
         end subroutine PlSchmidt_d1
 
         subroutine PLegendreA(p,lmax,z, csphase, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:)
             real(dp), intent(in) :: z
@@ -132,7 +130,7 @@ module SHTOOLS
         end subroutine PLegendreA
 
         subroutine PLegendreA_d1(p, dp1, lmax, z, csphase, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:), dp1(:)
             real(dp), intent(in) :: z
@@ -141,7 +139,7 @@ module SHTOOLS
         end subroutine PLegendreA_d1
 
         subroutine PLegendre(p,lmax,z, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:)
             real(dp), intent(in) :: z
@@ -149,7 +147,7 @@ module SHTOOLS
         end subroutine PLegendre
 
         subroutine PLegendre_d1(p, dp1, lmax, z, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: p(:), dp1(:)
             real(dp), intent(in) :: z
@@ -162,7 +160,7 @@ module SHTOOLS
 
         subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, &
                               csphase, lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: grid(:,:)
             real(dp), intent(out) :: cilm(:,:,:)
             integer, intent(in) :: n
@@ -173,7 +171,7 @@ module SHTOOLS
 
         subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, &
                               csphase, lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(out) :: griddh(:,:)
             integer, intent(in) :: lmax
@@ -184,7 +182,7 @@ module SHTOOLS
 
         subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, &
                                csphase, lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: grid(:,:)
             complex(dp), intent(out) :: cilm(:,:,:)
             integer, intent(in) :: n
@@ -195,7 +193,7 @@ module SHTOOLS
 
         subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
                                csphase, lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: cilm(:,:,:)
             complex(dp), intent(out) :: griddh(:,:)
             integer, intent(in) :: lmax
@@ -205,7 +203,7 @@ module SHTOOLS
         end subroutine MakeGridDHC
 
         subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: zero(:), w(:)
             real(dp), intent(out), optional :: plx(:,:)
@@ -215,7 +213,7 @@ module SHTOOLS
 
         subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, &
                                csphase, lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: w(:), gridglq(:,:)
             real(dp), intent(in), optional :: plx(:,:), zero(:)
             real(dp), intent(out) :: cilm(:,:,:)
@@ -226,7 +224,7 @@ module SHTOOLS
 
         subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, &
                                csphase, lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in), optional :: plx(:,:), zero(:)
             real(dp), intent(out) :: gridglq(:,:)
@@ -237,7 +235,7 @@ module SHTOOLS
 
         subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, &
                                 csphase, lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: w(:)
             complex(dp), intent(in) :: gridglq(:,:)
             real(dp), intent(in), optional :: plx(:,:), zero(:)
@@ -249,7 +247,7 @@ module SHTOOLS
 
         subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, &
                                 csphase, lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in), optional :: plx(:,:), zero(:)
             complex(dp), intent(out) :: gridglq(:,:)
@@ -259,7 +257,7 @@ module SHTOOLS
         end subroutine MakeGridGLQC
 
         subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             integer, intent(out) :: nlat, nlong
             real(dp), intent(out) :: latglq(:), longlq(:)
@@ -268,7 +266,7 @@ module SHTOOLS
 
         subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, &
                                chi2, csphase, weights, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: d(:), lat(:), lon(:)
             real(dp), intent(out) :: cilm(:,:,:)
             integer, intent(in) :: nmax, lmax
@@ -281,7 +279,7 @@ module SHTOOLS
         subroutine MakeGrid2d(grid, cilm, lmax, interval, nlat, nlong, &
                               norm, csphase, f, a, north, south, east, west, &
                               dealloc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), interval
             real(dp), intent(out) :: grid(:,:)
             integer, intent(in) :: lmax
@@ -292,7 +290,7 @@ module SHTOOLS
         end subroutine MakeGrid2D
 
         function MakeGridPoint(cilm, lmax, lat, lon, norm, csphase, dealloc)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: MakeGridPoint
             real(dp), intent(in) :: cilm(:,:,:), lat, lon
             integer, intent(in) :: lmax
@@ -300,7 +298,7 @@ module SHTOOLS
         end function MakeGridPoint
 
         function MakeGridPointC(cilm, lmax, lat, lon, norm, csphase, dealloc)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in) :: lat, lon
             integer, intent(in) :: lmax
@@ -309,7 +307,7 @@ module SHTOOLS
 
         subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, &
                               norm, csphase, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: shout(:,:,:)
             real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:)
             integer, intent(in) :: lmax1, lmax2
@@ -319,7 +317,7 @@ module SHTOOLS
 
         subroutine SHRead(filename, cilm, lmax, skip, header, error, &
                           exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             character(*), intent(in) :: filename
             integer, intent(out) :: lmax
             real(dp), intent(out) :: cilm(:,:,:)
@@ -330,7 +328,7 @@ module SHTOOLS
 
         subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, &
                            doystart, doyend, epoch, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             character(*), intent(in) :: filename
             integer, intent(out) :: lmax
             real(dp), intent(out) :: cilm(:,:,:), gm, r0_pot
@@ -341,7 +339,7 @@ module SHTOOLS
 
         subroutine SHReadJPL(filename, cilm, lmax, error, gm, formatstring, &
                              exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             character(*), intent(in) :: filename
             integer, intent(in) :: lmax
             real(dp), intent(out) :: cilm(:,:,:)
@@ -351,7 +349,7 @@ module SHTOOLS
         end subroutine SHReadJPL
 
         subroutine SHCilmToVector(cilm, vector, lmax, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(out) :: vector(:)
             integer, intent(in) :: lmax
@@ -359,7 +357,7 @@ module SHTOOLS
         end subroutine SHCilmToVector
 
         subroutine SHVectorToCilm(vector, cilm, lmax, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: cilm(:,:,:)
             real(dp), intent(in) :: vector(:)
             integer, intent(in) :: lmax
@@ -367,7 +365,7 @@ module SHTOOLS
         end subroutine SHVectorToCilm
 
         subroutine SHCilmToCindex(cilm, cindex, degmax, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(out) :: cindex(:,:)
             integer, intent(in), optional :: degmax
@@ -375,7 +373,7 @@ module SHTOOLS
         end subroutine SHCilmToCindex
 
         subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: cilm(:,:,:)
             real(dp), intent(in) :: cindex(:,:)
             integer, intent(in), optional :: degmax
@@ -384,7 +382,7 @@ module SHTOOLS
 
         subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, &
                           exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: rcilm(:,:,:)
             real(dp), intent(out) :: ccilm(:,:,:)
             integer, intent(in), optional :: degmax, convention, switchcs
@@ -393,7 +391,7 @@ module SHTOOLS
 
         subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs, &
                           exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: ccilm(:,:,:)
             real(dp), intent(out) :: rcilm(:,:,:)
             integer, intent(in), optional :: degmax, convention, switchcs
@@ -401,14 +399,14 @@ module SHTOOLS
         end subroutine SHctor
 
         subroutine djpi2(dj, lmax, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: dj(:,:,:)
             integer, intent(out), optional :: exitstatus
         end subroutine djpi2
 
         subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cof(:,:), dj(:,:,:), x(3)
             real(dp), intent(out) :: rcof(:,:)
             integer, intent(in) :: lmax
@@ -416,7 +414,7 @@ module SHTOOLS
         end subroutine SHRotateCoef
 
         subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), x(:), dj(:,:,:)
             real(dp), intent(out) :: cilmrot(:,:,:)
             integer, intent(in) :: lmax
@@ -424,35 +422,35 @@ module SHTOOLS
         end subroutine SHRotateRealCoef
 
         function SHPowerL(c, l)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: SHPowerL
             real(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: l
         end function SHPowerL
 
         function SHPowerDensityL(c, l)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: SHPowerDensityL
             real(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: l
         end function SHPowerDensityL
 
         function SHCrossPowerL(c1, c2, l)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: SHCrossPowerL
             real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: l
         end function SHCrossPowerL
 
         function SHCrossPowerDensityL(c1, c2, l)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: SHCrossPowerDensityL
             real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: l
         end function SHCrossPowerDensityL
 
         subroutine SHPowerSpectrum(c, lmax, spectra, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: spectra(:)
@@ -460,7 +458,7 @@ module SHTOOLS
         end subroutine SHPowerSpectrum
 
         subroutine SHPowerSpectrumDensity(c, lmax, spectra, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: spectra(:)
@@ -468,7 +466,7 @@ module SHTOOLS
         end subroutine SHPowerSpectrumDensity
 
         subroutine SHCrossPowerSpectrum(c1, c2, lmax, cspectra, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: cspectra(:)
@@ -477,7 +475,7 @@ module SHTOOLS
 
         subroutine SHCrossPowerSpectrumDensity(c1, c2, lmax, cspectra, &
                                                exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: cspectra(:)
@@ -486,7 +484,7 @@ module SHTOOLS
 
         subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, &
                                exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: G(:,:,:), T(:,:,:)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: admit(:), corr(:)
@@ -495,42 +493,42 @@ module SHTOOLS
         end subroutine SHAdmitCorr
 
         function SHConfidence(l_conf, r)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: SHConfidence
             real(dp), intent(in) :: r
             integer, intent(in) :: l_conf
         end function SHConfidence
 
         function SHPowerLC(c, l)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: SHPowerLC
             complex(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: l
         end function SHPowerLC
 
         function SHPowerDensityLC(c, l)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: SHPowerDensityLC
             complex(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: l
         end function SHPowerDensityLC
 
         function SHCrossPowerLC(c1, c2, l)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp) :: SHCrossPowerLC
             complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: l
         end function SHCrossPowerLC
 
         function SHCrossPowerDensityLC(c1, c2, l)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp) :: SHCrossPowerDensityLC
             complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: l
         end function SHCrossPowerDensityLC
 
         subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: spectra(:)
@@ -538,7 +536,7 @@ module SHTOOLS
         end subroutine SHPowerSpectrumC
 
         subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: c(:,:,:)
             integer, intent(in) :: lmax
             real(dp), intent(out) :: spectra(:)
@@ -546,7 +544,7 @@ module SHTOOLS
         end subroutine SHPowerSpectrumDensityC
 
         subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: lmax
             complex(dp), intent(out) :: cspectra(:)
@@ -555,7 +553,7 @@ module SHTOOLS
 
         subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra,&
                                                 exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
             integer, intent(in) :: lmax
             complex(dp), intent(out) :: cspectra(:)
@@ -565,7 +563,7 @@ module SHTOOLS
         subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, &
                                   lmaxt, k, alpha, lat, lon, taper_wt, norm, &
                                   csphase, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: mtse(:), sd(:)
             real(dp), intent(in) :: sh(:,:,:), tapers(:,:)
             integer, intent(in) :: lmax, lmaxt, k, taper_order(:)
@@ -577,7 +575,7 @@ module SHTOOLS
         subroutine SHMultiTaperCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
                                    taper_order, lmaxt, k, alpha, lat, lon, &
                                    taper_wt, norm, csphase, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: mtse(:), sd(:)
             real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
             integer, intent(in) :: lmax1, lmax2, lmaxt, k, taper_order(:)
@@ -590,7 +588,7 @@ module SHTOOLS
                                         g, t, lmax, admit, corr, k, &
                                         admit_error, corr_error, taper_wt, &
                                         mtdef, k1linsig, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: tapers(:,:), lat, lon, g(:,:,:), t(:,:,:)
             integer, intent(in) :: lwin, lmax, k, taper_order(:)
             real(dp), intent(out) :: admit(:), corr(:)
@@ -602,7 +600,7 @@ module SHTOOLS
 
         subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, &
                                   taper_order, degrees, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: theta0
             integer, intent(in) :: lmax
             real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
@@ -613,7 +611,7 @@ module SHTOOLS
 
         subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, &
                                    shannon, degrees, ntapers, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: theta0
             integer, intent(in) :: lmax, m
             real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
@@ -624,7 +622,7 @@ module SHTOOLS
         end subroutine SHReturnTapersM
 
         subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: dllm(:,:)
             real(dp), intent(in) :: theta0
             integer, intent(in) :: lmax, m
@@ -633,7 +631,7 @@ module SHTOOLS
         end subroutine ComputeDm
 
         subroutine ComputeDG82(dG82, lmax, m, theta0, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: dG82(:,:)
             real(dp), intent(in) :: theta0
             integer, intent(in) :: lmax, m
@@ -641,7 +639,7 @@ module SHTOOLS
         end subroutine ComputeDG82
 
         function SHFindLWin(theta0, m, alpha, taper_number)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer :: SHFindLWin
             real(dp), intent(in) :: theta0, alpha
             integer, intent(in) :: m
@@ -650,7 +648,7 @@ module SHTOOLS
 
         subroutine SHBiasK(tapers, lwin, k, incspectra, ldata, &
                            outcspectra, taper_wt, save_cg, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: tapers(:,:), incspectra(:)
             real(dp), intent(out) :: outcspectra(:)
             integer, intent(in) :: lwin, ldata, k
@@ -661,7 +659,7 @@ module SHTOOLS
 
         subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, k, &
                                       taper_wt, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: Mmt(:,:)
             real(dp), intent(in) :: tapers_power(:,:)
             real(dp), intent(in), optional :: taper_wt(:)
@@ -671,7 +669,7 @@ module SHTOOLS
 
         subroutine SHBiasAdmitCorr(sgt, sgg, stt, lmax, tapers, lwin, k, &
                                    admit, corr, mtdef, taper_wt, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: sgt(:), sgg(:), stt(:), tapers(:,:)
             integer, intent(in) :: lmax, lwin, k
             real(dp), intent(out) :: admit(:), corr(:)
@@ -682,7 +680,7 @@ module SHTOOLS
 
         subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, k, &
                                nl, lmid, n, taper_wt, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: mtdebias(:,:), lmid(:)
             real(dp), intent(in) :: mtspectra(:,:), tapers(:,:)
             real(dp), intent(in), optional :: taper_wt(:)
@@ -694,7 +692,7 @@ module SHTOOLS
         subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, &
                               var_opt, var_unit, weight_opt, &
                               unweighted_covar, nocross, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: tapers(:,:), Sff(:)
             real(dp), intent(out) :: var_opt(:), var_unit(:)
             integer, intent(in) :: l, lwin, kmax, taper_order(:)
@@ -707,7 +705,7 @@ module SHTOOLS
         subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, &
                               variance, taper_wt, unweighted_covar, nocross, &
                               exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: tapers(:,:), Sff(:)
             real(dp), intent(out) :: variance
             integer, intent(in) :: l, lwin, kmax, taper_order(:)
@@ -719,7 +717,7 @@ module SHTOOLS
 
         function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, &
                          lwin, hkcc)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp) :: SHSjkPG
             real(dp), intent(in) :: incspectra(:), hj_real(:), hk_real(:)
             integer, intent(in) :: lwin, l, m, mprime, mj, mk, hkcc
@@ -728,7 +726,7 @@ module SHTOOLS
         subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, &
                                      lmax, sampling, ntapers, degrees, &
                                      exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
             integer, intent(in) :: dh_mask(:,:), n_dh, lmax, sampling
             integer, intent(in), optional :: ntapers, degrees(:)
@@ -737,7 +735,7 @@ module SHTOOLS
 
         subroutine SHBiasKMask(tapers, lwin, k, incspectra, ldata, &
                            outcspectra, taper_wt, save_cg, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: tapers(:,:), incspectra(:)
             real(dp), intent(out) :: outcspectra(:)
             integer, intent(in) :: lwin, ldata, k
@@ -749,7 +747,7 @@ module SHTOOLS
         subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, &
                                       lmaxt, k, taper_wt, norm, csphase, &
                                       exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: mtse(:), sd(:)
             real(dp), intent(in) :: sh(:,:,:), tapers(:,:)
             integer, intent(in) :: lmax, lmaxt, k
@@ -761,7 +759,7 @@ module SHTOOLS
         subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, &
                                        tapers, lmaxt, k, taper_wt, norm, &
                                        csphase, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: mtse(:), sd(:)
             real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
             integer, intent(in) :: lmax1, lmax2, lmaxt, k
@@ -772,7 +770,7 @@ module SHTOOLS
 
         subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, &
                                exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: Dij(:,:)
             integer, intent(in) :: dh_mask(:,:), n_dh, lmax
             integer, intent(in), optional :: sampling, degrees(:)
@@ -781,7 +779,7 @@ module SHTOOLS
 
         subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
                               centralmeridian, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(out) :: dhgrid(:,:)
             real(dp), intent(in) :: profile(:,:)
             integer, intent(in) :: n, sampling, nprofile, np
@@ -791,7 +789,7 @@ module SHTOOLS
 
         subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg, &
                           exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: Shh(:), incspectra(:)
             real(dp), intent(out) :: outcspectra(:)
             integer, intent(in) :: lwin, ldata
@@ -800,7 +798,7 @@ module SHTOOLS
         end subroutine SHBias
 
         subroutine SphericalCapCoef(coef, theta, lmax, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: coef(:)
             real(dp), intent(in) :: theta
             integer, intent(in), optional :: lmax
@@ -810,7 +808,7 @@ module SHTOOLS
         subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad, theta, phi, &
                                   total, n, sampling, lmax_calc, omega, &
                                   normal_gravity, pot, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
             real(dp), intent(out) :: rad(:,:), theta(:,:), phi(:,:), total(:,:)
             real(dp), intent(in), optional :: omega
@@ -825,7 +823,7 @@ module SHTOOLS
         subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, &
                                       vzz, vxy, vxz, vyz, n, sampling, &
                                       lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
             real(dp), intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
                                      vxz(:,:), vyz(:,:)
@@ -838,7 +836,7 @@ module SHTOOLS
         subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, &
                                      vzz, vxy, vxz, vyz, n, sampling, &
                                      lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), r0, a, f
             real(dp), intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
                                      vxz(:,:), vyz(:,:)
@@ -851,7 +849,7 @@ module SHTOOLS
         subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, &
                                  r, gridtype, order, nlat, nlong, interval, &
                                  lmax_calc, a, f, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: geoid(:,:)
             real(dp), intent(in) :: cilm(:,:,:), r0pot, GM, r, PotRef, omega
             integer, intent(in) :: lmax, order, gridtype
@@ -863,7 +861,7 @@ module SHTOOLS
 
         subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, &
                             w, zero, plx, n, dref, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: gridin(:,:), mass, rho
             real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
             real(dp), intent(out) :: cilm(:,:,:), d
@@ -874,7 +872,7 @@ module SHTOOLS
 
         subroutine CilmMinus(cilm, gridin, lmax, nmax, mass, d, rho, &
                              gridtype, w, zero, plx, n, dref, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: gridin(:,:), mass, rho
             real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
             real(dp), intent(out) :: cilm(:,:,:), d
@@ -885,7 +883,7 @@ module SHTOOLS
 
         subroutine CilmPlusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, &
                                 gridtype, w, zero, plx, n, dref, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: gridin(:,:), mass, rho(:,:)
             real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
             real(dp), intent(out) :: cilm(:,:,:), d
@@ -896,7 +894,7 @@ module SHTOOLS
 
         subroutine CilmMinusRhoH(cilm, gridin, lmax, nmax, mass, d, rho, &
                                  gridtype, w, zero, plx, n, dref, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: gridin(:,:), mass, rho(:,:)
             real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
             real(dp), intent(out) :: cilm(:,:,:), d
@@ -908,7 +906,7 @@ module SHTOOLS
         subroutine BAtoHilm(cilm, ba, gridglq, lmax, nmax, mass, r0, rho, &
                             gridtype, w, plx, zero, filter_type, filter_deg, &
                             lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: cilm(:,:,:)
             real(dp), intent(in) :: ba(:,:,:), gridglq(:,:), mass, r0, rho
             real(dp), intent(in), optional :: plx(:,:), zero(:), w(:)
@@ -920,7 +918,7 @@ module SHTOOLS
         subroutine BAtoHilmRhoH(cilm, ba, gridglq, lmax, nmax, mass, r0, &
                                 rho, gridtype, w, plx, zero, filter_type, &
                                 filter_deg, lmax_calc, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: cilm(:,:,:)
             real(dp), intent(in) :: ba(:,:,:), gridglq(:,:), mass, r0, rho(:,:)
             real(dp), intent(in), optional :: plx(:,:), zero(:), w(:)
@@ -930,21 +928,21 @@ module SHTOOLS
         end subroutine BAtoHilmRhoH
 
         function DownContFilterMA(l, half, r, d)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: DownContFilterMA
             integer, intent(in) :: l, half
             real(dp), intent(in) :: r, d
         end function DownContFilterMA
 
         function DownContFilterMC(l, half, r, d)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: DownContFilterMC
             integer, intent(in) :: l, half
             real(dp), intent(in) :: r, d
         end function DownContFilterMC
 
         function NormalGravity(geocentric_lat, gm, omega, a, b)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: NormalGravity
             real(dp), intent(in) :: geocentric_lat, gm, omega, a, b
         end function NormalGravity
@@ -952,7 +950,7 @@ module SHTOOLS
         subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                                  phi_grid, total_grid, n, sampling, &
                                  lmax_calc, pot_grid, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), r0, a, f
             real(dp), intent(out) :: rad_grid(:,:), theta_grid(:,:), &
                                      phi_grid(:,:), total_grid(:,:)
@@ -964,7 +962,7 @@ module SHTOOLS
         end subroutine MakeMagGridDH
 
         subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: c(:,:,:)
             real(dp), intent(in) :: a, r
             integer, intent(in) :: lmax
@@ -973,7 +971,7 @@ module SHTOOLS
         end subroutine SHMagPowerSpectrum
 
         function SHMagPowerL(c, a, r, l)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp) :: SHMagPowerL
             real(dp), intent(in) :: c(:,:,:)
             real(dp), intent(in) :: a, r
@@ -982,7 +980,7 @@ module SHTOOLS
 
         subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
                                    exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: lat, lon, theta0
             real(dp), intent(out) :: coord(:,:)
             real(dp), intent(in), optional :: cinterval
@@ -991,7 +989,7 @@ module SHTOOLS
 
         subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
                                     cinterval, cnum, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: lat, lon, A_theta, B_theta, dec
             real(dp), intent(out) :: coord(:,:)
             real(dp), intent(in), optional :: cinterval
@@ -999,7 +997,7 @@ module SHTOOLS
         end subroutine MakeEllipseCoord
 
         subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: j2, j3, m1, m2, m3
             integer, intent(out) :: jmin, jmax
             real(dp), intent(out) :: w3j(:)
@@ -1007,19 +1005,21 @@ module SHTOOLS
         end subroutine Wigner3j
 
         function RandomN(idum)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
+            integer, parameter :: int4 = selected_int_kind(9)
             real(dp) :: RandomN
             integer(int4), intent(inout) :: idum
         end function RandomN
 
         function RandomGaussian(idum)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
+            integer, parameter :: int4 = selected_int_kind(9)
             real(dp) :: RandomGaussian
             integer(int4), intent(inout) :: idum
         end function RandomGaussian
 
         subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: x1, x2
             real(dp), intent(out) :: zero(:), w(:)
             integer, intent(in) :: n
@@ -1039,7 +1039,7 @@ module SHTOOLS
         end function NGLQSHN
 
         subroutine DHaj(n, aj, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: n
             real(dp), intent(out) :: aj(:)
             integer, intent(out), optional :: exitstatus
@@ -1050,7 +1050,7 @@ module SHTOOLS
         end function YilmIndexVector
 
         subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: ain(:,:)
             integer, intent(in) :: n
             real(dp), intent(out) :: eig(:), evec(:,:)
@@ -1060,7 +1060,7 @@ module SHTOOLS
         end subroutine EigValVecSym
 
         subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: ain(:,:)
             integer, intent(in) :: n
             real(dp), intent(out) :: eig(:), evec(:,:)
@@ -1069,7 +1069,7 @@ module SHTOOLS
         end subroutine EigValVecSymTri
 
         subroutine EigValSym(ain, n, eval, ul)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: ain(:,:)
             integer, intent(in) :: n
             real(dp), intent(out) :: eval(:)
@@ -1078,7 +1078,7 @@ module SHTOOLS
 
         subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, &
                                   x, dj, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: tapers(:,:), x(:), dj(:,:,:)
             real(dp), intent(out) :: tapersrot(:,:)
             integer, intent(in) :: taper_order(:), lmax, nrot
@@ -1087,7 +1087,7 @@ module SHTOOLS
 
         subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, &
                                  exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: falpha(:)
             real(dp), intent(in) :: galpha(:,:), flm(:,:,:)
             integer, intent(in) :: lmax, nmax
@@ -1096,7 +1096,7 @@ module SHTOOLS
 
         subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, &
                                      exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: flm(:,:,:)
             real(dp), intent(in) :: falpha(:), galpha(:,:)
             integer, intent(in) :: lmax, nmax
@@ -1104,7 +1104,7 @@ module SHTOOLS
         end subroutine SlepianCoeffsToSH
 
         subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: kij(:,:)
             real(dp), intent(in) :: galpha(:,:)
             integer, intent(in) :: lmax, nmax
@@ -1113,7 +1113,7 @@ module SHTOOLS
 
         subroutine SHSlepianVar(l, galpha, galpha_order, lmax, kmax, Sff, &
                                variance, exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: galpha(:,:), Sff(:)
             real(dp), intent(out) :: variance
             integer, intent(in) :: l, lmax, kmax, galpha_order(:)
@@ -1122,7 +1122,7 @@ module SHTOOLS
 
         subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
                                      exitstatus)
-            use ftypes
+            integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: kij(:,:)
             real(dp), intent(in) :: galpha(:,:)
             integer, intent(in) :: galpha_order(:), lmax, nmax
