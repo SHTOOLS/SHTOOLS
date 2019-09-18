@@ -50,7 +50,6 @@ install:
         mkl
         astropy
         xarray
-  # - conda install -n test-environment -c anaconda fftw
   - source activate test-environment
   - pip install --no-deps .
 
