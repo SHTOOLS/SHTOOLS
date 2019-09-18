@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -531,7 +531,7 @@ MathJax.Hub.Config({
 
     
 
-  <p>Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.</p>
+  <p>Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum.</p>
 
 <h2 id="usage">Usage</h2>
 
@@ -552,11 +552,11 @@ MathJax.Hub.Config({
 
 <dl>
   <dt><code class="highlighter-rouge">l</code> : integer</dt>
-  <dd>The angular degree to determine the minimum variance and optimal weights.</dd>
+  <dd>The spherical harmonic degree used to calculate the theoretical minimum variance and optimal weights.</dd>
   <dt><code class="highlighter-rouge">tapers</code> : float, dimension (<code class="highlighter-rouge">lwinin</code>+1, <code class="highlighter-rouge">kmaxin</code>)</dt>
   <dd>A matrix of localization functions obtained from <code class="highlighter-rouge">SHReturnTapers</code> or <code class="highlighter-rouge">SHReturnTapersM</code>.</dd>
   <dt><code class="highlighter-rouge">taper_order</code> : integer, dimension (<code class="highlighter-rouge">kmaxin</code>)</dt>
-  <dd>The angular order of the windowing coefficients in TAPERS. If this matrix was created using <code class="highlighter-rouge">SHReturnTapersM</code>, then this array must be composed of zeros.</dd>
+  <dd>The angular order of the windowing coefficients in <code class="highlighter-rouge">tapers</code>.</dd>
   <dt><code class="highlighter-rouge">sff</code> : float, dimension (<code class="highlighter-rouge">l</code>+<code class="highlighter-rouge">lwinin</code>+1)</dt>
   <dd>The global unwindowed power spectrum of the function to be localized.</dd>
   <dt><code class="highlighter-rouge">lwin</code> : optional, integer, default = <code class="highlighter-rouge">lwinin</code></dt>
@@ -579,7 +579,7 @@ MathJax.Hub.Config({
 
 <h2 id="see-also">See also</h2>
 
-<p><a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshreturntapersm.html">shreturntapersm</a>, <a href="pyshmultitaperse.html">shmultitaperse</a>, <a href="pyshmultitapercse.html">shmultitapercse</a>; <a href="pyshlocalizedadmitcorr.html">shlocalizedadmitcorr</a>, <a href="pyshbiasadmitcorr.html">shbiasadmitcorr</a>, <a href="pyshbiask.html">shbiask</a>, <a href="pyshmtdebias.html">shmtdebias</a></p>
+<p><a href="pyshmtvar.html">shmtvar</a>, <a href="pyshreturntapers.html">shreturntapers</a>, <a href="pyshreturntapersm.html">shreturntapersm</a>, <a href="pyshmultitaperse.html">shmultitaperse</a>, <a href="pyshmultitapercse.html">shmultitapercse</a>; <a href="pyshlocalizedadmitcorr.html">shlocalizedadmitcorr</a>, <a href="pyshbiasadmitcorr.html">shbiasadmitcorr</a>, <a href="pyshbiask.html">shbiask</a>, <a href="pyshmtdebias.html">shmtdebias</a></p>
 
 
     <div class="tags">
@@ -607,7 +607,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -653,7 +653,11 @@ table:nth-of-type(n) th:nth-of-type(2) {
     </tr>
     <tr>
       <td><a href="pyshmtvaropt.html">SHMTVarOpt</a></td>
-      <td>Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.</td>
+      <td>Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum.</td>
+    </tr>
+    <tr>
+      <td><a href="pyshmtvar.html">SHMTVar</a></td>
+      <td>Calculate the theoretical variance of a multitaper spectral estimate for a given input power spectrum.</td>
     </tr>
     <tr>
       <td><a href="pyshsjkpg.html">SHSjkPG</a></td>
@@ -738,6 +742,18 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td><a href="pyslepiancoeffstosh.html">SlepianCoeffsToSH</a></td>
       <td>Convert a function expressed in Slepian coefficients to spherical harmonic coefficients.</td>
     </tr>
+    <tr>
+      <td><a href="pyshscouplingmatrix.html">SHSCouplingMatrix</a></td>
+      <td>Compute the spherical harmonic coupling matrix for a given set of Slepian functions.</td>
+    </tr>
+    <tr>
+      <td><a href="pyshscouplingmatrixcap.html">SHSCouplingMatrixCap</a></td>
+      <td>Compute the spherical harmonic coupling matrix for a given set of spherical-cap Slepian functions.</td>
+    </tr>
+    <tr>
+      <td><a href="pyshslepianvar.html">SHSlepianVar</a></td>
+      <td>Calculate the theoretical variance of the power of a function expanded in spherical-cap Slepian functions.</td>
+    </tr>
   </tbody>
 </table>
 
@@ -782,7 +798,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -531,7 +531,7 @@ MathJax.Hub.Config({
 
     
 
-  <p>Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.</p>
+  <p>Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum.</p>
 
 <h2 id="usage">Usage</h2>
 
@@ -541,24 +541,24 @@ MathJax.Hub.Config({
 
 <dl>
   <dt><code class="highlighter-rouge">l</code> : input, integer</dt>
-  <dd>The angular degree to determine the minimum variance and optimal weights.</dd>
-  <dt><code class="highlighter-rouge">tapers</code> : input, real*8, dimension (<code class="highlighter-rouge">lwin</code>+1, <code class="highlighter-rouge">kmax</code>)</dt>
+  <dd>The spherical harmonic used degree to determine the minimum variance and optimal weights.</dd>
+  <dt><code class="highlighter-rouge">tapers</code> : input, real(dp), dimension (<code class="highlighter-rouge">lwin</code>+1, <code class="highlighter-rouge">kmax</code>)</dt>
   <dd>A matrix of localization functions obtained from <code class="highlighter-rouge">SHReturnTapers</code> or <code class="highlighter-rouge">SHReturnTapersM</code>.</dd>
   <dt><code class="highlighter-rouge">taper_order</code> : input, integer, dimension (<code class="highlighter-rouge">kmax</code>)</dt>
-  <dd>The angular order of the windowing coefficients in TAPERS. If this matrix was created using <code class="highlighter-rouge">SHReturnTapersM</code>, then this array must be composed of zeros.</dd>
+  <dd>The angular order of the windowing coefficients in <code class="highlighter-rouge">tapers</code>.</dd>
   <dt><code class="highlighter-rouge">lwin</code> : input, integer</dt>
   <dd>The spherical harmonic bandwidth of the localizing windows.</dd>
   <dt><code class="highlighter-rouge">kmax</code> : input, integer</dt>
   <dd>The maximum number of tapers to be used when calculating the minimum variance and optimal weights.</dd>
-  <dt><code class="highlighter-rouge">sff</code> : input, real*8, dimension (<code class="highlighter-rouge">l</code>+<code class="highlighter-rouge">lwin</code>+1)</dt>
+  <dt><code class="highlighter-rouge">sff</code> : input, real(dp), dimension (<code class="highlighter-rouge">l</code>+<code class="highlighter-rouge">lwin</code>+1)</dt>
   <dd>The global unwindowed power spectrum of the function to be localized.</dd>
-  <dt><code class="highlighter-rouge">var_opt</code> : output, real*8, dimension (<code class="highlighter-rouge">kmax</code>)</dt>
+  <dt><code class="highlighter-rouge">var_opt</code> : output, real(dp), dimension (<code class="highlighter-rouge">kmax</code>)</dt>
   <dd>The minimum variance of the multitaper spectral estimate for degree <code class="highlighter-rouge">l</code> using 1 through <code class="highlighter-rouge">kmax</code> tapers.</dd>
-  <dt><code class="highlighter-rouge">var_unit</code> : output, real*8, dimension (<code class="highlighter-rouge">kmax</code>)</dt>
+  <dt><code class="highlighter-rouge">var_unit</code> : output, real(dp), dimension (<code class="highlighter-rouge">kmax</code>)</dt>
   <dd>The variance of the multitaper spectral estimate using equal weights for degree <code class="highlighter-rouge">l</code> using 1 through <code class="highlighter-rouge">kmax</code> tapers.</dd>
-  <dt><code class="highlighter-rouge">weight_opt</code> : optional, output, real*8, dimension (<code class="highlighter-rouge">kmax</code>, <code class="highlighter-rouge">kmax</code>)</dt>
+  <dt><code class="highlighter-rouge">weight_opt</code> : optional, output, real(dp), dimension (<code class="highlighter-rouge">kmax</code>, <code class="highlighter-rouge">kmax</code>)</dt>
   <dd>The optimal weights (in columns) that minimize the multitaper spectral estimate’s variance using 1 through <code class="highlighter-rouge">kmax</code> tapers.</dd>
-  <dt><code class="highlighter-rouge">unweighted_covar</code> : optional, output, real*8, dimension (<code class="highlighter-rouge">kmax</code>, <code class="highlighter-rouge">kmax</code>)</dt>
+  <dt><code class="highlighter-rouge">unweighted_covar</code> : optional, output, real(dp), dimension (<code class="highlighter-rouge">kmax</code>, <code class="highlighter-rouge">kmax</code>)</dt>
   <dd>The unweighted covariance matrix of the <code class="highlighter-rouge">kmax</code> tapers (i.e., Fij in Wieczorek and Simons 2007).</dd>
   <dt><code class="highlighter-rouge">nocross</code> : optional, input, integer, default = 0</dt>
   <dd>If 1, only the diagonal terms of the covariance matrix Fij will be computed. If 0, all terms will be computed.</dd>
@@ -578,7 +578,7 @@ MathJax.Hub.Config({
 
 <h2 id="see-also">See also</h2>
 
-<p><a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersm.html">shreturntapersm</a>, <a href="shmultitaperse.html">shmultitaperse</a>, <a href="shmultitapercse.html">shmultitapercse</a>; <a href="shlocalizedadmitcorr.html">shlocalizedadmitcorr</a>, <a href="shbiasadmitcorr.html">shbiasadmitcorr</a>, <a href="shbiask.html">shbiask</a>, <a href="shmtdebias.html">shmtdebias</a></p>
+<p><a href="shmtvar.html">shmtvar</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersm.html">shreturntapersm</a>, <a href="shmultitaperse.html">shmultitaperse</a>, <a href="shmultitapercse.html">shmultitapercse</a>, <a href="shlocalizedadmitcorr.html">shlocalizedadmitcorr</a>, <a href="shbiasadmitcorr.html">shbiasadmitcorr</a>, <a href="shbiask.html">shbiask</a>, <a href="shmtdebias.html">shmtdebias</a></p>
 
 
     <div class="tags">
@@ -606,7 +606,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

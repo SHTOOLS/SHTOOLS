@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -540,11 +540,11 @@ MathJax.Hub.Config({
 <h2 id="parameters">Parameters</h2>
 
 <dl>
-  <dt><code class="highlighter-rouge">cilm</code> : input, real*8, dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
+  <dt><code class="highlighter-rouge">cilm</code> : input, real(dp), dimension (2, <code class="highlighter-rouge">lmaxin</code>+1, <code class="highlighter-rouge">lmaxin</code>+1)</dt>
   <dd>The real function expressed in real spherical harmonics.</dd>
   <dt><code class="highlighter-rouge">lmax</code> : input, integer</dt>
   <dd>The maximum spherical harmonic degree used in calculating the power spectrum. This must be less than or equal to <code class="highlighter-rouge">lmaxin</code>.</dd>
-  <dt><code class="highlighter-rouge">pspectrum</code> : output, real*8, dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
+  <dt><code class="highlighter-rouge">pspectrum</code> : output, real(dp), dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The power spectral density of the function.</dd>
   <dt><code class="highlighter-rouge">exitstatus</code> : output, optional, integer</dt>
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
@@ -586,7 +586,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

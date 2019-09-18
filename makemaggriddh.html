@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -540,23 +540,23 @@ MathJax.Hub.Config({
 <h2 id="parameters">Parameters</h2>
 
 <dl>
-  <dt><code class="highlighter-rouge">cilm</code> : input, real*8, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
+  <dt><code class="highlighter-rouge">cilm</code> : input, real(dp), dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The real Schmidt semi-normalized spherical harmonic coefficients to be expanded in the space domain. The coefficients <code class="highlighter-rouge">C1lm</code> and <code class="highlighter-rouge">C2lm</code> refer to the cosine (<code class="highlighter-rouge">Clm</code>) and sine (<code class="highlighter-rouge">Slm</code>) coefficients, respectively, with <code class="highlighter-rouge">Clm=cilm(1,l+1,m+1)</code> and <code class="highlighter-rouge">Slm=cilm(2,l+1,m+1)</code>. Alternatively, <code class="highlighter-rouge">C1lm</code> and <code class="highlighter-rouge">C2lm</code> correspond to the positive and negative order coefficients, respectively. The coefficients are assumed to have units of nT.</dd>
   <dt><code class="highlighter-rouge">lmax</code> : input, integer</dt>
   <dd>The maximum spherical harmonic degree of the coefficients <code class="highlighter-rouge">cilm</code>. This determines the number of samples of the output grids, <code class="highlighter-rouge">n=2*lmax+2</code>, and the latitudinal sampling interval, <code class="highlighter-rouge">90/(lmax+1)</code>.</dd>
-  <dt><code class="highlighter-rouge">r0</code> : input, real*8</dt>
+  <dt><code class="highlighter-rouge">r0</code> : input, real(dp)</dt>
   <dd>The reference radius of the spherical harmonic coefficients.</dd>
-  <dt><code class="highlighter-rouge">a</code> : input, real*8</dt>
+  <dt><code class="highlighter-rouge">a</code> : input, real(dp)</dt>
   <dd>The semi-major axis of the flattened ellipsoid on which the field is computed.</dd>
-  <dt><code class="highlighter-rouge">f</code> : input, real*8</dt>
+  <dt><code class="highlighter-rouge">f</code> : input, real(dp)</dt>
   <dd>The flattening of the reference ellipsoid: i.e., <code class="highlighter-rouge">F=(R_equator-R_pole)/R_equator</code>.</dd>
-  <dt><code class="highlighter-rouge">rad</code> : output, real*8, dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
+  <dt><code class="highlighter-rouge">rad</code> : output, real(dp), dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
   <dd>A 2D equally sampled (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>) or equally spaced (<code class="highlighter-rouge">n</code> by 2<code class="highlighter-rouge">n</code>) grid of the radial component of the magnetic field corresponding to the input spherical harmonic coefficients <code class="highlighter-rouge">cilm</code>. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/<code class="highlighter-rouge">n</code> degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/<code class="highlighter-rouge">n</code> for an equally sampled and 180/<code class="highlighter-rouge">n</code> for an equally spaced grid, respectively.</dd>
-  <dt><code class="highlighter-rouge">theta</code> : output, real*8, dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
+  <dt><code class="highlighter-rouge">theta</code> : output, real(dp), dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
   <dd>A 2D equally sampled or equally spaced grid of the theta component of the magnetic field.</dd>
-  <dt><code class="highlighter-rouge">phi</code> : output, real*8, dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
+  <dt><code class="highlighter-rouge">phi</code> : output, real(dp), dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
   <dd>A 2D equally sampled or equally spaced grid of the phi component of the magnetic field.</dd>
-  <dt><code class="highlighter-rouge">total</code> : output, real*8, dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
+  <dt><code class="highlighter-rouge">total</code> : output, real(dp), dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
   <dd>A 2D equally sampled or equally spaced grid of the total magnetic field strength.</dd>
   <dt><code class="highlighter-rouge">n</code> : output, integer</dt>
   <dd>The number of samples in latitude of the output grids. This is equal to <code class="highlighter-rouge">2lmax+2</code>.</dd>
@@ -564,7 +564,7 @@ MathJax.Hub.Config({
   <dd>If 1 (default) the output grids are equally sampled (<code class="highlighter-rouge">n</code> by <code class="highlighter-rouge">n</code>). If 2, the grids are equally spaced (<code class="highlighter-rouge">n</code> by 2<code class="highlighter-rouge">n</code>).</dd>
   <dt><code class="highlighter-rouge">lmaxcalc</code> : optional, input, integer, default = <code class="highlighter-rouge">lmax</code></dt>
   <dd>The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to <code class="highlighter-rouge">lmax</code>.</dd>
-  <dt><code class="highlighter-rouge">potgrid</code> : output, real*8, dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
+  <dt><code class="highlighter-rouge">potgrid</code> : output, real(dp), dimension(2*<code class="highlighter-rouge">lmax</code>+2, <code class="highlighter-rouge">sampling</code>*(2*<code class="highlighter-rouge">lmax</code>+2))</dt>
   <dd>A 2D equally sampled or equaly spaced grid of the magnetic potential.</dd>
   <dt><code class="highlighter-rouge">exitstatus</code> : output, optional, integer</dt>
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
@@ -610,7 +610,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

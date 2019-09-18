@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -542,23 +542,23 @@ MathJax.Hub.Config({
 <dl>
   <dt><code class="highlighter-rouge">filename</code> : input, character(*)</dt>
   <dd>The ascii-formatted filename containing the spherical harmonic coefficients.</dd>
-  <dt><code class="highlighter-rouge">cilm</code> : output, real*8, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
+  <dt><code class="highlighter-rouge">cilm</code> : output, real(dp), dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The spherical harmonic coefficients contained in <code class="highlighter-rouge">filename</code>.</dd>
   <dt><code class="highlighter-rouge">lmax</code> : output, integer</dt>
   <dd>The maximum spherical harmonic degree of <code class="highlighter-rouge">cilm</code>.</dd>
-  <dt><code class="highlighter-rouge">gm</code> : output, real*8</dt>
+  <dt><code class="highlighter-rouge">gm</code> : output, real(dp)</dt>
   <dd>The mass-gravitational constant.</dd>
-  <dt><code class="highlighter-rouge">r0_pot</code> : output, real*8</dt>
+  <dt><code class="highlighter-rouge">r0_pot</code> : output, real(dp)</dt>
   <dd>The reference radius of the potential coefficients.</dd>
-  <dt><code class="highlighter-rouge">error</code> : output, optional, real*8, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
+  <dt><code class="highlighter-rouge">error</code> : output, optional, real(dp), dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The errors corresponding to the spherical harmonic coefficients <code class="highlighter-rouge">cilm</code>.</dd>
-  <dt><code class="highlighter-rouge">dot</code> : output, optional, real*8, dimension (2, <code class="highlighter-rouge">lmaxout</code>+1, <code class="highlighter-rouge">lmaxout</code>+1)</dt>
+  <dt><code class="highlighter-rouge">dot</code> : output, optional, real(dp), dimension (2, <code class="highlighter-rouge">lmaxout</code>+1, <code class="highlighter-rouge">lmaxout</code>+1)</dt>
   <dd>The time derivatives of the spherical harmonic coefficients. The dimension of this array can be smaller than <code class="highlighter-rouge">lmax+1</code>.</dd>
-  <dt><code class="highlighter-rouge">doystart</code> : output, optional, real*8</dt>
+  <dt><code class="highlighter-rouge">doystart</code> : output, optional, real(dp)</dt>
   <dd>The starting time of the solution.</dd>
-  <dt><code class="highlighter-rouge">doyend</code> : output, optional, real*8</dt>
+  <dt><code class="highlighter-rouge">doyend</code> : output, optional, real(dp)</dt>
   <dd>The ending time of the solution</dd>
-  <dt><code class="highlighter-rouge">epoch</code> : output, optional, real*8</dt>
+  <dt><code class="highlighter-rouge">epoch</code> : output, optional, real(dp)</dt>
   <dd>The epoch time for the time derivates.</dd>
   <dt><code class="highlighter-rouge">exitstatus</code> : output, optional, integer</dt>
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
@@ -608,7 +608,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

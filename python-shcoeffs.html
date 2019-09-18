@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -611,6 +611,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td><code class="highlighter-rouge">x = SHCoeffs.from_file()</code></td>
       <td>Initialize using coefficients from a file.</td>
     </tr>
+    <tr>
+      <td><code class="highlighter-rouge">x = SHCoeffs.from_cap()</code></td>
+      <td>Initialize using coefficients of a spherical cap.</td>
+    </tr>
   </tbody>
 </table>
 
@@ -674,6 +678,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td>Return the spectrum of the function.</td>
     </tr>
     <tr>
+      <td><code class="highlighter-rouge">cross_spectrum()</code></td>
+      <td>Return the cross-spectrum of two functions.</td>
+    </tr>
+    <tr>
       <td><code class="highlighter-rouge">volume()</code></td>
       <td>Calculate the volume of the body.</td>
     </tr>
@@ -702,8 +710,16 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td>Plot the spectrum as a function of spherical harmonic degree.</td>
     </tr>
     <tr>
+      <td><code class="highlighter-rouge">plot_cross_spectrum()</code></td>
+      <td>Plot the cross-spectrum of two functions.</td>
+    </tr>
+    <tr>
       <td><code class="highlighter-rouge">plot_spectrum2d()</code></td>
       <td>Plot the spectrum of all spherical-harmonic coefficients.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">plot_cross_spectrum2d()</code></td>
+      <td>Plot the cross-spectrum of all spherical-harmonic coefficients.</td>
     </tr>
     <tr>
       <td><code class="highlighter-rouge">to_array()</code></td>
@@ -742,7 +758,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

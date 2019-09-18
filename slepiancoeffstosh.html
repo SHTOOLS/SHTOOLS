@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -540,16 +540,16 @@ MathJax.Hub.Config({
 <h2 id="parameters">Parameters</h2>
 
 <dl>
-  <dt><code class="highlighter-rouge">flm</code> : output, real*8, dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
+  <dt><code class="highlighter-rouge">flm</code> : output, real(dp), dimension (2, <code class="highlighter-rouge">lmax</code>+1, <code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The spherical harmonic coefficients of the global function.</dd>
-  <dt><code class="highlighter-rouge">falpha</code> : input, real*8, dimension (<code class="highlighter-rouge">nmax</code>)</dt>
+  <dt><code class="highlighter-rouge">falpha</code> : input, real(dp), dimension (<code class="highlighter-rouge">nmax</code>)</dt>
   <dd>A vector containing the Slepian coefficients of the function.</dd>
-  <dt><code class="highlighter-rouge">galpha</code> : input, real*8, dimension ((<code class="highlighter-rouge">lmax</code>+1)**2, <code class="highlighter-rouge">nmax</code>)</dt>
+  <dt><code class="highlighter-rouge">galpha</code> : input, real(dp), dimension ((<code class="highlighter-rouge">lmax</code>+1)**2, <code class="highlighter-rouge">nmax</code>)</dt>
   <dd>An array containing the spherical harmonic coefficients of the Slepian functions. Each column corresponds to a single function of which the spherical harmonic coefficients can be unpacked with <code class="highlighter-rouge">SHVectorToCilm</code>.</dd>
   <dt><code class="highlighter-rouge">lmax</code> : input, integer</dt>
   <dd>The spherical harmonic bandwidth of the Slepian functions.</dd>
   <dt><code class="highlighter-rouge">nmax</code> : input, integer</dt>
-  <dd>The number of expansion coefficients to compute.</dd>
+  <dd>The number of expansion coefficients to compute. This must be less than or equal to (<code class="highlighter-rouge">lmax</code>+1)**2.</dd>
   <dt><code class="highlighter-rouge">exitstatus</code> : output, optional, integer</dt>
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
@@ -562,7 +562,7 @@ MathJax.Hub.Config({
 
 <h2 id="see-also">See also</h2>
 
-<p><a href="slepiancoeffs.html">slepiancoeffs</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersmap.html">shreturntapersmap</a>, <a href="shrotatetapers.html">shrotatetapers</a>, <a href="shvectortocilm.html">shvectortocilm</a></p>
+<p><a href="slepiancoeffs.html">slepiancoeffs</a>, <a href="shslepianvar.html">shslepianvar</a>, <a href="shreturntapers.html">shreturntapers</a>, <a href="shreturntapersmap.html">shreturntapersmap</a>, <a href="shrotatetapers.html">shrotatetapers</a>, <a href="shvectortocilm.html">shvectortocilm</a>, <a href="shscouplingmatrix.html">shscouplingmatrix</a>, <a href="shscouplingmatrixcap.html">shscouplingmatrixcap</a>, <a href="shmtcouplingmatrix.html">shmtcouplingmatrix</a>,</p>
 
 
     <div class="tags">
@@ -590,7 +590,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

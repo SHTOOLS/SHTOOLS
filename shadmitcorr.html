@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -540,17 +540,17 @@ MathJax.Hub.Config({
 <h2 id="parameters">Parameters</h2>
 
 <dl>
-  <dt><code class="highlighter-rouge">gilm</code> : input, real*8, dimension (2, <code class="highlighter-rouge">lmaxg</code>+1, <code class="highlighter-rouge">lmaxg</code>+1)</dt>
+  <dt><code class="highlighter-rouge">gilm</code> : input, real(dp), dimension (2, <code class="highlighter-rouge">lmaxg</code>+1, <code class="highlighter-rouge">lmaxg</code>+1)</dt>
   <dd>The real spherical harmonic coefficients of the function <code class="highlighter-rouge">G</code>.</dd>
-  <dt><code class="highlighter-rouge">tilm</code> : input, real*8, dimension (2, <code class="highlighter-rouge">lmaxt</code>+1, <code class="highlighter-rouge">lmaxt</code>+1)</dt>
+  <dt><code class="highlighter-rouge">tilm</code> : input, real(dp), dimension (2, <code class="highlighter-rouge">lmaxt</code>+1, <code class="highlighter-rouge">lmaxt</code>+1)</dt>
   <dd>The real spherical harmonic coefficients of the function <code class="highlighter-rouge">T</code>.</dd>
   <dt><code class="highlighter-rouge">lmax</code> : input, integer</dt>
   <dd>The maximum spherical harmonic degree that will be calculated for the admittance and correlation spectra. This must be less than or equal to the minimum of <code class="highlighter-rouge">lmaxg</code> and <code class="highlighter-rouge">lmaxt</code>.</dd>
-  <dt><code class="highlighter-rouge">admit</code> : output, real*8, dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
+  <dt><code class="highlighter-rouge">admit</code> : output, real(dp), dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The admittance function, which is equal to <code class="highlighter-rouge">Sgt/Stt</code>.</dd>
-  <dt><code class="highlighter-rouge">corr</code> : output, real*8, dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
+  <dt><code class="highlighter-rouge">corr</code> : output, real(dp), dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The degree correlation function, which is equal to <code class="highlighter-rouge">Sgt/sqrt(Sgg Stt)</code>.</dd>
-  <dt><code class="highlighter-rouge">admit_error</code> : output, optional, real*8, dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
+  <dt><code class="highlighter-rouge">admit_error</code> : output, optional, real(dp), dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
   <dd>The uncertainty of the admittance function, assuming that <code class="highlighter-rouge">gilm</code> and <code class="highlighter-rouge">tilm</code> are related by a linear isotropic transfer function, and that the lack of correlation is a result of uncorrelated noise.</dd>
   <dt><code class="highlighter-rouge">exitstatus</code> : output, optional, integer</dt>
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
@@ -592,7 +592,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

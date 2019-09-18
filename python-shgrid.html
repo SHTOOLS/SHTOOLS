@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -611,6 +611,14 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td><code class="highlighter-rouge">x = SHGrid.from_file()</code></td>
       <td>Initialize using an array from a file.</td>
     </tr>
+    <tr>
+      <td><code class="highlighter-rouge">x = SHGrid.from_zeros()</code></td>
+      <td>Initialize using an array of zeros.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">x = SHGrid.from_cap()</code></td>
+      <td>Initialize using a rotated spherical cap.</td>
+    </tr>
   </tbody>
 </table>
 
@@ -670,12 +678,20 @@ table:nth-of-type(n) th:nth-of-type(2) {
   </thead>
   <tbody>
     <tr>
+      <td><code class="highlighter-rouge">to_array()</code></td>
+      <td>Return a numpy array of the gridded data.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">to_xarray()</code></td>
+      <td>Return the gridded data as an xarray DataArray.</td>
+    </tr>
+    <tr>
       <td><code class="highlighter-rouge">to_file()</code></td>
       <td>Save raw gridded data to a text or binary file.</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">to_array()</code></td>
-      <td>Return a numpy array of the gridded data.</td>
+      <td><code class="highlighter-rouge">to_netcdf()</code></td>
+      <td>Return the gridded data as a netcdf formatted file or object.</td>
     </tr>
     <tr>
       <td><code class="highlighter-rouge">lats()</code></td>
@@ -734,7 +750,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

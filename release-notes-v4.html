@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -554,7 +554,51 @@ $('#toc').on('click', 'a', function() {
 
     
 
-  <h2 id="version-44">Version 4.4</h2>
+  <h2 id="version-45">Version 4.5</h2>
+
+<p><strong>Slepian functions</strong></p>
+<ul>
+  <li>Added the fortran function <code class="highlighter-rouge">SHSCouplingMatrix</code> and <code class="highlighter-rouge">Slepain</code> class method <code class="highlighter-rouge">coupling matrix()</code> for computing the coupling matrix that relates the Slepian expansion power spectrum to the global power spectrum.</li>
+  <li>Added the fortran function <code class="highlighter-rouge">SHSCouplingMatrixCap</code> which is optimized for working with spherical cap Slepian functions.</li>
+  <li>Improved the plotting capabilities of the method <code class="highlighter-rouge">plot_coupling_matrix</code>, such as the addition of colorbars, and the option to normalize to maximum value to unity.</li>
+  <li>Added the option <code class="highlighter-rouge">taper_degrees()</code> and <code class="highlighter-rouge">slepian_degrees()</code> to the <code class="highlighter-rouge">SHWindow</code> and <code class="highlighter-rouge">Slepian</code> classes, respectively, to allow for the construction of Slepian functions that exclude certain spherical harmonic degrees.</li>
+  <li>Added the fortran function <code class="highlighter-rouge">SHMTVar</code> and the <code class="highlighter-rouge">SHWindow</code> class method <code class="highlighter-rouge">variance()</code> to compute the variance of a multitaper spectral estimate (based on <code class="highlighter-rouge">SHMTVarOpt</code>).</li>
+  <li>Added the fortran function <code class="highlighter-rouge">SHSlepianVar</code> and the <code class="highlighter-rouge">Slepian</code> class method <code class="highlighter-rouge">variance()</code> to compute the variance of a Slepian expansion spectral estimate.</li>
+  <li>Improved the handing of the optional parameter <code class="highlighter-rouge">weights</code> in all methods of <code class="highlighter-rouge">SHWindow</code>.</li>
+  <li><strong>Changed the name of the optional parameter <code class="highlighter-rouge">nwin</code> of <code class="highlighter-rouge">SHWindow.coupling_matrix</code> to <code class="highlighter-rouge">k</code> for consistency with the localized spectral analysis routines.</strong></li>
+</ul>
+
+<p><strong>SHCoeffs</strong></p>
+<ul>
+  <li>Added <code class="highlighter-rouge">cross_spectrum()</code>, <code class="highlighter-rouge">plot_cross_spectrum()</code> and <code class="highlighter-rouge">plot_cross_spectrum2d()</code> methods to the <code class="highlighter-rouge">SHCoeffs</code> class.</li>
+  <li>Added <code class="highlighter-rouge">from_cap()</code> constructor to create coefficients of a spherical cap.</li>
+  <li>Fixed a small bug when rotating coefficients in the <code class="highlighter-rouge">SHCoeffs</code>, <code class="highlighter-rouge">SHMagCoeffs</code> and <code class="highlighter-rouge">SHGravCoeffs</code> classes when the input <code class="highlighter-rouge">csphase</code> is different from the default value.</li>
+</ul>
+
+<p><strong>SHGrid</strong></p>
+<ul>
+  <li>Added the method <code class="highlighter-rouge">from_zeros()</code> to initialize a grid with zeros.</li>
+  <li>Added the method <code class="highlighter-rouge">from_cap()</code> to initial a grid with a spherical cap.</li>
+  <li>Added support for saving gridded data to netcdf and xarray formats. <code class="highlighter-rouge">to_netcdf()</code> exports data to netcdf format, and when saved to file can be used directly with GMT (generic mapping tools) where they are known as ‘grd’ files. <code class="highlighter-rouge">to_xarray()</code> exports data to an xarray DataArray.</li>
+  <li>Fixed a type error when expanding complex coefficients at arbitrary points.</li>
+</ul>
+
+<p><strong>Fortran 95</strong></p>
+<ul>
+  <li>The Fortran code was modified to be strictly compliant with the f95 standard (<code class="highlighter-rouge">-std=f95</code> in the <code class="highlighter-rouge">gfortran</code> compiler). Double precision, double complex, and long integers are defined as <code class="highlighter-rouge">real(dp)</code>, <code class="highlighter-rouge">complex(dp)</code>, and <code class="highlighter-rouge">integer(int8)</code>, and the types are defined in a new module <code class="highlighter-rouge">ftypes.f95</code>.</li>
+  <li>A few intrinsic function calls have been renamed to conform with the standards, and all double precision constants are now defined by appending <code class="highlighter-rouge">_dp</code> to them.</li>
+</ul>
+
+<p><strong>FFTW</strong></p>
+<ul>
+  <li>The syntax of the <code class="highlighter-rouge">fftw</code> routines has been updated. In particular, the old <code class="highlighter-rouge">call dfftw_execute(plan)</code> statements now include all their dependent variables using the new syntax <code class="highlighter-rouge">call dfftw_execute_dft(plan, grid, coef)</code>. Importantly, the old syntax caused the GCC9 optimizer to break the spherical transform routines, generating meaningless output for large parts of the grids or coefficients.</li>
+  <li>The fortran routines now access the FFTW library using Fortran 2003 standards. Though most compilers do not yet support all features of F2003, the few features used here (such as the module <code class="highlighter-rouge">iso_c_binding</code>) are claimed to be supported by the majority of modern compilers. This allows us to access the FFTW routines without use of fortran bindings, which are not always included in compiled versions of FFTW.</li>
+  <li>All FFTW routines are explicitly defined in an interface block in <code class="highlighter-rouge">FFTW3.f95</code>. For simplicity, the use of the optional parameter <code class="highlighter-rouge">FFTW_UNDERSCORE</code> used in the Makefile has been deprecated.</li>
+</ul>
+
+<p>M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2019). SHTOOLS: Version 4.5, Zenodo, doi:<a href="https://doi.org/10.5281/zenodo.2350781">10.5281/zenodo.2350781</a></p>
+
+<h2 id="version-44">Version 4.4</h2>
 
 <p><strong>New Slepian expansion routines</strong></p>
 
@@ -731,7 +775,7 @@ two class instances have the same <code class="highlighter-rouge">lmax</code>.</
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

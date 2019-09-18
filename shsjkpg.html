@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -540,9 +540,9 @@ MathJax.Hub.Config({
 <h2 id="parameters">Parameters</h2>
 
 <dl>
-  <dt><code class="highlighter-rouge">value</code> : output, complex*16</dt>
+  <dt><code class="highlighter-rouge">value</code> : output, complex(dp)</dt>
   <dd>The expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.</dd>
-  <dt><code class="highlighter-rouge">incspectra</code> : input, real*8, dimension (<code class="highlighter-rouge">l</code>+<code class="highlighter-rouge">lwin</code>+1)</dt>
+  <dt><code class="highlighter-rouge">incspectra</code> : input, real(dp), dimension (<code class="highlighter-rouge">l</code>+<code class="highlighter-rouge">lwin</code>+1)</dt>
   <dd>The global cross-power spectrum of <code class="highlighter-rouge">f</code> and <code class="highlighter-rouge">g</code>.</dd>
   <dt><code class="highlighter-rouge">l</code> : input, integer</dt>
   <dd>The spherical harmonic degree for which to calculate the expectation.</dd>
@@ -550,9 +550,9 @@ MathJax.Hub.Config({
   <dd>The angular order of the first localized function, <code class="highlighter-rouge">Phi</code>.</dd>
   <dt><code class="highlighter-rouge">mprime</code> : input, integer</dt>
   <dd>The angular order of the second localized function, <code class="highlighter-rouge">Gamma</code>.</dd>
-  <dt><code class="highlighter-rouge">hj_real</code> : input, real*8, dimension (<code class="highlighter-rouge">lwin</code>+1)</dt>
+  <dt><code class="highlighter-rouge">hj_real</code> : input, real(dp), dimension (<code class="highlighter-rouge">lwin</code>+1)</dt>
   <dd>The real spherical harmonic coefficients of angular order <code class="highlighter-rouge">mj</code> used to localize the first function <code class="highlighter-rouge">f</code>. These are obtained by a call to <code class="highlighter-rouge">SHReturnTapers</code>.</dd>
-  <dt><code class="highlighter-rouge">hk_real</code> : input, real*8, dimension (<code class="highlighter-rouge">lwin</code>+1)</dt>
+  <dt><code class="highlighter-rouge">hk_real</code> : input, real(dp), dimension (<code class="highlighter-rouge">lwin</code>+1)</dt>
   <dd>The real spherical harmonic coefficients of angular order <code class="highlighter-rouge">mk</code> used to localize the second function <code class="highlighter-rouge">g</code>. These are obtained by a call to <code class="highlighter-rouge">SHReturnTapers</code>.</dd>
   <dt><code class="highlighter-rouge">mj</code> : input, integer</dt>
   <dd>The angular order of the window coefficients <code class="highlighter-rouge">hj_real</code>.</dd>
@@ -609,7 +609,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

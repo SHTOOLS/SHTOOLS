@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -535,14 +535,14 @@ MathJax.Hub.Config({
 
 <h2 id="usage">Usage</h2>
 
-<p>call SHReturnTapersMap (<code class="highlighter-rouge">tapers</code>, <code class="highlighter-rouge">eigenvalues</code>, <code class="highlighter-rouge">dh_mask</code>, <code class="highlighter-rouge">n</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">sampling</code>, <code class="highlighter-rouge">ntapers</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
+<p>call SHReturnTapersMap (<code class="highlighter-rouge">tapers</code>, <code class="highlighter-rouge">eigenvalues</code>, <code class="highlighter-rouge">dh_mask</code>, <code class="highlighter-rouge">n</code>, <code class="highlighter-rouge">lmax</code>, <code class="highlighter-rouge">sampling</code>, <code class="highlighter-rouge">ntapers</code>, <code class="highlighter-rouge">degrees</code>, <code class="highlighter-rouge">exitstatus</code>)</p>
 
 <h2 id="parameters">Parameters</h2>
 
 <dl>
-  <dt><code class="highlighter-rouge">tapers</code> : input, real*8, dimension ((<code class="highlighter-rouge">lmax</code>+1)**2, <code class="highlighter-rouge">ntapers</code>)</dt>
+  <dt><code class="highlighter-rouge">tapers</code> : input, real(dp), dimension ((<code class="highlighter-rouge">lmax</code>+1)**2, <code class="highlighter-rouge">ntapers</code>)</dt>
   <dd>The spherical harmonic coefficients of the tapers, arranged in columns, from best to worst concentrated. The spherical harmonic coefficients in each column are indexed according to the scheme described in <code class="highlighter-rouge">YilmIndexVector</code>.</dd>
-  <dt><code class="highlighter-rouge">eigenvalues</code> : input, real*8, dimension (<code class="highlighter-rouge">ntapers</code>)</dt>
+  <dt><code class="highlighter-rouge">eigenvalues</code> : input, real(dp), dimension (<code class="highlighter-rouge">ntapers</code>)</dt>
   <dd>The concentration factor for each localization window specified in the columns of <code class="highlighter-rouge">tapers</code>.</dd>
   <dt><code class="highlighter-rouge">dh_mask</code> : input, integer, dimension (<code class="highlighter-rouge">n</code>, <code class="highlighter-rouge">n</code>*<code class="highlighter-rouge">sampling</code>)</dt>
   <dd>A Driscoll and Healy (1994) sampled grid describing the concentration region R. All elements should either be 1 (for inside the concentration region) or 0 (for outside R).</dd>
@@ -550,25 +550,27 @@ MathJax.Hub.Config({
   <dd>The number of latitudinal samples in <code class="highlighter-rouge">dh_mask</code>. The effective spherical harmonic bandwidth of this grid is <code class="highlighter-rouge">L=n/2-1</code>.</dd>
   <dt><code class="highlighter-rouge">lmax</code> : input, integer</dt>
   <dd>The spherical harmonic bandwidth of the localization windows.</dd>
-  <dt><code class="highlighter-rouge">sampling</code> : input, integer, default = 1</dt>
-  <dd>For 1 (default), <code class="highlighter-rouge">dh_mask</code> has <code class="highlighter-rouge">n x n</code> samples. For 2, <code class="highlighter-rouge">dh_mask</code> has <code class="highlighter-rouge">n x 2n</code> samples.</dd>
+  <dt><code class="highlighter-rouge">sampling</code> : input, integer</dt>
+  <dd>For 1, <code class="highlighter-rouge">dh_mask</code> has <code class="highlighter-rouge">n x n</code> samples. For 2, <code class="highlighter-rouge">dh_mask</code> has <code class="highlighter-rouge">n x 2n</code> samples.</dd>
   <dt><code class="highlighter-rouge">ntapers</code> : input, optional, integer, default = (<code class="highlighter-rouge">lmax</code>+1)**2</dt>
   <dd>The number of best concentrated eigenvalues and corresponding eigenfunctions to return in <code class="highlighter-rouge">tapers</code> and <code class="highlighter-rouge">eigenvalues</code>. The default value is to return all tapers.</dd>
+  <dt><code class="highlighter-rouge">degrees</code> : input, integer, optional, dimension (<code class="highlighter-rouge">lmax</code>+1)</dt>
+  <dd>List of degrees to use when computing the eigenfunctions. Only those degrees where <code class="highlighter-rouge">degrees(l+1)</code> is non-zero will be employed.</dd>
   <dt><code class="highlighter-rouge">exitstatus</code> : output, optional, integer</dt>
   <dd>If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.</dd>
 </dl>
 
 <h2 id="description">Description</h2>
 
-<p><code class="highlighter-rouge">SHReturnTapersMap</code> will calculate the eigenfunctions (i.e., localization windows) of the space-concentration problem for an arbitrary concentration region specified in <code class="highlighter-rouge">dh_mask</code> (see Simons et al. (2006) for further details). The input mask <code class="highlighter-rouge">dh_mask</code> must be sampled according to the Driscoll and Healy (1994) sampling theorem with <code class="highlighter-rouge">n</code> samples in latitude, and possess a value of 1 inside the concentration region, and 0 elsewhere. <code class="highlighter-rouge">dh_mask</code> can either possess <code class="highlighter-rouge">n</code> samples in longitude (<code class="highlighter-rouge">sampling=1</code>) or <code class="highlighter-rouge">2n</code> samples in longitude (<code class="highlighter-rouge">sampling=2</code>). Given the approximate way in which the elements of the space-concentration kernel are calculated (see <code class="highlighter-rouge">ComputeDMap</code> for details), <code class="highlighter-rouge">sampling=2</code> should be preferred. The effective spherical harmonic bandwidth (L=N/2-1) of the grid <code class="highlighter-rouge">dh_mask</code> determines the accuracy of the results, and experience shows that this should be about 4 times larger than <code class="highlighter-rouge">lmax</code>.</p>
+<p><code class="highlighter-rouge">SHReturnTapersMap</code> will calculate the eigenfunctions of the space-concentration problem for an arbitrary concentration region specified in <code class="highlighter-rouge">dh_mask</code> (see Simons et al. (2006) for further details). The input mask <code class="highlighter-rouge">dh_mask</code> must be sampled according to the Driscoll and Healy (1994) sampling theorem with <code class="highlighter-rouge">n</code> samples in latitude, and possess a value of 1 inside the concentration region, and 0 elsewhere. <code class="highlighter-rouge">dh_mask</code> can either possess <code class="highlighter-rouge">n</code> samples in longitude (<code class="highlighter-rouge">sampling=1</code>) or <code class="highlighter-rouge">2n</code> samples in longitude (<code class="highlighter-rouge">sampling=2</code>). Given the approximate way in which the elements of the space-concentration kernel are calculated (see <code class="highlighter-rouge">ComputeDMap</code> for details), <code class="highlighter-rouge">sampling=2</code> should be preferred. The effective spherical harmonic bandwidth (L=N/2-1) of the grid <code class="highlighter-rouge">dh_mask</code> determines the accuracy of the results, and experience shows that this should be about 3 times larger than <code class="highlighter-rouge">lmax</code>.</p>
 
-<p>The spherical harmonic coefficients of each window are given in the columns of <code class="highlighter-rouge">tapers</code>, and the corresponding concentration factors are given in <code class="highlighter-rouge">eigenvaules</code>. The spherical harmonic coefficients are ordered according to the scheme described in <code class="highlighter-rouge">YilmIndexVector</code>, which can be converted to matrix form using <code class="highlighter-rouge">SHVectorToCilm</code>, and the columns of <code class="highlighter-rouge">tapers</code> are ordered from best to worst concentrated. The localization windows are normalized such that they have unit power. If the optional parameter <code class="highlighter-rouge">ntapers</code> is specified, then only the <code class="highlighter-rouge">ntapers</code> largest eigenvalues and corresponding eigenfunctions will be calculated and returned.</p>
+<p>The spherical harmonic coefficients of each window are given in the columns of <code class="highlighter-rouge">tapers</code>, and the corresponding concentration factors are given in <code class="highlighter-rouge">eigenvaules</code>. The spherical harmonic coefficients are ordered according to the scheme described in <code class="highlighter-rouge">YilmIndexVector</code>, which can be converted to matrix form using <code class="highlighter-rouge">SHVectorToCilm</code>, and the columns of <code class="highlighter-rouge">tapers</code> are ordered from best to worst concentrated. The localization windows are normalized such that they have unit power. If the optional parameter <code class="highlighter-rouge">ntapers</code> is specified, then only the <code class="highlighter-rouge">ntapers</code> largest eigenvalues and corresponding eigenfunctions will be calculated and returned. If the optional vector <code class="highlighter-rouge">degrees</code> is specified, then the eigenfunctions will be computed using only those degrees where <code class="highlighter-rouge">degrees(l+1)</code> is not zero.</p>
 
 <h2 id="references">References</h2>
 
-<p>Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
+<p>Driscoll, J. R. and D. M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.</p>
 
-<p>Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.</p>
+<p>Simons, F. J., F. A. Dahlen, and M. A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.</p>
 
 <h2 id="see-also">See also</h2>
 
@@ -600,7 +602,7 @@ MathJax.Hub.Config({
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

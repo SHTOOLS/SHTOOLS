@@ -1295,6 +1295,15 @@
 
 
 {
+"title": "SHMTVar (Python)",
+"url": "pyshmtvar.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "SHMTVarOpt (Python)",
 "url": "pyshmtvaropt.html",
 "summary": ""
@@ -1484,8 +1493,35 @@
 
 
 {
+"title": "SHSCouplingMatrix (Python)",
+"url": "pyshscouplingmatrix.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SHSCouplingMatrixCap (Python)",
+"url": "pyshscouplingmatrixcap.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "SHSjkPG (Python)",
 "url": "pyshsjkpg.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SHSlepianVar (Python)",
+"url": "pyshslepianvar.html",
 "summary": ""
 }
 ,
@@ -2080,6 +2116,15 @@
 
 
 {
+"title": "SHMTVar (Fortran)",
+"url": "shmtvar.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "SHMTVarOpt (Fortran)",
 "url": "shmtvaropt.html",
 "summary": ""
@@ -2296,8 +2341,35 @@
 
 
 {
+"title": "SHSCouplingMatrix (Fortran)",
+"url": "shscouplingmatrix.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SHSCouplingMatrixCap (Fortran)",
+"url": "shscouplingmatrixcap.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "SHSjkPG (Fortran)",
 "url": "shsjkpg.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SHSlepianVar (Fortran)",
+"url": "shslepianvar.html",
 "summary": ""
 }
 ,

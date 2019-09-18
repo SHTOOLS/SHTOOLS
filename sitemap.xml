@@ -870,6 +870,12 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/pyshmtvar.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/pyshmtvaropt.html</loc>
   </url>
   
@@ -996,7 +1002,25 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/pyshscouplingmatrix.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/pyshscouplingmatrixcap.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/pyshsjkpg.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/pyshslepianvar.html</loc>
   </url>
   
   
@@ -1394,6 +1418,12 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/shmtvar.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/shmtvaropt.html</loc>
   </url>
   
@@ -1538,7 +1568,25 @@
   
   
   <url>
+    <loc>http://shtools.oca.eu/shscouplingmatrix.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/shscouplingmatrixcap.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://shtools.oca.eu/shsjkpg.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://shtools.oca.eu/shslepianvar.html</loc>
   </url>
   
   

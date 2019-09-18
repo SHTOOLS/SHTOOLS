@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -668,6 +668,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td><code class="highlighter-rouge">coord_degrees</code></td>
       <td><code class="highlighter-rouge">True</code> (default) if <code class="highlighter-rouge">clat</code> and <code class="highlighter-rouge">clon</code> are in degrees.</td>
     </tr>
+    <tr>
+      <td><code class="highlighter-rouge">slepian_degrees</code></td>
+      <td>Boolean or int array defining which spherical harmonic degrees were used to construct the Slepian functions.</td>
+    </tr>
   </tbody>
 </table>
 
@@ -714,6 +718,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
       <td>Rotate the spherical cap Slepian functions, originally located at the North pole, to <code class="highlighter-rouge">clat</code> and <code class="highlighter-rouge">clon</code> and save the spherical harmonic coefficients in <code class="highlighter-rouge">coeffs</code>.</td>
     </tr>
     <tr>
+      <td><code class="highlighter-rouge">variance()</code></td>
+      <td>Calculate the theoretical variance of the power of a function expanded in spherical-cap Slepian functions.</td>
+    </tr>
+    <tr>
       <td><code class="highlighter-rouge">copy()</code></td>
       <td>Return a copy of the class instance.</td>
     </tr>
@@ -750,7 +758,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>

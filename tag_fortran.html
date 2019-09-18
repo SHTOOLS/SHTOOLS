@@ -179,7 +179,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">SHTOOLS 4.4</li>
+  <li class="sidebarTitle">SHTOOLS 4.5</li>
   
   
   
@@ -631,7 +631,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="computedg82.html">ComputeDG82 (Fortran)</a></td>
-          <td> Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of a spherical cap. Usage call ComputeDG82 (dg82, lmax, m, theta0, exitstatus) Parameters  dg82 : output, real*8, dimension (lmax-abs(m)+1, lmax-abs(m)+1) The tridiagonal... </td>
+          <td> Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of a spherical cap. Usage call ComputeDG82 (dg82, lmax, m, theta0, exitstatus) Parameters  dg82 : output, real(dp), dimension (lmax-abs(m)+1, lmax-abs(m)+1) The tridiagonal... </td>
         </tr>
         
      
@@ -640,7 +640,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="computedm.html">ComputeDM (Fortran)</a></td>
-          <td> Compute the space-concentration kernel of a spherical cap. Usage call ComputeDM (dm, lmax, m, theta0, exitstatus) Parameters  dm : output, real*8, dimension (lmax+1, lmax+1) The space-concentration kernel or angular order m. lmax : input, integer The spherical... </td>
+          <td> Compute the space-concentration kernel of a spherical cap. Usage call ComputeDM (dm, lmax, m, theta0, degrees, exitstatus) Parameters  dm : output, real(dp), dimension (lmax+1, lmax+1) The space-concentration kernel of angular order m. lmax : input, integer... </td>
         </tr>
         
      
@@ -649,7 +649,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="computedmap.html">ComputeDMap (Fortran)</a></td>
-          <td> Compute the space-concentration kernel of an arbitrary mask on the sphere. Usage call ComputeDMap (dij, dh_mask, n, lmax, sampling, exitstatus) Parameters  dij : output, real*8, dimension ( (lmax+1)**2, (lmax+1)**2 ) The space-concentration kernel corresponding to the mask dh_mask.... </td>
+          <td> Compute the space-concentration kernel of an arbitrary mask on the sphere. Usage call ComputeDMap (dij, dh_mask, n, lmax, sampling, degrees, exitstatus) Parameters  dij : output, real(dp), dimension ( (lmax+1)**2, (lmax+1)**2 ) The space-concentration kernel corresponding to the... </td>
         </tr>
         
      
@@ -686,7 +686,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="djpi2.html">djpi2 (Fortran)</a></td>
-          <td> Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical harmonics. Usage call djpi2 (dj, lmax, exitstatus) Parameters  dj : output, real*8, dimension (lmax+1, lmax+1, lmax+1) The rotation matrix dj(pi/2). lmax : input, integer The maximum spherical... </td>
+          <td> Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical harmonics. Usage call djpi2 (dj, lmax, exitstatus) Parameters  dj : output, real(dp), dimension (lmax+1, lmax+1, lmax+1) The rotation matrix dj(pi/2). lmax : input, integer The maximum spherical... </td>
         </tr>
         
      
@@ -695,7 +695,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="downcontfilterma.html">DownContFilterMA (Fortran)</a></td>
-          <td> Compute the minimum-amplitude downward continuation filter of Wieczorek and Phillips (1998). Usage wl = DownContFilterMA (l, half, r, d) Parameters  wl : output, real*8 The amplitude of the downward continuation filter. l : input, integer The spherical harmonic degree. &lt;code... </td>
+          <td> Compute the minimum-amplitude downward continuation filter of Wieczorek and Phillips (1998). Usage wl = DownContFilterMA (l, half, r, d) Parameters  wl : output, real(dp) The amplitude of the downward continuation filter. l : input, integer The spherical harmonic degree. &lt;code... </td>
         </tr>
         
      
@@ -704,7 +704,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="downcontfiltermc.html">DownContFilterMC (Fortran)</a></td>
-          <td> Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree. Usage wl = DownContFilterMC (l, half, r, d) Parameters  wl : output, real*8 The amplitude of the downward continuation filter. l : input, integer The spherical harmonic degree.... </td>
+          <td> Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree. Usage wl = DownContFilterMC (l, half, r, d) Parameters  wl : output, real(dp) The amplitude of the downward continuation filter. l : input, integer The spherical harmonic degree.... </td>
         </tr>
         
      
@@ -713,7 +713,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="eigvalsym.html">EigValSym (Fortran)</a></td>
-          <td> Compute the eigenvalues of a real symmetric matrix. Usage call EigValSym (ain, n, eval, ul) Parameters  ain : input, real*8, dimension (n, n) The input real symmetric matrix. By default, only the upper portion of the matrix is used. &lt;code... </td>
+          <td> Compute the eigenvalues of a real symmetric matrix. Usage call EigValSym (ain, n, eval, ul) Parameters  ain : input, real(dp), dimension (n, n) The input real symmetric matrix. By default, only the upper portion of the matrix is used. &lt;code... </td>
         </tr>
         
      
@@ -722,7 +722,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="eigvalvecsym.html">EigValVecSym (Fortran)</a></td>
-          <td> Compute the eigenvalues and eigenvectors of a real symmetric matrix. Usage call EigValVecSym (ain, n, eval, evec, ul, k, exitstatus) Parameters  ain : input, real*8, dimension (n, n) The input real symmetric matrix. By default, only the... </td>
+          <td> Compute the eigenvalues and eigenvectors of a real symmetric matrix. Usage call EigValVecSym (ain, n, eval, evec, ul, k, exitstatus) Parameters  ain : input, real(dp), dimension (n, n) The input real symmetric matrix. By default, only the... </td>
         </tr>
         
      
@@ -731,7 +731,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="eigvalvecsymtri.html">EigValVecSymTri (Fortran)</a></td>
-          <td> Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix. Usage call EigValVecSymTri (ain, n, eval, evec, ul, exitstatus) Parameters  ain : input, real*8, dimension (n, n) The input real symmetric tridiagonal matrix. n : input,... </td>
+          <td> Compute the eigenvalues and eigenvectors of a real symmetric tridiagonal matrix. Usage call EigValVecSymTri (ain, n, eval, evec, ul, exitstatus) Parameters  ain : input, real(dp), dimension (n, n) The input real symmetric tridiagonal matrix. n : input,... </td>
         </tr>
         
      
@@ -754,7 +754,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="glqgridcoord.html">GLQGridCoord (Fortran)</a></td>
-          <td> Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids. Usage call GLQGridCoord (latglq, longlq, lmax, nlat, nlong, exitstatus) Parameters  latglq : output, real*8, dimension (lmax+1) The latitude coordinates of a grid, corresponding to the indices (:,1), in... </td>
+          <td> Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids. Usage call GLQGridCoord (latglq, longlq, lmax, nlat, nlong, exitstatus) Parameters  latglq : output, real(dp), dimension (lmax+1) The latitude coordinates of a grid, corresponding to the indices (:,1), in... </td>
         </tr>
         
      
@@ -785,7 +785,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="makecirclecoord.html">MakeCircleCoord (Fortran)</a></td>
-          <td> Compute the coordinates of a circle placed at a given latitude and longitude. Usage call MakeCircleCoord (coord, lat, lon, theta0, cinterval, cnum, exitstatus) Parameters  coord : output, real*8, dimension(360/cinterval, 2) The latitude (:,1) and longitude (:,2) coordinates of... </td>
+          <td> Compute the coordinates of a circle placed at a given latitude and longitude. Usage call MakeCircleCoord (coord, lat, lon, theta0, cinterval, cnum, exitstatus) Parameters  coord : output, real(dp), dimension(360/cinterval, 2) The latitude (:,1) and longitude (:,2) coordinates of... </td>
         </tr>
         
      
@@ -839,7 +839,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="makegriddh.html">MakeGridDH (Fortran)</a></td>
-          <td> Create a 2D map from a set of spherical harmonic coefficients that conforms with Driscoll and Healy’s (1994) sampling theorem. Usage call MakeGridDH (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh : output, real*8,... </td>
+          <td> Create a 2D map from a set of spherical harmonic coefficients that conforms with Driscoll and Healy’s (1994) sampling theorem. Usage call MakeGridDH (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh : output, real(dp),... </td>
         </tr>
         
      
@@ -857,7 +857,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="makegridglq.html">MakeGridGLQ (Fortran)</a></td>
-          <td> Create a 2D map from a set of spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. Usage call MakeGridGLQ (gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  gridglq : output, real*8, dimension (lmax+1,... </td>
+          <td> Create a 2D map from a set of spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. Usage call MakeGridGLQ (gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  gridglq : output, real(dp), dimension (lmax+1,... </td>
         </tr>
         
      
@@ -866,7 +866,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="makegridglqc.html">MakeGridGLQC (Fortran)</a></td>
-          <td> Create a 2D complex map from a set of complex spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. Usage call MakeGridGLQC (gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  gridglq : output, complex*16, dimension... </td>
+          <td> Create a 2D complex map from a set of complex spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. Usage call MakeGridGLQC (gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  gridglq : output, complex(dp), dimension... </td>
         </tr>
         
      
@@ -875,7 +875,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="makegridpoint.html">MakeGridPoint (Fortran)</a></td>
-          <td> Evaluate a real function expressed in real spherical harmonics at a single point. Usage value = MakeGridPoint (cilm, lmax, lat, lon, norm, csphase, dealloc) Parameters  value : output, real*8 Value of the function at (lat, lon).... </td>
+          <td> Evaluate a real function expressed in real spherical harmonics at a single point. Usage value = MakeGridPoint (cilm, lmax, lat, lon, norm, csphase, dealloc) Parameters  value : output, real(dp) Value of the function at (lat, lon).... </td>
         </tr>
         
      
@@ -884,7 +884,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="makegridpointc.html">MakeGridPointC (Fortran)</a></td>
-          <td> Evaluate a complex function expressed in complex spherical harmonics at a single point. Usage value = MakeGridPointC (cilm, lmax, lat, lon, norm, csphase, dealloc) Parameters  value : output, complex*16 Value of the function at (lat, lon).... </td>
+          <td> Evaluate a complex function expressed in complex spherical harmonics at a single point. Usage value = MakeGridPointC (cilm, lmax, lat, lon, norm, csphase, dealloc) Parameters  value : output, complex(dp) Value of the function at (lat, lon).... </td>
         </tr>
         
      
@@ -915,7 +915,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="normalgravity.html">NormalGravity (Fortran)</a></td>
-          <td> Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana. Usage value = NormalGravity (geocentriclat, gm, omega, a, b) Parameters  value : output, real*8 The normal gravity in SI units. geocentriclat: input, real*8... </td>
+          <td> Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana. Usage value = NormalGravity (geocentriclat, gm, omega, a, b) Parameters  value : output, real(dp) The normal gravity in SI units. geocentriclat: input, real(dp)... </td>
         </tr>
         
      
@@ -942,7 +942,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plbar_d1.html">PlBar_d1 (Fortran)</a></td>
-          <td> Compute all the 4-pi (geodesy) normalized Legendre polynomials and first derivatives. Usage call PlBar_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of 4-pi (geodesy) normalized Legendre polynomials up to degree lmax. Degree... </td>
+          <td> Compute all the 4-pi (geodesy) normalized Legendre polynomials and first derivatives. Usage call PlBar_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real(dp), dimension (lmax+1) An array of 4-pi (geodesy) normalized Legendre polynomials up to degree lmax. Degree... </td>
         </tr>
         
      
@@ -951,7 +951,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plegendre.html">PLegendre (Fortran)</a></td>
-          <td> Compute all the unnormalized Legendre polynomials. Usage call PLegendre (p, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l+1. &lt;code... </td>
+          <td> Compute all the unnormalized Legendre polynomials. Usage call PLegendre (p, lmax, z, exitstatus) Parameters  p : output, real(dp), dimension (lmax+1) An array of unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l+1. &lt;code... </td>
         </tr>
         
      
@@ -960,7 +960,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plegendre_d1.html">PLegendre_d1 (Fortran)</a></td>
-          <td> Compute all the unnormalized Legendre polynomials and first derivatives. Usage call PLegendre_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to... </td>
+          <td> Compute all the unnormalized Legendre polynomials and first derivatives. Usage call PLegendre_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real(dp), dimension (lmax+1) An array of unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to... </td>
         </tr>
         
      
@@ -969,7 +969,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plegendrea.html">PLegendreA (Fortran)</a></td>
-          <td> Compute all the unnormalized associated Legendre functions. Usage call PLegendreA (p, lmax, z, csphase, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of unnormalized associated Legendre functions up to degree lmax. The index corresponds to &lt;code... </td>
+          <td> Compute all the unnormalized associated Legendre functions. Usage call PLegendreA (p, lmax, z, csphase, exitstatus) Parameters  p : output, real(dp), dimension ((lmax+1)*(lmax+2)/2) An array of unnormalized associated Legendre functions up to degree lmax. The index corresponds to &lt;code... </td>
         </tr>
         
      
@@ -978,7 +978,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plegendrea_d1.html">PLegendreA_d1 (Fortran)</a></td>
-          <td> Compute all the unnormalized associated Legendre functions and first derivatives. Usage call PLegendreA_d1 (p, dp, lmax, z, csphase, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of unnormalized associated Legendre functions up to degree lmax.... </td>
+          <td> Compute all the unnormalized associated Legendre functions and first derivatives. Usage call PLegendreA_d1 (p, dp, lmax, z, csphase, exitstatus) Parameters  p : output, real(dp), dimension ((lmax+1)*(lmax+2)/2) An array of unnormalized associated Legendre functions up to degree lmax.... </td>
         </tr>
         
      
@@ -987,7 +987,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plmbar.html">PlmBar (Fortran)</a></td>
-          <td> Compute all the 4-pi (geodesy) normalized associated Legendre functions. Usage call PlmBar (p, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of 4-pi (geodesy) normalized associated Legendre functions up to degree &lt;code... </td>
+          <td> Compute all the 4-pi (geodesy) normalized associated Legendre functions. Usage call PlmBar (p, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real(dp), dimension ((lmax+1)*(lmax+2)/2) An array of 4-pi (geodesy) normalized associated Legendre functions up to degree &lt;code... </td>
         </tr>
         
      
@@ -996,7 +996,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plmbar_d1.html">PlmBar_d1 (Fortran)</a></td>
-          <td> Compute all the 4-pi (geodesy) normalized associated Legendre functions and first derivatives. Usage call PlmBar_d1 (p, dp, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of 4-pi (geodesy) normalized associated Legendre... </td>
+          <td> Compute all the 4-pi (geodesy) normalized associated Legendre functions and first derivatives. Usage call PlmBar_d1 (p, dp, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real(dp), dimension ((lmax+1)*(lmax+2)/2) An array of 4-pi (geodesy) normalized associated Legendre... </td>
         </tr>
         
      
@@ -1014,7 +1014,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plmon.html">PlmON (Fortran)</a></td>
-          <td> Compute all the orthonormalized associated Legendre functions. Usage call PlmON (p, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of orthonormalized associated Legendre functions up to degree lmax. The index corresponds... </td>
+          <td> Compute all the orthonormalized associated Legendre functions. Usage call PlmON (p, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real(dp), dimension ((lmax+1)*(lmax+2)/2) An array of orthonormalized associated Legendre functions up to degree lmax. The index corresponds... </td>
         </tr>
         
      
@@ -1023,7 +1023,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plmon_d1.html">PlmON_d1 (Fortran)</a></td>
-          <td> Compute all the orthonormalized associated Legendre functions and first derivatives. Usage call PlmON_d1 (p, dp, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of orthonormalized associated Legendre functions up to degree... </td>
+          <td> Compute all the orthonormalized associated Legendre functions and first derivatives. Usage call PlmON_d1 (p, dp, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real(dp), dimension ((lmax+1)*(lmax+2)/2) An array of orthonormalized associated Legendre functions up to degree... </td>
         </tr>
         
      
@@ -1032,7 +1032,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plmschmidt.html">PlmSchmidt (Fortran)</a></td>
-          <td> Compute all the Schmidt semi-normalized associated Legendre functions. Usage call PlmSchmidt (p, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of Schmidt-normalized associated Legendre functions up to degree lmax. The index... </td>
+          <td> Compute all the Schmidt semi-normalized associated Legendre functions. Usage call PlmSchmidt (p, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real(dp), dimension ((lmax+1)*(lmax+2)/2) An array of Schmidt-normalized associated Legendre functions up to degree lmax. The index... </td>
         </tr>
         
      
@@ -1041,7 +1041,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plmschmidt_d1.html">PlmSchmidt_d1 (Fortran)</a></td>
-          <td> Compute all the Schmidt semi-normalized associated Legendre functions and first derivatives. Usage call PlmSchmidt_d1 (p, dp, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real*8, dimension ((lmax+1)*(lmax+2)/2) An array of Schmidt-normalized associated Legendre functions up to... </td>
+          <td> Compute all the Schmidt semi-normalized associated Legendre functions and first derivatives. Usage call PlmSchmidt_d1 (p, dp, lmax, z, csphase, cnorm, exitstatus) Parameters  p : output, real(dp), dimension ((lmax+1)*(lmax+2)/2) An array of Schmidt-normalized associated Legendre functions up to... </td>
         </tr>
         
      
@@ -1059,7 +1059,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plon_d1.html">PlON_d1 (Fortran)</a></td>
-          <td> Compute all the orthonormalized Legendre polynomials and first derivatives. Usage call PlON_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of orthonormalized Legendre polynomials up to degree lmax. Degree l corresponds to... </td>
+          <td> Compute all the orthonormalized Legendre polynomials and first derivatives. Usage call PlON_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real(dp), dimension (lmax+1) An array of orthonormalized Legendre polynomials up to degree lmax. Degree l corresponds to... </td>
         </tr>
         
      
@@ -1068,7 +1068,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plschmidt.html">PlSchmidt (Fortran)</a></td>
-          <td> Compute all the Schmidt-normalized Legendre polynomials. Usage call PlSchmidt (p, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of Schmidt-normalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l+1. &lt;code... </td>
+          <td> Compute all the Schmidt-normalized Legendre polynomials. Usage call PlSchmidt (p, lmax, z, exitstatus) Parameters  p : output, real(dp), dimension (lmax+1) An array of Schmidt-normalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l+1. &lt;code... </td>
         </tr>
         
      
@@ -1077,7 +1077,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="plschmidt_d1.html">PlSchmidt_d1 (Fortran)</a></td>
-          <td> Compute all the Schmidt-normalized Legendre polynomials and first derivatives. Usage call PlSchmidt_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real*8, dimension (lmax+1) An array of Schmidt-normalized Legendre polynomials up to degree lmax. Degree l corresponds to... </td>
+          <td> Compute all the Schmidt-normalized Legendre polynomials and first derivatives. Usage call PlSchmidt_d1 (p, dp, lmax, z, exitstatus) Parameters  p : output, real(dp), dimension (lmax+1) An array of Schmidt-normalized Legendre polynomials up to degree lmax. Degree l corresponds to... </td>
         </tr>
         
      
@@ -1086,12 +1086,28 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="preglq.html">PreGLQ (Fortran)</a></td>
-          <td> Calculate the weights and nodes used in integrating a function by Gauss-Legendre quadrature. Usage call PreGLQ (lower, upper, n, zero, w, exitstatus) Parameters  lower : input, real*8 The lower bound of the integration. upper : input, real*8 The upper... </td>
+          <td> Calculate the weights and nodes used in integrating a function by Gauss-Legendre quadrature. Usage call PreGLQ (lower, upper, n, zero, w, exitstatus) Parameters  lower : input, real(dp) The lower bound of the integration. upper : input, real(dp) The upper... </td>
         </tr>
         
      
    
     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
+   
+    
+        
+     
    
     
         
@@ -1541,7 +1557,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="randomgaussian.html">RandomGaussian (Fortran)</a></td>
-          <td> Return a pseudo-Gaussian deviate of zero mean and unit variance. Usage rg = RandomGaussian (seed) Parameters  rg : output, real*8 The radom Gaussian deviate. seed : input/output, integer Input a negative integer to (re-)initialize the random number generator. Afterwards, this argument should not... </td>
+          <td> Return a pseudo-Gaussian deviate of zero mean and unit variance. Usage rg = RandomGaussian (seed) Parameters  rg : output, real(dp) The radom Gaussian deviate. seed : input/output, integer Input a negative integer to (re-)initialize the random number generator. Afterwards, this argument should not... </td>
         </tr>
         
      
@@ -1550,7 +1566,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="randomn.html">RandomN (Fortran)</a></td>
-          <td> Return a pseudo uniform random deviate between 0 and 1 using the algorithm of Park and Miller with a Marsaglia shift sequence. Usage rn = RandomN (seed) Parameters  rn : output, real*8 The uniform random deviate. seed : input/output, integer Input a negative... </td>
+          <td> Return a pseudo uniform random deviate between 0 and 1 using the algorithm of Park and Miller with a Marsaglia shift sequence. Usage rn = RandomN (seed) Parameters  rn : output, real(dp) The uniform random deviate. seed : input/output, integer Input a negative... </td>
         </tr>
         
      
@@ -1571,7 +1587,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shadmitcorr.html">SHAdmitCorr (Fortran)</a></td>
-          <td> Calculate the admittance and correlation spectra of two real functions. Usage call SHAdmitCorr (gilm, tilm, lmax, admit, corr, admit_error, exitstatus) Parameters  gilm : input, real*8, dimension (2, lmaxg+1, lmaxg+1) The real spherical harmonic coefficients of the function... </td>
+          <td> Calculate the admittance and correlation spectra of two real functions. Usage call SHAdmitCorr (gilm, tilm, lmax, admit, corr, admit_error, exitstatus) Parameters  gilm : input, real(dp), dimension (2, lmaxg+1, lmaxg+1) The real spherical harmonic coefficients of the function... </td>
         </tr>
         
      
@@ -1580,7 +1596,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shbias.html">SHBias (Fortran)</a></td>
-          <td> Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum. Usage call SHBias (shh, lwin, incspectra, ldata, outcspectra, save_cg, exitstatus) Parameters  shh : input, real*8, dimension (lwin+1) The power spectrum of the localizing window. &lt;code... </td>
+          <td> Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum. Usage call SHBias (shh, lwin, incspectra, ldata, outcspectra, save_cg, exitstatus) Parameters  shh : input, real(dp), dimension (lwin+1) The power spectrum of the localizing window. &lt;code... </td>
         </tr>
         
      
@@ -1598,7 +1614,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shbiask.html">SHBiasK (Fortran)</a></td>
-          <td> Calculate the multitaper (cross-)power spectrum expectation of a function localized by spherical cap windows. Usage call SHBiasK (tapers, lwin, k, incspectra, ldata, outcspectra, taper_wt, save_cg, exitstatus) Parameters  tapers : input, real*8, dimension (lwin+1, k) The... </td>
+          <td> Calculate the multitaper (cross-)power spectrum expectation of a function localized by spherical cap windows. Usage call SHBiasK (tapers, lwin, k, incspectra, ldata, outcspectra, taper_wt, save_cg, exitstatus) Parameters  tapers : input, real(dp), dimension (lwin+1, k) The... </td>
         </tr>
         
      
@@ -1607,7 +1623,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shbiaskmask.html">SHBiasKMask (Fortran)</a></td>
-          <td> Calculate the multitaper (cross-)power spectrum expectation of a function localized by arbitrary windows derived from a mask. Usage call SHBiasK (tapers, lwin, k, incspectra, ldata, outcspectra, taper_wt, save_cg, exitstatus) Parameters  tapers : input, real*8, dimension ((lwin+1)**2,... </td>
+          <td> Calculate the multitaper (cross-)power spectrum expectation of a function localized by arbitrary windows derived from a mask. Usage call SHBiasK (tapers, lwin, k, incspectra, ldata, outcspectra, taper_wt, save_cg, exitstatus) Parameters  tapers : input, real(dp), dimension ((lwin+1)**2,... </td>
         </tr>
         
      
@@ -1616,7 +1632,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcilmtocindex.html">SHCilmToCindex (Fortran)</a></td>
-          <td> Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array. Usage call SHCilmToCindex (cilm, cindex, degmax, exitstatus) Parameters  cilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The input spherical harmonic coefficients. cilm(1,:,:) and cilm(2,:,:) correspond... </td>
+          <td> Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array. Usage call SHCilmToCindex (cilm, cindex, degmax, exitstatus) Parameters  cilm : input, real(dp), dimension (2, lmaxin+1, lmaxin+1) The input spherical harmonic coefficients. cilm(1,:,:) and cilm(2,:,:) correspond... </td>
         </tr>
         
      
@@ -1625,7 +1641,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcilmtovector.html">SHCilmToVector (Fortran)</a></td>
-          <td> Convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed vector. Usage call SHCilmToVector (cilm, vector, lmax, exitstatus) Parameters  cilm : input, real*8, dimension (2, lmax+1, lmax+1) The input real spherical harmonic coefficients. vector : output,... </td>
+          <td> Convert a three-dimensional array of real spherical harmonic coefficients to a 1-dimensional indexed vector. Usage call SHCilmToVector (cilm, vector, lmax, exitstatus) Parameters  cilm : input, real(dp), dimension (2, lmax+1, lmax+1) The input real spherical harmonic coefficients. vector : output,... </td>
         </tr>
         
      
@@ -1634,7 +1650,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcindextocilm.html">SHCindexToCilm (Fortran)</a></td>
-          <td> Convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array. Usage call SHCindexToCilm (cindex, cilm, degmax, exitstatus) Parameters  cindex : input, real*8, dimension (2, (lmaxin+1)*(lmaxin+2)/2) The indexed spherical harmonic coefficients. cilm : output, real*8, dimension (2,... </td>
+          <td> Convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array. Usage call SHCindexToCilm (cindex, cilm, degmax, exitstatus) Parameters  cindex : input, real(dp), dimension (2, (lmaxin+1)*(lmaxin+2)/2) The indexed spherical harmonic coefficients. cilm : output, real(dp), dimension (2,... </td>
         </tr>
         
      
@@ -1643,7 +1659,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shconfidence.html">SHConfidence (Fortran)</a></td>
-          <td> Compute the probability that two functions are correlated at a given spherical harmonic degree for a given correlation coefficient. Usage prob = SHConfidence (l, corr) Parameters  prob : output, real*8 Probability that two functions expressed in spherical coefficients with spectral correlation corr... </td>
+          <td> Compute the probability that two functions are correlated at a given spherical harmonic degree for a given correlation coefficient. Usage prob = SHConfidence (l, corr) Parameters  prob : output, real(dp) Probability that two functions expressed in spherical coefficients with spectral correlation corr... </td>
         </tr>
         
      
@@ -1652,7 +1668,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcrosspowerdensityl.html">SHCrossPowerDensityL (Fortran)</a></td>
-          <td> Compute the cross-power spectral density of two real functions for a single spherical harmonic degree. Usage cpsd = SHCrossPowerDensityL (cilm1, cilm2, l) Parameters  cpsd : output, real*8 Cross-power spectral density of the two real functions for spherical harmonic degree l. &lt;code... </td>
+          <td> Compute the cross-power spectral density of two real functions for a single spherical harmonic degree. Usage cpsd = SHCrossPowerDensityL (cilm1, cilm2, l) Parameters  cpsd : output, real(dp) Cross-power spectral density of the two real functions for spherical harmonic degree l. &lt;code... </td>
         </tr>
         
      
@@ -1661,7 +1677,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcrosspowerdensitylc.html">SHCrossPowerDensityLC (Fortran)</a></td>
-          <td> Compute the cross-power spectral density of two complex functions for a single spherical harmonic degree. Usage cpsd = SHCrossPowerDensityLC (cilm1, cilm2, l) Parameters  cpsd : output, complex*16 The cross-power spectral density of the two complex functions for spherical harmonic degree l.... </td>
+          <td> Compute the cross-power spectral density of two complex functions for a single spherical harmonic degree. Usage cpsd = SHCrossPowerDensityLC (cilm1, cilm2, l) Parameters  cpsd : output, complex(dp) The cross-power spectral density of the two complex functions for spherical harmonic degree l.... </td>
         </tr>
         
      
@@ -1670,7 +1686,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcrosspowerl.html">SHCrossPowerL (Fortran)</a></td>
-          <td> Compute the cross-power of two real functions for a single spherical harmonic degree. Usage cpower = SHCrossPowerL (cilm1, cilm2, l) Parameters  cpower : output, real*8 The cross power of the two functions for spherical harmonic degree l. cilm1 : input,... </td>
+          <td> Compute the cross-power of two real functions for a single spherical harmonic degree. Usage cpower = SHCrossPowerL (cilm1, cilm2, l) Parameters  cpower : output, real(dp) The cross power of the two functions for spherical harmonic degree l. cilm1 : input,... </td>
         </tr>
         
      
@@ -1679,7 +1695,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcrosspowerlc.html">SHCrossPowerLC (Fortran)</a></td>
-          <td> Compute the cross-power of two complex functions for a single spherical harmonic degree. Usage cpower = SHCrossPowerLC (cilm1, cilm2, l) Parameters  cpower : output, complex*16 Cross power of the two complex functions for spherical harmonic degree l. cilm1 : input,... </td>
+          <td> Compute the cross-power of two complex functions for a single spherical harmonic degree. Usage cpower = SHCrossPowerLC (cilm1, cilm2, l) Parameters  cpower : output, complex(dp) Cross power of the two complex functions for spherical harmonic degree l. cilm1 : input,... </td>
         </tr>
         
      
@@ -1688,7 +1704,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcrosspowerspectrum.html">SHCrossPowerSpectrum (Fortran)</a></td>
-          <td> Compute the cross-power spectrum of two real functions. Usage call SHCrossPowerSpectrum (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, real*8, dimension (2, lmaxin1+1, lmaxin1+1) The first function expressed in real spherical harmonics. cilm2 : input, real*8, dimension... </td>
+          <td> Compute the cross-power spectrum of two real functions. Usage call SHCrossPowerSpectrum (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, real(dp), dimension (2, lmaxin1+1, lmaxin1+1) The first function expressed in real spherical harmonics. cilm2 : input, real(dp), dimension... </td>
         </tr>
         
      
@@ -1697,7 +1713,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcrosspowerspectrumc.html">SHCrossPowerSpectrumC (Fortran)</a></td>
-          <td> Compute the cross-power spectrum of two complex functions. Usage call SHCrossPowerSpectrumC (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, complex*16, dimension (2, lmaxin1+1, lmaxin1+1) The complex spherical harmonics of the first complex function. cilm2 : input, complex*16,... </td>
+          <td> Compute the cross-power spectrum of two complex functions. Usage call SHCrossPowerSpectrumC (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, complex(dp), dimension (2, lmaxin1+1, lmaxin1+1) The complex spherical harmonics of the first complex function. cilm2 : input, complex(dp),... </td>
         </tr>
         
      
@@ -1706,7 +1722,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcrosspowerspectrumdensity.html">SHCrossPowerSpectrumDensity (Fortran)</a></td>
-          <td> Compute the cross-power spectral density of two real functions. Usage call SHCrossPowerSpectrumDensity (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, real*8, dimension (2, lmaxin1+1, lmaxin1+1) The first function expressed in real spherical harmonics. cilm2 : input, real*8,... </td>
+          <td> Compute the cross-power spectral density of two real functions. Usage call SHCrossPowerSpectrumDensity (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, real(dp), dimension (2, lmaxin1+1, lmaxin1+1) The first function expressed in real spherical harmonics. cilm2 : input, real(dp),... </td>
         </tr>
         
      
@@ -1715,7 +1731,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shcrosspowerspectrumdensityc.html">SHCrossPowerSpectrumDensityC (Fortran)</a></td>
-          <td> Compute the cross-power spectral density of two complex functions. Usage call SHCrossPowerSpectrumDensityC (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, complex*16, dimension (2, lmaxin1+1, lmaxin1+1) The complex spherical harmonics of the first complex function. cilm2 : input,... </td>
+          <td> Compute the cross-power spectral density of two complex functions. Usage call SHCrossPowerSpectrumDensityC (cilm1, cilm2, lmax, cspectrum, exitstatus) Parameters  cilm1 : input, complex(dp), dimension (2, lmaxin1+1, lmaxin1+1) The complex spherical harmonics of the first complex function. cilm2 : input,... </td>
         </tr>
         
      
@@ -1724,7 +1740,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shctor.html">SHctor (Fortran)</a></td>
-          <td> Convert complex spherical harmonics to real form. Usage call SHctor (ccilm, rcilm, degmax, convention, switchcs, exitstatus) Parameters  ccilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The input complex spherical harmonic coefficients. ccilm(1,:,:) and ccilm(2,:,:) correspond to... </td>
+          <td> Convert complex spherical harmonics to real form. Usage call SHctor (ccilm, rcilm, degmax, convention, switchcs, exitstatus) Parameters  ccilm : input, real(dp), dimension (2, lmaxin+1, lmaxin+1) The input complex spherical harmonic coefficients. ccilm(1,:,:) and ccilm(2,:,:) correspond to... </td>
         </tr>
         
      
@@ -1733,7 +1749,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shexpanddh.html">SHExpandDH (Fortran)</a></td>
-          <td> Expand an equally sampled or equally spaced grid into spherical harmonics using Driscoll and Healy’s (1994) sampling theorem. Usage call SHExpandDH (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh : input, real*8, dimension (&lt;code... </td>
+          <td> Expand an equally sampled or equally spaced grid into spherical harmonics using Driscoll and Healy’s (1994) sampling theorem. Usage call SHExpandDH (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh : input, real(dp), dimension (&lt;code... </td>
         </tr>
         
      
@@ -1742,7 +1758,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shexpanddhc.html">SHExpandDHC (Fortran)</a></td>
-          <td> Expand an equally sampled or equally spaced complex grid into complex spherical harmonics using Driscoll and Healy’s (1994) sampling theorem. Usage call SHExpandDHC (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh : input, complex*16,... </td>
+          <td> Expand an equally sampled or equally spaced complex grid into complex spherical harmonics using Driscoll and Healy’s (1994) sampling theorem. Usage call SHExpandDHC (griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc, exitstatus) Parameters  griddh : input, complex(dp),... </td>
         </tr>
         
      
@@ -1751,7 +1767,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shexpandglq.html">SHExpandGLQ (Fortran)</a></td>
-          <td> Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics. Usage call SHExpandGLQ (cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  cilm : output, real*8, dimension (2, lmax+1, &lt;code... </td>
+          <td> Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics. Usage call SHExpandGLQ (cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  cilm : output, real(dp), dimension (2, lmax+1, &lt;code... </td>
         </tr>
         
      
@@ -1760,7 +1776,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shexpandglqc.html">SHExpandGLQC (Fortran)</a></td>
-          <td> Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics. Usage call SHExpandGLQC (cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  cilm : output, complex*16, dimension (2, lmax+1, &lt;code... </td>
+          <td> Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical harmonics. Usage call SHExpandGLQC (cilm, lmax, gridglq, w, plx, zero, norm, csphase, lmax_calc, exitstatus) Parameters  cilm : output, complex(dp), dimension (2, lmax+1, &lt;code... </td>
         </tr>
         
      
@@ -1778,7 +1794,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shfindlwin.html">SHFindLWin (Fortran)</a></td>
-          <td> Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor. Usage lwin = SHFindLWin (theta0, m, alpha, taper_number) Parameters  lwin : output, integer The spherical harmonic bandwidth theta0 : input, real*8 The angular radius of the spherical... </td>
+          <td> Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor. Usage lwin = SHFindLWin (theta0, m, alpha, taper_number) Parameters  lwin : output, integer The spherical harmonic bandwidth theta0 : input, real(dp) The angular radius of the spherical... </td>
         </tr>
         
      
@@ -1805,7 +1821,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shmagpowerl.html">SHMagPowerL (Fortran)</a></td>
-          <td> Compute the power of the magnetic field for a single degree l given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage power = SHMagPowerL (c, a, r, l) Parameters  power : output, real*8 The power at degree l... </td>
+          <td> Compute the power of the magnetic field for a single degree l given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage power = SHMagPowerL (c, a, r, l) Parameters  power : output, real(dp) The power at degree l... </td>
         </tr>
         
      
@@ -1814,7 +1830,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shmagpowerspectrum.html">SHMagPowerSpectrum (Fortran)</a></td>
-          <td> Compute the power spectrum of the magnetic field given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage call SHMagPowerSpectrum (c, a, r, lmax, spectrum, exitstatus) Parameters  c : input, real*8, dimension (2, lmax+1, lmax+1) The Schmidt seminormalized... </td>
+          <td> Compute the power spectrum of the magnetic field given the Schmidt seminormalized magnetic potential spherical harmonic coefficients. Usage call SHMagPowerSpectrum (c, a, r, lmax, spectrum, exitstatus) Parameters  c : input, real(dp), dimension (2, lmax+1, lmax+1) The Schmidt seminormalized... </td>
         </tr>
         
      
@@ -1823,7 +1839,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shmtcouplingmatrix.html">SHMTCouplingMatrix (Fortran)</a></td>
-          <td> This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum. Usage call SHMTCouplingMatrix (mmt, lmax,tapers_power, lwin, k, taper_wt, exitstatus)... </td>
+          <td> This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the expectation of the localized multitaper spectrum to the expectation of the power spectrum of the global function. Usage call SHMTCouplingMatrix (mmt, lmax,tapers_power, lwin,... </td>
         </tr>
         
      
@@ -1840,8 +1856,17 @@ table:nth-of-type(n) th:nth-of-type(2) {
     
         
 
+        <tr><td><a href="shmtvar.html">SHMTVar (Fortran)</a></td>
+          <td> Calculate the theoretical variance of a multitaper spectral estimate for a given input power spectrum. Usage call SHMTVar (l, tapers, taper_order, lwin, kmax, sff, variance, taper_wt, unweighted_covar, nocross, exitstatus) Parameters  l : input, integer The... </td>
+        </tr>
+        
+     
+   
+    
+        
+
         <tr><td><a href="shmtvaropt.html">SHMTVarOpt (Fortran)</a></td>
-          <td> Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate. Usage call SHMTVarOpt (l, tapers, taper_order, lwin, kmax, sff, var_opt, var_unit, weight_opt, unweighted_covar, nocross, exitstatus) Parameters  l : input, integer... </td>
+          <td> Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum. Usage call SHMTVarOpt (l, tapers, taper_order, lwin, kmax, sff, var_opt, var_unit, weight_opt, unweighted_covar, nocross, exitstatus)... </td>
         </tr>
         
      
@@ -1850,7 +1875,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shmultiply.html">SHMultiply (Fortran)</a></td>
-          <td> Multiply two functions and determine the spherical harmonic coefficients of the resulting function. Usage call SHMultiply (shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase, exitstatus) Parameters  shout : output, real*8, dimension (2, lmax1+lmax2+1, lmax1+&lt;code... </td>
+          <td> Multiply two functions and determine the spherical harmonic coefficients of the resulting function. Usage call SHMultiply (shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase, exitstatus) Parameters  shout : output, real(dp), dimension (2, lmax1+lmax2+1, lmax1+&lt;code... </td>
         </tr>
         
      
@@ -1877,7 +1902,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shmultitapermaskse.html">SHMultiTaperMaskSE (Fortran)</a></td>
-          <td> Perform a localized multitaper spectral analysis using arbitrary windows derived from a mask. Usage call SHMultiTaperMaskSE (mtse, sd, sh, lmax, tapers, lmaxt, k, taper_wt, norm, csphase, exitstatus) Parameters  mtse : output, real*8, dimension (lmax-&lt;code... </td>
+          <td> Perform a localized multitaper spectral analysis using arbitrary windows derived from a mask. Usage call SHMultiTaperMaskSE (mtse, sd, sh, lmax, tapers, lmaxt, k, taper_wt, norm, csphase, exitstatus) Parameters  mtse : output, real(dp), dimension (lmax-&lt;code... </td>
         </tr>
         
      
@@ -1895,7 +1920,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shpowerdensityl.html">SHPowerDensityL (Fortran)</a></td>
-          <td> Compute the power spectral density of a real function for a single spherical harmonic degree. Usage psd = SHPowerDensityL (cilm, l) Parameters  psd : output, real*8 Power spectral density of the function for the spherical harmonic degree l. cilm : input,... </td>
+          <td> Compute the power spectral density of a real function for a single spherical harmonic degree. Usage psd = SHPowerDensityL (cilm, l) Parameters  psd : output, real(dp) Power spectral density of the function for the spherical harmonic degree l. cilm : input,... </td>
         </tr>
         
      
@@ -1904,7 +1929,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shpowerdensitylc.html">SHPowerDensityLC (Fortran)</a></td>
-          <td> Compute the power spectral density of a complex function for a single spherical harmonic degree. Usage psd = SHPowerDensityLC (cilm, l) Parameters  psd : output, real*8 Power spectral density of the complex function for spherical harmonic degree l. cilm : input,... </td>
+          <td> Compute the power spectral density of a complex function for a single spherical harmonic degree. Usage psd = SHPowerDensityLC (cilm, l) Parameters  psd : output, real(dp) Power spectral density of the complex function for spherical harmonic degree l. cilm : input,... </td>
         </tr>
         
      
@@ -1913,7 +1938,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shpowerl.html">SHPowerL (Fortran)</a></td>
-          <td> Compute the power of a real function for a single spherical harmonic degree. Usage power = SHPowerL (cilm, l) Parameters  power : output, real*8 Power of the function for a single spherical harmonic degree l. cilm : input, real*8, dimension (2,... </td>
+          <td> Compute the power of a real function for a single spherical harmonic degree. Usage power = SHPowerL (cilm, l) Parameters  power : output, real(dp) Power of the function for a single spherical harmonic degree l. cilm : input, real(dp), dimension (2,... </td>
         </tr>
         
      
@@ -1922,7 +1947,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shpowerlc.html">SHPowerLC (Fortran)</a></td>
-          <td> Compute the power of a complex function for a single spherical harmonic degree. Usage power = SHPowerLC (cilm, l) Parameters  power : output, real*8 Power of the complex function for spherical harmonic degree l. cilm : input, complex*16, dimension (2, &lt;code... </td>
+          <td> Compute the power of a complex function for a single spherical harmonic degree. Usage power = SHPowerLC (cilm, l) Parameters  power : output, real(dp) Power of the complex function for spherical harmonic degree l. cilm : input, complex(dp), dimension (2, &lt;code... </td>
         </tr>
         
      
@@ -1931,7 +1956,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shpowerspectrum.html">SHPowerSpectrum (Fortran)</a></td>
-          <td> Compute the power spectrum of a real function. Usage call SHPowerSpectrum (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The function expressed in real spherical harmonics. lmax : input, integer The maximum spherical harmonic... </td>
+          <td> Compute the power spectrum of a real function. Usage call SHPowerSpectrum (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, real(dp), dimension (2, lmaxin+1, lmaxin+1) The function expressed in real spherical harmonics. lmax : input, integer The maximum spherical harmonic... </td>
         </tr>
         
      
@@ -1940,7 +1965,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shpowerspectrumc.html">SHPowerSpectrumC (Fortran)</a></td>
-          <td> Compute the power spectrum of a complex function. Usage call SHPowerSpectrumC (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, complex*16, dimension (2, lmaxin+1, lmaxin+1) The complex function expressed in complex spherical harmonics. lmax : input, integer The maximum spherical... </td>
+          <td> Compute the power spectrum of a complex function. Usage call SHPowerSpectrumC (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, complex(dp), dimension (2, lmaxin+1, lmaxin+1) The complex function expressed in complex spherical harmonics. lmax : input, integer The maximum spherical... </td>
         </tr>
         
      
@@ -1949,7 +1974,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shpowerspectrumdensity.html">SHPowerSpectrumDensity (Fortran)</a></td>
-          <td> Compute the power spectral density of a real function. Usage call SHPowerSpectrumDensity (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The real function expressed in real spherical harmonics. lmax : input, integer The maximum... </td>
+          <td> Compute the power spectral density of a real function. Usage call SHPowerSpectrumDensity (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, real(dp), dimension (2, lmaxin+1, lmaxin+1) The real function expressed in real spherical harmonics. lmax : input, integer The maximum... </td>
         </tr>
         
      
@@ -1958,7 +1983,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shpowerspectrumdensityc.html">SHPowerSpectrumDensityC (Fortran)</a></td>
-          <td> Compute the power spectral density of a complex function. Usage call SHPowerSpectrumDensityC (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, complex*16, dimension (2, lmaxin+1, lmaxin+1) The complex function expressed in complex spherical harmonics. lmax : input, integer The maximum... </td>
+          <td> Compute the power spectral density of a complex function. Usage call SHPowerSpectrumDensityC (cilm, lmax, pspectrum, exitstatus) Parameters  cilm : input, complex(dp), dimension (2, lmaxin+1, lmaxin+1) The complex function expressed in complex spherical harmonics. lmax : input, integer The maximum... </td>
         </tr>
         
      
@@ -1967,7 +1992,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shread.html">SHRead (Fortran)</a></td>
-          <td> Read spherical harmonic coefficients from an ascii-formatted file. Usage call SHRead (filename, cilm, lmax, skip, header, error, exitstatus) Parameters  filename : input, character(:) The filename of the ascii file containing the spherical harmonic coefficients. cilm : output, real*8,... </td>
+          <td> Read spherical harmonic coefficients from an ascii-formatted file. Usage call SHRead (filename, cilm, lmax, skip, header, error, exitstatus) Parameters  filename : input, character(:) The filename of the ascii file containing the spherical harmonic coefficients. cilm : output, real(dp),... </td>
         </tr>
         
      
@@ -1985,7 +2010,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shreadjpl.html">SHReadJPL (Fortran)</a></td>
-          <td> Read spherical harmonic coefficients from a JPL ascii-formatted file. Usage call SHReadJPL (filename, cilm, lmax, error, gm, formatstring, exitstatus) Parameters  filename : input, character(*) The filename of the JPL ascii formatted spherical harmonic coefficients. cilm : output, real*8,... </td>
+          <td> Read spherical harmonic coefficients from a JPL ascii-formatted file. Usage call SHReadJPL (filename, cilm, lmax, error, gm, formatstring, exitstatus) Parameters  filename : input, character(*) The filename of the JPL ascii formatted spherical harmonic coefficients. cilm : output, real(dp),... </td>
         </tr>
         
      
@@ -1994,7 +2019,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shreturntapers.html">SHReturnTapers (Fortran)</a></td>
-          <td> Calculate the eigenfunctions of the spherical-cap concentration problem. Usage call SHReturnTapers (theta0, lmax, tapers, eigenvalues, taper_order, exitstatus) Parameters  theta0 : input, real*8 The angular radius of the spherical cap in radians. lmax : input, integer The spherical harmonic bandwidth... </td>
+          <td> Calculate the eigenfunctions of the spherical-cap concentration problem. Usage call SHReturnTapers (theta0, lmax, tapers, eigenvalues, taper_order, degrees, exitstatus) Parameters  theta0 : input, real(dp) The angular radius of the spherical cap in radians. lmax : input, integer The spherical... </td>
         </tr>
         
      
@@ -2003,7 +2028,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shreturntapersm.html">SHReturnTapersM (Fortran)</a></td>
-          <td> Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order. Usage call SHReturnTapersM (theta0, lmax, m, tapers, eigenvalues, shannon, exitstatus) Parameters  theta0 : input, real*8 The angular radius of the spherical cap in radians. lmax... </td>
+          <td> Calculate the eigenfunctions of the spherical-cap concentration problem for a single angular order. Usage call SHReturnTapersM (theta0, lmax, m, tapers, eigenvalues, shannon, degrees, ntapers, exitstatus) Parameters  theta0 : input, real(dp) The angular radius of the spherical cap... </td>
         </tr>
         
      
@@ -2012,7 +2037,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shreturntapersmap.html">SHReturnTapersMap (Fortran)</a></td>
-          <td> Calculate the eigenfunctions and eigenvalues of the space-concentration problem for an arbitrary region. Usage call SHReturnTapersMap (tapers, eigenvalues, dh_mask, n, lmax, sampling, ntapers, exitstatus) Parameters  tapers : input, real*8, dimension ((lmax+1)**2, ntapers) The spherical harmonic coefficients... </td>
+          <td> Calculate the eigenfunctions and eigenvalues of the space-concentration problem for an arbitrary region. Usage call SHReturnTapersMap (tapers, eigenvalues, dh_mask, n, lmax, sampling, ntapers, degrees, exitstatus) Parameters  tapers : input, real(dp), dimension ((lmax+1)**2, ntapers) The spherical... </td>
         </tr>
         
      
@@ -2021,7 +2046,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shrotatecoef.html">SHRotateCoef (Fortran)</a></td>
-          <td> Determine the spherical harmonic coefficients of a real function expressed in complex harmonics rotated by three Euler angles. Usage call SHRotateCoef (x, coef, rcoef, dj, lmax, exitstatus) Parameters  x : input, real*8, dimension(3) The three Euler angles, alpha, beta, and... </td>
+          <td> Determine the spherical harmonic coefficients of a real function expressed in complex harmonics rotated by three Euler angles. Usage call SHRotateCoef (x, coef, rcoef, dj, lmax, exitstatus) Parameters  x : input, real(dp), dimension(3) The three Euler angles, alpha, beta, and... </td>
         </tr>
         
      
@@ -2030,7 +2055,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shrotaterealcoef.html">SHRotateRealCoef (Fortran)</a></td>
-          <td> Determine the spherical harmonic coefficients of a real function rotated by three Euler angles. Usage call SHRotateRealCoef (cilmrot, cilm, lmax, x, dj, exitstatus) Parameters  cilmrot : output, real*8, dimension (2, lmax+1, lmax+1) The spherical harmonic coefficients of the... </td>
+          <td> Determine the spherical harmonic coefficients of a real function rotated by three Euler angles. Usage call SHRotateRealCoef (cilmrot, cilm, lmax, x, dj, exitstatus) Parameters  cilmrot : output, real(dp), dimension (2, lmax+1, lmax+1) The spherical harmonic coefficients of the... </td>
         </tr>
         
      
@@ -2039,7 +2064,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shrotatetapers.html">SHRotateTapers (Fortran)</a></td>
-          <td> Rotate orthogonal spherical-cap Slepian functions centered at the North pole to a different location. Usage call SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, exitstatus) Parameters  tapersrot : output, real*8, dimension ((lmax+1)**2, nrot) An array containing the... </td>
+          <td> Rotate orthogonal spherical-cap Slepian functions centered at the North pole to a different location. Usage call SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, exitstatus) Parameters  tapersrot : output, real(dp), dimension ((lmax+1)**2, nrot) An array containing the... </td>
         </tr>
         
      
@@ -2048,7 +2073,25 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shrtoc.html">SHrtoc (Fortran)</a></td>
-          <td> Convert real spherical harmonics to complex form. Usage call SHrtoc (rcilm, ccilm, degmax, convention, switchcs, exitstatus) Parameters  rcilm : input, real*8, dimension (2, lmaxin+1, lmaxin+1) The input real spherical harmonic coefficients. rcilm(1,:,:) and rcilm(2,:,:) correspond to... </td>
+          <td> Convert real spherical harmonics to complex form. Usage call SHrtoc (rcilm, ccilm, degmax, convention, switchcs, exitstatus) Parameters  rcilm : input, real(dp), dimension (2, lmaxin+1, lmaxin+1) The input real spherical harmonic coefficients. rcilm(1,:,:) and rcilm(2,:,:) correspond to... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shscouplingmatrix.html">SHSCouplingMatrix (Fortran)</a></td>
+          <td> This routine returns the spherical harmonic coupling matrix for a given set of Slepian basis functions. This matrix relates the power spectrum expectation of the function expressed in a subset of the best-localized Slepian functions to the expectation of the global power spectrum. Usage call SHSCouplingMatrix (kij, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shscouplingmatrixcap.html">SHSCouplingMatrixCap (Fortran)</a></td>
+          <td> This routine returns the spherical harmonic coupling matrix for a given set of spherical-cap Slepian basis functions. This matrix relates the power spectrum expectation of the function expressed in a subset of the best-localized Slepian functions to the expectation of the global power spectrum. Usage call SHSCouplingMatrixCap (kij,... </td>
         </tr>
         
      
@@ -2058,6 +2101,15 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
         <tr><td><a href="shsjkpg.html">SHSjkPG (Fortran)</a></td>
           <td> Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders. Usage value = SHSjkPG (incspectra, l, m, mprime, hj_real, hk_real, mj, mk, &lt;code... </td>
+        </tr>
+        
+     
+   
+    
+        
+
+        <tr><td><a href="shslepianvar.html">SHSlepianVar (Fortran)</a></td>
+          <td> Calculate the theoretical variance of the power of a function expanded in spherical-cap Slepian functions for a given spherical harmonic degree. Usage call SHSlepianVar (l, galpha, galpha_order, lmax, kmax, sff, variance, exitstatus) Parameters  l : input, integer The... </td>
         </tr>
         
      
@@ -2075,7 +2127,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="shvectortocilm.html">SHVectorToCilm (Fortran)</a></td>
-          <td> Convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array. Usage call SHVectorToCilm (vector, cilm, lmax, exitstatus) Parameters  vector : input, real*8, dimension ( (lmax+1)**2 ) The input 1-D indexed array of real spherical harmonic coefficients. &lt;code... </td>
+          <td> Convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array. Usage call SHVectorToCilm (vector, cilm, lmax, exitstatus) Parameters  vector : input, real(dp), dimension ( (lmax+1)**2 ) The input 1-D indexed array of real spherical harmonic coefficients. &lt;code... </td>
         </tr>
         
      
@@ -2086,7 +2138,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="slepiancoeffs.html">SlepianCoeffs (Fortran)</a></td>
-          <td> Determine the expansion coefficients of a function for a given set of input Slepian functions. Usage call SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus) Parameters  falpha : output, real*8, dimension (nmax) A vector containing the Slepian coefficients of the input... </td>
+          <td> Determine the expansion coefficients of a function for a given set of input Slepian functions. Usage call SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus) Parameters  falpha : output, real(dp), dimension (nmax) A vector containing the Slepian coefficients of the input... </td>
         </tr>
         
      
@@ -2095,7 +2147,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="slepiancoeffstosh.html">SlepianCoeffsToSH (Fortran)</a></td>
-          <td> Convert a function expressed in Slepian coefficients to spherical harmonic coefficients. Usage call SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus) Parameters  flm : output, real*8, dimension (2, lmax+1, lmax+1) The spherical harmonic coefficients of the global function. falpha... </td>
+          <td> Convert a function expressed in Slepian coefficients to spherical harmonic coefficients. Usage call SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus) Parameters  flm : output, real(dp), dimension (2, lmax+1, lmax+1) The spherical harmonic coefficients of the global function. falpha... </td>
         </tr>
         
      
@@ -2112,7 +2164,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="sphericalcapcoef.html">SphericalCapCoef (Fortran)</a></td>
-          <td> Calculate the spherical harmonic coefficients of a spherical cap. Usage call SphericalCapCoef (coef, theta, lmax, exitstatus) Parameters  coef : output, real*8, dimension(lmaxin+1) The zonal spherical harmonic coefficients of a spherical cap centered over the north pole. theta : input, real*8... </td>
+          <td> Calculate the spherical harmonic coefficients of a spherical cap. Usage call SphericalCapCoef (coef, theta, lmax, exitstatus) Parameters  coef : output, real(dp), dimension(lmaxin+1) The zonal spherical harmonic coefficients of a spherical cap centered over the north pole. theta : input, real(dp)... </td>
         </tr>
         
      
@@ -2133,7 +2185,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
         
 
         <tr><td><a href="wigner3j.html">Wigner3j (Fortran)</a></td>
-          <td> Compute the Wigner-3j symbols for all allowable values of J. ## Usage call Wigner3j (`w3j`, `jmin`, `jmax`, `j2`, `j3`, `m1`, `m2`, `m3`, `exitstatus`) ## Parameters `w3j` : output, real\*8, dimension (`j2`+`j3`+1) : An array of the Wigner-3j symbols evaluated for all allowable values of `j`. The minimum and maximum values... </td>
+          <td> Compute the Wigner-3j symbols for all allowable values of J. ## Usage call Wigner3j (`w3j`, `jmin`, `jmax`, `j2`, `j3`, `m1`, `m2`, `m3`, `exitstatus`) ## Parameters `w3j` : output, real(dp), dimension (`j2`+`j3`+1) : An array of the Wigner-3j symbols evaluated for all allowable values of `j`. The minimum and maximum values... </td>
         </tr>
         
      
@@ -2173,7 +2225,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2018 SHTOOLS. All rights reserved. <br />
+               &copy;2019 SHTOOLS. All rights reserved. <br />
 <a href="https://www.oca.eu/?lang=en" target="_blank" rel="noopener">Observatoire de la Côte d'Azur</a><br />
 <a href="https://lagrange.oca.eu/fr/accueil-lagrange" target="_blank" rel="noopener">Laboratoire Lagrange</a><br />
 <p><img src="images/company_logo.png" alt="SHTOOLS"/></p>
