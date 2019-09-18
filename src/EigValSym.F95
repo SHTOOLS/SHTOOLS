@@ -39,18 +39,20 @@ subroutine EigValSym(ain, n, eval, ul)
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) ::  ain(:,:)
-    integer, intent(in) ::  n
-    real*8, intent(out) ::  eval(:)
-    character, intent(in), optional ::  ul
-    integer, parameter ::  nb = 80, nbl = 10
-    character ::  uplo
-    real*8 ::  d(n), e(n), tau(n-1), work(nb*n), vl, vu, abstol, w(n)
-    real*8, allocatable ::  a(:,:), z(:,:)
-    integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
-                i, astat(2)
+    real(dp), intent(in) :: ain(:,:)
+    integer, intent(in) :: n
+    real(dp), intent(out) :: eval(:)
+    character, intent(in), optional :: ul
+    integer, parameter :: nb = 80, nbl = 10
+    character :: uplo
+    real(dp) :: d(n), e(n), tau(n-1), work(nb*n), vl, vu, abstol, w(n)
+    real(dp), allocatable :: a(:,:), z(:,:)
+    integer :: lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
+               i, astat(2)
 #ifdef LAPACK_UNDERSCORE
 #define dsytrd dsytrd_
 #define dstegr dstegr_
@@ -83,7 +85,7 @@ subroutine EigValSym(ain, n, eval, ul)
     lwork = nb*n
     liwork = nbl*n
 
-    eval = 0.0d0
+    eval = 0.0_dp
     a(1:n,1:n) = ain(1:n,1:n)
 
     if (present(ul)) then
@@ -120,7 +122,7 @@ subroutine EigValSym(ain, n, eval, ul)
     !
     !---------------------------------------------------------------------------
 
-    abstol = 0.0d0
+    abstol = 0.0_dp
 
     call dstegr('n','a', n, d, e, vl, vu, il, iu, abstol, m,  w, &
                 z, n, isuppz, work, lwork, iwork, liwork, info)

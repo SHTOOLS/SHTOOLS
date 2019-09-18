@@ -11,7 +11,7 @@ call SHMTVarOpt (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `var_opt`,
 `l` : input, integer
 :   The spherical harmonic used degree to determine the minimum variance and optimal weights.
 
-`tapers` : input, real\*8, dimension (`lwin`+1, `kmax`)
+`tapers` : input, real(dp), dimension (`lwin`+1, `kmax`)
 :   A matrix of localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
 `taper_order` : input, integer, dimension (`kmax`)
@@ -23,19 +23,19 @@ call SHMTVarOpt (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `var_opt`,
 `kmax` : input, integer
 :   The maximum number of tapers to be used when calculating the minimum variance and optimal weights.
 
-`sff` : input, real\*8, dimension (`l`+`lwin`+1)
+`sff` : input, real(dp), dimension (`l`+`lwin`+1)
 :   The global unwindowed power spectrum of the function to be localized.
 
-`var_opt` : output, real\*8, dimension (`kmax`)
+`var_opt` : output, real(dp), dimension (`kmax`)
 :   The minimum variance of the multitaper spectral estimate for degree `l` using 1 through `kmax` tapers.
 
-`var_unit` : output, real\*8, dimension (`kmax`)
+`var_unit` : output, real(dp), dimension (`kmax`)
 :   The variance of the multitaper spectral estimate using equal weights for degree `l` using 1 through `kmax` tapers.
 
-`weight_opt` : optional, output, real\*8, dimension (`kmax`, `kmax`)
+`weight_opt` : optional, output, real(dp), dimension (`kmax`, `kmax`)
 :   The optimal weights (in columns) that minimize the multitaper spectral estimate's variance using 1 through `kmax` tapers.
 
-`unweighted_covar` : optional, output, real\*8, dimension (`kmax`, `kmax`)
+`unweighted_covar` : optional, output, real(dp), dimension (`kmax`, `kmax`)
 :   The unweighted covariance matrix of the `kmax` tapers (i.e., Fij in Wieczorek and Simons 2007).
 
 `nocross` : optional, input, integer, default = 0

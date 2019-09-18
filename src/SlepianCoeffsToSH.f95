@@ -45,13 +45,15 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHVectorToCilm
+    use ftypes
 
     implicit none
-    real*8, intent(out) :: flm(:,:,:)
-    real*8, intent(in) :: falpha(:), galpha(:,:)
+
+    real(dp), intent(out) :: flm(:,:,:)
+    real(dp), intent(in) :: falpha(:), galpha(:,:)
     integer, intent(in) :: lmax, nmax
     integer, intent(out), optional :: exitstatus
-    real*8, allocatable :: f(:)
+    real(dp), allocatable :: f(:)
     integer :: i, astat
 
     if (present(exitstatus)) exitstatus = 0
@@ -108,11 +110,11 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
         else
             stop
         end if
-    endif
+    end if
 
-    f = 0.0d0
+    f = 0.0_dp
 
-    do i=1, nmax, 1
+    do i = 1, nmax, 1
         f(1:(lmax+1)**2) = f(1:(lmax+1)**2) + &
                            falpha(i) * galpha(1:(lmax+1)**2, i)
     end do
@@ -122,7 +124,7 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
         if (exitstatus /= 0) return
     else
         call SHVectorToCilm(f, flm, lmax)
-    endif
+    end if
 
     deallocate(f)
 

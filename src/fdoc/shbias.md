@@ -8,19 +8,19 @@ call SHBias (`shh`, `lwin`, `incspectra`, `ldata`, `outcspectra`, `save_cg`, `ex
 
 # Parameters
 
-`shh` : input, real\*8, dimension (`lwin`+1)
+`shh` : input, real(dp), dimension (`lwin`+1)
 :   The power spectrum of the localizing window.
 
 `lwin` : input, integer
 :   The spherical harmonic bandwidth of the localizing window.
 
-`incspectra` : input, real\*8, dimension (`ldata`+1)
+`incspectra` : input, real(dp), dimension (`ldata`+1)
 :   The global unwindowed (cross-)power spectrum.
 
 `ldata` : input, integer
 :   The maximum degree of the global unwindowed power spectrum.
 
-`outcspectra` : output, real\*8, dimension (`ldata`+`lwin`+1)
+`outcspectra` : output, real(dp), dimension (`ldata`+`lwin`+1)
 :   The expectation of the localized (cross-)power spectrum.
 
 `save_cg` : optional, input, integer, default = 0

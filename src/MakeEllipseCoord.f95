@@ -39,24 +39,26 @@ subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: lat, lon, A_theta, B_theta, dec
-    real*8, intent(out) :: coord(:,:)
-    real*8, intent(in), optional :: cinterval
+    real(dp), intent(in) :: lat, lon, A_theta, B_theta, dec
+    real(dp), intent(out) :: coord(:,:)
+    real(dp), intent(in), optional :: cinterval
     integer, intent(out), optional :: cnum, exitstatus
-    real*8 :: pi, interval, xold, yold, zold, x, y, z, x1, phi, r
-    integer ::  k, num
+    real(dp) :: pi, interval, xold, yold, zold, x, y, z, x1, phi, r
+    integer :: k, num
 
     if (present(exitstatus)) exitstatus = 0
 
     if (present(cinterval)) then
         interval = cinterval
     else
-        interval = 1.0d0
+        interval = 1.0_dp
     end if
 
-    num = int(360.0d0 / interval)
+    num = int(360.0_dp / interval)
 
     if (present(cnum)) then
         cnum = num
@@ -75,7 +77,7 @@ subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
         end if
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     !--------------------------------------------------------------------------
     !
@@ -86,29 +88,29 @@ subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
 
     do k = 1, num
 
-        phi = pi - dble(k-1) * (2.0d0 * pi / dble(num))
+        phi = pi - dble(k-1) * (2.0_dp * pi / dble(num))
         r = a_theta * b_theta / sqrt( (b_theta*cos(phi))**2 &
             + (a_theta * sin(phi))**2)
-        xold = sin(r * pi / 180.0d0) * cos(phi - dec * pi / 180.0d0)
-        yold = sin(r * pi / 180.0d0) * sin(phi - dec * pi / 180.0d0)
-        zold = cos(r * pi / 180.0d0)
+        xold = sin(r * pi / 180.0_dp) * cos(phi - dec * pi / 180.0_dp)
+        yold = sin(r * pi / 180.0_dp) * sin(phi - dec * pi / 180.0_dp)
+        zold = cos(r * pi / 180.0_dp)
 
         ! rotate coordinate system 90-lat degrees about y axis
 
-        x1 = xold * cos(pi / 2.0 - lat * pi / 180.0d0) + &
-             zold * sin(pi / 2.0 - lat * pi / 180.0d0)
-        z = -xold * sin(pi / 2.0 - lat * pi / 180.0d0) + &
-            zold * cos(pi / 2.0 - lat * pi / 180.0d0)
+        x1 = xold * cos(pi / 2.0_dp - lat * pi / 180.0_dp) + &
+             zold * sin(pi / 2.0_dp - lat * pi / 180.0_dp)
+        z = -xold * sin(pi / 2.0_dp - lat * pi / 180.0_dp) + &
+            zold * cos(pi / 2.0_dp - lat * pi / 180.0_dp)
 
         ! rotate coordinate system lon degrees about z axis
 
-        x = x1 * cos(lon * pi / 180.0d0) - yold * sin(lon * pi / 180.0d0)
-        y = x1 * sin(lon * pi / 180.0d0) + yold * cos(lon * pi/180.0d0)
+        x = x1 * cos(lon * pi / 180.0_dp) - yold * sin(lon * pi / 180.0_dp)
+        y = x1 * sin(lon * pi / 180.0_dp) + yold * cos(lon * pi/180.0_dp)
 
-        coord(k, 1) = (pi / 2.0d0 - acos(z / sqrt(x**2 + y**2 + z**2))) * &
-                      180.0d0 / pi
-        coord(k, 2) = atan2(y, x) * 180.0d0 / pi
+        coord(k, 1) = (pi / 2.0_dp - acos(z / sqrt(x**2 + y**2 + z**2))) * &
+                      180.0_dp / pi
+        coord(k, 2) = atan2(y, x) * 180.0_dp / pi
 
-    enddo
+    end do
 
 end subroutine MakeEllipseCoord

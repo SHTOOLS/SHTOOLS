@@ -11,31 +11,31 @@ call SHRead2 (`filename`, `cilm`, `lmax`, `gm`, `r0_pot`, `error`, `dot`, `doyst
 `filename` : input, character(*)
 :   The ascii-formatted filename containing the spherical harmonic coefficients.
 
-`cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients contained in `filename`.
 
 `lmax` : output, integer
 :   The maximum spherical harmonic degree of `cilm`.
 
-`gm` : output, real\*8
+`gm` : output, real(dp)
 :   The mass-gravitational constant.
 
-`r0_pot` : output, real\*8
+`r0_pot` : output, real(dp)
 :   The reference radius of the potential coefficients.
 
-`error` : output, optional, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`error` : output, optional, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The errors corresponding to the spherical harmonic coefficients `cilm`.
 
-`dot` : output, optional, real\*8, dimension (2, `lmaxout`+1, `lmaxout`+1)
+`dot` : output, optional, real(dp), dimension (2, `lmaxout`+1, `lmaxout`+1)
 :   The time derivatives of the spherical harmonic coefficients. The dimension of this array can be smaller than `lmax+1`.
 
-`doystart` : output, optional, real\*8
+`doystart` : output, optional, real(dp)
 :   The starting time of the solution.
 
-`doyend` : output, optional, real\*8
+`doyend` : output, optional, real(dp)
 :   The ending time of the solution
 
-`epoch` : output, optional, real\*8
+`epoch` : output, optional, real(dp)
 :   The epoch time for the time derivates.
 
 `exitstatus` : output, optional, integer

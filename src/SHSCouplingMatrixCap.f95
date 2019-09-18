@@ -58,13 +58,16 @@ subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
-    real*8, intent(out) :: kij(:,:)
-    real*8, intent(in) :: galpha(:,:)
+
+    real(dp), intent(out) :: kij(:,:)
+    real(dp), intent(in) :: galpha(:,:)
     integer, intent(in) :: galpha_order(:), lmax, nmax
     integer, intent(out), optional :: exitstatus
     integer :: l, lp, m, alpha
-    real*8 :: temp
+    real(dp) :: temp
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -110,16 +113,16 @@ subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
     end if
 
 
-    kij = 0.0d0
+    kij = 0.0_dp
 
     ! Calculate k(l, lp) * (2lp +1 ), which is symmetric
-    do l=0, lmax
+    do l = 0, lmax
 
         do lp = l, lmax, 1
 
             do m = -l, l, 1
 
-                temp = 0.0d0
+                temp = 0.0_dp
                 do alpha = 1, nmax, 1
 
                     if (galpha_order(alpha) /= m) cycle
@@ -137,7 +140,7 @@ subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
     end do
 
     ! Fill lower half of matrix
-    do l=1, lmax, 1
+    do l = 1, lmax, 1
 
         do lp=0, l-1, 1
 
@@ -148,7 +151,7 @@ subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
     end do
 
     ! Multiply by 1/(2lp+1)
-    do lp=0, lmax
+    do lp = 0, lmax
 
         kij(1:lmax+1, lp+1) = kij(1:lmax+1, lp+1) / dble(2*lp+1)
 

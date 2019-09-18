@@ -67,19 +67,20 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: p(:)
-    real*8, intent(in) :: z
+    real(dp), intent(out) :: p(:)
+    real(dp), intent(in) :: z
     integer, intent(in), optional :: csphase, cnorm
     integer, intent(out), optional :: exitstatus
-    real*8 :: pm2, pm1, pmm, plm, rescalem, pi, u, scalef
-    real*8, save, allocatable :: f1(:), f2(:), sqr(:)
+    real(dp) :: pm2, pm1, pmm, plm, rescalem, pi, u, scalef
+    real(dp), save, allocatable :: f1(:), f2(:), sqr(:)
     integer :: k, kstart, m, l, astat(3)
     integer, save :: lmax_old = 0
-    integer*1 :: phase
+    integer(int1) :: phase
 
 !$OMP    threadprivate(f1, f2, sqr, lmax_old)
 
@@ -93,7 +94,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
         return
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     if (size(p) < (lmax+1)*(lmax+2)/2) then
         print*, "Error --- PlmBar"
@@ -105,7 +106,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     else if (lmax < 0) then
         print*, "Error --- PlmBar"
@@ -116,9 +117,9 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    else if (abs(z) > 1.0d0) then
+    else if (abs(z) > 1.0_dp) then
         print*, "Error --- PlmBar"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
@@ -127,7 +128,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     end if
 
@@ -147,7 +148,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
                 return
             else
                 stop
-            endif
+            end if
 
         end if
 
@@ -156,7 +157,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
 
     end if
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (lmax > lmax_old) then
         if (allocated (sqr)) deallocate (sqr)
@@ -176,7 +177,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
                 return
             else
                 stop
-            endif
+            end if
         end if
 
         !----------------------------------------------------------------------
@@ -224,9 +225,9 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
     !   Calculate P(l,0). These are not scaled.
     !
     !--------------------------------------------------------------------------
-    u = sqrt((1.0d0 - z) * (1.0d0 + z)) ! sin(theta)
+    u = sqrt((1.0_dp - z) * (1.0_dp + z)) ! sin(theta)
 
-    pm2 = 1.0d0 / sqrt(4.0d0*pi)
+    pm2 = 1.0_dp / sqrt(4.0_dp*pi)
     p(1) = pm2
 
     if (lmax == 0) return
@@ -262,7 +263,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
 
     end if
 
-    rescalem = 1.0d0/scalef
+    rescalem = 1.0_dp / scalef
     kstart = 1
 
     do m = 1, lmax - 1, 1

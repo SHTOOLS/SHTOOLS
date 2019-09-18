@@ -55,17 +55,18 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
 !------------------------------------------------------------------------------
     use SHTOOLS, only: PreGLQ, PlmBar, PlmSchmidt, PLegendreA, PlmON, &
                        CSPHASE_DEFAULT, PlmIndex
+    use ftypes
 
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: zero(:), w(:)
-    real*8, intent(out), optional :: plx(:,:)
+    real(dp), intent(out) :: zero(:), w(:)
+    real(dp), intent(out), optional :: plx(:,:)
     integer, intent(in), optional :: norm, csphase, cnorm
     integer, intent(out), optional :: exitstatus
     integer :: n, i, astat, phase, l, m, i_s, cnormin, lnorm
-    real*8 :: upper, lower, pi
-    real*8, allocatable ::  pl(:)
+    real(dp) :: upper, lower, pi
+    real(dp), allocatable :: pl(:)
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -111,7 +112,7 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
         end if
 
     end if
-    
+
     if (present(norm)) then
         if (norm > 4 .or. norm < 1) then
             print*, "Error --- SHGLQ"
@@ -131,7 +132,7 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
 
     else
         lnorm = 1
-        
+
     end if
 
     if (present(csphase)) then
@@ -177,10 +178,10 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    upper = 1.0d0
-    lower = -1.0d0
+    upper = 1.0_dp
+    lower = -1.0_dp
 
     n = lmax + 1
     ! lmax is the maxium degree of the equation we
@@ -192,8 +193,8 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
         if (exitstatus /= 0) return
     else
         call PreGLQ(lower, upper, n, zero, w)
-    endif
-    
+    end if
+
     !--------------------------------------------------------------------------
     !
     !   Next, fill the array plx with all of the associated legendre polynomials
@@ -251,7 +252,7 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
                 do l = 0, lmax
                     do m = 0, l
                         plx(i_s,PlmIndex(l,m)) = plx(i,PlmIndex(l,m)) &
-                                                 * (-1.0d0)**(l-m)
+                                                 * (-1)**(l-m)
 
                     end do
 

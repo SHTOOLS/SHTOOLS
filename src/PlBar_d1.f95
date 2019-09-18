@@ -1,4 +1,4 @@
-subroutine PlBar_d1(p, dp, lmax, z, exitstatus)
+subroutine PlBar_d1(p, dp1, lmax, z, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This function evalutates all of the "geophysical normalized legendre
@@ -9,7 +9,7 @@ subroutine PlBar_d1(p, dp, lmax, z, exitstatus)
 !       Out
 !           p       A vector of all normalized Legendgre polynomials evaluated
 !                   at z up to lmax with dimension (lmax+1).
-!           dp      A vector of all first derivatives of the normalized
+!           dp1     A vector of all first derivatives of the normalized
 !                   Legendgre polynomials evaluated at z up to lmax with
 !                   dimension (lmax+1).
 !
@@ -36,7 +36,7 @@ subroutine PlBar_d1(p, dp, lmax, z, exitstatus)
 !       cos(colatitude) or sin(latitude).
 !   5.  Derivatives are calculated according to the normalized relationships
 !           P'_0(z) = 0.0, P'_1(z) = 1.0, and
-!           P'_l(z) = l * (P_{l-1}(z) - z * P_l(z) ) / (1.0d0 - z**2)
+!           P'_l(z) = l * (P_{l-1}(z) - z * P_l(z) ) / (1.0_dp - z**2)
 !           At z = 1, Pl(1) = 1, and P'l(1) = l (l+1) / 2   (Boyd 2001)
 !           At z = -1 Pl(-1) = (-1)**l, and P'l(-1) = (-1)**(l-1) l (l+1) / 2
 !
@@ -46,13 +46,15 @@ subroutine PlBar_d1(p, dp, lmax, z, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: p(:), dp(:)
-    real*8, intent(in) ::  z
+    real(dp), intent(out) :: p(:), dp1(:)
+    real(dp), intent(in) :: z
     integer, intent(out), optional :: exitstatus
-    real*8 :: pm2, pm1, pl, sinsq
+    real(dp) :: pm2, pm1, pl, sinsq
     integer :: l
 
     if (present(exitstatus)) exitstatus = 0
@@ -66,18 +68,18 @@ subroutine PlBar_d1(p, dp, lmax, z, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    else if (size(dp) < lmax+1) then
+    else if (size(dp1) < lmax+1) then
         print*, "Error --- PlBar_d1"
-        print*, "DP must be dimensioned as (LMAX+1) where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(dp)
+        print*, "DP1 must be dimensioned as (LMAX+1) where LMAX is ", lmax
+        print*, "Input array is dimensioned ", size(dp1)
         if (present(exitstatus)) then
             exitstatus = 1
             return
         else
             stop
-        endif
+        end if
 
     else if (lmax < 0) then 
         print*, "Error --- PlBar_d1"
@@ -88,9 +90,9 @@ subroutine PlBar_d1(p, dp, lmax, z, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    else if(abs(z) > 1.0d0) then
+    else if(abs(z) > 1.0_dp) then
         print*, "Error --- PlBar_d1"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
@@ -99,40 +101,40 @@ subroutine PlBar_d1(p, dp, lmax, z, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     end if
 
-    if (z == 1.0d0) then
+    if (z == 1.0_dp) then
         do l = 0, lmax
             p(1:lmax+1) = sqrt( dble(2*l+1))
-            dp(l+1) = sqrt( dble(2*l+1)) * dble(l) * dble(l+1) / 2.0d0
+            dp1(l+1) = sqrt( dble(2*l+1)) * dble(l) * dble(l+1) / 2.0_dp
         end do
 
-    else if (z == -1.0d0) then
+    else if (z == -1.0_dp) then
         do l = 0, lmax
             p(l+1) = sqrt( dble(2*l+1) ) * dble((-1)**l)
-            dp(l+1) = sqrt( dble(2*l+1)) * dble(l) * dble(l+1) &
-                        * dble((-1)**(l-1)) / 2.0d0
+            dp1(l+1) = sqrt( dble(2*l+1)) * dble(l) * dble(l+1) &
+                        * dble((-1)**(l-1)) / 2.0_dp
         end do
 
     else
-        sinsq = (1.0d0 - z**2)
+        sinsq = (1.0_dp - z**2)
 
         pm2 = 1.d0
         p(1) = 1.d0
-        dp(1) = 0.0d0
+        dp1(1) = 0.0_dp
 
-        pm1 = sqrt(3.0d0) * z
+        pm1 = sqrt(3.0_dp) * z
         p(2) = pm1
-        dp(2) = sqrt(3.0d0)
+        dp1(2) = sqrt(3.0_dp)
 
         do l = 2, lmax, 1
             pl = ( sqrt(dble(2*l-1)) * z * pm1 - &
                     (l-1) * pm2 / sqrt(dble(2*l-3)) ) * &
-                    sqrt(dble(2*l+1))/dble(l)
+                    sqrt(dble(2*l+1)) / dble(l)
             p(l+1) = pl
-            dp(l+1) = l * ( sqrt( dble(2*l+1)/dble(2*l-1) ) * &
+            dp1(l+1) = l * ( sqrt( dble(2*l+1)/dble(2*l-1) ) * &
                     p(l) - z * pl ) / sinsq
             pm2 = pm1
             pm1 = pl

@@ -70,15 +70,16 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHPowerSpectrum, SHCrossPowerSpectrum
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: G(:,:,:), T(:,:,:)
+    real(dp), intent(in) :: G(:,:,:), T(:,:,:)
     integer, intent(in) :: lmax
-    real*8, intent(out) :: admit(:), corr(:)
-    real*8, intent(out), optional :: admit_error(:)
+    real(dp), intent(out) :: admit(:), corr(:)
+    real(dp), intent(out), optional :: admit_error(:)
     integer, intent(out), optional :: exitstatus
-    real*8 :: gt(lmax+1), gg(lmax+1), tt(lmax+1)
+    real(dp) :: gt(lmax+1), gg(lmax+1), tt(lmax+1)
     integer :: l, l1
 
     if (present(exitstatus)) exitstatus = 0
@@ -152,8 +153,8 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
 
     end if
 
-    admit = 0.0d0
-    corr = 0.0d0
+    admit = 0.0_dp
+    corr = 0.0_dp
 
     if (present(exitstatus)) then
         call SHCrossPowerSpectrum(G, T, lmax, gt, exitstatus=exitstatus)
@@ -172,10 +173,10 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
     corr(1:lmax+1) = gt(1:lmax+1) / sqrt( tt(1:lmax+1) * gg(1:lmax+1) )
 
     if (present(admit_error)) then
-        admit_error = 0.0d0
+        admit_error = 0.0_dp
         do l = 1, lmax, 1
             l1 = l + 1
-            admit_error(l1) = gg(l1)*(1.0d0 - corr(l1)**2) &
+            admit_error(l1) = gg(l1)*(1.0_dp - corr(l1)**2) &
                               / ( tt(l1) * dble(2*l) )
         end do
 

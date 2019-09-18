@@ -1,4 +1,4 @@
-real*8 function DownContFilterMA(l, half, r, d)
+function DownContFilterMA(l, half, r, d)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the minimum amplitude downward continuation
@@ -18,11 +18,14 @@ real*8 function DownContFilterMA(l, half, r, d)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
+    real(dp) :: DownContFilterMA
     integer, intent(in) :: l, half
-    real*8, intent(in) ::  r, d
-    real*8 :: const
+    real(dp), intent(in) :: r, d
+    real(dp) :: const
 
     if (l < 0) then
         print*, "Error --- DownContFilterMA"
@@ -32,21 +35,21 @@ real*8 function DownContFilterMA(l, half, r, d)
     end if
 
     if (half == 0) then
-        DownContFilterMA = 1.0d0
+        DownContFilterMA = 1.0_dp
 
     else
         const = (dble(2*half+1) * (r / d)**half )**2
-        const = 1.0d0 / const
+        const = 1.0_dp / const
 
-        DownContFilterMA = 1.0d0 + const * ( dble(2*l+1) * (r / d)**l )**2
-        DownContFilterMA = 1.0d0 / DownContFilterMA
+        DownContFilterMA = 1.0_dp + const * ( dble(2*l+1) * (r / d)**l )**2
+        DownContFilterMA = 1.0_dp / DownContFilterMA
 
     end if
 
 end function DownContFilterMA
 
 
-real*8 function DownContFilterMC(l, half, r, d)
+function DownContFilterMC(l, half, r, d)
 !------------------------------------------------------------------------------
 !
 !   This function will compute a minimum curvature downward continuation
@@ -69,11 +72,14 @@ real*8 function DownContFilterMC(l, half, r, d)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, intent(in) ::  l, half
-    real*8, intent(in) ::   r, d
-    real*8 ::   const
+    real(dp) :: DownContFilterMC
+    integer, intent(in) :: l, half
+    real(dp), intent(in) :: r, d
+    real(dp) :: const
 
     if (l < 0) then
         print*, "Error --- DownContFilterMC"
@@ -83,15 +89,15 @@ real*8 function DownContFilterMC(l, half, r, d)
     end if
 
     if (half == 0) then
-        DownContFilterMC = 1.0d0
+        DownContFilterMC = 1.0_dp
 
     else
         const = dble(half * half+half) * ( dble(2*half+1) * (r / d)**half)**2
-        const = 1.0d0 / const
+        const = 1.0_dp / const
 
-        DownContFilterMC = 1.0d0 + const * dble(l*l+l) * (dble(2*l+1) * (r/d)**l)**2
-        DownContFilterMC = 1.0d0 / DownContFilterMC
+        DownContFilterMC = 1.0_dp + const * dble(l*l+l) * (dble(2*l+1) * (r/d)**l)**2
+        DownContFilterMC = 1.0_dp / DownContFilterMC
 
-    endif
+    end if
 
 end function DownContFilterMC

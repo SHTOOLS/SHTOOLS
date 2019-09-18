@@ -40,12 +40,14 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
     character(*), intent(in) :: filename
     integer, intent(out) :: lmax
-    real*8, intent(out) :: cilm(:,:,:)
-    real*8, intent(out), optional :: header(:), error(:,:,:)
+    real(dp), intent(out) :: cilm(:,:,:)
+    real(dp), intent(out), optional :: header(:), error(:,:,:)
     integer, intent(in), optional :: skip
     integer, intent(out), optional :: exitstatus
     integer :: l, m, stat, ll, mm, lmax2, lstart, headlen, fu
@@ -53,10 +55,10 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error, exitstatus)
     if (present(exitstatus)) exitstatus = 0
 
     lmax = 0
-    cilm = 0.0d0
+    cilm = 0.0_dp
     fu = 101
 
-    if (size(cilm(:,1,1)) < 2 ) then
+    if (size(cilm(:,1,1)) < 2) then
         print*, "Error --- SHRead"
         print*, "CILM must be dimensioned (2, *, *)."
         print*, "Input array is dimensioned ", size(cilm(:,1,1)), &
@@ -81,7 +83,7 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error, exitstatus)
     !   Skip lines and read header information
     !
     !--------------------------------------------------------------------------
-    if (present(skip) ) then
+    if (present(skip)) then
 
         do l = 1, skip, 1
             read(fu,*, iostat=stat)
@@ -104,10 +106,10 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error, exitstatus)
 
     end if
 
-    if (present(header) ) then
+    if (present(header)) then
         read(fu,*, iostat=stat) (header(l), l=1, headlen,1)
 
-        if (stat /= 0 ) then
+        if (stat /= 0) then
             print*, "Error --- SHRead"
             print*, "Problem reading header line ", filename 
             if (present(exitstatus)) then
@@ -150,7 +152,7 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error, exitstatus)
 
         end do
 
-    endif
+    end if
 
     if (present(header)) then
         read(fu,*, iostat=stat) (header(l), l=1, headlen)

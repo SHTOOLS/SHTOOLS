@@ -39,17 +39,18 @@ subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
 !
 !------------------------------------------------------------------------------ 
     use SHTOOLS, only: PreGLQ, PlmBar, NGLQ, PlmIndex
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) ::  dllm(:,:)
-    real*8, intent(in) ::   theta0
-    integer, intent(in) ::  lmax, m
-    integer, intent(in), optional ::  degrees(:)
-    integer, intent(out), optional ::  exitstatus
-    real*8 ::  upper, zero(2*lmax+1), w(2*lmax+1), x
-    real*8, allocatable ::  plm(:)
-    integer ::  l, lp, i, n, astat
+    real(dp), intent(out) :: dllm(:,:)
+    real(dp), intent(in) :: theta0
+    integer, intent(in) :: lmax, m
+    integer, intent(in), optional :: degrees(:)
+    integer, intent(out), optional :: exitstatus
+    real(dp) :: upper, zero(2*lmax+1), w(2*lmax+1), x
+    real(dp), allocatable :: plm(:)
+    integer :: l, lp, i, n, astat
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -105,11 +106,11 @@ subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
         end if
     end if
 
-    dllm = 0.0d0
+    dllm = 0.0_dp
 
     n = NGLQ(2*lmax)
 
-    upper = 1.0d0
+    upper = 1.0_dp
     x = cos(theta0)
 
     if (present(exitstatus)) then
@@ -153,9 +154,9 @@ subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
     end do
 
     if (m == 0) then
-        dllm = dllm / 2.0d0
+        dllm = dllm / 2.0_dp
     else
-        dllm = dllm / 4.0d0
+        dllm = dllm / 4.0_dp
     end if
 
     call PlmBar(plm, -1, zero(1))   ! deallocate memory

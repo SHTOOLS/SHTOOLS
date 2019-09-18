@@ -65,18 +65,19 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHReturnTapersM
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: theta0
+    real(dp), intent(in) :: theta0
     integer, intent(in) :: lmax
-    real*8, intent(out) :: tapers(:,:), eigenvalues(:)
+    real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
     integer, intent(out) :: taper_order(:)
     integer, intent(in), optional :: degrees(:)
     integer, intent(out), optional :: exitstatus
     integer :: m, nt, nt2, n, i, j, jj(1), astat(8)
-    real*8, allocatable :: eval(:), evec(:, :), tapers_unordered(:,:), &
-                           eval_unordered(:)
+    real(dp), allocatable :: eval(:), evec(:, :), tapers_unordered(:,:), &
+                             eval_unordered(:)
     integer, allocatable :: m_unordered(:)
 
     if (present(exitstatus)) exitstatus = 0
@@ -153,10 +154,10 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
 
     end if
 
-    tapers = 0.0d0
-    tapers_unordered = 0.0d0
-    eigenvalues = 0.0d0
-    eval_unordered = 0.0d0
+    tapers = 0.0_dp
+    tapers_unordered = 0.0_dp
+    eigenvalues = 0.0_dp
+    eval_unordered = 0.0_dp
     m_unordered = 0
     taper_order = 0
 
@@ -190,7 +191,7 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
                 call SHReturnTapersM(theta0, lmax, m, evec, eval, ntapers=n)
             end if
 
-        endif
+        end if
 
         if (n /= 0) then
             tapers_unordered(1:lmax+1, nt+1:nt+n) = evec(1:lmax+1,1:n)
@@ -199,7 +200,7 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
 
             nt = nt + n
 
-        endif
+        end if
 
     end do
 

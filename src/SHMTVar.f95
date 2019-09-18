@@ -50,19 +50,20 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHSjkPG
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: tapers(:,:), Sff(:)
-    real*8, intent(out) :: variance
+    real(dp), intent(in) :: tapers(:,:), Sff(:)
+    real(dp), intent(out) :: variance
     integer, intent(in) :: l, lwin, kmax, taper_order(:)
-    real*8, intent(in), optional :: taper_wt(:)
-    real*8, intent(out), optional :: unweighted_covar(:, :)
+    real(dp), intent(in), optional :: taper_wt(:)
+    real(dp), intent(out), optional :: unweighted_covar(:, :)
     integer, intent(in), optional :: nocross
     integer, intent(out), optional :: exitstatus
-    real*8 :: Fij(kmax, kmax)
+    real(dp) :: Fij(kmax, kmax)
     integer :: i, j, m, mp
-    complex*16 :: temp1
+    complex(dp) :: temp1
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -159,8 +160,8 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
 
     end if
 
-    Fij = 0.0d0
-    variance = 0.0d0
+    Fij = 0.0_dp
+    variance = 0.0_dp
 
     !--------------------------------------------------------------------------
     !
@@ -175,7 +176,7 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
                         temp1 = SHSjkPG(Sff, l, m, mp, tapers(1:lwin+1,i), &
                                         tapers(1:lwin+1,i), taper_order(i), &
                                         taper_order(i), lwin, 1)
-                        Fij(i,i) = Fij(i,i) + 2.0d0 * dble(temp1*dconjg(temp1))
+                        Fij(i,i) = Fij(i,i) + 2.0_dp * dble(temp1 * conjg(temp1))
 
                     end do
 
@@ -194,7 +195,7 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
                                             taper_order(i), taper_order(j), &
                                             lwin, 1)
                             Fij(i,j) = Fij(i,j) + &
-                                       2.0d0 * dble(temp1*dconjg(temp1))
+                                       2.0_dp * dble(temp1 * conjg(temp1))
 
                         end do
 
@@ -206,7 +207,7 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
 
             end do
 
-        endif
+        end if
 
     else
         do i = 1, kmax, 1
@@ -216,7 +217,7 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
                         temp1 = SHSjkPG(Sff, l, m, mp, tapers(1:lwin+1,i), &
                                         tapers(1:lwin+1,j), taper_order(i), &
                                         taper_order(j), lwin, 1)
-                        Fij(i,j) = Fij(i,j) + 2.0d0 * dble(temp1*dconjg(temp1))
+                        Fij(i,j) = Fij(i,j) + 2.0_dp * dble(temp1 * conjg(temp1))
 
                     end do
 
@@ -228,10 +229,10 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
 
         end do
 
-    endif
+    end if
 
     if (present(unweighted_covar)) then
-        unweighted_covar = 0.0d0
+        unweighted_covar = 0.0_dp
         unweighted_covar(1:kmax, 1:kmax) = Fij(1:kmax,1:kmax)
 
     end if

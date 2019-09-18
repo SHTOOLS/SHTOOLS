@@ -8,19 +8,19 @@ call MakeCircleCoord (`coord`, `lat`, `lon`, `theta0`, `cinterval`, `cnum`, `exi
 
 # Parameters
 
-`coord` : output, real\*8, dimension(360/`cinterval`, 2)
+`coord` : output, real(dp), dimension(360/`cinterval`, 2)
 :   The latitude (:,1) and longitude (:,2) coordinates of the circle in degrees. If not specified, `cintervaL` is assumed to 1.
 
-`lat` : input, real\*8
+`lat` : input, real(dp)
 :   The latitude of the center of the circle in degrees.
 
-`lon` : input, real\*8
+`lon` : input, real(dp)
 :   The longitude of the center of the circle in degrees.
 
-`theta0` : input, real\*8
+`theta0` : input, real(dp)
 :   The angular radius of the circle in degrees.
 
-`cinterval` : optional, input, real\*8, default = 1
+`cinterval` : optional, input, real(dp), default = 1
 :   Angular spacing in degrees of the output latitude and longitude points. If not present, the default is 1.
 
 `cnum` : optional, output, integer

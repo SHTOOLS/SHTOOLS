@@ -37,13 +37,15 @@ subroutine ComputeDG82(DG82, lmax, m, theta0, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(out) :: DG82(:,:)
-    real*8, intent(in) :: theta0
+    real(dp), intent(out) :: DG82(:,:)
+    real(dp), intent(in) :: theta0
     integer, intent(in) :: lmax, m
     integer, intent(out), optional :: exitstatus
-    real*8 :: x
+    real(dp) :: x
     integer :: i, n
 
     if (present(exitstatus)) exitstatus = 0
@@ -87,7 +89,7 @@ subroutine ComputeDG82(DG82, lmax, m, theta0, exitstatus)
 
         DG82(i,i-1) = - sqrt(dble(i-1+m)**2 - dble(m)**2) * &
                       ( dble(i-1+m)**2 - dble(lmax+1)**2 ) / &
-                      sqrt(4.0d0*dble(i-1+m)**2 - 1.0d0)
+                      sqrt(4.0_dp * dble(i-1+m)**2 - 1.0_dp)
 
         DG82(i-1,i) = DG82(i,i-1)
 

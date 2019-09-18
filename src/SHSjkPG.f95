@@ -1,5 +1,5 @@
-complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
-                    mj, mk, lwin, hkcc)
+function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, &
+                 hkcc)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the expected windowed cross-power spectra for
@@ -34,16 +34,18 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: Wigner3j
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: incspectra(:), hj_real(:), hk_real(:)
+    complex(dp) :: SHSjkPG
+    real(dp), intent(in) :: incspectra(:), hj_real(:), hk_real(:)
     integer, intent(in) :: lwin, l, m, mprime, mj, mk, hkcc
     integer :: i, l1, l3, imin, imax, m1, m3, m2, &
                l10min, l10max, l1min, l1max, l30min, l30max, l3min, l3max
-    complex*16 :: hj(lwin+1), hk(lwin+1), tj(lwin+1), tk(lwin+1), sum2, &
-                  sum3, sum4
-    real*8 :: wl10(lwin+l+1), wl30(lwin+l+1), wl1(lwin+l+1), wl3(lwin+l+1), &
+    complex(dp) :: hj(lwin+1), hk(lwin+1), tj(lwin+1), tk(lwin+1), sum2, &
+                   sum3, sum4
+    real(dp) :: wl10(lwin+l+1), wl30(lwin+l+1), wl1(lwin+l+1), wl3(lwin+l+1), &
               sum1
 
     if (size(hj_real) < lwin+1) then
@@ -73,7 +75,7 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
 
     end if
 
-    SHSjkPG = dcmplx(0.0d0, 0.0d0)
+    SHSjkPG = cmplx(0.0_dp, 0.0_dp, dp)
 
     if (l < abs(m) .or. l < abs(mprime)) return
     !--------------------------------------------------------------------------
@@ -84,28 +86,28 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
     !
     !--------------------------------------------------------------------------
     if (mj == 0) then
-        hj(1:lwin+1) = dcmplx(hj_real(1:lwin+1), 0.0d0)
+        hj(1:lwin+1) = cmplx(hj_real(1:lwin+1), 0.0_dp, dp)
 
     else if (mj > 0) then
-        hj(1:lwin+1) = dcmplx(hj_real(1:lwin+1), 0.0d0) / sqrt(2.0d0)
+        hj(1:lwin+1) = cmplx(hj_real(1:lwin+1), 0.0_dp, dp) / sqrt(2.0_dp)
 
     else
-        hj(1:lwin+1) = dcmplx(0.0d0, -hj_real(1:lwin+1)) / sqrt(2.0d0)
+        hj(1:lwin+1) = cmplx(0.0_dp, -hj_real(1:lwin+1), dp) / sqrt(2.0_dp)
 
     end if
 
     if (mk == 0) then
-        hk(1:lwin+1) = dcmplx(hk_real(1:lwin+1), 0.0d0)
+        hk(1:lwin+1) = cmplx(hk_real(1:lwin+1), 0.0_dp, dp)
 
-    elseif (mk > 0) then
-        hk(1:lwin+1) = dcmplx(hk_real(1:lwin+1), 0.0d0) / sqrt(2.0d0)
+    else if (mk > 0) then
+        hk(1:lwin+1) = cmplx(hk_real(1:lwin+1), 0.0_dp, dp) / sqrt(2.0_dp)
 
     else
-        hk(1:lwin+1) = dcmplx(0.0d0, -hk_real(1:lwin+1)) / sqrt(2.0d0)
+        hk(1:lwin+1) = cmplx(0.0_dp, -hk_real(1:lwin+1), dp) / sqrt(2.0_dp)
 
     end if
 
-    if (hkcc == 1) hk = dconjg(hk)
+    if (hkcc == 1) hk = conjg(hk)
 
     !--------------------------------------------------------------------------
     !
@@ -113,31 +115,31 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
     !
     !--------------------------------------------------------------------------
     do l1 = abs(mj), lwin, 1
-        sum4 = dcmplx(0.0d0, 0.0d0)
+        sum4 = cmplx(0.0_dp, 0.0_dp, dp)
 
         call Wigner3j(wl10, l10min, l10max, l, l1, 0, 0, 0)
 
         do l3 = abs(mj), lwin, 1
-            sum3 = dcmplx(0.0d0,0.0d0)
+            sum3 = cmplx(0.0_dp, 0.0_dp, dp)
 
             if (mod(l1+l3,2) == 0) then
                 call Wigner3j(wl30, l30min, l30max, l, l3, 0, 0, 0)
 
                 do m1 = -abs(mj), abs(mj), max(2*abs(mj), 1)
-                    sum2 = dcmplx(0.0d0, 0.0d0)
+                    sum2 = cmplx(0.0_dp, 0.0_dp, dp)
 
                     if (m1 < 0) then
-                        tj = dconjg(hj) * (-1)**m1
+                        tj = conjg(hj) * (-1)**m1
                     else
                         tj = hj
                     end if
 
                     do m3 = -abs(mk), abs(mk), max(2*abs(mk), 1)
-                        sum1 = 0.0d0
+                        sum1 = 0.0_dp
 
                         if (m - m1 == mprime - m3) then
                             if (m3 < 0) then
-                                tk = dconjg(hk) * (-1)**m3
+                                tk = conjg(hk) * (-1)**m3
                             else
                                 tk = hk
                             end if
@@ -159,7 +161,7 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
                                        wl10(i-l10min+1) * &
                                        wl30(i-l30min+1) * wl1(i-l1min+1) &
                                        * wl3(i-l3min+1)
-                            enddo
+                            end do
 
                             sum2 = sum2 + sum1 * tk(l3+1)
 
@@ -173,14 +175,14 @@ complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, &
 
             end if
 
-            sum4 = sum4 + sum3 * sqrt(2.0d0 * l3 + 1.0d0)
+            sum4 = sum4 + sum3 * sqrt(2.0_dp * l3 + 1.0_dp)
 
         end do
 
-        SHSjkPG = SHSjkPG + sum4 * sqrt(2.0d0 * l1 + 1.0d0)
+        SHSjkPG = SHSjkPG + sum4 * sqrt(2.0_dp * l1 + 1.0_dp)
 
     end do
 
-    SHSjkPG = SHSjkPG * (2.0d0 * l + 1.0d0)
+    SHSjkPG = SHSjkPG * (2.0_dp * l + 1.0_dp)
 
 end function SHSjkPG

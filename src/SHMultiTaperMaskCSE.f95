@@ -60,28 +60,29 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 !------------------------------------------------------------------------------
     use SHTOOLS, only:  SHCrossPowerSpectrum, SHVectorToCilm, MakeGridGLQ, &
                         SHGLQ, SHExpandGLQ, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: mtse(:), sd(:)
-    real*8, intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
+    real(dp), intent(out) :: mtse(:), sd(:)
+    real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax1, lmax2, lmaxt, K
-    real*8, intent(in), optional :: taper_wt(:)
+    real(dp), intent(in), optional :: taper_wt(:)
     integer, intent(in), optional :: csphase, norm
     integer, intent(out), optional :: exitstatus
     integer :: i, l, lmax, phase, mnorm, astat(9), lmaxmul, nlat, nlong
-    real*8, allocatable, save :: zero(:), w(:)
+    real(dp), allocatable, save :: zero(:), w(:)
     integer, save :: first = 1, lmaxmul_last = -1
-    real*8 :: se(lmax1-lmaxt+1,K), pi, factor
-    real*8, allocatable ::  shwin(:,:,:), shloc1(:,:,:),  shloc2(:,:,:), &
-                            grid1glq(:,:), grid2glq(:,:), gridwinglq(:,:), &
-                            temp(:,:)
+    real(dp) :: se(lmax1-lmaxt+1,K), pi, factor
+    real(dp), allocatable :: shwin(:,:,:), shloc1(:,:,:),  shloc2(:,:,:), &
+                             grid1glq(:,:), grid2glq(:,:), gridwinglq(:,:), &
+                             temp(:,:)
 
 !$OMP   threadprivate(zero, w, first, lmaxmul_last)
 
     if (present(exitstatus)) exitstatus = 0
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     lmax = min(lmax1, lmax2)
 
@@ -273,7 +274,7 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
             if (exitstatus /= 0) return
         else
             call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
-        endif
+        end if
 
     end if
 
@@ -303,12 +304,12 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
             if (exitstatus /= 0) return
         else
             call SHGLQ(lmaxmul, zero, w, csphase = phase, norm = mnorm)
-        endif
+        end if
 
     end if
 
-    mtse = 0.0d0
-    sd = 0.0d0
+    mtse = 0.0_dp
+    sd = 0.0_dp
 
     !--------------------------------------------------------------------------
     !
@@ -335,7 +336,7 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     end if
 
     do i = 1, K
-        shwin = 0.0d0
+        shwin = 0.0_dp
 
         if (present(exitstatus)) then
             call SHVectorToCilm(tapers(:,i), shwin, lmaxt, &

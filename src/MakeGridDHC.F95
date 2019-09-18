@@ -2,20 +2,20 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
                        csphase, lmax_calc, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   Given the Spherical Harmonic coefficients CILM, this subroutine
-!   will evalate the function on a grid with an equal number of samples N in
-!   both latitude and longitude (or N by 2N by specifying the optional parameter
-!   SAMPLING = 2). This is the inverse of the routine SHExpandDH, both of which
-!   are done quickly using FFTs for each degree of each latitude band. The
-!   number of samples is determined by the spherical harmonic bandwidth LMAX.
-!   Nevertheless, the coefficients can be evaluated up to smaller spherical
-!   harmonic degree by specifying the optional parameter LMAX_CALC. Note that
-!   N is always EVEN for this routine.
+!   Given the Spherical Harmonic coefficients CILM of a function, this
+!   subroutine will evalate the function on a grid with an equal number of
+!   samples N in both latitude and longitude (or N by 2N by specifying the
+!   optional parameter SAMPLING = 2). This is the inverse of the routine
+!   SHExpandDH, both of which are done quickly using FFTs for each degree of
+!   each latitude band. The number of samples is determined by the spherical
+!   harmonic bandwidth LMAX, but the coefficients can be evaluated up to a
+!   smaller spherical harmonic degree by specifying the optional parameter
+!   LMAX_CALC. Note that N is always EVEN for this routine.
 !
-!   The Legendre functions are computed on the fly using the scaling methodology
-!   presented in Holmes and Featherston (2002). When NORM = 1, 2 or 4, these are
-!   accurate to about degree 2800. When NORM = 3, the routine is only stable to
-!   about degree 15!
+!   The Legendre functions are computed on the fly using the scaling
+!   methodology presented in Holmes and Featherston (2002). When NORM = 1, 2
+!   or 4, these are accurate to about degree 2800. When NORM = 3, the routine
+!   is only stable to about degree 15!
 !
 !   The output grid contains N samples in latitude from 90 to -90+interval,
 !   and in longitude from 0 to 360-2*interval (or N x 2N, see below), where
@@ -23,22 +23,24 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 !   90 degees latitude is ultimately downweighted to zero, so this point does
 !   not contribute to the spherical harmonic coefficients.
 !
-!   The complex spherical harmonics are output in the array cilm. Cilm(1,,)
-!   contains the positive m term, wheras cilm(2,,) contains the negative m term.
-!   The negative order Legendre functions are calculated making use of the
-!   identity Y_{lm}^* = (-1)^m Y_{l,-m}.
+!   The complex spherical harmonics are output in the array CILM. CILM(1,,)
+!   contains the positive m term, wheras CILM(2,,) contains the negative m
+!   term. The negative order Legendre functions are calculated making use of
+!   the identity Y_{lm}^* = (-1)^m Y_{l,-m}.
 !
 !   Calling Parameters
 !
 !       IN
 !           cilm        Input spherical harmonic coefficients with
 !                       dimension (2, lmax+1, lmax+1).
-!           lmax        Maximum spherical harmonic degree used in the expansion.
-!                       This determines the spacing of the output grid.
+!           lmax        Maximum spherical harmonic degree used in the
+!                       expansion. This determines the spacing of the output
+!                       grid.
 !
 !       OUT
 !           griddh      Gridded data of the spherical harmonic
-!                       coefficients CILM with dimensions (2*LMAX+2 , 2*LMAX+2).
+!                       coefficients CILM with dimensions
+!                       (2*LMAX+2 , 2*LMAX+2).
 !           n           Number of samples in the grid, always even, which is
 !                       2*(LMAX+2).
 !
@@ -82,30 +84,31 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 !------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_1d dfftw_plan_dft_1d_
-#define dfftw_execute dfftw_execute_
+#define dfftw_execute_dft dfftw_execute_dft_
 #define dfftw_destroy_plan dfftw_destroy_plan_
 #endif
 
     implicit none
 
-    complex*16, intent(in) :: cilm(:,:,:)
-    complex*16, intent(out) :: griddh(:,:)
+    complex(dp), intent(in) :: cilm(:,:,:)
+    complex(dp), intent(out) :: griddh(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: n
     integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
     integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, nlong
-    real*8 ::  pi, theta, scalef, rescalem, u, p, pmm, &
-               pm1, pm2, z
-    complex*16 :: coef(4*lmax+4), coefs(4*lmax+4), tempc, grid(4*lmax+4)
-    integer*8 :: plan
-    real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer*1, save, allocatable :: fsymsign(:,:)
+    real(dp) :: pi, theta, scalef, rescalem, u, p, pmm, pm1, pm2, z
+    complex(dp) :: coef(4*lmax+4), coefs(4*lmax+4), tempc, grid(4*lmax+4), &
+                   grids(4*lmax+4)
+    integer(int8) :: plan, plans
+    real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
+    integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
-    external :: dfftw_plan_dft_1d, dfftw_execute, dfftw_destroy_plan
+    external :: dfftw_plan_dft_1d, dfftw_execute_dft, dfftw_destroy_plan
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
 
@@ -114,7 +117,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
     n = 2 * lmax + 2
 
     if (present(sampling)) then
-        if (sampling /= 1 .and. sampling /=2) then
+        if (sampling /= 1 .and. sampling /= 2) then
             print*, "Error --- MakeGridDHC"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
@@ -229,9 +232,9 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (present(lmax_calc)) then
         if (lmax_calc > lmax) then
@@ -263,7 +266,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
         else
             nlong = 2 * n
 
-        endif
+        end if
     else
         nlong = n
 
@@ -271,7 +274,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate recursion constants used in computing the Legendre polynomials
+    !   Calculate recursion constants used in computing the Legendre functions.
     !
     !--------------------------------------------------------------------------
     if (lmax_comp /= lmax_old .or. lnorm /= norm_old) then
@@ -340,7 +343,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
             case (1,4)
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
-                    ff2(2,1) = 0.0d0
+                    ff2(2,1) = 0.0_dp
                 end if
 
                 do l = 2, lmax_comp, 1
@@ -355,14 +358,14 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
                     end do
 
                     ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
             case (2)
                 if (lmax_comp /= 0) then
-                    ff1(2,1) = 1.0d0
-                    ff2(2,1) = 0.0d0
+                    ff1(2,1) = 1.0_dp
+                    ff2(2,1) = 0.0_dp
                 end if
 
                 do l = 2, lmax_comp, 1
@@ -376,7 +379,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
                     end do
 
                     ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
@@ -406,8 +409,8 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
     !--------------------------------------------------------------------------
     if (lmax_comp == 0) then
         select case(lnorm)
-            case (1,2,3); pm2 = 1.0d0
-            case (4); pm2 = 1.0d0 / sqrt(4.0d0 * pi)
+            case (1,2,3); pm2 = 1.0_dp
+            case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
         end select
 
         if (present(sampling)) then
@@ -430,27 +433,112 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 
     !--------------------------------------------------------------------------
     !
-    !   Determine Clms one l at a time by intergrating over latitude.
+    !   Create generic plan for grid and grids.
     !
     !--------------------------------------------------------------------------
     call dfftw_plan_dft_1d(plan, nlong, coef(1:nlong), grid(1:nlong), &
                            FFTW_BACKWARD, FFTW_MEASURE)
+    call dfftw_plan_dft_1d(plans, nlong, coefs(1:nlong), grids(1:nlong), &
+                           FFTW_BACKWARD, FFTW_MEASURE)
 
+    !--------------------------------------------------------------------------
+    !
+    !   Determine Clms one l at a time by intergrating over latitude.
+    !
+    !--------------------------------------------------------------------------
     i_eq = n/2 + 1  ! Index correspondong to zero latitude
+
+    ! First do equator
+    z = 0.0_dp
+    u = 1.0_dp
+
+    coef(1:nlong) = cmplx(0.0_dp, 0.0_dp, dp)
+
+    select case (lnorm)
+        case (1,2,3); pm2 = 1.0_dp
+        case (4); pm2 = 1.0_dp / sqrt(4*pi)
+    end select
+
+    coef(1) = coef(1) + cilm(1,1,1) * pm2
+
+    do l = 2, lmax_comp, 2
+        l1 = l + 1
+        p = - ff2(l1,1) * pm2
+        pm2 = p
+        coef(1) = coef(1) + cilm(1,l1,1) * p
+    end do
+
+    select case (lnorm)
+        case (1,2);  pmm = scalef
+        case (3);    pmm = scalef
+        case (4);    pmm = scalef / sqrt(4*pi)
+    end select
+
+    rescalem = 1.0_dp / scalef
+
+    do m = 1, lmax_comp-1, 1
+        m1 = m + 1
+
+        select case (lnorm)
+            case (1,4)
+                pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
+                pm2 = pmm
+            case (2)
+                pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
+                pm2 = pmm / sqr(2*m+1)
+            case (3)
+                pmm = phase * pmm * (2*m-1)
+                pm2 = pmm
+        end select
+
+        coef(m1) = coef(m1) + cilm(1,m1,m1) * pm2
+        coef(nlong-(m-1)) = coef(nlong-(m-1)) + cilm(2,m1,m1) * pm2
+
+        do l = m + 2, lmax_comp, 2
+            l1 = l+1
+            p = - ff2(l1,m1) * pm2
+            coef(m1) = coef(m1) + cilm(1,l1,m1) * p
+            coef(nlong-(m-1)) = coef(nlong-(m-1)) + cilm(2,l1,m1) * p
+            pm2 = p
+        end do
+
+        coef(m1) = coef(m1) * rescalem
+        coef(nlong-(m-1)) = coef(nlong-(m-1)) * rescalem * ((-1)**mod(m,2))
+
+    end do
+
+    select case(lnorm)
+        case(1,4)
+            pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
+        case(2)
+            pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
+        case(3)
+            pmm = phase * pmm * (2*lmax_comp-1) * rescalem
+    end select
+
+    coef(lmax_comp+1) = coef(lmax_comp+1) + cilm(1,lmax_comp+1,lmax_comp+1) &
+                        * pmm
+    coef(nlong-(lmax_comp-1)) = coef(nlong-(lmax_comp-1)) &
+                                + cilm(2,lmax_comp+1,lmax_comp+1) &
+                                * pmm * ((-1)**mod(lmax_comp,2))
+
+    call dfftw_execute_dft(plan, coef, grid)    ! take fourier transform
+
+    griddh(i_eq,1:nlong) = grid(1:nlong)
 
     do i = 1, i_eq - 1, 1
         i_s = 2 * i_eq - i
 
         theta = pi * dble(i-1) / dble(n)
         z = cos(theta)
-        u = sqrt( (1.0d0-z) * (1.0d0+z) )
+        u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
-        coef(1:nlong) = dcmplx(0.0d0,0.0d0)
-        coefs(1:nlong) = dcmplx(0.0d0,0.0d0)
+        coef(1:nlong) = cmplx(0.0_dp, 0.0_dp, dp)
+        coefs(1:nlong) = cmplx(0.0_dp, 0.0_dp, dp)
 
         select case (lnorm)
-            case (1,2,3); pm2 = 1.0d0
-            case (4); pm2 = 1.0d0 / sqrt(4*pi)
+            case (1,2,3); pm2 = 1.0_dp
+            case (4); pm2 = 1.0_dp / sqrt(4*pi)
         end select
 
         tempc = cilm(1,1,1) * pm2
@@ -478,7 +566,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
             case (4);    pmm = scalef / sqrt(4*pi)
         end select
 
-        rescalem = 1.0d0 / scalef
+        rescalem = 1.0_dp / scalef
 
         do m = 1, lmax_comp-1, 1
             m1 = m + 1
@@ -556,95 +644,17 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
         coefs(nlong-(lmax_comp-1)) = coefs(nlong-(lmax_comp-1)) + tempc
         ! fsymsign = 1
 
-        call dfftw_execute(plan)    ! take fourier transform
+        call dfftw_execute_dft(plan, coef, grid)
         griddh(i,1:nlong) = grid(1:nlong)
 
         if (i /= 1) then    ! don't compute value for south pole.
-            coef(1:nlong) = coefs(1:nlong)
-            call dfftw_execute(plan)    ! take fourier transform
-            griddh(i_s,1:nlong) = grid(1:nlong)
+            call dfftw_execute_dft(plans, coefs, grids)
+            griddh(i_s,1:nlong) = grids(1:nlong)
         end if
 
     end do
 
-    ! Finally, do equator
-    z = 0.0d0
-    u = 1.0d0
-
-    coef(1:nlong) = dcmplx(0.0d0,0.0d0)
-
-    select case (lnorm)
-        case (1,2,3); pm2 = 1.0d0
-        case (4); pm2 = 1.0d0 / sqrt(4*pi)
-    end select
-
-    coef(1) = coef(1) + cilm(1,1,1) * pm2
-
-    do l = 2, lmax_comp, 2
-        l1 = l + 1
-        p = - ff2(l1,1) * pm2
-        pm2 = p
-        coef(1) = coef(1) + cilm(1,l1,1) * p
-    end do
-
-    select case (lnorm)
-        case (1,2);  pmm = scalef
-        case (3);    pmm = scalef
-        case (4);    pmm = scalef / sqrt(4*pi)
-    end select
-
-    rescalem = 1.0d0/scalef
-
-    do m = 1, lmax_comp-1, 1
-        m1 = m + 1
-
-        select case (lnorm)
-            case (1,4)
-                pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
-                pm2 = pmm
-            case (2)
-                pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
-                pm2 = pmm / sqr(2*m+1)
-            case (3)
-                pmm = phase * pmm * (2*m-1)
-                pm2 = pmm
-        end select
-
-        coef(m1) = coef(m1) + cilm(1,m1,m1) * pm2
-        coef(nlong-(m-1)) = coef(nlong-(m-1)) + cilm(2,m1,m1) * pm2
-
-        do l = m + 2, lmax_comp, 2
-            l1 = l+1
-            p = - ff2(l1,m1) * pm2
-            coef(m1) = coef(m1) + cilm(1,l1,m1) * p
-            coef(nlong-(m-1)) = coef(nlong-(m-1)) + cilm(2,l1,m1) * p
-            pm2 = p
-        end do
-
-        coef(m1) = coef(m1) * rescalem
-        coef(nlong-(m-1)) = coef(nlong-(m-1)) * rescalem * ((-1)**mod(m,2))
-
-    end do
-
-    select case(lnorm)
-        case(1,4)
-            pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
-        case(2)
-            pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
-        case(3)
-            pmm = phase * pmm * (2*lmax_comp-1) * rescalem
-    end select
-
-    coef(lmax_comp+1) = coef(lmax_comp+1) + cilm(1,lmax_comp+1,lmax_comp+1) &
-                        * pmm
-    coef(nlong-(lmax_comp-1)) = coef(nlong-(lmax_comp-1)) &
-                                + cilm(2,lmax_comp+1,lmax_comp+1) &
-                                * pmm * ((-1)**mod(lmax_comp,2))
-
-    call dfftw_execute(plan)    ! take fourier transform
-
-    griddh(i_eq,1:nlong) = grid(1:nlong)
-
     call dfftw_destroy_plan(plan)
+    call dfftw_destroy_plan(plans)
 
 end subroutine MakeGridDHC

@@ -8,7 +8,7 @@ call SHLocalizedAdmitCorr (`tapers`, `taper_order`, `lwin`, `lat`, `lon`, `gilm`
 
 # Parameters
 
-`tapers` : input, real\*8, dimension (`lwin`+1, `k`)
+`tapers` : input, real(dp), dimension (`lwin`+1, `k`)
 :   A matrix of spherical cap localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
 `taper_order` : input, integer, dimension (`k`)
@@ -17,37 +17,37 @@ call SHLocalizedAdmitCorr (`tapers`, `taper_order`, `lwin`, `lat`, `lon`, `gilm`
 `lwin` : input, integer
 :   The spherical harmonic bandwidth of the localizing windows.
 
-`lat` : input, real\*8
+`lat` : input, real(dp)
 :   The latitude of the localized analysis in degrees.
 
-`lon` : input, real\*8
+`lon` : input, real(dp)
 :   The longitude of the localized analysis in degrees.
 
-`gilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`gilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the function G.
 
-`tilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`tilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the function T.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the input functions corresponding to `gilm` and `tilm`.
 
-`admit` : output, real\*8, dimension (`lmax`-`lwin`+1)
+`admit` : output, real(dp), dimension (`lmax`-`lwin`+1)
 :   The admittance function, which is equal to `Sgt/Stt`.
 
-`corr` : output, real\*8, dimension (`lmax`-`lwin`+1)
+`corr` : output, real(dp), dimension (`lmax`-`lwin`+1)
 :   The degree correlation function, which is equal to `Sgt/sqrt(Sgg Stt)`.
 
 `k` : input, integer
 :   The number of tapers to be used in the multitaper spectral analysis.
 
-`admit_error` : output, optional, real\*8, dimension (`lmax`-`lwin`+1)
+`admit_error` : output, optional, real(dp), dimension (`lmax`-`lwin`+1)
 :   The standard error of the admittance function.
 
-`corr_error` : output, optional, real\*8, dimension (`lmax`-`lwin`+1)
+`corr_error` : output, optional, real(dp), dimension (`lmax`-`lwin`+1)
 :   The standard error of the degree correlation function.
 
-`taper_wt` : input, optional, real\*8, dimension (`k`)
+`taper_wt` : input, optional, real(dp), dimension (`k`)
 :   The weights to be applied to the spectral estimates when calculating the admittance, correlation, and their associated errors. This must sum to unity.
 
 `mtdef` : input, optional, integer, default = 1

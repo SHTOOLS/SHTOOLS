@@ -37,23 +37,24 @@ subroutine SphericalCapCoef(coef, theta, lmax, exitstatus)
 !
 !-------------------------------------------------------------------------------
     use SHTOOLS, only: PlBar
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: coef(:)
-    real*8, intent(in) :: theta
+    real(dp), intent(out) :: coef(:)
+    real(dp), intent(in) :: theta
     integer, intent(in), optional :: lmax
     integer, intent(out), optional :: exitstatus
-    real*8 :: x, top, bot, pi
-    real*8, allocatable :: pl(:)
+    real(dp) :: x, top, bot, pi
+    real(dp), allocatable :: pl(:)
     integer :: l, lmax2, astat
 
     if (present(exitstatus)) exitstatus = 0
 
-    pi = acos(-1.0d0)
-    coef = 0.0d0
+    pi = acos(-1.0_dp)
+    coef = 0.0_dp
     x = cos(theta)
-    
+
     if (present(lmax) ) then
         lmax2 = lmax
 
@@ -83,9 +84,9 @@ subroutine SphericalCapCoef(coef, theta, lmax, exitstatus)
         call PlBar(pl, lmax2+2, x)
     end if
 
-    coef(1) = 1.0d0
+    coef(1) = 1.0_dp
 
-    bot = pl(1) - pl(2) / sqrt(3.0d0)
+    bot = pl(1) - pl(2) / sqrt(3.0_dp)
 
     do l = 1, lmax2
         top = pl(l) / sqrt(dble(2*l-1)) -pl(l+2) / sqrt(dble(2*l+3))

@@ -35,14 +35,15 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: PreGLQ
+    use ftypes
 
     implicit none
 
     integer, intent(in) :: lmax
     integer, intent(out) :: nlat, nlong
-    real*8, intent(out) :: latglq(:), longlq(:)
+    real(dp), intent(out) :: latglq(:), longlq(:)
     integer, intent(out), optional :: exitstatus
-    real*8 :: pi, upper, lower, zero(lmax+1), w(lmax+1)
+    real(dp) :: pi, upper, lower, zero(lmax+1), w(lmax+1)
     integer :: i
 
     if (present(exitstatus)) exitstatus = 0
@@ -56,7 +57,7 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     else if (size(longlq) < 2*lmax+1) then
         print*, "Error --- GLQGridCoord"
@@ -67,31 +68,31 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     nlat = lmax + 1
     nlong = 2 * lmax + 1
 
-    upper = 1.0d0
-    lower = -1.0d0
+    upper = 1.0_dp
+    lower = -1.0_dp
 
     if (present(exitstatus)) then
         call PreGLQ(lower, upper, nlat, zero, w, exitstatus = exitstatus)
         if (exitstatus /= 0) return
     else
         call PreGLQ(lower, upper, nlat, zero, w)
-    endif
+    end if
 
     do i = 1, nlong
-        longlq(i) = 360.0d0 * (i-1) / nlong
+        longlq(i) = 360.0_dp * dble(i-1) / dble(nlong)
     end do
 
     do i = 1, nlat
-        latglq(i) = asin(zero(i)) * 180.0d0 / pi
+        latglq(i) = asin(zero(i)) * 180.0_dp / pi
     end do
 
 end subroutine GLQGridCoord

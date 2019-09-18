@@ -42,17 +42,18 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: p(:)
-    real*8, intent(in) :: z
+    real(dp), intent(out) :: p(:)
+    real(dp), intent(in) :: z
     integer, intent(in), optional :: csphase
     integer, intent(out), optional :: exitstatus
-    real*8 :: pm2, pm1, pmm, sinsq, sinsqr, fact, plm
+    real(dp) :: pm2, pm1, pmm, sinsq, sinsqr, fact, plm
     integer :: k, kstart, m, l
-    integer*1 :: phase
+    integer(int1) :: phase
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -66,7 +67,7 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     else if (lmax < 0) then
         print*, "Error --- PLegendreA"
@@ -77,9 +78,9 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    else if(abs(z) > 1.0d0) then
+    else if(abs(z) > 1.0_dp) then
         print*, "Error --- PLegendreA"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
@@ -88,7 +89,7 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     end if
 
@@ -108,7 +109,7 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
                 return
             else
                 stop
-            endif
+            end if
 
         end if
 
@@ -118,15 +119,15 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
     end if
 
     !--------------------------------------------------------------------------
-    !   
+    !
     !   Calculate P(l,0)
     !
     !--------------------------------------------------------------------------
-    sinsq = (1.0d0 - z) * (1.0d0 + z)
+    sinsq = (1.0_dp - z) * (1.0_dp + z)
     sinsqr = sqrt(sinsq)
 
-    pm2 = 1.0d0
-    p(1) = 1.0d0
+    pm2 = 1.0_dp
+    p(1) = 1.0_dp
 
     if (lmax == 0) return
 
@@ -137,7 +138,7 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
 
     do l = 2, lmax, 1
         k = k + l
-        plm = ( z * (2*l - 1) * pm1 - (l - 1) * pm2) / dble(l)
+        plm = ( z * (2*l - 1) * pm1 - (l - 1) * pm2 ) / dble(l)
         p(k) = plm
         pm2 = pm1
         pm1 = plm
@@ -149,15 +150,15 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
     !   Calculate P(m,m), P(m+1,m), and P(l,m)
     !
     !--------------------------------------------------------------------------
-    pmm = 1.0d0
-    fact = -1.0d0
+    pmm = 1.0_dp
+    fact = -1.0_dp
     kstart = 1
 
     do m = 1, lmax - 1, 1
 
         ! Calculate P(m,m)
         kstart = kstart + m + 1
-        fact = fact + 2.0d0
+        fact = fact + 2.0_dp
         pmm = phase * pmm * sinsqr * fact
         p(kstart) = pmm
         pm2 = pmm
@@ -181,7 +182,7 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
 
     ! P(lmax, lmax)
     kstart = kstart + m + 1
-    fact = fact + 2.0d0
+    fact = fact + 2.0_dp
     pmm = phase * pmm * sinsqr * fact
     p(kstart) = pmm
 

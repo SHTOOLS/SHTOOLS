@@ -82,16 +82,17 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 !-------------------------------------------------------------------------------
     use SHTOOLS, only: SHrtoc, SHctor, SHcilmtocindex, SHcindextocilm, &
                        SHRotateCoef, SHCilmToVector, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: tapers(:,:), x(:), dj(:,:,:)
-    real*8, intent(out) :: tapersrot(:,:)
+    real(dp), intent(in) :: tapers(:,:), x(:), dj(:,:,:)
+    real(dp), intent(out) :: tapersrot(:,:)
     integer, intent(in) :: taper_order(:), lmax, nrot
     integer, intent(out), optional :: exitstatus
     integer :: astat(5), i
-    real*8, allocatable :: ccilm(:,:,:), cilm(:,:,:), cof(:,:), rcof(:,:), &
-                           vec(:)
+    real(dp), allocatable :: ccilm(:,:,:), cilm(:,:,:), cof(:,:), rcof(:,:), &
+                             vec(:)
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -182,12 +183,12 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 
     do i=1, nrot, 1
 
-        cilm = 0.0d0
+        cilm = 0.0_dp
         if (taper_order(i) >= 0) then
             cilm(1, 1:lmax+1, taper_order(i)+1) = tapers(1:lmax+1, i)
         else
             cilm(2, 1:lmax+1, abs(taper_order(i))+1) = tapers(1:lmax+1, i)
-        endif
+        end if
 
         if (CSPHASE_DEFAULT == 1) then
             ! Convert geodesy coefficients to Varshalovich et al. complex form
@@ -197,7 +198,7 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
                 if (exitstatus /= 0) return
             else
                 call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=1)
-            endif
+            end if
 
         else
             if (present(exitstatus)) then
@@ -206,7 +207,7 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
                 if (exitstatus /= 0) return
             else
                 call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=0)
-            endif
+            end if
 
         end if
 
@@ -233,7 +234,7 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
             ! Convert ordered complex coefficients back to a 3D array
             call SHcindextocilm(rcof, ccilm, lmax)
 
-        endif
+        end if
 
         if (CSPHASE_DEFAULT == 1) then
             ! Convert Varshalovich et al complex coefficients back to 4pi
@@ -246,7 +247,7 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
                 call SHctor(ccilm, cilm, degmax=lmax, convention=2, &
                             switchcs=1)
 
-            endif
+            end if
 
         else
             if (present(exitstatus)) then
@@ -256,7 +257,7 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
             else
                 call SHctor(ccilm, cilm, degmax=lmax, convention=2, &
                             switchcs=0)
-            endif
+            end if
 
         end if
 
@@ -269,11 +270,11 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
             ! Re-order real coefficients to form a 1-D vector
             call SHCilmToVector(cilm, vec, lmax)
 
-        endif
+        end if
 
         tapersrot(1:(lmax+1)**2, i) = vec(1:(lmax+1)**2)
 
-    enddo
+    end do
 
     deallocate (ccilm)
     deallocate (cof)

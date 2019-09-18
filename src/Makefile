@@ -39,9 +39,9 @@ else ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
 endif
 
-SRCS0 = SHTOOLS.f95 FFTW3.f95 CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 \
-	ComputeDm.f95 DHaj.f95 djpi2.f95 BAtoHilm.f95 MakeGrid2D.f95 \
-	GLQGridCoord.f95 MakeGridPoint.f95 MakeGridPointC.f95 \
+SRCS0 = ftypes.f95 SHTOOLS.f95 FFTW3.f95 CilmPlus.f95 CilmMinus.f95 \
+	ComputeDG82.f95 ComputeDm.f95 DHaj.f95 djpi2.f95 BAtoHilm.f95 \
+	MakeGrid2D.f95 GLQGridCoord.f95 MakeGridPoint.f95 MakeGridPointC.f95 \
 	PlanetsConstants.f95 PlBar.f95 PlBar_d1.f95 PLegendre.f95 \
 	PLegendre_d1.f95 PLegendreA.f95 PLegendreA_d1.f95 PlmBar.f95 \
 	PlmBar_d1.f95 PlmIndex.f95 PlmSchmidt.f95 PlmSchmidt_d1.f95 \
@@ -62,13 +62,13 @@ SRCS0 = SHTOOLS.f95 FFTW3.f95 CilmPlus.f95 CilmMinus.f95 ComputeDG82.f95 \
 	SHRotateTapers.f95 SlepianCoeffs.f95 SlepianCoeffsToSH.f95 \
 	SHSCouplingMatrix.f95 SHMTVar.f95 SHSlepianVar.f95 SHSCouplingMatrixCap.f95
 
-OBJS0 = SHTOOLS.o FFTW3.o CilmPlus.o CilmMinus.o ComputeDG82.o ComputeDm.o \
-	DHaj.o djpi2.o BAtoHilm.o MakeGrid2D.o GLQGridCoord.o MakeGridPoint.o \
-	MakeGridPointC.o PlanetsConstants.o PlBar.o PlBar_d1.o PLegendre.o \
-	PLegendre_d1.o PLegendreA.o PLegendreA_d1.o PlmBar.o PlmBar_d1.o \
-	PlmIndex.o PlmSchmidt.o PlmSchmidt_d1.o PlSchmidt.o PlSchmidt_d1.o \
-	PreGLQ.o Random.o SHAdmitCorr.o SHBias.o SHBiasK.o SHConvertCoef.o \
-	SHFindLWin.o SHGLQ.o SHLocalizedAdmitCorr.o \
+OBJS0 = ftypes.o SHTOOLS.o FFTW3.o CilmPlus.o CilmMinus.o ComputeDG82.o \
+	ComputeDm.o DHaj.o djpi2.o BAtoHilm.o MakeGrid2D.o GLQGridCoord.o \
+	MakeGridPoint.o MakeGridPointC.o PlanetsConstants.o PlBar.o PlBar_d1.o \
+	PLegendre.o PLegendre_d1.o PLegendreA.o PLegendreA_d1.o PlmBar.o \
+	PlmBar_d1.o PlmIndex.o PlmSchmidt.o PlmSchmidt_d1.o PlSchmidt.o \
+	PlSchmidt_d1.o PreGLQ.o Random.o SHAdmitCorr.o SHBias.o SHBiasK.o \
+	SHConvertCoef.o SHFindLWin.o SHGLQ.o SHLocalizedAdmitCorr.o \
 	SHMultiply.o SHMultiTaperCSE.o SHMultiTaperSE.o SHPowerSpectra.o \
 	SHRead.o SHReadJPL.o SHReturnTapersM.o SHRotateCoef.o \
 	SHRotateRealCoef.o SphericalCapCoef.o Wigner3j.o \
@@ -141,64 +141,101 @@ clean-prog-mod:
 %.o: %.F95
 	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $(FFTW3_FLAGS) $<
 
-
-CilmPlus.o: SHTOOLS.o
-CilmMinus.o: SHTOOLS.o
-ComputeDm.o: SHTOOLS.o
-BAtoHilm.o: SHTOOLS.o
-MakeGrid2D.o: SHTOOLS.o
-GLQGridCoord.o: SHTOOLS.o
-MakeGridGLQ.o: FFTW3.o SHTOOLS.o
-MakeGridGLQC.o: FFTW3.o SHTOOLS.o
-MakeGridDH.o: FFTW3.o SHTOOLS.o
-MakeGridDHC.o: FFTW3.o SHTOOLS.o
-MakeGridPoint.o: SHTOOLS.o
-MakeGridPointC.o: SHTOOLS.o
-SHGLQ.o: SHTOOLS.o
-SHAdmitCorr.o: SHTOOLS.o
-SHBias.o: SHTOOLS.o
-SHBiasK.o: SHTOOLS.o
-SHBiasKMask.o: SHTOOLS.o
-SHExpandDH.o: FFTW3.o SHTOOLS.o
-SHExpandDHC.o: FFTW3.o SHTOOLS.o
-SHExpandGLQ.o: FFTW3.o SHTOOLS.o
-SHExpandGLQC.o: FFTW3.o SHTOOLS.o
-SHExpandLSQ.o: SHTOOLS.o
-SHFindLWin.o: SHTOOLS.o
-SHLocalizedAdmitCorr.o: SHTOOLS.o
-SHMultiply.o: SHTOOLS.o
-SHMultiTaperCSE.o: SHTOOLS.o
-SHMultiTaperSE.o: SHTOOLS.o
-SHReturnTapersM.o: SHTOOLS.o
-SHReturnTapers.o : SHTOOLS.o
-SHRotateRealCoef.o: SHTOOLS.o
-SHSjkPG.o: SHTOOLS.o
-SphericalCapCoef.o: SHTOOLS.o
-MakeGeoidGrid.o: SHTOOLS.o
-SHMTVarOpt.o : SHTOOLS.o
-PLegendreA.o  : SHTOOLS.o
-PLegendreA_d1.o : SHTOOLS.o
-PlmBar.o : SHTOOLS.o
-PlmBar_d1.o : SHTOOLS.o
-PlmSchmidt.o : SHTOOLS.o
-PlmSchmidt_d1.o : SHTOOLS.o
-PlmON.o : SHTOOLS.o
-PlmON_d1.o : SHTOOLS.o
-SHMTCouplingMatrix.o : SHTOOLS.o
-SHMTDebias.o : SHTOOLS.o
-MakeGravGridDH.o : FFTW3.o SHTOOLS.o
-MakeMagGridDH.o: FFTW3.o SHTOOLS.o
-SHBiasAdmitCorr.o : SHTOOLS.o
-ComputeDMap.o : SHTOOLS.o
+SHTOOLS.o : ftypes.o
+FFTW3.o : ftypes.o
+BAtoHilm.o : ftypes.o SHTOOLS.o
+BAtoHilmRhoH.o : ftypes.o SHTOOLS.o
+CilmMinus.o : ftypes.o SHTOOLS.o
+CilmMinusRhoH.o : ftypes.o SHTOOLS.o
+CilmPlus.o : ftypes.o SHTOOLS.o
+CilmPlusRhoH.o : ftypes.o SHTOOLS.o
+ComputeDG82.o : ftypes.o
+ComputeDMap.o : ftypes.o SHTOOLS.o
+ComputeDm.o : ftypes.o SHTOOLS.o
+Curve2Mask.o : ftypes.o
+DHaj.o : ftypes.o
+DownContFilter.o : ftypes.o
+EigValSym.o : ftypes.o
+EigValVecSym.o : ftypes.o
+EigValVecSymTri.o : ftypes.o
+GLQGridCoord.o : ftypes.o SHTOOLS.o
+MakeCircleCoord.o : ftypes.o
+MakeEllipseCoord.o : ftypes.o
+MakeGeoidGrid.o : ftypes.o SHTOOLS.o
+MakeGravGradGridDH.o : ftypes.o FFTW3.o
+MakeGravGridDH.o : ftypes.o FFTW3.o SHTOOLS.o
+MakeGrid2D.o : ftypes.o SHTOOLS.o
+MakeGridDH.o : ftypes.o FFTW3.o SHTOOLS.o
+MakeGridDHC.o : ftypes.o FFTW3.o SHTOOLS.o
+MakeGridGLQ.o : ftypes.o FFTW3.o SHTOOLS.o
+MakeGridGLQC.o : ftypes.o FFTW3.o SHTOOLS.o
+MakeGridPoint.o : ftypes.o SHTOOLS.o
+MakeGridPointC.o : ftypes.o SHTOOLS.o
+MakeMagGradGridDH.o : ftypes.o FFTW3.o
+MakeMagGridDH.o : ftypes.o FFTW3.o SHTOOLS.o
+NormalGravity.o : ftypes.o
+PLegendre.o : ftypes.o
+PLegendreA.o : ftypes.o SHTOOLS.o
+PLegendreA_d1.o : ftypes.o SHTOOLS.o
+Plegendre_d1.o : ftypes.o
+PlBar.o : ftypes.o
+PlBar_d1.o : ftypes.o
+PlON.o : ftypes.o
+PlON_d1.o : ftypes.o
+PlSchmidt.o : ftypes.o
+PlSchmidt_d1.o : ftypes.o
+PlanetsConstants.o : ftypes.o
+PlmBar.o : ftypes.o SHTOOLS.o
+PlmBar_d1.o : ftypes.o SHTOOLS.o
+PlmON.o : ftypes.o SHTOOLS.o
+PlmON_d1.o : ftypes.o SHTOOLS.o
+PlmSchmidt.o : ftypes.o SHTOOLS.o
+PlmSchmidt_d1.o : ftypes.o SHTOOLS.o
+PreGLQ.o : ftypes.o
+Random.o : ftypes.o SHTOOLS.o
+SHAdmitCorr.o : ftypes.o SHTOOLS.o
+SHBias.o : ftypes.o SHTOOLS.o
+SHBiasAdmitCorr.o : ftypes.o SHTOOLS.o
+SHBiasK.o : ftypes.o SHTOOLS.o
+SHBiasKMask.o : ftypes.o SHTOOLS.o
+SHCilmToVector.o : ftypes.o
+SHConfidence.o : ftypes.o
+SHConvertCoef.o : ftypes.o
+SHExpandDH.o : ftypes.o FFTW3.o SHTOOLS.o
+SHExpandDHC.o : ftypes.o FFTW3.o SHTOOLS.o
+SHExpandGLQ.o : ftypes.o FFTW3.o SHTOOLS.o
+SHExpandGLQC.o : ftypes.o FFTW3.o SHTOOLS.o
+SHExpandLSQ.o : ftypes.o SHTOOLS.o
+SHFindLWin.o : ftypes.o SHTOOLS.o
+SHGLQ.o : ftypes.o SHTOOLS.o
+SHLocalizedAdmitCorr.o : ftypes.o SHTOOLS.o
+SHMTCouplingMatrix.o : ftypes.o SHTOOLS.o
+SHMTDebias.o : ftypes.o SHTOOLS.o
+SHMTVar.o : ftypes.o  SHTOOLS.o
+SHMTVarOpt.o : ftypes.o SHTOOLS.o
+SHMagPowerSpectra.o : ftypes.o
+SHMultiTaperCSE.o : ftypes.o SHTOOLS.o
+SHMultiTaperMaskCSE.o : ftypes.o SHTOOLS.o
+SHMultiTaperMaskSE.o : ftypes.o SHTOOLS.o
+SHMultiTaperSE.o : ftypes.o SHTOOLS.o
+SHMultiply.o : ftypes.o SHTOOLS.o
+SHPowerSpectra.o : ftypes.o
+SHPowerSpectraC.o : ftypes.o
+SHRead.o : ftypes.o
+SHRead2.o : ftypes.o
+SHReadJPL.o : ftypes.o
+SHReturnTapers.o : ftypes.o SHTOOLS.o
+SHReturnTapersM.o : ftypes.o SHTOOLS.o
 SHReturnTapersMap.o : SHTOOLS.o
-CilmPlusRhoH.o : SHTOOLS.o
-CilmMinusRhoH.o : SHTOOLS.o
-BAtoHilmRhoH.o : SHTOOLS.o
-MakeGravGradGridDH.o : FFTW3.o
-MakeMagGradGridDH.o : FFTW3.o
-SHMultiTaperMaskCSE.o: SHTOOLS.o
-SHMultiTaperMaskSE.o: SHTOOLS.o
-SHRotateTapers.o: SHTOOLS.o
-SlepianCoeffs.o: SHTOOLS.o
-SlepianCoeffsToSH.o :: SHTOOLS.o
-SHMTVar.o :: SHTOOLS.o
+SHRotateCoef.o : ftypes.o
+SHRotateRealCoef.o : ftypes.o SHTOOLS.o
+SHRotateTapers.o : ftypes.o SHTOOLS.o
+SHSCouplingMatrix.o : ftypes.o
+SHSCouplingMatrixCap.o : ftypes.o
+SHSjkPG.o : ftypes.o SHTOOLS.o
+SHSlepianVar.o : ftypes.o
+SlepianCoeffs.o: ftypes.o SHTOOLS.o
+SlepianCoeffsToSH.o : ftypes.o SHTOOLS.o
+SphericalCapCoef.o : ftypes.o SHTOOLS.o
+Wigner3j.o : ftypes.o
+djpi2.o : ftypes.o

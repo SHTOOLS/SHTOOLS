@@ -52,18 +52,19 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHGLQ, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: shout(:,:,:)
-    real*8, intent(in) :: sh1(:,:,:), sh2(:,:,:)
+    real(dp), intent(out) :: shout(:,:,:)
+    real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:)
     integer, intent(in) :: lmax1, lmax2
     integer, intent(in), optional :: precomp, norm, csphase
     integer, intent(out), optional :: exitstatus
-    integer ::  lmaxout, phase, mnorm, astat(2), nlat, nlong
-    real*8, allocatable, save :: zero(:), w(:)
+    integer :: lmaxout, phase, mnorm, astat(2), nlat, nlong
+    real(dp), allocatable, save :: zero(:), w(:)
     integer, save :: first = 1, lmaxout_last = -1
-    real*8, allocatable :: grid1glq(:,:), grid2glq(:,:), plx(:,:)
+    real(dp), allocatable :: grid1glq(:,:), grid2glq(:,:), plx(:,:)
 
 !$OMP   threadprivate(zero, w, first, lmaxout_last)
 
@@ -203,13 +204,13 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
             if (exitstatus /= 0) return
         else
             call SHGLQ(lmaxout, zero, w, csphase = phase, norm = mnorm)
-        endif
+        end if
 
     end if
 
     if (lmaxout /= lmaxout_last) then
         lmaxout_last = lmaxout
-    
+
         deallocate (zero)
         deallocate (w)
         allocate (zero(lmaxout+1), stat = astat(1))
@@ -233,7 +234,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
             if (exitstatus /= 0) return
         else
             call SHGLQ(lmaxout, zero, w, csphase = phase, norm = mnorm)
-        endif
+        end if
 
     end if
 
@@ -282,7 +283,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
                                            * grid2glq(1:nlat,1:nlong)
                 call SHExpandGLQ(shout, lmaxout, grid1glq, w, zero = zero, &
                                  csphase = phase, norm = mnorm)
-            endif
+            end if
 
         else
             allocate (plx(lmax1+lmax2+1, (lmax1+lmax2+1)*(lmax1+lmax2+2)/2 ), &
@@ -331,7 +332,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
                                            * grid2glq(1:nlat,1:nlong)
                 call SHExpandGLQ(shout, lmaxout, grid1glq, w, plx = plx, &
                                  csphase = phase, norm = mnorm)
-            endif
+            end if
 
             deallocate (plx)
 
@@ -365,7 +366,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
                                        * grid2glq(1:nlat,1:nlong)
             call SHExpandGLQ(shout, lmaxout, grid1glq, w, zero = zero, &
                              csphase = phase, norm = mnorm)
-        endif
+        end if
 
     end if
 

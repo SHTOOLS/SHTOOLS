@@ -1,21 +1,21 @@
 subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                        lmax_calc, exitstatus)
 !------------------------------------------------------------------------------
-!   
+!
 !   This program will expand a grid of data (regulary spaced in longitude,
 !   and irregurarly in latitude according to the Guass-Legendre quadrature
 !   points) into spherical harmonics by utilizing an FFT of each latitudinal
 !   band, and a Guass-Legendre Quadrature in latitute. Note that the array PLX
 !   is optional, and should not be precomputed when memory is an issue (i.e.,
-!   LMAX>360). It is implicitly assumed that the gridded data are bandlimited to
-!   degree LMAX. If the optional parameter LMAX_CALC is specified, the spherical
-!   harmonic coefficients will be calculated only up to and including this
-!   degree.
+!   LMAX>360). It is implicitly assumed that the gridded data are bandlimited
+!   to degree LMAX. If the optional parameter LMAX_CALC is specified, the
+!   spherical harmonic coefficients will be calculated only up to and including
+!   this degree.
 !
 !   If PLX is not present, the Legendre functions are computed on the fly
 !   using the scaling methodolgy presented in Holmes and Featherston (2002).
-!   When NORM is 1,2 or 4, these are accurate to degree 2800. When NORM is 3,
-!   the routine is only stable to about degree 15.
+!   When NORM is 1, 2 or 4, these are accurate to degree 2800. When NORM is 3,
+!   the routine is only stable to about degree 15!
 !
 !   Calling Parameters
 !
@@ -73,31 +73,34 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 !------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 #ifdef FFTW3_UNDERSCORE
 #define dfftw_plan_dft_r2c_1d dfftw_plan_dft_r2c_1d_
-#define dfftw_execute dfftw_execute_
+#define dfftw_execute_dft_r2c dfftw_execute_dft_r2c_
 #define dfftw_destroy_plan dfftw_destroy_plan_
 #endif
 
     implicit none
 
-    real*8, intent(in) :: w(:), gridglq(:,:)
-    real*8, intent(in), optional :: plx(:,:), zero(:)
-    real*8, intent(out) :: cilm(:,:,:)
+    real(dp), intent(in) :: w(:), gridglq(:,:)
+    real(dp), intent(in), optional :: plx(:,:), zero(:)
+    real(dp), intent(out) :: cilm(:,:,:)
     integer, intent(in) :: lmax
     integer, intent(in), optional :: norm, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
     integer :: nlong, nlat, i, l, k, m, l1, m1, i_s, astat(4), &
                lnorm, lmax_comp
-    real*8 :: pi, gridl(2*lmax+1), prod, scalef, rescalem, u, p, pmm, &
-              pm1, pm2, z, fcoef1(2, lmax+1), fcoef2(2, lmax+1), ffc(1:2,-1:1)
-    complex*16 :: cc(lmax+1)
-    integer*8 :: plan
-    real*8, save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer*1, save, allocatable :: fsymsign(:,:)
+    real(dp) :: pi, gridl(2*lmax+1), gridls(2*lmax+1), prod, scalef, &
+                rescalem, u, p, pmm, pm1, pm2, z, fcoef1(2, lmax+1), &
+                fcoef2(2, lmax+1), ffc(1:2,-1:1)
+    complex(dp) :: cc(lmax+1), ccs(lmax+1)
+    integer(int8) :: plan, plans
+    real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
+    integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
-    external :: dfftw_plan_dft_r2c_1d, dfftw_execute, dfftw_destroy_plan
+    external :: dfftw_plan_dft_r2c_1d, dfftw_execute_dft_r2c, &
+                dfftw_destroy_plan
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 
@@ -129,8 +132,8 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax_comp+1 &
             .or. size(cilm(1,1,:)) < lmax_comp+1) then
         print*, "Error --- SHExpandGLQ"
-        print*, "CILM must be dimensioned as (2, LMAX_COMP+1, LMAX_COMP+1) where"
-        print*, "LMAX_COMP = MIN(LMAX+1, LMAX_CALC+1)"
+        print*, "CILM must be dimensioned as (2, LMAX_COMP+1, LMAX_COMP+1)"
+        print*, "where LMAX_COMP = MIN(LMAX+1, LMAX_CALC+1)"
         print*, "LMAX = ", lmax
         if (present(lmax_calc)) print*, "LMAX_CALC = ", lmax_calc
         print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), &
@@ -261,15 +264,15 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 
     nlat = lmax + 1
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    cilm = 0.0d0
+    cilm = 0.0_dp
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate recursion constants used in computing the Legendre polynomials
+    !   Calculate recursion constants used in computing the Legendre functions.
     !
     !--------------------------------------------------------------------------
     if ( (lmax_comp /= lmax_old .or. lnorm /= norm_old) &
@@ -341,7 +344,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
             case (1,4)
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
-                    ff2(2,1) = 0.0d0
+                    ff2(2,1) = 0.0_dp
 
                 end if
 
@@ -357,14 +360,14 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     end do
 
                     ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
             case (2)
                 if (lmax_comp /= 0) then
-                    ff1(2,1) = 1.0d0
-                    ff2(2,1) = 0.0d0
+                    ff1(2,1) = 1.0_dp
+                    ff2(2,1) = 0.0_dp
 
                 end if
 
@@ -379,7 +382,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     end do
 
                     ff1(l+1,l) = dble(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
@@ -405,10 +408,12 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 
     !--------------------------------------------------------------------------
     !
-    !   Create generic plan for grid.
+    !   Create generic plan for gridl and gridls.
     !
     !--------------------------------------------------------------------------
     call dfftw_plan_dft_r2c_1d(plan, nlong, gridl(1:nlong), cc, FFTW_MEASURE)
+    call dfftw_plan_dft_r2c_1d(plans, nlong, gridls(1:nlong), ccs, &
+                               FFTW_MEASURE)
 
     !--------------------------------------------------------------------------
     !
@@ -423,10 +428,10 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     if (present(plx)) then
         do i = 1, nlat
             gridl(1:nlong) = gridglq(i,1:nlong)
-            call dfftw_execute(plan)    ! take fourier transform
+            call dfftw_execute_dft_r2c(plan, gridl, cc)
             fcoef1(1,1:lmax+1) = 2 * w(i) * pi * dble(cc(1:lmax+1)) &
                                  / dble(nlong)
-            fcoef1(2,1:lmax+1) = -2 * w(i) * pi * dimag(cc(1:lmax+1)) &
+            fcoef1(2,1:lmax+1) = -2 * w(i) * pi * aimag(cc(1:lmax+1)) &
                                  / dble(nlong)
 
             k = 0
@@ -452,17 +457,17 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
             ! This latitude is the equator; z=0, u=1
 
                 gridl(1:nlong) = gridglq(i,1:nlong)
-                call dfftw_execute(plan)   ! take fourier transform
+                call dfftw_execute_dft_r2c(plan, gridl, cc)
                 fcoef1(1,1:lmax+1) = 2 * w(i) * pi * dble(cc(1:lmax+1)) &
                                      / dble(nlong)
-                fcoef1(2,1:lmax+1) = -2 * w(i) * pi * dimag(cc(1:lmax+1)) &
+                fcoef1(2,1:lmax+1) = -2 * w(i) * pi * aimag(cc(1:lmax+1)) &
                                      / dble(nlong)
 
-                u = 1.0d0
+                u = 1.0_dp
 
                 select case (lnorm)
-                    case (1,2,3); pm2 = 1.0d0
-                    case (4);     pm2 = 1.0d0 / sqrt(4*pi)
+                    case (1,2,3); pm2 = 1.0_dp
+                    case (4);     pm2 = 1.0_dp / sqrt(4*pi)
                 end select
 
                 cilm(1,1,1) = cilm(1,1,1) + pm2 * fcoef1(1,1)
@@ -482,7 +487,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     case (4);    pmm = sqr(2) * scalef / sqrt(4*pi)
                 end select
 
-                rescalem = 1.0d0 / scalef
+                rescalem = 1.0_dp / scalef
 
                 do m = 1, lmax_comp-1, 1
                     m1 = m + 1
@@ -532,27 +537,27 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 
             else
                 z = zero(i)
-                u = sqrt( (1.0d0-z) * (1.0d0+z) )
+                u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
                 gridl(1:nlong) = gridglq(i,1:nlong)
-                call dfftw_execute(plan)
+                call dfftw_execute_dft_r2c(plan, gridl, cc)
                 fcoef1(1,1:lmax+1) = 2 * w(i) * pi * dble(cc(1:lmax+1)) &
                                      / dble(nlong)
-                fcoef1(2,1:lmax+1) = -2 * w(i) * pi * dimag(cc(1:lmax+1)) &
+                fcoef1(2,1:lmax+1) = -2 * w(i) * pi * aimag(cc(1:lmax+1)) &
                                      / dble(nlong)
 
                 i_s = nlat + 1 - i  ! point symmetric about the equator
 
-                gridl(1:nlong) = gridglq(i_s,1:nlong)
-                call dfftw_execute(plan)
-                fcoef2(1,1:lmax+1) = 2 * w(i_s) * pi * dble(cc(1:lmax+1)) &
+                gridls(1:nlong) = gridglq(i_s,1:nlong)
+                call dfftw_execute_dft_r2c(plans, gridls, ccs)
+                fcoef2(1,1:lmax+1) = 2 * w(i_s) * pi * dble(ccs(1:lmax+1)) &
                                      / dble(nlong)
-                fcoef2(2,1:lmax+1) = -2 * w(i_s) * pi * dimag(cc(1:lmax+1)) &
+                fcoef2(2,1:lmax+1) = -2 * w(i_s) * pi * aimag(ccs(1:lmax+1)) &
                                      / dble(nlong)
 
                 select case (lnorm)
-                    case (1,2,3); pm2 = 1.0d0
-                    case (4);     pm2 = 1.0d0 / sqrt(4 * pi)
+                    case (1,2,3); pm2 = 1.0_dp
+                    case (4);     pm2 = 1.0_dp / sqrt(4 * pi)
                 end select
 
                 cilm(1,1,1) = cilm(1,1,1) + pm2 * (fcoef1(1,1) + fcoef2(1,1))
@@ -582,7 +587,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
                     case (4);    pmm = sqr(2) * scalef / sqrt(4*pi)
                 end select
 
-                rescalem = 1.0d0 / scalef
+                rescalem = 1.0_dp / scalef
 
                 do m = 1, lmax_comp-1, 1
                     m1 = m + 1
@@ -652,7 +657,8 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 
     end if
 
-    call dfftw_destroy_plan(plan) 
+    call dfftw_destroy_plan(plan)
+    call dfftw_destroy_plan(plans)
 
     !--------------------------------------------------------------------------
     !
@@ -676,13 +682,13 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
             do l = 0, lmax_comp, 1
                 prod = 4 * pi / dble(2*l+1)
                 cilm(1,l+1,1) = cilm(1,l+1,1) / prod
-                prod = prod / 2.0d0
+                prod = prod / 2.0_dp
 
                 do m = 1, l - 1, 1
                     prod = prod * (l+m) * (l-m+1)
                     cilm(1:2,l+1,m+1) = cilm(1:2,l+1,m+1) / prod
 
-                enddo
+                end do
 
                 !do m=l case
                 if (l /= 0) cilm(1:2,l+1,l+1) = cilm(1:2,l+1, l+1) / (prod*2*l)

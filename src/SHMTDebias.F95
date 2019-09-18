@@ -17,19 +17,20 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: wigner3j
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: mtdebias(:,:), lmid(:)
-    real*8, intent(in) ::  mtspectra(:,:), tapers(:,:)
-    real*8, intent(in), optional :: taper_wt(:)
+    real(dp), intent(out) :: mtdebias(:,:), lmid(:)
+    real(dp), intent(in) :: mtspectra(:,:), tapers(:,:)
+    real(dp), intent(in), optional :: taper_wt(:)
     integer, intent(in) :: lmax, K, lwin, nl
     integer, intent(out) :: n
     integer, intent(out), optional :: exitstatus
-    real*8 :: w3j(lwin+2*lmax+1), sum1, y(lmax+1), ss(lmax+1)
+    real(dp) :: w3j(lwin+2*lmax+1), sum1, y(lmax+1), ss(lmax+1)
     integer :: i, j, l, wmin, wmax, nstart, nstop, info, lwork, m, astat(5), &
                iwork(8*(lmax+lwin+1))
-    real*8, allocatable :: work(:), Mmt(:,:), a(:,:), vt(:,:), uu(:,:)
+    real(dp), allocatable :: work(:), Mmt(:,:), a(:,:), vt(:,:), uu(:,:)
 #ifdef LAPACK_UNDERSCORE
 #define dgesdd dgesdd_
 #endif
@@ -92,7 +93,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
         end if
 
     end if
-    
+
     if (present(taper_wt)) then
         if (size(taper_wt) < K) then
             print*, "Error ---  SHMTDebias"
@@ -147,7 +148,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
                 else
                     call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
                 end if
-                sum1 = 0.0d0
+                sum1 = 0.0_dp
 
                 do l = wmin, min(wmax,lwin), 2
                     sum1 = sum1 + dot_product(taper_wt(1:K), &
@@ -171,7 +172,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
                     call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
                 end if
 
-                sum1 = 0.0d0
+                sum1 = 0.0_dp
 
                 do l = wmin, min(wmax,lwin), 2
                     sum1 = sum1 + sum(tapers(l+1,1:K)**2) * w3j(l-wmin+1)**2
@@ -183,7 +184,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
 
         end do
 
-    endif
+    end if
 
     ! Divide linear equations by their uncertainty.
     do i = 1, m
@@ -198,21 +199,21 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
     !   in intervals of deltal.
     !
     !--------------------------------------------------------------------------
-    a = 0.0d0
+    a = 0.0_dp
 
     do j = 1, n
 
-        nstart =  1 + (j-1) * nl
-        
+        nstart = 1 + (j-1) * nl
+
         if (j == n) then
             nstop = lmax + lwin + 1
 
         else
-            nstop =  nstart + nl - 1
+            nstop = nstart + nl - 1
 
         end if
 
-        lmid(j) = dble(nstart+nstop) / 2.0d0 - 1
+        lmid(j) = dble(nstart+nstop) / 2.0_dp - 1
 
         do i = 1, m
             a(i,j) = sum(Mmt(i,nstart:nstop))
@@ -244,7 +245,7 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
 
     end if
 
-    mtdebias = 0.0d0
+    mtdebias = 0.0_dp
 
     do i = 1, n
         mtdebias(1,1:n) = mtdebias(1,1:n) + dot_product(uu(1:m,i), &

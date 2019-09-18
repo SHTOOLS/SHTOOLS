@@ -45,16 +45,18 @@ subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: cof(:,:), dj(:,:,:), x(3)
-    real*8, intent(out) :: rcof(:,:)
+    real(dp), intent(in) :: cof(:,:), dj(:,:,:), x(3)
+    real(dp), intent(out) :: rcof(:,:)
     integer, intent(in) :: lmax
     integer, intent(out), optional :: exitstatus
-    real*8 :: sum(2), temp(2,lmax+1), temp2(2,lmax+1), cgam(lmax+1), &
-              sgam(lmax+1), calf(lmax+1), salf(lmax+1), cbet(lmax+1), &
-              sbet(lmax+1), pi2, alpha, beta, gamma
-    integer ::  ind, lp1, l, mp1, jp1, isgn, ii, indx
+    real(dp) :: sum(2), temp(2,lmax+1), temp2(2,lmax+1), cgam(lmax+1), &
+                sgam(lmax+1), calf(lmax+1), salf(lmax+1), cbet(lmax+1), &
+                sbet(lmax+1), pi2, alpha, beta, gamma
+    integer :: ind, lp1, l, mp1, jp1, isgn, ii, indx
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -99,9 +101,9 @@ subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
 
     end if
 
-    rcof = 0.0d0
+    rcof = 0.0_dp
 
-    pi2 = 1.570796326794895d0
+    pi2 = 1.570796326794895_dp
 
     alpha = x(1)
     beta  = x(2)
@@ -114,7 +116,7 @@ subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
     ind = 0
 
     ! Loop over degrees
-    do lp1 = 1, lmax+1
+    do lp1 = 1, lmax + 1
         l = lp1-1
         cbet(lp1) = cos(l*beta)
         sbet(lp1) = sin(l*beta)
@@ -134,13 +136,13 @@ subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
         ! B rotation and beta rotation
         do jp1 = 1, lp1
             sum(1) = dj(jp1,1,lp1) * temp(1,1)
-            sum(2) = 0.d0
+            sum(2) = 0.0_dp
             isgn = 1 - 2 * mod((lp1-jp1),2)
 
             do mp1 = 2, lp1
                 isgn = -isgn
                 ii = (3-isgn) / 2
-                sum(ii) = sum(ii) + 2.d0 * dj(jp1,mp1,lp1) * temp(ii,mp1)
+                sum(ii) = sum(ii) + 2.0_dp * dj(jp1,mp1,lp1) * temp(ii,mp1)
             end do
 
             temp2(1,jp1) = sum(1) * cbet(jp1) - sum(2) * sbet(jp1)
@@ -151,13 +153,13 @@ subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
         ! Inverse B rotation and gamma rotation
         do jp1 = 1, lp1
             sum(1) = dj(1,jp1,lp1) * temp2(1,1)
-            sum(2) = 0.d0
-            isgn = 1 - 2*mod((lp1-jp1),2)
+            sum(2) = 0.0_dp
+            isgn = 1 - 2 * mod((lp1-jp1),2)
 
             do mp1 = 2,lp1
                 isgn = -isgn
                 ii = (3-isgn) / 2
-                sum(ii) = sum(ii) + 2.d0 * dj(mp1,jp1,lp1) * temp2(ii,mp1)
+                sum(ii) = sum(ii) + 2.0_dp * dj(mp1,jp1,lp1) * temp2(ii,mp1)
 
             end do
 
@@ -167,7 +169,7 @@ subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
 
         end do
 
-        ind = ind+lp1
+        ind = ind + lp1
 
     end do
 

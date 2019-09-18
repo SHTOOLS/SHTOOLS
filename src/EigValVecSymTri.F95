@@ -48,16 +48,18 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: ain(:,:)
+    real(dp), intent(in) :: ain(:,:)
     integer, intent(in) :: n
-    real*8, intent(out) :: eig(:), evec(:,:)
+    real(dp), intent(out) :: eig(:), evec(:,:)
     character, intent(in), optional :: ul
     integer, intent(out), optional :: exitstatus
     integer, parameter :: nb = 80, nbl = 10
-    real*8 :: d(n), e(n), work(nb*n), vl, vu, abstol, w(n)
-    real*8, allocatable :: z(:,:)
+    real(dp) :: d(n), e(n), work(nb*n), vl, vu, abstol, w(n)
+    real(dp), allocatable :: z(:,:)
     integer :: lwork, info, il, iu, m, isuppz(2*n), liwork, &
                iwork(nbl*n), i, astat
 #ifdef LAPACK_UNDERSCORE
@@ -120,8 +122,8 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
     lwork = nb * n
     liwork = nbl * n
 
-    eig = 0.0d0
-    evec = 0.0d0
+    eig = 0.0_dp
+    evec = 0.0_dp
 
     d(1) = ain(1,1)
 
@@ -160,7 +162,7 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
 
     end if
 
-    e(n) = 0.0d0
+    e(n) = 0.0_dp
 
     !--------------------------------------------------------------------------
     !
@@ -168,7 +170,7 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
     !   eignevalues and vectors from greatest to least.
     !
     !--------------------------------------------------------------------------
-    abstol = 0.0d0
+    abstol = 0.0_dp
 
     call dstegr('v','a', n, d, e, vl, vu, il, iu, abstol, m,  w, &
                 z, n, isuppz, work, lwork, iwork, liwork, info)
@@ -204,7 +206,7 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
     do i = 1, n
         eig(i) = w(n+1-i)
         evec(1:n,i) = z(1:n,n+1-i)
-        if (evec(1,i) < 0.0d0) evec(1:n,i) = -evec(1:n,i)
+        if (evec(1,i) < 0.0_dp) evec(1:n,i) = -evec(1:n,i)
     end do
 
     deallocate (z)

@@ -1,4 +1,4 @@
-real*8 function SHMagPowerL(c, a, r, l)
+function SHMagPowerL(c, a, r, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power for
@@ -23,10 +23,13 @@ real*8 function SHMagPowerL(c, a, r, l)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c(:,:,:)
-    real*8, intent(in) :: a, r
+    real(dp) :: SHMagPowerL
+    real(dp), intent(in) :: c(:,:,:)
+    real(dp), intent(in) :: a, r
     integer, intent(in) :: l
     integer i, m, l1, m1
 
@@ -42,16 +45,16 @@ real*8 function SHMagPowerL(c, a, r, l)
 
     end if
 
-    shmagpowerl = 0.0d0
+    SHMagPowerL = 0.0_dp
 
     do m = 0, l
         m1 = m + 1
         do i = 1, 2
-            shmagpowerl = shmagpowerl + c(i, l1, m1)**2
+            SHMagPowerL = SHMagPowerL + c(i, l1, m1)**2
         end do
     end do
 
-    shmagpowerl = shmagpowerl * dble(l+1) * (a / r)**(2*l+4)
+    SHMagPowerL = SHMagPowerL * dble(l+1) * (a / r)**(2*l+4)
 
 end function SHMagPowerL
 
@@ -95,18 +98,20 @@ subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: c(:,:,:)
-    real*8, intent(in) :: a, r
+    real(dp), intent(in) :: c(:,:,:)
+    real(dp), intent(in) :: a, r
     integer, intent(in) :: lmax
-    real*8, intent(out) ::spectra(:)
+    real(dp), intent(out) ::spectra(:)
     integer, intent(out), optional :: exitstatus
     integer i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(c(:,1,1)) < 2 .or. size(c(1,:,1)) < lmax+1  &
+    if (size(c(:,1,1)) < 2 .or. size(c(1,:,1)) < lmax+1 &
         .or. size(c(1,1,:)) < lmax+1) then
         print*, "Error --- SHMagPowerSpectrum"
         print*, "C must be dimensioned as (2, LMAX+1, LMAX+1) " // &
@@ -133,7 +138,7 @@ subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
 
     end if
 
-    spectra = 0.0d0
+    spectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
@@ -143,8 +148,8 @@ subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
 
             do i = 1, 2
                 spectra(l1) = spectra(l1) + c(i, l1, m1)**2
-            enddo
-        enddo
+            end do
+        end do
 
         spectra(l1) = spectra(l1) * dble(l+1) * (a / r)**(2*l+4)
 

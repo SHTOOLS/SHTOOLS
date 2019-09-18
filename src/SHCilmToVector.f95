@@ -30,10 +30,12 @@ subroutine SHCilmToVector(cilm, vector, lmax, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: cilm(:,:,:)
-    real*8, intent(out) :: vector(:)
+    real(dp), intent(in) :: cilm(:,:,:)
+    real(dp), intent(out) :: vector(:)
     integer, intent(in) :: lmax
     integer, intent(out), optional :: exitstatus
     integer :: i, l, m
@@ -134,10 +136,12 @@ subroutine SHVectorToCilm(vector, cilm, lmax, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(out) :: cilm(:,:,:)
-    real*8, intent(in) :: vector(:)
+    real(dp), intent(out) :: cilm(:,:,:)
+    real(dp), intent(in) :: vector(:)
     integer, intent(in) :: lmax
     integer, intent(out), optional :: exitstatus
     integer :: k, i, l, m
@@ -211,6 +215,6 @@ subroutine SHVectorToCilm(vector, cilm, lmax, exitstatus)
 
         cilm(i,l+1,m+1) = vector(k)
 
-    enddo
+    end do
 
 end subroutine SHVectorToCilm

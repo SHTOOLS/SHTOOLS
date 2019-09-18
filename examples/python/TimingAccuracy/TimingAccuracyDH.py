@@ -74,7 +74,13 @@ def TimingAccuracyDH(sampling=1):
 
         print('{:4d}    {:1.2e}    {:1.2e}    {:1.1e}s    {:1.1e}s'.format(
             lmax, maxerr, rmserr, tinverse, tforward))
+
+        if maxerr > 100.:
+            raise RuntimeError('Tests Failed. Maximum relative error = ', \
+                               maxerr)
+
         lmax = lmax * 2
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

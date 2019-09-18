@@ -1,5 +1,5 @@
 subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
-                            corr, mtdef, taper_wt, exitstatus)
+                           corr, mtdef, taper_wt, exitstatus)
 !-------------------------------------------------------------------------------
 !
 !   This subroutine will take as input the three global (unbiased) cross-power
@@ -66,16 +66,18 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHBias, SHBiasK
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: sgt(:), sgg(:), stt(:), tapers(:,:)
+    real(dp), intent(in) :: sgt(:), sgg(:), stt(:), tapers(:,:)
     integer, intent(in) :: lmax, lwin, K
-    real*8, intent(out) :: admit(:), corr(:)
+    real(dp), intent(out) :: admit(:), corr(:)
     integer, intent(in), optional :: mtdef
-    real*8, intent(in), optional :: taper_wt(:)
+    real(dp), intent(in), optional :: taper_wt(:)
     integer, intent(out), optional :: exitstatus
-    real*8 :: sgt_bias(lmax-lwin+1), sgg_bias(lmax-lwin+1), stt_bias(lmax-lwin+1), shh(lwin+1)
+    real(dp) :: sgt_bias(lmax-lwin+1), sgg_bias(lmax-lwin+1), &
+                stt_bias(lmax-lwin+1), shh(lwin+1)
     integer :: lmax_calc, def, i
 
     if (present(exitstatus)) exitstatus = 0
@@ -167,7 +169,7 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
                 stop
             end if
 
-        else if (sum(taper_wt(1:K)) /= 1.0d0) then
+        else if (sum(taper_wt(1:K)) /= 1.0_dp) then
             print*, "Error --- SHBiasAdmitCorr"
             print*, "TAPER_WT must sum to unity."
             print*, "Input array sums to ", sum(taper_wt(1:K))
@@ -201,12 +203,12 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
     else
         def = 1
 
-    endif
+    end if
 
     lmax_calc = lmax - lwin
     
-    admit = 0.0d0
-    corr = 0.0d0
+    admit = 0.0_dp
+    corr = 0.0_dp
 
     !--------------------------------------------------------------------------
     !
@@ -273,7 +275,7 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
                               / sqrt(stt_bias(1:lmax_calc+1)) &
                               / sqrt(sgg_bias(1:lmax_calc+1))
 
-    elseif (def == 2) then
+    else if (def == 2) then
         do i = 1, K
             shh(1:lwin+1) = tapers(1:lwin+1, i)**2
 

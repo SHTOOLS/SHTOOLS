@@ -63,14 +63,15 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only : EigValVecSym, ComputeDMap
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: tapers(:,:), eigenvalues(:)
+    real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
     integer, intent(in) :: dh_mask(:,:), n_dh, lmax, sampling
     integer, intent(in), optional :: ntapers, degrees(:)
     integer, intent(out), optional :: exitstatus
-    real*8, allocatable :: dij(:,:), dijex(:, :), evec(:, :)
+    real(dp), allocatable :: dij(:,:), dijex(:, :), evec(:, :)
     integer :: nlat, nlong, lmax_dh, astat(2), i, j, l, m, exclude, n, &
                ind((lmax+1)**2), numk
 
@@ -148,7 +149,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 
         end if
 
-    endif
+    end if
 
     if (mod(n_dh,2) /= 0) then
         print*, "Error --- SHReturnTapersMap"
@@ -232,8 +233,8 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 
     end if
 
-    eigenvalues = 0.0d0
-    tapers = 0.0d0
+    eigenvalues = 0.0_dp
+    tapers = 0.0_dp
 
     allocate (dij((lmax+1)**2, (lmax+1)**2), stat = astat(1))
     allocate (evec((lmax+1)**2, (lmax+1)**2), stat = astat(2))
@@ -299,7 +300,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
                 end if
             end if
 
-            dijex = 0.0d0
+            dijex = 0.0_dp
             do i = 1, n
                 do j = 1, n
                     dijex(i, j) = dij(ind(i), ind(j))
@@ -321,7 +322,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
             call EigValVecSym(Dij(1:n, 1:n), n, eigenvalues, evec, &
                               exitstatus = exitstatus)
             if (exitstatus /= 0) return
-        endif
+        end if
 
     else
         if (present(ntapers)) then
@@ -329,7 +330,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
                               k = min(ntapers, n))
         else
             call EigValVecSym(Dij(1:n, 1:n), n, eigenvalues, evec)
-        endif
+        end if
 
     end if
 
