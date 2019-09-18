@@ -17,10 +17,10 @@ call SphericalCapCoef (`coef`, `theta`, `lmax`, `exitstatus`)
 
 ## Parameters
 
-`coef` : output, real\*8, dimension(`lmaxin`+1)
+`coef` : output, real(dp), dimension(`lmaxin`+1)
 :   The zonal spherical harmonic coefficients of a spherical cap centered over the north pole.
 
-`theta` : input, real\*8
+`theta` : input, real(dp)
 :   The angular radius of the spherical cap in radians.
 
 `lmax` : optional, input, integer, default = `lmaxin`

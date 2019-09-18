@@ -20,7 +20,7 @@ call SHSlepianVar (`l`, `galpha`, `galpha_order`, `lmax`, `kmax`, `sff`, `varian
 `l` : input, integer
 :   The spherical harmonic degree used to calculate the theoretical variance.
 
-`galpha` : input, real\*8, dimension (`lmax`+1, `kmax`)
+`galpha` : input, real(dp), dimension (`lmax`+1, `kmax`)
 :   A matrix of spherical-cap Slepian functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
 `galpha_order` : input, integer, dimension (`kmax`)
@@ -32,10 +32,10 @@ call SHSlepianVar (`l`, `galpha`, `galpha_order`, `lmax`, `kmax`, `sff`, `varian
 `kmax` : input, integer
 :   The maximum number of Slepian functions to use when calculating the variance.
 
-`sff` : input, real\*8, dimension (`lmax`+1)
+`sff` : input, real(dp), dimension (`lmax`+1)
 :   The global power spectrum of the function.
 
-`variance` : output, real\*8
+`variance` : output, real(dp)
 :   The theoretical variance of the spectral estimate for degree `l`.
 
 `exitstatus` : output, optional, integer

@@ -17,19 +17,19 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 
 ## Parameters
 
-`value` : output, complex\*16
+`value` : output, complex(dp)
 :   Value of the function at (`lat`, `lon`).
 
-`cilm` : input, complex\*16, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, complex(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The complex spherical harmonic coefficients of the function. The coefficients `C1lm` and `C2lm` refer to the postive and negative angular orders, respectively, with `Clm=cilm(1,l+1,m+1)` and `Cl-m=cilm(2,l+1,m+1)`.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree used in evaluating the function.
 
-`lat` : input, real\*8
+`lat` : input, real(dp)
 :   The latitude of the point in DEGREES.
 
-`lon` : input, real\*8
+`lon` : input, real(dp)
 :   The longitude of the point in DEGREES.
 
 `norm` : input, optional, integer, default = 1

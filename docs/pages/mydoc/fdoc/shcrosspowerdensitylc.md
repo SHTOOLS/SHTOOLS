@@ -17,7 +17,7 @@ Compute the cross-power spectral density of two complex functions for a single s
 
 ## Parameters
 
-`cpsd` : output, complex\*16
+`cpsd` : output, complex(dp)
 :   The cross-power spectral density of the two complex functions for spherical harmonic degree `l`.
 
 `cilm1` : input, complex*16, dimension (2, `lmaxin1`+1, `lmaxin1`+1)

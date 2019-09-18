@@ -17,10 +17,10 @@ call SHReturnTapersMap (`tapers`, `eigenvalues`, `dh_mask`, `n`, `lmax`, `sampli
 
 ## Parameters
 
-`tapers` : input, real\*8, dimension ((`lmax`+1)\*\*2, `ntapers`)
+`tapers` : input, real(dp), dimension ((`lmax`+1)\*\*2, `ntapers`)
 :   The spherical harmonic coefficients of the tapers, arranged in columns, from best to worst concentrated. The spherical harmonic coefficients in each column are indexed according to the scheme described in `YilmIndexVector`.
 
-`eigenvalues` : input, real\*8, dimension (`ntapers`)
+`eigenvalues` : input, real(dp), dimension (`ntapers`)
 :   The concentration factor for each localization window specified in the columns of `tapers`.
 
 `dh_mask` : input, integer, dimension (`n`, `n`\*`sampling`)

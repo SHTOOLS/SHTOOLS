@@ -17,10 +17,10 @@ call SHSCouplingMatrix (`kij`, `galpha`, `lmax`, `nmax`, `exitstatus`)
 
 ## Parameters
 
-`kij` : output, real\*8, dimension (`lmax`+1, `lmax`+1)
+`kij` : output, real(dp), dimension (`lmax`+1, `lmax`+1)
 :   The coupling matrix that relates the power spectrum expectation of the function expressed in a subset of the best-localized Slepian functions to the expectation of the global power spectrum.
 
-`galpha` : input, real\*8, dimension ((`lmax`+1)**2, `nmax`)
+`galpha` : input, real(dp), dimension ((`lmax`+1)**2, `nmax`)
 :   An array of Slepian functions, arranged in columns from best to worst localized.
 
 `lmax` : input, integer

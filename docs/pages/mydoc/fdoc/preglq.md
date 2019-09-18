@@ -17,19 +17,19 @@ call PreGLQ (`lower`, `upper`, `n`, `zero`, `w`, `exitstatus`)
 
 ## Parameters
 
-`lower` : input, real\*8
+`lower` : input, real(dp)
 :   The lower bound of the integration.
 
-`upper` : input, real\*8
+`upper` : input, real(dp)
 :   The upper bound of the integration.
 
 `n` : input, integer
 :   The number of integration points to use. This will integrate exactly a polynomial of degree `2n-1`.
 
-`zero` : output, real\*8, dimension (`n`)
+`zero` : output, real(dp), dimension (`n`)
 :   The zeros used in the Gauss-Legendre quadrature.
 
-`w` : output, real\*8, dimension (`n`)
+`w` : output, real(dp), dimension (`n`)
 :   The weights used in the Gauss-Legendre quadrature.
 
 `exitstatus` : output, optional, integer

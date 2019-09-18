@@ -17,7 +17,7 @@ Return a pseudo uniform random deviate between 0 and 1 using the algorithm of Pa
 
 ## Parameters
 
-`rn` : output, real\*8
+`rn` : output, real(dp)
 :   The uniform random deviate.
 
 `seed` : input/output, integer

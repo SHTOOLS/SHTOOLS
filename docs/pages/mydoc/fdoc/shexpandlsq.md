@@ -17,16 +17,16 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 
 ## Parameters
 
-`cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`.
 
-`d` : input, real\*8, dimension (`nmax`)
+`d` : input, real(dp), dimension (`nmax`)
 :   The value of the function at the coordinates (`lat`, `lon`).
 
-`lat` : input, real\*8, dimension (`nmax`)
+`lat` : input, real(dp), dimension (`nmax`)
 :   The latitude in DEGREES corresponding to the value in `d`.
 
-`lon` : input, real\*8, dimension (`nmax`)
+`lon` : input, real(dp), dimension (`nmax`)
 :   The longitude in DEGREES corresponding to the value in `d`.
 
 `nmax` : input, integer
@@ -38,13 +38,13 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 `norm` : input, optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`chi2` : output, optional, real\*8
+`chi2` : output, optional, real(dp)
 :   The residual sum of squares misfit for an overdetermined inversion.
 
 `csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`weights` : input, real\*8, dimension (`nmax`)
+`weights` : input, real(dp), dimension (`nmax`)
 :   The weights to be applied in a weighted least squares inversion.
 
 `exitstatus` : output, optional, integer
