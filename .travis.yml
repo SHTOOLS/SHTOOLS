@@ -19,7 +19,7 @@ before_install:
        brew install fftw;
     else
        sudo apt-get update;
-       sudo apt-get install libblas-dev liblapack-dev g++ gfortran tcsh;
+       sudo apt-get install libfftw3-dev libblas-dev liblapack-dev g++ gfortran tcsh;
     fi
 
 install:
@@ -50,7 +50,6 @@ install:
         mkl
         astropy
         xarray
-  - conda install -n test-environment -c anaconda fftw
   - source activate test-environment
   - pip install --no-deps .
 
