@@ -188,7 +188,7 @@ def get_compiler_flags():
         flags = ['-m64', '-O3', '-YEXT_NAMES=LCS', '-YEXT_SFX=_',
                  '-fpic', '-speed_math=10']
     elif compiler == 'gnu95':
-        flags = ['-m64', '-fPIC', '-O3', '-std=f95', '-ffast-math']
+        flags = ['-m64', '-fPIC', '-O3', '-std=f2003', '-ffast-math']
     elif compiler == 'intel':
         flags = ['-m64', '-fpp', '-free', '-O3', '-Tf']
     elif compiler == 'g95':

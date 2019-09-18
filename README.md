@@ -48,10 +48,10 @@ pip install pyshtools --no-binary pyshtools
 
 #### pyshtools for Anaconda Python ####
 
-Install fftw3 with fortran bindings and then install pyshtools using `pip`:
+Install fftw3 and then install pyshtools using `pip`:
 
 ```bash
-conda install -c eumetsat fftw3
+conda install -c anaconda fftw
 pip install pyshtools
 ```
 

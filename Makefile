@@ -30,11 +30,9 @@
 #
 #
 #   In some cases, where there are underscore problems when linking to the
-#   LAPACK, BLAS, and FFTW3 libraries, it might be necessary to set one of
-#   the following:
+#   LAPACK, BLAS, and FFTW3 libraries, it might be necessary to set:
 #
-#       LAPACK_UNDERSCORE = 1
-#       FFTW3_UNDERSCORE = 1
+#       LAPACK_UNDERSCORE=1
 #
 #
 #   This Makefile accepts the following optional arguments that can be passed
@@ -155,7 +153,6 @@ PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
 
 FFTW = -L$(SYSLIBPATH) -lfftw3
-FFTW_UNDERSCORE = 0
 LAPACK_UNDERSCORE = 0
 
 SHELL = /bin/sh
@@ -188,7 +185,7 @@ BLAS ?= -lblas
 LAPACK ?= -llapack
 else ifeq ($(F95), gfortran)
 # Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 -std=f95 -ffast-math
+F95FLAGS ?= -m64 -fPIC -O3 -std=f2003 -ffast-math
 # -march=native
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
@@ -232,10 +229,6 @@ ifeq ($(LAPACK_UNDERSCORE),1)
 LAPACK_FLAGS = -DLAPACK_UNDERSCORE
 endif
 
-ifeq ($(FFTW3_UNDERSCORE),1)
-FFTW3_FLAGS = -DFFTW3_UNDERSCORE
-endif
-
 
 .PHONY: all fortran install doc remove-doc\
 	fortran-tests run-fortran-tests python-tests\
@@ -250,7 +243,7 @@ all: fortran
 fortran:
 	mkdir -pv lib
 	mkdir -pv modules
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
 	@echo "--> make fortran successful!"
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
@@ -263,7 +256,7 @@ fortran-mp:
 	mkdir -pv lib
 	mkdir -pv modules
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	@echo "--> make fortran-mp successful!"
 	@echo

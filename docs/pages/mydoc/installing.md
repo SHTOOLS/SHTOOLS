@@ -9,7 +9,7 @@ toc: true
 
 ## Python package installer (pip)
 
-The easiest way to install the Python components of SHTOOLS (pyshtools) is to use `pip`. On Linux, macOS and windows machines, the binary wheels can be installed by executing one of the following commands
+The easiest way to install the Python components of SHTOOLS (pyshtools) is to use `pip`. On Linux and macOS machines, the binary wheels can be installed by executing one of the following commands
 ```bash
 pip install pyshtools
 pip install --upgrade pyshtools  # to upgrade a pre-existing installation
@@ -156,10 +156,9 @@ For the Intel Fortran compiler `ifort`, it will be necessary to use
 ```
 in order that the compiler recognizes files with the extension `.f95` as Fortran 95 files. In this case, the f95 file should come directly after the option `-Tf`.
 
-Setting the right compiler flags is more complicated when the FFTW and LAPACK libraries have different naming and underscoring conventions. In order to accommodate this case, underscores can be added explicitly to either the LAPACK or FFTW subroutine names in the SHTOOLS source code by specifying the optional `make` arguments when building the archive:
+Setting the right compiler flags is more complicated when the FFTW and LAPACK libraries have different naming and underscoring conventions. In order to accommodate this case, underscores can be added explicitly to the LAPACK subroutine names in the SHTOOLS source code by specifying the optional `make` arguments when building the archive:
 ```bash
-FFTW_UNDERSCORE = 1  # to add an extra underscore to the FFTW routine names
-LAPACK_UNDERSCORE = 1  # to add an extra underscore to the LAPACK routine names
+LAPACK_UNDERSCORE=1  # to add an extra underscore to the LAPACK routine names
 ```
 For both cases, compiler flags should probably be set so that underscores are not appended to routine names. See [Fortran 95 problems](fortran-95-problems.html) for further information.
 
@@ -168,5 +167,3 @@ To generate 64 bit code, use the compiler option
 -m64
 ```
 For this case, it will be necessary to use 64-bit compiled FFTW and LAPACK libraries.
-
-
