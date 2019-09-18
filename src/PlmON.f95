@@ -5,7 +5,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
 !   functions up to degree lmax. The functions are initially scaled by
 !   10^280 sin^m in order to minimize the effects of underflow at large m
 !   near the poles (see Holmes and Featherstone 2002, J. Geodesy, 76, 279-299).
-!   On a Mac OSX system with a maximum allowable double precision value of
+!   On a macOS system with a maximum allowable double precision value of
 !   2.225073858507203E-308 the scaled portion of the algorithm will not overflow
 !   for degrees less than or equal to 2800.
 !
