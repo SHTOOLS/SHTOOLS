@@ -24,17 +24,22 @@ To use SHTOOLS in Python, it is only necessary to execute this statement in the 
 ```python
 import pyshtools
 ```
-This will load the following three classes and subpackages into the `pyshtools` namespace:
+This will load the following classes and subpackages into the `pyshtools` namespace:
 
 | Class | Description |
 | ----- | ----------- |
 | [SHCoeffs](python-shcoeffs.html) | Class for spherical harmonic coefficients |
 | [SHGrid](python-shgrid.html) | Class for global grids |
 | [SHWindow](python-shwindow.html) | Class for localization windows |
+| [Slepian](python-slepian.html) | Class for Slepian functions.|
+| [SlepianCoeffs](python-slepiancoeffs.html) | Class for Slepian expansion coefficients.|
 | [SHGravCoeffs](python-shgravcoeffs.html) | Class for gravitational potential spherical harmonic coefficients.|
 | [SHGravGrid](python-shgravgrid.html) | Class for global gridded gravitational field data.|
 | [SHGravTensor](python-shgravtensor.html) | Class for the gravity tensor and eigenvalues. |
 | [SHGeoid](python-shgeoid.html) | Class for the geoid.|
+| [SHMagCoeffs](python-shmagcoeffs.html) | Class for magnetic potential spherical harmonic coefficients.|
+| [SHMagGrid](python-shmaggrid.html) | Class for global gridded magnetic field data.|
+| [SHMagTensor](python-shtensor.html) | Class for the magnetic field tensor and eigenvalues.|
 
 
 | Subpackage | Description |

@@ -20,7 +20,7 @@ If you are having problems linking an already compiled SHTOOLS library to your c
 
 ## Can I compile SHTOOLS with Fortran 77?
 
-No, you must use a Fortran 90/95 compiler. Two free Fortran 90/95 compilers are [gfortran](http://gcc.gnu.org/) and [g95](http://www.g95.org/). If you will be using the Python code, it will be easiest to use the `gfortran` compiler.
+No, you must use a Fortran 95 compiler. Two free Fortran 95 compilers are [gfortran](http://gcc.gnu.org/) and [g95](http://www.g95.org/). If you will be using the Python code, it will be easiest to use the `gfortran` compiler.
 
 ## Linking fails because of "Undefined symbols"
 
@@ -36,12 +36,7 @@ If the linker is correctly finding the LAPACK and FFTW libraries, the most likel
 make clean
 make fortran LAPACK_UNDERSCORE=1
 ```
-If a similar problem is arising with the FFTW libraries, use
-```
-make clean
-make fortran FFTW_UNDERSCORE=1
-```
-These commands will compile SHTOOLS source files that append explicitly underscores to either the LAPACK of FFTW subroutine names. If you get similar link errors, but with an added underscore, this probably means that the linker can't find the LAPACK library.
+This command will compile SHTOOLS source files that append explicitly underscores to the LAPACK subroutine names. If you get similar link errors, but with an added underscore, this probably means that the linker can't find the LAPACK library.
 
 ## Linking fails because e_wsfe, z_abs, c_sqrt, s_cmp, etc., are undefined
 

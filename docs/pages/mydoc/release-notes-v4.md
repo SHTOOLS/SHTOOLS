@@ -18,12 +18,12 @@ toc: true
 * Improved the handing of the optional parameter `weights` in all methods of `SHWindow`.
 * **Changed the name of the optional parameter `nwin` of `SHWindow.coupling_matrix` to `k` for consistency with the localized spectral analysis routines.**
 
-**`SHCoeffs`**
+**SHCoeffs**
 * Added `cross_spectrum()`, `plot_cross_spectrum()` and `plot_cross_spectrum2d()` methods to the `SHCoeffs` class.
 * Added `from_cap()` constructor to create coefficients of a spherical cap.
 * Fixed a small bug when rotating coefficients in the `SHCoeffs`, `SHMagCoeffs` and `SHGravCoeffs` classes when the input `csphase` is different from the default value.
 
-**`SHGrid`**
+**SHGrid**
 * Added the method `from_zeros()` to initialize a grid with zeros.
 * Added the method `from_cap()` to initial a grid with a spherical cap.
 * Added support for saving gridded data to netcdf and xarray formats. `to_netcdf()` exports data to netcdf format, and when saved to file can be used directly with GMT (generic mapping tools) where they are known as 'grd' files. `to_xarray()` exports data to an xarray DataArray.
