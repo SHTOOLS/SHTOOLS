@@ -1,25 +1,22 @@
-subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
-                             vxz, vyz, n, sampling, lmax_calc, exitstatus)
+subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
+                              vxz, vyz, n, sampling, lmax_calc, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   Given the magnetic potential spherical harmonic coefficients CILM, this
-!   subroutine will compute 2D Driscol and Healy sampled grids of the six
-!   components of the magnetic field tensor in a local north-oriented
-!   reference frame:
+!   Given the 4pi normalized gravitational spherical harmonic coefficients
+!   CILM, this subroutine will compute 2D Driscol and Healy sampled grids of
+!   the six components of the gravity "gradient" tensor in a local
+!   north-oriented reference frame:
 !
 !       (Vxx,   Vxy,    Vxz)
 !       (Vyx,   Vyy,    Vyz)
 !       (Vzx,   Vzy,    Vzz)
 !   
-!   where X points NORTH, Y points WEST, and Z points UPWARD. The magnetic
+!   where X points NORTH, Y points WEST, and Z points UPWARD. The gravitational
 !   potential is defined as
 !
-!       V = R0 Sum_{l=0}^LMAX (R0/r)^(l+1) Sum_{m=-l}^l C_{lm} Y_{lm},
+!       V = GM/r Sum_{l=0}^LMAX (R0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm},
 !
-!   where the Gauss coefficients are in units of nT, and the spherical
-!   harmonic functions are Schmidt semi-normalized.
-!
-!   Laplaces equation implies that Vxx + Vyy + Vzz = 0, and the tensor
+!   Laplaces equation implies that Vxx + Vyy + Vzz = 0, and the gravity tensor
 !   is symmetric. The components are calculated according to eq. 1 in
 !   Petrovskaya and Vershkov (2006, J. Geod, 80, 117-127), which is based on
 !   the eq. 3.28 in Reed (1973, Ohio State Univ., Dept. Geod. Sci., Rep. 201,
@@ -36,24 +33,27 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 !   where r, t, p stand for radius, theta, and phi, and subscripts on V denote
 !   partial derivatives.
 !
-!   The output grids are in units of nT / m and are cacluated on a flattened
-!   ellipsoid with semi-major axis A and flattening F. The output grids contain
-!   N samples in latitude and longitude by default, but if the optional
-!   parameter SAMPLING is set to 2, the grids will contain N samples in
-!   latitude and 2N samples in longitude. The first latitudinal band of the
-!   grid corresponds to 90 N, the latitudinal band for 90 S is not calculated,
-!   and the latitudinal sampling interval is 180/N degrees. The first
-!   longitudinal band is 0 E, the longitudinal band for 360 E is not
-!   calculated, and the longitudinal sampling interval is 360/N for equally
-!   sampled and 180/N for equally spaced grids, respectively.
+!   The output grid are in units of 1/s and are cacluated on a flattened
+!   ellipsoid with semi-major axis A and flattening F. To obtain units of
+!   Eotvos (10^-9 s^-1), multiply by 10^9. The output grids contain N samples
+!   in latitude and longitude by default, but if the optional parameter
+!   SAMPLING is set to 2, the grids will contain N samples in latitude and 2N
+!   samples in longitude. The first latitudinal band of the grid corresponds to
+!   90 N, the latitudinal band for 90 S is not calculated, and the latitudinal
+!   sampling interval is 180/N degrees. The first longitudinal band is 0 E,
+!   the longitudinal band for 360 E is not calculated, and the longitudinal
+!   sampling interval is 360/N for equally sampled and 180/N for equally spaced
+!   grids, respectively.
 !
 !   Calling Parameters
 !
 !       IN
-!           cilm        Schmidth seminormalized magnetic potential spherical
+!           cilm        The 4-pi normalized gravitational potential spherical
 !                       harmonic coefficients.
 !           lmax        The maximum spherical harmonic degree of the function,
 !                       used to determine the number of samples N.
+!           GM          Product of the gravitatonal constant and the planet's
+!                       mass.
 !           r0          Reference radius of potential coefficients.
 !           a           The semimajor axis of the flattened ellipsoid.
 !           f           Flattening of the planet.
@@ -67,12 +67,12 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 !                       the coefficients up to.
 !
 !       OUT
-!           Vxx         x-x component of the magnetic field tensor.
-!           Vyy         y-y component of the magnetic field tensor.
-!           Vzz         z-z component of the magnetic field tensor.
-!           Vxy         x-y component of the magnetic field tensor.
-!           Vxz         x-z component of the magnetic field tensor.
-!           Vyz         y-z component of the magnetic field tensor.
+!           Vxx         x-x component of the gravity gradient tensor.
+!           Vyy         y-y component of the gravity gradient tensor.
+!           Vzz         z-z component of the gravity gradient tensor.
+!           Vxy         x-y component of the gravity gradient tensor.
+!           Vxz         x-z component of the gravity gradient tensor.
+!           Vyz         y-z component of the gravity gradient tensor.
 !           N           Number of samples in latitude. Number of samples in
 !                       longitude is N when sampling is 1 (default), and is
 !                       2N when sampling is 2.
@@ -101,17 +101,13 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 !------------------------------------------------------------------------------
     use FFTW3
     use ftypes
-#ifdef FFTW3_UNDERSCORE
-#define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
-#define dfftw_execute_dft_c2r dfftw_execute_dft_c2r_
-#define dfftw_destroy_plan dfftw_destroy_plan_
-#endif
+    use, intrinsic :: iso_c_binding
 
     implicit none
 
-    real(dp), intent(in) :: cilm(:,:,:), r0, a, f
-    real(dp), intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
-                             vxz(:,:), vyz(:,:)
+    real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
+    real(dp), intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), vxz(:,:),&
+                             vyz(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: n
     integer, intent(in), optional :: sampling, lmax_calc
@@ -124,18 +120,16 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 coefrps0, coeftp0, coeftps0, coefpp0, coefpps0, coeftt0, &
                 coeftts0
     complex(dp) :: coef(2*lmax+3), coefr(2*lmax+3), coefrs(2*lmax+3), &
-                coeft(2*lmax+3), coefts(2*lmax+3), coefp(2*lmax+3), &
-                coefps(2*lmax+3), tempc, coefrr(2*lmax+3), coefrrs(2*lmax+3), &
-                coefrt(2*lmax+3), coefrts(2*lmax+3), coefrp(2*lmax+3), &
-                coefrps(2*lmax+3), coeftp(2*lmax+3), coeftps(2*lmax+3), &
-                coefpp(2*lmax+3), coefpps(2*lmax+3), coeftt(2*lmax+3), &
-                coeftts(2*lmax+3)
-    integer(int8) :: plan
+                   coeft(2*lmax+3), coefts(2*lmax+3), coefp(2*lmax+3), &
+                   coefps(2*lmax+3), tempc, coefrr(2*lmax+3), &
+                   coefrrs(2*lmax+3), coefrt(2*lmax+3), coefrts(2*lmax+3), &
+                   coefrp(2*lmax+3), coefrps(2*lmax+3), coeftp(2*lmax+3), &
+                   coeftps(2*lmax+3), coefpp(2*lmax+3), coefpps(2*lmax+3), &
+                   coeftt(2*lmax+3), coeftts(2*lmax+3)
+    type(C_PTR) :: plan
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0
-    external :: dfftw_plan_dft_c2r_1d, dfftw_execute_dft_c2r, &
-                dfftw_destroy_plan
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
 
@@ -144,8 +138,8 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     n = 2 * lmax + 2
 
     if (present(sampling)) then
-        if (sampling /= 1 .and. sampling /= 2) then
-            print*, "Error --- MakeMagGradGridDH"
+        if (sampling /= 1 .and. sampling /=2) then
+            print*, "Error --- MakeGravGradGridDH"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
             print*, "Input value is ", sampling
@@ -160,7 +154,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     end if
 
     if (size(cilm(:,1,1)) < 2) then
-        print*, "Error --- MakeMagGradGridDH"
+        print*, "Error --- MakeGravGradGridDH"
         print*, "CILM must be dimensioned as (2, *, *)."
         print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), &
                 size(cilm(1,1,:))
@@ -191,7 +185,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             size(vxy(1,:)) < nlong .or. size(vxz(:,1)) < n .or. &
             size(vxz(1,:)) < nlong  .or. size(vyz(:,1)) < n .or. &
             size(vyz(1,:)) < nlong) then
-        print*, "Error --- MakeMagGradGridDH"
+        print*, "Error --- MakeGravGradGridDH"
 
         if (present(sampling)) then
             if (sampling == 1) then
@@ -219,13 +213,23 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
     end if
 
+    if (cilm(1,1,1) /= 1.0_dp .and. f /= 0.0_dp) then
+        print*, "Warning --- MakeGravGradGridDH"
+        print*, "The degree-0 term of the spherical harmonic coefficients is "
+        print*, "not equal to 1. The variation in gravity resulting from "
+        print*, "variations in radius of the flattened ellipsoid will not be "
+        print*, "taken into account."
+        print*, "C00 = ", cilm(1,1,1)
+        print*, "F = ", f
+    end if
+
     pi = acos(-1.0_dp)
 
     scalef = 1.0e-280_dp
 
     if (present(lmax_calc)) then
         if (lmax_calc > lmax) then
-            print*, "Error --- MakeMagGradGridDH"
+            print*, "Error --- MakeGravGradGridDH"
             print*, "LMAX_CALC must be less than or equal to LMAX."
             print*, "LMAX = ", lmax
             print*, "LMAX_CALC = ", lmax_calc
@@ -265,7 +269,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         allocate (fsymsign(lmax_comp+1,lmax_comp+1), stat=astat(4))
 
         if (sum(astat(1:4)) /= 0) then
-            print*, "Error --- MakeMagGradGridDH"
+            print*, "Error --- MakeGravGradGridDH"
             print*, "Problem allocating arrays SQR, FF1, FF2, or FSYMSIGN", &
                     astat(1), astat(2), astat(3), astat(4)
             if (present(exitstatus)) then
@@ -303,7 +307,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         !   Precompute square roots of integers that are used several times.
         !
         !----------------------------------------------------------------------
-        do l = 1, 2 * lmax_comp + 1
+        do l=1, 2 * lmax_comp + 1
             sqr(l) = sqrt(dble(l))
         end do
 
@@ -318,21 +322,22 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         !
         !----------------------------------------------------------------------
         if (lmax_comp /= 0) then
-            ff1(2,1) = 1.0_dp
+            ff1(2,1) = sqr(3)
             ff2(2,1) = 0.0_dp
 
         end if
 
         do l = 2, lmax_comp, 1
-            ff1(l+1,1) = dble(2*l-1) / dble(l)
-            ff2(l+1,1) = dble(l-1) / dble(l)
+            ff1(l+1,1) = sqr(2*l-1) * sqr(2*l+1) / dble(l)
+            ff2(l+1,1) = dble(l-1) * sqr(2*l+1) / sqr(2*l-3) / dble(l)
 
             do m = 1, l-2, 1
-                ff1(l+1,m+1) = dble(2*l-1) / sqr(l+m) / sqr(l-m)
-                ff2(l+1,m+1) = sqr(l-m-1) * sqr(l+m-1) / sqr(l+m) / sqr(l-m)
+                ff1(l+1,m+1) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
+                ff2(l+1,m+1) = sqr(2*l+1) * sqr(l-m-1) * sqr(l+m-1) &
+                               / sqr(2*l-3) / sqr(l+m) / sqr(l-m)
             end do
 
-            ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
+            ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
             ff2(l+1,l) = 0.0_dp
 
         end do
@@ -346,8 +351,8 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     !   Create generic plan for grid.
     !
     !--------------------------------------------------------------------------
-    call dfftw_plan_dft_c2r_1d(plan, nlong, coef(1:nlong/2+1), grid(1:nlong), &
-                               FFTW_MEASURE)
+    plan = fftw_plan_dft_c2r_1d(nlong, coef(1:nlong/2+1), grid(1:nlong), &
+                                FFTW_MEASURE)
 
     !--------------------------------------------------------------------------
     !
@@ -399,7 +404,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     tempr = 2 * cilm(1,1,1) * pm2  ! l = 0
     coefrr0 = coefrr0 + tempr
 
-    ! derivative in theta and phi of l=0 term is 0, so no need to calculate
+    ! derivative in theta and phi of l=0 term is 0, so no need to calculate this
 
     if (lmax_comp /= 0) then    ! l = 1
         prefactor(1) = r0 / r_ex
@@ -428,7 +433,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         tempr = cilm(1,l1,1) * p * (l1) * (l1+1) * prefactor(l)
         coefrr0 = coefrr0 + tempr
 
-        dpl = l * (pm1)
+        dpl = l * ( sqr(2*l+1) / sqr(2*l-1) * pm1 )
         tempr = cilm(1,l1,1) * dpl * prefactor(l)
         coeft0 = coeft0 + tempr
 
@@ -453,21 +458,21 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         m1 = m + 1
 
         pmm = pmm * sqr(2*m+1) / sqr(2*m)
-        pm2 = pmm / sqr(2*m+1)
+        pm2 = pmm
 
         tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (-m-1) &
                 * prefactor(m)    ! (m,m)
         coefr(m1) = coefr(m1) + tempc
 
-        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (m+1) * (m+2) &
-                * prefactor(m) ! (m,m)
+        tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (m+1) &
+                * (m+2) * prefactor(m) ! (m,m)
         coefrr(m1) = coefrr(m1) + tempc
 
         tempc = cmplx(cilm(2,m1,m1), cilm(1,m1,m1), dp) * pm2 &
                 * prefactor(m) * m ! (m,m)
         coefp(m1) = coefp(m1) + tempc
 
-        tempc = - cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
+        tempc = -cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
                 * prefactor(m) * m**2 ! (m,m)
         coefpp(m1) = coefpp(m1) + tempc
 
@@ -482,7 +487,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
         pm1 = 0.0_dp
 
-        dpl = (pm2 * sqr(2*m+1))
+        dpl = ( sqr(2*m+3) * pmm )
         tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * dpl &
                 * prefactor(m+1)    ! (m+1,m)
         coeft(m1) = coeft(m1) + tempc
@@ -510,7 +515,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                     * prefactor(l) * m
             coefp(m1) = coefp(m1) + tempc
 
-            tempc = - cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
+            tempc = -cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
                     * prefactor(l) * m**2
             coefpp(m1) = coefpp(m1) + tempc
 
@@ -518,7 +523,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                     * prefactor(l) * m
             coefrp(m1) = coefrp(m1) + tempc
 
-            dpl = ( sqr(l+m) * sqr(l-m) * pm1)
+            dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1)
             tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl &
                     * prefactor(l)
             coeft(m1) = coeft(m1) + tempc
@@ -527,8 +532,8 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                     * prefactor(l)
             coefrt(m1) = coefrt(m1) + tempc
 
-            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * dpl &
-                    * prefactor(l) * m
+            tempc = cmplx(cilm(2,l1,m1), cilm(1,l1,m1), dp) * dpl * &
+                    prefactor(l) * m
             coeftp(m1) = coeftp(m1) + tempc
 
             dpl2 = -(l * l1 -(m**2) / u**2) * p
@@ -555,7 +560,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
     if (lmax_comp /= 0) then
 
-        pmm = pmm / sqr(2*lmax_comp) * rescalem
+        pmm = pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
         tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                         - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
                         * (-lmax_comp-1) * prefactor(lmax_comp)
@@ -571,7 +576,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                         * prefactor(lmax_comp) * lmax_comp
         coefp(lmax_comp+1) = coefp(lmax_comp+1) + tempc
 
-        tempc = - cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+        tempc = -cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                         - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
                         * prefactor(lmax_comp) * lmax_comp**2
         coefpp(lmax_comp+1) = coefpp(lmax_comp+1) + tempc
@@ -581,7 +586,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                         * (-lmax_comp-1) * prefactor(lmax_comp) * lmax_comp
         coefrp(lmax_comp+1) = coefrp(lmax_comp+1) + tempc
 
-        dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)) * pmm
+        dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)) * pmm 
         tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                         - cilm(2,lmax_comp+1,lmax_comp+1), dp) * dpl2 &
                         * prefactor(lmax_comp)
@@ -589,32 +594,32 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
     end if
 
-    coefr0 = coefr0 * r0 / r_ex
-    coefr(2:lmax+1) = coefr(2:lmax+1) * r0 / r_ex
+    coefr0 = coefr0 * gm / r_ex**2
+    coefr(2:lmax+1) = coefr(2:lmax+1) * gm / r_ex**2
 
-    coefrt0 = - coefrt0 * r0 / r_ex
-    coefrt(2:lmax+1) = - coefrt(2:lmax+1) * r0 / r_ex
+    coefrt0 = - coefrt0 * gm / r_ex**2
+    coefrt(2:lmax+1) = - coefrt(2:lmax+1) * gm / r_ex**2
 
-    coefrr0 = coefrr0 * r0 / r_ex**2
-    coefrr(2:lmax+1) = coefrr(2:lmax+1) * r0 / r_ex**2
+    coefrr0 = coefrr0 * gm / r_ex**3
+    coefrr(2:lmax+1) = coefrr(2:lmax+1) * gm / r_ex**3
 
-    coeft0 = - coeft0 * r0
-    coeft(2:lmax+1) = - coeft(2:lmax+1) * r0
+    coeft0 = - coeft0 * gm / r_ex
+    coeft(2:lmax+1) = - coeft(2:lmax+1) * gm / r_ex
 
-    coeftt0 = coeftt0 * r0
-    coeftt(2:lmax+1) = coeftt(2:lmax+1) * r0
+    coeftt0 = coeftt0 * gm / r_ex
+    coeftt(2:lmax+1) = coeftt(2:lmax+1) * gm / r_ex
 
-    coeftp0 = - coeftp0 * r0
-    coeftp(2:lmax+1) = - coeftp(2:lmax+1) * r0
+    coeftp0 = - coeftp0 * gm / r_ex
+    coeftp(2:lmax+1) = - coeftp(2:lmax+1) * gm / r_ex
 
-    coefp0 = coefp0 * r0
-    coefp(2:lmax+1) = coefp(2:lmax+1) * r0
+    coefp0 = coefp0 * gm / r_ex
+    coefp(2:lmax+1) = coefp(2:lmax+1) * gm / r_ex
 
-    coefpp0 = coefpp0 * r0
-    coefpp(2:lmax+1) = coefpp(2:lmax+1) * r0
+    coefpp0 = coefpp0 * gm / r_ex
+    coefpp(2:lmax+1) = coefpp(2:lmax+1) * gm / r_ex
 
-    coefrp0 = coefrp0 * r0 / r_ex
-    coefrp(2:lmax+1) = coefrp(2:lmax+1) * r0 / r_ex
+    coefrp0 = coefrp0 * gm / r_ex**2
+    coefrp(2:lmax+1) = coefrp(2:lmax+1) * gm / r_ex**2
 
     ! Vzz = Vrr
     coef(1) = cmplx(coefrr0, 0.0_dp, dp)
@@ -626,7 +631,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     vzz(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vxx = 1/r Vr + 1/r^2 Vtt
@@ -639,11 +644,11 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     vxx(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
-    coef(1) = cmplx(coefr0/r_ex + coefpp0/(r_ex**2), 0.0_dp, dp)
+    coef(1) = cmplx(coefr0/r_ex  + coefpp0/(r_ex**2), 0.0_dp, dp)
     coef(2:lmax+1) = (coefr(2:lmax+1)/r_ex &
                      + coefpp(2:lmax+1)/(r_ex**2) ) / 2.0_dp
 
@@ -653,7 +658,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     vyy(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -662,11 +667,11 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
     if (present(sampling)) then
         if (sampling == 2) then
-            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp) 
+            coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     vxy(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -680,7 +685,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     vxz(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -694,7 +699,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     vyz(i_eq,1:nlong) = grid(1:nlong)
 
     do i = 1, i_eq - 1, 1
@@ -764,13 +769,19 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
         pm2 = 1.0_dp
 
-        ! l = 0 terms are zero
+        tempr = -cilm(1,1,1) * pm2 ! l = 0
+        coefr0 = coefr0 + tempr
+        coefrs0 = coefrs0 + tempr   ! fsymsign is always 1 for l=m=0
+
+        tempr = 2 * cilm(1,1,1) * pm2  ! l = 0
+        coefrr0 = coefrr0 + tempr
+        coefrrs0 = coefrrs0 + tempr
 
         ! derivative in theta and phi of l=0 term is 0, so no need to
         ! calculate this
 
         if (lmax_comp /= 0) then    ! l = 1
-            prefactor(1) = (r0 / r_ex)**2
+            prefactor(1) = r0 / r_ex
 
             do l = 2, lmax_comp, 1
                 prefactor(l) = prefactor(l-1) * r0 / r_ex
@@ -823,7 +834,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coefrr0 = coefrr0 + tempr
             coefrrs0 = coefrrs0 + tempr * fsymsign(l1,1)
 
-            dpl = l * (pm1 - z * p) / u**2
+            dpl = l * ( sqr(2*l+1) / sqr(2*l-1) * pm1 - z * p ) / u**2
             tempr = cilm(1,l1,1) * dpl * prefactor(l)
             coeft0 = coeft0 + tempr
             coefts0 = coefts0 - tempr * fsymsign(l1,1)  ! reverse fsymsign
@@ -853,7 +864,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             rescalem = rescalem * u
 
             pmm = pmm * sqr(2*m+1) / sqr(2*m)
-            pm2 = pmm / sqr(2*m+1)
+            pm2 = pmm
 
             tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (-m-1) &
                     * prefactor(m)    ! (m,m)
@@ -870,7 +881,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coefp(m1) = coefp(m1) + tempc
             coefps(m1) = coefps(m1) + tempc ! fsymsign = 1
 
-            tempc = - cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
+            tempc = -cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
                     * prefactor(m) * m**2 ! (m,m)
             coefpp(m1) = coefpp(m1) + tempc
             coefpps(m1) = coefpps(m1) + tempc ! fsymsign = 1
@@ -904,13 +915,13 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coeftts(m1) = coeftts(m1) + tempc * dpl2s
 
             pm1 = z * ff1(m1+1,m1) * pm2
-            tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 * (-m-2) &
-                    * prefactor(m+1)  ! (m+1,m)
+            tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 &
+                    * (-m-2) * prefactor(m+1)  ! (m+1,m)
             coefr(m1) = coefr(m1) + tempc 
             coefrs(m1) = coefrs(m1) - tempc ! fsymsign = -1
 
-            tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 * (m+2) &
-                    * (m+3) * prefactor(m+1)   ! (m+1,m)
+            tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 &
+                    * (m+2) * (m+3) * prefactor(m+1)   ! (m+1,m)
             coefrr(m1) = coefrr(m1) + tempc
             coefrrs(m1) = coefrrs(m1) - tempc ! fsymsign = -1
 
@@ -919,17 +930,17 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coefp(m1) = coefp(m1) + tempc
             coefps(m1) = coefps(m1) - tempc ! fsymsign = -1
 
-            tempc = - cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 &
+            tempc = -cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 &
                     * prefactor(m+1) * m**2   ! (m+1,m)
             coefpp(m1) = coefpp(m1) + tempc
             coefpps(m1) = coefpps(m1) - tempc ! fsymsign = -1
 
-            tempc = cmplx(cilm(2,m1+1,m1), cilm(1,m1+1,m1), dp) * pm1 * (-m-2) &
-                    * prefactor(m+1) * m    ! (m+1,m)
+            tempc = cmplx(cilm(2,m1+1,m1), cilm(1,m1+1,m1), dp) * pm1 &
+                    * (-m-2) * prefactor(m+1) * m    ! (m+1,m)
             coefrp(m1) = coefrp(m1) + tempc
             coefrps(m1) = coefrps(m1) - tempc ! fsymsign = -1
 
-            dpl = (pm2 * sqr(2*m+1) - z * (m+1) * pm1) / u**2
+            dpl = (sqr(2*m+3) * pmm - z * (m+1) * pm1) / u**2
             tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * dpl &
                     * prefactor(m+1)    ! (m+1,m)
             coeft(m1) = coeft(m1) + tempc
@@ -970,7 +981,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 coefp(m1) = coefp(m1) + tempc
                 coefps(m1) = coefps(m1) + tempc * fsymsign(l1,m1)
 
-                tempc = - cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
+                tempc = -cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
                         * prefactor(l) * m**2
                 coefpp(m1) = coefpp(m1) + tempc
                 coefpps(m1) = coefpps(m1) + tempc * fsymsign(l1,m1)
@@ -980,15 +991,16 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 coefrp(m1) = coefrp(m1) + tempc
                 coefrps(m1) = coefrps(m1) + tempc * fsymsign(l1,m1)
 
-                dpl = ( sqr(l+m) * sqr(l-m) * pm1 - l * z * p ) / u**2
+                dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) &
+                       * pm1 - z * l * p) / u**2
                 tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl &
                         * prefactor(l)
                 coeft(m1) = coeft(m1) + tempc
                 ! reverse fsymsign
                 coefts(m1) = coefts(m1) - tempc * fsymsign(l1,m1)
 
-                tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl * (-l1) &
-                        * prefactor(l)
+                tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl &
+                        * (-l1) * prefactor(l)
                 coefrt(m1) = coefrt(m1) + tempc
                 ! reverse fsymsign
                 coefrts(m1) = coefrts(m1) - tempc * fsymsign(l1,m1)
@@ -1002,7 +1014,8 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 dpl2 = -(l * l1 -(m**2)/u**2) * p + z * dpl
                 dpl2s = -(l * l1 -(m**2)/u**2) * p * fsymsign(l1,m1) &
                        - z * dpl * fsymsign(l1,m1) 
-                tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * prefactor(l)
+                tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
+                        * prefactor(l)
                 coeftt(m1) = coeftt(m1) + tempc * dpl2
                 coeftts(m1) = coeftts(m1) +  tempc * dpl2s
 
@@ -1044,7 +1057,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
             rescalem = rescalem * u
 
-            pmm = pmm / sqr(2*lmax_comp) * rescalem
+            pmm = pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) * rescalem
             tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                             - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
                             * (-lmax_comp-1) * prefactor(lmax_comp)
@@ -1064,7 +1077,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coefp(lmax_comp+1) = coefp(lmax_comp+1) + tempc
             coefps(lmax_comp+1) = coefps(lmax_comp+1) + tempc   ! fsymsign = 1
 
-            tempc = - cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+            tempc = -cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                             - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
                             * prefactor(lmax_comp) * lmax_comp**2
             coefpp(lmax_comp+1) = coefpp(lmax_comp+1) + tempc
@@ -1097,8 +1110,10 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coeftp(lmax_comp+1) = coeftp(lmax_comp+1) + tempc
             coeftps(lmax_comp+1) = coeftps(lmax_comp+1) - tempc
 
-            dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm + z * dpl
-            dpl2s = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm - z * dpl
+            dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm &
+                   + z * dpl
+            dpl2s = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm &
+                    - z * dpl
             tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                             - cilm(2,lmax_comp+1,lmax_comp+1), dp) &
                             * prefactor(lmax_comp)
@@ -1110,59 +1125,59 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
         ! Note that the first angular derivatives are with repsect to z,
         ! but that the second is with respect to theta.
 
-        coefr0 = coefr0 * r0 / r_ex
-        coefr(2:lmax+1) = coefr(2:lmax+1) * r0 / r_ex
+        coefr0 = coefr0 * gm / r_ex**2
+        coefr(2:lmax+1) = coefr(2:lmax+1) * gm / r_ex**2
 
-        coefrs0 = coefrs0 * r0 / r_ex
-        coefrs(2:lmax+1) = coefrs(2:lmax+1) * r0 / r_ex
+        coefrs0 = coefrs0 * gm / r_ex**2
+        coefrs(2:lmax+1) = coefrs(2:lmax+1) * gm / r_ex**2
 
-        coefrt0 = -sint * coefrt0 * r0 / r_ex
-        coefrt(2:lmax+1) = -sint * coefrt(2:lmax+1) * r0 / r_ex
+        coefrt0 = -sint * coefrt0 * gm / r_ex**2
+        coefrt(2:lmax+1) = -sint * coefrt(2:lmax+1) * gm / r_ex**2
 
-        coefrts0 = -sint * coefrts0 * r0 / r_ex
-        coefrts(2:lmax+1) = -sint * coefrts(2:lmax+1) * r0 / r_ex
+        coefrts0 = -sint * coefrts0 * gm / r_ex**2
+        coefrts(2:lmax+1) = -sint * coefrts(2:lmax+1) * gm / r_ex**2
 
-        coefrr0 = coefrr0 * r0 / r_ex**2
-        coefrr(2:lmax+1) = coefrr(2:lmax+1) * r0 / r_ex**2
+        coefrr0 = coefrr0 * gm / r_ex**3
+        coefrr(2:lmax+1) = coefrr(2:lmax+1) * gm / r_ex**3
 
-        coefrrs0 = coefrrs0 * r0 / r_ex**2
-        coefrrs(2:lmax+1) = coefrrs(2:lmax+1) * r0 / r_ex**2
+        coefrrs0 = coefrrs0 * gm / r_ex**3
+        coefrrs(2:lmax+1) = coefrrs(2:lmax+1) * gm / r_ex**3
 
-        coeft0 = -sint * coeft0 * r0
-        coeft(2:lmax+1) = -sint * coeft(2:lmax+1) * r0
+        coeft0 = -sint * coeft0 * gm / r_ex
+        coeft(2:lmax+1) = -sint * coeft(2:lmax+1) * gm / r_ex
 
-        coefts0 = -sint * coefts0 * r0
-        coefts(2:lmax+1) = -sint * coefts(2:lmax+1) * r0
+        coefts0 = -sint * coefts0 * gm / r_ex
+        coefts(2:lmax+1) = -sint * coefts(2:lmax+1) * gm / r_ex
 
-        coeftt0 = coeftt0 * r0
-        coeftt(2:lmax+1) = coeftt(2:lmax+1) * r0
+        coeftt0 = coeftt0 * gm / r_ex
+        coeftt(2:lmax+1) = coeftt(2:lmax+1) * gm / r_ex
 
-        coeftts0 = coeftts0 * r0
-        coeftts(2:lmax+1) = coeftts(2:lmax+1) * r0
+        coeftts0 = coeftts0 * gm / r_ex
+        coeftts(2:lmax+1) = coeftts(2:lmax+1) * gm / r_ex
 
-        coeftp0 = -sint * coeftp0 * r0
-        coeftp(2:lmax+1) = -sint * coeftp(2:lmax+1) * r0
+        coeftp0 = -sint * coeftp0 * gm / r_ex
+        coeftp(2:lmax+1) = -sint * coeftp(2:lmax+1) * gm / r_ex
 
-        coeftps0 = -sint * coeftps0 * r0
-        coeftps(2:lmax+1) = -sint * coeftps(2:lmax+1) * r0
+        coeftps0 = -sint * coeftps0 * gm / r_ex
+        coeftps(2:lmax+1) = -sint * coeftps(2:lmax+1) * gm / r_ex
 
-        coefp0 = coefp0 * r0
-        coefp(2:lmax+1) = coefp(2:lmax+1) * r0
+        coefp0 = coefp0 * gm / r_ex
+        coefp(2:lmax+1) = coefp(2:lmax+1) * gm / r_ex
 
-        coefps0 = coefps0 * r0
-        coefps(2:lmax+1) = coefps(2:lmax+1) * r0
+        coefps0 = coefps0 * gm / r_ex
+        coefps(2:lmax+1) = coefps(2:lmax+1) * gm / r_ex
 
-        coefpp0 = coefpp0 * r0
-        coefpp(2:lmax+1) = coefpp(2:lmax+1) * r0
+        coefpp0 = coefpp0 * gm / r_ex
+        coefpp(2:lmax+1) = coefpp(2:lmax+1) * gm / r_ex
 
-        coefpps0 = coefpps0 * r0
-        coefpps(2:lmax+1) = coefpps(2:lmax+1) * r0
+        coefpps0 = coefpps0 * gm / r_ex
+        coefpps(2:lmax+1) = coefpps(2:lmax+1) * gm / r_ex
 
-        coefrp0 = coefrp0 * r0 / r_ex
-        coefrp(2:lmax+1) = coefrp(2:lmax+1) * r0 / r_ex
+        coefrp0 = coefrp0 * gm / r_ex**2
+        coefrp(2:lmax+1) = coefrp(2:lmax+1) * gm / r_ex**2
 
-        coefrps0 = coefrps0 * r0 / r_ex
-        coefrps(2:lmax+1) = coefrps(2:lmax+1) * r0 / r_ex
+        coefrps0 = coefrps0 * gm / r_ex**2
+        coefrps(2:lmax+1) = coefrps(2:lmax+1) * gm / r_ex**2
 
         ! Vzz = Vrr
         coef(1) = cmplx(coefrr0, 0.0_dp, dp)
@@ -1175,7 +1190,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
         end if
 
-        call dfftw_execute_dft_c2r(plan, coef, grid)
+        call fftw_execute_dft_c2r(plan, coef, grid)
         vzz(i,1:nlong) = grid(1:nlong)
 
         if (i == 1) then
@@ -1197,7 +1212,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vxx(i,1:nlong) = grid(1:nlong)
 
             ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
@@ -1213,7 +1228,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vyy(i,1:nlong) = grid(1:nlong)
 
             ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -1228,7 +1243,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vxy(i,1:nlong) = grid(1:nlong)
 
             ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -1242,7 +1257,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vxz(i,1:nlong) = grid(1:nlong)
 
             ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -1256,7 +1271,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vyz(i,1:nlong) = grid(1:nlong)
 
         end if
@@ -1272,7 +1287,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vzz(i_s,1:nlong) = grid(1:nlong)
 
             ! Vxx = 1/r Vr + 1/r^2 Vtt
@@ -1286,12 +1301,12 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vxx(i_s,1:nlong) = grid(1:nlong)
 
             ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
             coef(1) = cmplx(coefrs0/r_ex + coefts0/(r_ex**2)/tan(theta) &
-                            + coefpps0/(r_ex**2)/u**2, 0.0_dp, dp)
+                            + coefpps0/(r_ex**2)/u**2,0.0_dp, dp)
             coef(2:lmax+1) = (coefrs(2:lmax+1)/r_ex &
                               + coefts(2:lmax+1)/(r_ex**2)/tan(theta) + &
                               coefpps(2:lmax+1)/(r_ex**2)/u**2 ) / 2.0_dp
@@ -1302,7 +1317,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vyy(i_s,1:nlong) = grid(1:nlong)
 
             ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
@@ -1317,7 +1332,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vxy(i_s,1:nlong) = grid(1:nlong)
 
             ! Vxz = 1/r^2 Vt - 1/r Vrt
@@ -1331,7 +1346,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vxz(i_s,1:nlong) = grid(1:nlong)
 
             ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
@@ -1346,13 +1361,13 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             vyz(i_s,1:nlong) = grid(1:nlong)
 
         end if
 
     end do
 
-    call dfftw_destroy_plan(plan)
+    call fftw_destroy_plan(plan)
 
-end subroutine MakeMagGradGridDH
+end subroutine MakeGravGradGridDH

@@ -101,11 +101,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     use FFTW3
     use SHTOOLS, only: normalgravity
     use ftypes
-#ifdef FFTW3_UNDERSCORE
-#define dfftw_plan_dft_c2r_1d dfftw_plan_dft_c2r_1d_
-#define dfftw_execute_dft_c2r dfftw_execute_dft_c2r_
-#define dfftw_destroy_plan dfftw_destroy_plan_
-#endif
+    use, intrinsic :: iso_c_binding
 
     implicit none
 
@@ -125,13 +121,11 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     complex(dp) :: coef(2*lmax+3), coefr(2*lmax+3), coefrs(2*lmax+3), &
                    coeft(2*lmax+3), coefts(2*lmax+3), coefp(2*lmax+3), &
                    coefps(2*lmax+3), coefu(2*lmax+3), coefus(2*lmax+3), tempc
-    integer(int8) :: plan
+    type(C_PTR) :: plan
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0
     logical :: calcu
-    external :: dfftw_plan_dft_c2r_1d, dfftw_execute_dft_c2r, &
-                dfftw_destroy_plan
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
 
@@ -417,8 +411,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     !   Create generic plan for grid.
     !
     !--------------------------------------------------------------------------
-    call dfftw_plan_dft_c2r_1d(plan, nlong, coef(1:nlong/2+1), grid(1:nlong), &
-                               FFTW_MEASURE)
+    plan = fftw_plan_dft_c2r_1d(nlong, coef(1:nlong/2+1), grid(1:nlong), &
+                                FFTW_MEASURE)
 
     !--------------------------------------------------------------------------
     !
@@ -577,7 +571,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     rad_grid(i_eq,1:nlong) = grid(1:nlong) * gm / r_ex**2
 
     if (calcu) then
@@ -591,7 +585,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         end if
 
-        call dfftw_execute_dft_c2r(plan, coef, grid)
+        call fftw_execute_dft_c2r(plan, coef, grid)
         pot_grid(i_eq,1:nlong) = grid(1:nlong) * gm / r_ex
     end if
 
@@ -604,7 +598,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     theta_grid(i_eq,1:nlong) = -sin(theta) * grid(1:nlong) * gm / r_ex**2
 
     coef(1) = cmplx(coefp0, 0.0_dp, dp)
@@ -616,7 +610,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         end if
     end if
 
-    call dfftw_execute_dft_c2r(plan, coef, grid)
+    call fftw_execute_dft_c2r(plan, coef, grid)
     phi_grid(i_eq,1:nlong) = grid(1:nlong) * (gm / r_ex**2) / sin(theta)
 
     do i=1, i_eq - 1, 1
@@ -883,7 +877,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             end if
         end if
 
-        call dfftw_execute_dft_c2r(plan, coef, grid)
+        call fftw_execute_dft_c2r(plan, coef, grid)
         rad_grid(i,1:nlong) = grid(1:nlong) * gm / r_ex**2
 
         if (calcu) then
@@ -896,7 +890,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             pot_grid(i,1:nlong) = grid(1:nlong) * gm / r_ex
         end if
 
@@ -914,7 +908,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             theta_grid(i,1:nlong) = -sin(theta)*grid(1:nlong) * gm / r_ex**2
 
             coef(1) = cmplx(coefp0, 0.0_dp, dp)
@@ -926,7 +920,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             phi_grid(i,1:nlong) = grid(1:nlong) * (gm/r_ex**2) / sin(theta)
 
         end if
@@ -941,7 +935,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             rad_grid(i_s,1:nlong) = grid(1:nlong) * gm / r_ex**2
 
             if (calcu) then
@@ -954,7 +948,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                     end if
                 end if
 
-                call dfftw_execute_dft_c2r(plan, coef, grid)
+                call fftw_execute_dft_c2r(plan, coef, grid)
                 pot_grid(i_s,1:nlong) = grid(1:nlong) * gm / r_ex
             end if
 
@@ -967,7 +961,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             theta_grid(i_s,1:nlong) = -sin(theta) * grid(1:nlong) &
                                       * gm / r_ex**2
 
@@ -979,14 +973,14 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 end if
             end if
 
-            call dfftw_execute_dft_c2r(plan, coef, grid)
+            call fftw_execute_dft_c2r(plan, coef, grid)
             phi_grid(i_s,1:nlong) = grid(1:nlong) * (gm/r_ex**2) / sin(theta)
 
         end if
 
     end do
 
-    call dfftw_destroy_plan(plan)
+    call fftw_destroy_plan(plan)
 
     !--------------------------------------------------------------------------
     !

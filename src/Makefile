@@ -89,10 +89,10 @@ SRCSLAPACK = EigValSym.F95 EigValVecSym.F95 EigValVecSymTri.F95 \
 OBJSLAPACK = EigValSym.o EigValVecSym.o EigValVecSymTri.o SHExpandLSQ.o \
 	SHMTDebias.o SHMTVarOpt.o
 
-SRCSFFTW = MakeGridDH.F95 MakeGridDHC.F95 MakeGridGLQ.F95 MakeGridGLQC.F95 \
-	SHExpandDH.F95 SHExpandDHC.F95 SHExpandGLQ.F95 SHExpandGLQC.F95 \
-	MakeGravGradGridDH.F95 MakeGravGridDH.F95 MakeMagGridDH.F95 \
-	MakeMagGradGridDH.F95
+SRCSFFTW = MakeGridDH.f95 MakeGridDHC.f95 MakeGridGLQ.f95 MakeGridGLQC.f95 \
+	SHExpandDH.f95 SHExpandDHC.f95 SHExpandGLQ.f95 SHExpandGLQC.f95 \
+	MakeGravGradGridDH.f95 MakeGravGridDH.f95 MakeMagGridDH.f95 \
+	MakeMagGradGridDH.f95
 
 OBJSFFTW = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
 	SHExpandDH.o SHExpandDHC.o SHExpandGLQ.o SHExpandGLQC.o \
@@ -139,7 +139,8 @@ clean-prog-mod:
 %.o: %.f95
 	$(F95) -c $(F95FLAGS) $<
 %.o: %.F95
-	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $(FFTW3_FLAGS) $<
+	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $<
+
 
 SHTOOLS.o : ftypes.o
 FFTW3.o : ftypes.o
