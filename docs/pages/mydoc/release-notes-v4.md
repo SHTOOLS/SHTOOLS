@@ -38,7 +38,7 @@ toc: true
 * The fortran routines now access the FFTW library using Fortran 2003 standards. Though most compilers do not yet support all features of F2003, the few features used here (such as the module `iso_c_binding`) are claimed to be supported by the majority of modern compilers. This allows us to access the FFTW routines without use of fortran bindings, which are not always included in compiled versions of FFTW. 
 * All FFTW routines are explicitly defined in an interface block in `FFTW3.f95`. For simplicity, the use of the optional parameter `FFTW_UNDERSCORE` used in the Makefile has been deprecated.
 
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2018). SHTOOLS: Version 4.5, Zenodo, doi:[10.5281/zenodo.2350781](https://doi.org/10.5281/zenodo.2350781)
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2019). SHTOOLS: Version 4.5, Zenodo, doi:[10.5281/zenodo.2350781](https://doi.org/10.5281/zenodo.2350781)
 
 ## Version 4.4
 
