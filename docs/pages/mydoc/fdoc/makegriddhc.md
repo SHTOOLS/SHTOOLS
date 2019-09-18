@@ -17,13 +17,13 @@ call MakeGridDHC (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, 
 
 ## Parameters
 
-`griddh` : output, complex\*16, dimension (2\*lmax+2, 2\*lmax+2) or (2\*lmax+2, 4\*lmax+4)
+`griddh` : output, complex(dp), dimension (2\*lmax+2, 2\*lmax+2) or (2\*lmax+2, 4\*lmax+4)
 :   A 2D equally sampled (`n` by `n`, default), or equally spaced (`n` by `2n`) complex map of the input complex spherical harmonic coefficients `cilm` that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
 
 `n` : output, integer
 :   The number of samples in latitude and longitude of `griddh`. This is equal to `2lmax+2`, which will always be even. 
 
-`cilm` : input, complex\*16, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, complex(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The complex spherical harmonic coefficients of the function.  The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm(1,l+1,m+1)` and `Cl,-m=cilm(2,l+1,m+1)`.
 
 `lmax` : input, integer

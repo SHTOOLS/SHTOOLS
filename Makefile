@@ -119,7 +119,7 @@
 #       Create the man pages from input markdown files and create the static
 #       web site. Both of these are PRE-MADE in the distribution. To remake
 #       these files, it will be necessary to install "pandoc", "ghc" and
-#       "cabal-install" (all using brew on OSX), and then execute
+#       "cabal-install" (all using brew on macOS), and then execute
 #       "cabal update" and "cabal install pandoc-types".
 #
 #   make remove-doc
@@ -127,10 +127,11 @@
 #
 #   make www
 #       Make the static html web documention in the directory www using Jekyll.
-#       You will first need to run `bundle install` in the doc/ directory, then
-#       `bundle exec serve`, and then open http://127.0.0.1:4000. If you need
-#       to update the dependences, remove the file Gemfile.lock, and then run
-#       "bundle install".
+#       First, you must install "ruby" (using brew on macOS), and then install
+#       the gem bundler using "gem install bundler jekyll". To serve the web
+#       documents without making static html files, go to the directory `docs`
+#       type the command `bundle exec jekyll serve`, and then open
+#       http://127.0.0.1:4000.
 #
 #   make remove-www
 #       Remove the directory containing the static html web site.
@@ -329,7 +330,7 @@ remove-doc:
 	@echo "--> Removed man files and web site source md files"
 
 www:
-	@cd $(WWWSRC) ; $(JEKYLL) build -d ../$(WWWDEST)
+	@cd $(WWWSRC) ; bundle update ; $(JEKYLL) build -d ../$(WWWDEST)
 
 remove-www:
 	@-rm -rf $(WWWDEST)

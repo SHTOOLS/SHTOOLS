@@ -20,7 +20,7 @@ call SHMTVar (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `variance`, `
 `l` : input, integer
 :   The spherical harmonic degree used to calculate the theoretical variance.
 
-`tapers` : input, real\*8, dimension (`lwin`+1, `kmax`)
+`tapers` : input, real(dp), dimension (`lwin`+1, `kmax`)
 :   A matrix of localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
 `taper_order` : input, integer, dimension (`kmax`)
@@ -32,16 +32,16 @@ call SHMTVar (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `variance`, `
 `kmax` : input, integer
 :   The maximum number of tapers to be used when calculating the variance.
 
-`sff` : input, real\*8, dimension (`l`+`lwin`+1)
+`sff` : input, real(dp), dimension (`l`+`lwin`+1)
 :   The global unwindowed power spectrum of the function to be localized.
 
-`variance` : output, real\*8
+`variance` : output, real(dp)
 :   The theoretical variance of the multitaper spectral estimate for degree `l`.
 
-`taper_wt` : optional, input, real\*8, dimension (`kmax`)
+`taper_wt` : optional, input, real(dp), dimension (`kmax`)
 :   The weights to be applied to the multitaper spectral estimates.
 
-`unweighted_covar` : optional, output, real\*8, dimension (`kmax`, `kmax`)
+`unweighted_covar` : optional, output, real(dp), dimension (`kmax`, `kmax`)
 :   The unweighted covariance matrix of the `kmax` tapers (i.e., Fij in Wieczorek and Simons 2007).
 
 `nocross` : optional, input, integer, default = 0

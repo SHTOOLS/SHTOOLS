@@ -20,13 +20,13 @@ call SHGLQ (`lmax`, `zero`, `w`, `plx`, `norm`, `csphase`, `cnorm`, `exitstatus`
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the coefficients to be calculated in the Gauss-Legendre quadrature based spherical harmonic transform routines.
 
-`zero` : output, real\*8, dimension (`lmax`+1)
+`zero` : output, real(dp), dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, determined from a call to `PreGLQ`.
 
-`w` : output, real\*8, dimension (`lmax`+1)
+`w` : output, real(dp), dimension (`lmax`+1)
 :   The weights used in the Gauss-Legendre quadrature over latitude, determined from a call to `PreGLQ`.
 
-`plx` : output, optional, real\*8, dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
+`plx` : output, optional, real(dp), dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the nodes used in the Gauss-Legendre quadrature. 
 
 `norm` : input, optional, integer, default = 1

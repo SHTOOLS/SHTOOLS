@@ -359,12 +359,12 @@ class SHCoeffs(object):
         if seed is not None:
             _np.random.seed(seed=seed)
         if kind.lower() == 'real':
-            coeffs = _np.empty((2, nl, nl))
+            coeffs = _np.zeros((2, nl, nl))
             for l in degrees:
                 coeffs[:2, l, :l+1] = _np.random.normal(size=(2, l+1))
         elif kind.lower() == 'complex':
             # - need to divide by sqrt 2 as there are two terms for each coeff.
-            coeffs = _np.empty((2, nl, nl), dtype=complex)
+            coeffs = _np.zeros((2, nl, nl), dtype=complex)
             for l in degrees:
                 coeffs[:2, l, :l+1] = (_np.random.normal(size=(2, l+1)) +
                                        1j * _np.random.normal(size=(2, l+1))
