@@ -41,7 +41,7 @@
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
-<link rel="alternate" type="application/rss+xml" title="" href="http://shtools.oca.eu/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="" href="https://shtools.oca.eu/feed.xml">
 
     <script>
         $(document).ready(function() {
@@ -588,7 +588,7 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="how-do-i-cite-shtools-in-a-publication">How do I cite SHTOOLS in a publication?</h2>
 
-<p>SHTOOLS can be cited in two ways. First, one could cite the shtools paper that was published in Geochemistry, Geophysics, Geosystems (the reference is on the main web page). Secondly, one could cite a specific version of the code using the <a href="http://zenodo.org/">Zenodo</a> DOI (digital object identifier) that is provided in the release notes.</p>
+<p>SHTOOLS can be cited in two ways. First, one could cite the shtools paper that was published in Geochemistry, Geophysics, Geosystems (the reference is on the main web page). Secondly, one could cite a specific version of the code using the <a href="https://zenodo.org/">Zenodo</a> DOI (digital object identifier) that is provided in the release notes.</p>
 
 <h2 id="where-can-i-find-more-information-about-spherical-harmonics">Where can I find more information about spherical harmonics?</h2>
 
@@ -596,7 +596,7 @@ $('#toc').on('click', 'a', function() {
 
 <ul>
   <li><a href="http://mathworld.wolfram.com/SphericalHarmonic.html">Mathworld - Spherical Harmonic</a></li>
-  <li><a href="http://en.wikipedia.org/wiki/Spherical_harmonics">Wikipedia - Spherical harmonics</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Spherical_harmonics">Wikipedia - Spherical harmonics</a></li>
 </ul>
 
 <h2 id="will-you-help-me-with-my-homework">Will you help me with my homework?</h2>
@@ -609,9 +609,13 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="how-do-i-make-images-with-the-output-from-shtools">How do I make images with the output from SHTOOLS?</h2>
 
-<p>If you are using the Fortran version of SHTOOLS, the output is typically in the form of an ASCII raster file. These can be read by any standard graphics package, such as the free unix-based command line software <a href="http://gmt.soest.hawaii.edu/">GMT</a>.</p>
+<p>If you are using the Fortran version of SHTOOLS, the output is typically in the form of an ASCII or binary raster file. These can be read by any standard graphics package, such as the free unix-based command line software <a href="https://www.generic-mapping-tools.org/">GMT</a>.</p>
 
 <p>If you are using the Python version of SHTOOLS, the classes for working with spherical harmonic coefficients and grids contain methods for making publication quality graphics that make use of the <code class="highlighter-rouge">matplotlib</code> package.</p>
+
+<h2 id="which-fft-libraries-work-with-shtools">Which FFT libraries work with SHTOOLS?</h2>
+
+<p>SHTOOLS was developed initially to use the <a href="http://www.fftw.org">FFTW</a> library. Since then, Intel’s <a href="https://software.intel.com/en-us/mkl">MKL</a> has added wrapper functions to their FFT routines that use the same syntax as FFTW. SHTOOLS can be linked either to FFTW or MKL with no impact on performance.</p>
 
 <h2 id="who-maintains-shtools">Who maintains SHTOOLS?</h2>
 

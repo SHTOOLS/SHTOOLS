@@ -3,10 +3,10 @@
     <channel>
         <title></title>
         <description>SHTOOLS is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.</description>
-        <link>http://shtools.oca.eu/</link>
-        <atom:link href="http://shtools.oca.eu/feed.xml" rel="self" type="application/rss+xml"/>
-        <pubDate>Wed, 18 Sep 2019 13:14:35 +0200</pubDate>
-        <lastBuildDate>Wed, 18 Sep 2019 13:14:35 +0200</lastBuildDate>
+        <link>https://shtools.oca.eu/</link>
+        <atom:link href="https://shtools.oca.eu/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Fri, 20 Sep 2019 17:23:16 +0200</pubDate>
+        <lastBuildDate>Fri, 20 Sep 2019 17:23:16 +0200</lastBuildDate>
         <generator>Jekyll v3.8.5</generator>
         
     </channel>

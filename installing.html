@@ -41,7 +41,7 @@
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
-<link rel="alternate" type="application/rss+xml" title="" href="http://shtools.oca.eu/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="" href="https://shtools.oca.eu/feed.xml">
 
     <script>
         $(document).ready(function() {
@@ -568,6 +568,8 @@ pip install <span class="nt">--upgrade</span> pyshtools  <span class="c"># to up
 <p>or on macOS using <a href="https://brew.sh/">brew</a></p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install fftw
 </code></pre></div></div>
+<p>Note that SHTOOLS supports the use of any FFTW3-compatible library, such as Intel’s <a href="https://software.intel.com/en-us/mkl">MKL</a>.</p>
+
 <p>Then build from source using the command</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pyshtools <span class="nt">--no-binary</span> pyshtools
 </code></pre></div></div>
@@ -600,7 +602,7 @@ brew install shtools
 
 <h2 id="fortran-95-library-using-the-makefile">Fortran 95 library using the Makefile</h2>
 
-<p>Before installing the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and the <a href="http://www.fftw.org">FFTW</a>, <a href="http://www.netlib.org/lapack/">LAPACK</a>, and <a href="http://www.netlib.org/blas/">BLAS</a> libraries installed on your computer. After this is done, the Fortran 95 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main directory:</p>
+<p>Before installing the Fortran 95 components of SHTOOLS, it will be necessary to have installed on your computer a Fortran 95 compiler, the <a href="https://www.netlib.org/lapack/">LAPACK</a> and <a href="https://www.netlib.org/blas/">BLAS</a> libraries, and a <a href="http://www.fftw.org">FFTW3</a>-compatible library. In addition to FFTW3, SHTOOLS also supports Intel’s <a href="https://software.intel.com/en-us/mkl">MKL</a> library. After this is done, the Fortran 95 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main directory:</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make
 </code></pre></div></div>
 <p>To compile the Fortran 95 components with OpenMP use</p>

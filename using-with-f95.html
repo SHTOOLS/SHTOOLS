@@ -41,7 +41,7 @@
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
-<link rel="alternate" type="application/rss+xml" title="" href="http://shtools.oca.eu/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="" href="https://shtools.oca.eu/feed.xml">
 
     <script>
         $(document).ready(function() {
@@ -573,7 +573,7 @@ setenv SHTOOLSMODPATH <span class="o">=</span> <span class="s2">"/usr/local/incl
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span>SHTOOLSLIBPATH <span class="o">=</span> <span class="s2">"/usr/local/lib"</span>
 <span class="nb">export </span>SHTOOLSMODPATH <span class="o">=</span> <span class="s2">"/usr/local/include"</span>
 </code></pre></div></div>
-<p>In addition, most routines require linking to the fast Fourier transform package <a href="http://www.fftw.org">FFTW</a>, and the linear algebra packages <a href="http://www.netlib.org/lapack/">LAPACK</a> and <a href="http://www.netlib.org/blas/">BLAS</a>. Typical examples of compiling and linking a program <code class="highlighter-rouge">MyProgram.f95</code> to the necessary library and module files are given below for several common compilers.</p>
+<p>In addition, most routines require linking to the fast Fourier transform package <a href="http://www.fftw.org">FFTW</a>, and the linear algebra packages <a href="https://www.netlib.org/lapack/">LAPACK</a> and <a href="https://www.netlib.org/blas/">BLAS</a>. Typical examples of compiling and linking a program <code class="highlighter-rouge">MyProgram.f95</code> to the necessary library and module files are given below for several common compilers.</p>
 
 <h3 id="gfortran">gfortran</h3>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gfortran MyProgram.f95 <span class="nt">-I</span><span class="nv">$SHTOOLSMODPATH</span> <span class="nt">-L</span><span class="nv">$SHTOOLSLIBPATH</span> <span class="nt">-lSHTOOLS</span> <span class="nt">-lfftw3</span> <span class="nt">-lm</span> <span class="nt">-llapack</span> <span class="nt">-lblas</span> <span class="nt">-O3</span> <span class="nt">-m64</span> <span class="nt">-o</span> MyProgram
