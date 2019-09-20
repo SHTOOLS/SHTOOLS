@@ -22,6 +22,8 @@ or on macOS using [brew](https://brew.sh/)
 ```bash
 brew install fftw
 ```
+Note that SHTOOLS supports the use of any FFTW3-compatible library, such as Intel's [MKL](https://software.intel.com/en-us/mkl).
+
 Then build from source using the command
 ```bash
 pip install pyshtools --no-binary pyshtools
@@ -35,7 +37,7 @@ Once the repo is cloned, enter the directory, and use either the command
 ```bash
 pip install .
 ```
-to install pyshtools in the active Python environment lib folder, or use 
+to install pyshtools in the active Python environment lib folder, or use
 ```bash
 pip install -e .
 ```
@@ -61,7 +63,7 @@ brew install shtools --with-openmp
 
 ## Fortran 95 library using the Makefile
 
-Before installing the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and the [FFTW](http://www.fftw.org), [LAPACK](http://www.netlib.org/lapack/), and [BLAS](http://www.netlib.org/blas/) libraries installed on your computer. After this is done, the Fortran 95 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main directory:
+Before installing the Fortran 95 components of SHTOOLS, it will be necessary to have installed on your computer a Fortran 95 compiler, the [LAPACK](https://www.netlib.org/lapack/) and [BLAS](https://www.netlib.org/blas/) libraries, and a [FFTW3](http://www.fftw.org)-compatible library. In addition to FFTW3, SHTOOLS also supports Intel's [MKL](https://software.intel.com/en-us/mkl) library. After this is done, the Fortran 95 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main directory:
 ```bash
 make
 ```

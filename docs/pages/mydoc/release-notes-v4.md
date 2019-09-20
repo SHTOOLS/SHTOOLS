@@ -83,7 +83,7 @@ M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. 
 
 **New constant subpackage**
 
-* The `constant` subpackage has been completely rewritten and now makes use of the [astropy](http://docs.astropy.org/en/latest/constants/index.html) `Constant` class. This class has attributes `name`, `value`, `uncertainty`, `unit`, and `reference`. The naming of the constants has changed in some cases for consistency. A few constants that are not necessary were removed. Many of the constants were updated with more recent values. `Constants` can be used in arithmetic operations with either other `Constants` or with objects of the astropy class `Quantity`.
+* The `constant` subpackage has been completely rewritten and now makes use of the [astropy](https://docs.astropy.org/en/latest/constants/index.html) `Constant` class. This class has attributes `name`, `value`, `uncertainty`, `unit`, and `reference`. The naming of the constants has changed in some cases for consistency. A few constants that are not necessary were removed. Many of the constants were updated with more recent values. `Constants` can be used in arithmetic operations with either other `Constants` or with objects of the astropy class `Quantity`.
 * Constants are organized into modules for each of the planets (`Mercury`, `Venus`, `Earth`, `Moon`, and `Mars`), and for convenience, these are all added to the main namespace. The fundamental constants `G` and `mu0` from the astropy constants package were added (as taken from CODATA 2014).
 
 **Other changes**

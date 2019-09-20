@@ -46,15 +46,6 @@ Build from source:
 pip install pyshtools --no-binary pyshtools
 ```
 
-#### pyshtools for Anaconda Python ####
-
-Install fftw3 and then install pyshtools using `pip`:
-
-```bash
-conda install -c anaconda fftw
-pip install pyshtools
-```
-
 #### pyshtools for developers ####
 Linux requirements:
 ```bash
@@ -72,8 +63,9 @@ Alternatively, clone the shtools repo and then install:
 ```bash
 git clone https://github.com/SHTOOLS/SHTOOLS.git
 cd shtools
+git checkout develop
 pip install .  # install into the active python environment lib folder, or
-pip install -v -e .  # install into the SHTOOLS/pyshtools folder and link to the active python environment
+pip install -e .  # install into the SHTOOLS/pyshtools folder and link to the active python environment
 ```
 
 #### Fortran Library ####

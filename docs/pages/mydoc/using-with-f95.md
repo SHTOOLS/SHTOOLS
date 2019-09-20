@@ -27,7 +27,7 @@ whereas for a bash shell the syntax is
 export SHTOOLSLIBPATH = "/usr/local/lib"
 export SHTOOLSMODPATH = "/usr/local/include"
 ```
-In addition, most routines require linking to the fast Fourier transform package [FFTW](http://www.fftw.org), and the linear algebra packages [LAPACK](http://www.netlib.org/lapack/) and [BLAS](http://www.netlib.org/blas/). Typical examples of compiling and linking a program `MyProgram.f95` to the necessary library and module files are given below for several common compilers.
+In addition, most routines require linking to the fast Fourier transform package [FFTW](http://www.fftw.org), and the linear algebra packages [LAPACK](https://www.netlib.org/lapack/) and [BLAS](https://www.netlib.org/blas/). Typical examples of compiling and linking a program `MyProgram.f95` to the necessary library and module files are given below for several common compilers.
 
 ### gfortran
 ```bash

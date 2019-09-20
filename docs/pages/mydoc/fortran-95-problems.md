@@ -20,7 +20,7 @@ If you are having problems linking an already compiled SHTOOLS library to your c
 
 ## Can I compile SHTOOLS with Fortran 77?
 
-No, you must use a Fortran 95 compiler. Two free Fortran 95 compilers are [gfortran](http://gcc.gnu.org/) and [g95](http://www.g95.org/). If you will be using the Python code, it will be easiest to use the `gfortran` compiler.
+No, you must use a Fortran 95 compiler. Two free Fortran 95 compilers are [gfortran](https://gcc.gnu.org/) and [g95](https://www.g95.org/). If you will be using the Python code, it will be easiest to use the `gfortran` compiler.
 
 ## Linking fails because of "Undefined symbols"
 

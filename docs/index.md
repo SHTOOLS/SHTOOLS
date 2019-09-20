@@ -56,7 +56,7 @@ brew install shtools
 
 ## Using
 
-SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95 (which requires a few standard Fortran 2003 extensions), and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library. SHTOOLS is open source software (3-clause BSD license).
+SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95 (which requires a few standard Fortran 2003 extensions), and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library. SHTOOLS is open source software (3-clause BSD license). When building from source, it will be necessary to link to LAPACK and BLAS, as well as an FFTW3 compatible library (which includes Intel's MKL).
 
 ## Citation
 
