@@ -5,9 +5,6 @@ module SHTOOLS
 !   used in the archive SHTOOLS. These are necessary in order to use
 !   implicitly shaped arrays with most subroutines.
 !
-!   Copyright (c) 2016, SHTOOLS
-!   All rights reserved.
-!
 !------------------------------------------------------------------------------
     implicit none
 

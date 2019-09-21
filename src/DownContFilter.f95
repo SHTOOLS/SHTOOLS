@@ -12,9 +12,7 @@ function DownContFilterMA(l, half, r, d)
 !       r       Reference radius for surface gravity field
 !       d       Mean radius of downward continuation
 !
-!   Dependencies:   None
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -63,12 +61,10 @@ function DownContFilterMC(l, half, r, d)
 !       r       Reference radius for surface gravity field
 !       d       Mean radius of downward continuation
 !
-!   Dependencies:   None
-!
 !   Note: This filter is analogous to (and numerically very similar to)
 !       the minimum curvature filter in Phipps Morgan and Blackman (1993)
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

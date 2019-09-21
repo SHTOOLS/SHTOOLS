@@ -10,7 +10,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 !       (Vxx,   Vxy,    Vxz)
 !       (Vyx,   Vyy,    Vyz)
 !       (Vzx,   Vzy,    Vzz)
-!   
+!
 !   where X points NORTH, Y points WEST, and Z points UPWARD. The magnetic
 !   potential is defined as
 !
@@ -93,9 +93,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 !           (i.e., those degrees after lmax are assumed to be zero).
 !       2.  Latitude is geocentric latitude.
 !
-!   Dependencies:   FFTW3
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

@@ -84,9 +84,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies: None
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

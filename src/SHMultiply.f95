@@ -45,9 +45,7 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies:   SHGLQ, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

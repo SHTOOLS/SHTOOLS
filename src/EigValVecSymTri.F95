@@ -42,9 +42,7 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
 !       For instance, IMSL chooses the sign such that the value with
 !       max(abs(evec)) is positive.
 !
-!   Dependencies: LAPACK, BLAS
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

@@ -31,11 +31,9 @@ subroutine EigValSym(ain, n, eval, ul)
 !   (2) The tridiagonal matrix is reduced to 
 !       T = S L S'
 !
-!   The eigenvalues of A correspond to L (which is a diagonal)
-!       
-!   Dependencies: LAPACK, BLAS
+!   The eigenvalues of A correspond to L (which is a diagonal).
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

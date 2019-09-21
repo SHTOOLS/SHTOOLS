@@ -71,9 +71,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !           (i.e., those degrees after lmax are assumed to be zero).
 !       2.  Latitude is geocentric latitude.
 !
-!   Dependencies:   FFTW3, CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

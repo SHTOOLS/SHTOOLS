@@ -58,9 +58,7 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies: SHReturnTapersM
-!
-!   Copyright (c) 2019, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

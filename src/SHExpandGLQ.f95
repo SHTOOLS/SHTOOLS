@@ -65,9 +65,7 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies:   FFTW3, CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

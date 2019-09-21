@@ -62,10 +62,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 !           degree of the input file, then this file will be ZERO PADDED!
 !           (i.e., those degrees after lmax are assumed to be zero).
 !
-!   Dependencies:       PlmBar, PlBar, PlmSchmidt, PlSchmidt, PLegendreA, &
-!                       PLegendre, PlmON, CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

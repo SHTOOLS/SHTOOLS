@@ -12,9 +12,9 @@ function RandomN(idum)
 !   NOTE:   When used within an OpenMP parallet construct, a different seed must
 !           be used for each thread.
 !
-!   Taken from numerical recipes, f90
+!   Modified from the algorithm published in Numerical Recipes (f90)
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -69,9 +69,9 @@ function RandomGaussian(idum)
 !   NOTE:   When used within an OpenMP parallet construct, a different seed
 !           must be used for each thread.
 !
-!   Taken from numerical recipes f77.
+!   Modified from the algorithm published in Numerical Recipes (f77)
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

@@ -27,7 +27,9 @@ whereas for a bash shell the syntax is
 export SHTOOLSLIBPATH = "/usr/local/lib"
 export SHTOOLSMODPATH = "/usr/local/include"
 ```
-In addition, most routines require linking to the fast Fourier transform package [FFTW](http://www.fftw.org), and the linear algebra packages [LAPACK](https://www.netlib.org/lapack/) and [BLAS](https://www.netlib.org/blas/). Typical examples of compiling and linking a program `MyProgram.f95` to the necessary library and module files are given below for several common compilers.
+In addition, most routines require linking to libraries that are compatible with the fast Fourier transform package [FFTW](http://www.fftw.org), and the linear algebra packages [LAPACK](https://www.netlib.org/lapack/) and [BLAS](https://www.netlib.org/blas/). SHTOOLS is compatible with the FFT routines in Intel's [MKL](https://software.intel.com/en-us/mkl) library. Furthermore, it is noted that there are many different system optimized versions of LAPACK and BLAS, some of which may be pre-installed on your machine.
+
+Typical examples of compiling and linking a program `MyProgram.f95` to the necessary library and module files are given below for several common compilers.
 
 ### gfortran
 ```bash
@@ -48,7 +50,7 @@ g95 MyProgram.f95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -fno-second-underscore -lS
 ```bash
 ifort -fpp -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -Tf MyProgram.f95 -o MyProgram
 ```
-Note that the position of the source file in the above examples might be important for some compilers. It may be necessary to modify some options in order to properly link to both the LAPACK and FFTW libraries (see [installing SHTOOLS](installing.html) for more details). If the library ATLAS exists on your system, this could be used instead of BLAS.
+Note that the position of the source file in the above examples might be important for some compilers. Note also that on macOS, linking to the preinstalled LAPACK and BLAS libraries can be accomplished using `-framework Accelerate`. (See [installing SHTOOLS](installing.html) for more details).
 
 ## OpenMP
 The Fortran 95 routines in the OpenMP version of SHTOOLS are OpenMP compatible and OpenMP thread-safe. To use these routines in a program that uses OpenMP, it is necessary to link to the library `libSHTOOLS-mp.a` and to add one of the following compiler options:

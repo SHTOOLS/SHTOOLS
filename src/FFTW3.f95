@@ -3,9 +3,6 @@ module FFTW3
 !
 !   This must be included in any routine that uses FFTW (version 3.3.3).
 !
-!   Copyright (c) 2016, SHTOOLS
-!   All rights reserved.
-!
 !-------------------------------------------------------------------------------
   use, intrinsic :: iso_c_binding
 

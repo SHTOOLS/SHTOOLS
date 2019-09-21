@@ -13,7 +13,7 @@ function SHPowerLC(c, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ function SHPowerDensityLC(c, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -128,7 +128,7 @@ function SHCrossPowerLC(c1, c2, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -193,7 +193,7 @@ function SHCrossPowerDensityLC(c1, c2, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -273,7 +273,7 @@ subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -367,7 +367,7 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
@@ -466,7 +466,7 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
@@ -577,7 +577,7 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

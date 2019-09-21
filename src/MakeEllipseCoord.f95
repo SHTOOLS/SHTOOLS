@@ -33,9 +33,7 @@ subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies: None
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

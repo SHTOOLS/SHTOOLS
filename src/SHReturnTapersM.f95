@@ -61,10 +61,7 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies: LAPACK, BLAS, ComputeDG82, EigValVecSymTri, PreGLQ, &
-!                 PlmBar, ComputeDm, EigValVecSym
-!
-!   Copyright (c) 2019, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

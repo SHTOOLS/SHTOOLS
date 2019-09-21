@@ -48,7 +48,7 @@ subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2018, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

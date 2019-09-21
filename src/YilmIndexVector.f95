@@ -15,7 +15,7 @@ integer function YilmIndexVector(i, l, m)
 !
 !       YilmIndex = l**2 + (i-1)*l + m + 1
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

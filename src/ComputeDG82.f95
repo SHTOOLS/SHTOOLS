@@ -31,9 +31,7 @@ subroutine ComputeDG82(DG82, lmax, m, theta0, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies:   none
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

@@ -27,9 +27,7 @@ function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, &
 !           hkcc            If 1, the complex conjugate of the second window hk
 !                           will be taken. If 2, it will remain as is.
 !
-!   Dependencies: Wigner3j.
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

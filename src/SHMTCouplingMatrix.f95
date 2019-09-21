@@ -23,7 +23,7 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
 !   the case, the ouput power spectrum should be considered valid only
 !   for the degrees up to and including lmax-lwin.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

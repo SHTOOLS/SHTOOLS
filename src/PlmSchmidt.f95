@@ -60,9 +60,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 !       calling routine.
 !   4.  The default is to exlude the Condon-Shortley phase of (-1)^m.
 !
-!   Dependencies:   CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

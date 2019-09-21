@@ -45,7 +45,7 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2019, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

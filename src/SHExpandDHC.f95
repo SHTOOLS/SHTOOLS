@@ -87,9 +87,7 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
 !           a NxN grid, higher frequencies could be aliased into lower
 !           frequencies.
 !
-!   Dependencies:       DHaj, FFTW3, CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

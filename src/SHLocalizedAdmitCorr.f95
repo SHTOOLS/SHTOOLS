@@ -80,11 +80,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 !       between -1 and 1. To obtain the "coherence" (which is also sometimes
 !       referred to as the "coherence squared"), just square this number.
 !
-!   Dependencies:   CSPHASE_DEFAULT,  djpi2, SHRotateRealCoef,
-!                   SHCrossPowerSpectrum, SHPowerSpectrum, MakeGridGLQ, SHGLQ,
-!                   SHExpandGLQ
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

@@ -30,7 +30,7 @@ subroutine PlSchmidt(p, lmax, z, exitstatus)
 !   1.  The integral of plm**2 over (-1,1) is 2 * / (2l+1).
 !   2.  The integral of Plm**2 over all space is 4 pi / (2l+1).
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

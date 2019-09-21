@@ -49,10 +49,7 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies:   SHPowerSpectrum, SHVectorToCilm, MakeGridGLQ, SHGLQ,
-!                   SHExpandGLQ, CSPHASE_DEFAULT.
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

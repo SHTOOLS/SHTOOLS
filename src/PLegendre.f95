@@ -32,9 +32,7 @@ subroutine PLegendre(p, lmax, z, exitstatus)
 !           P_0(z) = 1.0, P_1(z) = z, and 
 !           P_l(z) = (2l-1) * z * P_{l-1}(z) / l - (l-1) * P_{l-2}(z) / l
 !
-!   Dependencies:   None
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

@@ -76,9 +76,7 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
 !           (i.e., those degrees after lmax are assumed to be zero).
 !       2.  Latitude is geocentric latitude.
 !
-!   Dependencies:   FFTW3
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

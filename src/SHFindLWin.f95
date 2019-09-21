@@ -17,11 +17,9 @@ function SHFindLWin(theta0, m, alpha, taper_number)
 !
 !       IN (OPTIONAL)
 !           taper_number    Taper number used to calculate concentration
-!                           factors. 
+!                           factors.
 !
-!   Dependencies: LAPACK, BLAS, ComputeDm, EigValSym
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

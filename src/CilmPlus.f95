@@ -61,9 +61,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
 !
 !   All units assumed to be SI.
 !
-!   Dependencies:       SHExpandGLQ, SHExpandDH
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

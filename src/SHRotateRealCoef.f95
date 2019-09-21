@@ -55,15 +55,11 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!
-!   Dependencies:   SHrtoc, SHctor, SHcilmtocindex, SHcindextocilm,
-!                   SHRotateCoef, CSPHASE_DEFAULT
-!
 !   Note: Before using this routine, please verify that the input Euler
 !   angles and signs give the expected results. Some people define the angle
 !   beta as a rotation with respect to the x axis.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

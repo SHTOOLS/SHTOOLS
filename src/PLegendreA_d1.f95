@@ -46,9 +46,7 @@ subroutine PLegendreA_d1(p, dp1, lmax, z, csphase, exitstatus)
 !       calculated here.
 !   7.  The default is to exlude the Condon-Shortley phase of (-1)^m.
 !
-!   Dependencies:   CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

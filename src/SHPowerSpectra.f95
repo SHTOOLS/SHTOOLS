@@ -13,8 +13,7 @@ function SHPowerL(c, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

@@ -34,7 +34,7 @@ subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------ 

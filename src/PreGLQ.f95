@@ -34,9 +34,7 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
 !           values of lmax. If the algorithm doesn't converge, consider
 !           increasing itermax, or decreasing eps.
 !
-!   Dependencies:   None
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

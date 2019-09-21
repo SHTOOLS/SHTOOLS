@@ -39,9 +39,7 @@ subroutine SHBias(Shh, lwin, incspectra, ldata, outcspectra, save_cg, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies: Wigner3j
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

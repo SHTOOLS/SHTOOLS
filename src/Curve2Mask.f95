@@ -38,7 +38,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

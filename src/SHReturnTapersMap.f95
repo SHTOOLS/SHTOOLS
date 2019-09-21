@@ -58,7 +58,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2019, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

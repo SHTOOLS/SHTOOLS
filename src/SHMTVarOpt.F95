@@ -50,9 +50,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 !           nocross     If present and equal to 1, then the off-diagonal terms
 !                       of the covariance matrix will be assumed to be zero.
 !
-!   Dependencies: SHSjkPG, SSYSV (LAPACK)
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

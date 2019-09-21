@@ -16,7 +16,7 @@ function SHConfidence(l_conf, r)
 !       OUTPUT
 !           cl          The confidence level.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

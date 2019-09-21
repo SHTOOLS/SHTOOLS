@@ -62,10 +62,7 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
 !   See documentation in file ShRotateRealCoef for further information on
 !   spherical harmonic rotations.
 !
-!   Dependencies:   SHPowerSpectrum, SHRotateRealCoef, djpi2,
-!                   CSPHASE_DEFAULT, MakeGridGLQ, SHGLQ, SHExpandGLQ
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

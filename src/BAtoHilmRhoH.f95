@@ -67,10 +67,7 @@ subroutine BAtoHilmRhoH(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, &
 !
 !   All units assumed to be SI.
 !
-!   Dependencies:       SHExpandGLQ, SHExpandDH, DownContFilterMA,
-!                       DownContFilterMC, MakeGridGLQ, MakeGridDH
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

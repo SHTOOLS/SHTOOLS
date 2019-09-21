@@ -59,9 +59,7 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies: SHBias, SHBiasK
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

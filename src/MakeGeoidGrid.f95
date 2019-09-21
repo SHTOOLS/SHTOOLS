@@ -33,7 +33,8 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 !           PotRef      Reference potential of the geoid.
 !           omega       Angular rotation rate used when calculating the geoid
 !                       on in the rotating coordinate system.
-!           r           Reference sperical radius to calculate the geoid heights.
+!           r           Reference sperical radius to calculate the geoid
+!                       heights.
 !           gridtype    1 = Gauss-Legendre quadrature grid corresponding
 !                           to LMAX.
 !                       2 = N by N Driscoll and Healy grid corresponding
@@ -67,9 +68,7 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies :  MakeGrid2D, MakeGridGLQ, MakeGridDH, SHGLQ
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

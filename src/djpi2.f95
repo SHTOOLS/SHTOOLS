@@ -32,15 +32,13 @@ subroutine djpi2(dj, lmax, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies:   None
-!
 !   History
 !
 !       1. Based on routine from Guy Masters (July 16, 1993)
 !       2. Modified by Mark Simons (July 19, 1993)
 !       3. Turned into readable f95 code by Mark Wieczorek (August, 2003).
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

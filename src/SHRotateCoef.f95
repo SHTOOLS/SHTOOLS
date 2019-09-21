@@ -41,7 +41,7 @@ subroutine SHRotateCoef(x, cof, rcof, dj, lmax, exitstatus)
 !       2.  Modified by Mark Simons (July 25, 1993)
 !       3.  Turned into readable f95 code by Mark Wieczorek (August, 2003)
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

@@ -26,14 +26,12 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 !           dealloc     If (1) Deallocate saved memory in Legendre function
 !                       routines. Default (0) is not to deallocate memory.
 !
-!   Dependencies:       PlmBar, PlBar, PlmSchmidt, PlmON, CSPHASE_DEFAULT
-!
 !   Notes:
 !       1.  If lmax is greater than the the maximum spherical harmonic
 !           degree of the input file, then this file will be ZERO PADDED!
 !           (i.e., those degrees after lmax are assumed to be zero).
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

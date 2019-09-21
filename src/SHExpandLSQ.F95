@@ -60,10 +60,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies:   LAPACK, PlmBar, PLegendreA, PlmSchmidt, PlmON,
-!                   CSPHASE_DEFAULT
-!
-!   Copyright (c) 2018, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

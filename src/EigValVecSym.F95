@@ -50,9 +50,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
 !       The eigenvalues of A correspond to the L (which is a diagonal), and the
 !       eigenvectors correspond to Z = Q S.
 !
-!   Dependencies: LAPACK, BLAS
-!
-!   Copyright (c) 2019, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

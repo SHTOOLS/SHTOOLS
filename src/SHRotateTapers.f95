@@ -68,15 +68,11 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!
-!   Dependencies:   SHrtoc, SHctor, SHcilmtocindex, SHcindextocilm,
-!                   SHRotateCoef, SHCilmToVector, CSPHASE_DEFAULT
-!
 !   Note: Before using this routine, please verify that the input Euler
 !   angles and signs give the expected results. Some people define the angle
 !   beta as a rotation with respect to the x axis.
 !
-!   Copyright (c) 2018, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------

@@ -31,9 +31,7 @@ subroutine PlBar(p, lmax, z, exitstatus)
 !   2.  The integral of PlBar**2 over all space on the sphere is 4 pi.
 !       The integral of PlBar**2 over (-1,1) is 2.
 !
-!   Dependencies:   None
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

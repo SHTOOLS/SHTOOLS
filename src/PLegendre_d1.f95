@@ -40,9 +40,7 @@ subroutine PLegendre_d1(p, dp1, lmax, z, exitstatus)
 !           At z = 1, Pl(1) = 1, and P'l(1) = l (l+1) / 2   (Boyd 2001)
 !           At z = -1 Pl(-1) = (-1)**l, and P'l(-1) = (-1)**(l-1) l (l+1) / 2
 !
-!   Dependencies:   None
-!
-!   Copyright (c) 2015, Mark A. Wieczorek
+!   Copyright (c) 2005-2019, Mark A. Wieczorek
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------

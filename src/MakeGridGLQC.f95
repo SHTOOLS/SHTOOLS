@@ -72,9 +72,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !           (i.e., those degrees after lmax are assumed to be zero).
 !       2.  Latitudes are geocentric latitude.
 !
-!   Dependencies:   FFTW3, CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
