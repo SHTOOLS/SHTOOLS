@@ -8,16 +8,6 @@ toc: true
 ---
 ## Version 4.5
 
-**Slepian functions**
-* Added the fortran function `SHSCouplingMatrix` and `Slepain` class method `coupling matrix()` for computing the coupling matrix that relates the Slepian expansion power spectrum to the global power spectrum.
-* Added the fortran function `SHSCouplingMatrixCap` which is optimized for working with spherical cap Slepian functions.
-* Improved the plotting capabilities of the method `plot_coupling_matrix`, such as the addition of colorbars, and the option to normalize to maximum value to unity.
-* Added the option `taper_degrees()` and `slepian_degrees()` to the `SHWindow` and `Slepian` classes, respectively, to allow for the construction of Slepian functions that exclude certain spherical harmonic degrees.
-* Added the fortran function `SHMTVar` and the `SHWindow` class method `variance()` to compute the variance of a multitaper spectral estimate (based on `SHMTVarOpt`).
-* Added the fortran function `SHSlepianVar` and the `Slepian` class method `variance()` to compute the variance of a Slepian expansion spectral estimate.
-* Improved the handing of the optional parameter `weights` in all methods of `SHWindow`.
-* **Changed the name of the optional parameter `nwin` of `SHWindow.coupling_matrix` to `k` for consistency with the localized spectral analysis routines.**
-
 **SHCoeffs**
 * Added `cross_spectrum()`, `plot_cross_spectrum()` and `plot_cross_spectrum2d()` methods to the `SHCoeffs` class.
 * Added `from_cap()` constructor to create coefficients of a spherical cap.
@@ -29,13 +19,23 @@ toc: true
 * Added support for saving gridded data to netcdf and xarray formats. `to_netcdf()` exports data to netcdf format, and when saved to file can be used directly with GMT (generic mapping tools) where they are known as 'grd' files. `to_xarray()` exports data to an xarray DataArray.
 * Fixed a type error when expanding complex coefficients at arbitrary points.
 
+**Slepian functions**
+* Added the fortran function `SHSCouplingMatrix` and `Slepain` class method `coupling matrix()` for computing the coupling matrix that relates the Slepian expansion power spectrum to the global power spectrum.
+* Added the fortran function `SHSCouplingMatrixCap` which is optimized for working with spherical cap Slepian functions.
+* Improved the plotting capabilities of the method `plot_coupling_matrix`, such as the addition of colorbars, and the option to normalize to maximum value to unity.
+* Added the option `taper_degrees()` and `slepian_degrees()` to the `SHWindow` and `Slepian` classes, respectively, to allow for the construction of Slepian functions that exclude certain spherical harmonic degrees.
+* Added the fortran function `SHMTVar` and the `SHWindow` class method `variance()` to compute the variance of a multitaper spectral estimate (based on `SHMTVarOpt`).
+* Added the fortran function `SHSlepianVar` and the `Slepian` class method `variance()` to compute the variance of a Slepian expansion spectral estimate.
+* Improved the handing of the optional parameter `weights` in all methods of `SHWindow`.
+* **Changed the name of the optional parameter `nwin` of `SHWindow.coupling_matrix` to `k` for consistency with the localized spectral analysis routines.**
+
 **Fortran 95**
 * The Fortran code was modified to be strictly compliant with the f95 standard (`-std=f95` in the `gfortran` compiler). Double precision, double complex, and long integers are defined as `real(dp)`, `complex(dp)`, and `integer(int8)`, and the types are defined in a new module `ftypes.f95`.
 * A few intrinsic function calls have been renamed to conform with the standards, and all double precision constants are now defined by appending `_dp` to them.
 
 **FFTW**
-* The syntax of the `fftw` routines has been updated. In particular, the old `call dfftw_execute(plan)` statements now include all their dependent variables using the new syntax `call dfftw_execute_dft(plan, grid, coef)`. Importantly, the old syntax caused the GCC9 optimizer to break the spherical transform routines, generating meaningless output for large parts of the grids or coefficients.
-* The fortran routines now access the FFTW library using Fortran 2003 standards. Though most compilers do not yet support all features of F2003, the few features used here (such as the module `iso_c_binding`) are claimed to be supported by the majority of modern compilers. This allows us to access the FFTW routines without use of fortran bindings, which are not always included in compiled versions of FFTW. 
+* The syntax of the `fftw` routines has been updated. In particular, the old `call dfftw_execute(plan)` statements now include all their dependent variables using the new syntax `call fftw_execute_dft(plan, grid, coef)`. Importantly, the old syntax caused the GCC9 optimizer to break the spherical transform routines, generating meaningless output for large parts of the grids or coefficients.
+* The fortran routines now access the FFTW library using Fortran 2003 standards. Though most compilers do not yet support all features of F2003, the few features used here (such as the module `iso_c_binding`) are claimed to be supported by the majority of modern compilers. This allows us to access the FFTW routines without use of fortran bindings, which are not always included in compiled versions of FFTW.
 * All FFTW routines are explicitly defined in an interface block in `FFTW3.f95`. For simplicity, the use of the optional parameter `FFTW_UNDERSCORE` used in the Makefile has been deprecated.
 
 M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker (2019). SHTOOLS: Version 4.5, Zenodo, doi:[10.5281/zenodo.2350781](https://doi.org/10.5281/zenodo.2350781)
