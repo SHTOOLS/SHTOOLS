@@ -278,7 +278,7 @@
 {
 "title": "Spherical Harmonic Tools",
 "url": "index.html",
-"summary": "SHTOOLS is an archive of Python and Fortran 95 software that can be used to perform spherical harmonic transforms, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data."
+"summary": "SHTOOLS/pyshtools is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data."
 }
 ,
 
@@ -287,7 +287,7 @@
 {
 "title": "Installing SHTOOLS",
 "url": "installing.html",
-"summary": "SHTOOLS can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and compiling Fortran 95 code, you should use either the brew package manager (on macOS) or compile manually using the Makefile."
+"summary": "SHTOOLS and pyshtools can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and compiling Fortran 95 code, you should either compile manually using the Makefile or use the brew package manager (on macOS)."
 }
 ,
 

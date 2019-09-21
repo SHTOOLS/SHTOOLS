@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="SHTOOLS can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and...">
+<meta name="description" content="SHTOOLS and pyshtools can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will ...">
 <meta name="keywords" content=" spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field">
 <title>Installing SHTOOLS | SHTOOLS - Tools for working with spherical harmonics</title>
 <link rel="stylesheet" href="css/syntax.css">
@@ -528,7 +528,7 @@ MathJax.Hub.Config({
 <div class="post-content">
 
    
-    <div class="summary">SHTOOLS can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and compiling Fortran 95 code, you should use either the brew package manager (on macOS) or compile manually using the Makefile.</div>
+    <div class="summary">SHTOOLS and pyshtools can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and compiling Fortran 95 code, you should either compile manually using the Makefile or use the brew package manager (on macOS).</div>
    
 
     
@@ -558,7 +558,7 @@ $('#toc').on('click', 'a', function() {
 
   <h2 id="python-package-installer-pip">Python package installer (pip)</h2>
 
-<p>The easiest way to install the Python components of SHTOOLS (pyshtools) is to use <code class="highlighter-rouge">pip</code>. On Linux and macOS machines, the binary wheels can be installed by executing one of the following commands</p>
+<p>The easiest way to install the Python components of SHTOOLS (pyshtools) is to use <code class="highlighter-rouge">pip</code>. On Linux and macOS architectures, the binary wheels can be installed by executing one of the following commands</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pyshtools
 pip install <span class="nt">--upgrade</span> pyshtools  <span class="c"># to upgrade a pre-existing installation</span>
 </code></pre></div></div>
@@ -568,9 +568,7 @@ pip install <span class="nt">--upgrade</span> pyshtools  <span class="c"># to up
 <p>or on macOS using <a href="https://brew.sh/">brew</a></p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install fftw
 </code></pre></div></div>
-<p>Note that SHTOOLS supports the use of any FFTW3-compatible library, such as Intel’s <a href="https://software.intel.com/en-us/mkl">MKL</a>.</p>
-
-<p>Then build from source using the command</p>
+<p>(Note that SHTOOLS supports the use of any FFTW3-compatible library, such as Intel’s <a href="https://software.intel.com/en-us/mkl">MKL</a>). Then build from source using the command</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install pyshtools <span class="nt">--no-binary</span> pyshtools
 </code></pre></div></div>
 
@@ -580,7 +578,7 @@ pip install <span class="nt">--upgrade</span> pyshtools  <span class="c"># to up
 <p>Once the repo is cloned, enter the directory, and use either the command</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nb">.</span>
 </code></pre></div></div>
-<p>to install pyshtools in the active Python environment lib folder, or use</p>
+<p>to install pyshtools in the active Python environment lib folder, or</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nt">-e</span> <span class="nb">.</span>
 </code></pre></div></div>
 <p>to install the files in the current working directory and link them to the system Python directory.</p>
@@ -588,7 +586,7 @@ pip install <span class="nt">--upgrade</span> pyshtools  <span class="c"># to up
 <p>To uninstall pyshtools from your system directory, use the command</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip uninstall pyshtools
 </code></pre></div></div>
-<p>Note that these commands will install only the Python version that corresponds to the version of <code class="highlighter-rouge">pip</code> being used. On some systems, it may be necessary to specify <code class="highlighter-rouge">pip2.7</code> or <code class="highlighter-rouge">pip3.x</code>.</p>
+<p>Note that these commands will install only the Python version that corresponds to the version of <code class="highlighter-rouge">pip</code> being used. On some systems, it may be necessary to specify explicitly <code class="highlighter-rouge">pip2.7</code> or <code class="highlighter-rouge">pip3.x</code>.</p>
 
 <h2 id="fortran-95-library-using-brew-macos">Fortran 95 library using brew (macOS)</h2>
 
@@ -602,7 +600,7 @@ brew install shtools
 
 <h2 id="fortran-95-library-using-the-makefile">Fortran 95 library using the Makefile</h2>
 
-<p>Before installing the Fortran 95 components of SHTOOLS, it will be necessary to have installed on your computer a Fortran 95 compiler, the <a href="https://www.netlib.org/lapack/">LAPACK</a> and <a href="https://www.netlib.org/blas/">BLAS</a> libraries, and a <a href="http://www.fftw.org">FFTW3</a>-compatible library. In addition to FFTW3, SHTOOLS also supports Intel’s <a href="https://software.intel.com/en-us/mkl">MKL</a> library. After this is done, the Fortran 95 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main directory:</p>
+<p>Before trying to install the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and <a href="https://www.netlib.org/lapack/">LAPACK</a>, <a href="https://www.netlib.org/blas/">BLAS</a> and <a href="http://www.fftw.org">FFTW3</a>-compatible libraries. The Fortran 95 components of SHTOOLS can then be compiled in most cases by executing the following command in a unix shell in the main directory:</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make
 </code></pre></div></div>
 <p>To compile the Fortran 95 components with OpenMP use</p>
@@ -681,9 +679,9 @@ SYSDOCPATH <span class="o">=</span> /usr/local/share/doc
 <p>in order that the compiler recognizes files with the extension <code class="highlighter-rouge">.f95</code> as Fortran 95 files. In this case, the f95 file should come directly after the option <code class="highlighter-rouge">-Tf</code>.</p>
 
 <p>Setting the right compiler flags is more complicated when the FFTW and LAPACK libraries have different naming and underscoring conventions. In order to accommodate this case, underscores can be added explicitly to the LAPACK subroutine names in the SHTOOLS source code by specifying the optional <code class="highlighter-rouge">make</code> arguments when building the archive:</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">LAPACK_UNDERSCORE</span><span class="o">=</span>1  <span class="c"># to add an extra underscore to the LAPACK routine names</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">LAPACK_UNDERSCORE</span><span class="o">=</span>1  <span class="c"># add an extra underscore to the LAPACK routine names</span>
 </code></pre></div></div>
-<p>For both cases, compiler flags should probably be set so that underscores are not appended to routine names. See <a href="fortran-95-problems.html">Fortran 95 problems</a> for further information.</p>
+<p>For this case, compiler flags should probably be set so that underscores are not appended to routine names. See <a href="fortran-95-problems.html">Fortran 95 problems</a> for further information.</p>
 
 <p>To generate 64 bit code, use the compiler option</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-m64</span>
