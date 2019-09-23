@@ -139,10 +139,10 @@ clean-obs-mod:
 clean-prog-mod:
 	@-rm -f $(PROG)
 	@-rm -f ../modules/*.mod
-	
-%.o: %.f95
-	$(F95) -c $(F95FLAGS) $<
+
 %.mod: %.f95
+	$(F95) -c $(F95FLAGS) $<
+%.o: %.f95
 	$(F95) -c $(F95FLAGS) $<
 %.o: %.F95
 	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $<
@@ -185,7 +185,7 @@ NormalGravity.o : ftypes.mod
 PLegendre.o : ftypes.mod
 PLegendreA.o : ftypes.mod SHTOOLS.mod
 PLegendreA_d1.o : ftypes.mod SHTOOLS.mod
-Plegendre_d1.o : ftypes.mod
+PLegendre_d1.o : ftypes.mod
 PlBar.o : ftypes.mod
 PlBar_d1.o : ftypes.mod
 PlON.o : ftypes.mod
