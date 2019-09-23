@@ -104,42 +104,59 @@ class SHGeoid(object):
                         self.r, self.order))
         return str
 
-    def plot(self, colorbar=True, cb_orientation='vertical',
-             cb_label='geoid, m', show=True, **kwargs):
+    def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
+             colorbar=True, cb_orientation='vertical', cb_label='geoid, m',
+             grid=False, axes_labelsize=None, tick_labelsize=None, show=True,
+             **kwargs):
         """
         Plot the geoid.
 
         Usage
         -----
-        x.plot([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                cb_label, show, fname, **kwargs])
+        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, colorbar,
+                cb_orientation, cb_label, grid, axes_labelsize, tick_labelsize,
+                ax, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'geoid, m'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
         kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
+            Keyword arguements that will be sent to plt.imshow(), such as cmap,
+            vmin and vmax.
         """
-        return self.geoid.plot(colorbar=colorbar,
+        return self.geoid.plot(tick_interval=tick_interval,
+                               minor_tick_interval=minor_tick_interval,
+                               colorbar=colorbar,
                                cb_orientation=cb_orientation,
-                               cb_label=cb_label, show=True, **kwargs)
+                               cb_label=cb_label,
+                               grid=grid, axes_labelsize=axes_labelsize,
+                               tick_labelsize=tick_labelsize,
+                               show=show, **kwargs)

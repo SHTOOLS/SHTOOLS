@@ -17,40 +17,40 @@ call MakeGravGradGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `vxx`, `vyy`, `vz
 
 ## Parameters
 
-`cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real 4-pi normalized gravitational potential spherical harmonic coefficients. The coefficients `c1lm` and `c2lm` refer to the cosine and sine coefficients, respectively, with `c1lm=cilm(1,l+1,m+1)` and `c2lm=cilm(2,l+1,m+1)`.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the coefficients `cilm`. This determines the number of samples of the output grids, `n=2lmax+2`, and the latitudinal sampling interval, `90/(lmax+1)`.
 
-`gm` : input, real\*8
+`gm` : input, real(dp)
 :   The gravitational constant multiplied by the mass of the planet.
 
-`r0`: input, real\*8
+`r0`: input, real(dp)
 :   The reference radius of the spherical harmonic coefficients.
 
-`a` : input, real\*8
+`a` : input, real(dp)
 :   The semi-major axis of the flattened ellipsoid on which the field is computed.
 
-`f` : input, real\*8
+`f` : input, real(dp)
 :   The flattening of the reference ellipsoid: `f=(R_equator-R_pole)/R_equator`.
 
-`vxx` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vxx` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) grid of the `xx` component of the gravity tensor. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
 
-`vyy` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vyy` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the `yy` component of the gravity tensor.
 
-`vzz` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vzz` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the `zz` component of the gravity tensor.
 
-`vxy` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vxy` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the `xy` component of the gravity tensor.
 
-`vxz` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vxz` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the `xz` component of the gravity tensor.
 
-`vyz` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vyz` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the YZ component of the gravity tensor.
 
 `n` : output, integer

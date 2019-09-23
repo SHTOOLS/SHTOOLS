@@ -31,7 +31,7 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
 ### INSTALLATION ###
 #### pyshtools for Python ####
 
-Binary install for linux/macOS/windows:
+Binary install for linux and macOS:
 ```bash
 pip install pyshtools
 ```
@@ -44,15 +44,6 @@ pip install --upgrade pyshtools
 Build from source:
 ```bash
 pip install pyshtools --no-binary pyshtools
-```
-
-#### pyshtools for Anaconda Python ####
-
-Install fftw3 with fortran bindings and then install pyshtools using `pip`:
-
-```bash
-conda install -c eumetsat fftw3
-pip install pyshtools
 ```
 
 #### pyshtools for developers ####
@@ -72,8 +63,9 @@ Alternatively, clone the shtools repo and then install:
 ```bash
 git clone https://github.com/SHTOOLS/SHTOOLS.git
 cd shtools
+git checkout develop
 pip install .  # install into the active python environment lib folder, or
-pip install -v -e .  # install into the SHTOOLS/pyshtools folder and link to the active python environment
+pip install -e .  # install into the SHTOOLS/pyshtools folder and link to the active python environment
 ```
 
 #### Fortran Library ####

@@ -8,16 +8,16 @@ call SHRotateCoef (`x`, `coef`, `rcoef`, `dj`, `lmax`, `exitstatus`)
 
 # Parameters
 
-`x` : input, real\*8, dimension(3)
+`x` : input, real(dp), dimension(3)
 :   The three Euler angles, alpha, beta, and gamma, in radians.
 
-`coef` : input, real\*8, dimension (2, (`lmax`+1)\*(`lmax`+2)/2)
+`coef` : input, real(dp), dimension (2, (`lmax`+1)\*(`lmax`+2)/2)
 :   The input complex spherical harmonic coefficients of the real function. This is an indexed array where the real and complex components are given by `coef(1,:)` and `coef(2,:)`, respectively. The functions `SHCilmToCindex` and `SHCindexToCilm` are used to convert to and from indexed and `cilm(2,:,:)` form. The coefficients must correspond to unit-normalized spherical harmonics that possess the Condon-Shortley phase convention.
 
-`rcoef` : output, real\*8, dimension (2, (`lmax`+1)\*(`lmax`+2)/2)
+`rcoef` : output, real(dp), dimension (2, (`lmax`+1)\*(`lmax`+2)/2)
 :   The spherical harmonic coefficients of the rotated function in indexed form.
 
-`dj` : input, real\*8, dimension (`lmax`+1, `lmax`+1, `lmax`+1)
+`dj` : input, real(dp), dimension (`lmax`+1, `lmax`+1, `lmax`+1)
 :   The rotation matrix `dj(pi/2)` obtained from a call to `djpi2`.
 
 `lmax` : input, integer

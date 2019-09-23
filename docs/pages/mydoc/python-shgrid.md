@@ -32,6 +32,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | --------------------- | ----------- |
 | `x = SHGrid.from_array()` | Initialize using an array. |
 | `x = SHGrid.from_file()` | Initialize using an array from a file. |
+| `x = SHGrid.from_zeros()` | Initialize using an array of zeros. |
+| `x = SHGrid.from_cap()` | Initialize using a rotated spherical cap. |
+
 
 ## Class attributes
 
@@ -50,8 +53,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Method | Description |
 | ------ | ----------- |
-| `to_file()` | Save raw gridded data to a text or binary file. |
 | `to_array()` | Return a numpy array of the gridded data. |
+| `to_xarray()` | Return the gridded data as an xarray DataArray. |
+| `to_file()` | Save raw gridded data to a text or binary file. |
+| `to_netcdf()` | Return the gridded data as a netcdf formatted file or object. |
 | `lats()` | Return a vector containing the latitudes of each row of the gridded data. |
 | `lons()` | Return a vector containing the longitudes of each column of the gridded data. |
 | `expand()` | Expand the grid into spherical harmonics. |

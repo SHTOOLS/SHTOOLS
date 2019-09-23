@@ -29,7 +29,7 @@ Determine the expansion coefficients of a function for a given set of input Slep
 :   The spherical harmonic coefficients of the global function to be expanded in Slepian functions.
 
 `nmax` : integer
-:   The number of expansion coefficients to compute.
+:   The number of expansion coefficients to compute. This must be less than or equal to (`lmax`+1)\*\*2.
 
 ## Description
 
@@ -39,4 +39,4 @@ Determine the expansion coefficients of a function for a given set of input Slep
 
 ## See also
 
-[slepiancoeffstosh](pyslepiancoeffstosh.html), [shreturntapers](pyshreturntapers.html), [shreturntapersmap](pyshreturntapersmap.html), [shrotatetapers](pyshrotatetapers.html), [shvectortocilm](pyshvectortocilm.html)
+[slepiancoeffstosh](pyslepiancoeffstosh.html), [shslepianvar](pyshslepianvar.html), [shreturntapers](pyshreturntapers.html), [shreturntapersmap](pyshreturntapersmap.html), [shrotatetapers](pyshrotatetapers.html), [shvectortocilm](pyshvectortocilm.html), [shscouplingmatrix](pyshscouplingmatrix.html), [shscouplingmatrixcap](pyshscouplingmatrixcap.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)

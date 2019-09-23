@@ -8,34 +8,34 @@ call MakeGravGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `rad`, `theta`, `phi`
 
 # Parameters
 
-`cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real 4-pi normalized gravitational potential spherical harmonic coefficients. The coefficients c1lm and c2lm refer to the cosine and sine coefficients, respectively, with `c1lm=cilm(1,l+1,m+1)` and `c2lm=cilm(2,l+1,m+1)`.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the coefficients `cilm`. This determines the number of samples of the output grids, `n=2lmax+2`, and the latitudinal sampling interval, `90/(lmax+1)`.
 
-`gm` : input, real\*8
+`gm` : input, real(dp)
 :   The gravitational constant multiplied by the mass of the planet.
 
-`r0`: input, real\*8
+`r0`: input, real(dp)
 :   The reference radius of the spherical harmonic coefficients.
 
-`a` : input, real\*8
+`a` : input, real(dp)
 :   The semi-major axis of the flattened ellipsoid on which the field is computed.
 
-`f` : input, real\*8
+`f` : input, real(dp)
 :   The flattening of the reference ellipsoid: `f=(R_equator-R_pole)/R_equator`.
 
-`rad` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`rad` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) grid of the radial component of the gravity field corresponding to the input spherical harmonic coefficients `cilm`. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
 
-`theta` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`theta` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the theta component of the gravity field.
 
-`phi` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`phi` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the phi component of the gravity field.
 
-`total` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`total` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equally spaced grid of the magnitude of the gravity acceleration.
 
 `n` : output, integer
@@ -47,13 +47,13 @@ call MakeGravGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `rad`, `theta`, `phi`
 `lmax_calc` : optional, input, integer
 :   The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to `lmax`.
 
-`omega` : optional, input, real\*8
+`omega` : optional, input, real(dp)
 :   The angular rotation rate of the planet.
 
 `normal_gravity` : optional, input, integer
 :   If 1, the normal gravity (the gravitational acceleration on the ellipsoid) will be subtracted from the total gravity, yielding the "gravity disturbance." This is done using Somigliana's formula (after converting geocentric to geodetic coordinates).
 
-`pot_grid` : output, real\*8, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`pot_grid` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
 :   A 2D equally sampled or equaly spaced grid of the gravitational potential.
 
 `exitstatus` : output, optional, integer

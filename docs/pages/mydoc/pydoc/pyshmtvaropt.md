@@ -9,7 +9,7 @@ toc: false
 editdoc: pydoc
 ---
 
-Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate.
+Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum.
 
 ## Usage
 
@@ -29,13 +29,13 @@ Calculate the minimum variance and corresponding optimal weights of a localized 
 ## Parameters
 
 `l` : integer
-:   The angular degree to determine the minimum variance and optimal weights.
+:   The spherical harmonic degree used to calculate the theoretical minimum variance and optimal weights.
 
 `tapers` : float, dimension (`lwinin`+1, `kmaxin`)
 :   A matrix of localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
 `taper_order` : integer, dimension (`kmaxin`)
-:   The angular order of the windowing coefficients in TAPERS. If this matrix was created using `SHReturnTapersM`, then this array must be composed of zeros.
+:   The angular order of the windowing coefficients in `tapers`.
 
 `sff` : float, dimension (`l`+`lwinin`+1)
 :   The global unwindowed power spectrum of the function to be localized.
@@ -61,4 +61,4 @@ Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimati
 
 ## See also
 
-[shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html); [shlocalizedadmitcorr](pyshlocalizedadmitcorr.html), [shbiasadmitcorr](pyshbiasadmitcorr.html), [shbiask](pyshbiask.html), [shmtdebias](pyshmtdebias.html)
+[shmtvar](pyshmtvar.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html); [shlocalizedadmitcorr](pyshlocalizedadmitcorr.html), [shbiasadmitcorr](pyshbiasadmitcorr.html), [shbiask](pyshbiask.html), [shmtdebias](pyshmtdebias.html)

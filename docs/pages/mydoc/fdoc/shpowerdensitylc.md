@@ -17,10 +17,10 @@ Compute the power spectral density of a complex function for a single spherical 
 
 ## Parameters
 
-`psd` : output, real\*8
+`psd` : output, real(dp)
 :   Power spectral density of the complex function for spherical harmonic degree `l`.
 
-`cilm` : input, complex\*16, dimension (2, `lmaxin`+1, `lmaxin`+1)
+`cilm` : input, complex(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex function expressed in complex spherical harmonics.
 
 `l` : input, integer

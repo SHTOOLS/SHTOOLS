@@ -8,16 +8,16 @@ call SHRotateRealCoef (`cilmrot`, `cilm`, `lmax`, `x`, `dj`, `exitstatus`)
 
 # Parameters
 
-`cilmrot` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilmrot` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the rotated function, normalized for use with the geodesy 4-pi spherical harmonics.
 
-`cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The input real spherical harmonic coefficients. The coefficients must correspond to geodesy 4-pi normalized spherical harmonics that do not possess the Condon-Shortley phase convention.
 
-`x` : input, real\*8, dimension(3)
+`x` : input, real(dp), dimension(3)
 :   The three Euler angles, alpha, beta, and gamma, in radians.
 
-`dj` : input, real\*8, dimension (`lmax`+1, `lmax`+1, `lmax`+1)
+`dj` : input, real(dp), dimension (`lmax`+1, `lmax`+1, `lmax`+1)
 :   The rotation matrix `dj(pi/2)`, obtained from a call to `djpi2`.
 
 `lmax` : input, integer

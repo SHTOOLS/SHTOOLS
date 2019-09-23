@@ -5,7 +5,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 !   functions up to degree lmax. The functions are initially scaled by
 !   10^280 sin^m in order to minimize the effects of underflow at large m
 !   near the poles (see Holmes and Featherstone 2002, J. Geodesy, 76, 279-299).
-!   On a Mac OSX system with a maximum allowable double precision value of
+!   On a macOS system with a maximum allowable double precision value of
 !   2.225073858507203E-308 the scaled portion of the algorithm will not overflow
 !   for degrees less than or equal to 2800.
 !
@@ -60,26 +60,25 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 !       calling routine.
 !   4.  The default is to exlude the Condon-Shortley phase of (-1)^m.
 !
-!   Dependencies:   CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: p(:)
-    real*8, intent(in) :: z
+    real(dp), intent(out) :: p(:)
+    real(dp), intent(in) :: z
     integer, intent(in), optional :: csphase, cnorm
     integer, intent(out), optional :: exitstatus
-    real*8 :: pm2, pm1, pmm, plm, rescalem, u, scalef
-    real*8, save, allocatable :: f1(:), f2(:), sqr(:)
+    real(dp) :: pm2, pm1, pmm, plm, rescalem, u, scalef
+    real(dp), save, allocatable :: f1(:), f2(:), sqr(:)
     integer :: k, kstart, m, l, astat(3)
     integer, save :: lmax_old = 0
-    integer*1 :: phase
+    integer(int1) :: phase
 
 !$OMP    threadprivate(f1, f2, sqr, lmax_old)
 
@@ -103,7 +102,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     else if (lmax < 0) then
         print*, "Error --- PlmSchmidt"
@@ -114,9 +113,9 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-     else if (abs(z) > 1.0d0) then
+     else if (abs(z) > 1.0_dp) then
         print*, "Error --- PlmSchmidt"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
@@ -125,7 +124,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     end if
 
@@ -145,7 +144,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
                 return
             else
                 stop
-            endif
+            end if
 
         end if
     else
@@ -153,7 +152,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 
     end if
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (lmax > lmax_old) then
         if (allocated (sqr)) deallocate (sqr)
@@ -173,7 +172,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
                 return
             else
                 stop
-            endif
+            end if
         end if
 
         !----------------------------------------------------------------------
@@ -221,10 +220,10 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
     !   Calculate P(l,0). These are not scaled.
     !
     !--------------------------------------------------------------------------
-    u = sqrt((1.0d0-z)*(1.0d0+z)) ! sin(theta)
+    u = sqrt((1.0_dp-z)*(1.0_dp+z)) ! sin(theta)
 
-    pm2 = 1.0d0
-    p(1) = 1.0d0
+    pm2 = 1.0_dp
+    p(1) = 1.0_dp
 
     if (lmax == 0) return
 
@@ -260,7 +259,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 
     end if
 
-    rescalem = 1.0d0 / scalef
+    rescalem = 1.0_dp / scalef
     kstart = 1
 
     do m = 1, lmax - 1, 1

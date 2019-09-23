@@ -20,19 +20,19 @@ call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`, `exit
 `filename` : input, character(*)
 :   The filename of the JPL ascii formatted spherical harmonic coefficients.
 
-`cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients contained in `filename`.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of `cilm`.
 
-`error` : output, optional, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`error` : output, optional, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The errors corresponding to the spherical harmonic coefficients `cilm`.
 
-`gm` : output, optional, real\*8, dimension(2)
+`gm` : output, optional, real(dp), dimension(2)
 :   The mass-gravitational constant and error.
 
-`formatstring` : input character*6, optional, default = "E19.12"
+`formatstring` : input character(6), optional, default = "E19.12"
 :   The format string used to read the elements of `cilm` and `cilm_error`. The default is "E19.12".
 
 `exitstatus` : output, optional, integer

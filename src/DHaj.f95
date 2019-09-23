@@ -15,23 +15,25 @@ subroutine DHaj(n, aj, exitstatus)
 !       OUT
 !           aj  Vector of length n containing the weights.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, intent(in) ::  n
-    real*8, intent(out) ::  aj(:)
+    integer, intent(in) :: n
+    real(dp), intent(out) :: aj(:)
     integer, intent(out), optional :: exitstatus
     integer :: j, l
-    real*8 ::  sum1, pi
+    real(dp) :: sum1, pi
 
     if (present(exitstatus)) exitstatus = 0
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    aj = 0.0d0
+    aj = 0.0_dp
 
     if (mod(n,2) /= 0) then
         print*, "Error --- DH_aj"
@@ -60,14 +62,14 @@ subroutine DHaj(n, aj, exitstatus)
     end if
 
     do j = 0, n-1
-        sum1 = 0.0d0
+        sum1 = 0.0_dp
 
         do l = 0, n/2 -1
             sum1 = sum1 + sin( dble(2*l+1) * pi * dble(j) / dble(n) ) &
                           / dble(2*l+1)
         end do
 
-        aj(j+1) = sum1 * sin(pi * dble(j) / dble(n)) * sqrt(8.0d0) / dble(n)
+        aj(j+1) = sum1 * sin(pi * dble(j) / dble(n)) * sqrt(8.0_dp) / dble(n)
 
     end do
 

@@ -9,10 +9,11 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 !   samples, n, must be even for this routine to work, and the spherical
 !   harmonic expansion is exact if the function is bandlimited to degree n/2-1.
 !   Legendre functions are computed on the fly using the scaling methodology
-!   presented in holmes and featherston (2002). When norm is 1,2 or 4, these are
-!   accurate to about degree 2800. When norm is 3, the routine is only stable
-!   to about degree 15. If the optional parameter lmax_calc is specified, the
-!   spherical harmonic coefficients will only be calculated up to this degree.
+!   presented in holmes and featherston (2002). When norm is 1, 2 or 4, these
+!   are accurate to about degree 2800. When norm is 3, the routine is only
+!   stable to about degree 15! If the optional parameter lmax_calc is
+!   specified, the spherical harmonic coefficients will only be calculated up
+!   to this degree.
 !
 !   If sampling is 1 (default), the input grid contains n samples in latitude
 !   from 90 to -90+interval, and n samples in longitude from 0 to
@@ -41,8 +42,8 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 !                       (2, lmax_calc+1, lmax_calc+1).
 !           lmax        Spherical harmonic bandwidth of the grid. This
 !                       corresponds to the maximum spherical harmonic degree of
-!                       the expansion if the optional parameter lmax_calc is not
-!                       specified.
+!                       the expansion if the optional parameter lmax_calc is
+!                       not specified.
 !
 !       OPTIONAL (IN)
 !           norm        Normalization to be used when calculating legendre
@@ -81,39 +82,33 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 !           a nxn grid, higher frequencies could be aliased into lower
 !           frequencies.
 !
-!   Dependencies:       dhaj, fftw3, csphase_default
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use FFTW3
     use SHTOOLS, only: dhaj, csphase_default
-#ifdef FFTW3_UNDERSCORE
-#define dfftw_plan_dft_r2c_1d dfftw_plan_dft_r2c_1d_
-#define dfftw_execute dfftw_execute_
-#define dfftw_destroy_plan dfftw_destroy_plan_
-#endif
+    use ftypes
+    use, intrinsic :: iso_c_binding
 
     implicit none
 
-    real*8, intent(in) :: grid(:,:)
-    real*8, intent(out) :: cilm(:,:,:)
+    real(dp), intent(in) :: grid(:,:)
+    real(dp), intent(out) :: cilm(:,:,:)
     integer, intent(in) :: n
     integer, intent(out) :: lmax
     integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
     integer, intent(out), optional :: exitstatus
-    complex*16 :: cc(n+1)
+    complex(dp) :: cc(n+1), ccs(n+1)
     integer :: l, m, i, l1, m1, i_eq, i_s, lnorm, astat(4), lmax_comp, nlong
-    integer*8 :: plan
-    real*8 :: pi, gridl(2*n), aj(n), fcoef1(2, n/2+1), fcoef2(2, n/2+1), &
-              theta, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z, &
-              ffc(1:2,-1:1)
-    real*8, save, allocatable :: sqr(:), ff1(:,:), ff2(:,:)
-    integer*1, save, allocatable :: fsymsign(:,:)
+    type(C_PTR) :: plan, plans
+    real(dp) :: pi, gridl(2*n), gridls(2*n), aj(n), fcoef1(2, n/2+1), &
+                fcoef2(2, n/2+1), theta, prod, scalef, rescalem, u, p, pmm, &
+                pm1, pm2, z, ffc(1:2,-1:1)
+    real(dp), save, allocatable :: sqr(:), ff1(:,:), ff2(:,:)
+    integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
     integer :: phase
-    external :: dfftw_plan_dft_r2c_1d, dfftw_execute, dfftw_destroy_plan
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 
@@ -206,7 +201,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
             end if
 
-        elseif (sampling == 2) then
+        else if (sampling == 2) then
             if (size(grid(:,1)) < n .or. size(grid(1,:)) < 2*n) then
                 print*, "Error --- SHExpandDH"
                 print*, "GRIDDH must be dimensioned as (N, 2*N) where N is ", n
@@ -282,20 +277,20 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
-    cilm = 0.0d0
+    cilm = 0.0_dp
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (present(exitstatus)) then
         call DHaj(n, aj, exitstatus=exitstatus)
         if (exitstatus /= 0) return
     else
         call DHaj(n, aj)
-    endif
+    end if
 
-    aj(1:n) = aj(1:n) * sqrt(4.0d0*pi)
+    aj(1:n) = aj(1:n) * sqrt(4.0_dp*pi)
     ! Driscoll and Heally use unity normalized spherical harmonics
 
     if (present(sampling)) then
@@ -305,7 +300,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
         else
             nlong = 2 * n
 
-        endif
+        end if
 
     else
         nlong = n
@@ -314,7 +309,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate recursion constants used in computing the legendre polynomials
+    !   Calculate recursion constants used in computing the legendre functions.
     !
     !--------------------------------------------------------------------------
     if (lmax_comp /= lmax_old .or. lnorm /= norm_old) then
@@ -384,7 +379,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
             case(1,4)
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
-                    ff2(2,1) = 0.0d0
+                    ff2(2,1) = 0.0_dp
 
                 end if
 
@@ -401,14 +396,14 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
                     end do
 
                     ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
             case(2)
                 if (lmax_comp /= 0) then
-                    ff1(2,1) = 1.0d0
-                    ff2(2,1) = 0.0d0
+                    ff1(2,1) = 1.0_dp
+                    ff2(2,1) = 0.0_dp
 
                 end if
 
@@ -424,7 +419,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
                     end do
 
                     ff1(l+1,l)= dble(2*l-1) / sqr(l+m) / sqr(l-m)
-                    ff2(l+1,l) = 0.0d0
+                    ff2(l+1,l) = 0.0_dp
 
                 end do
 
@@ -450,11 +445,11 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
     !--------------------------------------------------------------------------
     !
-    !   Create generic plan for grid
+    !   Create generic plan for gridl and gridls.
     !
     !--------------------------------------------------------------------------
-
-    call dfftw_plan_dft_r2c_1d(plan, nlong, gridl(1:nlong), cc, fftw_measure)
+    plan = fftw_plan_dft_r2c_1d(nlong, gridl(1:nlong), cc, FFTW_MEASURE)
+    plans = fftw_plan_dft_r2c_1d(nlong, gridls(1:nlong), ccs, FFTW_MEASURE)
 
     !--------------------------------------------------------------------------
     !
@@ -467,24 +462,24 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
     do i = 2, i_eq - 1, 1
         theta = (i-1) * pi / dble(n)
         z = cos(theta)
-        u = sqrt( (1.0d0-z) * (1.0d0+z) )
+        u = sqrt( (1.0_dp-z) * (1.0_dp+z) )
 
         gridl(1:nlong) = grid(i,1:nlong)
-        call dfftw_execute(plan)    ! take fourier transform
+        call fftw_execute_dft_r2c(plan, gridl, cc)   ! take fourier transform
         fcoef1(1,1:n/2) = sqrt(2*pi) * aj(i) * dble(cc(1:n/2)) / dble(nlong)
-        fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * dimag(cc(1:n/2)) / dble(nlong)
+        fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * aimag(cc(1:n/2)) / dble(nlong)
 
         i_s = 2 * i_eq - i
 
-        gridl(1:nlong) = grid(i_s,1:nlong)
-        call dfftw_execute(plan)    ! take fourier transform
-        fcoef2(1,1:n/2) = sqrt(2*pi) * aj(i_s) * dble(cc(1:n/2)) / dble(nlong)
-        fcoef2(2,1:n/2) = -sqrt(2*pi) * aj(i_s) * dimag(cc(1:n/2)) / &
+        gridls(1:nlong) = grid(i_s,1:nlong)
+        call fftw_execute_dft_r2c(plans, gridls, ccs)
+        fcoef2(1,1:n/2) = sqrt(2*pi) * aj(i_s) * dble(ccs(1:n/2)) / dble(nlong)
+        fcoef2(2,1:n/2) = -sqrt(2*pi) * aj(i_s) * aimag(ccs(1:n/2)) / &
                           dble(nlong)
 
         select case (lnorm)
-            case (1,2,3);    pm2 = 1.0d0
-            case (4);        pm2 = 1.0d0 / sqrt(4*pi)
+            case (1,2,3);    pm2 = 1.0_dp
+            case (4);        pm2 = 1.0_dp / sqrt(4*pi)
 
         end select
 
@@ -516,7 +511,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
         end select
 
-        rescalem = 1.0d0 / scalef
+        rescalem = 1.0_dp / scalef
 
         do m = 1, lmax_comp-1, 1
             m1 = m + 1
@@ -587,17 +582,17 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
     ! finally, do equator
     i = i_eq
 
-    z = 0.0d0
-    u = 1.0d0
+    z = 0.0_dp
+    u = 1.0_dp
 
     gridl(1:nlong) = grid(i,1:nlong)
-    call dfftw_execute(plan)    ! take fourier transform
+    call fftw_execute_dft_r2c(plan, gridl, cc)
     fcoef1(1,1:n/2) = sqrt(2*pi) * aj(i) * dble(cc(1:n/2)) / dble(nlong)
-    fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * dimag(cc(1:n/2)) / dble(nlong)
+    fcoef1(2,1:n/2) = -sqrt(2*pi) * aj(i) * aimag(cc(1:n/2)) / dble(nlong)
 
     select case (lnorm)
-        case (1,2,3); pm2 = 1.0d0
-        case (4);     pm2 = 1.0d0 / sqrt(4*pi)
+        case (1,2,3); pm2 = 1.0_dp
+        case (4);     pm2 = 1.0_dp / sqrt(4*pi)
     end select
 
     cilm(1,1,1) = cilm(1,1,1) + pm2 * fcoef1(1,1)
@@ -617,7 +612,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
             case (4);    pmm = sqr(2) * scalef / sqrt(4 * pi)
         end select
 
-        rescalem = 1.0d0 / scalef
+        rescalem = 1.0_dp / scalef
 
         do m = 1, lmax_comp-1, 1
             m1 = m + 1
@@ -667,7 +662,8 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
         end if
 
-    call dfftw_destroy_plan(plan)
+    call fftw_destroy_plan(plan)
+    call fftw_destroy_plan(plans)
 
     !--------------------------------------------------------------------------
     !
@@ -689,13 +685,13 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
             do l = 0, lmax_comp, 1
                 prod = 4 * pi / dble(2*l+1)
                 cilm(1,l+1,1) = cilm(1,l+1,1) / prod
-                prod = prod / 2.0d0
+                prod = prod / 2.0_dp
 
                 do m = 1, l-1, 1
                     prod = prod * (l+m) * (l-m+1)
                     cilm(1:2,l+1,m+1) = cilm(1:2,l+1,m+1) / prod
 
-                enddo
+                end do
 
                 !do m=l case
                 if (l /= 0) cilm(1:2,l+1,l+1) = cilm(1:2,l+1, l+1) / (prod*2*l)

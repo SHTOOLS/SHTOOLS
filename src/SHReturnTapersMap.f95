@@ -1,52 +1,51 @@
 subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
-                             sampling, ntapers, exitstatus)
+                             sampling, ntapers, degrees, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will calculate the eigenvalues and eigenfunctions of the
-!   generalized concentration problem where the region of interest R is given by
-!   the grid DH_MASK. This matrix is sampled according to the Driscoll and Healy
-!   sampling theorem, and possesses a value of 1 inside of R, and 0 elsewhere.
-!   Returned tapers and eigenvalues are ordered from the largest to smallest
-!   eigenvalue, and the spectral coefficients are packed into a 1D column vector
-!   according to the scheme described in YilmIndexVector.
+!   generalized concentration problem where the region of interest R is given
+!   by the grid DH_MASK. This matrix is sampled according to the Driscoll and
+!   Healy sampling theorem, and possesses a value of 1 inside of R, and 0
+!   elsewhere. Returned tapers and eigenvalues are ordered from the largest to
+!   smallest eigenvalue, and the spectral coefficients are packed into a 1D
+!   column vector according to the scheme described in YilmIndexVector.
 !
 !   The elements Dij are calculated approximately using spherical harmonic
-!   transforms. The effective bandwidth of the grid DH_MASK should in general be
-!   larger than LMAX by about a factor of 4 or so for accurate results. In
+!   transforms. The effective bandwidth of the grid DH_MASK should in general
+!   be larger than LMAX by about a factor of 3 or so for accurate results. In
 !   addition, as a result of the approximate manner in which the space-
-!   concentration kernel is calculated, it is preferable to use SAMPLING=1. As
-!   one test of the accuracy, the area of the input grid DH_MASK, is compared
-!   to the calculated area given in the elements D(1,1).
+!   concentration kernel is calculated, it is preferable to use SAMPLING=2.
 !
 !   Calling Parameters
 !
 !       IN
-!           dh_mask     Integer grid sampled according to the Driscoll and Healy
-!                       sampling theorem. A value of 1 indicates the the grid
-!                       node is in the concentration domain, and a value of 0
-!                       indicates that it is outside. Dimensioned as (n_dh,
-!                       n_dh) for SAMPLING = 1 or (n_dh, 2*n_dh) for
+!           dh_mask     Integer grid sampled according to the Driscoll and
+!                       Healy sampling theorem. A value of 1 indicates that the
+!                       grid node is in the concentration domain, and a value
+!                       of 0 indicates that it is outside. Dimensioned as
+!                       (n_dh, n_dh) for SAMPLING = 1 or (n_dh, 2*n_dh) for
 !                       SAMPLING = 2.
-!           n_dh        The number of latitude samples in the Driscoll and Healy
-!                       sampled grid.
-!
-!           lmax        Maximum spherical harmonic degree of the outpt spherical
-!                       harmonic coefficients.
+!           n_dh        The number of latitude samples in the Driscoll and
+!                       Healy sampled grid.
+!           lmax        Maximum spherical harmonic degree of the outpt
+!                       spherical harmonic coefficients.
+!           sampling    1 corresponds to equal sampling (n_dh, n_dh), whereas
+!                       2 corresponds to equal spaced grids (n_dh, 2*n_dh).
 !
 !       IN, OPTIONAL
-!           SAMPLING    1 (default) corresponds to equal sampling (n_dh, n_dh),
-!                       whereas 2 corresponds to equal spaced grids (n_dh,
-!                       2*n_dh).
 !           ntapers     Number of tapers and eigenvalues to output.
+!           degrees     Specify those degrees of the coupling matrix to
+!                       compute. If degrees(l+1) is zero, degree l will not
+!                       be used.
 !
 !       OUT
-!           Tapers      Column vectors contain the spherical harmonic
+!           tapers      Column vectors contain the spherical harmonic
 !                       coefficients, packed according to the scheme described
 !                       in YilmIndexVector. The dimension of this array is
-!                       (lmax+1)**2 by (lmax+1)**2, or (lmax+1)**2 by ntapers if
-!                       ntapers is present.
-!           Eigenvalues A 1-dimensional vector containing the eigenvalues
-!                       corresponding to the columns of Tapers, dimensioned as
+!                       (lmax+1)**2 by (lmax+1)**2, or (lmax+1)**2 by ntapers
+!                       if ntapers is present.
+!           eigenvalues A 1-dimensional vector containing the eigenvalues
+!                       corresponding to the columns of tapers, dimensioned as
 !                       (lmax+1)**2.
 !
 !       OPTIONAL (OUT)
@@ -59,25 +58,24 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only : EigValVecSym, ComputeDMap
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: tapers(:,:), eigenvalues(:)
-    integer, intent(in) :: dh_mask(:,:), n_dh, lmax
-    integer, intent(in), optional :: sampling, ntapers
+    real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
+    integer, intent(in) :: dh_mask(:,:), n_dh, lmax, sampling
+    integer, intent(in), optional :: ntapers, degrees(:)
     integer, intent(out), optional :: exitstatus
-    real*8, allocatable :: dij(:,:)
-    integer :: nlat, nlong, lmax_dh, astat, i, j
-    real*8 :: area, areaf, pi, colat, long_int, lat_int, da
+    real(dp), allocatable :: dij(:,:), dijex(:, :), evec(:, :)
+    integer :: nlat, nlong, lmax_dh, astat(2), i, j, l, m, exclude, n, &
+               ind((lmax+1)**2), numk
 
     if (present(exitstatus)) exitstatus = 0
-
-    pi = acos(-1.0d0)
 
     if (present(ntapers)) then
         if (ntapers > (lmax+1)**2) then
@@ -151,7 +149,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 
         end if
 
-    endif
+    end if
 
     if (mod(n_dh,2) /= 0) then
         print*, "Error --- SHReturnTapersMap"
@@ -167,35 +165,39 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 
     end if
 
-    nlat = n_dh
-    lat_int = pi / dble(nlat)
-
-    if (present(sampling)) then
-        if (sampling == 1) then
-            nlong = nlat
-            long_int = 2.0d0 * lat_int
-
-        else if (sampling == 2) then
-            nlong = 2 * nlat
-            long_int = lat_int
-
-        else 
+    if (present(degrees)) then
+        if (size(degrees) < lmax+1) then
             print*, "Error --- SHReturnTapersMap"
-            print*, "SAMPLING must be either 1 (equally sampled) " // &
-                    "or 2 (equally spaced)."
-            print*, "SAMPLING = ", sampling
+            print*, "DEGREES must have dimension LMAX+1, where LMAX is ", lmax
+            print*, "Input array is dimensioned as ", size(degrees)
             if (present(exitstatus)) then
-                exitstatus = 2
+                exitstatus = 1
                 return
             else
                 stop
             end if
-
         end if
+    end if
+
+    nlat = n_dh
+
+    if (sampling == 1) then
+        nlong = nlat
+
+    else if (sampling == 2) then
+        nlong = 2 * nlat
 
     else
-        nlong = nlat
-        long_int = 2.0d0 * lat_int
+        print*, "Error --- SHReturnTapersMap"
+        print*, "SAMPLING must be either 1 (equally sampled) " // &
+                "or 2 (equally spaced)."
+        print*, "SAMPLING = ", sampling
+        if (present(exitstatus)) then
+            exitstatus = 2
+            return
+        else
+            stop
+        end if
 
     end if
 
@@ -219,7 +221,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
         print*, "Error --- SHReturnTapersMap"
         print*, "The effective bandwith of the input grid DH_MASK must " // &
                 "be greater or equal than LMAX."
-        print*, "Experience suggests that this should be about 4 times LMAX."
+        print*, "In practice, this should be about 3 * LMAX."
         print*, "LMAX = ", lmax
         print*, "Effective bandwidth of DH_MASK = (N/2 -1) = ", lmax_dh
         if (present(exitstatus)) then
@@ -231,12 +233,15 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
 
     end if
 
-    allocate (dij((lmax+1)**2, (lmax+1)**2), stat = astat)
+    eigenvalues = 0.0_dp
+    tapers = 0.0_dp
 
-    if (astat /= 0) then
+    allocate (dij((lmax+1)**2, (lmax+1)**2), stat = astat(1))
+    allocate (evec((lmax+1)**2, (lmax+1)**2), stat = astat(2))
+
+    if (astat(1) /= 0 .or. astat(2) /= 0) then
         print*, "Error --- SHReturnTapersMap"
-        print*, "Problem allocating DIJ((LMAX+1)**2,(LMAX+1)**2)"
-        print*, "LMAX = ", lmax
+        print*, "Problem allocating arrays DIJ and EVEC."
         if (present(exitstatus)) then
             exitstatus = 3
             return
@@ -247,69 +252,107 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
     end if
 
     if (present(exitstatus)) then
-        if (present(sampling)) then
-            call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=sampling, &
-                             exitstatus = exitstatus)
-            if (exitstatus /= 0) return
-        else
-            call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=1, &
-                             exitstatus = exitstatus)
-            if (exitstatus /= 0) return
-        end if
+        call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling = sampling, &
+                         exitstatus = exitstatus)
+        if (exitstatus /= 0) return
 
-        if (present(ntapers)) then
-            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, &
-                              k = ntapers, exitstatus = exitstatus)
-            if (exitstatus /= 0) return
-        else
-            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, &
-                              exitstatus = exitstatus)
-            if (exitstatus /= 0) return
-        endif
-    
     else
-        if (present(sampling)) then
-            call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=sampling)
-        else
-            call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling=1)
-        end if
-
-        if (present(ntapers)) then
-            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers, k = ntapers)
-        else
-            call EigValVecSym(Dij, (lmax+1)**2, eigenvalues, tapers)
-        endif
+        call ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling = sampling)
 
     end if
 
-    !--------------------------------------------------------------------------
-    !
-    !   Check and see how good the solutions are.
-    !
-    !--------------------------------------------------------------------------
-    area = 0.0d0
-    areaf = 0.0d0
+    exclude = 0
+    n = (lmax+1)**2
 
-    do i = 2, nlat
-        colat = dble(i-1) * lat_int
+    if (present(degrees)) then
+        if (sum(degrees(1:lmax+1)) /= lmax + 1 .and. &
+                sum(degrees(1:lmax+1)) /= 0) then
+            exclude = 1
+            ind = 0
+            i = 0
 
-        do j = 1, nlong
-            da = -( cos(colat + lat_int/2.0d0) - cos(colat - lat_int/2.0d0) ) &
-                  * long_int
-            area = area + da
+            do l = 0, lmax
+                if (degrees(l+1) /= 0) then
+                    do m = 0, l
+                        i = i + 1
+                        ind(i) = l**2 + m + 1
+                    end do
 
-            if (dh_mask(i,j) == 1) areaf = areaf + da
+                    do m = 1, l, 1
+                        i = i + 1
+                        ind(i) = l**2 + l + m + 1
+                    end do
+
+                end if
+            end do
+
+            n = i
+
+            allocate (dijex(n, n), stat = astat(1))
+            if (astat(1) /= 0) then
+                print*, "Error --- SHReturnTapersMap"
+                print*, "Problem allocating array DIJEX.", astat(1)
+                if (present(exitstatus)) then
+                    exitstatus = 3
+                    return
+                else
+                    stop
+                end if
+            end if
+
+            dijex = 0.0_dp
+            do i = 1, n
+                do j = 1, n
+                    dijex(i, j) = dij(ind(i), ind(j))
+                end do
+            end do
+
+            dij(1:n, 1:n) = dijex(1:n, 1:n)
+
+        end if
+
+    end if
+
+    if (present(exitstatus)) then
+        if (present(ntapers)) then
+            call EigValVecSym(Dij(1:n, 1:n), n, eigenvalues, evec, &
+                              k = min(ntapers, n), exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        else
+            call EigValVecSym(Dij(1:n, 1:n), n, eigenvalues, evec, &
+                              exitstatus = exitstatus)
+            if (exitstatus /= 0) return
+        end if
+
+    else
+        if (present(ntapers)) then
+            call EigValVecSym(Dij(1:n, 1:n), n, eigenvalues, evec, &
+                              k = min(ntapers, n))
+        else
+            call EigValVecSym(Dij(1:n, 1:n), n, eigenvalues, evec)
+        end if
+
+    end if
+
+    if (present(ntapers)) then
+        numk = min(ntapers, n)
+    else
+        numk = n
+    end if
+
+    if (exclude == 0) then
+        tapers(1:n, 1:numk) = evec(1:n, 1:numk)
+
+    else
+        do i = 1, n
+            tapers(ind(i), 1:numk) = evec(i, 1:numk)
 
         end do
 
-    end do
-
-    da = 2.0d0 * pi * (1.0d0 - cos(lat_int/2.0d0))
-    area = area + 2.0d0 * da
-
-    if (dh_mask(1,1) == 1) areaf = areaf + da
-    if (dh_mask(nlat,nlong) == 1) areaf = areaf + da
+    end if
 
     deallocate (dij)
+    deallocate (evec)
+    if (exclude == 1) deallocate (dijex)
 
 end subroutine SHReturnTapersMap

@@ -320,7 +320,8 @@ class SHGravCoeffs(object):
     def from_file(self, fname, format='shtools', gm=None, r0=None,
                   omega=None, lmax=None, normalization='4pi', skip=0,
                   header=True, errors=False, csphase=1, r0_index=0, gm_index=1,
-                  omega_index=None, header_units='m', **kwargs):
+                  omega_index=None, header_units='m', set_degree0=True,
+                  **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -330,7 +331,7 @@ class SHGravCoeffs(object):
                                               lmax, normalization, csphase,
                                               skip, header, errors, gm_index,
                                               r0_index, omega_index,
-                                              header_units])
+                                              header_units, set_degree0])
         x = SHGravCoeffs.from_file(filename, format='npy', gm, r0,
                                    [omega, normalization, csphase, **kwargs])
 
@@ -373,6 +374,8 @@ class SHGravCoeffs(object):
             The units used for r0 and gm in the header line of an shtools
             formatted file: 'm' or 'km'. If 'km', the values of r0 and gm will
             be converted to meters.
+        set_degree0 : bool, optional, default = True
+            If the degree-0 coefficient is zero, set this to 1.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -490,10 +493,7 @@ class SHGravCoeffs(object):
                            category=RuntimeWarning)
             lmaxout = 85
 
-        if coeffs[0, 0, 0] == 0:
-            warnstr = ("The degree 0 term of the file was not set. "
-                       "This will be set to 1.")
-            _warnings.warn(warnstr, category=RuntimeWarning)
+        if coeffs[0, 0, 0] == 0 and set_degree0:
             coeffs[0, 0, 0] = 1.0
 
         if format.lower() == 'shtools' and header is True:
@@ -2347,7 +2347,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
         if self.normalization != '4pi' or self.csphase != 1:
-            temp = _convert(coeffs, normalization_in='4pi', csphase=1,
+            temp = _convert(coeffs, normalization_in='4pi', csphase_in=1,
                             normalization_out=self.normalization,
                             csphase_out=self.csphase)
             return SHGravCoeffs.from_array(

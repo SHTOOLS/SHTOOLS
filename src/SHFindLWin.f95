@@ -1,4 +1,4 @@
-integer function SHFindLWin(theta0, m, alpha, taper_number)
+function SHFindLWin(theta0, m, alpha, taper_number)
 !------------------------------------------------------------------------------
 !
 !   This function will output the spherical harmonic bandwidth for
@@ -17,33 +17,33 @@ integer function SHFindLWin(theta0, m, alpha, taper_number)
 !
 !       IN (OPTIONAL)
 !           taper_number    Taper number used to calculate concentration
-!                           factors. 
+!                           factors.
 !
-!   Dependencies: LAPACK, BLAS, ComputeDm, EigValSym
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: ComputeDm, EigvalSym
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: theta0, alpha
-    integer, intent(in) ::  m
+    integer :: SHFindLWin
+    real(dp), intent(in) :: theta0, alpha
+    integer, intent(in) :: m
     integer, intent(in), optional :: taper_number
-    real*8, allocatable ::  dllm(:,:), eval(:)
-    real*8 ::   pi, alpha1
-    integer ::  l, astat(2), tn
+    real(dp), allocatable :: dllm(:,:), eval(:)
+    real(dp) :: pi, alpha1
+    integer :: l, astat(2), tn
 
-    if (alpha < 0.0d0 .or. alpha > 1.0d0) then
+    if (alpha < 0.0_dp .or. alpha > 1.0_dp) then
         print*, "Error --- SHFindLWin"
         print*, "The concentration factor alpha must be between 0 and 1."
         print*, "Input value is ", alpha
         stop
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     if (present(taper_number)) then
         if (taper_number < 1) then
@@ -65,8 +65,8 @@ integer function SHFindLWin(theta0, m, alpha, taper_number)
     do
         l = l + 1
 
-        allocate (dllm(l+1,l+1), stat = astat(1)) ; dllm = 0.0d0
-        allocate (eval(l+1), stat = astat(2)) ; eval = 0.0d0
+        allocate (dllm(l+1,l+1), stat = astat(1)) ; dllm = 0.0_dp
+        allocate (eval(l+1), stat = astat(2)) ; eval = 0.0_dp
 
         if (astat(1) /=0 .or. astat(2) /=0) then 
             print*, "Error --- SHFindLWin"

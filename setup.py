@@ -43,7 +43,7 @@ except(IOError, ImportError):
 # This flag has to be True if the version number indicated in the file
 # VERSION has already been released and to False if this is a development
 # version of a future release.
-ISRELEASED = True
+ISRELEASED = False
 
 
 def get_version():
@@ -174,7 +174,8 @@ INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
     'matplotlib',
-    'astropy'
+    'astropy',
+    'xarray'
 ]
 
 # configure python extension to be compiled with f2py
@@ -187,7 +188,7 @@ def get_compiler_flags():
         flags = ['-m64', '-O3', '-YEXT_NAMES=LCS', '-YEXT_SFX=_',
                  '-fpic', '-speed_math=10']
     elif compiler == 'gnu95':
-        flags = ['-m64', '-fPIC', '-O3', '-ffast-math']
+        flags = ['-m64', '-fPIC', '-O3', '-std=f2003', '-ffast-math']
     elif compiler == 'intel':
         flags = ['-m64', '-fpp', '-free', '-O3', '-Tf']
     elif compiler == 'g95':
@@ -203,15 +204,16 @@ def configuration(parent_package='', top_path=None):
     """Configure all packages that need to be built."""
     config = Configuration('', parent_package, top_path)
 
-    F95FLAGS = get_compiler_flags()
-
     kwargs = {
         'libraries': [],
         'include_dirs': [],
-        'library_dirs': [],
+        'library_dirs': []
     }
-    kwargs['extra_compile_args'] = F95FLAGS
-    kwargs['f2py_options'] = ['--quiet']
+
+    # F95FLAGS = get_compiler_flags()
+    # kwargs['extra_f90_compile_args'] = F95FLAGS
+    # These options don't seem to be necessary as the default flags already
+    # include what is required.
 
     # numpy.distutils.fcompiler.FCompiler doesn't support .F95 extension
     compiler = FCompiler(get_default_fcompiler())
@@ -243,6 +245,7 @@ def configuration(parent_package='', top_path=None):
     kwargs['libraries'].extend(['SHTOOLS'])
     kwargs['include_dirs'].extend([libdir])
     kwargs['library_dirs'].extend([libdir])
+    kwargs['f2py_options'] = ['--quiet']
 
     # FFTW info
     fftw_info = get_info('fftw', notfound_action=2)

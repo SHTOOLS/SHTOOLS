@@ -51,6 +51,7 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
         'legend.fontsize': 9,
         'text.usetex': False,
         'axes.formatter.limits': (-3, 3),
+        'mathtext.fontset': 'stix',
         # figure
         'figure.dpi': screen_dpi,
         'figure.figsize': (width_x, width_y),

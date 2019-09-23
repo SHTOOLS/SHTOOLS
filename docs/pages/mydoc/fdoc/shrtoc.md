@@ -17,10 +17,10 @@ call SHrtoc (`rcilm`, `ccilm`, `degmax`, `convention`, `switchcs`, `exitstatus`)
 
 ## Parameters
 
-`rcilm` : input, real\*8, dimension (2, `lmaxin`+1, `lmaxin`+1)
+`rcilm` : input, real(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The input real spherical harmonic coefficients. `rcilm(1,:,:)` and `rcilm(2,:,:)` correspond to the cosine and sine terms, respectively.
 
-`ccilm` : output, real\*8, dimension (2, `lmaxout`+1, `lmaxout`+1)
+`ccilm` : output, real(dp), dimension (2, `lmaxout`+1, `lmaxout`+1)
 :   The output complex spherical harmonic coefficients. `ccilm(1,:,:)` and `ccilm(2,:,:)` correspond to the real and complex part of the coefficients, respectively. Only the positive angular orders are output; the negative orders can be calculated from the relation `C_{l-m}=(-1)^m C_{lm}^*`.
 
 `degmax` : input, optional, integer, default = min(`lmaxin`, `lmaxout`)

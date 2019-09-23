@@ -11,7 +11,7 @@ call SHRead (`filename`, `cilm`, `lmax`, `skip`, `header`, `error`, `exitstatus`
 `filename` : input, character(:)
 :   The filename of the ascii file containing the spherical harmonic coefficients.
 
-`cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients contained in `filename`.
 
 `lmax` : output, integer
@@ -20,10 +20,10 @@ call SHRead (`filename`, `cilm`, `lmax`, `skip`, `header`, `error`, `exitstatus`
 `skip` : input, optional, integer
 :   The number of lines to skip before parsing `filename`.
 
-`header` : output, optional, real\*8 dimension (`n`)
+`header` : output, optional, real(dp) dimension (`n`)
 :   A vector containing the first `n` numbers in the first line of the file (following any skipped lines). 
 
-`error` : output, optional, real\*8 dimension (2, `lmax`+1, `lmax`+1)
+`error` : output, optional, real(dp) dimension (2, `lmax`+1, `lmax`+1)
 :   The errors corresponding to the spherical harmonic coefficients `cilm`.
 
 `exitstatus` : output, optional, integer

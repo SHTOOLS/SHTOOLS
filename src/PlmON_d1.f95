@@ -1,11 +1,11 @@
-subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
+subroutine PlmON_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This function evalutates all of the normalized associated Legendre
 !   functions up to degree lmax. The functions are initially scaled by
 !   10^280 sin^m in order to minimize the effects of underflow at large m
 !   near the poles (see Holmes and Featherstone 2002, J. Geodesy, 76, 279-299).
-!   On a Mac OSX system with a maximum allowable double precision value of
+!   On a macOS system with a maximum allowable double precision value of
 !   2.225073858507203E-308 the scaled portion of the algorithm will not overflow
 !   for degrees less than or equal to 2800.
 !
@@ -27,7 +27,7 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
 !           p           A vector of all associated Legendgre polynomials
 !                       evaluated at z up to lmax. The lenght must by greater or
 !                       equal to (lmax+1)*(lmax+2)/2.
-!           dp          A vector of all first derivatives of the normalized
+!           dp1         A vector of all first derivatives of the normalized
 !                       Legendgre polynomials evaluated at z up to lmax with
 !                       dimension (lmax+1).
 !
@@ -68,26 +68,25 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
 !       calculated here.
 !   6.  The default is to exlude the Condon-Shortley phase of (-1)^m.
 !
-!   Dependencies:   CSPHASE_DEFAULT
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
     integer, intent(in) :: lmax
-    real*8, intent(out) :: p(:), dp(:)
-    real*8, intent(in) :: z
+    real(dp), intent(out) :: p(:), dp1(:)
+    real(dp), intent(in) :: z
     integer, intent(in), optional :: csphase, cnorm
     integer, intent(out), optional :: exitstatus
-    real*8 :: pm2, pm1, pmm, plm, rescalem, pi, u, scalef
-    real*8, save, allocatable :: f1(:), f2(:), sqr(:)
+    real(dp) :: pm2, pm1, pmm, plm, rescalem, pi, u, scalef
+    real(dp), save, allocatable :: f1(:), f2(:), sqr(:)
     integer :: k, kstart, m, l, sdim, astat(3)
     integer, save :: lmax_old = 0
-    integer*1 :: phase
+    integer(int1) :: phase
 
 !$OMP    threadprivate(f1, f2, sqr, lmax_old)
 
@@ -101,7 +100,7 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
         return
     end if
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
     sdim = (lmax+1)*(lmax+2)/2
 
     if (size(p) < sdim) then
@@ -114,21 +113,21 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    elseif (size(dp) < sdim) then
+    else if (size(dp1) < sdim) then
         print*, "Error --- PlmBar_d1"
-        print*, "DP must be dimensioned as (LMAX+1)*(LMAX+2)/2 " // &
+        print*, "DP1 must be dimensioned as (LMAX+1)*(LMAX+2)/2 " // &
                 "where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(dp)
+        print*, "Input array is dimensioned ", size(dp1)
         if (present(exitstatus)) then
             exitstatus = 1
             return
         else
             stop
-        endif
+        end if
 
-    elseif (lmax < 0) then
+    else if (lmax < 0) then
         print*, "Error --- PlmBar_d1"
         print*, "LMAX must be greater than or equal to 0."
         print*, "Input value is ", lmax
@@ -137,9 +136,9 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    else if (abs(z) > 1.0d0) then
+    else if (abs(z) > 1.0_dp) then
         print*, "Error --- PlmBar_d1"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
@@ -148,9 +147,9 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
-    else if (abs(z) == 1.0d0) then
+    else if (abs(z) == 1.0_dp) then
         print*, "Error --- PlmBar_d1"
         print*, "Derivative can not be calculated at Z = 1 or -1."
         print*, "Input value is ", z
@@ -159,7 +158,7 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
             return
         else
             stop
-        endif
+        end if
 
     end if
 
@@ -178,7 +177,7 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
                 return
             else
                 stop
-            endif
+            end if
 
         end if
 
@@ -187,7 +186,7 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
 
     end if
 
-    scalef = 1.0d-280
+    scalef = 1.0e-280_dp
 
     if (lmax > lmax_old) then
         if (allocated (sqr)) deallocate (sqr)
@@ -207,7 +206,7 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
                 return
             else
                 stop
-            endif
+            end if
         end if
 
         !----------------------------------------------------------------------
@@ -239,8 +238,8 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
                 k = k + 1
                 f1(k) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
                 f2(k) = sqr(2*l+1) * sqr(l-m-1) * sqr(l+m-1) &
-                        / sqr(2*l-3) / sqr(l+m) / sqr(l-m) 
-            enddo
+                        / sqr(2*l-3) / sqr(l+m) / sqr(l-m)
+            end do
 
             k = k + 2
 
@@ -255,17 +254,17 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
     !   Calculate P(l,0). These are not scaled.
     !
     !--------------------------------------------------------------------------
-    u = sqrt((1.0d0 - z) * (1.0d0 + z)) ! sin(theta)
+    u = sqrt((1.0_dp - z) * (1.0_dp + z)) ! sin(theta)
 
-    pm2 = 1.0d0/sqrt(4*pi)
+    pm2 = 1.0_dp / sqrt(4*pi)
     p(1) = pm2
-    dp(1) = 0.0d0
+    dp1(1) = 0.0_dp
 
     if (lmax == 0) return
 
     pm1 = sqr(3) * z / sqrt(4 * pi)
     p(2) = pm1
-    dp(2) = sqr(3)  /sqrt(4 * pi)
+    dp1(2) = sqr(3)  /sqrt(4 * pi)
 
     k = 2
 
@@ -273,7 +272,7 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
         k = k + l
         plm = f1(k) * z * pm1 - f2(k) * pm2
         p(k) = plm
-        dp(k) = dble(l) * ( sqr(2*l+1) / sqr(2*l-1) * &
+        dp1(k) = dble(l) * ( sqr(2*l+1) / sqr(2*l-1) * &
             pm1 - z * plm ) / u**2
         pm2 = pm1
         pm1 = plm
@@ -298,7 +297,7 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
 
     end if
 
-    rescalem = 1.0d0 / scalef
+    rescalem = 1.0_dp / scalef
     kstart = 1
 
     do m = 1, lmax - 1, 1
@@ -308,21 +307,21 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
         kstart = kstart + m + 1
         pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
         p(kstart) = pmm*rescalem
-        dp(kstart) = -m * z * p(kstart) / u**2
+        dp1(kstart) = -m * z * p(kstart) / u**2
         pm2 = pmm
 
         ! Calculate P(m+1,m)
         k = kstart+m+1
         pm1 = z * sqr(2*m+3) * pmm
         p(k) = pm1*rescalem
-        dp(k) = ( sqr(2*m+3) * p(k-m-1) - z * (m+1) * p(k)) / u**2
+        dp1(k) = ( sqr(2*m+3) * p(k-m-1) - z * (m+1) * p(k)) / u**2
 
         ! Calculate P(l,m)
         do l = m + 2, lmax, 1
             k = k + l
             plm = z * f1(k) * pm1 - f2(k) * pm2
             p(k) = plm * rescalem
-            dp(k) = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * &
+            dp1(k) = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * &
                     p(k-l) - z * l * p(k)) / u**2
             pm2 = pm1
             pm1 = plm
@@ -337,6 +336,6 @@ subroutine PlmON_d1(p, dp, lmax, z, csphase, cnorm, exitstatus)
     kstart = kstart + m + 1
     pmm = phase * pmm * sqr(2*lmax+1) / sqr(2*lmax)
     p(kstart) = pmm*rescalem
-    dp(kstart) = -lmax * z * p(kstart) / u**2
+    dp1(kstart) = -lmax * z * p(kstart) / u**2
 
 end subroutine PlmON_d1

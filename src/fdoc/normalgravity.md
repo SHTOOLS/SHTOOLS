@@ -8,22 +8,22 @@ Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates 
 
 # Parameters
 
-`value` : output, real\*8
+`value` : output, real(dp)
 :   The normal gravity in SI units.
 
-`geocentriclat`: input, real\*8
+`geocentriclat`: input, real(dp)
 :   Geocentric latitude in degrees.
 
-`gm` : input, real\*8 
+`gm` : input, real(dp) 
 :   The gravitational constant multiplied by the mass of the planet.
 
-`omega` : input, real\*8
+`omega` : input, real(dp)
 :   The angular rotation rate of the planet.
 
-`a` : input, real\*8
+`a` : input, real(dp)
 :   The semi-major axis of the flattened ellipsoid on which the normal gravity is computed.
 
-`b` : input, real\*8
+`b` : input, real(dp)
 :   The semi-minor axis of the flattened ellipsoid on which the normal gravity is computed.
 
 # Description

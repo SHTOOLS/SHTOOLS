@@ -17,16 +17,16 @@ call PLegendreA_d1 (`p`, `dp`, `lmax`, `z`, `csphase`, `exitstatus`)
 
 ## Parameters
 
-`p` : output, real\*8, dimension ((`lmax`+1)\*(`lmax`+2)/2)
+`p` : output, real(dp), dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of unnormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m+1`, which can be calculated by a call to `PlmIndex`.
 
-`dp` : output, real\*8, dimension ((`lmax`+1)\*(`lmax`+2)/2)
+`dp` : output, real(dp), dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the first derivatives of the unnormalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m+1`, which can be calculated by a call to `PlmIndex`.
 
 `lmax` : input, integer
 :   The maximum degree of the associated Legendre functions to be computed.
 
-`z` : input, real\*8
+`z` : input, real(dp)
 :   The argument of the associated Legendre functions.
 
 `csphase` : input, optional, integer, default = 1

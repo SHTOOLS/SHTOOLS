@@ -17,16 +17,16 @@ call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `c
 
 ## Parameters
 
-`grid` : output, real\*8, dimension (180/`interval`+1, 360/`interval`+1)
+`grid` : output, real(dp), dimension (180/`interval`+1, 360/`interval`+1)
 :   A 2D equally spaced map of the input spherical harmonic coefficients `cilm`. The  array is in raster format with upper-left and lower-right coordinates of (90 N, 0 E) and (90 S, 360 E), respectively.
 
-`cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. 
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the coefficients `cilm` used when calculating the grid.
 
-`interval` : input, real\*8
+`interval` : input, real(dp)
 :   The latitudinal and longitudinal spacing of `grid`.
 
 `nlat` : output, integer
@@ -41,22 +41,22 @@ call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `c
 `csphase` : input, optional, integer, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`f` : input, optional, real\*8
+`f` : input, optional, real(dp)
 :   The flattening of the reference ellipoid that is subtracted from the function. This is given by (`R_equator-R_pole)/R_equator`. The semi-major axis `a` (i.e., `R_equator`) must be specified for this calculation.
 
-`a` : input, optional, real\*8
+`a` : input, optional, real(dp)
 :   The semi-major axis of the reference ellispoid that is subtracted from the function. The flattening `f` must be specified for this calculation.
 
 `north` : input, real*8, optional, default = 90
 :   The maximum latitude of the output raster grid, in degrees. The default is 90 degrees.
 
-`south` : input, optional, real\*8, default = -90
+`south` : input, optional, real(dp), default = -90
 :   The minimum latitude of the output raster grid, in degrees. The default is -90 degrees.
 
-`east` : input, optional, real\*8, default = 360
+`east` : input, optional, real(dp), default = 360
 :   The maximum longitude of the output raster grid, in degrees. The default is 360 degrees.
 
-`west` : input, optional, real\*8, default = 0
+`west` : input, optional, real(dp), default = 0
 :   The minimum longitude of the output raster grid, in degrees. The default is 0 degrees.
 
 `dealloc` : input, optional, integer, default = 0

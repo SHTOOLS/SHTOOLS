@@ -1,13 +1,14 @@
-subroutine ComputeDm(dllm, lmax, m, theta0, exitstatus)
+subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This routine will compute the kernel D for the space-concentration
-!   problem of a spherical cap for a given spherical harmonic order.
-!   (When m /= 0, the eigenfunctions will not be isotropic). All terms
-!   are computed exactly using Gauss-Legendre quadrature. The eigenfunctions
-!   of this kernel are spherical harmonic coefficients normalized according
-!   to the "geodesy" convention. The diagonal elements of Dllm approaches
-!   unity when theta0 appoaches 180 degrees.
+!   problem of a spherical cap for a given spherical harmonic order m. All
+!   terms are computed exactly using Gauss-Legendre quadrature. The
+!   eigenfunctions of this kernel are 4pi-normalized spherical harmonic
+!   coefficients that exclude the Condon-Shortley phase. The diagonal elements
+!   of Dllm approaches unity when theta0 appoaches 180 degrees. If the optional
+!   vector DEGREES is specified, then the matrix will be computed only for
+!   degrees l where DEGREES(l+1) is not zero.
 !
 !   Calling Parameters
 !
@@ -19,6 +20,10 @@ subroutine ComputeDm(dllm, lmax, m, theta0, exitstatus)
 !       OUT
 !           dllm        Symmetric kernel of size lmax+1 by lmax+1.
 !
+!       OPTIONAL (IN)
+!           degrees     Specify those degrees of the coupling matrix to
+!                       compute. If degrees(l+1) is zero, degree l will not
+!                       be computed.
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
 !                       is encountered, the variable exitstatus will be
@@ -29,21 +34,23 @@ subroutine ComputeDm(dllm, lmax, m, theta0, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------ 
     use SHTOOLS, only: PreGLQ, PlmBar, NGLQ, PlmIndex
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) ::  dllm(:,:)
-    real*8, intent(in) ::   theta0
-    integer, intent(in) ::  lmax, m
+    real(dp), intent(out) :: dllm(:,:)
+    real(dp), intent(in) :: theta0
+    integer, intent(in) :: lmax, m
+    integer, intent(in), optional :: degrees(:)
     integer, intent(out), optional :: exitstatus
-    real*8 ::   upper, zero(2*lmax+1), w(2*lmax+1), x
-    real*8, allocatable ::  plm(:)
-    integer ::  l, lp, i, n, astat
+    real(dp) :: upper, zero(2*lmax+1), w(2*lmax+1), x
+    real(dp), allocatable :: plm(:)
+    integer :: l, lp, i, n, astat
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -72,6 +79,20 @@ subroutine ComputeDm(dllm, lmax, m, theta0, exitstatus)
         end if
     end if
 
+    if (present(degrees)) then
+        if (size(degrees) < lmax+1) then
+            print*, "Error --- ComputeDm"
+            print*, "DEGREES must have dimension LMAX+1, where LMAX is ", lmax
+            print*, "Input array is dimensioned as ", size(degrees)
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
+        end if
+    end if
+
     allocate (plm( (lmax+1)*(lmax+2)/2 ), stat = astat)
 
     if (astat /= 0) then
@@ -85,11 +106,11 @@ subroutine ComputeDm(dllm, lmax, m, theta0, exitstatus)
         end if
     end if
 
-    dllm = 0.0d0
+    dllm = 0.0_dp
 
     n = NGLQ(2*lmax)
 
-    upper = 1.0d0
+    upper = 1.0_dp
     x = cos(theta0)
 
     if (present(exitstatus)) then
@@ -108,7 +129,15 @@ subroutine ComputeDm(dllm, lmax, m, theta0, exitstatus)
         end if
 
         do l = abs(m), lmax
+            if (present(degrees)) then
+                if (degrees(l+1) == 0) cycle
+            end if
+
             do lp = l, lmax
+                if (present(degrees)) then
+                    if (degrees(lp+1) == 0) cycle
+                end if
+
                 dllm(l+1, lp+1) = dllm(l+1,lp+1) + w(i) * &
                                   plm(PlmIndex(l,abs(m))) * &
                                   plm(PlmIndex(lp,abs(m)))
@@ -125,9 +154,9 @@ subroutine ComputeDm(dllm, lmax, m, theta0, exitstatus)
     end do
 
     if (m == 0) then
-        dllm = dllm / 2.0d0
+        dllm = dllm / 2.0_dp
     else
-        dllm = dllm / 4.0d0
+        dllm = dllm / 4.0_dp
     end if
 
     call PlmBar(plm, -1, zero(1))   ! deallocate memory

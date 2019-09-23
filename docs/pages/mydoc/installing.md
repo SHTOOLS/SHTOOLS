@@ -3,13 +3,13 @@ title: "Installing SHTOOLS"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: installing.html
-summary: SHTOOLS can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and compiling Fortran 95 code, you should use either the brew package manager (on macOS) or compile manually using the Makefile.
+summary: SHTOOLS and pyshtools can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and compiling Fortran 95 code, you should either compile manually using the Makefile or use the brew package manager (on macOS).
 toc: true
 ---
 
 ## Python package installer (pip)
 
-The easiest way to install the Python components of SHTOOLS (pyshtools) is to use `pip`. On Linux, macOS and windows machines, the binary wheels can be installed by executing one of the following commands
+The easiest way to install the Python components of SHTOOLS (pyshtools) is to use `pip`. On Linux and macOS architectures, the binary wheels can be installed by executing one of the following commands
 ```bash
 pip install pyshtools
 pip install --upgrade pyshtools  # to upgrade a pre-existing installation
@@ -22,7 +22,7 @@ or on macOS using [brew](https://brew.sh/)
 ```bash
 brew install fftw
 ```
-Then build from source using the command
+(Note that SHTOOLS supports the use of any FFTW3-compatible library, such as Intel's [MKL](https://software.intel.com/en-us/mkl)). Then build from source using the command
 ```bash
 pip install pyshtools --no-binary pyshtools
 ```
@@ -35,7 +35,7 @@ Once the repo is cloned, enter the directory, and use either the command
 ```bash
 pip install .
 ```
-to install pyshtools in the active Python environment lib folder, or use 
+to install pyshtools in the active Python environment lib folder, or
 ```bash
 pip install -e .
 ```
@@ -45,7 +45,7 @@ To uninstall pyshtools from your system directory, use the command
 ```bash
 pip uninstall pyshtools
 ```
-Note that these commands will install only the Python version that corresponds to the version of `pip` being used. On some systems, it may be necessary to specify `pip2.7` or `pip3.x`.
+Note that these commands will install only the Python version that corresponds to the version of `pip` being used. On some systems, it may be necessary to specify explicitly `pip2.7` or `pip3.x`.
 
 ## Fortran 95 library using brew (macOS)
 
@@ -61,7 +61,7 @@ brew install shtools --with-openmp
 
 ## Fortran 95 library using the Makefile
 
-Before installing the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and the [FFTW](http://www.fftw.org), [LAPACK](http://www.netlib.org/lapack/), and [BLAS](http://www.netlib.org/blas/) libraries installed on your computer. After this is done, the Fortran 95 components of SHTOOLS can be compiled in most cases by executing the following command in a unix shell in the main directory:
+Before trying to install the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and [LAPACK](https://www.netlib.org/lapack/), [BLAS](https://www.netlib.org/blas/) and [FFTW3](http://www.fftw.org)-compatible libraries. The Fortran 95 components of SHTOOLS can then be compiled in most cases by executing the following command in a unix shell in the main directory:
 ```bash
 make
 ```
@@ -156,17 +156,14 @@ For the Intel Fortran compiler `ifort`, it will be necessary to use
 ```
 in order that the compiler recognizes files with the extension `.f95` as Fortran 95 files. In this case, the f95 file should come directly after the option `-Tf`.
 
-Setting the right compiler flags is more complicated when the FFTW and LAPACK libraries have different naming and underscoring conventions. In order to accommodate this case, underscores can be added explicitly to either the LAPACK or FFTW subroutine names in the SHTOOLS source code by specifying the optional `make` arguments when building the archive:
+Setting the right compiler flags is more complicated when the FFTW and LAPACK libraries have different naming and underscoring conventions. In order to accommodate this case, underscores can be added explicitly to the LAPACK subroutine names in the SHTOOLS source code by specifying the optional `make` arguments when building the archive:
 ```bash
-FFTW_UNDERSCORE = 1  # to add an extra underscore to the FFTW routine names
-LAPACK_UNDERSCORE = 1  # to add an extra underscore to the LAPACK routine names
+LAPACK_UNDERSCORE=1  # add an extra underscore to the LAPACK routine names
 ```
-For both cases, compiler flags should probably be set so that underscores are not appended to routine names. See [Fortran 95 problems](fortran-95-problems.html) for further information.
+For this case, compiler flags should probably be set so that underscores are not appended to routine names. See [Fortran 95 problems](fortran-95-problems.html) for further information.
 
 To generate 64 bit code, use the compiler option
 ```bash
 -m64
 ```
 For this case, it will be necessary to use 64-bit compiled FFTW and LAPACK libraries.
-
-

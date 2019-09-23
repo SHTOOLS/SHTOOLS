@@ -8,25 +8,25 @@ call SHMultiTaperCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `t
 
 # Parameters
 
-`mtse` : output, real\*8, dimension (`lmax`-`lmaxt`+1)
+`mtse` : output, real(dp), dimension (`lmax`-`lmaxt`+1)
 :   The localized multitaper cross-power spectrum estimate. `lmax` is the smaller of `lmax1` and `lmax2`.
 
-`sd` : output, real\*8, dimension (`lmax`-`lmaxt`+1)
+`sd` : output, real(dp), dimension (`lmax`-`lmaxt`+1)
 :   The standard error of the localized multitaper cross-power spectral estimates. `lmax` is the smaller of `lmax1` and `lmax2`.
 
-`sh1` : input, real\*8, dimension (2, `lmax1`+1, `lmax1`+1)
+`sh1` : input, real(dp), dimension (2, `lmax1`+1, `lmax1`+1)
 :   The spherical harmonic coefficients of the first function.
 
 `lmax1` : input, integer
 :   The spherical harmonic bandwidth of `sh1`.
 
-`sh2` : input, real\*8, dimension (2, `lmax2`+1, `lmax2`+1)
+`sh2` : input, real(dp), dimension (2, `lmax2`+1, `lmax2`+1)
 :   The spherical harmonic coefficients of the second function.
 
 `lmax2` : input, integer
 :   The spherical harmonic bandwidth of `sh2`.
 
-`tapers` : input, real\*8, dimension (`lmaxt`+1, `k`)
+`tapers` : input, real(dp), dimension (`lmaxt`+1, `k`)
 :   An array of the `k` windowing functions, arranged in columns, obtained from a call to `SHReturnTapers`. Each window has non-zero coefficients for a single angular order that is specified in the array `taper_order`.
 
 `taper_order` : input, integer, dimension (`k`)
@@ -38,16 +38,16 @@ call SHMultiTaperCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `t
 `k` : input, integer
 :   The number of tapers to be utilized in performing the multitaper spectral analysis.
 
-`alpha` : input, optional, real\*8, dimension (3)
+`alpha` : input, optional, real(dp), dimension (3)
 :   The Euler rotation angles used in rotating the windowing functions. `alpha(1)=0`, `alpha(2)=-(90-lat)*pi/180`, `alpha(3)=-lon*pi/180`. Either `alpha` or `lat` and `lon` can be specified, but not both. If none of these are specified, the spectral analysis will be centered at the north pole.
 
-`lat` : input, optional, real\*8
+`lat` : input, optional, real(dp)
 :   The latitude in degrees of the localized analysis. Either `alpha` or `lat` and `lon` can be specified but not both. If none of these are specified, the spectral analysis will be centered at the north pole.
 
-`lon` : input, optional, real\*8
+`lon` : input, optional, real(dp)
 :   The longitude in degrees of the localized analysis. Either `alpha` or `lat` and `lon` can be specified, but not both. If none of these are specified, the spectral analysis will be centered at the north pole.
 
-`taper_wt` : input, optional, real\*8, dimension (`k`)
+`taper_wt` : input, optional, real(dp), dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates and standard error. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 	
 `norm` : input, optional, integer, default = 1

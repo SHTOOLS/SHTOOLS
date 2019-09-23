@@ -14,9 +14,11 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import warnings as _warnings
 from scipy.special import factorial as _factorial
+import xarray as _xr
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
+from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
 
@@ -36,6 +38,7 @@ class SHCoeffs(object):
         x = SHCoeffs.from_random(powerspectrum)
         x = SHCoeffs.from_zeros(lmax)
         x = SHCoeffs.from_file('fname.dat')
+        x = SHCoeffs.from_cap(theta, lmax)
 
     The normalization convention of the input coefficents is specified
     by the normalization and csphase parameters, which take the following
@@ -74,6 +77,8 @@ class SHCoeffs(object):
                             degrees from 0 to lmax.
     spectrum()            : Return the spectrum of the function as a function
                             of spherical harmonic degree.
+    cross_spectrum()      : Return the cross-spectrum of two functions as a
+                            function of spherical harmonic degree.
     volume()              : Calculate the volume of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
@@ -88,8 +93,11 @@ class SHCoeffs(object):
                             a list of latitude and longitude coordinates.
     plot_spectrum()       : Plot the spectrum as a function of spherical
                             harmonic degree.
+    plot_cross_spectrum() : Plot the cross-spectrum of two functions.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
                             degrees and orders.
+    plot_cross_spectrum2d() : Plot the 2D cross-spectrum of all spherical
+                              harmonic degrees and orders.
     to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     to_file()             : Save raw spherical harmonic coefficients as a file.
@@ -104,7 +112,9 @@ class SHCoeffs(object):
               '>>> pyshtools.SHCoeffs.from_array\n'
               '>>> pyshtools.SHCoeffs.from_random\n'
               '>>> pyshtools.SHCoeffs.from_zeros\n'
-              '>>> pyshtools.SHCoeffs.from_file\n')
+              '>>> pyshtools.SHCoeffs.from_file\n'
+              '>>> pyshtools.SHCoeffs.from_cap\n'
+              )
 
     # ---- Factory methods ----
     @classmethod
@@ -349,12 +359,12 @@ class SHCoeffs(object):
         if seed is not None:
             _np.random.seed(seed=seed)
         if kind.lower() == 'real':
-            coeffs = _np.empty((2, nl, nl))
+            coeffs = _np.zeros((2, nl, nl))
             for l in degrees:
                 coeffs[:2, l, :l+1] = _np.random.normal(size=(2, l+1))
         elif kind.lower() == 'complex':
             # - need to divide by sqrt 2 as there are two terms for each coeff.
-            coeffs = _np.empty((2, nl, nl), dtype=complex)
+            coeffs = _np.zeros((2, nl, nl), dtype=complex)
             for l in degrees:
                 coeffs[:2, l, :l+1] = (_np.random.normal(size=(2, l+1)) +
                                        1j * _np.random.normal(size=(2, l+1))
@@ -503,6 +513,111 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 return cls(coeffs, normalization=normalization.lower(),
                            csphase=csphase, header=header_list)
+
+    @classmethod
+    def from_cap(self, theta, lmax, clat=None, clon=None, normalization='4pi',
+                 csphase=1, kind='real', degrees=True, copy=True):
+        """
+        Initialize the class with spherical harmonic coefficients of a
+        spherical cap centered at the north pole.
+
+        Usage
+        -----
+        x = SHCoeffs.from_cap(theta, lmax, [clat, clon, normalization, csphase,
+                                            kind, degrees, copy])
+
+        Returns
+        -------
+        x : SHCoeffs class instance.
+
+        Parameters
+        ----------
+        theta : float
+            The angular radius of the spherical cap, default in degrees.
+        lmax : int
+            The maximum spherical harmonic degree of the coefficients.
+        clat, clon : float, optional, default = None
+            Latitude and longitude of the center of the rotated spherical cap
+            (default in degrees).
+        normalization : str, optional, default = '4pi'
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+            coefficients, respectively.
+        csphase : int, optional, default = 1
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
+        kind : str, optional, default = 'real'
+            'real' or 'complex' spherical harmonic coefficients.
+        degrees : bool, optional = True
+            If True, theta, clat, and clon are in degrees.
+        copy : bool, optional, default = True
+            If True, make a copy of array when initializing the class instance.
+            If False, initialize the class instance with a reference to array.
+
+        Description
+        -----------
+        The spherical harmonic coefficients are normalized such that the
+        average value of the function is equal to 1. To rotate the cap to a
+        specified latitude and longitude, specify the optional parameters clat
+        and clon.
+        """
+        if type(normalization) != str:
+            raise ValueError('normalization must be a string. ' +
+                             'Input type was {:s}'
+                             .format(str(type(normalization))))
+
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
+            raise ValueError(
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "or 'unnorm'. Input value was {:s}."
+                .format(repr(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be either 1 or -1. Input value was {:s}."
+                .format(repr(csphase))
+                )
+
+        if kind.lower() not in ('real', 'complex'):
+            raise ValueError(
+                "kind must be 'real' or 'complex'. " +
+                "Input value was {:s}.".format(repr(kind)))
+
+        if (clat is None and clon is not None) or \
+                (clat is not None and clon is None):
+            raise ValueError('clat and clon must both be input. ' +
+                             'clat = {:s}, clon = {:s}'
+                             .format(repr(clat), repr(clon)))
+
+        if degrees is True:
+            theta = _np.deg2rad(theta)
+
+        cl = _shtools.SphericalCapCoef(theta, lmax)
+        coeffs = _np.zeros((2, lmax+1, lmax+1))
+        coeffs[0, 0:lmax+1, 0] = cl[0:lmax+1]
+        coeffs = _convert(coeffs, normalization_in='4pi',
+                          normalization_out=normalization,
+                          csphase_in=1, csphase_out=csphase
+                          )
+
+        if kind == 'complex':
+            coeffs = _shtools.SHrtoc(coeffs)
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind):
+                temp = cls(coeffs[:, 0:lmax+1, 0:lmax+1],
+                           normalization=normalization.lower(),
+                           csphase=csphase, copy=copy)
+
+        if clat is not None and clon is not None:
+            if degrees is True:
+                temp = temp.rotate(0., -90 + clat, -clon, degrees=True)
+            else:
+                temp = temp.rotate(0., -_np.pi/2. + clat, -clon,
+                                   degrees=False)
+
+        return temp
 
     # ---- Define methods that modify internal variables ----
     def set_coeffs(self, values, ls, ms):
@@ -920,7 +1035,7 @@ class SHCoeffs(object):
 
         Returns
         -------
-        power : ndarray, shape (lmax+1)
+        spectrum : ndarray, shape (lmax+1)
             1-D numpy ndarray of the spectrum, where lmax is the maximum
             spherical harmonic degree.
 
@@ -966,6 +1081,78 @@ class SHCoeffs(object):
         return _spectrum(self.coeffs, normalization=self.normalization,
                          convention=convention, unit=unit, base=base,
                          lmax=lmax)
+
+    def cross_spectrum(self, clm, lmax=None, convention='power', unit='per_l',
+                       base=10.):
+        """
+        Return the cross-spectrum of two functions.
+
+        Usage
+        -----
+        cross_spectrum = x.cross_spectrum(clm, [lmax, convention, unit, base])
+
+        Returns
+        -------
+        cross_spectrum : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the cross-spectrum, where lmax is the maximum
+            spherical harmonic degree.
+
+        Parameters
+        ----------
+        clm : SHCoeffs class instance.
+            The second function used in computing the cross-spectrum.
+        lmax : int, optional, default = x.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+        convention : str, optional, default = 'power'
+            The type of spectrum to return: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
+        unit : str, optional, default = 'per_l'
+            If 'per_l', return the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', return the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', return the spectrum per log
+            interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' spectrum.
+
+        Description
+        -----------
+        This method returns either the cross-power spectrum, cross-energy
+        spectrum, or l2-cross-norm spectrum. Total cross-power is defined as
+        the integral of the function times the conjugate of clm over all space,
+        divided by the area the functions span. If the means of the functions
+        are zero, this is equivalent to the covariance of the two functions.
+        The total cross-energy is the integral of this function times the
+        conjugate of clm over all space and is 4pi times the total power. The
+        l2-cross-norm is the sum of this function times the conjugate of clm
+        over all angular orders as a function of spherical harmonic degree.
+
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l, and is equal to the
+        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
+        contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a).
+        """
+        if not isinstance(clm, SHCoeffs):
+            raise ValueError('clm must be an SHCoeffs class instance. Input '
+                             'type is {:s}'.format(repr(type(clm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, clm.lmax)
+
+        return _cross_spectrum(self.coeffs,
+                               clm.to_array(normalization=self.normalization,
+                                            csphase=self.csphase,
+                                            lmax=lmax),
+                               normalization=self.normalization,
+                               convention=convention, unit=unit, base=base,
+                               lmax=lmax)
 
     def volume(self, lmax=None):
         """
@@ -1245,7 +1432,7 @@ class SHCoeffs(object):
         return clm
 
     # ---- Expand the coefficients onto a grid ----
-    def expand(self, grid='DH', lat=None, colat=None, lon=None, degrees=True,
+    def expand(self, grid='DH2', lat=None, colat=None, lon=None, degrees=True,
                zeros=None, lmax=None, lmax_calc=None):
         """
         Evaluate the spherical harmonic coefficients either on a global grid
@@ -1272,7 +1459,7 @@ class SHCoeffs(object):
             Longitude coordinates where the function is to be evaluated.
         degrees : bool, optional, default = True
             True if lat, colat and lon are in degrees, False if in radians.
-        grid : str, optional, default = 'DH'
+        grid : str, optional, default = 'DH2'
             'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon,
             'DH2' for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ'
             for a Gauss-Legendre quadrature grid.
@@ -1492,6 +1679,162 @@ class SHCoeffs(object):
                 fig.savefig(fname)
             return fig, axes
 
+    def plot_cross_spectrum(self, clm, convention='power', unit='per_l',
+                            base=10., lmax=None, xscale='lin', yscale='log',
+                            grid=True, legend=None, axes_labelsize=None,
+                            tick_labelsize=None, show=True, ax=None,
+                            fname=None, **kwargs):
+        """
+        Plot the cross-spectrum of two functions.
+
+        Usage
+        -----
+        x.plot_cross_spectrum(clm, [convention, unit, base, lmax, xscale,
+                                    yscale, grid, axes_labelsize,
+                                    tick_labelsize, legend, show, ax,
+                                    fname, **kwargs])
+
+        Parameters
+        ----------
+        clm : SHCoeffs class instance.
+            The second function used in computing the cross-spectrum.
+        convention : str, optional, default = 'power'
+            The type of spectrum to plot: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
+        unit : str, optional, default = 'per_l'
+            If 'per_l', plot the total contribution to the spectrum for each
+            spherical harmonic degree l. If 'per_lm', plot the average
+            contribution to the spectrum for each coefficient at spherical
+            harmonic degree l. If 'per_dlogl', plot the spectrum per log
+            interval dlog_a(l).
+        base : float, optional, default = 10.
+            The logarithm base when calculating the 'per_dlogl' spectrum, and
+            the base to use for logarithmic axes.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        xscale : str, optional, default = 'lin'
+            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'log'
+            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot().
+
+        Description
+        -----------
+        This method plots either the cross-power spectrum, cross-energy
+        spectrum, or l2-cross-norm spectrum. Total cross-power is defined as
+        the integral of the function times the conjugate of clm over all space,
+        divided by the area the functions span. If the means of the functions
+        are zero, this is equivalent to the covariance of the two functions.
+        The total cross-energy is the integral of this function times the
+        conjugate of clm over all space and is 4pi times the total power. The
+        l2-cross-norm is the sum of this function times the conjugate of clm
+        over all angular orders as a function of spherical harmonic degree.
+
+        The output spectrum can be expresed using one of three units. 'per_l'
+        returns the contribution to the total spectrum from all angular orders
+        at degree l. 'per_lm' returns the average contribution to the total
+        spectrum from a single coefficient at degree l, and is equal to the
+        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
+        contribution to the total spectrum from all angular orders over an
+        infinitessimal logarithmic degree band. The contrubution in the band
+        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
+        and where spectrum(l, 'per_dlogl) is equal to
+        spectrum(l, 'per_l')*l*log(a). If the input fields are complex, the
+        absolute value of the cross-spectrum will be plotted.
+        """
+        if not isinstance(clm, SHCoeffs):
+            raise ValueError('clm must be an SHCoeffs class instance. Input '
+                             'type is {:s}'.format(repr(type(clm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, clm.lmax)
+
+        spectrum = self.cross_spectrum(clm, convention=convention, unit=unit,
+                                       base=base, lmax=lmax)
+        spectrum = abs(spectrum)
+
+        ls = _np.arange(lmax + 1)
+
+        if ax is None:
+            fig, axes = _plt.subplots(1, 1)
+        else:
+            axes = ax
+
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
+        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
+        if convention == 'Energy':
+            axes.set_ylabel('Energy', fontsize=axes_labelsize)
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'Energy per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'Energy per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'Energy per log bandwidth'
+        elif convention == 'l2norm':
+            axes.set_ylabel('l2 norm', fontsize=axes_labelsize)
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'l2 norm per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'l2 norm per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'l2 norm per log bandwidth'
+        else:
+            axes.set_ylabel('Power', fontsize=axes_labelsize)
+            if legend is None:
+                if (unit == 'per_l'):
+                    legend = 'Power per degree'
+                elif (unit == 'per_lm'):
+                    legend = 'Power per coefficient'
+                elif (unit == 'per_dlogl'):
+                    legend = 'Power per log bandwidth'
+
+        if xscale == 'log':
+            axes.set_xscale('log', basex=base)
+        if yscale == 'log':
+            axes.set_yscale('log', basey=base)
+
+        if xscale == 'log':
+            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
+        else:
+            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
+            axes.set(xlim=(ls[0], ls[lmax]))
+
+        axes.grid(grid, which='major')
+        axes.minorticks_on()
+        axes.tick_params(labelsize=tick_labelsize)
+        axes.legend()
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                fig.show()
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
                         grid=True, axes_labelsize=None, tick_labelsize=None,
                         vscale='log', vrange=None, vmin=None, vmax=None,
@@ -1565,9 +1908,228 @@ class SHCoeffs(object):
 
         # Create the matrix of the spectrum for each coefficient
         spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
-        mpositive = _np.abs(self.coeffs[0, :lmax + 1, :lmax + 1])**2
+        mpositive = self.coeffs[0, :lmax + 1, :lmax + 1] * \
+            self.coeffs[0, :lmax + 1, :lmax + 1].conj()
         mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
-        mnegative = _np.abs(self.coeffs[1, :lmax + 1, :lmax + 1])**2
+        mnegative = self.coeffs[1, :lmax + 1, :lmax + 1] * \
+            self.coeffs[1, :lmax + 1, :lmax + 1].conj()
+        mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
+
+        spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
+        spectrum[:, lmax:] = mpositive
+
+        if (convention.lower() == 'l2norm'):
+            if self.normalization == 'unnorm':
+                raise ValueError("convention can not be set to 'l2norm' " +
+                                 "when using unnormalized harmonics.")
+            else:
+                pass
+        elif convention.lower() in ('power', 'energy'):
+            if self.normalization == '4pi':
+                pass
+            elif self.normalization == 'schmidt':
+                for l in degrees:
+                    spectrum[l, :] /= (2. * l + 1.)
+            elif self.normalization == 'ortho':
+                for l in degrees:
+                    spectrum[l, :] /= (4. * _np.pi)
+            elif self.normalization == 'unnorm':
+                for l in degrees:
+                    ms = _np.arange(l+1)
+                    conv = _factorial(l+ms) / (2. * l + 1.) / _factorial(l-ms)
+                    if self.kind == 'real':
+                        conv[1:l + 1] = conv[1:l + 1] / 2.
+                    spectrum[l, lmax-l:lmax] *= conv[::-1][0:l]
+                    spectrum[l, lmax:lmax+l+1] *= conv[0:l+1]
+            else:
+                raise ValueError(
+                    "normalization must be '4pi', 'ortho', 'schmidt', " +
+                    "or 'unnorm'. Input value was {:s}"
+                    .format(repr(self.normalization)))
+        else:
+            raise ValueError(
+                "convention must be 'power', 'energy', or 'l2norm'. " +
+                "Input value was {:s}".format(repr(convention)))
+
+        if convention == 'energy':
+            spectrum *= 4.0 * _np.pi
+
+        spectrum_masked = _np.ma.masked_invalid(spectrum)
+
+        # need to add one extra value to each in order for pcolormesh
+        # to plot the last row and column.
+        ls = _np.arange(lmax+2).astype(_np.float)
+        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
+        lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
+        lgrid -= 0.5
+        mgrid -= 0.5
+
+        if ax is None:
+            fig, axes = _plt.subplots()
+        else:
+            axes = ax
+
+        if vrange is not None:
+            vmin = _np.nanmax(spectrum) * vrange[0]
+            vmax = _np.nanmax(spectrum) * vrange[1]
+        else:
+            if vmin is None:
+                _temp = spectrum
+                _temp[_temp == 0] = _np.NaN
+                vmin = _np.nanmin(_temp)
+            if vmax is None:
+                vmax = _np.nanmax(spectrum)
+
+        if vscale.lower() == 'log':
+            norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
+            # Clipping is required to avoid an invalid value error
+        elif vscale.lower() == 'lin':
+            norm = _plt.Normalize(vmin, vmax)
+        else:
+            raise ValueError(
+                "vscale must be 'lin' or 'log'. " +
+                "Input value was {:s}".format(repr(vscale)))
+
+        if (xscale == 'lin'):
+            cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
+                                    norm=norm, cmap='viridis')
+            axes.set(xlim=(-0.5, lmax + 0.5))
+        elif (xscale == 'log'):
+            cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
+                                    norm=norm, cmap='viridis')
+            axes.set(xscale='log', xlim=(1., lmax + 0.5))
+        else:
+            raise ValueError(
+                "xscale must be 'lin' or 'log'. " +
+                "Input value was {:s}".format(repr(xscale)))
+
+        if (yscale == 'lin'):
+            axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+        elif (yscale == 'log'):
+            axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
+        else:
+            raise ValueError(
+                "yscale must be 'lin' or 'log'. " +
+                "Input value was {:s}".format(repr(yscale)))
+
+        cb = _plt.colorbar(cmesh, ax=ax)
+
+        if (convention == 'energy'):
+            cb.set_label('Energy per coefficient', fontsize=axes_labelsize)
+        elif (convention == 'power'):
+            cb.set_label('Power per coefficient', fontsize=axes_labelsize)
+        else:
+            cb.set_label('Magnitude-squared coefficient',
+                         fontsize=axes_labelsize)
+
+        cb.ax.tick_params(labelsize=tick_labelsize)
+        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
+        axes.set_ylabel('Spherical harmonic order', fontsize=axes_labelsize)
+        axes.tick_params(labelsize=tick_labelsize)
+        axes.minorticks_on()
+        axes.grid(grid, which='major')
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                fig.show()
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
+    def plot_cross_spectrum2d(self, clm, convention='power', xscale='lin',
+                              yscale='lin', grid=True, axes_labelsize=None,
+                              tick_labelsize=None, vscale='log', vrange=None,
+                              vmin=None, vmax=None, lmax=None, show=True,
+                              ax=None, fname=None):
+        """
+        Plot the cross-spectrum of two functions as a function of spherical
+        harmonic degree and order.
+
+        Usage
+        -----
+        x.plot_cross_spectrum2d(clm, [convention, xscale, yscale, grid,
+                                      axes_labelsize, tick_labelsize, vscale,
+                                      vrange, vmin, vmax, lmax, show, ax,
+                                      fname])
+
+        Parameters
+        ----------
+        clm : SHCoeffs class instance.
+            The second function used in computing the cross-spectrum.
+        convention : str, optional, default = 'power'
+            The type of spectrum to plot: 'power' for power spectrum,
+            'energy' for energy spectrum, and 'l2norm' for the l2 norm
+            spectrum.
+        xscale : str, optional, default = 'lin'
+            Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'lin'
+            Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        vscale : str, optional, default = 'log'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
+        vrange : (float, float), optional, default = None
+            Colormap range (min, max) relative to the maximum value. If None,
+            scale the image to the maximum and minimum values.
+        vmin : float, optional, default=None
+            The minmum range of the colormap. If None, the minimum value of the
+            spectrum will be used.
+        vmax : float, optional, default=None
+            The maximum range of the colormap. If None, the maximum value of
+            the spectrum will be used.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+
+        Description
+        -----------
+        This method plots either the power, energy, or l2-norm for each
+        spherical harmonic degree and order of the function. Total power is
+        defined as the integral of the function squared over all space,
+        divided by the area the function spans. If the mean of the function is
+        zero, this is equivalent to the variance of the function. The total
+        energy is the integral of the function squared over all space and is
+        4pi times the total power. For normalized coefficients ('4pi',
+        'ortho', or 'schmidt'), the l2-norm is the sum of the magnitude of the
+        coefficients squared. If the input fields are complex, the absolute
+        value of the cross-spectrum will be plotted.
+        """
+        if not isinstance(clm, SHCoeffs):
+            raise ValueError('clm must be an SHCoeffs class instance. Input '
+                             'type is {:s}'.format(repr(type(clm))))
+
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
+        if lmax is None:
+            lmax = min(self.lmax, clm.lmax)
+
+        degrees = _np.arange(lmax + 1)
+
+        coeffs = clm.to_array(normalization=self.normalization,
+                              csphase=self.csphase,
+                              lmax=self.lmax)
+
+        # Create the matrix of the spectrum for each coefficient
+        spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
+        mpositive = _np.abs(self.coeffs[0, :lmax + 1, :lmax + 1] *
+                            coeffs[0, :lmax + 1, :lmax + 1].conj())
+        mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
+        mnegative = _np.abs(self.coeffs[1, :lmax + 1, :lmax + 1] *
+                            coeffs[1, :lmax + 1, :lmax + 1].conj())
         mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
 
         spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
@@ -1760,7 +2322,7 @@ class SHRealCoeffs(SHCoeffs):
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
         if self.normalization != '4pi' or self.csphase != 1:
-            temp = _convert(coeffs, normalization_in='4pi', csphase=1,
+            temp = _convert(coeffs, normalization_in='4pi', csphase_in=1,
                             normalization_out=self.normalization,
                             csphase_out=self.csphase)
             return SHCoeffs.from_array(
@@ -2076,7 +2638,7 @@ class SHComplexCoeffs(SHCoeffs):
                                            lmax=lmax_calc, norm=norm,
                                            csphase=self.csphase)
         elif type(lat) is _np.ndarray:
-            values = _np.empty_like(lat, dtype=float)
+            values = _np.empty_like(lat, dtype=_np.complex)
             for v, latitude, longitude in _np.nditer([values, latin, lonin],
                                                      op_flags=['readwrite']):
                 v[...] = _shtools.MakeGridPointC(self.coeffs, lat=latitude,
@@ -2112,6 +2674,8 @@ class SHGrid(object):
 
         x = SHGrid.from_array(array)
         x = SHGrid.from_file('fname.dat')
+        x = SHGrid.from_zeros(lmax)
+        x = SHGrid.from_cap(theta, clat, clon, lmax)
 
     The class instance defines the following class attributes:
 
@@ -2133,7 +2697,9 @@ class SHGrid(object):
     Each class instance provides the following methods:
 
     to_array()  : Return the raw gridded data as a numpy array.
+    to_xarray() : Return the gridded data as an xarray DataArray.
     to_file()   : Save gridded data to a text or binary file.
+    to_netcdf() : Return the gridded data as a netcdf formatted file or object.
     lats()      : Return a vector containing the latitudes of each row
                   of the gridded data.
     lons()      : Return a vector containing the longitudes of each column
@@ -2151,7 +2717,9 @@ class SHGrid(object):
         """Unused constructor of the super class."""
         print('Initialize the class using one of the class methods:\n'
               '>>> pyshtools.SHGrid.from_array\n'
-              '>>> pyshtools.SHGrid.from_file\n')
+              '>>> pyshtools.SHGrid.from_file\n'
+              '>>> pyshtools.SHGrid.from_zeros\n'
+              '>>> pyshtools.SHGrid.from_cap\n')
 
     # ---- Factory methods ----
     @classmethod
@@ -2199,6 +2767,160 @@ class SHGrid(object):
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
                 return cls(array, copy=copy)
+
+    @classmethod
+    def from_zeros(self, lmax, grid='DH', kind='real', sampling=2):
+        """
+        Initialize the class instance using an array of zeros.
+
+        Usage
+        -----
+        x = SHGrid.from_zeros(lmax, [grid, kind, sampling])
+
+        Returns
+        -------
+        x : SHGrid class instance
+
+        Parameters
+        ----------
+        lmax : int
+            The maximum spherical harmonic degree resolvable by the grid.
+        grid : str, optional, default = 'DH'
+            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss Legendre
+            Quadrature grids, respectively.
+        kind : str, optional, default = 'real'
+            'real' or 'complex' spherical harmonic coefficients.
+        sampling : int, optional, default = 3
+            For Driscoll and Healy grids, the longitudinal sampling of the
+            grid. Either 1 for nlong = nlat or 2 for nlong = 2 * nlat.
+        """
+        if type(grid) != str:
+            raise ValueError('grid must be a string. ' +
+                             'Input type was {:s}'
+                             .format(str(type(grid))))
+
+        if grid.upper() not in set(['DH', 'GLQ']):
+                raise ValueError(
+                    "grid must be 'DH' or 'GLQ'. " +
+                    "Input value was {:s}".format(repr(grid)))
+
+        if grid.upper() == 'DH':
+            nlat = 2 * lmax + 2
+            if sampling == 1:
+                nlon = nlat
+            else:
+                nlon = nlat * 2
+        elif grid.upper() == 'GLQ':
+            nlat = lmax + 1
+            nlon = 2 * nlat - 1
+
+        if kind == 'real':
+            array = _np.zeros((nlat, nlon), dtype=_np.float_)
+        else:
+            array = _np.zeros((nlat, nlon), dtype=_np.complex_)
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind) and cls.isgrid(grid):
+                return cls(array, copy=False)
+
+    @classmethod
+    def from_cap(self, theta, clat, clon, lmax, grid='DH', kind='real',
+                 sampling=2, degrees=True):
+        """
+        Initialize the class instance with an array equal to unity within
+        a spherical cap and zero elsewhere.
+
+        Usage
+        -----
+        x = SHGrid.from_cap(theta, clat, clon, lmax, [grid, kind, sampling,
+                            degrees])
+
+        Returns
+        -------
+        x : SHGrid class instance
+
+        Parameters
+        ----------
+        theta : float
+            The angular radius of the spherical cap, default in degrees.
+        clat, clon : float
+            Latitude and longitude of the center of the rotated spherical cap
+            (default in degrees).
+        lmax : int
+            The maximum spherical harmonic degree resolvable by the grid.
+        grid : str, optional, default = 'DH'
+            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss Legendre
+            Quadrature grids, respectively.
+        kind : str, optional, default = 'real'
+            'real' or 'complex' spherical harmonic coefficients.
+        sampling : int, optional, default = 2
+            For Driscoll and Healy grids, the longitudinal sampling of the
+            grid. Either 1 for nlong = nlat or 2 for nlong = 2 * nlat.
+        degrees : bool, optional = True
+            If True, theta, clat, and clon are in degrees.
+        """
+        if type(grid) != str:
+            raise ValueError('grid must be a string. ' +
+                             'Input type was {:s}'
+                             .format(str(type(grid))))
+
+        if grid.upper() not in set(['DH', 'GLQ']):
+                raise ValueError(
+                    "grid must be 'DH' or 'GLQ'. " +
+                    "Input value was {:s}".format(repr(grid)))
+
+        if degrees is True:
+            theta = _np.deg2rad(theta)
+            clat = _np.deg2rad(clat)
+            clon = _np.deg2rad(clon)
+
+        if grid.upper() == 'DH':
+            nlat = 2 * lmax + 2
+            if sampling == 1:
+                nlon = nlat
+            else:
+                nlon = nlat * 2
+        elif grid.upper() == 'GLQ':
+            nlat = lmax + 1
+            nlon = 2 * nlat - 1
+
+        if kind == 'real':
+            array = _np.zeros((nlat, nlon), dtype=_np.float_)
+        else:
+            array = _np.zeros((nlat, nlon), dtype=_np.complex_)
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind) and cls.isgrid(grid):
+                temp = cls(array, copy=False)
+
+        # Set array equal to 1 within the cap
+        lats = temp.lats(degrees=False)
+        lons = temp.lons(degrees=False)
+        imin = _np.inf
+        imax = 0
+        for i, lat in enumerate(lats):
+            if lat <= clat + theta:
+                if i <= imin:
+                    imin = i
+            if lat >= clat - theta:
+                if i >= imax:
+                    imax = i
+
+        x = _np.cos(clat) * _np.cos(clon)
+        y = _np.cos(clat) * _np.sin(clon)
+        z = _np.sin(clat)
+
+        coslon = _np.cos(lons)
+        sinlon = _np.sin(lons)
+        for i in range(imin, imax+1):
+            coslat = _np.cos(lats[i])
+            sinlat = _np.sin(lats[i])
+            for j in range(0, nlon):
+                dist = coslat * (x * coslon[j] + y * sinlon[j]) + z * sinlat
+                if _np.arccos(dist) <= theta:
+                    temp.data[i, j] = 1.
+
+        return temp
 
     @classmethod
     def from_file(self, fname, binary=False, **kwargs):
@@ -2293,6 +3015,66 @@ class SHGrid(object):
         else:
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}'.format(binary))
+
+    def to_netcdf(self, filename=None, title='', description='',
+                  name='data', dtype='f'):
+        """
+        Return the gridded data as a netcdf formatted file or object.
+
+        Usage
+        -----
+        x.to_netcdf([filename, title, description, name, dtype])
+
+        Parameters
+        ----------
+        filename : str, optional, default = None
+            Name of output file.
+        title : str, optional, default = ''
+            Title of the dataset.
+        description : str, optional, default = ''
+            Description of the dataset ('Remark' in gmt grd files).
+        name : str, optional, default = 'data'
+            Name of the data array.
+        dtype : str, optional, default = 'f'
+            Data type of the output array. Either 'f' or 'd' for single or
+            double precision floating point, respectively.
+        """
+        if self.kind == 'complex':
+            raise RuntimeError('netcdf files do not support complex data '
+                               'formats.')
+
+        if dtype == 'f':
+            _nparray = self.to_array().astype(_np.float32)
+        elif dtype == 'd':
+            _nparray = self.to_array()
+        else:
+            raise ValueError("dtype must be either 'f' or 'd' for single or "
+                             "double precision floating point.")
+
+        _data = _xr.DataArray(_nparray, dims=('latitude', 'longitude'),
+                              coords={'latitude': self.lats(),
+                                      'longitude': self.lons()},
+                              attrs={'actual_range': [self.min(), self.max()]})
+        _dataset = _xr.Dataset({name: _data},
+                               attrs={'title': title,
+                                      'description': description})
+        if filename is None:
+            return _dataset.to_netcdf()
+        else:
+            _dataset.to_netcdf(filename)
+
+    def to_xarray(self):
+        """
+        Return the gridded data as an xarray DataArray.
+
+        Usage
+        -----
+        x.to_xarray()
+        """
+        return _xr.DataArray(self.to_array(), dims=('latitude', 'longitude'),
+                             coords={'latitude': self.lats(),
+                                     'longitude': self.lons()},
+                             attrs={'actual_range': [self.min(), self.max()]})
 
     # ---- Mathematical operators ----
     def min(self):
@@ -2652,38 +3434,32 @@ class SHGrid(object):
         return fig, ax3d
 
     # ---- Plotting routines ----
-    def plot(self, tick_interval=[30, 30], minor_tick_interval=None,
-             ax=None, ax2=None, colorbar=False, cb_orientation='vertical',
+    def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
+             colorbar=False, cb_orientation='vertical',
              cb_label=None, grid=False, axes_labelsize=None,
-             tick_labelsize=None, show=True, fname=None, **kwargs):
+             tick_labelsize=None, ax=None, ax2=None, show=True, fname=None,
+             **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([tick_interval, minor_tick_interval, ax, ax2, colorbar,
-                cb_orientation, cb_label, grid, show, fname, **kwargs])
+        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, colorbar,
+                cb_orientation, cb_label, grid, axes_labelsize, tick_labelsize,
+                ax, ax2, show, fname, **kwargs])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = None
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'Longitude' or 'GLQ longitude index'
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude' or 'GLQ latitude index'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear. If the
-            grid is complex, the real component of the grid will be plotted
-            on this axes.
-        ax2 : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear. If the
-            grid is complex, the complex component of the grid will be plotted
-            on this axes.
         colorbar : bool, optional, default = False
             If True, plot a colorbar.
         cb_orientation : str, optional, default = 'vertical'
@@ -2696,50 +3472,73 @@ class SHGrid(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear. If the
+            grid is complex, the real component of the grid will be plotted
+            on this axes.
+        ax2 : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear. If the
+            grid is complex, the complex component of the grid will be plotted
+            on this axes.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
         kwargs : optional
-            Keyword arguements that will be sent to plt.imshow(), such as cmap.
+            Keyword arguements that will be sent to plt.imshow(), such as cmap,
+            vmin, and vmax.
         """
         if tick_interval is None:
+            tick_interval = [None, None]
+
+        if minor_tick_interval is None:
+            minor_tick_interval = [None, None]
+
+        if tick_interval[0] is None:
             xticks = []
-            yticks = []
         elif self.grid == 'GLQ':
             xticks = _np.linspace(0, self.nlon-1,
                                   num=self.nlon//tick_interval[0]+1,
                                   endpoint=True, dtype=int)
+        else:
+            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
+                                  endpoint=True)
+
+        if tick_interval[1] is None:
+            yticks = []
+        elif self.grid == 'GLQ':
             yticks = _np.linspace(0, self.nlat-1,
                                   num=self.nlat//tick_interval[1]+1,
                                   endpoint=True, dtype=int)
         else:
-            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
-                                  endpoint=True)
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
+
+        if minor_tick_interval[0] is None:
+            minor_xticks = []
+        elif self.grid == 'GLQ':
+            minor_xticks = _np.linspace(
+                0, self.nlon-1, num=self.nlon//minor_tick_interval[0]+1,
+                endpoint=True, dtype=int)
+        else:
+            minor_xticks = _np.linspace(
+                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
+
+        if minor_tick_interval[1] is None:
+            minor_yticks = []
+        elif self.grid == 'GLQ':
+            minor_yticks = _np.linspace(
+                0, self.nlat-1, num=self.nlat//minor_tick_interval[1]+1,
+                endpoint=True, dtype=int)
+        else:
+            minor_yticks = _np.linspace(
+                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-
-        if minor_tick_interval is None:
-            minor_xticks = []
-            minor_yticks = []
-        elif self.grid == 'GLQ':
-            minor_xticks = _np.linspace(
-                0, self.nlon-1, num=self.nlon//minor_tick_interval[0]+1,
-                endpoint=True, dtype=int)
-            minor_yticks = _np.linspace(
-                0, self.nlat-1, num=self.nlat//minor_tick_interval[1]+1,
-                endpoint=True, dtype=int)
-        else:
-            minor_xticks = _np.linspace(
-                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
-            minor_yticks = _np.linspace(
-                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
         if ax is None and ax2 is None:
             fig, axes = self._plot(xticks=xticks, yticks=yticks,

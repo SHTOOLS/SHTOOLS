@@ -32,34 +32,35 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 !                       2 = Improper bounds for input variable;
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
-
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
     character(*), intent(in) :: filename
     integer, intent(out) :: lmax
-    real*8, intent(out) :: cilm(:,:,:), gm, r0_pot
-    real*8, intent(out), optional :: error(:,:,:), dot(:,:,:), doystart, &
-                                     doyend, epoch
+    real(dp), intent(out) :: cilm(:,:,:), gm, r0_pot
+    real(dp), intent(out), optional :: error(:,:,:), dot(:,:,:), doystart, &
+                                       doyend, epoch
     integer, intent(out), optional :: exitstatus
     integer :: temp_max, mmax, maxl_cilm, maxl_error, maxl_dot
-    real*8 :: error_scale, doy1, doy2, epoch_temp
-    character*114 :: comment
-    integer:: l, m, stat
-    character :: c*6
-    real*8 :: clm, slm, clmsig, slmsig
+    real(dp) :: error_scale, doy1, doy2, epoch_temp
+    character(114) :: comment
+    integer :: l, m, stat
+    character(6) :: c
+    real(dp) :: clm, slm, clmsig, slmsig
 
     if (present(exitstatus)) exitstatus = 0
 
-    cilm=0.0d0
+    cilm = 0.0_dp
 
-    doy1 = 0.0d0
-    doy2 = 0.0d0
-    epoch_temp = 0.0d0
+    doy1 = 0.0_dp
+    doy2 = 0.0_dp
+    epoch_temp = 0.0_dp
 
     if (size(cilm(:,1,1)) < 2) then
         print*, "Error --- SHRead2"
@@ -92,7 +93,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 
         end if
 
-        error = 0.0d0
+        error = 0.0_dp
         maxl_error = min(size(error(1,:,1)) - 1, size(error(1,1,:)) - 1)
 
     end if
@@ -112,7 +113,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 
         end if
 
-        dot = 0.0d0
+        dot = 0.0_dp
         maxl_dot = min(size(dot(1,:,1)) - 1, size(dot(1,1,:)) - 1)
 
     end if
@@ -121,9 +122,9 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 
     lmax = 0
     temp_max = 0
-    gm = 0.0d0
-    r0_pot = 0.0d0
-    error_scale = 1.0d0
+    gm = 0.0_dp
+    r0_pot = 0.0_dp
+    error_scale = 1.0_dp
 
     do 
         read(13,"(a6)", advance="no", iostat=stat) c
@@ -132,7 +133,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
         if (c == "EARTH " .or. c(1:3) == "GGM") then
             read(13,*) gm, r0_pot
 
-        elseif(c == "SHM   ") then 
+        else if(c == "SHM   ") then 
             read(13,*) lmax, mmax, error_scale
 
             if (mmax /= lmax) then
@@ -142,7 +143,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
                 print*, "MMax = ", mmax
             end if
             
-            if (present(error) .and. error_scale /= 1.0d0) then
+            if (present(error) .and. error_scale /= 1.0_dp) then
                 print*, "Warning --- SHREAD2"
                 print*, "Standard deviations will be scale by ", error_scale
             end if
@@ -216,7 +217,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 
                 end if
                 
-                if (error_scale /= 1.0d0) then
+                if (error_scale /= 1.0_dp) then
                     error(1,l+1,m+1) = clmsig * error_scale
                     error(2,l+1,m+1) = slmsig * error_scale
 
@@ -226,7 +227,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 
                 end if
 
-            endif
+            end if
 
             if (l > temp_max) temp_max = l
 
@@ -316,7 +317,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 
                 end if
 
-                if (error_scale /= 1.0d0) then
+                if (error_scale /= 1.0_dp) then
                     error(1,l+1,m+1) = clmsig * error_scale
                     error(2,l+1,m+1) = slmsig * error_scale
 
@@ -367,7 +368,7 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
 
                 end if
 
-                if (error_scale /= 1.0d0) then
+                if (error_scale /= 1.0_dp) then
                     error(1,l+1,m+1) = clmsig * error_scale
                     error(2,l+1,m+1) = slmsig * error_scale
 
@@ -424,12 +425,12 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
     if (present(doystart)) then
         doystart = doy1
 
-    endif
+    end if
 
     if (present(doyend)) then
         doyend = doy2
 
-    endif
+    end if
 
     if (present(epoch)) then
         epoch = epoch_temp

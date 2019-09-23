@@ -1,4 +1,4 @@
-real*8 function SHConfidence(l_conf, r)
+function SHConfidence(l_conf, r)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will calculate the probability that two sets of spherical
@@ -16,24 +16,27 @@ real*8 function SHConfidence(l_conf, r)
 !       OUTPUT
 !           cl          The confidence level.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: r
+    real(dp) :: SHConfidence
+    real(dp), intent(in) :: r
     integer, intent(in) :: l_conf
-    real*8 :: prod
+    real(dp) :: prod
     integer:: l, i
 
     SHConfidence = abs(r)
-    prod = 1.0d0
+    prod = 1.0_dp
 
     do l = 2, l_conf, 1
         i = l - 1
         prod = prod * dble(2*i-1) / dble(2*i)
-        SHConfidence = SHConfidence + prod * abs(r) * (1.0d0 - r**2)**(l-1)
+        SHConfidence = SHConfidence + prod * abs(r) * (1.0_dp - r**2)**(l-1)
     end do
 
 end function SHConfidence

@@ -18,10 +18,10 @@ call SHRotateTapers(`tapersrot`, `tapers`, `taper_order`, `lmax`, `nrot`, `x`,
 
 ## Parameters
 
-`tapersrot` : output, real\*8, dimension ((`lmax`+1)**2, `nrot`)
+`tapersrot` : output, real(dp), dimension ((`lmax`+1)**2, `nrot`)
 :   An array containing the spherical harmonic coefficients of the rotated spherical-cap functions. Each column corresponds to a single function of which the spherical harmonic coefficients can be unpacked with `SHVectorToCilm`.
 
-`tapers` : input, real\*8, dimension (`lmax`+1, `nrot`)
+`tapers` : input, real(dp), dimension (`lmax`+1, `nrot`)
 :   An array containing the eigenfunctions of the spherical-cap concentration problem obtained from `SHReturnTapers`. The functions are listed by columns, ordered from best to worst concentrated.
 
 `taper_order` : input, integer, dimension (`nrot`)
@@ -33,10 +33,10 @@ call SHRotateTapers(`tapersrot`, `tapers`, `taper_order`, `lmax`, `nrot`, `x`,
 `nrot` : input, integer
 :   The number of functions to rotate, which must be less than or equal to (`lmax`+1)**2.
 
-`x` : input, real\*8, dimension(3)
+`x` : input, real(dp), dimension(3)
 :   The three Euler angles, alpha, beta, and gamma, in radians.
 
-`dj` : input, real\*8, dimension (`lmax`+1, `lmax`+1, `lmax`+1)
+`dj` : input, real(dp), dimension (`lmax`+1, `lmax`+1, `lmax`+1)
 :   The rotation matrix `dj(pi/2)`, obtained from a call to `djpi2`.
 
 `exitstatus` : output, optional, integer

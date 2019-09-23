@@ -37,14 +37,14 @@ Probably, but we have not yet implemented this. If you get this to work, let us 
 
 ## How do I cite SHTOOLS in a publication?
 
-SHTOOLS can be cited in two ways. First, one could cite the shtools paper that was published in Geochemistry, Geophysics, Geosystems (the reference is on the main web page). Secondly, on could cite a specific version of the code using the [Zenodo](http://zenodo.org/) DOI (digital object identifier) that is provided in the release notes.
+SHTOOLS can be cited in two ways. First, one could cite the shtools paper that was published in Geochemistry, Geophysics, Geosystems (the reference is on the main web page). Secondly, one could cite a specific version of the code using the [Zenodo](https://zenodo.org/) DOI (digital object identifier) that is provided in the release notes.
 
 ## Where can I find more information about spherical harmonics?
 
 Two online resources are:
 
 * [Mathworld - Spherical Harmonic](http://mathworld.wolfram.com/SphericalHarmonic.html)
-* [Wikipedia - Spherical harmonics](http://en.wikipedia.org/wiki/Spherical_harmonics)
+* [Wikipedia - Spherical harmonics](https://en.wikipedia.org/wiki/Spherical_harmonics)
 
 ## Will you help me with my homework?
 
@@ -56,10 +56,14 @@ No.
 
 ## How do I make images with the output from SHTOOLS?
 
-If you are using the Fortran version of SHTOOLS, the output is typically in the form of an ASCII raster file. These can be read by any standard graphics package, such as the free unix-based command line software [GMT](http://gmt.soest.hawaii.edu/).
+If you are using the Fortran version of SHTOOLS, the output is typically in the form of an ASCII or binary raster file. These can be read by any standard graphics package, such as the free unix-based command line software [GMT](https://www.generic-mapping-tools.org/).
 
 If you are using the Python version of SHTOOLS, the classes for working with spherical harmonic coefficients and grids contain methods for making publication quality graphics that make use of the `matplotlib` package.
 
+## Which FFT libraries work with SHTOOLS?
+
+SHTOOLS was developed initially to use the [FFTW](http://www.fftw.org) library. Since then, Intel's [MKL](https://software.intel.com/en-us/mkl) has added wrapper functions to their FFT routines that use the same syntax as FFTW. SHTOOLS can be linked either to FFTW or MKL with no impact on performance.
+
 ## Who maintains SHTOOLS?
 
-This software package was created initially in 2004 by [Mark Wieczorek](https://www.oca.eu/fr/mark-wieczorek) who is the lead developer. Matthias Meschede is responsible for the initial Python implementation of version 3. A list of all contributors can be found [here](contributors.html).
+This software package was created initially in 2004 by [Mark Wieczorek](https://www.oca.eu/fr/mark-wieczorek) who is the lead developer. Matthias Meschede was responsible for the initial Python implementation of version 3. A list of all contributors can be found [here](contributors.html).

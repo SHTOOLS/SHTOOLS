@@ -30,11 +30,9 @@
 #
 #
 #   In some cases, where there are underscore problems when linking to the
-#   LAPACK, BLAS, and FFTW3 libraries, it might be necessary to set one of
-#   the following:
+#   LAPACK, BLAS, and FFTW3 libraries, it might be necessary to set:
 #
-#       LAPACK_UNDERSCORE = 1
-#       FFTW3_UNDERSCORE = 1
+#       LAPACK_UNDERSCORE=1
 #
 #
 #   This Makefile accepts the following optional arguments that can be passed
@@ -121,7 +119,7 @@
 #       Create the man pages from input markdown files and create the static
 #       web site. Both of these are PRE-MADE in the distribution. To remake
 #       these files, it will be necessary to install "pandoc", "ghc" and
-#       "cabal-install" (all using brew on OSX), and then execute
+#       "cabal-install" (all using brew on macOS), and then execute
 #       "cabal update" and "cabal install pandoc-types".
 #
 #   make remove-doc
@@ -129,15 +127,18 @@
 #
 #   make www
 #       Make the static html web documention in the directory www using Jekyll.
-#       You will first need to run `bundle install` in the doc/ directory, then
-#       `bundle exec serve`, and then open http://127.0.0.1:4000
+#       First, you must install "ruby" (using brew on macOS), and then install
+#       the gem bundler using "gem install bundler jekyll". To serve the web
+#       documents without making static html files, go to the directory `docs`
+#       type the command `bundle exec jekyll serve`, and then open
+#       http://127.0.0.1:4000.
 #
 #   make remove-www
 #       Remove the directory containing the static html web site.
 #
 ###############################################################################
 
-VERSION = 4.4
+VERSION = 4.5
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
@@ -153,7 +154,6 @@ PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
 
 FFTW = -L$(SYSLIBPATH) -lfftw3
-FFTW_UNDERSCORE = 0
 LAPACK_UNDERSCORE = 0
 
 SHELL = /bin/sh
@@ -186,7 +186,7 @@ BLAS ?= -lblas
 LAPACK ?= -llapack
 else ifeq ($(F95), gfortran)
 # Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
+F95FLAGS ?= -m64 -fPIC -O3 -std=f2003 -ffast-math
 # -march=native
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)
@@ -230,10 +230,6 @@ ifeq ($(LAPACK_UNDERSCORE),1)
 LAPACK_FLAGS = -DLAPACK_UNDERSCORE
 endif
 
-ifeq ($(FFTW3_UNDERSCORE),1)
-FFTW3_FLAGS = -DFFTW3_UNDERSCORE
-endif
-
 
 .PHONY: all fortran install doc remove-doc\
 	fortran-tests run-fortran-tests python-tests\
@@ -248,7 +244,7 @@ all: fortran
 fortran:
 	mkdir -pv lib
 	mkdir -pv modules
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
 	@echo "--> make fortran successful!"
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
@@ -261,7 +257,7 @@ fortran-mp:
 	mkdir -pv lib
 	mkdir -pv modules
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95=$(F95) F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" FFTW3_FLAGS="$(FFTW3_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	@echo "--> make fortran-mp successful!"
 	@echo
@@ -334,7 +330,7 @@ remove-doc:
 	@echo "--> Removed man files and web site source md files"
 
 www:
-	@cd $(WWWSRC) ; $(JEKYLL) build -d ../$(WWWDEST)
+	@cd $(WWWSRC) ; bundle update ; $(JEKYLL) build -d ../$(WWWDEST)
 
 remove-www:
 	@-rm -rf $(WWWDEST)
@@ -398,7 +394,7 @@ remove-notebooks:
 	@echo "--> Removed notebook html files"
 
 fortran-tests: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -407,7 +403,7 @@ fortran-tests: fortran
 	@echo "--> Ran all Fortran examples and tests"
 
 fortran-tests-no-timing: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -416,7 +412,7 @@ fortran-tests-no-timing: fortran
 	@echo "--> Ran all Fortran examples and tests"
 
 fortran-tests-mp: fortran-mp
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -425,7 +421,7 @@ fortran-tests-mp: fortran-mp
 	@echo "--> Ran all Fortran examples and tests"
 
 fortran-tests-no-timing-mp: fortran-mp
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95=$(F95) F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo

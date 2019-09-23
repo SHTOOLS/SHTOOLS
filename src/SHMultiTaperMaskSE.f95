@@ -49,36 +49,34 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies:   SHPowerSpectrum, SHVectorToCilm, MakeGridGLQ, SHGLQ,
-!                   SHExpandGLQ, CSPHASE_DEFAULT.
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only:  SHPowerSpectrum, SHVectorToCilm, &
                         CSPHASE_DEFAULT, SHGLQ, SHExpandGLQ, MakeGridGLQ
+    use ftypes
 
     implicit none
 
-    real*8, intent(out) :: mtse(:), sd(:)
-    real*8, intent(in) ::  sh(:,:,:), tapers(:,:)
+    real(dp), intent(out) :: mtse(:), sd(:)
+    real(dp), intent(in) :: sh(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax, lmaxt, K
-    real*8, intent(in), optional :: taper_wt(:)
+    real(dp), intent(in), optional :: taper_wt(:)
     integer, intent(in), optional :: csphase, norm
     integer, intent(out), optional :: exitstatus
     integer :: i, l, phase, mnorm, astat(7), lmaxmul, nlat, nlong
-    real*8 :: se(lmax-lmaxt+1, K), pi, factor
-    real*8, allocatable, save :: zero(:), w(:)
+    real(dp) :: se(lmax-lmaxt+1, K), pi, factor
+    real(dp), allocatable, save :: zero(:), w(:)
     integer, save :: first = 1, lmaxmul_last = -1
-    real*8, allocatable :: shwin(:,:,:), shloc(:,:,:), grid1glq(:,:), &
-                           gridwinglq(:,:), temp(:,:)
+    real(dp), allocatable :: shwin(:,:,:), shloc(:,:,:), grid1glq(:,:), &
+                             gridwinglq(:,:), temp(:,:)
 
 !$OMP   threadprivate(zero, w, first, lmaxmul_last)
 
     if (present(exitstatus)) exitstatus = 0
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     if (size(sh(:,1,1)) < 2 .or. size(sh(1,:,1)) < lmax+1 .or. &
         size(sh(1,1,:)) < lmax+1) then
@@ -285,8 +283,8 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
 
     end if
 
-    mtse = 0.0d0
-    sd = 0.0d0
+    mtse = 0.0_dp
+    sd = 0.0_dp
 
     !--------------------------------------------------------------------------
     !
@@ -298,7 +296,7 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
                      lmaxmul, zero = zero, csphase = phase, norm = mnorm)
 
     do i = 1, K
-        shwin = 0.0d0
+        shwin = 0.0_dp
 
         if (present(exitstatus)) then
             call SHVectorToCilm(tapers(:,i), shwin, lmaxt, &
