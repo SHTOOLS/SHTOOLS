@@ -1,10 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script is a python version of TimingAccuracyGLQ. We use numpy functions to
 simplify the creation of random coefficients.
 """
-from __future__ import absolute_import, division, print_function
-
 import os
 import sys
 import time

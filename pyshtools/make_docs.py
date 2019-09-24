@@ -4,10 +4,6 @@ customized markdown files. The processed documentation is saved as ascii text
 files which are loaded on runtime and replace the __doc__ string of the f2py
 wrapped functions.
 """
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import sys
 import os
 import re

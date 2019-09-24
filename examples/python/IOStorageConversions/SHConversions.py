@@ -1,10 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
-from __future__ import absolute_import, division, print_function
-
 import os
 import sys
 import numpy as np

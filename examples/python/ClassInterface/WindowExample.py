@@ -1,11 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script tests the python class interface
 """
-
-from __future__ import absolute_import, division, print_function
-
-# standard imports:
 import os
 import sys
 

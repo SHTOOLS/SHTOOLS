@@ -1,8 +1,6 @@
 """
 This script will run all jupyter notebooks in order to test for errors.
 """
-from __future__ import print_function
-
 import sys
 import os
 
@@ -21,9 +19,7 @@ notebooks = ('Introduction-1.ipynb',
              'tutorial_5.ipynb',
              'tutorial_6.ipynb')
 
-if sys.version_info.major == 2:
-    kname = 'python2'
-elif sys.version_info.major == 3:
+if sys.version_info.major == 3:
     kname = 'python3'
 else:
     raise ('Python version {:d} not supported.'.format(sys.version_info.major))

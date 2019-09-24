@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Automatically creates python-wrapper subroutines from the interface file
 SHTOOLS.f95. Unfortunately all assumed array shapes have to be changed because
@@ -6,9 +6,6 @@ their structure is only known by the Fortran compiler and can not be directly
 exposed to C. It is possible that newer f2py versions can handle assumed array
 shapes using a similar procedure.
 """
-from __future__ import absolute_import, division, print_function
-
-#==== IMPORTS ====
 from numpy.f2py import crackfortran
 
 #==== MAIN FUNCTION ====

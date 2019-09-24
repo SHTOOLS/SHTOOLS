@@ -2,10 +2,6 @@
     Functions for converting spherical harmonic coefficients to a different
     normalization conventions.
 """
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import numpy as _np
 import warnings as _warnings
 from scipy.special import factorial as _factorial

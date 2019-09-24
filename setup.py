@@ -1,11 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """Setup script for SHTOOLS."""
 
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
 import os
 import re
 import sys
@@ -156,7 +153,6 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Programming Language :: Fortran',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 3',
     'Topic :: Scientific/Engineering',
     'Topic :: Scientific/Engineering :: GIS',

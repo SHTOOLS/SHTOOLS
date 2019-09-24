@@ -43,6 +43,8 @@ SRCMOD = ftypes.f95 SHTOOLS.f95 FFTW3.f95 PlanetsConstants.f95
 
 MOD = ftypes.mod SHTOOLS.mod FFTW3.mod PlanetsConstants.mod
 
+OBJSMOD = ftypes.o SHTOOLS.o FFTW3.o PlanetsConstants.o
+
 SRCS0 = CilmPlus.f95 CilmMinus.f95 \
 	ComputeDG82.f95 ComputeDm.f95 DHaj.f95 djpi2.f95 BAtoHilm.f95 \
 	MakeGrid2D.f95 GLQGridCoord.f95 MakeGridPoint.f95 MakeGridPointC.f95 \
@@ -132,6 +134,7 @@ clean: clean-obs-mod clean-prog-mod
 
 clean-obs-mod:
 	@-rm -f $(OBJS0)
+	@-rm -f $(OBJSMOD)
 	@-rm -f $(OBJSLAPACK)
 	@-rm -f $(OBJSFFTW)
 	@-rm -f *.mod
