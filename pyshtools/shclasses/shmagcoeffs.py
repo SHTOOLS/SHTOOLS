@@ -931,47 +931,10 @@ class SHMagCoeffs(object):
         """
         return self.__mul__(other)
 
-    def __div__(self, other):
-        """
-        Divide an SHMagCoeffs instance by an SHCoeffs instance or scalar
-        when __future__.division is not in effect: self / other.
-        """
-        if isinstance(other, _SHCoeffs):
-            if (self.normalization == other.normalization and
-                    self.csphase == other.csphase and self.kind == other.kind
-                    and self.lmax == other.lmax):
-                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                                   dtype=self.coeffs.dtype)
-                coeffs[self.mask] = (self.coeffs[self.mask] /
-                                     other.coeffs[self.mask])
-                return SHMagCoeffs.from_array(
-                    coeffs, r0=self.r0, csphase=self.csphase,
-                    normalization=self.normalization)
-            else:
-                raise ValueError('The two sets of coefficients must have the '
-                                 'same kind, normalization, csphase, and '
-                                 'lmax.')
-        elif _np.isscalar(other) is True:
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide real magnetic '
-                                 'potential coefficients by a complex '
-                                 'constant.')
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
-            coeffs[self.mask] = self.coeffs[self.mask] / other
-            return SHMagCoeffs.from_array(
-                coeffs, r0=self.r0, csphase=self.csphase,
-                normalization=self.normalization)
-        else:
-            raise TypeError('Division of an SHMagCoeffs instance is '
-                            'permitted only with either an SHCoeffs instance '
-                            'or a scalar. '
-                            'Type of other is {:s}'.format(repr(type(other))))
-
     def __truediv__(self, other):
         """
-        Divide an SHMagCoeffs instance by an SHCoeffs instance or scalar
-        when __future__.division is in effect: self / other.
+        Divide an SHMagCoeffs instance by an SHCoeffs instance or scalar:
+        self / other.
         """
         if isinstance(other, _SHCoeffs):
             if (self.normalization == other.normalization and

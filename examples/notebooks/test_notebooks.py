@@ -24,8 +24,6 @@ if sys.version_info.major == 3:
 else:
     raise ('Python version {:d} not supported.'.format(sys.version_info.major))
 
-print('Python kernel name = {:s}'.format(kname))
-
 for i in range(len(notebooks)):
     with open(notebooks[i]) as f:
         nb = nbformat.read(f, as_version=4)

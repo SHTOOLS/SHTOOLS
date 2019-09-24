@@ -35,16 +35,20 @@ Please see [this page](how-to-contribute.html).
 
 Probably, but we have not yet implemented this. If you get this to work, let us know how you did it and we will add the instructions and source files to the distribution.
 
-## How do I cite SHTOOLS in a publication?
+## Which FFT libraries work with SHTOOLS?
 
-SHTOOLS can be cited in two ways. First, one could cite the shtools paper that was published in Geochemistry, Geophysics, Geosystems (the reference is on the main web page). Secondly, one could cite a specific version of the code using the [Zenodo](https://zenodo.org/) DOI (digital object identifier) that is provided in the release notes.
+SHTOOLS was developed initially to use the [FFTW](http://www.fftw.org) library. Since then, Intel's [MKL](https://software.intel.com/en-us/mkl) has added wrapper functions to their FFT routines that use the same syntax as FFTW. SHTOOLS can be linked either to FFTW or MKL with no impact on performance.
 
-## Where can I find more information about spherical harmonics?
+## Does SHTOOLS work with Python 2.7?
 
-Two online resources are:
-
-* [Mathworld - Spherical Harmonic](http://mathworld.wolfram.com/SphericalHarmonic.html)
-* [Wikipedia - Spherical harmonics](https://en.wikipedia.org/wiki/Spherical_harmonics)
+The last version of pyshtools that supported Python 2.7 was version 4.5. Precompiled binaries of this release can be installed using the command
+```bash
+pip install pyshtools==4.5
+```
+Occassionally, critical updates may be made to the Python 2.7 code in the `python2.7` branch of the GitHub project. Though Python 2.7 compatible binaries will not be distributed for any of these updates, these can be installed from souce using the command
+```bash
+pip install git+https://github.com/SHTOOLS/SHTOOLS.git@python2.7
+```
 
 ## Will you help me with my homework?
 
@@ -60,10 +64,11 @@ If you are using the Fortran version of SHTOOLS, the output is typically in the 
 
 If you are using the Python version of SHTOOLS, the classes for working with spherical harmonic coefficients and grids contain methods for making publication quality graphics that make use of the `matplotlib` package.
 
-## Which FFT libraries work with SHTOOLS?
-
-SHTOOLS was developed initially to use the [FFTW](http://www.fftw.org) library. Since then, Intel's [MKL](https://software.intel.com/en-us/mkl) has added wrapper functions to their FFT routines that use the same syntax as FFTW. SHTOOLS can be linked either to FFTW or MKL with no impact on performance.
-
 ## Who maintains SHTOOLS?
 
 This software package was created initially in 2004 by [Mark Wieczorek](https://www.oca.eu/fr/mark-wieczorek) who is the lead developer. Matthias Meschede was responsible for the initial Python implementation of version 3. A list of all contributors can be found [here](contributors.html).
+
+## How do I cite SHTOOLS in a publication?
+
+SHTOOLS can be cited in two ways. First, one could cite the shtools paper that was published in Geochemistry, Geophysics, Geosystems (the reference is on the main web page). Secondly, one could cite a specific version of the code using the [Zenodo](https://zenodo.org/) DOI (digital object identifier) that is provided in the release notes.
+
