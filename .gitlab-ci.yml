@@ -5,12 +5,13 @@ cache:
   - vendor/
 
 before_script:
+  - cd docs
   - bundle install --path vendor
 
 pages:
   stage: deploy
   script:
-  - bundle exec jekyll build -d public
+  - bundle exec jekyll build -d ../public
   artifacts:
     paths:
     - public
