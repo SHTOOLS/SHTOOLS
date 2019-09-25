@@ -22,6 +22,16 @@ from numpy.distutils.system_info import get_info, dict_append
 from subprocess import CalledProcessError, check_output, check_call
 
 
+min_version = (3, 4)
+
+if sys.version_info < min_version:
+    error = """\n
+*** Beginning with pysthools 4.6, Python {0} or above is required. ***
+*** This error may be due to using a python-2.7 version of pip.    ***
+""".format('.'.join(str(n) for n in min_version))
+    raise SystemError(error)
+
+
 # Convert markdown README.md to restructured text (.rst) for PyPi, and
 # remove the first 5 lines that contain a reference to the shtools LOGO.
 # pandoc can be installed either by conda or pip:
@@ -166,6 +176,9 @@ KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
             'Magnetic Field']
 
 
+PYTHON_REQUIRES='>={}'.format('.'.join(str(n) for n in min_version))
+
+
 INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
@@ -275,6 +288,7 @@ metadata = dict(
     author_email="mark.a.wieczorek@gmail.com",
     license='BSD',
     keywords=KEYWORDS,
+    python_requires=PYTHON_REQUIRES,
     install_requires=INSTALL_REQUIRES,
     platforms='OS Independent',
     packages=setuptools.find_packages(),
