@@ -152,9 +152,9 @@ clean-prog-mod:
 
 
 ftypes.mod : ftypes.o
-SHTOOLS.mod : ftypes.mod
-FFTW3.mod : ftypes.mod
-PlanetsConstants.mod : ftypes.mod
+SHTOOLS.mod : SHTOOLS.o ftypes.mod
+FFTW3.mod : FFTW3.o ftypes.mod
+PlanetsConstants.mod : PlanetsConstants.o ftypes.mod
 
 BAtoHilm.o : ftypes.mod SHTOOLS.mod
 BAtoHilmRhoH.o : ftypes.mod SHTOOLS.mod
