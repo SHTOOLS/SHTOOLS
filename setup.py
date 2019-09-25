@@ -22,7 +22,7 @@ from numpy.distutils.system_info import get_info, dict_append
 from subprocess import CalledProcessError, check_output, check_call
 
 
-min_version = (3, 4)
+min_version = (3, 5)
 
 if sys.version_info < min_version:
     error = """\n
