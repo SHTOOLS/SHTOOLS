@@ -39,9 +39,11 @@ else ifeq ($(origin F95FLAGS), undefined)
 F95FLAGS = -m64 -O3
 endif
 
-SRCMOD = ftypes.f95 SHTOOLS.f95 FFTW3.f95 PlanetsConstants.f95
+SRCSMOD = ftypes.f95 SHTOOLS.f95 FFTW3.f95 PlanetsConstants.f95
 
 MOD = ftypes.mod SHTOOLS.mod FFTW3.mod PlanetsConstants.mod
+
+OBJSMOD = ftypes.o SHTOOLS.o FFTW3.o PlanetsConstants.o
 
 SRCS0 = CilmPlus.f95 CilmMinus.f95 \
 	ComputeDG82.f95 ComputeDm.f95 DHaj.f95 djpi2.f95 BAtoHilm.f95 \
@@ -103,11 +105,11 @@ OBJSFFTW = MakeGridDH.o MakeGridDHC.o MakeGridGLQ.o MakeGridGLQC.o \
 	MakeGravGradGridDH.o MakeGravGridDH.o MakeMagGridDH.o \
 	MakeMagGradGridDH.o
 
-SRCS = $(SRCMOD) $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
-OBJS = $(MOD) $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
+SRCS = $(SRCSMOD) $(SRCS0) $(SRCSLAPACK) $(SRCSFFTW)
+OBJS = $(OBJSMOD) $(OBJS0) $(OBJSLAPACK) $(OBJSFFTW)
 
 
-all: $(PROG)
+all: $(MOD) $(PROG)
 
 $(PROG): $(OBJS)
 	@echo
@@ -131,6 +133,7 @@ $(PROG): $(OBJS)
 clean: clean-obs-mod clean-prog-mod
 
 clean-obs-mod:
+	@-rm -f $(OBJSMOD)
 	@-rm -f $(OBJS0)
 	@-rm -f $(OBJSLAPACK)
 	@-rm -f $(OBJSFFTW)
@@ -148,9 +151,11 @@ clean-prog-mod:
 	$(F95) -c $(F95FLAGS) $(LAPACK_FLAGS) $<
 
 
+ftypes.mod : ftypes.o
 SHTOOLS.mod : ftypes.mod
 FFTW3.mod : ftypes.mod
 PlanetsConstants.mod : ftypes.mod
+
 BAtoHilm.o : ftypes.mod SHTOOLS.mod
 BAtoHilmRhoH.o : ftypes.mod SHTOOLS.mod
 CilmMinus.o : ftypes.mod SHTOOLS.mod
