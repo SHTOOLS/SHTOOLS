@@ -3,9 +3,19 @@
 
 """Setup script for SHTOOLS."""
 
+import sys
+
+min_version = (3, 5)
+
+if sys.version_info < min_version:
+    error = """\n
+*** Beginning with pysthools 4.6, Python {0} or above is required. ***
+*** This error may be a result of using a python-2.7 version of pip.    ***
+""".format('.'.join(str(n) for n in min_version))
+    raise SystemError(error)
+
 import os
 import re
-import sys
 import sysconfig
 # the setuptools import dummy patches the distutil commands such that
 # python setup.py develop works
@@ -20,16 +30,6 @@ from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
 from numpy.distutils.misc_util import Configuration
 from numpy.distutils.system_info import get_info, dict_append
 from subprocess import CalledProcessError, check_output, check_call
-
-
-min_version = (3, 5)
-
-if sys.version_info < min_version:
-    error = """\n
-*** Beginning with pysthools 4.6, Python {0} or above is required. ***
-*** This error may be due to using a python-2.7 version of pip.    ***
-""".format('.'.join(str(n) for n in min_version))
-    raise SystemError(error)
 
 
 # Convert markdown README.md to restructured text (.rst) for PyPi, and
@@ -176,7 +176,7 @@ KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
             'Magnetic Field']
 
 
-PYTHON_REQUIRES='>={}'.format('.'.join(str(n) for n in min_version))
+PYTHON_REQUIRES = '>={}'.format('.'.join(str(n) for n in min_version))
 
 
 INSTALL_REQUIRES = [
