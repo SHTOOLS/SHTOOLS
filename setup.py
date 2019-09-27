@@ -223,7 +223,7 @@ def configuration(parent_package='', top_path=None):
 
     # Fortran compilation
     kwargs_win = {
-        'extra_f90_compile_args': ['-DLAPACK_UNDERSCORE']
+        'extra_f90_compile_args': ['-fno-underscoring']
     }
 
     if sys.platform == 'win32':
