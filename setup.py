@@ -222,9 +222,8 @@ def configuration(parent_package='', top_path=None):
     print('searching SHTOOLS in:', libdir)
 
     # Fortran compilation
-
     kwargs_win = {
-        'extra_f90_compile_args' = ['-DLAPACK_UNDERSCORE']
+        'extra_f90_compile_args': ['-DLAPACK_UNDERSCORE']
     }
 
     if sys.platform == 'win32':
