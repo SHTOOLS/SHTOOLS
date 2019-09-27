@@ -222,7 +222,11 @@ def configuration(parent_package='', top_path=None):
     print('searching SHTOOLS in:', libdir)
 
     # Fortran compilation
-    config.add_library('SHTOOLS', sources=sources)
+    if sys.platform == 'win32':
+        config.add_library('SHTOOLS', sources=sources,
+                           'extra_f90_compile_args' = '-DLAPACK_UNDERSCORE')
+    else:
+        config.add_library('SHTOOLS', sources=sources)
 
     # SHTOOLS
     kwargs['libraries'].extend(['SHTOOLS'])
