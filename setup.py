@@ -223,9 +223,9 @@ def configuration(parent_package='', top_path=None):
 
     # Fortran compilation
     kwargs_win = {
-        'extra_f90_compile_args': ['-fno-funderscoring'],
-        'extra_compile_args': ['-fno-funderscoring'],
-        'extra_f77_compile_args': ['-fno-funderscoring']
+        'extra_f90_compile_args': ['-fno-underscoring'],
+        'extra_compile_args': ['-fno-underscoring'],
+        'extra_f77_compile_args': ['-fno-underscoring']
     }
 
     if sys.platform == 'win32':
