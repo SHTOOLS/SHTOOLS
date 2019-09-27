@@ -224,7 +224,7 @@ def configuration(parent_package='', top_path=None):
     # Fortran compilation
     if sys.platform == 'win32':
         config.add_library('SHTOOLS', sources=sources,
-                           'extra_f90_compile_args' = '-DLAPACK_UNDERSCORE')
+                           extra_f90_compile_args = '-DLAPACK_UNDERSCORE')
     else:
         config.add_library('SHTOOLS', sources=sources)
 
