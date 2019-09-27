@@ -223,8 +223,8 @@ def configuration(parent_package='', top_path=None):
 
     # Fortran compilation
     kwargs_win = {
-        'extra_f90_compile_args': ['-funderscoring'],
-        'extra_compile_args': ['-funderscoring']
+        'extra_f90_compile_args': ['-no-funderscoring'],
+        'extra_compiler_args': ['-no-funderscoring']
     }
 
     if sys.platform == 'win32':
