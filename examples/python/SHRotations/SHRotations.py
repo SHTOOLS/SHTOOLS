@@ -1,9 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script tests the rotation of spherical harmonic coefficients
 """
-from __future__ import absolute_import, division, print_function
-
 import os
 import sys
 import numpy as np

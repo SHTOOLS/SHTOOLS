@@ -3,10 +3,6 @@
 
         SHCoeffs : SHRealCoeffs, SHComplexCoeffs
 """
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
@@ -921,42 +917,10 @@ class SHCoeffs(object):
         """
         return self.__mul__(other)
 
-    def __div__(self, other):
-        """
-        Divide two similar sets of coefficients or coefficients and a scalar
-        when __future__.division is not in effect: self / other.
-        """
-        if isinstance(other, SHCoeffs):
-            if (self.normalization == other.normalization and self.csphase ==
-                    other.csphase and self.kind == other.kind and
-                    self.lmax == other.lmax):
-                coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                                   dtype=self.coeffs.dtype)
-                coeffs[self.mask] = (self.coeffs[self.mask] /
-                                     other.coeffs[self.mask])
-                return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                           normalization=self.normalization)
-            else:
-                raise ValueError('The two sets of coefficients must have the '
-                                 'same kind, normalization, csphase and '
-                                 'lmax.')
-        elif _np.isscalar(other) is True:
-            coeffs = _np.empty([2, self.lmax+1, self.lmax+1],
-                               dtype=self.coeffs.dtype)
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide real coefficients by '
-                                 'a complex constant.')
-            coeffs[self.mask] = self.coeffs[self.mask] / other
-            return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                       normalization=self.normalization)
-        else:
-            raise NotImplementedError('Mathematical operator not implemented '
-                                      'for these operands.')
-
     def __truediv__(self, other):
         """
-        Divide two similar sets of coefficients or coefficients and a scalar
-        when __future__.division is in effect: self / other.
+        Divide two similar sets of coefficients or coefficients and a scalar:
+        self / other.
         """
         if isinstance(other, SHCoeffs):
             if (self.normalization == other.normalization and self.csphase ==
@@ -3185,33 +3149,9 @@ class SHGrid(object):
         """Multiply two similar grids or a grid and a scaler: other * self."""
         return self.__mul__(other)
 
-    def __div__(self, other):
-        """
-        Divide two similar grids or a grid and a scalar, when
-        __future__.division is not in effect.
-        """
-        if isinstance(other, SHGrid):
-            if (self.grid == other.grid and self.data.shape ==
-                    other.data.shape and self.kind == other.kind):
-                data = self.data / other.data
-                return SHGrid.from_array(data, grid=self.grid)
-            else:
-                raise ValueError('The two grids must be of the ' +
-                                 'same kind and have the same shape.')
-        elif _np.isscalar(other) is True:
-            if self.kind == 'real' and _np.iscomplexobj(other):
-                raise ValueError('Can not divide a real grid by a complex '
-                                 'constant.')
-            data = self.data / other
-            return SHGrid.from_array(data, grid=self.grid)
-        else:
-            raise NotImplementedError('Mathematical operator not implemented '
-                                      'for these operands.')
-
     def __truediv__(self, other):
         """
-        Divide two similar grids or a grid and a scalar, when
-        __future__.division is in effect.
+        Divide two similar grids or a grid and a scalar.
         """
         if isinstance(other, SHGrid):
             if (self.grid == other.grid and self.data.shape ==

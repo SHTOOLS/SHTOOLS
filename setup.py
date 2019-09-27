@@ -1,14 +1,21 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """Setup script for SHTOOLS."""
 
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
+import sys
+
+min_version = (3, 5)
+
+if sys.version_info < min_version:
+    error = """\n
+*** Beginning with pysthools 4.6, Python {0} or above is required. ***
+*** This error may be a result of using a python-2.7 version of pip.    ***
+""".format('.'.join(str(n) for n in min_version))
+    raise SystemError(error)
+
 import os
 import re
-import sys
 import sysconfig
 # the setuptools import dummy patches the distutil commands such that
 # python setup.py develop works
@@ -156,7 +163,6 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Programming Language :: Fortran',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 3',
     'Topic :: Scientific/Engineering',
     'Topic :: Scientific/Engineering :: GIS',
@@ -170,6 +176,9 @@ KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
             'Magnetic Field']
 
 
+PYTHON_REQUIRES = '>={}'.format('.'.join(str(n) for n in min_version))
+
+
 INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
@@ -181,25 +190,6 @@ INSTALL_REQUIRES = [
 # configure python extension to be compiled with f2py
 
 
-def get_compiler_flags():
-    """Set fortran flags depending on the compiler."""
-    compiler = get_default_fcompiler()
-    if compiler == 'absoft':
-        flags = ['-m64', '-O3', '-YEXT_NAMES=LCS', '-YEXT_SFX=_',
-                 '-fpic', '-speed_math=10']
-    elif compiler == 'gnu95':
-        flags = ['-m64', '-fPIC', '-O3', '-std=f2003', '-ffast-math']
-    elif compiler == 'intel':
-        flags = ['-m64', '-fpp', '-free', '-O3', '-Tf']
-    elif compiler == 'g95':
-        flags = ['-O3', '-fno-second-underscore']
-    elif compiler == 'pg':
-        flags = ['-fast']
-    else:
-        flags = ['-m64', '-O3']
-    return flags
-
-
 def configuration(parent_package='', top_path=None):
     """Configure all packages that need to be built."""
     config = Configuration('', parent_package, top_path)
@@ -209,11 +199,6 @@ def configuration(parent_package='', top_path=None):
         'include_dirs': [],
         'library_dirs': []
     }
-
-    # F95FLAGS = get_compiler_flags()
-    # kwargs['extra_f90_compile_args'] = F95FLAGS
-    # These options don't seem to be necessary as the default flags already
-    # include what is required.
 
     # numpy.distutils.fcompiler.FCompiler doesn't support .F95 extension
     compiler = FCompiler(get_default_fcompiler())
@@ -237,9 +222,7 @@ def configuration(parent_package='', top_path=None):
     print('searching SHTOOLS in:', libdir)
 
     # Fortran compilation
-    config.add_library('SHTOOLS',
-                       sources=sources,
-                       **kwargs)
+    config.add_library('SHTOOLS', sources=sources)
 
     # SHTOOLS
     kwargs['libraries'].extend(['SHTOOLS'])
@@ -260,6 +243,9 @@ def configuration(parent_package='', top_path=None):
     dict_append(kwargs, **blas_info)
     dict_append(kwargs, **lapack_info)
 
+    if sys.platform == 'win32':
+        kwargs['runtime_library_dirs'] = []
+
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
@@ -279,6 +265,7 @@ metadata = dict(
     author_email="mark.a.wieczorek@gmail.com",
     license='BSD',
     keywords=KEYWORDS,
+    python_requires=PYTHON_REQUIRES,
     install_requires=INSTALL_REQUIRES,
     platforms='OS Independent',
     packages=setuptools.find_packages(),

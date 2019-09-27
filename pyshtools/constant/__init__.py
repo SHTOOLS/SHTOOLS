@@ -26,11 +26,6 @@ Inspect a constant using the print function:
       Unit  = m3 / (kg s2)
       Reference = CODATA 2014
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import numpy as _np
 
 try:

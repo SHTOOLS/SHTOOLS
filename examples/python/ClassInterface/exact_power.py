@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Test the phaseonly keyword."""
 
 import matplotlib.pyplot as plt
