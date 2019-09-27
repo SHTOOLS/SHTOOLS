@@ -222,9 +222,9 @@ def configuration(parent_package='', top_path=None):
     print('searching SHTOOLS in:', libdir)
 
     # Fortran compilation
-    #kwargs_win = {
-    #    'extra_f90_compile_args': ['-fno-underscoring']
-    #}
+    kwargs_win = {
+        'extra_f90_compile_args': ['-fno-underscoring']
+    }
 
     if sys.platform == 'win32':
         config.add_library('SHTOOLS', sources=sources),
@@ -251,8 +251,8 @@ def configuration(parent_package='', top_path=None):
     dict_append(kwargs, **blas_info)
     dict_append(kwargs, **lapack_info)
 
-    #if sys.platform == 'win32':
-    #    kwargs['runtime_library_dirs'] = []
+    if sys.platform == 'win32':
+        kwargs['runtime_library_dirs'] = []
 
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
