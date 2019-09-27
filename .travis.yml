@@ -2,14 +2,9 @@ language: c
 
 matrix:
   include:
-    # Test Python 2.7 and 3.7 on Linux and OSX
-    - os: linux
-      env: PYTHON_VERSION=2.7
+    # Test Python 3.7 on Linux and OSX
     - os: linux
       env: PYTHON_VERSION=3.7
-
-    - os: osx
-      env: PYTHON_VERSION=2.7
     - os: osx
       env: PYTHON_VERSION=3.7
 
@@ -29,11 +24,8 @@ install:
     else
       export OS="Linux";
     fi
-  - if [[ "${PYTHON_VERSION:0:1}" == '2' ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda2-latest-${OS}-x86_64.sh -O miniconda.sh;
-    else
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh;
-    fi
+
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r

@@ -135,6 +135,7 @@ clean: clean-obs-mod clean-prog-mod
 clean-obs-mod:
 	@-rm -f $(OBJSMOD)
 	@-rm -f $(OBJS0)
+	@-rm -f $(OBJSMOD)
 	@-rm -f $(OBJSLAPACK)
 	@-rm -f $(OBJSFFTW)
 	@-rm -f *.mod

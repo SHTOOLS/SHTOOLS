@@ -1,10 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script tests the localized spectral analysis routines
 """
-from __future__ import absolute_import, division, print_function
-
-# standard imports:
 import os
 import sys
 import numpy as np

@@ -51,11 +51,6 @@ Other
 PlmIndex      Compute the index of an array of Legendre function corresponding
               to degree L and angular order M.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 from ..shtools import PlmBar
 from ..shtools import PlmBar_d1
 from ..shtools import PlBar
