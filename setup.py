@@ -190,25 +190,6 @@ INSTALL_REQUIRES = [
 # configure python extension to be compiled with f2py
 
 
-def get_compiler_flags():
-    """Set fortran flags depending on the compiler."""
-    compiler = get_default_fcompiler()
-    if compiler == 'absoft':
-        flags = ['-m64', '-O3', '-YEXT_NAMES=LCS', '-YEXT_SFX=_',
-                 '-fpic', '-speed_math=10']
-    elif compiler == 'gnu95':
-        flags = ['-m64', '-fPIC', '-O3', '-std=f2003', '-ffast-math']
-    elif compiler == 'intel':
-        flags = ['-m64', '-fpp', '-free', '-O3', '-Tf']
-    elif compiler == 'g95':
-        flags = ['-O3', '-fno-second-underscore']
-    elif compiler == 'pg':
-        flags = ['-fast']
-    else:
-        flags = ['-m64', '-O3']
-    return flags
-
-
 def configuration(parent_package='', top_path=None):
     """Configure all packages that need to be built."""
     config = Configuration('', parent_package, top_path)
@@ -218,11 +199,6 @@ def configuration(parent_package='', top_path=None):
         'include_dirs': [],
         'library_dirs': []
     }
-
-    # F95FLAGS = get_compiler_flags()
-    # kwargs['extra_f90_compile_args'] = F95FLAGS
-    # These options don't seem to be necessary as the default flags already
-    # include what is required.
 
     # numpy.distutils.fcompiler.FCompiler doesn't support .F95 extension
     compiler = FCompiler(get_default_fcompiler())
@@ -246,9 +222,7 @@ def configuration(parent_package='', top_path=None):
     print('searching SHTOOLS in:', libdir)
 
     # Fortran compilation
-    config.add_library('SHTOOLS',
-                       sources=sources,
-                       **kwargs)
+    config.add_library('SHTOOLS', sources=sources)
 
     # SHTOOLS
     kwargs['libraries'].extend(['SHTOOLS'])
