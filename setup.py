@@ -243,6 +243,9 @@ def configuration(parent_package='', top_path=None):
     dict_append(kwargs, **blas_info)
     dict_append(kwargs, **lapack_info)
 
+    if sys.platform == 'win32':
+        kwargs['runtime_library_dirs'] = []
+
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
