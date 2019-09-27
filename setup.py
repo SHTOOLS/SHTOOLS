@@ -223,8 +223,9 @@ def configuration(parent_package='', top_path=None):
 
     # Fortran compilation
     kwargs_win = {
-        'extra_f90_compile_args': ['-no-funderscoring'],
-        'extra_compiler_args': ['-no-funderscoring']
+        'extra_f90_compile_args': ['-fno-funderscoring'],
+        'extra_compile_args': ['-fno-funderscoring'],
+        'extra_f77_compile_args': ['-fno-funderscoring']
     }
 
     if sys.platform == 'win32':
@@ -258,7 +259,7 @@ def configuration(parent_package='', top_path=None):
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
-                         **kwargs)
+                         **kwargs, **kwargs_win)
 
     return config
 
