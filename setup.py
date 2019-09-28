@@ -229,8 +229,8 @@ def configuration(parent_package='', top_path=None):
     #}
 
     if sys.platform == 'win32':
-        config.add_library('SHTOOLS', sources=sources,
-                           **kwargs_win)
+        config.add_library('SHTOOLS', sources=sources) #,
+                           # **kwargs_win)
     else:
         config.add_library('SHTOOLS', sources=sources)
 
