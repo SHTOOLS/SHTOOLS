@@ -226,7 +226,7 @@ def configuration(parent_package='', top_path=None):
     #    'extra_f90_compile_args': ['-fno-underscoring'],
     #    'extra_compile_args': ['-fno-underscoring'],
     #    'extra_f77_compile_args': ['-fno-underscoring']
-    }
+    #}
 
     if sys.platform == 'win32':
         config.add_library('SHTOOLS', sources=sources,
