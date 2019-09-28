@@ -238,7 +238,7 @@ def configuration(parent_package='', top_path=None):
     kwargs['libraries'].extend(['SHTOOLS'])
     kwargs['include_dirs'].extend([libdir])
     kwargs['library_dirs'].extend([libdir])
-    kwargs['f2py_options'] = ['--quiet']
+    # kwargs['f2py_options'] = ['--quiet']
 
     # FFTW info
     fftw_info = get_info('fftw', notfound_action=2)
