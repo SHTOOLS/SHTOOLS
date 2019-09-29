@@ -31,8 +31,6 @@ from numpy.distutils.misc_util import Configuration
 from numpy.distutils.system_info import get_info, dict_append
 from subprocess import CalledProcessError, check_output, check_call
 
-from numpy import get_include as get_numpy_include
-from distutils.sysconfig import get_python_inc as get_python_include
 
 # Convert markdown README.md to restructured text (.rst) for PyPi, and
 # remove the first 5 lines that contain a reference to the shtools LOGO.
@@ -238,7 +236,7 @@ def configuration(parent_package='', top_path=None):
 
     # SHTOOLS
     kwargs['libraries'].extend(['SHTOOLS'])
-    kwargs['include_dirs'].extend([libdir,get_numpy_include(),get_python_include()])
+    kwargs['include_dirs'].extend([libdir])
     kwargs['library_dirs'].extend([libdir])
     # kwargs['f2py_options'] = ['--quiet']
 
@@ -249,15 +247,15 @@ def configuration(parent_package='', top_path=None):
     if sys.platform != 'win32':
         kwargs['libraries'].extend(['m'])
 
-
     # BLAS / Lapack info
     #lapack_info = get_info('lapack_opt', notfound_action=2)
     #blas_info = get_info('blas_opt', notfound_action=2)
     #dict_append(kwargs, **blas_info)
     #dict_append(kwargs, **lapack_info)
 
-#    if sys.platform == 'win32':
-#        kwargs['runtime_library_dirs'] = []
+    if sys.platform == 'win32':
+        kwargs['runtime_library_dirs'] = []
+        kwargs['libraries'].extend(['gfortran'])
 
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
