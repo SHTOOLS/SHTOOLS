@@ -247,6 +247,9 @@ def configuration(parent_package='', top_path=None):
     if sys.platform != 'win32':
         kwargs['libraries'].extend(['m'])
 
+    if sys.platform == 'win32':
+        kwargs['libraries'].extend(['Advapi32'])
+
     # BLAS / Lapack info
     #lapack_info = get_info('lapack_opt', notfound_action=2)
     #blas_info = get_info('blas_opt', notfound_action=2)
