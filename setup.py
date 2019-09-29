@@ -242,7 +242,7 @@ def configuration(parent_package='', top_path=None):
 
     # FFTW info
     #fftw_info = get_info('fftw', notfound_action=2)
-    dict_append(kwargs, **fftw_info)
+    #dict_append(kwargs, **fftw_info)
 
     if sys.platform != 'win32':
         kwargs['libraries'].extend(['m'])
@@ -250,8 +250,8 @@ def configuration(parent_package='', top_path=None):
     # BLAS / Lapack info
     #lapack_info = get_info('lapack_opt', notfound_action=2)
     #blas_info = get_info('blas_opt', notfound_action=2)
-    dict_append(kwargs, **blas_info)
-    dict_append(kwargs, **lapack_info)
+    #dict_append(kwargs, **blas_info)
+    #dict_append(kwargs, **lapack_info)
 
 #    if sys.platform == 'win32':
 #        kwargs['runtime_library_dirs'] = []
