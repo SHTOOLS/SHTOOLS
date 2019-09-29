@@ -255,7 +255,7 @@ def configuration(parent_package='', top_path=None):
 
     if sys.platform == 'win32':
         kwargs['runtime_library_dirs'] = []
-        kwargs['libraries'].extend(['gfortran-3'])
+        kwargs['libraries'].extend(['gfortran'])
 
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
