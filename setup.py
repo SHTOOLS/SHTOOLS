@@ -241,15 +241,15 @@ def configuration(parent_package='', top_path=None):
     # kwargs['f2py_options'] = ['--quiet']
 
     # FFTW info
-    fftw_info = get_info('fftw', notfound_action=2)
+    #fftw_info = get_info('fftw', notfound_action=2)
     dict_append(kwargs, **fftw_info)
 
     if sys.platform != 'win32':
         kwargs['libraries'].extend(['m'])
 
     # BLAS / Lapack info
-    lapack_info = get_info('lapack_opt', notfound_action=2)
-    blas_info = get_info('blas_opt', notfound_action=2)
+    #lapack_info = get_info('lapack_opt', notfound_action=2)
+    #blas_info = get_info('blas_opt', notfound_action=2)
     dict_append(kwargs, **blas_info)
     dict_append(kwargs, **lapack_info)
 
