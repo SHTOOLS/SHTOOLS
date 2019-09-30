@@ -218,7 +218,7 @@ def configuration(parent_package='', top_path=None):
     dirparams = {'dirname': 'temp',
                  'platform': sysconfig.get_platform(),
                  'version': sys.version_info}
-    libdir = os.path.join(os.path.abspath('build'), build_lib_dir.format(**dirparams))
+    libdir = os.path.join('build', build_lib_dir.format(**dirparams))
     print('searching SHTOOLS in:', libdir)
 
     # Fortran compilation
@@ -256,8 +256,7 @@ def configuration(parent_package='', top_path=None):
     # if sys.platform == 'win32':
     #    kwargs['runtime_library_dirs'] = []
 
-    print('**** ==== KWARGS ==== ****')
-    print(kwargs)
+    os.listdir(libdir)
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
