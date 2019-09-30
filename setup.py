@@ -194,6 +194,12 @@ def configuration(parent_package='', top_path=None):
     """Configure all packages that need to be built."""
     config = Configuration('', parent_package, top_path)
 
+    kwargs = {
+        'libraries': [],
+        'include_dirs': [],
+        'library_dirs': []
+    }
+
     # numpy.distutils.fcompiler.FCompiler doesn't support .F95 extension
     compiler = FCompiler(get_default_fcompiler())
     compiler.src_extensions.append('.F95')
@@ -222,44 +228,38 @@ def configuration(parent_package='', top_path=None):
     #    'extra_f77_compile_args': ['-fno-underscoring']
     #}
 
-    config.add_library('SHTOOLS', sources=sources)
+    if sys.platform == 'win32':
+        config.add_library('SHTOOLS', sources=sources) #,
+                           # **kwargs_win)
+    else:
+        config.add_library('SHTOOLS', sources=sources)
 
     # SHTOOLS
-    libraries = ['SHTOOLS']
-    include_dirs = [libdir]
-    library_dirs = [libdir]
-    #f2py_options = ['--quiet']
+    kwargs['libraries'].extend(['SHTOOLS'])
+    kwargs['include_dirs'].extend([libdir])
+    kwargs['library_dirs'].extend([libdir])
+    # kwargs['f2py_options'] = ['--quiet']
 
     # FFTW info
     fftw_info = get_info('fftw', notfound_action=2)
-    #dict_append(kwargs, **fftw_info)
+    kwargs.update(fftw_info)
 
     if sys.platform != 'win32':
-        libraries.extend(['m'])
+        kwargs['libraries'].extend(['m'])
 
     # BLAS / Lapack info
     lapack_info = get_info('lapack_opt', notfound_action=2)
     blas_info = get_info('blas_opt', notfound_action=2)
-    print(fftw_info)
-    print(blas_info)
-    print(lapack_info)
-    #dict_append(kwargs, **blas_info)
-    #dict_append(kwargs, **lapack_info)
+    kwargs.update(blas_info)
+    kwargs.update(lapack_info)
 
-    win_kwargs = {}
     if sys.platform == 'win32':
-        win_kwargs['runtime_library_dirs'] = []
+        kwargs['runtime_library_dirs'] = []
 
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
-                         libraries=libraries,
-                         include_dirs=include_dirs,
-                         library_dirs=library_dirs,
-                         **fftw_info,
-                         **blas_info,
-                         **lapack_info,
-                         **win_kwargs)
+                         **kwargs)
 
     return config
 
