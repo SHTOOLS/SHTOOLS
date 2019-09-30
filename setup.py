@@ -241,7 +241,7 @@ def configuration(parent_package='', top_path=None):
     # kwargs['f2py_options'] = ['--quiet']
 
     # FFTW info
-    fftw_info = get_info('fftw', notfound_action=2)
+    fftw_info = get_info('dfftw', notfound_action=2)
     dict_append(kwargs, **fftw_info)
 
     if sys.platform != 'win32':
@@ -256,7 +256,7 @@ def configuration(parent_package='', top_path=None):
     # if sys.platform == 'win32':
     #    kwargs['runtime_library_dirs'] = []
 
-    kwargs = {'libraries': ['SHTOOLS', 'fftw3', 'blas', 'blas', 'lapack', 'lapack', 'blas', 'blas'], 'include_dirs': ['build\\temp.win-amd64-3.6', 'C:\\projects\\build-shtools\\fftw', 'C:\\projects\\build-shtools\\lapack', 'c:\\python36-x64\\include'], 'library_dirs': ['build\\temp.win-amd64-3.6', 'C:\\projects\\build-shtools\\fftw', 'C:\\projects\\build-shtools\\lapack'], 'define_macros': [('SCIPY_FFTW3_H', None), ('NO_ATLAS_INFO', 1)], 'runtime_library_dirs': [], 'language': 'f90'}
+    kwargs = {'libraries': ['SHTOOLS', 'fftw3', 'blas', 'lapack'], 'include_dirs': ['build\\temp.win-amd64-3.6', 'C:\\projects\\build-shtools\\fftw', 'C:\\projects\\build-shtools\\lapack', 'c:\\python36-x64\\include'], 'library_dirs': ['build\\temp.win-amd64-3.6', 'C:\\projects\\build-shtools\\fftw', 'C:\\projects\\build-shtools\\lapack'], 'define_macros': [('SCIPY_FFTW3_H', None), ('NO_ATLAS_INFO', 1)], 'runtime_library_dirs': []}
 
 
     config.add_extension('pyshtools._SHTOOLS',
