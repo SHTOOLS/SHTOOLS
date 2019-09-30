@@ -264,6 +264,7 @@ def configuration(parent_package='', top_path=None):
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
+                         depends=['fftw3.mod', 'ftypes.mod', 'shtools.mod']
                          **kwargs)
 
     return config
