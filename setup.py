@@ -256,24 +256,12 @@ def configuration(parent_package='', top_path=None):
     # if sys.platform == 'win32':
     #    kwargs['runtime_library_dirs'] = []
 
-    kwargs = {
-        'libraries': ['SHTOOLS', 'fftw3', 'blas', 'lapack'],
-        'include_dirs': ['build\\temp.win-amd64-3.6',
-                         'C:\\projects\\build-shtools\\fftw',
-                         'C:\\projects\\build-shtools\\lapack',
-                         'C:\\python36-x64\\include'],
-        'library_dirs': ['build\\temp.win-amd64-3.6',
-                         'C:\\projects\\build-shtools\\fftw',
-                         'C:\\projects\\build-shtools\\lapack'],
-        'define_macros': [('SCIPY_FFTW3_H', None), ('NO_ATLAS_INFO', 1)]
+    kwargs = {'libraries': ['SHTOOLS', 'fftw3', 'blas', 'blas', 'lapack', 'lapack', 'blas', 'blas'], 'include_dirs': ['build\\temp.win-amd64-3.6', 'C:\\projects\\build-shtools\\fftw', 'C:\\projects\\build-shtools\\lapack', 'c:\\python36-x64\\include'], 'library_dirs': ['build\\temp.win-amd64-3.6', 'C:\\projects\\build-shtools\\fftw', 'C:\\projects\\build-shtools\\lapack'], 'define_macros': [('SCIPY_FFTW3_H', None), ('NO_ATLAS_INFO', 1)], 'runtime_library_dirs': [], 'language': 'f90'}
     }
 
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
-                                  'src/PythonWrapper.f95',
-                                  'fftw3.mod',
-                                  'ftypes.mod',
-                                  'shtools.mod'],
+                                  'src/PythonWrapper.f95'],
                          **kwargs)
 
     return config
