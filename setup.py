@@ -235,7 +235,7 @@ def configuration(parent_package='', top_path=None):
     #dict_append(kwargs, **fftw_info)
 
     if sys.platform != 'win32':
-        kwargs['libraries'].extend(['m'])
+        libraries.extend(['m'])
 
     # BLAS / Lapack info
     lapack_info = get_info('lapack_opt', notfound_action=2)
