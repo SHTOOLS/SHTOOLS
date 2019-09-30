@@ -240,6 +240,9 @@ def configuration(parent_package='', top_path=None):
     # BLAS / Lapack info
     lapack_info = get_info('lapack_opt', notfound_action=2)
     blas_info = get_info('blas_opt', notfound_action=2)
+    print(fftw_info)
+    print(blas_info)
+    print(lapack_info)
     #dict_append(kwargs, **blas_info)
     #dict_append(kwargs, **lapack_info)
 
