@@ -256,7 +256,7 @@ def configuration(parent_package='', top_path=None):
     if sys.platform == 'win32':
         kwargs['runtime_library_dirs'] = []
 
-    print(**** ==== KWARGS ==== ****)
+    print('**** ==== KWARGS ==== ****')
     print(kwargs)
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
