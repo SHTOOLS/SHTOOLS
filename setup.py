@@ -257,7 +257,9 @@ def configuration(parent_package='', top_path=None):
     #    kwargs['runtime_library_dirs'] = []
 
     if os.path.exists(libdir):
-        os.listdir(libdir)
+        a = os.listdir(libdir)
+        print('==== ====')
+        print(a)
 
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
