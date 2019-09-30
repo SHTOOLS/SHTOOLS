@@ -266,8 +266,8 @@ def configuration(parent_package='', top_path=None):
                          'C:\\projects\\build-shtools\\fftw',
                          'C:\\projects\\build-shtools\\lapack'],
         'define_macros': [('SCIPY_FFTW3_H', None), ('NO_ATLAS_INFO', 1)],
-        'runtime_library_dirs': [],
-        'language': 'f77'}
+        'runtime_library_dirs': []
+    }
 
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
