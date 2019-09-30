@@ -256,7 +256,9 @@ def configuration(parent_package='', top_path=None):
     # if sys.platform == 'win32':
     #    kwargs['runtime_library_dirs'] = []
 
-    os.listdir(libdir)
+    if os.path.exists(libdir):
+        os.listdir(libdir)
+
     config.add_extension('pyshtools._SHTOOLS',
                          sources=['src/pyshtools.pyf',
                                   'src/PythonWrapper.f95'],
