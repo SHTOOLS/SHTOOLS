@@ -241,8 +241,8 @@ def configuration(parent_package='', top_path=None):
     # kwargs['f2py_options'] = ['--quiet']
 
     # FFTW info
-    fftw_info = get_info('fftw', notfound_action=2)
-    dict_append(kwargs, **fftw_info)
+    #fftw_info = get_info('fftw', notfound_action=2)
+    #dict_append(kwargs, **fftw_info)
 
     if sys.platform != 'win32':
         kwargs['libraries'].extend(['m'])
