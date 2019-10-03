@@ -52,5 +52,6 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `plot_phi()` | Plot the phi component of the gravity field. |
 | `plot_total()` | Plot the total gravity disturbance. |
 | `plot_pot()` | Plot the gravitational potential. |
+| `to_xarray()` | Return the gravity gridded data as an xarray DataSet. |
 | `copy()` | Return a copy of the class instance. |
 | `info()` | Print a summary of the data stored in the SHGravGrid instance. |

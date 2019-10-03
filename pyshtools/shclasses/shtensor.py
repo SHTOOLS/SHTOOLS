@@ -6,6 +6,7 @@ import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 import copy as _copy
 from scipy.linalg import eigvalsh as _eigvalsh
+import xarray as _xr
 
 from .shcoeffsgrid import SHGrid as _SHGrid
 

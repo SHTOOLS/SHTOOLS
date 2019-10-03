@@ -49,5 +49,6 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `plot_phi()` | Plot the phi component of the magnetic field. |
 | `plot_total()` | Plot the total magnetic field intensity. |
 | `plot_pot()` | Plot the magnetic potential. |
+| `to_xarray()` | Return the magnetic field gridded data as an xarray DataSet. |
 | `copy()` | Return a copy of the class instance. |
 | `info()` | Print a summary of the data stored in the SHMagGrid instance. |
