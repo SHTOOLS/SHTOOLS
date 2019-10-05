@@ -56,7 +56,7 @@ entries:
       url: /implementation-details.html
       output: web, pdf
 
-  - title: Fortran 95 Routines
+  - title: Fortran 95 components
     output: web, pdf
     folderitems:
 
@@ -136,7 +136,7 @@ entries:
       url: /python-constants.html
       output: web, pdf
 
-  - title: Examples programs
+  - title: Examples
     output: web, pdf
 
     folderitems:
