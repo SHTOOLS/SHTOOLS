@@ -27,27 +27,25 @@ SHTOOLS/pyshtools is extremely versatile:
 
 * The Fortran routines are OpenMP compatible and OpenMP thread-safe.
 
+* Standard data formats such as *xarray* and *netcdf* are supported.
+
 ## Installation
 
-The Python components of SHTOOLS can be installed using the Python package manager `pip`. Binaries are pre-built for linux and macOS architectures, and you need only to execute the following command in a unix terminal:
+The Python components of SHTOOLS can be installed using the Python package manager `pip`. Binaries are pre-built for linux and macOS architectures, and you need only to execute one of the following commands in a unix terminal:
 
 ```bash
 pip install pyshtools
+pip install --upgrade pyshtools  # to upgrade a pre-existing installation
 ```
 
-To upgrade a pre-existing installation use
-```bash
-pip install --upgrade pyshtools
-```
-
-To install the Fortran 95 components for use in your Fortran programs, execute the following command in the SHTOOLS directory
+To install the Fortran 95 components for use in your Fortran programs, execute one or both of the following commands in the SHTOOLS directory
 
 ```bash
 make fortran
-make fortran-mp  # for OpenMP
+make fortran-mp  # for OpenMP support
 ```
 
-or alternatively install using the brew package manager (macOS)
+or alternatively install using the macOS package manager brew
 
 ```bash
 brew tap shtools/shtools
@@ -58,6 +56,6 @@ brew install shtools
 
 SHTOOLS/pyshtools can be called from any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library. When building from source, it will be necessary to link to LAPACK, BLAS, and FFTW compatible libraries. SHTOOLS is open source software (3-clause BSD license).
 
-## Citation
+## Reference
 
 Mark A. Wieczorek and Matthias Meschede (2018). SHTools --- Tools for working with spherical harmonics, *Geochemistry, Geophysics, Geosystems*, 19, 2574-2592, doi:[10.1029/2018GC007529](https://doi.org/10.1029/2018GC007529).

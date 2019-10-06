@@ -50,7 +50,7 @@ g95 MyProgram.f95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -fno-second-underscore -lS
 ```bash
 ifort -fpp -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -Tf MyProgram.f95 -o MyProgram
 ```
-Note that the position of the source file in the above examples might be important for some compilers. Note also that on macOS, linking to the preinstalled LAPACK and BLAS libraries can be accomplished using `-framework Accelerate`. (See [installing SHTOOLS](installing.html) for more details).
+Note that the position of the source file in the above examples might be important for some compilers. Note also that on macOS, linking to the preinstalled LAPACK and BLAS libraries can be accomplished using `-framework Accelerate`. (See [installing SHTOOLS](installing-fortran.html) for more details).
 
 ## OpenMP
 The Fortran 95 routines in the OpenMP version of SHTOOLS are OpenMP compatible and OpenMP thread-safe. To use these routines in a program that uses OpenMP, it is necessary to link to the library `libSHTOOLS-mp.a` and to add one of the following compiler options:

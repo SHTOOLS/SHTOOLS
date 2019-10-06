@@ -28,16 +28,20 @@ entries:
       output: web, pdf
       type: homepage
 
-    - title: Installing
-      url: /installing.html
+    - title: Installing for Python
+      url: /installing-python.html
       output: web, pdf
 
-    - title: Using with Fortran 95
-      url: /using-with-f95.html
+    - title: Installing for Fortran 95
+      url: /installing-fortran.html
       output: web, pdf
 
     - title: Using with Python
       url: /using-with-python.html
+      output: web, pdf
+
+    - title: Using with Fortran 95
+      url: /using-with-f95.html
       output: web, pdf
 
   - title: Spherical harmonics
@@ -54,46 +58,6 @@ entries:
 
     - title: Implementation details
       url: /implementation-details.html
-      output: web, pdf
-
-  - title: Fortran 95 components
-    output: web, pdf
-    folderitems:
-
-    - title: Modules
-      url: /f95-modules.html
-      output: web, pdf
-
-    - title: Legendre functions
-      url: /legendre-functions.html
-      output: web, pdf
-
-    - title: Spherical harmonic transformations
-      url: /spherical-harmonic-transforms.html
-      output: web, pdf
-
-    - title: I/O, storage, conversions
-      url: /io.html
-      output: web, pdf
-
-    - title: Global spectral analysis
-      url: /global-spectral-analysis.html
-      output: web, pdf
-
-    - title: Localized spectral analysis
-      url: /localized-spectral-analysis.html
-      output: web, pdf
-
-    - title: Spherical harmonic rotations
-      url: /spherical-harmonic-rotations.html
-      output: web, pdf
-
-    - title: Gravity and magnetics
-      url: /gravity-magnetics.html
-      output: web, pdf
-
-    - title: Miscellaneous
-      url: /miscellaneous-routines.html
       output: web, pdf
 
   - title: Python components
@@ -136,15 +100,55 @@ entries:
       url: /python-constants.html
       output: web, pdf
 
+  - title: Fortran 95 components
+    output: web, pdf
+    folderitems:
+
+    - title: Modules
+      url: /f95-modules.html
+      output: web, pdf
+
+    - title: Legendre functions
+      url: /legendre-functions.html
+      output: web, pdf
+
+    - title: Spherical harmonic transformations
+      url: /spherical-harmonic-transforms.html
+      output: web, pdf
+
+    - title: I/O, storage, conversions
+      url: /io.html
+      output: web, pdf
+
+    - title: Global spectral analysis
+      url: /global-spectral-analysis.html
+      output: web, pdf
+
+    - title: Localized spectral analysis
+      url: /localized-spectral-analysis.html
+      output: web, pdf
+
+    - title: Spherical harmonic rotations
+      url: /spherical-harmonic-rotations.html
+      output: web, pdf
+
+    - title: Gravity and magnetics
+      url: /gravity-magnetics.html
+      output: web, pdf
+
+    - title: Miscellaneous
+      url: /miscellaneous-routines.html
+      output: web, pdf
+
   - title: Examples
     output: web, pdf
 
     folderitems:
-    - title: Python examples
+    - title: Python
       url: /python-examples.html
       output: web, pdf
 
-    - title: Fortran 95 examples
+    - title: Fortran 95
       url: /fortran-examples.html
       output: web, pdf
 
@@ -176,11 +180,11 @@ entries:
       url: /release-notes-v3.html
       output: web, pdf
 
-    - title: License
-      url: /license.html
-      output: web, pdf
-
     - title: Contributors
       url: /contributors.html
+      output: web, pdf
+
+    - title: License
+      url: /license.html
       output: web, pdf
 
