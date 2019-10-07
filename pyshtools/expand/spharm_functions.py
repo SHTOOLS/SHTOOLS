@@ -37,9 +37,9 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
     lmax : integer
         The maximum degree of the spherical harmonic functions to be computed.
     theta : float
-        The colatitude in degrees.
+        The colatitude in degrees. Use radians if 'degrees' is set to False.
     phi : float
-        The longitude in degrees.
+        The longitude in degrees. Use radians if 'degrees' is set to False.
     normalization : str, optional, default = '4pi'
         '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
         orthonormalized, Schmidt semi-normalized, or unnormalized spherical
@@ -55,7 +55,7 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
         second column corresponds to l*(l+1)/2+m, where l and m are
         respectively the degree and order.
     degrees : optional, bool, default = True
-        If True, `colat` and `phi` are expressed in degrees.
+        If True, `theta` and `phi` are expressed in degrees.
 
     Description
     -----------
@@ -204,9 +204,9 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
     m : integer
         The spherical harmonic order.
     theta : float
-        The colatitude in degrees.
+        The colatitude in degrees. Use radians if 'degrees' is set to False.
     phi : float
-        The longitude in degrees.
+        The longitude in degrees. Use radians if 'degrees' is set to False.
     normalization : str, optional, default = '4pi'
         '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
         orthonormalized, Schmidt semi-normalized, or unnormalized spherical
@@ -218,7 +218,7 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
         Condon-Shortley phase of (-1)^m will be appended to the spherical
         harmonic functions.
     degrees : optional, bool, default = True
-        If True, colat and phi are expressed in degrees.
+        If True, 'theta' and 'phi' are expressed in degrees.
 
     Description
     -----------
