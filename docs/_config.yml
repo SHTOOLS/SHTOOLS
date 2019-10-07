@@ -6,7 +6,7 @@ output: web
 topnav_title: SHTOOLS
 # this appears on the top navigation bar next to the home button
 
-site_title: SHTOOLS - Tools for working with spherical harmonics
+site_title: SHTOOLS - Spherical Harmonic Tools
 # this appears in the html browser tab for the site title (seen mostly by search engines, not users)
 
 company_name: SHTOOLS
@@ -88,7 +88,8 @@ description: "SHTOOLS/pyshtools is an archive of Fortran 95 and Python software 
 # the description is used in the feed.xml file
 
 # needed for sitemap.xml file and github pages
-url : https://shtools.github.io/SHTOOLS/
-# baseurl: 
+url : https://shtools.github.io/SHTOOLS
+baseurl: /SHTOOLS
 
-github: [metadata]
+plugins:
+  - "jekyll-github-metadata"
