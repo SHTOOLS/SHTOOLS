@@ -411,11 +411,13 @@ class SHGravCoeffs(object):
 
         l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
 
+        If the degree 0 term of the file is zero (or not specified), this will
+        be set to 1. If filename starts with http://, https://, or ftp://, the
+        file will be treated as a URL. In this case, the file will be
+        downloaded in its entirety before it is parsed.
+
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().
-
-        If the degree 0 term of the file is zero (or not specified), this will
-        be set to 1.
         """
         error = None
 

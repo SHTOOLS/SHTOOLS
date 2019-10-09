@@ -2,8 +2,10 @@
 Functions for reading spherical harmonic coefficients from files.
 """
 import os
+import io
 
 import numpy as _np
+import requests as _requests
 
 
 # ==== shread() ====
@@ -35,7 +37,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     Parameters
     ----------
     filename : str
-        Filename containing the text-formatted spherical harmonic coefficients.
+        File name or URL that contains the text-formatted spherical harmonic
+        coefficients. filename will be treated as a URL if it starts with
+        http://, https://, or ftp://.
     lmax : int, optional, default = None
         The maximum spherical harmonic degree to read from the file. The
         default is to read the entire file.
@@ -53,7 +57,7 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     This function will read spherical harmonic coefficients from an
     ascii-formatted text file. The errors associated with the spherical
     harmonic coefficients, as well as the values in a single header line, can
-    optionally be read by setting the optional parameters error and header to
+    be read optionally by setting the parameters error and header to
     True. The optional parameter skip specifies how many lines should be
     skipped before attempting to parse the file, and the optional parameter
     lmax specifies the maximum degree to read from the file. Both real and
@@ -80,10 +84,20 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     A valid line must contain at least 3 words, and the first two words must be
     integers. When reading the file, all other lines will be considered as
     "comments" and will be ignored.
+
+    If filename starts with http://, https://, or ftp://, the file will be
+    treated as a URL. In this case, the file will be downloaded in its
+    entirety before it is parsed.
     """
 
+    if _isurl(filename):
+        _response = _requests.get(filename)
+        f = io.BytesIO(_response.content)
+    else:
+        f = open(filename, 'rb')
+
     # determine lmax by reading the last non-comment line of the file
-    with open(filename, 'rb') as f:
+    with f:
         line = ''
         if f.seek(0, os.SEEK_END) == 0:
             raise RuntimeError('File is empty.')
@@ -142,7 +156,12 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                              'Unformatted string is {:s}'.format(line))
 
     # determine lstart and read header
-    with open(filename, 'r') as f:
+    if _isurl(filename):
+        f = io.StringIO(_response.text)
+    else:
+        f = open(filename, 'r')
+
+    with f:
         if skip != 0:
             for i in range(skip):
                 line = f.readline()
@@ -172,7 +191,12 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
         lstart = int(line.split()[0])
 
     # read coefficients one line at a time
-    with open(filename, 'r') as f:
+    if _isurl(filename):
+        f = io.StringIO(_response.text)
+    else:
+        f = open(filename, 'r')
+
+    with f:
         if skip != 0:
             for i in range(skip):
                 f.readline()
@@ -251,3 +275,20 @@ def _iscomment(line):
             return True
     else:
         return True
+
+
+def _isurl(filename):
+    """
+    Determine if filename is a URL. Valid URLs start with
+        'http://'
+        'https://'
+        'ftp://'
+    """
+    if filename[0:7].lower() == 'http://':
+        return True
+    elif filename[0:8].lower() == 'https://':
+        return True
+    elif filename[0:6].lower() == 'ftp://':
+        return True
+    else:
+        return False

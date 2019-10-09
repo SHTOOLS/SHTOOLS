@@ -417,7 +417,9 @@ class SHCoeffs(object):
         Parameters
         ----------
         filename : str
-            Name of the file, including path.
+            File name or URL containing the text-formatted spherical harmonic
+            coefficients. filename will be treated as a URL if it starts with
+            'http://', 'https://', or 'ftp://'.
         format : str, optional, default = 'shtools'
             'shtools' format or binary numpy 'npy' format.
         lmax : int, optional, default = None
@@ -456,6 +458,10 @@ class SHCoeffs(object):
         where l and m are the spherical harmonic degree and order,
         respectively. The terms coeffs[1, l, 0] can be neglected as they are
         zero. For more information, see `shio.shread()`.
+
+        If filename starts with http://, https://, or ftp://, the file will be
+        treated as a URL. In this case, the file will be downloaded in its
+        entirety before it is parsed.
 
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().

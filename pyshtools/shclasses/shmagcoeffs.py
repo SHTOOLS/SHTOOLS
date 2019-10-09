@@ -362,6 +362,10 @@ class SHMagCoeffs(object):
 
         l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
 
+        If filename starts with http://, https://, or ftp://, the file will be
+        treated as a URL. In this case, the file will be downloaded in its
+        entirety before it is parsed.
+
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().
 

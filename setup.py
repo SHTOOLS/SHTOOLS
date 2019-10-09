@@ -9,8 +9,8 @@ min_version = (3, 5)
 
 if sys.version_info < min_version:
     error = """\n
-*** Beginning with pysthools 4.6, Python {0} or above is required. ***
-*** This error may be a result of using a python-2.7 version of pip.    ***
+*** Beginning with pysthools 4.6, Python {0} or above is required.   ***
+*** This error may be a result of using a python-2.7 version of pip. ***
 """.format('.'.join(str(n) for n in min_version))
     raise SystemError(error)
 
@@ -184,7 +184,8 @@ INSTALL_REQUIRES = [
     'scipy>=0.14.0',
     'matplotlib',
     'astropy',
-    'xarray'
+    'xarray',
+    'requests'
 ]
 
 # configure python extension to be compiled with f2py
