@@ -42,6 +42,7 @@ install:
         mkl
         astropy
         xarray
+        requests
   - source activate test-environment
   - pip install --no-deps .
 
