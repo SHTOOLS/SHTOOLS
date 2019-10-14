@@ -2,54 +2,14 @@
 title: "Installing SHTOOLS"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
-permalink: installing.html
-summary: SHTOOLS and pyshtools can be installed in several ways. If you will be using only the Python components, you should use the pip package manager. If you will be writing and compiling Fortran 95 code, you should either compile manually using the Makefile or use the brew package manager (on macOS).
+permalink: installing-fortran.html
+summary: If only the fortran components of SHTOOLS are required, they can be installed manually using the Makefile or by using the macOS package manager brew.
 toc: true
 ---
 
-## Python package installer (pip)
-
-The easiest way to install the Python components of SHTOOLS (pyshtools) is to use `pip`. On Linux and macOS architectures, the binary wheels can be installed by executing one of the following commands
-```bash
-pip install pyshtools
-pip install --upgrade pyshtools  # to upgrade a pre-existing installation
-```
-If you wish to instead compile the archive yourself, first make sure that you have the necessary dependencies installed. On most linux distributions, this can be accomplished using
-```bash
-sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
-```
-or on macOS using [brew](https://brew.sh/)
-```bash
-brew install fftw
-```
-(Note that SHTOOLS supports the use of any FFTW3-compatible library, such as Intel's [MKL](https://software.intel.com/en-us/mkl)). Then build from source using the command
-```bash
-pip install pyshtools --no-binary pyshtools
-```
-
-If you would like to modify the source code, you should clone the SHTOOLS repo:
-```bash
-git clone https://github.com/SHTOOLS/SHTOOLS.git
-```
-Once the repo is cloned, enter the directory, and use either the command
-```bash
-pip install .
-```
-to install pyshtools in the active Python environment lib folder, or
-```bash
-pip install -e .
-```
-to install the files in the current working directory and link them to the system Python directory.
-
-To uninstall pyshtools from your system directory, use the command
-```bash
-pip uninstall pyshtools
-```
-Note that these commands will install only the Python version that corresponds to the version of `pip` being used. On some systems, it may be necessary to specify explicitly `pip2.7` or `pip3.x`.
-
 ## Fortran 95 library using brew (macOS)
 
-If [brew](https://brew.sh/) is already installed, it is only necessary to enter the following commands in the terminal:
+If the [brew](https://brew.sh/) package manager is already installed, it is only necessary to enter the following commands in the terminal:
 ```bash
 brew tap shtools/shtools
 brew install shtools
@@ -61,7 +21,17 @@ brew install shtools --with-openmp
 
 ## Fortran 95 library using the Makefile
 
-Before trying to install the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and [LAPACK](https://www.netlib.org/lapack/), [BLAS](https://www.netlib.org/blas/) and [FFTW3](http://www.fftw.org)-compatible libraries. The Fortran 95 components of SHTOOLS can then be compiled in most cases by executing the following command in a unix shell in the main directory:
+Before trying to install the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and [LAPACK](https://www.netlib.org/lapack/), [BLAS](https://www.netlib.org/blas/) and [FFTW3](http://www.fftw.org)-compatible libraries. On most linux distributions, this can be accomplished using
+```bash
+sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
+```
+or on macOS using [brew](https://brew.sh/)
+```bash
+brew install fftw
+# lapack and blas can be accessed by linking to the system '-framework Accelerate'
+```
+
+The Fortran 95 components of SHTOOLS can then be compiled in most cases by executing the following command in a unix shell in the main directory:
 ```bash
 make
 ```
@@ -98,7 +68,7 @@ make install
 This will move the compiled SHTOOLS files and documentation to
 ```bash
 SYSLIBPATH  # libSHTOOLS.a, libSHTOOLS-mp.a
-SYSMODPATH  # fftw3.mod, planetsconstants.mod, shtools.mod
+SYSMODPATH  # ftypes.mod fftw3.mod, planetsconstants.mod, shtools.mod
 SYSSHAREPATH/shtools/examples  # example files
 SYSSHAREPATH/man/man1  # man pages
 SYSDOCPATH/shtools  # index.html, web documentation 

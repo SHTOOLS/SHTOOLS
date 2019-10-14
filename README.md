@@ -26,6 +26,8 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
    * localized multitaper spectral analyses, and expansions in Slepian basis functions,
    * standard gravity and magnetic field calculations, computation of the geoid, and finite-amplitude potential from topography.
 
+* Integrated support for working with xarray and netcdf data.
+
 * SHTOOLS is open source software (3-clause BSD license).
 
 ### INSTALLATION ###
@@ -34,11 +36,7 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
 Binary install for linux and macOS:
 ```bash
 pip install pyshtools
-```
-
-Upgrade to a new version:
-```bash
-pip install --upgrade pyshtools
+pip install --upgrade pyshtools  # upgrade to a new version
 ```
 
 Build from source:
@@ -54,6 +52,7 @@ sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 macOS requirements:
 ```bash
 brew install fftw
+# for lapack and blas, link to the system '-framework Accelerate'
 ```
 To install the develop branch:
 ```bash
