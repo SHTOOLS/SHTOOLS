@@ -38,7 +38,7 @@
 #       OPENMPFLAGS : Fortran-95 OpenMP compiler flags.
 #       PYTHON      : Name (including path) of the Python executable.
 #       FFTW        : Name and path of the FFTW3 library of the form
-#                     "-Lpath -lfftw3".
+#                     "-Lpath -lfftw3 -lm".
 #       LAPACK      : Name and path of the LAPACK library of the form
 #                     "-Lpath -llapack"
 #       BLAS        : Name and path of the BLAS library of the form
@@ -128,7 +128,7 @@ JEKYLL = bundle exec jekyll
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
 
-FFTW = -L$(SYSLIBPATH) -lfftw3
+FFTW = "-L$(SYSLIBPATH) -lfftw3 -lm"
 LAPACK_UNDERSCORE = 0
 
 SHELL = /bin/sh
@@ -211,8 +211,20 @@ endif
 	run-fortran-tests-no-timing doc remove-doc python-tests \
 	python-tests-no-timing uninstall clean clean-fortran-tests \
 	clean-python-tests clean-python clean-libs remove-notebooks notebooks \
-	www remove-www
+	www remove-www help
 
+help:
+	@echo "Commands:"
+	@echo ""
+	@echo "  fortran                      Compile the Fortran 95 components"
+	@echo "  fortran-mp                   Compile the Fortran 95 OpenMP components"
+	@echo "  fortran-tests                Compile and run the Fortran 95 tests and examples"
+	@echo "  fortran-tests-mp             Compile and run the Fortran 95 OpenMP tests and examples"
+	@echo "  python-tests                 Run the python tests and examples"
+	@echo "  fortran-tests-no-timing      Do not run the timing tests"
+	@echo "  fortran-tests-no-timing-mp   Do not run the timing tests"
+	@echo "  python-tests-no-timing       Do not run the timing tests"
+	@echo ""
 
 all: fortran
 
@@ -224,7 +236,7 @@ fortran:
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
 	@echo "---------------------------------------------------"
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
 
 fortran-mp:
@@ -238,7 +250,7 @@ fortran-mp:
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
 	@echo "---------------------------------------------------"
-	@echo $(F95) $(MODFLAG) $(OPENMPFLAGS) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(OPENMPFLAGS) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
 
 install-fortran: fortran
@@ -262,7 +274,7 @@ install-fortran: fortran
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
 	@echo "---------------------------------------------------"
-	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -l$(LIBNAME) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
 
 uninstall:
