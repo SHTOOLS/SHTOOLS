@@ -478,10 +478,9 @@ class SHWindow(object):
         """
         if weights is not None:
             if len(weights) != k:
-                    raise ValueError(
-                        'Length of weights must be equal to k. '
-                        'len(weights) = {:d}, k = {:d}'
-                        .format(len(weights), k))
+                raise ValueError('Length of weights must be equal to k. '
+                                 'len(weights) = {:d}, k = {:d}'
+                                 .format(len(weights), k))
         else:
             weights = self.weights
 
@@ -547,10 +546,9 @@ class SHWindow(object):
         """
         if weights is not None:
             if len(weights) != k:
-                    raise ValueError(
-                        'Length of weights must be equal to k. '
-                        'len(weights) = {:d}, k = {:d}'
-                        .format(len(weights), k))
+                raise ValueError('Length of weights must be equal to k. '
+                                 'len(weights) = {:d}, k = {:d}'
+                                 .format(len(weights), k))
         else:
             weights = self.weights
 
@@ -607,10 +605,9 @@ class SHWindow(object):
         """
         if weights is not None:
             if len(weights) != k:
-                    raise ValueError(
-                        'Length of weights must be equal to k. '
-                        'len(weights) = {:d}, k = {:d}'
-                        .format(len(weights), k))
+                raise ValueError('Length of weights must be equal to k. '
+                                 'len(weights) = {:d}, k = {:d}'
+                                 .format(len(weights), k))
         else:
             weights = self.weights
 

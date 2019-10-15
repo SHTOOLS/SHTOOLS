@@ -2,12 +2,7 @@
 """
 This script tests the python class interface
 """
-import os
-import sys
-
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 import pyshtools
 pyshtools.utils.figstyle()

@@ -333,16 +333,6 @@ class Slepian(object):
 
         return self._coupling_matrix(nmax=nmax)
 
-    def info(self):
-        """
-        Print a summary of the data stored in the SHWindow instance.
-
-        Usage
-        -----
-        x.info()
-        """
-        self._info()
-
     def to_array(self, alpha, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of Slepian function i as a

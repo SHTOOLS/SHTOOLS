@@ -4,9 +4,7 @@ This script tests the different Spherical Harmonics Transforms on the Mars
 topography data set
 """
 import os
-import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 import pyshtools

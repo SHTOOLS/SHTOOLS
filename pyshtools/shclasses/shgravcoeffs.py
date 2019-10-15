@@ -24,11 +24,13 @@ from ..shtools import CilmPlusDH as _CilmPlusDH
 from ..shtools import MakeGravGridDH as _MakeGravGridDH
 from ..shtools import MakeGravGradGridDH as _MakeGravGradGridDH
 from ..shtools import MakeGeoidGridDH as _MakeGeoidGridDH
-
+from ..shtools import djpi2 as _djpi2
+from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
 
 # =============================================================================
 # =========    SHGravCoeffs class    =========================================
 # =============================================================================
+
 
 class SHGravCoeffs(object):
     """
@@ -893,7 +895,7 @@ class SHGravCoeffs(object):
         meta-data nor errors) will be saved to a binary numpy 'npy' file using
         numpy.save().
         """
-        if format is 'shtools':
+        if format == 'shtools':
             if errors is True and self.errors is None:
                 raise ValueError('Can not save errors when then have not been '
                                  'initialized.')
@@ -921,7 +923,7 @@ class SHGravCoeffs(object):
                             file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
                                        .format(l, m, self.coeffs[0, l, m],
                                                self.coeffs[1, l, m]))
-        elif format is 'npy':
+        elif format == 'npy':
             _np.save(filename, self.coeffs, **kwargs)
         else:
             raise NotImplementedError(
@@ -1382,12 +1384,12 @@ class SHGravCoeffs(object):
                 "Provided value was {:s}".format(repr(convention))
                 )
 
-        if convention is 'y':
+        if convention == 'y':
             if body is True:
                 angles = _np.array([-gamma, -beta, -alpha])
             else:
                 angles = _np.array([alpha, beta, gamma])
-        elif convention is 'x':
+        elif convention == 'x':
             if body is True:
                 angles = _np.array([-gamma - _np.pi/2, -beta,
                                     -alpha + _np.pi/2])
@@ -2299,10 +2301,10 @@ class SHGravRealCoeffs(SHGravCoeffs):
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if dj_matrix is None:
-            dj_matrix = _shtools.djpi2(self.lmax + 1)
+            dj_matrix = _djpi2(self.lmax + 1)
 
         # The coefficients need to be 4pi normalized with csphase = 1
-        coeffs = _shtools.SHRotateRealCoef(
+        coeffs = _SHRotateRealCoef(
             self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization

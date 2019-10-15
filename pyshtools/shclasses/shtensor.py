@@ -1932,7 +1932,7 @@ class Tensor(object):
                                     'actual_range': [self.vzz.min(),
                                                      self.vzz.max()]})
 
-        dataset = _xr.Dataset({'vxx': _vxx, 'vyx': _vxy, 'vxz': _vxz,
+        dataset = _xr.Dataset({'vxx': _vxx, 'vxy': _vxy, 'vxz': _vxz,
                                'vyx': _vyx, 'vyy': _vyy, 'vyz': _vyz,
                                'vzx': _vzx, 'vzy': _vzy, 'vzz': _vzz, },
                               attrs=attrs)

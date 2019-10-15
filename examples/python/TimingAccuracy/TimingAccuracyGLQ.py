@@ -3,8 +3,6 @@
 This script is a python version of TimingAccuracyGLQ. We use numpy functions to
 simplify the creation of random coefficients.
 """
-import os
-import sys
 import time
 import numpy as np
 

@@ -2,10 +2,7 @@
 """
 This script creates a crustal thickness map of Mars.
 """
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 import pyshtools
@@ -72,12 +69,12 @@ def TestCrustalThickness():
                                    ((r0 / d)**l) \
                                    / (4.0 * np.pi * (rho_m - rho_c) * d**2)
         elif filter_type == 1:
-            moho_c[:, l, :l + 1] = DownContFilterMA(l, half, r0, d) * \
+            moho_c[:, l, :l + 1] = gravmag.DownContFilterMA(l, half, r0, d) * \
                                    ba[:, l, :l + 1] * mass * (2 * l + 1) * \
                                    ((r0 / d)**l) / \
                                    (4.0 * np.pi * (rho_m - rho_c) * d**2)
         else:
-            moho_c[:, l, :l + 1] = DownContFilterMC(l, half, r0, d) * \
+            moho_c[:, l, :l + 1] = gravmag.DownContFilterMC(l, half, r0, d) * \
                                    ba[:, l, :l + 1] * mass * (2 * l + 1) *\
                                    ((r0 / d)**l) / \
                                    (4.0 * np.pi * (rho_m - rho_c) * d**2)

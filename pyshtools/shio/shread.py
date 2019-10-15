@@ -172,8 +172,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
         if header is True:
             line = f.readline()
             if line == '':
-                    raise RuntimeError('End of file encountered when ' +
-                                       'reading header line.')
+                raise RuntimeError('End of file encountered when ' +
+                                   'reading header line.')
             line = line.replace(',', ' ')
             header_list = line.split()
 

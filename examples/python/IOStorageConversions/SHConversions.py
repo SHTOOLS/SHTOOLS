@@ -3,10 +3,7 @@
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 import pyshtools
@@ -59,10 +56,10 @@ def example():
     norm = plt.Normalize(gridmin, gridmax)
 
     fig, axes = plt.subplots(1, 2)
-    im1 = axes[0].imshow(grid1, norm=norm)
+    axes[0].imshow(grid1, norm=norm)
     axes[0].set_title('from real coefficients')
 
-    im2 = axes[1].imshow(grid2.real, norm=norm)
+    axes[1].imshow(grid2.real, norm=norm)
     axes[1].set_title('from complex coefficients')
 
     fig.tight_layout(pad=1)

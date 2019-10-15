@@ -2,7 +2,6 @@
     Class for grids of the three components of the gravity field, the
     gravitational disturbance, and the gravitational potential.
 """
-import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 import copy as _copy

@@ -3,11 +3,7 @@
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 import pyshtools
 from pyshtools import shio

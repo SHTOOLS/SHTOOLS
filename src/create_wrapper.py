@@ -7,7 +7,6 @@ exposed to C. It is possible that newer f2py versions can handle assumed array
 shapes using a similar procedure.
 """
 from numpy.f2py import crackfortran
-import re
 from copy import deepcopy
 
 

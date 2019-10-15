@@ -2,10 +2,7 @@
 """
 This script tests other routines related to localized spectral analyses
 """
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 import pyshtools

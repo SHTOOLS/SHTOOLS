@@ -3,10 +3,7 @@
 This script tests and plots all Geodesy normalized Legendre functions.
 Parameters can be changed in the main function.
 """
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 import pyshtools

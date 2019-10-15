@@ -693,7 +693,7 @@ class SHCoeffs(object):
         If format='npy', the spherical harmonic coefficients will be saved to
         a binary numpy 'npy' file using numpy.save().
         """
-        if format is 'shtools':
+        if format == 'shtools':
             with open(filename, mode='w') as file:
                 if header is not None:
                     file.write(header + '\n')
@@ -702,7 +702,7 @@ class SHCoeffs(object):
                         file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
                                    .format(l, m, self.coeffs[0, l, m],
                                            self.coeffs[1, l, m]))
-        elif format is 'npy':
+        elif format == 'npy':
             _np.save(filename, self.coeffs, **kwargs)
         else:
             raise NotImplementedError(
@@ -1259,12 +1259,12 @@ class SHCoeffs(object):
                 "Provided value was {:s}".format(repr(convention))
                 )
 
-        if convention is 'y':
+        if convention == 'y':
             if body is True:
                 angles = _np.array([-gamma, -beta, -alpha])
             else:
                 angles = _np.array([alpha, beta, gamma])
-        elif convention is 'x':
+        elif convention == 'x':
             if body is True:
                 angles = _np.array([-gamma - _np.pi/2, -beta,
                                     -alpha + _np.pi/2])
@@ -2772,9 +2772,8 @@ class SHGrid(object):
                              .format(str(type(grid))))
 
         if grid.upper() not in set(['DH', 'GLQ']):
-                raise ValueError(
-                    "grid must be 'DH' or 'GLQ'. " +
-                    "Input value was {:s}".format(repr(grid)))
+            raise ValueError("grid must be 'DH' or 'GLQ'. " +
+                             "Input value was {:s}".format(repr(grid)))
 
         if grid.upper() == 'DH':
             nlat = 2 * lmax + 2
@@ -2837,9 +2836,8 @@ class SHGrid(object):
                              .format(str(type(grid))))
 
         if grid.upper() not in set(['DH', 'GLQ']):
-                raise ValueError(
-                    "grid must be 'DH' or 'GLQ'. " +
-                    "Input value was {:s}".format(repr(grid)))
+            raise ValueError("grid must be 'DH' or 'GLQ'. " +
+                             "Input value was {:s}".format(repr(grid)))
 
         if degrees is True:
             theta = _np.deg2rad(theta)
@@ -3118,7 +3116,6 @@ class SHGrid(object):
         attrs = {'actual_range': [self.min(), self.max()],
                  'title': title,
                  'comment': comment,
-                 'long_name': name,
                  'nlat': self.nlat,
                  'nlon': self.nlon,
                  'lmax': self.lmax,
@@ -3382,7 +3379,6 @@ class SHGrid(object):
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
-        from mpl_toolkits.mplot3d import Axes3D
 
         nlat, nlon = self.nlat, self.nlon
         cmap = _plt.get_cmap(cmap)
