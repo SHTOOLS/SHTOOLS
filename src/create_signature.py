@@ -8,9 +8,8 @@ shapes using a similar procedure.
 """
 from numpy.f2py import crackfortran
 
-#==== MAIN FUNCTION ====
 
-
+# ==== MAIN FUNCTION ====
 def main():
     fname_wrapper = 'PythonWrapper.f95'
     fname_signature = 'pyshtools.pyf'
@@ -20,7 +19,8 @@ def main():
     crackfortran.dolowercase = False
     cracked_shtools = crackfortran.crackfortran(fname_wrapper)
     for subroutine in cracked_shtools:
-        subroutine['f2pyenhancements'] = {'fortranname': subroutine['name'].lower()}
+        subroutine['f2pyenhancements'] = \
+            {'fortranname': subroutine['name'].lower()}
     for subroutine in cracked_shtools:
         subroutine['name'] = subroutine['name'][2:]
     interface = {'block': 'interface', 'name': 'unknown_interface', 'from': '',
@@ -33,6 +33,7 @@ def main():
     with open(fname_signature, 'w') as outfile:
         outfile.write(out)
 
-#==== EXECUTE SCRIPT ====
+
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

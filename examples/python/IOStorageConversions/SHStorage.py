@@ -9,7 +9,6 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import shio
 
@@ -50,6 +49,7 @@ def test_SHStorage():
     print(coeffs_indexed)
     print('\nrecomputed coeffs:')
     print(coeffs_recomp)
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

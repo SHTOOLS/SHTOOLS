@@ -9,12 +9,12 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import shio
 from pyshtools import expand
 
 pyshtools.utils.figstyle()
+
 
 def main():
     test_SHConversions()
@@ -70,6 +70,7 @@ def example():
     print('mars topography plotted and saved to file')
 
     # plt.show()
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

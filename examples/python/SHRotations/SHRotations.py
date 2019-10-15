@@ -8,11 +8,11 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import rotate
 
 pyshtools.utils.figstyle()
+
 
 def main():
     test_SHRotations()
@@ -52,6 +52,7 @@ def test_SHRotations():
                                size=(2, (lmax + 1) * (lmax + 2) // 2))
     ccoeffs_rot = rotate.SHRotateCoef(angles, ccoeffs, dj_matrix)
     print(ccoeffs_rot)
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

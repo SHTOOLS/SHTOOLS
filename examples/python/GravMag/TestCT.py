@@ -8,7 +8,6 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import shio
 from pyshtools import expand
@@ -147,6 +146,7 @@ def TestCrustalThickness():
     fig_map = plt.figure()
     plt.imshow(temp_grid)
     fig_map.savefig('Mars_CrustalThicknes.png')
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

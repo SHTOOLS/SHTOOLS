@@ -8,7 +8,6 @@ import sys
 import time
 import numpy as np
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import expand
 from pyshtools import spectralanalysis
 
@@ -83,7 +82,7 @@ def TimingAccuracyGLQ():
                                 tforward))
 
         if maxerr > 100.:
-            raise RuntimeError('Tests Failed. Maximum relative error = ', \
+            raise RuntimeError('Tests Failed. Maximum relative error = ',
                                maxerr)
 
         lmax = lmax * 2

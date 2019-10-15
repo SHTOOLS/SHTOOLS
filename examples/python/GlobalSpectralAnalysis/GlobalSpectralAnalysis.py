@@ -9,7 +9,6 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import spectralanalysis
 from pyshtools import shio
@@ -17,8 +16,8 @@ from pyshtools import expand
 
 pyshtools.utils.figstyle()
 
-# ==== MAIN FUNCTION ====
 
+# ==== MAIN FUNCTION ====
 def main():
     example()
 
@@ -61,6 +60,7 @@ def example():
     print('mars topography and spectrum saved')
 
     # plt.show()
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

@@ -251,8 +251,8 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
     """
     if l < 0:
         raise ValueError(
-            "The degree l must be greater or equal than 0. Input value was {:s}."
-            .format(repr(l))
+            "The degree l must be greater or equal than 0. " +
+            "Input value was {:s}.".format(repr(l))
             )
 
     if m > l:
