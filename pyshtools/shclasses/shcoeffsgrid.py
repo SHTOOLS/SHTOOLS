@@ -3379,6 +3379,7 @@ class SHGrid(object):
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
+        from mpl_toolkits.mplot3d import Axes3D
 
         nlat, nlon = self.nlat, self.nlon
         cmap = _plt.get_cmap(cmap)
