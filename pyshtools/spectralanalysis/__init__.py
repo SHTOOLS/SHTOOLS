@@ -124,3 +124,16 @@ from ..shtools import SlepianCoeffsToSH
 from ..shtools import SHSCouplingMatrix
 from ..shtools import SHSlepianVar
 from ..shtools import SHSCouplingMatrixCap
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['SHAdmitCorr', 'SHConfidence', 'spectrum', 'cross_spectrum',
+           'SHMultiTaperSE', 'SHMultiTaperCSE', 'SHLocalizedAdmitCorr',
+           'SHReturnTapers', 'SHReturnTapersM', 'ComputeDm', 'ComputeDG82',
+           'SHFindLWin', 'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr',
+           'SHMTDebias', 'SHMTVarOpt', 'SHMTVar', 'SHSjkPG',
+           'SHMultiTaperMaskSE', 'SHMultiTaperMaskCSE', 'SHReturnTapersMap',
+           'SHBiasKMask', 'ComputeDMap', 'Curve2Mask', 'SHBias',
+           'SphericalCapCoef', 'SHRotateTapers', 'SlepianCoeffs',
+           'SlepianCoeffsToSH', 'SHSCouplingMatrix', 'SHSlepianVar',
+           'SHSCouplingMatrixCap']
