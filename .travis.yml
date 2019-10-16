@@ -30,7 +30,7 @@ install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
-  - conda update --force -q conda
+  - conda update --force-reinstall -q conda
   - conda info -a
 
   - conda create -q -n test-environment
