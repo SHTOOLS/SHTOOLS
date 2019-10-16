@@ -131,7 +131,8 @@ class SHGravCoeffs(object):
     # ---- Factory methods ----
     @classmethod
     def from_array(self, coeffs, gm, r0, omega=None, errors=None,
-                   normalization='4pi', csphase=1, lmax=None, copy=True):
+                   normalization='4pi', csphase=1, lmax=None,
+                   set_degree0=True, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
@@ -140,7 +141,7 @@ class SHGravCoeffs(object):
         -----
         x = SHGravCoeffs.from_array(array, gm, r0, [omega, errors,
                                                     normalization, csphase,
-                                                    lmax, copy])
+                                                    lmax, set_degree0, copy])
 
         Returns
         -------
@@ -171,6 +172,8 @@ class SHGravCoeffs(object):
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to include in the returned
             class instance. This must be less than or equal to lmaxin.
+        set_degree0 : bool, optional, default = True
+            If the degree-0 coefficient is zero, set this to 1.
         copy : bool, optional, default = True
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
@@ -224,9 +227,7 @@ class SHGravCoeffs(object):
                            category=RuntimeWarning)
             lmax = 85
 
-        if coeffs[0, 0, 0] == 0:
-            _warnings.warn('The degree 0 term of the array was not set. This, '
-                           'will be set to 1.', category=RuntimeWarning)
+        if coeffs[0, 0, 0] == 0 and set_degree0:
             coeffs[0, 0, 0] = 1.0
 
         if errors is not None:
