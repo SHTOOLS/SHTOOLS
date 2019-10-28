@@ -7,9 +7,9 @@
                   l and order m.
 """
 import numpy as _np
+import warnings as _warnings
 
 from ..legendre import legendre as _legendre
-from ..legendre import legendre_lm as _legendre_lm
 
 
 def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
@@ -251,8 +251,8 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
     """
     if l < 0:
         raise ValueError(
-            "The degree l must be greater or equal than 0. Input value was {:s}."
-            .format(repr(l))
+            "The degree l must be greater or equal than 0. " +
+            "Input value was {:s}.".format(repr(l))
             )
 
     if m > l:
@@ -280,13 +280,10 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
             .format(repr(csphase))
             )
 
-    if normalization.lower() == 'unnorm' and lmax > 85:
-        _warnings.warn("Calculations using unnormalized coefficients " +
-                       "are stable only for degrees less than or equal " +
-                       "to 85. lmax for the coefficients will be set to " +
-                       "85. Input value was {:d}.".format(lmax),
-                       category=RuntimeWarning)
-        lmax = 85
+    if normalization.lower() == 'unnorm' and l > 85:
+        raise ValueError("Calculations using unnormalized coefficients " +
+                         "are stable only for degrees less than or equal " +
+                         "to 85. Input value was {:d}.".format(l))
 
     ind = (l*(l+1))//2 + abs(m)
 

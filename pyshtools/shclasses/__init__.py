@@ -77,3 +77,12 @@ from .shmagcoeffs import SHMagCoeffs
 from .shmagcoeffs import SHMagRealCoeffs
 from .shmaggrid import SHMagGrid
 from .shtensor import SHMagTensor
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['SHCoeffs', 'SHRealCoeffs', 'SHComplexCoeffs', 'SHGrid',
+           'DHRealGrid', 'DHComplexGrid', 'GLQRealGrid', 'GLQComplexGrid',
+           'SHWindow', 'SHWindowCap', 'SHWindowMask', 'Slepian', 'SlepianCap',
+           'SlepianMask', 'SlepianCoeffs', 'SHGravCoeffs', 'SHGravRealCoeffs',
+           'SHGravGrid', 'SHGravTensor', 'SHGeoid', 'SHMagCoeffs',
+           'SHMagRealCoeffs', 'SHMagGrid', 'SHMagTensor']

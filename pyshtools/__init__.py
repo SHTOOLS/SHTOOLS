@@ -48,8 +48,6 @@ and the GitHub project page at
 __version__ = '4.6'
 __author__ = 'SHTOOLS developers'
 
-import os as _os
-import numpy as _np
 
 # ---- Import shtools subpackages ----
 from . import shtools
@@ -78,7 +76,7 @@ from .shclasses import SHMagGrid
 from .shclasses import SHMagTensor
 
 # ---- Define __all__ for use with: from pyshtools import * ----
-__all__ = ['constant', 'shclasses', 'legendre', 'expand', 'shio',
+__all__ = ['constant', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',
            'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
            'SHGrid', 'SHWindow', 'Slepian', 'SlepianCoeffs', 'SHGravCoeffs',
            'SHGravGrid', 'SHGravTensor', 'SHGeoid', 'SHMagCoeffs', 'SHMagGrid',

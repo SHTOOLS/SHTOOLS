@@ -24,11 +24,13 @@ from ..shtools import CilmPlusDH as _CilmPlusDH
 from ..shtools import MakeGravGridDH as _MakeGravGridDH
 from ..shtools import MakeGravGradGridDH as _MakeGravGradGridDH
 from ..shtools import MakeGeoidGridDH as _MakeGeoidGridDH
-
+from ..shtools import djpi2 as _djpi2
+from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
 
 # =============================================================================
 # =========    SHGravCoeffs class    =========================================
 # =============================================================================
+
 
 class SHGravCoeffs(object):
     """
@@ -129,7 +131,8 @@ class SHGravCoeffs(object):
     # ---- Factory methods ----
     @classmethod
     def from_array(self, coeffs, gm, r0, omega=None, errors=None,
-                   normalization='4pi', csphase=1, lmax=None, copy=True):
+                   normalization='4pi', csphase=1, lmax=None,
+                   set_degree0=True, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
@@ -138,7 +141,7 @@ class SHGravCoeffs(object):
         -----
         x = SHGravCoeffs.from_array(array, gm, r0, [omega, errors,
                                                     normalization, csphase,
-                                                    lmax, copy])
+                                                    lmax, set_degree0, copy])
 
         Returns
         -------
@@ -169,6 +172,8 @@ class SHGravCoeffs(object):
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to include in the returned
             class instance. This must be less than or equal to lmaxin.
+        set_degree0 : bool, optional, default = True
+            If the degree-0 coefficient is zero, set this to 1.
         copy : bool, optional, default = True
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
@@ -222,9 +227,7 @@ class SHGravCoeffs(object):
                            category=RuntimeWarning)
             lmax = 85
 
-        if coeffs[0, 0, 0] == 0:
-            _warnings.warn('The degree 0 term of the array was not set. This, '
-                           'will be set to 1.', category=RuntimeWarning)
+        if coeffs[0, 0, 0] == 0 and set_degree0:
             coeffs[0, 0, 0] = 1.0
 
         if errors is not None:
@@ -411,11 +414,13 @@ class SHGravCoeffs(object):
 
         l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
 
+        If the degree 0 term of the file is zero (or not specified), this will
+        be set to 1. If filename starts with http://, https://, or ftp://, the
+        file will be treated as a URL. In this case, the file will be
+        downloaded in its entirety before it is parsed.
+
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().
-
-        If the degree 0 term of the file is zero (or not specified), this will
-        be set to 1.
         """
         error = None
 
@@ -891,7 +896,7 @@ class SHGravCoeffs(object):
         meta-data nor errors) will be saved to a binary numpy 'npy' file using
         numpy.save().
         """
-        if format is 'shtools':
+        if format == 'shtools':
             if errors is True and self.errors is None:
                 raise ValueError('Can not save errors when then have not been '
                                  'initialized.')
@@ -919,7 +924,7 @@ class SHGravCoeffs(object):
                             file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
                                        .format(l, m, self.coeffs[0, l, m],
                                                self.coeffs[1, l, m]))
-        elif format is 'npy':
+        elif format == 'npy':
             _np.save(filename, self.coeffs, **kwargs)
         else:
             raise NotImplementedError(
@@ -1380,12 +1385,12 @@ class SHGravCoeffs(object):
                 "Provided value was {:s}".format(repr(convention))
                 )
 
-        if convention is 'y':
+        if convention == 'y':
             if body is True:
                 angles = _np.array([-gamma, -beta, -alpha])
             else:
                 angles = _np.array([alpha, beta, gamma])
-        elif convention is 'x':
+        elif convention == 'x':
             if body is True:
                 angles = _np.array([-gamma - _np.pi/2, -beta,
                                     -alpha + _np.pi/2])
@@ -2297,10 +2302,10 @@ class SHGravRealCoeffs(SHGravCoeffs):
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if dj_matrix is None:
-            dj_matrix = _shtools.djpi2(self.lmax + 1)
+            dj_matrix = _djpi2(self.lmax + 1)
 
         # The coefficients need to be 4pi normalized with csphase = 1
-        coeffs = _shtools.SHRotateRealCoef(
+        coeffs = _SHRotateRealCoef(
             self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization

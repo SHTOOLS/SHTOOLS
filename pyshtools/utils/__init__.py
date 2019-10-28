@@ -18,3 +18,8 @@ from ..shtools import MakeEllipseCoord
 from ..shtools import Wigner3j
 from ..shtools import DHaj
 from .figstyle import figstyle
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j', 'DHaj',
+           'figstyle']

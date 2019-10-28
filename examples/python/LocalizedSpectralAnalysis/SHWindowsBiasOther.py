@@ -2,13 +2,9 @@
 """
 This script tests other routines related to localized spectral analyses
 """
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import shtools
 
@@ -75,6 +71,7 @@ def test_LocalizationWindows():
     print('\n---- testing SHReturnTapersMap ----')
     tapers, evalues = shtools.SHReturnTapersMap(dh_mask, lmax, ntapers=1)
     print('best taper concentration: {:2.2f}'.format(evalues[0]))
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

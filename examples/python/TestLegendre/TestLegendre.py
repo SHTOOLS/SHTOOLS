@@ -3,13 +3,9 @@
 This script tests and plots all Geodesy normalized Legendre functions.
 Parameters can be changed in the main function.
 """
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import legendre
 
@@ -131,6 +127,7 @@ def test_associatedlegendre(lmax, mplot, normalization):
                         aspect='auto')
         ax[1, m].set_xlabel('l')
     fig.savefig('associatedlegendre.png')
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

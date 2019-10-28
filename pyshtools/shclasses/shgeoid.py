@@ -2,8 +2,6 @@
     Class for the height of the geoid.
 """
 import numpy as _np
-import matplotlib as _mpl
-import matplotlib.pyplot as _plt
 import copy as _copy
 import xarray as _xr
 

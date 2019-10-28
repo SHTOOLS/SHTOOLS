@@ -2,7 +2,6 @@
 pyshtools subpackage that includes all Python wrapped Fortran routines.
 """
 import os as _os
-import numpy as _np
 
 # ---- Import all wrapped SHTOOLS functions
 

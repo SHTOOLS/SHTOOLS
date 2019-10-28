@@ -26,7 +26,6 @@ Inspect a constant using the print function:
       Unit  = m3 / (kg s2)
       Reference = CODATA 2014
 """
-import numpy as _np
 
 try:
     from astropy.constants import Constant

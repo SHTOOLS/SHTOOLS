@@ -69,3 +69,10 @@ from ..shtools import MakeMagGridDH
 from ..shtools import MakeMagGradGridDH
 
 from .mag_spectrum import mag_spectrum
+
+
+__all__ = ['MakeGravGridDH', 'MakeGravGradGridDH', 'MakeGeoidGridDH',
+           'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
+           'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
+           'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
+           'MakeMagGradGridDH', 'mag_spectrum']

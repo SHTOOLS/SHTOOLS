@@ -2,8 +2,6 @@
     Class for Slepian expansion coefficients.
 """
 import numpy as _np
-import matplotlib as _mpl
-import matplotlib.pyplot as _plt
 import copy as _copy
 
 from .. import shtools as _shtools

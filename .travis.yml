@@ -30,7 +30,8 @@ install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
+  - conda install -c anaconda setuptools
+  - conda update --force-reinstall -q conda
   - conda info -a
 
   - conda create -q -n test-environment
@@ -42,6 +43,7 @@ install:
         mkl
         astropy
         xarray
+        requests
   - source activate test-environment
   - pip install --no-deps .
 

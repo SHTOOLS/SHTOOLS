@@ -71,3 +71,10 @@ from ..shtools import PLegendre_d1
 from .legendre_functions import legendre
 from .legendre_functions import legendre_lm
 from .plm_index import PlmIndex
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
+           'PlON', 'PlON_d1', 'PlmSchmidt', 'PlmSchmidt_d1', 'PlSchmidt',
+           'PlSchmidt_d1', 'PLegendreA', 'PLegendreA_d1', 'PLegendre',
+           'PLegendre_d1', 'legendre', 'legendre_lm', 'PlmIndex']

@@ -2,13 +2,8 @@
 """
 This script tests the SHMTCouplingMatrix routine
 """
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import shtools
 
@@ -29,6 +24,7 @@ def test_CouplingMatrix():
     sqrt_taper_power[:, 0] = np.hanning(lwin+1)
     Mmt = shtools.SHMTCouplingMatrix(lmax, sqrt_taper_power)
     print(Mmt)
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

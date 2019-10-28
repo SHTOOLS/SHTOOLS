@@ -7,6 +7,7 @@
                   degree l and order m.
 """
 import numpy as _np
+import warnings as _warnings
 
 from . import PlmBar as _PlmBar
 from . import PlmON as _PlmON
@@ -238,13 +239,10 @@ def legendre_lm(l, m, z, normalization='4pi', csphase=1, cnorm=0):
             .format(repr(cnorm))
             )
 
-    if normalization.lower() == 'unnorm' and lmax > 85:
-        _warnings.warn("Calculations using unnormalized coefficients " +
-                       "are stable only for degrees less than or equal " +
-                       "to 85. lmax for the coefficients will be set to " +
-                       "85. Input value was {:d}.".format(lmax),
-                       category=RuntimeWarning)
-        lmax = 85
+    if normalization.lower() == 'unnorm' and l > 85:
+        raise ValueError("Calculations using unnormalized coefficients " +
+                         "are stable only for degrees less than or equal " +
+                         "to 85. Input value was {:d}.".format(l))
 
     if normalization == '4pi':
         p = _PlmBar(l, z, csphase=csphase, cnorm=cnorm)

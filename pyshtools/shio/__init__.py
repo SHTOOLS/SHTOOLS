@@ -52,3 +52,10 @@ from .convert import convert
 from .shread import shread
 from .icgem import read_icgem_gfc
 from .yilm_index_vector import YilmIndexVector
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['SHRead2', 'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
+           'SHCilmToCindex', 'SHCindexToCilm', 'SHCilmToVector',
+           'SHVectorToCilm', 'SHrtoc', 'SHctor', 'convert', 'shread',
+           'read_icgem_gfc', 'YilmIndexVector']
