@@ -334,8 +334,8 @@ class SHMagCoeffs(object):
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
-        Description
-        -----------
+        Notes
+        -----
         If format='shtools', spherical harmonic coefficients will be read from
         a text file. The optional parameter `skip` specifies how many lines
         should be skipped before attempting to parse the file, the optional
@@ -501,8 +501,8 @@ class SHMagCoeffs(object):
             power. The distribution of power at degree l amongst the angular
             orders is random, but the total power is fixed.
 
-        Description
-        -----------
+        Notes
+        -----
         This routine returns a random realization of spherical harmonic
         magnetic potential coefficients obtained from a normal distribution.
         The variance of each coefficient at degree l is equal to
@@ -668,8 +668,8 @@ class SHMagCoeffs(object):
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
-        Description
-        -----------
+        Notes
+        -----
         If format='shtools', the coefficients and meta-data will be written to
         an ascii formatted file. The first line is an optional user provided
         header line, and the following line provides the attributes r0 and
@@ -746,8 +746,8 @@ class SHMagCoeffs(object):
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will return an array of the spherical harmonic coefficients
         using a different normalization and Condon-Shortley phase convention,
         and a different maximum spherical harmonic degree. If the maximum
@@ -1025,8 +1025,8 @@ class SHMagCoeffs(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
 
-        Description
-        -----------
+        Notes
+        -----
         This method returns the power spectrum of the class instance, where the
         type of function is defined by the function parameter: 'potential' for
         the magnetic potential, 'radial' for the radial magnetic field, or
@@ -1114,8 +1114,8 @@ class SHMagCoeffs(object):
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will take the spherical harmonic coefficients of a
         function, rotate the coordinate frame by the three Euler anlges, and
         output the spherical harmonic coefficients of the new function. If
@@ -1216,8 +1216,8 @@ class SHMagCoeffs(object):
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will return a new class instance of the spherical
         harmonic coefficients using a different normalization and
         Condon-Shortley phase convention. A different maximum spherical
@@ -1323,8 +1323,8 @@ class SHMagCoeffs(object):
         lmax : int, optional, default = self.lmax
             Maximum spherical harmonic degree to output.
 
-        Description
-        -----------
+        Notes
+        -----
         This method returns a new class instance of the magnetic potential,
         but using a difference reference r0. When changing the reference
         radius r0, the spherical harmonic coefficients will be upward or
@@ -1378,8 +1378,8 @@ class SHMagCoeffs(object):
             If 1 the output grids are equally sampled (n by n). If 2 (default),
             the grids are equally spaced in degrees (n by 2n).
 
-        Description
-        -----------
+        Notes
+        -----
         This method will create 2-dimensional cylindrical maps of the three
         components of the magnetic field, the total field, and the magnetic
         potential, and return these as an SHMagGrid class instance. Each
@@ -1453,8 +1453,8 @@ class SHMagCoeffs(object):
             If 1 the output grids are equally sampled (n by n). If 2 (default),
             the grids are equally spaced in degrees (n by 2n).
 
-        Description
-        -----------
+        Notes
+        -----
         This method will create 2-dimensional cylindrical maps for the 9
         components of the magnetic field tensor and return an SHMagTensor
         class instance. The components are
@@ -1576,8 +1576,8 @@ class SHMagCoeffs(object):
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots the power (and error) spectrum of the class instance,
         where the type of function is defined by the function parameter:
         'potential' for the magnetic potential, 'radial' for the radial
@@ -1722,8 +1722,8 @@ class SHMagCoeffs(object):
             If present, and if axes is not specified, save the image to the
             specified file.
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots the power of the class instance for each spherical
         harmonic degree and order, where the type of spectrum is defined by
         the parameter function: 'potential' for the magnetic potential,

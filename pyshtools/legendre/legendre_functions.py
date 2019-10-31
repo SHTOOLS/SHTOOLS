@@ -53,8 +53,8 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
         corresponding to l*(l+1)/2+m, where l and m are respectively the
         degree and order.
 
-    Description
-    -----------
+    Notes
+    -----
     legendre` will calculate all of the associated Legendre functions up to
     degree lmax for a given argument. The Legendre functions are used typically
     as a part of the spherical harmonic functions, and three parameters
@@ -172,8 +172,8 @@ def legendre_lm(l, m, z, normalization='4pi', csphase=1, cnorm=0):
         If 1, the complex normalization of the associated Legendre functions
         will be used. The default is to use the real normalization.
 
-    Description
-    -----------
+    Notes
+    -----
     legendre_lm will calculate the associated Legendre function for a specific
     degree l and order m. The Legendre functions are used typically as a part
     of the spherical harmonic functions, and three parameters determine how

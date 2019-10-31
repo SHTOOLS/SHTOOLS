@@ -258,8 +258,8 @@ class SlepianCoeffs(object):
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots either the power spectrum, energy spectrum, or
         l2-norm spectrum. Total power is defined as the integral of the
         function squared over all space, divided by the area the function
