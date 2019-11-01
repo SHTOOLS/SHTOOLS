@@ -16,14 +16,14 @@
 
 F95 = gfortran
 
-FFTW ?= -lfftw3 -lm
+FFTW = -lfftw3 -lm
 
 LIBPATH = ../../lib
 MODPATH = ../../modules/
 
 LIBNAME = SHTOOLS
 
-SHELL=/bin/sh
+SHELL = /bin/sh
 
 .PHONY: all clean run-fortran-tests
 

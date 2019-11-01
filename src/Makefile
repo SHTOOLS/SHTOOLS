@@ -10,7 +10,7 @@
 
 F95 = gfortran
 
-SHELL=/bin/sh
+SHELL = /bin/sh
 
 LIBTOOL = libtool
 LIBTOOLFLAGS = -static
