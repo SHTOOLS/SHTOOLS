@@ -296,6 +296,7 @@ module SHTOOLS
 
         function MakeGridPointC(cilm, lmax, lat, lon, norm, csphase, dealloc)
             integer, parameter :: dp = selected_real_kind(p=15)
+            complex(dp) :: MakeGridPointC
             complex(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in) :: lat, lon
             integer, intent(in) :: lmax
