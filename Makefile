@@ -128,7 +128,7 @@ JEKYLL = bundle exec jekyll
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
 
-FFTW = "-L$(SYSLIBPATH) -lfftw3 -lm"
+FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
 LAPACK_UNDERSCORE = 0
 
 SHELL = /bin/sh

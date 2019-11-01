@@ -16,7 +16,7 @@
 
 F95 = gfortran
 
-FFTW ?= -lfftw3
+FFTW ?= -lfftw3 -lm
 
 LIBPATH = ../../lib
 MODPATH = ../../modules/
@@ -45,7 +45,7 @@ EXAMPLES = \
 all: $(EXAMPLES)
 
 %: %.f95 $(LIBPATH)/lib$(LIBNAME).a
-	$(F95) $(F95FLAGS) $< $(MODFLAG) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS) -o $@
+	$(F95) $(F95FLAGS) $< $(MODFLAG) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) $(LAPACK) $(BLAS) -o $@
 
 run-fortran-tests: $(EXAMPLES)
 	@echo MARS-CRUSTAL-THICKNESS
