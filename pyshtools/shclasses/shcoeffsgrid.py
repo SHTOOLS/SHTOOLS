@@ -3629,6 +3629,13 @@ class SHGrid(object):
             or -1 to include it.
         lmax_calc : int, optional, default = x.lmax
             Maximum spherical harmonic degree to return.
+
+        Notes
+        -----
+        When expanding a Driscoll and Healy (1994) sampled grid (grid='DH' or
+        'DH2') into spherical harmonic coefficients, the longitude band at
+        90 N is downweighted to zero and has no influence on the returned
+        spherical harmonic coefficients.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
