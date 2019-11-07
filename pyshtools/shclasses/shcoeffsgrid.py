@@ -1,7 +1,5 @@
 """
-    Spherical Harmonic Coefficient classes
-
-        SHCoeffs : SHRealCoeffs, SHComplexCoeffs
+    Spherical Harmonic Coefficient and Grid classes
 """
 import numpy as _np
 import matplotlib as _mpl
@@ -11,6 +9,7 @@ import copy as _copy
 import warnings as _warnings
 from scipy.special import factorial as _factorial
 import xarray as _xr
+import pygmt as _pygmt
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
@@ -3605,6 +3604,225 @@ class SHGrid(object):
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
+
+    def plot_gmt(self, projection='mollweide', width=None, unit='i',
+                 latitude=0, longitude=0, grid=True, grid_interval=30,
+                 annotate=False, annotate_interval=30, ticks=False,
+                 tick_interval=10, xlabel='Longitude', ylable='Latitude',
+                 cmap='viridis', cmap_reverse=False, continuous=False,
+                 limits=None, colorbar=False, cb_orientation='h',
+                 cb_triangles='bf', cb_label=None, cb_ylabel=None,
+                 cb_annotate=True, cb_annotate_interval=None, cb_ticks=True,
+                 cb_tick_interval=None, horizon=60, standard_parallel=0,
+                 fname=None):
+        """
+        Plot data using pygmt with a global or hemispherical projection.
+
+        To display the figure in a jupyter notebook, use
+            fig.show()
+        To display the figure in the terminal environment, use
+            fig.show(method='external')
+
+        Usage
+        -----
+        fig = x.plot_gmt([projection, width, unit, latitude, longitude,
+                          grid, grid_interval, annotate, annotate_interval,
+                          ticks, tick_interval, xlabel, ylabel, cmap,
+                          cmap_reverse, continuous, limits, colorbar,
+                          cb_orientation, cb_triangles, cb_label, cb_ylabel,
+                          cb_annotate, cb_annotate_interval, cb_ticks,
+                          cb_tick_interval, horizon, standard_parallel, fname])
+
+        Returns
+        -------
+        fig : pygmt.figure.Figure class instance
+
+        Parameters
+        ----------
+        projection : str, optional, default = 'mollweide'
+            The name of a global or hemispherical projection that is supported
+            by pygmt. Only the first three characters are necessary to identify
+            the projection.
+        width : float, optional, default = mpl.rcParams['figure.figsize'][0]
+            The wdith of the projected image.
+        unit : str, optional, default = 'i'
+            The measurement unit of the figure width: 'i' for inches or 'c'
+            for cm.
+        longitude : float, optional, default = 0
+            The central meridian or center of the projection.
+        latitude : float, optional, default = 0
+            The center of the projection for some hemispheric projections.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        grid_interval : float, optional, default = 30
+            Grid line interval in degrees.
+        annotate : bool, optional, default = False
+            If True, plot annotation labels on axes.
+        annotate_interval : float, optional, default = 30
+            Annotation label interval in degrees.
+        ticks : bool, optional, default = False
+            If True, plot ticks on axes.
+        tick_interval : float, optional, default = 10
+            Tick interval in degrees.
+        xlabel : str, optional, default = 'Longitude'
+            Label for the longitude axis.
+        ylabel : str, optional, default = 'Latitude'
+            Label for the latitude axis.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        continuous : bool, optional, default = False
+            If True, create a continuous colormap. Default behavior is to
+            use contant colors for each interval.
+        limits : list, optional, default = [self.min(), self.max()]
+            A list containing the lower and upper limits of the data to be
+            used with the color map, and optionally an interval.
+        colorbar : bool, optional, default = False
+            If True, plot a colorbar.
+        cb_orientation : str, optional, default = 'h'
+            Orientation of the colorbar; either 'h' or 'v' for horizontal or
+            vertical, respectively.
+        cb_triangles : str, optional, default = 'bf'
+            Add triangles to the edges of the colorbar for background 'b'
+            and/or foreground 'f' colors.
+        cb_label : str, optional, default = None
+            Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
+        cb_annotate : bool, optional, default = True
+            If True, plot annotation labels on the colorbar.
+        cb_annotate_interval : float, optional, default = None
+            Annotation interval.
+        cb_ticks : bool, optional, default = True
+            If True, plot ticks on colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
+        horizon : float, optional, default = 60
+            The horizon (number of degrees from the center to the edge) used
+            with the Gnomonic projection.
+        standard_parallel : float, optional, default = 0
+            The standard parallel used with the Cylindrical equidistant
+            projection.
+        fname : str, optional, default = None
+            If present, save the image to the specified file.
+
+        Notes
+        -----
+        Supported projections (with abreviation used by `projection`)
+
+        Azimuthal projections
+        Lambert-azimuthal-equal-area (lam)
+        Stereographic-equal-angle (ste)
+        Orthographic (ort)
+        Azimuthal-equidistant (azi)
+        Gnomonic (gno)
+
+        Cylindrical projections (case sensitive)
+        cylindrical-equidistant (cyl)
+        Cylindrical-equal-area (Cyl)
+        CYLindrical-stereographic (CYL)
+
+        Miscellaneous projections
+        Mollweide (mol)
+        Hammer (ham)
+        Winkel-Tripel (win)
+        Robinson (rob)
+        Eckert (eck)
+        Sinusoidal (sin)
+        Van-der-Grinten (van)
+        """
+        if projection.lower()[0:3] == 'mollweide'[0:3]:
+            proj_str = 'W' + str(longitude)
+        elif projection.lower()[0:3] == 'hammer'[0:3]:
+            proj_str = 'H' + str(longitude)
+        elif projection.lower()[0:3] == 'winkel-tripel'[0:3]:
+            proj_str = 'R' + str(longitude)
+        elif projection.lower()[0:3] == 'robinson'[0:3]:
+            proj_str = 'N' + str(longitude)
+        elif projection.lower()[0:3] == 'eckert'[0:3]:
+            proj_str = 'K' + str(longitude)
+        elif projection.lower()[0:3] == 'sinusoidal'[0:3]:
+            proj_str = 'I' + str(longitude)
+        elif projection.lower()[0:3] == 'van-der-grinten'[0:3]:
+            proj_str = 'V' + str(longitude)
+        elif projection.lower()[0:3] == 'lambert-azimuthal-equal-area'[0:3]:
+            proj_str = 'A' + str(longitude) + '/' + str(latitude)
+        elif projection.lower()[0:3] == 'stereographic-equal-angle'[0:3]:
+            proj_str = 'S' + str(longitude) + '/' + str(latitude)
+        elif projection.lower()[0:3] == 'orthographic'[0:3]:
+            proj_str = 'G' + str(longitude) + '/' + str(latitude)
+        elif projection.lower()[0:3] == 'azimuthal-equidistant'[0:3]:
+            proj_str = 'E' + str(longitude) + '/' + str(latitude)
+        elif projection.lower()[0:3] == 'gnomonic'[0:3]:
+            proj_str = 'F' + str(longitude) + '/' + str(latitude) + '/' + \
+                str(horizon)
+        elif projection.lower()[0:3] == 'miller-cylindrical'[0:3]:
+            proj_str = 'J' + str(longitude) + str(standard_parallel)
+        elif projection[0:3] == 'cylindrical-equidistant'[0:3]:
+            proj_str = 'Q' + str(longitude) + '/' + str(standard_parallel)
+        elif projection[0:3] == 'Cylindrical-equal-area'[0:3]:
+            proj_str = 'Y' + str(longitude) + '/' + str(standard_parallel)
+        elif projection[0:3] == 'CYLindrical-stereographic'[0:3]:
+            proj_str = 'Cyl_stere' + '/' + str(longitude) + '/' + \
+                str(standard_parallel)
+        else:
+            raise ValueError('Input projection is not recognized or '
+                             'supported. Input projection = {:s}'
+                             .format(projection))
+
+        if width is None:
+            width = str(_mpl.rcParams['figure.figsize'][0]) + unit
+        proj_str += '/' + str(width)
+
+        frame = ''
+        if grid:
+            frame += 'g' + str(grid_interval)
+        if annotate:
+            frame += 'a' + str(annotate_interval)
+        if ticks:
+            frame += 'f' + str(tick_interval)
+
+        if limits is None:
+            limits = [self.min(), self.max()]
+
+        _pygmt.makecpt(series=limits, cmap=cmap, reverse=cmap_reverse,
+                       continuous=continuous)
+        fig = _pygmt.Figure()
+        fig.grdimage(self.to_xarray(), region='g', projection=proj_str,
+                     frame=frame)
+
+        if colorbar:
+            if cb_orientation.lower()[0] == 'v':
+                position = "JMR"
+            else:
+                position = "JBC+h"
+            if cb_triangles is not None:
+                position += '+e' + cb_triangles
+
+            cb_str = []
+            x_str = 'x'
+            if cb_label is not None:
+                cb_str.extend(['x+l"{:s}"'.format(cb_label)])
+            if cb_annotate:
+                x_str += 'a'
+                if cb_annotate_interval is not None:
+                    x_str += str(cb_annotate_interval)
+            if cb_ticks:
+                x_str += 'f'
+                if cb_tick_interval is not None:
+                    x_str += str(cb_tick_interval)
+            cb_str.extend([x_str])
+            if cb_ylabel is not None:
+                cb_str.extend(['y+l"{:s}"'.format(cb_ylabel)])
+
+            fig.colorbar(position=position, frame=cb_str)
+
+        if fname is not None:
+            fig.savefig(fname)
+
+        return fig
 
     def expand(self, normalization='4pi', csphase=1, **kwargs):
         """
