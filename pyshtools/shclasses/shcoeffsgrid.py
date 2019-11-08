@@ -3569,10 +3569,11 @@ class SHGrid(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plot_gmt(self, projection='mollweide', width=None, unit='i',
-                 latitude=0, longitude=0, grid=True, grid_interval=30,
-                 annotate=False, annotate_interval=30, ticks=False,
-                 tick_interval=10, xlabel='Longitude', ylable='Latitude',
+    def plot_gmt(self, projection='mollweide', region='g', width=None,
+                 unit='i', latitude=0, longitude=0, grid=True,
+                 grid_interval=[30, 30], annotate=False,
+                 annotate_interval=[30, 30], ticks=False,
+                 tick_interval=[10, 10], axes='WSen', title=None,
                  cmap='viridis', cmap_reverse=False, continuous=False,
                  limits=None, colorbar=False, cb_orientation='h',
                  cb_triangles='bf', cb_label=None, cb_ylabel=None,
@@ -3580,7 +3581,7 @@ class SHGrid(object):
                  cb_tick_interval=None, horizon=60, standard_parallel=0,
                  fname=None):
         """
-        Plot data using pygmt with a global or hemispherical projection.
+        Plot data using pygmt with either a global or hemispherical projection.
 
         To display the figure in a jupyter notebook, use
             fig.show()
@@ -3589,9 +3590,9 @@ class SHGrid(object):
 
         Usage
         -----
-        fig = x.plot_gmt([projection, width, unit, latitude, longitude,
+        fig = x.plot_gmt([projection, region, width, unit, latitude, longitude,
                           grid, grid_interval, annotate, annotate_interval,
-                          ticks, tick_interval, xlabel, ylabel, cmap,
+                          ticks, tick_interval, axes, title, cmap,
                           cmap_reverse, continuous, limits, colorbar,
                           cb_orientation, cb_triangles, cb_label, cb_ylabel,
                           cb_annotate, cb_annotate_interval, cb_ticks,
@@ -3604,9 +3605,12 @@ class SHGrid(object):
         Parameters
         ----------
         projection : str, optional, default = 'mollweide'
-            The name of a global or hemispherical projection that is supported
-            by pygmt. Only the first three characters are necessary to identify
-            the projection.
+            The name of a global or hemispherical projection (see Notes). Only
+            the first three characters are necessary to identify the
+            projection.
+        region : str or list, optional, default = 'g'
+            The map region, consisting of a list [West, East, South, North] in
+            degrees. The default 'g' specifies the entire sphere.
         width : float, optional, default = mpl.rcParams['figure.figsize'][0]
             The wdith of the projected image.
         unit : str, optional, default = 'i'
@@ -3618,20 +3622,22 @@ class SHGrid(object):
             The center of the projection for some hemispheric projections.
         grid : bool, optional, default = True
             If True, plot grid lines.
-        grid_interval : float, optional, default = 30
-            Grid line interval in degrees.
+        grid_interval : list, optional, default = [30, 30]
+            Grid line interval [latitude, longitude] in degrees.
         annotate : bool, optional, default = False
             If True, plot annotation labels on axes.
-        annotate_interval : float, optional, default = 30
-            Annotation label interval in degrees.
+        annotate_interval : list, optional, default = [30, 30]
+            Annotation label interval [latitude, longitude] in degrees.
         ticks : bool, optional, default = False
             If True, plot ticks on axes.
-        tick_interval : float, optional, default = 10
-            Tick interval in degrees.
-        xlabel : str, optional, default = 'Longitude'
-            Label for the longitude axis.
-        ylabel : str, optional, default = 'Latitude'
-            Label for the latitude axis.
+        tick_interval : list, optional, default = [10, 10]
+            Tick interval [latitude, longitude] in degrees.
+        axes : str, optional, default = 'WSen'
+            Specify which plot axes should be drawn and annotated. Capital
+            letters draw the axes, ticks, and annotations, whereas small
+            letters draw only the axes and ticks.
+        title : str, optional, default = None
+            The title to be displayed above the plot.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_reverse : bool, optional, default = False
@@ -3658,44 +3664,44 @@ class SHGrid(object):
         cb_annotate : bool, optional, default = True
             If True, plot annotation labels on the colorbar.
         cb_annotate_interval : float, optional, default = None
-            Annotation interval.
+            Annotation interval on the colorbar.
         cb_ticks : bool, optional, default = True
-            If True, plot ticks on colorbar.
+            If True, plot ticks on the colorbar.
         cb_tick_interval : float, optional, default = None
             Colorbar tick interval.
         horizon : float, optional, default = 60
             The horizon (number of degrees from the center to the edge) used
             with the Gnomonic projection.
         standard_parallel : float, optional, default = 0
-            The standard parallel used with the Cylindrical equidistant
-            projection.
+            The standard parallel used with the cylindrical projections.
         fname : str, optional, default = None
             If present, save the image to the specified file.
 
         Notes
         -----
-        Supported projections (with abreviation used by `projection`)
+        Supported global and hemispherical projections (with corresponding
+        abbreviation used by the argument `projection`)
 
         Azimuthal projections
-        Lambert-azimuthal-equal-area (lam)
-        Stereographic-equal-angle (ste)
-        Orthographic (ort)
-        Azimuthal-equidistant (azi)
-        Gnomonic (gno)
+            Lambert-azimuthal-equal-area (lam)
+            Stereographic-equal-angle (ste)
+            Orthographic (ort)
+            Azimuthal-equidistant (azi)
+            Gnomonic (gno)
 
         Cylindrical projections (case sensitive)
-        cylindrical-equidistant (cyl)
-        Cylindrical-equal-area (Cyl)
-        CYLindrical-stereographic (CYL)
+            cylindrical-equidistant (cyl)
+            Cylindrical-equal-area (Cyl)
+            CYLindrical-stereographic (CYL)
 
         Miscellaneous projections
-        Mollweide (mol)
-        Hammer (ham)
-        Winkel-Tripel (win)
-        Robinson (rob)
-        Eckert (eck)
-        Sinusoidal (sin)
-        Van-der-Grinten (van)
+            Mollweide (mol)
+            Hammer (ham)
+            Winkel-Tripel (win)
+            Robinson (rob)
+            Eckert (eck)
+            Sinusoidal (sin)
+            Van-der-Grinten (van)
         """
         if projection.lower()[0:3] == 'mollweide'[0:3]:
             proj_str = 'W' + str(longitude)
@@ -3740,22 +3746,23 @@ class SHGrid(object):
             width = str(_mpl.rcParams['figure.figsize'][0]) + unit
         proj_str += '/' + str(width)
 
-        frame = ''
+        framex = 'x'
+        framey = 'y'
         if grid:
-            frame += 'g' + str(grid_interval)
+            framex += 'g' + str(grid_interval[1])
+            framey += 'g' + str(grid_interval[0])
         if annotate:
-            frame += 'a' + str(annotate_interval)
+            framex += 'a' + str(annotate_interval[1])
+            framey += 'a' + str(annotate_interval[0])
         if ticks:
-            frame += 'f' + str(tick_interval)
+            framex += 'f' + str(tick_interval[1])
+            framey += 'f' + str(tick_interval[0])
+        if title is not None:
+            axes += '+t"{:s}"'.format(title)
+        frame = [framex, framey, axes]
 
         if limits is None:
             limits = [self.min(), self.max()]
-
-        _pygmt.makecpt(series=limits, cmap=cmap, reverse=cmap_reverse,
-                       continuous=continuous)
-        fig = _pygmt.Figure()
-        fig.grdimage(self.to_xarray(), region='g', projection=proj_str,
-                     frame=frame)
 
         if colorbar:
             if cb_orientation.lower()[0] == 'v':
@@ -3781,12 +3788,17 @@ class SHGrid(object):
             if cb_ylabel is not None:
                 cb_str.extend(['y+l"{:s}"'.format(cb_ylabel)])
 
-            fig.colorbar(position=position, frame=cb_str)
+        _fig = self._plot_pygmt(limits=limits, cmap=cmap,
+                                cmap_reverse=cmap_reverse,
+                                continuous=continuous, region=region,
+                                proj_str=proj_str, frame=frame,
+                                colorbar=colorbar, position=position,
+                                cb_str=cb_str)
 
         if fname is not None:
-            fig.savefig(fname)
+            _fig.savefig(fname)
 
-        return fig
+        return _fig
 
     def expand(self, normalization='4pi', csphase=1, **kwargs):
         """
@@ -3988,6 +4000,22 @@ class DHRealGrid(SHGrid):
         if ax is None:
             return fig, axes
 
+    def _plot_pygmt(self, limits, cmap, cmap_reverse, continuous, region,
+                    proj_str, frame, colorbar, position, cb_str):
+        """
+        Plot the projected data using pygmt.
+        """
+        _fig = _pygmt.Figure()
+        _pygmt.makecpt(series=limits, cmap=cmap, reverse=cmap_reverse,
+                       continuous=continuous)
+        _fig.grdimage(self.to_xarray(), region=region, projection=proj_str,
+                      frame=frame)
+
+        if colorbar:
+            _fig.colorbar(position=position, frame=cb_str)
+
+        return _fig
+
 
 # ---- Complex Driscoll and Healy grid class ----
 class DHComplexGrid(SHGrid):
@@ -4155,6 +4183,14 @@ class DHComplexGrid(SHGrid):
         if ax is None:
             return fig, axes
 
+    def _plot_pygmt(self, limits, cmap, cmap_reverse, continuous, region,
+                    proj_str, frame, colorbar, position, cb_str):
+        """
+        Plot the projected data using pygmt.
+        """
+        raise NotImplementedError('plot_gmt() does not support the plotting '
+                                  'of complex data.')
+
 
 # ---- Real Gauss-Legendre Quadrature grid class ----
 
@@ -4289,6 +4325,14 @@ class GLQRealGrid(SHGrid):
 
         if ax is None:
             return fig, axes
+
+    def _plot_pygmt(self, limits, cmap, cmap_reverse, continuous, region,
+                    proj_str, frame, colorbar, position, cb_str):
+        """
+        Plot the projected data using pygmt.
+        """
+        raise NotImplementedError('plot_gmt() does not support the plotting '
+                                  'of GLQ gridded data.')
 
 
 # ---- Complex Gauss-Legendre Quadrature grid class ----
@@ -4444,3 +4488,11 @@ class GLQComplexGrid(SHGrid):
 
         if ax is None:
             return fig, axes
+
+    def _plot_pygmt(self, limits, cmap, cmap_reverse, continuous, region,
+                    proj_str, frame, colorbar, position, cb_str):
+        """
+        Plot the projected data using pygmt.
+        """
+        raise NotImplementedError('plot_gmt() does not support the plotting '
+                                  'of complex GLQ gridded data.')
