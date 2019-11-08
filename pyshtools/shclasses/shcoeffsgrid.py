@@ -9,13 +9,17 @@ import copy as _copy
 import warnings as _warnings
 from scipy.special import factorial as _factorial
 import xarray as _xr
-import pygmt as _pygmt
 
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+
+try:
+    import pygmt2 as _pygmt
+except ModuleNotFoundError:
+    print('\n*** Could not import the module pygmt. ***')
 
 
 # =============================================================================
@@ -3569,8 +3573,8 @@ class SHGrid(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plot_gmt(self, projection='mollweide', region='g', width=None,
-                 unit='i', latitude=0, longitude=0, grid=True,
+    def plot_gmt(self, figure=None, projection='mollweide', region='g',
+                 width=None, unit='i', latitude=0, longitude=0, grid=True,
                  grid_interval=[30, 30], annotate=False,
                  annotate_interval=[30, 30], ticks=False,
                  tick_interval=[10, 10], axes='WSen', title=None,
@@ -3579,7 +3583,7 @@ class SHGrid(object):
                  cb_triangles='bf', cb_label=None, cb_ylabel=None,
                  cb_annotate=True, cb_annotate_interval=None, cb_ticks=True,
                  cb_tick_interval=None, horizon=60, standard_parallel=0,
-                 fname=None):
+                 shift_origin=[0, 0], fname=None):
         """
         Plot data using pygmt with either a global or hemispherical projection.
 
@@ -3590,13 +3594,14 @@ class SHGrid(object):
 
         Usage
         -----
-        fig = x.plot_gmt([projection, region, width, unit, latitude, longitude,
-                          grid, grid_interval, annotate, annotate_interval,
-                          ticks, tick_interval, axes, title, cmap,
-                          cmap_reverse, continuous, limits, colorbar,
+        fig = x.plot_gmt([figure, projection, region, width, unit, latitude,
+                          longitude, grid, grid_interval, annotate,
+                          annotate_interval, ticks, tick_interval, axes, title,
+                          cmap, cmap_reverse, continuous, limits, colorbar,
                           cb_orientation, cb_triangles, cb_label, cb_ylabel,
                           cb_annotate, cb_annotate_interval, cb_ticks,
-                          cb_tick_interval, horizon, standard_parallel, fname])
+                          cb_tick_interval, horizon, standard_parallel,
+                          shift_origin, fname])
 
         Returns
         -------
@@ -3612,10 +3617,10 @@ class SHGrid(object):
             The map region, consisting of a list [West, East, South, North] in
             degrees. The default 'g' specifies the entire sphere.
         width : float, optional, default = mpl.rcParams['figure.figsize'][0]
-            The wdith of the projected image.
+            The width of the projected image.
         unit : str, optional, default = 'i'
-            The measurement unit of the figure width: 'i' for inches or 'c'
-            for cm.
+            The measurement unit of the figure width and shift_origin: 'i' for
+            inches or 'c' for cm.
         longitude : float, optional, default = 0
             The central meridian or center of the projection.
         latitude : float, optional, default = 0
@@ -3674,6 +3679,8 @@ class SHGrid(object):
             with the Gnomonic projection.
         standard_parallel : float, optional, default = 0
             The standard parallel used with the cylindrical projections.
+        shift_origin : list, optional, default = [0, 0]
+            Offset of the plot in the x and y directions from the origin.
         fname : str, optional, default = None
             If present, save the image to the specified file.
 
@@ -3740,11 +3747,13 @@ class SHGrid(object):
         else:
             raise ValueError('Input projection is not recognized or '
                              'supported. Input projection = {:s}'
-                             .format(projection))
+                             .format(repr(projection)))
 
         if width is None:
-            width = str(_mpl.rcParams['figure.figsize'][0]) + unit
-        proj_str += '/' + str(width)
+            width = str(_mpl.rcParams['figure.figsize'][0])
+            proj_str += '/' + str(width) + 'i'
+        else:
+            proj_str += '/' + str(width) + unit
 
         framex = 'x'
         framey = 'y'
@@ -3764,6 +3773,8 @@ class SHGrid(object):
         if limits is None:
             limits = [self.min(), self.max()]
 
+        position = None
+        cb_str = None
         if colorbar:
             if cb_orientation.lower()[0] == 'v':
                 position = "JMR"
@@ -3788,17 +3799,22 @@ class SHGrid(object):
             if cb_ylabel is not None:
                 cb_str.extend(['y+l"{:s}"'.format(cb_ylabel)])
 
-        _fig = self._plot_pygmt(limits=limits, cmap=cmap,
+        xshift = str(shift_origin[0]) + unit
+        yshift = str(shift_origin[1]) + unit
+
+        _fig = self._plot_pygmt(figure=figure, limits=limits, cmap=cmap,
                                 cmap_reverse=cmap_reverse,
                                 continuous=continuous, region=region,
                                 proj_str=proj_str, frame=frame,
                                 colorbar=colorbar, position=position,
-                                cb_str=cb_str)
+                                cb_str=cb_str, xshift=xshift,
+                                yshift=yshift)
 
         if fname is not None:
             _fig.savefig(fname)
 
-        return _fig
+        if figure is None:
+            return _fig
 
     def expand(self, normalization='4pi', csphase=1, **kwargs):
         """
@@ -4000,16 +4016,21 @@ class DHRealGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, limits, cmap, cmap_reverse, continuous, region,
-                    proj_str, frame, colorbar, position, cb_str):
+    def _plot_pygmt(self, figure, limits, cmap, cmap_reverse, continuous,
+                    region, proj_str, frame, colorbar, position, cb_str,
+                    xshift, yshift):
         """
         Plot the projected data using pygmt.
         """
-        _fig = _pygmt.Figure()
+        if figure is None:
+            _fig = _pygmt.Figure()
+        else:
+            _fig = figure
+
         _pygmt.makecpt(series=limits, cmap=cmap, reverse=cmap_reverse,
                        continuous=continuous)
         _fig.grdimage(self.to_xarray(), region=region, projection=proj_str,
-                      frame=frame)
+                      frame=frame, X=xshift, Y=yshift)
 
         if colorbar:
             _fig.colorbar(position=position, frame=cb_str)
@@ -4183,8 +4204,7 @@ class DHComplexGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, limits, cmap, cmap_reverse, continuous, region,
-                    proj_str, frame, colorbar, position, cb_str):
+    def _plot_pygmt(self, **kwargs):
         """
         Plot the projected data using pygmt.
         """
@@ -4326,8 +4346,7 @@ class GLQRealGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, limits, cmap, cmap_reverse, continuous, region,
-                    proj_str, frame, colorbar, position, cb_str):
+    def _plot_pygmt(self, **kwargs):
         """
         Plot the projected data using pygmt.
         """
@@ -4489,8 +4508,7 @@ class GLQComplexGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, limits, cmap, cmap_reverse, continuous, region,
-                    proj_str, frame, colorbar, position, cb_str):
+    def _plot_pygmt(self, **kwargs):
         """
         Plot the projected data using pygmt.
         """
