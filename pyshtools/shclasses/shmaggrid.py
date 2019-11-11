@@ -554,65 +554,16 @@ class SHMagGrid(object):
                  'extend': self.extend
                  }
 
-        _total = _xr.DataArray(self.total.to_array(),
-                               dims=('latitude', 'longitude'),
-                               coords=[('latitude', self.total.lats(),
-                                        {'units': 'degrees_north'}),
-                                       ('longitude', self.total.lons(),
-                                        {'units': 'degrees_east'})],
-                               attrs={'title': 'magnetic field intensity',
-                                      'long_name': '$|B|$',
-                                      'units': '$nT$',
-                                      'actual_range': [self.total.min(),
-                                                       self.total.max()]})
-
-        _rad = _xr.DataArray(self.rad.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.rad.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.rad.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': 'magnetic field (radial)',
-                                    'long_name': '$B_r$',
-                                    'units': '$nT$',
-                                    'actual_range': [self.rad.min(),
-                                                     self.rad.max()]})
-
-        _theta = _xr.DataArray(self.theta.to_array(),
-                               dims=('latitude', 'longitude'),
-                               coords=[('latitude', self.theta.lats(),
-                                        {'units': 'degrees_north'}),
-                                       ('longitude', self.theta.lons(),
-                                        {'units': 'degrees_east'})],
-                               attrs={'title': 'magnetic field (theta)',
-                                      'long_name': '$B_\\theta$',
-                                      'units': '$nT$',
-                                      'actual_range': [self.theta.min(),
-                                                       self.theta.max()]})
-
-        _phi = _xr.DataArray(self.phi.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.phi.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.phi.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': 'magnetic field (theta)',
-                                    'long_name': '$B_\\phi$',
-                                    'units': '$nT$',
-                                    'actual_range': [self.phi.min(),
-                                                     self.phi.max()]})
-
-        _pot = _xr.DataArray(self.pot.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.pot.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.pot.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': 'magnetic field potential',
-                                    'long_name': 'potential',
-                                    'units': '$m nT$',
-                                    'actual_range': [self.pot.min(),
-                                                     self.pot.max()]})
+        _total = self.total.to_xarray(title='magnetic field intensity',
+                                      long_name='$|B|$', units='$nT$')
+        _rad = self.rad.to_xarray(title='magnetic field (radial)',
+                                  long_name='$B_r$', units='$nT$')
+        _theta = self.theta.to_xarray(title='magnetic field (theta)',
+                                      long_name='$B_\\theta$', units='$nT$')
+        _phi = self.phi.to_xarray(title='magnetic field (phi)',
+                                  long_name='$B_\\phi$', units='$nT$')
+        _pot = self.pot.to_xarray(title='magnetic field potential',
+                                  long_name='potential', units='$m nT$')
 
         return _xr.Dataset({'radial': _rad, 'theta': _theta, 'phi': _phi,
                             'total': _total, 'potential': _pot}, attrs=attrs)
