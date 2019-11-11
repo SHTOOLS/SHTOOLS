@@ -1824,117 +1824,28 @@ class Tensor(object):
         else:
             desc = 'magnetic field tensor component '
 
-        _vxx = _xr.DataArray(self.vxx.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.vxx.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.vxx.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': desc + '(Vxx)',
-                                    'long_name': '$V_{xx}$',
-                                    'units': self._vii_units,
-                                    'actual_range': [self.vxx.min(),
-                                                     self.vxx.max()]})
-
-        _vxy = _xr.DataArray(self.vxy.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.vxy.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.vxy.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': desc + '(Vxy)',
-                                    'long_name': '$V_{xy}$',
-                                    'units': self._vii_units,
-                                    'actual_range': [self.vxy.min(),
-                                                     self.vxy.max()]})
-
-        _vxz = _xr.DataArray(self.vxz.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.vxz.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.vxz.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': desc + '(Vxz)',
-                                    'long_name': '$V_{xz}$',
-                                    'units': self._vii_units,
-                                    'actual_range': [self.vxz.min(),
-                                                     self.vxz.max()]})
-
-        _vyx = _xr.DataArray(self.vyx.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.vyx.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.vyx.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': desc + '(Vyx)',
-                                    'long_name': '$V_{yx}$',
-                                    'units': self._vii_units,
-                                    'actual_range': [self.vyx.min(),
-                                                     self.vyx.max()]})
-
-        _vyy = _xr.DataArray(self.vyy.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.vyy.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.vyy.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': desc + '(Vyy)',
-                                    'long_name': '$V_{yy}$',
-                                    'units': self._vii_units,
-                                    'actual_range': [self.vyy.min(),
-                                                     self.vyy.max()]})
-
-        _vyz = _xr.DataArray(self.vyz.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.vyz.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.vyz.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': desc + '(Vyz)',
-                                    'long_name': '$V_{yz}$',
-                                    'units': self._vii_units,
-                                    'actual_range': [self.vyz.min(),
-                                                     self.vyz.max()]})
-
-        _vzx = _xr.DataArray(self.vzx.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.vzx.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.vzx.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': desc + '(Vzx)',
-                                    'long_name': '$V_{zx}$',
-                                    'units': self._vii_units,
-                                    'actual_range': [self.vzx.min(),
-                                                     self.vzx.max()]})
-
-        _vzy = _xr.DataArray(self.vzy.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.vzy.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.vzy.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': desc + '(Vzy)',
-                                    'long_name': '$V_{zy}$',
-                                    'units': self._vii_units,
-                                    'actual_range': [self.vzy.min(),
-                                                     self.vzy.max()]})
-
-        _vzz = _xr.DataArray(self.vzz.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.vzz.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.vzz.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs={'title': desc + '(Vzz)',
-                                    'long_name': '$V_{zz}$',
-                                    'units': self._vii_units,
-                                    'actual_range': [self.vzz.min(),
-                                                     self.vzz.max()]})
+        _vxx = self.vxx.to_xarray(title=desc+'(Vxx)', long_name='$V_{xx}$',
+                                  units=self._vii_units)
+        _vxy = self.vxy.to_xarray(title=desc+'(Vxy)', long_name='$V_{xy}$',
+                                  units=self._vii_units)
+        _vxz = self.vxz.to_xarray(title=desc+'(Vxz)', long_name='$V_{xz}$',
+                                  units=self._vii_units)
+        _vyx = self.vyx.to_xarray(title=desc+'(Vyx)', long_name='$V_{yx}$',
+                                  units=self._vii_units)
+        _vyy = self.vyy.to_xarray(title=desc+'(Vyy)', long_name='$V_{yy}$',
+                                  units=self._vii_units)
+        _vyz = self.vyz.to_xarray(title=desc+'(Vyz)', long_name='$V_{yz}$',
+                                  units=self._vii_units)
+        _vzx = self.vzx.to_xarray(title=desc+'(Vzx)', long_name='$V_{zx}$',
+                                  units=self._vii_units)
+        _vzy = self.vzy.to_xarray(title=desc+'(Vzy)', long_name='$V_{zy}$',
+                                  units=self._vii_units)
+        _vzz = self.vzz.to_xarray(title=desc+'(Vzz)', long_name='$V_{zz}$',
+                                  units=self._vii_units)
 
         dataset = _xr.Dataset({'vxx': _vxx, 'vxy': _vxy, 'vxz': _vxz,
                                'vyx': _vyx, 'vyy': _vyy, 'vyz': _vyz,
-                               'vzx': _vzx, 'vzy': _vzy, 'vzz': _vzz, },
+                               'vzx': _vzx, 'vzy': _vzy, 'vzz': _vzz},
                               attrs=attrs)
 
         if self.i0 is not None:
@@ -1949,54 +1860,18 @@ class Tensor(object):
                 desc2 = 'Third invariant of the magnetic field tensor'
                 desc = 'Unitless invariant of the magnetic field tensor'
 
-            _i0 = _xr.DataArray(self.i0.to_array(),
-                                dims=('latitude', 'longitude'),
-                                coords=[('latitude', self.i0.lats(),
-                                         {'units': 'degrees_north'}),
-                                        ('longitude', self.i0.lons(),
-                                         {'units': 'degrees_east'})],
-                                attrs={'title': desc0,
-                                       'long_name': '$I_0$, Tr $V_{ii}$',
-                                       'units': self._i0_units,
-                                       'actual_range': [self.i0.min(),
-                                                        self.i0.max()]})
-
-            _i1 = _xr.DataArray(self.i1.to_array(),
-                                dims=('latitude', 'longitude'),
-                                coords=[('latitude', self.i1.lats(),
-                                         {'units': 'degrees_north'}),
-                                        ('longitude', self.i1.lons(),
-                                         {'units': 'degrees_east'})],
-                                attrs={'title': desc1,
-                                       'long_name': '$I_1$',
-                                       'units': self._i1_units,
-                                       'actual_range': [self.i1.min(),
-                                                        self.i1.max()]})
-
-            _i2 = _xr.DataArray(self.i2.to_array(),
-                                dims=('latitude', 'longitude'),
-                                coords=[('latitude', self.i2.lats(),
-                                         {'units': 'degrees_north'}),
-                                        ('longitude', self.i2.lons(),
-                                         {'units': 'degrees_east'})],
-                                attrs={'title': desc2,
-                                       'long_name': '$I_2$, det $V_{ij}$',
-                                       'units': self._i2_units,
-                                       'actual_range': [self.i1.min(),
-                                                        self.i1.max()]})
-
-            _i = _xr.DataArray(self.i.to_array(),
-                               dims=('latitude', 'longitude'),
-                               coords=[('latitude', self.i.lats(),
-                                        {'units': 'degrees_north'}),
-                                       ('longitude', self.i.lons(),
-                                        {'units': 'degrees_east'})],
-                               attrs={'title': desc,
-                                      'long_name': '$-(I_2/2)^{2} / ' +
-                                      '(I_1/3)^{3}$',
-                                      'units': 'none',
-                                      'actual_range': [self.i.min(),
-                                                       self.i.max()]})
+            _i0 = self.i0.to_xarray(title=desc0,
+                                    long_name='$I_0$, Tr $V_{ii}$',
+                                    units=self._i0_units)
+            _i1 = self.i1.to_xarray(title=desc1, long_name='$I_1$',
+                                    units=self._i1_units)
+            _i2 = self.i2.to_xarray(title=desc2,
+                                    long_name='$I_2$, det $V_{ij}$',
+                                    units=self._i2_units)
+            _i = self.i.to_xarray(title=desc,
+                                  long_name='$-(I_2/2)^{2} / ' +
+                                  '(I_1/3)^{3}$',
+                                  units='none')
 
             dataset['i0'] = _i0
             dataset['i1'] = _i1
@@ -2013,41 +1888,15 @@ class Tensor(object):
                 desc2 = 'Second eigenvalue of the magnetic field tensor'
                 desc3 = 'Third eigenvalue of the magnetic field tensor'
 
-            _eig1 = _xr.DataArray(self.eig1.to_array(),
-                                  dims=('latitude', 'longitude'),
-                                  coords=[('latitude', self.eig1.lats(),
-                                           {'units': 'degrees_north'}),
-                                          ('longitude', self.eig1.lons(),
-                                           {'units': 'degrees_east'})],
-                                  attrs={'title': desc1,
-                                         'long_name': '${\lambda}_1$',
-                                         'units': self._vii_units,
-                                         'actual_range': [self.eig1.min(),
-                                                          self.eig1.max()]})
-
-            _eig2 = _xr.DataArray(self.eig2.to_array(),
-                                  dims=('latitude', 'longitude'),
-                                  coords=[('latitude', self.eig2.lats(),
-                                           {'units': 'degrees_north'}),
-                                          ('longitude', self.eig2.lons(),
-                                           {'units': 'degrees_east'})],
-                                  attrs={'title': desc2,
-                                         'long_name': '${\lambda}_2$',
-                                         'units': self._vii_units,
-                                         'actual_range': [self.eig2.min(),
-                                                          self.eig2.max()]})
-
-            _eig3 = _xr.DataArray(self.eig3.to_array(),
-                                  dims=('latitude', 'longitude'),
-                                  coords=[('latitude', self.eig3.lats(),
-                                           {'units': 'degrees_north'}),
-                                          ('longitude', self.eig3.lons(),
-                                           {'units': 'degrees_east'})],
-                                  attrs={'title': desc3,
-                                         'long_name': '${\lambda}_3$',
-                                         'units': self._vii_units,
-                                         'actual_range': [self.eig3.min(),
-                                                          self.eig3.max()]})
+            _eig1 = self.eig1.to_xarray(title=desc1,
+                                        long_name='${\lambda}_1$',
+                                        units=self._vii_units)
+            _eig2 = self.eig2.to_xarray(title=desc2,
+                                        long_name='${\lambda}_2$',
+                                        units=self._vii_units)
+            _eig3 = self.eig3.to_xarray(title=desc3,
+                                        long_name='${\lambda}_3$',
+                                        units=self._vii_units)
 
             dataset['eig1'] = _eig1
             dataset['eig2'] = _eig2
@@ -2066,41 +1915,15 @@ class Tensor(object):
                 desc3 = 'Combined horizontal eigenvalue of the magnetic ' \
                         + 'field tensor'
 
-            _eigh1 = _xr.DataArray(self.eigh1.to_array(),
-                                   dims=('latitude', 'longitude'),
-                                   coords=[('latitude', self.eigh1.lats(),
-                                            {'units': 'degrees_north'}),
-                                           ('longitude', self.eigh1.lons(),
-                                            {'units': 'degrees_east'})],
-                                   attrs={'title': desc1,
-                                          'long_name': '${\lambda}_{h1}$',
-                                          'units': self._vii_units,
-                                          'actual_range': [self.eigh1.min(),
-                                                           self.eigh1.max()]})
-
-            _eigh2 = _xr.DataArray(self.eigh2.to_array(),
-                                   dims=('latitude', 'longitude'),
-                                   coords=[('latitude', self.eigh2.lats(),
-                                            {'units': 'degrees_north'}),
-                                           ('longitude', self.eigh2.lons(),
-                                            {'units': 'degrees_east'})],
-                                   attrs={'title': desc2,
-                                          'long_name': '${\lambda}_{h2}$',
-                                          'units': self._vii_units,
-                                          'actual_range': [self.eigh2.min(),
-                                                           self.eigh2.max()]})
-
-            _eighh = _xr.DataArray(self.eighh.to_array(),
-                                   dims=('latitude', 'longitude'),
-                                   coords=[('latitude', self.eighh.lats(),
-                                            {'units': 'degrees_north'}),
-                                           ('longitude', self.eighh.lons(),
-                                            {'units': 'degrees_east'})],
-                                   attrs={'title': desc3,
-                                          'long_name': '${\lambda}_{hh}$',
-                                          'units': self._vii_units,
-                                          'actual_range': [self.eighh.min(),
-                                                           self.eighh.max()]})
+            _eigh1 = self.eigh1.to_xarray(title=desc1,
+                                          long_name='${\lambda}_{h1}$',
+                                          units=self._vii_units)
+            _eigh2 = self.eigh2.to_xarray(title=desc2,
+                                          long_name='${\lambda}_{h2}$',
+                                          units=self._vii_units)
+            _eighh = self.eighh.to_xarray(title=desc3,
+                                          long_name='${\lambda}_{hh}$',
+                                          units=self._vii_units)
 
             dataset['eigh1'] = _eigh1
             dataset['eigh2'] = _eigh2
