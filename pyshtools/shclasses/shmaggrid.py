@@ -108,7 +108,7 @@ class SHMagGrid(object):
 
     def plot_rad(self, colorbar=True, cb_orientation='vertical',
                  cb_label='$B_r$, nT', ax=None, show=True, fname=None,
-                 **kwargs):
+                 title=None, titlesize=None, **kwargs):
         """
         Plot the radial component of the magnetic field.
 
@@ -130,6 +130,10 @@ class SHMagGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -156,7 +160,9 @@ class SHMagGrid(object):
         if ax is None:
             fig, axes = self.rad.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+                                      cb_label=cb_label, show=False,
+                                      title=title, titlesize=titlesize,
+                                      **kwargs)
             if show:
                 fig.show()
 
@@ -166,11 +172,12 @@ class SHMagGrid(object):
 
         else:
             self.rad.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+                          cb_label=cb_label, ax=ax, title=title,
+                          titlesize=titlesize, **kwargs)
 
     def plot_theta(self, colorbar=True, cb_orientation='vertical',
                    cb_label='$B_\\theta$, nT', ax=None, show=True,
-                   fname=None, **kwargs):
+                   fname=None, title=None, titlesize=None, **kwargs):
         """
         Plot the theta component of the magnetic field.
 
@@ -192,6 +199,10 @@ class SHMagGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -219,6 +230,7 @@ class SHMagGrid(object):
             fig, axes = self.theta.plot(colorbar=colorbar,
                                         cb_orientation=cb_orientation,
                                         cb_label=cb_label, show=False,
+                                        title=title, titlesize=titlesize,
                                         **kwargs)
             if show:
                 fig.show()
@@ -229,11 +241,12 @@ class SHMagGrid(object):
 
         else:
             self.theta.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                            cb_label=cb_label, ax=ax, **kwargs)
+                            cb_label=cb_label, ax=ax, title=title,
+                            titlesize=titlesize,**kwargs)
 
     def plot_phi(self, colorbar=True, cb_orientation='vertical',
                  cb_label='$B_\phi$, nT', ax=None, show=True,
-                 fname=None, **kwargs):
+                 fname=None, title=None, titlesize=None, **kwargs):
         """
         Plot the phi component of the magnetic field.
 
@@ -255,6 +268,10 @@ class SHMagGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -281,7 +298,9 @@ class SHMagGrid(object):
         if ax is None:
             fig, axes = self.phi.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+                                      cb_label=cb_label, show=False,
+                                      title=title, titlesize=titlesize,
+                                      **kwargs)
             if show:
                 fig.show()
 
@@ -291,11 +310,12 @@ class SHMagGrid(object):
 
         else:
             self.phi.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+                          cb_label=cb_label, ax=ax, title=title,
+                          titlesize=titlesize, **kwargs)
 
     def plot_total(self, colorbar=True, cb_orientation='vertical',
                    cb_label='$|B|$, nT', ax=None, show=True, fname=None,
-                   **kwargs):
+                   title=None, titlesize=None, **kwargs):
         """
         Plot the total magnetic intensity.
 
@@ -317,6 +337,10 @@ class SHMagGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -343,7 +367,8 @@ class SHMagGrid(object):
         if ax is None:
             fig, axes = self.total.plot(
                 colorbar=colorbar, cb_orientation=cb_orientation,
-                cb_label=cb_label, show=False, **kwargs)
+                cb_label=cb_label, show=False, title=title,
+                titlesize=titlesize, **kwargs)
 
             if show:
                 fig.show()
@@ -355,11 +380,12 @@ class SHMagGrid(object):
         else:
             self.total.plot(
                 colorbar=colorbar, cb_orientation=cb_orientation,
-                cb_label=cb_label, ax=ax, **kwargs)
+                cb_label=cb_label, ax=ax, title=title, titlesize=titlesize,
+                **kwargs)
 
     def plot_pot(self, colorbar=True, cb_orientation='vertical',
                  cb_label='Potential, nT m', ax=None, show=True,
-                 fname=None, **kwargs):
+                 fname=None, title=None, titlesize=None, **kwargs):
         """
         Plot the magnetic potential.
 
@@ -381,6 +407,10 @@ class SHMagGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -407,7 +437,9 @@ class SHMagGrid(object):
         if ax is None:
             fig, axes = self.pot.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+                                      cb_label=cb_label, show=False,
+                                      title=title, titlesize=titlesize,
+                                      **kwargs)
             if show:
                 fig.show()
 
@@ -417,7 +449,8 @@ class SHMagGrid(object):
 
         else:
             self.pot.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+                          cb_label=cb_label, ax=ax, title=title,
+                          titlesize=titlesize, **kwargs)
 
     def plot(self, colorbar=True, cb_orientation='horizontal',
              tick_interval=[60, 60], minor_tick_interval=[20, 20],

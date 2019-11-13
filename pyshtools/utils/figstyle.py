@@ -21,7 +21,7 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
         The screen resolution of the display in dpi, which determines the
         size of the plot on the display.
     aspect_ratio : float, optional, default = 4/3
-        The aspect ratio of the plot.
+        The aspect ratio (horizontal/vertical) of the plot.
     max_width : float, optional, default = 7.48031
         The maximum width of the usable area of a journal page in inches.
 
