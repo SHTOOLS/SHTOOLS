@@ -131,15 +131,15 @@ class SHGravGrid(object):
 
     def plot_rad(self, colorbar=True, cb_orientation='vertical',
                  cb_label='$g_r$, m s$^{-2}$', ax=None, show=True, fname=None,
-                 **kwargs):
+                 title=None, titlesize=None, **kwargs):
         """
         Plot the radial component of the gravity field.
 
         Usage
         -----
-        x.plot_rad([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname, **kwargs])
+        x.plot_rad([tick_interval, minor_tick_interval, xlabel, ylabel, title,
+                    titlesize, ax, colorbar, cb_orientation, cb_label, grid,
+                    axes_labelsize, tick_labelsize, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -153,6 +153,10 @@ class SHGravGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -179,7 +183,9 @@ class SHGravGrid(object):
         if ax is None:
             fig, axes = self.rad.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+                                      cb_label=cb_label, show=False,
+                                      title=title, titlesize=titlesize,
+                                      **kwargs)
             if show:
                 fig.show()
 
@@ -189,11 +195,12 @@ class SHGravGrid(object):
 
         else:
             self.rad.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+                          cb_label=cb_label, ax=ax, title=title,
+                          titlesize=titlesize, **kwargs)
 
     def plot_theta(self, colorbar=True, cb_orientation='vertical',
                    cb_label='$g_\\theta$, m s$^{-2}$', ax=None, show=True,
-                   fname=None, **kwargs):
+                   fname=None, title=None, titlesize=None, **kwargs):
         """
         Plot the theta component of the gravity field.
 
@@ -215,6 +222,10 @@ class SHGravGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -242,6 +253,7 @@ class SHGravGrid(object):
             fig, axes = self.theta.plot(colorbar=colorbar,
                                         cb_orientation=cb_orientation,
                                         cb_label=cb_label, show=False,
+                                        title=title, titlesize=titlesize,
                                         **kwargs)
             if show:
                 fig.show()
@@ -252,11 +264,12 @@ class SHGravGrid(object):
 
         else:
             self.theta.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                            cb_label=cb_label, ax=ax, **kwargs)
+                            cb_label=cb_label, ax=ax, title=title,
+                            titlesize=titlesize, **kwargs)
 
     def plot_phi(self, colorbar=True, cb_orientation='vertical',
                  cb_label='$g_\phi$, m s$^{-2}$', ax=None, show=True,
-                 fname=None, **kwargs):
+                 fname=None, title=None, titlesize=None, **kwargs):
         """
         Plot the phi component of the gravity field.
 
@@ -278,6 +291,10 @@ class SHGravGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -304,7 +321,9 @@ class SHGravGrid(object):
         if ax is None:
             fig, axes = self.phi.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+                                      cb_label=cb_label, show=False,
+                                      title=title, titlesize=titlesize,
+                                      **kwargs)
             if show:
                 fig.show()
 
@@ -314,10 +333,12 @@ class SHGravGrid(object):
 
         else:
             self.phi.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+                          cb_label=cb_label, ax=ax, title=title,
+                          titlesize=titlesize, **kwargs)
 
     def plot_total(self, colorbar=True, cb_orientation='vertical',
-                   cb_label=None, ax=None, show=True, fname=None, **kwargs):
+                   cb_label=None, ax=None, show=True, fname=None, title=None,
+                   titlesize=None, **kwargs):
         """
         Plot the total gravity disturbance.
 
@@ -339,6 +360,10 @@ class SHGravGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -378,11 +403,13 @@ class SHGravGrid(object):
             if self.normal_gravity is True:
                 fig, axes = (self.total*1.e5).plot(
                     colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, show=False, **kwargs)
+                    cb_label=cb_label, show=False, title=title,
+                    titlesize=titlesize, **kwargs)
             else:
                 fig, axes = self.total.plot(
                     colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, show=False, **kwargs)
+                    cb_label=cb_label, show=False, title=title,
+                    titlesize=titlesize, **kwargs)
 
             if show:
                 fig.show()
@@ -395,15 +422,17 @@ class SHGravGrid(object):
             if self.normal_gravity is True:
                 (self.total*1.e5).plot(
                     colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, ax=ax, **kwargs)
+                    cb_label=cb_label, ax=ax, title=title,
+                    titlesize=titlesize, **kwargs)
             else:
                 self.total.plot(
                     colorbar=colorbar, cb_orientation=cb_orientation,
-                    cb_label=cb_label, ax=ax, **kwargs)
+                    cb_label=cb_label, ax=ax, title=title, titlesize=titlesize,
+                    **kwargs)
 
     def plot_pot(self, colorbar=True, cb_orientation='vertical',
                  cb_label='Potential, m$^2$ s$^{-2}$', ax=None, show=True,
-                 fname=None, **kwargs):
+                 fname=None, title=None, titlesize=None, **kwargs):
         """
         Plot the gravitational potential.
 
@@ -425,6 +454,10 @@ class SHGravGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         colorbar : bool, optional, default = True
@@ -451,7 +484,9 @@ class SHGravGrid(object):
         if ax is None:
             fig, axes = self.pot.plot(colorbar=colorbar,
                                       cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+                                      cb_label=cb_label, show=False,
+                                      title=title, titlesize=titlesize,
+                                      **kwargs)
             if show:
                 fig.show()
 
@@ -461,7 +496,8 @@ class SHGravGrid(object):
 
         else:
             self.pot.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+                          cb_label=cb_label, ax=ax, title=title,
+                          titlesize=titlesize, **kwargs)
 
     def plot(self, colorbar=True, cb_orientation='horizontal',
              tick_interval=[60, 60], minor_tick_interval=[20, 20],
