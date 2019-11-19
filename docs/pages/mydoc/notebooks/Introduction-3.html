@@ -13134,8 +13134,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span> <span class="c1"># only necessary if using Python 2.x</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pyshtools</span>
@@ -13202,7 +13201,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Immediately, we receive a warning message because the file did not set the degree-0 spherical harmonic coefficient: when this occurs, <em>pyshtools</em> will automatically sets this value to unity. We can inspect this class instance by using the <code>info()</code> method, by <code>print(clm)</code>, or simply by entering the name of the class instance at the prompt:</p>
+<p>We can inspect this class instance by using the <code>info()</code> method, by <code>print(clm)</code>, or simply by entering the name of the class instance at the prompt:</p>
 
 </div>
 </div>
@@ -13337,7 +13336,7 @@ height=470
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>If the errors of the gravitational potential are set, <code>plot_spectrum()</code> will compute automatically and plot the error spectrum. For <code>plot_spectrum2d()</code>, the errors can be plotted by specifying <code>errors=True</code>. By default, the power associated with the degree 0 and 1 terms will not plotted, because the degree 0 term is orders of magnitude larger than the others, and the degree-1 terms are zero when in center-of-mass coordinates.</p>
+<p>If the errors of the gravitational potential are set, <code>plot_spectrum()</code> will compute automatically and plot the error spectrum. For <code>plot_spectrum2d()</code>, the errors can be plotted by specifying <code>errors=True</code>. By default, the power associated with the degree 0 and 1 terms will not be plotted, because the degree 0 term is orders of magnitude larger than the others, and the degree-1 terms are zero when in center-of-mass coordinates.</p>
 <p>Next, we use the method <code>expand()</code> to calculate grids of the gravitational potential, the three vector components of the gravity field, and the total gravity disturbance. By default, these values are calculated on a sphere whose radius is equal to the reference radius <code>r0</code>. By specifying the parameters <code>a</code> and <code>f</code>, these quantities will instead be calculated on a flattened ellipsoid. In this case, it should be emphasized that the vector components correspond to the spherical coordinate unit vectors $\hat{r}$, $\hat{\theta}$, and $\hat{\phi}$, and not components that are perpendicular to the reference ellipsoid. By default, the normal gravity is removed from the total gravitational acceleration, yielding the gravity disturbance.</p>
 <p>The <code>expand()</code> method returns an <code>SHGravGrid</code> class instance. This class stores each of the five grids, <code>rad</code>, <code>theta</code>, <code>phi</code>, <code>total</code>, and <code>pot</code> as <code>SHGrid</code> class instances. The four gravity grids can be plotted together using the method <code>plot()</code>:</p>
 
@@ -13536,7 +13535,7 @@ height=300
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">shape</span> <span class="o">=</span> <span class="n">pyshtools</span><span class="o">.</span><span class="n">SHCoeffs</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s1">&#39;../ExampleDataFiles/MarsTopo719.shape&#39;</span><span class="p">)</span>
 <span class="n">shape_grid</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="s1">&#39;DH2&#39;</span><span class="p">)</span>
 <span class="n">topo_grid</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape_grid</span> <span class="o">-</span> <span class="n">mars_geoid</span><span class="o">.</span><span class="n">a</span> <span class="o">-</span> <span class="n">mars_geoid</span><span class="o">.</span><span class="n">geoid</span><span class="p">)</span><span class="o">/</span><span class="mf">1.e3</span>
-<span class="n">fig6</span><span class="p">,</span> <span class="n">ax6</span> <span class="o">=</span> <span class="n">topo_grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cb_label</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">cb_orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu_r&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">8.5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">8.</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig6</span><span class="p">,</span> <span class="n">ax6</span> <span class="o">=</span> <span class="n">topo_grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colorbar</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">cb_label</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu_r&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">8.5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">8.</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
     </div>

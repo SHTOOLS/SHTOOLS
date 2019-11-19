@@ -67,5 +67,6 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `max()` | Return the maximum value of data. |
 | `copy()` | Return a copy of the class instance. |
 | `plot()` | Plot the raw data using a simple cylindrical projection. |
+| `plotgmt()` | Plot projected data using the generic mapping tools (GMT). |
 | `plot3d()` | Plot the raw data on a 3d sphere. |
 | `info()` | Print a summary of the data stored in the SHGrid instance. |

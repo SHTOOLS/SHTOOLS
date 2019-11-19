@@ -113,16 +113,15 @@ class SHMagGrid(object):
                        self.extend, self.lmax, self.lmax_calc, self.a, self.f))
         return str
 
-    def plot_rad(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='$B_r$, nT', ax=None, show=True, fname=None,
-                 title=None, titlesize=None, **kwargs):
+    def plot_rad(self, colorbar='vertical', cb_label='$B_r$, nT', ax=None,
+                 show=True, fname=None, title=None, titlesize=None, **kwargs):
         """
         Plot the radial component of the magnetic field.
 
         Usage
         -----
         x.plot_rad([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    colorbar, cb_label, grid, axes_labelsize,
                     tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -143,10 +142,9 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$B_r$, nT'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -166,7 +164,6 @@ class SHMagGrid(object):
         """
         if ax is None:
             fig, axes = self.rad.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
                                       cb_label=cb_label, show=False,
                                       title=title, titlesize=titlesize,
                                       **kwargs)
@@ -178,20 +175,19 @@ class SHMagGrid(object):
             return fig, axes
 
         else:
-            self.rad.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, title=title,
-                          titlesize=titlesize, **kwargs)
+            self.rad.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          title=title, titlesize=titlesize, **kwargs)
 
-    def plot_theta(self, colorbar=True, cb_orientation='vertical',
-                   cb_label='$B_\\theta$, nT', ax=None, show=True,
-                   fname=None, title=None, titlesize=None, **kwargs):
+    def plot_theta(self, colorbar='vertical', cb_label='$B_\\theta$, nT',
+                   ax=None, show=True, fname=None, title=None, titlesize=None,
+                   **kwargs):
         """
         Plot the theta component of the magnetic field.
 
         Usage
         -----
         x.plot_theta([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      colorbar, cb_label, grid, axes_labelsize,
                       tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -212,10 +208,9 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$B_\\theta$, nT'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -235,7 +230,6 @@ class SHMagGrid(object):
         """
         if ax is None:
             fig, axes = self.theta.plot(colorbar=colorbar,
-                                        cb_orientation=cb_orientation,
                                         cb_label=cb_label, show=False,
                                         title=title, titlesize=titlesize,
                                         **kwargs)
@@ -247,20 +241,18 @@ class SHMagGrid(object):
             return fig, axes
 
         else:
-            self.theta.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                            cb_label=cb_label, ax=ax, title=title,
-                            titlesize=titlesize,**kwargs)
+            self.theta.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                            title=title, titlesize=titlesize, **kwargs)
 
-    def plot_phi(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='$B_\phi$, nT', ax=None, show=True,
-                 fname=None, title=None, titlesize=None, **kwargs):
+    def plot_phi(self, colorbar='vertical', cb_label='$B_\phi$, nT', ax=None,
+                 show=True, fname=None, title=None, titlesize=None, **kwargs):
         """
         Plot the phi component of the magnetic field.
 
         Usage
         -----
         x.plot_phi([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    colorbar, cb_label, grid, axes_labelsize,
                     tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -281,10 +273,9 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$B_\phi$, nT'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -304,7 +295,6 @@ class SHMagGrid(object):
         """
         if ax is None:
             fig, axes = self.phi.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
                                       cb_label=cb_label, show=False,
                                       title=title, titlesize=titlesize,
                                       **kwargs)
@@ -316,20 +306,19 @@ class SHMagGrid(object):
             return fig, axes
 
         else:
-            self.phi.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, title=title,
-                          titlesize=titlesize, **kwargs)
+            self.phi.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          title=title, titlesize=titlesize, **kwargs)
 
-    def plot_total(self, colorbar=True, cb_orientation='vertical',
-                   cb_label='$|B|$, nT', ax=None, show=True, fname=None,
-                   title=None, titlesize=None, **kwargs):
+    def plot_total(self, colorbar='vertical', cb_label='$|B|$, nT', ax=None,
+                   show=True, fname=None, title=None, titlesize=None,
+                   **kwargs):
         """
         Plot the total magnetic intensity.
 
         Usage
         -----
         x.plot_total([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      colorbar, cb_label, grid, axes_labelsize,
                       tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -350,10 +339,9 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$|B|$, nT'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -373,8 +361,7 @@ class SHMagGrid(object):
         """
         if ax is None:
             fig, axes = self.total.plot(
-                colorbar=colorbar, cb_orientation=cb_orientation,
-                cb_label=cb_label, show=False, title=title,
+                colorbar=colorbar, cb_label=cb_label, show=False, title=title,
                 titlesize=titlesize, **kwargs)
 
             if show:
@@ -386,20 +373,19 @@ class SHMagGrid(object):
 
         else:
             self.total.plot(
-                colorbar=colorbar, cb_orientation=cb_orientation,
-                cb_label=cb_label, ax=ax, title=title, titlesize=titlesize,
-                **kwargs)
+                colorbar=colorbar, cb_label=cb_label, ax=ax, title=title,
+                titlesize=titlesize, **kwargs)
 
-    def plot_pot(self, colorbar=True, cb_orientation='vertical',
-                 cb_label='Potential, nT m', ax=None, show=True,
-                 fname=None, title=None, titlesize=None, **kwargs):
+    def plot_pot(self, colorbar='vertical', cb_label='Potential, nT m',
+                 ax=None, show=True, fname=None, title=None, titlesize=None,
+                 **kwargs):
         """
         Plot the magnetic potential.
 
         Usage
         -----
         x.plot_pot([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    colorbar, cb_label, grid, axes_labelsize,
                     tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -420,10 +406,9 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = 'potential, nT m'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -443,7 +428,6 @@ class SHMagGrid(object):
         """
         if ax is None:
             fig, axes = self.pot.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
                                       cb_label=cb_label, show=False,
                                       title=title, titlesize=titlesize,
                                       **kwargs)
@@ -455,15 +439,13 @@ class SHMagGrid(object):
             return fig, axes
 
         else:
-            self.pot.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, title=title,
-                          titlesize=titlesize, **kwargs)
+            self.pot.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          title=title, titlesize=titlesize, **kwargs)
 
-    def plot(self, colorbar=True, cb_orientation='horizontal',
-             tick_interval=[60, 60], minor_tick_interval=[20, 20],
-             xlabel='Longitude', ylabel='Latitude', grid=False,
-             axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
-             **kwargs):
+    def plot(self, colorbar='horizontal', tick_interval=[60, 60],
+             minor_tick_interval=[20, 20], xlabel='Longitude',
+             ylabel='Latitude', grid=False, axes_labelsize=9,
+             tick_labelsize=8, show=True, fname=None, **kwargs):
         """
         Plot the three vector components of the magnetic field and the total
         magnetic intensity.
@@ -471,7 +453,7 @@ class SHMagGrid(object):
         Usage
         -----
         x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, grid,
-                colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                colorbar, cb_label, grid, axes_labelsize,
                 tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -486,10 +468,9 @@ class SHMagGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'h'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -507,39 +488,42 @@ class SHMagGrid(object):
             Keyword arguements that will be sent to plt.imshow(), such as cmap,
             vmin and vmax.
         """
-        if colorbar is True:
-            if cb_orientation == 'horizontal':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'h':
                 scale = 0.8
-            else:
+            elif colorbar.lower()[0] == 'v':
                 scale = 0.5
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'.format(repr(colorbar)))
         else:
             scale = 0.6
         figsize = (_mpl.rcParams['figure.figsize'][0],
                    _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(2, 2, figsize=figsize)
-        self.plot_rad(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[0], tick_interval=tick_interval,
+        self.plot_rad(colorbar=colorbar, ax=ax.flat[0],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel, grid=grid,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
-        self.plot_theta(colorbar=colorbar, cb_orientation=cb_orientation,
-                        ax=ax.flat[1], tick_interval=tick_interval,
+        self.plot_theta(colorbar=colorbar, ax=ax.flat[1],
+                        tick_interval=tick_interval,
                         xlabel=xlabel, ylabel=ylabel, grid=grid,
                         axes_labelsize=axes_labelsize,
                         tick_labelsize=tick_labelsize,
                         minor_tick_interval=minor_tick_interval,
                         **kwargs)
-        self.plot_phi(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[2], tick_interval=tick_interval,
+        self.plot_phi(colorbar=colorbar, ax=ax.flat[2],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel, grid=grid,
                       axes_labelsize=axes_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       tick_labelsize=tick_labelsize, **kwargs)
-        self.plot_total(colorbar=colorbar, cb_orientation=cb_orientation,
-                        ax=ax.flat[3], tick_interval=tick_interval,
+        self.plot_total(colorbar=colorbar, ax=ax.flat[3],
+                        tick_interval=tick_interval,
                         xlabel=xlabel, ylabel=ylabel, grid=grid,
                         axes_labelsize=axes_labelsize,
                         tick_labelsize=tick_labelsize,

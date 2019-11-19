@@ -116,17 +116,16 @@ class SHGeoid(object):
         return str
 
     def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
-             colorbar=True, cb_orientation='vertical', cb_label='geoid, m',
-             grid=False, axes_labelsize=None, tick_labelsize=None, show=True,
-             **kwargs):
+             colorbar='vertical', cb_label='geoid, m', grid=False,
+             axes_labelsize=None, tick_labelsize=None, show=True, **kwargs):
         """
         Plot the geoid.
 
         Usage
         -----
         x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, colorbar,
-                cb_orientation, cb_label, grid, axes_labelsize, tick_labelsize,
-                ax, show, fname, **kwargs])
+                cb_label, grid, axes_labelsize, tick_labelsize, ax, show,
+                fname, **kwargs])
 
         Parameters
         ----------
@@ -140,10 +139,9 @@ class SHGeoid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = 'geoid, m'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -166,7 +164,6 @@ class SHGeoid(object):
         return self.geoid.plot(tick_interval=tick_interval,
                                minor_tick_interval=minor_tick_interval,
                                colorbar=colorbar,
-                               cb_orientation=cb_orientation,
                                cb_label=cb_label,
                                grid=grid, axes_labelsize=axes_labelsize,
                                tick_labelsize=tick_labelsize,

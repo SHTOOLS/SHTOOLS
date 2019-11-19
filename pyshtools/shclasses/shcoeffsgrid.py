@@ -2685,6 +2685,7 @@ class SHGrid(object):
     min()       : Return the minimum value of data using numpy.min().
     copy()      : Return a copy of the class instance.
     plot()      : Plot the raw data using a simple cylindrical projection.
+    plotgmt()   : Plot projected data using the generic mapping tools (GMT).
     plot3d()    : Plot the raw data on a 3d sphere.
     info()      : Print a summary of the data stored in the SHGrid instance.
     """
@@ -3437,20 +3438,17 @@ class SHGrid(object):
 
     # ---- Plotting routines ----
     def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
-             title=None, titlesize=None,
-             colorbar=False, cb_orientation='vertical',
-             cb_label=None, grid=False, axes_labelsize=None,
-             tick_labelsize=None, ax=None, ax2=None, show=True, fname=None,
-             **kwargs):
+             title=None, titlesize=None, colorbar=None, cb_label=None,
+             grid=False, axes_labelsize=None, tick_labelsize=None, ax=None,
+             ax2=None, show=True, fname=None, **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
         x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, title,
-                titlesize, colorbar, cb_orientation, cb_label, grid,
-                axes_labelsize, tick_labelsize, ax, ax2, show, fname,
-                **kwargs])
+                titlesize, colorbar, cb_label, grid, axes_labelsize,
+                tick_labelsize, ax, ax2, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -3469,10 +3467,9 @@ class SHGrid(object):
             list of strings for the real and complex components.
         titlesize : int, optional, default = None
             The fontsize of the title.
-        colorbar : bool, optional, default = False
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = None
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -3559,7 +3556,6 @@ class SHGrid(object):
                                    minor_xticks=minor_xticks,
                                    minor_yticks=minor_yticks,
                                    colorbar=colorbar,
-                                   cb_orientation=cb_orientation,
                                    cb_label=cb_label, grid=grid,
                                    axes_labelsize=axes_labelsize,
                                    tick_labelsize=tick_labelsize,
@@ -3572,8 +3568,7 @@ class SHGrid(object):
                                      'both optional arguments axes and axes2.')
             self._plot(xticks=xticks, yticks=yticks, minor_xticks=minor_xticks,
                        minor_yticks=minor_yticks, ax=ax, ax2=ax2,
-                       colorbar=colorbar, cb_orientation=cb_orientation,
-                       cb_label=cb_label, grid=grid,
+                       colorbar=colorbar, cb_label=cb_label, grid=grid,
                        axes_labelsize=axes_labelsize,
                        tick_labelsize=tick_labelsize, title=title,
                        titlesize=titlesize, **kwargs)
@@ -3587,19 +3582,17 @@ class SHGrid(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plot_gmt(self, figure=None, projection='mollweide', region='g',
-                 width=None, unit='i', latitude=0, longitude=0, grid=True,
-                 grid_interval=[30, 30], annotate=False,
-                 annotate_interval=[30, 30], ticks=False,
-                 tick_interval=[10, 10], axes='WSen', title=None,
-                 cmap='viridis', cmap_reverse=False, continuous=False,
-                 limits=None, colorbar=False, cb_orientation='h',
-                 cb_triangles='bf', cb_label=None, cb_ylabel=None,
-                 cb_annotate=True, cb_annotate_interval=None, cb_ticks=True,
-                 cb_tick_interval=None, horizon=60, offset=[0, 0],
-                 fname=None):
+    def plotgmt(self, fig=None, projection='mollweide', region='g',
+                width=None, unit='i', central_latitude=0, central_longitude=0,
+                center=None, grid=[30, 30], annotate=[None, None],
+                ticks=[None, None], axes='WSen', title=None,
+                cmap='viridis', cmap_reverse=False, cmap_continuous=False,
+                limits=None, colorbar=None, cb_triangles='bf', cb_label=None,
+                cb_ylabel=None, cb_annotate=True, cb_annotate_interval=None,
+                cb_ticks=True, cb_tick_interval=None, horizon=60,
+                offset=[None, None], fname=None):
         """
-        Plot data using pygmt with either a global or hemispherical projection.
+        Plot projected data using the Generic Mapping Tools (pygmt).
 
         To display the figure in a jupyter notebook, use
             fig.show()
@@ -3608,13 +3601,13 @@ class SHGrid(object):
 
         Usage
         -----
-        fig = x.plot_gmt([figure, projection, region, width, unit, latitude,
-                          longitude, grid, grid_interval, annotate,
-                          annotate_interval, ticks, tick_interval, axes, title,
-                          cmap, cmap_reverse, continuous, limits, colorbar,
-                          cb_orientation, cb_triangles, cb_label, cb_ylabel,
-                          cb_annotate, cb_annotate_interval, cb_ticks,
-                          cb_tick_interval, horizon, offset, fname])
+        fig = x.plotgmt([fig, projection, region, width, unit,
+                         central_latitude, central_longitude, center, grid,
+                         annotate, ticks, axes, title, cmap, cmap_reverse,
+                         cmap_continuous, limits, colorbar, cb_triangles,
+                         cb_label, cb_ylabel, cb_annotate,
+                         cb_annotate_interval, cb_ticks, cb_tick_interval,
+                         horizon, offset, fname])
 
         Returns
         -------
@@ -3622,7 +3615,7 @@ class SHGrid(object):
 
         Parameters
         ----------
-        figure : pygmt.Figure() class instance, optional, default = None
+        fig : pygmt.Figure() class instance, optional, default = None
             If provided, the plot will be placed in a pre-existing figure.
         projection : str, optional, default = 'mollweide'
             The name of a global or hemispherical projection (see Notes). Only
@@ -3636,23 +3629,23 @@ class SHGrid(object):
         unit : str, optional, default = 'i'
             The measurement unit of the figure width and offset: 'i' for
             inches or 'c' for cm.
-        longitude : float, optional, default = 0
+        central_longitude : float, optional, default = 0
             The central meridian or center of the projection.
-        latitude : float, optional, default = 0
+        central_latitude : float, optional, default = 0
             The center of the projection used with hemispheric projections, or
             the standard parallel used with cylindrical projections.
-        grid : bool, optional, default = True
-            If True, plot grid lines.
-        grid_interval : list, optional, default = [30, 30]
-            Grid line interval [latitude, longitude] in degrees.
-        annotate : bool, optional, default = False
-            If True, plot annotation labels on axes.
-        annotate_interval : list, optional, default = [30, 30]
-            Annotation label interval [latitude, longitude] in degrees.
-        ticks : bool, optional, default = False
-            If True, plot ticks on axes.
-        tick_interval : list, optional, default = [10, 10]
-            Tick interval [latitude, longitude] in degrees.
+        center : list, optional, default = None
+            The center of the projection, which is by default given by
+            [central_longitude, central_latitude].
+        grid : list, optional, default = [30, 30]
+            Grid line interval [longitude, latitude] in degrees. If None, grid
+            lines will not be plotted for that axis.
+        annotate : list, optional, default = [None, None]
+            Annotation label interval [longitude, latitude] in degrees. If
+            None, annotations will not be plotted for that axis.
+        ticks : list, optional, default = [None, None]
+            Tick interval [longitude, latitude] in degrees. If None, ticks will
+            not be plotted for that axis.
         axes : str, optional, default = 'WSen'
             Specify which plot axes should be drawn and annotated. Capital
             letters draw the axes, ticks, and annotations, whereas small
@@ -3664,17 +3657,15 @@ class SHGrid(object):
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
-        continuous : bool, optional, default = False
+        cmap_continuous : bool, optional, default = False
             If True, create a continuous colormap. Default behavior is to
             use contant colors for each interval.
         limits : list, optional, default = [self.min(), self.max()]
             A list containing the lower and upper limits of the data to be
             used with the color map, and optionally an interval.
-        colorbar : bool, optional, default = False
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'h'
-            Orientation of the colorbar; either 'h' or 'v' for horizontal or
-            vertical, respectively.
+        colorbar : str, optional, default = None
+            If 'h' or 'v', plot a horizontal or vertical colorbar,
+            respectively.
         cb_triangles : str, optional, default = 'bf'
             Add triangles to the edges of the colorbar for background 'b'
             and/or foreground 'f' colors.
@@ -3693,8 +3684,9 @@ class SHGrid(object):
         horizon : float, optional, default = 60
             The horizon (number of degrees from the center to the edge) used
             with the Gnomonic projection.
-        offset : list, optional, default = [0, 0]
-            Offset of the plot in the x and y directions from the origin.
+        offset : list, optional, default = [None, None]
+            Offset of the plot in the x and y directions from the current
+            origin.
         fname : str, optional, default = None
             If present, save the image to the specified file.
 
@@ -3725,40 +3717,43 @@ class SHGrid(object):
             Sinusoidal (sin)
             Van-der-Grinten (van)
         """
+        if center is None:
+            center = [central_longitude, central_latitude]
+
         if projection.lower()[0:3] == 'mollweide'[0:3]:
-            proj_str = 'W' + str(longitude)
+            proj_str = 'W' + str(center[0])
         elif projection.lower()[0:3] == 'hammer'[0:3]:
-            proj_str = 'H' + str(longitude)
+            proj_str = 'H' + str(center[0])
         elif projection.lower()[0:3] == 'winkel-tripel'[0:3]:
-            proj_str = 'R' + str(longitude)
+            proj_str = 'R' + str(center[0])
         elif projection.lower()[0:3] == 'robinson'[0:3]:
-            proj_str = 'N' + str(longitude)
+            proj_str = 'N' + str(center[0])
         elif projection.lower()[0:3] == 'eckert'[0:3]:
-            proj_str = 'K' + str(longitude)
+            proj_str = 'K' + str(center[0])
         elif projection.lower()[0:3] == 'sinusoidal'[0:3]:
-            proj_str = 'I' + str(longitude)
+            proj_str = 'I' + str(center[0])
         elif projection.lower()[0:3] == 'van-der-grinten'[0:3]:
-            proj_str = 'V' + str(longitude)
+            proj_str = 'V' + str(center[0])
         elif projection.lower()[0:3] == 'lambert-azimuthal-equal-area'[0:3]:
-            proj_str = 'A' + str(longitude) + '/' + str(latitude)
+            proj_str = 'A' + str(center[0]) + '/' + str(center[1])
         elif projection.lower()[0:3] == 'stereographic-equal-angle'[0:3]:
-            proj_str = 'S' + str(longitude) + '/' + str(latitude)
+            proj_str = 'S' + str(center[0]) + '/' + str(center[1])
         elif projection.lower()[0:3] == 'orthographic'[0:3]:
-            proj_str = 'G' + str(longitude) + '/' + str(latitude)
+            proj_str = 'G' + str(center[0]) + '/' + str(center[1])
         elif projection.lower()[0:3] == 'azimuthal-equidistant'[0:3]:
-            proj_str = 'E' + str(longitude) + '/' + str(latitude)
+            proj_str = 'E' + str(center[0]) + '/' + str(center[1])
         elif projection.lower()[0:3] == 'gnomonic'[0:3]:
-            proj_str = 'F' + str(longitude) + '/' + str(latitude) + '/' + \
-                str(horizon)
+            proj_str = 'F' + str(center[0]) + '/' + str(center[1]) + '/' \
+                + str(horizon)
         elif projection.lower()[0:3] == 'miller-cylindrical'[0:3]:
-            proj_str = 'J' + str(longitude)
+            proj_str = 'J' + str(central_longitude)
         elif projection[0:3] == 'cylindrical-equidistant'[0:3]:
-            proj_str = 'Q' + str(longitude) + '/' + str(latitude)
+            proj_str = 'Q' + str(center[0]) + '/' + str(center[1])
         elif projection[0:3] == 'Cylindrical-equal-area'[0:3]:
-            proj_str = 'Y' + str(longitude) + '/' + str(latitude)
+            proj_str = 'Y' + str(center[0]) + '/' + str(center[1])
         elif projection[0:3] == 'CYLindrical-stereographic'[0:3]:
-            proj_str = 'Cyl_stere' + '/' + str(longitude) + '/' + \
-                str(latitude)
+            proj_str = 'Cyl_stere' + '/' + str(center[0]) + '/' \
+                + str(center[1])
         else:
             raise ValueError('Input projection is not recognized or '
                              'supported. Input projection = {:s}'
@@ -3772,15 +3767,18 @@ class SHGrid(object):
 
         framex = 'x'
         framey = 'y'
-        if grid:
-            framex += 'g' + str(grid_interval[1])
-            framey += 'g' + str(grid_interval[0])
-        if annotate:
-            framex += 'a' + str(annotate_interval[1])
-            framey += 'a' + str(annotate_interval[0])
-        if ticks:
-            framex += 'f' + str(tick_interval[1])
-            framey += 'f' + str(tick_interval[0])
+        if grid[0] is not None:
+            framex += 'g' + str(grid[0])
+        if grid[1] is not None:
+            framey += 'g' + str(grid[1])
+        if annotate[0] is not None:
+            framex += 'a' + str(annotate[0])
+        if annotate[1] is not None:
+            framey += 'a' + str(annotate[1])
+        if ticks[0] is not None:
+            framex += 'f' + str(ticks[0])
+        if ticks[1] is not None:
+            framey += 'f' + str(ticks[1])
         if title is not None:
             axes += '+t"{:s}"'.format(title)
         frame = [framex, framey, axes]
@@ -3790,11 +3788,14 @@ class SHGrid(object):
 
         position = None
         cb_str = None
-        if colorbar:
-            if cb_orientation.lower()[0] == 'v':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'v':
                 position = "JMR"
-            else:
+            elif colorbar.lower()[0] == 'h':
                 position = "JBC+h"
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'.format(repr(colorbar)))
             if cb_triangles is not None:
                 position += '+e' + cb_triangles
 
@@ -3814,22 +3815,32 @@ class SHGrid(object):
             if cb_ylabel is not None:
                 cb_str.extend(['y+l"{:s}"'.format(cb_ylabel)])
 
-        xshift = str(offset[0]) + unit
-        yshift = str(offset[1]) + unit
+        if offset[0] is not None:
+            xshift = str(offset[0]) + unit
+        else:
+            xshift = False
+        if offset[1] is not None:
+            yshift = str(offset[1]) + unit
+        else:
+            yshift = False
 
-        _fig = self._plot_pygmt(figure=figure, limits=limits, cmap=cmap,
-                                cmap_reverse=cmap_reverse,
-                                continuous=continuous, region=region,
-                                proj_str=proj_str, frame=frame,
-                                colorbar=colorbar, position=position,
-                                cb_str=cb_str, xshift=xshift,
-                                yshift=yshift)
+        if fig is None:
+            figure = _pygmt.Figure()
+        else:
+            figure = fig
+
+        figure = self._plot_pygmt(fig=figure, limits=limits, cmap=cmap,
+                                  cmap_reverse=cmap_reverse,
+                                  cmap_continuous=cmap_continuous,
+                                  region=region, proj_str=proj_str,
+                                  frame=frame, colorbar=colorbar,
+                                  position=position, cb_str=cb_str,
+                                  xshift=xshift, yshift=yshift)
 
         if fname is not None:
-            _fig.savefig(fname)
-
-        if figure is None:
-            return _fig
+            figure.savefig(fname)
+        if fig is None:
+            return figure
 
     def expand(self, normalization='4pi', csphase=1, **kwargs):
         """
@@ -3981,17 +3992,20 @@ class DHRealGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
               xlabel='Longitude', ylabel='Latitude', ax=None, ax2=None,
-              colorbar=None, cb_orientation=None, cb_label=None, grid=False,
-              axes_labelsize=None, tick_labelsize=None, title=None,
-              titlesize=None, **kwargs):
+              colorbar=None, cb_label=None, grid=False, axes_labelsize=None,
+              tick_labelsize=None, title=None, titlesize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
 
         if ax is None:
-            if colorbar is True:
-                if cb_orientation == 'horizontal':
+            if colorbar is not None:
+                if colorbar.lower()[0] == 'h':
                     scale = 0.67
-                else:
+                elif colorbar.lower()[0] == 'v':
                     scale = 0.5
+                else:
+                    raise ValueError('colorbar must be either h or v. '
+                                     'Input value is {:s}'
+                                     .format(repr(colorbar)))
             else:
                 scale = 0.55
             figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -4017,16 +4031,18 @@ class DHRealGrid(SHGrid):
         if title is not None:
             axes.set_title(title, fontsize=titlesize)
 
-        if colorbar is True:
-            if cb_orientation == 'vertical':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'v':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("right", size="2.5%", pad=0.15)
-                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
-            else:
+                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical')
+            elif colorbar.lower()[0] == 'h':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("bottom", size="5%", pad=0.5)
-                cbar = _plt.colorbar(cim, cax=cax,
-                                     orientation=cb_orientation)
+                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal')
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'.format(repr(colorbar)))
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
             cbar.ax.tick_params(labelsize=tick_labelsize)
@@ -4034,26 +4050,21 @@ class DHRealGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, figure, limits, cmap, cmap_reverse, continuous,
+    def _plot_pygmt(self, fig, limits, cmap, cmap_reverse, cmap_continuous,
                     region, proj_str, frame, colorbar, position, cb_str,
                     xshift, yshift):
         """
-        Plot the projected data using pygmt.
+        Plot projected data using pygmt.
         """
-        if figure is None:
-            _fig = _pygmt.Figure()
-        else:
-            _fig = figure
-
         _pygmt.makecpt(series=limits, cmap=cmap, reverse=cmap_reverse,
-                       continuous=continuous)
-        _fig.grdimage(self.to_xarray(), region=region, projection=proj_str,
-                      frame=frame, X=xshift, Y=yshift)
+                       continuous=cmap_continuous)
+        fig.grdimage(self.to_xarray(), region=region, projection=proj_str,
+                     frame=frame, X=xshift, Y=yshift)
 
-        if colorbar:
-            _fig.colorbar(position=position, frame=cb_str)
+        if colorbar is not None:
+            fig.colorbar(position=position, frame=cb_str)
 
-        return _fig
+        return fig
 
 
 # ---- Complex Driscoll and Healy grid class ----
@@ -4147,16 +4158,19 @@ class DHComplexGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
               xlabel='Longitude', ylabel='Latitude', ax=None, ax2=None,
-              colorbar=None, cb_label=None, cb_orientation=None, grid=False,
-              axes_labelsize=None, tick_labelsize=None, title=None,
-              titlesize=None, **kwargs):
+              colorbar=None, cb_label=None, grid=False, axes_labelsize=None,
+              tick_labelsize=None, title=None, titlesize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            if colorbar is True:
-                if cb_orientation == 'horizontal':
+            if colorbar is not None:
+                if colorbar.lower()[0] == 'h':
                     scale = 1.5
-                else:
+                elif colorbar.lower()[0] == 'v':
                     scale = 1.1
+                else:
+                    raise ValueError('colorbar must be either h or v. '
+                                     'Input value is {:s}'
+                                     .format(repr(colorbar)))
             else:
                 scale = 1.2
             figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -4197,26 +4211,24 @@ class DHComplexGrid(SHGrid):
         if title is not None:
             axcomplex.set_title(title[1], fontsize=titlesize)
 
-        if colorbar is True:
-            if cb_orientation == 'vertical':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'v':
                 divider1 = _make_axes_locatable(axreal)
                 cax1 = divider1.append_axes("right", size="2.5%", pad=0.05)
-                cbar1 = _plt.colorbar(cim1, cax=cax1,
-                                      orientation=cb_orientation)
+                cbar1 = _plt.colorbar(cim1, cax=cax1, orientation='vertical')
                 divider2 = _make_axes_locatable(axcomplex)
                 cax2 = divider2.append_axes("right", size="2.5%", pad=0.05)
-                cbar2 = _plt.colorbar(cim2, cax=cax2,
-                                      orientation=cb_orientation)
-            else:
+                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='vertical')
+            elif colorbar.lower()[0] == 'h':
                 divider1 = _make_axes_locatable(axreal)
                 cax1 = divider1.append_axes("bottom", size="5%", pad=0.5)
-                cbar1 = _plt.colorbar(cim1, cax=cax1,
-                                      orientation=cb_orientation)
+                cbar1 = _plt.colorbar(cim1, cax=cax1, orientation='horizontal')
                 divider2 = _make_axes_locatable(axcomplex)
                 cax2 = divider2.append_axes("bottom", size="5%", pad=0.5)
-                cbar2 = _plt.colorbar(cim2, cax=cax2,
-                                      orientation=cb_orientation)
-
+                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='horizontal')
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'.format(repr(colorbar)))
             if cb_label is not None:
                 cbar1.set_label(cb_label, fontsize=axes_labelsize)
                 cbar2.set_label(cb_label, fontsize=axes_labelsize)
@@ -4230,7 +4242,7 @@ class DHComplexGrid(SHGrid):
         """
         Plot the projected data using pygmt.
         """
-        raise NotImplementedError('plot_gmt() does not support the plotting '
+        raise NotImplementedError('plotgmt() does not support the plotting '
                                   'of complex data.')
 
 
@@ -4322,16 +4334,20 @@ class GLQRealGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
               xlabel='GLQ longitude index', ylabel='GLQ latitude index',
-              ax=None, ax2=None, colorbar=None, cb_orientation=None,
-              cb_label=None, grid=False, axes_labelsize=None,
-              tick_labelsize=None, title=None, titlesize=None, **kwargs):
+              ax=None, ax2=None, colorbar=None, cb_label=None, grid=False,
+              axes_labelsize=None, tick_labelsize=None, title=None,
+              titlesize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            if colorbar is True:
-                if cb_orientation == 'horizontal':
+            if colorbar is not None:
+                if colorbar.lower()[0] == 'h':
                     scale = 0.67
-                else:
+                elif colorbar.lower()[0] == 'v':
                     scale = 0.5
+                else:
+                    raise ValueError('colorbar must be either h or v. '
+                                     'Input value is {:s}'
+                                     .format(repr(colorbar)))
             else:
                 scale = 0.55
             figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -4352,17 +4368,18 @@ class GLQRealGrid(SHGrid):
         if title is not None:
             axes.set_title(title, fontsize=titlesize)
 
-        if colorbar is True:
-            if cb_orientation == 'vertical':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'v':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("right", size="2.5%", pad=0.15)
-                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
-            else:
+                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical')
+            elif colorbar.lower()[0] == 'h':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("bottom", size="5%", pad=0.5)
-                cbar = _plt.colorbar(cim, cax=cax,
-                                     orientation=cb_orientation)
-
+                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal')
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'.format(repr(colorbar)))
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
             cbar.ax.tick_params(labelsize=tick_labelsize)
@@ -4374,7 +4391,7 @@ class GLQRealGrid(SHGrid):
         """
         Plot the projected data using pygmt.
         """
-        raise NotImplementedError('plot_gmt() does not support the plotting '
+        raise NotImplementedError('plotgmt() does not support the plotting '
                                   'of GLQ gridded data.')
 
 
@@ -4462,15 +4479,19 @@ class GLQComplexGrid(SHGrid):
     def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
               xlabel='GLQ longitude index', ylabel='GLQ latitude index',
               ax=None, ax2=None, colorbar=None, cb_label=None,
-              cb_orientation=None, grid=False, axes_labelsize=None,
-              tick_labelsize=None, title=None, titlesize=None, **kwargs):
+              grid=False, axes_labelsize=None, tick_labelsize=None, title=None,
+              titlesize=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
-            if colorbar is True:
-                if cb_orientation == 'horizontal':
+            if colorbar is not None:
+                if colorbar.lower()[0] == 'h':
                     scale = 1.5
-                else:
+                elif colorbar.lower()[0] == 'v':
                     scale = 1.1
+                else:
+                    raise ValueError('colorbar must be either h or v. '
+                                     'Input value is {:s}'
+                                     .format(repr(colorbar)))
             else:
                 scale = 1.2
             figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -4507,26 +4528,28 @@ class GLQComplexGrid(SHGrid):
         if title is not None:
             axcomplex.set_title(title[1], fontsize=titlesize)
 
-        if colorbar is True:
-            if cb_orientation == 'vertical':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'v':
                 divider1 = _make_axes_locatable(axreal)
                 cax1 = divider1.append_axes("right", size="2.5%", pad=0.05)
                 cbar1 = _plt.colorbar(cim1, cax=cax1,
-                                      orientation=cb_orientation)
+                                      orientation='vertical')
                 divider2 = _make_axes_locatable(axcomplex)
                 cax2 = divider2.append_axes("right", size="2.5%", pad=0.05)
                 cbar2 = _plt.colorbar(cim2, cax=cax2,
-                                      orientation=cb_orientation)
-            else:
+                                      orientation='vertical')
+            elif colorbar.lower()[0] == 'h':
                 divider1 = _make_axes_locatable(axreal)
                 cax1 = divider1.append_axes("bottom", size="5%", pad=0.5)
                 cbar1 = _plt.colorbar(cim1, cax=cax1,
-                                      orientation=cb_orientation)
+                                      orientation='horizontal')
                 divider2 = _make_axes_locatable(axcomplex)
                 cax2 = divider2.append_axes("bottom", size="5%", pad=0.5)
-                cbar2 = _plt.colorbar(cim2, cax=cax2,
-                                      orientation=cb_orientation)
-
+                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='horizontal')
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'
+                                 .format(repr(colorbar)))
             if cb_label is not None:
                 cbar1.set_label(cb_label, fontsize=axes_labelsize)
                 cbar2.set_label(cb_label, fontsize=axes_labelsize)
@@ -4540,5 +4563,5 @@ class GLQComplexGrid(SHGrid):
         """
         Plot the projected data using pygmt.
         """
-        raise NotImplementedError('plot_gmt() does not support the plotting '
+        raise NotImplementedError('plotgmt() does not support the plotting '
                                   'of complex GLQ gridded data.')

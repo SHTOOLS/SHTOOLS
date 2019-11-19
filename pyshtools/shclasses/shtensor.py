@@ -117,16 +117,16 @@ class Tensor(object):
         """
         print(repr(self))
 
-    def plot_vxx(self, colorbar=True, cb_orientation='vertical',
-                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_vxx(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the Vxx component of the tensor.
 
         Usage
         -----
         x.plot_vxx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname])
+                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                    show, fname])
 
         Parameters
         ----------
@@ -142,10 +142,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = False
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$V_{xx}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -168,7 +167,6 @@ class Tensor(object):
 
         if ax is None:
             fig, axes = self.vxx.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
                                       cb_label=cb_label, show=False, **kwargs)
             if show:
                 fig.show()
@@ -178,19 +176,19 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.vxx.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+            self.vxx.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          **kwargs)
 
-    def plot_vyy(self, colorbar=True, cb_orientation='vertical',
-                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_vyy(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the Vyy component of the tensor.
 
         Usage
         -----
         x.plot_vyy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname])
+                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                    show, fname])
 
         Parameters
         ----------
@@ -206,10 +204,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$V_{yy}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -231,9 +228,8 @@ class Tensor(object):
             cb_label = self._vyy_label
 
         if ax is None:
-            fig, axes = self.vyy.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+            fig, axes = self.vyy.plot(colorbar=colorbar, cb_label=cb_label,
+                                      show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -242,10 +238,10 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.vyy.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+            self.vyy.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          **kwargs)
 
-    def plot_vzz(self, colorbar=True, cb_orientation='vertical',
+    def plot_vzz(self, colorbar='vertical',
                  cb_label=None, ax=None, show=True, fname=None, **kwargs):
         """
         Plot the Vzz component of the tensor.
@@ -253,8 +249,8 @@ class Tensor(object):
         Usage
         -----
         x.plot_vzz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname])
+                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                    show, fname])
 
         Parameters
         ----------
@@ -270,10 +266,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$V_{zz}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -295,9 +290,8 @@ class Tensor(object):
             cb_label = self._vzz_label
 
         if ax is None:
-            fig, axes = self.vzz.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+            fig, axes = self.vzz.plot(colorbar=colorbar, cb_label=cb_label,
+                                      show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -306,19 +300,19 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.vzz.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+            self.vzz.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          **kwargs)
 
-    def plot_vxy(self, colorbar=True, cb_orientation='vertical',
-                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_vxy(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the Vxy component of the tensor.
 
         Usage
         -----
         x.plot_vxy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname])
+                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                    show, fname])
 
         Parameters
         ----------
@@ -334,10 +328,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$V_{xy}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -360,7 +353,6 @@ class Tensor(object):
 
         if ax is None:
             fig, axes = self.vxy.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
                                       cb_label=cb_label, show=False, **kwargs)
             if show:
                 fig.show()
@@ -370,19 +362,19 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.vxy.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+            self.vxy.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          **kwargs)
 
-    def plot_vyx(self, colorbar=True, cb_orientation='vertical',
-                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_vyx(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the Vyx component of the tensor.
 
         Usage
         -----
         x.plot_vyx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname])
+                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                    show, fname])
 
         Parameters
         ----------
@@ -398,10 +390,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$V_{yx}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -423,9 +414,8 @@ class Tensor(object):
             cb_label = self._vyx_label
 
         if ax is None:
-            fig, axes = self.vyx.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+            fig, axes = self.vyx.plot(colorbar=colorbar, cb_label=cb_label,
+                                      show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -434,19 +424,19 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.vyx.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+            self.vyx.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          **kwargs)
 
-    def plot_vxz(self, colorbar=True, cb_orientation='vertical',
-                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_vxz(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the Vxz component of the tensor.
 
         Usage
         -----
         x.plot_vxz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname])
+                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                    show, fname])
 
         Parameters
         ----------
@@ -462,10 +452,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$V_{xz}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -487,9 +476,8 @@ class Tensor(object):
             cb_label = self._vxz_label
 
         if ax is None:
-            fig, axes = self.vxz.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+            fig, axes = self.vxz.plot(colorbar=colorbar, cb_label=cb_label,
+                                      show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -498,19 +486,19 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.vxz.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+            self.vxz.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          **kwargs)
 
-    def plot_vzx(self, colorbar=True, cb_orientation='vertical',
-                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_vzx(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the Vzx component of the tensor.
 
         Usage
         -----
         x.plot_vzx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname])
+                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                    show, fname])
 
         Parameters
         ----------
@@ -526,10 +514,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$V_{zx}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -551,9 +538,8 @@ class Tensor(object):
             cb_label = self._vzx_label
 
         if ax is None:
-            fig, axes = self.vzx.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+            fig, axes = self.vzx.plot(colorbar=colorbar, cb_label=cb_label,
+                                      show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -562,18 +548,18 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.vzx.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+            self.vzx.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          **kwargs)
 
-    def plot_vyz(self, colorbar=True, cb_orientation='vertical',
-                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_vyz(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the Vyz component of the tensor.
 
         Usage
         -----
         x.plot_vyz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    colorbar, cb_label, grid, axes_labelsize,
                     tick_labelsize, show, fname])
 
         Parameters
@@ -590,10 +576,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$V_{yz}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -615,9 +600,8 @@ class Tensor(object):
             cb_label = self._vyz_label
 
         if ax is None:
-            fig, axes = self.vyz.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+            fig, axes = self.vyz.plot(colorbar=colorbar, cb_label=cb_label,
+                                      show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -626,19 +610,19 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.vyz.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+            self.vyz.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          **kwargs)
 
-    def plot_vzy(self, colorbar=True, cb_orientation='vertical',
-                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_vzy(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                 fname=None, **kwargs):
         """
         Plot the Vzy component of the tensor.
 
         Usage
         -----
         x.plot_vzy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname])
+                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                    show, fname])
 
         Parameters
         ----------
@@ -654,10 +638,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$V_{zy}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -679,9 +662,8 @@ class Tensor(object):
             cb_label = self._vzy_label
 
         if ax is None:
-            fig, axes = self.vzy.plot(colorbar=colorbar,
-                                      cb_orientation=cb_orientation,
-                                      cb_label=cb_label, show=False, **kwargs)
+            fig, axes = self.vzy.plot(colorbar=colorbar, cb_label=cb_label,
+                                      show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -690,21 +672,20 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.vzy.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                          cb_label=cb_label, ax=ax, **kwargs)
+            self.vzy.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                          **kwargs)
 
-    def plot(self, colorbar=True, cb_orientation='horizontal',
-             tick_interval=[90, 90], minor_tick_interval=[30, 30],
-             xlabel='Longitude', ylabel='Latitude',
-             axes_labelsize=8, tick_labelsize=8, show=True, fname=None,
-             **kwargs):
+    def plot(self, colorbar='horizontal', tick_interval=[90, 90],
+             minor_tick_interval=[30, 30], xlabel='Longitude',
+             ylabel='Latitude', axes_labelsize=8, tick_labelsize=8, show=True,
+             fname=None, **kwargs):
         """
         Plot the 9 components of the tensor.
 
         Usage
         -----
         x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
-                colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                colorbar, cb_label, grid, axes_labelsize,
                 tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -719,10 +700,9 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'h'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -740,75 +720,79 @@ class Tensor(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
        """
-        if colorbar is True:
-            if cb_orientation == 'horizontal':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'h':
                 scale = 0.9
-            else:
+            elif colorbar.lower()[0] == 'v':
                 scale = 0.45
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'
+                                 .format(repr(colorbar)))
         else:
             scale = 0.55
         figsize = (_mpl.rcParams['figure.figsize'][0],
                    _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(3, 3, figsize=figsize)
-        self.plot_vxx(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[0], tick_interval=tick_interval,
+        self.plot_vxx(colorbar=colorbar, ax=ax.flat[0],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
-        self.plot_vxy(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[1], tick_interval=tick_interval,
+        self.plot_vxy(colorbar=colorbar, ax=ax.flat[1],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
-        self.plot_vxz(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[2], tick_interval=tick_interval,
+        self.plot_vxz(colorbar=colorbar, ax=ax.flat[2],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
-        self.plot_vyx(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[3], tick_interval=tick_interval,
+        self.plot_vyx(colorbar=colorbar, ax=ax.flat[3],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
-        self.plot_vyy(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[4], tick_interval=tick_interval,
+        self.plot_vyy(colorbar=colorbar, ax=ax.flat[4],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
-        self.plot_vyz(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[5], tick_interval=tick_interval,
+        self.plot_vyz(colorbar=colorbar, ax=ax.flat[5],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
-        self.plot_vzx(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[6], tick_interval=tick_interval,
+        self.plot_vzx(colorbar=colorbar, ax=ax.flat[6],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
-        self.plot_vzy(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[7], tick_interval=tick_interval,
+        self.plot_vzy(colorbar=colorbar, ax=ax.flat[7],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
                       **kwargs)
-        self.plot_vzz(colorbar=colorbar, cb_orientation=cb_orientation,
-                      ax=ax.flat[8], tick_interval=tick_interval,
+        self.plot_vzz(colorbar=colorbar, ax=ax.flat[8],
+                      tick_interval=tick_interval,
                       xlabel=xlabel, ylabel=ylabel,
                       axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
@@ -824,8 +808,8 @@ class Tensor(object):
             fig.savefig(fname)
         return fig, ax
 
-    def plot_i0(self, colorbar=True, cb_orientation='vertical',
-                cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_i0(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                fname=None, **kwargs):
         """
         Plot the first invariant I0 (the trace) of the tensor
 
@@ -836,7 +820,7 @@ class Tensor(object):
         Usage
         -----
         x.plot_i0([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                   colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                   colorbar, cb_label, grid, axes_labelsize,
                    tick_labelsize, show, fname])
 
         Parameters
@@ -853,10 +837,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = 'Tr $V_{ij}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -881,9 +864,8 @@ class Tensor(object):
             self.compute_invar()
 
         if ax is None:
-            fig, axes = self.i0.plot(colorbar=colorbar,
-                                     cb_orientation=cb_orientation,
-                                     cb_label=cb_label, show=False, **kwargs)
+            fig, axes = self.i0.plot(colorbar=colorbar, cb_label=cb_label,
+                                     show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -892,11 +874,11 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.i0.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                         cb_label=cb_label, ax=ax, **kwargs)
+            self.i0.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                         **kwargs)
 
-    def plot_i1(self, colorbar=True, cb_orientation='vertical',
-                cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_i1(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+                fname=None, **kwargs):
         """
         Plot the second invariant I1 of the tensor:
 
@@ -905,8 +887,8 @@ class Tensor(object):
         Usage
         -----
         x.plot_i1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                   colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                   tick_labelsize, show, fname])
+                   colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                   show, fname])
 
         Parameters
         ----------
@@ -922,10 +904,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$I_1$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -951,7 +932,6 @@ class Tensor(object):
 
         if ax is None:
             fig, axes = self.i1.plot(colorbar=colorbar,
-                                     cb_orientation=cb_orientation,
                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 fig.show()
@@ -961,10 +941,9 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.i1.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                         cb_label=cb_label, ax=ax, **kwargs)
+            self.i1.plot(colorbar=colorbar, cb_label=cb_label, ax=ax, **kwargs)
 
-    def plot_i2(self, colorbar=True, cb_orientation='vertical',
+    def plot_i2(self, colorbar='vertical',
                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
         """
         Plot the third invariant I2 (the determinant) of the tensor:
@@ -975,8 +954,8 @@ class Tensor(object):
         Usage
         -----
         x.plot_i2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                   colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                   tick_labelsize, show, fname])
+                   colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                   show, fname])
 
         Parameters
         ----------
@@ -992,10 +971,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = 'det $V_{ij}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1021,7 +999,6 @@ class Tensor(object):
 
         if ax is None:
             fig, axes = self.i2.plot(colorbar=colorbar,
-                                     cb_orientation=cb_orientation,
                                      cb_label=cb_label, show=False, **kwargs)
             if show:
                 fig.show()
@@ -1031,11 +1008,10 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.i2.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                         cb_label=cb_label, ax=ax, **kwargs)
+            self.i2.plot(colorbar=colorbar, cb_label=cb_label, ax=ax, **kwargs)
 
-    def plot_i(self, colorbar=True, cb_orientation='vertical',
-               cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_i(self, colorbar='vertical', cb_label=None, ax=None, show=True,
+               fname=None, **kwargs):
         """
         Plot the dimensionless quantity I of Pedersen and Rasmussen (1990)
 
@@ -1046,7 +1022,7 @@ class Tensor(object):
         Usage
         -----
         x.plot_i([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                  colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                  colorbar, cb_label, grid, axes_labelsize,
                   tick_labelsize, show, fname])
 
         Parameters
@@ -1063,10 +1039,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1092,7 +1067,6 @@ class Tensor(object):
 
         if ax is None:
             fig, axes = self.i.plot(colorbar=colorbar,
-                                    cb_orientation=cb_orientation,
                                     cb_label=cb_label, show=False, **kwargs)
             if show:
                 fig.show()
@@ -1102,22 +1076,20 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.i.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                        cb_label=cb_label, ax=ax, **kwargs)
+            self.i.plot(colorbar=colorbar, cb_label=cb_label, ax=ax, **kwargs)
 
-    def plot_invar(self, colorbar=True, cb_orientation='horizontal',
-                   tick_interval=[60, 60], minor_tick_interval=[20, 20],
-                   xlabel='Longitude', ylabel='Latitude',
-                   axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
-                   **kwargs):
+    def plot_invar(self, colorbar='horizontal', tick_interval=[60, 60],
+                   minor_tick_interval=[20, 20], xlabel='Longitude',
+                   ylabel='Latitude', axes_labelsize=9, tick_labelsize=8,
+                   show=True, fname=None, **kwargs):
         """
         Plot the three invariants of the tensor and the derived quantity I.
 
         Usage
         -----
         x.plot_invar([tick_interval, minor_tick_interval, xlabel, ylabel,
-                colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                tick_labelsize, show, fname, **kwargs])
+                      colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                      show, fname, **kwargs])
 
         Parameters
         ----------
@@ -1131,10 +1103,9 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'h'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1152,11 +1123,15 @@ class Tensor(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        if colorbar is True:
-            if cb_orientation == 'horizontal':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'h':
                 scale = 0.8
-            else:
+            elif colorbar.lower()[0] == 'v':
                 scale = 0.5
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'
+                                 .format(repr(colorbar)))
         else:
             scale = 0.6
         figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -1164,29 +1139,29 @@ class Tensor(object):
 
         fig, ax = _plt.subplots(2, 2, figsize=figsize)
 
-        self.plot_i0(colorbar=colorbar, cb_orientation=cb_orientation,
-                     ax=ax.flat[0], tick_interval=tick_interval,
+        self.plot_i0(colorbar=colorbar, ax=ax.flat[0],
+                     tick_interval=tick_interval,
                      xlabel=xlabel, ylabel=ylabel,
                      axes_labelsize=axes_labelsize,
                      tick_labelsize=tick_labelsize,
                      minor_tick_interval=minor_tick_interval,
                      **kwargs)
-        self.plot_i1(colorbar=colorbar, cb_orientation=cb_orientation,
-                     ax=ax.flat[1], tick_interval=tick_interval,
+        self.plot_i1(colorbar=colorbar, ax=ax.flat[1],
+                     tick_interval=tick_interval,
                      xlabel=xlabel, ylabel=ylabel,
                      axes_labelsize=axes_labelsize,
                      tick_labelsize=tick_labelsize,
                      minor_tick_interval=minor_tick_interval,
                      **kwargs)
-        self.plot_i2(colorbar=colorbar, cb_orientation=cb_orientation,
-                     ax=ax.flat[2], tick_interval=tick_interval,
+        self.plot_i2(colorbar=colorbar, ax=ax.flat[2],
+                     tick_interval=tick_interval,
                      xlabel=xlabel, ylabel=ylabel,
                      axes_labelsize=axes_labelsize,
                      tick_labelsize=tick_labelsize,
                      minor_tick_interval=minor_tick_interval,
                      **kwargs)
-        self.plot_i(colorbar=colorbar, cb_orientation=cb_orientation,
-                    ax=ax.flat[3], tick_interval=tick_interval,
+        self.plot_i(colorbar=colorbar, ax=ax.flat[3],
+                    tick_interval=tick_interval,
                     xlabel=xlabel, ylabel=ylabel,
                     axes_labelsize=axes_labelsize,
                     tick_labelsize=tick_labelsize,
@@ -1202,15 +1177,15 @@ class Tensor(object):
             fig.savefig(fname)
         return fig, ax
 
-    def plot_eig1(self, colorbar=True, cb_orientation='vertical',
-                  cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_eig1(self, colorbar='vertical', cb_label=None, ax=None,
+                  show=True, fname=None, **kwargs):
         """
         Plot the first eigenvalue of the tensor.
 
         Usage
         -----
         x.plot_eig1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                     colorbar, cb_label, grid, axes_labelsize,
                      tick_labelsize, show, fname])
 
         Parameters
@@ -1227,10 +1202,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$\lambda_1$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1255,10 +1229,8 @@ class Tensor(object):
             self.compute_eig()
 
         if ax is None:
-            fig, axes = self.eig1.plot(colorbar=colorbar,
-                                       cb_orientation=cb_orientation,
-                                       cb_label=cb_label, show=False,
-                                       **kwargs)
+            fig, axes = self.eig1.plot(colorbar=colorbar, cb_label=cb_label,
+                                       show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -1267,19 +1239,19 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.eig1.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                           cb_label=cb_label, ax=ax, **kwargs)
+            self.eig1.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                           **kwargs)
 
-    def plot_eig2(self, colorbar=True, cb_orientation='vertical',
-                  cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_eig2(self, colorbar='vertical', cb_label=None, ax=None,
+                  show=True, fname=None, **kwargs):
         """
         Plot the second eigenvalue of the tensor.
 
         Usage
         -----
         x.plot_eig2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                     tick_labelsize, show, fname])
+                     colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                     show, fname])
 
         Parameters
         ----------
@@ -1295,10 +1267,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$\lambda_2$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1324,7 +1295,6 @@ class Tensor(object):
 
         if ax is None:
             fig, axes = self.eig2.plot(colorbar=colorbar,
-                                       cb_orientation=cb_orientation,
                                        cb_label=cb_label, show=False,
                                        **kwargs)
             if show:
@@ -1335,18 +1305,18 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.eig2.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                           cb_label=cb_label, ax=ax, **kwargs)
+            self.eig2.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                           **kwargs)
 
-    def plot_eig3(self, colorbar=True, cb_orientation='vertical',
-                  cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_eig3(self, colorbar='vertical', cb_label=None, ax=None,
+                  show=True, fname=None, **kwargs):
         """
         Plot the third eigenvalue of the tensor.
 
         Usage
         -----
         x.plot_eig3([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                     colorbar, cb_label, grid, axes_labelsize,
                      tick_labelsize, show, fname])
 
         Parameters
@@ -1363,10 +1333,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$\lambda_3$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1391,10 +1360,8 @@ class Tensor(object):
             self.compute_eig()
 
         if ax is None:
-            fig, axes = self.eig3.plot(colorbar=colorbar,
-                                       cb_orientation=cb_orientation,
-                                       cb_label=cb_label, show=False,
-                                       **kwargs)
+            fig, axes = self.eig3.plot(colorbar=colorbar, cb_label=cb_label,
+                                       show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -1403,21 +1370,20 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.eig3.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                           cb_label=cb_label, ax=ax, **kwargs)
+            self.eig3.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                           **kwargs)
 
-    def plot_eigs(self, colorbar=True, cb_orientation='vertical',
-                  tick_interval=[60, 60], minor_tick_interval=[20, 20],
-                  xlabel='Longitude', ylabel='Latitude',
-                  axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
-                  **kwargs):
+    def plot_eigs(self, colorbar='vertical', tick_interval=[60, 60],
+                  minor_tick_interval=[20, 20], xlabel='Longitude',
+                  ylabel='Latitude', axes_labelsize=9, tick_labelsize=8,
+                  show=True, fname=None, **kwargs):
         """
         Plot the three eigenvalues of the tensor.
 
         Usage
         -----
         x.plot_eigs([tick_interval, minor_tick_interval, xlabel, ylabel,
-                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                     colorbar, cb_label, grid, axes_labelsize,
                      tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -1432,10 +1398,9 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1453,11 +1418,15 @@ class Tensor(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        if colorbar is True:
-            if cb_orientation == 'horizontal':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'h':
                 scale = 2.3
-            else:
+            elif colorbar.lower()[0] == 'v':
                 scale = 1.4
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'
+                                 .format(repr(colorbar)))
         else:
             scale = 1.65
         figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -1465,23 +1434,20 @@ class Tensor(object):
 
         fig, ax = _plt.subplots(3, 1, figsize=figsize)
 
-        self.plot_eig1(colorbar=colorbar, cb_orientation=cb_orientation,
-                       ax=ax.flat[0], xlabel=xlabel, ylabel=ylabel,
-                       tick_interval=tick_interval,
+        self.plot_eig1(colorbar=colorbar, ax=ax.flat[0], xlabel=xlabel,
+                       ylabel=ylabel, tick_interval=tick_interval,
                        axes_labelsize=axes_labelsize,
                        tick_labelsize=tick_labelsize,
                        minor_tick_interval=minor_tick_interval,
                        **kwargs)
-        self.plot_eig2(colorbar=colorbar, cb_orientation=cb_orientation,
-                       ax=ax.flat[1], xlabel=xlabel, ylabel=ylabel,
-                       tick_interval=tick_interval,
+        self.plot_eig2(colorbar=colorbar, ax=ax.flat[1], xlabel=xlabel,
+                       ylabel=ylabel, tick_interval=tick_interval,
                        axes_labelsize=axes_labelsize,
                        tick_labelsize=tick_labelsize,
                        minor_tick_interval=minor_tick_interval,
                        **kwargs)
-        self.plot_eig3(colorbar=colorbar, cb_orientation=cb_orientation,
-                       ax=ax.flat[2], xlabel=xlabel, ylabel=ylabel,
-                       tick_interval=tick_interval,
+        self.plot_eig3(colorbar=colorbar, ax=ax.flat[2], xlabel=xlabel,
+                       ylabel=ylabel, tick_interval=tick_interval,
                        axes_labelsize=axes_labelsize,
                        tick_labelsize=tick_labelsize,
                        minor_tick_interval=minor_tick_interval,
@@ -1496,16 +1462,16 @@ class Tensor(object):
             fig.savefig(fname)
         return fig, ax
 
-    def plot_eigh1(self, colorbar=True, cb_orientation='vertical',
-                   cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_eigh1(self, colorbar='vertical', cb_label=None, ax=None,
+                   show=True, fname=None, **kwargs):
         """
         Plot the first eigenvalue of the horizontal tensor.
 
         Usage
         -----
         x.plot_eigh1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                      tick_labelsize, show, fname])
+                      colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                      show, fname])
 
         Parameters
         ----------
@@ -1521,10 +1487,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$\lambda_{h1}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1549,10 +1514,8 @@ class Tensor(object):
             self.compute_eigh()
 
         if ax is None:
-            fig, axes = self.eigh1.plot(colorbar=colorbar,
-                                        cb_orientation=cb_orientation,
-                                        cb_label=cb_label, show=False,
-                                        **kwargs)
+            fig, axes = self.eigh1.plot(colorbar=colorbar, cb_label=cb_label,
+                                        show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -1561,10 +1524,10 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.eigh1.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                            cb_label=cb_label, ax=ax, **kwargs)
+            self.eigh1.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                            **kwargs)
 
-    def plot_eigh2(self, colorbar=True, cb_orientation='vertical',
+    def plot_eigh2(self, colorbar='vertical',
                    cb_label=None, ax=None, show=True, fname=None, **kwargs):
         """
         Plot the second eigenvalue of the horizontal tensor.
@@ -1572,8 +1535,8 @@ class Tensor(object):
         Usage
         -----
         x.plot_eigh2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                      tick_labelsize, show, fname])
+                      colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                      show, fname])
 
         Parameters
         ----------
@@ -1589,10 +1552,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$\lambda_{h2}$, Eotvos$^{-1}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1618,7 +1580,6 @@ class Tensor(object):
 
         if ax is None:
             fig, axes = self.eigh2.plot(colorbar=colorbar,
-                                        cb_orientation=cb_orientation,
                                         cb_label=cb_label, show=False,
                                         **kwargs)
             if show:
@@ -1629,19 +1590,19 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.eigh2.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                            cb_label=cb_label, ax=ax, **kwargs)
+            self.eigh2.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                            **kwargs)
 
-    def plot_eighh(self, colorbar=True, cb_orientation='vertical',
-                   cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_eighh(self, colorbar='vertical', cb_label=None, ax=None,
+                   show=True, fname=None, **kwargs):
         """
         Plot the maximum absolute value eigenvalue of the horizontal tensor.
 
         Usage
         -----
         x.plot_eighh([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                      tick_labelsize, show, fname])
+                      colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                      show, fname])
 
         Parameters
         ----------
@@ -1657,10 +1618,9 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = '$\lambda_{hh}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1685,10 +1645,8 @@ class Tensor(object):
             self.compute_eigh()
 
         if ax is None:
-            fig, axes = self.eighh.plot(colorbar=colorbar,
-                                        cb_orientation=cb_orientation,
-                                        cb_label=cb_label, show=False,
-                                        **kwargs)
+            fig, axes = self.eighh.plot(colorbar=colorbar, cb_label=cb_label,
+                                        show=False, **kwargs)
             if show:
                 fig.show()
 
@@ -1697,14 +1655,13 @@ class Tensor(object):
             return fig, axes
 
         else:
-            self.eighh.plot(colorbar=colorbar, cb_orientation=cb_orientation,
-                            cb_label=cb_label, ax=ax, **kwargs)
+            self.eighh.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
+                            **kwargs)
 
-    def plot_eigh(self, colorbar=True, cb_orientation='vertical',
-                  tick_interval=[60, 60], minor_tick_interval=[20, 20],
-                  xlabel='Longitude', ylabel='Latitude',
-                  axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
-                  **kwargs):
+    def plot_eigh(self, colorbar='vertical', tick_interval=[60, 60],
+                  minor_tick_interval=[20, 20], xlabel='Longitude',
+                  ylabel='Latitude', axes_labelsize=9, tick_labelsize=8,
+                  show=True, fname=None, **kwargs):
         """
         Plot the two eigenvalues and maximum absolute value eigenvalue of the
         horizontal tensor.
@@ -1712,8 +1669,8 @@ class Tensor(object):
         Usage
         -----
         x.plot_eigh([tick_interval, minor_tick_interval, xlabel, ylabel,
-                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
-                     tick_labelsize, show, fname, **kwargs])
+                     colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
+                     show, fname, **kwargs])
 
         Parameters
         ----------
@@ -1727,10 +1684,9 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = 'v'
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1748,11 +1704,15 @@ class Tensor(object):
             Keyword arguements that will be sent to the SHGrid.plot()
             and plt.imshow() methods.
         """
-        if colorbar is True:
-            if cb_orientation == 'horizontal':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'h':
                 scale = 2.3
-            else:
+            elif colorbar.lower()[0] == 'v':
                 scale = 1.4
+            else:
+                raise ValueError('colorbar must be either h or v. '
+                                 'Input value is {:s}'
+                                 .format(repr(colorbar)))
         else:
             scale = 1.65
         figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -1760,21 +1720,18 @@ class Tensor(object):
 
         fig, ax = _plt.subplots(3, 1, figsize=figsize)
 
-        self.plot_eigh1(colorbar=colorbar, cb_orientation=cb_orientation,
-                        ax=ax.flat[0], xlabel=xlabel, ylabel=ylabel,
-                        tick_interval=tick_interval,
+        self.plot_eigh1(colorbar=colorbar, ax=ax.flat[0], xlabel=xlabel,
+                        ylabel=ylabel, tick_interval=tick_interval,
                         tick_labelsize=tick_labelsize,
                         minor_tick_interval=minor_tick_interval,
                         **kwargs)
-        self.plot_eigh2(colorbar=colorbar, cb_orientation=cb_orientation,
-                        ax=ax.flat[1], xlabel=xlabel, ylabel=ylabel,
-                        tick_interval=tick_interval,
+        self.plot_eigh2(colorbar=colorbar, ax=ax.flat[1], xlabel=xlabel,
+                        ylabel=ylabel, tick_interval=tick_interval,
                         tick_labelsize=tick_labelsize,
                         minor_tick_interval=minor_tick_interval,
                         **kwargs)
-        self.plot_eighh(colorbar=colorbar, cb_orientation=cb_orientation,
-                        ax=ax.flat[2], xlabel=xlabel, ylabel=ylabel,
-                        tick_interval=tick_interval,
+        self.plot_eighh(colorbar=colorbar, ax=ax.flat[2], xlabel=xlabel,
+                        ylabel=ylabel, tick_interval=tick_interval,
                         tick_labelsize=tick_labelsize,
                         minor_tick_interval=minor_tick_interval,
                         **kwargs)
