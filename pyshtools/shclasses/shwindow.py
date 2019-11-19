@@ -1121,10 +1121,9 @@ class SHWindow(object):
                              vmin=None, vmax=None, xlabel='Input degree',
                              ylabel='Output degree', title=None,
                              axes_labelsize=None, tick_labelsize=None,
-                             title_labelsize=None, colorbar=False,
-                             cb_orientation='vertical', cb_label=None,
-                             normalize=False, show=True, ax=None, fname=None,
-                             **kwargs):
+                             title_labelsize=None, colorbar=None,
+                             cb_label=None, normalize=False, show=True,
+                             ax=None, fname=None, **kwargs):
         """
         Plot the multitaper coupling matrix.
 
@@ -1136,9 +1135,8 @@ class SHWindow(object):
         x.plot_coupling_matrix(lmax, [k, weights, mode, vmin, vmax, xlabel,
                                       ylabel, title, axes_labelsize,
                                       tick_labelsize, title_labelsize,
-                                      colorbar, cb_orientation, cb_label,
-                                      normalize, show, ax, fname, weights,
-                                      **kwargs])
+                                      colorbar, cb_label, normalize, show, ax,
+                                      fname, weights, **kwargs])
 
         Parameters
         ----------
@@ -1175,10 +1173,9 @@ class SHWindow(object):
             The font size for the x and y tick labels.
         title_labelsize : int, optional, default = None
             The font size for the title.
-        colorbar : bool, optional, default = False
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = None
+            If 'v' or 'h', plot a vertical or horizontal colorbar,
+            respectively.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         normalize : bool, optional, default = False
@@ -1216,11 +1213,15 @@ class SHWindow(object):
             tick_labelsize = _mpl.rcParams['axes.titlesize']
 
         if ax is None:
-            if colorbar is True:
-                if cb_orientation == 'horizontal':
+            if colorbar is not None:
+                if colorbar.lower()[0] == 'h':
                     scale = 1.1
-                else:
+                elif colorbar.lower()[0] == 'v':
                     scale = 0.85
+                else:
+                    raise ValueError('colorbar must be either v or h. '
+                                     'Input value is {:s}'
+                                     .format(repr(colorbar)))
             else:
                 scale = 1
 
@@ -1244,16 +1245,18 @@ class SHWindow(object):
         axes.tick_params(labelsize=tick_labelsize)
         axes.minorticks_on()
 
-        if colorbar is True:
-            if cb_orientation == 'vertical':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'v':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("right", size="2.5%", pad=0.15)
-                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
-            else:
+                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical')
+            elif colorbar.lower()[0] == 'h':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("bottom", size="2.5%", pad=0.5)
-                cbar = _plt.colorbar(cim, cax=cax,
-                                     orientation=cb_orientation)
+                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal')
+            else:
+                raise ValueError('colorbar must be either v or h. '
+                                 'Input value is {:s}'.format(repr(colorbar)))
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
             cbar.ax.tick_params(labelsize=tick_labelsize)
