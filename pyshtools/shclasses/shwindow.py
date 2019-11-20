@@ -1174,8 +1174,7 @@ class SHWindow(object):
         title_labelsize : int, optional, default = None
             The font size for the title.
         colorbar : str, optional, default = None
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         normalize : bool, optional, default = False
@@ -1219,8 +1218,8 @@ class SHWindow(object):
                 elif colorbar.lower()[0] == 'v':
                     scale = 0.85
                 else:
-                    raise ValueError('colorbar must be either v or h. '
-                                     'Input value is {:s}'
+                    raise ValueError("colorbar must be either 'horizontal' or "
+                                     "'vertical'. Input value is {:s}."
                                      .format(repr(colorbar)))
             else:
                 scale = 1
@@ -1255,8 +1254,9 @@ class SHWindow(object):
                 cax = divider.append_axes("bottom", size="2.5%", pad=0.5)
                 cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal')
             else:
-                raise ValueError('colorbar must be either v or h. '
-                                 'Input value is {:s}'.format(repr(colorbar)))
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
+                                 .format(repr(colorbar)))
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
             cbar.ax.tick_params(labelsize=tick_labelsize)

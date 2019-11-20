@@ -3478,17 +3478,21 @@ class SHGrid(object):
 
     # ---- Plotting routines ----
     def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
-             title=None, titlesize=None, colorbar=None, cb_label=None,
-             grid=False, axes_labelsize=None, tick_labelsize=None, ax=None,
-             ax2=None, show=True, fname=None, **kwargs):
+             title=None, titlesize=None, colorbar=None, cmap='viridis',
+             cmap_limits=None, cb_triangles='neither', cb_label=None,
+             cb_tick_interval=None, grid=False, axes_labelsize=None,
+             tick_labelsize=None, ax=None, ax2=None, show=True, fname=None,
+             **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, title,
-                titlesize, colorbar, cb_label, grid, axes_labelsize,
-                tick_labelsize, ax, ax2, show, fname, **kwargs])
+        fig, ax = x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
+                          title, titlesize, colorbar, cmap, cmap_limits,
+                          cb_triangles, cb_label, cb_tick_interval, grid,
+                          axes_labelsize, tick_labelsize, ax, ax2, show,
+                          fname, **kwargs])
 
         Parameters
         ----------
@@ -3508,10 +3512,19 @@ class SHGrid(object):
         titlesize : int, optional, default = None
             The fontsize of the title.
         colorbar : str, optional, default = None
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the colormap used to plot the
+            data.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = None
@@ -3532,8 +3545,7 @@ class SHGrid(object):
             If present, and if axes is not specified, save the image to the
             specified file.
         kwargs : optional
-            Keyword arguements that will be sent to plt.imshow(), such as cmap,
-            vmin, and vmax.
+            Keyword arguements that will be sent to plt.imshow().
         """
         if tick_interval is None:
             tick_interval = [None, None]
@@ -3581,6 +3593,30 @@ class SHGrid(object):
             minor_yticks = _np.linspace(
                 -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
+        if cmap_limits is None:
+            vmin = self.min()
+            vmax = self.max()
+        else:
+            vmin = cmap_limits[0]
+            vmax = cmap_limits[1]
+
+        cb_ticks = None
+        if cb_tick_interval is not None:
+            if _np.sign(vmin) == -1.:
+                start = (abs(vmin) // cb_tick_interval) \
+                    * cb_tick_interval * _np.sign(vmin)
+            else:
+                start = (vmin // cb_tick_interval + 1) \
+                    * cb_tick_interval
+            if _np.sign(vmax) == -1.:
+                stop = (abs(vmax) // cb_tick_interval + 1) \
+                    * cb_tick_interval * _np.sign(vmax)
+            else:
+                stop = (vmax // cb_tick_interval) * cb_tick_interval
+            cb_ticks = _np.linspace(start, stop,
+                                    num=(stop-start)/cb_tick_interval+1,
+                                    endpoint=True)
+
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
         if tick_labelsize is None:
@@ -3596,10 +3632,13 @@ class SHGrid(object):
                                    minor_xticks=minor_xticks,
                                    minor_yticks=minor_yticks,
                                    colorbar=colorbar,
-                                   cb_label=cb_label, grid=grid,
+                                   cb_triangles=cb_triangles,
+                                   cb_label=cb_label,
+                                   cb_ticks=cb_ticks, grid=grid,
                                    axes_labelsize=axes_labelsize,
                                    tick_labelsize=tick_labelsize,
-                                   title=title, titlesize=titlesize, **kwargs)
+                                   title=title, titlesize=titlesize,
+                                   cmap=cmap, vmin=vmin, vmax=vmax, **kwargs)
         else:
             if self.kind == 'complex':
                 if (ax is None and ax2 is not None) or (ax2 is None and
@@ -3608,10 +3647,12 @@ class SHGrid(object):
                                      'both optional arguments axes and axes2.')
             self._plot(xticks=xticks, yticks=yticks, minor_xticks=minor_xticks,
                        minor_yticks=minor_yticks, ax=ax, ax2=ax2,
-                       colorbar=colorbar, cb_label=cb_label, grid=grid,
+                       colorbar=colorbar, cb_triangles=cb_triangles,
+                       cb_label=cb_label, cb_ticks=cb_ticks, grid=grid,
                        axes_labelsize=axes_labelsize,
                        tick_labelsize=tick_labelsize, title=title,
-                       titlesize=titlesize, **kwargs)
+                       titlesize=titlesize, cmap=cmap, vmin=vmin, vmax=vmax,
+                       **kwargs)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -3627,7 +3668,7 @@ class SHGrid(object):
                 center=None, grid=[30, 30], annotate=[None, None],
                 ticks=[None, None], axes='WSen', title=None,
                 cmap='viridis', cmap_reverse=False, cmap_continuous=False,
-                limits=None, colorbar=None, cb_triangles='bf', cb_label=None,
+                limits=None, colorbar=None, cb_triangles='both', cb_label=None,
                 cb_ylabel=None, cb_annotate=True, cb_annotate_interval=None,
                 cb_ticks=True, cb_tick_interval=None, horizon=60,
                 offset=[None, None], fname=None):
@@ -3701,14 +3742,13 @@ class SHGrid(object):
             If True, create a continuous colormap. Default behavior is to
             use contant colors for each interval.
         limits : list, optional, default = [self.min(), self.max()]
-            A list containing the lower and upper limits of the data to be
-            used with the color map, and optionally an interval.
+            Set the lower and upper limits of the colormap used to plot the
+            data, and optionally an interval.
         colorbar : str, optional, default = None
-            If 'h' or 'v', plot a horizontal or vertical colorbar,
-            respectively.
-        cb_triangles : str, optional, default = 'bf'
-            Add triangles to the edges of the colorbar for background 'b'
-            and/or foreground 'f' colors.
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cb_triangles : str, optional, default = 'both'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
@@ -3834,11 +3874,22 @@ class SHGrid(object):
             elif colorbar.lower()[0] == 'h':
                 position = "JBC+h"
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'.format(repr(colorbar)))
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
+                                 .format(repr(colorbar)))
             if cb_triangles is not None:
-                position += '+e' + cb_triangles
-
+                if cb_triangles == 'neither':
+                    pass
+                elif cb_triangles == 'both':
+                    position += '+ebf'
+                elif cb_triangles == 'min':
+                    position += '+eb'
+                elif cb_triangles == 'max':
+                    position += '+ef'
+                else:
+                    raise ValueError("cb_triangles must be 'neither', 'both' "
+                                     "'min' or 'max'. Input value is {:s}."
+                                     .format(repr(cb_triangles)))
             cb_str = []
             x_str = 'x'
             if cb_label is not None:
@@ -4022,8 +4073,9 @@ class DHRealGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
               xlabel='Longitude', ylabel='Latitude', ax=None, ax2=None,
-              colorbar=None, cb_label=None, grid=False, axes_labelsize=None,
-              tick_labelsize=None, title=None, titlesize=None, **kwargs):
+              colorbar=None, cb_triangles=None, cb_label=None, cb_ticks=None,
+              grid=False, axes_labelsize=None, tick_labelsize=None, title=None,
+              titlesize=None, cmap=None, vmin=None, vmax=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
 
         if ax is None:
@@ -4033,8 +4085,8 @@ class DHRealGrid(SHGrid):
                 elif colorbar.lower()[0] == 'v':
                     scale = 0.5
                 else:
-                    raise ValueError('colorbar must be either h or v. '
-                                     'Input value is {:s}'
+                    raise ValueError("colorbar must be either 'horizontal' or "
+                                     "'vertical'. Input value is {:s}."
                                      .format(repr(colorbar)))
             else:
                 scale = 0.55
@@ -4049,7 +4101,8 @@ class DHRealGrid(SHGrid):
         yticklabels = [str(int(y)) + deg for y in yticks]
 
         cim = axes.imshow(self.data, origin='upper',
-                          extent=(0., 360., -90., 90.), **kwargs)
+                          extent=(0., 360., -90., 90.), cmap=cmap, vmin=vmin,
+                          vmax=vmax, **kwargs)
         axes.set(xticks=xticks, yticks=yticks)
         axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         axes.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4065,16 +4118,21 @@ class DHRealGrid(SHGrid):
             if colorbar.lower()[0] == 'v':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("right", size="2.5%", pad=0.15)
-                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical')
+                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical',
+                                     extend=cb_triangles)
             elif colorbar.lower()[0] == 'h':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("bottom", size="5%", pad=0.5)
-                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal')
+                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal',
+                                     extend=cb_triangles)
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'.format(repr(colorbar)))
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
+                                 .format(repr(colorbar)))
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
+            if cb_ticks is not None:
+                cbar.set_ticks(cb_ticks)
             cbar.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
@@ -4178,8 +4236,9 @@ class DHComplexGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
               xlabel='Longitude', ylabel='Latitude', ax=None, ax2=None,
-              colorbar=None, cb_label=None, grid=False, axes_labelsize=None,
-              tick_labelsize=None, title=None, titlesize=None, **kwargs):
+              colorbar=None, cb_triangles=None, cb_label=None, cb_ticks=None,
+              grid=False, axes_labelsize=None, tick_labelsize=None, title=None,
+              titlesize=None, cmap=None, vmin=None, vmax=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -4188,8 +4247,8 @@ class DHComplexGrid(SHGrid):
                 elif colorbar.lower()[0] == 'v':
                     scale = 1.1
                 else:
-                    raise ValueError('colorbar must be either h or v. '
-                                     'Input value is {:s}'
+                    raise ValueError("colorbar must be either 'horizontal' or "
+                                     "'vertical'. Input value is {:s}."
                                      .format(repr(colorbar)))
             else:
                 scale = 1.2
@@ -4207,7 +4266,8 @@ class DHComplexGrid(SHGrid):
         yticklabels = [str(int(y)) + deg for y in yticks]
 
         cim1 = axreal.imshow(self.data.real, origin='upper',
-                             extent=(0., 360., -90., 90.), **kwargs)
+                             extent=(0., 360., -90., 90.), cmap=cmap,
+                             vmin=vmin, vmax=vmax, **kwargs)
         axreal.set(xticks=xticks, yticks=yticks)
         axreal.set_xlabel(xlabel, fontsize=axes_labelsize)
         axreal.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4219,7 +4279,8 @@ class DHComplexGrid(SHGrid):
         if title is not None:
             axreal.set_title(title[0], fontsize=titlesize)
         cim2 = axcomplex.imshow(self.data.imag, origin='upper',
-                                extent=(0., 360., -90., 90.), **kwargs)
+                                extent=(0., 360., -90., 90.), cmap=cmap,
+                                vmin=vmin, vmax=vmax, **kwargs)
         axcomplex.set(xticks=xticks, yticks=yticks)
         axcomplex.set_xlabel(xlabel, fontsize=axes_labelsize)
         axcomplex.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4235,23 +4296,31 @@ class DHComplexGrid(SHGrid):
             if colorbar.lower()[0] == 'v':
                 divider1 = _make_axes_locatable(axreal)
                 cax1 = divider1.append_axes("right", size="2.5%", pad=0.05)
-                cbar1 = _plt.colorbar(cim1, cax=cax1, orientation='vertical')
+                cbar1 = _plt.colorbar(cim1, cax=cax1, orientation='vertical',
+                                      extend=cb_triangles)
                 divider2 = _make_axes_locatable(axcomplex)
                 cax2 = divider2.append_axes("right", size="2.5%", pad=0.05)
-                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='vertical')
+                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='vertical',
+                                      extend=cb_triangles)
             elif colorbar.lower()[0] == 'h':
                 divider1 = _make_axes_locatable(axreal)
                 cax1 = divider1.append_axes("bottom", size="5%", pad=0.5)
-                cbar1 = _plt.colorbar(cim1, cax=cax1, orientation='horizontal')
+                cbar1 = _plt.colorbar(cim1, cax=cax1, orientation='horizontal',
+                                      extend=cb_triangles)
                 divider2 = _make_axes_locatable(axcomplex)
                 cax2 = divider2.append_axes("bottom", size="5%", pad=0.5)
-                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='horizontal')
+                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='horizontal',
+                                      extend=cb_triangles)
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'.format(repr(colorbar)))
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
+                                 .format(repr(colorbar)))
             if cb_label is not None:
                 cbar1.set_label(cb_label, fontsize=axes_labelsize)
                 cbar2.set_label(cb_label, fontsize=axes_labelsize)
+            if cb_ticks is not None:
+                cbar1.set_ticks(cb_ticks)
+                cbar2.set_ticks(cb_ticks)
             cbar1.ax.tick_params(labelsize=tick_labelsize)
             cbar2.ax.tick_params(labelsize=tick_labelsize)
 
@@ -4345,9 +4414,10 @@ class GLQRealGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
               xlabel='GLQ longitude index', ylabel='GLQ latitude index',
-              ax=None, ax2=None, colorbar=None, cb_label=None, grid=False,
-              axes_labelsize=None, tick_labelsize=None, title=None,
-              titlesize=None, **kwargs):
+              ax=None, ax2=None, colorbar=None, cb_triangles=None,
+              cb_label=None, cb_ticks=None, grid=False, axes_labelsize=None,
+              tick_labelsize=None, title=None, titlesize=None, cmap=None,
+              vmin=None, vmax=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -4356,8 +4426,8 @@ class GLQRealGrid(SHGrid):
                 elif colorbar.lower()[0] == 'v':
                     scale = 0.5
                 else:
-                    raise ValueError('colorbar must be either h or v. '
-                                     'Input value is {:s}'
+                    raise ValueError("colorbar must be either 'horizontal' or "
+                                     "'vertical'. Input value is {:s}."
                                      .format(repr(colorbar)))
             else:
                 scale = 0.55
@@ -4367,7 +4437,8 @@ class GLQRealGrid(SHGrid):
         else:
             axes = ax
 
-        cim = axes.imshow(self.data, origin='upper', **kwargs)
+        cim = axes.imshow(self.data, origin='upper', cmap=cmap, vmin=vmin,
+                          vmax=vmax, **kwargs)
         axes.set(xticks=xticks, yticks=yticks)
         axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         axes.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4383,16 +4454,21 @@ class GLQRealGrid(SHGrid):
             if colorbar.lower()[0] == 'v':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("right", size="2.5%", pad=0.15)
-                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical')
+                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical',
+                                     extend=cb_triangles)
             elif colorbar.lower()[0] == 'h':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("bottom", size="5%", pad=0.5)
-                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal')
+                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal',
+                                     extend=cb_triangles)
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'.format(repr(colorbar)))
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
+                                 .format(repr(colorbar)))
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
+            if cb_ticks is not None:
+                cbar.set_ticks(cb_ticks)
             cbar.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
@@ -4480,9 +4556,10 @@ class GLQComplexGrid(SHGrid):
 
     def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
               xlabel='GLQ longitude index', ylabel='GLQ latitude index',
-              ax=None, ax2=None, colorbar=None, cb_label=None,
-              grid=False, axes_labelsize=None, tick_labelsize=None, title=None,
-              titlesize=None, **kwargs):
+              ax=None, ax2=None, colorbar=None, cb_triangles=None,
+              cb_label=None, cb_ticks=None, grid=False, axes_labelsize=None,
+              tick_labelsize=None, title=None, titlesize=None, cmap=None,
+              vmin=None, vmax=None, **kwargs):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -4491,8 +4568,8 @@ class GLQComplexGrid(SHGrid):
                 elif colorbar.lower()[0] == 'v':
                     scale = 1.1
                 else:
-                    raise ValueError('colorbar must be either h or v. '
-                                     'Input value is {:s}'
+                    raise ValueError("colorbar must be either 'horizontal' or "
+                                     "'vertical'. Input value is {:s}."
                                      .format(repr(colorbar)))
             else:
                 scale = 1.2
@@ -4506,7 +4583,8 @@ class GLQComplexGrid(SHGrid):
             axreal = ax
             axcomplex = ax2
 
-        cim1 = axreal.imshow(self.data.real, origin='upper', **kwargs)
+        cim1 = axreal.imshow(self.data.real, origin='upper', cmap=cmap,
+                             vmin=vmin, vmax=vmax, **kwargs)
         axreal.set(title='Real component', xticks=xticks, yticks=yticks)
         axreal.set_xlabel(xlabel, fontsize=axes_labelsize)
         axreal.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4517,7 +4595,8 @@ class GLQComplexGrid(SHGrid):
         axreal.grid(grid, which='major')
         if title is not None:
             axreal.set_title(title[0], fontsize=titlesize)
-        cim2 = axcomplex.imshow(self.data.imag, origin='upper', **kwargs)
+        cim2 = axcomplex.imshow(self.data.imag, origin='upper', cmap=cmap,
+                                vmin=vmin, vmax=vmax, **kwargs)
         axcomplex.set(title='Imaginary component', xticks=xticks,
                       yticks=yticks)
         axcomplex.set_xlabel(xlabel, fontsize=axes_labelsize)
@@ -4534,27 +4613,31 @@ class GLQComplexGrid(SHGrid):
             if colorbar.lower()[0] == 'v':
                 divider1 = _make_axes_locatable(axreal)
                 cax1 = divider1.append_axes("right", size="2.5%", pad=0.05)
-                cbar1 = _plt.colorbar(cim1, cax=cax1,
-                                      orientation='vertical')
+                cbar1 = _plt.colorbar(cim1, cax=cax1, orientation='vertical',
+                                      extend=cb_triangles)
                 divider2 = _make_axes_locatable(axcomplex)
                 cax2 = divider2.append_axes("right", size="2.5%", pad=0.05)
-                cbar2 = _plt.colorbar(cim2, cax=cax2,
-                                      orientation='vertical')
+                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='vertical',
+                                      extend=cb_triangles)
             elif colorbar.lower()[0] == 'h':
                 divider1 = _make_axes_locatable(axreal)
                 cax1 = divider1.append_axes("bottom", size="5%", pad=0.5)
-                cbar1 = _plt.colorbar(cim1, cax=cax1,
-                                      orientation='horizontal')
+                cbar1 = _plt.colorbar(cim1, cax=cax1, orientation='horizontal',
+                                      extend=cb_triangles)
                 divider2 = _make_axes_locatable(axcomplex)
                 cax2 = divider2.append_axes("bottom", size="5%", pad=0.5)
-                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='horizontal')
+                cbar2 = _plt.colorbar(cim2, cax=cax2, orientation='horizontal',
+                                      extend=cb_triangles)
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
                                  .format(repr(colorbar)))
             if cb_label is not None:
                 cbar1.set_label(cb_label, fontsize=axes_labelsize)
                 cbar2.set_label(cb_label, fontsize=axes_labelsize)
+            if cb_ticks is not None:
+                cbar1.set_ticks(cb_ticks)
+                cbar2.set_ticks(cb_ticks)
             cbar1.ax.tick_params(labelsize=tick_labelsize)
             cbar2.ax.tick_params(labelsize=tick_labelsize)
 

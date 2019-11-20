@@ -135,9 +135,8 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$B_r$, nT'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -201,9 +200,8 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$B_\\theta$, nT'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -266,9 +264,8 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$B_\phi$, nT'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -332,9 +329,8 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$|B|$, nT'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -399,9 +395,8 @@ class SHMagGrid(object):
             The fontsize of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = 'potential, nT m'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -461,9 +456,8 @@ class SHMagGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : str, optional, default = 'h'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'horizontal'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -487,8 +481,9 @@ class SHMagGrid(object):
             elif colorbar.lower()[0] == 'v':
                 scale = 0.5
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'.format(repr(colorbar)))
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
+                                 .format(repr(colorbar)))
         else:
             scale = 0.6
         figsize = (_mpl.rcParams['figure.figsize'][0],

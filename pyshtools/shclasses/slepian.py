@@ -295,8 +295,8 @@ class Slepian(object):
             nmax = (self.lmax+1)**2
         elif nmax is not None and nmax > (self.lmax+1)**2:
             raise ValueError(
-                "nmax must be less than or equal to (lmax+1)**2 " +
-                "where lmax is {:s}. Input value is {:s}"
+                "nmax must be less than or equal to (lmax+1)**2 "
+                "where lmax is {:s}. Input value is {:s}."
                 .format(repr(self.lmax), repr(nmax))
                 )
 
@@ -593,8 +593,8 @@ class Slepian(object):
             if lmax > self.lmax:
                 raise ValueError('lmax must be less than or equal to '
                                  'self.lmax. Input value is {:s}, and '
-                                 'self.lmax is {:s}'.format(repr(lmax),
-                                                            repr(self.lmax)))
+                                 'self.lmax is {:s}.'.format(repr(lmax),
+                                                             repr(self.lmax)))
 
         return self._variance(power, k, lmax=lmax)
 
@@ -958,8 +958,7 @@ class Slepian(object):
         title_labelsize : int, optional, default = None
             The font size for the title.
         colorbar : str, optional, default = None
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         normalize : bool, optional, default = False
@@ -987,8 +986,8 @@ class Slepian(object):
                 elif colorbar.lower()[0] == 'v':
                     scale = 0.85
                 else:
-                    raise ValueError('colorbar must be either v or h. '
-                                     'Input value is {:s}'
+                    raise ValueError("colorbar must be either 'horizontal' or "
+                                     "'vertical'. Input value is {:s}."
                                      .format(repr(colorbar)))
             else:
                 scale = 1

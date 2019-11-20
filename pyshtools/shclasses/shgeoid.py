@@ -129,9 +129,8 @@ class SHGeoid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = None
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = 'geoid, m'
             Text label for the colorbar.
         grid : bool, optional, default = False
