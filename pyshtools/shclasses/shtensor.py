@@ -142,9 +142,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$V_{xx}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -204,9 +203,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$V_{yy}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -266,9 +264,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$V_{zz}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -328,9 +325,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$V_{xy}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -390,9 +386,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$V_{yx}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -452,9 +447,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$V_{xz}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -514,9 +508,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$V_{zx}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -576,9 +569,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$V_{yz}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -638,9 +630,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$V_{zy}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -700,9 +691,8 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : str, optional, default = 'h'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'horizontal'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -726,8 +716,8 @@ class Tensor(object):
             elif colorbar.lower()[0] == 'v':
                 scale = 0.45
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
                                  .format(repr(colorbar)))
         else:
             scale = 0.55
@@ -837,9 +827,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = 'Tr $V_{ij}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -904,9 +893,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$I_1$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -971,9 +959,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = 'det $V_{ij}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1039,9 +1026,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1103,9 +1089,8 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : str, optional, default = 'h'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'horizontal'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1129,8 +1114,8 @@ class Tensor(object):
             elif colorbar.lower()[0] == 'v':
                 scale = 0.5
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
                                  .format(repr(colorbar)))
         else:
             scale = 0.6
@@ -1202,9 +1187,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$\lambda_1$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1267,9 +1251,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$\lambda_2$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1333,9 +1316,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$\lambda_3$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1398,9 +1380,8 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1424,8 +1405,8 @@ class Tensor(object):
             elif colorbar.lower()[0] == 'v':
                 scale = 1.4
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
                                  .format(repr(colorbar)))
         else:
             scale = 1.65
@@ -1487,9 +1468,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$\lambda_{h1}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1552,9 +1532,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$\lambda_{h2}$, Eotvos$^{-1}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1618,9 +1597,8 @@ class Tensor(object):
             Label for the latitude axis.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = '$\lambda_{hh}$'
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1684,9 +1662,8 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude'
             Label for the latitude axis.
-        colorbar : str, optional, default = 'v'
-            If 'v' or 'h', plot a vertical or horizontal colorbar,
-            respectively.
+        colorbar : str, optional, default = 'vertical'
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         grid : bool, optional, default = False
@@ -1710,8 +1687,8 @@ class Tensor(object):
             elif colorbar.lower()[0] == 'v':
                 scale = 1.4
             else:
-                raise ValueError('colorbar must be either h or v. '
-                                 'Input value is {:s}'
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
                                  .format(repr(colorbar)))
         else:
             scale = 1.65
