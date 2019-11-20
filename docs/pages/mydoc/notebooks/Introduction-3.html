@@ -13384,7 +13384,7 @@ height=491
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Individual maps can be plotted using the corresponding methods <code>plot_rad()</code>, <code>plot_theta()</code>, <code>plot_phi()</code>, <code>plot_total()</code>, and <code>plot_pot()</code>. Here, we plot the total gravity disturbance, and use the parameters <code>vmin</code>, <code>vmax</code>, and <code>cmap</code> to set the minimum and maximum values and color scale, respectively:</p>
+<p>Individual maps can be plotted using the corresponding methods <code>plot_rad()</code>, <code>plot_theta()</code>, <code>plot_phi()</code>, <code>plot_total()</code>, and <code>plot_pot()</code>. Here, we plot the total gravity disturbance, and use the parameters <code>cmap</code> and <code>cmap_limits</code> to set the minimum and maximum values and color scale, respectively:</p>
 
 </div>
 </div>
@@ -13394,7 +13394,7 @@ height=491
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig3</span><span class="p">,</span> <span class="n">ax3</span> <span class="o">=</span> <span class="n">grav</span><span class="o">.</span><span class="n">plot_total</span><span class="p">(</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">400</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu_r&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig3</span><span class="p">,</span> <span class="n">ax3</span> <span class="o">=</span> <span class="n">grav</span><span class="o">.</span><span class="n">plot_total</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu_r&#39;</span><span class="p">,</span> <span class="n">cmap_limits</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">400</span><span class="p">,</span> <span class="mi">600</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13487,7 +13487,7 @@ height=300
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mars_geoid_ellipsoid</span> <span class="o">=</span> <span class="n">clm</span><span class="o">.</span><span class="n">geoid</span><span class="p">(</span><span class="n">u0</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="mi">719</span><span class="p">)</span>
-<span class="n">fig5</span><span class="p">,</span> <span class="n">ax5</span> <span class="o">=</span> <span class="n">mars_geoid_ellipsoid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">750</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu_r&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig5</span><span class="p">,</span> <span class="n">ax5</span> <span class="o">=</span> <span class="n">mars_geoid_ellipsoid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu_r&#39;</span><span class="p">,</span> <span class="n">cmap_limits</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">750</span><span class="p">,</span> <span class="mi">1200</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13535,7 +13535,7 @@ height=300
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">shape</span> <span class="o">=</span> <span class="n">pyshtools</span><span class="o">.</span><span class="n">SHCoeffs</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s1">&#39;../ExampleDataFiles/MarsTopo719.shape&#39;</span><span class="p">)</span>
 <span class="n">shape_grid</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="s1">&#39;DH2&#39;</span><span class="p">)</span>
 <span class="n">topo_grid</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape_grid</span> <span class="o">-</span> <span class="n">mars_geoid</span><span class="o">.</span><span class="n">a</span> <span class="o">-</span> <span class="n">mars_geoid</span><span class="o">.</span><span class="n">geoid</span><span class="p">)</span><span class="o">/</span><span class="mf">1.e3</span>
-<span class="n">fig6</span><span class="p">,</span> <span class="n">ax6</span> <span class="o">=</span> <span class="n">topo_grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colorbar</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">cb_label</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu_r&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">8.5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">8.</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig6</span><span class="p">,</span> <span class="n">ax6</span> <span class="o">=</span> <span class="n">topo_grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colorbar</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">cb_label</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu_r&#39;</span><span class="p">,</span> <span class="n">cmap_limits</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">8.5</span><span class="p">,</span> <span class="mf">8.</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13698,7 +13698,7 @@ height=303
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="n">bouguer</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">lmax</span><span class="o">=</span><span class="mi">95</span><span class="p">)</span>
-<span class="n">fig8</span><span class="p">,</span> <span class="n">ax8</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">plot_vxx</span><span class="p">(</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">25</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig8</span><span class="p">,</span> <span class="n">ax8</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">plot_vxx</span><span class="p">(</span><span class="n">cmap_limits</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13743,7 +13743,7 @@ height=295
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig9</span><span class="p">,</span> <span class="n">ax9</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">plot_eigs</span><span class="p">(</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">30</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig9</span><span class="p">,</span> <span class="n">ax9</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">plot_eigs</span><span class="p">(</span><span class="n">cmap_limits</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13788,8 +13788,8 @@ height=883
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig10</span><span class="p">,</span> <span class="n">ax10</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">plot_eigh1</span><span class="p">(</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">fig11</span><span class="p">,</span> <span class="n">ax11</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">plot_eigh2</span><span class="p">(</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig10</span><span class="p">,</span> <span class="n">ax10</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">plot_eigh1</span><span class="p">(</span><span class="n">cmap_limits</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig11</span><span class="p">,</span> <span class="n">ax11</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">plot_eigh2</span><span class="p">(</span><span class="n">cmap_limits</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
     </div>
