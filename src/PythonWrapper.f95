@@ -1551,8 +1551,7 @@
     end subroutine pyComputeDMap
 
     subroutine pyCurve2Mask(exitstatus,dhgrid,n,sampling,profile,nprofile,NP,&
-                            centralmeridian,profile_d0,profile_d1,dhgrid_d0,&
-                            dhgrid_d1)
+                            profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
         use shtools, only: Curve2Mask
         use ftypes
         implicit none
@@ -1567,9 +1566,7 @@
         real(dp),dimension(profile_d0,profile_d1),intent(in) :: profile
         integer,intent(in) :: nprofile
         integer,intent(in) :: NP
-        integer,intent(in) :: centralmeridian
         call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,&
-                        centralmeridian=centralmeridian,&
                         exitstatus=exitstatus)
     end subroutine pyCurve2Mask
 
