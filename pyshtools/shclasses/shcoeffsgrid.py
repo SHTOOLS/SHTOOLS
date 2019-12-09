@@ -222,7 +222,7 @@ class SHCoeffs(object):
             kind = 'real'
 
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
@@ -312,7 +312,7 @@ class SHCoeffs(object):
         """
         # check if all arguments are correct
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
@@ -567,7 +567,7 @@ class SHCoeffs(object):
         and clon.
         """
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
 
@@ -591,7 +591,7 @@ class SHCoeffs(object):
 
         if (clat is None and clon is not None) or \
                 (clat is not None and clon is None):
-            raise ValueError('clat and clon must both be input. ' +
+            raise ValueError('clat and clon must both be input. '
                              'clat = {:s}, clon = {:s}'
                              .format(repr(clat), repr(clon)))
 
@@ -1252,7 +1252,7 @@ class SHCoeffs(object):
         using the angles (-gamma, -beta, -alpha).
         """
         if type(convention) != str:
-            raise ValueError('convention must be a string. ' +
+            raise ValueError('convention must be a string. '
                              'Input type was {:s}'
                              .format(str(type(convention))))
 
@@ -1341,7 +1341,7 @@ class SHCoeffs(object):
 
         # check argument consistency
         if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
+            raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
@@ -1487,8 +1487,7 @@ class SHCoeffs(object):
                 lmax_calc = lmax
 
             if type(grid) != str:
-                raise ValueError('grid must be a string. ' +
-                                 'Input type was {:s}'
+                raise ValueError('grid must be a string. Input type was {:s}'
                                  .format(str(type(grid))))
 
             if grid.upper() in ('DH', 'DH1'):
@@ -1502,7 +1501,7 @@ class SHCoeffs(object):
                                           lmax_calc=lmax_calc)
             else:
                 raise ValueError(
-                    "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
+                    "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. "
                     "Input value was {:s}".format(repr(grid)))
 
             return gridout
@@ -2375,7 +2374,7 @@ class SHRealCoeffs(SHCoeffs):
             lonin = _np.rad2deg(lon)
 
         if type(lat) is not type(lon):
-            raise ValueError('lat and lon must be of the same type. ' +
+            raise ValueError('lat and lon must be of the same type. '
                              'Input types are {:s} and {:s}'
                              .format(repr(type(lat)), repr(type(lon))))
 
@@ -2402,8 +2401,8 @@ class SHRealCoeffs(SHCoeffs):
                                            csphase=self.csphase))
             return values
         else:
-            raise ValueError('lat and lon must be either an int, float, ' +
-                             'ndarray, or list. ' +
+            raise ValueError('lat and lon must be either an int, float, '
+                             'ndarray, or list. '
                              'Input types are {:s} and {:s}'
                              .format(repr(type(lat)), repr(type(lon))))
 
@@ -2450,16 +2449,16 @@ class SHComplexCoeffs(SHCoeffs):
         if check:
             for l in self.degrees():
                 if self.coeffs[0, l, 0] != self.coeffs[0, l, 0].conjugate():
-                    raise RuntimeError('Complex coefficients do not ' +
-                                       'correspond to a real field. ' +
+                    raise RuntimeError('Complex coefficients do not '
+                                       'correspond to a real field. '
                                        'l = {:d}, m = 0: {:e}'
                                        .format(l, self.coeffs[0, l, 0]))
                 for m in _np.arange(1, l + 1):
                     if m % 2 == 1:
                         if (self.coeffs[0, l, m] != -
                                 self.coeffs[1, l, m].conjugate()):
-                            raise RuntimeError('Complex coefficients do not ' +
-                                               'correspond to a real field. ' +
+                            raise RuntimeError('Complex coefficients do not '
+                                               'correspond to a real field. '
                                                'l = {:d}, m = {:d}: {:e}, {:e}'
                                                .format(
                                                    l, m, self.coeffs[0, l, 0],
@@ -2467,8 +2466,8 @@ class SHComplexCoeffs(SHCoeffs):
                     else:
                         if (self.coeffs[0, l, m] !=
                                 self.coeffs[1, l, m].conjugate()):
-                            raise RuntimeError('Complex coefficients do not ' +
-                                               'correspond to a real field. ' +
+                            raise RuntimeError('Complex coefficients do not '
+                                               'correspond to a real field. '
                                                'l = {:d}, m = {:d}: {:e}, {:e}'
                                                .format(
                                                    l, m, self.coeffs[0, l, 0],
@@ -2602,7 +2601,7 @@ class SHComplexCoeffs(SHCoeffs):
             lonin = _np.rad2deg(lon)
 
         if type(lat) is not type(lon):
-            raise ValueError('lat and lon must be of the same type. ' +
+            raise ValueError('lat and lon must be of the same type. '
                              'Input types are {:s} and {:s}'
                              .format(repr(type(lat)), repr(type(lon))))
 
@@ -2629,8 +2628,8 @@ class SHComplexCoeffs(SHCoeffs):
                                             csphase=self.csphase))
             return values
         else:
-            raise ValueError('lat and lon must be either an int, float, ' +
-                             'ndarray, or list. ' +
+            raise ValueError('lat and lon must be either an int, float, '
+                             'ndarray, or list. '
                              'Input types are {:s} and {:s}'
                              .format(repr(type(lat)), repr(type(lon))))
 
@@ -2730,8 +2729,7 @@ class SHGrid(object):
             kind = 'real'
 
         if type(grid) != str:
-            raise ValueError('grid must be a string. ' +
-                             'Input type was {:s}'
+            raise ValueError('grid must be a string. Input type was {:s}'
                              .format(str(type(grid))))
 
         if grid.upper() not in set(['DH', 'GLQ']):
@@ -2835,12 +2833,11 @@ class SHGrid(object):
             If True, theta, clat, and clon are in degrees.
         """
         if type(grid) != str:
-            raise ValueError('grid must be a string. ' +
-                             'Input type was {:s}'
+            raise ValueError('grid must be a string. Input type was {:s}'
                              .format(str(type(grid))))
 
         if grid.upper() not in set(['DH', 'GLQ']):
-            raise ValueError("grid must be 'DH' or 'GLQ'. " +
+            raise ValueError("grid must be 'DH' or 'GLQ'. "
                              "Input value was {:s}".format(repr(grid)))
 
         if degrees is True:
@@ -2941,10 +2938,10 @@ class SHGrid(object):
         elif data.shape[1] == 2 * data.shape[0] - 1:
             grid = 'GLQ'
         else:
-            raise ValueError('Input grid must be dimensioned as ' +
-                             '(nlat, nlon). For DH grids, nlon = nlat or ' +
-                             'nlon = 2 * nlat. For GLQ grids, nlon = ' +
-                             '2 * nlat - 1. Input dimensions are nlat = ' +
+            raise ValueError('Input grid must be dimensioned as '
+                             '(nlat, nlon). For DH grids, nlon = nlat or '
+                             'nlon = 2 * nlat. For GLQ grids, nlon = '
+                             '2 * nlat - 1. Input dimensions are nlat = '
                              '{:d}, nlon = {:d}'.format(data.shape[0],
                                                         data.shape[1]))
 
@@ -2984,10 +2981,10 @@ class SHGrid(object):
         elif data_array.values.shape[1] == 2 * data_array.values.shape[0] - 1:
             grid = 'GLQ'
         else:
-            raise ValueError('Input grid must be dimensioned as ' +
-                             '(nlat, nlon). For DH grids, nlon = nlat or ' +
-                             'nlon = 2 * nlat. For GLQ grids, nlon = ' +
-                             '2 * nlat - 1. Input dimensions are nlat = ' +
+            raise ValueError('Input grid must be dimensioned as '
+                             '(nlat, nlon). For DH grids, nlon = nlat or '
+                             'nlon = 2 * nlat. For GLQ grids, nlon = '
+                             '2 * nlat - 1. Input dimensions are nlat = '
                              '{:d}, nlon = {:d}'.format(
                                  data_array.values.shape[0],
                                  data_array.values.shape[1]))
@@ -3172,7 +3169,7 @@ class SHGrid(object):
                 data = self.data + other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
-                raise ValueError('The two grids must be of the ' +
+                raise ValueError('The two grids must be of the '
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
@@ -3216,7 +3213,7 @@ class SHGrid(object):
                 data = other.data - self.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
-                raise ValueError('The two grids must be of the ' +
+                raise ValueError('The two grids must be of the '
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
@@ -3236,7 +3233,7 @@ class SHGrid(object):
                 data = self.data * other.data
                 return SHGrid.from_array(data, grid=self.grid)
             else:
-                raise ValueError('The two grids must be of the ' +
+                raise ValueError('The two grids must be of the '
                                  'same kind and have the same shape.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
@@ -3479,10 +3476,10 @@ class SHGrid(object):
     # ---- Plotting routines ----
     def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
              title=None, titlesize=None, colorbar=None, cmap='viridis',
-             cmap_limits=None, cb_triangles='neither', cb_label=None,
-             cb_tick_interval=None, grid=False, axes_labelsize=None,
-             tick_labelsize=None, ax=None, ax2=None, show=True, fname=None,
-             **kwargs):
+             cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
+             cb_label=None, cb_tick_interval=None, grid=False,
+             axes_labelsize=None, tick_labelsize=None, ax=None, ax2=None,
+             show=True, fname=None, **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
@@ -3490,9 +3487,9 @@ class SHGrid(object):
         -----
         fig, ax = x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
                           title, titlesize, colorbar, cmap, cmap_limits,
-                          cb_triangles, cb_label, cb_tick_interval, grid,
-                          axes_labelsize, tick_labelsize, ax, ax2, show,
-                          fname, **kwargs])
+                          cmap_reverse, b_triangles, cb_label,
+                          cb_tick_interval, grid, axes_labelsize,
+                          tick_labelsize, ax, ax2, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -3516,8 +3513,13 @@ class SHGrid(object):
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
-            Set the lower and upper limits of the colormap used to plot the
-            data.
+            Set the lower and upper limits of the data used by the colormap
+            when plotting, and optionally an interval for each color in the
+            colormap. If the interval is specified, the number of discreet
+            colors will be (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -3562,7 +3564,6 @@ class SHGrid(object):
         else:
             xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
                                   endpoint=True)
-
         if tick_interval[1] is None:
             yticks = []
         elif self.grid == 'GLQ':
@@ -3582,7 +3583,6 @@ class SHGrid(object):
         else:
             minor_xticks = _np.linspace(
                 0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
-
         if minor_tick_interval[1] is None:
             minor_yticks = []
         elif self.grid == 'GLQ':
@@ -3594,11 +3594,18 @@ class SHGrid(object):
                 -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
         if cmap_limits is None:
-            vmin = self.min()
-            vmax = self.max()
+            cmap_limits = [self.min(), self.max()]
+
+        vmin = cmap_limits[0]
+        vmax = cmap_limits[1]
+
+        if len(cmap_limits) == 3:
+            num = (cmap_limits[1] - cmap_limits[0]) / cmap_limits[2]
+            cmap = _mpl.cm.get_cmap(cmap, num)
         else:
-            vmin = cmap_limits[0]
-            vmax = cmap_limits[1]
+            cmap = _mpl.cm.get_cmap(cmap)
+        if cmap_reverse:
+            cmap = cmap.reversed()
 
         cb_ticks = None
         if cb_tick_interval is not None:
@@ -3643,7 +3650,7 @@ class SHGrid(object):
             if self.kind == 'complex':
                 if (ax is None and ax2 is not None) or (ax2 is None and
                                                         ax is not None):
-                    raise ValueError('For complex grids, one must specify ' +
+                    raise ValueError('For complex grids, one must specify '
                                      'both optional arguments axes and axes2.')
             self._plot(xticks=xticks, yticks=yticks, minor_xticks=minor_xticks,
                        minor_yticks=minor_yticks, ax=ax, ax2=ax2,
@@ -3667,11 +3674,12 @@ class SHGrid(object):
                 width=None, unit='i', central_latitude=0, central_longitude=0,
                 center=None, grid=[30, 30], annotate=[None, None],
                 ticks=[None, None], axes='WSen', title=None,
-                cmap='viridis', cmap_reverse=False, cmap_continuous=False,
-                limits=None, colorbar=None, cb_triangles='both', cb_label=None,
-                cb_ylabel=None, cb_annotate=True, cb_annotate_interval=None,
-                cb_ticks=True, cb_tick_interval=None, horizon=60,
-                offset=[None, None], fname=None):
+                cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                cmap_continuous=False, colorbar=None, cb_triangles='both',
+                cb_label=None, cb_ylabel=None, cb_annotate=True,
+                cb_annotate_interval=None, cb_ticks=True,
+                cb_tick_interval=None, horizon=60, offset=[None, None],
+                fname=None):
         """
         Plot projected data using the Generic Mapping Tools (pygmt).
 
@@ -3684,8 +3692,8 @@ class SHGrid(object):
         -----
         fig = x.plotgmt([fig, projection, region, width, unit,
                          central_latitude, central_longitude, center, grid,
-                         annotate, ticks, axes, title, cmap, cmap_reverse,
-                         cmap_continuous, limits, colorbar, cb_triangles,
+                         annotate, ticks, axes, title, cmap, cmap_limits,
+                         cmap_reverse, cmap_continuous, colorbar, cb_triangles,
                          cb_label, cb_ylabel, cb_annotate,
                          cb_annotate_interval, cb_ticks, cb_tick_interval,
                          horizon, offset, fname])
@@ -3735,15 +3743,15 @@ class SHGrid(object):
             The title to be displayed above the plot.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap
+            when plotting, and optionally an interval for each color.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
         cmap_continuous : bool, optional, default = False
             If True, create a continuous colormap. Default behavior is to
             use contant colors for each interval.
-        limits : list, optional, default = [self.min(), self.max()]
-            Set the lower and upper limits of the colormap used to plot the
-            data, and optionally an interval.
         colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_triangles : str, optional, default = 'both'
@@ -3863,8 +3871,8 @@ class SHGrid(object):
             axes += '+t"{:s}"'.format(title)
         frame = [framex, framey, axes]
 
-        if limits is None:
-            limits = [self.min(), self.max()]
+        if cmap_limits is None:
+            cmap_limits = [self.min(), self.max()]
 
         position = None
         cb_str = None
@@ -3920,7 +3928,8 @@ class SHGrid(object):
         else:
             figure = fig
 
-        figure = self._plot_pygmt(fig=figure, limits=limits, cmap=cmap,
+        figure = self._plot_pygmt(fig=figure, cmap=cmap,
+                                  cmap_limits=cmap_limits,
                                   cmap_reverse=cmap_reverse,
                                   cmap_continuous=cmap_continuous,
                                   region=region, proj_str=proj_str,
@@ -4013,7 +4022,7 @@ class DHRealGrid(SHGrid):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
-            raise ValueError('Input arrays for DH grids must have an even ' +
+            raise ValueError('Input arrays for DH grids must have an even '
                              'number of latitudes: nlat = {:d}'
                              .format(self.nlat)
                              )
@@ -4138,13 +4147,13 @@ class DHRealGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, fig, limits, cmap, cmap_reverse, cmap_continuous,
-                    region, proj_str, frame, colorbar, position, cb_str,
-                    xshift, yshift):
+    def _plot_pygmt(self, fig, cmap, cmap_limits, cmap_reverse,
+                    cmap_continuous, region, proj_str, frame, colorbar,
+                    position, cb_str, xshift, yshift):
         """
         Plot projected data using pygmt.
         """
-        _pygmt.makecpt(series=limits, cmap=cmap, reverse=cmap_reverse,
+        _pygmt.makecpt(series=cmap_limits, cmap=cmap, reverse=cmap_reverse,
                        continuous=cmap_continuous)
         fig.grdimage(self.to_xarray(), region=region, projection=proj_str,
                      frame=frame, X=xshift, Y=yshift)
@@ -4172,7 +4181,7 @@ class DHComplexGrid(SHGrid):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
-            raise ValueError('Input arrays for DH grids must have an even ' +
+            raise ValueError('Input arrays for DH grids must have an even '
                              'number of latitudes: nlat = {:d}'
                              .format(self.nlat)
                              )
