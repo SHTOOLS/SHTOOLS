@@ -298,8 +298,8 @@ class SHCoeffs(object):
         seed : int, optional, default = None
             Set the seed for the numpy random number generator.
 
-        Description
-        -----------
+        Notes
+        -----
         This routine returns a random realization of spherical harmonic
         coefficients obtained from a normal distribution. The variance of
         each coefficient at degree l is equal to the total power at degree
@@ -441,8 +441,8 @@ class SHCoeffs(object):
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
-        Description
-        -----------
+        Notes
+        -----
         If format='shtools', spherical harmonic coefficients will be read from
         a text file. The optional parameter `skip` specifies how many lines
         should be skipped before attempting to parse the file, the optional
@@ -556,8 +556,8 @@ class SHCoeffs(object):
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
 
-        Description
-        -----------
+        Notes
+        -----
         The spherical harmonic coefficients are normalized such that the
         average value of the function is equal to 1. To rotate the cap to a
         specified latitude and longitude, specify the optional parameters clat
@@ -678,8 +678,8 @@ class SHCoeffs(object):
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
-        Description
-        -----------
+        Notes
+        -----
         If format='shtools', the coefficients will be written to an ascii
         formatted file. The first line of the file is an optional user provided
         header line, and the spherical harmonic coefficients are then listed,
@@ -735,8 +735,8 @@ class SHCoeffs(object):
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will return an array of the spherical harmonic coefficients
         using a different normalization and Condon-Shortley phase convention,
         and a different maximum spherical harmonic degree. If the maximum
@@ -1026,8 +1026,8 @@ class SHCoeffs(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
 
-        Description
-        -----------
+        Notes
+        -----
         This method returns either the power spectrum, energy spectrum, or
         l2-norm spectrum. Total power is defined as the integral of the
         function squared over all space, divided by the area the function
@@ -1086,8 +1086,8 @@ class SHCoeffs(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
 
-        Description
-        -----------
+        Notes
+        -----
         This method returns either the cross-power spectrum, cross-energy
         spectrum, or l2-cross-norm spectrum. Total cross-power is defined as
         the integral of the function times the conjugate of clm over all space,
@@ -1144,8 +1144,8 @@ class SHCoeffs(object):
             The maximum spherical harmonic degree to use when calculating the
             volume.
 
-        Description
-        -----------
+        Notes
+        -----
         If the function is the real shape of an object, this method will
         calculate the volume of the body exactly by integration. This routine
         raises the function to the nth power, with n from 1 to 3, and
@@ -1206,8 +1206,8 @@ class SHCoeffs(object):
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will take the spherical harmonic coefficients of a
         function, rotate the coordinate frame by the three Euler anlges, and
         output the spherical harmonic coefficients of the new function. If
@@ -1315,8 +1315,8 @@ class SHCoeffs(object):
             When converting complex coefficients to real coefficients, if True,
             check if function is entirely real.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will return a new class instance of the spherical
         harmonic coefficients using a different normalization and
         Condon-Shortley phase convention. The coefficients can be converted
@@ -1443,8 +1443,8 @@ class SHCoeffs(object):
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
 
-        Description
-        -----------
+        Notes
+        -----
         This method either (1) evaluates the spherical harmonic coefficients on
         a global grid and returns an SHGrid class instance, or (2) evaluates
         the spherical harmonic coefficients for a list of (co)latitude and
@@ -1557,8 +1557,8 @@ class SHCoeffs(object):
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots either the power spectrum, energy spectrum, or
         l2-norm spectrum. Total power is defined as the integral of the
         function squared over all space, divided by the area the function
@@ -1705,8 +1705,8 @@ class SHCoeffs(object):
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots either the cross-power spectrum, cross-energy
         spectrum, or l2-cross-norm spectrum. Total cross-power is defined as
         the integral of the function times the conjugate of clm over all space,
@@ -1855,8 +1855,8 @@ class SHCoeffs(object):
             If present, and if axes is not specified, save the image to the
             specified file.
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots either the power, energy, or l2-norm for each
         spherical harmonic degree and order of the function. Total power is
         defined as the integral of the function squared over all space,
@@ -2062,8 +2062,8 @@ class SHCoeffs(object):
             If present, and if axes is not specified, save the image to the
             specified file.
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots either the power, energy, or l2-norm for each
         spherical harmonic degree and order of the function. Total power is
         defined as the integral of the function squared over all space,
@@ -3067,8 +3067,10 @@ class SHGrid(object):
             raise ValueError("dtype must be either 'f' or 'd' for single or "
                              "double precision floating point.")
 
+        if title != '':
+            attrs['title'] = title
+
         attrs = {'actual_range': [self.min(), self.max()],
-                 'title': title,
                  'comment': comment,
                  'long_name': name,
                  'nlat': self.nlat,
@@ -3113,8 +3115,10 @@ class SHGrid(object):
         comment : str, optional, default = 'Grid generated by pyshtools'
             Additional information about how the data were generated.
         """
+        if title != '':
+            attrs['title'] = title
+
         attrs = {'actual_range': [self.min(), self.max()],
-                 'title': title,
                  'comment': comment,
                  'nlat': self.nlat,
                  'nlon': self.nlon,
@@ -3629,6 +3633,13 @@ class SHGrid(object):
             or -1 to include it.
         lmax_calc : int, optional, default = x.lmax
             Maximum spherical harmonic degree to return.
+
+        Notes
+        -----
+        When expanding a Driscoll and Healy (1994) sampled grid (grid='DH' or
+        'DH2') into spherical harmonic coefficients, the longitude band at
+        90 N is downweighted to zero and has no influence on the returned
+        spherical harmonic coefficients.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +

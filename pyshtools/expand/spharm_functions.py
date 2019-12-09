@@ -57,8 +57,8 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
     degrees : optional, bool, default = True
         If True, `theta` and `phi` are expressed in degrees.
 
-    Description
-    -----------
+    Notes
+    -----
     spharm will calculate all of the spherical harmonic functions up to degree
     lmax for a given colatitude theta and longitude phi. Three parameters
     determine how the spherical harmonic functions are defined. normalization
@@ -220,8 +220,8 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
     degrees : optional, bool, default = True
         If True, `theta` and `phi` are expressed in degrees.
 
-    Description
-    -----------
+    Notes
+    -----
     spharm_lm will calculate the spherical harmonic function for a specific
     degree l and order m, and for a given colatitude theta and longitude phi.
     Three parameters determine how the spherical harmonic functions are

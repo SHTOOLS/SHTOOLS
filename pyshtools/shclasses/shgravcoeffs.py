@@ -388,8 +388,8 @@ class SHGravCoeffs(object):
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
-        Description
-        -----------
+        Notes
+        -----
         If format='shtools', spherical harmonic coefficients will be read from
         a text file. The optional parameter `skip` specifies how many lines
         should be skipped before attempting to parse the file, the optional
@@ -563,8 +563,8 @@ class SHGravCoeffs(object):
             power. The distribution of power at degree l amongst the angular
             orders is random, but the total power is fixed.
 
-        Description
-        -----------
+        Notes
+        -----
         This routine returns a random realization of spherical harmonic
         gravitational potential coefficients obtained from a normal
         distribution. The variance of each coefficient at degree l is equal to
@@ -722,8 +722,8 @@ class SHGravCoeffs(object):
         omega : float, optional, default = None
             The angular rotation rate of the body.
 
-        Description
-        -----------
+        Notes
+        -----
         Initialize an SHGravCoeffs class instance by calculating the spherical
         harmonic coefficients of the gravitational potential associated with
         the shape of a density interface. The potential is calculated using the
@@ -876,8 +876,8 @@ class SHGravCoeffs(object):
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
-        Description
-        -----------
+        Notes
+        -----
         If format='shtools', the coefficients and meta-data will be written to
         an ascii formatted file. The first line is an optional user provided
         header line, and the following line provides the attributes r0, gm,
@@ -960,8 +960,8 @@ class SHGravCoeffs(object):
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will return an array of the spherical harmonic coefficients
         using a different normalization and Condon-Shortley phase convention,
         and a different maximum spherical harmonic degree. If the maximum
@@ -1239,8 +1239,8 @@ class SHGravCoeffs(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
 
-        Description
-        -----------
+        Notes
+        -----
         This method returns the power spectrum of the class instance, where the
         type of function is defined by the function parameter: 'potential' for
         the gravitational potential, 'geoid' for the geoid, 'radial' for
@@ -1332,8 +1332,8 @@ class SHGravCoeffs(object):
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will take the spherical harmonic coefficients of a
         function, rotate the coordinate frame by the three Euler anlges, and
         output the spherical harmonic coefficients of the new function. If
@@ -1435,8 +1435,8 @@ class SHGravCoeffs(object):
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will return a new class instance of the spherical
         harmonic coefficients using a different normalization and
         Condon-Shortley phase convention. A different maximum spherical
@@ -1547,8 +1547,8 @@ class SHGravCoeffs(object):
         lmax : int, optional, default = self.lmax
             Maximum spherical harmonic degree to output.
 
-        Description
-        -----------
+        Notes
+        -----
         This method returns a new class instance of the gravitational
         potential, but using a difference reference gm or r0. When
         changing the reference radius r0, the spherical harmonic coefficients
@@ -1614,8 +1614,8 @@ class SHGravCoeffs(object):
             If 1 the output grids are equally sampled (n by n). If 2 (default),
             the grids are equally spaced in degrees (n by 2n).
 
-        Description
-        -----------
+        Notes
+        -----
         This method will create 2-dimensional cylindrical maps of the three
         components of the gravity field, the total field, and the gravitational
         potential, and return these as an SHGravGrid class instance. Each
@@ -1705,8 +1705,8 @@ class SHGravCoeffs(object):
             If 1 the output grids are equally sampled (n by n). If 2 (default),
             the grids are equally spaced in degrees (n by 2n).
 
-        Description
-        -----------
+        Notes
+        -----
         This method will create 2-dimensional cylindrical maps for the 9
         components of the gravity 'gradient' tensor and return an SHGravTensor
         class instance. The components are
@@ -1820,8 +1820,8 @@ class SHGravCoeffs(object):
             'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon, or
             'DH2' for an equidistant lat/lon grid with nlon=2*nlat.
 
-        Description
-        -----------
+        Notes
+        -----
         This method will create a global map of the geoid height, accurate to
         either first, second, or third order, using the method described in
         Wieczorek (2007; equation 19-20). The algorithm expands the potential
@@ -1929,8 +1929,8 @@ class SHGravCoeffs(object):
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots the power (and error) spectrum of the class instance,
         where the type of spectrum is defined by the parameter function:
         'potential' for the gravitational potential, 'geoid' for the geoid,
@@ -2082,8 +2082,8 @@ class SHGravCoeffs(object):
             If present, and if axes is not specified, save the image to the
             specified file.
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots the power of the class instance for each spherical
         harmonic degree and order, where the type of spectrum is defined by
         the parameter function: 'potential' for the gravitational potential,

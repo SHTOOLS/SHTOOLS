@@ -49,8 +49,8 @@ def convert(coeffs_in, normalization_in=None, normalization_out=None,
         that of the input coefficients, the output array will be zero
         padded.
 
-    Description
-    -----------
+    Notes
+    -----
     This routine will convert an array of spherical harmonic coefficients
     to a different normalization convention and different Condon-Shortley
     phase convention. Optionally, a different maximum spherical harmonic

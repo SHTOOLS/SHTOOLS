@@ -52,8 +52,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     skip : int, optional, default = 0
         The number of lines to skip before parsing the file.
 
-    Description
-    -----------
+    Notes
+    -----
     This function will read spherical harmonic coefficients from an
     ascii-formatted text file. The errors associated with the spherical
     harmonic coefficients, as well as the values in a single header line, can

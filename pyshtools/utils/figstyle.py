@@ -25,8 +25,8 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
     max_width : float, optional, default = 7.48031
         The maximum width of the usable area of a journal page in inches.
 
-    Description
-    -----------
+    Notes
+    -----
     This function sets a variety of matplotlib parameters for creating
     publication quality graphics. The default parameters are tailored to
     AGU/Wiley-Blackwell journals that accept relative widths of 0.5, 0.75,

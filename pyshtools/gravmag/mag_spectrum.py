@@ -51,8 +51,8 @@ def mag_spectrum(clm, a, r, potential=False, normalization='schmidt',
     base : float, optional, default = 10.
         The logarithm base when calculating the 'per_dlogl' spectrum.
 
-    Description
-    -----------
+    Notes
+    -----
     This function returns either the power spectrum, energy spectrum, or
     l2-norm spectrum of a global magnetic field. Total power is defined as the
     integral of the function squared over all space, divided by the area the

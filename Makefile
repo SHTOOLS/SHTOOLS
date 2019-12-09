@@ -122,13 +122,13 @@ LIBNAMEMP = SHTOOLS-mp
 
 F95 = gfortran
 PYTHON = python3
-JUPYTER = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python3"
+JUPYTER = jupyter nbconvert --ExecutePreprocessor.kernel_name=python3
 JEKYLL = bundle exec jekyll
 
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
 
-FFTW = "-L$(SYSLIBPATH) -lfftw3 -lm"
+FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
 LAPACK_UNDERSCORE = 0
 
 SHELL = /bin/sh
@@ -305,7 +305,7 @@ remove-www:
 	@-rm -rf $(WWWDEST)
 
 notebooks:
-	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER)
+	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER="$(JUPYTER)"
 	@echo "--> Notebook html files created successfully"
 
 remove-notebooks:

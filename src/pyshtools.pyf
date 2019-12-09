@@ -1177,7 +1177,7 @@ python module _SHTOOLS
             integer,optional,intent(in),intent(hide) :: degrees_d0 = lmax+1
         end subroutine ComputeDMap
 
-        subroutine Curve2Mask(exitstatus,dhgrid,n,sampling,profile,nprofile,NP,centralmeridian,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
+        subroutine Curve2Mask(exitstatus,dhgrid,n,sampling,profile,nprofile,NP,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
             fortranname pycurve2mask
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
@@ -1187,7 +1187,6 @@ python module _SHTOOLS
             real(dp),dimension(profile_d0,profile_d1),intent(in) :: profile
             integer,optional,intent(in),depend(profile_d0) :: nprofile = profile_d0
             integer,intent(in):: NP
-            integer,optional,intent(in) :: centralmeridian = 0
             integer,optional,intent(in),depend(profile),intent(hide) :: profile_d0 = shape(profile,0)
             integer,optional,intent(in),depend(profile),intent(hide) :: profile_d1 = shape(profile,1)
             integer,optional,intent(in),depend(n),intent(hide) :: dhgrid_d0 = n

@@ -397,8 +397,8 @@ class SHWindow(object):
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
 
-        Description
-        -----------
+        Notes
+        -----
         For more information concerning the spherical harmonic expansions and
         the properties of the output grids, see the documentation for
         SHExpandDH and SHExpandGLQ.
@@ -654,8 +654,8 @@ class SHWindow(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
 
-        Description
-        -----------
+        Notes
+        -----
         This function returns either the power spectrum, energy spectrum, or
         l2-norm spectrum of one or more of the localization windows.
         Total power is defined as the integral of the function squared over all
@@ -1401,8 +1401,8 @@ class SHWindowCap(SHWindow):
             The number of best concentrated windows to rotate, where lwin is
             the spherical harmonic bandwidth of the localization windows.
 
-        Description
-        -----------
+        Notes
+        -----
         This function will take the spherical-cap localization windows
         centered at the North pole (and saved in the attributes tapers and
         orders), rotate each function to the coordinate (clat, clon), and save

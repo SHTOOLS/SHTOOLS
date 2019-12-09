@@ -296,6 +296,7 @@ module SHTOOLS
 
         function MakeGridPointC(cilm, lmax, lat, lon, norm, csphase, dealloc)
             integer, parameter :: dp = selected_real_kind(p=15)
+            complex(dp) :: MakeGridPointC
             complex(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in) :: lat, lon
             integer, intent(in) :: lmax
@@ -775,12 +776,11 @@ module SHTOOLS
         end subroutine ComputeDMap
 
         subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
-                              centralmeridian, exitstatus)
+                              exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(out) :: dhgrid(:,:)
             real(dp), intent(in) :: profile(:,:)
             integer, intent(in) :: n, sampling, nprofile, np
-            integer, intent(in), optional :: centralmeridian
             integer, intent(out), optional :: exitstatus
         end subroutine Curve2Mask
 

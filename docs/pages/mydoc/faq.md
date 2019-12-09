@@ -27,6 +27,10 @@ If at this point your problem is not resolved, you can
 
 We often make improvements based on user suggestions. Nevertheless, please realize that the developers are very busy and that we are not paid to develop or maintain this archive. We suggest that you open an issue on GitHub describing your suggestion, and we will then flag the issue as a future enhancement.
 
+## How do you pronounce "shtools"?
+
+It is pronounced S-H-Tools.
+
 ## I would like to contribute
 
 Please see [this page](how-to-contribute.html).

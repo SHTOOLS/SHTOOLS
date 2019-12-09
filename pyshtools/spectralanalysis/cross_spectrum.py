@@ -45,8 +45,8 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
     base : float, optional, default = 10.
         The logarithm base when calculating the 'per_dlogl' spectrum.
 
-    Description
-    -----------
+    Notes
+    -----
     This function returns either the cross-power spectrum, cross-energy
     spectrum, or l2-cross-norm spectrum. Total cross-power is defined as the
     integral of the clm1 times the conjugate of clm2 over all space, divided

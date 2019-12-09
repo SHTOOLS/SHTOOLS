@@ -283,8 +283,8 @@ class Slepian(object):
         nmax : int, optional, default = (x.lmax+1)**2
             The number of Slepian expansion coefficients to compute.
 
-        Description
-        -----------
+        Notes
+        -----
         The global function f is input using its spherical harmonic
         expansion coefficients flm. The expansion coefficients of the function
         f using Slepian functions g is given by
@@ -455,8 +455,8 @@ class Slepian(object):
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
 
-        Description
-        -----------
+        Notes
+        -----
         For more information concerning the spherical harmonic expansions and
         the properties of the output grids, see the documentation for
         SHExpandDH and SHExpandGLQ.
@@ -524,8 +524,8 @@ class Slepian(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
 
-        Description
-        -----------
+        Notes
+        -----
         This function returns either the power spectrum, energy spectrum, or
         l2-norm spectrum of one or more of the Slepian funtions. Total power
         is defined as the integral of the function squared over all space,
@@ -1187,8 +1187,8 @@ class SlepianCap(Slepian):
             The number of best-concentrated Slepian functions to rotate, where
             lmax is the spherical harmonic bandwidth of the functions.
 
-        Description
-        -----------
+        Notes
+        -----
         This function will take the spherical-cap Slepian functions centered at
         the North pole (and saved in the attributes tapers and orders), rotate
         each function to the coordinate (clat, clon), and save the spherical
