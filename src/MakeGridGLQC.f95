@@ -1,5 +1,5 @@
 subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
-                        lmax_calc, exitstatus)
+                        lmax_calc, extend, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   Given the complex spherical harmonic coefficients CILM of a function, this
@@ -17,7 +17,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !   lmax>360). If PLX is not present, the Legendre functions are computed on
 !   the fly using the scaling methodolgy presented in Holmes and Featherston
 !   (2002). When NORM = 1, 2 or 4, these are accurate to degree 2800. When
-!   NORM = 3, the routine is only stable to about degree 15!
+!   NORM = 3, the routine is only stable to about degree 15.
 !
 !   Calling Parameters
 !
@@ -29,11 +29,12 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !                       the output function.
 !
 !       OUT
-!           gridglq     Gridded data of the spherical harmonic
-!                       coefficients CILM with dimensions (LMAX+1 , 2*LMAX+1).
-!                       The first index (latitude) corresponds to the
-!                       Gauss points, and the second index corresponds to
-!                       360*(k-1)/nlong = 360*(k-1)/(2*LMAX +1).
+!           gridglq     Gridded data of the spherical harmonic coefficients
+!                       CILM with dimensions (LMAX+1 , 2*LMAX+1) when
+!                       EXTEND=0 or (LMAX+1 , 2*LMAX+2) when EXTEND=1. The
+!                       first index (latitude) corresponds to the Gauss points,
+!                       and the second index corresponds to
+!                       360*(k-1)/(2*LMAX +1).
 !
 !       OPTIONAL (IN)
 !           plx         Input array of Associated Legendre Polnomials computed
@@ -43,8 +44,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !                       CNORM=1.
 !           zero        Array of dimension lmax+1 that contains the latitudinal
 !                       gridpoints used in the Gauss-Legendre quadrature
-!                       integration
-!                       scheme. Only needed if PLX is not included.
+!                       integration scheme. Only needed if PLX is not included.
 !           norm        Normalization to be used when calculating Legendre
 !                       functions
 !                           (1) "geodesy" (default)
@@ -55,6 +55,11 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !                       -1: Apply the phase factor of (-1)^m.
 !           lmax_calc   The maximum spherical harmonic degree to evaluate the
 !                       coefficients up to.
+!           extend      If 1, return a grid that contains an additional column
+!                       corresponding to 360 E longitude. The dimension of the
+!                       output grid is (LMAX+1 , 2*LMAX+2) when EXTEND is 1,
+!                       and (LMAX+1 , 2*LMAX+1) when EXTEND is 0.
+
 !
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
@@ -68,9 +73,9 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !
 !   Notes:
 !       1.  If lmax is greater than the the maximum spherical harmonic
-!           degree of the input file, then this file will be ZERO PADDED!
-!           (i.e., those degrees after lmax are assumed to be zero).
-!       2.  Latitudes are geocentric latitude.
+!           degree of the input coefficients, then the coefficients will be
+!           zero padded.
+!       2.  Latitude is geocentric latitude.
 !
 !   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
@@ -87,9 +92,10 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     real(dp), intent(in), optional :: plx(:,:), zero(:)
     complex(dp), intent(out) :: gridglq(:,:)
     integer, intent(in) :: lmax
-    integer, intent(in), optional :: norm, csphase, lmax_calc
+    integer, intent(in), optional :: norm, csphase, lmax_calc, extend
     integer, intent(out), optional :: exitstatus
-    integer :: l, m, i, nlat, nlong, l1, m1, lmax_comp, i_s, astat(4), lnorm, k
+    integer :: l, m, i, nlat, nlong, l1, m1, lmax_comp, i_s, astat(4), lnorm, &
+               k, nlong_out, phase, extend_grid
     real(dp) :: pi, scalef, rescalem, u, p, pmm, pm1, pm2, z
     complex(dp) :: coef(2*lmax+1), coefs(2*lmax+1), grid(2*lmax+1), &
                    grids(2*lmax+1)
@@ -97,17 +103,42 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
-    integer :: phase
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
 
     if (present(exitstatus)) exitstatus = 0
 
+    nlong = 2 * lmax + 1
+    nlat = lmax + 1
+
+    if (present(extend)) then
+        if (extend == 0) then
+            extend_grid = 0
+            nlong_out = nlong
+        else if (extend == 1) then
+            extend_grid = 1
+            nlong_out = nlong + 1
+        else
+            print*, "Error --- MakeGridGLQC"
+            print*, "Optional parameter EXTEND must be 0 or 1."
+            print*, "Input value is ", extend
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
+        end if
+    else
+        extend_grid = 0
+        nlong_out = nlong
+    end if
+
     if (size(cilm(:,1,1)) < 2) then
         print*, "Error --- MakeGridGLQC"
         print*, "CILM must be dimensioned as (2, *, *)."
         print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), &
-            size(cilm(1,1,:))
+                size(cilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -115,13 +146,13 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
             stop
         end if
 
-    else if (size(gridglq(1,:)) < 2*lmax+1 .or. &
-                size(gridglq(:,1)) < lmax+1 ) then
+    end if
+
+    if (size(gridglq(1,:)) < nlong_out .or. size(gridglq(:,1)) < nlat) then
         print*, "Error --- MakeGridGLQC"
-        print*, "GRIDGLQ must be dimensioned as (LMAX+1, 2*LMAX+1) " // &
-                "where LMAX is ", lmax
+        print*, "GRIDGLQ must be dimensioned as ", nlat, nlong_out
         print*, "Input array is dimensioned ", size(gridglq(:,1)), &
-                size(gridglq(1,:))
+                                               size(gridglq(1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -133,7 +164,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     if (present(plx)) then
         if (size(plx(:,1)) < lmax+1 .or. &
-            size(plx(1,:)) < ((lmax+1)*(lmax+2))/2) then
+                size(plx(1,:)) < ((lmax+1)*(lmax+2))/2) then
             print*, "Error --- MakeGridGLQC"
             print*, "PLX must be dimensioned as (LMAX+1, " // &
                     "(LMAX+1)*(LMAX+2)/2) where LMAX is ", lmax
@@ -145,6 +176,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
             else
                 stop
             end if
+
         end if
 
     else if (present(zero)) then
@@ -216,10 +248,6 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
     pi = acos(-1.0_dp)
 
-    nlong = 2 * lmax + 1
-
-    nlat = lmax + 1
-
     scalef = 1.0e-280_dp
 
     if (present(lmax_calc)) then
@@ -238,12 +266,10 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
         else
             lmax_comp = min(lmax, size(cilm(1,1,:))-1, size(cilm(1,:,1))-1, &
                             lmax_calc)
-
         end if
 
     else
         lmax_comp = min(lmax, size(cilm(1,1,:))-1, size(cilm(1,:,1))-1)
-
     end if
 
     !--------------------------------------------------------------------------
@@ -265,7 +291,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
         allocate (fsymsign(lmax_comp+1,lmax_comp+1), stat=astat(4))
 
         if (sum(astat(1:4)) /= 0) then
-            print*, "MakeGridGLQ --- Error"
+            print*, "Error ---MakeGridGLQ"
             print*, "Problem allocating arrays SQR, FF1, FF2, or FSYMSIGN", &
                     astat(1), astat(2), astat(3), astat(4)
             if (present(exitstatus)) then
@@ -301,7 +327,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
         !   Precompute square roots of integers that are used several times.
         !
         !----------------------------------------------------------------------
-        do l = 1, 2 * lmax_comp+1
+        do l = 1, 2 * lmax_comp + 1
             sqr(l) = sqrt(dble(l))
         end do
 
@@ -316,7 +342,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
         !
         !----------------------------------------------------------------------
         select case (lnorm)
-            case (1,4)
+            case (1, 4)
                 if (lmax_comp /= 0) then
                     ff1(2,1) = sqr(3)
                     ff2(2,1) = 0.0_dp
@@ -348,7 +374,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                     ff1(l+1,1) = dble(2*l-1) / dble(l)
                     ff2(l+1,1) = dble(l-1) / dble(l)
 
-                    do m = 1, l - 2, 1
+                    do m = 1, l-2, 1
                         ff1(l+1,m+1) = dble(2*l-1) / sqr(l+m) / sqr(l-m)
                         ff2(l+1,m+1) = sqr(l-m-1) * sqr(l+m-1) / sqr(l+m) &
                                        / sqr(l-m)
@@ -385,11 +411,11 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     !--------------------------------------------------------------------------
     if (lmax_comp == 0) then
         select case (lnorm)
-            case (1,2,3); pm2 = 1.0_dp
-            case (4); pm2 = 1.0_dp / sqrt(4 * pi)
+            case (1, 2, 3); pm2 = 1.0_dp
+            case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
         end select
 
-        gridglq(1:nlat, 1:nlong) = cilm(1,1,1) * pm2
+        gridglq(1:nlat, 1:nlong_out) = cilm(1,1,1) * pm2
 
         return
 
@@ -401,7 +427,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     !
     !--------------------------------------------------------------------------
     plan = fftw_plan_dft_1d(nlong, coef(1:nlong), grid(1:nlong), &
-                            FFTW_BACKWARD, FFTW_MEASURE)  ! create generic plan
+                            FFTW_BACKWARD, FFTW_MEASURE)
     plans = fftw_plan_dft_1d(nlong, coefs(1:nlong), grids(1:nlong), &
                              FFTW_BACKWARD, FFTW_MEASURE)
 
@@ -445,13 +471,13 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
         do i = 1, (nlat+1) / 2
             coef = cmplx(0.0_dp, 0.0_dp, dp)
 
-            if ( i == (nlat+1)/2 .and. mod(nlat,2) /= 0) then
+            if (i == (nlat+1)/2 .and. mod(nlat,2) /= 0) then
                 ! This latitude is the equator; z=0, u=1
                 u = 1.0_dp
 
                 select case (lnorm)
-                    case (1,2,3); pm2 = 1.0_dp
-                    case (4); pm2 = 1.0_dp / sqrt(4 * pi)
+                    case (1, 2, 3); pm2 = 1.0_dp
+                    case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
                 end select
 
                 coef(1) = coef(1) + cilm(1,1,1) * pm2
@@ -464,8 +490,8 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                 end do
 
                 select case (lnorm)
-                    case (1,2,3); pmm = scalef
-                    case (4); pmm = scalef / sqrt(4 * pi)
+                    case (1, 2, 3); pmm = scalef
+                    case (4); pmm = scalef / sqrt(4.0_dp * pi)
                 end select
 
                 rescalem = 1.0_dp / scalef
@@ -474,14 +500,14 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                     m1 = m + 1
 
                     select case (lnorm)
-                        case (1,4)
+                        case (1, 4)
                             pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
                             pm2 = pmm
                         case (2)
                             pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
                             pm2 = pmm / sqr(2*m+1)
                         case (3)
-                            pmm = phase * pmm * (2*m-1)
+                            pmm = phase * pmm * dble(2*m-1)
                             pm2 = pmm
                     end select
 
@@ -503,13 +529,13 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
                 end do
 
-                select case(lnorm)
-                    case(1,4)
+                select case (lnorm)
+                    case (1, 4)
                         pmm = phase * pmm * sqr(2*lmax_comp+1) &
                               / sqr(2*lmax_comp) * rescalem
-                    case(2)
+                    case (2)
                         pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
-                    case(3)
+                    case (3)
                         pmm = phase * pmm * (2*lmax_comp-1) * rescalem
                 end select
 
@@ -531,8 +557,8 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                 coefs = cmplx(0.0_dp, 0.0_dp, dp)
 
                 select case (lnorm)
-                    case (1,2,3); pm2 = 1.0_dp
-                    case (4); pm2 = 1.0_dp / sqrt(4 * pi)
+                    case (1, 2, 3); pm2 = 1.0_dp
+                    case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
                 end select
 
                 coef(1) = coef(1) + cilm(1,1,1) * pm2
@@ -552,9 +578,9 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                     pm1 = p
                 end do
 
-                select case(lnorm)
-                    case(1,2,3); pmm = scalef
-                    case(4); pmm = scalef / sqrt(4 * pi)
+                select case (lnorm)
+                    case (1, 2, 3); pmm = scalef
+                    case (4); pmm = scalef / sqrt(4.0_dp * pi)
                 end select
 
                 rescalem = 1.0_dp / scalef
@@ -564,14 +590,14 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
                     rescalem = rescalem * u
 
                     select case (lnorm)
-                        case (1,4)
+                        case (1, 4)
                             pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
                             pm2 = pmm
                         case (2)
                             pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
                             pm2 = pmm / sqr(2*m+1)
                         case (3)
-                            pmm = phase * pmm * (2*m-1)
+                            pmm = phase * pmm * dble(2*m-1)
                             pm2 = pmm
                     end select
 
@@ -619,14 +645,14 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
                 rescalem = rescalem * u
 
-                select case(lnorm)
-                    case(1,4)
+                select case (lnorm)
+                    case (1, 4)
                         pmm = phase * pmm * sqr(2*lmax_comp+1) &
                               / sqr(2*lmax_comp) * rescalem
-                    case(2)
+                    case (2)
                         pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
-                    case(3)
-                        pmm = phase * pmm * (2*lmax_comp-1) * rescalem
+                    case (3)
+                        pmm = phase * pmm * dble(2*lmax_comp-1) * rescalem
                 end select
 
                 coef(lmax_comp+1) = coef(lmax_comp+1) &
@@ -651,6 +677,10 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 
         end do
 
+    end if
+
+    if (extend_grid == 1) then
+        gridglq(1:nlat, nlong_out) = gridglq(1:nlat, 1)
     end if
 
     call fftw_destroy_plan(plan)

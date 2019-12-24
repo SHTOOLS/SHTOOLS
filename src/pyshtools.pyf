@@ -219,23 +219,24 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(grid),intent(hide) :: grid_d1 = shape(grid,1)
         end subroutine SHExpandDH
 
-        subroutine MakeGridDH(exitstatus,griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
+        subroutine MakeGridDH(exitstatus,griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,extend,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
             fortranname pymakegriddh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
             real(dp),dimension(griddh_d0,griddh_d1),intent(out) :: griddh
             integer,intent(hide) :: n
             real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer,optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
+            integer,optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: sampling = 1
             integer,optional,intent(in) :: csphase = 1
-            integer,optional,intent(in),depend(lmax) :: lmax_calc=lmax
+            integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
+            integer,optional,intent(in) :: extend = 0
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
-            integer,optional,intent(in),depend(lmax),intent(hide) :: griddh_d0 = 2*(lmax+1)
-            integer,optional,intent(in),depend(griddh_d0,sampling),intent(hide) :: griddh_d1 = sampling*griddh_d0
+            integer,optional,intent(in),depend(lmax,extend),intent(hide) :: griddh_d0 = 2*(lmax+1)+extend
+            integer,optional,intent(in),depend(sampling,lmax,extend),intent(hide) :: griddh_d1 = sampling*2*(lmax+1)+extend
         end subroutine MakeGridDH
 
         subroutine SHExpandDHC(exitstatus,grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
@@ -243,7 +244,7 @@ python module _SHTOOLS
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
             complex(dp),dimension(grid_d0,grid_d1),intent(in) :: grid
-            integer,intent(hide),depend(grid_d0) :: n=grid_d0
+            integer,intent(hide),depend(grid_d0) :: n = grid_d0
             complex(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer,intent(hide) :: lmax
             integer,optional,intent(in) :: norm = 1
@@ -257,23 +258,24 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(grid),intent(hide) :: grid_d1 = shape(grid,1)
         end subroutine SHExpandDHC
 
-        subroutine MakeGridDHC(exitstatus,griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
+        subroutine MakeGridDHC(exitstatus,griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,extend,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
             fortranname pymakegriddhc
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
             complex(dp),dimension(griddh_d0,griddh_d1),intent(out) :: griddh
             integer,intent(hide) :: n
             complex(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-            integer,optional,intent(in),depend(cilm_d1) :: lmax=cilm_d1-1
+            integer,optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: sampling = 1
             integer,optional,intent(in) :: csphase = 1
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
+            integer,optional,intent(in) :: extend = 0
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
-            integer,optional,intent(in),depend(lmax),intent(hide) :: griddh_d0 = 2*(lmax+1)
-            integer,optional,intent(in),depend(griddh_d0,sampling),intent(hide) :: griddh_d1 = sampling*griddh_d0
+            integer,optional,intent(in),depend(lmax,extend),intent(hide) :: griddh_d0 = 2*(lmax+1)+extend
+            integer,optional,intent(in),depend(sampling,lmax,extend),intent(hide) :: griddh_d1 = sampling*2*(lmax+1)+extend
         end subroutine MakeGridDHC
 
         subroutine SHGLQ(exitstatus,lmax,zero,w,zero_d0,w_d0)
@@ -308,7 +310,7 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(w),intent(hide) :: w_d0 = len(w)
         end subroutine SHExpandGLQ
 
-        subroutine MakeGridGLQ(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
+        subroutine MakeGridGLQ(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,extend,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
             fortranname pymakegridglq
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
@@ -319,8 +321,9 @@ python module _SHTOOLS
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
+            integer,optional,intent(in) :: extend = 0
             integer,optional,intent(in),depend(lmax),intent(hide) :: gridglq_d0 = lmax+1
-            integer,optional,intent(in),depend(lmax),intent(hide) :: gridglq_d1 = 2*lmax+1
+            integer,optional,intent(in),depend(lmax,extend),intent(hide) :: gridglq_d1 = 2*lmax+1+extend
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
@@ -348,7 +351,7 @@ python module _SHTOOLS
             integer,optional,intent(in),depend(w),intent(hide) :: w_d0 = len(w)
         end subroutine SHExpandGLQC
 
-        subroutine MakeGridGLQC(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
+        subroutine MakeGridGLQC(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,extend,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
             fortranname pymakegridglqc
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
@@ -359,8 +362,9 @@ python module _SHTOOLS
             integer,optional,intent(in) :: norm = 1
             integer,optional,intent(in) :: csphase = 1
             integer,optional,intent(in),depend(lmax) :: lmax_calc = lmax
+            integer,optional,intent(in) :: extend = 0
             integer,optional,intent(in),depend(lmax),intent(hide) :: gridglq_d0 = lmax+1
-            integer,optional,intent(in),depend(lmax),intent(hide) :: gridglq_d1 = 2*lmax+1
+            integer,optional,intent(in),depend(lmax,extend),intent(hide) :: gridglq_d1 = 2*lmax+1+extend
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
             integer,optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)

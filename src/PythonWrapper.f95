@@ -249,7 +249,7 @@
     end subroutine pySHExpandDH
 
     subroutine pyMakeGridDH(exitstatus,griddh,n,cilm,lmax,norm,sampling,&
-                            csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,&
+                            csphase,lmax_calc,extend,cilm_d0,cilm_d1,cilm_d2,&
                             griddh_d0,griddh_d1)
         use shtools, only: MakeGridDH
         use ftypes
@@ -268,8 +268,9 @@
         integer,intent(in) :: sampling
         integer,intent(in) :: csphase
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeGridDH(griddh,n,cilm,lmax,norm=norm,sampling=sampling,&
-                        csphase=csphase,lmax_calc=lmax_calc,&
+                        csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                         exitstatus=exitstatus)
     end subroutine pyMakeGridDH
 
@@ -299,7 +300,7 @@
     end subroutine pySHExpandDHC
 
     subroutine pyMakeGridDHC(exitstatus,griddh,n,cilm,lmax,norm,sampling,&
-                             csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,&
+                             csphase,lmax_calc,extend,cilm_d0,cilm_d1,cilm_d2,&
                              griddh_d0,griddh_d1)
         use shtools, only: MakeGridDHC
         use ftypes
@@ -318,8 +319,9 @@
         integer,intent(in) :: sampling
         integer,intent(in) :: csphase
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeGridDHC(griddh,n,cilm,lmax,norm=norm,sampling=sampling,&
-                         csphase=csphase,lmax_calc=lmax_calc,&
+                         csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                          exitstatus=exitstatus)
     end subroutine pyMakeGridDHC
 
@@ -364,8 +366,8 @@
     end subroutine pySHExpandGLQ
 
     subroutine pyMakeGridGLQ(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,&
-                             lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,&
-                             cilm_d2,zero_d0)
+                             lmax_calc,extend,gridglq_d0,gridglq_d1,cilm_d0,&
+                             cilm_d1,cilm_d2,zero_d0)
         use shtools, only: MakeGridGLQ
         use ftypes
         implicit none
@@ -383,8 +385,9 @@
         integer,intent(in) :: norm
         integer,intent(in) :: csphase
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeGridGLQ(gridglq,cilm,lmax,zero=zero,norm=norm,&
-                         csphase=csphase,lmax_calc=lmax_calc,&
+                         csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                          exitstatus=exitstatus)
     end subroutine pyMakeGridGLQ
 
@@ -416,8 +419,8 @@
     end subroutine pySHExpandGLQC
 
     subroutine pyMakeGridGLQC(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,&
-                              lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,&
-                              cilm_d2,zero_d0)
+                              lmax_calc,extend,gridglq_d0,gridglq_d1,cilm_d0,&
+                              cilm_d1,cilm_d2,zero_d0)
         use shtools, only: MakeGridGLQC
         use ftypes
         implicit none
@@ -435,8 +438,9 @@
         integer,intent(in) :: norm
         integer,intent(in) :: csphase
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeGridGLQC(gridglq,cilm,lmax,zero=zero,norm=norm,&
-                          csphase=csphase,lmax_calc=lmax_calc,&
+                          csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                           exitstatus=exitstatus)
     end subroutine pyMakeGridGLQC
 

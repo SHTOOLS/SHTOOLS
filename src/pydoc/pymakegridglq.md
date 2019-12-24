@@ -4,23 +4,23 @@ Create a 2D map from a set of spherical harmonic coefficients sampled on the Gau
 
 # Usage
 
-`gridglq` = MakeGridGLQ (`cilm`, `zero`, [`lmax`,  `norm`, `csphase`, `lmax_calc`])
+`gridglq` = MakeGridGLQ (`cilm`, `zero`, [`lmax`,  `norm`, `csphase`, `lmax_calc`, `extend`])
 
 # Returns
 
-`gridglq` : float, dimension (`lmax`+1, 2\*`lmax`+1)
-:   A 2D map of the function sampled on the Gauss-Legendre quadrature nodes.
+`gridglq` : float, dimension (nlat, nlong)
+:   A 2D map of the function sampled on the Gauss-Legendre quadrature nodes, dimensioned as (`lmax`+1, 2\*`lmax`+1) if `extend` is 0 or (`lmax`+1, 2\*`lmax`+2) if `extend` is 1.
 
 # Parameters
 
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
-:   The real spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of `lmax`, `lmaxin` or `lmax_calc` (if specified). The coefficients `C1lm` and `C2lm` refer to the "cosine" (`Clm`) and "sine" (`Slm`) coefficients, respectively, with `Clm=cilm[0,l,m]` and `Slm=cilm[1,l,m]`.
+:   The real spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of `lmax`, `lmaxin`, or `lmax_calc` (if specified). The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm[0,l,m+]` and `Cl,-m=cilm[1,l,m]`.
 
 `zero` : float, dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.
 
 `lmax` : optional, integer, default = `lamxin`
-:   The maximum spherical harmonic bandwidth of the function. This determines the sampling nodes of the dimensions of the output grid.
+:   The maximum spherical harmonic bandwidth of the function. This determines the sampling nodes and dimensions of the output grid.
 
 `norm` : optional, integer, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
@@ -30,6 +30,9 @@ Create a 2D map from a set of spherical harmonic coefficients sampled on the Gau
 
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
+
+`extend` : input, optional, integer, default = 0
+:   If 1, compute the longitudinal band for 360 E.
 
 # Description
 

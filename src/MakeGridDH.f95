@@ -1,5 +1,5 @@
 subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
-                      lmax_calc, exitstatus)
+                      lmax_calc, extend, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   Given the Spherical Harmonic coefficients CILM of a function, this
@@ -10,18 +10,20 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !   each latitude band. The number of samples is determined by the spherical
 !   harmonic bandwidth LMAX, but the coefficients can be evaluated up to a
 !   smaller spherical harmonic degree by specifying the optional parameter
-!   LMAX_CALC. Note that N is always EVEN for this routine.
+!   LMAX_CALC. Note that N is always even for this routine.
 !
 !   The Legendre functions are computed on the fly using the scaling
 !   methodology presented in Holmes and Featherston (2002). When NORM = 1, 2
 !   or 4, these are accurate to about degree 2800. When NORM = 3, the routine
-!   is only stable to about degree 15!
+!   is only stable to about degree 15.
 !
-!   The output grid contains N samples in latitude from 90 to -90+interval,
+!   The output grid contains N samples in latitude from 90 to -90 + interval,
 !   and in longitude from 0 to 360-2*interval (or N x 2N, see below), where
-!   interval is the sampling interval, and n=2*(LMAX+1). Note that the datum at
+!   interval is the sampling interval and n=2*(LMAX+1). Note that the datum at
 !   90 degees latitude is ultimately downweighted to zero, so this point does
-!   not contribute to the spherical harmonic coefficients.
+!   not contribute to the spherical harmonic coefficients. If the optional
+!   parameter EXTEND is set to 1, the output grid will contain an extra column
+!   corresponding to 360 E and an extra row corresponding to 90 S.
 !
 !   Calling Parameters
 !
@@ -33,9 +35,9 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !                       grid.
 !
 !       OUT
-!           griddh      Gridded data of the spherical harmonic
-!                       coefficients CILM with dimensions
-!                       (2*LMAX+2 , 2*LMAX+2).
+!           griddh      Gridded data of the spherical harmonic coefficients
+!                       CILM with dimensions (n, sampling*n) or
+!                       (n+1, sampling*n+1).
 !           n           Number of samples in the grid, always even, which
 !                       is 2*(LMAX+2).
 !
@@ -54,6 +56,9 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !                       -1: Apply the phase factor of (-1)^m.
 !           lmax_calc   The maximum spherical harmonic degree to evaluate
 !                       the coefficients up to.
+!           extend      If 1, return a grid that contains an additional column
+!                       and row corresponding to 360 E longitude and 90 S
+!                       latitude, respectively.
 !
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
@@ -67,8 +72,8 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !
 !   Notes:
 !       1.  If lmax is greater than the the maximum spherical harmonic
-!           degree of the input file, then this file will be ZERO PADDED!
-!           (i.e., those degrees after lmax are assumed to be zero).
+!           degree of the input coefficients, then the coefficients will be
+!           zero padded.
 !       2.  Latitude is geocentric latitude.
 !
 !   Copyright (c) 2005-2019, SHTOOLS
@@ -86,9 +91,10 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     real(dp), intent(out) :: griddh(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: n
-    integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+    integer, intent(in), optional :: norm, sampling, csphase, lmax_calc, extend
     integer, intent(out), optional :: exitstatus
-    integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, nlong
+    integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, nlong, &
+               nlong_out, nlat_out, phase, extend_grid
     real(dp) :: grid(4*lmax+4), grids(4*lmax+4), pi, theta, coef0, scalef, &
                 rescalem, u, p, pmm, pm1, pm2, z, coef0s, tempr
     complex(dp) :: coef(2*lmax+3), coefs(2*lmax+3), tempc
@@ -96,7 +102,6 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
     integer(int1), save, allocatable :: fsymsign(:,:)
     integer, save :: lmax_old = 0, norm_old = 0
-    integer :: phase
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
 
@@ -105,7 +110,11 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     n = 2 * lmax + 2
 
     if (present(sampling)) then
-        if (sampling /= 1 .and. sampling /= 2) then
+        if (sampling == 1) then
+            nlong = n
+        else if (sampling == 2) then
+            nlong = 2 * n
+        else
             print*, "Error --- MakeGridDH"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
@@ -116,8 +125,35 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
             else
                 stop
             end if
-
         end if
+    else
+        nlong = n
+    end if
+
+    if (present(extend)) then
+        if (extend == 0) then
+            extend_grid = 0
+            nlat_out = n
+            nlong_out = nlong
+        else if (extend == 1) then
+            extend_grid = 1
+            nlat_out = n + 1
+            nlong_out = nlong + 1
+        else
+            print*, "Error --- MakeGridDH"
+            print*, "Optional parameter EXTEND must be 0 or 1."
+            print*, "Input value is ", extend
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
+        end if
+    else
+        extend_grid = 0
+        nlat_out = n
+        nlong_out = nlong
     end if
 
     if (size(cilm(:,1,1)) < 2) then
@@ -133,49 +169,17 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         end if
     end if
 
-    if (present(sampling)) then
-        if (sampling == 1) then
-            if (size(griddh(:,1)) < n .or. size(griddh(1,:)) < n) then
-                print*, "Error --- MakeGridDH"
-                print*, "GRIDDH must be dimensioned as (N, N) where N is ", n
-                print*, "Input dimension is ", size(griddh(:,1)), &
-                        size(griddh(1,:))
-                if (present(exitstatus)) then
-                    exitstatus = 1
-                    return
-                else
-                    stop
-                end if
-            end if
-
-        else if (sampling == 2) then
-            if (size(griddh(:,1)) < n .or. size(griddh(1,:)) < 2*n) then
-                print*, "Error --- MakeGriddDH"
-                print*, "GRIDDH must be dimensioned as (N, 2*N) where N is ", n
-                print*, "Input dimension is ", size(griddh(:,1)), &
-                        size(griddh(1,:))
-                if (present(exitstatus)) then
-                    exitstatus = 1
-                    return
-                else
-                    stop
-                end if
-            end if
+    if (size(griddh(:,1)) < nlat_out .or. size(griddh(1,:)) < nlong_out) then
+        print*, "Error --- MakeGridDH"
+        print*, "GRIDDH must be dimensioned as: ", nlat_out, nlong_out
+        print*, "Input dimension is ", size(griddh(:,1)), &
+                size(griddh(1,:))
+        if (present(exitstatus)) then
+            exitstatus = 1
+            return
+        else
+            stop
         end if
-
-    else
-        if (size(griddh(:,1)) < n .or. size(griddh(1,:)) < n) then
-            print*, "Error --- MakeGridDH"
-            print*, "GRIDDH must be dimensioned as (N, N) where N is ", n
-            print*, "Input dimension is ", size(griddh(:,1)), size(griddh(1,:))
-            if (present(exitstatus)) then
-                exitstatus = 1
-                return
-            else
-                stop
-            end if
-        end if
-
     end if
 
     if (present(norm)) then
@@ -247,20 +251,6 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
     end if
 
-    if (present(sampling)) then
-        if (sampling == 1) then
-            nlong = n
-
-        else
-            nlong = 2 * n
-
-        end if
-
-    else
-        nlong = n
-
-    end if
-
     !--------------------------------------------------------------------------
     !
     !   Calculate recursion constants used in computing the Legendre functions.
@@ -273,10 +263,10 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         if (allocated (ff2)) deallocate (ff2)
         if (allocated (fsymsign)) deallocate (fsymsign)
 
-        allocate (sqr(2 * lmax_comp +1 ), stat=astat(1))
-        allocate (ff1(lmax_comp+1,lmax_comp+1), stat=astat(2))
-        allocate (ff2(lmax_comp+1,lmax_comp+1), stat=astat(3))
-        allocate (fsymsign(lmax_comp+1,lmax_comp+1), stat=astat(4))
+        allocate (sqr(2*lmax_comp+1), stat=astat(1))
+        allocate (ff1(lmax_comp+1, lmax_comp+1), stat=astat(2))
+        allocate (ff2(lmax_comp+1, lmax_comp+1), stat=astat(3))
+        allocate (fsymsign(lmax_comp+1, lmax_comp+1), stat=astat(4))
 
         if (sum(astat(1:4)) /= 0) then
             print*, "MakeGridDH --- Error"
@@ -407,18 +397,8 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
             case (1,2,3); pm2 = 1.0_dp
             case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
         end select
-    
-        if (present(sampling)) then
-            if (sampling == 1) then
-                griddh(1:n, 1:n) = cilm(1,1,1) * pm2
-            else
-                griddh(1:n, 1:2*n) = cilm(1,1,1) * pm2
-            end if
 
-        else
-            griddh(1:n, 1:n) = cilm(1,1,1) * pm2
-
-        end if
+        griddh(1:nlat_out, 1:nlong_out) = cilm(1,1,1) * pm2
 
         return
 
@@ -442,14 +422,13 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     i_eq = n/2 + 1  ! Index correspondong to zero latitude
 
     ! First do equator
-
     z = 0.0_dp
     u = 1.0_dp
 
     coef(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
     coef0 = 0.0_dp
 
-    select case(lnorm)
+    select case (lnorm)
         case (1,2,3); pm2 = 1.0_dp
         case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
     end select
@@ -498,7 +477,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
     end do
 
     select case (lnorm)
-        case (1,4)
+        case (1, 4)
             pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp)
         case (2)
             pmm = phase * pmm / sqr(2*lmax_comp)
@@ -538,7 +517,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         coef0s = 0.0_dp
 
         select case (lnorm)
-            case (1,2,3); pm2 = 1.0_dp
+            case (1, 2, 3); pm2 = 1.0_dp
             case (4); pm2 = 1.0_dp / sqrt(4.0_dp * pi)
         end select
 
@@ -562,7 +541,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         end do
 
         select case (lnorm)
-            case (1,2);  pmm = sqr(2) * scalef
+            case (1, 2); pmm = sqr(2) * scalef
             case (3);    pmm = scalef
             case (4);    pmm = sqr(2) * scalef / sqrt(4.0_dp * pi)
         end select
@@ -574,7 +553,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
             rescalem = rescalem * u
 
             select case (lnorm)
-                case (1,4)
+                case (1, 4)
                     pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
                     pm2 = pmm
                 case (2)
@@ -593,7 +572,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
             pm1 = z * ff1(m1+1,m1) * pm2
 
             tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1
-            coef(m1) = coef(m1) + tempc 
+            coef(m1) = coef(m1) + tempc
             coefs(m1) = coefs(m1) - tempc
             ! fsymsign = -1
 
@@ -614,13 +593,13 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
         rescalem = rescalem * u
 
-        select case(lnorm)
-            case(1,4)
+        select case (lnorm)
+            case (1, 4)
                 pmm = phase * pmm * sqr(2*lmax_comp+1) / sqr(2*lmax_comp) &
                       * rescalem
-            case(2)
+            case (2)
                 pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
-            case(3)
+            case (3)
                 pmm = phase * pmm * dble(2*lmax_comp-1) * rescalem
         end select
 
@@ -642,7 +621,8 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         call fftw_execute_dft_c2r(plan, coef, grid)
         griddh(i,1:nlong) = grid(1:nlong)
 
-        if (i /= 1) then    ! don't compute value for south pole.
+        ! don't compute value for south pole when extend = 0.
+        if (.not. (i == 1 .and. extend_grid == 0) ) then
             coefs(1) = cmplx(coef0s, 0.0_dp, dp)
             coefs(2:lmax+1) = coefs(2:lmax+1) / 2.0_dp
 
@@ -658,6 +638,10 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
         end if
 
     end do
+
+    if (extend_grid == 1) then
+        griddh(1:nlat_out, nlong_out) = griddh(1:nlat_out, 1)
+    end if
 
     call fftw_destroy_plan(plan)
     call fftw_destroy_plan(plans)

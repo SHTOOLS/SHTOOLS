@@ -167,13 +167,14 @@ module SHTOOLS
         end subroutine SHExpandDH
 
         subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, &
-                              csphase, lmax_calc, exitstatus)
+                              csphase, lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(out) :: griddh(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
-            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer, intent(in), optional :: norm, sampling, csphase, &
+                                             lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGridDH
 
@@ -189,13 +190,14 @@ module SHTOOLS
         end subroutine SHExpandDHC
 
         subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
-                               csphase, lmax_calc, exitstatus)
+                               csphase, lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: cilm(:,:,:)
             complex(dp), intent(out) :: griddh(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
-            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer, intent(in), optional :: norm, sampling, csphase, &
+                                             lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGridDHC
 
@@ -220,13 +222,13 @@ module SHTOOLS
         end subroutine SHExpandGLQ
 
         subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, &
-                               csphase, lmax_calc, exitstatus)
+                               csphase, lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in), optional :: plx(:,:), zero(:)
             real(dp), intent(out) :: gridglq(:,:)
             integer, intent(in) :: lmax
-            integer, intent(in), optional :: norm, csphase, lmax_calc
+            integer, intent(in), optional :: norm, csphase, lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGridGLQ
 
@@ -243,13 +245,13 @@ module SHTOOLS
         end subroutine SHExpandGLQC
 
         subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, &
-                                csphase, lmax_calc, exitstatus)
+                                csphase, lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in), optional :: plx(:,:), zero(:)
             complex(dp), intent(out) :: gridglq(:,:)
             integer, intent(in) :: lmax
-            integer, intent(in), optional :: norm, csphase, lmax_calc
+            integer, intent(in), optional :: norm, csphase, lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGridGLQC
 

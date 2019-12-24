@@ -4,12 +4,13 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients sa
 
 # Usage
 
-`gridglq` = MakeGridGLQC (`cilm`, `zero`, [`lmax`, `norm`, `csphase`, `lmax_calc`])
+`gridglq` = MakeGridGLQC (`cilm`, `zero`, [`lmax`, `norm`, `csphase`, `lmax_calc`, `extend`])
 
 # Returns
 
-`gridglq` : complex, dimension (`lmax`+1, 2\*`lmax`+1)
-:   A 2D complex map of the function sampled on the Gauss-Legendre quadrature nodes.
+`gridglq` : complex, dimension (nlat, nlong)
+:   A 2D complex map of the function sampled on the Gauss-Legendre quadrature nodes, dimensioned as (`lmax`+1, 2\*`lmax`+1) if `extend` is 0 or (`lmax`+1, 2\*`lmax`+2) if `extend` is 1.
+
 
 # Parameters
 
@@ -31,11 +32,14 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients sa
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
 
+`extend` : input, optional, integer, default = 0
+:   If 1, compute the longitudinal band for 360 E.
+
 # Description
 
 `MakeGridGLQC` will create a 2-dimensional complex map from a set of input complex spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. This is the inverse of the routine `SHExpandGLQC`. The latitudinal nodes correspond to the zeros of the Legendre polynomial of degree `lmax+1`, and the longitudinal nodes are equally spaced with an interval of `360/(2*lmax+1)` degrees. When evaluating the function, the maximum spherical harmonic degree that is considered is the minimum of `lmax`, `lmaxin`, or `lmax_calc` (if specified).
 
-The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. The normalized legendre functions are calculated using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15.
+The redundant longitudinal band for 360 E is excluded from the grid by default, but this can be computed by specifying the optional argument `extend`. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. The normalized legendre functions are calculated using the scaling algorithm of Holmes and Featherstone (2002), which are accurate to about degree 2800. The unnormalized functions are accurate only to about degree 15.
 
 The reconstruction of the spherical harmonic function may be speeded up by precomputing the Legendre functions on the Gauss-Legendre quadrature nodes in the routine `SHGLQ` with the optional parameter `cnorm` set to 1. However, given that this array contains on the order of `lmax`**3 entries, this is only feasible for moderate values of `lmax`.
 
