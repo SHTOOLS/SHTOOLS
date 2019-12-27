@@ -32,8 +32,8 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients sa
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the function. This must be less than or equal to `lmax`.
 
-`extend` : input, optional, integer, default = 0
-:   If 1, compute the longitudinal band for 360 E.
+`extend` : input, optional, bool, default = False
+:   If True, compute the longitudinal band for 360 E.
 
 # Description
 
@@ -43,7 +43,7 @@ The redundant longitudinal band for 360 E is excluded from the grid by default, 
 
 The reconstruction of the spherical harmonic function may be speeded up by precomputing the Legendre functions on the Gauss-Legendre quadrature nodes in the routine `SHGLQ` with the optional parameter `cnorm` set to 1. However, given that this array contains on the order of `lmax`**3 entries, this is only feasible for moderate values of `lmax`.
 
-# References
+# Reference
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
 summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.

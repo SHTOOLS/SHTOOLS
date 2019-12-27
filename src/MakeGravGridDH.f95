@@ -1,6 +1,6 @@
 subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                         phi_grid, total_grid, n, sampling, lmax_calc, omega, &
-                        normal_gravity, pot_grid, exitstatus)
+                        normal_gravity, pot_grid, extend, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   Given the gravitational spherical harmonic coefficients CILM, this
@@ -26,15 +26,16 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !
 !       B = Grad V.
 !
-!   The first latitudinal band of the grid corresponds to 90 N, the latitudinal
-!   band for 90 S is not calculated, and the latitudinal sampling interval is
-!   180/N degrees. The first longitudinal band is 0 E, the longitudinal
-!   band for 360 E is not calculated, and the longitudinal sampling interval
-!   is 360/N for equally sampled and 180/N for equally spaced grids,
-!   respectively.
+!   When SAMPLING = 1, the output grids contain N samples in latitude from
+!   90 to -90 + interval and N samples in longitude from 0 to 360-2*interval,
+!   where N=2*(LMAX+1) and interval=180/N. When SAMPLING = 2, the grids are
+!   equally spaced in degrees latitude and longitude with dimension (N x 2N).
+!   If the optional parameter EXTEND is set to 1, the output grids will contain
+!   an extra column corresponding to 360 E and an extra row corresponding to
+!   90 S, which increases each of the dimensions of the grid by one.
 !
 !   This routine assumes that the spherical harmonic coefficients of geodesy
-!   4-pi normalized.
+!   are 4-pi normalized.
 !
 !   Calling Parameters
 !
@@ -61,6 +62,9 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !                       ellipsoid will be removed from the magnitude of the
 !                       total gravity vector. This is the "gravity
 !                       disturbance."
+!           extend      If 1, return a grid that contains an additional column
+!                       and row corresponding to 360 E longitude and 90 S
+!                       latitude, respectively.
 !
 !       OUT
 !           rad_grid    Gridded expansion of the radial component of the
@@ -88,8 +92,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !
 !   Notes:
 !       1.  If lmax is greater than the the maximum spherical harmonic
-!           degree of the input file, Cilm will be ZERO PADDED!
-!           (i.e., those degrees after lmax are assumed to be zero).
+!           degree of the input coefficients, then the coefficients will be
+!           zero padded.
 !       2.  Latitude is geocentric latitude.
 !
 !   Copyright (c) 2005-2019, SHTOOLS
@@ -110,9 +114,11 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     real(dp), intent(out), optional :: pot_grid(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: n
-    integer, intent(in), optional :: sampling, lmax_calc, normal_gravity
+    integer, intent(in), optional :: sampling, lmax_calc, normal_gravity, &
+                                     extend
     integer, intent(out), optional :: exitstatus
-    integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong
+    integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong, &
+               nlat_out, nlong_out, extend_grid
     real(dp) :: grid(4*lmax+4), pi, theta, scalef, rescalem, u, p, dpl, pmm, &
                 pm1, pm2, z, tempr, r_ex, lat, prefactor(lmax), coefr0, &
                 coefu0, coefrs0, coeft0, coefts0, coefp0, coefps0, coefus0, b
@@ -132,7 +138,11 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     n = 2 * lmax + 2
 
     if (present(sampling)) then
-        if (sampling /= 1 .and. sampling /=2) then
+        if (sampling == 1) then
+            nlong = n
+        else if (sampling == 2) then
+            nlong = 2 * n
+        else
             print*, "Error --- MakeGravGridDH"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
@@ -143,8 +153,35 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             else
                 stop
             end if
-
         end if
+    else
+        nlong = n
+    end if
+
+    if (present(extend)) then
+        if (extend == 0) then
+            extend_grid = 0
+            nlat_out = n
+            nlong_out = nlong
+        else if (extend == 1) then
+            extend_grid = 1
+            nlat_out = n + 1
+            nlong_out = nlong + 1
+        else
+            print*, "Error --- MakeGravGridDH"
+            print*, "Optional parameter EXTEND must be 0 or 1."
+            print*, "Input value is ", extend
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
+        end if
+    else
+        extend_grid = 0
+        nlat_out = n
+        nlong_out = nlong
     end if
 
     if (size(cilm(:,1,1)) < 2) then
@@ -161,38 +198,14 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     end if
 
-    if (present(sampling)) then
-        if (sampling == 1) then
-            nlong = n
-
-        else
-            nlong = 2 * n
-
-        end if
-    else
-        nlong = n
-
-    end if
-
-    if (size(rad_grid(:,1)) < n .or. size(rad_grid(1,:)) < nlong .or. &
-            size(theta_grid(:,1)) < n .or. size(theta_grid(1,:)) < nlong &
-            .or. size(phi_grid(:,1)) < n .or. size(phi_grid(1,:)) < nlong .or. &
-            size(total_grid(:,1)) < n .or. size(total_grid(1,:)) < nlong) then
+    if (size(rad_grid(:,1)) < nlat_out .or. size(rad_grid(1,:)) < nlong_out &
+        .or. size(theta_grid(:,1)) < nlat_out .or. size(theta_grid(1,:)) < &
+        nlong_out .or. size(phi_grid(:,1)) < nlat_out .or. size(phi_grid(1,:)) &
+        < nlong_out .or. size(total_grid(:,1)) < nlat_out .or. &
+        size(total_grid(1,:)) < nlong_out) then
         print*, "Error --- MakeGravGridDH"
-
-        if (present(sampling)) then
-            if (sampling == 1) then
-                print*, "RAD_GRID, THETA_GRID, PHI_GRID, and TOTAL_GRID " // &
-                        "must be dimensioned as (N, N) where N is ", n
-            else if (sampling == 2) then
-                print*, "RAD_GRID, THETA_GRID, PHI_GRID, and TOTAL_GRID " // &
-                        "must be dimensioned as (N, 2N) where N is ", n
-            end if
-        else
-            print*, "RAD_GRID, THETA_GRID, PHI_GRID, and TOTAL_GRID " // &
-                    "must be dimensioned as (N, N) where N is ", n
-        end if
-
+        print*, "RAD_GRID, THETA_GRID, PHI_GRID, and TOTAL_GRID " // &
+                "must be dimensioned as: ", nlat_out, nlong_out
         print*, "Input dimensions are ", size(rad_grid(:,1)), &
                 size(rad_grid(1,:)), size(theta_grid(:,1)), &
                 size(theta_grid(1,:)), size(phi_grid(:,1)),  &
@@ -249,23 +262,11 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     if (present(pot_grid)) then
         calcu = .true.
 
-        if (size(pot_grid(:,1)) < n .or. size(pot_grid(1,:)) < nlong) then
+        if (size(pot_grid(:,1)) < nlat_out .or. size(pot_grid(1,:)) &
+            < nlong_out) then
             print*, "Error --- MakeGravGridDH"
-            if (present(sampling)) then
-                if (sampling == 1) then
-                    print*, "POT_GRID must be dimensioned as (N, N) " // &
-                            "where N is ", n
-                else if (sampling == 2) then
-                    print*, "POT_GRID must be dimensioned as (N, 2N) " // &
-                            "where N is ", n
-                end if
-
-            else
-                print*, "POT_GRID must be dimensioned as (N, N) where N is ", n
-
-            end if
-
-            print*, "Input dimensions are ", size(pot_grid(:,1)),  &
+            print*, "POT_GRID must be dimensioned as: ", nlat_out, nlong_out
+            print*, "Input dimensions are ", size(pot_grid(:,1)), &
                     size(pot_grid(1,:))
             if (present(exitstatus)) then
                 exitstatus = 1
@@ -321,7 +322,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         if (allocated (ff2)) deallocate (ff2)
         if (allocated (fsymsign)) deallocate (fsymsign)
 
-        allocate (sqr(2 * lmax_comp + 1), stat=astat(1))
+        allocate (sqr(2*lmax_comp+1), stat=astat(1))
         allocate (ff1(lmax_comp+1,lmax_comp+1), stat=astat(2))
         allocate (ff2(lmax_comp+1,lmax_comp+1), stat=astat(3))
         allocate (fsymsign(lmax_comp+1,lmax_comp+1), stat=astat(4))
@@ -365,7 +366,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         !   Precompute square roots of integers that are used several times.
         !
         !----------------------------------------------------------------------
-        do l = 1, 2 * lmax_comp + 1
+        do l = 1, 2*lmax_comp+1
             sqr(l) = sqrt(dble(l))
         end do
 
@@ -392,7 +393,6 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 ff1(l+1,m+1) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
                 ff2(l+1,m+1) = sqr(2*l+1) * sqr(l-m-1) * sqr(l+m-1) &
                                / sqr(2*l-3) / sqr(l+m) / sqr(l-m)
-
             end do
 
             ff1(l+1,l) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
@@ -417,15 +417,13 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     !   Determine Clms one l at a time by intergrating over latitude.
     !
     !--------------------------------------------------------------------------
-    i_eq = n/2 + 1  ! Index correspondong to zero latitude
+    i_eq = n / 2 + 1  ! Index correspondong to zero latitude
 
     ! First do equator
     r_ex = a
     theta = pi / 2.0_dp
     z = 0.0_dp
     u = 1.0_dp
-
-    lat = 0.0_dp
 
     coefr(1:lmax+2) = cmplx(0.0_dp, 0.0_dp, dp)
     coefr0 = 0.0_dp
@@ -453,7 +451,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         prefactor(1) = r0 / r_ex
 
         do l = 2, lmax_comp,1
-            prefactor(l) = prefactor(l-1) *r0 / r_ex
+            prefactor(l) = prefactor(l-1) * r0 / r_ex
         end do
 
         pm1 = 0.0_dp
@@ -485,7 +483,6 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     rescalem = 1.0_dp / scalef
 
     do m = 1, lmax_comp-1, 1
-
         m1 = m + 1
 
         pmm = pmm * sqr(2*m+1) / sqr(2*m)
@@ -506,7 +503,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         coeft(m1) = coeft(m1) + cmplx(cilm(1,m1+1,m1), &
                                 - cilm(2,m1+1,m1), dp) * dpl * prefactor(m+1)
 
-        do l = m + 2, lmax_comp, 1
+        do l = m+2, lmax_comp, 1
             l1 = l + 1
             p = - ff2(l1,m1) * pm2
             coefr(m1) = coefr(m1) + cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
@@ -580,11 +577,11 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             if (sampling == 2) then
                 coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
             end if
-
         end if
 
         call fftw_execute_dft_c2r(plan, coef, grid)
         pot_grid(i_eq,1:nlong) = grid(1:nlong) * gm / r_ex
+
     end if
 
     coef(1) = cmplx(coeft0, 0.0_dp, dp)
@@ -611,7 +608,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     call fftw_execute_dft_c2r(plan, coef, grid)
     phi_grid(i_eq,1:nlong) = grid(1:nlong) * (gm / r_ex**2) / sin(theta)
 
-    do i=1, i_eq - 1, 1
+    do i=1, i_eq-1, 1
 
         i_s = 2 * i_eq - i
 
@@ -626,7 +623,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         else
             r_ex = (1.0_dp + tan(lat)**2) / &
-                    (1.0_dp  + tan(lat)**2 / (1.0_dp - f)**2 )
+                   (1.0_dp  + tan(lat)**2 / (1.0_dp - f)**2 )
             r_ex = a * sqrt(r_ex)
 
         end if
@@ -718,7 +715,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         pmm = sqr(2) * scalef
 
-        rescalem = 1.0_dp/scalef
+        rescalem = 1.0_dp / scalef
 
         do m = 1, lmax_comp-1, 1
 
@@ -729,7 +726,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             pm2 = pmm
 
             tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 * (-m-1) &
-                           * prefactor(m)    ! (m,m)
+                    * prefactor(m)    ! (m,m)
             coefr(m1) = coefr(m1) + tempc
             coefrs(m1) = coefrs(m1) + tempc
             ! fsymsign = 1
@@ -780,7 +777,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             coeft(m1) = coeft(m1) + tempc
             coefts(m1) = coefts(m1) + tempc ! reverse fsymsign
 
-            do l = m+2, lmax_comp, 1
+            do l=m+2, lmax_comp, 1
                 l1 = l + 1
                 p = z * ff1(l1,m1) * pm1 - ff2(l1,m1) * pm2
                 tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
@@ -890,11 +887,13 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
             call fftw_execute_dft_c2r(plan, coef, grid)
             pot_grid(i,1:nlong) = grid(1:nlong) * gm / r_ex
+
         end if
 
-        if (i==1) then
-            theta_grid(1,1:nlong) = 0.0_dp   ! These derivatives are
-            phi_grid(1,1:nlong) = 0.0_dp     ! undefined at the pole
+        if (i == 1) then
+            ! These two derivatives are undefined at the pole
+            theta_grid(1,1:nlong) = 0.0_dp
+            phi_grid(1,1:nlong) = 0.0_dp
 
         else
             coef(1) = cmplx(coeft0, 0.0_dp, dp)
@@ -907,7 +906,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             end if
 
             call fftw_execute_dft_c2r(plan, coef, grid)
-            theta_grid(i,1:nlong) = -sin(theta)*grid(1:nlong) * gm / r_ex**2
+            theta_grid(i,1:nlong) = -sin(theta) * grid(1:nlong) * gm / r_ex**2
 
             coef(1) = cmplx(coefp0, 0.0_dp, dp)
             coef(2:lmax+1) = coefp(2:lmax+1) / 2.0_dp
@@ -923,7 +922,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         end if
 
-        if (i /= 1) then    ! don't compute value for south pole.
+        ! don't compute value for south pole when extend = 0.
+        if (.not. (i == 1 .and. extend_grid == 0) ) then
             coef(1) = cmplx(coefrs0, 0.0_dp, dp)
             coef(2:lmax+1) = coefrs(2:lmax+1) / 2.0_dp
 
@@ -950,29 +950,38 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 pot_grid(i_s,1:nlong) = grid(1:nlong) * gm / r_ex
             end if
 
-            coef(1) = cmplx(coefts0, 0.0_dp, dp)
-            coef(2:lmax+1) = coefts(2:lmax+1) / 2.0_dp
+            if (i == 1) then
+                ! These two derivatives are undefined at the pole
+                theta_grid(i_s,1:nlong) = 0.0_dp
+                phi_grid(i_s,1:nlong) = 0.0_dp
 
-            if (present(sampling)) then
-                if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+            else
+                coef(1) = cmplx(coefts0, 0.0_dp, dp)
+                coef(2:lmax+1) = coefts(2:lmax+1) / 2.0_dp
+
+                if (present(sampling)) then
+                    if (sampling == 2) then
+                        coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                    end if
                 end if
-            end if
 
-            call fftw_execute_dft_c2r(plan, coef, grid)
-            theta_grid(i_s,1:nlong) = -sin(theta) * grid(1:nlong) &
-                                      * gm / r_ex**2
+                call fftw_execute_dft_c2r(plan, coef, grid)
+                theta_grid(i_s,1:nlong) = -sin(theta) * grid(1:nlong) &
+                                          * gm / r_ex**2
 
-            coef(1) = cmplx(coefps0, 0.0_dp, dp)
-            coef(2:lmax+1) = coefps(2:lmax+1) / 2.0_dp
-            if (present(sampling)) then
-                if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                coef(1) = cmplx(coefps0, 0.0_dp, dp)
+                coef(2:lmax+1) = coefps(2:lmax+1) / 2.0_dp
+                if (present(sampling)) then
+                    if (sampling == 2) then
+                        coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                    end if
                 end if
-            end if
 
-            call fftw_execute_dft_c2r(plan, coef, grid)
-            phi_grid(i_s,1:nlong) = grid(1:nlong) * (gm/r_ex**2) / sin(theta)
+                call fftw_execute_dft_c2r(plan, coef, grid)
+                phi_grid(i_s,1:nlong) = grid(1:nlong) * (gm/r_ex**2) / &
+                                        sin(theta)
+
+            end if
 
         end if
 
@@ -988,10 +997,10 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     if (present(omega)) then
 
-        do i = 1, n
+        do i = 1, nlat_out
 
-            theta = pi * dble(i-1)/dble(n)
-            lat = (pi/2.0_dp - theta)
+            theta = pi * dble(i-1) / dble(n)
+            lat = (pi / 2.0_dp - theta)
 
             r_ex = (1.0_dp + tan(lat)**2) / &
                    (1.0_dp  + tan(lat)**2 / (1.0_dp - f)**2)
@@ -1013,22 +1022,34 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
     end if
 
-    total_grid(1:n, 1:nlong) = sqrt(rad_grid(1:n,1:nlong)**2 &
-                               + phi_grid(1:n,1:nlong)**2 &
-                               + theta_grid(1:n,1:nlong)**2)
+    total_grid(1:nlat_out, 1:nlong) = sqrt(rad_grid(1:nlat_out,1:nlong)**2 &
+                                           + phi_grid(1:nlat_out,1:nlong)**2 &
+                                           + theta_grid(1:nlat_out,1:nlong)**2)
 
     ! remove normal gravity from total gravitational acceleration
     if (present(normal_gravity)) then
         if (normal_gravity == 1) then
             b = a * (1.0_dp - f)
 
-            do i = 1, n
+            do i = 1, nlat_out
                 theta = pi * dble(i-1) / dble(n)
                 lat = (pi / 2.0_dp - theta) * 180.0_dp / pi
                 total_grid(i,1:nlong) = total_grid(i,1:nlong) - &
                                         NormalGravity(lat, GM, omega, a, b)
             end do
 
+        end if
+
+    end if
+
+    if (extend_grid == 1) then
+        rad_grid(1:nlat_out, nlong_out) = rad_grid(1:nlat_out, 1)
+        theta_grid(1:nlat_out, nlong_out) = theta_grid(1:nlat_out, 1)
+        phi_grid(1:nlat_out, nlong_out) = phi_grid(1:nlat_out, 1)
+        total_grid(1:nlat_out, nlong_out) = total_grid(1:nlat_out, 1)
+
+        if (calcu) then
+            pot_grid(1:nlat_out, nlong_out) = pot_grid(1:nlat_out, 1)
         end if
 
     end if

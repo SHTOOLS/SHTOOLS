@@ -17,13 +17,14 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
 !   or 4, these are accurate to about degree 2800. When NORM = 3, the routine
 !   is only stable to about degree 15.
 !
-!   The output grid contains N samples in latitude from 90 to -90 + interval,
-!   and in longitude from 0 to 360-2*interval (or N x 2N, see below), where
-!   interval is the sampling interval and n=2*(LMAX+1). Note that the datum at
-!   90 degees latitude is ultimately downweighted to zero, so this point does
-!   not contribute to the spherical harmonic coefficients. If the optional
-!   parameter EXTEND is set to 1, the output grid will contain an extra column
-!   corresponding to 360 E and an extra row corresponding to 90 S.
+!   When SAMPLING = 1, the output grid contains N samples in latitude from
+!   90 to -90 + interval and N samples in longitude from 0 to 360-2*interval,
+!   where N=2*(LMAX+1) and interval=180/N. When SAMPLING = 2, the grid is
+!   equally spaced in degrees latitude and longitude with dimension (N x 2N).
+!   If the optional parameter EXTEND is set to 1, the output grid will contain
+!   an extra column corresponding to 360 E and an extra row corresponding to
+!   90 S, which increases each of the dimensions of the grid by one.
+!   by one.
 !
 !   The complex spherical harmonics are output in the array CILM. CILM(1,,)
 !   contains the positive m term, wheras CILM(2,,) contains the negative m
@@ -120,7 +121,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
         else if (sampling == 2) then
             nlong = 2 * n
         else
-            print*, "Error --- MakeGridDH"
+            print*, "Error --- MakeGridDHC"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
             print*, "Input value is ", sampling
@@ -145,7 +146,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
             nlat_out = n + 1
             nlong_out = nlong + 1
         else
-            print*, "Error --- MakeGridDH"
+            print*, "Error --- MakeGridDHC"
             print*, "Optional parameter EXTEND must be 0 or 1."
             print*, "Input value is ", extend
             if (present(exitstatus)) then
@@ -175,7 +176,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
     end if
 
     if (size(griddh(:,1)) < nlat_out .or. size(griddh(1,:)) < nlong_out) then
-        print*, "Error --- MakeGridDH"
+        print*, "Error --- MakeGridDHC"
         print*, "GRIDDHC must be dimensioned as: ", nlat_out, nlong_out
         print*, "Input dimension is ", size(griddh(:,1)), &
                 size(griddh(1,:))
@@ -274,7 +275,7 @@ subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
         allocate (fsymsign(lmax_comp+1, lmax_comp+1), stat=astat(4))
 
         if (sum(astat(1:4)) /= 0) then
-            print*, "MakeGridDHC --- Error"
+            print*, "Error --- MakeGridDHC"
             print*, "Problem allocating arrays SQR, FF1, FF2, or FSYMSIGN", &
                     astat(1), astat(2), astat(3), astat(4)
             if (present(exitstatus)) then

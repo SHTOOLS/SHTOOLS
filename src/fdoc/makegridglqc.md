@@ -46,7 +46,7 @@ The redundant longitudinal band for 360 E is excluded from the grid by default, 
 
 The reconstruction of the spherical harmonic function may be speeded up by precomputing the Legendre functions on the Gauss-Legendre quadrature nodes in the routine `SHGLQ` with the optional parameter `cnorm` set to 1. However, given that this array contains on the order of `lmax`\*\*3 entries, this is only feasible for moderate values of `lmax`.
 
-# References
+# Reference
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
 summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.

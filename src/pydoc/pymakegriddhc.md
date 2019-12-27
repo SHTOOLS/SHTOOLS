@@ -31,6 +31,9 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients th
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the  function. This must be less than or equal to `lmax`, and does not affect the number of samples of the output grid.
 
+`extend` : input, optional, bool, default = False
+:   If True, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of `griddh` by 1.
+
 # Description
 
 `MakeGridDHC` will create a 2-dimensional complex map equally sampled (`n` by `n`) or equally spaced (`n` by `2n`) in latitude and longitude from a set of input complex spherical harmonic coefficients, where N is `2lmax+2`. This grid conforms with the sampling theorem of Driscoll and Healy (1994) and this routine is the inverse of `SHExpandDHC`. The function is evaluated at each longitudinal band by inverse Fourier transforming the exponential terms for each degree `l`, and then summing over all degrees. When evaluating the function, the maximum spherical harmonic degree that is considered is the minimum of `lmax`, the size of `cilm-1`, or `lmax_calc` (if specified).

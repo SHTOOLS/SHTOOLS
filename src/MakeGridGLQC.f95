@@ -291,7 +291,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
         allocate (fsymsign(lmax_comp+1,lmax_comp+1), stat=astat(4))
 
         if (sum(astat(1:4)) /= 0) then
-            print*, "Error ---MakeGridGLQ"
+            print*, "Error ---MakeGridGLQC"
             print*, "Problem allocating arrays SQR, FF1, FF2, or FSYMSIGN", &
                     astat(1), astat(2), astat(3), astat(4)
             if (present(exitstatus)) then

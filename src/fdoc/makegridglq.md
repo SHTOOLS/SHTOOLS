@@ -9,7 +9,7 @@ call MakeGridGLQ (`gridglq`, `cilm`, `lmax`, `plx`, `zero`, `norm`, `csphase`, `
 # Parameters
 
 `gridglq` : output, real(dp), dimension (nlat, nlong)
-:   A 2D complex map of the function sampled on the Gauss-Legendre quadrature nodes, dimensioned as (`lmax`+1, 2\*`lmax`+1) if `extend` is 0 or (`lmax`+1, 2\*`lmax`+2) if `extend` is 1.
+:   A 2D map of the function sampled on the Gauss-Legendre quadrature nodes, dimensioned as (`lmax`+1, 2\*`lmax`+1) if `extend` is 0 or (`lmax`+1, 2\*`lmax`+2) if `extend` is 1.
 
 `cilm` : input, real(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The real spherical harmonic coefficients of the function. When evaluating the function, the maximum spherical harmonic degree considered is the minimum of `lmax`, `lmaxin`, or `lmax_calc` (if specified). The first index specifies the coefficient corresponding to the positive and negative order of `m`, respectively, with `Clm=cilm(1,l+1,m+1)` and `Cl,-m=cilm(2,l+1,m+1)`.
@@ -46,7 +46,7 @@ The redundant longitudinal band for 360 E is excluded from the grid by default, 
 
 The reconstruction of the spherical harmonic function may be speeded up by precomputing the Legendre functions on the Gauss-Legendre quadrature nodes in the routine `SHGLQ`. However, given that this array contains on the order of `lmax`\*\*3 entries, this is only feasible for moderate values of `lmax`.
 
-# References
+# Reference
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
 summation and the recursive computation of very high degree and

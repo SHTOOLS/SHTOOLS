@@ -31,8 +31,8 @@ Create a 2D map from a set of spherical harmonic coefficients using the Driscoll
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the  function. This must be less than or equal to `lmax`, and does not affect the number of samples of the output grid.
 
-`extend` : input, optional, integer, default = 0
-:   If 1, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of `griddh` by 1.
+`extend` : input, optional, bool, default = False
+:   If True, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of `griddh` by 1.
 
 # Description
 

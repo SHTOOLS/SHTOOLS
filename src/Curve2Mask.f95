@@ -1,10 +1,10 @@
-subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
+subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, extend, &
                       exitstatus)
 !------------------------------------------------------------------------------
 !
 !   Given a list of coordinates of a single closed curve, this routine
 !   will output a Driscoll and Healy sampled grid where the interior and
-!   exterior of the curve are filled with 0s and 1s. The value at the
+!   exterior of the curve are filled with zeros and ones. The value at the
 !   north pole (either 0 or 1) is specified by the input parameter NP.
 !
 !   Longitudes can span the range from -360 to 720 degrees. If the longitudes
@@ -28,6 +28,11 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
 !           dhgrid      A Driscoll and Healy sampled grid specifiying whether
 !                       the point is in the curve (1), or outside of it (0).
 !
+!       OPTIONAL (IN)
+!           extend      If 1, return a grid that contains an additional column
+!                       and row corresponding to 360 E longitude and 90 S
+!                       latitude, respectively.
+!
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
 !                       is encountered, the variable exitstatus will be
@@ -49,9 +54,11 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
     integer, intent(out) :: dhgrid(:,:)
     real(dp), intent(in) :: profile(:,:)
     integer, intent(in) :: n, sampling, nprofile, np
+    integer, intent(in), optional :: extend
     integer, intent(out), optional :: exitstatus
     integer, parameter :: maxcross = 2000
-    integer :: i, j, k, k_loc, nlat, nlong, numcross, next, ind1, ind2
+    integer :: i, j, k, k_loc, nlat, nlong, numcross, next, ind1, ind2, &
+               nlat_out, nlong_out, extend_grid
     real(dp) :: lat_int, long_int, lon, cross(maxcross), &
                 cross_sort(maxcross), lat1, lat2, lon1, lon2
 
@@ -76,11 +83,9 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
     if (sampling == 1) then
         nlong = nlat
         long_int = 2.0_dp * lat_int
-
     else if (sampling == 2) then
         nlong = 2 * nlat
         long_int = lat_int
-
     else
         print*, "Error --- Curve2Mask"
         print*, "SAMPLING of DHGRID must be 1 (equally sampled) or 2 (equally spaced)."
@@ -91,7 +96,32 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
         else
             stop
         end if
+    end if
 
+    if (present(extend)) then
+        if (extend == 0) then
+            extend_grid = 0
+            nlat_out = nlat
+            nlong_out = nlong
+        else if (extend == 1) then
+            extend_grid = 1
+            nlat_out = nlat + 1
+            nlong_out = nlong + 1
+        else
+            print*, "Error --- Curve2Mask"
+            print*, "Optional parameter EXTEND must be 0 or 1."
+            print*, "Input value is ", extend
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
+        end if
+    else
+        extend_grid = 0
+        nlat_out = nlat
+        nlong_out = nlong
     end if
 
     if (NP /= 1 .and. NP /= 0) then
@@ -108,11 +138,11 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
 
     end if
 
-    if (size(dhgrid(1,:)) < nlong .or. size(dhgrid(:,1)) < nlat ) then
+    if (size(dhgrid(1,:)) < nlong_out .or. size(dhgrid(:,1)) < nlat_out) then
         print*, "Error --- Curve2Mask"
         print*, "DHGRID must be dimensioned as (NLAT, NLONG)."
-        print*, "NLAT = ", nlat
-        print*, "NLONG = ", nlong
+        print*, "NLAT = ", nlat_out
+        print*, "NLONG = ", nlong_out
         print*, "Size of GRID = ", size(dhgrid(:,1)), size(dhgrid(1,:))
         if (present(exitstatus)) then
             exitstatus = 1
@@ -241,7 +271,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
         end do
 
         if (numcross == 0) then
-            dhgrid(1:nlat, j) = np
+            dhgrid(1:nlat_out, j) = np
             cycle
 
         else  ! sort crossings by decreasing latitude
@@ -268,8 +298,12 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
 
         end do
 
-        if (ind1 <= nlat) dhgrid(ind1:nlat, j) = next
+        if (ind1 <= nlat_out) dhgrid(ind1:nlat_out, j) = next
 
     end do
+
+    if (extend_grid == 1) then
+        dhgrid(1:nlat_out, nlong_out) = dhgrid(1:nlat_out, 1)
+    end if
 
 end subroutine Curve2Mask
