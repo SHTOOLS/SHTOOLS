@@ -205,7 +205,7 @@ python module _SHTOOLS
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
             real(dp),dimension(grid_d0,grid_d1),intent(in) :: grid
-            integer,intent(hide),depend(grid_d0) :: n=grid_d0
+            integer,intent(hide),depend(grid_d0) :: n = grid_d0
             real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
             integer,intent(hide) :: lmax
             integer,optional,intent(in) :: norm = 1
@@ -294,7 +294,7 @@ python module _SHTOOLS
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
             real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-            integer,intent(hide),depend(gridglq_d0) :: lmax=gridglq_d0-1
+            integer,intent(hide),depend(gridglq_d0) :: lmax = gridglq_d0-1
             real(dp),dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
             real(dp),dimension(w_d0),intent(in) :: w
             real(dp),dimension(zero_d0),intent(in) :: zero

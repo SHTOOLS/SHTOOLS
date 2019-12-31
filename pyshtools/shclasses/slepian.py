@@ -173,7 +173,7 @@ class Slepian(object):
 
         Parameters
         ----------
-        dh_mask :ndarray, shape (nlat, nlon)
+        dh_mask : ndarray, shape (nlat, nlon)
             A Driscoll and Healy (1994) sampled grid describing the
             concentration region R. All elements should either be 1 (for inside
             the concentration region) or 0 (for outside the concentration

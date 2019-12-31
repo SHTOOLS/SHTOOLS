@@ -42,13 +42,15 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Attribute | Description |
 | --------- | ----------- |
 | `data` | Array of the gridded data. |
-| `nlat`, `nlon` | The number of latitude and longitude bands in the grid.|
+| `nlat`, `nlon` | The number of latitude and longitude bands in the grid. |
+| `n` | The number of samples in latitude for `'DH'` grids. |
 | `lmax` | The maximum spherical harmonic degree that can be resolved by the grid sampling. |
-| `sampling` | For Driscoll and Healy grids, the longitudinal sampling of the grid. Either 1 for `nlon` = `nlat` or 2 for `nlon` = 2 * `nlat` |
+| `sampling` | The longitudinal sampling for Driscoll and Healy grids. Either 1 for equally sampled grids (`nlon` = `nlat`) or 2 for equally spaced grids in degrees. |
 | `kind` | Either `'complex'` or `'real'` for the data type. |
 | `grid` | Either `'DH'` or `'GLQ'` for Driscoll and Healy grids or Gauss-Legendre quadrature grids. |
-| `zeros` | The $$\cos(\theta)$$ nodes used with Gauss-Legendre quadrature grids. Default is `None`.|
+| `zeros` | The $$\cos(\theta)$$ nodes used with Gauss-Legendre quadrature grids. Default is `None`. |
 | `weights` | The latitudinal weights used with Gauss-Legendre quadrature grids. Default is `None`. |
+| `extend` | True if the grid contains the redundant column for 360 E and (for `'DH'` grids) the unnecessary row for 90 S. |
 
 ## Class methods
 
