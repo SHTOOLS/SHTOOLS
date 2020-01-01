@@ -1,5 +1,6 @@
 subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
-                              vxz, vyz, n, sampling, lmax_calc, exitstatus)
+                              vxz, vyz, n, sampling, lmax_calc, extend, &
+                              exitstatus)
 !------------------------------------------------------------------------------
 !
 !   Given the 4pi normalized gravitational spherical harmonic coefficients
@@ -16,12 +17,12 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !
 !       V = GM/r Sum_{l=0}^LMAX (R0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm},
 !
-!   Laplaces equation implies that Vxx + Vyy + Vzz = 0, and the gravity tensor
+!   Laplace's equation implies that Vxx + Vyy + Vzz = 0, and the gravity tensor
 !   is symmetric. The components are calculated according to eq. 1 in
 !   Petrovskaya and Vershkov (2006, J. Geod, 80, 117-127), which is based on
-!   the eq. 3.28 in Reed (1973, Ohio State Univ., Dept. Geod. Sci., Rep. 201,
+!   eq. 3.28 in Reed (1973, Ohio State Univ., Dept. Geod. Sci., Rep. 201,
 !   Columbus, OH). Note that Reed's equations are in terms of latitude, and
-!   that the Y axis points East.
+!   that the Y axis points East:
 !
 !       Vzz = Vrr
 !       Vxx = 1/r Vr + 1/r^2 Vtt
@@ -35,15 +36,15 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !
 !   The output grid are in units of 1/s and are cacluated on a flattened
 !   ellipsoid with semi-major axis A and flattening F. To obtain units of
-!   Eotvos (10^-9 s^-1), multiply by 10^9. The output grids contain N samples
-!   in latitude and longitude by default, but if the optional parameter
-!   SAMPLING is set to 2, the grids will contain N samples in latitude and 2N
-!   samples in longitude. The first latitudinal band of the grid corresponds to
-!   90 N, the latitudinal band for 90 S is not calculated, and the latitudinal
-!   sampling interval is 180/N degrees. The first longitudinal band is 0 E,
-!   the longitudinal band for 360 E is not calculated, and the longitudinal
-!   sampling interval is 360/N for equally sampled and 180/N for equally spaced
-!   grids, respectively.
+!   Eotvos (10^-9 s^-1), multiply by 10^9.
+!
+!   When SAMPLING = 1, the output grids contain N samples in latitude from
+!   90 to -90 + interval and N samples in longitude from 0 to 360-2*interval,
+!   where N=2*(LMAX+1) and interval=180/N. When SAMPLING = 2, the grids are
+!   equally spaced in degrees latitude and longitude with dimension (N x 2N).
+!   If the optional parameter EXTEND is set to 1, the output grids will contain
+!   an extra column corresponding to 360 E and an extra row corresponding to
+!   90 S, which increases each of the dimensions of the grid by one.
 !
 !   Calling Parameters
 !
@@ -65,6 +66,9 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !                       hence not aliased into lower frequencies.
 !           lmax_calc   The maximum spherical harmonic degree to evaluate
 !                       the coefficients up to.
+!           extend      If 1, return a grid that contains an additional column
+!                       and row corresponding to 360 E longitude and 90 S
+!                       latitude, respectively.
 !
 !       OUT
 !           Vxx         x-x component of the gravity gradient tensor.
@@ -89,8 +93,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !
 !   Notes:
 !       1.  If lmax is greater than the the maximum spherical harmonic
-!           degree of the input file, Cilm will be ZERO PADDED!
-!           (i.e., those degrees after lmax are assumed to be zero).
+!           degree of the input coefficients, then the coefficients will be
+!           zero padded.
 !       2.  Latitude is geocentric latitude.
 !
 !   Copyright (c) 2005-2019, SHTOOLS
@@ -108,9 +112,10 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                              vyz(:,:)
     integer, intent(in) :: lmax
     integer, intent(out) :: n
-    integer, intent(in), optional :: sampling, lmax_calc
+    integer, intent(in), optional :: sampling, lmax_calc, extend
     integer, intent(out), optional :: exitstatus
-    integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong
+    integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong, &
+               nlat_out, nlong_out, extend_grid
     real(dp) :: grid(4*lmax+4), pi, theta, scalef, rescalem, u, p, dpl, dpl2, &
                 dpl2s, pmm, sint, pm1, pm2, z, tempr, r_ex, lat, &
                 prefactor(lmax), coefr0, coefrs0, coeft0, coefts0, coefp0, &
@@ -136,7 +141,11 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     n = 2 * lmax + 2
 
     if (present(sampling)) then
-        if (sampling /= 1 .and. sampling /=2) then
+        if (sampling == 1) then
+            nlong = n
+        else if (sampling == 2) then
+            nlong = 2 * n
+        else
             print*, "Error --- MakeGravGradGridDH"
             print*, "Optional parameter SAMPLING must be 1 (N by N) " // &
                     "or 2 (N by 2N)."
@@ -147,8 +156,35 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             else
                 stop
             end if
-
         end if
+    else
+        nlong = n
+    end if
+
+    if (present(extend)) then
+        if (extend == 0) then
+            extend_grid = 0
+            nlat_out = n
+            nlong_out = nlong
+        else if (extend == 1) then
+            extend_grid = 1
+            nlat_out = n + 1
+            nlong_out = nlong + 1
+        else
+            print*, "Error --- MakeGravGradGridDH"
+            print*, "Optional parameter EXTEND must be 0 or 1."
+            print*, "Input value is ", extend
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
+        end if
+    else
+        extend_grid = 0
+        nlat_out = n
+        nlong_out = nlong
     end if
 
     if (size(cilm(:,1,1)) < 2) then
@@ -165,39 +201,15 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
     end if
 
-    if (present(sampling)) then
-        if (sampling == 1) then
-            nlong = n
-        else
-            nlong = 2 * n
-        end if
-        
-    else
-        nlong = n
-
-    end if
-
-    if (size(vxx(:,1)) < n .or. size(vxx(1,:)) < nlong .or. size(vyy(:,1)) < n &
-            .or. size(vyy(1,:)) < nlong .or. size(vzz(:,1)) < n .or. &
-            size(vzz(1,:)) < nlong .or. size(vxy(:,1)) < n .or. &
-            size(vxy(1,:)) < nlong .or. size(vxz(:,1)) < n .or. &
-            size(vxz(1,:)) < nlong  .or. size(vyz(:,1)) < n .or. &
-            size(vyz(1,:)) < nlong) then
+    if (size(vxx(:,1)) < nlat_out .or. size(vxx(1,:)) < nlong_out .or. &
+            size(vyy(:,1)) < nlat_out .or. size(vyy(1,:)) < nlong_out .or. &
+            size(vzz(:,1)) < nlat_out .or. size(vzz(1,:)) < nlong_out .or. &
+            size(vxy(:,1)) < nlat_out .or. size(vxy(1,:)) < nlong_out .or. &
+            size(vxz(:,1)) < nlat_out .or. size(vxz(1,:)) < nlong_out .or. &
+            size(vyz(:,1)) < nlat_out .or. size(vyz(1,:)) < nlong_out) then
         print*, "Error --- MakeGravGradGridDH"
-
-        if (present(sampling)) then
-            if (sampling == 1) then
-                print*, "VXX, VYY, VZZ, VXY, VXZ, and VYZ must be " // &
-                        "dimensioned as (N, N) where N is ", n
-            else if (sampling == 2) then
-                print*, "VXX, VYY, VZZ, VXY, VXZ, and VYZ must be " // &
-                        "dimensioned as (N, 2N) where N is ", n
-            end if
-        else
-            print*, "VXX, VYY, VZZ, VXY, VXZ, and VYZ must be dimensioned " // &
-                    "as (N, N) where N is ", n
-        end if
-
+        print*, "VXX, VYY, VZZ, VXY, VXZ, and VYZ must be dimensioned " // &
+                "as: ", nlat_out, nlong_out
         print*, "Input dimensions are ", size(vxx(:,1)), size(vxx(1,:)), &
             size(vyy(:,1)), size(vyy(1,:)), size(vzz(:,1)), size(vzz(1,:)), &
             size(vxy(:,1)), size(vxy(1,:)), size(vxz(:,1)), size(vxz(1,:)), &
@@ -305,7 +317,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         !   Precompute square roots of integers that are used several times.
         !
         !----------------------------------------------------------------------
-        do l=1, 2 * lmax_comp + 1
+        do l=1, 2*lmax_comp+1
             sqr(l) = sqrt(dble(l))
         end do
 
@@ -402,7 +414,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     tempr = 2 * cilm(1,1,1) * pm2  ! l = 0
     coefrr0 = coefrr0 + tempr
 
-    ! derivative in theta and phi of l=0 term is 0, so no need to calculate this
+    ! derivative in theta and phi of l=0 term is 0. No need to calculate this
 
     if (lmax_comp /= 0) then    ! l = 1
         prefactor(1) = r0 / r_ex
@@ -470,7 +482,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 * prefactor(m) * m ! (m,m)
         coefp(m1) = coefp(m1) + tempc
 
-        tempc = -cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
+        tempc = - cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
                 * prefactor(m) * m**2 ! (m,m)
         coefpp(m1) = coefpp(m1) + tempc
 
@@ -485,7 +497,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
         pm1 = 0.0_dp
 
-        dpl = ( sqr(2*m+3) * pmm )
+        dpl = sqr(2*m+3) * pmm
         tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * dpl &
                 * prefactor(m+1)    ! (m+1,m)
         coeft(m1) = coeft(m1) + tempc
@@ -513,7 +525,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                     * prefactor(l) * m
             coefp(m1) = coefp(m1) + tempc
 
-            tempc = -cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
+            tempc = - cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
                     * prefactor(l) * m**2
             coefpp(m1) = coefpp(m1) + tempc
 
@@ -521,7 +533,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                     * prefactor(l) * m
             coefrp(m1) = coefrp(m1) + tempc
 
-            dpl = ( sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1)
+            dpl = sqr(2*l+1) * sqr(l-m) * sqr(l+m) / sqr(2*l-1) * pm1
             tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl &
                     * prefactor(l)
             coeft(m1) = coeft(m1) + tempc
@@ -534,7 +546,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                     prefactor(l) * m
             coeftp(m1) = coeftp(m1) + tempc
 
-            dpl2 = -(l * l1 -(m**2) / u**2) * p
+            dpl2 = - (l * l1 -(m**2) / u**2) * p
             tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * dpl2 &
                     * prefactor(l)
             coeftt(m1) = coeftt(m1) + tempc
@@ -574,7 +586,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                         * prefactor(lmax_comp) * lmax_comp
         coefp(lmax_comp+1) = coefp(lmax_comp+1) + tempc
 
-        tempc = -cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+        tempc = - cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                         - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
                         * prefactor(lmax_comp) * lmax_comp**2
         coefpp(lmax_comp+1) = coefpp(lmax_comp+1) + tempc
@@ -646,7 +658,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
     vxx(i_eq,1:nlong) = grid(1:nlong)
 
     ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
-    coef(1) = cmplx(coefr0/r_ex  + coefpp0/(r_ex**2), 0.0_dp, dp)
+    coef(1) = cmplx(coefr0/r_ex + coefpp0/(r_ex**2), 0.0_dp, dp)
     coef(2:lmax+1) = (coefr(2:lmax+1)/r_ex &
                      + coefpp(2:lmax+1)/(r_ex**2) ) / 2.0_dp
 
@@ -879,7 +891,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coefp(m1) = coefp(m1) + tempc
             coefps(m1) = coefps(m1) + tempc ! fsymsign = 1
 
-            tempc = -cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
+            tempc = - cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) * pm2 &
                     * prefactor(m) * m**2 ! (m,m)
             coefpp(m1) = coefpp(m1) + tempc
             coefpps(m1) = coefpps(m1) + tempc ! fsymsign = 1
@@ -928,7 +940,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coefp(m1) = coefp(m1) + tempc
             coefps(m1) = coefps(m1) - tempc ! fsymsign = -1
 
-            tempc = -cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 &
+            tempc = - cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 &
                     * prefactor(m+1) * m**2   ! (m+1,m)
             coefpp(m1) = coefpp(m1) + tempc
             coefpps(m1) = coefpps(m1) - tempc ! fsymsign = -1
@@ -961,7 +973,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coeftt(m1) = coeftt(m1) + tempc  * dpl2
             coeftts(m1) = coeftts(m1) + tempc * dpl2s
 
-            do l = m + 2, lmax_comp, 1
+            do l=m+2, lmax_comp, 1
                 l1 = l + 1
                 p = z * ff1(l1,m1) * pm1 - ff2(l1,m1) * pm2
                 tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p * (-l1) &
@@ -979,7 +991,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 coefp(m1) = coefp(m1) + tempc
                 coefps(m1) = coefps(m1) + tempc * fsymsign(l1,m1)
 
-                tempc = -cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
+                tempc = - cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) * p &
                         * prefactor(l) * m**2
                 coefpp(m1) = coefpp(m1) + tempc
                 coefpps(m1) = coefpps(m1) + tempc * fsymsign(l1,m1)
@@ -1075,7 +1087,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             coefp(lmax_comp+1) = coefp(lmax_comp+1) + tempc
             coefps(lmax_comp+1) = coefps(lmax_comp+1) + tempc   ! fsymsign = 1
 
-            tempc = -cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
+            tempc = - cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                             - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
                             * prefactor(lmax_comp) * lmax_comp**2
             coefpp(lmax_comp+1) = coefpp(lmax_comp+1) + tempc
@@ -1192,8 +1204,9 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
         vzz(i,1:nlong) = grid(1:nlong)
 
         if (i == 1) then
-            vyy(1,1:nlong) = 0.0_dp  ! These derivatives are
-            vzz(1,1:nlong) = 0.0_dp  ! undefined at the pole
+            ! These derivatives are undefined at the pole
+            vxx(1,1:nlong) = 0.0_dp
+            vyy(1,1:nlong) = 0.0_dp
             vxy(1,1:nlong) = 0.0_dp
             vxz(1,1:nlong) = 0.0_dp
             vyz(1,1:nlong) = 0.0_dp
@@ -1274,7 +1287,8 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 
         end if
 
-        if (i /= 1) then    ! don't compute value for south pole.
+        ! don't compute value for south pole when extend = 0.
+        if (.not. (i == 1 .and. extend_grid == 0) ) then
             ! Vzz = Vrr
             coef(1) = cmplx(coefrrs0, 0.0_dp, dp)
             coef(2:lmax+1) = coefrrs(2:lmax+1) / 2.0_dp
@@ -1288,83 +1302,104 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             call fftw_execute_dft_c2r(plan, coef, grid)
             vzz(i_s,1:nlong) = grid(1:nlong)
 
-            ! Vxx = 1/r Vr + 1/r^2 Vtt
-            coef(1) = cmplx(coefrs0/r_ex + coeftts0/r_ex**2, 0.0_dp, dp)
-            coef(2:lmax+1) = (coefrs(2:lmax+1)/r_ex &
-                              + coeftts(2:lmax+1)/r_ex**2 ) / 2.0_dp
+            if (i == 1) then
+                ! These derivatives are undefined at the pole
+                vxx(1,1:nlong) = 0.0_dp
+                vyy(1,1:nlong) = 0.0_dp
+                vxy(1,1:nlong) = 0.0_dp
+                vxz(1,1:nlong) = 0.0_dp
+                vyz(1,1:nlong) = 0.0_dp
 
-            if (present(sampling)) then
-                if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+            else
+                ! Vxx = 1/r Vr + 1/r^2 Vtt
+                coef(1) = cmplx(coefrs0/r_ex + coeftts0/r_ex**2, 0.0_dp, dp)
+                coef(2:lmax+1) = (coefrs(2:lmax+1)/r_ex &
+                                  + coeftts(2:lmax+1)/r_ex**2 ) / 2.0_dp
+
+                if (present(sampling)) then
+                    if (sampling == 2) then
+                        coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                    end if
                 end if
-            end if
 
-            call fftw_execute_dft_c2r(plan, coef, grid)
-            vxx(i_s,1:nlong) = grid(1:nlong)
+                call fftw_execute_dft_c2r(plan, coef, grid)
+                vxx(i_s,1:nlong) = grid(1:nlong)
 
-            ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
-            coef(1) = cmplx(coefrs0/r_ex + coefts0/(r_ex**2)/tan(theta) &
-                            + coefpps0/(r_ex**2)/u**2,0.0_dp, dp)
-            coef(2:lmax+1) = (coefrs(2:lmax+1)/r_ex &
-                              + coefts(2:lmax+1)/(r_ex**2)/tan(theta) + &
-                              coefpps(2:lmax+1)/(r_ex**2)/u**2 ) / 2.0_dp
+                ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
+                coef(1) = cmplx(coefrs0/r_ex + coefts0/(r_ex**2)/tan(theta) &
+                                + coefpps0/(r_ex**2)/u**2, 0.0_dp, dp)
+                coef(2:lmax+1) = (coefrs(2:lmax+1)/r_ex &
+                                  + coefts(2:lmax+1)/(r_ex**2)/tan(theta) + &
+                                  coefpps(2:lmax+1)/(r_ex**2)/u**2 ) / 2.0_dp
 
-            if (present(sampling)) then
-                if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                if (present(sampling)) then
+                    if (sampling == 2) then
+                        coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                    end if
                 end if
-            end if
 
-            call fftw_execute_dft_c2r(plan, coef, grid)
-            vyy(i_s,1:nlong) = grid(1:nlong)
+                call fftw_execute_dft_c2r(plan, coef, grid)
+                vyy(i_s,1:nlong) = grid(1:nlong)
 
-            ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
-            coef(1) = cmplx(coeftps0/sint/r_ex**2 &
-                            - coefps0/(r_ex**2)*z/u**2, 0.0_dp, dp)
-            coef(2:lmax+1) = (coeftps(2:lmax+1)/sint/r_ex**2 &
-                            - coefps(2:lmax+1)/(r_ex**2)*z/u**2 ) / 2.0_dp
+                ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
+                coef(1) = cmplx(coeftps0/sint/r_ex**2 &
+                                - coefps0/(r_ex**2)*z/u**2, 0.0_dp, dp)
+                coef(2:lmax+1) = (coeftps(2:lmax+1)/sint/r_ex**2 &
+                                  - coefps(2:lmax+1)/(r_ex**2)*z/u**2 ) &
+                                  / 2.0_dp
 
-            if (present(sampling)) then
-                if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                if (present(sampling)) then
+                    if (sampling == 2) then
+                        coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                    end if
                 end if
-            end if
 
-            call fftw_execute_dft_c2r(plan, coef, grid)
-            vxy(i_s,1:nlong) = grid(1:nlong)
+                call fftw_execute_dft_c2r(plan, coef, grid)
+                vxy(i_s,1:nlong) = grid(1:nlong)
 
-            ! Vxz = 1/r^2 Vt - 1/r Vrt
-            coef(1) = cmplx(coefts0/r_ex**2 - coefrts0/r_ex, 0.0_dp, dp)
-            coef(2:lmax+1) = (coefts(2:lmax+1)/r_ex**2 &
-                            - coefrts(2:lmax+1)/r_ex ) / 2.0_dp
+                ! Vxz = 1/r^2 Vt - 1/r Vrt
+                coef(1) = cmplx(coefts0/r_ex**2 - coefrts0/r_ex, 0.0_dp, dp)
+                coef(2:lmax+1) = (coefts(2:lmax+1)/r_ex**2 &
+                                  - coefrts(2:lmax+1)/r_ex ) / 2.0_dp
 
-            if (present(sampling)) then
-                if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                if (present(sampling)) then
+                    if (sampling == 2) then
+                        coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                    end if
                 end if
-            end if
 
-            call fftw_execute_dft_c2r(plan, coef, grid)
-            vxz(i_s,1:nlong) = grid(1:nlong)
+                call fftw_execute_dft_c2r(plan, coef, grid)
+                vxz(i_s,1:nlong) = grid(1:nlong)
 
-            ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
-            coef(1) = cmplx(coefps0/sint/r_ex**2 - coefrps0/sint/r_ex, &
-                            0.0_dp, dp)
-            coef(2:lmax+1) = (coefps(2:lmax+1)/sint/r_ex**2 &
-                            - coefrps(2:lmax+1)/sint/r_ex ) / 2.0_dp
+                ! Vyz = 1/r^2 /sin(t) Vp - 1/r /sin(t) Vrp
+                coef(1) = cmplx(coefps0/sint/r_ex**2 - coefrps0/sint/r_ex, &
+                                0.0_dp, dp)
+                coef(2:lmax+1) = (coefps(2:lmax+1)/sint/r_ex**2 &
+                                  - coefrps(2:lmax+1)/sint/r_ex ) / 2.0_dp
 
-            if (present(sampling)) then
-                if (sampling == 2) then
-                    coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                if (present(sampling)) then
+                    if (sampling == 2) then
+                        coef(lmax+2:2*lmax+3) = cmplx(0.0_dp, 0.0_dp, dp)
+                    end if
                 end if
-            end if
 
-            call fftw_execute_dft_c2r(plan, coef, grid)
-            vyz(i_s,1:nlong) = grid(1:nlong)
+                call fftw_execute_dft_c2r(plan, coef, grid)
+                vyz(i_s,1:nlong) = grid(1:nlong)
+
+            end if
 
         end if
 
     end do
+
+    if (extend_grid == 1) then
+        vxx(1:nlat_out, nlong_out) = vxx(1:nlat_out, 1)
+        vyy(1:nlat_out, nlong_out) = vyy(1:nlat_out, 1)
+        vzz(1:nlat_out, nlong_out) = vzz(1:nlat_out, 1)
+        vxy(1:nlat_out, nlong_out) = vxy(1:nlat_out, 1)
+        vxz(1:nlat_out, nlong_out) = vxz(1:nlat_out, 1)
+        vyz(1:nlat_out, nlong_out) = vyz(1:nlat_out, 1)
+    end if
 
     call fftw_destroy_plan(plan)
 

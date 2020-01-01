@@ -40,8 +40,12 @@ class SHGravGrid(object):
     lmax_calc      : The maximum spherical harmonic degree of the gravitational
                      potential used in creating the grid.
     nlat, nlon     : The number of latitude and longitude bands in the grids.
-    sampling       : The longitudinal sampling scheme of the grids: either
-                     1 for nlon=nlat or 2 for nlon=2*nlat.
+    n              : The number of samples in latitude.
+    sampling       : The longitudinal sampling for Driscoll and Healy grids.
+                     Either 1 for equally sampled grids (nlat=nlon) or 2 for
+                     equally spaced grids in degrees.
+    extend         : True if the grid contains the redundant column for 360 E
+                     and the unnecessary row for 90 S.
 
     Methods:
 
@@ -72,6 +76,8 @@ class SHGravGrid(object):
         self.sampling = self.rad.sampling
         self.nlat = self.rad.nlat
         self.nlon = self.rad.nlon
+        self.n = self.rad.n
+        self.extend = self.rad.extend
         self.gm = gm
         self.a = a
         self.f = f
@@ -104,21 +110,23 @@ class SHGravGrid(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('grid = {:s}\n'.format(repr(self.grid)))
-        if self.grid == 'DH':
-            str += 'sampling = {:d}\n'.format(self.sampling)
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'lmax = {:d}\n'
-                'lmax_calc = {:d}\n'
-                'gm (m3 / s2) = {:e}\n'
-                'a (m)= {:e}\n'
-                'f = {:e}\n'
-                'omega (rad / s) = {:s}\n'
-                'normal gravity is removed = {:s}'
-                .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.gm, self.a, self.f, repr(self.omega),
-                        repr(self.normal_gravity)))
+        str = ('grid = {:s}\n'
+               'nlat = {:d}\n'
+               'nlon = {:d}\n'
+               'n = {:d}\n'
+               'sampling = {:d}\n'
+               'extend = {}\n'
+               'lmax = {:d}\n'
+               'lmax_calc = {:d}\n'
+               'gm (m3 / s2) = {:e}\n'
+               'a (m)= {:e}\n'
+               'f = {:e}\n'
+               'omega (rad / s) = {:s}\n'
+               'normal gravity is removed = {:s}'
+               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
+                       self.extend, self.lmax, self.lmax_calc, self.gm,
+                       self.a, self.f, repr(self.omega),
+                       repr(self.normal_gravity)))
         return str
 
     def plot_rad(self, colorbar=True, cb_orientation='vertical',
@@ -581,7 +589,9 @@ class SHGravGrid(object):
                  'omega': self.omega,
                  'lmax_calc': self.lmax_calc,
                  'sampling': self.sampling,
-                 'normal_gravity': self.normal_gravity
+                 'normal_gravity': self.normal_gravity,
+                 'n': self.n,
+                 'extend': self.extend
                  }
 
         _total = _xr.DataArray(self.total.to_array(),

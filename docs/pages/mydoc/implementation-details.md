@@ -85,15 +85,15 @@ It is possible to choose the weights $$w_i$$ and the locations of the latitudina
 
 ### Gauss-Legendre Quadrature
 
-For the case of Gauss-Legendre quadrature (`GLQ`), the quadrature is exact when the function $$f$$ is sampled in latitude at the $$(L+1)$$ zeros of the Legendre Polynomial of degree $$(L+1)$$. Since the function also needs to be sampled on $$(2L+1)$$ equally space grid nodes for the Fourier transforms in longitude, the function $$f$$ is sampled on a grid of size $$(L+1)\times(2L+1)$$.
+For the case of Gauss-Legendre quadrature (`GLQ`), the quadrature is exact when the function $$f$$ is sampled in latitude at the $$(L+1)$$ zeros of the Legendre Polynomial of degree $$(L+1)$$. Since the function also needs to be sampled on $$(2L+1)$$ equally space grid nodes for the Fourier transforms in longitude, the function $$f$$ is sampled on a grid of size $$(L+1)\times(2L+1)$$. The redundant data points at 360$$^{\circ}$$ E longitude are not required by the spherical harmonic transformation routines, but can be computed by specifying the optional argument `extend`.
 
 ### Driscoll and Healy [1994]
 
 The second type of grid is for data that are sampled on regular grids. As shown by *Driscoll and Healy* [1994], an exact quadrature exists when the function $$f$$ is sampled at $$N$$ equally spaced nodes in latitude and $$N$$ equally spaced nodes in longitude. For this sampling (`DH`), the grids make use of the longitude band at 90$$^{\circ}$$ N, but not 90$$^{\circ}$$ S, and the number of samples is $$2(L+1)$$, which is always even. Given that the sampling in latitude was imposed a priori, these grids contain almost twice as many samples in latitude as the grids used with Gauss-Legendre quadrature. It should be noted that for this quadrature, the longitude band at 90$$^{\circ}$$ N is ultimately downweighted to zero, and hence has no influence on the returned spherical harmonic coefficients.
 
-For geographic data, it is common to work with grids that are equally spaced in degrees latitude and longitude. SHTOOLS provides the option of using grids of size $$N\times2N$$, and when performing the Fourier transforms for this case (`DH2`), the coefficients $$c_{lm}$$ and $$s_{lm}$$ with $$m>L$$ are discarded.
+For geographic data, it is common to work with grids that are equally spaced in degrees latitude and longitude. SHTOOLS provides the option of using grids of size $$N\times2N$$, and when performing the Fourier transforms for this case (`DH2`), the coefficients $$c_{lm}$$ and $$s_{lm}$$ with $$m>L$$ are discarded. The redundant data points at 360$$^{\circ}$$ E longitude and the latitudinal band at 90$$^{\circ}$$ S are not required by the spherical harmonic transformation routines, but can be computed by specifying the optional argument `extend`.
 
-{% include image.html file="grids.png" alt="Spherical harmonic grid formats" caption="Figure 1. Schematic diagram illustrating the properties of the grids used with the Gauss-Legendre quadrature and Driscoll and Healy routines in SHTOOLS." %}
+{% include image.html file="grids.png" alt="Spherical harmonic grid formats" caption="Figure 1. Schematic diagram illustrating the properties of the grids used with the Gauss-Legendre quadrature and Driscoll and Healy routines in SHTOOLS. The red points are not required by the spherical harmonic transform routines, but can be computed by specifying the optional argument `extend`." %}
 
 ## Accuracy
 

@@ -160,19 +160,19 @@ class SHMagCoeffs(object):
 
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
                 "The normalization must be '4pi', 'ortho', 'schmidt', "
-                "or 'unnorm'. Input value was {:s}."
+                "or 'unnorm'. Input value is {:s}."
                 .format(repr(normalization))
                 )
 
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be either 1 or -1. Input value was {:s}."
+                "csphase must be either 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
 
@@ -180,7 +180,7 @@ class SHMagCoeffs(object):
             if coeffs.shape != errors.shape:
                 raise ValueError(
                     "The shape of coeffs and errors must be the same."
-                    "Shape of coeffs = {:s}, shape of errors = {:s}"
+                    "Shape of coeffs = {:s}, shape of errors = {:s}."
                     .format(repr(coeffs.shape), repr(coeffs.errors))
                     )
 
@@ -195,7 +195,7 @@ class SHMagCoeffs(object):
             _warnings.warn("Calculations using unnormalized coefficients "
                            "are stable only for degrees less than or equal "
                            "to 85. lmax for the coefficients will be set to "
-                           "85. Input value was {:d}.".format(lmax),
+                           "85. Input value is {:d}.".format(lmax),
                            category=RuntimeWarning)
             lmax = 85
 
@@ -243,13 +243,13 @@ class SHMagCoeffs(object):
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
                 "The normalization must be '4pi', 'ortho', 'schmidt', "
-                "or 'unnorm'. Input value was {:s}."
+                "or 'unnorm'. Input value is {:s}."
                 .format(repr(normalization))
                 )
 
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be either 1 or -1. Input value was {:s}."
+                "csphase must be either 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
 
@@ -257,7 +257,7 @@ class SHMagCoeffs(object):
             _warnings.warn("Calculations using unnormalized coefficients "
                            "are stable only for degrees less than or equal "
                            "to 85. lmax for the coefficients will be set to "
-                           "85. Input value was {:d}.".format(lmax),
+                           "85. Input value is {:d}.".format(lmax),
                            category=RuntimeWarning)
             lmax = 85
 
@@ -377,25 +377,25 @@ class SHMagCoeffs(object):
 
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
                 "The input normalization must be '4pi', 'ortho', 'schmidt', "
-                "or 'unnorm'. Provided value was {:s}"
+                "or 'unnorm'. Provided value is {:s}."
                 .format(repr(normalization))
                 )
 
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
+                "csphase must be 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
 
         if format == 'shtools':
             if r0_index is not None and r0 is not None:
-                raise ValueError('Can not specify both r0_index and r0')
+                raise ValueError('Can not specify both r0_index and r0.')
             if header is False and r0 is None:
                 raise ValueError('If header is False, r0 must be specified.')
 
@@ -439,7 +439,7 @@ class SHMagCoeffs(object):
             _warnings.warn("Calculations using unnormalized coefficients "
                            "are stable only for degrees less than or equal "
                            "to 85. lmax for the coefficients will be set to "
-                           "85. Input value was {:d}.".format(lmaxout),
+                           "85. Input value is {:d}.".format(lmaxout),
                            category=RuntimeWarning)
             lmaxout = 85
 
@@ -519,26 +519,26 @@ class SHMagCoeffs(object):
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
 
         if function.lower() not in ('potential', 'radial', 'total'):
             raise ValueError(
                 "function must be of type 'potential', "
-                "'radial', or 'total'. Provided value was {:s}"
+                "'radial', or 'total'. Provided value is {:s}."
                 .format(repr(function))
                 )
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
                 "The input normalization must be '4pi', 'ortho', 'schmidt', "
-                "or 'unnorm'. Provided value was {:s}"
+                "or 'unnorm'. Provided value is {:s}."
                 .format(repr(normalization))
                 )
 
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
+                "csphase must be 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
 
@@ -556,7 +556,7 @@ class SHMagCoeffs(object):
             _warnings.warn("Calculations using unnormalized coefficients "
                            "are stable only for degrees less than or equal "
                            "to 85. lmax for the coefficients will be set to "
-                           "85. Input value was {:d}.".format(nl-1),
+                           "85. Input value is {:d}.".format(nl-1),
                            category=RuntimeWarning)
             nl = 85 + 1
             lmax = 85
@@ -714,7 +714,7 @@ class SHMagCoeffs(object):
             _np.save(filename, self.coeffs, **kwargs)
         else:
             raise NotImplementedError(
-                'format={:s} not implemented'.format(repr(format)))
+                'format={:s} not implemented.'.format(repr(format)))
 
     def to_array(self, normalization=None, csphase=None, lmax=None):
         """
@@ -829,7 +829,7 @@ class SHMagCoeffs(object):
                                  'normalization, csphase, r0 and lmax.')
         else:
             raise TypeError('Addition is permitted only for two SHMagCoeffs '
-                            'instances. Type of other is {:s}'
+                            'instances. Type of other is {:s}.'
                             .format(repr(type(other))))
 
     def __radd__(self, other):
@@ -862,7 +862,7 @@ class SHMagCoeffs(object):
                                  'normalization, csphase, r0 and lmax.')
         else:
             raise TypeError('Subtraction is permitted only for two '
-                            'SHMagCoeffs instances. Type of other is {:s}'
+                            'SHMagCoeffs instances. Type of other is {:s}.'
                             .format(repr(type(other))))
 
     def __rsub__(self, other):
@@ -888,7 +888,7 @@ class SHMagCoeffs(object):
                                  'normalization, csphase, r0 and lmax.')
         else:
             raise TypeError('Subtraction is permitted only for two '
-                            'SHMagCoeffs instances. Type of other is {:s}'
+                            'SHMagCoeffs instances. Type of other is {:s}.'
                             .format(repr(type(other))))
 
     def __mul__(self, other):
@@ -926,7 +926,7 @@ class SHMagCoeffs(object):
             raise TypeError('Multiplication of an SHMagCoeffs instance is '
                             'permitted only with either an SHCoeffs instance '
                             'or a scalar. '
-                            'Type of other is {:s}'.format(repr(type(other))))
+                            'Type of other is {:s}.'.format(repr(type(other))))
 
     def __rmul__(self, other):
         """
@@ -970,7 +970,7 @@ class SHMagCoeffs(object):
             raise TypeError('Division of an SHMagCoeffs instance is '
                             'permitted only with either an SHCoeffs instance '
                             'or a scalar. '
-                            'Type of other is {:s}'.format(repr(type(other))))
+                            'Type of other is {:s}.'.format(repr(type(other))))
 
     # ---- Extract data ----
     def degrees(self):
@@ -1050,7 +1050,7 @@ class SHMagCoeffs(object):
         if function.lower() not in ('potential', 'radial', 'total'):
             raise ValueError(
                 "function must be of type 'potential', 'radial', or 'total'. "
-                "Provided value was {:s}"
+                "Provided value is {:s}."
                 .format(repr(function))
                 )
 
@@ -1158,13 +1158,13 @@ class SHMagCoeffs(object):
         """
         if type(convention) != str:
             raise ValueError('convention must be a string. '
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(convention))))
 
         if convention.lower() not in ('x', 'y'):
             raise ValueError(
                 "convention must be either 'x' or 'y'. "
-                "Provided value was {:s}".format(repr(convention))
+                "Provided value is {:s}.".format(repr(convention))
                 )
 
         if convention == 'y':
@@ -1185,7 +1185,7 @@ class SHMagCoeffs(object):
         if self.lmax > 1200:
             _warnings.warn("The rotate() method is accurate only to about"
                            " spherical harmonic degree 1200. "
-                           "lmax = {:d}".format(self.lmax),
+                           "lmax = {:d}.".format(self.lmax),
                            category=RuntimeWarning)
 
         rot = self._rotate(angles, dj_matrix, r0=self.r0)
@@ -1237,16 +1237,16 @@ class SHMagCoeffs(object):
         # check argument consistency
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
                 "normalization must be '4pi', 'ortho', 'schmidt', or "
-                "'unnorm'. Provided value was {:s}"
+                "'unnorm'. Provided value is {:s}."
                 .format(repr(normalization)))
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
+                "csphase must be 1 or -1. Input value is {:s}."
                 .format(repr(csphase)))
 
         if self.errors is not None:
@@ -1346,7 +1346,8 @@ class SHMagCoeffs(object):
         return clm
 
     # ---- Routines that return different magnetic-related class instances ----
-    def expand(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2):
+    def expand(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2,
+               extend=True):
         """
         Create 2D cylindrical maps on a flattened and rotating ellipsoid of all
         three components of the magnetic field, the total magnetic intensity,
@@ -1354,7 +1355,7 @@ class SHMagCoeffs(object):
 
         Usage
         -----
-        mag = x.expand([a, f, lmax, lmax_calc, sampling])
+        mag = x.expand([a, f, lmax, lmax_calc, sampling, extend])
 
         Returns
         -------
@@ -1376,7 +1377,10 @@ class SHMagCoeffs(object):
             functions. This must be less than or equal to lmax.
         sampling : optional, integer, default = 2
             If 1 the output grids are equally sampled (n by n). If 2 (default),
-            the grids are equally spaced in degrees (n by 2n).
+            the grids are equally spaced in degrees.
+        extend : bool, optional, default = True
+            If True, compute the longitudinal band for 360 E and the
+            latitudinal band for 90 S.
 
         Notes
         -----
@@ -1385,7 +1389,7 @@ class SHMagCoeffs(object):
         potential, and return these as an SHMagGrid class instance. Each
         map is stored as an SHGrid class instance using Driscoll and Healy
         grids that are either equally sampled (n by n) or equally spaced
-        (n by 2n) in latitude and longitude. All grids use geocentric
+        in degreess latitude and longitude. All grids use geocentric
         coordinates, and the units are either in nT (for the magnetic field),
         or nT m (for the potential),
 
@@ -1416,12 +1420,13 @@ class SHMagCoeffs(object):
             coeffs = self.to_array(normalization='schmidt', csphase=1)
 
         rad, theta, phi, total, pot = _MakeMagGridDH(
-            coeffs, self.r0, a=a, f=f, lmax=lmax,
-            lmax_calc=lmax_calc, sampling=sampling)
+            coeffs, self.r0, a=a, f=f, lmax=lmax, lmax_calc=lmax_calc,
+            sampling=sampling, extend=extend)
 
         return _SHMagGrid(rad, theta, phi, total, pot, a, f, lmax, lmax_calc)
 
-    def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2):
+    def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2,
+               extend=True):
         """
         Create 2D cylindrical maps on a flattened ellipsoid of the 9
         components of the magnetic field tensor in a local north-oriented
@@ -1429,7 +1434,7 @@ class SHMagCoeffs(object):
 
         Usage
         -----
-        tensor = x.tensor([a, f, lmax, lmax_calc, sampling])
+        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend])
 
         Returns
         -------
@@ -1451,7 +1456,10 @@ class SHMagCoeffs(object):
             functions. This must be less than or equal to lmax.
         sampling : optional, integer, default = 2
             If 1 the output grids are equally sampled (n by n). If 2 (default),
-            the grids are equally spaced in degrees (n by 2n).
+            the grids are equally spaced in degrees.
+        extend : bool, optional, default = True
+            If True, compute the longitudinal band for 360 E and the
+            latitudinal band for 90 S.
 
         Notes
         -----
@@ -1518,7 +1526,7 @@ class SHMagCoeffs(object):
 
         vxx, vyy, vzz, vxy, vxz, vyz = _MakeMagGradGridDH(
             coeffs, self.r0, a=a, f=f, lmax=lmax, lmax_calc=lmax_calc,
-            sampling=sampling)
+            sampling=sampling, extend=extend)
 
         return _SHMagTensor(vxx, vyy, vzz, vxy, vxz, vyz, a, f, lmax,
                             lmax_calc)
@@ -1781,7 +1789,7 @@ class SHMagCoeffs(object):
         else:
             raise ValueError(
                 "normalization must be '4pi', 'ortho', 'schmidt', " +
-                "or 'unnorm'. Input value was {:s}"
+                "or 'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
         if function == 'potential':
@@ -1827,7 +1835,7 @@ class SHMagCoeffs(object):
         else:
             raise ValueError(
                 "vscale must be 'lin' or 'log'. " +
-                "Input value was {:s}".format(repr(vscale)))
+                "Input value is {:s}.".format(repr(vscale)))
 
         if (xscale == 'lin'):
             cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
@@ -1840,7 +1848,7 @@ class SHMagCoeffs(object):
         else:
             raise ValueError(
                 "xscale must be 'lin' or 'log'. " +
-                "Input value was {:s}".format(repr(xscale)))
+                "Input value is {:s}.".format(repr(xscale)))
 
         if (yscale == 'lin'):
             axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
@@ -1849,7 +1857,7 @@ class SHMagCoeffs(object):
         else:
             raise ValueError(
                 "yscale must be 'lin' or 'log'. " +
-                "Input value was {:s}".format(repr(yscale)))
+                "Input value is {:s}.".format(repr(yscale)))
 
         cb = _plt.colorbar(cmesh, ax=ax)
 

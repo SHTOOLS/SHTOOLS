@@ -4,7 +4,7 @@ Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three co
 
 # Usage
 
-call MakeGravGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `rad`, `theta`, `phi`, `total`, `n`, `sampling`, `lmax_calc`, `omega`, `normal_gravity`, `pot_grid`, `exitstatus`)
+call MakeGravGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `rad`, `theta`, `phi`, `total`, `n`, `sampling`, `lmax_calc`, `omega`, `normal_gravity`, `pot_grid`, `extend`, `exitstatus`)
 
 # Parameters
 
@@ -26,16 +26,16 @@ call MakeGravGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `rad`, `theta`, `phi`
 `f` : input, real(dp)
 :   The flattening of the reference ellipsoid: `f=(R_equator-R_pole)/R_equator`.
 
-`rad` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
-:   A 2D equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) grid of the radial component of the gravity field corresponding to the input spherical harmonic coefficients `cilm`. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
+`rad` : output, real(dp), dimension (nlat, nlong)
+:   A 2D map of radial component of the gravity field that conforms to the sampling theorem of Driscoll and Healy (1994). If `sampling` is 1, the grid is equally sampled and is dimensioned as (`n` by `n`), where `n` is `2lmax+2`. If sampling is 2, the grid is equally spaced and is dimensioned as (`n` by 2`n`). The first latitudinal band of the grid corresponds to 90 N, the latitudinal sampling interval is 180/`n` degrees, and the default behavior is to exclude the latitudinal band for 90 S. The first longitudinal band of the grid is 0 E, by default the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively. If `extend` is 1, the longitudinal band for 360 E and the latitudinal band for 90 S will be included, which increases each of the dimensions of the grid by 1.
 
-`theta` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`theta` : output, real(dp), dimension (nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the theta component of the gravity field.
 
-`phi` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`phi` : output, real(dp), dimension (nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the phi component of the gravity field.
 
-`total` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`total` : output, real(dp), dimension (nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the magnitude of the gravity acceleration.
 
 `n` : output, integer
@@ -53,8 +53,11 @@ call MakeGravGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `rad`, `theta`, `phi`
 `normal_gravity` : optional, input, integer
 :   If 1, the normal gravity (the gravitational acceleration on the ellipsoid) will be subtracted from the total gravity, yielding the "gravity disturbance." This is done using Somigliana's formula (after converting geocentric to geodetic coordinates).
 
-`pot_grid` : output, real(dp), dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`pot_grid` : output, real(dp), dimension (nlat, nlong)
 :   A 2D equally sampled or equaly spaced grid of the gravitational potential.
+
+`extend` : input, optional, integer, default = 0
+:   If 1, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of the grids by 1.
 
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
@@ -75,9 +78,9 @@ To remove the "normal gravity" (the total gravitational acceleration on the elli
 
 The calculated values should be considered exact only when the radii on the ellipsoid are greater than the maximum radius of the planet (the potential coefficients are simply downward/upward continued in the spectral domain). The components of the gravity vector are calculated using spherical coordinates whose origin is at the center of the planet, and the components are thus not normal to the reference ellipsoid.
 
-The default is to calculate grids for use in the Driscoll and Healy routines that are equally sampled (`n` by `n`), but this can be changed to calculate equally spaced grids (`n` by 2`n`) by setting the optional argument `sampling` to 2. The input value of `lmax` determines the number of samples, `n=2lmax+2`, and the latitudinal sampling interval, 90/(`lmax`+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/`n` for equally sampled and 180/`n` for equally spaced grids, respectively.
+The default is to use an input grid that is equally sampled (`n` by `n`), but this can be changed to use an equally spaced grid (`n` by 2`n`) by the optional argument `sampling`. The redundant longitudinal band for 360 E and the latitudinal band for 90 S are excluded by default, but these can be computed by specifying the optional argument `extend`.
 
-# References
+# Reference
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 

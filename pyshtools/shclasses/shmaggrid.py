@@ -36,8 +36,12 @@ class SHMagGrid(object):
     lmax_calc      : The maximum spherical harmonic degree of the magnetic
                      potential used in creating the grids.
     nlat, nlon     : The number of latitude and longitude bands in the grids.
-    sampling       : The longitudinal sampling scheme of the grids: either
-                     1 for nlon=nlat or 2 for nlon=2*nlat.
+    n              : The number of samples in latitude.
+    sampling       : The longitudinal sampling for Driscoll and Healy grids.
+                     Either 1 for equally sampled grids (nlat=nlon) or 2 for
+                     equally spaced grids in degrees.
+    extend         : True if the grid contains the redundant column for 360 E
+                     and the unnecessary row for 90 S.
 
     Methods:
 
@@ -67,6 +71,8 @@ class SHMagGrid(object):
         self.sampling = self.rad.sampling
         self.nlat = self.rad.nlat
         self.nlon = self.rad.nlon
+        self.n = self.rad.n
+        self.extend = self.rad.extend
         self.a = a
         self.f = f
         self.lmax = lmax
@@ -93,17 +99,18 @@ class SHMagGrid(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('grid = {:s}\n'.format(repr(self.grid)))
-        if self.grid == 'DH':
-            str += 'sampling = {:d}\n'.format(self.sampling)
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'lmax = {:d}\n'
-                'lmax_calc = {:d}\n'
-                'a (m)= {:e}\n'
-                'f = {:e}'
-                .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.a, self.f))
+        str = ('grid = {:s}\n'
+               'nlat = {:d}\n'
+               'nlon = {:d}\n'
+               'n = {:d}\n'
+               'sampling = {:d}\n'
+               'extend = {}\n'
+               'lmax = {:d}\n'
+               'lmax_calc = {:d}\n'
+               'a (m)= {:e}\n'
+               'f = {:e}'
+               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
+                       self.extend, self.lmax, self.lmax_calc, self.a, self.f))
         return str
 
     def plot_rad(self, colorbar=True, cb_orientation='vertical',
@@ -542,7 +549,9 @@ class SHMagGrid(object):
                  'a': self.a,
                  'f': self.f,
                  'lmax_calc': self.lmax_calc,
-                 'sampling': self.sampling
+                 'sampling': self.sampling,
+                 'n': self.n,
+                 'extend': self.extend
                  }
 
         _total = _xr.DataArray(self.total.to_array(),

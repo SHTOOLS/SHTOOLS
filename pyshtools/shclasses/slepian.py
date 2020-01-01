@@ -173,12 +173,11 @@ class Slepian(object):
 
         Parameters
         ----------
-        dh_mask :ndarray, shape (nlat, nlon)
-            A Driscoll and Healy (1994) sampled grid describing the
-            concentration region R. All elements should either be 1 (for inside
-            the concentration region) or 0 (for outside the concentration
-            region). The grid must have dimensions nlon=nlat or nlon=2*nlat,
-            where nlat is even.
+        dh_mask :ndarray or SHGrid class instance, shape (nlat, nlon)
+            A Driscoll and Healy sampled grid describing the concentration
+            region R. All elements should either be 1 or 0 for inside or
+            outside of the concentration region, respectively. The grid must
+            have dimensions nlon=nlat, nlon=2*nlat, or nlon=2*nlat-1.
         lmax : int
             The spherical harmonic bandwidth of the Slepian functions.
         nmax : int, optional, default = (lmax+1)**2
@@ -194,28 +193,31 @@ class Slepian(object):
         else:
             if nmax > (lmax + 1)**2:
                 raise ValueError('nmax must be less than or equal to ' +
-                                 '(lmax + 1)**2. lmax = {:d} and nmax = {:d}'
+                                 '(lmax + 1)**2. lmax = {:d} and nmax = {:d}.'
                                  .format(lmax, nmax))
 
-        if dh_mask.shape[0] % 2 != 0:
-            raise ValueError('The number of latitude bands in dh_mask ' +
-                             'must be even. nlat = {:d}'
-                             .format(dh_mask.shape[0]))
+        if isinstance(dh_mask, _np.ndarray):
+            mask = SHGrid.from_array(dh_mask, grid='DH', copy=False)
+            data = mask.data[:mask.nlat-mask.extend, :mask.nlon-mask.extend]
+            area = 4 * _np.pi * mask.expand(lmax_calc=0).coeffs[0, 0, 0]
 
-        if dh_mask.shape[1] == dh_mask.shape[0]:
-            _sampling = 1
-        elif dh_mask.shape[1] == 2 * dh_mask.shape[0]:
-            _sampling = 2
+        elif isinstance(dh_mask, SHGrid):
+            if dh_mask.grid != 'DH':
+                raise ValueError("The grid type of dh_mask must be 'DH'. "
+                                 'Input grid is {:s}.'
+                                 .format(repr(dh_mask.grid)))
+            data = dh_mask.data[:dh_mask.nlat-dh_mask.extend,
+                                :dh_mask.nlon-dh_mask.extend]
+            area = 4 * _np.pi * dh_mask.expand(lmax_calc=0).coeffs[0, 0, 0]
+
         else:
-            raise ValueError('dh_mask must be dimensioned as (n, n) or ' +
-                             '(n, 2 * n). Input shape is ({:d}, {:d})'
-                             .format(dh_mask.shape[0], dh_mask.shape[1]))
-
-        mask_lm = _shtools.SHExpandDH(dh_mask, sampling=_sampling, lmax_calc=0)
-        area = mask_lm[0, 0, 0] * 4 * _np.pi
+            raise ValueError('dh_mask must be an numpy.ndarrary or '
+                             'pyshtools.SHGrid class instance. '
+                             'Input type is {:s}.'
+                             .format(str(type(dh_mask))))
 
         tapers, eigenvalues = _shtools.SHReturnTapersMap(
-            dh_mask, lmax, ntapers=nmax, degrees=slepian_degrees)
+            data, lmax, ntapers=nmax, degrees=slepian_degrees)
 
         return SlepianMask(tapers, eigenvalues, area, slepian_degrees,
                            copy=False)
@@ -296,7 +298,7 @@ class Slepian(object):
         elif nmax is not None and nmax > (self.lmax+1)**2:
             raise ValueError(
                 "nmax must be less than or equal to (lmax+1)**2 " +
-                "where lmax is {:s}. Input value is {:s}"
+                "where lmax is {:s}. Input value is {:s}."
                 .format(repr(self.lmax), repr(nmax))
                 )
 
@@ -363,18 +365,18 @@ class Slepian(object):
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt'):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "or 'schmidt'. Provided value is {:s}."
                 .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
+                'csphase must be 1 or -1. Input value is {:s}.'
                 .format(repr(csphase))
                 )
 
@@ -409,18 +411,18 @@ class Slepian(object):
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "or 'schmidt'. Provided value is {:s}."
                 .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
+                "csphase must be 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
 
@@ -429,10 +431,10 @@ class Slepian(object):
         return SHCoeffs.from_array(coeffs, normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    def to_shgrid(self, alpha, grid='DH2', zeros=None):
+    def to_shgrid(self, alpha, grid='DH2', zeros=None, extend=True):
         """
-        Evaluate the coefficients of Slepian function i on a spherical grid and
-        return a SHGrid class instance.
+        Evaluate the coefficients of Slepian function i on a grid and return
+        an SHGrid class instance.
 
         Usage
         -----
@@ -454,6 +456,9 @@ class Slepian(object):
         zeros : ndarray, optional, default = None
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
+        extend : bool, optional, default = True
+            If True, compute the longitudinal band for 360 E (DH and GLQ grids)
+            and the latitudinal band for 90 S (DH grids only).
 
         Notes
         -----
@@ -462,28 +467,27 @@ class Slepian(object):
         SHExpandDH and SHExpandGLQ.
         """
         if type(grid) != str:
-            raise ValueError('grid must be a string. ' +
-                             'Input type was {:s}'
+            raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
         if grid.upper() in ('DH', 'DH1'):
             gridout = _shtools.MakeGridDH(self.to_array(alpha), sampling=1,
-                                          norm=1, csphase=1)
+                                          norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'DH2':
             gridout = _shtools.MakeGridDH(self.to_array(alpha), sampling=2,
-                                          norm=1, csphase=1)
+                                          norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lmax)
             gridout = _shtools.MakeGridGLQ(self.to_array(alpha), zeros,
-                                           norm=1, csphase=1)
+                                           norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='GLQ', copy=False)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
-                "Input value was {:s}".format(repr(grid)))
+                "Input value is {:s}.".format(repr(grid)))
 
     def spectra(self, alpha=None, nmax=None, convention='power', unit='per_l',
                 base=10.):
@@ -593,8 +597,8 @@ class Slepian(object):
             if lmax > self.lmax:
                 raise ValueError('lmax must be less than or equal to '
                                  'self.lmax. Input value is {:s}, and '
-                                 'self.lmax is {:s}'.format(repr(lmax),
-                                                            repr(self.lmax)))
+                                 'self.lmax is {:s}.'.format(repr(lmax),
+                                                             repr(self.lmax)))
 
         return self._variance(power, k, lmax=lmax)
 
@@ -1112,7 +1116,7 @@ class SlepianCap(Slepian):
 
         if (nmax > self.nrot):
             raise ValueError('nmax must be less than or equal to ' +
-                             'nrot. nmax = {:d}, nrot = {:d}'
+                             'nrot. nmax = {:d}, nrot = {:d}.'
                              .format(nmax, self.nrot))
         falpha = _shtools.SlepianCoeffs(self.coeffs, coeffsin, nmax)
 
@@ -1146,7 +1150,7 @@ class SlepianCap(Slepian):
         else:
             if alpha > self.nrot - 1:
                 raise ValueError('alpha must be less than or equal to ' +
-                                 'nrot - 1. alpha = {:d}, nrot = {:d}'
+                                 'nrot - 1. alpha = {:d}, nrot = {:d}.'
                                  .format(alpha, self.nrot))
             coeffs = _shtools.SHVectorToCilm(self.coeffs[:, alpha])
 
