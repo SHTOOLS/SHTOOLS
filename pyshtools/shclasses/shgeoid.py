@@ -30,8 +30,12 @@ class SHGeoid(object):
                      potential used in creating the geoid.
     nlat, nlon     : The number of latitude and longitude bands in the geoid
                      grid.
-    sampling       : The longitudinal sampling scheme of the geoid grid: either
-                     1 for nlong=nlat or 2 for nlong=2*nlat.
+    n              : The number of samples in latitude.
+    sampling       : The longitudinal sampling for Driscoll and Healy grids.
+                     Either 1 for equally sampled grids (nlat=nlon) or 2 for
+                     equally spaced grids in degrees.
+    extend         : True if the grid contains the redundant column for 360 E
+                     and the unnecessary row for 90 S.
 
     Methods:
 
@@ -52,6 +56,8 @@ class SHGeoid(object):
         self.sampling = self.geoid.sampling
         self.nlat = self.geoid.nlat
         self.nlon = self.geoid.nlon
+        self.n = self.geoid.n
+        self.extend = self.geoid.extend
         self.potref = potref
         self.gm = gm
         self.a = a
@@ -91,6 +97,9 @@ class SHGeoid(object):
             str += 'sampling = {:d}\n'.format(self.sampling)
         str += ('nlat = {:d}\n'
                 'nlon = {:d}\n'
+                'n = {:d}\n'
+                'sampling = {:d}\n'
+                'extend = {}\n'
                 'lmax = {:d}\n'
                 'lmax_calc = {:d}\n'
                 'gm (m3 / s2) = {:e}\n'
@@ -100,9 +109,10 @@ class SHGeoid(object):
                 'omega (rad / s) = {:s}\n'
                 'radius of Taylor expansion (m) = {:e}\n'
                 'order of expansion = {:d}'
-                .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.gm, self.potref, self.a, self.f, repr(self.omega),
-                        self.r, self.order))
+                .format(self.nlat, self.nlon, self.n, self.sampling,
+                        self.extend, self.lmax, self.lmax_calc, self.gm,
+                        self.potref, self.a, self.f, repr(self.omega), self.r,
+                        self.order))
         return str
 
     def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
@@ -214,7 +224,9 @@ class SHGeoid(object):
                  'r': self.r,
                  'order': self.order,
                  'lmax_calc': self.lmax_calc,
-                 'sampling': self.geoid.sampling
+                 'sampling': self.geoid.sampling,
+                 'n': self.n,
+                 'extend': self.extend
                  }
 
         _data = _xr.DataArray(_nparray, dims=('latitude', 'longitude'),
@@ -265,7 +277,9 @@ class SHGeoid(object):
                  'r': self.r,
                  'order': self.order,
                  'lmax_calc': self.lmax_calc,
-                 'sampling': self.geoid.sampling
+                 'sampling': self.geoid.sampling,
+                 'n': self.n,
+                 'extend': self.extend
                  }
 
         return _xr.DataArray(self.geoid.to_array(),

@@ -1607,13 +1607,14 @@ python module _SHTOOLS
             integer,intent(in),intent(hide) :: w3j_d0 = j2+j3+1
         end subroutine Wigner3j
 
-        subroutine DHaj(exitstatus,n,aj,aj_d0)
+        subroutine DHaj(exitstatus,n,aj,extend,aj_d0)
             fortranname pydhaj
             integer, parameter :: dp = selected_real_kind(p=15)
             integer,intent(out) :: exitstatus
-            integer,intent(in) :: n
             real(dp),dimension(aj_d0),intent(out) :: aj
-            integer,optional,intent(in),depend(n),intent(hide) :: aj_d0 = n
+            integer,intent(in) :: n
+            integer,optional,intent(in) :: extend = 0
+            integer,optional,intent(in),depend(n,extend),intent(hide) :: aj_d0 = n + extend
         end subroutine DHaj
 
         subroutine SHRotateTapers(exitstatus,tapersrot,tapers,taper_order,lmax,nrot,x,dj,tapersrot_d0,tapersrot_d1,tapers_d0,tapers_d1,taper_order_d0,dj_d0,dj_d1,dj_d2)

@@ -1040,10 +1040,11 @@ module SHTOOLS
             integer, intent(in) :: degree, n
         end function NGLQSHN
 
-        subroutine DHaj(n, aj, exitstatus)
+        subroutine DHaj(n, aj, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: n
             real(dp), intent(out) :: aj(:)
+            integer, intent(in), optional :: extend
             integer, intent(out), optional :: exitstatus
         end subroutine DHaj
 

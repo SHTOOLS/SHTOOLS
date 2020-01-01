@@ -185,16 +185,15 @@ class SHWindow(object):
 
         Parameters
         ----------
-        dh_mask :ndarray, shape (nlat, nlon)
-            A Driscoll and Healy (1994) sampled grid describing the
-            concentration region R. All elements should either be 1 (for inside
-            the concentration region) or 0 (for outside the concentration
-            region). The grid must have dimensions nlon=nlat or nlon=2*nlat,
-            where nlat is even.
+        dh_mask :ndarray or SHGrid class instance, shape (nlat, nlon)
+            A Driscoll and Healy sampled grid describing the concentration
+            region R. All elements should either be 1 or 0 for inside or
+            outside of the concentration region, respectively. The grid must
+            have dimensions nlon=nlat, nlon=2*nlat, or nlon=2*nlat-1.
         lwin : int
             The spherical harmonic bandwidth of the localization windows.
         nwin : int, optional, default = (lwin+1)**2
-            The number of best concentrated eigenvalues and eigenfunctions to
+            The number of best-concentrated eigenvalues and eigenfunctions to
             return.
         weights : ndarray, optional, default = None
             Taper weights used with the multitaper spectral analyses.
@@ -208,29 +207,31 @@ class SHWindow(object):
         else:
             if nwin > (lwin + 1)**2:
                 raise ValueError('nwin must be less than or equal to ' +
-                                 '(lwin + 1)**2. lwin = {:d} and nwin = {:d}'
+                                 '(lwin + 1)**2. lwin = {:d} and nwin = {:d}.'
                                  .format(lwin, nwin))
 
-        if dh_mask.shape[0] % 2 != 0:
-            raise ValueError('The number of latitude bands in dh_mask ' +
-                             'must be even. nlat = {:d}'
-                             .format(dh_mask.shape[0]))
+        if isinstance(dh_mask, _np.ndarray):
+            mask = SHGrid.from_array(dh_mask, grid='DH', copy=False)
+            data = mask.data[:mask.nlat-mask.extend, :mask.nlon-mask.extend]
+            area = 4 * _np.pi * mask.expand(lmax_calc=0).coeffs[0, 0, 0]
 
-        if dh_mask.shape[1] == dh_mask.shape[0]:
-            _sampling = 1
-        elif dh_mask.shape[1] == 2 * dh_mask.shape[0]:
-            _sampling = 2
+        elif isinstance(dh_mask, SHGrid):
+            if dh_mask.grid != 'DH':
+                raise ValueError("The grid type of dh_mask must be 'DH'. "
+                                 'Input grid is {:s}.'
+                                 .format(repr(dh_mask.grid)))
+            data = dh_mask.data[:dh_mask.nlat-dh_mask.extend,
+                                :dh_mask.nlon-dh_mask.extend]
+            area = 4 * _np.pi * dh_mask.expand(lmax_calc=0).coeffs[0, 0, 0]
+
         else:
-            raise ValueError('dh_mask must be dimensioned as (n, n) or ' +
-                             '(n, 2 * n). Input shape is ({:d}, {:d})'
-                             .format(dh_mask.shape[0], dh_mask.shape[1]))
+            raise ValueError('dh_mask must be an numpy.ndarrary or '
+                             'pyshtools.SHGrid class instance. '
+                             'Input type is {:s}.'
+                             .format(str(type(dh_mask))))
 
-        mask_lm = _shtools.SHExpandDH(dh_mask, sampling=_sampling, lmax_calc=0)
-        area = mask_lm[0, 0, 0] * 4 * _np.pi
-
-        tapers, eigenvalues = _shtools.SHReturnTapersMap(dh_mask, lwin,
-                                                         ntapers=nwin,
-                                                         degrees=taper_degrees)
+        tapers, eigenvalues = _shtools.SHReturnTapersMap(
+            data, lwin, ntapers=nwin, degrees=taper_degrees)
 
         return SHWindowMask(tapers, eigenvalues, weights, area, taper_degrees,
                             copy=False)
@@ -307,18 +308,18 @@ class SHWindow(object):
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt'):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "or 'schmidt'. Provided value is {:s}."
                 .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
+                "csphase must be 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
 
@@ -352,18 +353,18 @@ class SHWindow(object):
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "or 'schmidt'. Provided value is {:s}."
                 .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
+                "csphase must be 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
 
@@ -372,14 +373,14 @@ class SHWindow(object):
         return SHCoeffs.from_array(coeffs, normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    def to_shgrid(self, itaper, grid='DH2', zeros=None):
+    def to_shgrid(self, itaper, grid='DH2', zeros=None, extend=True):
         """
         Evaluate the coefficients of taper i on a spherical grid and return
         a SHGrid class instance.
 
         Usage
         -----
-        f = x.to_shgrid(itaper, [grid, zeros])
+        f = x.to_shgrid(itaper, [grid, zeros, extend])
 
         Returns
         -------
@@ -396,6 +397,9 @@ class SHWindow(object):
         zeros : ndarray, optional, default = None
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
+        extend : bool, optional, default = True
+            If True, compute the longitudinal band for 360 E (DH and GLQ grids)
+            and the latitudinal band for 90 S (DH grids only).
 
         Notes
         -----
@@ -404,28 +408,27 @@ class SHWindow(object):
         SHExpandDH and SHExpandGLQ.
         """
         if type(grid) != str:
-            raise ValueError('grid must be a string. ' +
-                             'Input type was {:s}'
+            raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
         if grid.upper() in ('DH', 'DH1'):
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=1,
-                                          norm=1, csphase=1)
+                                          norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'DH2':
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
-                                          norm=1, csphase=1)
+                                          norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lwin)
             gridout = _shtools.MakeGridGLQ(self.to_array(itaper), zeros,
-                                           norm=1, csphase=1)
+                                           norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='GLQ', copy=False)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
-                "Input value was {:s}".format(repr(grid)))
+                "Input value is {:s}.".format(repr(grid)))
 
     def multitaper_spectrum(self, clm, k, convention='power', unit='per_l',
                             lmax=None, weights=None, clat=None, clon=None,
@@ -479,7 +482,7 @@ class SHWindow(object):
         if weights is not None:
             if len(weights) != k:
                 raise ValueError('Length of weights must be equal to k. '
-                                 'len(weights) = {:d}, k = {:d}'
+                                 'len(weights) = {:d}, k = {:d}.'
                                  .format(len(weights), k))
         else:
             weights = self.weights
@@ -547,7 +550,7 @@ class SHWindow(object):
         if weights is not None:
             if len(weights) != k:
                 raise ValueError('Length of weights must be equal to k. '
-                                 'len(weights) = {:d}, k = {:d}'
+                                 'len(weights) = {:d}, k = {:d}.'
                                  .format(len(weights), k))
         else:
             weights = self.weights
@@ -606,7 +609,7 @@ class SHWindow(object):
         if weights is not None:
             if len(weights) != k:
                 raise ValueError('Length of weights must be equal to k. '
-                                 'len(weights) = {:d}, k = {:d}'
+                                 'len(weights) = {:d}, k = {:d}.'
                                  .format(len(weights), k))
         else:
             weights = self.weights
@@ -732,13 +735,13 @@ class SHWindow(object):
                 if len(weights) != k:
                     raise ValueError(
                         'Length of weights must be equal to k. '
-                        'len(weights) = {:d}, k = {:d}'
+                        'len(weights) = {:d}, k = {:d}.'
                         .format(len(weights), k))
             else:
                 if len(weights) != self.nwin:
                     raise ValueError(
                         'Length of weights must be equal to nwin when k is '
-                        'not specified. len(weights) = {:d}, nwin = {:d}'
+                        'not specified. len(weights) = {:d}, nwin = {:d}.'
                         .format(len(weights), self.nwin))
         else:
             weights = self.weights
@@ -753,7 +756,7 @@ class SHWindow(object):
             return cmatrix[:lmax - self.lwin+1, :]
         else:
             raise ValueError("mode has to be 'full', 'same' or 'valid', not "
-                             "{}".format(mode))
+                             "{}.".format(mode))
 
     def variance(self, power, k, lmax=None, weights=None):
         """
@@ -785,7 +788,7 @@ class SHWindow(object):
             if len(weights) != k:
                 raise ValueError(
                     'Length of weights must be equal to k. '
-                    'len(weights) = {:d}, k = {:d}'
+                    'len(weights) = {:d}, k = {:d}.'
                     .format(len(weights), k))
         else:
             weights = self.weights
@@ -1197,13 +1200,13 @@ class SHWindow(object):
                 if len(weights) != k:
                     raise ValueError(
                         'Length of weights must be equal to k. '
-                        'len(weights) = {:d}, k = {:d}'
+                        'len(weights) = {:d}, k = {:d}.'
                         .format(len(weights), k))
             else:
                 if len(weights) != self.nwin:
                     raise ValueError(
                         'Length of weights must be equal to nwin when k is '
-                        'not specified. len(weights) = {:d}, nwin = {:d}'
+                        'not specified. len(weights) = {:d}, nwin = {:d}.'
                         .format(len(weights), self.nwin))
         else:
             weights = self.weights
@@ -1360,7 +1363,7 @@ class SHWindowCap(SHWindow):
         else:
             if itaper > self.nwinrot - 1:
                 raise ValueError('itaper must be less than or equal to ' +
-                                 'nwinrot - 1. itaper = {:d}, nwinrot = {:d}'
+                                 'nwinrot - 1. itaper = {:d}, nwinrot = {:d}.'
                                  .format(itaper, self.nwinrot))
             coeffs = _shtools.SHVectorToCilm(self.coeffs[:, itaper])
 
@@ -1485,7 +1488,7 @@ class SHWindowCap(SHWindow):
             if (clat is None and clon is not None) or \
                     (clat is not None and clon is None):
                 raise ValueError('clat and clon must both be input. ' +
-                                 'clat = {:s}, clon = {:s}'
+                                 'clat = {:s}, clon = {:s}.'
                                  .format(repr(clat), repr(clon)))
             if clat is None and clon is None:
                 self.rotate(clat=90., clon=0., coord_degrees=True, nwinrot=k)
@@ -1507,7 +1510,7 @@ class SHWindowCap(SHWindow):
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
-                "Input value was {:s}".format(repr(unit)))
+                "Input value is {:s}.".format(repr(unit)))
 
         if (convention == 'power'):
             return mtse, sd
@@ -1516,7 +1519,7 @@ class SHWindowCap(SHWindow):
         else:
             raise ValueError(
                 "convention must be 'power' or 'energy'." +
-                "Input value was {:s}".format(repr(convention)))
+                "Input value is {:s}.".format(repr(convention)))
 
     def _multitaper_cross_spectrum(self, clm, slm, k, convention='power',
                                    unit='per_l', clat=None, clon=None,
@@ -1550,7 +1553,7 @@ class SHWindowCap(SHWindow):
             if (clat is None and clon is not None) or \
                     (clat is not None and clon is None):
                 raise ValueError('clat and clon must both be input. ' +
-                                 'clat = {:s}, clon = {:s}'
+                                 'clat = {:s}, clon = {:s}.'
                                  .format(repr(clat), repr(clon)))
             if clat is None and clon is None:
                 self.rotate(clat=90., clon=0., coord_degrees=True, nwinrot=k)
@@ -1574,7 +1577,7 @@ class SHWindowCap(SHWindow):
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
-                "Input value was {:s}".format(repr(unit)))
+                "Input value is {:s}.".format(repr(unit)))
 
         if (convention == 'power'):
             return mtse, sd
@@ -1583,7 +1586,7 @@ class SHWindowCap(SHWindow):
         else:
             raise ValueError(
                 "convention must be 'power' or 'energy'." +
-                "Input value was {:s}".format(repr(convention)))
+                "Input value is {:s}.".format(repr(convention)))
 
     def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
                          weights=None, save_cg=None, ldata=None):
@@ -1597,7 +1600,7 @@ class SHWindowCap(SHWindow):
         if (convention != 'power' and convention != 'energy'):
             raise ValueError(
                 "convention must be 'power' or 'energy'." +
-                "Input value was {:s}".format(repr(convention)))
+                "Input value is {:s}.".format(repr(convention)))
 
         if (unit == 'per_l'):
             outspectrum = _shtools.SHBiasK(self.tapers, spectrum, k=k,
@@ -1613,7 +1616,7 @@ class SHWindowCap(SHWindow):
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
-                "Input value was {:s}".format(repr(unit)))
+                "Input value is {:s}.".format(repr(unit)))
 
         return outspectrum
 
@@ -1774,7 +1777,7 @@ class SHWindowMask(SHWindow):
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
-                "Input value was {:s}".format(repr(unit)))
+                "Input value is {:s}.".format(repr(unit)))
 
         if (convention == 'power'):
             return mtse, sd
@@ -1783,7 +1786,7 @@ class SHWindowMask(SHWindow):
         else:
             raise ValueError(
                 "convention must be 'power' or 'energy'." +
-                "Input value was {:s}".format(repr(convention)))
+                "Input value is {:s}.".format(repr(convention)))
 
     def _multitaper_cross_spectrum(self, clm, slm, k, convention='power',
                                    unit='per_l', lmax=None, weights=None,
@@ -1814,7 +1817,7 @@ class SHWindowMask(SHWindow):
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
-                "Input value was {:s}".format(repr(unit)))
+                "Input value is {:s}.".format(repr(unit)))
 
         if (convention == 'power'):
             return mtse, sd
@@ -1823,7 +1826,7 @@ class SHWindowMask(SHWindow):
         else:
             raise ValueError(
                 "convention must be 'power' or 'energy'." +
-                "Input value was {:s}".format(repr(convention)))
+                "Input value is {:s}.".format(repr(convention)))
 
     def _biased_spectrum(self, spectrum, k, convention='power', unit='per_l',
                          weights=None, save_cg=None, ldata=None):
@@ -1837,7 +1840,7 @@ class SHWindowMask(SHWindow):
         if (convention != 'power' and convention != 'energy'):
             raise ValueError(
                 "convention must be 'power' or 'energy'." +
-                "Input value was {:s}".format(repr(convention)))
+                "Input value is {:s}.".format(repr(convention)))
 
         if (unit == 'per_l'):
             outspectrum = _shtools.SHBiasKMask(self.tapers, spectrum, k=k,
@@ -1853,7 +1856,7 @@ class SHWindowMask(SHWindow):
         else:
             raise ValueError(
                 "unit must be 'per_l' or 'per_lm'." +
-                "Input value was {:s}".format(repr(unit)))
+                "Input value is {:s}.".format(repr(unit)))
 
         return outspectrum
 

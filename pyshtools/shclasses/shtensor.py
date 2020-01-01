@@ -1816,7 +1816,9 @@ class Tensor(object):
                  'sampling': self.sampling,
                  'grid': self.grid,
                  'a': self.a,
-                 'f': self.f
+                 'f': self.f,
+                 'n': self.n,
+                 'extend': self.extend
                  }
         if isinstance(self, SHGravTensor):
             attrs['gm'] = self.gm
@@ -2135,8 +2137,12 @@ class SHGravTensor(Tensor):
     lmax_calc        : The maximum spherical harmonic degree of the
                        gravitational potential used in creating the grids.
     nlat, nlon       : The number of latitude and longitude bands in the grids.
-    sampling         : The longitudinal sampling scheme of the grids: either 1
-                       for nlong=nlat or 2 for nlong=2*nlat.
+    n                : The number of samples in latitude.
+    sampling         : The longitudinal sampling for Driscoll and Healy grids.
+                       Either 1 for equally sampled grids (nlat=nlon) or 2 for
+                       equally spaced grids in degrees.
+    extend           : True if the grid contains the redundant column for
+                       360 E and the unnecessary row for 90 S.
 
     Methods:
 
@@ -2197,6 +2203,8 @@ class SHGravTensor(Tensor):
         self.sampling = self.vxx.sampling
         self.nlat = self.vxx.nlat
         self.nlon = self.vxx.nlon
+        self.n = self.vxx.n
+        self.extend = self.vxx.extend
         self.gm = gm
         self.a = a
         self.f = f
@@ -2241,18 +2249,20 @@ class SHGravTensor(Tensor):
         self._eighh_label = '$\lambda_{hh}$, Eotvos'
 
     def __repr__(self):
-        str = ('grid = {:s}\n'.format(repr(self.grid)))
-        if self.grid == 'DH':
-            str += 'sampling = {:d}\n'.format(self.sampling)
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'lmax = {:d}\n'
-                'lmax_calc = {:d}\n'
-                'gm (m3 / s2) = {:e}\n'
-                'a (m)= {:e}\n'
-                'f = {:e}'
-                .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.gm, self.a, self.f))
+        str = ('grid = {:s}\n'
+               'nlat = {:d}\n'
+               'nlon = {:d}\n'
+               'n = {:d}\n'
+               'sampling = {:d}\n'
+               'extend = {}\n'
+               'lmax = {:d}\n'
+               'lmax_calc = {:d}\n'
+               'gm (m3 / s2) = {:e}\n'
+               'a (m)= {:e}\n'
+               'f = {:e}'
+               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
+                       self.extend, self.lmax, self.lmax_calc, self.gm, self.a,
+                       self.f))
         return str
 
 
@@ -2280,8 +2290,11 @@ class SHMagTensor(Tensor):
     lmax_calc        : The maximum spherical harmonic degree of the
                        magnetic potential used in creating the grids.
     nlat, nlon       : The number of latitude and longitude bands in the grids.
-    sampling         : The longitudinal sampling scheme of the grids: either 1
-                       for nlong=nlat or 2 for nlong=2*nlat.
+    sampling         : The longitudinal sampling for Driscoll and Healy grids.
+                       Either 1 for equally sampled grids (nlat=nlon) or 2 for
+                       equally spaced grids in degrees.
+    extend           : True if the grid contains the redundant column for
+                       360 E and the unnecessary row for 90 S.
 
     Methods:
 
@@ -2344,6 +2357,8 @@ class SHMagTensor(Tensor):
         self.sampling = self.vxx.sampling
         self.nlat = self.vxx.nlat
         self.nlon = self.vxx.nlon
+        self.n = self.vxx.n
+        self.extend = self.vxx.extend
         self.a = a
         self.f = f
         self.lmax = lmax
@@ -2387,15 +2402,16 @@ class SHMagTensor(Tensor):
         self._eighh_label = '$\lambda_{hh}$, nT m$^{-1}$'
 
     def __repr__(self):
-        str = ('grid = {:s}\n'.format(repr(self.grid)))
-        if self.grid == 'DH':
-            str += 'sampling = {:d}\n'.format(self.sampling)
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'lmax = {:d}\n'
-                'lmax_calc = {:d}\n'
-                'a (m)= {:e}\n'
-                'f = {:e}'
-                .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.a, self.f))
+        str = ('grid = {:s}\n'
+               'nlat = {:d}\n'
+               'nlon = {:d}\n'
+               'n = {:d}\n'
+               'sampling = {:d}\n'
+               'extend = {}\n'
+               'lmax = {:d}\n'
+               'lmax_calc = {:d}\n'
+               'a (m)= {:e}\n'
+               'f = {:e}'
+               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
+                       self.extend, self.lmax, self.lmax_calc, self.a, self.f))
         return str
