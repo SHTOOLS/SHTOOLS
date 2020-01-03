@@ -3522,18 +3522,14 @@ class SHGrid(object):
         if tick_interval[0] is None:
             xticks = []
         elif self.grid == 'GLQ':
-            xticks = _np.linspace(0, self.nlon-1,
-                                  num=self.nlon//tick_interval[0]+1,
-                                  endpoint=True, dtype=int)
+            xticks = _np.arange(0, self.nlon, tick_interval[0])
         else:
             xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
                                   endpoint=True)
         if tick_interval[1] is None:
             yticks = []
         elif self.grid == 'GLQ':
-            yticks = _np.linspace(0, self.nlat-1,
-                                  num=self.nlat//tick_interval[1]+1,
-                                  endpoint=True, dtype=int)
+            yticks = _np.arange(0, self.nlat, tick_interval[1])
         else:
             yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
                                   endpoint=True)
@@ -3541,24 +3537,24 @@ class SHGrid(object):
         if minor_tick_interval[0] is None:
             minor_xticks = []
         elif self.grid == 'GLQ':
-            minor_xticks = _np.linspace(
-                0, self.nlon-1, num=self.nlon//minor_tick_interval[0]+1,
-                endpoint=True, dtype=int)
+            minor_xticks = _np.arange(0, self.nlon, minor_tick_interval[0])
         else:
             minor_xticks = _np.linspace(
                 0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
         if minor_tick_interval[1] is None:
             minor_yticks = []
         elif self.grid == 'GLQ':
-            minor_yticks = _np.linspace(
-                0, self.nlat-1, num=self.nlat//minor_tick_interval[1]+1,
-                endpoint=True, dtype=int)
+            minor_yticks = _np.arange(0, self.nlat, minor_tick_interval[1])
         else:
             minor_yticks = _np.linspace(
                 -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
         if cmap_limits is None:
-            cmap_limits = [self.min(), self.max()]
+            if self.kind == 'real':
+                cmap_limits = [self.min(), self.max()]
+            else:
+                cmap_limits = [min(self.data.real.min(), self.data.imag.min()),
+                               max(self.data.real.max(), self.data.imag.max())]
 
         vmin = cmap_limits[0]
         vmax = cmap_limits[1]
@@ -4083,9 +4079,14 @@ class DHRealGrid(SHGrid):
         xticklabels = [str(int(y)) + deg for y in xticks]
         yticklabels = [str(int(y)) + deg for y in yticks]
 
-        cim = axes.imshow(self.data, origin='upper',
-                          extent=(0., 360., -90., 90.), cmap=cmap, vmin=vmin,
-                          vmax=vmax, **kwargs)
+        extent = (-360. / self.sampling / self.n / 2.,
+                  360. + 360. / self.sampling / self.n * (self.extend - 0.5),
+                  -90. - 180. / self.n * (self.extend - 0.5),
+                  90. + 180. / 2. / self.n)
+
+        cim = axes.imshow(self.data, origin='upper', extent=extent, cmap=cmap,
+                          vmin=vmin, vmax=vmax, **kwargs)
+        axes.set(xlim=(0, 360), ylim=(-90, 90))
         axes.set(xticks=xticks, yticks=yticks)
         axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         axes.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4258,9 +4259,14 @@ class DHComplexGrid(SHGrid):
         xticklabels = [str(int(y)) + deg for y in xticks]
         yticklabels = [str(int(y)) + deg for y in yticks]
 
-        cim1 = axreal.imshow(self.data.real, origin='upper',
-                             extent=(0., 360., -90., 90.), cmap=cmap,
-                             vmin=vmin, vmax=vmax, **kwargs)
+        extent = (-360. / self.sampling / self.n / 2.,
+                  360. + 360. / self.sampling / self.n * (self.extend - 0.5),
+                  -90. - 180. / self.n * (self.extend - 0.5),
+                  90. + 180. / 2. / self.n)
+
+        cim1 = axreal.imshow(self.data.real, origin='upper', extent=extent,
+                             cmap=cmap, vmin=vmin, vmax=vmax, **kwargs)
+        axreal.set(xlim=(0, 360), ylim=(-90, 90))
         axreal.set(xticks=xticks, yticks=yticks)
         axreal.set_xlabel(xlabel, fontsize=axes_labelsize)
         axreal.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4271,9 +4277,9 @@ class DHComplexGrid(SHGrid):
         axreal.grid(grid, which='major')
         if title is not None:
             axreal.set_title(title[0], fontsize=titlesize)
-        cim2 = axcomplex.imshow(self.data.imag, origin='upper',
-                                extent=(0., 360., -90., 90.), cmap=cmap,
-                                vmin=vmin, vmax=vmax, **kwargs)
+        cim2 = axcomplex.imshow(self.data.imag, origin='upper', extent=extent,
+                                cmap=cmap, vmin=vmin, vmax=vmax, **kwargs)
+        axcomplex.set(xlim=(0, 360), ylim=(-90, 90))
         axcomplex.set(xticks=xticks, yticks=yticks)
         axcomplex.set_xlabel(xlabel, fontsize=axes_labelsize)
         axcomplex.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4439,8 +4445,9 @@ class GLQRealGrid(SHGrid):
         else:
             axes = ax
 
-        cim = axes.imshow(self.data, origin='upper', cmap=cmap, vmin=vmin,
-                          vmax=vmax, **kwargs)
+        extent = (-0.5, self.nlon-0.5, -0.5, self.nlat-0.5)
+        cim = axes.imshow(self.data, extent=extent, origin='upper', cmap=cmap,
+                          vmin=vmin, vmax=vmax, **kwargs)
         axes.set(xticks=xticks, yticks=yticks)
         axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         axes.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4594,8 +4601,9 @@ class GLQComplexGrid(SHGrid):
             axreal = ax
             axcomplex = ax2
 
-        cim1 = axreal.imshow(self.data.real, origin='upper', cmap=cmap,
-                             vmin=vmin, vmax=vmax, **kwargs)
+        extent = (-0.5, self.nlon-0.5, -0.5, self.nlat-0.5)
+        cim1 = axreal.imshow(self.data.real, extent=extent, origin='upper',
+                             cmap=cmap, vmin=vmin, vmax=vmax, **kwargs)
         axreal.set(title='Real component', xticks=xticks, yticks=yticks)
         axreal.set_xlabel(xlabel, fontsize=axes_labelsize)
         axreal.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -4606,8 +4614,8 @@ class GLQComplexGrid(SHGrid):
         axreal.grid(grid, which='major')
         if title is not None:
             axreal.set_title(title[0], fontsize=titlesize)
-        cim2 = axcomplex.imshow(self.data.imag, origin='upper', cmap=cmap,
-                                vmin=vmin, vmax=vmax, **kwargs)
+        cim2 = axcomplex.imshow(self.data.imag, extend=extent, origin='upper',
+                                cmap=cmap, vmin=vmin, vmax=vmax, **kwargs)
         axcomplex.set(title='Imaginary component', xticks=xticks,
                       yticks=yticks)
         axcomplex.set_xlabel(xlabel, fontsize=axes_labelsize)

@@ -716,6 +716,16 @@ class Slepian(object):
         xticklabels = [str(int(y)) + deg for y in xticks]
         yticklabels = [str(int(y)) + deg for y in yticks]
 
+        if lmax is not None:
+            n = 2 * max(self.lmax, lmax) + 2
+        else:
+            n = 2 * self.lmax + 2
+
+        extent = (-360. / 2. / n / 2.,
+                  360. + 360. / 2. / n * (1. - 0.5),
+                  -90. - 180. / n * (1. - 0.5),
+                  90. + 180. / 2. / n)
+
         if ax is None:
             if nrows > 1:
                 for axtemp in axes[:-1, :].flatten():
@@ -741,9 +751,10 @@ class Slepian(object):
             else:
                 axtemp = axes[alpha]
             gridout = _shtools.MakeGridDH(self.to_array(alpha), sampling=2,
-                                          lmax=lmax, norm=1, csphase=1)
-            axtemp.imshow(gridout, origin='upper',
-                          extent=(0., 360., -90., 90.))
+                                          lmax=lmax, norm=1, csphase=1,
+                                          extend=1)
+            axtemp.imshow(gridout, origin='upper', extent=extent)
+            axtemp.set(xlim=(0, 360), ylim=(-90, 90))
             axtemp.set(xticks=xticks, yticks=yticks)
             axtemp.set_xlabel(xlabel, fontsize=axes_labelsize)
             axtemp.set_ylabel(ylabel, fontsize=axes_labelsize)
