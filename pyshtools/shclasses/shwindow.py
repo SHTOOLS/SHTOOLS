@@ -804,19 +804,19 @@ class SHWindow(object):
 
     def plot_windows(self, nwin, lmax=None, maxcolumns=3,
                      tick_interval=[60, 45], minor_tick_interval=[None, None],
-                     xlabel='Longitude', ylabel='Latitude',
-                     axes_labelsize=None, tick_labelsize=None,
-                     title_labelsize=None, grid=False, show=True, title=True,
-                     ax=None, fname=None):
+                     xlabel='Longitude', ylabel='Latitude', title=True,
+                     cmap='viridis', cmap_reverse=False, grid=False,
+                     axes_labelsize=None, tick_labelsize=None, titlesize=8,
+                     show=True, ax=None, fname=None):
         """
         Plot the best-concentrated localization windows.
 
         Usage
         -----
         x.plot_windows(nwin, [lmax, maxcolumns, tick_interval,
-                              minor_tick_interval, xlabel, ylabel, grid, show,
-                              title, axes_labelsize, tick_labelsize,
-                              title_labelsize, ax, fname])
+                              minor_tick_interval, xlabel, ylabel,
+                              title, cmap, cmap_reverse, grid, axes_labelsize,
+                              tick_labelsize, titlesize, ax, show, fname])
 
         Parameters
         ----------
@@ -838,21 +838,26 @@ class SHWindow(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        grid : bool, optional, default = False
-            If True, plot grid lines.
-        show : bool, optional, default = True
-            If True, plot the image to the screen.
         title : bool, optional, default = True
             If True, plot a title on top of each subplot providing the taper
             number and 1 minus the concentration factor.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data.
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        grid : bool, optional, default = False
+            If True, plot grid lines.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        title_labelsize : int, optional, default = None
+        titlesize : int, optional, default = 8
             The font size for the subplot titles.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
+        show : bool, optional, default = True
+            If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
@@ -876,56 +881,32 @@ class SHWindow(object):
                                  ' and ax.size = {:s}.'.format(repr(ax.size)))
             axes = ax
 
-        if tick_interval is None:
-            tick_interval = [None, None]
+        for itaper in range(min(self.nwin, nwin)):
+            evalue = self.eigenvalues[itaper]
+            if min(self.nwin, nwin) == 1 and ax is None:
+                axtemp = axes
+            elif hasattr(axes, 'flatten'):
+                axtemp = axes.flatten()[itaper]
+            else:
+                axtemp = axes[itaper]
+            coeffs = self.to_shcoeffs(itaper)
+            if lmax is not None:
+                coeffs = coeffs.pad(lmax=lmax, copy=False)
+            grid_temp = coeffs.expand()
 
-        if minor_tick_interval is None:
-            minor_tick_interval = [None, None]
+            if title is True:
+                title_str = '#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue)
+            else:
+                title_str = None
 
-        if tick_interval[0] is None:
-            xticks = []
-        else:
-            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
-                                  endpoint=True)
-
-        if tick_interval[1] is None:
-            yticks = []
-        else:
-            yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
-                                  endpoint=True)
-
-        if minor_tick_interval[0] is None:
-            minor_xticks = []
-        else:
-            minor_xticks = _np.linspace(
-                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
-
-        if minor_tick_interval[1] is None:
-            minor_yticks = []
-        else:
-            minor_yticks = _np.linspace(
-                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
-
-        if axes_labelsize is None:
-            axes_labelsize = _mpl.rcParams['axes.labelsize']
-        if tick_labelsize is None:
-            tick_labelsize = _mpl.rcParams['xtick.labelsize']
-        if title_labelsize is None:
-            title_labelsize = _mpl.rcParams['axes.titlesize']
-
-        deg = '$^{\circ}$'
-        xticklabels = [str(int(y)) + deg for y in xticks]
-        yticklabels = [str(int(y)) + deg for y in yticks]
-
-        if lmax is not None:
-            n = 2 * max(self.lwin, lmax) + 2
-        else:
-            n = 2 * self.lwin + 2
-
-        extent = (-360. / 2. / n / 2.,
-                  360. + 360. / 2. / n * (1. - 0.5),
-                  -90. - 180. / n * (1. - 0.5),
-                  90. + 180. / 2. / n)
+            grid_temp.plot(tick_interval=tick_interval,
+                           minor_tick_interval=minor_tick_interval,
+                           title=title_str,
+                           xlabel=xlabel, ylabel=ylabel, grid=grid,
+                           cmap=cmap, cmap_reverse=cmap_reverse,
+                           axes_labelsize=axes_labelsize,
+                           tick_labelsize=tick_labelsize,
+                           titlesize=titlesize, ax=axtemp)
 
         if ax is None:
             if nrows > 1:
@@ -942,32 +923,6 @@ class SHWindow(object):
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
                     axtemp.set_ylabel('', visible=False)
-
-        for itaper in range(min(self.nwin, nwin)):
-            evalue = self.eigenvalues[itaper]
-            if min(self.nwin, nwin) == 1 and ax is None:
-                axtemp = axes
-            elif hasattr(axes, 'flatten'):
-                axtemp = axes.flatten()[itaper]
-            else:
-                axtemp = axes[itaper]
-            gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
-                                          lmax=lmax, norm=1, csphase=1,
-                                          extend=1)
-            axtemp.imshow(gridout, origin='upper', extent=extent)
-            axtemp.set(xlim=(0, 360), ylim=(-90, 90))
-            axtemp.set(xticks=xticks, yticks=yticks)
-            axtemp.set_xlabel(xlabel, fontsize=axes_labelsize)
-            axtemp.set_ylabel(ylabel, fontsize=axes_labelsize)
-            axtemp.set_xticklabels(xticklabels, fontsize=tick_labelsize)
-            axtemp.set_yticklabels(yticklabels, fontsize=tick_labelsize)
-            axtemp.set_xticks(minor_xticks, minor=True)
-            axtemp.set_yticks(minor_yticks, minor=True)
-            axtemp.grid(grid, which='major')
-            if title is True:
-                axtemp.set_title('#{:d} [loss={:2.2g}]'
-                                 .format(itaper, 1-evalue),
-                                 fontsize=title_labelsize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)

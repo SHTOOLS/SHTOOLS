@@ -1367,14 +1367,14 @@ class SHCoeffs(object):
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    def pad(self, lmax):
+    def pad(self, lmax, copy=True):
         """
         Return a SHCoeffs class where the coefficients are zero padded or
         truncated to a different lmax.
 
         Usage
         -----
-        clm = x.pad(lmax)
+        clm = x.pad(lmax, [copy])
 
         Returns
         -------
@@ -1384,8 +1384,14 @@ class SHCoeffs(object):
         ----------
         lmax : int
             Maximum spherical harmonic degree to output.
+        copy : bool, optional, default = True
+            If True, make a copy of x when initializing the class instance.
+            If False, modify x itself.
         """
-        clm = self.copy()
+        if copy:
+            clm = self.copy()
+        else:
+            clm = self
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
@@ -3323,6 +3329,7 @@ class SHGrid(object):
         """
         return _np.copy(self.data)
 
+    # ---- Plotting routines ----
     def plot3d(self, elevation=20, azimuth=30, cmap='RdBu_r', show=True,
                fname=None):
         """
@@ -3437,7 +3444,6 @@ class SHGrid(object):
 
         return fig, ax3d
 
-    # ---- Plotting routines ----
     def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
              title=None, titlesize=None, colorbar=None, cmap='viridis',
              cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
