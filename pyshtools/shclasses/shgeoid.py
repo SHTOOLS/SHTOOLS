@@ -115,20 +115,28 @@ class SHGeoid(object):
                         self.order))
         return str
 
-    def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
-             colorbar='vertical', cb_label='geoid, m', grid=False,
-             axes_labelsize=None, tick_labelsize=None, show=True, **kwargs):
+    def plot(self, projection=None, tick_interval=[30, 30],
+             minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+             title=None, titlesize=None, colorbar='vertical', cmap='viridis',
+             cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
+             cb_label='geoid, m', cb_tick_interval=None, grid=False,
+             axes_labelsize=None, tick_labelsize=None, show=True, ax=None,
+             fname=None):
         """
         Plot the geoid.
 
         Usage
         -----
-        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, colorbar,
-                cb_label, grid, axes_labelsize, tick_labelsize, ax, show,
-                fname, **kwargs])
+        x.plot([projection, tick_interval, minor_tick_interval, xlabel, ylabel,
+                title, titlesize, colorbar, cmap, cmap_limits, cmap_reverse,
+                cb_triangles, cb_label, cb_tick_interval, grid, axes_labelsize,
+                tick_labelsize, ax, show, fname, **kwargs])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -139,10 +147,29 @@ class SHGeoid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        titlesize : int, optional, default = None
+            The fontsize of the title.
         colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap
+            when plotting, and optionally an interval for each color in the
+            colormap. If the interval is specified, the number of discreet
+            colors will be (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = 'geoid, m'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = None
@@ -156,20 +183,21 @@ class SHGeoid(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to plt.imshow(), such as cmap,
-            vmin and vmax.
         """
-        return self.geoid.plot(tick_interval=tick_interval,
+        return self.geoid.plot(projection=projection,
+                               tick_interval=tick_interval,
                                minor_tick_interval=minor_tick_interval,
-                               colorbar=colorbar,
-                               cb_label=cb_label,
-                               grid=grid, axes_labelsize=axes_labelsize,
-                               tick_labelsize=tick_labelsize,
-                               show=show, **kwargs)
+                               xlabel=xlabel, ylabel=ylabel, title=title,
+                               titlesize=titlesize, colorbar=colorbar,
+                               cmap=cmap, cmap_limits=cmap_limits,
+                               cb_triangles=cb_triangles, cb_label=cb_label,
+                               cb_tick_interval=cb_tick_interval, grid=grid,
+                               axes_labelsize=axes_labelsize,
+                               tick_labelsize=tick_labelsize, ax=ax,
+                               show=show, fname=fname)
 
     def to_netcdf(self, filename=None, title='', description='',
-                  comment='Grid generated by pyshtools', name='geoid',
+                  comment='pyshtools grid', name='geoid',
                   dtype='f'):
         """
         Return the gridded data as a netcdf formatted file or object.
@@ -186,7 +214,7 @@ class SHGeoid(object):
             Title of the dataset.
         description : str, optional, default = ''
             Description of the dataset ('Remark' in gmt grd files).
-        comment : str, optional, default = 'Grid generated by pyshtools'
+        comment : str, optional, default = 'pyshtools grid'
             Additional information about how the data were generated.
         name : str, optional, default = 'data'
             Name of the data array.
@@ -240,7 +268,7 @@ class SHGeoid(object):
         else:
             _dataset.to_netcdf(filename)
 
-    def to_xarray(self, title='', comment='Grid generated by pyshtools'):
+    def to_xarray(self, title='', comment='pyshtools grid'):
         """
         Return the gridded data as an xarray DataArray.
 
@@ -252,7 +280,7 @@ class SHGeoid(object):
         ----------
         title : str, optional, default = ''
             Title of the dataset.
-        comment : str, optional, default = 'Grid generated by pyshtools'
+        comment : str, optional, default = 'pyshtools grid'
             Additional information about how the data were generated.
         """
         attrs = {'actual_range': [self.geoid.min(), self.geoid.max()],
