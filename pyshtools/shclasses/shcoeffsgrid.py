@@ -2689,6 +2689,10 @@ class SHGrid(object):
     to_xarray() : Return the gridded data as an xarray DataArray.
     to_file()   : Save gridded data to a text or binary file.
     to_netcdf() : Return the gridded data as a netcdf formatted file or object.
+    to_real()   : Return a new SHGrid class instance of the real component
+                  of the data.
+    to_imag()   : Return a new SHGrid class instance of the imaginary component
+                  of the data.
     lats()      : Return a vector containing the latitudes of each row
                   of the gridded data.
     lons()      : Return a vector containing the longitudes of each column
@@ -3114,6 +3118,52 @@ class SHGrid(object):
         else:
             _dataset.to_netcdf(filename)
 
+    def to_array(self):
+        """
+        Return the raw gridded data as a numpy array.
+
+        Usage
+        -----
+        grid = x.to_array()
+
+        Returns
+        -------
+        grid : ndarray, shape (nlat, nlon)
+            2-D numpy array of the gridded data.
+        """
+        return _np.copy(self.data)
+
+    def to_real(self):
+        """
+        Return a new SHGrid class instance of the real component of the data.
+
+        Usage
+        -----
+        grid = x.to_real()
+
+        Returns
+        -------
+        grid : SHGrid class instance
+        """
+        return SHGrid.from_array(self.to_array().real, grid=self.grid,
+                                 copy=False)
+
+    def to_imag(self):
+        """
+        Return a new SHGrid class instance of the imaginary component of the
+        data.
+
+        Usage
+        -----
+        grid = x.to_imag()
+
+        Returns
+        -------
+        grid : SHGrid class instance
+        """
+        return SHGrid.from_array(self.to_array().imag, grid=self.grid,
+                                 copy=False)
+
     # ---- Mathematical operators ----
     def min(self):
         """
@@ -3320,21 +3370,6 @@ class SHGrid(object):
             return _np.radians(self._lons())
         else:
             return self._lons()
-
-    def to_array(self):
-        """
-        Return the raw gridded data as a numpy array.
-
-        Usage
-        -----
-        grid = x.to_array()
-
-        Returns
-        -------
-        grid : ndarray, shape (nlat, nlon)
-            2-D numpy array of the gridded data.
-        """
-        return _np.copy(self.data)
 
     # ---- Plotting routines ----
     def plot3d(self, elevation=20, azimuth=30, cmap='RdBu_r', show=True,
