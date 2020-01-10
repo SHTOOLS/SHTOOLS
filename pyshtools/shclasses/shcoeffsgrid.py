@@ -17,9 +17,16 @@ from ..shio import convert as _convert
 from ..shio import shread as _shread
 
 try:
+    import cartopy.crs as _ccrs
+    from cartopy.mpl.ticker import LongitudeFormatter as _LongitudeFormatter
+    from cartopy.mpl.ticker import LatitudeFormatter as _LatitudeFormatter
+except ModuleNotFoundError:
+    print('\n*** Could not import the cartopy module. ***')
+
+try:
     import pygmt as _pygmt
 except ModuleNotFoundError:
-    print('\n*** Could not import the module pygmt. ***')
+    print('\n*** Could not import the pygmt module. ***')
 
 
 # =============================================================================
@@ -3444,25 +3451,29 @@ class SHGrid(object):
 
         return fig, ax3d
 
-    def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
-             title=None, titlesize=None, colorbar=None, cmap='viridis',
-             cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
-             cb_label=None, cb_tick_interval=None, grid=False,
-             axes_labelsize=None, tick_labelsize=None, ax=None, ax2=None,
-             show=True, fname=None, **kwargs):
+    def plot(self, projection=None, tick_interval=[30, 30],
+             minor_tick_interval=[None, None], title=None, titlesize=None,
+             colorbar=None, cmap='viridis', cmap_limits=None,
+             cmap_reverse=False, cb_triangles='neither', cb_label=None,
+             cb_tick_interval=None, grid=False, axes_labelsize=None,
+             tick_labelsize=None, ax=None, ax2=None, show=True, fname=None,
+             **kwargs):
         """
         Plot the raw data using a simple cylindrical projection.
 
         Usage
         -----
-        fig, ax = x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
-                          title, titlesize, colorbar, cmap, cmap_limits,
-                          cmap_reverse, b_triangles, cb_label,
+        fig, ax = x.plot([projection, tick_interval, minor_tick_interval,
+                          xlabel, ylabel, title, titlesize, colorbar, cmap,
+                          cmap_limits, cmap_reverse, b_triangles, cb_label,
                           cb_tick_interval, grid, axes_labelsize,
                           tick_labelsize, ax, ax2, show, fname, **kwargs])
 
         Parameters
         ----------
+        projection : cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -3519,6 +3530,14 @@ class SHGrid(object):
         kwargs : optional
             Keyword arguements that will be sent to plt.imshow().
         """
+        if projection is not None:
+            if not isinstance(projection, _ccrs.Projection):
+                raise ValueError('The input projection must be an instance '
+                                 'of cartopy.crs.Projection.')
+            if self.grid != 'DH':
+                raise ValueError('Map projections are supported only for '
+                                 'DH grid types.')
+
         if tick_interval is None:
             tick_interval = [None, None]
 
@@ -3601,7 +3620,8 @@ class SHGrid(object):
             title = ['Real component', 'Imaginary component']
 
         if ax is None and ax2 is None:
-            fig, axes = self._plot(xticks=xticks, yticks=yticks,
+            fig, axes = self._plot(projection=projection,
+                                   xticks=xticks, yticks=yticks,
                                    minor_xticks=minor_xticks,
                                    minor_yticks=minor_yticks,
                                    colorbar=colorbar,
@@ -3618,10 +3638,11 @@ class SHGrid(object):
                                                         ax is not None):
                     raise ValueError('For complex grids, one must specify '
                                      'both optional arguments axes and axes2.')
-            self._plot(xticks=xticks, yticks=yticks, minor_xticks=minor_xticks,
-                       minor_yticks=minor_yticks, ax=ax, ax2=ax2,
-                       colorbar=colorbar, cb_triangles=cb_triangles,
-                       cb_label=cb_label, cb_ticks=cb_ticks, grid=grid,
+            self._plot(projection=projection, xticks=xticks, yticks=yticks,
+                       minor_xticks=minor_xticks, minor_yticks=minor_yticks,
+                       ax=ax, ax2=ax2, colorbar=colorbar,
+                       cb_triangles=cb_triangles, cb_label=cb_label,
+                       cb_ticks=cb_ticks, grid=grid,
                        axes_labelsize=axes_labelsize,
                        tick_labelsize=tick_labelsize, title=title,
                        titlesize=titlesize, cmap=cmap, vmin=vmin, vmax=vmax,
@@ -4056,12 +4077,14 @@ class DHRealGrid(SHGrid):
                                      csphase=csphase, copy=False)
         return coeffs
 
-    def _plot(self, xticks=[], yticks=[], minor_xticks=[], minor_yticks=[],
-              xlabel='Longitude', ylabel='Latitude', ax=None, ax2=None,
-              colorbar=None, cb_triangles=None, cb_label=None, cb_ticks=None,
-              grid=False, axes_labelsize=None, tick_labelsize=None, title=None,
-              titlesize=None, cmap=None, vmin=None, vmax=None, **kwargs):
-        """Plot the raw data using a simply cylindrical projection."""
+    def _plot(self, projection=None, xticks=[], yticks=[], minor_xticks=[],
+              minor_yticks=[], xlabel='Longitude', ylabel='Latitude', ax=None,
+              ax2=None, colorbar=None, cb_triangles=None, cb_label=None,
+              cb_ticks=None, grid=False, axes_labelsize=None,
+              tick_labelsize=None, title=None, titlesize=None, cmap=None,
+              vmin=None, vmax=None, **kwargs):
+        """Plot the raw data as a matplotlib simple cylindrical projection,
+           or with Cartopy when projection is specified."""
 
         if ax is None:
             if colorbar is not None:
@@ -4077,48 +4100,78 @@ class DHRealGrid(SHGrid):
                 scale = 0.55
             figsize = (_mpl.rcParams['figure.figsize'][0],
                        _mpl.rcParams['figure.figsize'][0] * scale)
-            fig, axes = _plt.subplots(1, 1, figsize=figsize)
+            fig = _plt.figure(figsize=figsize)
+            if projection is not None:
+                axes = fig.add_subplot(111, projection=projection)
+            else:
+                axes = fig.add_subplot(111)
         else:
-            axes = ax
-
-        deg = '$^{\circ}$'
-        xticklabels = [str(int(y)) + deg for y in xticks]
-        yticklabels = [str(int(y)) + deg for y in yticks]
+            if projection is not None:
+                fig = ax.get_figure()
+                geometry = ax.get_geometry()
+                ax.remove()
+                axes = fig.add_subplot(*geometry, projection=projection)
+            else:
+                axes = ax
 
         extent = (-360. / self.sampling / self.n / 2.,
                   360. + 360. / self.sampling / self.n * (self.extend - 0.5),
                   -90. - 180. / self.n * (self.extend - 0.5),
                   90. + 180. / 2. / self.n)
 
-        cim = axes.imshow(self.data, origin='upper', extent=extent, cmap=cmap,
-                          vmin=vmin, vmax=vmax, **kwargs)
-        axes.set(xlim=(0, 360), ylim=(-90, 90))
-        axes.set(xticks=xticks, yticks=yticks)
-        axes.set_xlabel(xlabel, fontsize=axes_labelsize)
-        axes.set_ylabel(ylabel, fontsize=axes_labelsize)
-        axes.set_xticklabels(xticklabels, fontsize=tick_labelsize)
-        axes.set_yticklabels(yticklabels, fontsize=tick_labelsize)
-        axes.set_xticks(minor_xticks, minor=True)
-        axes.set_yticks(minor_yticks, minor=True)
-        axes.grid(grid, which='major')
+        if projection is not None:
+            axes.set_global()
+            cim = axes.imshow(
+                self.data, transform=_ccrs.PlateCarree(central_longitude=0.0),
+                origin='upper', extent=extent, cmap=cmap, vmin=vmin, vmax=vmax,
+                **kwargs)
+            if isinstance(projection, _ccrs.PlateCarree):
+                axes.set_xticks(
+                    xticks, crs=_ccrs.PlateCarree(central_longitude=0.0))
+                axes.set_yticks(
+                    yticks, crs=_ccrs.PlateCarree(central_longitude=0.0))
+                axes.set_xticks(minor_xticks, minor=True,
+                                crs=_ccrs.PlateCarree(central_longitude=0.0))
+                axes.set_yticks(minor_yticks, minor=True,
+                                crs=_ccrs.PlateCarree(central_longitude=0.0))
+                axes.xaxis.set_major_formatter(_LongitudeFormatter())
+                axes.yaxis.set_major_formatter(_LatitudeFormatter())
+            if grid:
+                axes.gridlines(xlocs=xticks-180, ylocs=yticks,
+                               crs=_ccrs.PlateCarree(central_longitude=0.0))
+        else:
+            cim = axes.imshow(self.data, origin='upper', extent=extent,
+                              cmap=cmap, vmin=vmin, vmax=vmax, **kwargs)
+            axes.set(xlim=(0, 360), ylim=(-90, 90))
+            axes.set_xlabel(xlabel, fontsize=axes_labelsize)
+            axes.set_ylabel(ylabel, fontsize=axes_labelsize)
+            axes.set(xticks=xticks, yticks=yticks)
+            axes.set_xticks(minor_xticks, minor=True)
+            axes.set_yticks(minor_yticks, minor=True)
+            axes.grid(grid, which='major')
+            axes.xaxis.set_major_formatter(
+                _mpl.ticker.FormatStrFormatter("%d"+u"\u00B0"))
+            axes.yaxis.set_major_formatter(
+                _mpl.ticker.FormatStrFormatter("%d"+u"\u00B0"))
+
+        axes.tick_params(which='major', labelsize=tick_labelsize)
         if title is not None:
             axes.set_title(title, fontsize=titlesize)
 
         if colorbar is not None:
-            if colorbar.lower()[0] == 'v':
-                divider = _make_axes_locatable(axes)
-                cax = divider.append_axes("right", size="2.5%", pad=0.15)
-                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical',
-                                     extend=cb_triangles)
-            elif colorbar.lower()[0] == 'h':
-                divider = _make_axes_locatable(axes)
-                cax = divider.append_axes("bottom", size="5%", pad=0.5)
-                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal',
-                                     extend=cb_triangles)
+            divider = _make_axes_locatable(axes)
+            if colorbar == 'vertical':
+                cax = divider.append_axes("right", size="2.5%", pad=0.15,
+                                          axes_class=_plt.Axes)
+            elif colorbar == 'horizontal':
+                cax = divider.append_axes("bottom", size="5%", pad=0.5,
+                                          axes_class=_plt.Axes)
             else:
                 raise ValueError("colorbar must be either 'horizontal' or "
                                  "'vertical'. Input value is {:s}."
                                  .format(repr(colorbar)))
+            cbar = _plt.colorbar(cim, cax=cax, orientation=colorbar,
+                                 extend=cb_triangles)
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
             if cb_ticks is not None:
