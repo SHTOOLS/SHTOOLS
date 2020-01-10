@@ -806,6 +806,27 @@ class SHGravCoeffs(object):
         """
         return self.gm / _G.value
 
+    @property
+    def center_of_mass(self):
+        """Return coordinates of the center of mass in metres.
+
+        This method will return cartesian coordinates of the center of mass with respect
+        to the coordinate system of the spherical harmonic coefficients.
+
+        Returns
+        -------
+        x, y, z : float
+            Cartesian coordinates of the center of mass, in metres.
+        """
+        coeffs = self.convert(normalization='unnorm',
+                csphase=1, lmax=1).coeffs
+
+        x_cm = coeffs[1,1,1] * self.r0
+        y_cm = coeffs[0,1,1] * self.r0
+        z_cm = coeffs[0,1,0] * self.r0
+
+        return x_cm, y_cm, z_cm
+
     # ---- Define methods that modify internal variables ----
     def set_omega(self, omega):
         """
