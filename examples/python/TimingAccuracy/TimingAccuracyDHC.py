@@ -1,16 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script is a python version of TimingAccuracyDHC. We use numpy functions to
 simplify the creation of random coefficients.
 """
-from __future__ import absolute_import, division, print_function
-
-import os
-import sys
 import time
 import numpy as np
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 from pyshtools import expand
 from pyshtools import spectralanalysis
 
@@ -80,7 +75,13 @@ def TimingAccuracyDHC(sampling=1):
 
         print('{:4d}    {:1.2e}    {:1.2e}    {:1.1e}s    {:1.1e}s'.format(
             lmax, maxerr, rmserr, tinverse, tforward))
+
+        if maxerr > 100.:
+            raise RuntimeError('Tests Failed. Maximum relative error = ',
+                               maxerr)
+
         lmax = lmax * 2
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

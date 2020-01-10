@@ -43,8 +43,8 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
     base : float, optional, default = 10.
         The logarithm base when calculating the 'per_dlogl' spectrum.
 
-    Description
-    -----------
+    Notes
+    -----
     This function returns either the power spectrum, energy spectrum, or
     l2-norm spectrum. Total power is defined as the integral of the
     function squared over all space, divided by the area the function

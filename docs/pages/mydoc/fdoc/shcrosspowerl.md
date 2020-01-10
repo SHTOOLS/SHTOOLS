@@ -17,13 +17,13 @@ Compute the cross-power of two real functions for a single spherical harmonic de
 
 ## Parameters
 
-`cpower` : output, real\*8
+`cpower` : output, real(dp)
 :   The cross power of the two functions for spherical harmonic degree `l`.
 
-`cilm1` : input, real\*8, dimension (2, `lmaxin1`+1, `lmaxin1`+1)
+`cilm1` : input, real(dp), dimension (2, `lmaxin1`+1, `lmaxin1`+1)
 :   The spherical harmonic coefficients of the first function.
 
-`cilm2` : input, real\*8, dimension (2, `lmaxin2`+1, `lmaxin2`+1)
+`cilm2` : input, real(dp), dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The spherical harmonic coefficients of the second function.
 
 `l` : input, integer

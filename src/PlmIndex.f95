@@ -10,23 +10,21 @@ integer function PlmIndex(l, m)
 !       l   Spherical harmonic angular degree.
 !       m   Spherical harmonic angular order.
 !
-!   Dependencies:   None
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
     implicit none
-    
+
     integer, intent(in) :: l, m
-    
+
     if (l < 0) then
         print*, "Error --- PlmIndex"
         print*, "L must be greater of equal to 0."
         print*, "L = ", l
         print*, "M = ", m
         stop
-        
+
     else if (m < 0 .or.  m > l) then
         print*, "Error --- PlmIndex"
         print*, "M must be greater than or equal to zero and less than or " // &
@@ -34,9 +32,9 @@ integer function PlmIndex(l, m)
         print*, "L = ", l
         print*, "M = ", m
         stop
-        
+
     end if
-    
+
     PlmIndex = (l*(l+1))/2+m+1
-    
+
 end function PlmIndex

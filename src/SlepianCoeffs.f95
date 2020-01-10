@@ -38,18 +38,20 @@ subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2018, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHCilmToVector
+    use ftypes
 
     implicit none
-    real*8, intent(out) :: falpha(:)
-    real*8, intent(in) :: galpha(:,:), flm(:,:,:)
+
+    real(dp), intent(out) :: falpha(:)
+    real(dp), intent(in) :: galpha(:,:), flm(:,:,:)
     integer, intent(in) :: lmax, nmax
     integer, intent(out), optional :: exitstatus
-    real*8, allocatable :: f(:)
+    real(dp), allocatable :: f(:)
     integer :: i, astat
 
     if (present(exitstatus)) exitstatus = 0
@@ -115,7 +117,7 @@ subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus)
         call SHCilmToVector(flm, f, lmax)
     end if
 
-    falpha = 0.0d0
+    falpha = 0.0_dp
 
     do i=1, nmax, 1
         falpha(i) = dot_product(f(1:(lmax+1)**2), galpha(1:(lmax+1)**2, i))

@@ -42,8 +42,8 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 !   as the number of times this occured
 !
 !   1.d-7 < error  <=1.d-8 = 103    # = 483
-!   1.d-6 < error <= 1.d-7 =  116   # = 240
-!   1.d-5 < error <= 1.d-6 =  165   # = 93
+!   1.d-6 < error <= 1.d-7 = 116   # = 240
+!   1.d-5 < error <= 1.d-6 = 165   # = 93
 !   1.d-4 < error <= 1.d-5 = 167    # = 36
 !
 !   Many times (maybe always), the large relative errors occur when the 3j
@@ -84,20 +84,20 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies: None
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
     integer, intent(in) :: j2, j3, m1, m2, m3
     integer, intent(out) :: jmin, jmax
-    real*8, intent(out) :: w3j(:)
+    real(dp), intent(out) :: w3j(:)
     integer, intent(out), optional :: exitstatus
-    real*8 :: wnmid, wpmid, scalef, denom, rs(j2+j3+1), &
-              wl(j2+j3+1), wu(j2+j3+1), xjmin, yjmin, yjmax, zjmax, xj, zj
+    real(dp) :: wnmid, wpmid, scalef, denom, rs(j2+j3+1), &
+                wl(j2+j3+1), wu(j2+j3+1), xjmin, yjmin, yjmax, zjmax, xj, zj
     integer :: j, jnum, jp, jn, k, flag1, flag2, jmid
 
     if (present(exitstatus)) exitstatus = 0
@@ -114,12 +114,12 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
         end if
     end if
 
-    w3j = 0.0d0
+    w3j = 0.0_dp
 
     flag1 = 0
     flag2 = 0
 
-    scalef = 1.0d3
+    scalef = 1.0e3_dp
 
     jmin = max(abs(j2-j3), abs(m1))
     jmax = j2 + j3
@@ -140,10 +140,10 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
     !--------------------------------------------------------------------------
 
     if (jnum == 1) then
-        w3j(1) = 1.0d0 / sqrt(2.0d0 * jmin + 1.0d0)
+        w3j(1) = 1.0_dp / sqrt(2.0_dp * jmin + 1.0_dp)
         
-        if ( (w3j(1) < 0.0d0 .and. (-1)**(j2-j3+m2+m3) > 0) .or. &
-            (w3j(1) > 0.0d0 .and. (-1)**(j2-j3+m2+m3) < 0) ) &
+        if ( (w3j(1) < 0.0_dp .and. (-1)**(j2-j3+m2+m3) > 0) .or. &
+            (w3j(1) > 0.0_dp .and. (-1)**(j2-j3+m2+m3) < 0) ) &
             w3j(1) = -w3j(1)
 
         return
@@ -158,32 +158,32 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
     !   problem as all odd terms must be zero.
     !
     !--------------------------------------------------------------------------
-    rs = 0.0d0
-    wl = 0.0d0
+    rs = 0.0_dp
+    wl = 0.0_dp
 
     xjmin = x(jmin)
     yjmin = y(jmin)
 
     if (m1 == 0 .and. m2 == 0 .and. m3 == 0) then       ! All m's are zero
-        wl(jindex(jmin)) = 1.0d0
-        wl(jindex(jmin+1)) = 0.0d0
+        wl(jindex(jmin)) = 1.0_dp
+        wl(jindex(jmin+1)) = 0.0_dp
         jn = jmin + 1
 
-    else if (yjmin == 0.0d0) then           ! The second terms is either zero
-        if (xjmin == 0.0d0) then            ! or undefined
+    else if (yjmin == 0.0_dp) then           ! The second terms is either zero
+        if (xjmin == 0.0_dp) then            ! or undefined
             flag1 = 1
             jn = jmin
 
         else
-            wl(jindex(jmin)) = 1.0d0
-            wl(jindex(jmin+1)) = 0.0d0
+            wl(jindex(jmin)) = 1.0_dp
+            wl(jindex(jmin+1)) = 0.0_dp
             jn = jmin + 1
 
         end if
 
-    else if (xjmin * yjmin >= 0.0d0) then
+    else if (xjmin * yjmin >= 0.0_dp) then
         ! The second term is outside of the non-classical region
-        wl(jindex(jmin)) = 1.0d0
+        wl(jindex(jmin)) = 1.0_dp
         wl(jindex(jmin+1)) = -yjmin / xjmin
         jn = jmin + 1
 
@@ -197,8 +197,8 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
             denom = y(j) + z(j)*rs(jindex(j-1))
             xj = x(j)
 
-            if (abs(xj) > abs(denom) .or. xj * denom >= 0.0d0 .or. &
-                    denom == 0.0d0) then
+            if (abs(xj) > abs(denom) .or. xj * denom >= 0.0_dp .or. &
+                    denom == 0.0_dp) then
                 jn = j - 1
                 exit
 
@@ -209,7 +209,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         end do
 
-        wl(jindex(jn)) = 1.0d0
+        wl(jindex(jn)) = 1.0_dp
 
         do k = 1, jn - jmin, 1
             wl(jindex(jn-k)) = wl(jindex(jn-k+1)) * rs(jindex(jn-k))
@@ -243,30 +243,30 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
     !   (Note, I don't think that this ever happens).
     !
     !--------------------------------------------------------------------------
-    wu = 0.0d0
+    wu = 0.0_dp
 
     yjmax = y(jmax)
     zjmax = z(jmax)
 
     if (m1 == 0 .and. m2 == 0 .and. m3 == 0) then
-        wu(jindex(jmax)) = 1.0d0
-        wu(jindex(jmax-1)) = 0.0d0
+        wu(jindex(jmax)) = 1.0_dp
+        wu(jindex(jmax-1)) = 0.0_dp
         jp = jmax - 1
 
-    else if (yjmax == 0.0d0) then
-        if (zjmax == 0.0d0) then
+    else if (yjmax == 0.0_dp) then
+        if (zjmax == 0.0_dp) then
             flag2 = 1
             jp = jmax
 
         else
-            wu(jindex(jmax)) = 1.0d0
+            wu(jindex(jmax)) = 1.0_dp
             wu(jindex(jmax-1)) = - yjmax / zjmax
             jp = jmax-1
 
         end if
 
-    else if (yjmax * zjmax >= 0.0d0) then
-        wu(jindex(jmax)) = 1.0d0
+    else if (yjmax * zjmax >= 0.0_dp) then
+        wu(jindex(jmax)) = 1.0_dp
         wu(jindex(jmax-1)) = - yjmax / zjmax
         jp = jmax - 1
 
@@ -279,8 +279,8 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
             denom = y(j) + x(j)*rs(jindex(j+1))
             zj = z(j)
 
-            if (abs(zj) > abs(denom) .or. zj * denom >= 0.0d0 .or. &
-                    denom == 0.0d0) then
+            if (abs(zj) > abs(denom) .or. zj * denom >= 0.0_dp .or. &
+                    denom == 0.0_dp) then
                 jp = j + 1
                 exit
 
@@ -291,7 +291,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         end do
 
-        wu(jindex(jp)) = 1.0d0
+        wu(jindex(jp)) = 1.0_dp
 
         do k = 1, jmax - jp, 1
             wu(jindex(jp+k)) = wu(jindex(jp+k-1))*rs(jindex(jp+k))
@@ -320,14 +320,14 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
             wl(jindex(j+1)) = - (z(j)*wl(jindex(j-1)) +y(j)*wl(jindex(j))) &
                                 / x(j)
 
-            if (abs(wl(jindex(j+1))) > 1.0d0) then
+            if (abs(wl(jindex(j+1))) > 1.0_dp) then
                 ! watch out for overflows.
                 wl(jindex(jmin):jindex(j+1)) = wl(jindex(jmin):jindex(j+1)) &
                                                / scalef
             end if
 
-            if (abs(wl(jindex(j+1)) / wl(jindex(j-1))) < 1.0d0 .and. &
-                wl(jindex(j+1)) /= 0.0d0) then
+            if (abs(wl(jindex(j+1)) / wl(jindex(j-1))) < 1.0_dp .and. &
+                wl(jindex(j+1)) /= 0.0_dp) then
                 ! If values are decreasing then stop upward iteration
                 ! and start with the downward iteration.
                 jmid = j + 1
@@ -338,7 +338,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         wnmid = wl(jindex(jmid))
 
-        if (wl(jindex(jmid-1)) /= 0.0d0 .and. &
+        if (wl(jindex(jmid-1)) /= 0.0_dp .and. &
                 abs(wnmid / wl(jindex(jmid-1))) < 1.d-6) then
             ! Make sure that the stopping midpoint value is not a zero,
             ! or close to it!
@@ -349,7 +349,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
         do j = jp, jmid + 1, -1
             wu(jindex(j-1)) = - (x(j)*wu(jindex(j+1)) + y(j)*wu(jindex(j)) ) &
                                 / z(j)
-            if (abs(wu(jindex(j-1))) > 1.0d0) then
+            if (abs(wu(jindex(j-1))) > 1.0_dp) then
                 wu(jindex(j-1):jindex(jmax)) = wu(jindex(j-1):jindex(jmax)) &
                                                / scalef
             end if
@@ -386,7 +386,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         w3j(1:jnum) = wu(1:jnum)
 
-    elseif (flag2 == 1 .and. flag1 == 0) then
+    else if (flag2 == 1 .and. flag1 == 0) then
         ! iterature in upward direction only
 
         do j = jn, jp - 1, 1
@@ -426,14 +426,16 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
             jindex = j - jmin + 1
         end function jindex
 
-        real*8 function a(j)
+        function a(j)
+            real(dp) :: a
             integer :: j
             a = (dble(j)**2 - dble(j2 - j3)**2) * (dble(j2 + j3 + 1)**2 &
                             - dble(j)**2) * (dble(j)**2 - dble(m1)**2)
             a = sqrt(a)
         end function a
 
-        real*8 function y(j)
+        function y(j)
+            real(dp) :: y
             integer :: j
             y = -dble(2 * j + 1) * &
                 (dble(m1) * (dble(j2) * dble(j2 + 1) &
@@ -441,21 +443,23 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
                 - dble(m3 - m2) * dble(j) * dble(j + 1))
         end function y
 
-        real*8 function x(j)
+        function x(j)
+            real(dp) :: x
             integer :: j
             x = dble(j) * a(j+1)
         end function x
 
-        real*8 function z(j)
+        function z(j)
+            real(dp) :: z
             integer :: j
             z = dble(j+1) * a(j)
         end function z
 
         subroutine normw3j
-            real*8:: norm
-            integer j
+            real(dp) :: norm
+            integer :: j
 
-            norm = 0.0d0
+            norm = 0.0_dp
 
             do j = jmin, jmax
                 norm = norm + dble(2 * j + 1) * w3j(jindex(j))**2
@@ -467,8 +471,8 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         subroutine fixsign
 
-            if ( (w3j(jindex(jmax)) < 0.0d0 .and. (-1)**(j2-j3+m2+m3) > 0) &
-                    .or. (w3j(jindex(jmax)) > 0.0d0 .and. &
+            if ( (w3j(jindex(jmax)) < 0.0_dp .and. (-1)**(j2-j3+m2+m3) > 0) &
+                    .or. (w3j(jindex(jmax)) > 0.0_dp .and. &
                     (-1)**(j2-j3+m2+m3) < 0) ) then
                 w3j(1:jnum) = -w3j(1:jnum)
             end if

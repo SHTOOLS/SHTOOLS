@@ -1,4 +1,4 @@
-real*8 function SHPowerLC(c, l)
+function SHPowerLC(c, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power at
@@ -13,15 +13,18 @@ real*8 function SHPowerLC(c, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c(:,:,:)
+    real(dp) :: SHPowerLC
+    complex(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -51,7 +54,7 @@ real*8 function SHPowerLC(c, l)
 end function SHPowerLC
 
 
-real*8 function SHPowerDensityLC(c, l)
+function SHPowerDensityLC(c, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power per coefficient
@@ -66,15 +69,18 @@ real*8 function SHPowerDensityLC(c, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c(:,:,:)
+    real(dp) :: SHPowerDensityLC
+    complex(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -105,14 +111,14 @@ real*8 function SHPowerDensityLC(c, l)
 end function SHPowerDensityLC
 
 
-complex*16 function SHCrossPowerLC(c1, c2, l)
+function SHCrossPowerLC(c1, c2, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power at
 !   degree l for the complex 4-pi normalized spherical harmonic
 !   coefficients c1(i, l, m) and c2(i,l,m).
 !
-!   CrossPower =  Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
+!   CrossPower = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
 !
 !   Calling Parameters
 !
@@ -122,15 +128,18 @@ complex*16 function SHCrossPowerLC(c1, c2, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp) :: SHCrossPowerLC
+    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -152,13 +161,13 @@ complex*16 function SHCrossPowerLC(c1, c2, l)
 
     end if
 
-    SHCrossPowerLC = c1(1, l1, 1) * dconjg(c2(1,l1,1))
+    SHCrossPowerLC = c1(1, l1, 1) * conjg(c2(1,l1,1))
 
     do m = 1, l, 1
         m1 = m + 1
 
         do i = 1, 2
-            SHCrossPowerLC = SHCrossPowerLC + c1(i,l1,m1) * dconjg(c2(i,l1,m1))
+            SHCrossPowerLC = SHCrossPowerLC + c1(i,l1,m1) * conjg(c2(i,l1,m1))
 
         end do
 
@@ -167,14 +176,14 @@ complex*16 function SHCrossPowerLC(c1, c2, l)
 end function SHCrossPowerLC
 
 
-complex*16 function SHCrossPowerDensityLC(c1, c2, l)
+function SHCrossPowerDensityLC(c1, c2, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power
 !   (density) at degree l of the complex 4-pi normalized spherical harmonic
 !   coefficients c1(i, l, m) and c2(i,l,m).
 !
-!   CrossPower(l) =  Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
+!   CrossPower(l) = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
 !
 !   Calling Parameters
 !
@@ -184,15 +193,18 @@ complex*16 function SHCrossPowerDensityLC(c1, c2, l)
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp) :: SHCrossPowerDensityLC
+    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -214,14 +226,14 @@ complex*16 function SHCrossPowerDensityLC(c1, c2, l)
 
     end if
 
-    SHCrossPowerDensityLC =  c1(1, l1, 1) * dconjg(c2(1,l1,1))
+    SHCrossPowerDensityLC = c1(1, l1, 1) * conjg(c2(1,l1,1))
 
     do m = 1, l, 1
         m1 = m + 1
 
         do i = 1, 2
             SHCrossPowerDensityLC = SHCrossPowerDensityLC &
-                                    + c1(i, l1, m1)*dconjg(c2(i,l1,m1))
+                                    + c1(i, l1, m1) * conjg(c2(i,l1,m1))
 
         end do
 
@@ -261,17 +273,19 @@ subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c(:,:,:)
+    complex(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: lmax
-    real*8, intent(out) ::  spectra(:)
+    real(dp), intent(out) :: spectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -302,7 +316,7 @@ subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
 
     end if
 
-    spectra = 0.0d0
+    spectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
@@ -353,17 +367,19 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
-    
-    complex*16, intent(in) :: c(:,:,:)
+
+    complex(dp), intent(in) :: c(:,:,:)
     integer, intent(in) :: lmax
-    real*8, intent(out) ::  spectra(:)
+    real(dp), intent(out) :: spectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -394,7 +410,7 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
 
     end if
 
-    spectra = 0.0d0
+    spectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
@@ -426,7 +442,7 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 !   of the complex 4-pi normalized spherical harmonic coefficients c1(i, l, m)
 !   and c2(1,l,m).
 !
-!   CrossPower(l) =  Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
+!   CrossPower(l) = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
 !
 !   Calling Parameters
 !
@@ -450,17 +466,19 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2016-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
-    
-    complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+
+    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: lmax
-    complex*16, intent(out) ::  cspectra(:)
+    complex(dp), intent(out) :: cspectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -504,19 +522,19 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 
     end if
 
-    cspectra = 0.0d0
+    cspectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
 
-        cspectra(l1) = c1(1, l1, 1) * dconjg(c2(1, l1, 1))
+        cspectra(l1) = c1(1, l1, 1) * conjg(c2(1, l1, 1))
 
         do m = 1, l, 1
             m1 = m + 1
 
             do i = 1, 2
                 cspectra(l1) = cspectra(l1) &
-                               + c1(i, l1, m1) * dconjg(c2(i, l1, m1))
+                               + c1(i, l1, m1) * conjg(c2(i, l1, m1))
 
             end do
 
@@ -534,7 +552,7 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
 !   density of the complex 4-pi normalized spherical harmonic coefficients
 !   c1(i, l, m) and c2(i,l,m).
 !
-!   CrossPower(l) =  Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
+!   CrossPower(l) = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
 !
 !   Calling Parameters
 !
@@ -559,17 +577,19 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    complex*16, intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
     integer, intent(in) :: lmax
-    complex*16, intent(out) ::  cspectra(:)
+    complex(dp), intent(out) :: cspectra(:)
     integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -613,19 +633,19 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
 
     end if
 
-    cspectra = 0.0d0
+    cspectra = 0.0_dp
 
     do l = 0, lmax
         l1 = l + 1
 
-        cspectra(l1) = c1(1, l1, 1) * dconjg(c2(1, l1, 1))
+        cspectra(l1) = c1(1, l1, 1) * conjg(c2(1, l1, 1))
 
         do m = 1, l, 1
             m1 = m + 1
 
             do i = 1, 2
                 cspectra(l1) = cspectra(l1) &
-                               + c1(i, l1, m1) * dconjg(c2(i, l1, m1))
+                               + c1(i, l1, m1) * conjg(c2(i, l1, m1))
 
             end do
 

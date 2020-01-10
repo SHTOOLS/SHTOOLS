@@ -60,36 +60,34 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !                       3 = Error allocating memory;
 !                       4 = File IO error.
 !
-!   Dependencies:   LAPACK, PlmBar, PLegendreA, PlmSchmidt, PlmON,
-!                   CSPHASE_DEFAULT
-!
-!   Copyright (c) 2018, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: d(:), lat(:), lon(:)
-    real*8, intent(out) :: cilm(:,:,:)
+    real(dp), intent(in) :: d(:), lat(:), lon(:)
+    real(dp), intent(out) :: cilm(:,:,:)
     integer, intent(in) :: nmax, lmax
     integer, intent(in), optional :: norm, csphase
-    real*8, intent(out), optional :: chi2
-    real*8, intent(in), optional :: weights(:)
+    real(dp), intent(out), optional :: chi2
+    real(dp), intent(in), optional :: weights(:)
     integer, intent(out), optional :: exitstatus
     integer, parameter :: opt = 80
     integer :: ncoef, i, l, m, ind1, ind2, info, lwork, opt1, phase, &
                astat(7), lnorm
-    real*8 :: pi, lonr, small
-    real*8, allocatable :: mm(:), gg(:, :), p(:), work(:), b(:, :), y(:), &
-                           din(:)
+    real(dp) :: pi, lonr, small
+    real(dp), allocatable :: mm(:), gg(:, :), p(:), work(:), b(:, :), y(:), &
+                             din(:)
 #ifdef LAPACK_UNDERSCORE
 #define dgels dgels_
 #endif
     external :: dgels, dggglm
 
-    small = 1.d-12
+    small = 1.e-12_dp
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -250,9 +248,9 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     end if
 
-    pi = acos(-1.0d0)
-    mm = 0.0d0
-    gg = 0.0d0
+    pi = acos(-1.0_dp)
+    mm = 0.0_dp
+    gg = 0.0_dp
 
     !--------------------------------------------------------------------------
     !
@@ -263,16 +261,16 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
         if (present(exitstatus)) then
             select case(lnorm)
                 case(1)
-                    call PlmBar(p, lmax, sin(lat(i) * pi / 180.0d0), &
+                    call PlmBar(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                 csphase = phase, exitstatus = exitstatus)
                 case(2)
-                    call PlmSchmidt(p, lmax, sin(lat(i) * pi / 180.0d0), &
+                    call PlmSchmidt(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                     csphase = phase, exitstatus = exitstatus)
                 case(3)
-                    call PLegendreA(p, lmax, sin(lat(i) * pi / 180.0d0), &
+                    call PLegendreA(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                     csphase = phase, exitstatus = exitstatus)
                 case(4)
-                    call PlmON(p, lmax, sin(lat(i) * pi / 180.0d0), &
+                    call PlmON(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                csphase = phase, exitstatus = exitstatus)
             end select
             if (exitstatus /= 0) return
@@ -280,22 +278,22 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
         else
             select case(lnorm)
                 case(1)
-                    call PlmBar(p, lmax, sin(lat(i) * pi / 180.0d0), &
+                    call PlmBar(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                 csphase = phase)
                 case(2)
-                    call PlmSchmidt(p, lmax, sin(lat(i) * pi / 180.0d0), &
+                    call PlmSchmidt(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                     csphase = phase)
                 case(3)
-                    call PLegendreA(p, lmax, sin(lat(i) * pi / 180.0d0), &
+                    call PLegendreA(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                     csphase = phase)
                 case(4)
-                    call PlmON(p, lmax, sin(lat(i) * pi / 180.0d0), &
+                    call PlmON(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                csphase = phase)
             end select
 
         end if
 
-        lonr = lon(i) * pi / 180.0d0
+        lonr = lon(i) * pi / 180.0_dp
         ind1 = 0
 
         do l = 0, lmax
@@ -331,14 +329,14 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     !--------------------------------------------------------------------------
     if (present(weights)) then
         din(1:nmax) = d(1:nmax)
-        b = 0.0d0
+        b = 0.0_dp
 
         do i = 1, nmax
-            if (weights(i) == 0.0d0) then
-                b(i, i) = 1.0d0 / sqrt(small)
+            if (weights(i) == 0.0_dp) then
+                b(i, i) = 1.0_dp / sqrt(small)
 
             else
-                b(i, i) = 1.0d0 / sqrt(weights(i))
+                b(i, i) = 1.0_dp / sqrt(weights(i))
 
             end if
 
@@ -425,7 +423,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     !
     !--------------------------------------------------------------------------
     if (present(chi2) .and. nmax >= ncoef) then
-        chi2 = 0.0d0
+        chi2 = 0.0_dp
 
         if (present(weights)) then
             do i = 1, nmax
@@ -442,11 +440,11 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     ! deallocate memory
     select case(lnorm)
         case(1)
-            call PlmBar(p, -1, 0.0d0)
+            call PlmBar(p, -1, 0.0_dp)
         case(2)
-            call PlmSchmidt(p, -1, 0.0d0)
+            call PlmSchmidt(p, -1, 0.0_dp)
         case(4)
-            call PlmON(p, -1, 0.0d0)
+            call PlmON(p, -1, 0.0_dp)
 
     end select
 

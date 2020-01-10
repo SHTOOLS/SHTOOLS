@@ -17,13 +17,13 @@ call SHPowerSpectrumDensityC (`cilm`, `lmax`, `pspectrum`, `exitstatus`)
 
 ## Parameters
 
-`cilm` : input, complex\*16, dimension (2, `lmaxin`+1, `lmaxin`+1)
+`cilm` : input, complex(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex function expressed in complex spherical harmonics.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the power spectral density. This must be less than or equal to `lmaxin`.
 
-`pspectrum` : output, real\*8, dimension (`lmax`+1)
+`pspectrum` : output, real(dp), dimension (`lmax`+1)
 :   The power spectral density of the function.
 
 `exitstatus` : output, optional, integer

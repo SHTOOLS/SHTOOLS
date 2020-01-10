@@ -8,7 +8,7 @@ Compute the minimum-amplitude downward continuation filter of Wieczorek and Phil
 
 # Parameters
 
-`wl` : output, real\*8
+`wl` : output, real(dp)
 :   The amplitude of the downward continuation filter.
 
 `l` : input, integer
@@ -17,10 +17,10 @@ Compute the minimum-amplitude downward continuation filter of Wieczorek and Phil
 `half` : input, integer
 :   The spherical harmonic degree where the filter is equal to 0.5.
 
-`r` : input, real\*8
+`r` : input, real(dp)
 :   The reference radius of the gravitational field.
 
-`d` : input, real\*8
+`d` : input, real(dp)
 :   The radius of the surface to downward continue to.
 
 # Description

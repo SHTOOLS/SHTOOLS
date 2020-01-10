@@ -31,27 +31,35 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Initialization method | Description |
 | --------------------- | ----------- |
 | `x = SHGrid.from_array()` | Initialize using an array. |
+| `x = SHGrid.from_xarray()` | Initialize using an xarray DataArray. |
 | `x = SHGrid.from_file()` | Initialize using an array from a file. |
+| `x = SHGrid.from_zeros()` | Initialize using an array of zeros. |
+| `x = SHGrid.from_cap()` | Initialize using a rotated spherical cap. |
+
 
 ## Class attributes
 
 | Attribute | Description |
 | --------- | ----------- |
 | `data` | Array of the gridded data. |
-| `nlat`, `nlon` | The number of latitude and longitude bands in the grid.|
+| `nlat`, `nlon` | The number of latitude and longitude bands in the grid. |
+| `n` | The number of samples in latitude for `'DH'` grids. |
 | `lmax` | The maximum spherical harmonic degree that can be resolved by the grid sampling. |
-| `sampling` | For Driscoll and Healy grids, the longitudinal sampling of the grid. Either 1 for `nlon` = `nlat` or 2 for `nlon` = 2 * `nlat` |
+| `sampling` | The longitudinal sampling for Driscoll and Healy grids. Either 1 for equally sampled grids (`nlon` = `nlat`) or 2 for equally spaced grids in degrees. |
 | `kind` | Either `'complex'` or `'real'` for the data type. |
 | `grid` | Either `'DH'` or `'GLQ'` for Driscoll and Healy grids or Gauss-Legendre quadrature grids. |
-| `zeros` | The $$\cos(\theta)$$ nodes used with Gauss-Legendre quadrature grids. Default is `None`.|
+| `zeros` | The $$\cos(\theta)$$ nodes used with Gauss-Legendre quadrature grids. Default is `None`. |
 | `weights` | The latitudinal weights used with Gauss-Legendre quadrature grids. Default is `None`. |
+| `extend` | True if the grid contains the redundant column for 360 E and (for `'DH'` grids) the unnecessary row for 90 S. |
 
 ## Class methods
 
 | Method | Description |
 | ------ | ----------- |
-| `to_file()` | Save raw gridded data to a text or binary file. |
 | `to_array()` | Return a numpy array of the gridded data. |
+| `to_xarray()` | Return the gridded data as an xarray DataArray. |
+| `to_file()` | Save raw gridded data to a text or binary file. |
+| `to_netcdf()` | Return the gridded data as a netcdf formatted file or object. |
 | `lats()` | Return a vector containing the latitudes of each row of the gridded data. |
 | `lons()` | Return a vector containing the longitudes of each column of the gridded data. |
 | `expand()` | Expand the grid into spherical harmonics. |

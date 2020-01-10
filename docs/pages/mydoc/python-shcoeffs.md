@@ -32,6 +32,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `x = SHCoeffs.from_random()` | Initialize using random coefficients with a prescribed power spectrum. |
 | `x = SHCoeffs.from_zeros()` | Initialize with coefficients set to zero. |
 | `x = SHCoeffs.from_file()` | Initialize using coefficients from a file. |
+| `x = SHCoeffs.from_cap()` | Initialize using coefficients of a spherical cap. |
 
 ## Class attributes
 
@@ -50,16 +51,19 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Method | Description |
 | ------ | ----------- |
 | `degrees()` | Return an array listing the spherical harmonic degrees from `0` to `lmax`. |
-| `spectrum()` | Return the spectrum of the function.|
-| `volume()` | Calculate the volume of the body.|
-| `set_coeffs()` | Set coefficients in-place to specified values.|
-| `rotate()` | Rotate the coordinate system used to express the spherical harmonics coefficients and return a new class instance.|
+| `spectrum()` | Return the spectrum of the function. |
+| `cross_spectrum()` | Return the cross-spectrum of two functions. |
+| `volume()` | Calculate the volume of the body. |
+| `set_coeffs()` | Set coefficients in-place to specified values. |
+| `rotate()` | Rotate the coordinate system used to express the spherical harmonics coefficients and return a new class instance. |
 | `convert()` | Return a new class instance using a different normalization convention. |
-| `pad()` | Return a new class instance that is zero padded or truncated to a different `lmax`.|
-| `expand()` | Evaluate the coefficients either on a spherical grid and return an SHGrid class instance, or for a list of latitude and longitude coordinates.|
+| `pad()` | Return a new class instance that is zero padded or truncated to a different `lmax`. |
+| `expand()` | Evaluate the coefficients either on a spherical grid and return an SHGrid class instance, or for a list of latitude and longitude coordinates. |
 | `plot_spectrum()` | Plot the spectrum as a function of spherical harmonic degree. |
+| `plot_cross_spectrum()` | Plot the cross-spectrum of two functions. |
 | `plot_spectrum2d()` | Plot the spectrum of all spherical-harmonic coefficients. |
+| `plot_cross_spectrum2d()` | Plot the cross-spectrum of all spherical-harmonic coefficients. |
 | `to_array()` | Return an array of spherical harmonics coefficients with a different normalization convention. |
 | `to_file()` | Save raw spherical harmonic coefficients to a text or binary file. |
 | `copy()` | Return a copy of the class instance. |
-| `info()` | Print a summary of the data stored in the SHCoeffs instance.|
+| `info()` | Print a summary of the data stored in the SHCoeffs instance. |

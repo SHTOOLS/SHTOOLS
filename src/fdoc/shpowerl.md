@@ -8,10 +8,10 @@ Compute the power of a real function for a single spherical harmonic degree.
 
 # Parameters
 
-`power` : output, real\*8
+`power` : output, real(dp)
 :   Power of the function for a single spherical harmonic degree `l`.
 
-`cilm` : input, real\*8, dimension (2, `lmaxin`+1, `lmaxin`+1)
+`cilm` : input, real(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The spherical harmonic coefficients of the function.
 
 `l` : input, integer

@@ -8,16 +8,16 @@ call EigValVecSym (`ain`, `n`, `eval`, `evec`, `ul`, `k`, `exitstatus`)
 
 # Parameters
 
-`ain` : input, real\*8, dimension (`n`, `n`)
+`ain` : input, real(dp), dimension (`n`, `n`)
 :   The input real symmetric matrix. By default, only the upper portion of the matrix is used.
 
 `n` : input, integer
 :   The rank of the matrix `ain`.
 
-`eval` : output, real\*8, dimension (`k`)
+`eval` : output, real(dp), dimension (`k`)
 :   The eigenvalues of `ain`, sorted from largest to smallest.
 
-`evec` : output, real\*8, dimension (`n`, `k`)
+`evec` : output, real(dp), dimension (`n`, `k`)
 :   The eigenvectors of `ain`, sorted from largest to smallest eigenvalues. The sign of the first element of each eigenvector is chosen to be positive.
 
 `ul` : input, character, optional, default = `U`

@@ -50,27 +50,26 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 !           nocross     If present and equal to 1, then the off-diagonal terms
 !                       of the covariance matrix will be assumed to be zero.
 !
-!   Dependencies: SHSjkPG, SSYSV (LAPACK)
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHSjkPG
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) :: tapers(:,:), Sff(:)
-    real*8, intent(out) :: var_opt(:), var_unit(:)
+    real(dp), intent(in) :: tapers(:,:), Sff(:)
+    real(dp), intent(out) :: var_opt(:), var_unit(:)
     integer, intent(in) :: l, lwin, kmax, taper_order(:)
-    real*8, intent(out), optional :: weight_opt(:,:), unweighted_covar(:,:)
+    real(dp), intent(out), optional :: weight_opt(:,:), unweighted_covar(:,:)
     integer, intent(in), optional :: nocross
     integer, intent(out), optional :: exitstatus
     integer, parameter :: nb = 64
-    real*8 :: Fij(kmax, kmax), ww(kmax), bb(kmax+1), MM(kmax+1, kmax+1), &
-              work((kmax+1)*nb)
+    real(dp) :: Fij(kmax, kmax), ww(kmax), bb(kmax+1), MM(kmax+1, kmax+1), &
+                work((kmax+1)*nb)
     integer :: i,j, m, mp, k, ipiv(kmax+1), info, lwork
-    complex*16 :: temp1
+    complex(dp) :: temp1
 #ifdef LAPACK_UNDERSCORE
 #define DSYSV DSYSV_
 #endif
@@ -175,7 +174,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
     if (present(nocross)) then
         if (nocross /= 1 .and. nocross /= 0) then
-            print*, "Error --- SHMTVarOpt0"
+            print*, "Error --- SHMTVarOpt"
             print*, "NOCROSS must be either 0 (use all elements of " // &
                     "covariance matrix) or"
             print*, "1 (set off-diagonal elements of " // &
@@ -192,15 +191,15 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
     end if
 
-    Fij = 0.0d0
+    Fij = 0.0_dp
 
     lwork = (kmax+1) * nb
 
-    var_opt = 0.0d0
-    var_unit = 0.0d0
+    var_opt = 0.0_dp
+    var_unit = 0.0_dp
 
     if (present(weight_opt)) then
-        weight_opt = 0.0d0
+        weight_opt = 0.0_dp
     end if
 
     !--------------------------------------------------------------------------
@@ -211,12 +210,12 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
     if (present(nocross)) then
         if (nocross == 1) then
             do i = 1, kmax, 1
-                do m= -l, l
+                do m = -l, l
                     do mp = -l, l
                         temp1 = SHSjkPG(Sff, l, m, mp, tapers(1:lwin+1,i), &
-                                        tapers(1:lwin+1,i),&
-                                        taper_order(i), taper_order(i), lwin, 1)
-                        Fij(i,i) = Fij(i,i) + 2.0d0 * dble(temp1*dconjg(temp1))
+                                        tapers(1:lwin+1,i), taper_order(i), &
+                                        taper_order(i), lwin, 1)
+                        Fij(i,i) = Fij(i,i) + 2.0_dp * dble(temp1 * conjg(temp1))
 
                     end do
 
@@ -229,10 +228,13 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
                 do j = i, kmax, 1
                     do m = -l, l
                         do mp = -l, l
-                            temp1 = SHSjkPG(Sff, l, m, mp, tapers(1:lwin+1,i), &
-                                            tapers(1:lwin+1,j), taper_order(i),&
-                                            taper_order(j), lwin, 1)
-                            Fij(i,j) = Fij(i,j) + 2.0d0 * dble(temp1*dconjg(temp1))
+                            temp1 = SHSjkPG(Sff, l, m, mp, &
+                                            tapers(1:lwin+1,i), &
+                                            tapers(1:lwin+1,j), &
+                                            taper_order(i), taper_order(j), &
+                                            lwin, 1)
+                            Fij(i,j) = Fij(i,j) + &
+                                       2.0_dp * dble(temp1 * conjg(temp1))
 
                         end do
 
@@ -244,7 +246,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
             end do
 
-        endif
+        end if
 
     else
         do i = 1, kmax, 1
@@ -254,7 +256,7 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
                         temp1 = SHSjkPG(Sff, l, m, mp, tapers(1:lwin+1,i), &
                                         tapers(1:lwin+1,j), taper_order(i), &
                                         taper_order(j), lwin, 1)
-                        Fij(i,j) = Fij(i,j) + 2.0d0 * dble(temp1*dconjg(temp1))
+                        Fij(i,j) = Fij(i,j) + 2.0_dp * dble(temp1 * conjg(temp1))
 
                     end do
 
@@ -266,10 +268,10 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
         end do
 
-    endif
+    end if
 
     if (present(unweighted_covar)) then
-        unweighted_covar = 0.0d0
+        unweighted_covar = 0.0_dp
         unweighted_covar(1:kmax, 1:kmax) = Fij(1:kmax,1:kmax)
 
     end if
@@ -290,12 +292,12 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
     !
     !--------------------------------------------------------------------------
     do k = 1, kmax
-        MM(1:k,1:k) = 2.0d0 * Fij(1:k,1:k)
-        MM(k+1,1:k) = 1.0d0
-        MM(1:k,k+1) = 1.0d0
-        MM(k+1,k+1) = 0.0d0
-        bb(1:k) = 0.0d0
-        bb(k+1) = 1.0d0
+        MM(1:k,1:k) = 2.0_dp * Fij(1:k,1:k)
+        MM(k+1,1:k) = 1.0_dp
+        MM(1:k,k+1) = 1.0_dp
+        MM(k+1,k+1) = 0.0_dp
+        bb(1:k) = 0.0_dp
+        bb(k+1) = 1.0_dp
 
         call DSYSV("u", k+1, 1, MM, kmax+1, ipiv,  bb,  kmax+1,  work, &
                     lwork, info)
@@ -339,6 +341,6 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
         end do
 
-    enddo
+    end do
 
 end subroutine SHMTVarOpt

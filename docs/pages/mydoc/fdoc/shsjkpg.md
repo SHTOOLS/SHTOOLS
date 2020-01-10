@@ -17,10 +17,10 @@ Calculate the expectation of the product of two functions, each multiplied by a 
 
 ## Parameters
 
-`value` : output, complex\*16
+`value` : output, complex(dp)
 :   The expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.
 
-`incspectra` : input, real\*8, dimension (`l`+`lwin`+1)
+`incspectra` : input, real(dp), dimension (`l`+`lwin`+1)
 :   The global cross-power spectrum of `f` and `g`.
 
 `l` : input, integer
@@ -32,10 +32,10 @@ Calculate the expectation of the product of two functions, each multiplied by a 
 `mprime` : input, integer
 :   The angular order of the second localized function, `Gamma`.
 
-`hj_real` : input, real\*8, dimension (`lwin`+1)
+`hj_real` : input, real(dp), dimension (`lwin`+1)
 :   The real spherical harmonic coefficients of angular order `mj` used to localize the first function `f`. These are obtained by a call to `SHReturnTapers`.
 
-`hk_real` : input, real\*8, dimension (`lwin`+1)
+`hk_real` : input, real(dp), dimension (`lwin`+1)
 :   The real spherical harmonic coefficients of angular order `mk` used to localize the second function `g`. These are obtained by a call to `SHReturnTapers`.
 
 `mj` : input, integer

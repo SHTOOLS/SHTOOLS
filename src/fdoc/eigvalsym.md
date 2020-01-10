@@ -8,13 +8,13 @@ call EigValSym (`ain`, `n`, `eval`, `ul`)
 
 # Parameters
 
-`ain` : input, real\*8, dimension (`n`, `n`)
+`ain` : input, real(dp), dimension (`n`, `n`)
 :   The input real symmetric matrix. By default, only the upper portion of the matrix is used.
 
 `n` : input, integer
 :   The rank of the matrix `ain`.
 
-`eval` : output, real\*8, dimension (`n`)
+`eval` : output, real(dp), dimension (`n`)
 :   The eigenvalues of `ain`, sorted from largest to smallest.
 
 `ul` : optional, input, character, default = `U`

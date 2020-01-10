@@ -17,16 +17,16 @@ call SHCrossPowerSpectrumC (`cilm1`, `cilm2`, `lmax`, `cspectrum`, `exitstatus`)
 
 ## Parameters
 
-`cilm1` : input, complex\*16, dimension (2, `lmaxin1`+1, `lmaxin1`+1)
+`cilm1` : input, complex(dp), dimension (2, `lmaxin1`+1, `lmaxin1`+1)
 :   The complex spherical harmonics of the first complex function.
 
-`cilm2` : input, complex\*16, dimension (2, `lmaxin2`+1, `lmaxin2`+1)
+`cilm2` : input, complex(dp), dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The complex spherical harmonics of the second complex function.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the cross power spectrum. This must be less than or equal to the minimum of `lmaxin1` and `lmaxin2`.
 
-`cspectrum` : output, complex\*16, dimension (`lmax`+1)
+`cspectrum` : output, complex(dp), dimension (`lmax`+1)
 :   The cross-power spectrum of the two complex functions.
 
 `exitstatus` : output, optional, integer

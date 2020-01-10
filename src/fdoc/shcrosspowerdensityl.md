@@ -8,13 +8,13 @@ Compute the cross-power spectral density of two real functions for a single sphe
 
 # Parameters
 
-`cpsd` : output, real\*8
+`cpsd` : output, real(dp)
 :   Cross-power spectral density of the two real functions for spherical harmonic degree `l`.
 
-`cilm1` : input, real\*8, dimension (2, `lmaxin1`+1, `lmaxin1`+1)
+`cilm1` : input, real(dp), dimension (2, `lmaxin1`+1, `lmaxin1`+1)
 :   The spherical harmonic coefficients of the first real function.
 
-`cilm2` : input, real\*8, dimension (2, `lmaxin2`+1, `lmaxin2`+1)
+`cilm2` : input, real(dp), dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The spherical harmonic coefficients of the second real function.
 
 `l` : input, integer

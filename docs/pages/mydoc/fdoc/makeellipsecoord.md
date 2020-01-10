@@ -20,22 +20,22 @@ call MakeEllipseCoord (`coord`, `lat`, `lon`, `dec`, `a_theta`, `b_theta`, `cint
 `coord` : output, real*8, dimension(360/`cinterval`, 2)
 :   The latitude (:,1) and longitude (:,2) coordinates of the ellipse in degrees.
 
-`lat` : input, real\*8
+`lat` : input, real(dp)
 :   The latitude of the center of the ellipse in degrees.
 
-`lon` : input, real\*8
+`lon` : input, real(dp)
 :   The longitude of the center of the ellipse in degrees.
 
-`dec` : input, real\*8
+`dec` : input, real(dp)
 :   Rotation angle of the semi-major axis of the ellipse in degrees with respect to local north.
 
-`a_theta` : input, real\*8
+`a_theta` : input, real(dp)
 :   The angular radius of the semi-major axis of the ellipse in degrees.
 
-`b_theta` : input, real\*8
+`b_theta` : input, real(dp)
 :   The angular radius of the semi-minor axis of the ellipse in degrees.
 
-`cinterval` : optional, input, real\*8, default = 1
+`cinterval` : optional, input, real(dp), default = 1
 :   Angular spacing in degrees of the output latitude and longitude points. If not present, the default is 1.
 
 `cnum` : optional, output, integer

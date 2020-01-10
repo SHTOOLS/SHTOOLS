@@ -33,8 +33,8 @@ SHFindLWin             Determine the spherical-harmonic bandwidth that is
                        necessary to achieve a certain concentration factor.
 SHBiasK                Calculate the multitaper (cross-)power spectrum
                        expectation of a windowed function.
-SHMTCouplingMatrix     Calculate the multitaper coupling matrix for a given
-                       set of localization windows.
+SHMTCouplingMatrix     Compute the multitaper coupling matrix for a given set
+                       of localization windows.
 SHBiasAdmitCorr        Calculate the expected multitaper admittance and
                        correlation spectra associated with the input global
                        cross-power spectra of two functions.
@@ -42,6 +42,8 @@ SHMTDebias             Invert for the global power spectrum given a localized
                        multitaper spectrum estimate.
 SHMTVarOpt             Calculate the minimum variance and corresponding optimal
                        weights of a localized multitaper spectral estimate.
+SHMTVar                Calculate the theoretical variance of a multitaper
+                       spectral estimate for a given input power spectrum.
 SHSjkPG                Calculate the expectation of the product of two
                        functions, each multiplied by a different data taper,
                        for a given spherical harmonic degree and two different
@@ -75,17 +77,18 @@ SlepianCoeffs          Determine the expansion coefficients of a function for
                        a given set of input Slepian functions.
 SlepianCoeffsToSH      Convert a function expressed in Slepian coefficients to
                        spherical harmonic coefficients.
+SHSCouplingMatrix      Compute the spherical harmonic coupling matrix for a
+                       given set of Slepian functions.
+SHSCouplingMatrixCap   Compute the spherical harmonic coupling matrix for a
+                       given set of spherical-cap Slepian functions.
+SHSlepianVar           Calculate the theoretical variance of the power of a
+                       function expanded in spherical-cap Slepian functions.
 
 Other
 -----
 SphericalCapCoef       Calculate the spherical harmonic coefficients of a
                        spherical cap.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 from ..shtools import SHAdmitCorr
 from ..shtools import SHConfidence
 
@@ -105,6 +108,7 @@ from ..shtools import SHMTCouplingMatrix
 from ..shtools import SHBiasAdmitCorr
 from ..shtools import SHMTDebias
 from ..shtools import SHMTVarOpt
+from ..shtools import SHMTVar
 from ..shtools import SHSjkPG
 from ..shtools import SHMultiTaperMaskSE
 from ..shtools import SHMultiTaperMaskCSE
@@ -117,3 +121,19 @@ from ..shtools import SphericalCapCoef
 from ..shtools import SHRotateTapers
 from ..shtools import SlepianCoeffs
 from ..shtools import SlepianCoeffsToSH
+from ..shtools import SHSCouplingMatrix
+from ..shtools import SHSlepianVar
+from ..shtools import SHSCouplingMatrixCap
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['SHAdmitCorr', 'SHConfidence', 'spectrum', 'cross_spectrum',
+           'SHMultiTaperSE', 'SHMultiTaperCSE', 'SHLocalizedAdmitCorr',
+           'SHReturnTapers', 'SHReturnTapersM', 'ComputeDm', 'ComputeDG82',
+           'SHFindLWin', 'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr',
+           'SHMTDebias', 'SHMTVarOpt', 'SHMTVar', 'SHSjkPG',
+           'SHMultiTaperMaskSE', 'SHMultiTaperMaskCSE', 'SHReturnTapersMap',
+           'SHBiasKMask', 'ComputeDMap', 'Curve2Mask', 'SHBias',
+           'SphericalCapCoef', 'SHRotateTapers', 'SlepianCoeffs',
+           'SlepianCoeffsToSH', 'SHSCouplingMatrix', 'SHSlepianVar',
+           'SHSCouplingMatrixCap']

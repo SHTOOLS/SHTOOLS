@@ -26,33 +26,22 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
    * localized multitaper spectral analyses, and expansions in Slepian basis functions,
    * standard gravity and magnetic field calculations, computation of the geoid, and finite-amplitude potential from topography.
 
+* Integrated support for working with xarray and netcdf data.
+
 * SHTOOLS is open source software (3-clause BSD license).
 
 ### INSTALLATION ###
 #### pyshtools for Python ####
 
-Binary install for linux/macOS/windows:
+Binary install for linux and macOS:
 ```bash
 pip install pyshtools
-```
-
-Upgrade to a new version:
-```bash
-pip install --upgrade pyshtools
+pip install --upgrade pyshtools  # upgrade to a new version
 ```
 
 Build from source:
 ```bash
 pip install pyshtools --no-binary pyshtools
-```
-
-#### pyshtools for Anaconda Python ####
-
-Install fftw3 with fortran bindings and then install pyshtools using `pip`:
-
-```bash
-conda install -c eumetsat fftw3
-pip install pyshtools
 ```
 
 #### pyshtools for developers ####
@@ -63,6 +52,7 @@ sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 macOS requirements:
 ```bash
 brew install fftw
+# for lapack and blas, link to the system '-framework Accelerate'
 ```
 To install the develop branch:
 ```bash
@@ -72,8 +62,9 @@ Alternatively, clone the shtools repo and then install:
 ```bash
 git clone https://github.com/SHTOOLS/SHTOOLS.git
 cd shtools
+git checkout develop
 pip install .  # install into the active python environment lib folder, or
-pip install -v -e .  # install into the SHTOOLS/pyshtools folder and link to the active python environment
+pip install -e .  # install into the SHTOOLS/pyshtools folder and link to the active python environment
 ```
 
 #### Fortran Library ####

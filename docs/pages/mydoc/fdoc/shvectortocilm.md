@@ -17,10 +17,10 @@ call SHVectorToCilm (`vector`, `cilm`, `lmax`, `exitstatus`)
 
 ## Parameters
 
-`vector` : input, real\*8, dimension ( (`lmax`+1)\*\*2 )
+`vector` : input, real(dp), dimension ( (`lmax`+1)\*\*2 )
 :   The input 1-D indexed array of real spherical harmonic coefficients.
 
-`cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The 3-D arrary of output real spherical harmonic coefficients.
 
 `lmax` : input, integer

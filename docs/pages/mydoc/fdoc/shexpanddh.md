@@ -17,13 +17,13 @@ call SHExpandDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `
 
 ## Parameters
 
-`griddh` : input, real\*8, dimension (`n`, `n`) or (`n`, 2\*`n`)
+`griddh` : input, real(dp), dimension (`n`, `n`) or (`n`, 2\*`n`)
 :   A 2D equally sampled (default) or equally spaced grid that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitude band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally and 180/`n` for an equally spaced grid, respectively.
 
 `n` : input, integer
 :   The number of samples in latitude of `griddh`. If `sampling` is 1 (default) then the number of samples in longitude is `n`. If `sampling` is 2 then the number of longitudinal samples is `2n`. `n` must be even.
 
-`cilm` : output, real\*8, dimension (2, `n`/2, `n`/2) or (2, `lmax_calc`+1, `lmax_calc`+1) 
+`cilm` : output, real(dp), dimension (2, `n`/2, `n`/2) or (2, `lmax_calc`+1, `lmax_calc`+1) 
 :   The real spherical harmonic coefficients of the function. These will be exact if the function is bandlimited to degree `lmax=n/2-1`. The coefficients `c1lm` and `c2lm` refer to the cosine (`clm`) and sine (`slm`) coefficients, respectively, with `clm=cilm(1,l+1,m+1)` and `slm=cilm(2,l+1,m+1)`.
 
 `lmax` : output, integer

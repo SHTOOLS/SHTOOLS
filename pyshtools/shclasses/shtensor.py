@@ -1,15 +1,12 @@
 """
     Class for the gravity and magnetic field 'gradient' tensors.
 """
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 import copy as _copy
 from scipy.linalg import eigvalsh as _eigvalsh
+import xarray as _xr
 
 from .shcoeffsgrid import SHGrid as _SHGrid
 
@@ -127,14 +124,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vxx([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vxx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -146,7 +147,13 @@ class Tensor(object):
         cb_orientation : str, optional, default = 'vertical'
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{xx}$'
-            Text label for the colorbar..
+            Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -181,14 +188,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vyy([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vyy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -201,6 +212,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{yy}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -235,14 +252,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vzz([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vzz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -255,6 +276,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{zz}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -289,14 +316,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vxy([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vxy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -309,6 +340,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{xy}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -343,14 +380,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vyx([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vyx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -363,6 +404,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{yx}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -397,14 +444,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vxz([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vxz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -417,6 +468,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{xz}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -451,14 +508,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vzx([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vzx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -471,6 +532,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{zx}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -505,14 +572,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vyz([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vyz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -525,6 +596,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{yz}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -559,14 +636,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_vzy([tick_interval, xlabel, ylabel, ax, colorbar,
-                    cb_orientation, cb_label, show, fname])
+        x.plot_vzy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                    colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                    tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -579,6 +660,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$V_{zy}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -617,7 +704,7 @@ class Tensor(object):
         Usage
         -----
         x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
-                colorbar, cb_orientation, cb_label, axes_labelsize,
+                colorbar, cb_orientation, cb_label, grid, axes_labelsize,
                 tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -638,9 +725,11 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
-        axes_labelsize : int, optional, default = 8
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = 8
+        tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -659,7 +748,7 @@ class Tensor(object):
         else:
             scale = 0.55
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                    _mpl.rcParams['figure.figsize'][0] * scale)
+                   _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(3, 3, figsize=figsize)
         self.plot_vxx(colorbar=colorbar, cb_orientation=cb_orientation,
@@ -746,14 +835,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i0([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                   cb_label, show, fname])
+        x.plot_i0([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                   colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                   tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -766,6 +859,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'Tr $V_{ij}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -805,14 +904,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i1([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                   cb_label, show, fname])
+        x.plot_i1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                   colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                   tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -825,6 +928,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$I_1$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -865,14 +974,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i2([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                   cb_label, show, fname])
+        x.plot_i2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                   colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                   tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -885,6 +998,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = 'det $V_{ij}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -926,14 +1045,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i([tick_interval, xlabel, ylabel, ax, colorbar, cb_orientation,
-                  cb_label, show, fname])
+        x.plot_i([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                  colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                  tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -946,6 +1069,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -977,17 +1106,17 @@ class Tensor(object):
                         cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_invar(self, colorbar=True, cb_orientation='horizontal',
-             tick_interval=[60, 60], minor_tick_interval=[20, 20],
-             xlabel='Longitude', ylabel='Latitude',
-             axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
-             **kwargs):
+                   tick_interval=[60, 60], minor_tick_interval=[20, 20],
+                   xlabel='Longitude', ylabel='Latitude',
+                   axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
+                   **kwargs):
         """
         Plot the three invariants of the tensor and the derived quantity I.
 
         Usage
         -----
         x.plot_invar([tick_interval, minor_tick_interval, xlabel, ylabel,
-                colorbar, cb_orientation, cb_label, axes_labelsize,
+                colorbar, cb_orientation, cb_label, grid, axes_labelsize,
                 tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -1008,9 +1137,11 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
-        axes_labelsize : int, optional, default = 9
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = 8
+        tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1029,38 +1160,38 @@ class Tensor(object):
         else:
             scale = 0.6
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                    _mpl.rcParams['figure.figsize'][0] * scale)
+                   _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(2, 2, figsize=figsize)
 
         self.plot_i0(colorbar=colorbar, cb_orientation=cb_orientation,
                      ax=ax.flat[0], tick_interval=tick_interval,
                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
-                      minor_tick_interval=minor_tick_interval,
-                      **kwargs)
+                     axes_labelsize=axes_labelsize,
+                     tick_labelsize=tick_labelsize,
+                     minor_tick_interval=minor_tick_interval,
+                     **kwargs)
         self.plot_i1(colorbar=colorbar, cb_orientation=cb_orientation,
                      ax=ax.flat[1], tick_interval=tick_interval,
                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
-                      minor_tick_interval=minor_tick_interval,
-                      **kwargs)
+                     axes_labelsize=axes_labelsize,
+                     tick_labelsize=tick_labelsize,
+                     minor_tick_interval=minor_tick_interval,
+                     **kwargs)
         self.plot_i2(colorbar=colorbar, cb_orientation=cb_orientation,
                      ax=ax.flat[2], tick_interval=tick_interval,
                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
-                      minor_tick_interval=minor_tick_interval,
-                      **kwargs)
+                     axes_labelsize=axes_labelsize,
+                     tick_labelsize=tick_labelsize,
+                     minor_tick_interval=minor_tick_interval,
+                     **kwargs)
         self.plot_i(colorbar=colorbar, cb_orientation=cb_orientation,
                     ax=ax.flat[3], tick_interval=tick_interval,
                     xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
-                      minor_tick_interval=minor_tick_interval,
-                      **kwargs)
+                    axes_labelsize=axes_labelsize,
+                    tick_labelsize=tick_labelsize,
+                    minor_tick_interval=minor_tick_interval,
+                    **kwargs)
 
         fig.tight_layout(pad=0.5)
 
@@ -1078,14 +1209,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eig1([tick_interval, xlabel, ylabel, ax, colorbar,
-                     cb_orientation, cb_label, show, fname])
+        x.plot_eig1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                     tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1098,6 +1233,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_1$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1136,14 +1277,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eig2([tick_interval, xlabel, ylabel, ax, colorbar,
-                     cb_orientation, cb_label, show, fname])
+        x.plot_eig2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                     tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1156,6 +1301,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_2$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1194,14 +1345,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eig3([tick_interval, xlabel, ylabel, ax, colorbar,
-                     cb_orientation, cb_label, show, fname])
+        x.plot_eig3([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                     tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1214,6 +1369,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_3$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1246,17 +1407,17 @@ class Tensor(object):
                            cb_label=cb_label, ax=ax, **kwargs)
 
     def plot_eigs(self, colorbar=True, cb_orientation='vertical',
-             tick_interval=[60, 60], minor_tick_interval=[20, 20],
-             xlabel='Longitude', ylabel='Latitude',
-             axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
-             **kwargs):
+                  tick_interval=[60, 60], minor_tick_interval=[20, 20],
+                  xlabel='Longitude', ylabel='Latitude',
+                  axes_labelsize=9, tick_labelsize=8, show=True, fname=None,
+                  **kwargs):
         """
         Plot the three eigenvalues of the tensor.
 
         Usage
         -----
         x.plot_eigs([tick_interval, minor_tick_interval, xlabel, ylabel,
-                     colorbar, cb_orientation, cb_label, axes_labelsize,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
                      tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -1277,9 +1438,11 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
-        axes_labelsize : int, optional, default = 9
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = 8
+        tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1298,7 +1461,7 @@ class Tensor(object):
         else:
             scale = 1.65
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                    _mpl.rcParams['figure.figsize'][0] * scale)
+                   _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(3, 1, figsize=figsize)
 
@@ -1340,14 +1503,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eigh1([tick_interval, xlabel, ylabel, ax, colorbar,
-                      cb_orientation, cb_label, show, fname])
+        x.plot_eigh1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1360,6 +1527,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_{h1}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1398,14 +1571,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eigh2([tick_interval, xlabel, ylabel, ax, colorbar,
-                      cb_orientation, cb_label, show, fname])
+        x.plot_eigh2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1418,6 +1595,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_{h2}$, Eotvos$^{-1}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1456,14 +1639,18 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_eighh([tick_interval, xlabel, ylabel, ax, colorbar,
-                      cb_orientation, cb_label, show, fname])
+        x.plot_eighh([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
+                      colorbar, cb_orientation, cb_label, grid, axes_labelsize,
+                      tick_labelsize, show, fname])
 
         Parameters
         ----------
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the minor x and y ticks. If set to
+            None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -1476,6 +1663,12 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = '$\lambda_{hh}$'
             Text label for the colorbar.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1519,7 +1712,7 @@ class Tensor(object):
         Usage
         -----
         x.plot_eigh([tick_interval, minor_tick_interval, xlabel, ylabel,
-                     colorbar, cb_orientation, cb_label, axes_labelsize,
+                     colorbar, cb_orientation, cb_label, grid, axes_labelsize,
                      tick_labelsize, show, fname, **kwargs])
 
         Parameters
@@ -1540,9 +1733,11 @@ class Tensor(object):
             Orientation of the colorbar: either 'vertical' or 'horizontal'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
-        axes_labelsize : int, optional, default = 9
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = 8
+        tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot the image to the screen.
@@ -1561,7 +1756,7 @@ class Tensor(object):
         else:
             scale = 1.65
         figsize = (_mpl.rcParams['figure.figsize'][0],
-                    _mpl.rcParams['figure.figsize'][0] * scale)
+                   _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(3, 1, figsize=figsize)
 
@@ -1593,6 +1788,328 @@ class Tensor(object):
             fig.savefig(fname)
         return fig, ax
 
+    def to_xarray(self, title='', description='',
+                  comment='Grids generated by pyshtools'):
+        """
+        Return all tensor gridded data as an xarray DataSet.
+
+        Usage
+        -----
+        x.to_xarray([title, description, comment])
+
+        Parameters
+        ----------
+        title : str, optional, default = ''
+            Title of the dataset.
+        description : str, optional, default = ''
+            Description of the dataset ('Remark' in gmt grd files).
+        comment : str, optional, default = 'Grids generated by pyshtools'
+            Additional information about how the data were generated.
+        """
+        attrs = {'title': title,
+                 'description': description,
+                 'comment': comment,
+                 'nlat': self.nlat,
+                 'nlon': self.nlon,
+                 'lmax': self.lmax,
+                 'lmax_calc': self.lmax_calc,
+                 'sampling': self.sampling,
+                 'grid': self.grid,
+                 'a': self.a,
+                 'f': self.f,
+                 'n': self.n,
+                 'extend': self.extend
+                 }
+        if isinstance(self, SHGravTensor):
+            attrs['gm'] = self.gm
+            desc = 'gravity tensor component '
+        else:
+            desc = 'magnetic field tensor component '
+
+        _vxx = _xr.DataArray(self.vxx.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.vxx.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.vxx.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs={'title': desc + '(Vxx)',
+                                    'long_name': '$V_{xx}$',
+                                    'units': self._vii_units,
+                                    'actual_range': [self.vxx.min(),
+                                                     self.vxx.max()]})
+
+        _vxy = _xr.DataArray(self.vxy.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.vxy.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.vxy.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs={'title': desc + '(Vxy)',
+                                    'long_name': '$V_{xy}$',
+                                    'units': self._vii_units,
+                                    'actual_range': [self.vxy.min(),
+                                                     self.vxy.max()]})
+
+        _vxz = _xr.DataArray(self.vxz.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.vxz.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.vxz.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs={'title': desc + '(Vxz)',
+                                    'long_name': '$V_{xz}$',
+                                    'units': self._vii_units,
+                                    'actual_range': [self.vxz.min(),
+                                                     self.vxz.max()]})
+
+        _vyx = _xr.DataArray(self.vyx.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.vyx.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.vyx.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs={'title': desc + '(Vyx)',
+                                    'long_name': '$V_{yx}$',
+                                    'units': self._vii_units,
+                                    'actual_range': [self.vyx.min(),
+                                                     self.vyx.max()]})
+
+        _vyy = _xr.DataArray(self.vyy.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.vyy.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.vyy.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs={'title': desc + '(Vyy)',
+                                    'long_name': '$V_{yy}$',
+                                    'units': self._vii_units,
+                                    'actual_range': [self.vyy.min(),
+                                                     self.vyy.max()]})
+
+        _vyz = _xr.DataArray(self.vyz.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.vyz.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.vyz.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs={'title': desc + '(Vyz)',
+                                    'long_name': '$V_{yz}$',
+                                    'units': self._vii_units,
+                                    'actual_range': [self.vyz.min(),
+                                                     self.vyz.max()]})
+
+        _vzx = _xr.DataArray(self.vzx.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.vzx.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.vzx.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs={'title': desc + '(Vzx)',
+                                    'long_name': '$V_{zx}$',
+                                    'units': self._vii_units,
+                                    'actual_range': [self.vzx.min(),
+                                                     self.vzx.max()]})
+
+        _vzy = _xr.DataArray(self.vzy.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.vzy.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.vzy.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs={'title': desc + '(Vzy)',
+                                    'long_name': '$V_{zy}$',
+                                    'units': self._vii_units,
+                                    'actual_range': [self.vzy.min(),
+                                                     self.vzy.max()]})
+
+        _vzz = _xr.DataArray(self.vzz.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.vzz.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.vzz.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs={'title': desc + '(Vzz)',
+                                    'long_name': '$V_{zz}$',
+                                    'units': self._vii_units,
+                                    'actual_range': [self.vzz.min(),
+                                                     self.vzz.max()]})
+
+        dataset = _xr.Dataset({'vxx': _vxx, 'vxy': _vxy, 'vxz': _vxz,
+                               'vyx': _vyx, 'vyy': _vyy, 'vyz': _vyz,
+                               'vzx': _vzx, 'vzy': _vzy, 'vzz': _vzz, },
+                              attrs=attrs)
+
+        if self.i0 is not None:
+            if isinstance(self, SHGravTensor):
+                desc0 = 'First invariant of the gravity tensor'
+                desc1 = 'Second invariant of the gravity tensor'
+                desc2 = 'Third invariant of the gravity tensor'
+                desc = 'Unitless invariant of the gravity tensor'
+            else:
+                desc0 = 'First invariant of the magnetic field tensor'
+                desc1 = 'Second invariant of the magnetic field tensor'
+                desc2 = 'Third invariant of the magnetic field tensor'
+                desc = 'Unitless invariant of the magnetic field tensor'
+
+            _i0 = _xr.DataArray(self.i0.to_array(),
+                                dims=('latitude', 'longitude'),
+                                coords=[('latitude', self.i0.lats(),
+                                         {'units': 'degrees_north'}),
+                                        ('longitude', self.i0.lons(),
+                                         {'units': 'degrees_east'})],
+                                attrs={'title': desc0,
+                                       'long_name': '$I_0$, Tr $V_{ii}$',
+                                       'units': self._i0_units,
+                                       'actual_range': [self.i0.min(),
+                                                        self.i0.max()]})
+
+            _i1 = _xr.DataArray(self.i1.to_array(),
+                                dims=('latitude', 'longitude'),
+                                coords=[('latitude', self.i1.lats(),
+                                         {'units': 'degrees_north'}),
+                                        ('longitude', self.i1.lons(),
+                                         {'units': 'degrees_east'})],
+                                attrs={'title': desc1,
+                                       'long_name': '$I_1$',
+                                       'units': self._i1_units,
+                                       'actual_range': [self.i1.min(),
+                                                        self.i1.max()]})
+
+            _i2 = _xr.DataArray(self.i2.to_array(),
+                                dims=('latitude', 'longitude'),
+                                coords=[('latitude', self.i2.lats(),
+                                         {'units': 'degrees_north'}),
+                                        ('longitude', self.i2.lons(),
+                                         {'units': 'degrees_east'})],
+                                attrs={'title': desc2,
+                                       'long_name': '$I_2$, det $V_{ij}$',
+                                       'units': self._i2_units,
+                                       'actual_range': [self.i1.min(),
+                                                        self.i1.max()]})
+
+            _i = _xr.DataArray(self.i.to_array(),
+                               dims=('latitude', 'longitude'),
+                               coords=[('latitude', self.i.lats(),
+                                        {'units': 'degrees_north'}),
+                                       ('longitude', self.i.lons(),
+                                        {'units': 'degrees_east'})],
+                               attrs={'title': desc,
+                                      'long_name': '$-(I_2/2)^{2} / ' +
+                                      '(I_1/3)^{3}$',
+                                      'units': 'none',
+                                      'actual_range': [self.i.min(),
+                                                       self.i.max()]})
+
+            dataset['i0'] = _i0
+            dataset['i1'] = _i1
+            dataset['i2'] = _i2
+            dataset['i'] = _i
+
+        if self.eig1 is not None:
+            if isinstance(self, SHGravTensor):
+                desc1 = 'First eigenvalue of the gravity tensor'
+                desc2 = 'Second eigenvalue of the gravity tensor'
+                desc3 = 'Third eigenvalue of the gravity tensor'
+            else:
+                desc1 = 'First eigenvalue of the magnetic field tensor'
+                desc2 = 'Second eigenvalue of the magnetic field tensor'
+                desc3 = 'Third eigenvalue of the magnetic field tensor'
+
+            _eig1 = _xr.DataArray(self.eig1.to_array(),
+                                  dims=('latitude', 'longitude'),
+                                  coords=[('latitude', self.eig1.lats(),
+                                           {'units': 'degrees_north'}),
+                                          ('longitude', self.eig1.lons(),
+                                           {'units': 'degrees_east'})],
+                                  attrs={'title': desc1,
+                                         'long_name': '${\lambda}_1$',
+                                         'units': self._vii_units,
+                                         'actual_range': [self.eig1.min(),
+                                                          self.eig1.max()]})
+
+            _eig2 = _xr.DataArray(self.eig2.to_array(),
+                                  dims=('latitude', 'longitude'),
+                                  coords=[('latitude', self.eig2.lats(),
+                                           {'units': 'degrees_north'}),
+                                          ('longitude', self.eig2.lons(),
+                                           {'units': 'degrees_east'})],
+                                  attrs={'title': desc2,
+                                         'long_name': '${\lambda}_2$',
+                                         'units': self._vii_units,
+                                         'actual_range': [self.eig2.min(),
+                                                          self.eig2.max()]})
+
+            _eig3 = _xr.DataArray(self.eig3.to_array(),
+                                  dims=('latitude', 'longitude'),
+                                  coords=[('latitude', self.eig3.lats(),
+                                           {'units': 'degrees_north'}),
+                                          ('longitude', self.eig3.lons(),
+                                           {'units': 'degrees_east'})],
+                                  attrs={'title': desc3,
+                                         'long_name': '${\lambda}_3$',
+                                         'units': self._vii_units,
+                                         'actual_range': [self.eig3.min(),
+                                                          self.eig3.max()]})
+
+            dataset['eig1'] = _eig1
+            dataset['eig2'] = _eig2
+            dataset['eig3'] = _eig3
+
+        if self.eighh is not None:
+            if isinstance(self, SHGravTensor):
+                desc1 = 'First horizontal eigenvalue of the gravity tensor'
+                desc2 = 'Second horizontal eigenvalue of the gravity tensor'
+                desc3 = 'Combined horizontal eigenvalue of the gravity tensor'
+            else:
+                desc1 = 'First horizontal eigenvalue of the magnetic ' \
+                        + 'field tensor'
+                desc2 = 'Second horizontal eigenvalue of the magnetic ' \
+                        + 'field tensor'
+                desc3 = 'Combined horizontal eigenvalue of the magnetic ' \
+                        + 'field tensor'
+
+            _eigh1 = _xr.DataArray(self.eigh1.to_array(),
+                                   dims=('latitude', 'longitude'),
+                                   coords=[('latitude', self.eigh1.lats(),
+                                            {'units': 'degrees_north'}),
+                                           ('longitude', self.eigh1.lons(),
+                                            {'units': 'degrees_east'})],
+                                   attrs={'title': desc1,
+                                          'long_name': '${\lambda}_{h1}$',
+                                          'units': self._vii_units,
+                                          'actual_range': [self.eigh1.min(),
+                                                           self.eigh1.max()]})
+
+            _eigh2 = _xr.DataArray(self.eigh2.to_array(),
+                                   dims=('latitude', 'longitude'),
+                                   coords=[('latitude', self.eigh2.lats(),
+                                            {'units': 'degrees_north'}),
+                                           ('longitude', self.eigh2.lons(),
+                                            {'units': 'degrees_east'})],
+                                   attrs={'title': desc2,
+                                          'long_name': '${\lambda}_{h2}$',
+                                          'units': self._vii_units,
+                                          'actual_range': [self.eigh2.min(),
+                                                           self.eigh2.max()]})
+
+            _eighh = _xr.DataArray(self.eighh.to_array(),
+                                   dims=('latitude', 'longitude'),
+                                   coords=[('latitude', self.eighh.lats(),
+                                            {'units': 'degrees_north'}),
+                                           ('longitude', self.eighh.lons(),
+                                            {'units': 'degrees_east'})],
+                                   attrs={'title': desc3,
+                                          'long_name': '${\lambda}_{hh}$',
+                                          'units': self._vii_units,
+                                          'actual_range': [self.eighh.min(),
+                                                           self.eighh.max()]})
+
+            dataset['eigh1'] = _eigh1
+            dataset['eigh2'] = _eigh2
+            dataset['eighh'] = _eighh
+
+        return dataset
+
 
 class SHGravTensor(Tensor):
     """
@@ -1607,6 +2124,11 @@ class SHGravTensor(Tensor):
     vzx, vzy, vzz
     i0, i1, i2, i    : The three invariants of the gravity tensor and a
                        derived quantity that is bounded between 0 and 1.
+                       These are computed by a call to compute_invar().
+    eig1, eig2, eig3 : The three eigenvalues of the gravity tensor, which are
+                       computed by a call to compute_eig().
+    eigh1, eigh2,    : The horizontal eigenvalues of the gravity tensor, which
+    eighh              are computed by a call to compute_eigh().
     gm               : The gravitational constant times the mass of the body.
     a                : Semimajor axis of the reference ellipsoid.
     f                : Flattening of the reference ellipsoid, f=(a-b)/a.
@@ -1615,8 +2137,12 @@ class SHGravTensor(Tensor):
     lmax_calc        : The maximum spherical harmonic degree of the
                        gravitational potential used in creating the grids.
     nlat, nlon       : The number of latitude and longitude bands in the grids.
-    sampling         : The longitudinal sampling scheme of the grids: either 1
-                       for nlong=nlat or 2 for nlong=2*nlat.
+    n                : The number of samples in latitude.
+    sampling         : The longitudinal sampling for Driscoll and Healy grids.
+                       Either 1 for equally sampled grids (nlat=nlon) or 2 for
+                       equally spaced grids in degrees.
+    extend           : True if the grid contains the redundant column for
+                       360 E and the unnecessary row for 90 S.
 
     Methods:
 
@@ -1653,9 +2179,10 @@ class SHGravTensor(Tensor):
     plot_eighh()    : Plot the combined maximum absolute eigenvalue of the
                       gravity tensor.
 
-    copy()         : Return a copy of the class instance.
-    info()         : Print a summary of the data stored in the SHGravTensor
-                     instance.
+    to_xarray()     : Return an xarray DataSet of all gridded data.
+    copy()          : Return a copy of the class instance.
+    info()          : Print a summary of the data stored in the SHGravTensor
+                      instance.
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, gm, a, f, lmax,
@@ -1676,6 +2203,8 @@ class SHGravTensor(Tensor):
         self.sampling = self.vxx.sampling
         self.nlat = self.vxx.nlat
         self.nlon = self.vxx.nlon
+        self.n = self.vxx.n
+        self.extend = self.vxx.extend
         self.gm = gm
         self.a = a
         self.f = f
@@ -1692,19 +2221,23 @@ class SHGravTensor(Tensor):
         self.eigh2 = None
         self.eighh = None
 
-        self._vxx_label = '$V_{xx}$, Eotvos'
-        self._vxy_label = '$V_{xy}$, Eotvos'
-        self._vxz_label = '$V_{xz}$, Eotvos'
-        self._vyx_label = '$V_{yx}$, Eotvos'
-        self._vyy_label = '$V_{yy}$, Eotvos'
-        self._vyz_label = '$V_{yz}$, Eotvos'
-        self._vzx_label = '$V_{zx}$, Eotvos'
-        self._vzy_label = '$V_{zy}$, Eotvos'
-        self._vzz_label = '$V_{zz}$, Eotvos'
+        self._vii_units = 'Eotvos'
+        self._vxx_label = '$V_{xx}$, ' + self._vii_units
+        self._vxy_label = '$V_{xy}$, ' + self._vii_units
+        self._vxz_label = '$V_{xz}$, ' + self._vii_units
+        self._vyx_label = '$V_{yx}$, ' + self._vii_units
+        self._vyy_label = '$V_{yy}$, ' + self._vii_units
+        self._vyz_label = '$V_{yz}$, ' + self._vii_units
+        self._vzx_label = '$V_{zx}$, ' + self._vii_units
+        self._vzy_label = '$V_{zy}$, ' + self._vii_units
+        self._vzz_label = '$V_{zz}$, ' + self._vii_units
 
-        self._i0_label = 'Tr $V_{ii}$, Eotvos'
-        self._i1_label = '$I_1$, Eotvos$^2$'
-        self._i2_label = 'det $V_{ij}$, Eotvos$^3$'
+        self._i0_units = 'Eotvos'
+        self._i0_label = 'Tr $V_{ii}$, ' + self._i0_units
+        self._i1_units = 'Eotvos$^2$'
+        self._i1_label = '$I_1$, ' + self._i1_units
+        self._i2_units = 'Eotvos$^3$'
+        self._i2_label = 'det $V_{ij}$, ' + self._i2_units
         self._i_label = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
 
         self._eig1_label = '$\lambda_1$, Eotvos'
@@ -1716,18 +2249,20 @@ class SHGravTensor(Tensor):
         self._eighh_label = '$\lambda_{hh}$, Eotvos'
 
     def __repr__(self):
-        str = ('grid = {:s}\n'.format(repr(self.grid)))
-        if self.grid == 'DH':
-            str += 'sampling = {:d}\n'.format(self.sampling)
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'lmax = {:d}\n'
-                'lmax_calc = {:d}\n'
-                'gm (m3 / s2) = {:e}\n'
-                'a (m)= {:e}\n'
-                'f = {:e}'
-                .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.gm, self.a, self.f))
+        str = ('grid = {:s}\n'
+               'nlat = {:d}\n'
+               'nlon = {:d}\n'
+               'n = {:d}\n'
+               'sampling = {:d}\n'
+               'extend = {}\n'
+               'lmax = {:d}\n'
+               'lmax_calc = {:d}\n'
+               'gm (m3 / s2) = {:e}\n'
+               'a (m)= {:e}\n'
+               'f = {:e}'
+               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
+                       self.extend, self.lmax, self.lmax_calc, self.gm, self.a,
+                       self.f))
         return str
 
 
@@ -1744,6 +2279,10 @@ class SHMagTensor(Tensor):
     vzx, vzy, vzz
     i0, i1, i2, i    : The three invariants of the magnetic field tensor and a
                        derived quantity that is bounded between 0 and 1.
+    eig1, eig2, eig3 : The three eigenvalues of the magnetic field tensor,
+                       which are computed by a call to compute_eig().
+    eigh1, eigh2,    : The horizontal eigenvalues of the magnetic field
+    eighh              tensor, which are computed by a call to compute_eigh().
     a                : Semimajor axis of the reference ellipsoid.
     f                : Flattening of the reference ellipsoid, f=(a-b)/a.
     lmax             : The maximum spherical harmonic degree resolvable by the
@@ -1751,8 +2290,11 @@ class SHMagTensor(Tensor):
     lmax_calc        : The maximum spherical harmonic degree of the
                        magnetic potential used in creating the grids.
     nlat, nlon       : The number of latitude and longitude bands in the grids.
-    sampling         : The longitudinal sampling scheme of the grids: either 1
-                       for nlong=nlat or 2 for nlong=2*nlat.
+    sampling         : The longitudinal sampling for Driscoll and Healy grids.
+                       Either 1 for equally sampled grids (nlat=nlon) or 2 for
+                       equally spaced grids in degrees.
+    extend           : True if the grid contains the redundant column for
+                       360 E and the unnecessary row for 90 S.
 
     Methods:
 
@@ -1791,9 +2333,10 @@ class SHMagTensor(Tensor):
     plot_eighh()    : Plot the combined maximum absolute eigenvalue of the
                       magnetic field tensor.
 
-    copy()         : Return a copy of the class instance.
-    info()         : Print a summary of the data stored in the SHMagTensor
-                     instance.
+    to_xarray()     : Return an xarray DataSet of all gridded data.
+    copy()          : Return a copy of the class instance.
+    info()          : Print a summary of the data stored in the SHMagTensor
+                      instance.
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, a, f, lmax,
@@ -1814,6 +2357,8 @@ class SHMagTensor(Tensor):
         self.sampling = self.vxx.sampling
         self.nlat = self.vxx.nlat
         self.nlon = self.vxx.nlon
+        self.n = self.vxx.n
+        self.extend = self.vxx.extend
         self.a = a
         self.f = f
         self.lmax = lmax
@@ -1829,19 +2374,23 @@ class SHMagTensor(Tensor):
         self.eigh2 = None
         self.eighh = None
 
-        self._vxx_label = '$V_{xx}$, nT m$^{-1}$'
-        self._vxy_label = '$V_{xy}$, nT m$^{-1}$'
-        self._vxz_label = '$V_{xz}$, nT m$^{-1}$'
-        self._vyx_label = '$V_{yx}$, nT m$^{-1}$'
-        self._vyy_label = '$V_{yy}$, nT m$^{-1}$'
-        self._vyz_label = '$V_{yz}$, nT m$^{-1}$'
-        self._vzx_label = '$V_{zx}$, nT m$^{-1}$'
-        self._vzy_label = '$V_{zy}$, nT m$^{-1}$'
-        self._vzz_label = '$V_{zz}$, nT m$^{-1}$'
+        self._vii_units = 'nT m$^{-1}$'
+        self._vxx_label = '$V_{xx}$, ' + self._vii_units
+        self._vxy_label = '$V_{xy}$, ' + self._vii_units
+        self._vxz_label = '$V_{xz}$, ' + self._vii_units
+        self._vyx_label = '$V_{yx}$, ' + self._vii_units
+        self._vyy_label = '$V_{yy}$, ' + self._vii_units
+        self._vyz_label = '$V_{yz}$, ' + self._vii_units
+        self._vzx_label = '$V_{zx}$, ' + self._vii_units
+        self._vzy_label = '$V_{zy}$, ' + self._vii_units
+        self._vzz_label = '$V_{zz}$, ' + self._vii_units
 
-        self._i0_label = 'Tr $V_{ii}$, nT m$^{-1}$'
-        self._i1_label = '$I_1$, nT$^2$ m$^{-2}$'
-        self._i2_label = 'det $V_{ij}$, nT$^3$ m$^{-3}$'
+        self._i0_units = 'nT m$^{-1}$'
+        self._i0_label = 'Tr $V_{ii}$, ' + self._i0_units
+        self._i1_units = 'nT$^2$ m$^{-2}$'
+        self._i1_label = '$I_1$, ' + self._i1_units
+        self._i2_units = 'nT$^3$ m$^{-3}$'
+        self._i2_label = 'det $V_{ij}$, ' + self._i2_units
         self._i_label = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
 
         self._eig1_label = '$\lambda_1$, nT m$^{-1}$'
@@ -1853,15 +2402,16 @@ class SHMagTensor(Tensor):
         self._eighh_label = '$\lambda_{hh}$, nT m$^{-1}$'
 
     def __repr__(self):
-        str = ('grid = {:s}\n'.format(repr(self.grid)))
-        if self.grid == 'DH':
-            str += 'sampling = {:d}\n'.format(self.sampling)
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'lmax = {:d}\n'
-                'lmax_calc = {:d}\n'
-                'a (m)= {:e}\n'
-                'f = {:e}'
-                .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.a, self.f))
+        str = ('grid = {:s}\n'
+               'nlat = {:d}\n'
+               'nlon = {:d}\n'
+               'n = {:d}\n'
+               'sampling = {:d}\n'
+               'extend = {}\n'
+               'lmax = {:d}\n'
+               'lmax_calc = {:d}\n'
+               'a (m)= {:e}\n'
+               'f = {:e}'
+               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
+                       self.extend, self.lmax, self.lmax_calc, self.a, self.f))
         return str

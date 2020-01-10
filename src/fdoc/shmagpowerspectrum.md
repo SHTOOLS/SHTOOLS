@@ -8,19 +8,19 @@ call SHMagPowerSpectrum (`c`, `a`, `r`, `lmax`, `spectrum`, `exitstatus`)
 
 # Parameters
 
-`c` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`c` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The Schmidt seminormalized spherical harmonic coefficients of the magnetic potential.
 
-`a` : input, real\*8
+`a` : input, real(dp)
 :   The reference radius of the magnetic potential spherical harmonic coefficients.
 
-`r` : input, real\*8
+`r` : input, real(dp)
 :   The radius to evaluate the magnetic field.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree to calculate the power spectrum.
 
-`spectrum` : output, real\*8, dimension (`lmax`+1)
+`spectrum` : output, real(dp), dimension (`lmax`+1)
 :   The power spectrum of the magnetic field.
 
 `exitstatus` : output, optional, integer

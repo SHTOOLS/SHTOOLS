@@ -17,19 +17,19 @@ call SHMultiTaperMaskSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `lmaxt`, `k`, `ta
 
 ## Parameters
 
-`mtse` : output, real\*8, dimension (`lmax`-`lmaxt`+1)
+`mtse` : output, real(dp), dimension (`lmax`-`lmaxt`+1)
 :   The localized multitaper power spectrum estimate.
 
-`sd` : output, real\*8, dimension (`lmax`-`lmaxt`+1)
+`sd` : output, real(dp), dimension (`lmax`-`lmaxt`+1)
 :   The standard error of the localized multitaper power spectral estimates.
 
-`sh` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`sh` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the function to be localized.
 
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of `sh`.
 
-`tapers` : input, real\*8, dimension ((`lmaxt`+1)**2, `k`)
+`tapers` : input, real(dp), dimension ((`lmaxt`+1)**2, `k`)
 :   An array of the `k` windowing functions, arranged in columns, obtained from a call to `SHReturnTapersMap`. The spherical harmonic coefficients are packed according to the conventions in `SHCilmToVector`.
 
 `lmaxt` : input, integer
@@ -38,7 +38,7 @@ call SHMultiTaperMaskSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `lmaxt`, `k`, `ta
 `k` : input, integer
 :   The number of tapers to be utilized in performing the multitaper spectral analysis.
 
-`taper_wt` : input, optional, real\*8, dimension (`k`)
+`taper_wt` : input, optional, real(dp), dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates and standard error. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 
 `norm` : input, optional, integer, default = 1

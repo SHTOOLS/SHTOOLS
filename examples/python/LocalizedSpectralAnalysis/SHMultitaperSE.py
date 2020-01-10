@@ -1,17 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script tests the localized spectral analysis routines
 """
-from __future__ import absolute_import, division, print_function
-
-# standard imports:
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import shtools
 
@@ -124,6 +116,7 @@ def test_MultitaperSE():
     Sgt = 0.5 / (1. + np.arange(lmax + 1))**2
     admit, corr = shtools.SHBiasAdmitCorr(Sgt, Sgg, Stt, tapers[:, 2])
     print(corr)
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

@@ -33,7 +33,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [SHMTCouplingMatrix](shmtcouplingmatrix.html) | Calculate the multitaper coupling matrix for a given set of localization windows. |
 | [SHBiasAdmitCorr](shbiasadmitcorr.html) | Calculate the expected multitaper admittance and correlation spectra associated with the input global cross-power spectra of two functions. |
 | [SHMTDebias](shmtdebias.html) | Invert for the global power spectrum given a localized multitaper spectrum estimate. |
-| [SHMTVarOpt](shmtvaropt.html) | Calculate the minimum variance and corresponding optimal weights of a localized multitaper spectral estimate. |
+| [SHMTVarOpt](shmtvaropt.html) | Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum. |
+| [SHMTVar](shmtvar.html) | Calculate the theoretical variance of a multitaper spectral estimate for a given input power spectrum. |
 | [SHSjkPG](shsjkpg.html) | Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders. |
 | [SHRotateTapers](shrotatetapers.html) | Rotate orthogonal spherical-cap Slepian functions centered at the North pole to a different location. |
 
@@ -60,6 +61,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------------ | ----------- |
 | [SlepianCoeffs](slepiancoeffs.html) | Determine the expansion coefficients of a function for a given set of input Slepian functions. |
 | [SlepianCoeffsToSH](slepiancoeffstosh.html) | Convert a function expressed in Slepian coefficients to spherical harmonic coefficients. |
+| [SHSCouplingMatrix](shscouplingmatrix.html) | Compute the spherical harmonic coupling matrix for a given set of Slepian functions. |
+| [SHSCouplingMatrixCap](shscouplingmatrixcap.html) | Compute the spherical harmonic coupling matrix for a given set of spherical-cap Slepian functions. |
+| [SHSlepianVar](shslepianvar.html) | Calculate the theoretical variance of the power of a function expanded in spherical-cap Slepian functions for a given spherical harmonic degree. |
 
 ## Other routines
 

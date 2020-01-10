@@ -17,13 +17,13 @@ call SHPowerSpectrum (`cilm`, `lmax`, `pspectrum`, `exitstatus`)
 
 ## Parameters
 
-`cilm` : input, real\*8, dimension (2, `lmaxin`+1, `lmaxin`+1)
+`cilm` : input, real(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The function expressed in real spherical harmonics.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree used in calculating the power spectrum. This must be less than or equal to `lmaxin`.
 
-`pspectrum` : output, real\*8, dimension (`lmax`+1)
+`pspectrum` : output, real(dp), dimension (`lmax`+1)
 :   The power spectrum of the function.
 
 `exitstatus` : output, optional, integer

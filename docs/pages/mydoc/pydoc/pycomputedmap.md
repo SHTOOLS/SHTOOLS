@@ -13,7 +13,7 @@ Compute the space-concentration kernel of an arbitrary mask on the sphere.
 
 ## Usage
 
-`dij` = ComputeDMap (`dh_mask`, `lmax`, [`n`, `sampling`])
+`dij` = ComputeDMap (`dh_mask`, `lmax`, [`n`, `sampling`, `degrees`])
 
 ## Returns
 
@@ -31,12 +31,15 @@ Compute the space-concentration kernel of an arbitrary mask on the sphere.
 `n` : optional, integer, default = `nin`
 :   The number of latitudinal samples in `dh_mask`. The effective spherical harmonic bandwidth of this grid is `L=n/2-1`.
 
+`degrees` : integer, optional, dimension (`lmax`+1), default = 1
+:   List of degrees to use when computing the space-concentration kernel. Only those degrees where `degrees[l]` is non-zero will be employed.
+
 `sampling` : optional, integer, default determined by dimensions of `dh_mask`
 :   For 1, `dh_mask` has `n` x `n` samples. For 2, `dh_mask` has `n` x `2n` samples. 
 
 ## Description
 
-`ComputeDMap` will calculate the space-concentration kernel for a generic mask defined on the sphere. The input mask `dh_mask` must be sampled according to the Driscoll and Healy (1994) sampling theorem with `n` samples in latitude, and possess a value of 1 inside the concentration region, and 0 elsewhere. `dh_mask` can either possess `n` samples in longitude (`sampling=1`) or `2n` samples in longitude (`sampling=2`). Given the approximate way in which the elements of `dij` are calculated (see below), `sampling=2` should be preferred. `dij` is symmetric, and the elements are ordered according to the scheme described in `YilmIndexVector`. See Simons et al. (2006) for further details.
+`ComputeDMap` will calculate the space-concentration kernel for a generic mask defined on the sphere. The input mask `dh_mask` must be sampled according to the Driscoll and Healy (1994) sampling theorem with `n` samples in latitude, and possess a value of 1 inside the concentration region, and 0 elsewhere. `dh_mask` can either possess `n` samples in longitude (`sampling=1`) or `2n` samples in longitude (`sampling=2`). Given the approximate way in which the elements of `dij` are calculated (see below), `sampling=2` should be preferred. `dij` is symmetric, and the elements are ordered according to the scheme described in `YilmIndexVector`. See Simons et al. (2006) for further details. If the optional vector `degrees` is specified, then the matrix will be computed only for elements where `degrees(l)` is not zero.
 
 The elements of DIJ are explicitly given by 
 

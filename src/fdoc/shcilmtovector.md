@@ -8,10 +8,10 @@ call SHCilmToVector (`cilm`, `vector`, `lmax`, `exitstatus`)
 
 # Parameters
 
-`cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The input real spherical harmonic coefficients.
 
-`vector` : output, real\*8, dimension ( (`lmax`+1)\*\*2 )
+`vector` : output, real(dp), dimension ( (`lmax`+1)\*\*2 )
 :   The indexed output real spherical harmonic coefficients.
 
 `lmax` : input, integer

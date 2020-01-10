@@ -4,15 +4,15 @@ Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature
 
 # Usage
 
-call GLQGridCoord (`latglq`, `longlq`, `lmax`, `nlat`, `nlong`, `exitstatus`)
+call GLQGridCoord (`latglq`, `longlq`, `lmax`, `nlat`, `nlong`, `extend`, `exitstatus`)
 
 # Parameters
 
-`latglq` : output, real\*8, dimension (`lmax`+1)
-:   The latitude coordinates of a grid, corresponding to the indices (:,1), in DEGREES.
+`latglq` : output, real(dp), dimension (`lmax`+1)
+:   The latitude coordinates of a Gauss-Legendred quadrature grid in degrees.
 
-`longlq` : output, real\*8, dimension (2\*`lmax`+1)
-:   The longitude coordinates of a grid, corresponding to the indices (1,:), in DEGREES. The first node is 0 E.
+`longlq` : output, real(dp), dimension (nlong)
+:   The longitude coordinates of a Gauss-Legendre quadrature grid in degrees, dimensioned as (2\*`lmax`+1) when `extend` is 0 or (2\*`lmax`+2) when `extend` is 1.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree that will be integrated exactly by Gauss-Legendre quadrature.
@@ -22,6 +22,9 @@ call GLQGridCoord (`latglq`, `longlq`, `lmax`, `nlat`, `nlong`, `exitstatus`)
 
 `nlong` : output, integer
 :   The number of samples in longitude.
+
+`extend` : input, optional, integer, default = 0
+:   If 1, include 360 E longitude.
 
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.

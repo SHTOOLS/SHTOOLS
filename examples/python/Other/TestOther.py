@@ -1,16 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script tests the gravity and magnetics routines.
 """
-from __future__ import absolute_import, division, print_function
-
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import utils
 
@@ -58,7 +52,6 @@ def TestWigner():
 def TestSHExpandWLSQ():
     file = "../../ExampleDataFiles/MarsTopo719.shape"
     clm = pyshtools.SHCoeffs.from_file(file, lmax=9)
-    lmax = clm.lmax
     nmax = 100
     np.random.seed(seed=123456)
     x = 2*np.random.random_sample(nmax)-1
@@ -75,12 +68,10 @@ def TestSHExpandWLSQ():
           '(weighted, uniform weights),')
     for l in range(10):
         hilm, chi2 = pyshtools.expand.SHExpandLSQ(d, lat, lon, l)
-        hlm = pyshtools.SHCoeffs.from_array(hilm)
-        d2 = hlm.expand(lat=lat, lon=lon)
+        # hlm = pyshtools.SHCoeffs.from_array(hilm)
 
         hilmw, chi2w = pyshtools.expand.SHExpandWLSQ(d, w, lat, lon, l)
-        hlmw = pyshtools.SHCoeffs.from_array(hilmw)
-        d2w = hlmw.expand(lat=lat, lon=lon)
+        # hlmw = pyshtools.SHCoeffs.from_array(hilmw)
 
         print('L = {:d}, chi2 = {:e}, chi2w = {:e}'
               .format(l, chi2, chi2w))

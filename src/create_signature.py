@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Automatically creates python-wrapper subroutines from the interface file
 SHTOOLS.f95. Unfortunately all assumed array shapes have to be changed because
@@ -6,14 +6,10 @@ their structure is only known by the Fortran compiler and can not be directly
 exposed to C. It is possible that newer f2py versions can handle assumed array
 shapes using a similar procedure.
 """
-from __future__ import absolute_import, division, print_function
-
-#==== IMPORTS ====
 from numpy.f2py import crackfortran
 
-#==== MAIN FUNCTION ====
 
-
+# ==== MAIN FUNCTION ====
 def main():
     fname_wrapper = 'PythonWrapper.f95'
     fname_signature = 'pyshtools.pyf'
@@ -23,7 +19,8 @@ def main():
     crackfortran.dolowercase = False
     cracked_shtools = crackfortran.crackfortran(fname_wrapper)
     for subroutine in cracked_shtools:
-        subroutine['f2pyenhancements'] = {'fortranname': subroutine['name'].lower()}
+        subroutine['f2pyenhancements'] = \
+            {'fortranname': subroutine['name'].lower()}
     for subroutine in cracked_shtools:
         subroutine['name'] = subroutine['name'][2:]
     interface = {'block': 'interface', 'name': 'unknown_interface', 'from': '',
@@ -36,6 +33,7 @@ def main():
     with open(fname_signature, 'w') as outfile:
         outfile.write(out)
 
-#==== EXECUTE SCRIPT ====
+
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()

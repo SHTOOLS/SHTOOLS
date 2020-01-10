@@ -17,7 +17,7 @@ call Wigner3j (`w3j`, `jmin`, `jmax`, `j2`, `j3`, `m1`, `m2`, `m3`, `exitstatus`
 
 ## Parameters
 
-`w3j` : output, real\*8, dimension (`j2`+`j3`+1)
+`w3j` : output, real(dp), dimension (`j2`+`j3`+1)
 :   An array of the Wigner-3j symbols evaluated for all allowable values of `j`. The minimum and maximum values of `j` are given by `jmin` and `jmax`.
 
 `jmin` : output, integer

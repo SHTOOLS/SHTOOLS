@@ -4,32 +4,32 @@ Create a global map of the geoid.
 
 # Usage
 
-call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`, `gridtype`, `order`, `nlat`, `nlong`, `interval`, `lmax_calc`, `a`, `f`, `exitstatus`)
+call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`, `gridtype`, `order`, `nlat`, `nlong`, `interval`, `lmax_calc`, `a`, `f`, `extend`, `exitstatus`)
 
 # Parameters
 
-`geoid` : output, real\*8, dimension(`nlat`, `nlong`)
-:   A global grid of the height to the potential `potref` above a sphere of radius `r` (or above a flattened ellipsoid if both `a` and `f` are specified). The number of latitude and longitude points depends upon `gridtype`: (1) `lmax+1` by `2lmax+1`, (2) `2lmax+2` by `2lmax+2`, (3) `2lmax+2` by `4lmax+4`, or (4) `180/interval+1` by `360/interval+1`.
+`geoid` : output, real(dp), dimension(`nlat`, `nlong`)
+:   A global grid of the height to the potential `potref` above a sphere of radius `r` (or above a flattened ellipsoid if both `a` and `f` are specified). The number of latitude and longitude points depends upon `gridtype`: (1) `lmax+1` by `2lmax+1`, (2) `2lmax+2` by `2lmax+2`, (3) `2lmax+2` by `4lmax+4`, or (4) `180/interval+1` by `360/interval+1`. If `extend` is 1, an additional column is present for gridtypes 1, 2, and 3, and an additional row is present for gridtypes 2 and 3.
 
-`cilm` : input, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential referenced to a spherical interface of radius `r0pot`.
 
 `lmax` : input, integer
 :   The maximum spherical harmonic degree of the gravitational-potential coefficients. For `gridtype`s 1, 2 and 3, this determines the number of latitudinal and longitudinal samples.
 
-`r0` : input, real\*8
+`r0` : input, real(dp)
 :   The reference radius of the spherical harmonic coefficients.
 
-`gm` : input, real\*8
+`gm` : input, real(dp)
 :   The product of the gravitational constant and mass of the planet.
 
-`potref` : input, real\*8
+`potref` : input, real(dp)
 :   The value of the potential on the chosen geoid, in SI units.
 
-`omega` : input, real\*8
+`omega` : input, real(dp)
 :   The angular rotation rate of the planet.
 
-`r` : input, real\*8
+`r` : input, real(dp)
 :   The radius of the reference sphere that the Taylor expansion of the potential is performed on. If `a` and `f` are not specified, the geoid height will be referenced to this spherical interface.
 
 `gridtype` : input, integer
@@ -44,17 +44,20 @@ call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`,
 `nlong` : output, integer
 :   The number of longitudinal samples.
 
-`interval`: optional, input, real\*8
+`interval`: optional, input, real(dp)
 :   The latitudinal and longitudinal spacing of the output grid when `gridtype` is 4.
 
 `lmax_calc` : optional, input, integer
 :   The maximum degree used in evaluating the spherical harmonic coefficients. This must be less than or equal to `lmax`.
 
-`a` : optional, input, real\*8, default = `r0`
+`a` : optional, input, real(dp), default = `r0`
 :   The semi-major axis of the flattened ellipsoid that the output grid `geoid` is referenced to. The optional parameter `f` must also be specified.
 
-`f` : optional, input, real\*8, default = 0
+`f` : optional, input, real(dp), default = 0
 :   The flattening `(R_equator-R_pole)/R_equator` of the reference ellipsoid. The optional parameter `a` (i.e., `R_equator`) must be specified.
+
+`extend` : input, optional, integer, default = 0
+:   If 1, compute the longitudinal band corresponding to 360 E for `gridtype` 1, 2 and 3, and compute the latitudinal band for 90 S for `gridtype` 2 and 3.
 
 `exitstatus` : output, optional, integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.

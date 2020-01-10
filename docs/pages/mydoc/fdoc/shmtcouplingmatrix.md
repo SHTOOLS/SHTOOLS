@@ -9,7 +9,7 @@ toc: false
 editdoc: fdoc
 ---
 
-This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the global power spectrum to the expectation of the localized multitaper spectrum.
+This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the expectation of the localized multitaper spectrum to the expectation of the power spectrum of the global function.
 
 ## Usage
 
@@ -17,13 +17,13 @@ call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers_power`, `lwin`, `k`, `taper_wt`, 
 
 ## Parameters
 
-`mmt` : output, real\*8, dimension (`lmax`+`lwin`+1, `lmax`+1)
-:   The full multitaper coupling matrix that relates the global power spectrum to the expectation of the localized multitaper spectrum.
+`mmt` : output, real(dp), dimension (`lmax`+`lwin`+1, `lmax`+1)
+:   The full multitaper coupling matrix that relates the expectation of the localized multitaper spectrum to the global power spectrum of the function.
 
 `lmax` : input, integer
 :   The spherical harmonic bandwidth of the global power spectrum.
 
-`tapers_power` : input, real\*8, dimension (`lwin`+1, `k`)
+`tapers_power` : input, real(dp), dimension (`lwin`+1, `k`)
 :   An array of power spectra of the k windowing functions, arranged in columns.
 
 `lwin` : input, integer
@@ -32,7 +32,7 @@ call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers_power`, `lwin`, `k`, `taper_wt`, 
 `k` : input, integer
 :   The number of tapers utilized in the multitaper spectral analysis.
 
-`taper_wt` : input, optional, real\*8, dimension (`k`)
+`taper_wt` : input, optional, real(dp), dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 
 `exitstatus` : output, optional, integer
@@ -40,7 +40,7 @@ call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers_power`, `lwin`, `k`, `taper_wt`, 
 
 ## Description
 
-`SHMTCouplingMatrix` returns the multitaper coupling matrix that relates the global power spectrum (assumed to be stationary) to the expectation of the localized multitaper spectrum. This is given by eqs 4.5 and 4.6 in Wieczorek and Simons (2007):
+`SHMTCouplingMatrix` returns the multitaper coupling matrix that relates the expectation of the localized multitaper spectrum to the expectation of the global power spectrum of the function (assumed to be stationary). This is given by eqs 4.5 and 4.6 in Wieczorek and Simons (2007):
 
 `< S_{Phi Phi}^(mt) > = M^(mt) S_{ff}`
 

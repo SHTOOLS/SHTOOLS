@@ -61,29 +61,28 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
 !
 !   All units assumed to be SI.
 !
-!   Dependencies:       SHExpandGLQ, SHExpandDH
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: SHExpandGLQ, SHExpandDH
+    use ftypes
 
     implicit none
 
-    real*8, intent(in) ::  gridin(:,:), mass, rho
-    real*8, intent(in), optional :: w(:), zero(:), plx(:,:), dref
-    real*8, intent(out) :: cilm(:,:,:), d
+    real(dp), intent(in) :: gridin(:,:), mass, rho
+    real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
+    real(dp), intent(out) :: cilm(:,:,:), d
     integer, intent(in) :: lmax, nmax, gridtype
     integer, intent(in), optional :: n
     integer, intent(out), optional :: exitstatus
-    real*8 :: prod, pi, scalef
-    real*8, allocatable :: cilmn(:, :, :), grid(:, :)
+    real(dp) :: prod, pi, scalef
+    real(dp), allocatable :: cilmn(:, :, :), grid(:, :)
     integer :: j, l, k, nlat, nlong, astat(2), lmax_dh
 
     if (present(exitstatus)) exitstatus = 0
 
-    pi = acos(-1.0d0)
+    pi = acos(-1.0_dp)
 
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
         size(cilm(1,1,:)) < lmax+1) then
@@ -360,10 +359,10 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
             stop
         end if
 
-    endif
+    end if
 
-    cilm = 0.0d0
-    cilmn = 0.0d0
+    cilm = 0.0_dp
+    cilmn = 0.0_dp
 
     !--------------------------------------------------------------------------
     !
@@ -444,9 +443,9 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
     cilmn(1,1,1) = cilmn(1,1,1) - d
 
     do l = 0, lmax
-        cilm(1:2,l+1,1:l+1) = 4.0d0 * pi * rho * (d**2) * cilmn(1:2,l+1,1:l+1)&
+        cilm(1:2,l+1,1:l+1) = 4.0_dp * pi * rho * (d**2) * cilmn(1:2,l+1,1:l+1)&
                               / mass / dble(2*l+1)
-    enddo
+    end do
 
     grid(1:nlat, 1:nlong) = grid(1:nlat, 1:nlong) - d
     scalef = maxval(abs(grid(1:nlat,1:nlong)))
@@ -482,7 +481,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
                                         grid(1:nlat,1:nlong), w, zero=zero, &
                                         norm = 1, csphase = 1)
                     end if
-                endif
+                end if
 
             case (2)
                 if (present(exitstatus)) then
@@ -515,10 +514,10 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
         end select
 
         do l = 0, lmax
-            prod = 4.0d0 * pi * rho * (d**3) / mass * (scalef / d)**k
+            prod = 4.0_dp * pi * rho * (d**3) / mass * (scalef / d)**k
 
             do j = 2, k, 1
-                prod = prod * (l + 4 - j)
+                prod = prod * dble(l+4-j)
             end do
 
             prod = prod / (dble(2*l+1) * dble(fact(k)))
@@ -543,10 +542,10 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
         !----------------------------------------------------------------------
             implicit none
             integer :: i, j
-            real*8 :: fact
+            real(dp) :: fact
 
             if (i == 0) then
-                fact = 1.0d0
+                fact = 1.0_dp
 
             else if (i < 0) then
                 print*, "Argument to FACT must be positive"
@@ -558,7 +557,7 @@ subroutine CilmPlus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, zero,&
                 end if
 
             else
-                fact = 1.0d0
+                fact = 1.0_dp
                 do j = 1, i
                     fact = fact * j
                 end do

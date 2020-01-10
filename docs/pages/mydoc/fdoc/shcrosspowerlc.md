@@ -17,13 +17,13 @@ Compute the cross-power of two complex functions for a single spherical harmonic
 
 ## Parameters
 
-`cpower` : output, complex\*16
+`cpower` : output, complex(dp)
 :   Cross power of the two complex functions for spherical harmonic degree `l`.
 
-`cilm1` : input, complex\*16, dimension (2, `lmaxin1`+1, `lmaxin1`+1)
+`cilm1` : input, complex(dp), dimension (2, `lmaxin1`+1, `lmaxin1`+1)
 :   The first complex function expressed in complex spherical harmonics.
 
-`cilm2` : input, complex\*16, dimension (2, `lmaxin2`+1, `lmaxin2`+1)
+`cilm2` : input, complex(dp), dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The second complex function expressed in complex spherical harmonics.
 
 `l` : input, integer

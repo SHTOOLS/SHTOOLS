@@ -8,10 +8,10 @@ call CilmPlusRhoH (`cilm`, `gridin`, `lmax`, `nmax`, `mass`, `d`, `rho`, `gridty
 
 # Parameters
 
-`cilm` : output, real\*8, dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential corresponding to constant density relief referenced to a spherical interface of radius `d`.
 
-`gridin` : input, real\*8, dimension (`lmax`+1, 2\*`lmax`+1) for gridtype 1, (`n`, `n`) for gridtype 2, (`n`, 2\*`n`) for gridtype 3
+`gridin` : input, real(dp), dimension (`lmax`+1, 2\*`lmax`+1) for gridtype 1, (`n`, `n`) for gridtype 2, (`n`, 2\*`n`) for gridtype 3
 :   The radii of the interface evaluated on a grid corresponding to a function of maximum spherical harmonic degree `lmax`. This is calculated by a call to either `MakeGridGLQ` or `MakeGridDH`.
 
 `lmax` : input, integer
@@ -20,31 +20,31 @@ call CilmPlusRhoH (`cilm`, `gridin`, `lmax`, `nmax`, `mass`, `d`, `rho`, `gridty
 `nmax` : input, integer
 :   The maximum order used in the Taylor-series expansion used in calculating the potential coefficients.
 
-`mass` : input, real\*8
+`mass` : input, real(dp)
 :   The mass of the planet in kg.
 
-`d` : output, real\*8
+`d` : output, real(dp)
 :   The mean radius of the relief in meters.
 
-`rho` : input, real\*8, dimension (`lmax`+1, 2\*`lmax`+1) for gridtype 1, (`n`, `n`) for gridtype 2, (`n`, 2\*`n`) for gridtype 3
+`rho` : input, real(dp), dimension (`lmax`+1, 2\*`lmax`+1) for gridtype 1, (`n`, `n`) for gridtype 2, (`n`, 2\*`n`) for gridtype 3
 :   The density contrast of the relief in kg/m^3 expressed on a grid with the same dimensions as `gridin`.
 
 `gridtype` : input, integer
 :   1 = Gauss-Legendre grids, calculated using `SHGLQ` and `MakeGridGLQ>`. 2 = Equally sampled Driscoll-Healy grids, `n` by `n`, calculated using `MakeGridDH`. 3 = Equally spaced Driscoll-Healy grids, `n` by 2`n`, calculated using `MakeGridDH`.
 
-`w` : optional, input, real\*8, dimension (`lmax`+1)
+`w` : optional, input, real(dp), dimension (`lmax`+1)
 :   The weights used in the Gauss-Legendre quadrature, which are required for `gridtype` = 1. These are calculated from a call to `SHGLQ`.
 
-`zero` : optional, input, real\*8, dimension (`lmax`+1)
+`zero` : optional, input, real(dp), dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude for `gridtype` 1, calculated by a call to `SHGLQ`. One of `plx` or `zero` must be present when `gridtype=1`, but not both. 
 
-`plx` : optional, input, real\*8, dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
+`plx` : optional, input, real(dp), dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the nodes used in the Gauss-Legendre quadrature for `gridtype` 1. These are determined from a call to `SHGLQ`. One of `plx` or `zero` must be present when `gridtype=1`, but not both.
 
 `n` : optional, input, integer
 :   The number of samples in latitude when using Driscoll-Healy grids. For a function bandlimited to `lmax`, `n=2(lmax+1)`. This is required for gridtypes 2 and 3.
 
-`dref` : optional, input, real\*8
+`dref` : optional, input, real(dp)
 :   The reference radius to be used when calculating both the relief and spherical harmonic coefficients. If this is not specified, this parameter will be set equal to the mean radius of `gridin`.
 
 `exitstatus` : output, optional, integer

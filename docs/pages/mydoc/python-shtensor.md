@@ -75,6 +75,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `plot_eigh1()` | Plot the first horizontal eigenvalue of the tensor.|
 | `plot_eigh2()` | Plot the second horizontal eigenvalue of the tensor. |
 | `plot_eighh()` | Plot the combined maximum absolute eigenvalue of the tensor.|
+| `to_xarray()` | Return an xarray DataSet of all gridded data. |
 | `copy()` | Return a copy of the class instance. |
 | `info()` | Print a summary of the data stored in the class instance. |
 

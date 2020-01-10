@@ -23,19 +23,20 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
 !   the case, the ouput power spectrum should be considered valid only
 !   for the degrees up to and including lmax-lwin.
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: wigner3j
+    use ftypes
 
     implicit none
-    real*8, intent(out) :: Mmt(:,:)
-    real*8, intent(in) :: tapers_power(:,:)
-    real*8, intent(in), optional :: taper_wt(:)
+    real(dp), intent(out) :: Mmt(:,:)
+    real(dp), intent(in) :: tapers_power(:,:)
+    real(dp), intent(in), optional :: taper_wt(:)
     integer, intent(in) :: lmax, K, lwin
     integer, intent(out), optional :: exitstatus
-    real*8 :: w3j(lwin+2*lmax+1), sum1
+    real(dp) :: w3j(lwin+2*lmax+1), sum1
     integer :: i, j, l, wmin, wmax
 
     if (present(exitstatus)) exitstatus = 0
@@ -52,7 +53,7 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
             stop
         end if
 
-    endif
+    end if
 
     if (size(tapers_power(:,1)) < lwin+1 .or. size(tapers_power(1,:)) < K) then
         print*, "Error --- SHMTCouplingMatrix"
@@ -67,22 +68,22 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
             stop
         end if
 
-    endif
+    end if
 
     if (present(taper_wt)) then
         if (size(taper_wt) < K) then
             print*, "Error --- SHMTCouplingMatrix"
             print*, "TAPER_WT must be dimensioned as (K) where K is ", k
             print*, "Input array is dimensioned as ", size(taper_wt)
-        if (present(exitstatus)) then
-            exitstatus = 1
-            return
-        else
-            stop
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
         end if
-        endif
 
-    endif
+    end if
 
     !--------------------------------------------------------------------------
     !
@@ -101,12 +102,12 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
                 else
                     call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
                 end if
-                sum1 = 0.0d0
+                sum1 = 0.0_dp
 
                 do l = wmin, min(wmax,lwin), 2
                     sum1 = sum1 + dot_product(taper_wt(1:K), &
                            tapers_power(l+1,1:K)) * w3j(l-wmin+1)**2
-                enddo
+                end do
 
                 Mmt(i+1,j+1) = sum1 * dble(2*i+1)
 
@@ -124,11 +125,11 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
                 else
                     call Wigner3j(w3j, wmin, wmax, i, j, 0, 0, 0)
                 end if
-                sum1 = 0.0d0
+                sum1 = 0.0_dp
 
                 do l = wmin, min(wmax,lwin), 2
                     sum1 = sum1 + sum(tapers_power(l+1,1:K)) * w3j(l-wmin+1)**2
-                enddo
+                end do
 
                 Mmt(i+1,j+1) = sum1 * dble(2*i+1) / dble(K)
 

@@ -1,17 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
-from __future__ import absolute_import, division, print_function
-
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import shio
 
@@ -52,6 +45,7 @@ def test_SHStorage():
     print(coeffs_indexed)
     print('\nrecomputed coeffs:')
     print(coeffs_recomp)
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

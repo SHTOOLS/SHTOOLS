@@ -8,7 +8,7 @@
 #
 ###############################################################################
 
-JUPYTER = jupyter nbconvert
+JUPYTER ?= jupyter nbconvert
 
 SHELL=/bin/sh
 

@@ -33,7 +33,7 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 
 ## Description
 
-`YilmIndexVector` will calculate the index of a 1D vector of spherical harmonic coefficients corresponding to degree `l`, angular order `m` and `i` (1 = cosine, 2 = sine). The index is given by `l**2+(i-1)*l+m`.
+`YilmIndexVector` will calculate the index of a 1D vector of spherical harmonic coefficients corresponding to degree `l`, angular order `m` and `i` (1 = cosine, 2 = sine). The elements of the 1D vector array are packed by successive degrees, where each degree lists the l+1 cosine terms and then the l cosine terms. The index is given explicitly by `l**2+(i-1)*l+m`.
 
 ## See also
 

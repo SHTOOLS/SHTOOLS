@@ -17,16 +17,16 @@ call PlSchmidt_d1 (`p`, `dp`, `lmax`, `z`, `exitstatus`)
 
 ## Parameters
 
-`p` : output, real\*8, dimension (`lmax`+1)
+`p` : output, real(dp), dimension (`lmax`+1)
 :   An array of Schmidt-normalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l+1`.
 
-`dp` : output, real\*8, dimension (`lmax`+1)
+`dp` : output, real(dp), dimension (`lmax`+1)
 :   An array of the first derivatives of the Schmidt-normalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l+1`.
 
 `lmax` : input, integer
 :   The maximum degree of the Legendre polynomials to be computed.
 
-`z` : input, real\*8
+`z` : input, real(dp)
 :   The argument of the Legendre polynomial.
 
 `exitstatus` : output, optional, integer

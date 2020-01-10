@@ -1,5 +1,5 @@
-complex*16 function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
-                                   csphase, dealloc)
+function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
+                        csphase, dealloc)
 !------------------------------------------------------------------------------
 !
 !   This function will determine the value at a given latitude and
@@ -26,31 +26,31 @@ complex*16 function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
 !           dealloc     If (1) Deallocate saved memory in Legendre function
 !                       routines. Default (0) is not to deallocate memory.
 !
-!   Dependencies:       PlmBar, PlBar, PlmSchmidt, PlmON, CSPHASE_DEFAULT
-!
 !   Notes:
 !       1.  If lmax is greater than the the maximum spherical harmonic
 !           degree of the input file, then this file will be ZERO PADDED!
 !           (i.e., those degrees after lmax are assumed to be zero).
 !
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON, CSPHASE_DEFAULT
+    use ftypes
 
     implicit none
 
-    complex*16, intent(in):: cilm(:,:,:)
-    real*8, intent(in) :: lat, longitude
+    complex(dp) :: MakeGridPointC
+    complex(dp), intent(in):: cilm(:,:,:)
+    real(dp), intent(in) :: lat, longitude
     integer, intent(in) :: lmax
     integer, intent(in), optional :: norm, csphase, dealloc
-    real*8 :: pi, x, lon
-    complex*16 :: expand, i_imag
+    real(dp) :: pi, x, lon
+    complex(dp) :: expand, i_imag
     integer :: index, l, m, l1, m1, lmax_comp, phase, astat(4)
-    real*8, allocatable :: pl(:), cosm(:), sinm(:), onem(:)
+    real(dp), allocatable :: pl(:), cosm(:), sinm(:), onem(:)
 
-    i_imag = (0.0d0, 1.0d0)
+    i_imag = cmplx(0.0_dp, 1.0_dp, dp)
 
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
             size(cilm(1,1,:)) < lmax+1) then
@@ -72,9 +72,9 @@ complex*16 function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
 
     if (present(csphase)) then
         if (csphase == -1) then
-             phase = -1.0d0
+             phase = -1
         else if (csphase == 1) then
-                phase = 1.0d0
+                phase = 1
         else
             print*, "Error --- MakeGridPointC"
             print*, "CSPHASE must be 1 (exclude) or -1 (include)."
@@ -83,7 +83,7 @@ complex*16 function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
         end if
 
     else
-        phase = dble(CSPHASE_DEFAULT)
+        phase = CSPHASE_DEFAULT
 
     end if
 
@@ -99,9 +99,9 @@ complex*16 function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
         stop
     end if
 
-    pi = acos(-1.0d0)
-    x = sin(lat * pi / 180.0d0)
-    lon = longitude * pi / 180.0d0
+    pi = acos(-1.0_dp)
+    x = sin(lat * pi / 180.0_dp)
+    lon = longitude * pi / 180.0_dp
 
     lmax_comp = min(lmax, size(cilm(1,1,:)) - 1)
 
@@ -119,17 +119,17 @@ complex*16 function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
 
     end if
 
-    expand = (0.0d0, 0.0d0)
+    expand = cmplx(0.0_dp, 0.0_dp, dp)
 
     do m = 0, lmax
         m1 = m + 1
         onem(m1) = (-1)**m
-    enddo
+    end do
 
     ! Precompute sines and cosines. Use multiple angle identity to minimize
     ! number of calls to SIN and COS.
-    sinm(1) = 0.0d0
-    cosm(1) = 1.0d0
+    sinm(1) = 0.0_dp
+    cosm(1) = 1.0_dp
 
     if (lmax_comp > 0) then
         sinm(2) = sin(lon)
@@ -172,7 +172,7 @@ complex*16 function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
                 call PlmBar(pl, -1, x, csphase = phase)
             end if
         end if
-    endif
+    end if
 
     deallocate (pl)
     deallocate (cosm)

@@ -8,7 +8,7 @@ call djpi2 (`dj`, `lmax`, `exitstatus`)
 
 # Parameters
 
-`dj` : output, real\*8, dimension (`lmax`+1, `lmax`+1, `lmax`+1)
+`dj` : output, real(dp), dimension (`lmax`+1, `lmax`+1, `lmax`+1)
 :   The rotation matrix dj(pi/2).
 
 `lmax` : input, integer

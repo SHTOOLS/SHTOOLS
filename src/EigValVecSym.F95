@@ -5,7 +5,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
 !   of the symmetric square matrix Ain. The output eigenvectors
 !   are ordered from greatest to least, and the norm of the eigenvectors
 !   is unity. If the optional parameter K is specified, only the K largest
-!   eigenvalues and corresponding vectors will be output.
+!   eigenvalues and corresponding eigenvectors will be output.
 !
 !   Calling Parameters
 !
@@ -50,30 +50,26 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
 !       The eigenvalues of A correspond to the L (which is a diagonal), and the
 !       eigenvectors correspond to Z = Q S.
 !
-!   2.  The sign convention for the eigenvalues might want to be changed.
-!       For instance, IMSL chooses the sign such that the value with
-!       max(abs(evec)) is positive.
-!
-!   Dependencies: LAPACK, BLAS
-!
-!   Copyright (c) 2016, SHTOOLS
+!   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    real*8, intent(in) :: ain(:,:)
+    real(dp), intent(in) :: ain(:,:)
     integer, intent(in) :: n
-    real*8, intent(out) :: eig(:), evec(:,:)
+    real(dp), intent(out) :: eig(:), evec(:,:)
     character, intent(in), optional :: ul
     integer, intent(in), optional :: K
     integer, intent(out), optional :: exitstatus
     integer, parameter :: nb = 80, nbl = 10
     character :: uplo
-    real*8 :: d(n), e(n), tau(n-1), work(nb*n), vl, vu, abstol, w(n)
-    real*8, allocatable ::  a(:,:), z(:,:)
-    integer ::  lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
-                i, astat(2)
+    real(dp) :: d(n), e(n), tau(n-1), work(nb*n), vl, vu, abstol, w(n)
+    real(dp), allocatable :: a(:,:), z(:,:)
+    integer :: lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
+               i, astat(2)
 #ifdef LAPACK_UNDERSCORE
 #define dsytrd dsytrd_
 #define dstegr dstegr_
@@ -95,7 +91,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
         end if
 
     end if
-    
+
     if (present(K)) then
         if (K > n .or. K < 1) then
             print*, "Error --- EigValVecSym"
@@ -138,7 +134,7 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
             end if
 
         end if
-        
+
     else
         if (size(eig) < n) then
             print*, "Error --- EigValVecSym"
@@ -169,9 +165,9 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
 
     allocate (a(n,n), stat = astat(1))
     allocate (z(n,n), stat = astat(2))
-    
+
     if (astat(1) /= 0 .or. astat(2) /= 0) then
-        print*, "Error --- EigValVecSym2"
+        print*, "Error --- EigValVecSym"
         print*, "Problem allocating arrays A and Z", astat(1), astat(2)
         if (present(exitstatus)) then
             exitstatus = 3
@@ -185,8 +181,8 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
     lwork = nb * n
     liwork = nbl * n
 
-    eig = 0.0d0
-    evec = 0.0d0
+    eig = 0.0_dp
+    evec = 0.0_dp
     a(1:n,1:n) = ain(1:n,1:n)
 
     if (present(ul)) then
@@ -229,13 +225,13 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
     !
     !--------------------------------------------------------------------------
 
-    abstol = 0.0d0
+    abstol = 0.0_dp
 
     if (present(K)) then
-        call dstegr('v','I', n, d, e, vl, vu, n-K+1, n, abstol, m, w, &
+        call dstegr('v','i', n, d, e, vl, vu, n-K+1, n, abstol, m, w, &
                     z, n, isuppz, work, lwork, iwork, liwork, info)
     else
-        call dstegr('v','I', n, d, e, vl, vu, il, iu, abstol, m,  w, &
+        call dstegr('v','a', n, d, e, vl, vu, il, iu, abstol, m,  w, &
                     z, n, isuppz, work, lwork, iwork, liwork, info)
     end if
 

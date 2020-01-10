@@ -1,22 +1,17 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
-from __future__ import absolute_import, division, print_function
-
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 from pyshtools import shio
 from pyshtools import expand
 
 pyshtools.utils.figstyle()
+
 
 def main():
     test_SHConversions()
@@ -61,10 +56,10 @@ def example():
     norm = plt.Normalize(gridmin, gridmax)
 
     fig, axes = plt.subplots(1, 2)
-    im1 = axes[0].imshow(grid1, norm=norm)
+    axes[0].imshow(grid1, norm=norm)
     axes[0].set_title('from real coefficients')
 
-    im2 = axes[1].imshow(grid2.real, norm=norm)
+    axes[1].imshow(grid2.real, norm=norm)
     axes[1].set_title('from complex coefficients')
 
     fig.tight_layout(pad=1)
@@ -72,6 +67,7 @@ def example():
     print('mars topography plotted and saved to file')
 
     # plt.show()
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

@@ -1,10 +1,6 @@
 """
 ICGEM-format read support
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-
 import numpy as _np
 
 from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction

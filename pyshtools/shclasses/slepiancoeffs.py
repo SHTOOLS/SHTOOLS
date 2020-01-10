@@ -1,14 +1,7 @@
 """
     Class for Slepian expansion coefficients.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import numpy as _np
-import matplotlib as _mpl
-import matplotlib.pyplot as _plt
 import copy as _copy
 
 from .. import shtools as _shtools
@@ -87,13 +80,13 @@ class SlepianCoeffs(object):
         str += '\nSlepian functions:\n' + self.galpha.__repr__()
         return str
 
-    def expand(self, nmax=None, grid='DH2', zeros=None):
+    def expand(self, nmax=None, grid='DH2', zeros=None, extend=True):
         """
         Expand the function on a grid using the first n Slepian coefficients.
 
         Usage
         -----
-        f = x.expand([nmax, grid, zeros])
+        f = x.expand([nmax, grid, zeros, extend])
 
         Returns
         -------
@@ -105,12 +98,15 @@ class SlepianCoeffs(object):
             The number of expansion coefficients to use when calculating the
             spherical harmonic coefficients.
         grid : str, optional, default = 'DH2'
-            'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon, 'DH2'
-            for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ' for a
-            Gauss-Legendre quadrature grid.
+            'DH' or 'DH1' for an equally sampled grid with nlat=nlon, 'DH2'
+            for an equally spaced grid in degrees latitude and longitude, or
+            'GLQ' for a Gauss-Legendre quadrature grid.
         zeros : ndarray, optional, default = None
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
+        extend : bool, optional, default = True
+            If True, compute the longitudinal band for 360 E (DH and GLQ grids)
+            and the latitudinal band for 90 S (DH grids only).
         """
         if type(grid) != str:
             raise ValueError('grid must be a string. ' +
@@ -129,17 +125,17 @@ class SlepianCoeffs(object):
 
         if grid.upper() in ('DH', 'DH1'):
             gridout = _shtools.MakeGridDH(shcoeffs, sampling=1,
-                                          norm=1, csphase=1)
+                                          norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'DH2':
             gridout = _shtools.MakeGridDH(shcoeffs, sampling=2,
-                                          norm=1, csphase=1)
+                                          norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.galpha.lmax)
-            gridout = _shtools.MakeGridGLQ(shcoeffs, zeros,
-                                           norm=1, csphase=1)
+            gridout = _shtools.MakeGridGLQ(shcoeffs, zeros, norm=1, csphase=1,
+                                           extend=extend)
             return SHGrid.from_array(gridout, grid='GLQ', copy=False)
         else:
             raise ValueError(
@@ -265,8 +261,8 @@ class SlepianCoeffs(object):
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().
 
-        Description
-        -----------
+        Notes
+        -----
         This method plots either the power spectrum, energy spectrum, or
         l2-norm spectrum. Total power is defined as the integral of the
         function squared over all space, divided by the area the function

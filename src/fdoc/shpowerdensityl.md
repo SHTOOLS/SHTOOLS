@@ -8,10 +8,10 @@ Compute the power spectral density of a real function for a single spherical har
 
 # Parameters
 
-`psd` : output, real\*8
+`psd` : output, real(dp)
 :   Power spectral density of the function for the spherical harmonic degree `l`.
 
-`cilm` : input, real\*8, dimension (2, `lmaxin`+1, `lmaxin`+1)
+`cilm` : input, real(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The function expressed in real spherical harmonics.
 
 `l` : input, integer
