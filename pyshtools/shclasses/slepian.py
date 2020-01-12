@@ -605,7 +605,7 @@ class Slepian(object):
     def plot(self, nmax, lmax=None, maxcolumns=3,
              tick_interval=[60, 45], minor_tick_interval=[None, None],
              xlabel='Longitude', ylabel='Latitude', title=True,
-             cmap='viridis', cmap_reverse=False, grid=False,
+             cmap='viridis', cmap_reverse=False, grid=False, loss=False,
              axes_labelsize=None, tick_labelsize=None, titlesize=8,
              show=True, ax=None, fname=None):
         """
@@ -614,8 +614,8 @@ class Slepian(object):
         Usage
         -----
         x.plot(nmax, [lmax, maxcolumns, tick_interval, minor_tick_interval,
-                      xlabel, ylabel, title, cmap, cmap_reverse, grid,
-                      axes_labelsize, tick_labelsize, titlesize, ax, show,
+                      xlabel, ylabel, title, titlesize, cmap, cmap_reverse,
+                      grid, loss, axes_labelsize, tick_labelsize, ax, show,
                       fname])
 
         Parameters
@@ -647,13 +647,16 @@ class Slepian(object):
             Set to True to reverse the sense of the color progression in the
             color table.
         grid : bool, optional, default = False
-            If True, plot grid lines.
+            If True, plot major grid lines.
+        loss : bool, optional, default = False
+            When plotting titles, provide the loss factor instead of the
+            concentration factor (loss=1-concentration).
+        titlesize : int, optional, default = 8
+            The font size for the subplot titles.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        titlesize : int, optional, default = 8
-            The font size for the subplot titles.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
         show : bool, optional, default = True
@@ -695,7 +698,11 @@ class Slepian(object):
             grid_temp = coeffs.expand()
 
             if title is True:
-                title_str = '#{:d} [loss={:2.2g}]'.format(alpha, 1-evalue)
+                if loss:
+                    title_str = '#{:d} [loss={:2.2g}]'.format(alpha, 1-evalue)
+                else:
+                    title_str = '#{:d} [concentration={:2.2g}]'.format(
+                        alpha, evalue)
             else:
                 title_str = None
 

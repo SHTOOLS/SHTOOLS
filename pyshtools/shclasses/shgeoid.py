@@ -92,27 +92,26 @@ class SHGeoid(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('grid = {:s}\n'.format(repr(self.grid)))
-        if self.grid == 'DH':
-            str += 'sampling = {:d}\n'.format(self.sampling)
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'n = {:d}\n'
-                'sampling = {:d}\n'
-                'extend = {}\n'
-                'lmax = {:d}\n'
-                'lmax_calc = {:d}\n'
-                'gm (m3 / s2) = {:e}\n'
-                'reference potential (m2 /s2) = {:e}\n'
-                'a (m)= {:e}\n'
-                'f = {:e}\n'
-                'omega (rad / s) = {:s}\n'
-                'radius of Taylor expansion (m) = {:e}\n'
-                'order of expansion = {:d}'
-                .format(self.nlat, self.nlon, self.n, self.sampling,
-                        self.extend, self.lmax, self.lmax_calc, self.gm,
-                        self.potref, self.a, self.f, repr(self.omega), self.r,
-                        self.order))
+        str = ('grid = {:s}\n'
+               'sampling = {:d}\n'
+               'nlat = {:d}\n'
+               'nlon = {:d}\n'
+               'n = {:d}\n'
+               'sampling = {:d}\n'
+               'extend = {}\n'
+               'lmax = {:d}\n'
+               'lmax_calc = {:d}\n'
+               'gm (m3 / s2) = {:e}\n'
+               'reference potential (m2 /s2) = {:e}\n'
+               'a (m)= {:e}\n'
+               'f = {:e}\n'
+               'omega (rad / s) = {:s}\n'
+               'radius of Taylor expansion (m) = {:e}\n'
+               'order of expansion = {:d}'
+               .format(repr(self.grid), self.sampling, self.nlat, self.nlon,
+                       self.n, self.sampling, self.extend, self.lmax,
+                       self.lmax_calc, self.gm, self.potref, self.a, self.f,
+                       repr(self.omega), self.r, self.order))
         return str
 
     def plot(self, projection=None, tick_interval=[30, 30],
@@ -128,9 +127,9 @@ class SHGeoid(object):
         Usage
         -----
         x.plot([projection, tick_interval, minor_tick_interval, xlabel, ylabel,
-                title, titlesize, colorbar, cmap, cmap_limits, cmap_reverse,
-                cb_triangles, cb_label, cb_tick_interval, grid, axes_labelsize,
-                tick_labelsize, ax, show, fname, **kwargs])
+                title, colorbar, cmap, cmap_limits, cmap_reverse, cb_triangles,
+                cb_label, cb_tick_interval, grid, titlesize, axes_labelsize,
+                tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -149,17 +148,15 @@ class SHGeoid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        titlesize : int, optional, default = None
-            The fontsize of the title.
         colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
-            Set the lower and upper limits of the data used by the colormap
-            when plotting, and optionally an interval for each color in the
-            colormap. If the interval is specified, the number of discreet
-            colors will be (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
@@ -172,6 +169,8 @@ class SHGeoid(object):
             Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -190,6 +189,7 @@ class SHGeoid(object):
                                xlabel=xlabel, ylabel=ylabel, title=title,
                                titlesize=titlesize, colorbar=colorbar,
                                cmap=cmap, cmap_limits=cmap_limits,
+                               cmap_reverse=cmap_reverse,
                                cb_triangles=cb_triangles, cb_label=cb_label,
                                cb_tick_interval=cb_tick_interval, grid=grid,
                                axes_labelsize=axes_labelsize,

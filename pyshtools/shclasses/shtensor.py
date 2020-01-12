@@ -36,7 +36,8 @@ class Tensor(object):
                    self.vxy*(self.vyz*self.vxz - self.vxy*self.vzz) +
                    self.vxz*(self.vxy*self.vyz - self.vxz*self.vyy))
         self.i = (-1.) * (self.i2 / 2.)**2
-        self.i.data[1:, :] /= (self.i1.data[1:, :] / 3.)**3
+        self.i.data[1:self.nlat-self.extend, :] /= \
+            (self.i1.data[1:self.nlat-self.extend, :] / 3.)**3
 
     def compute_eig(self):
         """
@@ -117,598 +118,834 @@ class Tensor(object):
         """
         print(repr(self))
 
-    def plot_vxx(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                 fname=None, **kwargs):
+    def plot_vxx(self, projection=None, tick_interval=[30, 30],
+                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                 title=None, titlesize=None, colorbar='vertical',
+                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                 grid=False, axes_labelsize=None, tick_labelsize=None,
+                 show=True, ax=None, fname=None):
         """
         Plot the Vxx component of the tensor.
 
         Usage
         -----
-        x.plot_vxx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                    show, fname])
+        x.plot_vxx([projection, tick_interval, minor_tick_interval, xlabel,
+                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                    axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$V_{xx}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._vxx_label
 
-        if ax is None:
-            fig, axes = self.vxx.plot(colorbar=colorbar,
-                                      cb_label=cb_label, show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.vxx.plot(projection=projection,
+                             tick_interval=tick_interval,
+                             minor_tick_interval=minor_tick_interval,
+                             xlabel=xlabel, ylabel=ylabel, title=title,
+                             titlesize=titlesize, colorbar=colorbar,
+                             cmap=cmap, cmap_limits=cmap_limits,
+                             cmap_reverse=cmap_reverse,
+                             cb_triangles=cb_triangles, cb_label=cb_label,
+                             cb_tick_interval=cb_tick_interval, grid=grid,
+                             axes_labelsize=axes_labelsize,
+                             tick_labelsize=tick_labelsize, ax=ax,
+                             show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.vxx.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                          **kwargs)
-
-    def plot_vyy(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                 fname=None, **kwargs):
+    def plot_vyy(self, projection=None, tick_interval=[30, 30],
+                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                 title=None, titlesize=None, colorbar='vertical',
+                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                 grid=False, axes_labelsize=None, tick_labelsize=None,
+                 show=True, ax=None, fname=None):
         """
         Plot the Vyy component of the tensor.
 
         Usage
         -----
-        x.plot_vyy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                    show, fname])
+        x.plot_vyy([projection, tick_interval, minor_tick_interval, xlabel,
+                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                    axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$V_{yy}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._vyy_label
 
-        if ax is None:
-            fig, axes = self.vyy.plot(colorbar=colorbar, cb_label=cb_label,
-                                      show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.vyy.plot(projection=projection,
+                             tick_interval=tick_interval,
+                             minor_tick_interval=minor_tick_interval,
+                             xlabel=xlabel, ylabel=ylabel, title=title,
+                             titlesize=titlesize, colorbar=colorbar,
+                             cmap=cmap, cmap_limits=cmap_limits,
+                             cmap_reverse=cmap_reverse,
+                             cb_triangles=cb_triangles, cb_label=cb_label,
+                             cb_tick_interval=cb_tick_interval, grid=grid,
+                             axes_labelsize=axes_labelsize,
+                             tick_labelsize=tick_labelsize, ax=ax,
+                             show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.vyy.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                          **kwargs)
-
-    def plot_vzz(self, colorbar='vertical',
-                 cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_vzz(self, projection=None, tick_interval=[30, 30],
+                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                 title=None, titlesize=None, colorbar='vertical',
+                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                 grid=False, axes_labelsize=None, tick_labelsize=None,
+                 show=True, ax=None, fname=None):
         """
         Plot the Vzz component of the tensor.
 
         Usage
         -----
-        x.plot_vzz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                    show, fname])
+        x.plot_vzz([projection, tick_interval, minor_tick_interval, xlabel,
+                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                    axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$V_{zz}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._vzz_label
 
-        if ax is None:
-            fig, axes = self.vzz.plot(colorbar=colorbar, cb_label=cb_label,
-                                      show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.vzz.plot(projection=projection,
+                             tick_interval=tick_interval,
+                             minor_tick_interval=minor_tick_interval,
+                             xlabel=xlabel, ylabel=ylabel, title=title,
+                             titlesize=titlesize, colorbar=colorbar,
+                             cmap=cmap, cmap_limits=cmap_limits,
+                             cmap_reverse=cmap_reverse,
+                             cb_triangles=cb_triangles, cb_label=cb_label,
+                             cb_tick_interval=cb_tick_interval, grid=grid,
+                             axes_labelsize=axes_labelsize,
+                             tick_labelsize=tick_labelsize, ax=ax,
+                             show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.vzz.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                          **kwargs)
-
-    def plot_vxy(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                 fname=None, **kwargs):
+    def plot_vxy(self, projection=None, tick_interval=[30, 30],
+                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                 title=None, titlesize=None, colorbar='vertical',
+                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                 grid=False, axes_labelsize=None, tick_labelsize=None,
+                 show=True, ax=None, fname=None):
         """
-        Plot the Vxy component of the tensor.
+        Plot the Vxx component of the tensor.
 
         Usage
         -----
-        x.plot_vxy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                    show, fname])
+        x.plot_vxy([projection, tick_interval, minor_tick_interval, xlabel,
+                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                    axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$V_{xy}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._vxy_label
 
-        if ax is None:
-            fig, axes = self.vxy.plot(colorbar=colorbar,
-                                      cb_label=cb_label, show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.vxy.plot(projection=projection,
+                             tick_interval=tick_interval,
+                             minor_tick_interval=minor_tick_interval,
+                             xlabel=xlabel, ylabel=ylabel, title=title,
+                             titlesize=titlesize, colorbar=colorbar,
+                             cmap=cmap, cmap_limits=cmap_limits,
+                             cmap_reverse=cmap_reverse,
+                             cb_triangles=cb_triangles, cb_label=cb_label,
+                             cb_tick_interval=cb_tick_interval, grid=grid,
+                             axes_labelsize=axes_labelsize,
+                             tick_labelsize=tick_labelsize, ax=ax,
+                             show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.vxy.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                          **kwargs)
-
-    def plot_vyx(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                 fname=None, **kwargs):
+    def plot_vyx(self, projection=None, tick_interval=[30, 30],
+                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                 title=None, titlesize=None, colorbar='vertical',
+                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                 grid=False, axes_labelsize=None, tick_labelsize=None,
+                 show=True, ax=None, fname=None):
         """
         Plot the Vyx component of the tensor.
 
         Usage
         -----
-        x.plot_vyx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                    show, fname])
+        x.plot_vyx([projection, tick_interval, minor_tick_interval, xlabel,
+                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                    axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$V_{yx}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._vyx_label
 
-        if ax is None:
-            fig, axes = self.vyx.plot(colorbar=colorbar, cb_label=cb_label,
-                                      show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.vyx.plot(projection=projection,
+                             tick_interval=tick_interval,
+                             minor_tick_interval=minor_tick_interval,
+                             xlabel=xlabel, ylabel=ylabel, title=title,
+                             titlesize=titlesize, colorbar=colorbar,
+                             cmap=cmap, cmap_limits=cmap_limits,
+                             cmap_reverse=cmap_reverse,
+                             cb_triangles=cb_triangles, cb_label=cb_label,
+                             cb_tick_interval=cb_tick_interval, grid=grid,
+                             axes_labelsize=axes_labelsize,
+                             tick_labelsize=tick_labelsize, ax=ax,
+                             show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.vyx.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                          **kwargs)
-
-    def plot_vxz(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                 fname=None, **kwargs):
+    def plot_vxz(self, projection=None, tick_interval=[30, 30],
+                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                 title=None, titlesize=None, colorbar='vertical',
+                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                 grid=False, axes_labelsize=None, tick_labelsize=None,
+                 show=True, ax=None, fname=None):
         """
         Plot the Vxz component of the tensor.
 
         Usage
         -----
-        x.plot_vxz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                    show, fname])
+        x.plot_vxz([projection, tick_interval, minor_tick_interval, xlabel,
+                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                    axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$V_{xz}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._vxz_label
 
-        if ax is None:
-            fig, axes = self.vxz.plot(colorbar=colorbar, cb_label=cb_label,
-                                      show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.vxz.plot(projection=projection,
+                             tick_interval=tick_interval,
+                             minor_tick_interval=minor_tick_interval,
+                             xlabel=xlabel, ylabel=ylabel, title=title,
+                             titlesize=titlesize, colorbar=colorbar,
+                             cmap=cmap, cmap_limits=cmap_limits,
+                             cmap_reverse=cmap_reverse,
+                             cb_triangles=cb_triangles, cb_label=cb_label,
+                             cb_tick_interval=cb_tick_interval, grid=grid,
+                             axes_labelsize=axes_labelsize,
+                             tick_labelsize=tick_labelsize, ax=ax,
+                             show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.vxz.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                          **kwargs)
-
-    def plot_vzx(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                 fname=None, **kwargs):
+    def plot_vzx(self, projection=None, tick_interval=[30, 30],
+                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                 title=None, titlesize=None, colorbar='vertical',
+                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                 grid=False, axes_labelsize=None, tick_labelsize=None,
+                 show=True, ax=None, fname=None):
         """
         Plot the Vzx component of the tensor.
 
         Usage
         -----
-        x.plot_vzx([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                    show, fname])
+        x.plot_vzx([projection, tick_interval, minor_tick_interval, xlabel,
+                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                    axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$V_{zx}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._vzx_label
 
-        if ax is None:
-            fig, axes = self.vzx.plot(colorbar=colorbar, cb_label=cb_label,
-                                      show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.vzx.plot(projection=projection,
+                             tick_interval=tick_interval,
+                             minor_tick_interval=minor_tick_interval,
+                             xlabel=xlabel, ylabel=ylabel, title=title,
+                             titlesize=titlesize, colorbar=colorbar,
+                             cmap=cmap, cmap_limits=cmap_limits,
+                             cmap_reverse=cmap_reverse,
+                             cb_triangles=cb_triangles, cb_label=cb_label,
+                             cb_tick_interval=cb_tick_interval, grid=grid,
+                             axes_labelsize=axes_labelsize,
+                             tick_labelsize=tick_labelsize, ax=ax,
+                             show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.vzx.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                          **kwargs)
-
-    def plot_vyz(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                 fname=None, **kwargs):
+    def plot_vyz(self, projection=None, tick_interval=[30, 30],
+                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                 title=None, titlesize=None, colorbar='vertical',
+                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                 grid=False, axes_labelsize=None, tick_labelsize=None,
+                 show=True, ax=None, fname=None):
         """
         Plot the Vyz component of the tensor.
 
         Usage
         -----
-        x.plot_vyz([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_label, grid, axes_labelsize,
-                    tick_labelsize, show, fname])
+        x.plot_vyz([projection, tick_interval, minor_tick_interval, xlabel,
+                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                    axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$V_{yz}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._vyz_label
 
-        if ax is None:
-            fig, axes = self.vyz.plot(colorbar=colorbar, cb_label=cb_label,
-                                      show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.vyz.plot(projection=projection,
+                             tick_interval=tick_interval,
+                             minor_tick_interval=minor_tick_interval,
+                             xlabel=xlabel, ylabel=ylabel, title=title,
+                             titlesize=titlesize, colorbar=colorbar,
+                             cmap=cmap, cmap_limits=cmap_limits,
+                             cmap_reverse=cmap_reverse,
+                             cb_triangles=cb_triangles, cb_label=cb_label,
+                             cb_tick_interval=cb_tick_interval, grid=grid,
+                             axes_labelsize=axes_labelsize,
+                             tick_labelsize=tick_labelsize, ax=ax,
+                             show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.vyz.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                          **kwargs)
-
-    def plot_vzy(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                 fname=None, **kwargs):
+    def plot_vzy(self, projection=None, tick_interval=[30, 30],
+                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                 title=None, titlesize=None, colorbar='vertical',
+                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                 grid=False, axes_labelsize=None, tick_labelsize=None,
+                 show=True, ax=None, fname=None):
         """
         Plot the Vzy component of the tensor.
 
         Usage
         -----
-        x.plot_vzy([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                    colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                    show, fname])
+        x.plot_vzy([projection, tick_interval, minor_tick_interval, xlabel,
+                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                    axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$V_{zy}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._vzy_label
 
-        if ax is None:
-            fig, axes = self.vzy.plot(colorbar=colorbar, cb_label=cb_label,
-                                      show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.vzy.plot(projection=projection,
+                             tick_interval=tick_interval,
+                             minor_tick_interval=minor_tick_interval,
+                             xlabel=xlabel, ylabel=ylabel, title=title,
+                             titlesize=titlesize, colorbar=colorbar,
+                             cmap=cmap, cmap_limits=cmap_limits,
+                             cmap_reverse=cmap_reverse,
+                             cb_triangles=cb_triangles, cb_label=cb_label,
+                             cb_tick_interval=cb_tick_interval, grid=grid,
+                             axes_labelsize=axes_labelsize,
+                             tick_labelsize=tick_labelsize, ax=ax,
+                             show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.vzy.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                          **kwargs)
-
-    def plot(self, colorbar='horizontal', tick_interval=[90, 90],
-             minor_tick_interval=[30, 30], xlabel='Longitude',
-             ylabel='Latitude', axes_labelsize=8, tick_labelsize=8, show=True,
-             fname=None, **kwargs):
+    def plot(self, projection=None, tick_interval=[90, 90],
+             minor_tick_interval=[30, 30], xlabel='', ylabel='',
+             colorbar='horizontal', cmap='viridis', cmap_limits=None,
+             cmap_reverse=False, cb_triangles='neither', cb_label=None,
+             cb_tick_interval=None, grid=False, axes_labelsize=8,
+             tick_labelsize=8, show=True, ax=None, fname=None):
         """
         Plot the 9 components of the tensor.
 
         Usage
         -----
-        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel,
-                colorbar, cb_label, grid, axes_labelsize,
-                tick_labelsize, show, fname, **kwargs])
+        x.plot([projection, tick_interval, minor_tick_interval, xlabel, ylabel,
+                colorbar, cmap, cmap_limits, cmap_reverse, cb_triangles,
+                cb_label, cb_tick_interval, grid, axes_labelsize,
+                tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [90, 90]
-            Intervals to use when plotting the major x and y ticks. If set to
-            None, major ticks will not be plotted.
+            Intervals to use when plotting the x and y ticks. If set to None,
+            ticks will not be plotted.
         minor_tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
-        xlabel : str, optional, default = 'Longitude'
+        xlabel : str, optional, default = ''
             Label for the longitude axis.
-        ylabel : str, optional, default = 'Latitude'
+        ylabel : str, optional, default = ''
             Label for the latitude axis.
         colorbar : str, optional, default = 'horizontal'
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
-        axes_labelsize : int, optional, default = None
+        axes_labelsize : int, optional, default = 8
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = None
+        tick_labelsize : int, optional, default = 8
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
        """
         if colorbar is not None:
             if colorbar == 'horizontal':
@@ -725,81 +962,101 @@ class Tensor(object):
                    _mpl.rcParams['figure.figsize'][0] * scale)
 
         fig, ax = _plt.subplots(3, 3, figsize=figsize)
-        self.plot_vxx(colorbar=colorbar, ax=ax.flat[0],
+        self.plot_vxx(projection=projection, ax=ax.flat[0],
                       tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      **kwargs)
-        self.plot_vxy(colorbar=colorbar, ax=ax.flat[1],
+                      xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                      cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                      cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                      grid=grid, axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize, show=show)
+        self.plot_vxy(projection=projection, ax=ax.flat[1],
                       tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      **kwargs)
-        self.plot_vxz(colorbar=colorbar, ax=ax.flat[2],
+                      xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                      cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                      cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                      grid=grid, axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize, show=show)
+        self.plot_vxz(projection=projection, ax=ax.flat[2],
                       tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      **kwargs)
-        self.plot_vyx(colorbar=colorbar, ax=ax.flat[3],
+                      xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                      cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                      cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                      grid=grid, axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize, show=show)
+        self.plot_vyx(projection=projection, ax=ax.flat[3],
                       tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      **kwargs)
-        self.plot_vyy(colorbar=colorbar, ax=ax.flat[4],
+                      xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                      cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                      cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                      grid=grid, axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize, show=show)
+        self.plot_vyy(projection=projection, ax=ax.flat[4],
                       tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      **kwargs)
-        self.plot_vyz(colorbar=colorbar, ax=ax.flat[5],
+                      xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                      cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                      cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                      grid=grid, axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize, show=show)
+        self.plot_vyz(projection=projection, ax=ax.flat[5],
                       tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      **kwargs)
-        self.plot_vzx(colorbar=colorbar, ax=ax.flat[6],
+                      xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                      cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                      cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                      grid=grid, axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize, show=show)
+        self.plot_vzx(projection=projection, ax=ax.flat[6],
                       tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      **kwargs)
-        self.plot_vzy(colorbar=colorbar, ax=ax.flat[7],
+                      xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                      cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                      cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                      grid=grid, axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize, show=show)
+        self.plot_vzy(projection=projection, ax=ax.flat[7],
                       tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      **kwargs)
-        self.plot_vzz(colorbar=colorbar, ax=ax.flat[8],
+                      xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                      cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                      cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                      grid=grid, axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize, show=show)
+        self.plot_vzz(projection=projection, ax=ax.flat[8],
                       tick_interval=tick_interval,
-                      xlabel=xlabel, ylabel=ylabel,
-                      axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
                       minor_tick_interval=minor_tick_interval,
-                      **kwargs)
+                      xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                      cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                      cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                      grid=grid, axes_labelsize=axes_labelsize,
+                      tick_labelsize=tick_labelsize, show=show)
 
         fig.tight_layout(pad=0.5)
-
-        if show:
-            fig.show()
 
         if fname is not None:
             fig.savefig(fname)
         return fig, ax
 
-    def plot_i0(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                fname=None, **kwargs):
+    def plot_i0(self, projection=None, tick_interval=[30, 30],
+                minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                title=None, titlesize=None, colorbar='vertical',
+                cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                grid=False, axes_labelsize=None, tick_labelsize=None,
+                show=True, ax=None, fname=None):
         """
         Plot the first invariant I0 (the trace) of the tensor
 
@@ -809,42 +1066,62 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i0([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                   colorbar, cb_label, grid, axes_labelsize,
-                   tick_labelsize, show, fname])
+        x.plot_i0([projection, tick_interval, minor_tick_interval, xlabel,
+                   ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                   cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                   axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = 'Tr $V_{ij}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._i0_label
@@ -852,22 +1129,26 @@ class Tensor(object):
         if self.i0 is None:
             self.compute_invar()
 
-        if ax is None:
-            fig, axes = self.i0.plot(colorbar=colorbar, cb_label=cb_label,
-                                     show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.i0.plot(projection=projection,
+                            tick_interval=tick_interval,
+                            minor_tick_interval=minor_tick_interval,
+                            xlabel=xlabel, ylabel=ylabel, title=title,
+                            titlesize=titlesize, colorbar=colorbar,
+                            cmap=cmap, cmap_limits=cmap_limits,
+                            cmap_reverse=cmap_reverse,
+                            cb_triangles=cb_triangles, cb_label=cb_label,
+                            cb_tick_interval=cb_tick_interval, grid=grid,
+                            axes_labelsize=axes_labelsize,
+                            tick_labelsize=tick_labelsize, ax=ax,
+                            show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.i0.plot(colorbar=colorbar, cb_label=cb_label, ax=ax,
-                         **kwargs)
-
-    def plot_i1(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-                fname=None, **kwargs):
+    def plot_i1(self, projection=None, tick_interval=[30, 30],
+                minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                title=None, titlesize=None, colorbar='vertical',
+                cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                grid=False, axes_labelsize=None, tick_labelsize=None,
+                show=True, ax=None, fname=None):
         """
         Plot the second invariant I1 of the tensor:
 
@@ -875,42 +1156,62 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i1([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                   colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                   show, fname])
+        x.plot_i1([projection, tick_interval, minor_tick_interval, xlabel,
+                   ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                   cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                   axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$I_1$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._i1_label
@@ -918,21 +1219,26 @@ class Tensor(object):
         if self.i1 is None:
             self.compute_invar()
 
-        if ax is None:
-            fig, axes = self.i1.plot(colorbar=colorbar,
-                                     cb_label=cb_label, show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.i1.plot(projection=projection,
+                            tick_interval=tick_interval,
+                            minor_tick_interval=minor_tick_interval,
+                            xlabel=xlabel, ylabel=ylabel, title=title,
+                            titlesize=titlesize, colorbar=colorbar,
+                            cmap=cmap, cmap_limits=cmap_limits,
+                            cmap_reverse=cmap_reverse,
+                            cb_triangles=cb_triangles, cb_label=cb_label,
+                            cb_tick_interval=cb_tick_interval, grid=grid,
+                            axes_labelsize=axes_labelsize,
+                            tick_labelsize=tick_labelsize, ax=ax,
+                            show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.i1.plot(colorbar=colorbar, cb_label=cb_label, ax=ax, **kwargs)
-
-    def plot_i2(self, colorbar='vertical',
-                cb_label=None, ax=None, show=True, fname=None, **kwargs):
+    def plot_i2(self, projection=None, tick_interval=[30, 30],
+                minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+                title=None, titlesize=None, colorbar='vertical',
+                cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+                grid=False, axes_labelsize=None, tick_labelsize=None,
+                show=True, ax=None, fname=None):
         """
         Plot the third invariant I2 (the determinant) of the tensor:
 
@@ -941,42 +1247,62 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i2([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                   colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                   show, fname])
+        x.plot_i2([projection, tick_interval, minor_tick_interval, xlabel,
+                   ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                   cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                   axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = 'det $V_{ij}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._i2_label
@@ -984,21 +1310,26 @@ class Tensor(object):
         if self.i2 is None:
             self.compute_invar()
 
-        if ax is None:
-            fig, axes = self.i2.plot(colorbar=colorbar,
-                                     cb_label=cb_label, show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.i2.plot(projection=projection,
+                            tick_interval=tick_interval,
+                            minor_tick_interval=minor_tick_interval,
+                            xlabel=xlabel, ylabel=ylabel, title=title,
+                            titlesize=titlesize, colorbar=colorbar,
+                            cmap=cmap, cmap_limits=cmap_limits,
+                            cmap_reverse=cmap_reverse,
+                            cb_triangles=cb_triangles, cb_label=cb_label,
+                            cb_tick_interval=cb_tick_interval, grid=grid,
+                            axes_labelsize=axes_labelsize,
+                            tick_labelsize=tick_labelsize, ax=ax,
+                            show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.i2.plot(colorbar=colorbar, cb_label=cb_label, ax=ax, **kwargs)
-
-    def plot_i(self, colorbar='vertical', cb_label=None, ax=None, show=True,
-               fname=None, **kwargs):
+    def plot_i(self, projection=None, tick_interval=[30, 30],
+               minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+               title=None, titlesize=None, colorbar='vertical',
+               cmap='viridis', cmap_limits=None, cmap_reverse=False,
+               cb_triangles='neither', cb_label=None, cb_tick_interval=None,
+               grid=False, axes_labelsize=None, tick_labelsize=None,
+               show=True, ax=None, fname=None):
         """
         Plot the dimensionless quantity I of Pedersen and Rasmussen (1990)
 
@@ -1008,42 +1339,62 @@ class Tensor(object):
 
         Usage
         -----
-        x.plot_i([tick_interval, minor_tick_interval, xlabel, ylabel, ax,
-                  colorbar, cb_label, grid, axes_labelsize,
-                  tick_labelsize, show, fname])
+        x.plot_i([projection, tick_interval, minor_tick_interval, xlabel,
+                  ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
+                  cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+                  axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+        minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
-        colorbar : str, optional, default = 'vertical'
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if cb_label is None:
             cb_label = self._i_label
@@ -1051,67 +1402,88 @@ class Tensor(object):
         if self.i is None:
             self.compute_invar()
 
-        if ax is None:
-            fig, axes = self.i.plot(colorbar=colorbar,
-                                    cb_label=cb_label, show=False, **kwargs)
-            if show:
-                fig.show()
+        return self.i.plot(projection=projection,
+                           tick_interval=tick_interval,
+                           minor_tick_interval=minor_tick_interval,
+                           xlabel=xlabel, ylabel=ylabel, title=title,
+                           titlesize=titlesize, colorbar=colorbar,
+                           cmap=cmap, cmap_limits=cmap_limits,
+                           cmap_reverse=cmap_reverse,
+                           cb_triangles=cb_triangles, cb_label=cb_label,
+                           cb_tick_interval=cb_tick_interval, grid=grid,
+                           axes_labelsize=axes_labelsize,
+                           tick_labelsize=tick_labelsize, ax=ax,
+                           show=show, fname=fname)
 
-            if fname is not None:
-                fig.savefig(fname)
-            return fig, axes
-
-        else:
-            self.i.plot(colorbar=colorbar, cb_label=cb_label, ax=ax, **kwargs)
-
-    def plot_invar(self, colorbar='horizontal', tick_interval=[60, 60],
-                   minor_tick_interval=[20, 20], xlabel='Longitude',
-                   ylabel='Latitude', axes_labelsize=9, tick_labelsize=8,
-                   show=True, fname=None, **kwargs):
+    def plot_invar(self, projection=None, tick_interval=[60, 60],
+                    minor_tick_interval=[30, 30], xlabel='',
+                    ylabel='', colorbar='horizontal', cmap='viridis',
+                    cmap_limits=None, cmap_reverse=False,
+                    cb_triangles='neither', cb_label=None,
+                    cb_tick_interval=None, grid=False, axes_labelsize=9,
+                    tick_labelsize=8, show=True, ax=None, fname=None):
         """
         Plot the three invariants of the tensor and the derived quantity I.
 
         Usage
         -----
-        x.plot_invar([tick_interval, minor_tick_interval, xlabel, ylabel,
-                      colorbar, cb_label, grid, axes_labelsize, tick_labelsize,
-                      show, fname, **kwargs])
+        x.plot_invar([projection, tick_interval, minor_tick_interval, xlabel,
+                      ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
+                      cb_triangles, cb_label, cb_tick_interval, grid,
+                      axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [60, 60]
-            Intervals to use when plotting the major x and y ticks. If set to
-            None, major ticks will not be plotted.
-        minor_tick_interval : list or tuple, optional, default = [20, 20]
+            Intervals to use when plotting the x and y ticks. If set to None,
+            ticks will not be plotted.
+        minor_tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
-        xlabel : str, optional, default = 'Longitude'
+        xlabel : str, optional, default = ''
             Label for the longitude axis.
-        ylabel : str, optional, default = 'Latitude'
+        ylabel : str, optional, default = ''
             Label for the latitude axis.
         colorbar : str, optional, default = 'horizontal'
             Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
+        cb_tick_interval : float, optional, default = None
+            Colorbar tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
-        axes_labelsize : int, optional, default = None
+        axes_labelsize : int, optional, default = 9
             The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = None
+        tick_labelsize : int, optional, default = 8
             The font size for the x and y tick labels.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to the SHGrid.plot()
-            and plt.imshow() methods.
         """
         if colorbar is not None:
-            if colorbar.lower()[0] == 'h':
+            if colorbar == 'horizontal':
                 scale = 0.8
-            elif colorbar.lower()[0] == 'v':
+            elif colorbar == 'vertical':
                 scale = 0.5
             else:
                 raise ValueError("colorbar must be either 'horizontal' or "
@@ -1124,39 +1496,44 @@ class Tensor(object):
 
         fig, ax = _plt.subplots(2, 2, figsize=figsize)
 
-        self.plot_i0(colorbar=colorbar, ax=ax.flat[0],
+        self.plot_i0(projection=projection, ax=ax.flat[0],
                      tick_interval=tick_interval,
-                     xlabel=xlabel, ylabel=ylabel,
-                     axes_labelsize=axes_labelsize,
-                     tick_labelsize=tick_labelsize,
                      minor_tick_interval=minor_tick_interval,
-                     **kwargs)
-        self.plot_i1(colorbar=colorbar, ax=ax.flat[1],
+                     xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                     cmap=cmap, cmap_limits=cmap_limits,
+                     cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                     cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                     grid=grid, axes_labelsize=axes_labelsize,
+                     tick_labelsize=tick_labelsize, show=show)
+        self.plot_i1(projection=projection, ax=ax.flat[1],
                      tick_interval=tick_interval,
-                     xlabel=xlabel, ylabel=ylabel,
-                     axes_labelsize=axes_labelsize,
-                     tick_labelsize=tick_labelsize,
                      minor_tick_interval=minor_tick_interval,
-                     **kwargs)
-        self.plot_i2(colorbar=colorbar, ax=ax.flat[2],
+                     xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                     cmap=cmap, cmap_limits=cmap_limits,
+                     cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                     cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                     grid=grid, axes_labelsize=axes_labelsize,
+                     tick_labelsize=tick_labelsize, show=show)
+        self.plot_i2(projection=projection, ax=ax.flat[2],
                      tick_interval=tick_interval,
-                     xlabel=xlabel, ylabel=ylabel,
-                     axes_labelsize=axes_labelsize,
-                     tick_labelsize=tick_labelsize,
                      minor_tick_interval=minor_tick_interval,
-                     **kwargs)
-        self.plot_i(colorbar=colorbar, ax=ax.flat[3],
+                     xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                     cmap=cmap, cmap_limits=cmap_limits,
+                     cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                     cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                     grid=grid, axes_labelsize=axes_labelsize,
+                     tick_labelsize=tick_labelsize, show=show)
+        self.plot_i(projection=projection, ax=ax.flat[3],
                     tick_interval=tick_interval,
-                    xlabel=xlabel, ylabel=ylabel,
-                    axes_labelsize=axes_labelsize,
-                    tick_labelsize=tick_labelsize,
                     minor_tick_interval=minor_tick_interval,
-                    **kwargs)
+                    xlabel=xlabel, ylabel=ylabel, colorbar=colorbar,
+                    cmap=cmap, cmap_limits=cmap_limits,
+                    cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
+                    cb_label=cb_label, cb_tick_interval=cb_tick_interval,
+                    grid=grid, axes_labelsize=axes_labelsize,
+                    tick_labelsize=tick_labelsize, show=show)
 
         fig.tight_layout(pad=0.5)
-
-        if show:
-            fig.show()
 
         if fname is not None:
             fig.savefig(fname)
