@@ -4151,6 +4151,8 @@ class DHRealGrid(SHGrid):
                   -90. - 180. / self.n * (self.extend - 0.5),
                   90. + 180. / 2. / self.n)
 
+        cb_space = True  # add space for annotations between plot and colorbar
+
         if projection is not None:
             axes.set_global()
             cim = axes.imshow(
@@ -4168,6 +4170,8 @@ class DHRealGrid(SHGrid):
                                 crs=_ccrs.PlateCarree(central_longitude=0.0))
                 axes.xaxis.set_major_formatter(_LongitudeFormatter())
                 axes.yaxis.set_major_formatter(_LatitudeFormatter())
+            else:
+                cb_space = False
             if grid:
                 axes.gridlines(xlocs=xticks-180, ylocs=yticks,
                                crs=_ccrs.PlateCarree(central_longitude=0.0))
@@ -4197,12 +4201,29 @@ class DHRealGrid(SHGrid):
                 cax = divider.append_axes('right', size='2.5%', pad=0.15,
                                           axes_class=_plt.Axes)
             elif colorbar == 'horizontal':
-                if xlabel is not None and xlabel != '':
-                    cax = divider.append_axes('bottom', size='5%', pad=0.5,
-                                              axes_class=_plt.Axes)
-                else:
-                    cax = divider.append_axes('bottom', size='5%', pad=0.3,
-                                              axes_class=_plt.Axes)
+                offset = 0.
+                if xticks != [] and cb_space:
+                    # add space for ticks and tick label
+                    offset += _mpl.rcParams['xtick.major.size'] + \
+                        _mpl.rcParams['xtick.major.pad']
+                    if tick_labelsize is not None:
+                        offset += tick_labelsize
+                    elif type(_mpl.rcParams['xtick.labelsize']) is str:
+                        offset += _mpl.rcParams['font.size']
+                    else:
+                        offset += _mpl.rcParams['xtick.labelsize']
+                if xlabel != '' and xlabel is not None and projection is None:
+                    # add space for xlabel
+                    if axes_labelsize is not None:
+                        offset += axes_labelsize
+                    elif type(_mpl.rcParams['axes.labelsize']) is str:
+                        offset += _mpl.rcParams['font.size']
+                    else:
+                        offset += _mpl.rcParams['axes.labelsize']
+                offset += 1.5 * _mpl.rcParams['font.size']  # add extra
+                offset /= 72.  # convert to points
+                cax = divider.append_axes('bottom', size='5%', pad=offset,
+                                          axes_class=_plt.Axes)
             else:
                 raise ValueError("colorbar must be either 'horizontal' or "
                                  "'vertical'. Input value is {:s}."
@@ -4571,7 +4592,28 @@ class GLQRealGrid(SHGrid):
             if colorbar == 'vertical':
                 cax = divider.append_axes('right', size='2.5%', pad=0.15)
             elif colorbar == 'horizontal':
-                cax = divider.append_axes('bottom', size='5%', pad=0.5)
+                offset = 0.
+                if xticks != []:
+                    # add space for ticks and tick label
+                    offset += _mpl.rcParams['xtick.major.size'] + \
+                        _mpl.rcParams['xtick.major.pad']
+                    if tick_labelsize is not None:
+                        offset += tick_labelsize
+                    elif type(_mpl.rcParams['xtick.labelsize']) is str:
+                        offset += _mpl.rcParams['font.size']
+                    else:
+                        offset += _mpl.rcParams['xtick.labelsize']
+                if xlabel != '' and xlabel is not None:
+                    # add space for xlabel
+                    if axes_labelsize is not None:
+                        offset += axes_labelsize
+                    elif type(_mpl.rcParams['axes.labelsize']) is str:
+                        offset += _mpl.rcParams['font.size']
+                    else:
+                        offset += _mpl.rcParams['axes.labelsize']
+                offset += 1.5 * _mpl.rcParams['font.size']  # add extra
+                offset /= 72.  # convert to points
+                cax = divider.append_axes('bottom', size='5%', pad=offset)
             else:
                 raise ValueError("colorbar must be either 'horizontal' or "
                                  "'vertical'. Input value is {:s}."

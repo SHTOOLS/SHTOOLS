@@ -648,7 +648,7 @@ class SHMagGrid(object):
                         titlesize=None, colorbar=colorbar,
                         cmap=cmap, cmap_limits=cmap_limits,
                         cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
-                        cb_label=None, cb_tick_interval=cb_tick_interval,
+                        cb_tick_interval=cb_tick_interval,
                         grid=grid, axes_labelsize=axes_labelsize,
                         tick_labelsize=tick_labelsize,
                         show=show, fname=None)
