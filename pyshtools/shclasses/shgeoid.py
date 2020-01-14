@@ -120,16 +120,18 @@ class SHGeoid(object):
              cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
              cb_label='geoid, m', cb_tick_interval=None, grid=False,
              axes_labelsize=None, tick_labelsize=None, show=True, ax=None,
+             cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
              fname=None):
         """
         Plot the geoid.
 
         Usage
         -----
-        x.plot([projection, tick_interval, minor_tick_interval, xlabel, ylabel,
-                title, colorbar, cmap, cmap_limits, cmap_reverse, cb_triangles,
-                cb_label, cb_tick_interval, grid, titlesize, axes_labelsize,
-                tick_labelsize, ax, show, fname])
+        x.plot([projection, tick_interval, minor_tick_interval, ticks,
+                xlabel, ylabel, title, colorbar, cmap, cmap_limits,
+                cmap_reverse, cb_triangles, cb_label, cb_ylabel,
+                cb_tick_interval, cb_minor_tick_interval, grid, titlesize,
+                axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -142,6 +144,11 @@ class SHGeoid(object):
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -165,8 +172,12 @@ class SHGeoid(object):
             values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = 'geoid, m'
             Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
         cb_tick_interval : float, optional, default = None
-            Colorbar tick interval.
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -192,6 +203,8 @@ class SHGeoid(object):
                                cmap_reverse=cmap_reverse,
                                cb_triangles=cb_triangles, cb_label=cb_label,
                                cb_tick_interval=cb_tick_interval, grid=grid,
+                               cb_ylabel=cb_ylabel, ticks=ticks,
+                               cb_minor_tick_interval=cb_minor_tick_interval,
                                axes_labelsize=axes_labelsize,
                                tick_labelsize=tick_labelsize, ax=ax,
                                show=show, fname=fname)

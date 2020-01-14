@@ -120,15 +120,17 @@ class SHMagGrid(object):
                  cb_triangles='neither', cb_label='$B_r$, nT',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None,
+                 cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                  fname=None):
         """
         Plot the radial component of the magnetic field.
 
         Usage
         -----
-        x.plot_rad([projection, tick_interval, minor_tick_interval, xlabel,
-                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
-                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+        x.plot_rad([projection, tick_interval, minor_tick_interval, ticks,
+                    xlabel, ylabel, title, colorbar, cmap, cmap_limits,
+                    cmap_reverse, cb_triangles, cb_label, cb_ylabel,
+                    cb_tick_interval, cb_minor_tick_interval, grid, titlesize,
                     axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
@@ -142,6 +144,11 @@ class SHMagGrid(object):
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -165,8 +172,12 @@ class SHMagGrid(object):
             values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$B_r$, nT'
             Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
         cb_tick_interval : float, optional, default = None
-            Colorbar tick interval.
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -193,6 +204,8 @@ class SHMagGrid(object):
                              cb_triangles=cb_triangles, cb_label=cb_label,
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
+                             cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
 
@@ -203,15 +216,17 @@ class SHMagGrid(object):
                    cb_triangles='neither', cb_label='$B_\\theta$, nT',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None,
+                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    fname=None):
         """
         Plot the theta component of the magnetic field.
 
         Usage
         -----
-        x.plot_theta([projection, tick_interval, minor_tick_interval, xlabel,
-                      ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
-                      cb_triangles, cb_label, cb_tick_interval, grid,
+        x.plot_theta([projection, tick_interval, minor_tick_interval, ticks,
+                      xlabel, ylabel, title, colorbar, cmap, cmap_limits,
+                      cmap_reverse, cb_triangles, cb_label, cb_ylabel,
+                      cb_tick_interval, cb_minor_tick_interval, grid,
                       titlesize, axes_labelsize, tick_labelsize, ax, show,
                       fname])
 
@@ -226,6 +241,11 @@ class SHMagGrid(object):
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -249,8 +269,12 @@ class SHMagGrid(object):
             values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$B_\\theta$, nT'
             Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
         cb_tick_interval : float, optional, default = None
-            Colorbar tick interval.
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -277,6 +301,8 @@ class SHMagGrid(object):
                                cb_triangles=cb_triangles, cb_label=cb_label,
                                cb_tick_interval=cb_tick_interval, grid=grid,
                                axes_labelsize=axes_labelsize,
+                               cb_ylabel=cb_ylabel, ticks=ticks,
+                               cb_minor_tick_interval=cb_minor_tick_interval,
                                tick_labelsize=tick_labelsize, ax=ax,
                                show=show, fname=fname)
 
@@ -287,15 +313,17 @@ class SHMagGrid(object):
                  cb_triangles='neither', cb_label='$B_\phi$, nT',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None,
+                 cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                  fname=None):
         """
         Plot the phi component of the magnetic field.
 
         Usage
         -----
-        x.plot_phi([projection, tick_interval, minor_tick_interval, xlabel,
-                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
-                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+        x.plot_phi([projection, tick_interval, minor_tick_interval, ticks,
+                    xlabel, ylabel, title, colorbar, cmap, cmap_limits,
+                    cmap_reverse, cb_triangles, cb_label, cb_ylabel,
+                    cb_tick_interval, cb_minor_tick_interval, grid, titlesize,
                     axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
@@ -309,6 +337,11 @@ class SHMagGrid(object):
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -332,8 +365,12 @@ class SHMagGrid(object):
             values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$B_\phi$, nT'
             Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
         cb_tick_interval : float, optional, default = None
-            Colorbar tick interval.
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -360,6 +397,8 @@ class SHMagGrid(object):
                              cb_triangles=cb_triangles, cb_label=cb_label,
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
+                             cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
 
@@ -370,15 +409,17 @@ class SHMagGrid(object):
                    cb_triangles='neither', cb_label='$|B|$, nT',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None,
+                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    fname=None):
         """
         Plot the total magnetic intensity.
 
         Usage
         -----
-        x.plot_total([projection, tick_interval, minor_tick_interval, xlabel,
-                      ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
-                      cb_triangles, cb_label, cb_tick_interval, grid,
+        x.plot_total([projection, tick_interval, minor_tick_interval, ticks,
+                      xlabel, ylabel, title, colorbar, cmap, cmap_limits,
+                      cmap_reverse, cb_triangles, cb_label, cb_ylabel,
+                      cb_tick_interval, cb_minor_tick_interval, grid,
                       titlesize, axes_labelsize, tick_labelsize, ax, show,
                       fname])
 
@@ -393,6 +434,11 @@ class SHMagGrid(object):
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -416,8 +462,12 @@ class SHMagGrid(object):
             values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = '$|B|$, nT'
             Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
         cb_tick_interval : float, optional, default = None
-            Colorbar tick interval.
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -444,6 +494,8 @@ class SHMagGrid(object):
                                cb_triangles=cb_triangles, cb_label=cb_label,
                                cb_tick_interval=cb_tick_interval, grid=grid,
                                axes_labelsize=axes_labelsize,
+                               cb_ylabel=cb_ylabel, ticks=ticks,
+                               cb_minor_tick_interval=cb_minor_tick_interval,
                                tick_labelsize=tick_labelsize, ax=ax,
                                show=show, fname=fname)
 
@@ -454,15 +506,17 @@ class SHMagGrid(object):
                  cb_triangles='neither', cb_label='Potential, nT m',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None,
+                 cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                  fname=None):
         """
         Plot the gravitational potential.
 
         Usage
         -----
-        x.plot_pot([projection, tick_interval, minor_tick_interval, xlabel,
-                    ylabel, title, colorbar, cmap, cmap_limits, cmap_reverse,
-                    cb_triangles, cb_label, cb_tick_interval, grid, titlesize,
+        x.plot_pot([projection, tick_interval, minor_tick_interval, ticks,
+                    xlabel, ylabel, title, colorbar, cmap, cmap_limits,
+                    cmap_reverse, cb_triangles, cb_label, cb_ylabel,
+                    cb_tick_interval, cb_minor_tick_interval, grid, titlesize,
                     axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
@@ -476,6 +530,11 @@ class SHMagGrid(object):
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -499,8 +558,12 @@ class SHMagGrid(object):
             values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = 'Potential, nT m'
             Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
         cb_tick_interval : float, optional, default = None
-            Colorbar tick interval.
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -527,6 +590,8 @@ class SHMagGrid(object):
                              cb_triangles=cb_triangles, cb_label=cb_label,
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
+                             cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
 
@@ -535,17 +600,20 @@ class SHMagGrid(object):
              ylabel='Latitude', colorbar='horizontal', cmap='viridis',
              cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
              cb_tick_interval=None, grid=False, axes_labelsize=9,
-             tick_labelsize=8, show=True, ax=None, fname=None):
+             tick_labelsize=8, show=True, ax=None,
+             cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
+             fname=None):
         """
         Plot the three vector components of the magnetic field and total
         intensity.
 
         Usage
         -----
-        x.plot([projection, tick_interval, minor_tick_interval, xlabel,
+        x.plot([projection, tick_interval, minor_tick_interval, ticks, xlabel,
                 ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
-                cb_triangles, cb_tick_interval, grid, axes_labelsize,
-                tick_labelsize, ax, show, fname])
+                cb_triangles, cb_ylabel, cb_tick_interval,
+                cb_minor_tick_interval, grid, axes_labelsize, tick_labelsize,
+                ax, show, fname])
 
         Parameters
         ----------
@@ -558,6 +626,11 @@ class SHMagGrid(object):
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -577,8 +650,12 @@ class SHMagGrid(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
         cb_tick_interval : float, optional, default = None
-            Colorbar tick interval.
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = None
@@ -618,6 +695,8 @@ class SHMagGrid(object):
                       cb_tick_interval=cb_tick_interval,
                       grid=grid, axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
+                      cb_ylabel=cb_ylabel, ticks=ticks,
+                      cb_minor_tick_interval=cb_minor_tick_interval,
                       show=show, fname=None)
         self.plot_theta(projection=projection, ax=ax.flat[1],
                         tick_interval=tick_interval,
@@ -629,6 +708,8 @@ class SHMagGrid(object):
                         cb_tick_interval=cb_tick_interval,
                         grid=grid, axes_labelsize=axes_labelsize,
                         tick_labelsize=tick_labelsize,
+                        cb_ylabel=cb_ylabel, ticks=ticks,
+                        cb_minor_tick_interval=cb_minor_tick_interval,
                         show=show, fname=None)
         self.plot_phi(projection=projection, ax=ax.flat[2],
                       tick_interval=tick_interval,
@@ -640,6 +721,8 @@ class SHMagGrid(object):
                       cb_tick_interval=cb_tick_interval,
                       grid=grid, axes_labelsize=axes_labelsize,
                       tick_labelsize=tick_labelsize,
+                      cb_ylabel=cb_ylabel, ticks=ticks,
+                      cb_minor_tick_interval=cb_minor_tick_interval,
                       show=show, fname=None)
         self.plot_total(projection=projection, ax=ax.flat[3],
                         tick_interval=tick_interval,
@@ -651,6 +734,8 @@ class SHMagGrid(object):
                         cb_tick_interval=cb_tick_interval,
                         grid=grid, axes_labelsize=axes_labelsize,
                         tick_labelsize=tick_labelsize,
+                        cb_ylabel=cb_ylabel, ticks=ticks,
+                        cb_minor_tick_interval=cb_minor_tick_interval,
                         show=show, fname=None)
         fig.tight_layout(pad=0.5)
 
