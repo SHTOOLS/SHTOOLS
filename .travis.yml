@@ -50,6 +50,7 @@ install:
         gmt=6.0.0
   - source activate test-environment
   - pip install git+https://github.com/GenericMappingTools/pygmt.git
+  - pip install palettable
   - pip install --no-deps .
 
 script:
