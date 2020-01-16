@@ -46,8 +46,9 @@ install:
         xarray
         requests
         cartopy
+        gmt
   - source activate test-environment
-  - pip install git+https://github.com/GenericMappingTools/pygmt.git
+  # - pip install git+https://github.com/GenericMappingTools/pygmt.git
   - pip install --no-deps .
 
 script:
