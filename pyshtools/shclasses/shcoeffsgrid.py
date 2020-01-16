@@ -21,12 +21,12 @@ try:
     from cartopy.mpl.ticker import LongitudeFormatter as _LongitudeFormatter
     from cartopy.mpl.ticker import LatitudeFormatter as _LatitudeFormatter
 except ModuleNotFoundError:
-    print('\n*** Could not import the cartopy module. ***')
+    print('*** Could not import the cartopy module. ***')
 
 try:
     import pygmt as _pygmt
 except ModuleNotFoundError:
-    print('\n*** Could not import the pygmt module. ***')
+    print('*** Could not import the pygmt module. ***')
 
 
 # =============================================================================
@@ -3491,9 +3491,10 @@ class SHGrid(object):
              colorbar=None, cmap='viridis', cmap_limits=None,
              cmap_limits_complex=None, cmap_reverse=False,
              cb_triangles='neither', cb_label=None, cb_ylabel=None,
-             cb_tick_interval=None, cb_minor_tick_interval=None, grid=False,
-             axes_labelsize=None, tick_labelsize=None, xlabel=None,
-             ylabel=None, ax=None, ax2=None, show=True, fname=None):
+             cb_tick_interval=None, cb_minor_tick_interval=None,
+             cb_offset=None, grid=False, axes_labelsize=None,
+             tick_labelsize=None, xlabel=None, ylabel=None, ax=None, ax2=None,
+             show=True, fname=None):
         """
         Plot the raw data using a Cartopy projection or a matplotlib
         cylindrical projection.
@@ -3504,7 +3505,7 @@ class SHGrid(object):
                           ticks, xlabel, ylabel, title, colorbar, cmap,
                           cmap_limits, cmap_limits_complex, cmap_reverse,
                           cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
-                          cb_minor_tick_interval, grid, titlesize,
+                          cb_minor_tick_interval, cb_offset, grid, titlesize,
                           axes_labelsize, tick_labelsize, ax, ax2, show,
                           fname])
 
@@ -3559,6 +3560,9 @@ class SHGrid(object):
             Colorbar major tick and annotation interval.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -3616,7 +3620,7 @@ class SHGrid(object):
                 minor_tick_interval=minor_tick_interval,
                 cb_tick_interval=cb_tick_interval, cb_ylabel=cb_ylabel,
                 cb_minor_tick_interval=cb_minor_tick_interval, cmap=cmap,
-                cmap_limits=cmap_limits,
+                cmap_limits=cmap_limits, cb_offset=cb_offset,
                 cmap_limits_complex=cmap_limits_complex,
                 cmap_reverse=cmap_reverse)
         else:
@@ -3633,7 +3637,7 @@ class SHGrid(object):
                        xlabel=xlabel, ylabel=ylabel,
                        tick_interval=tick_interval, ticks=ticks,
                        minor_tick_interval=minor_tick_interval,
-                       titlesize=titlesize, cmap=cmap,
+                       titlesize=titlesize, cmap=cmap, cb_offset=cb_offset,
                        cb_tick_interval=cb_tick_interval,
                        cb_minor_tick_interval=cb_minor_tick_interval,
                        cmap_limits=cmap_limits, cb_ylabel=cb_ylabel,
@@ -3651,13 +3655,13 @@ class SHGrid(object):
 
     def plotgmt(self, fig=None, projection='mollweide', region='g',
                 width=None, unit='i', central_latitude=0, central_longitude=0,
-                center=None, grid=[30, 30], tick_interval=[30, 30],
+                grid=[30, 30], tick_interval=[30, 30],
                 minor_tick_interval=[None, None], ticks='WSen', title=None,
-                cmap='viridis', cmap_limits=None, cmap_reverse=False,
-                cmap_continuous=False, colorbar=None, cb_triangles='both',
-                cb_label=None, cb_ylabel=None, cb_tick_interval=None,
-                cb_minor_tick_interval=None, horizon=60, offset=[None, None],
-                fname=None):
+                cmap='viridis', cmap_limits=None, cmap_limits_complex=None,
+                cmap_reverse=False, cmap_continuous=False, colorbar=None,
+                cb_triangles='both', cb_label=None, cb_ylabel=None,
+                cb_tick_interval=None, cb_minor_tick_interval=None,
+                cb_offset=None, horizon=60, offset=[None, None], fname=None):
         """
         Plot projected data using the Generic Mapping Tools (pygmt).
 
@@ -3669,12 +3673,12 @@ class SHGrid(object):
         Usage
         -----
         fig = x.plotgmt([fig, projection, region, width, unit,
-                         central_latitude, central_longitude, center, grid,
+                         central_latitude, central_longitude, grid,
                          tick_interval, minor_tick_interval, ticks, title,
-                         cmap, cmap_limits, cmap_reverse, cmap_continuous,
-                         colorbar, cb_triangles, cb_label, cb_ylabel,
-                         cb_tick_interval, cb_minor_tick_interval, horizon,
-                         offset, fname])
+                         cmap, cmap_limits, cmap_limits_complex, cmap_reverse,
+                         cmap_continuous, colorbar, cb_triangles, cb_label,
+                         cb_ylabel, cb_tick_interval, cb_minor_tick_interval,
+                         cb_offset, horizon, offset, fname])
 
         Returns
         -------
@@ -3701,12 +3705,10 @@ class SHGrid(object):
         central_latitude : float, optional, default = 0
             The center of the projection used with hemispheric projections, or
             the standard parallel used with cylindrical projections.
-        center : list, optional, default = None
-            The center of the projection, which is by default given by
-            [central_longitude, central_latitude].
         grid : list, optional, default = [30, 30]
             Grid line interval [longitude, latitude] in degrees. If None, grid
-            lines will not be plotted for that axis.
+            lines will not be plotted for that axis. If true, gridlines will be
+            plotted at the same interval as the major ticks.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -3725,6 +3727,10 @@ class SHGrid(object):
         cmap_limits : list, optional, default = [self.min(), self.max()]
             Set the lower and upper limits of the data used by the colormap
             when plotting, and optionally an interval for each color.
+        cmap_limits_complex : list, optional, default = None
+            Set the lower and upper limits of the imaginary component of the
+            data used by the colormap, and optionally an interval for each
+            color band.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
@@ -3744,6 +3750,9 @@ class SHGrid(object):
             Annotation interval on the colorbar.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
         horizon : float, optional, default = 60
             The horizon (number of degrees from the center to the edge) used
             with the Gnomonic projection.
@@ -3780,133 +3789,30 @@ class SHGrid(object):
             Sinusoidal (sin)
             Van-der-Grinten (van)
         """
-        if center is None:
-            center = [central_longitude, central_latitude]
-
-        if projection.lower()[0:3] == 'mollweide'[0:3]:
-            proj_str = 'W' + str(center[0])
-        elif projection.lower()[0:3] == 'hammer'[0:3]:
-            proj_str = 'H' + str(center[0])
-        elif projection.lower()[0:3] == 'winkel-tripel'[0:3]:
-            proj_str = 'R' + str(center[0])
-        elif projection.lower()[0:3] == 'robinson'[0:3]:
-            proj_str = 'N' + str(center[0])
-        elif projection.lower()[0:3] == 'eckert'[0:3]:
-            proj_str = 'K' + str(center[0])
-        elif projection.lower()[0:3] == 'sinusoidal'[0:3]:
-            proj_str = 'I' + str(center[0])
-        elif projection.lower()[0:3] == 'van-der-grinten'[0:3]:
-            proj_str = 'V' + str(center[0])
-        elif projection.lower()[0:3] == 'lambert-azimuthal-equal-area'[0:3]:
-            proj_str = 'A' + str(center[0]) + '/' + str(center[1])
-        elif projection.lower()[0:3] == 'stereographic-equal-angle'[0:3]:
-            proj_str = 'S' + str(center[0]) + '/' + str(center[1])
-        elif projection.lower()[0:3] == 'orthographic'[0:3]:
-            proj_str = 'G' + str(center[0]) + '/' + str(center[1])
-        elif projection.lower()[0:3] == 'azimuthal-equidistant'[0:3]:
-            proj_str = 'E' + str(center[0]) + '/' + str(center[1])
-        elif projection.lower()[0:3] == 'gnomonic'[0:3]:
-            proj_str = 'F' + str(center[0]) + '/' + str(center[1]) + '/' \
-                + str(horizon)
-        elif projection.lower()[0:3] == 'miller-cylindrical'[0:3]:
-            proj_str = 'J' + str(central_longitude)
-        elif projection[0:3] == 'cylindrical-equidistant'[0:3]:
-            proj_str = 'Q' + str(center[0]) + '/' + str(center[1])
-        elif projection[0:3] == 'Cylindrical-equal-area'[0:3]:
-            proj_str = 'Y' + str(center[0]) + '/' + str(center[1])
-        elif projection[0:3] == 'CYLindrical-stereographic'[0:3]:
-            proj_str = 'Cyl_stere' + '/' + str(center[0]) + '/' \
-                + str(center[1])
-        else:
-            raise ValueError('Input projection is not recognized or '
-                             'supported. Input projection = {:s}'
-                             .format(repr(projection)))
-
+        if tick_interval is None:
+            tick_interval = [None, None]
+        if minor_tick_interval is None:
+            minor_tick_interval = [None, None]
+        if self.kind == 'complex' and title is None:
+            title = ['Real component', 'Imaginary component']
+        if grid is True:
+            grid = tick_interval
         if width is None:
-            width = str(_mpl.rcParams['figure.figsize'][0])
-            proj_str += '/' + str(width) + 'i'
-        else:
-            proj_str += '/' + str(width) + unit
+            width = _mpl.rcParams['figure.figsize'][0]
 
-        framex = 'x'
-        framey = 'y'
-        if grid[0] is not None:
-            framex += 'g' + str(grid[0])
-        if grid[1] is not None:
-            framey += 'g' + str(grid[1])
-        if tick_interval[0] is not None:
-            framex += 'a' + str(tick_interval[0])
-        if tick_interval[1] is not None:
-            framey += 'a' + str(tick_interval[1])
-        if minor_tick_interval[0] is not None:
-            framex += 'f' + str(minor_tick_interval[0])
-        if minor_tick_interval[1] is not None:
-            framey += 'f' + str(minor_tick_interval[1])
-        if title is not None:
-            ticks += '+t"{:s}"'.format(title)
-        frame = [framex, framey, ticks]
-
-        if cmap_limits is None:
-            cmap_limits = [self.min(), self.max()]
-
-        position = None
-        cb_str = None
-        if colorbar is not None:
-            if colorbar == 'vertical':
-                position = "JMR"
-            elif colorbar == 'horizontal':
-                position = "JBC+h"
-            else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
-            if cb_triangles is not None:
-                if cb_triangles == 'neither':
-                    pass
-                elif cb_triangles == 'both':
-                    position += '+ebf'
-                elif cb_triangles == 'min':
-                    position += '+eb'
-                elif cb_triangles == 'max':
-                    position += '+ef'
-                else:
-                    raise ValueError("cb_triangles must be 'neither', 'both' "
-                                     "'min' or 'max'. Input value is {:s}."
-                                     .format(repr(cb_triangles)))
-            cb_str = []
-            x_str = 'x'
-            if cb_label is not None:
-                cb_str.extend(['x+l"{:s}"'.format(cb_label)])
-            if cb_tick_interval is not None:
-                x_str += 'a' + str(cb_tick_interval)
-            if cb_minor_tick_interval is not None:
-                x_str += 'f' + str(cb_minor_tick_interval)
-            cb_str.extend([x_str])
-            if cb_ylabel is not None:
-                cb_str.extend(['y+l"{:s}"'.format(cb_ylabel)])
-
-        if offset[0] is not None:
-            xshift = str(offset[0]) + unit
-        else:
-            xshift = False
-        if offset[1] is not None:
-            yshift = str(offset[1]) + unit
-        else:
-            yshift = False
-
-        if fig is None:
-            figure = _pygmt.Figure()
-        else:
-            figure = fig
-
-        figure = self._plot_pygmt(fig=figure, cmap=cmap,
-                                  cmap_limits=cmap_limits,
-                                  cmap_reverse=cmap_reverse,
-                                  cmap_continuous=cmap_continuous,
-                                  region=region, proj_str=proj_str,
-                                  frame=frame, colorbar=colorbar,
-                                  position=position, cb_str=cb_str,
-                                  xshift=xshift, yshift=yshift)
+        figure = self._plot_pygmt(
+            fig=fig, projection=projection, region=region, width=width,
+            unit=unit, central_latitude=central_latitude,
+            central_longitude=central_longitude, grid=grid,
+            tick_interval=tick_interval,
+            minor_tick_interval=minor_tick_interval, ticks=ticks, title=title,
+            cmap=cmap, cmap_limits=cmap_limits,
+            cmap_limits_complex=cmap_limits_complex, cmap_reverse=cmap_reverse,
+            cmap_continuous=cmap_continuous, colorbar=colorbar,
+            cb_triangles=cb_triangles, cb_label=cb_label, cb_ylabel=cb_ylabel,
+            cb_tick_interval=cb_tick_interval, cb_offset=cb_offset,
+            cb_minor_tick_interval=cb_minor_tick_interval, horizon=horizon,
+            offset=offset)
 
         if fname is not None:
             figure.savefig(fname)
@@ -4067,7 +3973,7 @@ class DHRealGrid(SHGrid):
               titlesize=None, cmap=None, tick_interval=None, ticks=None,
               minor_tick_interval=None, cb_tick_interval=None, cb_ylabel=None,
               cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
-              cmap_limits_complex=None):
+              cmap_limits_complex=None, cb_offset=None):
         """Plot the raw data as a matplotlib simple cylindrical projection,
            or with Cartopy when projection is specified."""
         if ax is None:
@@ -4128,7 +4034,10 @@ class DHRealGrid(SHGrid):
             cmap_limits = [self.min(), self.max()]
         if len(cmap_limits) == 3:
             num = int((cmap_limits[1] - cmap_limits[0]) / cmap_limits[2])
-            cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+            if isinstance(cmap, _mpl.colors.Colormap):
+                cmap_scaled = cmap._resample(num)
+            else:
+                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
         else:
             cmap_scaled = _mpl.cm.get_cmap(cmap)
         if cmap_reverse:
@@ -4245,30 +4154,39 @@ class DHRealGrid(SHGrid):
 
         axes.tick_params(bottom=bottom, top=top, right=right, left=left,
                          labelbottom=labelbottom, labeltop=labeltop,
-                         labelleft=labelleft, labelright=labelright)
+                         labelleft=labelleft, labelright=labelright,
+                         which='both')
         axes.tick_params(which='major', labelsize=tick_labelsize)
         if title is not None:
             axes.set_title(title, fontsize=titlesize)
 
         # plot colorbar
         if colorbar is not None:
+            if cb_offset is None:
+                if colorbar == 'vertical':
+                    offset = 0.15
+                else:
+                    offset = 0.
+                    if xticks != [] and bottom and cb_space:
+                        # add space for ticks
+                        offset += _mpl.rcParams['xtick.major.size']
+                    if xticks != [] and labelbottom and cb_space:
+                        offset += _mpl.rcParams['xtick.major.pad']
+                        offset += tick_labelsize
+                    if xlabel != '' and xlabel is not None and \
+                            projection is None:
+                        # add space for xlabel
+                        offset += axes_labelsize
+                    offset += 1.5 * _mpl.rcParams['font.size']  # add extra
+                    offset /= 72.  # convert to inches
+            else:
+                offset = cb_offset / 72.0  # convert to inches
+
             divider = _make_axes_locatable(axes)
             if colorbar == 'vertical':
-                cax = divider.append_axes('right', size='2.5%', pad=0.15,
+                cax = divider.append_axes('right', size='2.5%', pad=offset,
                                           axes_class=_plt.Axes)
             elif colorbar == 'horizontal':
-                offset = 0.
-                if xticks != [] and bottom and cb_space:
-                    # add space for ticks
-                    offset += _mpl.rcParams['xtick.major.size']
-                if xticks != [] and labelbottom and cb_space:
-                    offset += _mpl.rcParams['xtick.major.pad']
-                    offset += tick_labelsize
-                if xlabel != '' and xlabel is not None and projection is None:
-                    # add space for xlabel
-                    offset += axes_labelsize
-                offset += 1.5 * _mpl.rcParams['font.size']  # add extra
-                offset /= 72.  # convert to points
                 cax = divider.append_axes('bottom', size='5%', pad=offset,
                                           axes_class=_plt.Axes)
             else:
@@ -4282,10 +4200,10 @@ class DHRealGrid(SHGrid):
             if cb_ylabel is not None:
                 if colorbar == 'vertical':
                     cbar.ax.xaxis.set_label_position('top')
-                    cbar.ax.set_xlabel(cb_ylabel, fontsize=axes_labelsize)
+                    cbar.ax.set_xlabel(cb_ylabel, fontsize=tick_labelsize)
                 else:
                     cbar.ax.yaxis.set_label_position('right')
-                    cbar.ax.set_ylabel(cb_ylabel, fontsize=axes_labelsize,
+                    cbar.ax.set_ylabel(cb_ylabel, fontsize=tick_labelsize,
                                        rotation=0., labelpad=axes_labelsize/2.,
                                        va='center', ha='left')
             if cb_ticks is not None:
@@ -4300,21 +4218,146 @@ class DHRealGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, fig, cmap, cmap_limits, cmap_reverse,
-                    cmap_continuous, region, proj_str, frame, colorbar,
-                    position, cb_str, xshift, yshift):
+    def _plot_pygmt(self, fig=None, projection=None, region=None, width=None,
+                    unit=None, central_latitude=None, central_longitude=None,
+                    grid=None, tick_interval=None, minor_tick_interval=None,
+                    ticks=None, title=None, cmap=None, cmap_limits=None,
+                    cmap_limits_complex=None, cmap_reverse=None,
+                    cmap_continuous=None, colorbar=None, cb_triangles=None,
+                    cb_label=None, cb_ylabel=None, cb_tick_interval=None,
+                    cb_minor_tick_interval=None, horizon=None, offset=None,
+                    cb_offset=None):
         """
         Plot projected data using pygmt.
         """
+        center = [central_longitude, central_latitude]
+
+        if projection.lower()[0:3] == 'mollweide'[0:3]:
+            proj_str = 'W' + str(center[0])
+        elif projection.lower()[0:3] == 'hammer'[0:3]:
+            proj_str = 'H' + str(center[0])
+        elif projection.lower()[0:3] == 'winkel-tripel'[0:3]:
+            proj_str = 'R' + str(center[0])
+        elif projection.lower()[0:3] == 'robinson'[0:3]:
+            proj_str = 'N' + str(center[0])
+        elif projection.lower()[0:3] == 'eckert'[0:3]:
+            proj_str = 'K' + str(center[0])
+        elif projection.lower()[0:3] == 'sinusoidal'[0:3]:
+            proj_str = 'I' + str(center[0])
+        elif projection.lower()[0:3] == 'van-der-grinten'[0:3]:
+            proj_str = 'V' + str(center[0])
+        elif projection.lower()[0:3] == 'lambert-azimuthal-equal-area'[0:3]:
+            proj_str = 'A' + str(center[0]) + '/' + str(center[1])
+        elif projection.lower()[0:3] == 'stereographic-equal-angle'[0:3]:
+            proj_str = 'S' + str(center[0]) + '/' + str(center[1])
+        elif projection.lower()[0:3] == 'orthographic'[0:3]:
+            proj_str = 'G' + str(center[0]) + '/' + str(center[1])
+        elif projection.lower()[0:3] == 'azimuthal-equidistant'[0:3]:
+            proj_str = 'E' + str(center[0]) + '/' + str(center[1])
+        elif projection.lower()[0:3] == 'gnomonic'[0:3]:
+            proj_str = 'F' + str(center[0]) + '/' + str(center[1]) + '/' \
+                + str(horizon)
+        elif projection.lower()[0:3] == 'miller-cylindrical'[0:3]:
+            proj_str = 'J' + str(central_longitude)
+        elif projection[0:3] == 'cylindrical-equidistant'[0:3]:
+            proj_str = 'Q' + str(center[0]) + '/' + str(center[1])
+        elif projection[0:3] == 'Cylindrical-equal-area'[0:3]:
+            proj_str = 'Y' + str(center[0]) + '/' + str(center[1])
+        elif projection[0:3] == 'CYLindrical-stereographic'[0:3]:
+            proj_str = 'Cyl_stere' + '/' + str(center[0]) + '/' \
+                + str(center[1])
+        else:
+            raise ValueError('Input projection is not recognized or '
+                             'supported. Input projection = {:s}'
+                             .format(repr(projection)))
+
+        proj_str += '/' + str(width) + unit
+
+        framex = 'x'
+        framey = 'y'
+        if grid[0] is not None:
+            framex += 'g' + str(grid[0])
+        if grid[1] is not None:
+            framey += 'g' + str(grid[1])
+        if tick_interval[0] is not None:
+            framex += 'a' + str(tick_interval[0])
+        if tick_interval[1] is not None:
+            framey += 'a' + str(tick_interval[1])
+        if minor_tick_interval[0] is not None:
+            framex += 'f' + str(minor_tick_interval[0])
+        if minor_tick_interval[1] is not None:
+            framey += 'f' + str(minor_tick_interval[1])
+        if title is not None:
+            ticks += '+t"{:s}"'.format(title)
+        frame = [framex, framey, ticks]
+
+        position = None
+        cb_str = None
+        if colorbar is not None:
+            if colorbar == 'vertical':
+                position = "JMR"
+            elif colorbar == 'horizontal':
+                position = "JBC+h"
+            else:
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
+                                 .format(repr(colorbar)))
+            if cb_offset is not None:
+                if colorbar == 'horizontal':
+                    position += '+o0p/' + str(cb_offset) + 'p'
+                else:
+                    position += '+o' + str(cb_offset) + 'p/0p'
+            if cb_triangles is not None:
+                if cb_triangles == 'neither':
+                    pass
+                elif cb_triangles == 'both':
+                    position += '+ebf'
+                elif cb_triangles == 'min':
+                    position += '+eb'
+                elif cb_triangles == 'max':
+                    position += '+ef'
+                else:
+                    raise ValueError("cb_triangles must be 'neither', 'both' "
+                                     "'min' or 'max'. Input value is {:s}."
+                                     .format(repr(cb_triangles)))
+            cb_str = []
+            x_str = 'x'
+            if cb_label is not None:
+                cb_str.extend(['x+l"{:s}"'.format(cb_label)])
+            if cb_tick_interval is not None:
+                x_str += 'a' + str(cb_tick_interval)
+            if cb_minor_tick_interval is not None:
+                x_str += 'f' + str(cb_minor_tick_interval)
+            cb_str.extend([x_str])
+            if cb_ylabel is not None:
+                cb_str.extend(['y+l"{:s}"'.format(cb_ylabel)])
+
+        if offset[0] is not None:
+            xshift = str(offset[0]) + unit
+        else:
+            xshift = False
+        if offset[1] is not None:
+            yshift = str(offset[1]) + unit
+        else:
+            yshift = False
+
+        if fig is None:
+            figure = _pygmt.Figure()
+        else:
+            figure = fig
+
+        if cmap_limits is None:
+            cmap_limits = [self.min(), self.max()]
+
         _pygmt.makecpt(series=cmap_limits, cmap=cmap, reverse=cmap_reverse,
                        continuous=cmap_continuous)
-        fig.grdimage(self.to_xarray(), region=region, projection=proj_str,
-                     frame=frame, X=xshift, Y=yshift)
+        figure.grdimage(self.to_xarray(), region=region, projection=proj_str,
+                        frame=frame, X=xshift, Y=yshift)
 
         if colorbar is not None:
-            fig.colorbar(position=position, frame=cb_str)
+            figure.colorbar(position=position, frame=cb_str)
 
-        return fig
+        return figure
 
 
 # ---- Complex Driscoll and Healy grid class ----
@@ -4412,7 +4455,8 @@ class DHComplexGrid(SHGrid):
               titlesize=None, cmap=None, ax=None, ax2=None,
               tick_interval=None, minor_tick_interval=None, cb_ylabel=None,
               cb_tick_interval=None, cb_minor_tick_interval=None,
-              cmap_limits=None, cmap_reverse=None, cmap_limits_complex=None):
+              cmap_limits=None, cmap_reverse=None, cmap_limits_complex=None,
+              cb_offset=None):
         """Plot the raw data as a matplotlib simple cylindrical projection,
            or with Cartopy when projection is specified."""
         if ax is None:
@@ -4443,7 +4487,7 @@ class DHComplexGrid(SHGrid):
                             cb_tick_interval=cb_tick_interval,
                             cb_minor_tick_interval=cb_minor_tick_interval,
                             grid=grid, axes_labelsize=axes_labelsize,
-                            tick_labelsize=tick_labelsize,
+                            tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                             title=title[0], titlesize=titlesize,
                             xlabel=xlabel, ylabel=ylabel, cb_ylabel=cb_ylabel,
                             cmap=cmap, cmap_limits=cmap_limits,
@@ -4459,19 +4503,69 @@ class DHComplexGrid(SHGrid):
                             tick_labelsize=tick_labelsize, cb_ylabel=cb_ylabel,
                             title=title[1], titlesize=titlesize,
                             cmap=cmap, cmap_limits=cmap_limits_complex,
-                            cmap_reverse=cmap_reverse,
+                            cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                             xlabel=xlabel, ylabel=ylabel,
                             ax=axcomplex)
 
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, **kwargs):
+    def _plot_pygmt(self, fig=None, projection=None, region=None, width=None,
+                    unit=None, central_latitude=None, central_longitude=None,
+                    grid=None, tick_interval=None, minor_tick_interval=None,
+                    ticks=None, title=None, cmap=None, cmap_limits=None,
+                    cmap_limits_complex=None, cmap_reverse=None,
+                    cmap_continuous=None, colorbar=None, cb_triangles=None,
+                    cb_label=None, cb_ylabel=None, cb_tick_interval=None,
+                    cb_minor_tick_interval=None, horizon=None, offset=None,
+                    cb_offset=None):
         """
-        Plot the projected data using pygmt.
+        Plot projected data using pygmt.
         """
-        raise NotImplementedError('plotgmt() does not support the plotting '
-                                  'of complex data.')
+        if fig is None:
+            figure = _pygmt.Figure()
+        else:
+            figure = fig
+
+        self.to_imag().plotgmt(fig=figure, projection=projection,
+                               region=region, width=width, unit=unit,
+                               central_latitude=central_latitude,
+                               central_longitude=central_longitude,
+                               grid=grid, tick_interval=tick_interval,
+                               minor_tick_interval=minor_tick_interval,
+                               ticks=ticks, title=title[1], cmap=cmap,
+                               cmap_limits=cmap_limits_complex,
+                               cmap_reverse=cmap_reverse, cb_offset=cb_offset,
+                               cmap_continuous=cmap_continuous,
+                               colorbar=colorbar, cb_triangles=cb_triangles,
+                               cb_label=cb_label, cb_ylabel=cb_ylabel,
+                               cb_tick_interval=cb_tick_interval,
+                               cb_minor_tick_interval=cb_minor_tick_interval,
+                               horizon=horizon, offset=offset)
+
+        offset_real = _np.copy(offset)
+        if offset_real[1] is None:
+            offset_real[1] = width / 2. + 50. / 72.
+        else:
+            offset_real[1] += width / 2. + 50. / 72.
+
+        self.to_real().plotgmt(fig=figure, projection=projection,
+                               region=region, width=width, unit=unit,
+                               central_latitude=central_latitude,
+                               central_longitude=central_longitude,
+                               grid=grid, tick_interval=tick_interval,
+                               minor_tick_interval=minor_tick_interval,
+                               ticks=ticks, title=title[0], cmap=cmap,
+                               cmap_limits=cmap_limits, cb_offset=cb_offset,
+                               cmap_reverse=cmap_reverse,
+                               cmap_continuous=cmap_continuous,
+                               colorbar=colorbar, cb_triangles=cb_triangles,
+                               cb_label=cb_label, cb_ylabel=cb_ylabel,
+                               cb_tick_interval=cb_tick_interval,
+                               cb_minor_tick_interval=cb_minor_tick_interval,
+                               horizon=horizon, offset=offset_real)
+
+        return figure
 
 
 # ---- Real Gauss-Legendre Quadrature grid class ----
@@ -4566,13 +4660,13 @@ class GLQRealGrid(SHGrid):
               title=None, titlesize=None, cmap=None, tick_interval=None,
               minor_tick_interval=None, cb_tick_interval=None, ticks=None,
               cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
-              cmap_limits_complex=None, cb_ylabel=None):
+              cmap_limits_complex=None, cb_ylabel=None, cb_offset=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
                 if colorbar == 'horizontal':
                     scale = 0.67
-                elif colorbar.lower == 'vertical':
+                elif colorbar == 'vertical':
                     scale = 0.5
                 else:
                     raise ValueError("colorbar must be either 'horizontal' or "
@@ -4612,7 +4706,10 @@ class GLQRealGrid(SHGrid):
             cmap_limits = [self.min(), self.max()]
         if len(cmap_limits) == 3:
             num = int((cmap_limits[1] - cmap_limits[0]) / cmap_limits[2])
-            cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+            if isinstance(cmap, _mpl.colors.Colormap):
+                cmap_scaled = cmap._resample(num)
+            else:
+                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
         else:
             cmap_scaled = _mpl.cm.get_cmap(cmap)
         if cmap_reverse:
@@ -4695,29 +4792,37 @@ class GLQRealGrid(SHGrid):
         axes.set_yticks(minor_yticks, minor=True)
         axes.tick_params(bottom=bottom, top=top, right=right, left=left,
                          labelbottom=labelbottom, labeltop=labeltop,
-                         labelleft=labelleft, labelright=labelright)
+                         labelleft=labelleft, labelright=labelright,
+                         which='both')
         axes.grid(grid, which='major')
         if title is not None:
             axes.set_title(title, fontsize=titlesize)
 
         # plot colorbar
         if colorbar is not None:
+            if cb_offset is None:
+                if colorbar == 'vertical':
+                    offset = 0.15
+                else:
+                    offset = 0.
+                    if xticks != [] and bottom:
+                        # add space for ticks
+                        offset += _mpl.rcParams['xtick.major.size']
+                    if xticks != [] and labelbottom:
+                        offset += _mpl.rcParams['xtick.major.pad']
+                        offset += tick_labelsize
+                    if xlabel != '' and xlabel is not None:
+                        # add space for xlabel
+                        offset += axes_labelsize
+                    offset += 1.5 * _mpl.rcParams['font.size']  # add extra
+                    offset /= 72.  # convert to inches
+            else:
+                offset = cb_offset / 72.  # convert to inches
+
             divider = _make_axes_locatable(axes)
             if colorbar == 'vertical':
-                cax = divider.append_axes('right', size='2.5%', pad=0.15)
+                cax = divider.append_axes('right', size='2.5%', pad=offset)
             elif colorbar == 'horizontal':
-                offset = 0.
-                if xticks != [] and bottom:
-                    # add space for ticks
-                    offset += _mpl.rcParams['xtick.major.size']
-                if xticks != [] and labelbottom:
-                    offset += _mpl.rcParams['xtick.major.pad']
-                    offset += tick_labelsize
-                if xlabel != '' and xlabel is not None:
-                    # add space for xlabel
-                    offset += axes_labelsize
-                offset += 1.5 * _mpl.rcParams['font.size']  # add extra
-                offset /= 72.  # convert to points
                 cax = divider.append_axes('bottom', size='5%', pad=offset)
             else:
                 raise ValueError("colorbar must be either 'horizontal' or "
@@ -4730,7 +4835,7 @@ class GLQRealGrid(SHGrid):
             if cb_ylabel is not None:
                 if colorbar == 'vertical':
                     cbar.ax.xaxis.set_label_position('top')
-                    cbar.ax.set_xlabel(cb_ylabel, fontsize=axes_labelsize)
+                    cbar.ax.set_xlabel(cb_ylabel, fontsize=tick_labelsize)
                 else:
                     cbar.ax.yaxis.set_label_position('right')
                     cbar.ax.set_ylabel(cb_ylabel, fontsize=axes_labelsize,
@@ -4844,7 +4949,7 @@ class GLQComplexGrid(SHGrid):
               titlesize=None, cmap=None, tick_interval=None, cb_ylabel=None,
               minor_tick_interval=None, cb_tick_interval=None,
               cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
-              cmap_limits_complex=None):
+              cmap_limits_complex=None, cb_offset=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -4874,7 +4979,7 @@ class GLQComplexGrid(SHGrid):
                             cb_tick_interval=cb_tick_interval,
                             cb_minor_tick_interval=cb_minor_tick_interval,
                             grid=grid, axes_labelsize=axes_labelsize,
-                            tick_labelsize=tick_labelsize,
+                            tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                             title=title[0], titlesize=titlesize,
                             xlabel=xlabel, ylabel=ylabel, cb_ylabel=cb_ylabel,
                             cmap=cmap, cmap_limits=cmap_limits,
@@ -4887,7 +4992,7 @@ class GLQComplexGrid(SHGrid):
                             cb_tick_interval=cb_tick_interval,
                             cb_minor_tick_interval=cb_minor_tick_interval,
                             grid=grid, axes_labelsize=axes_labelsize,
-                            tick_labelsize=tick_labelsize,
+                            tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                             title=title[1], titlesize=titlesize,
                             cmap=cmap, cmap_limits=cmap_limits_complex,
                             cmap_reverse=cmap_reverse, cb_ylabel=cb_ylabel,

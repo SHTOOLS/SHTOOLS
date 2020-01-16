@@ -806,11 +806,11 @@ class SHWindow(object):
                      tick_interval=[60, 45], minor_tick_interval=[None, None],
                      ticks='WSen', xlabel='Longitude', ylabel='Latitude',
                      title=True, colorbar=None, cmap='viridis',
-                     cmap_limits=None, cmap_reverse=False,
+                     cmap_limits=None, cmap_reverse=False, cb_offset=None,
                      cb_triangles='neither', cb_label=None, cb_ylabel=None,
                      cb_tick_interval=None, cb_minor_tick_interval=None,
                      grid=False, loss=False, axes_labelsize=None,
-                     tick_labelsize=None, titlesize=8, show=True, ax=None,
+                     tick_labelsize=None, titlesize=9, show=True, ax=None,
                      fname=None):
         """
         Plot the best-concentrated localization windows.
@@ -821,9 +821,9 @@ class SHWindow(object):
                               minor_tick_interval, ticks, xlabel, ylabel,
                               title, colorbar, cmap, cmap_limits, cmap_reverse,
                               cb_triangles, cb_label, cb_ylabel,
-                              cb_tick_interval, cb_minor_tick_interval, grid,
-                              loss, titlesize, axes_labelsize, tick_labelsize,
-                              ax, show, fname])
+                              cb_tick_interval, cb_minor_tick_interval,
+                              cb_offset, grid, loss, titlesize, axes_labelsize,
+                              tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -879,12 +879,15 @@ class SHWindow(object):
             Colorbar major tick and annotation interval.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
         grid : bool, optional, default = False
             If True, plot grid lines.
         loss : bool, optional, default = False
             When plotting titles, provide the loss factor instead of the
             concentration factor (loss=1-concentration).
-        titlesize : int, optional, default = 8
+        titlesize : int, optional, default = 9
             The font size for the subplot titles.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
@@ -905,7 +908,7 @@ class SHWindow(object):
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = (_mpl.rcParams['figure.figsize'][0],
                    _mpl.rcParams['figure.figsize'][0]
-                   * 0.55 * nrows / ncolumns + 0.41)
+                   * 0.6 * nrows / ncolumns + 0.41)
 
         if ax is None:
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize,
@@ -948,7 +951,7 @@ class SHWindow(object):
                            tick_labelsize=tick_labelsize,
                            colorbar=colorbar, cmap_limits=cmap_limits,
                            cb_triangles=cb_triangles, cb_label=cb_label,
-                           cb_ylabel=cb_ylabel,
+                           cb_ylabel=cb_ylabel, cb_offset=cb_offset,
                            cb_tick_interval=cb_tick_interval,
                            cb_minor_tick_interval=cb_minor_tick_interval,
                            titlesize=titlesize, ax=axtemp)
@@ -981,15 +984,15 @@ class SHWindow(object):
                      maxcolumns=3, xscale='lin', yscale='log', grid=True,
                      xlim=(None, None), ylim=(None, None), show=True,
                      title=True, axes_labelsize=None, tick_labelsize=None,
-                     title_labelsize=None, ax=None, fname=None):
+                     loss=False, titlesize=9, ax=None, fname=None):
         """
         Plot the spectra of the best-concentrated localization windows.
 
         Usage
         -----
         x.plot_spectra(nwin, [convention, unit, base, maxcolumns, xscale,
-                              yscale, grid, xlim, ylim, show, title,
-                              axes_labelsize, tick_labelsize, title_labelsize,
+                              yscale, grid, xlim, ylim, show, title, loss,
+                              axes_labelsize, tick_labelsize, titlesize,
                               ax, fname])
 
         Parameters
@@ -1025,11 +1028,14 @@ class SHWindow(object):
         title : bool, optional, default = True
             If True, plot a legend on top of each subplot providing the taper
             number and 1 minus the concentration factor.
+        loss : bool, optional, default = False
+            When plotting titles, provide the loss factor instead of the
+            concentration factor (loss=1-concentration).
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        title_labelsize : int, optional, default = None
+        titlesize : int, optional, default = 9
             The font size for the subplot titles.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
@@ -1040,8 +1046,8 @@ class SHWindow(object):
             axes_labelsize = _mpl.rcParams['axes.labelsize']
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-        if title_labelsize is None:
-            title_labelsize = _mpl.rcParams['axes.titlesize']
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
 
         degrees = self.degrees()
         spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
@@ -1051,7 +1057,7 @@ class SHWindow(object):
         nrows = _np.ceil(nwin / ncolumns).astype(int)
         figsize = (_mpl.rcParams['figure.figsize'][0],
                    _mpl.rcParams['figure.figsize'][0]
-                   * 0.7 * nrows / ncolumns + 0.41)
+                   * 0.8 * nrows / ncolumns + 0.41)
 
         if ax is None:
             fig, axes = _plt.subplots(nrows, ncolumns, figsize=figsize,
@@ -1118,10 +1124,14 @@ class SHWindow(object):
             axtemp.minorticks_on()
             axtemp.grid(grid, which='major')
             axtemp.tick_params(labelsize=tick_labelsize)
-            if title is True:
-                axtemp.set_title('#{:d} [loss={:2.2g}]'
-                                 .format(itaper, 1-evalue),
-                                 fontsize=title_labelsize)
+
+            if title:
+                if loss:
+                    title_str = '#{:d} [loss={:2.2g}]'.format(itaper, 1-evalue)
+                else:
+                    title_str = '#{:d} [concentration={:2.2g}]'.format(
+                        itaper, evalue)
+                axtemp.set_title(title_str, fontsize=titlesize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)

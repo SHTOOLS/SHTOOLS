@@ -45,7 +45,9 @@ install:
         astropy
         xarray
         requests
+        cartopy
   - source activate test-environment
+  - pip install git+https://github.com/GenericMappingTools/pygmt.git
   - pip install --no-deps .
 
 script:

@@ -88,9 +88,10 @@ SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is
 
 To get started, check out the following Python tutorial notebooks:
 
-* [Introduction 1: Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
-* [Introduction 2: Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
-* [Introduction 3: Gravity and Magnetic Fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-3.html)
+* [Introduction to Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
+* [Introduction to Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
+* [Introduction to Gravity and Magnetic Fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-3.html)
+* [Introduction to Plotting Maps](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-4.html)
 
 ### DEVELOPERS ###
 

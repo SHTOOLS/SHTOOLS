@@ -135,7 +135,7 @@ class SHGravGrid(object):
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='$g_r$, m s$^{-2}$',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
-                 tick_labelsize=None, show=True, ax=None,
+                 tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                  fname=None):
         """
@@ -146,8 +146,9 @@ class SHGravGrid(object):
         x.plot_rad([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, grid, titlesize,
-                    axes_labelsize, tick_labelsize, ax, show, fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
+                    titlesize, axes_labelsize, tick_labelsize, ax, show,
+                    fname])
 
         Parameters
         ----------
@@ -194,6 +195,9 @@ class SHGravGrid(object):
             Colorbar major tick and annotation interval.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -216,7 +220,7 @@ class SHGravGrid(object):
                              xlabel=xlabel, ylabel=ylabel, title=title,
                              titlesize=titlesize, colorbar=colorbar,
                              cmap=cmap, cmap_limits=cmap_limits,
-                             cmap_reverse=cmap_reverse,
+                             cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                              cb_triangles=cb_triangles, cb_label=cb_label,
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
@@ -231,7 +235,7 @@ class SHGravGrid(object):
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label='$g_\\theta$, m s$^{-2}$',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
-                   tick_labelsize=None, show=True, ax=None,
+                   tick_labelsize=None, show=True, ax=None, cb_offset=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    fname=None):
         """
@@ -242,9 +246,9 @@ class SHGravGrid(object):
         x.plot_theta([projection, tick_interval, minor_tick_interval, ticks,
                       xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                      cb_tick_interval, cb_minor_tick_interval, grid,
-                      titlesize, axes_labelsize, tick_labelsize, ax, show,
-                      fname])
+                      cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                      grid, titlesize, axes_labelsize, tick_labelsize, ax,
+                      show, fname])
 
         Parameters
         ----------
@@ -291,6 +295,9 @@ class SHGravGrid(object):
             Colorbar major tick and annotation interval.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -313,7 +320,7 @@ class SHGravGrid(object):
                                xlabel=xlabel, ylabel=ylabel, title=title,
                                titlesize=titlesize, colorbar=colorbar,
                                cmap=cmap, cmap_limits=cmap_limits,
-                               cmap_reverse=cmap_reverse,
+                               cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                                cb_triangles=cb_triangles, cb_label=cb_label,
                                cb_tick_interval=cb_tick_interval, grid=grid,
                                axes_labelsize=axes_labelsize,
@@ -328,7 +335,7 @@ class SHGravGrid(object):
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='$g_\phi$, m s$^{-2}$',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
-                 tick_labelsize=None, show=True, ax=None,
+                 tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                  fname=None):
         """
@@ -339,8 +346,9 @@ class SHGravGrid(object):
         x.plot_phi([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, grid, titlesize,
-                    axes_labelsize, tick_labelsize, ax, show, fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
+                    titlesize, axes_labelsize, tick_labelsize, ax, show,
+                    fname])
 
         Parameters
         ----------
@@ -387,6 +395,9 @@ class SHGravGrid(object):
             Colorbar major tick and annotation interval.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -409,7 +420,7 @@ class SHGravGrid(object):
                              xlabel=xlabel, ylabel=ylabel, title=title,
                              titlesize=titlesize, colorbar=colorbar,
                              cmap=cmap, cmap_limits=cmap_limits,
-                             cmap_reverse=cmap_reverse,
+                             cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                              cb_triangles=cb_triangles, cb_label=cb_label,
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
@@ -424,7 +435,7 @@ class SHGravGrid(object):
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label='Gravity disturbance',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
-                   tick_labelsize=None, show=True, ax=None,
+                   tick_labelsize=None, show=True, ax=None, cb_offset=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    fname=None):
         """
@@ -435,9 +446,9 @@ class SHGravGrid(object):
         x.plot_total([projection, tick_interval, minor_tick_interval, ticks,
                       xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                      cb_tick_interval, cb_minor_tick_interval, grid,
-                      titlesize, axes_labelsize, tick_labelsize, ax, show,
-                      fname])
+                      cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                      grid, titlesize, axes_labelsize, tick_labelsize, ax,
+                      show, fname])
 
         Parameters
         ----------
@@ -484,6 +495,9 @@ class SHGravGrid(object):
             Colorbar major tick and annotation interval.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -523,7 +537,7 @@ class SHGravGrid(object):
                          xlabel=xlabel, ylabel=ylabel, title=title,
                          titlesize=titlesize, colorbar=colorbar,
                          cmap=cmap, cmap_limits=cmap_limits,
-                         cmap_reverse=cmap_reverse,
+                         cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                          cb_triangles=cb_triangles, cb_label=cb_label,
                          cb_tick_interval=cb_tick_interval, grid=grid,
                          axes_labelsize=axes_labelsize,
@@ -538,7 +552,7 @@ class SHGravGrid(object):
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='Potential, m$^2$ s$^{-2}$',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
-                 tick_labelsize=None, show=True, ax=None,
+                 tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                  fname=None):
         """
@@ -549,8 +563,9 @@ class SHGravGrid(object):
         x.plot_pot([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, grid, titlesize,
-                    axes_labelsize, tick_labelsize, ax, show, fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
+                    titlesize, axes_labelsize, tick_labelsize, ax, show,
+                    fname])
 
         Parameters
         ----------
@@ -597,6 +612,9 @@ class SHGravGrid(object):
             Colorbar major tick and annotation interval.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -619,7 +637,7 @@ class SHGravGrid(object):
                              xlabel=xlabel, ylabel=ylabel, title=title,
                              titlesize=titlesize, colorbar=colorbar,
                              cmap=cmap, cmap_limits=cmap_limits,
-                             cmap_reverse=cmap_reverse,
+                             cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                              cb_triangles=cb_triangles, cb_label=cb_label,
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
@@ -633,7 +651,7 @@ class SHGravGrid(object):
              ylabel='Latitude', colorbar='horizontal', cmap='viridis',
              cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
              cb_tick_interval=None, grid=False, axes_labelsize=9,
-             tick_labelsize=8, show=True, ax=None,
+             tick_labelsize=8, show=True, ax=None, cb_offset=None,
              cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
              fname=None):
         """
@@ -645,8 +663,8 @@ class SHGravGrid(object):
         x.plot([projection, tick_interval, minor_tick_interval, ticks, xlabel,
                 ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
                 cb_triangles, cb_ylabel, cb_tick_interval,
-                cb_minor_tick_interval, grid, axes_labelsize, tick_labelsize,
-                ax, show, fname])
+                cb_minor_tick_interval, cb_offset, grid, axes_labelsize,
+                tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -689,6 +707,9 @@ class SHGravGrid(object):
             Colorbar major tick and annotation interval.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = None
@@ -727,7 +748,7 @@ class SHGravGrid(object):
                       cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
                       cb_tick_interval=cb_tick_interval,
                       grid=grid, axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
+                      tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                       cb_ylabel=cb_ylabel, ticks=ticks,
                       cb_minor_tick_interval=cb_minor_tick_interval,
                       show=show, fname=None)
@@ -740,7 +761,7 @@ class SHGravGrid(object):
                         cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
                         cb_tick_interval=cb_tick_interval,
                         grid=grid, axes_labelsize=axes_labelsize,
-                        tick_labelsize=tick_labelsize,
+                        tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                         cb_ylabel=cb_ylabel, ticks=ticks,
                         cb_minor_tick_interval=cb_minor_tick_interval,
                         show=show, fname=None)
@@ -753,7 +774,7 @@ class SHGravGrid(object):
                       cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
                       cb_tick_interval=cb_tick_interval,
                       grid=grid, axes_labelsize=axes_labelsize,
-                      tick_labelsize=tick_labelsize,
+                      tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                       cb_ylabel=cb_ylabel, ticks=ticks,
                       cb_minor_tick_interval=cb_minor_tick_interval,
                       show=show, fname=None)
@@ -766,7 +787,7 @@ class SHGravGrid(object):
                         cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
                         cb_tick_interval=cb_tick_interval,
                         grid=grid, axes_labelsize=axes_labelsize,
-                        tick_labelsize=tick_labelsize,
+                        tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                         cb_ylabel=cb_ylabel, ticks=ticks,
                         cb_minor_tick_interval=cb_minor_tick_interval,
                         show=show, fname=None)
