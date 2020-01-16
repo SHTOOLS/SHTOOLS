@@ -49,7 +49,7 @@ install:
         cartopy
         gmt=6.0.0
   - source activate test-environment
-  # - pip install git+https://github.com/GenericMappingTools/pygmt.git
+  - pip install git+https://github.com/GenericMappingTools/pygmt.git
   - pip install --no-deps .
 
 script:
