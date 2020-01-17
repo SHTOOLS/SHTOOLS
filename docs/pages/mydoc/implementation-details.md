@@ -77,11 +77,20 @@ points over which the integration is performed.
 
 It is possible to choose the weights $$w_i$$ and the locations of the latitudinal sampling points $$\theta_i$$ such that the quadrature in equation \eqref{eq:quadrature} is exact. SHTOOLS makes use of two grid formats that accommodate exact quadrature using Gauss-Legendre quadrature [e.g., Press et al. 1992], and exact quadrature using regular grids sampled according to the *Driscoll and Healy* (1994) theorem. In both techniques, the quadrature is exact only when the function being integrated is a terminating polynomial. The functions $$c_{lm}$$ and $$s_{lm}$$ can be approximated as polynomials of maximum degree $$L$$, and when multiplied by the associated Legendre function, the integrand is approximately a polynomial of maximum degree $$2L$$. The following table summarizes the properties of the different types of grids supported by SHTOOLS.
 
+|                                    | DH1                | DH2                | GLQ                        |
+| ---------------------------------- | ------------------ | ------------------ | -------------------------- |
+| Name                               | Driscoll and Healy | Driscoll and Healy | Gauss-Legendre Quadrature  |
+| Shape ($$N_{lat} \times N_{lon}$$) | $$N \times N$$     | $$N \times 2N$$    | $$N \times 2N$$            |
+| $$L$$                              | $$N/2-1$$          | $$N/2-1$$          | $$N-1$$                    |
+| $$N$$                              | $$2L+2$$           | $$2L+2$$           | $$L+1$$                    |
+| $$\Delta \theta$$                  | $$180^{\circ}/N$$  | $$180^{\circ}/N$$  | Variable                   |
+| $$\Delta \phi$$                    | $$360^{\circ}/N$$  | $$180^{\circ}/N$$  | $$360^{\circ}/(2N-1)$$     |
+
 | Acronym | Name | Shape ($$N_{lat} \times N_{lon}$$) | $$L$$ |
 | ------- | ---- | ---------------------------------- | ----- |
 | DH | Driscoll and Healy | $$N \times N$$ | $$N/2-1$$ |
 | DH2 | Driscoll and Healy | $$N \times 2N$$ | $$N/2-1$$ |
-| GLQ | Gauss-Legendre Quadrature | $$N \times (2N-1)$$ | $$N-1$$ |
+| GLQ | Gauss-Legendre Quadrature | $$N \times 2N$$ | $$N-1$$ |
 
 ### Gauss-Legendre Quadrature
 

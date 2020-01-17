@@ -1263,7 +1263,7 @@ class SHMagCoeffs(object):
                 coeffs, r0=self.r0, normalization=normalization.lower(),
                 csphase=csphase, copy=False)
 
-    def pad(self, lmax):
+    def pad(self, lmax, copy=True):
         """
         Return an SHMagCoeffs class where the coefficients are zero padded or
         truncated to a different lmax.
@@ -1280,8 +1280,14 @@ class SHMagCoeffs(object):
         ----------
         lmax : int
             Maximum spherical harmonic degree to output.
+        copy : bool, optional, default = True
+            If True, make a copy of x when initializing the class instance.
+            If False, modify x itself.
         """
-        clm = self.copy()
+        if copy:
+            clm = self.copy()
+        else:
+            clm = self
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]

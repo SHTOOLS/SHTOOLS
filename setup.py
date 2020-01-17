@@ -64,7 +64,7 @@ def get_version():
     """
     d = os.path.dirname(__file__)
     # get release number from VERSION
-    with open(os.path.join(d, 'VERSION')) as f:
+    with open(os.path.join(d, 'VERSION.txt')) as f:
         vre = re.compile('.Version: (.+)$', re.M)
         version = vre.search(f.read()).group(1)
 

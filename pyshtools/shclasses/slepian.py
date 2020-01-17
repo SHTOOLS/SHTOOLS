@@ -297,7 +297,7 @@ class Slepian(object):
             nmax = (self.lmax+1)**2
         elif nmax is not None and nmax > (self.lmax+1)**2:
             raise ValueError(
-                "nmax must be less than or equal to (lmax+1)**2 " +
+                "nmax must be less than or equal to (lmax+1)**2, "
                 "where lmax is {:s}. Input value is {:s}."
                 .format(repr(self.lmax), repr(nmax))
                 )
@@ -602,25 +602,34 @@ class Slepian(object):
 
         return self._variance(power, k, lmax=lmax)
 
-    def plot(self, nmax, lmax=None, maxcolumns=3,
-             tick_interval=[60, 45], minor_tick_interval=[None, None],
-             xlabel='Longitude', ylabel='Latitude',
-             axes_labelsize=None, tick_labelsize=None,
-             title_labelsize=None, grid=False, show=True, title=True,
-             ax=None, fname=None):
+    def plot(self, nmax, projection=None, lmax=None, maxcolumns=3,
+             ticks='WSen', tick_interval=[60, 45],
+             minor_tick_interval=[None, None], xlabel='Longitude',
+             ylabel='Latitude', title=True, colorbar=None, cmap='viridis',
+             cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
+             cb_label=None, cb_ylabel=None, cb_tick_interval=None,
+             cb_minor_tick_interval=None, grid=False, loss=False,
+             axes_labelsize=None, tick_labelsize=None, titlesize=8,
+             show=True, ax=None, fname=None, cb_offset=None):
         """
         Plot the best-concentrated Slepian functions.
 
         Usage
         -----
-        x.plot(nmax, [lmax, maxcolumns, tick_interval, minor_tick_interval,
-                      xlabel, ylabel, grid, show, title, axes_labelsize,
-                      tick_labelsize, title_labelsize, ax, fname])
+        x.plot(nmax, [projections, lmax, maxcolumns, tick_interval,
+                      minor_tick_interval, ticks, xlabel, ylabel, title,
+                      titlesize, colorbar, cmap, cmap_limits, cmap_reverse,
+                      cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
+                      cb_minor_tick_interval, cb_offset, grid, loss,
+                      axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
         nmax : int
             The number of Slepian functions to plot.
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         lmax : int, optional, default = self.lmax
             The maximum degree to use when plotting the Slepian function, which
             controls the number of samples in latitude and longitude.
@@ -633,25 +642,59 @@ class Slepian(object):
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        grid : bool, optional, default = False
-            If True, plot grid lines.
-        show : bool, optional, default = True
-            If True, plot the image to the screen.
         title : bool, optional, default = True
             If True, plot a title on top of each subplot providing the taper
             number and 1 minus the concentration factor.
+        colorbar : str, optional, default = None
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the
+            interval is specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
+        cb_label : str, optional, default = None
+            Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
+        cb_tick_interval : float, optional, default = None
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        loss : bool, optional, default = False
+            When plotting titles, provide the loss factor instead of the
+            concentration factor (loss=1-concentration).
+        titlesize : int, optional, default = 8
+            The font size for the subplot titles.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        title_labelsize : int, optional, default = None
-            The font size for the subplot titles.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
+        show : bool, optional, default = True
+            If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
@@ -675,48 +718,43 @@ class Slepian(object):
                                  ' and ax.size = {:s}.'.format(repr(ax.size)))
             axes = ax
 
-        if tick_interval is None:
-            tick_interval = [None, None]
+        for alpha in range(min(self.nmax, nmax)):
+            evalue = self.eigenvalues[alpha]
+            if min(self.nmax, nmax) == 1 and ax is None:
+                axtemp = axes
+            elif hasattr(axes, 'flatten'):
+                axtemp = axes.flatten()[alpha]
+            else:
+                axtemp = axes[alpha]
+            coeffs = self.to_shcoeffs(alpha)
+            if lmax is not None:
+                coeffs = coeffs.pad(lmax=lmax, copy=False)
+            grid_temp = coeffs.expand()
 
-        if minor_tick_interval is None:
-            minor_tick_interval = [None, None]
+            if title:
+                if loss:
+                    title_str = '#{:d} [loss={:2.2g}]'.format(alpha, 1-evalue)
+                else:
+                    title_str = '#{:d} [concentration={:2.2g}]'.format(
+                        alpha, evalue)
+            else:
+                title_str = None
 
-        if tick_interval[0] is None:
-            xticks = []
-        else:
-            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
-                                  endpoint=True)
+            grid_temp.plot(projection=projection, tick_interval=tick_interval,
+                           minor_tick_interval=minor_tick_interval,
+                           title=title_str, ticks=ticks,
+                           xlabel=xlabel, ylabel=ylabel, grid=grid,
+                           cmap=cmap, cmap_reverse=cmap_reverse,
+                           axes_labelsize=axes_labelsize,
+                           tick_labelsize=tick_labelsize,
+                           colorbar=colorbar, cmap_limits=cmap_limits,
+                           cb_triangles=cb_triangles, cb_label=cb_label,
+                           cb_ylabel=cb_ylabel, cb_offset=cb_offset,
+                           cb_tick_interval=cb_tick_interval,
+                           cb_minor_tick_interval=cb_minor_tick_interval,
+                           titlesize=titlesize, ax=axtemp)
 
-        if tick_interval[1] is None:
-            yticks = []
-        else:
-            yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
-                                  endpoint=True)
-
-        if minor_tick_interval[0] is None:
-            minor_xticks = []
-        else:
-            minor_xticks = _np.linspace(
-                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
-
-        if minor_tick_interval[1] is None:
-            minor_yticks = []
-        else:
-            minor_yticks = _np.linspace(
-                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
-
-        if axes_labelsize is None:
-            axes_labelsize = _mpl.rcParams['axes.labelsize']
-        if tick_labelsize is None:
-            tick_labelsize = _mpl.rcParams['xtick.labelsize']
-        if title_labelsize is None:
-            title_labelsize = _mpl.rcParams['axes.titlesize']
-
-        deg = '$^{\circ}$'
-        xticklabels = [str(int(y)) + deg for y in xticks]
-        yticklabels = [str(int(y)) + deg for y in yticks]
-
-        if ax is None:
+        if ax is None and projection is None:
             if nrows > 1:
                 for axtemp in axes[:-1, :].flatten():
                     for xlabel_i in axtemp.get_xticklabels():
@@ -731,31 +769,6 @@ class Slepian(object):
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
                     axtemp.set_ylabel('', visible=False)
-
-        for alpha in range(min(self.nmax, nmax)):
-            evalue = self.eigenvalues[alpha]
-            if min(self.nmax, nmax) == 1 and ax is None:
-                axtemp = axes
-            elif hasattr(axes, 'flatten'):
-                axtemp = axes.flatten()[alpha]
-            else:
-                axtemp = axes[alpha]
-            gridout = _shtools.MakeGridDH(self.to_array(alpha), sampling=2,
-                                          lmax=lmax, norm=1, csphase=1)
-            axtemp.imshow(gridout, origin='upper',
-                          extent=(0., 360., -90., 90.))
-            axtemp.set(xticks=xticks, yticks=yticks)
-            axtemp.set_xlabel(xlabel, fontsize=axes_labelsize)
-            axtemp.set_ylabel(ylabel, fontsize=axes_labelsize)
-            axtemp.set_xticklabels(xticklabels, fontsize=tick_labelsize)
-            axtemp.set_yticklabels(yticklabels, fontsize=tick_labelsize)
-            axtemp.set_xticks(minor_xticks, minor=True)
-            axtemp.set_yticks(minor_yticks, minor=True)
-            axtemp.grid(grid, which='major')
-            if title is True:
-                axtemp.set_title('#{:d} [loss={:2.2g}]'
-                                 .format(alpha, 1-evalue),
-                                 fontsize=title_labelsize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -923,9 +936,8 @@ class Slepian(object):
                              xlabel='Input degree', ylabel='Output degree',
                              title=None, axes_labelsize=None,
                              tick_labelsize=None, title_labelsize=None,
-                             colorbar=False, cb_orientation='vertical',
-                             cb_label=None, normalize=False, show=True,
-                             ax=None, fname=None, **kwargs):
+                             colorbar=None, cb_label=None, normalize=False,
+                             show=True, ax=None, fname=None, **kwargs):
         """
         Plot the spherical harmonic coupling matrix. This matrix relates the
         power spectrum expectation of the function expressed in a subset of the
@@ -936,9 +948,8 @@ class Slepian(object):
         -----
         x.plot_coupling_matrix([nmax, vmin, vmax, xlabel, ylabel, title
                                 axes_labelsize, tick_labelsize,
-                                title_labelsize, colorbar, cb_orientation,
-                                cb_label, normalize, show, ax, fname,
-                                **kwargs])
+                                title_labelsize, colorbar, cb_label, normalize,
+                                show, ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -963,10 +974,8 @@ class Slepian(object):
             The font size for the x and y tick labels.
         title_labelsize : int, optional, default = None
             The font size for the title.
-        colorbar : bool, optional, default = False
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = None
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         normalize : bool, optional, default = False
@@ -988,11 +997,15 @@ class Slepian(object):
             tick_labelsize = _mpl.rcParams['axes.titlesize']
 
         if ax is None:
-            if colorbar is True:
-                if cb_orientation == 'horizontal':
+            if colorbar is not None:
+                if colorbar.lower()[0] == 'h':
                     scale = 1.1
-                else:
+                elif colorbar.lower()[0] == 'v':
                     scale = 0.85
+                else:
+                    raise ValueError("colorbar must be either 'horizontal' or "
+                                     "'vertical'. Input value is {:s}."
+                                     .format(repr(colorbar)))
             else:
                 scale = 1
 
@@ -1016,16 +1029,15 @@ class Slepian(object):
         axes.tick_params(labelsize=tick_labelsize)
         axes.minorticks_on()
 
-        if colorbar is True:
-            if cb_orientation == 'vertical':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'v':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("right", size="2.5%", pad=0.15)
-                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
-            else:
+                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical')
+            elif colorbar.lower()[0] == 'h':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("bottom", size="2.5%", pad=0.5)
-                cbar = _plt.colorbar(cim, cax=cax,
-                                     orientation=cb_orientation)
+                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal')
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
             cbar.ax.tick_params(labelsize=tick_labelsize)
