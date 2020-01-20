@@ -108,7 +108,7 @@ subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
 
     if (z == 1.0_dp) then
         do l = 0, lmax
-            p(1:lmax+1) = sqrt( dble(2*l+1) )
+            p(l+1) = sqrt( dble(2*l+1) )
             dp1(l+1) = sqrt( dble(2*l+1) ) * dble(l) * dble(l+1) / 2.0_dp
         end do
 
