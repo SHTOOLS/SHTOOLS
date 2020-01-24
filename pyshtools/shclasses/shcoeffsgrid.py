@@ -750,7 +750,7 @@ class SHCoeffs(object):
             raise NotImplementedError(
                 'format={:s} not implemented'.format(repr(format)))
 
-    def to_netcdf(self, filename, title='', description='')
+    def to_netcdf(self, filename, title='', description=''):
         """Return the coefficient data as a netcdf formatted file or object.
         
         Usage
