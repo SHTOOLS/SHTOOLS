@@ -618,7 +618,51 @@ class SHCoeffs(object):
                                    degrees=False)
 
         return temp
+    
+    @classmethod
+    def from_netcdf(self, filename):
+        """
+        Initialize the class with spherical harmonic coefficients from a 
+        netcdf file.
 
+        Usage
+        -----
+        x = SHCoeffs.from_netcdf(filename)
+
+        Returns
+        -------
+        x : SHCoeffs class instance.
+        
+        Parameters
+        ----------
+        filename : str
+            Name of the file, including path.
+            
+        Description
+        -----------
+        The format of the netcdf file has to be exactly as the format that is
+        used in SHCoeffs.to_netcdf().
+        """
+    
+        if not filename[-3:] == '.nc':
+            filename += '.nc'
+        
+        ds = xr.open_dataset(filename)
+        c = np.tril(ds.coeffs.data)
+        s = np.triu(ds.coeffs.data, k=1)
+        s = np.vstack([s[-1], s[:-1]])
+        s = np.transpose(s)
+        coeffs = np.array([c, s])
+
+        if _np.iscomplexobj(coeffs):
+            kind = 'complex'
+        else:
+            kind = 'real'
+            
+        for cls in self.__subclasses__():
+            if cls.istype(kind):
+                return cls(coeffs)
+        
     # ---- Define methods that modify internal variables ----
     def set_coeffs(self, values, ls, ms):
         """
@@ -706,6 +750,40 @@ class SHCoeffs(object):
             raise NotImplementedError(
                 'format={:s} not implemented'.format(repr(format)))
 
+    def to_netcdf(self, filename, title='', description='')
+        """Return the coefficient data as a netcdf formatted file or object.
+        
+        Usage
+        -----
+        x.to_netcdf([filename, title, description])
+        
+        Parameters
+        ----------
+        filename : str
+            Name of the output file.
+        title : str, optional, default = ''
+            Title of the dataset
+        description : str, optional, default = ''
+            Description of the data.
+        """
+        
+        if not filename[-3:] == '.nc':
+            filename += '.nc'
+        
+        ds = xr.Dataset()
+        ds.coords['degree'] = ('degree', np.arange(coeffs.lmax+1))
+        ds.coords['order'] = ('order', np.arange(coeffs.lmax+1))
+        # c coeffs as lower triangular matrix
+        c = coeffs.coeffs[0, :, :]
+        # s coeffs as upper triangular matrix
+        s = np.transpose(coeffs.coeffs[1, :, :])
+        s = np.vstack([s[1:], s[0]])
+        ds['coeffs'] = (('degree', 'order'), c + s)
+        ds['coeffs'].attrs['title'] = title
+        ds['coeffs'].attrs['description'] = description
+        
+        ds.to_netcdf(filename)
+        
     def to_array(self, normalization=None, csphase=None, lmax=None):
         """
         Return spherical harmonic coefficients as a numpy array.
