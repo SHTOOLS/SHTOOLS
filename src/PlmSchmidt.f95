@@ -51,10 +51,10 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 !   Notes:
 !
 !   1.  The employed normalization is the "geophysical convention." The integral
-!       of (plm*cos(m theta))**2 or (plm*sin (m theta))**2 over all space is
-!       4 pi.
-!   2.  The integral of plm**2 over (-1,1) is 2 * (2 - delta(0,m)) / (2l+1). If
-!       CNORM=1, then this is equal to 2/(2l+1).
+!       of (PlmSchmidt*cos(m theta))**2 or (PlmSchmidt*sin (m theta))**2 over
+!       all space is 4 pi.
+!   2.  The integral of PlmSchmidt**2 over (-1,1) is 2 * (2 - delta(0,m)) /
+!       (2l+1). If CNORM=1, then this is equal to 2/(2l+1).
 !   3.  The index of the array p corresponds to l*(l+1)/2 + m + 1. As such
 !       the array p should be dimensioned as (lmax+1)*(lmax+2)/2 in the
 !       calling routine.
@@ -164,7 +164,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
         allocate (f2((lmax+1)*(lmax+2)/2), stat=astat(3))
 
         if (astat(1) /= 0 .or. astat(2) /= 0 .or. astat(3) /= 0) then
-            print*, "PlmSchmidt --- Error"
+            print*, "Error --- PlmSchmidt"
             print*, "Problem allocating arrays SQR, F1 and F2", astat(1), &
                     astat(2), astat(3)
             if (present(exitstatus)) then

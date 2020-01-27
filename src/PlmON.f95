@@ -51,10 +51,10 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
 !   Notes:
 !
 !   1.  The employed normalization is the "orthonormalized convention." The
-!       integral of (plm*cos(m theta))**2 or (plm*sin (m theta))**2 over all
-!       space is 1.
-!   2.  The integral of plm**2 over (-1,1) is (2 - delta(0,m))/2pi. If CNORM=1,
-!       then this is equal to 1/2pi.
+!       integral of (PlmON*cos(m theta))**2 or (PlmON*sin (m theta))**2 over
+!       all space is 1.
+!   2.  The integral of PlmON**2 over (-1,1) is (2 - delta(0,m))/2pi.
+!       If CNORM=1, then this is equal to 1/2pi.
 !   3.  The index of the array p corresponds to l*(l+1)/2 + m + 1. As such
 !       the array p should be dimensioned as (lmax+1)*(lmax+2)/2 in the
 !       calling routine.
@@ -95,7 +95,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
     pi = acos(-1.0_dp)
 
     if (size(p) < (lmax+1)*(lmax+2)/2) then
-        print*, "Error --- PlmBar"
+        print*, "Error --- PlmON"
         print*, "P must be dimensioned as (LMAX+1)*(LMAX+2)/2 " // &
                 "where LMAX is ", lmax
         print*, "Input array is dimensioned ", size(p)
@@ -107,7 +107,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
         end if
 
     else if (lmax < 0) then
-        print*, "Error --- PlmBar"
+        print*, "Error --- PlmON"
         print*, "LMAX must be greater than or equal to 0."
         print*, "Input value is ", lmax
         if (present(exitstatus)) then
@@ -118,7 +118,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
         end if
 
     else if (abs(z) > 1.0_dp) then
-        print*, "Error --- PlmBar"
+        print*, "Error --- PlmON"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
         if (present(exitstatus)) then
@@ -138,7 +138,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
             phase = 1
 
         else
-            print*, "Error --- PlmBar"
+            print*, "Error --- PlmON"
             print*, "CSPHASE must be 1 (exclude) or -1 (include)."
             print*, "Input value is ", csphase
             if (present(exitstatus)) then

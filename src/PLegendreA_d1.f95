@@ -34,7 +34,7 @@ subroutine PLegendreA_d1(p, dp1, lmax, z, csphase, exitstatus)
 !
 !   Notes:
 !
-!   1.  The integral of plm**2 over (-1,1) is 2 * (l+m)! / (2l+1) / (l-m)!.
+!   1.  The integral of Plm**2 over (-1,1) is 2 * (l+m)! / (2l+1) / (l-m)!.
 !   2.  The index of the array p corresponds to l*(l+1)/2 + m + 1.
 !   3.  The index of the array p corresponds to l*(l+1)/2 + m + 1.
 !   4.  The derivative is evaluated with respecte to z, and NOT cos(colatitude)
@@ -161,8 +161,8 @@ subroutine PLegendreA_d1(p, dp1, lmax, z, csphase, exitstatus)
     sinsq = (1.0_dp-z) * (1.0_dp+z)
     sinsqr = sqrt(sinsq)
 
-    pm2 = 1.d0
-    p(1) = 1.d0
+    pm2 = 1.0_dp
+    p(1) = 1.0_dp
     dp1(1) = 0.0_dp
 
     if (lmax == 0) return

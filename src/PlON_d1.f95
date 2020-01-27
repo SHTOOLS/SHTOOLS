@@ -32,7 +32,7 @@ subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
 !   1.  The employed normalization is the "orthonomalization convention."
 !   2.  The integral of PlON**2 over all space on the sphere is 1.
 !   3.  The integral of PlON**2 over (-1,1) is 1/2pi.
-!   4.  The derivative is evaluated with respecte to z, and NOT cos(colatitude)
+!   4.  The derivative is evaluated with respect to z, and NOT cos(colatitude)
 !       or sin(latitude).
 !   5.  Derivatives are calculated according to the geodesy-normalized
 !       relationships

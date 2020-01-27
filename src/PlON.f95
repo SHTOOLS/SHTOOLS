@@ -28,8 +28,8 @@ subroutine PlON(p, lmax, z, exitstatus)
 !   Notes:
 !
 !   1.  The employed normalization is the "orthonormalization convention."
-!   2.  The integral of PlBar**2 over all space on the sphere is 1.
-!       The integral of PlBar**2 over (-1,1) is 1/2pi.
+!   2.  The integral of PlON**2 over all space on the sphere is 1.
+!       The integral of PlON**2 over (-1,1) is 1/2pi.
 !
 !   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
@@ -49,7 +49,7 @@ subroutine PlON(p, lmax, z, exitstatus)
     if (present(exitstatus)) exitstatus = 0
 
     if (size(p) < lmax+1) then
-        print*, "Error --- PlBar"
+        print*, "Error --- PlON"
         print*, "P must be dimensioned as (LMAX+1) where LMAX is ", lmax
         print*, "Input array is dimensioned ", size(p)
         if (present(exitstatus)) then
@@ -60,7 +60,7 @@ subroutine PlON(p, lmax, z, exitstatus)
         end if
 
     else if (lmax < 0) then
-        print*, "Error --- PlBar"
+        print*, "Error --- PlON"
         print*, "LMAX must be greater than or equal to 0."
         print*, "Input value is ", lmax
         if (present(exitstatus)) then
@@ -71,7 +71,7 @@ subroutine PlON(p, lmax, z, exitstatus)
         end if
 
     else if(abs(z) > 1.0_dp) then
-        print*, "Error --- PlBar"
+        print*, "Error --- PlON"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
         if (present(exitstatus)) then
@@ -85,7 +85,7 @@ subroutine PlON(p, lmax, z, exitstatus)
 
     pi = acos(-1.0_dp)
 
-    pm2 = 1.d0 / sqrt(4 * pi)
+    pm2 = 1._dp / sqrt(4 * pi)
     p(1) = pm2
 
     pm1 = sqrt(3.0_dp) * z / sqrt(4*pi)
