@@ -121,7 +121,7 @@ class SHGeoid(object):
              cb_label='geoid, m', cb_tick_interval=None, grid=False,
              axes_labelsize=None, tick_labelsize=None, show=True, ax=None,
              cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-             fname=None, cb_offset=None):
+             fname=None, cb_offset=None, cb_width=None):
         """
         Plot the geoid.
 
@@ -130,8 +130,9 @@ class SHGeoid(object):
         x.plot([projection, tick_interval, minor_tick_interval, ticks,
                 xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                 cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                titlesize, axes_labelsize, tick_labelsize, ax, show, fname])
+                cb_tick_interval, cb_minor_tick_interval, cb_offset, cb_width,
+                grid, titlesize, axes_labelsize, tick_labelsize, ax, show,
+                fname])
 
         Parameters
         ----------
@@ -181,6 +182,10 @@ class SHGeoid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -209,6 +214,7 @@ class SHGeoid(object):
                                cb_ylabel=cb_ylabel, ticks=ticks,
                                cb_minor_tick_interval=cb_minor_tick_interval,
                                axes_labelsize=axes_labelsize,
+                               cb_width=cb_width,
                                tick_labelsize=tick_labelsize, ax=ax,
                                show=show, fname=fname)
 

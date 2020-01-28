@@ -3492,7 +3492,7 @@ class SHGrid(object):
              cmap_limits_complex=None, cmap_reverse=False,
              cb_triangles='neither', cb_label=None, cb_ylabel=None,
              cb_tick_interval=None, cb_minor_tick_interval=None,
-             cb_offset=None, grid=False, axes_labelsize=None,
+             cb_offset=None, cb_width=None, grid=False, axes_labelsize=None,
              tick_labelsize=None, xlabel=None, ylabel=None, ax=None, ax2=None,
              show=True, fname=None):
         """
@@ -3505,9 +3505,9 @@ class SHGrid(object):
                           ticks, xlabel, ylabel, title, colorbar, cmap,
                           cmap_limits, cmap_limits_complex, cmap_reverse,
                           cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
-                          cb_minor_tick_interval, cb_offset, grid, titlesize,
-                          axes_labelsize, tick_labelsize, ax, ax2, show,
-                          fname])
+                          cb_minor_tick_interval, cb_offset, cb_width, grid,
+                          titlesize, axes_labelsize, tick_labelsize, ax, ax2,
+                          show, fname])
 
         Parameters
         ----------
@@ -3563,6 +3563,10 @@ class SHGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -3621,7 +3625,7 @@ class SHGrid(object):
                 cb_tick_interval=cb_tick_interval, cb_ylabel=cb_ylabel,
                 cb_minor_tick_interval=cb_minor_tick_interval, cmap=cmap,
                 cmap_limits=cmap_limits, cb_offset=cb_offset,
-                cmap_limits_complex=cmap_limits_complex,
+                cb_width=cb_width, cmap_limits_complex=cmap_limits_complex,
                 cmap_reverse=cmap_reverse)
         else:
             if self.kind == 'complex':
@@ -3641,6 +3645,7 @@ class SHGrid(object):
                        cb_tick_interval=cb_tick_interval,
                        cb_minor_tick_interval=cb_minor_tick_interval,
                        cmap_limits=cmap_limits, cb_ylabel=cb_ylabel,
+                       cb_width=cb_width,
                        cmap_limits_complex=cmap_limits_complex,
                        cmap_reverse=cmap_reverse)
 
@@ -3973,7 +3978,7 @@ class DHRealGrid(SHGrid):
               titlesize=None, cmap=None, tick_interval=None, ticks=None,
               minor_tick_interval=None, cb_tick_interval=None, cb_ylabel=None,
               cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
-              cmap_limits_complex=None, cb_offset=None):
+              cmap_limits_complex=None, cb_offset=None, cb_width=None):
         """Plot the raw data as a matplotlib simple cylindrical projection,
            or with Cartopy when projection is specified."""
         if ax is None:
@@ -4111,7 +4116,9 @@ class DHRealGrid(SHGrid):
                   -90. - 180. / self.n * (self.extend - 0.5),
                   90. + 180. / 2. / self.n)
 
-        cb_space = True  # add space for annotations between plot and colorbar
+        # Add space for annotations between plot and colorbar. This will be
+        # False for map projections that do not support longitude labels
+        cb_space = True
 
         # plot image, ticks, and annotations
         if projection is not None:
@@ -4184,15 +4191,23 @@ class DHRealGrid(SHGrid):
 
             divider = _make_axes_locatable(axes)
             if colorbar == 'vertical':
-                cax = divider.append_axes('right', size='2.5%', pad=offset,
-                                          axes_class=_plt.Axes)
+                cb_loc = 'right'
+                if cb_width is None:
+                    size = '2.5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
             elif colorbar == 'horizontal':
-                cax = divider.append_axes('bottom', size='5%', pad=offset,
-                                          axes_class=_plt.Axes)
+                cb_loc = 'bottom'
+                if cb_width is None:
+                    size = '5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
             else:
                 raise ValueError("colorbar must be either 'horizontal' or "
                                  "'vertical'. Input value is {:s}."
                                  .format(repr(colorbar)))
+            cax = divider.append_axes(cb_loc, size=size, pad=offset,
+                                      axes_class=_plt.Axes)
             cbar = _plt.colorbar(cim, cax=cax, orientation=colorbar,
                                  extend=cb_triangles)
             if cb_label is not None:
@@ -4456,7 +4471,7 @@ class DHComplexGrid(SHGrid):
               tick_interval=None, minor_tick_interval=None, cb_ylabel=None,
               cb_tick_interval=None, cb_minor_tick_interval=None,
               cmap_limits=None, cmap_reverse=None, cmap_limits_complex=None,
-              cb_offset=None):
+              cb_offset=None, cb_width=None):
         """Plot the raw data as a matplotlib simple cylindrical projection,
            or with Cartopy when projection is specified."""
         if ax is None:
@@ -4490,8 +4505,9 @@ class DHComplexGrid(SHGrid):
                             tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                             title=title[0], titlesize=titlesize,
                             xlabel=xlabel, ylabel=ylabel, cb_ylabel=cb_ylabel,
-                            cmap=cmap, cmap_limits=cmap_limits,
-                            cmap_reverse=cmap_reverse, ax=axreal)
+                            cb_width=cb_width, cmap=cmap,
+                            cmap_limits=cmap_limits, cmap_reverse=cmap_reverse,
+                            ax=axreal)
 
         self.to_imag().plot(projection=projection, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
@@ -4504,7 +4520,7 @@ class DHComplexGrid(SHGrid):
                             title=title[1], titlesize=titlesize,
                             cmap=cmap, cmap_limits=cmap_limits_complex,
                             cmap_reverse=cmap_reverse, cb_offset=cb_offset,
-                            xlabel=xlabel, ylabel=ylabel,
+                            cb_width=cb_width, xlabel=xlabel, ylabel=ylabel,
                             ax=axcomplex)
 
         if ax is None:
@@ -4660,7 +4676,8 @@ class GLQRealGrid(SHGrid):
               title=None, titlesize=None, cmap=None, tick_interval=None,
               minor_tick_interval=None, cb_tick_interval=None, ticks=None,
               cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
-              cmap_limits_complex=None, cb_ylabel=None, cb_offset=None):
+              cmap_limits_complex=None, cb_ylabel=None, cb_offset=None,
+              cb_width=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -4949,7 +4966,7 @@ class GLQComplexGrid(SHGrid):
               titlesize=None, cmap=None, tick_interval=None, cb_ylabel=None,
               minor_tick_interval=None, cb_tick_interval=None,
               cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
-              cmap_limits_complex=None, cb_offset=None):
+              cmap_limits_complex=None, cb_offset=None, cb_width=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -4982,8 +4999,9 @@ class GLQComplexGrid(SHGrid):
                             tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                             title=title[0], titlesize=titlesize,
                             xlabel=xlabel, ylabel=ylabel, cb_ylabel=cb_ylabel,
-                            cmap=cmap, cmap_limits=cmap_limits,
-                            cmap_reverse=cmap_reverse, ax=axreal)
+                            cb_width=cb_width, cmap=cmap,
+                            cmap_limits=cmap_limits, cmap_reverse=cmap_reverse,
+                            ax=axreal)
 
         self.to_imag().plot(projection=projection, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
@@ -4996,7 +5014,7 @@ class GLQComplexGrid(SHGrid):
                             title=title[1], titlesize=titlesize,
                             cmap=cmap, cmap_limits=cmap_limits_complex,
                             cmap_reverse=cmap_reverse, cb_ylabel=cb_ylabel,
-                            xlabel=xlabel, ylabel=ylabel,
+                            cb_width=cb_width, xlabel=xlabel, ylabel=ylabel,
                             ax=axcomplex)
 
         if ax is None:

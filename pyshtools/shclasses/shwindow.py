@@ -811,7 +811,7 @@ class SHWindow(object):
                      cb_tick_interval=None, cb_minor_tick_interval=None,
                      grid=False, loss=False, axes_labelsize=None,
                      tick_labelsize=None, titlesize=9, show=True, ax=None,
-                     fname=None):
+                     cb_width=None, fname=None):
         """
         Plot the best-concentrated localization windows.
 
@@ -822,8 +822,8 @@ class SHWindow(object):
                               title, colorbar, cmap, cmap_limits, cmap_reverse,
                               cb_triangles, cb_label, cb_ylabel,
                               cb_tick_interval, cb_minor_tick_interval,
-                              cb_offset, grid, loss, titlesize, axes_labelsize,
-                              tick_labelsize, ax, show, fname])
+                              cb_offset, cb_width, grid, loss, titlesize,
+                              axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -882,6 +882,10 @@ class SHWindow(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot grid lines.
         loss : bool, optional, default = False
@@ -953,6 +957,7 @@ class SHWindow(object):
                            cb_triangles=cb_triangles, cb_label=cb_label,
                            cb_ylabel=cb_ylabel, cb_offset=cb_offset,
                            cb_tick_interval=cb_tick_interval,
+                           cb_width=cb_width,
                            cb_minor_tick_interval=cb_minor_tick_interval,
                            titlesize=titlesize, ax=axtemp)
 

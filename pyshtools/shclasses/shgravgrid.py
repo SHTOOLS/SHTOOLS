@@ -134,10 +134,11 @@ class SHGravGrid(object):
                  title=None, titlesize=None, colorbar='vertical',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='$g_r$, m s$^{-2}$',
-                 cb_tick_interval=None, grid=False, axes_labelsize=None,
-                 tick_labelsize=None, show=True, ax=None, cb_offset=None,
-                 cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 fname=None):
+                 cb_tick_interval=None, cb_offset=None,
+                 cb_width=None, grid=False, axes_labelsize=None,
+                 tick_labelsize=None, show=True, ax=None,
+                 cb_minor_tick_interval=None, ticks='WSen',
+                 cb_ylabel=None, fname=None):
         """
         Plot the radial component of the gravity field.
 
@@ -146,9 +147,9 @@ class SHGravGrid(object):
         x.plot_rad([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -198,6 +199,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -226,6 +231,7 @@ class SHGravGrid(object):
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
                              cb_minor_tick_interval=cb_minor_tick_interval,
+                             cb_width=cb_width,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
 
@@ -237,7 +243,7 @@ class SHGravGrid(object):
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None, cb_offset=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                   fname=None):
+                   fname=None, cb_width=None):
         """
         Plot the theta component of the gravity field.
 
@@ -247,8 +253,8 @@ class SHGravGrid(object):
                       xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
                       cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      grid, titlesize, axes_labelsize, tick_labelsize, ax,
-                      show, fname])
+                      cb_width, grid, titlesize, axes_labelsize,
+                      tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -298,6 +304,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -327,6 +337,7 @@ class SHGravGrid(object):
                                cb_ylabel=cb_ylabel, ticks=ticks,
                                cb_minor_tick_interval=cb_minor_tick_interval,
                                tick_labelsize=tick_labelsize, ax=ax,
+                               cb_width=cb_width,
                                show=show, fname=fname)
 
     def plot_phi(self, projection=None, tick_interval=[30, 30],
@@ -337,7 +348,7 @@ class SHGravGrid(object):
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 fname=None):
+                 cb_width=None, fname=None):
         """
         Plot the phi component of the gravity field.
 
@@ -346,9 +357,9 @@ class SHGravGrid(object):
         x.plot_phi([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -398,6 +409,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -425,6 +440,7 @@ class SHGravGrid(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -437,7 +453,7 @@ class SHGravGrid(object):
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None, cb_offset=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                   fname=None):
+                   cb_width=None, fname=None):
         """
         Plot the total gravity disturbance.
 
@@ -447,8 +463,8 @@ class SHGravGrid(object):
                       xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
                       cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      grid, titlesize, axes_labelsize, tick_labelsize, ax,
-                      show, fname])
+                      cb_width, grid, titlesize, axes_labelsize,
+                      tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -498,6 +514,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -542,6 +562,7 @@ class SHGravGrid(object):
                          cb_tick_interval=cb_tick_interval, grid=grid,
                          axes_labelsize=axes_labelsize,
                          cb_ylabel=cb_ylabel, ticks=ticks,
+                         cb_width=cb_width,
                          cb_minor_tick_interval=cb_minor_tick_interval,
                          tick_labelsize=tick_labelsize, ax=ax,
                          show=show, fname=fname)
@@ -554,7 +575,7 @@ class SHGravGrid(object):
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 fname=None):
+                 cb_width=None, fname=None):
         """
         Plot the gravitational potential.
 
@@ -563,9 +584,9 @@ class SHGravGrid(object):
         x.plot_pot([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -615,6 +636,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -643,6 +668,7 @@ class SHGravGrid(object):
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
                              cb_minor_tick_interval=cb_minor_tick_interval,
+                             cb_width=cb_width,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
 
@@ -653,7 +679,7 @@ class SHGravGrid(object):
              cb_tick_interval=None, grid=False, axes_labelsize=9,
              tick_labelsize=8, show=True, ax=None, cb_offset=None,
              cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-             fname=None):
+             cb_width=None, fname=None):
         """
         Plot the three vector components of the gravity field and the gravity
         disturbance.
@@ -663,8 +689,8 @@ class SHGravGrid(object):
         x.plot([projection, tick_interval, minor_tick_interval, ticks, xlabel,
                 ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
                 cb_triangles, cb_ylabel, cb_tick_interval,
-                cb_minor_tick_interval, cb_offset, grid, axes_labelsize,
-                tick_labelsize, ax, show, fname])
+                cb_minor_tick_interval, cb_offset, cb_width, grid,
+                axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -710,6 +736,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = None
@@ -751,7 +781,7 @@ class SHGravGrid(object):
                       tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                       cb_ylabel=cb_ylabel, ticks=ticks,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      show=show, fname=None)
+                      cb_width=cb_width, show=show, fname=None)
         self.plot_theta(projection=projection, ax=ax.flat[1],
                         tick_interval=tick_interval,
                         minor_tick_interval=minor_tick_interval,
@@ -764,7 +794,7 @@ class SHGravGrid(object):
                         tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                         cb_ylabel=cb_ylabel, ticks=ticks,
                         cb_minor_tick_interval=cb_minor_tick_interval,
-                        show=show, fname=None)
+                        cb_width=cb_width, show=show, fname=None)
         self.plot_phi(projection=projection, ax=ax.flat[2],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -777,7 +807,7 @@ class SHGravGrid(object):
                       tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                       cb_ylabel=cb_ylabel, ticks=ticks,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      show=show, fname=None)
+                      cb_width=cb_width, show=show, fname=None)
         self.plot_total(projection=projection, ax=ax.flat[3],
                         tick_interval=tick_interval,
                         minor_tick_interval=minor_tick_interval,
@@ -790,7 +820,7 @@ class SHGravGrid(object):
                         tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                         cb_ylabel=cb_ylabel, ticks=ticks,
                         cb_minor_tick_interval=cb_minor_tick_interval,
-                        show=show, fname=None)
+                        cb_width=cb_width, show=show, fname=None)
         fig.tight_layout(pad=0.5)
 
         if fname is not None:

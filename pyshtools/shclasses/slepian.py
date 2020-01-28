@@ -610,7 +610,7 @@ class Slepian(object):
              cb_label=None, cb_ylabel=None, cb_tick_interval=None,
              cb_minor_tick_interval=None, grid=False, loss=False,
              axes_labelsize=None, tick_labelsize=None, titlesize=8,
-             show=True, ax=None, fname=None, cb_offset=None):
+             show=True, ax=None, fname=None, cb_offset=None, cb_width=None):
         """
         Plot the best-concentrated Slepian functions.
 
@@ -620,7 +620,7 @@ class Slepian(object):
                       minor_tick_interval, ticks, xlabel, ylabel, title,
                       titlesize, colorbar, cmap, cmap_limits, cmap_reverse,
                       cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
-                      cb_minor_tick_interval, cb_offset, grid, loss,
+                      cb_minor_tick_interval, cb_offset, cb_width, grid, loss,
                       axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
@@ -680,6 +680,10 @@ class Slepian(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         loss : bool, optional, default = False
@@ -751,6 +755,7 @@ class Slepian(object):
                            cb_triangles=cb_triangles, cb_label=cb_label,
                            cb_ylabel=cb_ylabel, cb_offset=cb_offset,
                            cb_tick_interval=cb_tick_interval,
+                           cb_width=cb_width,
                            cb_minor_tick_interval=cb_minor_tick_interval,
                            titlesize=titlesize, ax=axtemp)
 

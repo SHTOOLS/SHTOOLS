@@ -125,7 +125,8 @@ class Tensor(object):
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 cb_offset=None, show=True, ax=None, fname=None):
+                 cb_offset=None, cb_width=None, show=True, ax=None,
+                 fname=None):
         """
         Plot the Vxx component of the tensor.
 
@@ -134,9 +135,9 @@ class Tensor(object):
         x.plot_vxx([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -186,6 +187,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -216,6 +221,7 @@ class Tensor(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -227,7 +233,8 @@ class Tensor(object):
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 cb_offset=None, show=True, ax=None, fname=None):
+                 cb_offset=None, cb_width=None, show=True, ax=None,
+                 fname=None):
         """
         Plot the Vyy component of the tensor.
 
@@ -236,9 +243,9 @@ class Tensor(object):
         x.plot_vyy([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -288,6 +295,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -318,6 +329,7 @@ class Tensor(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -329,7 +341,8 @@ class Tensor(object):
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 cb_offset=None, show=True, ax=None, fname=None):
+                 cb_offset=None, cb_width=None, show=True, ax=None,
+                 fname=None):
         """
         Plot the Vzz component of the tensor.
 
@@ -338,9 +351,9 @@ class Tensor(object):
         x.plot_vzz([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -390,6 +403,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -420,6 +437,7 @@ class Tensor(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -431,7 +449,8 @@ class Tensor(object):
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 cb_offset=None, show=True, ax=None, fname=None):
+                 cb_offset=None, cb_width=None, show=True, ax=None,
+                 fname=None):
         """
         Plot the Vxx component of the tensor.
 
@@ -440,9 +459,9 @@ class Tensor(object):
         x.plot_vxy([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -492,6 +511,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -522,6 +545,7 @@ class Tensor(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -533,7 +557,8 @@ class Tensor(object):
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 cb_offset=None, show=True, ax=None, fname=None):
+                 cb_offset=None, cb_width=None, show=True, ax=None,
+                 fname=None):
         """
         Plot the Vyx component of the tensor.
 
@@ -542,9 +567,9 @@ class Tensor(object):
         x.plot_vyx([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -594,6 +619,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -624,6 +653,7 @@ class Tensor(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -635,7 +665,8 @@ class Tensor(object):
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 cb_offset=None, show=True, ax=None, fname=None):
+                 cb_offset=None, cb_width=None, show=True, ax=None,
+                 fname=None):
         """
         Plot the Vxz component of the tensor.
 
@@ -644,9 +675,9 @@ class Tensor(object):
         x.plot_vxz([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -696,6 +727,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -726,6 +761,7 @@ class Tensor(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -737,7 +773,8 @@ class Tensor(object):
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 cb_offset=None, show=True, ax=None, fname=None):
+                 cb_offset=None, cb_width=None, show=True, ax=None,
+                 fname=None):
         """
         Plot the Vzx component of the tensor.
 
@@ -746,9 +783,9 @@ class Tensor(object):
         x.plot_vzx([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -798,6 +835,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -828,6 +869,7 @@ class Tensor(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -839,7 +881,8 @@ class Tensor(object):
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 cb_offset=None, show=True, ax=None, fname=None):
+                 cb_offset=None, cb_width=None, show=True, ax=None,
+                 fname=None):
         """
         Plot the Vyz component of the tensor.
 
@@ -848,9 +891,9 @@ class Tensor(object):
         x.plot_vyz([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -900,6 +943,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -930,6 +977,7 @@ class Tensor(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -941,7 +989,8 @@ class Tensor(object):
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 cb_offset=None, show=True, ax=None, fname=None):
+                 cb_offset=None, cb_width=None, show=True, ax=None,
+                 fname=None):
         """
         Plot the Vzy component of the tensor.
 
@@ -950,9 +999,9 @@ class Tensor(object):
         x.plot_vzy([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -1002,6 +1051,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -1032,6 +1085,7 @@ class Tensor(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
@@ -1042,7 +1096,8 @@ class Tensor(object):
              cmap_reverse=False, cb_triangles='neither', cb_label=None,
              cb_tick_interval=None, grid=False, axes_labelsize=8,
              cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-             cb_offset=None, tick_labelsize=8, show=True, ax=None, fname=None):
+             cb_offset=None, cb_width=None, tick_labelsize=8, show=True,
+             ax=None, fname=None):
         """
         Plot the 9 components of the tensor.
 
@@ -1051,8 +1106,8 @@ class Tensor(object):
         x.plot([projection, tick_interval, minor_tick_interval, ticks, xlabel,
                 ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
                 cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
-                cb_minor_tick_interval, cb_offset, grid, axes_labelsize,
-                tick_labelsize, ax, show, fname])
+                cb_minor_tick_interval, cb_offset, cb_width, grid,
+                axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -1100,6 +1155,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = 8
@@ -1139,7 +1198,8 @@ class Tensor(object):
                       grid=grid, axes_labelsize=axes_labelsize,
                       cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      tick_labelsize=tick_labelsize, show=show)
+                      cb_width=cb_width, tick_labelsize=tick_labelsize,
+                      show=show)
         self.plot_vxy(projection=projection, ax=ax.flat[1],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -1150,7 +1210,8 @@ class Tensor(object):
                       grid=grid, axes_labelsize=axes_labelsize,
                       cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      tick_labelsize=tick_labelsize, show=show)
+                      cb_width=cb_width, tick_labelsize=tick_labelsize,
+                      show=show)
         self.plot_vxz(projection=projection, ax=ax.flat[2],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -1161,7 +1222,8 @@ class Tensor(object):
                       grid=grid, axes_labelsize=axes_labelsize,
                       cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      tick_labelsize=tick_labelsize, show=show)
+                      cb_width=cb_width, tick_labelsize=tick_labelsize,
+                      show=show)
         self.plot_vyx(projection=projection, ax=ax.flat[3],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -1172,7 +1234,8 @@ class Tensor(object):
                       grid=grid, axes_labelsize=axes_labelsize,
                       cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      tick_labelsize=tick_labelsize, show=show)
+                      cb_width=cb_width, tick_labelsize=tick_labelsize,
+                      show=show)
         self.plot_vyy(projection=projection, ax=ax.flat[4],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -1183,7 +1246,8 @@ class Tensor(object):
                       grid=grid, axes_labelsize=axes_labelsize,
                       cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      tick_labelsize=tick_labelsize, show=show)
+                      cb_width=cb_width, tick_labelsize=tick_labelsize,
+                      show=show)
         self.plot_vyz(projection=projection, ax=ax.flat[5],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -1194,7 +1258,8 @@ class Tensor(object):
                       grid=grid, axes_labelsize=axes_labelsize,
                       cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      tick_labelsize=tick_labelsize, show=show)
+                      cb_width=cb_width, tick_labelsize=tick_labelsize,
+                      show=show)
         self.plot_vzx(projection=projection, ax=ax.flat[6],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -1205,7 +1270,8 @@ class Tensor(object):
                       grid=grid, axes_labelsize=axes_labelsize,
                       cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      tick_labelsize=tick_labelsize, show=show)
+                      cb_width=cb_width, tick_labelsize=tick_labelsize,
+                      show=show)
         self.plot_vzy(projection=projection, ax=ax.flat[7],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -1216,7 +1282,8 @@ class Tensor(object):
                       grid=grid, axes_labelsize=axes_labelsize,
                       cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      tick_labelsize=tick_labelsize, show=show)
+                      cb_width=cb_width, tick_labelsize=tick_labelsize,
+                      show=show)
         self.plot_vzz(projection=projection, ax=ax.flat[8],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -1227,7 +1294,8 @@ class Tensor(object):
                       grid=grid, axes_labelsize=axes_labelsize,
                       cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      tick_labelsize=tick_labelsize, show=show)
+                      cb_width=cb_width, tick_labelsize=tick_labelsize,
+                      show=show)
 
         fig.tight_layout(pad=0.5)
 
@@ -1242,7 +1310,7 @@ class Tensor(object):
                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                 grid=False, axes_labelsize=None, tick_labelsize=None,
                 cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                cb_offset=None, show=True, ax=None, fname=None):
+                cb_offset=None, cb_width=None, show=True, ax=None, fname=None):
         """
         Plot the first invariant I0 (the trace) of the tensor
 
@@ -1255,8 +1323,9 @@ class Tensor(object):
         x.plot_i0([projection, tick_interval, minor_tick_interval, ticks,
                    xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                    cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                   cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                   titlesize, axes_labelsize, tick_labelsize, ax, show, fname])
+                   cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                   cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                   ax, show, fname])
 
         Parameters
         ----------
@@ -1306,6 +1375,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -1339,6 +1412,7 @@ class Tensor(object):
                             cb_tick_interval=cb_tick_interval, grid=grid,
                             axes_labelsize=axes_labelsize,
                             cb_ylabel=cb_ylabel, ticks=ticks,
+                            cb_width=cb_width,
                             cb_minor_tick_interval=cb_minor_tick_interval,
                             tick_labelsize=tick_labelsize, ax=ax,
                             show=show, fname=fname)
@@ -1350,7 +1424,7 @@ class Tensor(object):
                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                 grid=False, axes_labelsize=None, tick_labelsize=None,
                 cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                cb_offset=None, show=True, ax=None, fname=None):
+                cb_offset=None, cb_width=None, show=True, ax=None, fname=None):
         """
         Plot the second invariant I1 of the tensor:
 
@@ -1361,8 +1435,9 @@ class Tensor(object):
         x.plot_i1([projection, tick_interval, minor_tick_interval, ticks,
                    xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                    cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                   cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                   titlesize, axes_labelsize, tick_labelsize, ax, show, fname])
+                   cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                   cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                   ax, show, fname])
 
         Parameters
         ----------
@@ -1412,6 +1487,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -1445,6 +1524,7 @@ class Tensor(object):
                             cb_tick_interval=cb_tick_interval, grid=grid,
                             axes_labelsize=axes_labelsize,
                             cb_ylabel=cb_ylabel, ticks=ticks,
+                            cb_width=cb_width,
                             cb_minor_tick_interval=cb_minor_tick_interval,
                             tick_labelsize=tick_labelsize, ax=ax,
                             show=show, fname=fname)
@@ -1456,7 +1536,7 @@ class Tensor(object):
                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                 grid=False, axes_labelsize=None, tick_labelsize=None,
                 cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                cb_offset=None, show=True, ax=None, fname=None):
+                cb_offset=None, cb_width=None, show=True, ax=None, fname=None):
         """
         Plot the third invariant I2 (the determinant) of the tensor:
 
@@ -1468,8 +1548,9 @@ class Tensor(object):
         x.plot_i2([projection, tick_interval, minor_tick_interval, ticks,
                    xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                    cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                   cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                   titlesize, axes_labelsize, tick_labelsize, ax, show, fname])
+                   cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                   cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                   ax, show, fname])
 
         Parameters
         ----------
@@ -1519,6 +1600,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -1552,6 +1637,7 @@ class Tensor(object):
                             cb_tick_interval=cb_tick_interval, grid=grid,
                             axes_labelsize=axes_labelsize,
                             cb_ylabel=cb_ylabel, ticks=ticks,
+                            cb_width=cb_width,
                             cb_minor_tick_interval=cb_minor_tick_interval,
                             tick_labelsize=tick_labelsize, ax=ax,
                             show=show, fname=fname)
@@ -1563,7 +1649,7 @@ class Tensor(object):
                cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                grid=False, axes_labelsize=None, tick_labelsize=None,
                cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-               cb_offset=None, show=True, ax=None, fname=None):
+               cb_offset=None, cb_width=None, show=True, ax=None, fname=None):
         """
         Plot the dimensionless quantity I of Pedersen and Rasmussen (1990)
 
@@ -1576,8 +1662,9 @@ class Tensor(object):
         x.plot_i([projection, tick_interval, minor_tick_interval, ticks,
                   xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                   cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                  cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                  titlesize, axes_labelsize, tick_labelsize, ax, show, fname])
+                  cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                  cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                  ax, show, fname])
 
         Parameters
         ----------
@@ -1627,6 +1714,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -1660,6 +1751,7 @@ class Tensor(object):
                            cb_tick_interval=cb_tick_interval, grid=grid,
                            axes_labelsize=axes_labelsize,
                            cb_ylabel=cb_ylabel, ticks=ticks,
+                           cb_width=cb_width,
                            cb_minor_tick_interval=cb_minor_tick_interval,
                            tick_labelsize=tick_labelsize, ax=ax,
                            show=show, fname=fname)
@@ -1671,8 +1763,8 @@ class Tensor(object):
                    cb_triangles='neither', cb_label=None,
                    cb_tick_interval=None, grid=False, axes_labelsize=9,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                   cb_offset=None, tick_labelsize=8, show=True, ax=None,
-                   fname=None):
+                   cb_offset=None, cb_width=None, tick_labelsize=8, show=True,
+                   ax=None, fname=None):
         """
         Plot the three invariants of the tensor and the derived quantity I.
 
@@ -1682,7 +1774,8 @@ class Tensor(object):
                       xlabel, ylabel, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
                       cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      grid, axes_labelsize, tick_labelsize, ax, show, fname])
+                      cb_width, grid, axes_labelsize, tick_labelsize, ax, show,
+                      fname])
 
         Parameters
         ----------
@@ -1730,6 +1823,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = 9
@@ -1770,7 +1867,8 @@ class Tensor(object):
                      grid=grid, axes_labelsize=axes_labelsize,
                      cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                      cb_minor_tick_interval=cb_minor_tick_interval,
-                     tick_labelsize=tick_labelsize, show=show)
+                     cb_width=cb_width, tick_labelsize=tick_labelsize,
+                     show=show)
         self.plot_i1(projection=projection, ax=ax.flat[1],
                      tick_interval=tick_interval, cb_offset=cb_offset,
                      minor_tick_interval=minor_tick_interval,
@@ -1781,7 +1879,8 @@ class Tensor(object):
                      grid=grid, axes_labelsize=axes_labelsize,
                      cb_ylabel=cb_ylabel, ticks=ticks,
                      cb_minor_tick_interval=cb_minor_tick_interval,
-                     tick_labelsize=tick_labelsize, show=show)
+                     cb_width=cb_width, tick_labelsize=tick_labelsize,
+                     show=show)
         self.plot_i2(projection=projection, ax=ax.flat[2],
                      tick_interval=tick_interval, cb_offset=cb_offset,
                      minor_tick_interval=minor_tick_interval,
@@ -1792,7 +1891,8 @@ class Tensor(object):
                      grid=grid, axes_labelsize=axes_labelsize,
                      cb_ylabel=cb_ylabel, ticks=ticks,
                      cb_minor_tick_interval=cb_minor_tick_interval,
-                     tick_labelsize=tick_labelsize, show=show)
+                     cb_width=cb_width, tick_labelsize=tick_labelsize,
+                     show=show)
         self.plot_i(projection=projection, ax=ax.flat[3],
                     tick_interval=tick_interval, cb_offset=cb_offset,
                     minor_tick_interval=minor_tick_interval,
@@ -1803,7 +1903,8 @@ class Tensor(object):
                     grid=grid, axes_labelsize=axes_labelsize,
                     cb_ylabel=cb_ylabel, ticks=ticks,
                     cb_minor_tick_interval=cb_minor_tick_interval,
-                    tick_labelsize=tick_labelsize, show=show)
+                    cb_width=cb_width, tick_labelsize=tick_labelsize,
+                    show=show)
 
         fig.tight_layout(pad=0.5)
 
@@ -1818,7 +1919,8 @@ class Tensor(object):
                   cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                   grid=False, axes_labelsize=None, tick_labelsize=None,
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                  cb_offset=None, show=True, ax=None, fname=None):
+                  cb_offset=None, cb_width=None, show=True, ax=None,
+                  fname=None):
         """
         Plot the first eigenvalue of the tensor.
 
@@ -1827,9 +1929,9 @@ class Tensor(object):
         x.plot_eig1([projection, tick_interval, minor_tick_interval, ticks,
                      xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                      cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                     cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                     titlesize, axes_labelsize, tick_labelsize, ax, show,
-                     fname])
+                     cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                     cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                     ax, show, fname])
 
         Parameters
         ----------
@@ -1879,6 +1981,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -1912,6 +2018,7 @@ class Tensor(object):
                               cb_tick_interval=cb_tick_interval, grid=grid,
                               axes_labelsize=axes_labelsize,
                               cb_ylabel=cb_ylabel, ticks=ticks,
+                              cb_width=cb_width,
                               cb_minor_tick_interval=cb_minor_tick_interval,
                               tick_labelsize=tick_labelsize, ax=ax,
                               show=show, fname=fname)
@@ -1923,7 +2030,8 @@ class Tensor(object):
                   cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                   grid=False, axes_labelsize=None, tick_labelsize=None,
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                  cb_offset=None, show=True, ax=None, fname=None):
+                  cb_offset=None, cb_width=None, show=True, ax=None,
+                  fname=None):
         """
         Plot the second eigenvalue of the tensor.
 
@@ -1932,9 +2040,9 @@ class Tensor(object):
         x.plot_eig2([projection, tick_interval, minor_tick_interval, ticks,
                      xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                      cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                     cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                     titlesize, axes_labelsize, tick_labelsize, ax, show,
-                     fname])
+                     cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                     cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                     ax, show, fname])
 
         Parameters
         ----------
@@ -1984,6 +2092,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -2017,6 +2129,7 @@ class Tensor(object):
                               cb_tick_interval=cb_tick_interval, grid=grid,
                               axes_labelsize=axes_labelsize,
                               cb_ylabel=cb_ylabel, ticks=ticks,
+                              cb_width=cb_width,
                               cb_minor_tick_interval=cb_minor_tick_interval,
                               tick_labelsize=tick_labelsize, ax=ax,
                               show=show, fname=fname)
@@ -2028,7 +2141,8 @@ class Tensor(object):
                   cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                   grid=False, axes_labelsize=None, tick_labelsize=None,
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                  cb_offset=None, show=True, ax=None, fname=None):
+                  cb_offset=None, cb_width=None, show=True, ax=None,
+                  fname=None):
         """
         Plot the third eigenvalue of the tensor.
 
@@ -2037,9 +2151,9 @@ class Tensor(object):
         x.plot_eig3([projection, tick_interval, minor_tick_interval, ticks,
                      xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                      cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                     cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                     titlesize, axes_labelsize, tick_labelsize, ax, show,
-                     fname])
+                     cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                     cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                     ax, show, fname])
 
         Parameters
         ----------
@@ -2089,6 +2203,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -2122,6 +2240,7 @@ class Tensor(object):
                               cb_tick_interval=cb_tick_interval, grid=grid,
                               axes_labelsize=axes_labelsize,
                               cb_ylabel=cb_ylabel, ticks=ticks,
+                              cb_width=cb_width,
                               cb_minor_tick_interval=cb_minor_tick_interval,
                               tick_labelsize=tick_labelsize, ax=ax,
                               show=show, fname=fname)
@@ -2133,8 +2252,8 @@ class Tensor(object):
                   cb_triangles='neither', cb_label=None,
                   cb_tick_interval=None, grid=False, axes_labelsize=9,
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                  cb_offset=None, tick_labelsize=8, show=True, ax=None,
-                  fname=None):
+                  cb_offset=None, cb_width=None, tick_labelsize=8, show=True,
+                  ax=None, fname=None):
         """
         Plot the three eigenvalues of the tensor.
 
@@ -2143,8 +2262,8 @@ class Tensor(object):
         x.plot_eigs([projection, tick_interval, minor_tick_interval, ticks,
                      xlabel, ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
                      cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
-                     cb_minor_tick_interval, cb_offset, grid, axes_labelsize,
-                     tick_labelsize, ax, show, fname])
+                     cb_minor_tick_interval, cb_offset, cb_width, grid,
+                     axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -2192,6 +2311,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = 9
@@ -2232,7 +2355,8 @@ class Tensor(object):
                        grid=grid, axes_labelsize=axes_labelsize,
                        cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                        cb_minor_tick_interval=cb_minor_tick_interval,
-                       tick_labelsize=tick_labelsize, show=show)
+                       cb_width=cb_width, tick_labelsize=tick_labelsize,
+                       show=show)
         self.plot_eig2(projection=projection, ax=ax.flat[1],
                        tick_interval=tick_interval,
                        minor_tick_interval=minor_tick_interval,
@@ -2243,7 +2367,8 @@ class Tensor(object):
                        grid=grid, axes_labelsize=axes_labelsize,
                        cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                        cb_minor_tick_interval=cb_minor_tick_interval,
-                       tick_labelsize=tick_labelsize, show=show)
+                       cb_width=cb_width, tick_labelsize=tick_labelsize,
+                       show=show)
         self.plot_eig3(projection=projection, ax=ax.flat[2],
                        tick_interval=tick_interval,
                        minor_tick_interval=minor_tick_interval,
@@ -2254,7 +2379,8 @@ class Tensor(object):
                        grid=grid, axes_labelsize=axes_labelsize,
                        cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                        cb_minor_tick_interval=cb_minor_tick_interval,
-                       tick_labelsize=tick_labelsize, show=show)
+                       cb_width=cb_width, tick_labelsize=tick_labelsize,
+                       show=show)
 
         fig.tight_layout(pad=0.5)
 
@@ -2269,8 +2395,8 @@ class Tensor(object):
                    cb_triangles='neither', cb_label=None,
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                   cb_offset=None, tick_labelsize=None, show=True, ax=None,
-                   fname=None):
+                   cb_offset=None, cb_width=None, tick_labelsize=None,
+                   show=True, ax=None, fname=None):
         """
         Plot the first eigenvalue of the horizontal tensor.
 
@@ -2280,8 +2406,8 @@ class Tensor(object):
                       xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
                       cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      grid, titlesize, axes_labelsize, tick_labelsize, ax,
-                      show, fname])
+                      cb_width, grid, titlesize, axes_labelsize,
+                      tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -2331,6 +2457,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -2364,6 +2494,7 @@ class Tensor(object):
                                cb_tick_interval=cb_tick_interval, grid=grid,
                                axes_labelsize=axes_labelsize,
                                cb_ylabel=cb_ylabel, ticks=ticks,
+                               cb_width=cb_width,
                                cb_minor_tick_interval=cb_minor_tick_interval,
                                tick_labelsize=tick_labelsize, ax=ax,
                                show=show, fname=fname)
@@ -2375,8 +2506,8 @@ class Tensor(object):
                    cb_triangles='neither', cb_label=None,
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                   cb_offset=None, tick_labelsize=None, show=True, ax=None,
-                   fname=None):
+                   cb_offset=None, cb_width=None, tick_labelsize=None,
+                   show=True, ax=None, fname=None):
         """
         Plot the second eigenvalue of the horizontal tensor.
 
@@ -2386,8 +2517,8 @@ class Tensor(object):
                       xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
                       cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      grid, titlesize, axes_labelsize, tick_labelsize, ax,
-                      show, fname])
+                      cb_width, grid, titlesize, axes_labelsize,
+                      tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -2437,6 +2568,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -2470,6 +2605,7 @@ class Tensor(object):
                                cb_tick_interval=cb_tick_interval, grid=grid,
                                axes_labelsize=axes_labelsize,
                                cb_ylabel=cb_ylabel, ticks=ticks,
+                               cb_width=cb_width,
                                cb_minor_tick_interval=cb_minor_tick_interval,
                                tick_labelsize=tick_labelsize, ax=ax,
                                show=show, fname=fname)
@@ -2481,8 +2617,8 @@ class Tensor(object):
                    cb_triangles='neither', cb_label=None,
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                   cb_offset=None, tick_labelsize=None, show=True, ax=None,
-                   fname=None):
+                   cb_offset=None, cb_width=None, tick_labelsize=None,
+                   show=True, ax=None, fname=None):
         """
         Plot the maximum absolute value eigenvalue of the horizontal tensor.
 
@@ -2492,8 +2628,8 @@ class Tensor(object):
                       xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
                       cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      grid, titlesize, axes_labelsize, tick_labelsize, ax,
-                      show, fname])
+                      cb_width, grid, titlesize, axes_labelsize,
+                      tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -2543,6 +2679,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -2576,6 +2716,7 @@ class Tensor(object):
                                cb_tick_interval=cb_tick_interval, grid=grid,
                                axes_labelsize=axes_labelsize,
                                cb_ylabel=cb_ylabel, ticks=ticks,
+                               cb_width=cb_width,
                                cb_minor_tick_interval=cb_minor_tick_interval,
                                tick_labelsize=tick_labelsize, ax=ax,
                                show=show, fname=fname)
@@ -2587,8 +2728,8 @@ class Tensor(object):
                   cb_triangles='neither', cb_label=None,
                   cb_tick_interval=None, grid=False, axes_labelsize=9,
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                  cb_offset=None, tick_labelsize=8, show=True, ax=None,
-                  fname=None):
+                  cb_offset=None, cb_width=None, tick_labelsize=8, show=True,
+                  ax=None, fname=None):
         """
         Plot the two eigenvalues and maximum absolute value eigenvalue of the
         horizontal tensor.
@@ -2598,8 +2739,8 @@ class Tensor(object):
         x.plot_eigh([projection, tick_interval, minor_tick_interval, ticks,
                      xlabel, ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
                      cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
-                     cb_minor_tick_interval, cb_offset, grid, axes_labelsize,
-                     tick_labelsize, ax, show, fname])
+                     cb_minor_tick_interval, cb_offset, cb_width, grid,
+                     axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -2647,6 +2788,10 @@ class Tensor(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = 9
@@ -2687,7 +2832,8 @@ class Tensor(object):
                         grid=grid, axes_labelsize=axes_labelsize,
                         cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                         cb_minor_tick_interval=cb_minor_tick_interval,
-                        tick_labelsize=tick_labelsize, show=show)
+                        cb_width=cb_width, tick_labelsize=tick_labelsize,
+                        show=show)
         self.plot_eigh2(projection=projection, ax=ax.flat[1],
                         tick_interval=tick_interval,
                         minor_tick_interval=minor_tick_interval,
@@ -2698,7 +2844,8 @@ class Tensor(object):
                         grid=grid, axes_labelsize=axes_labelsize,
                         cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                         cb_minor_tick_interval=cb_minor_tick_interval,
-                        tick_labelsize=tick_labelsize, show=show)
+                        cb_width=cb_width, tick_labelsize=tick_labelsize,
+                        show=show)
         self.plot_eighh(projection=projection, ax=ax.flat[2],
                         tick_interval=tick_interval,
                         minor_tick_interval=minor_tick_interval,
@@ -2709,7 +2856,8 @@ class Tensor(object):
                         grid=grid, axes_labelsize=axes_labelsize,
                         cb_ylabel=cb_ylabel, ticks=ticks, cb_offset=cb_offset,
                         cb_minor_tick_interval=cb_minor_tick_interval,
-                        tick_labelsize=tick_labelsize, show=show)
+                        cb_width=cb_width, tick_labelsize=tick_labelsize,
+                        show=show)
 
         fig.tight_layout(pad=0.5)
 
