@@ -3493,7 +3493,7 @@ class SHGrid(object):
              cb_triangles='neither', cb_label=None, cb_ylabel=None,
              cb_tick_interval=None, cb_minor_tick_interval=None,
              cb_offset=None, cb_width=None, grid=False, axes_labelsize=None,
-             tick_labelsize=None, xlabel=None, ylabel=None, ax=None, ax2=None,
+             tick_labelsize=None, xlabel=True, ylabel=True, ax=None, ax2=None,
              show=True, fname=None):
         """
         Plot the raw data using a Cartopy projection or a matplotlib
@@ -3613,6 +3613,21 @@ class SHGrid(object):
             titlesize = _mpl.rcParams['axes.titlesize']
         if self.kind == 'complex' and title is None:
             title = ['Real component', 'Imaginary component']
+        if xlabel is True:
+            if self.grid == 'DH':
+                xlabel = 'Longitude'
+            else:
+                xlabel = 'GLQ longitude index'
+        if ylabel is True:
+            if self.grid == 'DH':
+                ylabel = 'Latitude'
+            else:
+                ylabel = 'GLQ latitude index'
+        if colorbar is not None:
+            if colorbar not in set(['horizontal', 'vertical']):
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
+                                 .format(repr(colorbar)))
 
         if ax is None and ax2 is None:
             fig, axes = self._plot(
@@ -3804,6 +3819,11 @@ class SHGrid(object):
             grid = tick_interval
         if width is None:
             width = _mpl.rcParams['figure.figsize'][0]
+        if colorbar is not None:
+            if colorbar not in set(['horizontal', 'vertical']):
+                raise ValueError("colorbar must be either 'horizontal' or "
+                                 "'vertical'. Input value is {:s}."
+                                 .format(repr(colorbar)))
 
         figure = self._plot_pygmt(
             fig=fig, projection=projection, region=region, width=width,
@@ -3987,10 +4007,6 @@ class DHRealGrid(SHGrid):
                     scale = 0.67
                 elif colorbar == 'vertical':
                     scale = 0.5
-                else:
-                    raise ValueError("colorbar must be either 'horizontal' or "
-                                     "'vertical'. Input value is {:s}."
-                                     .format(repr(colorbar)))
             else:
                 scale = 0.55
             figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -4029,10 +4045,6 @@ class DHRealGrid(SHGrid):
         else:
             minor_yticks = _np.linspace(
                 -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
-        if xlabel is None:
-            xlabel = 'Longitude'
-        if ylabel is None:
-            ylabel = 'Latitude'
 
         # make colormap
         if cmap_limits is None:
@@ -4202,10 +4214,6 @@ class DHRealGrid(SHGrid):
                     size = '5%'
                 else:
                     size = '{:f}%'.format(cb_width)
-            else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
             cax = divider.append_axes(cb_loc, size=size, pad=offset,
                                       axes_class=_plt.Axes)
             cbar = _plt.colorbar(cim, cax=cax, orientation=colorbar,
@@ -4313,10 +4321,6 @@ class DHRealGrid(SHGrid):
                 position = "JMR"
             elif colorbar == 'horizontal':
                 position = "JBC+h"
-            else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
             if cb_offset is not None:
                 if colorbar == 'horizontal':
                     position += '+o0p/' + str(cb_offset) + 'p'
@@ -4685,10 +4689,6 @@ class GLQRealGrid(SHGrid):
                     scale = 0.67
                 elif colorbar == 'vertical':
                     scale = 0.5
-                else:
-                    raise ValueError("colorbar must be either 'horizontal' or "
-                                     "'vertical'. Input value is {:s}."
-                                     .format(repr(colorbar)))
             else:
                 scale = 0.55
             figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -4713,10 +4713,6 @@ class GLQRealGrid(SHGrid):
             minor_yticks = []
         else:
             minor_yticks = _np.arange(0, self.nlat, minor_tick_interval[1])
-        if xlabel is None:
-            xlabel = 'GLQ longitude index'
-        if ylabel is None:
-            ylabel = 'GLQ latitude index'
 
         # make colormap
         if cmap_limits is None:
@@ -4841,10 +4837,6 @@ class GLQRealGrid(SHGrid):
                 cax = divider.append_axes('right', size='2.5%', pad=offset)
             elif colorbar == 'horizontal':
                 cax = divider.append_axes('bottom', size='5%', pad=offset)
-            else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
             cbar = _plt.colorbar(cim, cax=cax, orientation=colorbar,
                                  extend=cb_triangles)
             if cb_label is not None:
