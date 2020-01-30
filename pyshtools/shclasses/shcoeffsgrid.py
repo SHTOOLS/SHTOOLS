@@ -3624,9 +3624,9 @@ class SHGrid(object):
             else:
                 ylabel = 'GLQ latitude index'
         if colorbar is not None:
-            if colorbar not in set(['horizontal', 'vertical']):
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
+            if colorbar not in set(['top', 'bottom', 'left', 'right']):
+                raise ValueError("colorbar must be 'top', 'bottom', 'left' or "
+                                 "'right'. Input value is {:s}."
                                  .format(repr(colorbar)))
 
         if ax is None and ax2 is None:
@@ -3758,7 +3758,8 @@ class SHGrid(object):
             If True, create a continuous colormap. Default behavior is to
             use contant colors for each interval.
         colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+            Plot a colorbar that is to the 'left', 'right', 'top', or 'bottom'
+            of the image.
         cb_triangles : str, optional, default = 'both'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -4003,9 +4004,9 @@ class DHRealGrid(SHGrid):
            or with Cartopy when projection is specified."""
         if ax is None:
             if colorbar is not None:
-                if colorbar == 'horizontal':
+                if colorbar in set(['top', 'bottom']):
                     scale = 0.67
-                elif colorbar == 'vertical':
+                else:
                     scale = 0.5
             else:
                 scale = 0.55
@@ -4182,46 +4183,62 @@ class DHRealGrid(SHGrid):
         # plot colorbar
         if colorbar is not None:
             if cb_offset is None:
-                if colorbar == 'vertical':
+                if colorbar in set(['left', 'right']):
                     offset = 0.15
+                    if (colorbar == 'left' and 'W' in ticks) or \
+                            (colorbar == 'right' and 'E' in ticks):
+                        offset += 2 * tick_labelsize / 72.
+                    # add space for ylabel on left of plot only
+                    if ylabel != '' and ylabel is not None and \
+                            projection is None and colorbar == 'left':
+                        offset += 1.4 * axes_labelsize / 72.
                 else:
                     offset = 0.
-                    if xticks != [] and bottom and cb_space:
-                        # add space for ticks
+                    # add space for ticks
+                    if (colorbar == 'bottom' and bottom and cb_space) or \
+                            (colorbar == 'top' and top and cb_space):
                         offset += _mpl.rcParams['xtick.major.size']
-                    if xticks != [] and labelbottom and cb_space:
+                    # add space for labels
+                    if (colorbar == 'bottom' and labelbottom and cb_space) or \
+                            (colorbar == 'top' and labeltop and cb_space):
                         offset += _mpl.rcParams['xtick.major.pad']
                         offset += tick_labelsize
+                    # add space for xlabel on bottom of plot only
                     if xlabel != '' and xlabel is not None and \
-                            projection is None:
-                        # add space for xlabel
+                            projection is None and colorbar == 'bottom':
                         offset += axes_labelsize
-                    offset += 1.5 * _mpl.rcParams['font.size']  # add extra
+                    offset += 1.3 * _mpl.rcParams['font.size']  # add extra
                     offset /= 72.  # convert to inches
             else:
                 offset = cb_offset / 72.0  # convert to inches
 
             divider = _make_axes_locatable(axes)
-            if colorbar == 'vertical':
-                cb_loc = 'right'
+            if colorbar in set(['left', 'right']):
+                orientation = 'vertical'
                 if cb_width is None:
                     size = '2.5%'
                 else:
                     size = '{:f}%'.format(cb_width)
-            elif colorbar == 'horizontal':
-                cb_loc = 'bottom'
+            else:
+                orientation = 'horizontal'
                 if cb_width is None:
                     size = '5%'
                 else:
                     size = '{:f}%'.format(cb_width)
-            cax = divider.append_axes(cb_loc, size=size, pad=offset,
+            cax = divider.append_axes(colorbar, size=size, pad=offset,
                                       axes_class=_plt.Axes)
-            cbar = _plt.colorbar(cim, cax=cax, orientation=colorbar,
+            cbar = _plt.colorbar(cim, cax=cax, orientation=orientation,
                                  extend=cb_triangles)
+            if colorbar == 'left':
+                cbar.ax.yaxis.set_ticks_position('left')
+                cbar.ax.yaxis.set_label_position('left')
+            if colorbar == 'top':
+                cbar.ax.xaxis.set_ticks_position('top')
+                cbar.ax.xaxis.set_label_position('top')
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
             if cb_ylabel is not None:
-                if colorbar == 'vertical':
+                if colorbar in set(['left', 'right']):
                     cbar.ax.xaxis.set_label_position('top')
                     cbar.ax.set_xlabel(cb_ylabel, fontsize=tick_labelsize)
                 else:
@@ -4232,7 +4249,7 @@ class DHRealGrid(SHGrid):
             if cb_ticks is not None:
                 cbar.set_ticks(cb_ticks)
             if cb_minor_ticks is not None:
-                if colorbar == 'horizontal':
+                if colorbar in set(['top', 'bottom']):
                     cbar.ax.xaxis.set_ticks(cb_minor_ticks, minor=True)
                 else:
                     cbar.ax.yaxis.set_ticks(cb_minor_ticks, minor=True)
