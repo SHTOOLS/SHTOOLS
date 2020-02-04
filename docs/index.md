@@ -29,6 +29,8 @@ SHTOOLS/pyshtools is extremely versatile:
 
 * Standard data formats such as *xarray* and *netcdf* are supported.
 
+* Publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/dev/).
+
 ## Installation
 
 The Python components of SHTOOLS can be installed using the Python package manager `pip`. Binaries are pre-built for linux and macOS architectures, and you need only to execute one of the following commands in a unix terminal:
