@@ -120,7 +120,7 @@ class Tensor(object):
 
     def plot_vxx(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -161,8 +161,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -228,7 +228,7 @@ class Tensor(object):
 
     def plot_vyy(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -269,8 +269,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -336,7 +336,7 @@ class Tensor(object):
 
     def plot_vzz(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -377,8 +377,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -444,7 +444,7 @@ class Tensor(object):
 
     def plot_vxy(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -485,8 +485,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -552,7 +552,7 @@ class Tensor(object):
 
     def plot_vyx(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -593,8 +593,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -660,7 +660,7 @@ class Tensor(object):
 
     def plot_vxz(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -701,8 +701,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -768,7 +768,7 @@ class Tensor(object):
 
     def plot_vzx(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -809,8 +809,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -876,7 +876,7 @@ class Tensor(object):
 
     def plot_vyz(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -917,8 +917,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -984,7 +984,7 @@ class Tensor(object):
 
     def plot_vzy(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                  grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -1025,8 +1025,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -1092,7 +1092,7 @@ class Tensor(object):
 
     def plot(self, projection=None, tick_interval=[90, 90],
              minor_tick_interval=[30, 30], xlabel='', ylabel='',
-             colorbar='horizontal', cmap='viridis', cmap_limits=None,
+             colorbar='bottom', cmap='viridis', cmap_limits=None,
              cmap_reverse=False, cb_triangles='neither', cb_label=None,
              cb_tick_interval=None, grid=False, axes_labelsize=8,
              cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
@@ -1129,8 +1129,8 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = ''
             Label for the latitude axis.
-        colorbar : str, optional, default = 'horizontal'
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'bottom'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -1174,14 +1174,10 @@ class Tensor(object):
             specified file.
        """
         if colorbar is not None:
-            if colorbar == 'horizontal':
+            if colorbar in set(['bottom', 'top']):
                 scale = 0.9
-            elif colorbar == 'vertical':
-                scale = 0.45
             else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
+                scale = 0.45
         else:
             scale = 0.55
         figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -1305,7 +1301,7 @@ class Tensor(object):
 
     def plot_i0(self, projection=None, tick_interval=[30, 30],
                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                title=None, titlesize=None, colorbar='vertical',
+                title=None, titlesize=None, colorbar='right',
                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                 grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -1349,8 +1345,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -1419,7 +1415,7 @@ class Tensor(object):
 
     def plot_i1(self, projection=None, tick_interval=[30, 30],
                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                title=None, titlesize=None, colorbar='vertical',
+                title=None, titlesize=None, colorbar='right',
                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                 grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -1461,8 +1457,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -1531,7 +1527,7 @@ class Tensor(object):
 
     def plot_i2(self, projection=None, tick_interval=[30, 30],
                 minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                title=None, titlesize=None, colorbar='vertical',
+                title=None, titlesize=None, colorbar='right',
                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
                 cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                 grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -1574,8 +1570,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -1644,7 +1640,7 @@ class Tensor(object):
 
     def plot_i(self, projection=None, tick_interval=[30, 30],
                minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-               title=None, titlesize=None, colorbar='vertical',
+               title=None, titlesize=None, colorbar='right',
                cmap='viridis', cmap_limits=None, cmap_reverse=False,
                cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -1688,8 +1684,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -1758,7 +1754,7 @@ class Tensor(object):
 
     def plot_invar(self, projection=None, tick_interval=[60, 60],
                    minor_tick_interval=[30, 30], xlabel='',
-                   ylabel='', colorbar='horizontal', cmap='viridis',
+                   ylabel='', colorbar='bottom', cmap='viridis',
                    cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label=None,
                    cb_tick_interval=None, grid=False, axes_labelsize=9,
@@ -1797,8 +1793,8 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = ''
             Label for the latitude axis.
-        colorbar : str, optional, default = 'horizontal'
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'bottom'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -1842,14 +1838,10 @@ class Tensor(object):
             specified file.
         """
         if colorbar is not None:
-            if colorbar == 'horizontal':
+            if colorbar in set(['bottom', 'top']):
                 scale = 0.8
-            elif colorbar == 'vertical':
-                scale = 0.5
             else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
+                scale = 0.5
         else:
             scale = 0.6
         figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -1914,7 +1906,7 @@ class Tensor(object):
 
     def plot_eig1(self, projection=None, tick_interval=[30, 30],
                   minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                  title=None, titlesize=None, colorbar='vertical',
+                  title=None, titlesize=None, colorbar='right',
                   cmap='viridis', cmap_limits=None, cmap_reverse=False,
                   cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                   grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -1955,8 +1947,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -2025,7 +2017,7 @@ class Tensor(object):
 
     def plot_eig2(self, projection=None, tick_interval=[30, 30],
                   minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                  title=None, titlesize=None, colorbar='vertical',
+                  title=None, titlesize=None, colorbar='right',
                   cmap='viridis', cmap_limits=None, cmap_reverse=False,
                   cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                   grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -2066,8 +2058,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -2136,7 +2128,7 @@ class Tensor(object):
 
     def plot_eig3(self, projection=None, tick_interval=[30, 30],
                   minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                  title=None, titlesize=None, colorbar='vertical',
+                  title=None, titlesize=None, colorbar='right',
                   cmap='viridis', cmap_limits=None, cmap_reverse=False,
                   cb_triangles='neither', cb_label=None, cb_tick_interval=None,
                   grid=False, axes_labelsize=None, tick_labelsize=None,
@@ -2177,8 +2169,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -2247,7 +2239,7 @@ class Tensor(object):
 
     def plot_eigs(self, projection=None, tick_interval=[60, 60],
                   minor_tick_interval=[30, 30], xlabel='',
-                  ylabel='', colorbar='horizontal', cmap='viridis',
+                  ylabel='', colorbar='bottom', cmap='viridis',
                   cmap_limits=None, cmap_reverse=False,
                   cb_triangles='neither', cb_label=None,
                   cb_tick_interval=None, grid=False, axes_labelsize=9,
@@ -2285,8 +2277,8 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = ''
             Label for the latitude axis.
-        colorbar : str, optional, default = 'horizontal'
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'bottom'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -2330,14 +2322,10 @@ class Tensor(object):
             specified file.
         """
         if colorbar is not None:
-            if colorbar == 'horizontal':
+            if colorbar in set(['bottom', 'top']):
                 scale = 2.3
-            elif colorbar == 'vertical':
-                scale = 1.4
             else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
+                scale = 1.4
         else:
             scale = 1.65
         figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -2390,7 +2378,7 @@ class Tensor(object):
 
     def plot_eigh1(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                   title=None, titlesize=None, colorbar='vertical',
+                   title=None, titlesize=None, colorbar='right',
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label=None,
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
@@ -2431,8 +2419,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -2501,7 +2489,7 @@ class Tensor(object):
 
     def plot_eigh2(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                   title=None, titlesize=None, colorbar='vertical',
+                   title=None, titlesize=None, colorbar='right',
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label=None,
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
@@ -2542,8 +2530,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -2612,7 +2600,7 @@ class Tensor(object):
 
     def plot_eighh(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                   title=None, titlesize=None, colorbar='vertical',
+                   title=None, titlesize=None, colorbar='right',
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label=None,
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
@@ -2653,8 +2641,8 @@ class Tensor(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -2723,7 +2711,7 @@ class Tensor(object):
 
     def plot_eigh(self, projection=None, tick_interval=[60, 60],
                   minor_tick_interval=[30, 30], xlabel='',
-                  ylabel='', colorbar='horizontal', cmap='viridis',
+                  ylabel='', colorbar='bottom', cmap='viridis',
                   cmap_limits=None, cmap_reverse=False,
                   cb_triangles='neither', cb_label=None,
                   cb_tick_interval=None, grid=False, axes_labelsize=9,
@@ -2762,8 +2750,8 @@ class Tensor(object):
             Label for the longitude axis.
         ylabel : str, optional, default = ''
             Label for the latitude axis.
-        colorbar : str, optional, default = 'horizontal'
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'bottom'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -2807,14 +2795,10 @@ class Tensor(object):
             specified file.
         """
         if colorbar is not None:
-            if colorbar == 'horizontal':
+            if colorbar in set(['bottom', 'top']):
                 scale = 2.3
-            elif colorbar == 'vertical':
-                scale = 1.4
             else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
+                scale = 1.4
         else:
             scale = 1.65
         figsize = (_mpl.rcParams['figure.figsize'][0],

@@ -115,7 +115,7 @@ class SHMagGrid(object):
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='$B_r$, nT',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
@@ -156,8 +156,8 @@ class SHMagGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -220,7 +220,7 @@ class SHMagGrid(object):
 
     def plot_theta(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                   title=None, titlesize=None, colorbar='vertical',
+                   title=None, titlesize=None, colorbar='right',
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label='$B_\\theta$, nT',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
@@ -261,8 +261,8 @@ class SHMagGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -325,7 +325,7 @@ class SHMagGrid(object):
 
     def plot_phi(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='$B_\phi$, nT',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
@@ -366,8 +366,8 @@ class SHMagGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -430,7 +430,7 @@ class SHMagGrid(object):
 
     def plot_total(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                   title=None, titlesize=None, colorbar='vertical',
+                   title=None, titlesize=None, colorbar='right',
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label='$|B|$, nT',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
@@ -471,8 +471,8 @@ class SHMagGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -535,7 +535,7 @@ class SHMagGrid(object):
 
     def plot_pot(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='Potential, nT m',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
@@ -576,8 +576,8 @@ class SHMagGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -640,7 +640,7 @@ class SHMagGrid(object):
 
     def plot(self, projection=None, tick_interval=[60, 30],
              minor_tick_interval=[None, None], xlabel='Longitude',
-             ylabel='Latitude', colorbar='horizontal', cmap='viridis',
+             ylabel='Latitude', colorbar='bottom', cmap='viridis',
              cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
              cb_tick_interval=None, grid=False, axes_labelsize=9,
              tick_labelsize=8, show=True, ax=None, cb_offset=None,
@@ -678,8 +678,8 @@ class SHMagGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'bottom'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -721,14 +721,10 @@ class SHMagGrid(object):
             specified file.
         """
         if colorbar is not None:
-            if colorbar == 'horizontal':
+            if colorbar in set(['bottom', 'top']):
                 scale = 0.8
-            elif colorbar == 'vertical':
-                scale = 0.5
             else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
+                scale = 0.5
         else:
             scale = 0.6
         figsize = (_mpl.rcParams['figure.figsize'][0],

@@ -20,13 +20,15 @@ try:
     import cartopy.crs as _ccrs
     from cartopy.mpl.ticker import LongitudeFormatter as _LongitudeFormatter
     from cartopy.mpl.ticker import LatitudeFormatter as _LatitudeFormatter
+    _cartopy_module = True
 except ModuleNotFoundError:
-    print('*** Could not import the cartopy module. ***')
+    _cartopy_module = False
 
 try:
     import pygmt as _pygmt
+    _pygmt_module = True
 except ModuleNotFoundError:
-    print('*** Could not import the pygmt module. ***')
+    _pygmt_module = False
 
 
 # =============================================================================
@@ -2701,7 +2703,7 @@ class SHGrid(object):
     max()       : Return the maximum value of data using numpy.max().
     min()       : Return the minimum value of data using numpy.min().
     copy()      : Return a copy of the class instance.
-    plot()      : Plot the raw data.
+    plot()      : Plot the data.
     plotgmt()   : Plot projected data using the generic mapping tools (GMT).
     plot3d()    : Plot the raw data on a 3d sphere.
     info()      : Print a summary of the data stored in the SHGrid instance.
@@ -3496,8 +3498,8 @@ class SHGrid(object):
              tick_labelsize=None, xlabel=True, ylabel=True, ax=None, ax2=None,
              show=True, fname=None):
         """
-        Plot the raw data using a Cartopy projection or a matplotlib
-        cylindrical projection.
+        Plot the data using a Cartopy projection or a matplotlib cylindrical
+        projection.
 
         Usage
         -----
@@ -3533,7 +3535,7 @@ class SHGrid(object):
             The title of the plot. If the grid is complex, title should be a
             list of strings for the real and complex components.
         colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -3758,8 +3760,7 @@ class SHGrid(object):
             If True, create a continuous colormap. Default behavior is to
             use contant colors for each interval.
         colorbar : str, optional, default = None
-            Plot a colorbar that is to the 'left', 'right', 'top', or 'bottom'
-            of the image.
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cb_triangles : str, optional, default = 'both'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -3821,9 +3822,9 @@ class SHGrid(object):
         if width is None:
             width = _mpl.rcParams['figure.figsize'][0]
         if colorbar is not None:
-            if colorbar not in set(['horizontal', 'vertical']):
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
+            if colorbar not in set(['top', 'bottom', 'left', 'right']):
+                raise ValueError("colorbar must be 'top', 'bottom', 'left' or "
+                                 "'right'. Input value is {:s}."
                                  .format(repr(colorbar)))
 
         figure = self._plot_pygmt(
@@ -4000,7 +4001,7 @@ class DHRealGrid(SHGrid):
               minor_tick_interval=None, cb_tick_interval=None, cb_ylabel=None,
               cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
               cmap_limits_complex=None, cb_offset=None, cb_width=None):
-        """Plot the raw data as a matplotlib simple cylindrical projection,
+        """Plot the data as a matplotlib cylindrical projection,
            or with Cartopy when projection is specified."""
         if ax is None:
             if colorbar is not None:
@@ -4334,10 +4335,14 @@ class DHRealGrid(SHGrid):
         position = None
         cb_str = None
         if colorbar is not None:
-            if colorbar == 'vertical':
+            if colorbar == 'right':
                 position = "JMR"
-            elif colorbar == 'horizontal':
+            elif colorbar == 'bottom':
                 position = "JBC+h"
+            elif colorbar == 'left':
+                position = "JML"
+            elif colorbar == 'top':
+                position = "JTC+h"
             if cb_offset is not None:
                 if colorbar == 'horizontal':
                     position += '+o0p/' + str(cb_offset) + 'p'
@@ -4497,14 +4502,10 @@ class DHComplexGrid(SHGrid):
            or with Cartopy when projection is specified."""
         if ax is None:
             if colorbar is not None:
-                if colorbar == 'horizontal':
+                if colorbar in set(['top', 'bottom']):
                     scale = 1.5
-                elif colorbar == 'vertical':
-                    scale = 1.1
                 else:
-                    raise ValueError("colorbar must be either 'horizontal' or "
-                                     "'vertical'. Input value is {:s}."
-                                     .format(repr(colorbar)))
+                    scale = 1.1
             else:
                 scale = 1.2
             figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -4699,12 +4700,12 @@ class GLQRealGrid(SHGrid):
               cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
               cmap_limits_complex=None, cb_ylabel=None, cb_offset=None,
               cb_width=None):
-        """Plot the raw data using a simply cylindrical projection."""
+        """Plot the data using a matplotlib cylindrical projection."""
         if ax is None:
             if colorbar is not None:
-                if colorbar == 'horizontal':
+                if colorbar in set(['top', 'bottom']):
                     scale = 0.67
-                elif colorbar == 'vertical':
+                else:
                     scale = 0.5
             else:
                 scale = 0.55
@@ -4831,46 +4832,73 @@ class GLQRealGrid(SHGrid):
         # plot colorbar
         if colorbar is not None:
             if cb_offset is None:
-                if colorbar == 'vertical':
+                if colorbar in set(['left', 'right']):
                     offset = 0.15
+                    if (colorbar == 'left' and 'W' in ticks) or \
+                            (colorbar == 'right' and 'E' in ticks):
+                        offset += 2 * tick_labelsize / 72.
+                    # add space for ylabel on left of plot only
+                    if ylabel != '' and ylabel is not None and \
+                            colorbar == 'left':
+                        offset += 1.4 * axes_labelsize / 72.
                 else:
                     offset = 0.
-                    if xticks != [] and bottom:
-                        # add space for ticks
+                    # add space for ticks
+                    if (colorbar == 'bottom' and bottom) or \
+                            (colorbar == 'top' and top):
                         offset += _mpl.rcParams['xtick.major.size']
-                    if xticks != [] and labelbottom:
+                    # add space for labels
+                    if (colorbar == 'bottom' and labelbottom) or \
+                            (colorbar == 'top' and labeltop):
                         offset += _mpl.rcParams['xtick.major.pad']
                         offset += tick_labelsize
-                    if xlabel != '' and xlabel is not None:
-                        # add space for xlabel
+                    # add space for xlabel on bottom of plot only
+                    if xlabel != '' and xlabel is not None and \
+                            colorbar == 'bottom':
                         offset += axes_labelsize
-                    offset += 1.5 * _mpl.rcParams['font.size']  # add extra
+                    offset += 1.3 * _mpl.rcParams['font.size']  # add extra
                     offset /= 72.  # convert to inches
             else:
                 offset = cb_offset / 72.  # convert to inches
 
             divider = _make_axes_locatable(axes)
-            if colorbar == 'vertical':
-                cax = divider.append_axes('right', size='2.5%', pad=offset)
-            elif colorbar == 'horizontal':
-                cax = divider.append_axes('bottom', size='5%', pad=offset)
-            cbar = _plt.colorbar(cim, cax=cax, orientation=colorbar,
+            if colorbar in set(['left', 'right']):
+                orientation = 'vertical'
+                if cb_width is None:
+                    size = '2.5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
+            else:
+                orientation = 'horizontal'
+                if cb_width is None:
+                    size = '5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
+            cax = divider.append_axes(colorbar, size=size, pad=offset,
+                                      axes_class=_plt.Axes)
+            cbar = _plt.colorbar(cim, cax=cax, orientation=orientation,
                                  extend=cb_triangles)
+            if colorbar == 'left':
+                cbar.ax.yaxis.set_ticks_position('left')
+                cbar.ax.yaxis.set_label_position('left')
+            if colorbar == 'top':
+                cbar.ax.xaxis.set_ticks_position('top')
+                cbar.ax.xaxis.set_label_position('top')
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
             if cb_ylabel is not None:
-                if colorbar == 'vertical':
+                if colorbar in set(['left', 'right']):
                     cbar.ax.xaxis.set_label_position('top')
                     cbar.ax.set_xlabel(cb_ylabel, fontsize=tick_labelsize)
                 else:
                     cbar.ax.yaxis.set_label_position('right')
-                    cbar.ax.set_ylabel(cb_ylabel, fontsize=axes_labelsize,
+                    cbar.ax.set_ylabel(cb_ylabel, fontsize=tick_labelsize,
                                        rotation=0., labelpad=axes_labelsize/2.,
                                        va='center', ha='left')
             if cb_ticks is not None:
                 cbar.set_ticks(cb_ticks)
             if cb_minor_ticks is not None:
-                if colorbar == 'horizontal':
+                if colorbar in set(['top', 'bottom']):
                     cbar.ax.xaxis.set_ticks(cb_minor_ticks, minor=True)
                 else:
                     cbar.ax.yaxis.set_ticks(cb_minor_ticks, minor=True)
@@ -4979,14 +5007,10 @@ class GLQComplexGrid(SHGrid):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
-                if colorbar == 'horizontal':
+                if colorbar in set(['top', 'bottom']):
                     scale = 1.5
-                elif colorbar == 'vertical':
-                    scale = 1.1
                 else:
-                    raise ValueError("colorbar must be either 'horizontal' or "
-                                     "'vertical'. Input value is {:s}."
-                                     .format(repr(colorbar)))
+                    scale = 1.1
             else:
                 scale = 1.2
             figsize = (_mpl.rcParams['figure.figsize'][0],

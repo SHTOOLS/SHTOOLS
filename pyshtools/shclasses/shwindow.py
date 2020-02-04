@@ -857,7 +857,7 @@ class SHWindow(object):
             If True, plot a title on top of each subplot providing the taper
             number and 1 minus the concentration factor.
         colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data.
         cmap_limits : list, optional, default = [self.min(), self.max()]
