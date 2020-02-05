@@ -144,3 +144,13 @@ u0_wgs84 = _Constant(
     'Defense World Geodetic System 1984: Its Definition and Relationship '
     'with Local Geodetic Systems. NIMA TR8350.2, National Imagery and '
     'Mapping Agency.')
+
+dynamical_flattening_earth = _Constant(
+    abbrev='dynamical_flattening_earth',
+    name="Dynamical flattening of the Earth",
+    value=3273795e-9,
+    unit='',
+    uncertainty=1e-9,
+    reference='Petit, G., & Luzum, B. (2010). IERS conventions (2010) '
+    '(No. IERS-TN-36). BUREAU INTERNATIONAL DES POIDS '
+    'ET MESURES SEVRES (FRANCE).')
