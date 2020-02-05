@@ -30,7 +30,8 @@ def _time_variable_part(epoch, ref_epoch, trnd, periodic):
     return trend + periodic_sum
 
 
-def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
+def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
+                   encoding=None):
     """
     Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted
     file.
@@ -66,6 +67,9 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
         The epoch time to calculate time-variable coefficients in YYYYMMDD.DD
         format. If None then reference epoch t0 of the model will be used.
         If format of the file is 'icgem2.0' then epoch must be specified.
+    encoding : str, optional
+        Encoding of the input file. Try to use 'iso-8859-1'
+        if default (UTF-8) is failed.
     """
 
     # read header
@@ -74,7 +78,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
                    'gravity_constant', 'radius', 'max_degree', 'errors',
                    'tide_system', 'norm', 'format']
 
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding=encoding) as f:
         for line in f:
             if 'end_of_head' in line:
                 break
@@ -97,14 +101,16 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
             epoch = _yyyymmdd_to_year_fraction(epoch)
 
         if 'earth_gravity_constant' in header:
-            gravity_constant = float(header['earth_gravity_constant'].replace('D', 'E'))
+            gravity_constant = float(header[
+                'earth_gravity_constant'].lower().replace('d', 'e'))
         elif 'gravity_constant' in header:
-            gravity_constant = float(header['gravity_constant'].replace('D', 'E'))
+            gravity_constant = float(header[
+                'gravity_constant'].lower().replace('d', 'e'))
         else:
             raise ValueError(
                 'No standard gravitational constant in the header.')
 
-        radius = float(header['radius'].replace('D', 'E'))
+        radius = float(header['radius'].lower().replace('d', 'e'))
 
         lmax_model = int(header['max_degree'])
         if lmax is None or lmax < 0 or lmax > lmax_model:
@@ -133,7 +139,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None):
 
         # read coefficients
         for line in f:
-            line = line.replace('D', 'E').strip().split()
+            line = line.lower().replace('d', 'e').strip().split()
 
             l, m = int(line[1]), int(line[2])
             if m > lmax:
