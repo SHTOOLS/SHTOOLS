@@ -34,6 +34,7 @@ install:
   - conda install -c anaconda setuptools
   - conda update --force-reinstall -q conda
   - conda info -a
+  - conda config --append channels conda-forge
 
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
@@ -45,7 +46,11 @@ install:
         astropy
         xarray
         requests
+        cartopy
+        gmt=6.0.0
   - source activate test-environment
+  - pip install git+https://github.com/GenericMappingTools/pygmt.git
+  - pip install palettable
   - pip install --no-deps .
 
 script:

@@ -30,8 +30,8 @@ subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
 !   Notes:
 !
 !   1.  The employed normalization is the "orthonomalization convention."
-!   2.  The integral of PlBar**2 over all space on the sphere is 1.
-!   3.  The integral of PlBar**2 over (-1,1) is 1/2pi.
+!   2.  The integral of PlON**2 over all space on the sphere is 1.
+!   3.  The integral of PlON**2 over (-1,1) is 1/2pi.
 !   4.  The derivative is evaluated with respecte to z, and NOT cos(colatitude)
 !       or sin(latitude).
 !   5.  Derivatives are calculated according to the geodesy-normalized
@@ -61,7 +61,7 @@ subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
     pi = acos(-1.0_dp)
 
     if (size(p) < lmax+1) then
-        print*, "Error --- PlBar_d1"
+        print*, "Error --- PlON_d1"
         print*, "P must be dimensioned as (LMAX+1) where LMAX is ", lmax
         print*, "Input array is dimensioned ", size(p)
         if (present(exitstatus)) then
@@ -72,7 +72,7 @@ subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
         end if
 
     else if (size(dp1) < lmax+1) then
-        print*, "Error --- PlBar_d1"
+        print*, "Error --- PlON_d1"
         print*, "DP1 must be dimensioned as (LMAX+1) where LMAX is ", lmax
         print*, "Input array is dimensioned ", size(dp1)
         if (present(exitstatus)) then
@@ -83,7 +83,7 @@ subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
         end if
 
      else if (lmax < 0) then
-        print*, "Error --- PlBar_d1"
+        print*, "Error --- PlON_d1"
         print*, "LMAX must be greater than or equal to 0."
         print*, "Input value is ", lmax
         if (present(exitstatus)) then
@@ -94,7 +94,7 @@ subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
         end if
 
     else if (abs(z) > 1.0_dp) then
-        print*, "Error --- PlBar_d1"
+        print*, "Error --- PlON_d1"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
         if (present(exitstatus)) then
@@ -108,16 +108,17 @@ subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
 
     if (z == 1.0_dp) then
         do l = 0, lmax
-            p(1:lmax+1) = sqrt( dble(2*l+1) )
-            dp1(l+1) = sqrt( dble(2*l+1) ) * dble(l) * dble(l+1) / 2.0_dp
+            p(l+1) = sqrt( dble(2*l+1)) / sqrt(4*pi)
+            dp1(l+1) = sqrt( dble(2*l+1) ) * dble(l) * dble(l+1) / 2.0_dp &
+                        / sqrt(4*pi)
         end do
 
     else if (z == -1.0_dp) then
         do l = 0, lmax
-            p(l+1) = sqrt( dble(2*l+1) ) * dble((-1)**l)
+            p(l+1) = sqrt( dble(2*l+1)) * dble((-1)**l) / sqrt(4*pi)
             dp1(l+1) = sqrt( dble(2*l+1)) * dble(l) * dble(l+1) &
-                        * dble((-1)**(l-1)) / 2.0_dp
-            end do
+                        * dble((-1)**(l-1)) / 2.0_dp / sqrt(4*pi)
+        end do
 
     else
         sinsq = (1.0_dp - z**2)
