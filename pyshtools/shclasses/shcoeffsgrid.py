@@ -3592,9 +3592,13 @@ class SHGrid(object):
             specified file.
         """
         if projection is not None:
-            if not isinstance(projection, _ccrs.Projection):
-                raise ValueError('The input projection must be an instance '
-                                 'of cartopy.crs.Projection.')
+            if _cartopy_module:
+                if not isinstance(projection, _ccrs.Projection):
+                    raise ValueError('The input projection must be an '
+                                     'instance of cartopy.crs.Projection.')
+            else:
+                raise ImportError('When using map projections, plot() '
+                                  'requires installation of Cartopy.')
             if self.grid != 'DH':
                 raise ValueError('Map projections are supported only for '
                                  'DH grid types.')
@@ -3811,6 +3815,9 @@ class SHGrid(object):
             Sinusoidal (sin)
             Van-der-Grinten (van)
         """
+        if not _pygmt_module:
+            raise ImportError('plotgmt() requires installation of the module '
+                              'pygmt.')
         if tick_interval is None:
             tick_interval = [None, None]
         if minor_tick_interval is None:

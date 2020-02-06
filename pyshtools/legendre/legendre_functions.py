@@ -126,7 +126,7 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
     elif normalization == 'schmidt':
         p = _PlmSchmidt(lmax, z, csphase=csphase, cnorm=cnorm)
     elif normalization == 'unnorm':
-        p = _PLegendreA(lmax, z, csphase=csphase, cnorm=cnorm)
+        p = _PLegendreA(lmax, z, csphase=csphase)
 
     if packed is True:
         return p
@@ -251,6 +251,6 @@ def legendre_lm(l, m, z, normalization='4pi', csphase=1, cnorm=0):
     elif normalization == 'schmidt':
         p = _PlmSchmidt(l, z, csphase=csphase, cnorm=cnorm)
     elif normalization == 'unnorm':
-        p = _PLegendreA(l, z, csphase=csphase, cnorm=cnorm)
+        p = _PLegendreA(l, z, csphase=csphase)
 
     return p[(l*(l+1))//2+m]
