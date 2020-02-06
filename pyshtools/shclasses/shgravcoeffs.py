@@ -825,8 +825,8 @@ class SHGravCoeffs(object):
         coeffs = self.convert(normalization='unnorm',
                 csphase=1, lmax=1).coeffs
 
-        x_cm = coeffs[1, 1, 1] * self.r0
-        y_cm = coeffs[0, 1, 1] * self.r0
+        x_cm = coeffs[0, 1, 1] * self.r0
+        y_cm = coeffs[1, 1, 1] * self.r0
         z_cm = coeffs[0, 1, 0] * self.r0
 
         return x_cm, y_cm, z_cm
