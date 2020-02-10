@@ -38,6 +38,7 @@ class SHCoeffs(object):
         x = SHCoeffs.from_random(powerspectrum)
         x = SHCoeffs.from_zeros(lmax)
         x = SHCoeffs.from_file('fname.dat')
+        x = SHCoeffs.from_netcdf('ncname.nc')
         x = SHCoeffs.from_cap(theta, lmax)
 
     The normalization convention of the input coefficents is specified
@@ -101,6 +102,8 @@ class SHCoeffs(object):
     to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     to_file()             : Save raw spherical harmonic coefficients as a file.
+    to_netcdf()           : Save raw spherical harmonic coefficients as a 
+                            netcdf file.
     copy()                : Return a copy of the class instance.
     info()                : Print a summary of the data stored in the SHCoeffs
                             instance.
@@ -113,6 +116,7 @@ class SHCoeffs(object):
               '>>> pyshtools.SHCoeffs.from_random\n'
               '>>> pyshtools.SHCoeffs.from_zeros\n'
               '>>> pyshtools.SHCoeffs.from_file\n'
+              '>>> pyshtools.SHCoeffs.from_netcdf\n'
               '>>> pyshtools.SHCoeffs.from_cap\n'
               )
 
@@ -620,7 +624,7 @@ class SHCoeffs(object):
         return temp
     
     @classmethod
-    def from_netcdf(self, filename):
+    def from_netcdf(self, filename, lmax=None, normalization='4pi', csphase=1):
         """
         Initialize the class with spherical harmonic coefficients from a 
         netcdf file.
@@ -637,22 +641,62 @@ class SHCoeffs(object):
         ----------
         filename : str
             Name of the file, including path.
+        lmax : int, optional, default = None
+            The maximum spherical harmonic degree to read.
+        normalization : str, optional, default = '4pi'
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+            coefficients, respectively.
+        csphase : int, optional, default = 1
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
             
         Description
         -----------
         The format of the netcdf file has to be exactly as the format that is
         used in SHCoeffs.to_netcdf().
         """
+        if type(normalization) != str:
+            raise ValueError('normalization must be a string. '
+                             'Input type was {:s}'
+                             .format(str(type(normalization))))
+
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
+            raise ValueError(
+                "The input normalization must be '4pi', 'ortho', 'schmidt', "
+                "or 'unnorm'. Provided value was {:s}"
+                .format(repr(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be 1 or -1. Input value was {:s}"
+                .format(repr(csphase))
+                )
     
         if not filename[-3:] == '.nc':
             filename += '.nc'
         
-        ds = xr.open_dataset(filename)
-        c = np.tril(ds.coeffs.data)
-        s = np.triu(ds.coeffs.data, k=1)
-        s = np.vstack([s[-1], s[:-1]])
-        s = np.transpose(s)
-        coeffs = np.array([c, s])
+        ds = _xr.open_dataset(filename)
+        lmaxout = ds.dims['degree'] - 1
+            
+        c = _np.tril(ds.coeffs.data)
+        s = _np.triu(ds.coeffs.data, k=1)
+        s = _np.vstack([s[-1], s[:-1]])
+        s = _np.transpose(s)
+        if isinstance(lmax, int):
+            c, s = c[:lmax+1, :lmax+1], s[:lmax+1, :lmax+1]
+            lmaxout = lmax
+
+        if normalization.lower() == 'unnorm' and lmaxout > 85:
+            _warnings.warn("Calculations using unnormalized coefficients " +
+                           "are stable only for degrees less than or equal " +
+                           "to 85. lmax for the coefficients will be set to " +
+                           "85. Input value was {:d}.".format(lmaxout),
+                           category=RuntimeWarning)
+            lmaxout = 85
+            c, s = c[:lmaxout+1, :lmaxout+1], s[:lmaxout+1, :lmaxout+1]
+        coeffs = _np.array([c, s])
 
         if _np.iscomplexobj(coeffs):
             kind = 'complex'
@@ -661,7 +705,8 @@ class SHCoeffs(object):
             
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs)
+                return cls(coeffs, normalization=normalization.lower(),
+                           csphase=csphase)
         
     # ---- Define methods that modify internal variables ----
     def set_coeffs(self, values, ls, ms):
@@ -770,14 +815,14 @@ class SHCoeffs(object):
         if not filename[-3:] == '.nc':
             filename += '.nc'
         
-        ds = xr.Dataset()
-        ds.coords['degree'] = ('degree', np.arange(coeffs.lmax+1))
-        ds.coords['order'] = ('order', np.arange(coeffs.lmax+1))
+        ds = _xr.Dataset()
+        ds.coords['degree'] = ('degree', _np.arange(self.lmax+1))
+        ds.coords['order'] = ('order', _np.arange(self.lmax+1))
         # c coeffs as lower triangular matrix
-        c = coeffs.coeffs[0, :, :]
+        c = self.coeffs[0, :, :]
         # s coeffs as upper triangular matrix
-        s = np.transpose(coeffs.coeffs[1, :, :])
-        s = np.vstack([s[1:], s[0]])
+        s = _np.transpose(self.coeffs[1, :, :])
+        s = _np.vstack([s[1:], s[0]])
         ds['coeffs'] = (('degree', 'order'), c + s)
         ds['coeffs'].attrs['title'] = title
         ds['coeffs'].attrs['description'] = description
