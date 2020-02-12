@@ -28,6 +28,8 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
 
 * Integrated support for working with xarray and netcdf data.
 
+* Publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/dev/).
+
 * SHTOOLS is open source software (3-clause BSD license).
 
 ### INSTALLATION ###

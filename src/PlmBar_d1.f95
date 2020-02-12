@@ -54,10 +54,10 @@ subroutine PlmBar_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
 !   Notes:
 !
 !   1.  The employed normalization is the "geophysical convention." The integral
-!       of (plm*cos(m theta))**2 or (plm*sin (m theta))**2 over all space is
-!       4 pi.
-!   2.  The integral of plm**2 over (-1,1) is 2 * (2 - delta(0,m)). If CNORM=1,
-!       then this is equal to 2.
+!       of (PlmBar*cos(m theta))**2 or (PlmBar*sin (m theta))**2 over all
+!       space is 4 pi.
+!   2.  The integral of PlmBar**2 over (-1,1) is 2 * (2 - delta(0,m)).
+!       If CNORM=1, then this is equal to 2.
 !   3.  The index of the array p corresponds to l*(l+1)/2 + m + 1. As such
 !       the array p should be dimensions as (lmax+1)*(lmax+2)/2 in the
 !       calling routine.

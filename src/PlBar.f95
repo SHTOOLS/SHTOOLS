@@ -83,8 +83,8 @@ subroutine PlBar(p, lmax, z, exitstatus)
 
     end if
 
-    pm2 = 1.d0
-    p(1) = 1.d0
+    pm2 = 1.0_dp
+    p(1) = 1.0_dp
 
     pm1 = sqrt(3.0_dp) * z
     p(2) = pm1

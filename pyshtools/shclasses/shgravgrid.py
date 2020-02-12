@@ -131,13 +131,14 @@ class SHGravGrid(object):
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='$g_r$, m s$^{-2}$',
-                 cb_tick_interval=None, grid=False, axes_labelsize=None,
-                 tick_labelsize=None, show=True, ax=None, cb_offset=None,
-                 cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 fname=None):
+                 cb_tick_interval=None, cb_offset=None,
+                 cb_width=None, grid=False, axes_labelsize=None,
+                 tick_labelsize=None, show=True, ax=None,
+                 cb_minor_tick_interval=None, ticks='WSen',
+                 cb_ylabel=None, fname=None):
         """
         Plot the radial component of the gravity field.
 
@@ -146,9 +147,9 @@ class SHGravGrid(object):
         x.plot_rad([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -172,8 +173,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -198,6 +199,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -226,18 +231,19 @@ class SHGravGrid(object):
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
                              cb_minor_tick_interval=cb_minor_tick_interval,
+                             cb_width=cb_width,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
 
     def plot_theta(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                   title=None, titlesize=None, colorbar='vertical',
+                   title=None, titlesize=None, colorbar='right',
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label='$g_\\theta$, m s$^{-2}$',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None, cb_offset=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                   fname=None):
+                   fname=None, cb_width=None):
         """
         Plot the theta component of the gravity field.
 
@@ -247,8 +253,8 @@ class SHGravGrid(object):
                       xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
                       cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      grid, titlesize, axes_labelsize, tick_labelsize, ax,
-                      show, fname])
+                      cb_width, grid, titlesize, axes_labelsize,
+                      tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -272,8 +278,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -298,6 +304,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -327,17 +337,18 @@ class SHGravGrid(object):
                                cb_ylabel=cb_ylabel, ticks=ticks,
                                cb_minor_tick_interval=cb_minor_tick_interval,
                                tick_labelsize=tick_labelsize, ax=ax,
+                               cb_width=cb_width,
                                show=show, fname=fname)
 
     def plot_phi(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='$g_\phi$, m s$^{-2}$',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 fname=None):
+                 cb_width=None, fname=None):
         """
         Plot the phi component of the gravity field.
 
@@ -346,9 +357,9 @@ class SHGravGrid(object):
         x.plot_phi([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -372,8 +383,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -398,6 +409,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -425,19 +440,20 @@ class SHGravGrid(object):
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
+                             cb_width=cb_width,
                              cb_minor_tick_interval=cb_minor_tick_interval,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
 
     def plot_total(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                   title=None, titlesize=None, colorbar='vertical',
+                   title=None, titlesize=None, colorbar='right',
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
                    cb_triangles='neither', cb_label='Gravity disturbance',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None, cb_offset=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                   fname=None):
+                   cb_width=None, fname=None):
         """
         Plot the total gravity disturbance.
 
@@ -447,8 +463,8 @@ class SHGravGrid(object):
                       xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                       cmap_reverse, cb_triangles, cb_label, cb_ylabel,
                       cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      grid, titlesize, axes_labelsize, tick_labelsize, ax,
-                      show, fname])
+                      cb_width, grid, titlesize, axes_labelsize,
+                      tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -472,8 +488,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -498,6 +514,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -542,19 +562,20 @@ class SHGravGrid(object):
                          cb_tick_interval=cb_tick_interval, grid=grid,
                          axes_labelsize=axes_labelsize,
                          cb_ylabel=cb_ylabel, ticks=ticks,
+                         cb_width=cb_width,
                          cb_minor_tick_interval=cb_minor_tick_interval,
                          tick_labelsize=tick_labelsize, ax=ax,
                          show=show, fname=fname)
 
     def plot_pot(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='vertical',
+                 title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
                  cb_triangles='neither', cb_label='Potential, m$^2$ s$^{-2}$',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-                 fname=None):
+                 cb_width=None, fname=None):
         """
         Plot the gravitational potential.
 
@@ -563,9 +584,9 @@ class SHGravGrid(object):
         x.plot_pot([projection, tick_interval, minor_tick_interval, ticks,
                     xlabel, ylabel, title, colorbar, cmap, cmap_limits,
                     cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset, grid,
-                    titlesize, axes_labelsize, tick_labelsize, ax, show,
-                    fname])
+                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
+                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
+                    ax, show, fname])
 
         Parameters
         ----------
@@ -589,8 +610,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -615,6 +636,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         titlesize : int, optional, default = None
@@ -643,17 +668,18 @@ class SHGravGrid(object):
                              axes_labelsize=axes_labelsize,
                              cb_ylabel=cb_ylabel, ticks=ticks,
                              cb_minor_tick_interval=cb_minor_tick_interval,
+                             cb_width=cb_width,
                              tick_labelsize=tick_labelsize, ax=ax,
                              show=show, fname=fname)
 
     def plot(self, projection=None, tick_interval=[60, 30],
              minor_tick_interval=[None, None], xlabel='Longitude',
-             ylabel='Latitude', colorbar='horizontal', cmap='viridis',
+             ylabel='Latitude', colorbar='bottom', cmap='viridis',
              cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
              cb_tick_interval=None, grid=False, axes_labelsize=9,
              tick_labelsize=8, show=True, ax=None, cb_offset=None,
              cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
-             fname=None):
+             cb_width=None, fname=None):
         """
         Plot the three vector components of the gravity field and the gravity
         disturbance.
@@ -663,8 +689,8 @@ class SHGravGrid(object):
         x.plot([projection, tick_interval, minor_tick_interval, ticks, xlabel,
                 ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
                 cb_triangles, cb_ylabel, cb_tick_interval,
-                cb_minor_tick_interval, cb_offset, grid, axes_labelsize,
-                tick_labelsize, ax, show, fname])
+                cb_minor_tick_interval, cb_offset, cb_width, grid,
+                axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -686,8 +712,8 @@ class SHGravGrid(object):
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        colorbar : str, optional, default = None
-            Plot a colorbar that is either 'horizontal' or 'vertical'.
+        colorbar : str, optional, default = 'bottom'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -710,6 +736,10 @@ class SHGravGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
         axes_labelsize : int, optional, default = None
@@ -725,14 +755,10 @@ class SHGravGrid(object):
             specified file.
         """
         if colorbar is not None:
-            if colorbar == 'horizontal':
+            if colorbar in set(['bottom', 'top']):
                 scale = 0.8
-            elif colorbar == 'vertical':
-                scale = 0.5
             else:
-                raise ValueError("colorbar must be either 'horizontal' or "
-                                 "'vertical'. Input value is {:s}."
-                                 .format(repr(colorbar)))
+                scale = 0.5
         else:
             scale = 0.6
         figsize = (_mpl.rcParams['figure.figsize'][0],
@@ -751,7 +777,7 @@ class SHGravGrid(object):
                       tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                       cb_ylabel=cb_ylabel, ticks=ticks,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      show=show, fname=None)
+                      cb_width=cb_width, show=show, fname=None)
         self.plot_theta(projection=projection, ax=ax.flat[1],
                         tick_interval=tick_interval,
                         minor_tick_interval=minor_tick_interval,
@@ -764,7 +790,7 @@ class SHGravGrid(object):
                         tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                         cb_ylabel=cb_ylabel, ticks=ticks,
                         cb_minor_tick_interval=cb_minor_tick_interval,
-                        show=show, fname=None)
+                        cb_width=cb_width, show=show, fname=None)
         self.plot_phi(projection=projection, ax=ax.flat[2],
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
@@ -777,7 +803,7 @@ class SHGravGrid(object):
                       tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                       cb_ylabel=cb_ylabel, ticks=ticks,
                       cb_minor_tick_interval=cb_minor_tick_interval,
-                      show=show, fname=None)
+                      cb_width=cb_width, show=show, fname=None)
         self.plot_total(projection=projection, ax=ax.flat[3],
                         tick_interval=tick_interval,
                         minor_tick_interval=minor_tick_interval,
@@ -790,7 +816,7 @@ class SHGravGrid(object):
                         tick_labelsize=tick_labelsize, cb_offset=cb_offset,
                         cb_ylabel=cb_ylabel, ticks=ticks,
                         cb_minor_tick_interval=cb_minor_tick_interval,
-                        show=show, fname=None)
+                        cb_width=cb_width, show=show, fname=None)
         fig.tight_layout(pad=0.5)
 
         if fname is not None:
