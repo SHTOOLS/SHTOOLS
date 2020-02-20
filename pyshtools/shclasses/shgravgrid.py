@@ -540,10 +540,10 @@ class SHGravGrid(object):
         acceleration, the output will be displayed in mGals.
         """
         if self.normal_gravity:
-            if cb_label is not None:
+            if cb_label is not None and cb_ylabel is None:
                 cb_label += ', mGal'
         else:
-            if cb_label is not None:
+            if cb_label is not None and cb_ylabel is None:
                 cb_label += ', m s$^{-2}$'
 
         if self.normal_gravity:

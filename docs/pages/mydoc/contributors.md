@@ -14,3 +14,4 @@ toc: true
 * [xoviat](https://github.com/xoviat)
 * Benda Xu / [heroxbd](https://github.com/heroxbd)
 * Andrew Walker / [andreww](https://github.com/andreww)
+* Katrin Leinweber / [katrinleinweber](https://github.com/katrinleinweber)

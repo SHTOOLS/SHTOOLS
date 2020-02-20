@@ -2661,6 +2661,7 @@ class SHGrid(object):
 
         x = SHGrid.from_array(array)
         x = SHGrid.from_xarray(data_array)
+        x = SHGrid.from_netcdf(netcdf)
         x = SHGrid.from_file('fname.dat')
         x = SHGrid.from_zeros(lmax)
         x = SHGrid.from_cap(theta, clat, clon, lmax)
@@ -2714,6 +2715,7 @@ class SHGrid(object):
         print('Initialize the class using one of the class methods:\n'
               '>>> pyshtools.SHGrid.from_array\n'
               '>>> pyshtools.SHGrid.from_xarray\n'
+              '>>> pyshtools.SHGrid.from_netcdf\n'
               '>>> pyshtools.SHGrid.from_file\n'
               '>>> pyshtools.SHGrid.from_zeros\n'
               '>>> pyshtools.SHGrid.from_cap\n')
@@ -2953,7 +2955,7 @@ class SHGrid(object):
 
         Usage
         -----
-        x = SHGrid.from_xarray(data_array)
+        x = SHGrid.from_xarray(data_array, [grid])
 
         Returns
         -------
@@ -2970,6 +2972,30 @@ class SHGrid(object):
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
         """
+        return self.from_array(data_array.values, grid=grid)
+
+    @classmethod
+    def from_netcdf(self, netcdf, grid='DH'):
+        """
+        Initialize the class instance from a netcdf formatted file or object.
+
+        Usage
+        -----
+        x = SHGrid.from_netcdf(netcdf, [grid])
+
+        Returns
+        -------
+        x : SHGrid class instance
+
+        Parameters
+        ----------
+        netcdf : str or netcdf object
+            The name of a netcdf file or object.
+        grid : str, optional, default = 'DH'
+            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
+            Quadrature grids, respectively.
+        """
+        data_array = _xr.open_dataarray(netcdf)
         return self.from_array(data_array.values, grid=grid)
 
     def copy(self):

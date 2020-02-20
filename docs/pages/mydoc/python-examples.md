@@ -17,6 +17,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
+{% include note.html content="In order to access the notebooks, example programs, and example datasets, it will be necessary to download or clone the entire shtools repo from [GitHub](https://github.com/SHTOOLS/SHTOOLS/). These files are not included when installing via pip." %}
+
 ## Notebooks
 
 | Notebook name | Description |
