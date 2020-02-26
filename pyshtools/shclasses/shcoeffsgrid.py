@@ -642,7 +642,7 @@ class SHCoeffs(object):
 
         Usage
         -----
-        x = SHCoeffs.from_netcdf(filename)
+        x = SHCoeffs.from_netcdf(filename, [lmax, normalization, csphase])
 
         Returns
         -------
@@ -684,9 +684,6 @@ class SHCoeffs(object):
                 "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase))
                 )
-    
-        if not filename[-3:] == '.nc':
-            filename += '.nc'
         
         ds = _xr.open_dataset(filename)
         lmaxout = ds.dims['degree'] - 1
@@ -811,7 +808,7 @@ class SHCoeffs(object):
         
         Usage
         -----
-        x.to_netcdf([filename, title, description])
+        x.to_netcdf(filename, [title, description])
         
         Parameters
         ----------
@@ -822,9 +819,6 @@ class SHCoeffs(object):
         description : str, optional, default = ''
             Description of the data.
         """
-        
-        if not filename[-3:] == '.nc':
-            filename += '.nc'
         
         ds = _xr.Dataset()
         ds.coords['degree'] = ('degree', _np.arange(self.lmax+1))
