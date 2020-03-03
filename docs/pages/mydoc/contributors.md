@@ -7,11 +7,17 @@ summary:
 toc: true
 ---
 
-* Mark Wieczorek / [MarkWieczorek](https://github.com/MarkWieczorek) (admin)
-* Matthias Meschede / [MMesch](https://github.com/MMesch) (admin)
+## Maintainers
+* Mark Wieczorek / [MarkWieczorek](https://github.com/MarkWieczorek)
+* Matthias Meschede / [MMesch](https://github.com/MMesch)
+
+## Contributors
 * Elliott Sales de Andrade / [QuLogic](https://github.com/QuLogic)
 * Ilya Oshchepkov / [ioshchepkov](https://github.com/ioshchepkov)
 * [xoviat](https://github.com/xoviat)
 * Benda Xu / [heroxbd](https://github.com/heroxbd)
-* Andrew Walker / [andreww](https://github.com/andreww)
 * Katrin Leinweber / [katrinleinweber](https://github.com/katrinleinweber)
+* Andrew Walker / [andreww](https://github.com/andreww)
+* Stefan Schröder / [Nasuyo](https://github.com/Nasuyo)
+* Akihisa Hattori / [HattoriAkihisa](https://github.com/HattoriAkihisa)
+* Aaryaman Vasishta / [jammm](https://github.com/jammm)
