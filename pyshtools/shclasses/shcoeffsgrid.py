@@ -110,7 +110,7 @@ class SHCoeffs(object):
     to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     to_file()             : Save raw spherical harmonic coefficients as a file.
-    to_netcdf()           : Save raw spherical harmonic coefficients as a 
+    to_netcdf()           : Save raw spherical harmonic coefficients as a
                             netcdf file.
     copy()                : Return a copy of the class instance.
     info()                : Print a summary of the data stored in the SHCoeffs
@@ -635,11 +635,11 @@ class SHCoeffs(object):
                                    degrees=False)
 
         return temp
-    
+
     @classmethod
     def from_netcdf(self, filename, lmax=None, normalization='4pi', csphase=1):
         """
-        Initialize the class with spherical harmonic coefficients from a 
+        Initialize the class with spherical harmonic coefficients from a
         netcdf file.
 
         Usage
@@ -649,7 +649,7 @@ class SHCoeffs(object):
         Returns
         -------
         x : SHCoeffs class instance.
-        
+
         Parameters
         ----------
         filename : str
@@ -657,39 +657,50 @@ class SHCoeffs(object):
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
-            orthonormalized, Schmidt semi-normalized, or unnormalized
-            coefficients, respectively.
+            Spherical harmonic normalization if not specified in the netcdf
+            file: '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi
+            normalized, orthonormalized, Schmidt semi-normalized, or
+            unnormalized coefficients, respectively.
         csphase : int, optional, default = 1
-            Condon-Shortley phase convention: 1 to exclude the phase factor,
-            or -1 to include it.
-            
+            Condon-Shortley phase convention if not specified in the netcdf
+            file: 1 to exclude the phase factor, or -1 to include it.
+
         Description
         -----------
         The format of the netcdf file has to be exactly as the format that is
         used in SHCoeffs.to_netcdf().
         """
+        ds = _xr.open_dataset(filename)
+
+        try:
+            normalization = ds.coeffs.normalization
+        except:
+            pass
+
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
-
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho', 'schmidt', "
-                "or 'unnorm'. Provided value was {:s}"
+                "The input normalization must be '4pi', 'ortho', "
+                "'schmidt', or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
+
+        try:
+            csphase = ds.coeffs.csphase
+        except:
+            pass
 
         if csphase != 1 and csphase != -1:
             raise ValueError(
                 "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase))
                 )
-        
-        ds = _xr.open_dataset(filename)
+
         lmaxout = ds.dims['degree'] - 1
-            
+
         c = _np.tril(ds.coeffs.data)
         s = _np.triu(ds.coeffs.data, k=1)
         s = _np.vstack([s[-1], s[:-1]])
@@ -712,7 +723,7 @@ class SHCoeffs(object):
             kind = 'complex'
         else:
             kind = 'real'
-            
+
         for cls in self.__subclasses__():
             if cls.istype(kind):
                 return cls(coeffs, normalization=normalization.lower(),
@@ -805,13 +816,14 @@ class SHCoeffs(object):
             raise NotImplementedError(
                 'format={:s} not implemented.'.format(repr(format)))
 
-    def to_netcdf(self, filename, title='', description=''):
-        """Return the coefficient data as a netcdf formatted file or object.
-        
+    def to_netcdf(self, filename, title='', description='', lmax=None):
+        """
+        Return the coefficient data as a netcdf formatted file or object.
+
         Usage
         -----
-        x.to_netcdf(filename, [title, description])
-        
+        x.to_netcdf(filename, [title, description, lmax])
+
         Parameters
         ----------
         filename : str
@@ -820,20 +832,26 @@ class SHCoeffs(object):
             Title of the dataset
         description : str, optional, default = ''
             Description of the data.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to output.
         """
-        
+        if lmax is None:
+            lmax = self.lmax
+
         ds = _xr.Dataset()
-        ds.coords['degree'] = ('degree', _np.arange(self.lmax+1))
-        ds.coords['order'] = ('order', _np.arange(self.lmax+1))
+        ds.coords['degree'] = ('degree', _np.arange(lmax+1))
+        ds.coords['order'] = ('order', _np.arange(lmax+1))
         # c coeffs as lower triangular matrix
-        c = self.coeffs[0, :, :]
+        c = self.coeffs[0, :lmax+1, :lmax+1]
         # s coeffs as upper triangular matrix
-        s = _np.transpose(self.coeffs[1, :, :])
+        s = _np.transpose(self.coeffs[1, :lmax+1, :lmax+1])
         s = _np.vstack([s[1:], s[0]])
         ds['coeffs'] = (('degree', 'order'), c + s)
         ds['coeffs'].attrs['title'] = title
         ds['coeffs'].attrs['description'] = description
-        
+        ds['coeffs'].attrs['normalization'] = self.normalization
+        ds['coeffs'].attrs['csphase'] = self.csphase
+
         ds.to_netcdf(filename)
 
     def to_array(self, normalization=None, csphase=None, lmax=None):
@@ -2778,6 +2796,7 @@ class SHGrid(object):
 
         x = SHGrid.from_array(array)
         x = SHGrid.from_xarray(data_array)
+        x = SHGrid.from_netcdf(netcdf)
         x = SHGrid.from_file('fname.dat')
         x = SHGrid.from_zeros(lmax)
         x = SHGrid.from_cap(theta, clat, clon, lmax)
@@ -2831,6 +2850,7 @@ class SHGrid(object):
         print('Initialize the class using one of the class methods:\n'
               '>>> pyshtools.SHGrid.from_array\n'
               '>>> pyshtools.SHGrid.from_xarray\n'
+              '>>> pyshtools.SHGrid.from_netcdf\n'
               '>>> pyshtools.SHGrid.from_file\n'
               '>>> pyshtools.SHGrid.from_zeros\n'
               '>>> pyshtools.SHGrid.from_cap\n')
@@ -3070,7 +3090,7 @@ class SHGrid(object):
 
         Usage
         -----
-        x = SHGrid.from_xarray(data_array)
+        x = SHGrid.from_xarray(data_array, [grid])
 
         Returns
         -------
@@ -3087,6 +3107,30 @@ class SHGrid(object):
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
         """
+        return self.from_array(data_array.values, grid=grid)
+
+    @classmethod
+    def from_netcdf(self, netcdf, grid='DH'):
+        """
+        Initialize the class instance from a netcdf formatted file or object.
+
+        Usage
+        -----
+        x = SHGrid.from_netcdf(netcdf, [grid])
+
+        Returns
+        -------
+        x : SHGrid class instance
+
+        Parameters
+        ----------
+        netcdf : str or netcdf object
+            The name of a netcdf file or object.
+        grid : str, optional, default = 'DH'
+            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
+            Quadrature grids, respectively.
+        """
+        data_array = _xr.open_dataarray(netcdf)
         return self.from_array(data_array.values, grid=grid)
 
     def copy(self):
@@ -3516,7 +3560,7 @@ class SHGrid(object):
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
-        from mpl_toolkits.mplot3d import Axes3D
+        from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 
         nlat, nlon = self.nlat, self.nlon
         cmap = _plt.get_cmap(cmap)

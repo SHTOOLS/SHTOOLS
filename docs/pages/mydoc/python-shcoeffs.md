@@ -32,6 +32,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `x = SHCoeffs.from_random()` | Initialize using random coefficients with a prescribed power spectrum. |
 | `x = SHCoeffs.from_zeros()` | Initialize with coefficients set to zero. |
 | `x = SHCoeffs.from_file()` | Initialize using coefficients from a file. |
+| `x = SHCoeffs.from_netcdf()` | Initialize using coefficients from a netcdf file. |
 | `x = SHCoeffs.from_cap()` | Initialize using coefficients of a spherical cap. |
 
 ## Class attributes
@@ -65,5 +66,6 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `plot_cross_spectrum2d()` | Plot the cross-spectrum of all spherical-harmonic coefficients. |
 | `to_array()` | Return an array of spherical harmonics coefficients with a different normalization convention. |
 | `to_file()` | Save raw spherical harmonic coefficients to a text or binary file. |
+| `to_netcdf()` | Return the coefficient data as a netcdf formatted file or object. |
 | `copy()` | Return a copy of the class instance. |
 | `info()` | Print a summary of the data stored in the SHCoeffs instance. |

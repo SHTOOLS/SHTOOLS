@@ -32,6 +32,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | --------------------- | ----------- |
 | `x = SHGrid.from_array()` | Initialize using an array. |
 | `x = SHGrid.from_xarray()` | Initialize using an xarray DataArray. |
+| `x = SHGrid.from_netcdf()` | Initialize using a netcdf file or object. |
 | `x = SHGrid.from_file()` | Initialize using an array from a file. |
 | `x = SHGrid.from_zeros()` | Initialize using an array of zeros. |
 | `x = SHGrid.from_cap()` | Initialize using a rotated spherical cap. |
@@ -58,8 +59,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------ | ----------- |
 | `to_array()` | Return a numpy array of the gridded data. |
 | `to_xarray()` | Return the gridded data as an xarray DataArray. |
-| `to_file()` | Save raw gridded data to a text or binary file. |
 | `to_netcdf()` | Return the gridded data as a netcdf formatted file or object. |
+| `to_file()` | Save raw gridded data to a text or binary file. |
 | `to_real()` | Return a new SHGrid class instance of the real component of the data. |
 | `to_imag()` | Return a new SHGrid class instance of the imaginary component of the data. |
 | `lats()` | Return a vector containing the latitudes of each row of the gridded data. |

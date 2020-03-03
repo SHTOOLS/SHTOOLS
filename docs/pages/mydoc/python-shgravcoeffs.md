@@ -1,8 +1,8 @@
 ---
-title: "SHMagCoeffs class"
+title: "SHGravCoeffs class"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
-permalink: python-shmagcoeffs.html
+permalink: python-shgravcoeffs.html
 summary:
 toc: true
 ---
@@ -21,16 +21,18 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Subclass name | Description |
 | ------------- | ----------- |
-| SHMagRealCoeffs | Real magnetic potential spherical harmonic coefficient class. |
+| SHGravRealCoeffs | Real gravitational potential spherical harmonic coefficient class. |
 
 ## Initialization
 
 | Initialization method | Description |
 | --------------------- | ----------- |
-| `x = SHMagCoeffs.from_array()` | Initialize using coefficients from an array. |
-| `x = SHMagCoeffs.from_random()` | Initialize using random coefficients with a prescribed power spectrum. |
-| `x = SHMagCoeffs.from_zeros()` | Initialize with coefficients set to zero. |
-| `x = SHMagCoeffs.from_file()` | Initialize using coefficients from a file. |
+| `x = SHGravCoeffs.from_array()` | Initialize using coefficients from an array. |
+| `x = SHGravCoeffs.from_random()` | Initialize using random coefficients with a prescribed power spectrum. |
+| `x = SHGravCoeffs.from_zeros()` | Initialize with coefficients set to zero. |
+| `x = SHGravCoeffs.from_file()` | Initialize using coefficients from a file. |
+| `x = SHGravCoeffs.from_netcdf()` | Initialize using coefficients from a netcdf file. |
+| `x = SHGravCoeffs.from_shape()` | Initialize using the gravitational potential predicted from surface relief. |
 
 ## Class attributes
 
@@ -38,7 +40,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | --------- | ----------- |
 | `lmax` | The maximum spherical harmonic degree of the coefficients. |
 | `coeffs` | The raw coefficients with the specified normalization and phase conventions. |
-| `r0` | The reference radius of the magnetic potential coefficients. |
+| `gm` | The gravitational constant times the mass that is associated with the gravitational potential coefficients. |
+| `r0` | The reference radius of the gravitational potential coefficients. |
+| `omega` | The angular rotation rate of the body. |
 | `normalization` | The normalization of the coefficients: `'4pi'`, `'ortho'`, `'schmidt'`, or `'unnorm'`.|
 | `csphase` | Defines whether the Condon-Shortley phase is used (`1`) or not (`-1`). |
 | `mask` | A boolean mask that is `True` for the permissible values of degree `l` and order `m`. |
@@ -51,16 +55,19 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------ | ----------- |
 | `degrees()` | Return an array listing the spherical harmonic degrees from `0` to `lmax`. |
 | `spectrum()` | Return the spectrum of the function. |
+| `set_omega()` | Set the angular rotation rate of the body. |
 | `set_coeffs()` | Set coefficients in-place to specified values.|
-| `change_ref()` | Return a new class instance referenced to a different reference radius, r0. |
+| `change_ref()` | Return a new class instance referenced to a different gm, r0, or omega. |
 | `rotate()` | Rotate the coordinate system used to express the spherical harmonics coefficients and return a new class instance.|
 | `convert()` | Return a new class instance using a different normalization convention. |
 | `pad()` | Return a new class instance that is zero padded or truncated to a different `lmax`. |
-| `expand()` | Calculate the three vector components of the magnetic field, the total field, and the magnetic potential, and return an SHMagGrid class instance. |
-| `tensor()` | Calculate the 9 components of the magnetic field tensor and return an SHMagTensor class instance. |
+| `expand()` | Calculate the three vector components of the gravity field, the total field, and the gravitational potential, and return an SHGravGrid class instance. |
+| `tensor()` | Calculate the 9 components of the gravity tensor and return an SHGravTensor class instance. |
+| `geoid()` | Calculate the height of the geoid and return an SHGeoid class instance. |
 | `plot_spectrum()` | Plot the spectrum as a function of spherical harmonic degree. |
 | `plot_spectrum2d()` | Plot the spectrum of all spherical-harmonic coefficients. |
 | `to_array()` | Return an array of spherical harmonics coefficients with a different normalization convention. |
 | `to_file()` | Save raw spherical harmonic coefficients to a text or binary file. |
+| `to_netcdf()` | Return the coefficient data as a netcdf formatted file or object. |
 | `copy()` | Return a copy of the class instance. |
-| `info()` | Print a summary of the data stored in the SHMagCoeffs instance.|
+| `info()` | Print a summary of the data stored in the SHGravCoeffs instance.|

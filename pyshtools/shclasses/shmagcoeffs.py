@@ -6,6 +6,7 @@ import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 import copy as _copy
 import warnings as _warnings
+import xarray as _xr
 from scipy.special import factorial as _factorial
 
 from .shcoeffsgrid import SHCoeffs as _SHCoeffs
@@ -36,6 +37,7 @@ class SHMagCoeffs(object):
         x = SHMagCoeffs.from_random(powerspectrum, r0)
         x = SHMagCoeffs.from_zeros(lmax, r0)
         x = SHMagCoeffs.from_file('fname.dat')
+        x = SHMagCoeffs.from_netcdf('ncname.nc')
 
     The normalization convention of the input coefficents is specified
     by the optional normalization and csphase parameters, which take the
@@ -99,6 +101,8 @@ class SHMagCoeffs(object):
     to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     to_file()             : Save the spherical harmonic coefficients to a file.
+    to_netcdf()           : Save raw spherical harmonic coefficients as a
+                            netcdf file.
     copy()                : Return a copy of the class instance.
     info()                : Print a summary of the data stored in the
                             SHMagCoeffs instance.
@@ -110,7 +114,8 @@ class SHMagCoeffs(object):
               '>>> pyshtools.SHMagCoeffs.from_array\n'
               '>>> pyshtools.SHMagCoeffs.from_random\n'
               '>>> pyshtools.SHMagCoeffs.from_zeros\n'
-              '>>> pyshtools.SHMagCoeffs.from_file\n')
+              '>>> pyshtools.SHCoeffs.from_file\n'
+              '>>> pyshtools.SHMagCoeffs.from_netcdf\n')
 
     # ---- Factory methods ----
     @classmethod
@@ -607,6 +612,114 @@ class SHMagCoeffs(object):
                               csphase=csphase)
         return clm
 
+    @classmethod
+    def from_netcdf(self, filename, lmax=None, normalization='schmidt',
+                    csphase=1):
+        """
+        Initialize the class with spherical harmonic coefficients from a
+        netcdf file.
+
+        Usage
+        -----
+        x = SHMagCoeffs.from_netcdf(filename, [lmax, normalization, csphase])
+
+        Returns
+        -------
+        x : SHMagCoeffs class instance.
+
+        Parameters
+        ----------
+        filename : str
+            Name of the file, including path.
+        lmax : int, optional, default = None
+            The maximum spherical harmonic degree to read.
+        normalization : str, optional, default = 'schmidt'
+            Spherical harmonic normalization if not specified in the netcdf
+            file: '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi
+            normalized, orthonormalized, Schmidt semi-normalized, or
+            unnormalized coefficients, respectively.
+        csphase : int, optional, default = 1
+            Condon-Shortley phase convention if not specified in the netcdf
+            file: 1 to exclude the phase factor, or -1 to include it.
+
+        Description
+        -----------
+        The format of the netcdf file has to be exactly as the format that is
+        used in SHMagCoeffs.to_netcdf().
+        """
+        ds = _xr.open_dataset(filename)
+
+        try:
+            normalization = ds.coeffs.normalization
+        except:
+            pass
+
+        if type(normalization) != str:
+            raise ValueError('normalization must be a string. '
+                             'Input type was {:s}'
+                             .format(str(type(normalization))))
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
+            raise ValueError(
+                "The input normalization must be '4pi', 'ortho', "
+                "'schmidt', or 'unnorm'. Provided value was {:s}"
+                .format(repr(normalization))
+                )
+
+        try:
+            csphase = ds.coeffs.csphase
+        except:
+            pass
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be 1 or -1. Input value was {:s}"
+                .format(repr(csphase))
+                )
+
+        try:
+            r0 = ds.coeffs.r0
+        except:
+            raise ValueError("coeffs.r0 must be specified in the netcdf file.")
+
+        lmaxout = ds.dims['degree'] - 1
+        c = _np.tril(ds.coeffs.data)
+        s = _np.triu(ds.coeffs.data, k=1)
+        s = _np.vstack([s[-1], s[:-1]])
+        s = _np.transpose(s)
+        if isinstance(lmax, int):
+            c, s = c[:lmax+1, :lmax+1], s[:lmax+1, :lmax+1]
+            lmaxout = lmax
+
+        if normalization.lower() == 'unnorm' and lmaxout > 85:
+            _warnings.warn("Calculations using unnormalized coefficients " +
+                           "are stable only for degrees less than or equal " +
+                           "to 85. lmax for the coefficients will be set to " +
+                           "85. Input value was {:d}.".format(lmaxout),
+                           category=RuntimeWarning)
+            lmaxout = 85
+            c, s = c[:lmaxout+1, :lmaxout+1], s[:lmaxout+1, :lmaxout+1]
+        coeffs = _np.array([c, s])
+
+        try:
+            cerrors = _np.tril(ds.errors.data)
+            serrors = _np.triu(ds.errors.data, k=1)
+            serrors = _np.vstack([serrors[-1], serrors[:-1]])
+            serrors = _np.transpose(serrors)
+            cerrors = cerrors[:lmaxout+1, :lmaxout+1]
+            serrors = serrors[:lmaxout+1, :lmaxout+1]
+            errors = _np.array([cerrors, serrors])
+        except:
+            errors = None
+
+        if _np.iscomplexobj(coeffs):
+            raise ValueError('Gravitational potential coefficients must be '
+                             'real. Input coefficients are complex.')
+
+        clm = SHMagRealCoeffs(coeffs, r0=r0, errors=errors,
+                              normalization=normalization.lower(),
+                              csphase=csphase)
+        return clm
+
     # ---- Define methods that modify internal variables ----
     def set_coeffs(self, values, ls, ms):
         """
@@ -715,6 +828,54 @@ class SHMagCoeffs(object):
         else:
             raise NotImplementedError(
                 'format={:s} not implemented.'.format(repr(format)))
+
+    def to_netcdf(self, filename, title='', description='', lmax=None):
+        """
+        Return the coefficient data as a netcdf formatted file or object.
+
+        Usage
+        -----
+        x.to_netcdf(filename, [title, description, lmax])
+
+        Parameters
+        ----------
+        filename : str
+            Name of the output file.
+        title : str, optional, default = ''
+            Title of the dataset
+        description : str, optional, default = ''
+            Description of the data.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to output.
+        """
+        if lmax is None:
+            lmax = self.lmax
+
+        ds = _xr.Dataset()
+        ds.coords['degree'] = ('degree', _np.arange(lmax+1))
+        ds.coords['order'] = ('order', _np.arange(lmax+1))
+        # c coeffs as lower triangular matrix
+        c = self.coeffs[0, :lmax+1, :lmax+1]
+        # s coeffs as upper triangular matrix
+        s = _np.transpose(self.coeffs[1, :lmax+1, :lmax+1])
+        s = _np.vstack([s[1:], s[0]])
+        ds['coeffs'] = (('degree', 'order'), c + s)
+        ds['coeffs'].attrs['title'] = title
+        ds['coeffs'].attrs['description'] = description
+        ds['coeffs'].attrs['normalization'] = self.normalization
+        ds['coeffs'].attrs['csphase'] = self.csphase
+        ds['coeffs'].attrs['r0'] = self.r0
+
+        if self.errors is not None:
+            cerrors = self.errors[0, :lmax+1, :lmax+1]
+            serrors = _np.transpose(self.errors[1, :lmax+1, :lmax+1])
+            serrors = _np.vstack([serrors[1:], serrors[0]])
+            ds['errors'] = (('degree', 'order'), cerrors + serrors)
+            ds['errors'].attrs['normalization'] = self.normalization
+            ds['errors'].attrs['csphase'] = self.csphase
+            ds['errors'].attrs['r0'] = self.r0
+
+        ds.to_netcdf(filename)
 
     def to_array(self, normalization=None, csphase=None, lmax=None):
         """
