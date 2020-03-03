@@ -38,7 +38,7 @@ Read spherical harmonic coefficients from a text file.
 ## Parameters
 
 `filename` : str
-:   Filename containing the text-formatted spherical harmonic coefficients.
+:   File name or URL that contains the text-formatted spherical harmonic coefficients. filename will be treated as a URL if it starts with 'http://', 'https://', or 'ftp://'.
 
 `lmax` : int, optional, default = None
 :   The maximum spherical harmonic degree to read from the file. The default is to read the entire file.
@@ -72,6 +72,8 @@ order, from 0 to l.
 If a header line is to be read, it should be located directly after the first lines to be skipped, before the start of the spherical harmonic coefficents. The header values are returned as a list, where each value is formatted as a string.
 
 A valid line must contain at least 3 words, and the first two words must be integers. When reading the file, all other lines will be considered as "comments" and will be ignored.
+
+If filename starts with http://, https://, or ftp://, the file will be treated as a URL. In this case, the file will be downloaded in its entirety before it is parsed.
 
 ## See also
 

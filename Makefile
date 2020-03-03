@@ -98,7 +98,7 @@
 #       the distribution. To remake these files for a new release, it will be
 #       necessary to install "pandoc", "ghc" and "cabal-install" (all using
 #       brew on macOS), and then execute "cabal update" and
-#       "cabal install pandoc-types".
+#       "cabal install --lib pandoc-types".
 #
 #   make remove-doc
 #       Remove the man and html-man pages.

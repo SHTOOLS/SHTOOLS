@@ -13610,7 +13610,7 @@ extend = True
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Sometimes you need to set individual spherical harmonic coefficients to a specified value. For example, for planetary topography, the degree 2 and order 0 term can be atypically large as a result of the planet's rotation. Let's set this term equal to zero and replot it using an over-sampled DH grid. Though we will modify only a single coefficient here, you could also provide input arrays for <code>l</code>, <code>m</code>, and <code>value</code>. When using the <code>set_coeffs()</code> method, you set the cosine terms using positive values for the orders, and the sine terms using negative orders. We expand the modified coefficients on a grid, and then plot the data with a vertical color bar:</p>
+<p>Sometimes you need to set individual spherical harmonic coefficients to a specified value. For example, for planetary topography, the degree 2 and order 0 term can be atypically large as a result of the planet's rotation. Let's set this term equal to zero and replot it using an over-sampled DH grid. Though we will modify only a single coefficient here, you could also provide input arrays for <code>l</code>, <code>m</code>, and <code>value</code>. When using the <code>set_coeffs()</code> method, you set the cosine terms using positive values for the orders, and the sine terms using negative orders. We expand the modified coefficients on a grid, and then plot the data with a color bar to the right of the image:</p>
 
 </div>
 </div>
@@ -13624,7 +13624,7 @@ extend = True
                <span class="n">ms</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                <span class="n">values</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
 <span class="n">grid_dh2</span> <span class="o">=</span> <span class="n">clm</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">grid_dh2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colorbar</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">grid_dh2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colorbar</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
                         <span class="n">cb_label</span><span class="o">=</span><span class="s1">&#39;My data&#39;</span><span class="p">,</span>
                         <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">grid_dh2</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>

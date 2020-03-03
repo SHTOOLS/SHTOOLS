@@ -13,20 +13,23 @@ Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature
 
 ## Usage
 
-`latglq`, `longlq` = GLQGridCoord (`lmax`)
+`latglq`, `longlq` = GLQGridCoord (`lmax`, [`extend`])
 
 ## Returns
 
 `latglq` : float, dimension (`lmax`+1)
-:   The latitude coordinates of a grid, corresponding to the indices [:,0], in degrees.
+:   The latitude coordinates of a Gauss-Legendre quadrature grid in degrees.
 
-`longlq` : float, dimension (2\*`lmax`+1)
-:   The longitude coordinates of a grid, corresponding to the indices [0,:], in degrees. The first node is 0 E.
+`longlq` : float, dimension (nlong)
+:   The longitude coordinates of a Gauss-Lengendre quadrature grid in degrees, dimensioned as (2\*`lmax`+1) when `extend` is 0 or (2\*`lmax`+2) when `extend` is 1.
 
 ## Parameters
 
 `lmax` : integer
 :   The maximum spherical harmonic degree that will be integrated exactly by Gauss-Legendre quadrature.
+
+`extend` : input, optional, bool, default = False
+:   If True, include 360 E longitude.
 
 ## Description
 
