@@ -106,8 +106,8 @@ class SHGravCoeffs(object):
                             gravitational potential, and return an SHGravGrid
                             class instance.
     mass                  : Return the mass of the planet.
-    center_of_mass        : Return coordinates of the center of mass
-                            of the planet.
+    center_of_mass        : Return coordinates of the center of mass of the
+                            planet.
     inertia_tensor()      : Return an array of the inertia tensor.
     tensor()              : Calculate the 9 components of the gravity tensor
                             and return an SHGravTensor class instance.
@@ -933,18 +933,18 @@ class SHGravCoeffs(object):
 
     @property
     def center_of_mass(self):
-        """Return coordinates of the center of mass of the planet in metres.
+        """Return coordinates of the center of mass of the planet in meters.
 
-        This method will return cartesian coordinates of the center of mass with respect
-        to the coordinate system of the spherical harmonic coefficients.
+        This method will return Cartesian coordinates of the center of mass
+        with respect to the coordinate system of the spherical harmonic
+        coefficients.
 
         Returns
         -------
         x, y, z : float
-            Cartesian coordinates of the center of mass, in metres.
+            Cartesian coordinates of the center of mass, in meters.
         """
-        coeffs = self.convert(normalization='unnorm',
-                csphase=1, lmax=1).coeffs
+        coeffs = self.convert(normalization='unnorm', csphase=1, lmax=1).coeffs
 
         x_cm = coeffs[0, 1, 1] * self.r0
         y_cm = coeffs[1, 1, 1] * self.r0
@@ -958,7 +958,8 @@ class SHGravCoeffs(object):
         Parameters
         ----------
         dynamical_flattening : float
-            Dynamical flattening (or precession constant) of the planet.
+            Dynamical flattening (or precession constant) of the planet,
+            defined as [C-(A+B)/2]/C.
 
         Returns
         -------
@@ -973,8 +974,8 @@ class SHGravCoeffs(object):
             (Iyx, Iyy, Iyz)
             (Izx, Izy, Izz)
 
-        The diagonal elements Ixx, Iyy, Izz are the axial moments of inertia.
-        The off-diagonal elements
+        The diagonal elements Ixx, Iyy, Izz are the axial moments of inertia,
+        and the off-diagonal elements
 
             Ixy = Iyx, Ixz = Izx, Iyz = Izy
 
@@ -986,12 +987,11 @@ class SHGravCoeffs(object):
         WH Freeman, 1967.
 
         Chen, W., Li, J.C., Ray, J., Shen, W.B. and Huang, C.L.,
-        Consistent estimates of the dynamic figure parameters of the earth.
+        Consistent estimates of the dynamic figure parameters of the Earth.
         J. Geod., 89(2), 179-188, 2015.
         """
 
-        coeffs = self.convert(normalization='unnorm',
-                csphase=1, lmax=2).coeffs
+        coeffs = self.convert(normalization='unnorm', csphase=1, lmax=2).coeffs
 
         mr02 = self.mass * self.r0**2
 
@@ -1002,9 +1002,9 @@ class SHGravCoeffs(object):
 
         # Axial moments of inertia
         xx = mr02 * ((1 - 1 / dynamical_flattening) * coeffs[0, 2, 0] -
-                2 * coeffs[0, 2, 2])
+                     2 * coeffs[0, 2, 2])
         yy = mr02 * ((1 - 1 / dynamical_flattening) * coeffs[0, 2, 0] +
-                2 * coeffs[0, 2, 2])
+                     2 * coeffs[0, 2, 2])
         zz = -mr02 * coeffs[0, 2, 0] / dynamical_flattening
 
         tensor = _np.array([
