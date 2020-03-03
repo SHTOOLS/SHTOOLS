@@ -933,16 +933,14 @@ class SHGravCoeffs(object):
 
     @property
     def center_of_mass(self):
-        """Return coordinates of the center of mass of the planet in meters.
-
-        This method will return Cartesian coordinates of the center of mass
-        with respect to the coordinate system of the spherical harmonic
-        coefficients.
+        """
+        Return the Cartesian coordinates of the center of mass of the planet
+        in meters.
 
         Returns
         -------
-        x, y, z : float
-            Cartesian coordinates of the center of mass, in meters.
+        [x, y, z] : numpy ndarray
+            Cartesian coordinates of the center of mass in meters.
         """
         coeffs = self.convert(normalization='unnorm', csphase=1, lmax=1).coeffs
 
@@ -950,7 +948,7 @@ class SHGravCoeffs(object):
         y_cm = coeffs[1, 1, 1] * self.r0
         z_cm = coeffs[0, 1, 0] * self.r0
 
-        return x_cm, y_cm, z_cm
+        return _np.array([x_cm, y_cm, z_cm])
 
     def inertia_tensor(self, dynamical_flattening):
         """Return the inertia tensor of the planet in kg * m**2.
