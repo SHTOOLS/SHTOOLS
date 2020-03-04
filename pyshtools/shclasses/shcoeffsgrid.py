@@ -89,6 +89,7 @@ class SHCoeffs(object):
     cross_spectrum()      : Return the cross-spectrum of two functions as a
                             function of spherical harmonic degree.
     volume()              : Calculate the volume of the body.
+    centroid()            : Compute the centroid of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
@@ -1312,12 +1313,38 @@ class SHCoeffs(object):
             lmax = self.lmax
 
         r0 = self.coeffs[0, 0, 0]
-        grid = self.expand(lmax=3*lmax) - r0
+        grid = self.expand(lmax=min(3*lmax, 2800)) - r0
         h200 = (grid**2).expand(lmax_calc=0).coeffs[0, 0, 0]
         h300 = (grid**3).expand(lmax_calc=0).coeffs[0, 0, 0]
 
         volume = 4 * _np.pi / 3 * (h300 + 3 * r0 * h200 + r0**3)
         return volume
+
+    def centroid(self):
+        """
+        Compute the centroid of the body in Cartesian coordinates.
+
+        Usage
+        -----
+        centroid = x.centroid()
+
+        Returns
+        -------
+        [x, y, z] : ndarray
+            The centroid of the object in meters.
+
+        Notes
+        -----
+        The centroid is computed as the center of mass of a homogeneous body.
+        The units of the input function must be in meters.
+        """
+        from .shgravcoeffs import SHGravCoeffs as _SHGravCoeffs
+        from ..constant import G as _G
+
+        density = 1.
+        gm = density * _G.value * self.volume()
+        potential = _SHGravCoeffs.from_shape(self, density, gm)
+        return potential.center_of_mass
 
     # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',

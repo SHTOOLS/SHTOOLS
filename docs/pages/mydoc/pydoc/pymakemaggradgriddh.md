@@ -13,26 +13,26 @@ Create 2D cylindrical maps on a flattened ellipsoid of the components of the mag
 
 ## Usage
 
-`vxx`, `vyy`, `vzz`, `vxy`, `vxz`, `vyz` = MakeMagGradGridDH (`cilm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`])
+`vxx`, `vyy`, `vzz`, `vxy`, `vxz`, `vyz` = MakeMagGradGridDH (`cilm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`, `extend`])
 
 ## Returns
 
-`vxx` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
-:   A 2D equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) grid of the `xx` component of the magnetic field tensor. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
+`vxx` : float, dimension (nlat, nlong)
+:   A 2D map of the `xx` component of the magnetic field tensor that conforms to the sampling theorem of Driscoll and Healy (1994). If `sampling` is 1, the grid is equally sampled and is dimensioned as (`n` by `n`), where `n` is `2lmax+2`. If sampling is 2, the grid is equally spaced and is dimensioned as (`n` by 2`n`). The first latitudinal band of the grid corresponds to 90 N, the latitudinal sampling interval is 180/`n` degrees, and the default behavior is to exclude the latitudinal band for 90 S. The first longitudinal band of the grid is 0 E, by default the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively. If `extend` is 1, the longitudinal band for 360 E and the latitudinal band for 90 S will be included, which increases each of the dimensions of the grid by 1.
 
-`vyy` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vyy` : float, dimension (nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the `yy` component of the magnetic field tensor.
 
-`vzz` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vzz` : float, dimension (nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the `zz` component of the magnetic field tensor.
 
-`vxy` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vxy` : float, dimension (nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the `xy` component of the magnetic field tensor.
 
-`vxz` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vxz` : float, dimension (nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the `xz` component of the magnetic field tensor.
 
-`vyz` : float, dimension (2\*`lmax`+2, `sampling`\*(2*`lmax`+2))
+`vyz` : float, dimension (nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the YZ component of the magnetic field tensor.
 
 ## Parameters
@@ -57,6 +57,9 @@ Create 2D cylindrical maps on a flattened ellipsoid of the components of the mag
 
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to `lmax`.
+
+`extend` : input, optional, bool, default = False
+:   If True, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of the grids by 1.
 
 ## Description
 
@@ -89,7 +92,7 @@ where `r`, `t`, `p` stand for radius, theta, and phi, respectively, and subscrip
 
 The output grid are in units of nT / m and are cacluated on a flattened ellipsoid with semi-major axis `a` and flattening `f`. The calculated values should be considered exact only when the radii on the ellipsoid are greater than the maximum radius of the planet (the potential coefficients are simply downward/upward continued in the spectral domain).
 
-The default is to calculate grids for use in the Driscoll and Healy (1994) routines that are equally spaced (`n` by `2n`), but this can be changed to calculate equally sampled grids (`n` by `n`) by setting the optional argument `sampling` to 1. The input value of `lmax` determines the number of samples, `n=2lmax+2`, and the latitudinal sampling interval, 90/(`lmax`+1). The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/`n` for equally sampled and 180/`n` for equally spaced grids, respectively.
+The default is to use an input grid that is equally sampled (`n` by `n`), but this can be changed to use an equally spaced grid (`n` by 2`n`) by the optional argument `sampling`. The redundant longitudinal band for 360 E and the latitudinal band for 90 S are excluded by default, but these can be computed by specifying the optional argument `extend`.
 
 ## References
 

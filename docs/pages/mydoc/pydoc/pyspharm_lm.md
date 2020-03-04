@@ -29,10 +29,10 @@ Compute the spherical harmonic function for a specific degree and order.
 :   The spherical harmonic order.
 
 `theta` : float
-:   The colatitude in degrees.
+:   The colatitude in degrees. Use radians if 'degrees' is set to False.
 
 `phi` : float
-:   The longitude in degrees.
+:   The longitude in degrees. Use radians if 'degrees' is set to False.
 
 `normalization` : str, optional, default = '4pi'
 :   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized, orthonormalized, Schmidt semi-normalized, or unnormalized spherical harmonic functions, respectively.

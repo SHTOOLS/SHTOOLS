@@ -6,6 +6,51 @@ permalink: release-notes-v4.html
 summary:
 toc: true
 ---
+## Version 4.6
+
+### New extended grids
+
+All grid formats not allow to compute the redundant values at 360 E longitude (GLQ and DH), as well as at 90 S (DH only). These *extended* grids are now the default in pyshtools, but remain optional in the Fortran 95 routines. The use of extended grids is controlled by the optional argument `extend`. The purpose of these extended grids is to better integrate with the plotting routines that require these points (i.e.., Cartopy and pygmt).
+
+### Improved plotting and map projections
+
+The plotting routine `SHGrid.plot()` has been refactored to allow support for projections using `Cartopy` and `pygmt`.
+
+* An incorrect 0.5 pixel offset was fixed when plotting grids via matplotlib, and grids now correctly plot both 0 and 360 degrees using the new "extended" grids of `SHGrid`.
+* Support was added for Cartopy projections, by specifying: `SHGrid.plot(projection=ccrs.ProjectionName())`.
+* The argument `colorbar` now takes the options 'top', 'bottom', 'left' or 'right'.
+* Improved plotting and placement of colorbars. New optional arguments include `cb_label` for labels, `cb_ylabel` for a label on the y axis of the colorbar, `cb_tick_interval` for specifying the major tick interval, `cb_minor_tick_interval` for specifying minor tick intervals, `cb_triangles` for plotting upper/lower limit triangles at the ends of the colorbar, `cb_width` to specify the colorbar width, and `cb_offset` to override the default spacing between the map and colorbar.
+* Improved colormap handling: New optional arguments include `cmap_limits` to specify the lower and upper bounds of the data, as well as an interval for constant color intervals, and `cmap_reverse` to reverse the colormap.
+* Improved handling of ticks and annotations: The optional argument `ticks` specifies which ticks and annotations to show, using a syntax from the generic mapping tools (i.e., `'WSen'`).
+* Experimental support for pygmt using the routine `SHGrid.plotgmt()`. This function takes nearly the same arguments as `plot()`. As soon as pygmt implements projection classes (https://github.com/GenericMappingTools/pygmt/pull/379), this will be incorporated into the `plot` function in the same manner as Cartopy was.
+* All gravity, magnetics, tensor, localization windows and slepian function plotting routines incorporate these changes.
+* Added a new introductory notebook that shows how to use all features of the `plot()` function.
+
+### Improved integration with xarray DataArrays, xarray DataSets, and netcdf files
+
+* Added the methods `to_netcdf()` and `from_netcdf()` to the `SHCoeffs`, `SHGravCoeffs` and `SHMagCoeffs` classes.
+* Added the method `SHGrid.from_xarray()` to initialize a grid from an xarray DataArray.
+* Added improved descriptive attributes for netcdf files that mirror these [conventions](http://cfconventions.org/cf-conventions/cf-conventions.html).
+* Added the method `SHGeoid.to_xarray()` to export an xarray DataArray and `to_netcdf()` to export a netcdf object readable by the generic mapping tools.
+* Added the methods `SHGravGrid.to_xarray()` and `SHMagGrid.to_xarray()` to export all gridded data (radial, theta, phi, total, and potential) as an xarray DataSet.
+* Added the methods `SHGravTensor.to_xarray()` and `SHMagTensor.to_xarray()`to export all gridded data (Vxx, invariants, eigenvalues) as an xarray DataSet.
+
+### Gravity routine improvements
+
+* Added the method `SHGravCoeffs.center_of_mass` to calculate the center of mass of a body.
+* Added the method `SHGravCoeffs.inertia_tensor()` to calculate the moment of inertia tensor.
+* Added the Earth dynamical flattening constant H (IERS Conventions 2010) to the `constant` module.
+* The `read_icgem_gfc()` function was extended with the option `encoding` as some models in ICGEM are not in UTF-8.
+* Addded the method `centroid()` to the class `SHCoeffs`. The centroid is computed as the center of mass of a homogeneous object.
+
+### Other changes
+
+* New methods `SHGrid.to_real()` and `SHGrid.to_imag()` return the real and imaginary components of a complex `SHGrid` instance.
+* Added an optional argument `copy` to `SHCoeffs.pad()`.
+* Fixed bugs in the Fortran code of `PlBar_d1` and `PlON_d1` when calculating the Legendre polynomials at the north and south pole.
+* Spherical harmonic coefficients can be read remotely by specifying a URL as the filename. This functionality uses `requests.get()`, and has been implemented in the function `shread()` and the `SHCoeffs` method `from_file()`.
+* Fixed a bug in the fortran code of `Curve2Mask`. As part of this fix, the optional parameter `centralmeridian` has been removed as it is no longer required. The longitudes of the curve can possess values from -360 to 720 degrees, and the routine searches for discontinuities that may occur between two successive points as the longitudes pass from 360 to 0, or -180 to 180 degrees.
+
 ## Version 4.5
 
 **SHCoeffs**
