@@ -35,7 +35,6 @@ The plotting routine `SHGrid.plot()` has been refactored to allow support for pr
 * Added the methods `SHGravGrid.to_xarray()` and `SHMagGrid.to_xarray()` to export all gridded data (radial, theta, phi, total, and potential) as an xarray DataSet.
 * Added the methods `SHGravTensor.to_xarray()` and `SHMagTensor.to_xarray()`to export all gridded data (Vxx, invariants, eigenvalues) as an xarray DataSet.
 
-
 ### Gravity routine improvements
 
 * Added the method `SHGravCoeffs.center_of_mass` to calculate the center of mass of a body.
