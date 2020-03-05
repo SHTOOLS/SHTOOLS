@@ -4,10 +4,13 @@ cache:
   paths:
   - vendor/
 
+variables:
+  LC_ALL: "C.UTF-8"
+  LANG: "en_US.UTF-8"
+  LANGUAGE: "en_US.UTF-8"
+
 before_script:
   - cd docs
-  - gem install bundler
-  - gem install bundler jekyll
   - bundle config set path 'vendor'
   - bundle install
 
