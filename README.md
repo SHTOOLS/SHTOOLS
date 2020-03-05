@@ -26,6 +26,10 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
    * localized multitaper spectral analyses, and expansions in Slepian basis functions,
    * standard gravity and magnetic field calculations, computation of the geoid, and finite-amplitude potential from topography.
 
+* Integrated support for working with xarray and netcdf data.
+
+* Publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/dev/).
+
 * SHTOOLS is open source software (3-clause BSD license).
 
 ### INSTALLATION ###
@@ -34,11 +38,7 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
 Binary install for linux and macOS:
 ```bash
 pip install pyshtools
-```
-
-Upgrade to a new version:
-```bash
-pip install --upgrade pyshtools
+pip install --upgrade pyshtools  # upgrade to a new version
 ```
 
 Build from source:
@@ -54,6 +54,7 @@ sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 macOS requirements:
 ```bash
 brew install fftw
+# for lapack and blas, link to the system '-framework Accelerate'
 ```
 To install the develop branch:
 ```bash
@@ -89,9 +90,10 @@ SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is
 
 To get started, check out the following Python tutorial notebooks:
 
-* [Introduction 1: Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
-* [Introduction 2: Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
-* [Introduction 3: Gravity and Magnetic Fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-3.html)
+* [Introduction to Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
+* [Introduction to Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
+* [Introduction to Gravity and Magnetic Fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-3.html)
+* [Introduction to Plotting Maps](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-4.html)
 
 ### DEVELOPERS ###
 

@@ -13,23 +13,23 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 
 ## Usage
 
-`rad`, `theta`, `phi`, `total`, `pot` = MakeMagGridDH (`cilm`, `r0`, [`lmax`, `a`, `f`, `sampling`, `lmax_calc`])
+`rad`, `theta`, `phi`, `total`, `pot` = MakeMagGridDH (`cilm`, `r0`, [`lmax`, `a`, `f`, `sampling`, `lmax_calc`, `extend`])
 
 ## Returns
 
-`rad` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
-:   A 2D equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) grid of the radial component of the magnetic field corresponding to the input spherical harmonic coefficients `cilm`. The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively.
+`rad` : float, dimension(nlat, nlong)
+:   A 2D map of the radial component of the magnetic field that conforms to the sampling theorem of Driscoll and Healy (1994). If `sampling` is 1, the grid is equally sampled and is dimensioned as (`n` by `n`), where `n` is `2lmax+2`. If sampling is 2, the grid is equally spaced and is dimensioned as (`n` by 2`n`). The first latitudinal band of the grid corresponds to 90 N, the latitudinal sampling interval is 180/`n` degrees, and the default behavior is to exclude the latitudinal band for 90 S. The first longitudinal band of the grid is 0 E, by default the longitudinal band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally sampled and 180/`n` for an equally spaced grid, respectively. If `extend` is 1, the longitudinal band for 360 E and the latitudinal band for 90 S will be included, which increases each of the dimensions of the grid by 1.
 
-`theta` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
+`theta` : float, dimension(nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the theta component of the magnetic field.
 
-`phi` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
+`phi` : float, dimension(nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the phi component of the magnetic field.
 
-`total` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
+`total` : float, dimension(nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the total magnetic field strength.
 
-`pot` : float, dimension(2\*`lmax`+2, `sampling`\*(2\*`lmax`+2)) 
+`pot` : float, dimension(nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the magnetic potential.
 
 ## Parameters
@@ -55,6 +55,9 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to `lmax`.
 
+`extend` : input, optional, bool, default = False
+:   If True, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of the grids by 1.
+
 ## Description
 
 `MakeMagGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm` of all three components of the magnetic field, the total field strength, and the magnetic potential. The magnetic potential is given by
@@ -67,4 +70,12 @@ and the magnetic field is
 
 The coefficients are referenced to a radius `r0`, and the function is computed on a flattened ellipsoid with semi-major axis `a` (i.e., the mean equatorial radius) and flattening `f`.
 
-The default is to calculate grids for use in the Driscoll and Healy routines that are equally sampled (`n` by `n`), but this can be changed to calculate equally spaced grids (`n` by 2`n`) by setting the optional argument `sampling` to 2. The input value of `lmax` determines the number of samples, `n=2lmax+2`, and the latitudinal sampling interval, `90/(lmax+1)`. The first latitudinal band of the grid corresponds to 90 N, the latitudinal band for 90 S is not calculated, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitudinal band for 360 E is not calculated, and the longitudinal sampling interval is 360/`n` for equally sampled and 180/`n` for equally spaced grids, respectively.
+The default is to use an input grid that is equally sampled (`n` by `n`), but this can be changed to use an equally spaced grid (`n` by 2`n`) by the optional argument `sampling`. The redundant longitudinal band for 360 E and the latitudinal band for 90 S are excluded by default, but these can be computed by specifying the optional argument `extend`.
+
+## Reference
+
+Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
+
+## See also
+[makemaggradgriddh](pymakemaggradgriddh.html), [makegriddh](pymakegriddh.html)
+

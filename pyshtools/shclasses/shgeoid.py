@@ -1,14 +1,9 @@
 """
     Class for the height of the geoid.
 """
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import numpy as _np
-import matplotlib as _mpl
-import matplotlib.pyplot as _plt
 import copy as _copy
+import xarray as _xr
 
 from .shcoeffsgrid import SHGrid as _SHGrid
 
@@ -35,12 +30,19 @@ class SHGeoid(object):
                      potential used in creating the geoid.
     nlat, nlon     : The number of latitude and longitude bands in the geoid
                      grid.
-    sampling       : The longitudinal sampling scheme of the geoid grid: either
-                     1 for nlong=nlat or 2 for nlong=2*nlat.
+    n              : The number of samples in latitude.
+    sampling       : The longitudinal sampling for Driscoll and Healy grids.
+                     Either 1 for equally sampled grids (nlat=nlon) or 2 for
+                     equally spaced grids in degrees.
+    extend         : True if the grid contains the redundant column for 360 E
+                     and the unnecessary row for 90 S.
 
     Methods:
 
     plot()         : Plot the geoid.
+    to_xarray()    : Return the gridded data as an xarray DataArray.
+    to_netcdf()    : Return the gridded data as a netcdf formatted file or
+                     object.
     copy()         : Return a copy of the class instance.
     info()         : Print a summary of the data stored in the SHGrid instance.
     """
@@ -54,11 +56,16 @@ class SHGeoid(object):
         self.sampling = self.geoid.sampling
         self.nlat = self.geoid.nlat
         self.nlon = self.geoid.nlon
+        self.n = self.geoid.n
+        self.extend = self.geoid.extend
         self.potref = potref
         self.gm = gm
         self.a = a
         self.f = f
-        self.omega = omega
+        if omega is None:
+            self.omega = 0.0
+        else:
+            self.omega = omega
         self.order = order
         self.r = r
         self.lmax = lmax
@@ -85,58 +92,104 @@ class SHGeoid(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('grid = {:s}\n'.format(repr(self.grid)))
-        if self.grid == 'DH':
-            str += 'sampling = {:d}\n'.format(self.sampling)
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'lmax = {:d}\n'
-                'lmax_calc = {:d}\n'
-                'gm (m3 / s2) = {:e}\n'
-                'reference potential (m2 /s2) = {:e}\n'
-                'a (m)= {:e}\n'
-                'f = {:e}\n'
-                'omega (rad / s) = {:s}\n'
-                'radius of Taylor expansion (m) = {:e}\n'
-                'order of expansion = {:d}'
-                .format(self.nlat, self.nlon, self.lmax, self.lmax_calc,
-                        self.gm, self.potref, self.a, self.f, repr(self.omega),
-                        self.r, self.order))
+        str = ('grid = {:s}\n'
+               'sampling = {:d}\n'
+               'nlat = {:d}\n'
+               'nlon = {:d}\n'
+               'n = {:d}\n'
+               'sampling = {:d}\n'
+               'extend = {}\n'
+               'lmax = {:d}\n'
+               'lmax_calc = {:d}\n'
+               'gm (m3 / s2) = {:e}\n'
+               'reference potential (m2 /s2) = {:e}\n'
+               'a (m)= {:e}\n'
+               'f = {:e}\n'
+               'omega (rad / s) = {:s}\n'
+               'radius of Taylor expansion (m) = {:e}\n'
+               'order of expansion = {:d}'
+               .format(repr(self.grid), self.sampling, self.nlat, self.nlon,
+                       self.n, self.sampling, self.extend, self.lmax,
+                       self.lmax_calc, self.gm, self.potref, self.a, self.f,
+                       repr(self.omega), self.r, self.order))
         return str
 
-    def plot(self, tick_interval=[30, 30], minor_tick_interval=[None, None],
-             colorbar=True, cb_orientation='vertical', cb_label='geoid, m',
-             grid=False, axes_labelsize=None, tick_labelsize=None, show=True,
-             **kwargs):
+    def plot(self, projection=None, tick_interval=[30, 30],
+             minor_tick_interval=[None, None], xlabel=None, ylabel=None,
+             title=None, titlesize=None, colorbar='right', cmap='viridis',
+             cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
+             cb_label='geoid, m', cb_tick_interval=None, grid=False,
+             axes_labelsize=None, tick_labelsize=None, show=True, ax=None,
+             cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
+             fname=None, cb_offset=None, cb_width=None):
         """
         Plot the geoid.
 
         Usage
         -----
-        x.plot([tick_interval, minor_tick_interval, xlabel, ylabel, colorbar,
-                cb_orientation, cb_label, grid, axes_labelsize, tick_labelsize,
-                ax, show, fname, **kwargs])
+        x.plot([projection, tick_interval, minor_tick_interval, ticks,
+                xlabel, ylabel, title, colorbar, cmap, cmap_limits,
+                cmap_reverse, cb_triangles, cb_label, cb_ylabel,
+                cb_tick_interval, cb_minor_tick_interval, cb_offset, cb_width,
+                grid, titlesize, axes_labelsize, tick_labelsize, ax, show,
+                fname])
 
         Parameters
         ----------
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        colorbar : bool, optional, default = True
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar: either 'vertical' or 'horizontal'.
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
         cb_label : str, optional, default = 'geoid, m'
             Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
+        cb_tick_interval : float, optional, default = None
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -148,15 +201,137 @@ class SHGeoid(object):
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to plt.imshow(), such as cmap,
-            vmin and vmax.
         """
-        return self.geoid.plot(tick_interval=tick_interval,
+        return self.geoid.plot(projection=projection,
+                               tick_interval=tick_interval,
                                minor_tick_interval=minor_tick_interval,
-                               colorbar=colorbar,
-                               cb_orientation=cb_orientation,
-                               cb_label=cb_label,
-                               grid=grid, axes_labelsize=axes_labelsize,
-                               tick_labelsize=tick_labelsize,
-                               show=show, **kwargs)
+                               xlabel=xlabel, ylabel=ylabel, title=title,
+                               titlesize=titlesize, colorbar=colorbar,
+                               cmap=cmap, cmap_limits=cmap_limits,
+                               cmap_reverse=cmap_reverse, cb_offset=cb_offset,
+                               cb_triangles=cb_triangles, cb_label=cb_label,
+                               cb_tick_interval=cb_tick_interval, grid=grid,
+                               cb_ylabel=cb_ylabel, ticks=ticks,
+                               cb_minor_tick_interval=cb_minor_tick_interval,
+                               axes_labelsize=axes_labelsize,
+                               cb_width=cb_width,
+                               tick_labelsize=tick_labelsize, ax=ax,
+                               show=show, fname=fname)
+
+    def to_netcdf(self, filename=None, title='', description='',
+                  comment='pyshtools grid', name='geoid',
+                  dtype='f'):
+        """
+        Return the gridded data as a netcdf formatted file or object.
+
+        Usage
+        -----
+        x.to_netcdf([filename, title, description, comment, name, dtype])
+
+        Parameters
+        ----------
+        filename : str, optional, default = None
+            Name of output file.
+        title : str, optional, default = ''
+            Title of the dataset.
+        description : str, optional, default = ''
+            Description of the dataset ('Remark' in gmt grd files).
+        comment : str, optional, default = 'pyshtools grid'
+            Additional information about how the data were generated.
+        name : str, optional, default = 'data'
+            Name of the data array.
+        dtype : str, optional, default = 'f'
+            Data type of the output array. Either 'f' or 'd' for single or
+            double precision floating point, respectively.
+        """
+        if dtype == 'f':
+            _nparray = self.geoid.to_array().astype(_np.float32)
+        elif dtype == 'd':
+            _nparray = self.geoid.to_array()
+        else:
+            raise ValueError("dtype must be either 'f' or 'd' for single or "
+                             "double precision floating point.")
+
+        attrs = {'actual_range': [self.geoid.min(), self.geoid.max()],
+                 'title': title,
+                 'comment': comment,
+                 'long_name': 'Geoid',
+                 'units': 'meters',
+                 'nlat': self.geoid.nlat,
+                 'nlon': self.geoid.nlon,
+                 'lmax': self.lmax,
+                 'kind': self.geoid.kind,
+                 'grid': self.geoid.grid,
+                 'gm': self.gm,
+                 'potref': self.potref,
+                 'a': self.a,
+                 'f': self.f,
+                 'omega': self.omega,
+                 'r': self.r,
+                 'order': self.order,
+                 'lmax_calc': self.lmax_calc,
+                 'sampling': self.geoid.sampling,
+                 'n': self.n,
+                 'extend': self.extend
+                 }
+
+        _data = _xr.DataArray(_nparray, dims=('latitude', 'longitude'),
+                              coords=[('latitude', self.geoid.lats(),
+                                       {'units': 'degrees_north'}),
+                                      ('longitude', self.geoid.lons(),
+                                       {'units': 'degrees_east'})],
+                              attrs=attrs)
+        _dataset = _xr.Dataset({name: _data},
+                               attrs={'title': title,
+                                      'comment': comment,
+                                      'description': description})
+        if filename is None:
+            return _dataset.to_netcdf()
+        else:
+            _dataset.to_netcdf(filename)
+
+    def to_xarray(self, title='', comment='pyshtools grid'):
+        """
+        Return the gridded data as an xarray DataArray.
+
+        Usage
+        -----
+        x.to_xarray([title, comment])
+
+        Parameters
+        ----------
+        title : str, optional, default = ''
+            Title of the dataset.
+        comment : str, optional, default = 'pyshtools grid'
+            Additional information about how the data were generated.
+        """
+        attrs = {'actual_range': [self.geoid.min(), self.geoid.max()],
+                 'title': title,
+                 'comment': comment,
+                 'long_name': 'Geoid',
+                 'units': 'meters',
+                 'nlat': self.geoid.nlat,
+                 'nlon': self.geoid.nlon,
+                 'lmax': self.lmax,
+                 'kind': self.geoid.kind,
+                 'grid': self.geoid.grid,
+                 'gm': self.gm,
+                 'potref': self.potref,
+                 'a': self.a,
+                 'f': self.f,
+                 'omega': self.omega,
+                 'r': self.r,
+                 'order': self.order,
+                 'lmax_calc': self.lmax_calc,
+                 'sampling': self.geoid.sampling,
+                 'n': self.n,
+                 'extend': self.extend
+                 }
+
+        return _xr.DataArray(self.geoid.to_array(),
+                             dims=('latitude', 'longitude'),
+                             coords=[('latitude', self.geoid.lats(),
+                                      {'units': 'degrees_north'}),
+                                     ('longitude', self.geoid.lons(),
+                                      {'units': 'degrees_east'})],
+                             attrs=attrs)

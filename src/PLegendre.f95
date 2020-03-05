@@ -50,7 +50,7 @@ subroutine PLegendre(p, lmax, z, exitstatus)
     if (present(exitstatus)) exitstatus = 0
 
     if (size(p) < lmax+1) then
-        print*, "Error --- PlegendreL"
+        print*, "Error --- PLegendre"
         print*, "P must be dimensioned as (LMAX+1) where LMAX is ", lmax
         print*, "Input array is dimensioned ", size(p)
         if (present(exitstatus)) then
@@ -61,7 +61,7 @@ subroutine PLegendre(p, lmax, z, exitstatus)
         end if
 
     else if (lmax < 0) then
-        print*, "Error --- PlegendreL"
+        print*, "Error --- PLegendre"
         print*, "LMAX must be greater than or equal to 0."
         print*, "Input value is ", lmax
         if (present(exitstatus)) then
@@ -72,7 +72,7 @@ subroutine PLegendre(p, lmax, z, exitstatus)
         end if
 
     else if (abs(z) > 1.0_dp) then
-        print*, "Error --- PlegendreL"
+        print*, "Error --- PLegendre"
         print*, "ABS(Z) must be less than or equal to 1."
         print*, "Input value is ", z
         if (present(exitstatus)) then
@@ -84,8 +84,8 @@ subroutine PLegendre(p, lmax, z, exitstatus)
 
     end if
 
-    pm2 = 1.d0
-    p(1) = 1.d0
+    pm2 = 1.0_dp
+    p(1) = 1.0_dp
 
     pm1 = z
     p(2) = pm1

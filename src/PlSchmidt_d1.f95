@@ -30,8 +30,8 @@ subroutine PlSchmidt_d1(p, dp1, lmax, z, exitstatus)
 !
 !   Notes:
 !
-!   1.  The integral of plm**2 over (-1,1) is 2 * / (2l+1).
-!   2.  The integral of Plm**2 over all space is 4 pi / (2l+1).
+!   1.  The integral of Pl**2 over (-1,1) is 2 * / (2l+1).
+!   2.  The integral of Pl**2 over all space is 4 pi / (2l+1).
 !   3.  Derivatives are calculated according to the unnormalized relationships:
 !           P'_0(z) = 0.0, P'_1(z) = 1.0, and
 !           P'_l(z) = l * (P'_{l-1}(z) - z * P_l(z) ) / (1.0_dp - z**2)

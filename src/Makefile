@@ -10,7 +10,7 @@
 
 F95 = gfortran
 
-SHELL=/bin/sh
+SHELL = /bin/sh
 
 LIBTOOL = libtool
 LIBTOOLFLAGS = -static
@@ -135,6 +135,7 @@ clean: clean-obs-mod clean-prog-mod
 clean-obs-mod:
 	@-rm -f $(OBJSMOD)
 	@-rm -f $(OBJS0)
+	@-rm -f $(OBJSMOD)
 	@-rm -f $(OBJSLAPACK)
 	@-rm -f $(OBJSFFTW)
 	@-rm -f *.mod
@@ -152,9 +153,9 @@ clean-prog-mod:
 
 
 ftypes.mod : ftypes.o
-SHTOOLS.mod : SHTOOLS.o ftypes.mod
-FFTW3.mod : FFTW3.o ftypes.mod
-PlanetsConstants.mod : PlanetsConstants.o ftypes.mod
+SHTOOLS.mod : ftypes.mod
+FFTW3.mod : ftypes.mod
+PlanetsConstants.mod : ftypes.mod
 
 BAtoHilm.o : ftypes.mod SHTOOLS.mod
 BAtoHilmRhoH.o : ftypes.mod SHTOOLS.mod

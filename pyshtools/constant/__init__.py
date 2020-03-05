@@ -27,12 +27,6 @@ Inspect a constant using the print function:
       Reference = CODATA 2014
 """
 
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
-import numpy as _np
-
 try:
     from astropy.constants import Constant
     from astropy.units.quantity import Quantity
@@ -79,6 +73,7 @@ from .Earth import gma_wgs84
 from .Earth import b_wgs84
 from .Earth import r3_wgs84
 from .Earth import u0_wgs84
+from .Earth import dynamical_flattening_earth
 
 # == Moon ==
 
@@ -120,7 +115,8 @@ _constants_venus = ['gm_venus', 'mass_venus', 'r_venus', 'density_venus',
 
 _constants_earth = ['gm_egm2008', 'mass_egm2008', 'omega_egm2008', 'a_wgs84',
                     'f_wgs84', 'gm_wgs84', 'mass_wgs84', 'omega_wgs84',
-                    'gma_wgs84', 'b_wgs84', 'r3_wgs84', 'u0_wgs84']
+                    'gma_wgs84', 'b_wgs84', 'r3_wgs84', 'u0_wgs84',
+                    'dynamical_flattening_earth']
 
 _constants_moon = ['gm_moon', 'mass_moon', 'r_moon', 'density_moon',
                    'g0_moon', 'a_orbit_moon', 'omega_moon', 'i_solid_moon',

@@ -50,12 +50,6 @@ spharm         Compute all the spherical harmonic functions up to a maximum
 spharm_lm      Compute the spherical harmonic function for a specific degree l
                and order m.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
-
 from ..shtools import SHExpandDH
 from ..shtools import MakeGridDH
 from ..shtools import SHExpandDHC
@@ -75,3 +69,11 @@ from ..shtools import SHMultiply
 
 from .spharm_functions import spharm
 from .spharm_functions import spharm_lm
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['SHExpandDH', 'MakeGridDH', 'SHExpandDHC', 'MakeGridDHC',
+           'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ', 'SHExpandGLQC',
+           'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ', 'SHExpandWLSQ',
+           'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
+           'spharm', 'spharm_lm']

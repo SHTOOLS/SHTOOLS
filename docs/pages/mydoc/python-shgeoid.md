@@ -45,5 +45,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Method | Description |
 | ------ | ----------- |
 | `plot()` | Plot the geoid.|
+| `to_xarray()` | Return the gridded data as an xarray DataArray.|
+| `to_netcdf()` | Return the gridded data as a netcdf formatted file or object.|
 | `copy()` | Return a copy of the class instance. |
 | `info()` | Print a summary of the data stored in the SHGravGrid instance. |

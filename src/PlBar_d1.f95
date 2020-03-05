@@ -32,7 +32,7 @@ subroutine PlBar_d1(p, dp1, lmax, z, exitstatus)
 !   1.  The employed normalization is the "geophysical convention."
 !   2.  The integral of PlBar**2 over all space on the sphere is 4 pi.
 !   3.  The integral of PlBar**2 over (-1,1) is 2.
-!   4.  The derivative is evaluated with respecte to z, and NOT
+!   4.  The derivative is evaluated with respect to z, and NOT
 !       cos(colatitude) or sin(latitude).
 !   5.  Derivatives are calculated according to the normalized relationships
 !           P'_0(z) = 0.0, P'_1(z) = 1.0, and
@@ -105,7 +105,7 @@ subroutine PlBar_d1(p, dp1, lmax, z, exitstatus)
 
     if (z == 1.0_dp) then
         do l = 0, lmax
-            p(1:lmax+1) = sqrt( dble(2*l+1))
+            p(l+1) = sqrt( dble(2*l+1))
             dp1(l+1) = sqrt( dble(2*l+1)) * dble(l) * dble(l+1) / 2.0_dp
         end do
 
@@ -119,8 +119,8 @@ subroutine PlBar_d1(p, dp1, lmax, z, exitstatus)
     else
         sinsq = (1.0_dp - z**2)
 
-        pm2 = 1.d0
-        p(1) = 1.d0
+        pm2 = 1.0_dp
+        p(1) = 1.0_dp
         dp1(1) = 0.0_dp
 
         pm1 = sqrt(3.0_dp) * z

@@ -89,11 +89,6 @@ Other
 SphericalCapCoef       Calculate the spherical harmonic coefficients of a
                        spherical cap.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 from ..shtools import SHAdmitCorr
 from ..shtools import SHConfidence
 
@@ -129,3 +124,16 @@ from ..shtools import SlepianCoeffsToSH
 from ..shtools import SHSCouplingMatrix
 from ..shtools import SHSlepianVar
 from ..shtools import SHSCouplingMatrixCap
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['SHAdmitCorr', 'SHConfidence', 'spectrum', 'cross_spectrum',
+           'SHMultiTaperSE', 'SHMultiTaperCSE', 'SHLocalizedAdmitCorr',
+           'SHReturnTapers', 'SHReturnTapersM', 'ComputeDm', 'ComputeDG82',
+           'SHFindLWin', 'SHBiasK', 'SHMTCouplingMatrix', 'SHBiasAdmitCorr',
+           'SHMTDebias', 'SHMTVarOpt', 'SHMTVar', 'SHSjkPG',
+           'SHMultiTaperMaskSE', 'SHMultiTaperMaskCSE', 'SHReturnTapersMap',
+           'SHBiasKMask', 'ComputeDMap', 'Curve2Mask', 'SHBias',
+           'SphericalCapCoef', 'SHRotateTapers', 'SlepianCoeffs',
+           'SlepianCoeffsToSH', 'SHSCouplingMatrix', 'SHSlepianVar',
+           'SHSCouplingMatrixCap']

@@ -47,11 +47,6 @@ Class structure:
 
 For more information, see the documentation for the top level classes.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 from .shcoeffsgrid import SHCoeffs
 from .shcoeffsgrid import SHRealCoeffs
 from .shcoeffsgrid import SHComplexCoeffs
@@ -82,3 +77,12 @@ from .shmagcoeffs import SHMagCoeffs
 from .shmagcoeffs import SHMagRealCoeffs
 from .shmaggrid import SHMagGrid
 from .shtensor import SHMagTensor
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['SHCoeffs', 'SHRealCoeffs', 'SHComplexCoeffs', 'SHGrid',
+           'DHRealGrid', 'DHComplexGrid', 'GLQRealGrid', 'GLQComplexGrid',
+           'SHWindow', 'SHWindowCap', 'SHWindowMask', 'Slepian', 'SlepianCap',
+           'SlepianMask', 'SlepianCoeffs', 'SHGravCoeffs', 'SHGravRealCoeffs',
+           'SHGravGrid', 'SHGravTensor', 'SHGeoid', 'SHMagCoeffs',
+           'SHMagRealCoeffs', 'SHMagGrid', 'SHMagTensor']

@@ -119,8 +119,8 @@ subroutine PLegendre_d1(p, dp1, lmax, z, exitstatus)
     else
         sinsq = (1.0_dp - z**2)
 
-        pm2 = 1.d0
-        p(1) = 1.d0
+        pm2 = 1.0_dp
+        p(1) = 1.0_dp
         dp1(1) = 0.0_dp
 
         pm1 = z

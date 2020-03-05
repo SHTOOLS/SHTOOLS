@@ -167,13 +167,14 @@ module SHTOOLS
         end subroutine SHExpandDH
 
         subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, &
-                              csphase, lmax_calc, exitstatus)
+                              csphase, lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(out) :: griddh(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
-            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer, intent(in), optional :: norm, sampling, csphase, &
+                                             lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGridDH
 
@@ -189,13 +190,14 @@ module SHTOOLS
         end subroutine SHExpandDHC
 
         subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, &
-                               csphase, lmax_calc, exitstatus)
+                               csphase, lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: cilm(:,:,:)
             complex(dp), intent(out) :: griddh(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
-            integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer, intent(in), optional :: norm, sampling, csphase, &
+                                             lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGridDHC
 
@@ -220,13 +222,13 @@ module SHTOOLS
         end subroutine SHExpandGLQ
 
         subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, &
-                               csphase, lmax_calc, exitstatus)
+                               csphase, lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in), optional :: plx(:,:), zero(:)
             real(dp), intent(out) :: gridglq(:,:)
             integer, intent(in) :: lmax
-            integer, intent(in), optional :: norm, csphase, lmax_calc
+            integer, intent(in), optional :: norm, csphase, lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGridGLQ
 
@@ -243,21 +245,23 @@ module SHTOOLS
         end subroutine SHExpandGLQC
 
         subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, &
-                                csphase, lmax_calc, exitstatus)
+                                csphase, lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             complex(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in), optional :: plx(:,:), zero(:)
             complex(dp), intent(out) :: gridglq(:,:)
             integer, intent(in) :: lmax
-            integer, intent(in), optional :: norm, csphase, lmax_calc
+            integer, intent(in), optional :: norm, csphase, lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGridGLQC
 
-        subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
+        subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, extend, &
+                                exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: lmax
             integer, intent(out) :: nlat, nlong
             real(dp), intent(out) :: latglq(:), longlq(:)
+            integer, intent(in), optional :: extend
             integer, intent(out), optional :: exitstatus
         end subroutine GLQGridCoord
 
@@ -296,6 +300,7 @@ module SHTOOLS
 
         function MakeGridPointC(cilm, lmax, lat, lon, norm, csphase, dealloc)
             integer, parameter :: dp = selected_real_kind(p=15)
+            complex(dp) :: MakeGridPointC
             complex(dp), intent(in) :: cilm(:,:,:)
             real(dp), intent(in) :: lat, lon
             integer, intent(in) :: lmax
@@ -775,12 +780,12 @@ module SHTOOLS
         end subroutine ComputeDMap
 
         subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, &
-                              centralmeridian, exitstatus)
+                              extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(out) :: dhgrid(:,:)
             real(dp), intent(in) :: profile(:,:)
             integer, intent(in) :: n, sampling, nprofile, np
-            integer, intent(in), optional :: centralmeridian
+            integer, intent(in), optional :: extend
             integer, intent(out), optional :: exitstatus
         end subroutine Curve2Mask
 
@@ -804,7 +809,7 @@ module SHTOOLS
 
         subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad, theta, phi, &
                                   total, n, sampling, lmax_calc, omega, &
-                                  normal_gravity, pot, exitstatus)
+                                  normal_gravity, pot, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
             real(dp), intent(out) :: rad(:,:), theta(:,:), phi(:,:), total(:,:)
@@ -813,44 +818,44 @@ module SHTOOLS
             integer, intent(in) :: lmax
             integer, intent(out) :: n
             integer, intent(in), optional :: sampling, lmax_calc, &
-                                             normal_gravity
+                                             normal_gravity, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGravGridDH
 
         subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, &
                                       vzz, vxy, vxz, vyz, n, sampling, &
-                                      lmax_calc, exitstatus)
+                                      lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
             real(dp), intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
                                      vxz(:,:), vyz(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
-            integer, intent(in), optional :: sampling, lmax_calc
+            integer, intent(in), optional :: sampling, lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeGravGradGridDH
 
         subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, &
                                      vzz, vxy, vxz, vyz, n, sampling, &
-                                     lmax_calc, exitstatus)
+                                     lmax_calc, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), r0, a, f
             real(dp), intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
                                      vxz(:,:), vyz(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
-            integer, intent(in), optional :: sampling, lmax_calc
+            integer, intent(in), optional :: sampling, lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeMagGradGridDH
 
         subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, &
                                  r, gridtype, order, nlat, nlong, interval, &
-                                 lmax_calc, a, f, exitstatus)
+                                 lmax_calc, a, f, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(out) :: geoid(:,:)
             real(dp), intent(in) :: cilm(:,:,:), r0pot, GM, r, PotRef, omega
             integer, intent(in) :: lmax, order, gridtype
-            integer, intent(in), optional :: lmax_calc
+            integer, intent(in), optional :: lmax_calc, extend
             integer, intent(out) :: nlat, nlong
             real(dp), intent(in), optional :: interval, a, f
             integer, intent(out), optional :: exitstatus
@@ -946,7 +951,7 @@ module SHTOOLS
 
         subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                                  phi_grid, total_grid, n, sampling, &
-                                 lmax_calc, pot_grid, exitstatus)
+                                 lmax_calc, pot_grid, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp), intent(in) :: cilm(:,:,:), r0, a, f
             real(dp), intent(out) :: rad_grid(:,:), theta_grid(:,:), &
@@ -954,7 +959,7 @@ module SHTOOLS
             real(dp), intent(out), optional :: pot_grid(:,:)
             integer, intent(in) :: lmax
             integer, intent(out) :: n
-            integer, intent(in), optional :: sampling, lmax_calc
+            integer, intent(in), optional :: sampling, lmax_calc, extend
             integer, intent(out), optional :: exitstatus
         end subroutine MakeMagGridDH
 
@@ -1035,10 +1040,11 @@ module SHTOOLS
             integer, intent(in) :: degree, n
         end function NGLQSHN
 
-        subroutine DHaj(n, aj, exitstatus)
+        subroutine DHaj(n, aj, extend, exitstatus)
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, intent(in) :: n
             real(dp), intent(out) :: aj(:)
+            integer, intent(in), optional :: extend
             integer, intent(out), optional :: exitstatus
         end subroutine DHaj
 

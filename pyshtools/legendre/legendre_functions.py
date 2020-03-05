@@ -7,6 +7,7 @@
                   degree l and order m.
 """
 import numpy as _np
+import warnings as _warnings
 
 from . import PlmBar as _PlmBar
 from . import PlmON as _PlmON
@@ -52,8 +53,8 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
         corresponding to l*(l+1)/2+m, where l and m are respectively the
         degree and order.
 
-    Description
-    -----------
+    Notes
+    -----
     legendre` will calculate all of the associated Legendre functions up to
     degree lmax for a given argument. The Legendre functions are used typically
     as a part of the spherical harmonic functions, and three parameters
@@ -125,7 +126,7 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
     elif normalization == 'schmidt':
         p = _PlmSchmidt(lmax, z, csphase=csphase, cnorm=cnorm)
     elif normalization == 'unnorm':
-        p = _PLegendreA(lmax, z, csphase=csphase, cnorm=cnorm)
+        p = _PLegendreA(lmax, z, csphase=csphase)
 
     if packed is True:
         return p
@@ -171,8 +172,8 @@ def legendre_lm(l, m, z, normalization='4pi', csphase=1, cnorm=0):
         If 1, the complex normalization of the associated Legendre functions
         will be used. The default is to use the real normalization.
 
-    Description
-    -----------
+    Notes
+    -----
     legendre_lm will calculate the associated Legendre function for a specific
     degree l and order m. The Legendre functions are used typically as a part
     of the spherical harmonic functions, and three parameters determine how
@@ -238,13 +239,10 @@ def legendre_lm(l, m, z, normalization='4pi', csphase=1, cnorm=0):
             .format(repr(cnorm))
             )
 
-    if normalization.lower() == 'unnorm' and lmax > 85:
-        _warnings.warn("Calculations using unnormalized coefficients " +
-                       "are stable only for degrees less than or equal " +
-                       "to 85. lmax for the coefficients will be set to " +
-                       "85. Input value was {:d}.".format(lmax),
-                       category=RuntimeWarning)
-        lmax = 85
+    if normalization.lower() == 'unnorm' and l > 85:
+        raise ValueError("Calculations using unnormalized coefficients " +
+                         "are stable only for degrees less than or equal " +
+                         "to 85. Input value was {:d}.".format(l))
 
     if normalization == '4pi':
         p = _PlmBar(l, z, csphase=csphase, cnorm=cnorm)
@@ -253,6 +251,6 @@ def legendre_lm(l, m, z, normalization='4pi', csphase=1, cnorm=0):
     elif normalization == 'schmidt':
         p = _PlmSchmidt(l, z, csphase=csphase, cnorm=cnorm)
     elif normalization == 'unnorm':
-        p = _PLegendreA(l, z, csphase=csphase, cnorm=cnorm)
+        p = _PLegendreA(l, z, csphase=csphase)
 
     return p[(l*(l+1))//2+m]

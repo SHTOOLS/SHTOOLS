@@ -3,11 +3,6 @@
 
         Slepian: SlepianCap, SlepianMask
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
@@ -178,12 +173,11 @@ class Slepian(object):
 
         Parameters
         ----------
-        dh_mask :ndarray, shape (nlat, nlon)
-            A Driscoll and Healy (1994) sampled grid describing the
-            concentration region R. All elements should either be 1 (for inside
-            the concentration region) or 0 (for outside the concentration
-            region). The grid must have dimensions nlon=nlat or nlon=2*nlat,
-            where nlat is even.
+        dh_mask :ndarray or SHGrid class instance, shape (nlat, nlon)
+            A Driscoll and Healy sampled grid describing the concentration
+            region R. All elements should either be 1 or 0 for inside or
+            outside of the concentration region, respectively. The grid must
+            have dimensions nlon=nlat, nlon=2*nlat, or nlon=2*nlat-1.
         lmax : int
             The spherical harmonic bandwidth of the Slepian functions.
         nmax : int, optional, default = (lmax+1)**2
@@ -199,28 +193,31 @@ class Slepian(object):
         else:
             if nmax > (lmax + 1)**2:
                 raise ValueError('nmax must be less than or equal to ' +
-                                 '(lmax + 1)**2. lmax = {:d} and nmax = {:d}'
+                                 '(lmax + 1)**2. lmax = {:d} and nmax = {:d}.'
                                  .format(lmax, nmax))
 
-        if dh_mask.shape[0] % 2 != 0:
-            raise ValueError('The number of latitude bands in dh_mask ' +
-                             'must be even. nlat = {:d}'
-                             .format(dh_mask.shape[0]))
+        if isinstance(dh_mask, _np.ndarray):
+            mask = SHGrid.from_array(dh_mask, grid='DH', copy=False)
+            data = mask.data[:mask.nlat-mask.extend, :mask.nlon-mask.extend]
+            area = 4 * _np.pi * mask.expand(lmax_calc=0).coeffs[0, 0, 0]
 
-        if dh_mask.shape[1] == dh_mask.shape[0]:
-            _sampling = 1
-        elif dh_mask.shape[1] == 2 * dh_mask.shape[0]:
-            _sampling = 2
+        elif isinstance(dh_mask, SHGrid):
+            if dh_mask.grid != 'DH':
+                raise ValueError("The grid type of dh_mask must be 'DH'. "
+                                 'Input grid is {:s}.'
+                                 .format(repr(dh_mask.grid)))
+            data = dh_mask.data[:dh_mask.nlat-dh_mask.extend,
+                                :dh_mask.nlon-dh_mask.extend]
+            area = 4 * _np.pi * dh_mask.expand(lmax_calc=0).coeffs[0, 0, 0]
+
         else:
-            raise ValueError('dh_mask must be dimensioned as (n, n) or ' +
-                             '(n, 2 * n). Input shape is ({:d}, {:d})'
-                             .format(dh_mask.shape[0], dh_mask.shape[1]))
-
-        mask_lm = _shtools.SHExpandDH(dh_mask, sampling=_sampling, lmax_calc=0)
-        area = mask_lm[0, 0, 0] * 4 * _np.pi
+            raise ValueError('dh_mask must be an numpy.ndarrary or '
+                             'pyshtools.SHGrid class instance. '
+                             'Input type is {:s}.'
+                             .format(str(type(dh_mask))))
 
         tapers, eigenvalues = _shtools.SHReturnTapersMap(
-            dh_mask, lmax, ntapers=nmax, degrees=slepian_degrees)
+            data, lmax, ntapers=nmax, degrees=slepian_degrees)
 
         return SlepianMask(tapers, eigenvalues, area, slepian_degrees,
                            copy=False)
@@ -288,8 +285,8 @@ class Slepian(object):
         nmax : int, optional, default = (x.lmax+1)**2
             The number of Slepian expansion coefficients to compute.
 
-        Description
-        -----------
+        Notes
+        -----
         The global function f is input using its spherical harmonic
         expansion coefficients flm. The expansion coefficients of the function
         f using Slepian functions g is given by
@@ -300,8 +297,8 @@ class Slepian(object):
             nmax = (self.lmax+1)**2
         elif nmax is not None and nmax > (self.lmax+1)**2:
             raise ValueError(
-                "nmax must be less than or equal to (lmax+1)**2 " +
-                "where lmax is {:s}. Input value is {:s}"
+                "nmax must be less than or equal to (lmax+1)**2, "
+                "where lmax is {:s}. Input value is {:s}."
                 .format(repr(self.lmax), repr(nmax))
                 )
 
@@ -338,16 +335,6 @@ class Slepian(object):
 
         return self._coupling_matrix(nmax=nmax)
 
-    def info(self):
-        """
-        Print a summary of the data stored in the SHWindow instance.
-
-        Usage
-        -----
-        x.info()
-        """
-        self._info()
-
     def to_array(self, alpha, normalization='4pi', csphase=1):
         """
         Return the spherical harmonic coefficients of Slepian function i as a
@@ -378,18 +365,18 @@ class Slepian(object):
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt'):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "or 'schmidt'. Provided value is {:s}."
                 .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
+                'csphase must be 1 or -1. Input value is {:s}.'
                 .format(repr(csphase))
                 )
 
@@ -424,18 +411,18 @@ class Slepian(object):
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. ' +
-                             'Input type was {:s}'
+                             'Input type is {:s}.'
                              .format(str(type(normalization))))
 
         if normalization.lower() not in set(['4pi', 'ortho', 'schmidt']):
             raise ValueError(
                 "normalization must be '4pi', 'ortho' " +
-                "or 'schmidt'. Provided value was {:s}"
+                "or 'schmidt'. Provided value is {:s}."
                 .format(repr(normalization))
                 )
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
+                "csphase must be 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
 
@@ -444,10 +431,10 @@ class Slepian(object):
         return SHCoeffs.from_array(coeffs, normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    def to_shgrid(self, alpha, grid='DH2', zeros=None):
+    def to_shgrid(self, alpha, grid='DH2', zeros=None, extend=True):
         """
-        Evaluate the coefficients of Slepian function i on a spherical grid and
-        return a SHGrid class instance.
+        Evaluate the coefficients of Slepian function i on a grid and return
+        an SHGrid class instance.
 
         Usage
         -----
@@ -469,36 +456,38 @@ class Slepian(object):
         zeros : ndarray, optional, default = None
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
+        extend : bool, optional, default = True
+            If True, compute the longitudinal band for 360 E (DH and GLQ grids)
+            and the latitudinal band for 90 S (DH grids only).
 
-        Description
-        -----------
+        Notes
+        -----
         For more information concerning the spherical harmonic expansions and
         the properties of the output grids, see the documentation for
         SHExpandDH and SHExpandGLQ.
         """
         if type(grid) != str:
-            raise ValueError('grid must be a string. ' +
-                             'Input type was {:s}'
+            raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
         if grid.upper() in ('DH', 'DH1'):
             gridout = _shtools.MakeGridDH(self.to_array(alpha), sampling=1,
-                                          norm=1, csphase=1)
+                                          norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'DH2':
             gridout = _shtools.MakeGridDH(self.to_array(alpha), sampling=2,
-                                          norm=1, csphase=1)
+                                          norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lmax)
             gridout = _shtools.MakeGridGLQ(self.to_array(alpha), zeros,
-                                           norm=1, csphase=1)
+                                           norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='GLQ', copy=False)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
-                "Input value was {:s}".format(repr(grid)))
+                "Input value is {:s}.".format(repr(grid)))
 
     def spectra(self, alpha=None, nmax=None, convention='power', unit='per_l',
                 base=10.):
@@ -539,8 +528,8 @@ class Slepian(object):
         base : float, optional, default = 10.
             The logarithm base when calculating the 'per_dlogl' spectrum.
 
-        Description
-        -----------
+        Notes
+        -----
         This function returns either the power spectrum, energy spectrum, or
         l2-norm spectrum of one or more of the Slepian funtions. Total power
         is defined as the integral of the function squared over all space,
@@ -608,30 +597,39 @@ class Slepian(object):
             if lmax > self.lmax:
                 raise ValueError('lmax must be less than or equal to '
                                  'self.lmax. Input value is {:s}, and '
-                                 'self.lmax is {:s}'.format(repr(lmax),
-                                                            repr(self.lmax)))
+                                 'self.lmax is {:s}.'.format(repr(lmax),
+                                                             repr(self.lmax)))
 
         return self._variance(power, k, lmax=lmax)
 
-    def plot(self, nmax, lmax=None, maxcolumns=3,
-             tick_interval=[60, 45], minor_tick_interval=[None, None],
-             xlabel='Longitude', ylabel='Latitude',
-             axes_labelsize=None, tick_labelsize=None,
-             title_labelsize=None, grid=False, show=True, title=True,
-             ax=None, fname=None):
+    def plot(self, nmax, projection=None, lmax=None, maxcolumns=3,
+             ticks='WSen', tick_interval=[60, 45],
+             minor_tick_interval=[None, None], xlabel='Longitude',
+             ylabel='Latitude', title=True, colorbar=None, cmap='viridis',
+             cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
+             cb_label=None, cb_ylabel=None, cb_tick_interval=None,
+             cb_minor_tick_interval=None, grid=False, loss=False,
+             axes_labelsize=None, tick_labelsize=None, titlesize=8,
+             show=True, ax=None, fname=None, cb_offset=None, cb_width=None):
         """
         Plot the best-concentrated Slepian functions.
 
         Usage
         -----
-        x.plot(nmax, [lmax, maxcolumns, tick_interval, minor_tick_interval,
-                      xlabel, ylabel, grid, show, title, axes_labelsize,
-                      tick_labelsize, title_labelsize, ax, fname])
+        x.plot(nmax, [projections, lmax, maxcolumns, tick_interval,
+                      minor_tick_interval, ticks, xlabel, ylabel, title,
+                      titlesize, colorbar, cmap, cmap_limits, cmap_reverse,
+                      cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
+                      cb_minor_tick_interval, cb_offset, cb_width, grid, loss,
+                      axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
         nmax : int
             The number of Slepian functions to plot.
+        projection : Cartopy projection class, optional, default = None
+            The Cartopy projection class used to project the gridded data,
+            for Driscoll and Healy sampled grids only.
         lmax : int, optional, default = self.lmax
             The maximum degree to use when plotting the Slepian function, which
             controls the number of samples in latitude and longitude.
@@ -644,25 +642,63 @@ class Slepian(object):
         minor_tick_interval : list or tuple, optional, default = [None, None]
             Intervals to use when plotting the minor x and y ticks. If set to
             None, minor ticks will not be plotted.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
             Label for the latitude axis.
-        grid : bool, optional, default = False
-            If True, plot grid lines.
-        show : bool, optional, default = True
-            If True, plot the image to the screen.
         title : bool, optional, default = True
             If True, plot a title on top of each subplot providing the taper
             number and 1 minus the concentration factor.
+        colorbar : str, optional, default = None
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the
+            interval is specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
+        cb_label : str, optional, default = None
+            Text label for the colorbar.
+        cb_ylabel : str, optional, default = None
+            Text label for the y axis of the colorbar
+        cb_tick_interval : float, optional, default = None
+            Colorbar major tick and annotation interval.
+        cb_minor_tick_interval : float, optional, default = None
+            Colorbar minor tick interval.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
+        grid : bool, optional, default = False
+            If True, plot major grid lines.
+        loss : bool, optional, default = False
+            When plotting titles, provide the loss factor instead of the
+            concentration factor (loss=1-concentration).
+        titlesize : int, optional, default = 8
+            The font size for the subplot titles.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        title_labelsize : int, optional, default = None
-            The font size for the subplot titles.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
+        show : bool, optional, default = True
+            If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, save the image to the specified file.
         """
@@ -686,48 +722,44 @@ class Slepian(object):
                                  ' and ax.size = {:s}.'.format(repr(ax.size)))
             axes = ax
 
-        if tick_interval is None:
-            tick_interval = [None, None]
+        for alpha in range(min(self.nmax, nmax)):
+            evalue = self.eigenvalues[alpha]
+            if min(self.nmax, nmax) == 1 and ax is None:
+                axtemp = axes
+            elif hasattr(axes, 'flatten'):
+                axtemp = axes.flatten()[alpha]
+            else:
+                axtemp = axes[alpha]
+            coeffs = self.to_shcoeffs(alpha)
+            if lmax is not None:
+                coeffs = coeffs.pad(lmax=lmax, copy=False)
+            grid_temp = coeffs.expand()
 
-        if minor_tick_interval is None:
-            minor_tick_interval = [None, None]
+            if title:
+                if loss:
+                    title_str = '#{:d} [loss={:2.2g}]'.format(alpha, 1-evalue)
+                else:
+                    title_str = '#{:d} [concentration={:2.2g}]'.format(
+                        alpha, evalue)
+            else:
+                title_str = None
 
-        if tick_interval[0] is None:
-            xticks = []
-        else:
-            xticks = _np.linspace(0, 360, num=360//tick_interval[0]+1,
-                                  endpoint=True)
+            grid_temp.plot(projection=projection, tick_interval=tick_interval,
+                           minor_tick_interval=minor_tick_interval,
+                           title=title_str, ticks=ticks,
+                           xlabel=xlabel, ylabel=ylabel, grid=grid,
+                           cmap=cmap, cmap_reverse=cmap_reverse,
+                           axes_labelsize=axes_labelsize,
+                           tick_labelsize=tick_labelsize,
+                           colorbar=colorbar, cmap_limits=cmap_limits,
+                           cb_triangles=cb_triangles, cb_label=cb_label,
+                           cb_ylabel=cb_ylabel, cb_offset=cb_offset,
+                           cb_tick_interval=cb_tick_interval,
+                           cb_width=cb_width,
+                           cb_minor_tick_interval=cb_minor_tick_interval,
+                           titlesize=titlesize, ax=axtemp)
 
-        if tick_interval[1] is None:
-            yticks = []
-        else:
-            yticks = _np.linspace(-90, 90, num=180//tick_interval[1]+1,
-                                  endpoint=True)
-
-        if minor_tick_interval[0] is None:
-            minor_xticks = []
-        else:
-            minor_xticks = _np.linspace(
-                0, 360, num=360//minor_tick_interval[0]+1, endpoint=True)
-
-        if minor_tick_interval[1] is None:
-            minor_yticks = []
-        else:
-            minor_yticks = _np.linspace(
-                -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
-
-        if axes_labelsize is None:
-            axes_labelsize = _mpl.rcParams['axes.labelsize']
-        if tick_labelsize is None:
-            tick_labelsize = _mpl.rcParams['xtick.labelsize']
-        if title_labelsize is None:
-            title_labelsize = _mpl.rcParams['axes.titlesize']
-
-        deg = '$^{\circ}$'
-        xticklabels = [str(int(y)) + deg for y in xticks]
-        yticklabels = [str(int(y)) + deg for y in yticks]
-
-        if ax is None:
+        if ax is None and projection is None:
             if nrows > 1:
                 for axtemp in axes[:-1, :].flatten():
                     for xlabel_i in axtemp.get_xticklabels():
@@ -742,31 +774,6 @@ class Slepian(object):
                     for ylabel_i in axtemp.get_yticklabels():
                         ylabel_i.set_visible(False)
                     axtemp.set_ylabel('', visible=False)
-
-        for alpha in range(min(self.nmax, nmax)):
-            evalue = self.eigenvalues[alpha]
-            if min(self.nmax, nmax) == 1 and ax is None:
-                axtemp = axes
-            elif hasattr(axes, 'flatten'):
-                axtemp = axes.flatten()[alpha]
-            else:
-                axtemp = axes[alpha]
-            gridout = _shtools.MakeGridDH(self.to_array(alpha), sampling=2,
-                                          lmax=lmax, norm=1, csphase=1)
-            axtemp.imshow(gridout, origin='upper',
-                          extent=(0., 360., -90., 90.))
-            axtemp.set(xticks=xticks, yticks=yticks)
-            axtemp.set_xlabel(xlabel, fontsize=axes_labelsize)
-            axtemp.set_ylabel(ylabel, fontsize=axes_labelsize)
-            axtemp.set_xticklabels(xticklabels, fontsize=tick_labelsize)
-            axtemp.set_yticklabels(yticklabels, fontsize=tick_labelsize)
-            axtemp.set_xticks(minor_xticks, minor=True)
-            axtemp.set_yticks(minor_yticks, minor=True)
-            axtemp.grid(grid, which='major')
-            if title is True:
-                axtemp.set_title('#{:d} [loss={:2.2g}]'
-                                 .format(alpha, 1-evalue),
-                                 fontsize=title_labelsize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -934,9 +941,8 @@ class Slepian(object):
                              xlabel='Input degree', ylabel='Output degree',
                              title=None, axes_labelsize=None,
                              tick_labelsize=None, title_labelsize=None,
-                             colorbar=False, cb_orientation='vertical',
-                             cb_label=None, normalize=False, show=True,
-                             ax=None, fname=None, **kwargs):
+                             colorbar=None, cb_label=None, normalize=False,
+                             show=True, ax=None, fname=None, **kwargs):
         """
         Plot the spherical harmonic coupling matrix. This matrix relates the
         power spectrum expectation of the function expressed in a subset of the
@@ -947,9 +953,8 @@ class Slepian(object):
         -----
         x.plot_coupling_matrix([nmax, vmin, vmax, xlabel, ylabel, title
                                 axes_labelsize, tick_labelsize,
-                                title_labelsize, colorbar, cb_orientation,
-                                cb_label, normalize, show, ax, fname,
-                                **kwargs])
+                                title_labelsize, colorbar, cb_label, normalize,
+                                show, ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -974,10 +979,8 @@ class Slepian(object):
             The font size for the x and y tick labels.
         title_labelsize : int, optional, default = None
             The font size for the title.
-        colorbar : bool, optional, default = False
-            If True, plot a colorbar.
-        cb_orientation : str, optional, default = 'vertical'
-            Orientation of the colorbar; either 'vertical' or 'horizontal'.
+        colorbar : str, optional, default = None
+            Plot a colorbar that is either 'horizontal' or 'vertical'.
         cb_label : str, optional, default = None
             Text label for the colorbar.
         normalize : bool, optional, default = False
@@ -999,11 +1002,15 @@ class Slepian(object):
             tick_labelsize = _mpl.rcParams['axes.titlesize']
 
         if ax is None:
-            if colorbar is True:
-                if cb_orientation == 'horizontal':
+            if colorbar is not None:
+                if colorbar.lower()[0] == 'h':
                     scale = 1.1
-                else:
+                elif colorbar.lower()[0] == 'v':
                     scale = 0.85
+                else:
+                    raise ValueError("colorbar must be either 'horizontal' or "
+                                     "'vertical'. Input value is {:s}."
+                                     .format(repr(colorbar)))
             else:
                 scale = 1
 
@@ -1027,16 +1034,15 @@ class Slepian(object):
         axes.tick_params(labelsize=tick_labelsize)
         axes.minorticks_on()
 
-        if colorbar is True:
-            if cb_orientation == 'vertical':
+        if colorbar is not None:
+            if colorbar.lower()[0] == 'v':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("right", size="2.5%", pad=0.15)
-                cbar = _plt.colorbar(cim, cax=cax, orientation=cb_orientation)
-            else:
+                cbar = _plt.colorbar(cim, cax=cax, orientation='vertical')
+            elif colorbar.lower()[0] == 'h':
                 divider = _make_axes_locatable(axes)
                 cax = divider.append_axes("bottom", size="2.5%", pad=0.5)
-                cbar = _plt.colorbar(cim, cax=cax,
-                                     orientation=cb_orientation)
+                cbar = _plt.colorbar(cim, cax=cax, orientation='horizontal')
             if cb_label is not None:
                 cbar.set_label(cb_label, fontsize=axes_labelsize)
             cbar.ax.tick_params(labelsize=tick_labelsize)
@@ -1127,7 +1133,7 @@ class SlepianCap(Slepian):
 
         if (nmax > self.nrot):
             raise ValueError('nmax must be less than or equal to ' +
-                             'nrot. nmax = {:d}, nrot = {:d}'
+                             'nrot. nmax = {:d}, nrot = {:d}.'
                              .format(nmax, self.nrot))
         falpha = _shtools.SlepianCoeffs(self.coeffs, coeffsin, nmax)
 
@@ -1161,7 +1167,7 @@ class SlepianCap(Slepian):
         else:
             if alpha > self.nrot - 1:
                 raise ValueError('alpha must be less than or equal to ' +
-                                 'nrot - 1. alpha = {:d}, nrot = {:d}'
+                                 'nrot - 1. alpha = {:d}, nrot = {:d}.'
                                  .format(alpha, self.nrot))
             coeffs = _shtools.SHVectorToCilm(self.coeffs[:, alpha])
 
@@ -1202,8 +1208,8 @@ class SlepianCap(Slepian):
             The number of best-concentrated Slepian functions to rotate, where
             lmax is the spherical harmonic bandwidth of the functions.
 
-        Description
-        -----------
+        Notes
+        -----
         This function will take the spherical-cap Slepian functions centered at
         the North pole (and saved in the attributes tapers and orders), rotate
         each function to the coordinate (clat, clon), and save the spherical

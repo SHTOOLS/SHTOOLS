@@ -4,11 +4,6 @@ pyshtools constants for the planet Earth.
 Each object is an astropy Constant that possesses the attributes name, value,
 unit, uncertainty, and reference.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import numpy as _np
 
 from astropy.constants import Constant as _Constant
@@ -149,3 +144,13 @@ u0_wgs84 = _Constant(
     'Defense World Geodetic System 1984: Its Definition and Relationship '
     'with Local Geodetic Systems. NIMA TR8350.2, National Imagery and '
     'Mapping Agency.')
+
+dynamical_flattening_earth = _Constant(
+    abbrev='dynamical_flattening_earth',
+    name="Dynamical flattening of the Earth",
+    value=3273795e-9,
+    unit='',
+    uncertainty=1e-9,
+    reference='Petit, G., & Luzum, B. (2010). IERS conventions (2010) '
+    '(No. IERS-TN-36). BUREAU INTERNATIONAL DES POIDS '
+    'ET MESURES SEVRES (FRANCE).')

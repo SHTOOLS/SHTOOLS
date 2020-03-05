@@ -1,13 +1,7 @@
 """
 pyshtools subpackage that includes all Python wrapped Fortran routines.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 import os as _os
-import numpy as _np
 
 # ---- Import all wrapped SHTOOLS functions
 

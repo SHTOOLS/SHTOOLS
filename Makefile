@@ -15,18 +15,13 @@
 #       make fortran-tests-no-timing-mp : Compile and run the Fortran OpenMP
 #                                         test/example suite (excluding timing
 #                                         tests).
-#       make python-tests     : Run the Python test/example suite (versions
-#                               determined by PYTHON_VERSION).
-#       make python2-tests  :   Run the Python 2 test/example suite.
-#       make python3-tests  :   Run the Python 3 test/example suite.
-#       make python2-tests-no-timing  : Run the Python 2 test/example suite,
-#                                       (excluding timing tests).
-#       make python3-tests-no-timing  : Run the Python 3 test/example suite,
-#                                       (excluding timing tests).
-#       make install        : Place the compiled libraries and docs in
-#                             $(DESTDIR)$(PREFIX) [default is /usr/local].
-#       make uninstall      : Remove files copied to $(DESTDIR)$(PREFIX).
-#       make clean          : Return the folder to its original state.
+#       make python-tests     : Run the Python test/example suite.
+#       make python-tests-no-timing  : Run the Python test/example suite,
+#                                      (excluding timing tests).
+#       make install-fortran  : Place the compiled libraries and docs in
+#                               $(DESTDIR)$(PREFIX) [default is /usr/local].
+#       make uninstall        : Remove files copied to $(DESTDIR)$(PREFIX).
+#       make clean            : Return the folder to its original state.
 #
 #
 #   In some cases, where there are underscore problems when linking to the
@@ -41,12 +36,9 @@
 #       F95         : Name and path of the Fortran-95 compiler.
 #       F95FLAGS    : Fortran-95 compiler flags.
 #       OPENMPFLAGS : Fortran-95 OpenMP compiler flags.
-#       PYTHON      : Name (including path) of the Python 2 executable.
-#       PYTHON3     : Name (including path) of the Python 3 executable.
-#       PYTHON_VERSION : Which Python versions of shtools to use: either
-#                        2, 3, or all.
+#       PYTHON      : Name (including path) of the Python executable.
 #       FFTW        : Name and path of the FFTW3 library of the form
-#                     "-Lpath -lfftw3".
+#                     "-Lpath -lfftw3 -lm".
 #       LAPACK      : Name and path of the LAPACK library of the form
 #                     "-Lpath -llapack"
 #       BLAS        : Name and path of the BLAS library of the form
@@ -60,14 +52,10 @@
 #   LIST OF ALL SUPPORTED MAKE TARGETS
 #
 #   make, make all, make fortran
-#       Compile the Fortran 95 components the current directory.
+#       Compile the Fortran 95 components.
 #
 #   make fortran-mp
-#       Compile only the fortran 95 component of the archive with OpenMP
-#       support.
-#
-#   make install-fortran
-#       Install only the fortran 95 component of SHTOOLS.
+#       Compile the fortran 95 component of the archive with OpenMP support.
 #
 #   make clean
 #       Remove the compiled lib, module, object, and Python files. Also removes
@@ -87,27 +75,16 @@
 #       Delete compiled Fortran test suite programs.
 #
 #   make python-tests
-#       Run all Python tests, where the variable PYTHON_VERSION determines
-#       which versions to run.
-#
-#   make python2-tests
-#       Run all Python 2 tests.
-#
-#   make python3-tests
-#       Run all Python 3 tests.
+#       Run all Python tests.
 #
 #   make python-tests-no-timing
-#       Run all Python tests (with exception of timing/accuracy tests), where
-#       the variable PYTHON_VERSION determines which versions to run.
-#
-#   make python2-tests-no-timing
-#       Run all Python tests (with exception of timing/accuracy tests).
-#
-#   make python3-tests-no-timing
 #       Run all Python tests (with exception of timing/accuracy tests).
 #
 #   make clean-python-tests
 #       Detele all compiled Python test files.
+#
+#   make clean-python
+#       Detele all compiled Python files.
 #
 #   make notebooks
 #       Run notebooks and convert to html for web documentation.
@@ -116,11 +93,12 @@
 #       Remove html notebooks.
 #
 #   make doc
-#       Create the man pages from input markdown files and create the static
-#       web site. Both of these are PRE-MADE in the distribution. To remake
-#       these files, it will be necessary to install "pandoc", "ghc" and
-#       "cabal-install" (all using brew on macOS), and then execute
-#       "cabal update" and "cabal install pandoc-types".
+#       Create the man pages from input markdown files and reformat
+#       md files for use with the static web site. These files are PRE-MADE in
+#       the distribution. To remake these files for a new release, it will be
+#       necessary to install "pandoc", "ghc" and "cabal-install" (all using
+#       brew on macOS), and then execute "cabal update" and
+#       "cabal install --lib pandoc-types".
 #
 #   make remove-doc
 #       Remove the man and html-man pages.
@@ -130,30 +108,27 @@
 #       First, you must install "ruby" (using brew on macOS), and then install
 #       the gem bundler using "gem install bundler jekyll". To serve the web
 #       documents without making static html files, go to the directory `docs`
-#       type the command `bundle exec jekyll serve`, and then open
-#       http://127.0.0.1:4000.
+#       type the command `bundle update` and `bundle exec jekyll serve`, and
+#       then open http://127.0.0.1:4000.
 #
 #   make remove-www
 #       Remove the directory containing the static html web site.
 #
 ###############################################################################
 
-VERSION = 4.5
+VERSION = 4.6
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
 F95 = gfortran
-PYTHON = python
-PYTHON3 = python3
-PYTHON_VERSION = all
-JUPYTER = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python2"
-JUPYTER3 = "jupyter nbconvert --ExecutePreprocessor.kernel_name=python3"
+PYTHON = python3
+JUPYTER = jupyter nbconvert --ExecutePreprocessor.kernel_name=python3
 JEKYLL = bundle exec jekyll
 
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
 
-FFTW = -L$(SYSLIBPATH) -lfftw3
+FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
 LAPACK_UNDERSCORE = 0
 
 SHELL = /bin/sh
@@ -172,7 +147,7 @@ LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
 SYSMODPATH = $(PREFIX)/include
-PY3EXT = $(shell $(PYTHON3) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
+PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
 
 ifeq ($(F95), f95)
@@ -231,13 +206,25 @@ LAPACK_FLAGS = -DLAPACK_UNDERSCORE
 endif
 
 
-.PHONY: all fortran install doc remove-doc\
-	fortran-tests run-fortran-tests python-tests\
-	python2-tests python3-tests python-tests-no-timing python2-tests-no-timing\
-	python3-tests-no-timing install-fortran uninstall fortran-mp clean\
-	clean-fortran-tests clean-python-tests clean-python2 clean-python3\
-	clean-libs remove-notebooks notebooks notebooks2 notebooks3 www remove-www
+.PHONY: all fortran fortran-mp install-fortran fortran-tests fortran-tests-mp \
+	fortran-tests-no-timing fortran-tests-no-timing-mp run-fortran-tests \
+	run-fortran-tests-no-timing doc remove-doc python-tests \
+	python-tests-no-timing uninstall clean clean-fortran-tests \
+	clean-python-tests clean-python clean-libs remove-notebooks notebooks \
+	www remove-www help
 
+help:
+	@echo "Commands:"
+	@echo ""
+	@echo "  fortran                      Compile the Fortran 95 components"
+	@echo "  fortran-mp                   Compile the Fortran 95 OpenMP components"
+	@echo "  fortran-tests                Compile and run the Fortran 95 tests and examples"
+	@echo "  fortran-tests-mp             Compile and run the Fortran 95 OpenMP tests and examples"
+	@echo "  python-tests                 Run the python tests and examples"
+	@echo "  fortran-tests-no-timing      Do not run the timing tests"
+	@echo "  fortran-tests-no-timing-mp   Do not run the timing tests"
+	@echo "  python-tests-no-timing       Do not run the timing tests"
+	@echo ""
 
 all: fortran
 
@@ -249,7 +236,7 @@ fortran:
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
 	@echo "---------------------------------------------------"
-	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
 
 fortran-mp:
@@ -263,36 +250,8 @@ fortran-mp:
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
 	@echo "---------------------------------------------------"
-	@echo $(F95) $(MODFLAG) $(OPENMPFLAGS) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(MODFLAG) $(OPENMPFLAGS) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
-
-ifeq ($(PYTHON_VERSION),all)
-python-tests: python2-tests python3-tests
-python-tests-no-timing: python2-tests-no-timing python3-tests-no-timing
-notebooks: notebooks3 notebooks2
-else ifeq ($(PYTHON_VERSION),2)
-python-tests: python2-tests
-python-tests-no-timing: python2-tests-no-timing
-notebooks: notebooks2
-else ifeq ($(PYTHON_VERSION),3)
-python-tests: python3-tests
-python-tests-no-timing: python3-tests-no-timing
-notebooks: notebooks3
-else
-$(error $(PYTHON_VERSION) is unsupported.)
-endif
-
-install: install-fortran
-
-uninstall:
-	-rm -r $(SYSLIBPATH)/lib$(LIBNAME).a
-	-rm -r $(SYSLIBPATH)/lib$(LIBNAMEMP).a
-	-rm -r $(SYSMODPATH)/fftw3.mod
-	-rm -r $(SYSMODPATH)/planetsconstants.mod
-	-rm -r $(SYSMODPATH)/shtools.mod
-	-rm -r $(SYSSHAREPATH)/shtools/examples/
-	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
-	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 
 install-fortran: fortran
 	-rm -r $(DESTDIR)$(SYSMODPATH)/fftw3.mod
@@ -315,8 +274,18 @@ install-fortran: fortran
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
 	@echo "---------------------------------------------------"
-	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -l$(LIBNAME) $(FFTW) -lm $(LAPACK) $(BLAS)
+	@echo $(F95) $(SYSMODFLAG) $(F95FLAGS) -L$(SYSLIBPATH) -l$(LIBNAME) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
+
+uninstall:
+	-rm -r $(SYSLIBPATH)/lib$(LIBNAME).a
+	-rm -r $(SYSLIBPATH)/lib$(LIBNAMEMP).a
+	-rm -r $(SYSMODPATH)/fftw3.mod
+	-rm -r $(SYSMODPATH)/planetsconstants.mod
+	-rm -r $(SYSMODPATH)/shtools.mod
+	-rm -r $(SYSSHAREPATH)/shtools/examples/
+	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
+	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
 
 doc:
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
@@ -335,15 +304,15 @@ www:
 remove-www:
 	@-rm -rf $(WWWDEST)
 
-notebooks2:
-	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER)
-	@echo "--> Notebook html files created successfully with Python 2"
+notebooks:
+	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER="$(JUPYTER)"
+	@echo "--> Notebook html files created successfully"
 
-notebooks3:
-	@$(MAKE) -C $(NBDIR) -f Makefile JUPYTER=$(JUPYTER3)
-	@echo "--> Notebook html files created successfully with Python 3"
+remove-notebooks:
+	@$(MAKE) -C $(NBDIR) -f Makefile clean
+	@echo "--> Removed notebook html files"
 
-clean: clean-fortran-tests clean-python-tests clean-python2 clean-python3 clean-libs remove-www
+clean: clean-fortran-tests clean-python-tests clean-python clean-libs remove-www
 
 clean-fortran-tests:
 	@$(MAKE) -C $(FEXDIR) -f Makefile clean
@@ -353,17 +322,7 @@ clean-python-tests:
 	@$(MAKE) -C $(PEXDIR) -f Makefile clean
 	@echo "--> Removed Python test suite executables and files"
 
-clean-python2:
-	@-rm -rf _SHTOOLS.so.dSYM/
-	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/
-	@-rm -f *.so
-	@-rm -f pyshtools/*.so
-	@-rm -f pyshtools/*.pyc
-	@-rm -rf pyshtools/__pycache__/
-	@-rm -rf pyshtools/doc
-	@echo "--> Removed Python 2 files"
-
-clean-python3:
+clean-python:
 	@-rm -rf _SHTOOLS$(PY3EXT).dSYM/
 	@-rm -rf pyshtools/_SHTOOLS$(PY3EXT).dSYM/
 	@-rm -rf _SHTOOLS.so.dSYM/
@@ -373,7 +332,7 @@ clean-python3:
 	@-rm -f pyshtools/*.pyc
 	@-rm -rf pyshtools/__pycache__/
 	@-rm -rf pyshtools/doc
-	@echo "--> Removed Python 3 files"
+	@echo "--> Removed Python files"
 
 clean-libs:
 	@-$(MAKE) -C $(SRCDIR) -f Makefile clean
@@ -388,10 +347,6 @@ clean-libs:
 	@echo
 	@echo \*\*\* If you installed pyshtools using \"pip install -e .\" you should
 	@echo \*\*\* also execute \"pip uninstall pyshtools\".
-
-remove-notebooks:
-	@$(MAKE) -C $(NBDIR) -f Makefile clean
-	@echo "--> Removed notebook html files"
 
 fortran-tests: fortran
 	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
@@ -439,22 +394,12 @@ run-fortran-tests-no-timing: fortran
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 
-python2-tests:
+python-tests:
 	@$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON)
 	@echo
-	@echo "--> Ran all Python 2 tests"
+	@echo "--> Ran all Python tests"
 
-python3-tests:
-	@$(MAKE) -C $(PEXDIR) -f Makefile all PYTHON=$(PYTHON3)
-	@echo
-	@echo "--> Ran all Python 3 tests"
-
-python2-tests-no-timing:
+python-tests-no-timing:
 	@$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON)
 	@echo
-	@echo "--> Ran all Python 2 tests"
-
-python3-tests-no-timing:
-	@$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON3)
-	@echo
-	@echo "--> Ran all Python 3 tests"
+	@echo "--> Ran all Python tests"

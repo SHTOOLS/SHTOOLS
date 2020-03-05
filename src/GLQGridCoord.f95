@@ -1,4 +1,4 @@
-subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
+subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, extend, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   Given a maximum spherical harmonic degree lmax, this routine
@@ -17,6 +17,10 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
 !                       grids, in degrees.
 !           nlat        Number of latitude points.
 !           nlong       Number of longitude points.
+!
+!       OPTIONAL (IN)
+!           extend      If 1, return a grid that contains an additional column
+!                       for 360 E longitude.
 !
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
@@ -40,13 +44,37 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
     integer, intent(in) :: lmax
     integer, intent(out) :: nlat, nlong
     real(dp), intent(out) :: latglq(:), longlq(:)
+    integer, intent(in), optional :: extend
     integer, intent(out), optional :: exitstatus
     real(dp) :: pi, upper, lower, zero(lmax+1), w(lmax+1)
-    integer :: i
+    integer :: i, nlong_out
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(latglq) < lmax+1) then
+    nlat = lmax + 1
+    nlong = 2 * lmax + 1
+
+    if (present(extend)) then
+        if (extend == 0) then
+            nlong_out = nlong
+        else if (extend == 1) then
+            nlong_out = nlong + 1
+        else
+            print*, "Error --- GLQGridCoord"
+            print*, "Optional parameter EXTEND must be 0 or 1."
+            print*, "Input value is ", extend
+            if (present(exitstatus)) then
+                exitstatus = 2
+                return
+            else
+                stop
+            end if
+        end if
+    else
+        nlong_out = nlong
+    end if
+
+    if (size(latglq) < nlat) then
         print*, "Error --- GLQGridCoord"
         print*, "LATGLQ must be dimensioned as (LMAX+1) where LMAX is ", lmax
         print*, "Input array is dimensioned as ", size(latglq)
@@ -57,9 +85,9 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
             stop
         end if
 
-    else if (size(longlq) < 2*lmax+1) then
+    else if (size(longlq) < nlong_out) then
         print*, "Error --- GLQGridCoord"
-        print*, "LONGLQ must be dimensioned as (2*LMAX+1) where LMAX is ", lmax
+        print*, "LONGLQ must be dimensioned as ", nlong_out
         print*, "Input array is dimensioned as ", size(longlq)
         if (present(exitstatus)) then
             exitstatus = 1
@@ -72,9 +100,6 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
 
     pi = acos(-1.0_dp)
 
-    nlat = lmax + 1
-    nlong = 2 * lmax + 1
-
     upper = 1.0_dp
     lower = -1.0_dp
 
@@ -85,7 +110,7 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, exitstatus)
         call PreGLQ(lower, upper, nlat, zero, w)
     end if
 
-    do i = 1, nlong
+    do i = 1, nlong_out
         longlq(i) = 360.0_dp * dble(i-1) / dble(nlong)
     end do
 

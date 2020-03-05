@@ -249,7 +249,7 @@
     end subroutine pySHExpandDH
 
     subroutine pyMakeGridDH(exitstatus,griddh,n,cilm,lmax,norm,sampling,&
-                            csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,&
+                            csphase,lmax_calc,extend,cilm_d0,cilm_d1,cilm_d2,&
                             griddh_d0,griddh_d1)
         use shtools, only: MakeGridDH
         use ftypes
@@ -268,8 +268,9 @@
         integer,intent(in) :: sampling
         integer,intent(in) :: csphase
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeGridDH(griddh,n,cilm,lmax,norm=norm,sampling=sampling,&
-                        csphase=csphase,lmax_calc=lmax_calc,&
+                        csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                         exitstatus=exitstatus)
     end subroutine pyMakeGridDH
 
@@ -299,7 +300,7 @@
     end subroutine pySHExpandDHC
 
     subroutine pyMakeGridDHC(exitstatus,griddh,n,cilm,lmax,norm,sampling,&
-                             csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,&
+                             csphase,lmax_calc,extend,cilm_d0,cilm_d1,cilm_d2,&
                              griddh_d0,griddh_d1)
         use shtools, only: MakeGridDHC
         use ftypes
@@ -318,8 +319,9 @@
         integer,intent(in) :: sampling
         integer,intent(in) :: csphase
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeGridDHC(griddh,n,cilm,lmax,norm=norm,sampling=sampling,&
-                         csphase=csphase,lmax_calc=lmax_calc,&
+                         csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                          exitstatus=exitstatus)
     end subroutine pyMakeGridDHC
 
@@ -364,8 +366,8 @@
     end subroutine pySHExpandGLQ
 
     subroutine pyMakeGridGLQ(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,&
-                             lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,&
-                             cilm_d2,zero_d0)
+                             lmax_calc,extend,gridglq_d0,gridglq_d1,cilm_d0,&
+                             cilm_d1,cilm_d2,zero_d0)
         use shtools, only: MakeGridGLQ
         use ftypes
         implicit none
@@ -383,8 +385,9 @@
         integer,intent(in) :: norm
         integer,intent(in) :: csphase
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeGridGLQ(gridglq,cilm,lmax,zero=zero,norm=norm,&
-                         csphase=csphase,lmax_calc=lmax_calc,&
+                         csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                          exitstatus=exitstatus)
     end subroutine pyMakeGridGLQ
 
@@ -416,8 +419,8 @@
     end subroutine pySHExpandGLQC
 
     subroutine pyMakeGridGLQC(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,&
-                              lmax_calc,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,&
-                              cilm_d2,zero_d0)
+                              lmax_calc,extend,gridglq_d0,gridglq_d1,cilm_d0,&
+                              cilm_d1,cilm_d2,zero_d0)
         use shtools, only: MakeGridGLQC
         use ftypes
         implicit none
@@ -435,12 +438,13 @@
         integer,intent(in) :: norm
         integer,intent(in) :: csphase
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeGridGLQC(gridglq,cilm,lmax,zero=zero,norm=norm,&
-                          csphase=csphase,lmax_calc=lmax_calc,&
+                          csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                           exitstatus=exitstatus)
     end subroutine pyMakeGridGLQC
 
-    subroutine pyGLQGridCoord(exitstatus,latglq,longlq,lmax,nlat,nlong,&
+    subroutine pyGLQGridCoord(exitstatus,latglq,longlq,lmax,nlat,nlong,extend,&
                               latglq_d0,longlq_d0)
         use shtools, only: GLQGridCoord
         use ftypes
@@ -453,7 +457,9 @@
         integer,intent(in) :: lmax
         integer,intent(out) :: nlat
         integer,intent(out) :: nlong
-        call GLQGridCoord(latglq,longlq,lmax,nlat,nlong,exitstatus=exitstatus)
+        integer,intent(in) :: extend
+        call GLQGridCoord(latglq,longlq,lmax,nlat,nlong,extend=extend,&
+                          exitstatus=exitstatus)
     end subroutine pyGLQGridCoord
 
     subroutine pySHExpandLSQ(exitstatus,cilm,d,lat,lon,nmax,lmax,norm,chi2,&
@@ -1551,8 +1557,7 @@
     end subroutine pyComputeDMap
 
     subroutine pyCurve2Mask(exitstatus,dhgrid,n,sampling,profile,nprofile,NP,&
-                            centralmeridian,profile_d0,profile_d1,dhgrid_d0,&
-                            dhgrid_d1)
+                            extend,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
         use shtools, only: Curve2Mask
         use ftypes
         implicit none
@@ -1567,9 +1572,8 @@
         real(dp),dimension(profile_d0,profile_d1),intent(in) :: profile
         integer,intent(in) :: nprofile
         integer,intent(in) :: NP
-        integer,intent(in) :: centralmeridian
-        call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,&
-                        centralmeridian=centralmeridian,&
+        integer,intent(in) :: extend
+        call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,extend=extend,&
                         exitstatus=exitstatus)
     end subroutine pyCurve2Mask
 
@@ -1606,7 +1610,7 @@
 
     subroutine pyMakeGravGridDH(exitstatus,cilm,lmax,gm,r0,a,f,rad,theta,phi,&
                                 total,pot,n,sampling,lmax_calc,omega,&
-                                normal_gravity,phi_d0,phi_d1,total_d0,&
+                                normal_gravity,extend,phi_d0,phi_d1,total_d0,&
                                 total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,&
                                 cilm_d2,theta_d0,theta_d1,pot_d0,pot_d1)
         use shtools, only: MakeGravGridDH
@@ -1642,17 +1646,18 @@
         integer,intent(in) :: lmax_calc
         real(dp),intent(in) :: omega
         integer,intent(in) :: normal_gravity
+        integer,intent(in) :: extend
         call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,&
                             sampling=sampling,lmax_calc=lmax_calc,omega=omega,&
                             normal_gravity=normal_gravity,pot=pot,&
-                            exitstatus=exitstatus)
+                            extend=extend,exitstatus=exitstatus)
     end subroutine pyMakeGravGridDH
 
     subroutine pyMakeGravGradGridDH(exitstatus,cilm,lmax,gm,r0,a,f,vxx,vyy,&
                                     vzz,vxy,vxz,vyz,n,sampling,lmax_calc,&
-                                    vyz_d0,vyz_d1,vyy_d0,vyy_d1,cilm_d0,&
-                                    cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0,&
-                                    vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1)
+                                    extend,vyz_d0,vyz_d1,vyy_d0,vyy_d1,&
+                                    cilm_d0,cilm_d1,cilm_d2,vzz_d0,vzz_d1,&
+                                    vxy_d0,vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1)
         use shtools, only: MakeGravGradGridDH
         use ftypes
         implicit none
@@ -1687,16 +1692,17 @@
         integer,intent(out) :: n
         integer,intent(in) :: sampling
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,&
                                 sampling=sampling,lmax_calc=lmax_calc,&
-                                exitstatus=exitstatus)
+                                extend=extend,exitstatus=exitstatus)
     end subroutine pyMakeGravGradGridDH
 
     subroutine pyMakeMagGradGridDH(exitstatus,cilm,lmax,r0,a,f,vxx,vyy,vzz,&
-                                    vxy,vxz,vyz,n,sampling,lmax_calc,vyz_d0,&
-                                    vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,&
-                                    cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,&
-                                    vxx_d0,vxx_d1,vxz_d0,vxz_d1)
+                                    vxy,vxz,vyz,n,sampling,lmax_calc,extend,&
+                                    vyz_d0,vyz_d1,vyy_d0,vyy_d1,cilm_d0,&
+                                    cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0,&
+                                    vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1)
         use shtools, only: MakeMagGradGridDH
         use ftypes
         implicit none
@@ -1730,14 +1736,16 @@
         integer,intent(out) :: n
         integer,intent(in) :: sampling
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeMagGradGridDH(cilm,lmax,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,&
                                 sampling=sampling,lmax_calc=lmax_calc,&
-                                exitstatus=exitstatus)
+                                extend=extend,exitstatus=exitstatus)
     end subroutine pyMakeMagGradGridDH
 
     subroutine pyMakeGeoidGridDH(exitstatus,geoid,cilm,lmax,r0pot,GM,PotRef,&
                                  omega,r,sampling,order,nlat,nlong,lmax_calc,&
-                                 a,f,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
+                                 a,f,extend,cilm_d0,cilm_d1,cilm_d2,geoid_d0,&
+                                 geoid_d1)
         use shtools, only: MakeGeoidGrid
         use ftypes
         implicit none
@@ -1762,14 +1770,15 @@
         integer,intent(in) :: lmax_calc
         real(dp),intent(in) :: a
         real(dp),intent(in) :: f
+        integer,intent(in) :: extend
         if (sampling == 1) then
             call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,2,&
                                order,nlat,nlong,lmax_calc=lmax_calc,a=a,f=f,&
-                               exitstatus=exitstatus)
+                               extend=extend,exitstatus=exitstatus)
         else if (sampling == 2) then
             call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,3,&
                                order,nlat,nlong,lmax_calc=lmax_calc,a=a,f=f,&
-                               exitstatus=exitstatus)
+                               extend=extend,exitstatus=exitstatus)
         end if
     end subroutine pyMakeGeoidGridDH
 
@@ -2016,10 +2025,11 @@
 
     subroutine pyMakeMagGridDH(exitstatus,cilm,lmax,r0,a,f,rad_grid,&
                                theta_grid,phi_grid,total_grid,pot_grid,n,&
-                               sampling,lmax_calc,total_grid_d0,total_grid_d1,&
-                               cilm_d0,cilm_d1,cilm_d2,rad_grid_d0,&
-                               rad_grid_d1,theta_grid_d0,theta_grid_d1,&
-                               phi_grid_d0,phi_grid_d1,pot_grid_d0,pot_grid_d1)
+                               sampling,lmax_calc,extend,total_grid_d0,&
+                               total_grid_d1,cilm_d0,cilm_d1,cilm_d2,&
+                               rad_grid_d0,rad_grid_d1,theta_grid_d0,&
+                               theta_grid_d1,phi_grid_d0,phi_grid_d1,&
+                               pot_grid_d0,pot_grid_d1)
         use shtools, only: MakeMagGridDH
         use ftypes
         implicit none
@@ -2052,9 +2062,11 @@
         integer,intent(out) :: n
         integer,intent(in) :: sampling
         integer,intent(in) :: lmax_calc
+        integer,intent(in) :: extend
         call MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,&
                            total_grid,n,sampling=sampling,lmax_calc=lmax_calc,&
-                           pot_grid=pot_grid,exitstatus=exitstatus)
+                           pot_grid=pot_grid,extend=extend,&
+                           exitstatus=exitstatus)
     end subroutine pyMakeMagGridDH
 
     subroutine pyMakeCircleCoord(exitstatus,coord,lat,lon,theta0,cinterval,&
@@ -2113,15 +2125,16 @@
         call Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,exitstatus=exitstatus)
     end subroutine pyWigner3j
 
-    subroutine pyDHaj(exitstatus,n,aj,aj_d0)
+    subroutine pyDHaj(exitstatus,n,aj,extend,aj_d0)
         use shtools, only: DHaj
         use ftypes
         implicit none
         integer,intent(in) :: aj_d0
         integer,intent(out) :: exitstatus
-        integer,intent(in) :: n
         real(dp),dimension(aj_d0),intent(out) :: aj
-        call DHaj(n,aj,exitstatus=exitstatus)
+        integer,intent(in) :: n
+        integer,intent(in) :: extend
+        call DHaj(n,aj,extend=extend,exitstatus=exitstatus)
     end subroutine pyDHaj
 
     subroutine pySHRotateTapers(exitstatus,tapersrot,tapers,taper_order,&

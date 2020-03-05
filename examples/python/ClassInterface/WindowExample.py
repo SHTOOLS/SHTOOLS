@@ -1,19 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This script tests the python class interface
 """
-
-from __future__ import absolute_import, division, print_function
-
-# standard imports:
-import os
-import sys
-
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../.."))
 import pyshtools
 
 pyshtools.utils.figstyle()
@@ -44,7 +32,8 @@ def example2():
     lmax = 15
     nwins = 15
 
-    coeffs = pyshtools.SHCoeffs.from_file('../../ExampleDataFiles/srtmp300.msl')
+    coeffs = pyshtools.SHCoeffs.from_file(
+        '../../ExampleDataFiles/srtmp300.msl')
     topo = coeffs.expand(grid='DH2')
     dh_mask = topo.data > 0.
     print(dh_mask.shape)
@@ -53,6 +42,7 @@ def example2():
     region.plot_windows(nwins, show=False, fname='continent_tapers.png')
     region.plot_coupling_matrix(30, k=5, show=False,
                                 fname='continent_coupling.png')
+
 
 # ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":

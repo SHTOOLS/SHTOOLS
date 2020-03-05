@@ -7,9 +7,9 @@
                   l and order m.
 """
 import numpy as _np
+import warnings as _warnings
 
 from ..legendre import legendre as _legendre
-from ..legendre import legendre_lm as _legendre_lm
 
 
 def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
@@ -37,9 +37,9 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
     lmax : integer
         The maximum degree of the spherical harmonic functions to be computed.
     theta : float
-        The colatitude in degrees.
+        The colatitude in degrees. Use radians if 'degrees' is set to False.
     phi : float
-        The longitude in degrees.
+        The longitude in degrees. Use radians if 'degrees' is set to False.
     normalization : str, optional, default = '4pi'
         '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
         orthonormalized, Schmidt semi-normalized, or unnormalized spherical
@@ -55,10 +55,10 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
         second column corresponds to l*(l+1)/2+m, where l and m are
         respectively the degree and order.
     degrees : optional, bool, default = True
-        If True, `colat` and `phi` are expressed in degrees.
+        If True, `theta` and `phi` are expressed in degrees.
 
-    Description
-    -----------
+    Notes
+    -----
     spharm will calculate all of the spherical harmonic functions up to degree
     lmax for a given colatitude theta and longitude phi. Three parameters
     determine how the spherical harmonic functions are defined. normalization
@@ -204,9 +204,9 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
     m : integer
         The spherical harmonic order.
     theta : float
-        The colatitude in degrees.
+        The colatitude in degrees. Use radians if 'degrees' is set to False.
     phi : float
-        The longitude in degrees.
+        The longitude in degrees. Use radians if 'degrees' is set to False.
     normalization : str, optional, default = '4pi'
         '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
         orthonormalized, Schmidt semi-normalized, or unnormalized spherical
@@ -218,10 +218,10 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
         Condon-Shortley phase of (-1)^m will be appended to the spherical
         harmonic functions.
     degrees : optional, bool, default = True
-        If True, colat and phi are expressed in degrees.
+        If True, `theta` and `phi` are expressed in degrees.
 
-    Description
-    -----------
+    Notes
+    -----
     spharm_lm will calculate the spherical harmonic function for a specific
     degree l and order m, and for a given colatitude theta and longitude phi.
     Three parameters determine how the spherical harmonic functions are
@@ -251,8 +251,8 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
     """
     if l < 0:
         raise ValueError(
-            "The degree l must be greater or equal than 0. Input value was {:s}."
-            .format(repr(l))
+            "The degree l must be greater or equal than 0. " +
+            "Input value was {:s}.".format(repr(l))
             )
 
     if m > l:
@@ -280,13 +280,10 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
             .format(repr(csphase))
             )
 
-    if normalization.lower() == 'unnorm' and lmax > 85:
-        _warnings.warn("Calculations using unnormalized coefficients " +
-                       "are stable only for degrees less than or equal " +
-                       "to 85. lmax for the coefficients will be set to " +
-                       "85. Input value was {:d}.".format(lmax),
-                       category=RuntimeWarning)
-        lmax = 85
+    if normalization.lower() == 'unnorm' and l > 85:
+        raise ValueError("Calculations using unnormalized coefficients " +
+                         "are stable only for degrees less than or equal " +
+                         "to 85. Input value was {:d}.".format(l))
 
     ind = (l*(l+1))//2 + abs(m)
 

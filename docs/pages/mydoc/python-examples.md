@@ -17,6 +17,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
+{% include note.html content="In order to access the notebooks, example programs, and example datasets, it will be necessary to download or clone the entire shtools repo from [GitHub](https://github.com/SHTOOLS/SHTOOLS/). These files are not included when installing via pip." %}
+
 ## Notebooks
 
 | Notebook name | Description |
@@ -24,6 +26,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | <a href="pages/mydoc/notebooks/Introduction-1.html" target="_blank" rel="noopener">Introduction 1</a> | Grids and spherical harmonic coefficients. |
 | <a href="pages/mydoc/notebooks/Introduction-2.html" target="_blank" rel="noopener">Introduction 2</a> | Localization windows and spectral analysis. |
 | <a href="pages/mydoc/notebooks/Introduction-3.html" target="_blank" rel="noopener">Introduction 3</a> | Gravity and Magnetic fields. |
+| <a href="pages/mydoc/notebooks/Introduction-4.html" target="_blank" rel="noopener">Introduction 4</a> | Plotting maps. |
 | <a href="pages/mydoc/notebooks/tutorial_1.html" target="_blank" rel="noopener">Tutorial 1</a> | Simple spherical harmonic analyses. |
 | <a href="pages/mydoc/notebooks/tutorial_2.html" target="_blank" rel="noopener">Tutorial 2</a> | Localized spectral analysis on the sphere. |
 | <a href="pages/mydoc/notebooks/tutorial_3.html" target="_blank" rel="noopener">Tutorial 3</a> | The SHTOOLS class interface. |

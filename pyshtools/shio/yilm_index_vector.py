@@ -23,8 +23,8 @@ def YilmIndexVector(i, l, m):
     m : integer
         The angular order.
 
-    Description
-    -----------
+    Notes
+    -----
     YilmIndexVector will calculate the index of a 1D vector of spherical
     harmonic coefficients corresponding to degree l, angular order m and i
     (1 = cosine, 2 = sine). The index is given by l**2+(i-1)*l+m.

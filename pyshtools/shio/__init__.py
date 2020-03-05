@@ -37,11 +37,6 @@ convert          Convert an array of spherical harmonic coefficients to a
 SHrtoc           Convert real spherical harmonics to complex form.
 SHctor           Convert complex spherical harmonics to real form.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 from ..shtools import SHRead2
 from ..shtools import SHRead2Error
 from ..shtools import SHReadJPL
@@ -57,3 +52,10 @@ from .convert import convert
 from .shread import shread
 from .icgem import read_icgem_gfc
 from .yilm_index_vector import YilmIndexVector
+
+
+# ---- Define __all__ for use with: from pyshtools import * ----
+__all__ = ['SHRead2', 'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
+           'SHCilmToCindex', 'SHCindexToCilm', 'SHCilmToVector',
+           'SHVectorToCilm', 'SHrtoc', 'SHctor', 'convert', 'shread',
+           'read_icgem_gfc', 'YilmIndexVector']

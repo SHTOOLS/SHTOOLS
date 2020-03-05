@@ -53,11 +53,6 @@ MakeMagGradGridDH   Calculate the components of the magnetic field tensor
 mag_spectrum        Compute the spectrum of either the magnetic potential
                     or magnetic field strength.
 """
-
-from __future__ import absolute_import as _absolute_import
-from __future__ import division as _division
-from __future__ import print_function as _print_function
-
 from ..shtools import MakeGravGridDH
 from ..shtools import MakeGravGradGridDH
 from ..shtools import MakeGeoidGridDH
@@ -74,3 +69,10 @@ from ..shtools import MakeMagGridDH
 from ..shtools import MakeMagGradGridDH
 
 from .mag_spectrum import mag_spectrum
+
+
+__all__ = ['MakeGravGridDH', 'MakeGravGradGridDH', 'MakeGeoidGridDH',
+           'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
+           'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
+           'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
+           'MakeMagGradGridDH', 'mag_spectrum']

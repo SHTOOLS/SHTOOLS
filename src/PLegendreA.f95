@@ -31,7 +31,7 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
 !
 !   Notes:
 !
-!   1.  The integral of plm**2 over (-1,1) is 2 * (l+m)! / (2l+1) / (l-m)!.
+!   1.  The integral of Plm**2 over (-1,1) is 2 * (l+m)! / (2l+1) / (l-m)!.
 !   2.  The index of the array p corresponds to l*(l+1)/2 + m + 1.
 !   3.  The default is to exlude the Condon-Shortley phase of (-1)^m.
 !

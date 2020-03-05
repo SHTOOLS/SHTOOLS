@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Automatically creates python-wrapper subroutines from the interface file
 SHTOOLS.f95. Unfortunately all assumed array shapes have to be changed because
@@ -6,16 +6,11 @@ their structure is only known by the Fortran compiler and can not be directly
 exposed to C. It is possible that newer f2py versions can handle assumed array
 shapes using a similar procedure.
 """
-from __future__ import absolute_import, division, print_function
-
-#==== IMPORTS ====
 from numpy.f2py import crackfortran
-import re
 from copy import deepcopy
 
-#==== MAIN FUNCTION ====
 
-
+# ==== MAIN FUNCTION ====
 def main():
     fname_fortran = 'SHTOOLS.f95'
     fname_wrapper = 'PythonWrapper.f95'
@@ -38,19 +33,23 @@ def main():
 
     print('add implicit none statements')
     # search for the indices of 'use shtools,' to insert 'implicit none' after
-    iusestatement = [iline for iline, line in enumerate(wrapperlines) if 'use shtools,' in line]
-    assert len(iusestatement) == len(interface_new['body']), 'number of subroutines don\'t match'
+    iusestatement = [iline for iline, line in enumerate(wrapperlines)
+                     if 'use shtools,' in line]
+    assert len(iusestatement) == len(interface_new['body']), \
+        'number of subroutines don\'t match'
     for iline in iusestatement[::-1]:
-        wrapperlines.insert(iline + 1, 2 * crackfortran.tabchar + 'implicit none')
+        wrapperlines.insert(iline + 1,
+                            2 * crackfortran.tabchar + 'implicit none')
 
     print('add shtools subroutine calls...')
     # search for the indices of 'end subroutine'
     iendsubroutine = [iline for iline, line in enumerate(wrapperlines)
                       if 'end subroutine' in line or 'end function' in line]
-    assert len(iendsubroutine) == len(interface_new['body']), 'number of subroutines don\'t match'
+    assert len(iendsubroutine) == len(interface_new['body']), \
+        'number of subroutines don\'t match'
 
-    # insert call statements before 'end subroutine' line starting from the end such that we
-    # don't change the preceding indices
+    # insert call statements before 'end subroutine' line starting from the
+    # end such that we don't change the preceding indices
     for sroutine_new, sroutine_old, iline in zip(interface_new['body'],
                                                  interface_old['body'],
                                                  iendsubroutine)[::-1]:
@@ -70,9 +69,11 @@ def main():
         try:
             firstword = line.split()[0]
             secondword = line.split()[1]
-            words = ['real*8', 'integer', 'integer(kind=4)', 'character*(*)', 'complex*16']
+            words = ['real*8', 'integer', 'integer(kind=4)', 'character*(*)',
+                     'complex*16']
             for word in words:
-                if firstword == word and not secondword[0] == ':' or secondword[0] == ',':
+                if (firstword == word and not secondword[0] == ':' or
+                        secondword[0] == ','):
                     line = line.replace(word, word + ',')
             wrapperlines[iline] = line
         except IndexError:
@@ -96,29 +97,30 @@ def main():
 
     print('\n==== ALL DONE ====\n')
 
-#==== FUNCTIONS ====
 
-
+# ==== FUNCTIONS ====
 def modify_subroutine(subroutine):
     """loops through variables of a subroutine and modifies them"""
     # print('\n----',subroutine['name'],'----')
 
-    #-- use original function from shtools:
-    subroutine['use'] = {'shtools': {'map': {subroutine['name']: subroutine['name']}, 'only': 1}}
+    # use original function from shtools:
+    subroutine['use'] = {'shtools':
+                         {'map': {subroutine['name']: subroutine['name']},
+                          'only': 1}}
 
-    #-- loop through variables:
+    # -- loop through variables:
     for varname, varattribs in subroutine['vars'].items():
-        #-- prefix function return variables with 'py'
+        # prefix function return variables with 'py'
         if varname == subroutine['name']:
-            subroutine['vars']['py' + varname] = subroutine['vars'].pop(varname)
+            subroutine['vars']['py' + varname] = \
+                subroutine['vars'].pop(varname)
             varname = 'py' + varname
             # print('prefix added:',varname)
-        #-- change assumed to explicit:
+        # -- change assumed to explicit:
         if has_assumed_shape(varattribs):
             make_explicit(subroutine, varname, varattribs)
-            # print('assumed shape variable modified to:',varname,varattribs['dimension'])
 
-    #-- add py prefix to subroutine:
+    # add py prefix to subroutine:
     subroutine['name'] = 'py' + subroutine['name']
 
 
@@ -145,6 +147,7 @@ def has_assumed_shape(varattribs):
     except KeyError:
         return False
 
-#==== EXECUTE SCRIPT ====
+
+# ==== EXECUTE SCRIPT ====
 if __name__ == "__main__":
     main()
