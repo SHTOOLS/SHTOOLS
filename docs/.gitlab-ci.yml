@@ -1,7 +1,10 @@
-image: ruby:2.3
+image: ruby:2.7
 
 variables:
   JEKYLL_ENV: production
+  LC_ALL: "C.UTF-8"
+  LANG: "en_US.UTF-8"
+  LANGUAGE: "en_US.UTF-8"
 
 test:
   stage: test

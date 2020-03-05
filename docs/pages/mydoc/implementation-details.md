@@ -139,8 +139,8 @@ For the real Gauss-Legendre quadrature routines, the transform time is on the or
 
 * Driscoll, J. R. and D. M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, doi:[10.1006/aama.1994.1008](https://doi.org/10.1006/aama.1994.1008), 1994.
 
-* Frigo, M., and S. G. Johnson, The design and implementation of FFTW3, Proc. IEEE, 93, 216–231, doi:[10.1109/JPROC.2004.840301](https://doi.org/10.1109/JPROC.2004.840301), 2005.
+* Frigo, M., and S. G. Johnson, The design and implementation of FFTW3, Proc. IEEE, 93, 216-231, doi:[10.1109/JPROC.2004.840301](https://doi.org/10.1109/JPROC.2004.840301), 2005.
 
-* Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279- 299, doi:[10.1007/s00190-002-0216-2](https://doi.org/10.1007/s00190-002-0216-2), 2002.
+* Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, doi:[10.1007/s00190-002-0216-2](https://doi.org/10.1007/s00190-002-0216-2), 2002.
 
 * Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery, "Numerical Recipes in FORTRAN: The Art of Scientific Computing," 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.
