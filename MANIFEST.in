@@ -1,7 +1,7 @@
 include README.md
-include LICENSE
-include VERSION
-include Contributors.txt
+include LICENSE.txt
+include VERSION.txt
+include AUTHORS.md
 include Makefile
 
 graft examples/ExampleDataFiles
