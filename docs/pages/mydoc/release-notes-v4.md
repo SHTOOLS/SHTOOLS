@@ -10,7 +10,7 @@ toc: true
 
 ### New extended grids
 
-All grid formats not allow to compute the redundant values at 360 E longitude (GLQ and DH), as well as at 90 S (DH only). These *extended* grids are now the default in pyshtools, but remain optional in the Fortran 95 routines. The use of extended grids is controlled by the optional argument `extend`. The purpose of these extended grids is to better integrate with the plotting routines that require these points (i.e.., Cartopy and pygmt).
+All grid formats now allow to compute the redundant values at 360 E longitude (GLQ and DH), as well as at 90 S (DH only). These *extended* grids are now the default in pyshtools, but remain optional in the Fortran 95 routines. The use of extended grids is controlled by the optional argument `extend`. The purpose of these extended grids is to better integrate with the plotting routines that require these points (i.e.., Cartopy and pygmt).
 
 ### Improved plotting and map projections
 
