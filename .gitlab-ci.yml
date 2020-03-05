@@ -7,6 +7,7 @@ cache:
 before_script:
   - cd docs
   - gem install bundler
+  - gem install bundler jekyll
   - bundle config set path 'vendor'
   - bundle install
 
