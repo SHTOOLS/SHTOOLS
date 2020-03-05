@@ -18,6 +18,6 @@ toc: true
 * Benda Xu / [heroxbd](https://github.com/heroxbd)
 * Katrin Leinweber / [katrinleinweber](https://github.com/katrinleinweber)
 * Andrew Walker / [andreww](https://github.com/andreww)
-* Stefan Schröder / [Nasuyo](https://github.com/Nasuyo)
+* Stefan Schroder / [Nasuyo](https://github.com/Nasuyo)
 * Akihisa Hattori / [HattoriAkihisa](https://github.com/HattoriAkihisa)
 * Aaryaman Vasishta / [jammm](https://github.com/jammm)
