@@ -43,7 +43,7 @@ When possible, the eigenfunctions are calculated using the kernel of Grunbaum et
 
 # References
 
-Grunbaum, F. A., L. Longhi, and M. Perlstadt, Differential operators commuting with finite convolution integral operators: Some non-abelian examples, SIAM, J. Appl. Math. 42, 941–955, 1982.
+Grunbaum, F. A., L. Longhi, and M. Perlstadt, Differential operators commuting with finite convolution integral operators: Some non-abelian examples, SIAM, J. Appl. Math. 42, 941-955, 1982.
 
 Simons, F. J., F. A. Dahlen, and M. A. Wieczorek, Spatiospectral concentration on a sphere, `SIAM Review`, 48, 504-536, 2006.
 

@@ -41,7 +41,7 @@ The Legendre functions are calculated using the standard three-term recursion fo
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, doi:10.1007/s00190-002-0216-2, 2002.
 
-Wieczorek, M. A., and M. Meschede. SHTools — Tools for working with spherical harmonics, Geochem., Geophys., Geosyst., 19, 2574-2592, doi:10.1029/2018GC007529, 2018.
+Wieczorek, M. A., and M. Meschede. SHTools - Tools for working with spherical harmonics, Geochem., Geophys., Geosyst., 19, 2574-2592, doi:10.1029/2018GC007529, 2018.
 
 # See also
 
