@@ -4541,7 +4541,7 @@ class DHRealGrid(SHGrid):
             elif colorbar == 'top':
                 position = "JTC+h"
             if cb_offset is not None:
-                if colorbar == 'horizontal':
+                if colorbar == 'bottom' or colorbar == 'top':
                     position += '+o0p/' + str(cb_offset) + 'p'
                 else:
                     position += '+o' + str(cb_offset) + 'p/0p'
