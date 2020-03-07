@@ -4411,12 +4411,14 @@ class DHRealGrid(SHGrid):
             divider = _make_axes_locatable(axes)
             if colorbar in set(['left', 'right']):
                 orientation = 'vertical'
+                extendfrac = 0.05
                 if cb_width is None:
                     size = '2.5%'
                 else:
                     size = '{:f}%'.format(cb_width)
             else:
                 orientation = 'horizontal'
+                extendfrac = 0.025
                 if cb_width is None:
                     size = '5%'
                 else:
@@ -4424,7 +4426,7 @@ class DHRealGrid(SHGrid):
             cax = divider.append_axes(colorbar, size=size, pad=offset,
                                       axes_class=_plt.Axes)
             cbar = _plt.colorbar(cim, cax=cax, orientation=orientation,
-                                 extend=cb_triangles)
+                                 extend=cb_triangles, extendfrac=extendfrac)
             if colorbar == 'left':
                 cbar.ax.yaxis.set_ticks_position('left')
                 cbar.ax.yaxis.set_label_position('left')
