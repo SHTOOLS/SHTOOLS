@@ -5,7 +5,7 @@
 
 import sys
 
-min_version = (3, 5)
+min_version = (3, 6)
 
 if sys.version_info < min_version:
     error = """\n

@@ -45,7 +45,7 @@ and the GitHub project page at
 
    https://github.com/SHTOOLS/SHTOOLS
 """
-__version__ = '4.6'
+__version__ = '4.7'
 __author__ = 'SHTOOLS developers'
 
 
