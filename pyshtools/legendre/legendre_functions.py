@@ -55,7 +55,7 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
 
     Notes
     -----
-    legendre` will calculate all of the associated Legendre functions up to
+    legendre will calculate all of the associated Legendre functions up to
     degree lmax for a given argument. The Legendre functions are used typically
     as a part of the spherical harmonic functions, and three parameters
     determine how they are defined. `normalization` can be either '4pi'
