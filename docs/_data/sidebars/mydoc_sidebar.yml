@@ -19,7 +19,7 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: Getting started
+  - title: Getting Started
     output: web, pdf
     folderitems:
 
@@ -44,7 +44,7 @@ entries:
       url: /using-with-f95.html
       output: web, pdf
 
-  - title: Spherical harmonics
+  - title: Spherical Harmonics
     output: web, pdf
     folderitems:
 
@@ -56,11 +56,27 @@ entries:
       url: /complex-spherical-harmonics.html
       output: web, pdf
 
+    - title: Grid formats
+      url: /grid-formats.html
+      output: web, pdf
+
     - title: Implementation details
       url: /implementation-details.html
       output: web, pdf
 
-  - title: Python components
+  - title: Tutorials & Guides
+    output: web, pdf
+
+    folderitems:
+    - title: Python
+      url: /python-examples.html
+      output: web, pdf
+
+    - title: Fortran 95
+      url: /fortran-examples.html
+      output: web, pdf
+
+  - title: Python Reference
     output: web, pdf
     folderitems:
 
@@ -100,7 +116,7 @@ entries:
       url: /python-constants.html
       output: web, pdf
 
-  - title: Fortran 95 components
+  - title: Fortran 95 Reference
     output: web, pdf
     folderitems:
 
@@ -138,18 +154,6 @@ entries:
 
     - title: Miscellaneous
       url: /miscellaneous-routines.html
-      output: web, pdf
-
-  - title: Examples
-    output: web, pdf
-
-    folderitems:
-    - title: Python
-      url: /python-examples.html
-      output: web, pdf
-
-    - title: Fortran 95
-      url: /fortran-examples.html
       output: web, pdf
 
   - title: Support

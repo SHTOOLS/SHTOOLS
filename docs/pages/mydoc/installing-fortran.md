@@ -14,9 +14,14 @@ If the [brew](https://brew.sh/) package manager is already installed, it is only
 brew tap shtools/shtools
 brew install shtools
 ```
-To also install both the standard Fortran 95 library along with the OpenMP components, add the option `--with-openmp` to the last command:
+To install the OpenMP components along with the standard Fortran 95 library, add the option `--with-openmp` to the last command:
 ```bash
 brew install shtools --with-openmp
+```
+
+To install the example data files and test programs, add the option `--with-examples`:
+```bash
+brew install shtools --with-examples
 ```
 
 ## Fortran 95 library using the Makefile

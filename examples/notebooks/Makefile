@@ -15,13 +15,27 @@ SHELL=/bin/sh
 WWWNBDIR = ../../docs/pages/mydoc/notebooks
 JFLAGS = --to html --execute --ExecutePreprocessor.timeout=120 --output-dir=$(WWWNBDIR)
 
-IPYNB = Introduction-1.ipynb Introduction-2.ipynb Introduction-3.ipynb \
-	Introduction-3.ipynb tutorial_1.ipynb tutorial_2.ipynb tutorial_3.ipynb \
-	tutorial_4.ipynb tutorial_5.ipynb tutorial_6.ipynb
+IPYNB = grids-and-coefficients.ipynb \
+	localized-spectral-analysis.ipynb \
+	gravity-and-magnetic-fields.ipynb \
+	plotting-maps.ipynb
+	low-level-spherical-harmonic-analyses.ipynb \
+	advanced-localized-spectral-analysis.ipynb \
+	advanced-shcoeffs-and-shgrid-usage.ipynb \
+	spherical-harmonic-normalizations.ipynb \
+	advanced-shwindow-usage.ipynb \
+	3d-plots.ipynb
 
-HTML = $(addprefix $(WWWNBDIR)/, Introduction-1.html Introduction-2.html \
-	Introduction-3.html Introduction-4.html tutorial_1.html tutorial_2.html \
-	tutorial_3.html tutorial_4.html tutorial_5.html tutorial_6.html)
+HTML = $(addprefix $(WWWNBDIR)/, grids-and-coefficients.html \
+	localized-spectral-analysis.html \
+	gravity-and-magnetic-fields.html \
+	plotting-maps.html \
+	low-level-spherical-harmonic-analyses.html \
+	advanced-localized-spectral-analysis.html \
+	advanced-shcoeffs-and-shgrid-usage.html \
+	spherical-harmonic-normalizations.html \
+	advanced-shwindow-usage.html \
+	3d-plots.html)
 
 all: $(HTML)
 

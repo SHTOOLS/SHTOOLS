@@ -9,16 +9,16 @@ from nbconvert.preprocessors import ExecutePreprocessor
 
 os.chdir(os.path.dirname(sys.argv[0]))
 
-notebooks = ('Introduction-1.ipynb',
-             'Introduction-2.ipynb',
-             'Introduction-3.ipynb',
-             'Introduction-4.ipynb',
-             'tutorial_1.ipynb',
-             'tutorial_2.ipynb',
-             'tutorial_3.ipynb',
-             'tutorial_4.ipynb',
-             'tutorial_5.ipynb',
-             'tutorial_6.ipynb')
+notebooks = ('grids-and-coefficients.ipynb',
+             'localized-spectral-analysis.ipynb',
+             'gravity-and-magnetic-fields.ipynb',
+             'plotting-maps.ipynb',
+             'low-level-spherical-harmonic-analyses.ipynb',
+             'advanced-localized-spectral-analysis.ipynb',
+             'advanced-shcoeffs-and-shgrid-usage.ipynb',
+             'spherical-harmonic-normalizations.ipynb',
+             'advanced-shwindow-usage.ipynb',
+             '3d-plots.ipynb')
 
 if sys.version_info.major == 3:
     kname = 'python3'
