@@ -35,6 +35,12 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
 ### INSTALLATION ###
 #### pyshtools for Python ####
 
+Install via Anaconda (Linux/MacOS):
+
+```bash
+conda install -c conda-forge pyshtools
+```
+
 Binary install for linux and macOS:
 ```bash
 pip install pyshtools
