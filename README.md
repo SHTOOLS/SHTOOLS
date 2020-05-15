@@ -35,10 +35,15 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
 ### INSTALLATION ###
 #### pyshtools for Python ####
 
-Binary install for linux and macOS:
+Binary install using pip (Linux, macOS and Windows):
 ```bash
 pip install pyshtools
 pip install --upgrade pyshtools  # upgrade to a new version
+```
+
+Binary install using conda (Linux and macOS):
+```bash
+conda install -c conda-forge pyshtools
 ```
 
 Build from source:
@@ -86,14 +91,14 @@ More installation instructions and options can be found in the [web documentatio
 
 ### HOW TO USE ###
 
-SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library.
+SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers and dedicated classes allow simple access to the fortran-compiled routines. A variety of Python tutorials and guides are included that demonstrate the major features of the library.
 
 To get started, check out the following Python tutorial notebooks:
 
-* [Introduction to Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
-* [Introduction to Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
-* [Introduction to Gravity and Magnetic Fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-3.html)
-* [Introduction to Plotting Maps](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-4.html)
+* [Spherical harmonic coefficients and grids](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/grids-and-coefficients.html)
+* [Localization windows and spectral analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/localized-spectral-analysis.html)
+* [Gravity and magnetic fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/gravity-and-magnetic-fields.html)
+* [Plotting maps](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/plotting-maps.html)
 
 ### DEVELOPERS ###
 
