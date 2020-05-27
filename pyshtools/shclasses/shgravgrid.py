@@ -856,7 +856,7 @@ class SHGravGrid(object):
                  'sampling': self.sampling,
                  'normal_gravity': self.normal_gravity,
                  'n': self.n,
-                 'extend': self.extend
+                 'extend': repr(self.extend)
                  }
 
         _total = self.total.to_xarray(title='total gravity disturbance',

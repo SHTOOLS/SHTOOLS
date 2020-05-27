@@ -3225,7 +3225,8 @@ class SHGrid(object):
                  'nlon': self.nlon,
                  'lmax': self.lmax,
                  'kind': self.kind,
-                 'grid': self.grid
+                 'grid': self.grid,
+                 'extend': repr(self.extend)
                  }
         if self.grid == 'GLQ':
             attrs['zeros'] = self.zeros

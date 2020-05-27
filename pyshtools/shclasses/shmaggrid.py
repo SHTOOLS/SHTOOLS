@@ -823,7 +823,7 @@ class SHMagGrid(object):
                  'lmax_calc': self.lmax_calc,
                  'sampling': self.sampling,
                  'n': self.n,
-                 'extend': self.extend
+                 'extend': repr(self.extend)
                  }
 
         _total = self.total.to_xarray(title='magnetic field intensity',
