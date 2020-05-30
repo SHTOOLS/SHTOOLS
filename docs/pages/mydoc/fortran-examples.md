@@ -1,9 +1,9 @@
 ---
-title: "Fortran examples"
+title: "Fortran example programs"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: fortran-examples.html
-summary: 
+summary: If you want to learn how to incorporate shtools routines in your fortran programs, the following example programs are a good starting point to see shtools in action.
 toc: false
 ---
 
@@ -17,9 +17,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
-A variety of test programs can be found in the folders in `examples/fortran`.
+{% include note.html content="In order to access the fortran example programs and example datasets, it will be necessary to either dowload (or clone) the entire shtools repo from [GitHub](https://github.com/SHTOOLS/SHTOOLS/), or to install with brew using the option `--with-examples`. If the entire repo was downloaded, the example programs will be found in the folder `examples/fortran`. If shtools was instead installed with brew, they will be found in `/usr/local/share/shtools/examples/fortran/`." %}
 
-| Folder directory | Description |
+
+| Folder | Description |
 | ------------- | ----------- |
 | `SHCilmPlus/` | Demonstration of how to expand spherical harmonic files into gridded maps using the GLQ routines, and how to compute the gravity field resulting from finite amplitude surface relief. |
 | `SHExpandDH/` | Demonstration of how to expand a grid that is equally sampled in latitude and longitude into spherical harmonics using the sampling theorem of *Driscoll and Healy* (1994). |

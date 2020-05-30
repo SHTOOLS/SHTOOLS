@@ -33,11 +33,12 @@ SHTOOLS/pyshtools is extremely versatile:
 
 ## Installation
 
-The Python components of SHTOOLS can be installed using the Python package manager `pip`. Binaries are pre-built for linux and macOS architectures, and you need only to execute one of the following commands in a unix terminal:
+The Python components of SHTOOLS can be installed using the Python package manager `pip` or `conda`. Binaries are pre-built for Linux, macOS and Windows architectures, and you need only to execute one of the following commands in a unix terminal:
 
 ```bash
 pip install pyshtools
 pip install --upgrade pyshtools  # to upgrade a pre-existing installation
+conda install -c conda-forge pyshtools  # Linux and macOS only
 ```
 
 To install the Fortran 95 components for use in your Fortran programs, execute one or both of the following commands in the SHTOOLS directory
@@ -56,7 +57,7 @@ brew install shtools
 
 ## Using
 
-SHTOOLS/pyshtools can be called from any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library. When building from source, it will be necessary to link to LAPACK, BLAS, and FFTW compatible libraries. SHTOOLS is open source software (3-clause BSD license).
+SHTOOLS/pyshtools can be called from any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers and dedicated classes allow simple access to the fortran-compiled routines. A variety of Python tutorials and guides are included that demonstrate the major features of the library. When building from source, it will be necessary to link to LAPACK, BLAS, and FFTW compatible libraries. SHTOOLS is open source software (3-clause BSD license).
 
 ## Reference
 

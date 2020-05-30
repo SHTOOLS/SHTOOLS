@@ -3,7 +3,8 @@
 [![Documentation](https://img.shields.io/badge/documentation-shtools.github.io%2FSHTOOLS%2F-yellow.svg)](https://shtools.github.io/SHTOOLS/)
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg)](https://doi.org/10.5281/zenodo.592762)
 [![Paper](https://img.shields.io/badge/paper-10.1029/2018GC007529-orange.svg)](https://doi.org/10.1029/2018GC007529)
-[![Join the chat at https://gitter.im/SHTOOLS/SHTOOLS](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Chat on matrix](https://img.shields.io/badge/chat-on_[matrix]-4bb596.svg)](https://matrix.to/#/!SrkiFczPSWmYrlSNYF:matrix.org?via=matrix.org)
+[![Chat at gitter](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=pyshtools)
 
 SHTOOLS/pysthools is a Fortran-95/Python library that can be used to perform
@@ -35,10 +36,15 @@ spherical harmonic transforms, multitaper spectral analyses on the sphere, expan
 ### INSTALLATION ###
 #### pyshtools for Python ####
 
-Binary install for linux and macOS:
+Binary install using pip (Linux, macOS and Windows):
 ```bash
 pip install pyshtools
 pip install --upgrade pyshtools  # upgrade to a new version
+```
+
+Binary install using conda (Linux and macOS):
+```bash
+conda install -c conda-forge pyshtools
 ```
 
 Build from source:
@@ -86,14 +92,14 @@ More installation instructions and options can be found in the [web documentatio
 
 ### HOW TO USE ###
 
-SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library.
+SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers and dedicated classes allow simple access to the fortran-compiled routines. A variety of Python tutorials and guides are included that demonstrate the major features of the library.
 
 To get started, check out the following Python tutorial notebooks:
 
-* [Introduction to Grids and Spherical Harmonic Coefficients](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-1.html)
-* [Introduction to Localization Windows and Spectral Analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-2.html)
-* [Introduction to Gravity and Magnetic Fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-3.html)
-* [Introduction to Plotting Maps](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/Introduction-4.html)
+* [Spherical harmonic coefficients and grids](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/grids-and-coefficients.html)
+* [Localization windows and spectral analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/localized-spectral-analysis.html)
+* [Gravity and magnetic fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/gravity-and-magnetic-fields.html)
+* [Plotting maps](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/plotting-maps.html)
 
 ### DEVELOPERS ###
 

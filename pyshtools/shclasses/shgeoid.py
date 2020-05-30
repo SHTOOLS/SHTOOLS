@@ -272,9 +272,9 @@ class SHGeoid(object):
                  'lmax_calc': self.lmax_calc,
                  'sampling': self.geoid.sampling,
                  'n': self.n,
-                 'extend': self.extend
+                 'extend': repr(self.extend)
                  }
-
+        print(attrs)
         _data = _xr.DataArray(_nparray, dims=('latitude', 'longitude'),
                               coords=[('latitude', self.geoid.lats(),
                                        {'units': 'degrees_north'}),
@@ -325,7 +325,7 @@ class SHGeoid(object):
                  'lmax_calc': self.lmax_calc,
                  'sampling': self.geoid.sampling,
                  'n': self.n,
-                 'extend': self.extend
+                 'extend': repr(self.extend)
                  }
 
         return _xr.DataArray(self.geoid.to_array(),

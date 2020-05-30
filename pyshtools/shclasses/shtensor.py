@@ -2879,7 +2879,7 @@ class Tensor(object):
                  'a': self.a,
                  'f': self.f,
                  'n': self.n,
-                 'extend': self.extend
+                 'extend': repr(self.extend)
                  }
         if isinstance(self, SHGravTensor):
             attrs['gm'] = self.gm
