@@ -6,6 +6,8 @@ import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
+import gzip as _gzip
+import shutil as _shutil
 import warnings as _warnings
 from scipy.special import factorial as _factorial
 import xarray as _xr
@@ -433,14 +435,16 @@ class SHCoeffs(object):
         Parameters
         ----------
         filename : str
-            File name or URL containing the text-formatted spherical harmonic
-            coefficients. filename will be treated as a URL if it starts with
-            'http://', 'https://', or 'ftp://'.
+            File name or URL containing the spherical harmonic coefficients.
+            filename will be treated as a URL if it starts with 'http://',
+            'https://', or 'ftp://'. For shtools formatted files, if filename
+            ends with '.gz', the file will be uncompressed using gzip before
+            parsing.
         format : str, optional, default = 'shtools'
             'shtools' format or binary numpy 'npy' format.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read from 'shtools'
-            formatted files.
+            formatted files. The default is to read the entire file.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -478,6 +482,9 @@ class SHCoeffs(object):
         If filename starts with http://, https://, or ftp://, the file will be
         treated as a URL. In this case, the file will be downloaded in its
         entirety before it is parsed.
+
+        If the filename ends with '.gz', the file will be automatically
+        uncompressed using gzip before parsing.
 
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().
@@ -778,7 +785,8 @@ class SHCoeffs(object):
         Parameters
         ----------
         filename : str
-            Name of the output file.
+            Name of the output file. If the filename ends with '.gz', the file
+            will be compressed using gzip.
         format : str, optional, default = 'shtools'
             'shtools' or 'npy'. See method from_file() for more information.
         header : str, optional, default = None
@@ -801,9 +809,16 @@ class SHCoeffs(object):
 
         If format='npy', the spherical harmonic coefficients will be saved to
         a binary numpy 'npy' file using numpy.save().
+
+        If the filename end with '.gz', the file will be compressed using gzip.
         """
+        if filename[-3:] == '.gz':
+            filebase = filename[-3:]
+        else:
+            filebase = filename
+
         if format == 'shtools':
-            with open(filename, mode='w') as file:
+            with open(filebase, mode='w') as file:
                 if header is not None:
                     file.write(header + '\n')
                 for l in range(self.lmax+1):
@@ -812,10 +827,15 @@ class SHCoeffs(object):
                                    .format(l, m, self.coeffs[0, l, m],
                                            self.coeffs[1, l, m]))
         elif format == 'npy':
-            _np.save(filename, self.coeffs, **kwargs)
+            _np.save(filebase, self.coeffs, **kwargs)
         else:
             raise NotImplementedError(
                 'format={:s} not implemented.'.format(repr(format)))
+
+        if filename[-3:] == '.gz':
+            with open(filebase, 'rb') as f_in:
+                with _gzip.open(filename, 'wb') as f_out:
+                    _shutil.copyfileobj(f_in, f_out)
 
     def to_netcdf(self, filename, title='', description='', lmax=None):
         """
@@ -3092,6 +3112,8 @@ class SHGrid(object):
             Healy grids, the dimensions of the array must be nlon=nlat,
             nlon=2*nlat or nlon=2*nlat-1. For Gauss-Legendre Quadrature grids,
             the dimensions of the array must be nlon=2*nlat-1 or nlon=2*nlat.
+            For text files, if the filename ends in '.gz', the file will be
+            decompressed using gzip.
         binary : bool, optional, default = False
             If False, read a text file. If True, read a binary 'npy' file.
         grid : str, optional, default = 'DH'
@@ -3182,8 +3204,7 @@ class SHGrid(object):
         ----------
         filename : str
             Name of output file. For text files (default), the file will be
-            saved automatically in gzip compressed format if the filename ends
-            in .gz.
+            compressed using gzip if filename ends in '.gz.'
         binary : bool, optional, default = False
             If False, save as text using numpy.savetxt(). If True, save as a
             'npy' binary file using numpy.save().

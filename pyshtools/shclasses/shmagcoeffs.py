@@ -303,12 +303,16 @@ class SHMagCoeffs(object):
         Parameters
         ----------
         filename : str
-            Name of the file, including path.
+            File name or URL containing the spherical harmonic coefficients.
+            filename will be treated as a URL if it starts with 'http://',
+            'https://', or 'ftp://'. For shtools formatted files, if filename
+            ends with '.gz', the file will be uncompressed using gzip before
+            parsing.
         format : str, optional, default = 'shtools'
             'shtools' format or binary numpy 'npy' format.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read from 'shtools'
-            formatted files.
+            formatted files. The default is to read the entire file.
         header : bool, optional, default = True
             If True, read a list of values from the header line of an 'shtools'
             formatted file.
@@ -367,16 +371,17 @@ class SHMagCoeffs(object):
 
         l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
 
+        The coefficients read from the file are assumed to have units of nT.
+
         If filename starts with http://, https://, or ftp://, the file will be
         treated as a URL. In this case, the file will be downloaded in its
         entirety before it is parsed.
 
+        If the filename ends with '.gz', the file will be automatically
+        uncompressed using gzip before parsing.
+
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().
-
-        Notes
-        -----
-        The coefficients read from the file are assumed to have units of nT.
         """
         error = None
 

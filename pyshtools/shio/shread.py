@@ -3,6 +3,7 @@ Functions for reading spherical harmonic coefficients from files.
 """
 import os
 import io
+import gzip
 
 import numpy as _np
 import requests as _requests
@@ -39,7 +40,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     filename : str
         File name or URL that contains the text-formatted spherical harmonic
         coefficients. filename will be treated as a URL if it starts with
-        http://, https://, or ftp://.
+        http://, https://, or ftp://. If filename ends with '.gz', the file
+        will be ungzipped before parsing.
     lmax : int, optional, default = None
         The maximum spherical harmonic degree to read from the file. The
         default is to read the entire file.
@@ -55,7 +57,7 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     Notes
     -----
     This function will read spherical harmonic coefficients from an
-    ascii-formatted text file. The errors associated with the spherical
+    ascii-formatted text file. If the The errors associated with the spherical
     harmonic coefficients, as well as the values in a single header line, can
     be read optionally by setting the parameters error and header to
     True. The optional parameter skip specifies how many lines should be
@@ -88,76 +90,69 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     If filename starts with http://, https://, or ftp://, the file will be
     treated as a URL. In this case, the file will be downloaded in its
     entirety before it is parsed.
+
+    If the filename ends with '.gz', the file will be automatically
+    uncompressed using gzip before parsing.
     """
 
-    if _isurl(filename):
-        _response = _requests.get(filename)
-        f = io.BytesIO(_response.content)
-    else:
-        f = open(filename, 'rb')
-
-    # determine lmax by reading the last non-comment line of the file
-    with f:
-        line = ''
-        if f.seek(0, os.SEEK_END) == 0:
-            raise RuntimeError('File is empty.')
+    # if lmax is None, determine lmax by reading last line of the file that
+    # is not a comment. (Note that this is very slow for gzipped files.
+    # Consider using indexed_gzip when SEEK_END is supported.)
+    if lmax is None:
+        if _isurl(filename):
+            _response = _requests.get(filename)
+            f = io.BytesIO(_response.content)
+        elif filename[-3:] == '.gz':
+            f = gzip.open(filename, mode='rb')
         else:
-            f.seek(-1, os.SEEK_CUR)
+            f = open(filename, 'rb')
 
-        # read backwards to end of preceding line and then read the line
-        while _iscomment(line):
-            while f.read(1) != b'\n':
-                try:
-                    f.seek(-2, os.SEEK_CUR)
-                except:
-                    f.seek(-1, os.SEEK_CUR)  # beginning of file
-                    break
-
-            if f.tell() <= 1:
-                line = f.readline().decode()
-                line = line.replace(',', ' ')
-                if _iscomment(line):
-                    raise RuntimeError('Encountered beginning of file ' +
-                                       'while attempting to determine lmax.')
-                break
+        # determine lmax by reading the last non-comment line of the file
+        with f:
+            line = ''
+            if f.seek(0, os.SEEK_END) == 0:
+                raise RuntimeError('File is empty.')
             else:
-                line = f.readline().decode()
-                line = line.replace(',', ' ')
-                try:
-                    f.seek(-len(line)-2, os.SEEK_CUR)
-                except:
-                    raise RuntimeError('Encountered beginning of file ' +
-                                       'while attempting to determine lmax.')
+                f.seek(-1, os.SEEK_CUR)
 
-    lmaxfile = int(line.split()[0])
-    if lmax is not None:
-        lmaxout = min(lmax, lmaxfile)
+            # read backwards to end of preceding line and then read the line
+            while _iscomment(line):
+                while f.read(1) != b'\n':
+                    try:
+                        f.seek(-2, os.SEEK_CUR)
+                    except:
+                        f.seek(-1, os.SEEK_CUR)  # beginning of file
+                        break
+
+                if f.tell() <= 1:
+                    line = f.readline().decode()
+                    line = line.replace(',', ' ')
+                    if _iscomment(line):
+                        raise RuntimeError('Encountered beginning of file '
+                                           'while attempting to determine '
+                                           'lmax.')
+                    break
+                else:
+                    line = f.readline().decode()
+                    line = line.replace(',', ' ')
+                    try:
+                        f.seek(-len(line)-2, os.SEEK_CUR)
+                    except:
+                        raise RuntimeError('Encountered beginning of file '
+                                           'while attempting to determine '
+                                           'lmax.')
+
+        lmaxout = int(line.split()[0])
+
     else:
-        lmaxout = lmaxfile
+        lmaxout = lmax
 
-    # determine if coefficients are real or complex
-    try:
-        num = float(line.split()[2])
-        coeffs = _np.zeros((2, lmaxout+1, lmaxout+1))
-        kind = 'real'
-        if error is True:
-            errors = _np.zeros((2, lmaxout+1, lmaxout+1))
-    except ValueError:
-        try:
-            num = complex(line.split()[2])
-            coeffs = _np.zeros((2, lmaxout+1, lmaxout+1), dtype=complex)
-            kind = 'complex'
-            if error is True:
-                errors = _np.zeros((2, lmaxout+1, lmaxout+1), dtype=complex)
-        except ValueError:
-            raise ValueError('Coefficients can not be converted to ' +
-                             'either float or complex. Coefficient ' +
-                             'is {:s}\n'.format(line.split()[2]) +
-                             'Unformatted string is {:s}'.format(line))
-
-    # determine lstart and read header
+    # open file, read header, determine lstart, and then read coefficients
+    # one line at a time
     if _isurl(filename):
         f = io.StringIO(_response.text)
+    elif filename[-3:] == '.gz':
+        f = gzip.open(filename, mode='rt')
     else:
         f = open(filename, 'r')
 
@@ -166,23 +161,27 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
             for i in range(skip):
                 line = f.readline()
                 if line == '':
-                    raise RuntimeError('End of file encountered when ' +
+                    raise RuntimeError('End of file encountered when '
                                        'skipping lines.')
 
+        # read header
         if header is True:
             line = f.readline()
             if line == '':
-                raise RuntimeError('End of file encountered when ' +
+                raise RuntimeError('End of file encountered when '
                                    'reading header line.')
             line = line.replace(',', ' ')
             header_list = line.split()
 
+        # determine the starting degree
+        start_position = f.tell()
         line = f.readline()
         if line == '':
-            raise RuntimeError('End of file encountered when determining ' +
+            raise RuntimeError('End of file encountered when determining '
                                'value of lstart.')
         line = line.replace(',', ' ')
         while _iscomment(line):
+            start_position = f.tell()
             line = f.readline()
             if line == '':
                 raise RuntimeError('End of file encountered when ' +
@@ -190,31 +189,42 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
             line = line.replace(',', ' ')
         lstart = int(line.split()[0])
 
-    # read coefficients one line at a time
-    if _isurl(filename):
-        f = io.StringIO(_response.text)
-    else:
-        f = open(filename, 'r')
+        # determine if the coefficients are real or complex
+        try:
+            num = float(line.split()[2])
+            coeffs = _np.zeros((2, lmaxout+1, lmaxout+1))
+            kind = 'real'
+            if error is True:
+                errors = _np.zeros((2, lmaxout+1, lmaxout+1))
+        except ValueError:
+            try:
+                num = complex(line.split()[2])
+                coeffs = _np.zeros((2, lmaxout+1, lmaxout+1), dtype=complex)
+                kind = 'complex'
+                if error is True:
+                    errors = _np.zeros((2, lmaxout+1, lmaxout+1),
+                                       dtype=complex)
+            except ValueError:
+                raise ValueError('Coefficients can not be converted to '
+                                'either float or complex. Coefficient '
+                                'is {:s}\n'.format(line.split()[2]) +
+                                'Unformatted string is {:s}'.format(line))
 
-    with f:
-        if skip != 0:
-            for i in range(skip):
-                f.readline()
-        if header is True:
-            f.readline()
+        # rewind one line and read coefficients one line at a time
+        f.seek(start_position)
 
         for degree in range(lstart, lmaxout+1):
             for order in range(degree+1):
                 line = f.readline()
                 if line == '':
-                    raise RuntimeError('End of file encountered at ' +
+                    raise RuntimeError('End of file encountered at '
                                        'degree and order {:d}, {:d}.'
                                        .format(degree, order))
                 line = line.replace(',', ' ')
                 while _iscomment(line):
                     line = f.readline()
                     if line == '':
-                        raise RuntimeError('End of file encountered at ' +
+                        raise RuntimeError('End of file encountered at '
                                            'degree and order {:d}, {:d}.'
                                            .format(degree, order))
                     line = line.replace(',', ' ')
@@ -223,8 +233,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                 m = int(line.split()[1])
 
                 if degree != l or order != m:
-                    raise RuntimeError('Degree and order from file do not ' +
-                                       'correspond to expected values.\n ' +
+                    raise RuntimeError('Degree and order from file do not '
+                                       'correspond to expected values.\n '
                                        'Read {:d}, {:d}. Expected {:d}, {:d}.'
                                        .format(degree, order, l, m))
 
@@ -239,9 +249,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
 
                 if error:
                     if len(line.split()) < 6:
-                        raise RuntimeError('When reading errors, ' +
-                                           'each line must ' +
-                                           'contain at least 6 elements. ' +
+                        raise RuntimeError('When reading errors, '
+                                           'each line must '
+                                           'contain at least 6 elements. '
                                            'Last line is: {:s}'.format(line))
 
                     if kind == 'real':
