@@ -206,9 +206,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                                        dtype=complex)
             except ValueError:
                 raise ValueError('Coefficients can not be converted to '
-                                'either float or complex. Coefficient '
-                                'is {:s}\n'.format(line.split()[2]) +
-                                'Unformatted string is {:s}'.format(line))
+                                 'either float or complex. Coefficient '
+                                 'is {:s}\n'.format(line.split()[2]) +
+                                 'Unformatted string is {:s}'.format(line))
 
         # rewind one line and read coefficients one line at a time
         f.seek(start_position)

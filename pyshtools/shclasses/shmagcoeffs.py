@@ -384,6 +384,8 @@ class SHMagCoeffs(object):
         numpy.load().
         """
         error = None
+        if not header:
+            r0_index = None
 
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '

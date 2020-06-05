@@ -66,12 +66,14 @@ In order to use the most basic aspects of pyshtools, it will be necessary to ins
 * [numpy](https://numpy.org/)
 * [scipy](https://www.scipy.org/)
 * [matplotlib](https://matplotlib.org/)
-* [astropy](https://www.astropy.org/) (required for the planetary constants module)
-* [xarray](https://xarray.pydata.org/en/stable/#) (required for netcdf file support)
-* [requests](https://2.python-requests.org/en/master/#) (required when reading files from urls).
+* [astropy](https://www.astropy.org/): required for the planetary constants module.
+* [xarray](https://xarray.pydata.org/en/stable/#): required for netcdf file support.
+* [requests](https://2.python-requests.org/en/master/#): required when reading files from urls.
+* [pooch](https://www.fatiando.org/pooch/latest/index.html): required for reading datasets.
+* [tqdm](https://tqdm.github.io/): required for showing progress bars when downloading datasets.
 
 All of the above packages should be installed automatically when installing pyshtools with pip or conda. For more specialized operations, it will be necessary to install manually the following packages:
 
-* [Cartopy](https://scitools.org.uk/cartopy/docs/latest/) (required for Cartopy map projections)
-* [pygmt](https://www.pygmt.org) (required for pygmt map projections)
-* [palettable](https://jiffyclub.github.io/palettable/) (scientific color maps required by one of the tutorials).
+* [Cartopy](https://scitools.org.uk/cartopy/docs/latest/): required for Cartopy map projections.
+* [pygmt](https://www.pygmt.org): required for pygmt map projections.
+* [palettable](https://jiffyclub.github.io/palettable/): scientific color maps required by one of the tutorials.

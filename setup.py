@@ -186,6 +186,8 @@ INSTALL_REQUIRES = [
     'astropy',
     'xarray',
     'requests'
+    'pooch',
+    'tqdm'
 ]
 
 # configure python extension to be compiled with f2py
