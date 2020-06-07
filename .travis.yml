@@ -48,7 +48,7 @@ install:
         requests
         cartopy
         pygmt
-        gmt=6.0.0
+        gmt
         pooch
         tqdm
         palettable

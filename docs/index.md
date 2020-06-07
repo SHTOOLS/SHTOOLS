@@ -29,7 +29,7 @@ SHTOOLS/pyshtools is extremely versatile:
 
 * Standard data formats such as *xarray* and *netcdf* are supported.
 
-* Publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/dev/).
+* Publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/).
 
 ## Installation
 

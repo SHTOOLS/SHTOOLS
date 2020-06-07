@@ -4,6 +4,7 @@ Functions for reading spherical harmonic coefficients from files.
 import os
 import io
 import gzip
+import zipfile
 
 import numpy as _np
 import requests as _requests
@@ -40,8 +41,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     filename : str
         File name or URL that contains the text-formatted spherical harmonic
         coefficients. filename will be treated as a URL if it starts with
-        http://, https://, or ftp://. If filename ends with '.gz', the file
-        will be ungzipped before parsing.
+        http://, https://, or ftp://. If filename ends with '.gz' or '.zip',
+        the file will be uncompressed before parsing.
     lmax : int, optional, default = None
         The maximum spherical harmonic degree to read from the file. The
         default is to read the entire file.
@@ -91,19 +92,29 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     treated as a URL. In this case, the file will be downloaded in its
     entirety before it is parsed.
 
-    If the filename ends with '.gz', the file will be automatically
-    uncompressed using gzip before parsing.
+    If the filename ends with '.gz' or '.zip', the file will be automatically
+    uncompressed before parsing. For zip files, archives with only a single
+    file are supported. Note that reading '.gz' and '.zip' files will be
+    extremely slow if lmax is not specified.
     """
+    if filename[-4:] == '.zip':
+        zf = zipfile.ZipFile(filename, 'r')
+        if len(zf.namelist()) > 1:
+            raise Exception('shread can only process zip archives that '
+                            'contain a single file. Archive contents: \n'
+                            '{}'.format(zf.namelist()))
 
     # if lmax is None, determine lmax by reading last line of the file that
-    # is not a comment. (Note that this is very slow for gzipped files.
-    # Consider using indexed_gzip when SEEK_END is supported.)
+    # is not a comment. (Note that this is very slow for zipped and gzipped
+    # files. Consider using indexed_gzip when SEEK_END is supported.)
     if lmax is None:
         if _isurl(filename):
             _response = _requests.get(filename)
             f = io.BytesIO(_response.content)
         elif filename[-3:] == '.gz':
             f = gzip.open(filename, mode='rb')
+        elif filename[-4:] == '.zip':
+            f = zf.open(zf.namelist()[0])
         else:
             f = open(filename, 'rb')
 
@@ -153,6 +164,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
         f = io.StringIO(_response.text)
     elif filename[-3:] == '.gz':
         f = gzip.open(filename, mode='rt')
+    elif filename[-4:] == '.zip':
+        f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
     else:
         f = open(filename, 'r')
 

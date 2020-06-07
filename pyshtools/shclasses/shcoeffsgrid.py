@@ -438,7 +438,7 @@ class SHCoeffs(object):
             File name or URL containing the spherical harmonic coefficients.
             filename will be treated as a URL if it starts with 'http://',
             'https://', or 'ftp://'. For shtools formatted files, if filename
-            ends with '.gz', the file will be uncompressed using gzip before
+            ends with '.gz' or '.zip', the file will be uncompressed before
             parsing.
         format : str, optional, default = 'shtools'
             'shtools' format or binary numpy 'npy' format.
@@ -483,8 +483,10 @@ class SHCoeffs(object):
         treated as a URL. In this case, the file will be downloaded in its
         entirety before it is parsed.
 
-        If the filename ends with '.gz', the file will be automatically
-        uncompressed using gzip before parsing.
+        If the filename ends with '.gz' or '.zip', the file will be
+        automatically uncompressed before parsing. For zip files, archives with
+        only a single file are supported. Note that reading '.gz' and '.zip'
+        files will be extremely slow if lmax is not specified.
 
         If format='npy', a binary numpy 'npy' file will be read using
         numpy.load().
