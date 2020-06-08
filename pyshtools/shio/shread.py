@@ -97,7 +97,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     file are supported. Note that reading '.gz' and '.zip' files will be
     extremely slow if lmax is not specified.
     """
-    if filename[-4:] == '.zip':
+    if _isurl(filename):
+        _response = _requests.get(filename)
+    elif filename[-4:] == '.zip':
         zf = zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
             raise Exception('shread can only process zip archives that '
@@ -109,7 +111,6 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     # files. Consider using indexed_gzip when SEEK_END is supported.)
     if lmax is None:
         if _isurl(filename):
-            _response = _requests.get(filename)
             f = io.BytesIO(_response.content)
         elif filename[-3:] == '.gz':
             f = gzip.open(filename, mode='rb')

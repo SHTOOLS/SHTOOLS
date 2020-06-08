@@ -18,10 +18,11 @@ use of the variable nt.
 """
 from . import Mercury
 from . import Venus
+from . import Earth
 from . import Moon
 from . import Mars
 from . import Vesta
 from . import Ceres
 
 
-__all__ = ['Mercury', 'Venus', 'Moon', 'Mars', 'Vesta', 'Ceres']
+__all__ = ['Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres']
