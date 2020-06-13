@@ -96,6 +96,12 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     """
     if _isurl(filename):
         _response = _requests.get(filename)
+        if filename[-4:] == '.zip':
+            zf = zipfile.ZipFile(io.BytesIO(_response.content))
+            if len(zf.namelist()) > 1:
+                raise Exception('read_icgem_gfc can only process zip archives '
+                                'that contain a single file. Archive '
+                                'contents:\n{}'.format(zf.namelist()))
     elif filename[-4:] == '.zip':
         zf = zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
@@ -103,12 +109,14 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                             'contain a single file. Archive contents: \n'
                             '{}'.format(zf.namelist()))
 
-    # if lmax is None, determine lmax by reading last line of the file that
+    # If lmax is None, determine lmax by reading last line of the file that
     # is not a comment. (Note that this is very slow for zipped and gzipped
     # files. Consider using indexed_gzip when SEEK_END is supported.)
     if lmax is None:
         if _isurl(filename):
             f = io.BytesIO(_response.content)
+            if filename[-4:] == '.zip':
+                f = zf.open(zf.namelist()[0])
         elif filename[-3:] == '.gz':
             f = gzip.open(filename, mode='rb')
         elif filename[-4:] == '.zip':
@@ -160,6 +168,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     # one line at a time
     if _isurl(filename):
         f = io.StringIO(_response.text)
+        if filename[-4:] == '.zip':
+            f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
     elif filename[-3:] == '.gz':
         f = gzip.open(filename, mode='rt')
     elif filename[-4:] == '.zip':

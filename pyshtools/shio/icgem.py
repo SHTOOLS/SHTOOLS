@@ -1,8 +1,11 @@
 """
 ICGEM-format read support
 """
+import io
+import gzip
+import zipfile
 import numpy as _np
-
+import requests as _requests
 from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
 
 
@@ -69,16 +72,38 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         If format of the file is 'icgem2.0' then epoch must be specified.
     encoding : str, optional
         Encoding of the input file. Try to use 'iso-8859-1' if default (UTF-8)
-        is failed.
+        fails.
     """
-
-    # read header
     header = {}
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',
                    'gravity_constant', 'radius', 'max_degree', 'errors',
                    'tide_system', 'norm', 'format']
 
-    with open(filename, 'r', encoding=encoding) as f:
+    # determine how to open filename
+    if _isurl(filename):
+        _response = _requests.get(filename)
+        if _iszipurl(filename):
+            zf = zipfile.ZipFile(io.BytesIO(_response.content))
+            if len(zf.namelist()) > 1:
+                raise Exception('read_icgem_gfc can only process zip archives '
+                                'that contain a single file. Archive '
+                                'contents:\n{}'.format(zf.namelist()))
+            f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        else:
+            f = io.StringIO(_response.text)
+    elif filename[-3:] == '.gz':
+        f = gzip.open(filename, mode='rt')
+    elif filename[-4:] == '.zip':
+        zf = zipfile.ZipFile(filename, 'r')
+        if len(zf.namelist()) > 1:
+            raise Exception('shread can only process zip archives that '
+                            'contain a single file. Archive contents: \n'
+                            '{}'.format(zf.namelist()))
+        f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+    else:
+        f = open(filename, 'r', encoding=encoding)
+
+    with f:
         for line in f:
             if 'end_of_head' in line:
                 break
@@ -198,3 +223,35 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         return cilm[:2], gravity_constant, radius, cilm[2:]
     else:
         return cilm[:2], gravity_constant, radius
+
+
+def _isurl(filename):
+    """
+    Determine if filename is a URL. Valid URLs start with
+        'http://'
+        'https://'
+        'ftp://'
+    """
+    if filename[0:7].lower() == 'http://':
+        return True
+    elif filename[0:8].lower() == 'https://':
+        return True
+    elif filename[0:6].lower() == 'ftp://':
+        return True
+    else:
+        return False
+
+
+def _iszipurl(filename):
+    """
+    Determine if filename is a URL of a zip file. Zip files either
+        (1) end with '.zip', or
+        (2) are located in a subdirectory '/zip/' for files downloaded from
+            the ICGEM web site.
+    """
+    if _isurl(filename):
+        if '/zip/' in filename:
+            return True
+
+    return False
+
