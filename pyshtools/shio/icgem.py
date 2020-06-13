@@ -36,50 +36,51 @@ def _time_variable_part(epoch, ref_epoch, trnd, periodic):
 def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                    encoding=None):
     """
-    Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted
-    file.
+    Read spherical harmonic coefficients from an ICGEM formatted file.
 
-    This function only reads files with the gravity field spherical
+    This function reads only GFC files with gravity field spherical
     harmonic coefficients.
 
     Returns
     -------
     cilm : array
-        Array with the coefficients with the shape (2, lmax + 1, lmax + 1)
-        for the given epoch.
+        Array with the coefficients of shape (2, lmax + 1, lmax + 1) for the
+        given epoch.
     gm : float
-        Standard gravitational constant of the model, in m**3/s**2.
+        Gravitational constant of the model, in m**3/s**2.
     r0 : float
         Reference radius of the model, in meters.
     errors : array, optional
-        Array with the errors of the coefficients with the shape
+        Array with the errors of the coefficients of shape
         (2, lmax + 1, lmax + 1) for the given epoch.
 
     Parameters
     ----------
     filename : str
-        The ascii-formatted filename containing the spherical harmonic
-        coefficients.
-    errors : str, optional
-        Which errors to read. Can be either "calibrated", "formal" or
-        None. Default is None.
-    lmax : int, optional
+        The filename containing the spherical harmonic ICGEM-formatted
+        coefficients. filename will be treated as a URL if it starts with
+        'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
+        '.zip', the file will be uncompressed before parsing.
+    errors : str, optional, default = None
+        Which errors to read. Can be either 'calibrated', 'formal' or None.
+    lmax : int, optional, default = None
         Maximum degree to read from the file. If lmax is None, less than 0, or
         greater than lmax_model, the maximum degree of the model will be used.
-    epoch : str or float, optional
+    epoch : str or float, optional, default = None
         The epoch time to calculate time-variable coefficients in YYYYMMDD.DD
-        format. If None then reference epoch t0 of the model will be used.
-        If format of the file is 'icgem2.0' then epoch must be specified.
+        format. If None then the reference epoch t0 of the model will be used.
+        If the format of the file is 'icgem2.0' then the epoch must be
+        specified.
     encoding : str, optional
-        Encoding of the input file. Try to use 'iso-8859-1' if default (UTF-8)
-        fails.
+        Encoding of the input file. Try to use 'iso-8859-1' if the default
+        (UTF-8) fails.
     """
     header = {}
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',
                    'gravity_constant', 'radius', 'max_degree', 'errors',
                    'tide_system', 'norm', 'format']
 
-    # determine how to open filename
+    # open filename as a text file
     if _isurl(filename):
         _response = _requests.get(filename)
         if _iszipurl(filename):
@@ -254,4 +255,3 @@ def _iszipurl(filename):
             return True
 
     return False
-

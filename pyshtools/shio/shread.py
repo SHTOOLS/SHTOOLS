@@ -38,8 +38,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     filename : str
         File name or URL that contains the text-formatted spherical harmonic
         coefficients. filename will be treated as a URL if it starts with
-        http://, https://, or ftp://. If filename ends with '.gz' or '.zip',
-        the file will be uncompressed before parsing.
+        'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
+        '.zip', the file will be uncompressed before parsing.
     lmax : int, optional, default = None
         The maximum spherical harmonic degree to read from the file. The
         default is to read the entire file.
