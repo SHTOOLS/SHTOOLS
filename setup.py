@@ -185,7 +185,7 @@ INSTALL_REQUIRES = [
     'matplotlib',
     'astropy',
     'xarray',
-    'requests'
+    'requests',
     'pooch',
     'tqdm'
 ]

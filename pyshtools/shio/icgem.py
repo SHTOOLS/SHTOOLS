@@ -68,8 +68,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         format. If None then reference epoch t0 of the model will be used.
         If format of the file is 'icgem2.0' then epoch must be specified.
     encoding : str, optional
-        Encoding of the input file. Try to use 'iso-8859-1'
-        if default (UTF-8) is failed.
+        Encoding of the input file. Try to use 'iso-8859-1' if default (UTF-8)
+        is failed.
     """
 
     # read header

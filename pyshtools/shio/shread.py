@@ -1,16 +1,13 @@
 """
-Functions for reading spherical harmonic coefficients from files.
+Functions for reading spherical harmonic coefficients from text files.
 """
 import os
 import io
 import gzip
 import zipfile
-
 import numpy as _np
 import requests as _requests
 
-
-# ==== shread() ====
 
 def shread(filename, lmax=None, error=False, header=False, skip=0):
     """
@@ -58,7 +55,7 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     Notes
     -----
     This function will read spherical harmonic coefficients from an
-    ascii-formatted text file. If the The errors associated with the spherical
+    ascii-formatted text file. The errors associated with the spherical
     harmonic coefficients, as well as the values in a single header line, can
     be read optionally by setting the parameters error and header to
     True. The optional parameter skip specifies how many lines should be
