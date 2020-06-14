@@ -309,7 +309,7 @@ class SHMagCoeffs(object):
             ends with '.gz' or '.zip', the file will be uncompressed before
             parsing.
         format : str, optional, default = 'shtools'
-            'shtools' format or binary numpy 'npy' format.
+            'shtools' for generic ascii files, or 'npy' for binary numpy files.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read from 'shtools'
             formatted files. The default is to read the entire file.
@@ -345,6 +345,22 @@ class SHMagCoeffs(object):
 
         Notes
         -----
+        If format='shtools', the spherical harmonic coefficients will be read
+        from a text file using the function pyshtools.shio.shread().
+
+        If format='npy', the spherical harmonic coefficients will be read from
+        a binary numpy 'npy' using the function numpy.load().
+
+        The coefficients read from the file are assumed to have units of nT.
+
+        For 'shtools' formatted files, if filename starts with 'http://',
+        'https://', or 'ftp://', the file will be treated as a URL. In this
+        case, the file will be downloaded in its entirety before it is parsed.
+        If the filename ends with '.gz' or '.zip', the file will be
+        automatically uncompressed before parsing. For zip files, archives with
+        only a single file are supported. Note that reading '.gz' and '.zip'
+        files will be extremely slow if lmax is not specified.
+
         If format='shtools', spherical harmonic coefficients will be read from
         a text file. The optional parameter `skip` specifies how many lines
         should be skipped before attempting to parse the file, the optional
@@ -357,7 +373,7 @@ class SHMagCoeffs(object):
         coeffs_units is specified as 'T', the coefficients will be converted
         to nT.
 
-        For shtools formatted files, all lines that do not start with 2
+        For 'shtools' formatted files, all lines that do not start with 2
         integers and that are less than 3 words long will be treated as
         comments and ignored. For this format, each line of the file must
         contain
@@ -366,26 +382,12 @@ class SHMagCoeffs(object):
 
         where l and m are the spherical harmonic degree and order,
         respectively. The terms coeffs[1, l, 0] can be neglected as they are
-        zero. For more information, see `shio.shread()`. If errors are read,
-        each line must contain:
+        zero. If errors are read, each line must contain:
 
         l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
-
-        The coefficients read from the file are assumed to have units of nT.
-
-        If filename starts with http://, https://, or ftp://, the file will be
-        treated as a URL. In this case, the file will be downloaded in its
-        entirety before it is parsed.
-
-        If the filename ends with '.gz' or '.zip', the file will be
-        automatically uncompressed before parsing. For zip files, archives with
-        only a single file are supported. Note that reading '.gz' and '.zip'
-        files will be extremely slow if lmax is not specified.
-
-        If format='npy', a binary numpy 'npy' file will be read using
-        numpy.load().
         """
-        error = None
+        error_coeffs = None
+        header_list = None
         if not header:
             r0_index = None
 
@@ -412,27 +414,31 @@ class SHMagCoeffs(object):
                 raise ValueError('Can not specify both r0_index and r0.')
             if header is False and r0 is None:
                 raise ValueError('If header is False, r0 must be specified.')
-
-        if header_units.lower() not in ('m', 'km'):
-            raise ValueError("header_units can be only 'm' or 'km'. Input "
-                             "value is {:s}.".format(repr(header_units)))
+            if header_units.lower() not in ('m', 'km'):
+                raise ValueError("header_units can be only 'm' or 'km'. Input "
+                                 "value is {:s}.".format(repr(header_units)))
 
         if coeffs_units.lower() not in ('nt', 't'):
             raise ValueError("coeffs_units can be only 'T' or 'nT'. Input "
                              "value is {:s}.".format(repr(coeffs_units)))
 
-        header_list = None
         if format.lower() == 'shtools':
             if header is True:
                 if errors is True:
-                    coeffs, error, lmaxout, header_list = _shread(
+                    coeffs, error_coeffs, lmaxout, header_list = _shread(
                         fname, lmax=lmax, skip=skip, header=True, error=True)
                 else:
                     coeffs, lmaxout, header_list = _shread(
                         fname, lmax=lmax, skip=skip, header=True)
+
+                if r0_index is not None:
+                    r0 = float(header_list[r0_index])
+                    if header_units.lower() == 'km':
+                        r0 *= 1.e3
+
             else:
                 if errors is True:
-                    coeffs, error, lmaxout = _shread(
+                    coeffs, error_coeffs, lmaxout = _shread(
                         fname, lmax=lmax, error=True, skip=skip)
                 else:
                     coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
@@ -456,19 +462,14 @@ class SHMagCoeffs(object):
                            "85. Input value is {:d}.".format(lmaxout),
                            category=RuntimeWarning)
             lmaxout = 85
-
-        if format.lower() == 'shtools' and header is True:
-            if r0_index is not None:
-                r0 = float(header_list[r0_index])
-                if header_units.lower() == 'km':
-                    r0 *= 1.e3
+            coeffs = coeffs[:, :lmaxout+1, :lmaxout+1]
 
         if coeffs_units.lower() == 't':
             coeffs *= 1.e9
             if errors is True:
-                error *= 1.e9
+                error_coeffs *= 1.e9
 
-        clm = SHMagRealCoeffs(coeffs, r0=r0, errors=error,
+        clm = SHMagRealCoeffs(coeffs, r0=r0, errors=error_coeffs,
                               normalization=normalization.lower(),
                               csphase=csphase, header=header_list)
         return clm

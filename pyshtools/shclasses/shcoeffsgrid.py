@@ -441,7 +441,7 @@ class SHCoeffs(object):
             ends with '.gz' or '.zip', the file will be uncompressed before
             parsing.
         format : str, optional, default = 'shtools'
-            'shtools' format or binary numpy 'npy' format.
+            'shtools' for generic ascii files, or 'npy' for binary numpy files.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read from 'shtools'
             formatted files. The default is to read the entire file.
@@ -463,13 +463,26 @@ class SHCoeffs(object):
 
         Notes
         -----
-        If format='shtools', spherical harmonic coefficients will be read from
-        a text file. The optional parameter `skip` specifies how many lines
-        should be skipped before attempting to parse the file, the optional
-        parameter `header` specifies whether to read a list of values from a
-        header line, and the optional parameter `lmax` specifies the maximum
-        degree to read from the file. All lines that do not start with 2
-        integers and that are less than 3 words long will be treated as
+        If format='shtools', the spherical harmonic coefficients will be read
+        from a text file using the function pyshtools.shio.shread().
+
+        If format='npy', the spherical harmonic coefficients will be read from
+        a binary numpy 'npy' using the function numpy.load().
+
+        For 'shtools' formatted files, if filename starts with 'http://',
+        'https://', or 'ftp://', the file will be treated as a URL. In this
+        case, the file will be downloaded in its entirety before it is parsed.
+        If the filename ends with '.gz' or '.zip', the file will be
+        automatically uncompressed before parsing. For zip files, archives with
+        only a single file are supported. Note that reading '.gz' and '.zip'
+        files will be extremely slow if lmax is not specified.
+
+        For 'shtools' formatted files, the optional parameter `skip` specifies
+        how many lines should be skipped before attempting to parse the file,
+        the optional parameter `header` specifies whether to read a list of
+        values from a header line, and the optional parameter `lmax` specifies
+        the maximum degree to read from the file. All lines that do not start
+        with 2 integers and that are less than 3 words long will be treated as
         comments and ignored. For this format, each line of the file must
         contain
 
@@ -477,19 +490,7 @@ class SHCoeffs(object):
 
         where l and m are the spherical harmonic degree and order,
         respectively. The terms coeffs[1, l, 0] can be neglected as they are
-        zero. For more information, see `shio.shread()`.
-
-        If filename starts with http://, https://, or ftp://, the file will be
-        treated as a URL. In this case, the file will be downloaded in its
-        entirety before it is parsed.
-
-        If the filename ends with '.gz' or '.zip', the file will be
-        automatically uncompressed before parsing. For zip files, archives with
-        only a single file are supported. Note that reading '.gz' and '.zip'
-        files will be extremely slow if lmax is not specified.
-
-        If format='npy', a binary numpy 'npy' file will be read using
-        numpy.load().
+        zero.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
@@ -516,9 +517,11 @@ class SHCoeffs(object):
                                                        skip=skip, header=True)
             else:
                 coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+
         elif format.lower() == 'npy':
             coeffs = _np.load(fname, **kwargs)
             lmaxout = coeffs.shape[1] - 1
+
         else:
             raise NotImplementedError(
                 'format={:s} not implemented.'.format(repr(format)))
@@ -530,6 +533,7 @@ class SHCoeffs(object):
                            "85. Input value is {:d}.".format(lmaxout),
                            category=RuntimeWarning)
             lmaxout = 85
+            coeffs = coeffs[:, :lmaxout+1, :lmaxout+1]
 
         if _np.iscomplexobj(coeffs):
             kind = 'complex'

@@ -60,7 +60,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         The filename containing the spherical harmonic ICGEM-formatted
         coefficients. filename will be treated as a URL if it starts with
         'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
-        '.zip', the file will be uncompressed before parsing.
+        '.zip' (or if the path contains '/zip/'), the file will be
+        uncompressed before parsing.
     errors : str, optional, default = None
         Which errors to read. Can be either 'calibrated', 'formal' or None.
     lmax : int, optional, default = None
@@ -79,11 +80,12 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',
                    'gravity_constant', 'radius', 'max_degree', 'errors',
                    'tide_system', 'norm', 'format']
+    valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
 
     # open filename as a text file
     if _isurl(filename):
         _response = _requests.get(filename)
-        if _iszipurl(filename):
+        if _iszipfile(filename):
             zf = zipfile.ZipFile(io.BytesIO(_response.content))
             if len(zf.namelist()) > 1:
                 raise Exception('read_icgem_gfc can only process zip archives '
@@ -143,7 +145,6 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
             lmax = lmax_model
 
         if errors is not None:
-            valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
             if header['errors'] == 'no':
                 raise ValueError('This model has no errors.')
             elif errors not in valid_err[:-1]:
@@ -243,15 +244,16 @@ def _isurl(filename):
         return False
 
 
-def _iszipurl(filename):
+def _iszipfile(filename):
     """
-    Determine if filename is a URL of a zip file. Zip files either
+    Determine if filename is a zip file. Zip files either
         (1) end with '.zip', or
         (2) are located in a subdirectory '/zip/' for files downloaded from
             the ICGEM web site.
     """
-    if _isurl(filename):
-        if '/zip/' in filename:
-            return True
+    if '/zip/' in filename:
+        return True
+    elif filename[-4:] == '.zip':
+        return True
 
     return False
