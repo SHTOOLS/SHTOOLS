@@ -16,6 +16,7 @@ from .shtensor import SHMagTensor as _SHMagTensor
 from ..spectralanalysis import spectrum as _spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+from ..shio import read_bshc as _read_bshc
 from ..shtools import MakeMagGridDH as _MakeMagGridDH
 from ..shtools import MakeMagGradGridDH as _MakeMagGradGridDH
 from ..shtools import djpi2 as _djpi2
@@ -290,11 +291,13 @@ class SHMagCoeffs(object):
         Usage
         -----
         x = SHMagCoeffs.from_file(filename, [format='shtools', r0, lmax,
-                                             normalization, csphase, skip,
-                                             header, errors, r0_index,
-                                             header_units, coeffs_units])
-        x = SHMagCoeffs.from_file(filename, format='npy', r0,
-                                  [normalization, csphase, **kwargs])
+                                  normalization, csphase, skip, header, errors,
+                                  r0_index, header_units, coeffs_units])
+        x = SHMagCoeffs.from_file(filename, format='bshc', r0, [lmax,
+                                  normalization, csphase, coeffs_units])
+        x = SHMagCoeffs.from_file(filename, format='npy', r0, [lmax,
+                                  normalization, csphase, coeffs_units,
+                                  **kwargs])
 
         Returns
         -------
@@ -305,14 +308,15 @@ class SHMagCoeffs(object):
         filename : str
             File name or URL containing the spherical harmonic coefficients.
             filename will be treated as a URL if it starts with 'http://',
-            'https://', or 'ftp://'. For shtools formatted files, if filename
-            ends with '.gz' or '.zip', the file will be uncompressed before
-            parsing.
+            'https://', or 'ftp://'. For 'shtools' and 'bshc' formatted files,
+            if filename ends with '.gz' or '.zip', the file will be
+            uncompressed before parsing.
         format : str, optional, default = 'shtools'
-            'shtools' for generic ascii files, or 'npy' for binary numpy files.
+            'shtools' for generic ascii files, 'bshc' for binary spherical
+            harmonic coefficient files, or 'npy' for binary numpy files.
         lmax : int, optional, default = None
-            The maximum spherical harmonic degree to read from 'shtools'
-            formatted files. The default is to read the entire file.
+            The maximum spherical harmonic degree to read from the file. The
+            default is to read the entire file.
         header : bool, optional, default = True
             If True, read a list of values from the header line of an 'shtools'
             formatted file.
@@ -328,8 +332,8 @@ class SHMagCoeffs(object):
             The units of r0 in the header line of an shtools formatted file:
             'm' or 'km'. If 'km', the value of r0 will be converted to meters.
         coeffs_units : str, optional, default = 'nT'
-            The units of the coefficients read from the file: 'nT or 'T''. If
-            'T', the coefficients will be converted to nT.
+            The units of the coefficients read from the file: 'nT' or 'T'. If
+            'T', the coefficients will be converted to nanoTeslas.
         normalization : str, optional, default = 'schmidt'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -338,8 +342,8 @@ class SHMagCoeffs(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         skip : int, optional, default = 0
-            Number of lines to skip at the beginning of the file when format is
-            'shtools'.
+            Number of lines to skip at the beginning of the file for 'shtools'
+            formatted files.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
@@ -348,15 +352,20 @@ class SHMagCoeffs(object):
         If format='shtools', the spherical harmonic coefficients will be read
         from a text file using the function pyshtools.shio.shread().
 
+        If format='bshc', the real spherical harmonic coefficients will be read
+        from a binary file using the function pyshtools.shio.read_bshc().
+
         If format='npy', the spherical harmonic coefficients will be read from
         a binary numpy 'npy' using the function numpy.load().
 
         The coefficients read from the file are assumed to have units of nT.
+        If coeffs_units is specified as 'T', the coefficients read from the
+        file will be converted to nT.
 
-        For 'shtools' formatted files, if filename starts with 'http://',
-        'https://', or 'ftp://', the file will be treated as a URL. In this
-        case, the file will be downloaded in its entirety before it is parsed.
-        If the filename ends with '.gz' or '.zip', the file will be
+        For 'shtools' and 'bshc' formatted files, if filename starts with
+        'http://', 'https://', or 'ftp://', the file will be treated as a URL.
+        In this case, the file will be downloaded in its entirety before it is
+        parsed. If the filename ends with '.gz' or '.zip', the file will be
         automatically uncompressed before parsing. For zip files, archives with
         only a single file are supported. Note that reading '.gz' and '.zip'
         files will be extremely slow if lmax is not specified.
@@ -368,23 +377,7 @@ class SHMagCoeffs(object):
         header line, and the optional parameter `lmax` specifies the maximum
         degree to read from the file. If a header line is read, r0_index is
         used as the indice to set r0. If header_unit is specified as 'km', the
-        value of r0 read from the header will be converted to meters. The
-        coefficients read from the file are assumed to have units of nT. If
-        coeffs_units is specified as 'T', the coefficients will be converted
-        to nT.
-
-        For 'shtools' formatted files, all lines that do not start with 2
-        integers and that are less than 3 words long will be treated as
-        comments and ignored. For this format, each line of the file must
-        contain
-
-        l, m, coeffs[0, l, m], coeffs[1, l, m]
-
-        where l and m are the spherical harmonic degree and order,
-        respectively. The terms coeffs[1, l, 0] can be neglected as they are
-        zero. If errors are read, each line must contain:
-
-        l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
+        value of r0 read from the header will be converted to meters.
         """
         error_coeffs = None
         header_list = None
@@ -443,11 +436,22 @@ class SHMagCoeffs(object):
                 else:
                     coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
 
+        elif format.lower() == 'bshc':
+            if r0 is None:
+                raise ValueError('For binary bshc files, r0 must be '
+                                 'specified.')
+            coeffs, lmaxout = _read_bshc(fname, lmax=lmax)
+
         elif format.lower() == 'npy':
             if r0 is None:
                 raise ValueError('For binary npy files, r0 must be specified.')
             coeffs = _np.load(fname, **kwargs)
             lmaxout = coeffs.shape[1] - 1
+            if lmax is not None:
+                if lmax < lmaxout:
+                    coeffs = coeffs[:, :lmax+1, :lmax+1]
+                    lmaxout = lmax
+
         else:
             raise NotImplementedError(
                 'format={:s} not implemented'.format(repr(format)))

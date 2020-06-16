@@ -22,11 +22,12 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Function name | Description |
 | ------------- | ----------- |
 | [shread](pyshread.html) | Read spherical harmonic coefficients from a text file. |
+| [read_icgem_gfc](read_icgem_gfc.html) | Read real spherical harmonic coefficients from an ICGEM GFC-formatted file. |
+| [read_bsch](read_icgem_gfc.html) | Read real spherical harmonic coefficients from a binary bsch-formatted file. |
 | [SHRead2](pyshread2.html) | Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file. |
 | [SHRead2Error](pyshread2error.html) | Read spherical harmonic coefficients and associated errors from a CHAMP or GRACE-like ascii-formatted file. |
 | [SHReadJPL](pyshreadjpl.html) | Read spherical harmonic coefficients from a JPL ascii-formatted file. |
 | [SHReadJPLError](pyshreadjplerror.html) | Read spherical harmonic coefficients and associated errors from a JPL ascii-formatted file. |
-| [read_icgem_gfc](read_icgem_gfc.html) | Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted file. |
 
 ## Spherical harmonic storage
 

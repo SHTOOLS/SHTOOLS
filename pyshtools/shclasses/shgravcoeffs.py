@@ -20,6 +20,7 @@ from ..constant import G as _G
 from ..spectralanalysis import spectrum as _spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+from ..shio import read_bshc as _read_bshc
 from ..shio import read_icgem_gfc as _read_icgem_gfc
 from ..shtools import CilmPlusRhoHDH as _CilmPlusRhoHDH
 from ..shtools import CilmPlusDH as _CilmPlusDH
@@ -336,15 +337,18 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        x = SHGravCoeffs.from_file(filename, [format='shtools' or 'icgem',
-                                              gm, r0, omega, lmax,
-                                              normalization, csphase,
-                                              skip, header, errors, gm_index,
-                                              r0_index, omega_index,
-                                              header_units, set_degree0,
-                                              epoch])
-        x = SHGravCoeffs.from_file(filename, format='npy', gm, r0,
-                                   [omega, normalization, csphase, **kwargs])
+        x = SHGravCoeffs.from_file(filename, [format='shtools', gm, r0, omega,
+                                   lmax, normalization, csphase, skip, header,
+                                   errors, gm_index, r0_index, omega_index,
+                                   header_units, set_degree0])
+        x = SHGravCoeffs.from_file(filename, format='icgem', [lmax, omega,
+                                   normalization, csphase, errors, set_degree0,
+                                   epoch])
+        x = SHGravCoeffs.from_file(filename, format='bshc', gm, r0, [lmax,
+                                   omega, normalization, csphase, set_degree0])
+        x = SHGravCoeffs.from_file(filename, format='npy', gm, r0, [lmax,
+                                   omega, normalization, csphase, set_degree0,
+                                   **kwargs])
 
         Returns
         -------
@@ -355,15 +359,17 @@ class SHGravCoeffs(object):
         filename : str
             File name or URL containing the spherical harmonic coefficients.
             filename will be treated as a URL if it starts with 'http://',
-            'https://', or 'ftp://'. For 'shtools' and 'icgem' formatted files,
-            if filename ends with '.gz' or '.zip' (or if the path contains
-            '/zip/'), the file will be uncompressed before parsing.
+            'https://', or 'ftp://'. For 'shtools', 'icgem' and 'bshc'
+            formatted files, if filename ends with '.gz' or '.zip' (or if the
+            path contains '/zip/'), the file will be uncompressed before
+            parsing.
         format : str, optional, default = 'shtools'
             'shtools' for generic ascii files, 'icgem' for ICGEM GFC formatted
-            files, or 'npy' for binary numpy files.
+            files, 'bshc' for binary spherical harmonic coefficient files, or
+            'npy' for binary numpy files.
         lmax : int, optional, default = None
-            The maximum spherical harmonic degree to read from 'shtools' or
-            'icgem' formatted files. The default is to read the entire file.
+            The maximum spherical harmonic degree to read from the file. The
+            default is to read the entire file.
         header : bool, optional, default = True
             If True, read a list of values from the header line of an 'shtools'
             formatted file.
@@ -389,7 +395,7 @@ class SHGravCoeffs(object):
         omega : float, optional, default = None
             The angular rotation rate of the body.
         header_units : str, optional, default = 'm'
-            The units used for r0 and gm in the header line of an shtools
+            The units used for r0 and gm in the header line of an 'shtools'
             formatted file: 'm' or 'km'. If 'km', the values of r0 and gm will
             be converted to meters.
         set_degree0 : bool, optional, default = True
@@ -402,8 +408,8 @@ class SHGravCoeffs(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         skip : int, optional, default = 0
-            Number of lines to skip at the beginning of the file when format is
-            'shtools'.
+            Number of lines to skip at the beginning of the file for 'shtools'
+            formatted files.
         epoch : str or float, optional, default = None
             The epoch time to calculate time-variable coefficients for 'icgem'
             files. Epoch is given by the format YYYYMMDD.DD, and if None the
@@ -420,16 +426,19 @@ class SHGravCoeffs(object):
         If format='icgem', the spherical harmonic coefficients will be read
         from a text file using the function pyshtools.shio.icgem_read_gfc().
 
+        If format='bshc', the real spherical harmonic coefficients will be read
+        from a binary file using the function pyshtools.shio.read_bshc().
+
         If format='npy', the spherical harmonic coefficients will be read from
         a binary numpy 'npy' file using the function numpy.load().
 
         If the degree 0 term of the file is zero (or not specified), this will
         by default be set to 1.
 
-        For 'shtools' and 'icgem' formatted files, if filename starts with
-        'http://', 'https://', or 'ftp://', the file will be treated as a URL.
-        In this case, the file will be downloaded in its entirety before it is
-        parsed. If the filename ends with '.gz' or '.zip' (or if the path
+        For 'shtools', 'icgem' and 'bshc' formatted files, if filename starts
+        with 'http://', 'https://', or 'ftp://', the file will be treated as a
+        URL. In this case, the file will be downloaded in its entirety before
+        it is parsed. If the filename ends with '.gz' or '.zip' (or if the path
         contains '/zip/'), the file will be automatically uncompressed before
         parsing. For zip files, archives with only a single file are supported.
         Note that reading '.gz' and '.zip' files in 'shtools' format will be
@@ -443,19 +452,6 @@ class SHGravCoeffs(object):
         r0_index, gm_index, and omega_index, are used as the indices to set r0,
         gm, and omega. If header_unit is specified as 'km', the values of r0
         and gm that are read from the header will be converted to meters.
-
-        For 'shtools' formatted files, all lines that do not start with 2
-        integers and that are less than 3 words long will be treated as
-        comments and ignored. For this format, each line of the file must
-        contain
-
-        l, m, coeffs[0, l, m], coeffs[1, l, m]
-
-        where l and m are the spherical harmonic degree and order,
-        respectively. The terms coeffs[1, l, 0] can be neglected as they are
-        zero. If errors are read, each line must contain:
-
-        l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
         """
         error_coeffs = None
         header_list = None
@@ -519,12 +515,22 @@ class SHGravCoeffs(object):
                 else:
                     coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
 
+        elif format.lower() == 'bshc':
+            if gm is None or r0 is None:
+                raise ValueError('For binary bshc files, gm and r0 must be '
+                                 'specified.')
+            coeffs, lmaxout = _read_bshc(fname, lmax=lmax)
+
         elif format.lower() == 'npy':
             if gm is None or r0 is None:
                 raise ValueError('For binary npy files, gm and r0 must be '
                                  'specified.')
             coeffs = _np.load(fname, **kwargs)
             lmaxout = coeffs.shape[1] - 1
+            if lmax is not None:
+                if lmax < lmaxout:
+                    coeffs = coeffs[:, :lmax+1, :lmax+1]
+                    lmaxout = lmax
 
         elif format.lower() == 'icgem':
             valid_err = ('calibrated', 'formal')

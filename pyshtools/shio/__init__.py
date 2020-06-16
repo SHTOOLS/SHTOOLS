@@ -6,6 +6,10 @@ This submodule of pyshtools defines the following functions:
 Spherical harmonic I/O
 ----------------------
 shread           Read spherical harmonic coefficients from a text file.
+read_icgem_gfc   Read real spherical harmonic coefficients and associated
+                 errors from an ICGEM GFC ascii-formatted file.
+read_bshc        Read real spherical harmonic coefficients from a binary
+                 bshc-formatted file.
 SHRead2          Read spherical harmonic coefficients from a CHAMP or GRACE-
                  like ascii-formatted file.
 SHRead2Error     Read spherical harmonic coefficients and associated errors
@@ -14,8 +18,6 @@ SHReadJPL        Read spherical harmonic coefficients from a JPL ascii-
                  formatted file.
 SHReadJPLError   Read spherical harmonic coefficients and associated errors
                  from a JPL ascii-formatted file.
-read_icgem_gfc   Read spherical harmonic coefficients or associated errors
-                 from an ICGEM GFC ascii-formatted file.
 
 Spherical harmonic storage
 --------------------------
@@ -51,6 +53,7 @@ from ..shtools import SHctor
 from .convert import convert
 from .shread import shread
 from .icgem import read_icgem_gfc
+from .read_bshc import read_bshc
 from .yilm_index_vector import YilmIndexVector
 
 
@@ -58,4 +61,4 @@ from .yilm_index_vector import YilmIndexVector
 __all__ = ['SHRead2', 'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
            'SHCilmToCindex', 'SHCindexToCilm', 'SHCilmToVector',
            'SHVectorToCilm', 'SHrtoc', 'SHctor', 'convert', 'shread',
-           'read_icgem_gfc', 'YilmIndexVector']
+           'read_icgem_gfc', 'read_bshc', 'YilmIndexVector']

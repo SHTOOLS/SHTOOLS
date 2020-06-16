@@ -99,8 +99,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
     elif filename[-4:] == '.zip':
         zf = zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
-            raise Exception('shread can only process zip archives that '
-                            'contain a single file. Archive contents: \n'
+            raise Exception('read_icgem_gfc can only process zip archives '
+                            'that contain a single file. Archive contents: \n'
                             '{}'.format(zf.namelist()))
         f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
     else:
@@ -255,5 +255,5 @@ def _iszipfile(filename):
         return True
     elif filename[-4:] == '.zip':
         return True
-
-    return False
+    else:
+        return False
