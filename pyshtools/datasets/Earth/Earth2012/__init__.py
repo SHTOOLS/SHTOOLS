@@ -1,15 +1,16 @@
 '''
-Earth2012: Shape and topography of Earth expanded to degree and order 2160.
+Earth2012: Shape and topography (with respect to mean sea level) of Earth
+expanded to degree and order 2160.
 
 shape_air       :  Earth's shape (with water)
 shape_bathy     :  Earth's shape (without water)
 shape_bathy_bed :  Earth's shape (without water and ice)
-shape_RET       :  Earth's rock-equivalent topography as shape model
+shape_ret       :  Earth's rock-equivalent topography as shape model
 
 topo_air        :  Earth's surface (with water)
 topo_bathy      :  Earth's surface (without water)
 topo_bathy_bed  :  Earth's surface (without water and ice)
-RET             :  Earth's rock-equivalent topography
+ret             :  Earth's rock-equivalent topography
 
 Reference
 ---------
@@ -100,7 +101,7 @@ def shape_bathy_bed(lmax=2160):
     return _SHCoeffs.from_file(fname, lmax=lmax)
 
 
-def shape_RET(lmax=2160):
+def shape_ret(lmax=2160):
     '''
     Earth's rock-equivalent topography as shape model: Harmonic shape model of
     Earth's rock-equivalent topography.
@@ -206,7 +207,7 @@ def topo_bathy_bed(lmax=2160):
     return _SHCoeffs.from_file(fname, lmax=lmax)
 
 
-def RET(lmax=2160):
+def ret(lmax=2160):
     '''
     Earth's rock-equivalent topography: Harmonic model of Earth's
     rock-equivalent topography.
@@ -231,5 +232,5 @@ def RET(lmax=2160):
     return _SHCoeffs.from_file(fname, lmax=lmax)
 
 
-__all__ = ['shape_air', 'shape_bathy', 'shape_bathy_bed', 'shape_RET',
-           'topo_air', 'topo_bathy', 'topo_bathy_bed', 'RET']
+__all__ = ['shape_air', 'shape_bathy', 'shape_bathy_bed', 'shape_ret',
+           'topo_air', 'topo_bathy', 'topo_bathy_bed', 'ret']
