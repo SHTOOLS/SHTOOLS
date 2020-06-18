@@ -15,8 +15,8 @@ ret             :  Earth's rock-equivalent topography
 Reference
 ---------
 Hirt, C., Kuhn, M., Featherstone, W.E., Goettl, F. (2012). Topographic/
-isostatic evaluation of new-generation GOCE gravity field models, Journal of
-Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
+    isostatic evaluation of new-generation GOCE gravity field models, Journal
+    of Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
@@ -37,8 +37,9 @@ def shape_air(lmax=2160):
     Reference
     ---------
     Hirt, C., Kuhn, M., Featherstone, W.E., Goettl, F. (2012). Topographic/
-    isostatic evaluation of new-generation GOCE gravity field models, Journal
-    of Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
+        isostatic evaluation of new-generation GOCE gravity field models,
+        Journal of Geophysical Research: Solid Earth, B05407,
+        doi:10.1029/2011JB008878.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2012/topo_shape_to2160/Earth2012.shape_air.SHCto2160.zip",  # noqa: E501
@@ -62,8 +63,9 @@ def shape_bathy(lmax=2160):
     Reference
     ---------
     Hirt, C., Kuhn, M., Featherstone, W.E., Goettl, F. (2012). Topographic/
-    isostatic evaluation of new-generation GOCE gravity field models, Journal
-    of Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
+        isostatic evaluation of new-generation GOCE gravity field models,
+        Journal of Geophysical Research: Solid Earth, B05407,
+        doi:10.1029/2011JB008878.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2012/topo_shape_to2160/Earth2012.shape_bathy.SHCto2160.zip",  # noqa: E501
@@ -89,8 +91,9 @@ def shape_bathy_bed(lmax=2160):
     Reference
     ---------
     Hirt, C., Kuhn, M., Featherstone, W.E., Goettl, F. (2012). Topographic/
-    isostatic evaluation of new-generation GOCE gravity field models, Journal
-    of Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
+        isostatic evaluation of new-generation GOCE gravity field models,
+        Journal of Geophysical Research: Solid Earth, B05407,
+        doi:10.1029/2011JB008878.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2012/topo_shape_to2160/Earth2012.shape_bathy_bed.SHCto2160.zip",  # noqa: E501
@@ -114,8 +117,9 @@ def shape_ret(lmax=2160):
     Reference
     ---------
     Hirt, C., Kuhn, M., Featherstone, W.E., Goettl, F. (2012). Topographic/
-    isostatic evaluation of new-generation GOCE gravity field models, Journal
-    of Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
+        isostatic evaluation of new-generation GOCE gravity field models,
+        Journal of Geophysical Research: Solid Earth, B05407,
+        doi:10.1029/2011JB008878.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2012/topo_shape_to2160/Earth2012.shape_RET2012.SHCto2160.zip",  # noqa: E501
@@ -140,8 +144,9 @@ def topo_air(lmax=2160):
     Reference
     ---------
     Hirt, C., Kuhn, M., Featherstone, W.E., Goettl, F. (2012). Topographic/
-    isostatic evaluation of new-generation GOCE gravity field models, Journal
-    of Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
+        isostatic evaluation of new-generation GOCE gravity field models,
+        Journal of Geophysical Research: Solid Earth, B05407,
+        doi:10.1029/2011JB008878.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2012/topo_shape_to2160/Earth2012.topo_air.SHCto2160.zip",  # noqa: E501
@@ -167,8 +172,9 @@ def topo_bathy(lmax=2160):
     Reference
     ---------
     Hirt, C., Kuhn, M., Featherstone, W.E., Goettl, F. (2012). Topographic/
-    isostatic evaluation of new-generation GOCE gravity field models, Journal
-    of Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
+        isostatic evaluation of new-generation GOCE gravity field models,
+        Journal of Geophysical Research: Solid Earth, B05407,
+        doi:10.1029/2011JB008878.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2012/topo_shape_to2160/Earth2012.topo_bathy.SHCto2160.zip",  # noqa: E501
@@ -195,8 +201,9 @@ def topo_bathy_bed(lmax=2160):
     Reference
     ---------
     Hirt, C., Kuhn, M., Featherstone, W.E., Goettl, F. (2012). Topographic/
-    isostatic evaluation of new-generation GOCE gravity field models, Journal
-    of Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
+        isostatic evaluation of new-generation GOCE gravity field models,
+        Journal of Geophysical Research: Solid Earth, B05407,
+        doi:10.1029/2011JB008878.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2012/topo_shape_to2160/Earth2012.topo_bathy_bed.SHCto2160.zip",  # noqa: E501
@@ -220,8 +227,9 @@ def ret(lmax=2160):
     Reference
     ---------
     Hirt, C., Kuhn, M., Featherstone, W.E., Goettl, F. (2012). Topographic/
-    isostatic evaluation of new-generation GOCE gravity field models, Journal
-    of Geophysical Research: Solid Earth, B05407, doi:10.1029/2011JB008878.
+        isostatic evaluation of new-generation GOCE gravity field models,
+        Journal of Geophysical Research: Solid Earth, B05407,
+        doi:10.1029/2011JB008878.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2012/topo_shape_to2160/Earth2012.RET2012.SHCto2160.zip",  # noqa: E501

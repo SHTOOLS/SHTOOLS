@@ -11,9 +11,9 @@ ice       :  Thickness of Earth's ice sheets
 Reference
 ---------
 Hirt, C., Rexer, M. (2015). Earth2014: 1 arc-min shape, topography, bedrock
-and ice-sheet models - available as gridded data and degree-10,800 spherical
-harmonics, International Journal of Applied Earth Observation and
-Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
+    and ice-sheet models - available as gridded data and degree-10,800
+    spherical harmonics, International Journal of Applied Earth Observation and
+    Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
@@ -34,9 +34,9 @@ def surface(lmax=2160):
     Reference
     ---------
     Hirt, C., Rexer, M. (2015). Earth2014: 1 arc-min shape, topography, bedrock
-    and ice-sheet models - available as gridded data and degree-10,800
-    spherical harmonics, International Journal of Applied Earth Observation and
-    Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
+        and ice-sheet models - available as gridded data and degree-10,800
+        spherical harmonics, International Journal of Applied Earth Observation
+        and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.SUR2014.degree2160.bshc",  # noqa: E501
@@ -60,9 +60,9 @@ def bedrock(lmax=2160):
     Reference
     ---------
     Hirt, C., Rexer, M. (2015). Earth2014: 1 arc-min shape, topography, bedrock
-    and ice-sheet models - available as gridded data and degree-10,800
-    spherical harmonics, International Journal of Applied Earth Observation and
-    Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
+        and ice-sheet models - available as gridded data and degree-10,800
+        spherical harmonics, International Journal of Applied Earth Observation
+        and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.BED2014.degree2160.bshc",  # noqa: E501
@@ -86,9 +86,9 @@ def tbi(lmax=2160):
     Reference
     ---------
     Hirt, C., Rexer, M. (2015). Earth2014: 1 arc-min shape, topography, bedrock
-    and ice-sheet models - available as gridded data and degree-10,800
-    spherical harmonics, International Journal of Applied Earth Observation and
-    Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
+        and ice-sheet models - available as gridded data and degree-10,800
+        spherical harmonics, International Journal of Applied Earth Observation
+        and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.TBI2014.degree2160.bshc",  # noqa: E501
@@ -113,9 +113,9 @@ def ret(lmax=2160):
     Reference
     ---------
     Hirt, C., Rexer, M. (2015). Earth2014: 1 arc-min shape, topography, bedrock
-    and ice-sheet models - available as gridded data and degree-10,800
-    spherical harmonics, International Journal of Applied Earth Observation and
-    Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
+        and ice-sheet models - available as gridded data and degree-10,800
+        spherical harmonics, International Journal of Applied Earth Observation
+        and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.RET2014.degree2160.bshc",  # noqa: E501
@@ -139,9 +139,9 @@ def ice(lmax=2160):
     Reference
     ---------
     Hirt, C., Rexer, M. (2015). Earth2014: 1 arc-min shape, topography, bedrock
-    and ice-sheet models - available as gridded data and degree-10,800
-    spherical harmonics, International Journal of Applied Earth Observation and
-    Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
+        and ice-sheet models - available as gridded data and degree-10,800
+        spherical harmonics, International Journal of Applied Earth Observation
+        and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     fname = _retrieve(
         url="http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.ICE2014.degree2160.bshc",  # noqa: E501

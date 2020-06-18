@@ -331,7 +331,7 @@ class SHGravCoeffs(object):
                   omega=None, lmax=None, normalization='4pi', skip=0,
                   header=True, errors=False, csphase=1, r0_index=0, gm_index=1,
                   omega_index=None, header_units='m', set_degree0=True,
-                  epoch=None, **kwargs):
+                  epoch=None, encoding=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -343,7 +343,7 @@ class SHGravCoeffs(object):
                                    header_units, set_degree0])
         x = SHGravCoeffs.from_file(filename, format='icgem', [lmax, omega,
                                    normalization, csphase, errors, set_degree0,
-                                   epoch])
+                                   epoch, encoding])
         x = SHGravCoeffs.from_file(filename, format='bshc', gm, r0, [lmax,
                                    omega, normalization, csphase, set_degree0])
         x = SHGravCoeffs.from_file(filename, format='npy', gm, r0, [lmax,
@@ -415,6 +415,9 @@ class SHGravCoeffs(object):
             files. Epoch is given by the format YYYYMMDD.DD, and if None the
             reference epoch t0 of the model will be used. Epoch is required for
             'icgem2.0' formatted files.
+        encoding : str, optional, default = None
+            Encoding of the input file for 'icgem' files. Try to use
+            'iso-8859-1' if the default (UTF-8) fails.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
@@ -537,10 +540,12 @@ class SHGravCoeffs(object):
             if errors is False or errors is None:
                 coeffs, gm, r0 = _read_icgem_gfc(filename=fname,
                                                  errors=None, lmax=lmax,
-                                                 epoch=epoch)
+                                                 epoch=epoch,
+                                                 encoding=encoding)
             elif errors in valid_err:
                 coeffs, gm, r0, error_coeffs = _read_icgem_gfc(
-                    filename=fname, errors=errors, lmax=lmax, epoch=epoch)
+                    filename=fname, errors=errors, lmax=lmax, epoch=epoch,
+                    encoding=encoding)
             else:
                 raise ValueError('errors must be among: {}. '
                                  'Input value is {:s}.'
