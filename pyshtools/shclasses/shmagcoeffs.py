@@ -17,6 +17,7 @@ from ..spectralanalysis import spectrum as _spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
 from ..shio import read_bshc as _read_bshc
+from ..shio import read_igrf as _read_igrf
 from ..shtools import MakeMagGridDH as _MakeMagGridDH
 from ..shtools import MakeMagGradGridDH as _MakeMagGradGridDH
 from ..shtools import djpi2 as _djpi2
@@ -284,7 +285,7 @@ class SHMagCoeffs(object):
     def from_file(self, fname, format='shtools', r0=None, lmax=None,
                   normalization='schmidt', skip=0, header=True, errors=False,
                   csphase=1, r0_index=0, header_units='m', coeffs_units='nT',
-                  **kwargs):
+                  year=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -293,6 +294,8 @@ class SHMagCoeffs(object):
         x = SHMagCoeffs.from_file(filename, [format='shtools', r0, lmax,
                                   normalization, csphase, skip, header, errors,
                                   r0_index, header_units, coeffs_units])
+        x = SHMagCoeffs.from_file(filename, format='igrf', r0, year, [lmax,
+                                  normalization, csphase, coeffs_units])
         x = SHMagCoeffs.from_file(filename, format='bshc', r0, [lmax,
                                   normalization, csphase, coeffs_units])
         x = SHMagCoeffs.from_file(filename, format='npy', r0, [lmax,
@@ -312,7 +315,8 @@ class SHMagCoeffs(object):
             if filename ends with '.gz' or '.zip', the file will be
             uncompressed before parsing.
         format : str, optional, default = 'shtools'
-            'shtools' for generic ascii files, 'bshc' for binary spherical
+            'shtools' for generic ascii files, 'igrf' for International
+            Geomagnetic Reference Field files, 'bshc' for binary spherical
             harmonic coefficient files, or 'npy' for binary numpy files.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read from the file. The
@@ -324,12 +328,12 @@ class SHMagCoeffs(object):
             If True, read errors from the file (for 'shtools' formatted files
             only).
         r0_index : int, optional, default = 0
-            For shtools formatted files, if header is True, r0 will be set
+            For 'shtools' formatted files, if header is True, r0 will be set
             using the value from the header line with this index.
         r0 : float, optional, default = None
             The reference radius of the spherical harmonic coefficients.
         header_units : str, optional, default = 'm'
-            The units of r0 in the header line of an shtools formatted file:
+            The units of r0 in the header line of an 'shtools' formatted file:
             'm' or 'km'. If 'km', the value of r0 will be converted to meters.
         coeffs_units : str, optional, default = 'nT'
             The units of the coefficients read from the file: 'nT' or 'T'. If
@@ -344,6 +348,8 @@ class SHMagCoeffs(object):
         skip : int, optional, default = 0
             Number of lines to skip at the beginning of the file for 'shtools'
             formatted files.
+        year : float, default = None.
+            The year to compute the coefficients for 'igrf' formatted files.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
@@ -351,6 +357,10 @@ class SHMagCoeffs(object):
         -----
         If format='shtools', the spherical harmonic coefficients will be read
         from a text file using the function pyshtools.shio.shread().
+
+        If format='igrf', the real spherical harmonic coefficients will be read
+        from an International Geomagnetic Reference Field file using the
+        function pyshtools.shio.read_igrf() for a specified year.
 
         If format='bshc', the real spherical harmonic coefficients will be read
         from a binary file using the function pyshtools.shio.read_bshc().
@@ -362,13 +372,14 @@ class SHMagCoeffs(object):
         If coeffs_units is specified as 'T', the coefficients read from the
         file will be converted to nT.
 
-        For 'shtools' and 'bshc' formatted files, if filename starts with
-        'http://', 'https://', or 'ftp://', the file will be treated as a URL.
-        In this case, the file will be downloaded in its entirety before it is
-        parsed. If the filename ends with '.gz' or '.zip', the file will be
-        automatically uncompressed before parsing. For zip files, archives with
-        only a single file are supported. Note that reading '.gz' and '.zip'
-        files will be extremely slow if lmax is not specified.
+        For 'shtools', 'igrf' and 'bshc' formatted files, if filename starts
+        with 'http://', 'https://', or 'ftp://', the file will be treated as a
+        URL. In this case, the file will be downloaded in its entirety before
+        it is parsed. If the filename ends with '.gz' or '.zip', the file will
+        be automatically uncompressed before parsing. For zip files, archives
+        with only a single file are supported. Note that reading '.gz' and
+        '.zip' files for 'shtools' formatted files will be extremely slow if
+        lmax is not specified.
 
         If format='shtools', spherical harmonic coefficients will be read from
         a text file. The optional parameter `skip` specifies how many lines
@@ -441,6 +452,18 @@ class SHMagCoeffs(object):
                 raise ValueError('For binary bshc files, r0 must be '
                                  'specified.')
             coeffs, lmaxout = _read_bshc(fname, lmax=lmax)
+
+        elif format.lower() == 'igrf':
+            if r0 is None:
+                raise ValueError('For igrf files, r0 must be specified.')
+            if year is None:
+                raise ValueError('For igrf files, year must be specified.')
+            coeffs = _read_igrf(fname, year=year)
+            lmaxout = coeffs.shape[1] - 1
+            if lmax is not None:
+                if lmax < lmaxout:
+                    coeffs = coeffs[:, :lmax+1, :lmax+1]
+                    lmaxout = lmax
 
         elif format.lower() == 'npy':
             if r0 is None:

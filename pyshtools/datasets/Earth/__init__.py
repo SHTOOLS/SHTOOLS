@@ -8,17 +8,22 @@ Earth2014                  :  Hirt and Rexer (2015)
 
 Gravity
 -------
-EGM2008                    :  Pavlis et al. (2012); degree 2190, combined
-EIGEN_6C4                  :  Förste et al. (2014); degree 2190, combined
-GGM05C                     :  Ries et al. (2016); degree 360, combined
+EGM2008                    :  Pavlis et al. (2012); degree 2190
+EIGEN_6C4                  :  Förste et al. (2014); degree 2190
+GGM05C                     :  Ries et al. (2016); degree 360
 GOCO06S                    :  Kvas et al. (2019); degree 300, satellite only
 EIGEN_GRGS_RL04_MEAN_FIELD :  Lemoine et al. (2019); degree 300, satellite only
-XGM2019E                   :  Zingerle et al. (2019); degree 2190, combined
+XGM2019E                   :  Zingerle et al. (2019); degree 2190
+
+Magnetic field
+--------------
+IGRF_13                    :  Thébault et al. (2015)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
+from ...shclasses import SHMagCoeffs as _SHMagCoeffs
 from ...constant.Earth import omega_egm2008 as _omega
 
 from . import Earth2012
@@ -202,5 +207,38 @@ def XGM2019E(lmax=2190):
                                    errors='formal', omega=_omega.value)
 
 
+def IGRF_13(lmax=13, year=2020.):
+    '''
+    IGRF-13 is a degree 13 time variable model of the Earth's main magnetic
+    field that is valid between 1900 and 2020. Coefficients are provided in 5
+    year intervals, and for a given year, the values of the coefficients are
+    interpolated linearly between adjacent entries. For years between 2020 and
+    2025, the coefficients are extrapolated using the provided secular
+    variation.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+    year : float, optional, default = 2020.
+        The year to compute the coefficients.
+
+    Reference
+    ---------
+    Thébault, E., and 47 coauthors (2015). International Geomagnetic Reference
+        Field: the 12th generation, Earth, Planets and Space, 67, 79,
+        doi:10.1186/s40623-015-0228-9.
+    '''
+    fname = _retrieve(
+        url="https://www.ngdc.noaa.gov/IAGA/vmod/coeffs/igrf13coeffs.txt",
+        known_hash="sha256:460b8d8beb9b4df84febe4f0b639f0dd54dccfe8ff0970616287b015fa721425",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHMagCoeffs.from_file(fname, format='igrf', r0=6371.2e3,
+                                  lmax=lmax, year=year)
+
+
 __all__ = ['Earth2012', 'Earth2014', 'EGM2008', 'EIGEN_6C4',
-           'GGM05C', 'GOCO06S', 'EIGEN_GRGS_RL04_MEAN_FIELD', 'XGM2019E']
+           'GGM05C', 'GOCO06S', 'EIGEN_GRGS_RL04_MEAN_FIELD', 'XGM2019E',
+           'IGRF_13']

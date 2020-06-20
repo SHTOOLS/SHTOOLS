@@ -1,5 +1,6 @@
 """
-ICGEM-format read support
+Support for reading real gravitational-potential coefficients from
+ICGEM-formatted files.
 """
 import io
 import gzip
@@ -36,23 +37,20 @@ def _time_variable_part(epoch, ref_epoch, trnd, periodic):
 def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                    encoding=None):
     """
-    Read spherical harmonic coefficients from an ICGEM formatted file.
-
-    This function reads only GFC files with gravity field spherical
-    harmonic coefficients.
+    Read real spherical harmonic gravity coefficients from an ICGEM formatted
+    file.
 
     Returns
     -------
-    cilm : array
-        Array with the coefficients of shape (2, lmax + 1, lmax + 1) for the
+    cilm : ndarray, size (2, lmax + 1, lmax + 1)
+        Array of '4pi' normalized spherical harmonic coefficients for the
         given epoch.
     gm : float
         Gravitational constant of the model, in m**3/s**2.
     r0 : float
         Reference radius of the model, in meters.
-    errors : array, optional
-        Array with the errors of the coefficients of shape
-        (2, lmax + 1, lmax + 1) for the given epoch.
+    errors : ndarray, optional, shape (2, lmax + 1, lmax + 1)
+        Array of the spherical harmonic error coefficients for the given epoch.
 
     Parameters
     ----------

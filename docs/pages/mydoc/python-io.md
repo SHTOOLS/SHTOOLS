@@ -22,8 +22,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Function name | Description |
 | ------------- | ----------- |
 | [shread](pyshread.html) | Read spherical harmonic coefficients from a text file. |
-| [read_icgem_gfc](read_icgem_gfc.html) | Read real spherical harmonic coefficients from an ICGEM GFC-formatted file. |
-| [read_bsch](read_icgem_gfc.html) | Read real spherical harmonic coefficients from a binary bsch-formatted file. |
+| [read_icgem_gfc](read_icgem_gfc.html) | Read real spherical harmonic gravitational potential coefficients and associated errors from an ICGEM GFC formatted file. |
+| [read_bsch](read_bshc.html) | Read real spherical harmonic coefficients from a binary bsch-formatted file. |
+| [read_igrf](read_igrf.html) | Read IGRF real spherical harmonic coefficients, and return the magnetic potential coefficients for the specified year. |
 | [SHRead2](pyshread2.html) | Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file. |
 | [SHRead2Error](pyshread2error.html) | Read spherical harmonic coefficients and associated errors from a CHAMP or GRACE-like ascii-formatted file. |
 | [SHReadJPL](pyshreadjpl.html) | Read spherical harmonic coefficients from a JPL ascii-formatted file. |
