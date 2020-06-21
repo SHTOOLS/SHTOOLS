@@ -111,28 +111,12 @@ def Morschhauser2014(lmax=110, nt=True):
         url="https://zenodo.org/record/3876495/files/Morschhauser2014.txt.gz?download=1",  # noqa: E501
         known_hash="sha256:a86200b3147a24447ff8bba88ec6047329823275813a9f5e9505bb611e3e86e0",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
         processor=_Decompress(),
     )
-
     r0 = 3393.5e3
-    lmax = 110
-
-    with open(fname, 'r') as f:
-        lines = f.readlines()
-        coeffs = _np.zeros([2, lmax+1, lmax+1])
-
-        for x in lines[3:]:
-            degree = int(x.split()[0])
-            order = int(x.split()[1])
-            d = float(x.split()[2])
-
-            if degree <= lmax:
-                if order >= 0:
-                    coeffs[0, degree, order] = d
-                else:
-                    coeffs[1, degree, abs(order)] = d
-
-    temp = _SHMagCoeffs.from_array(coeffs, r0=r0)
+    temp = _SHMagCoeffs.from_file(fname, r0=r0, skip=3, header=False,
+                                  format='dov')
 
     if nt:
         return temp
@@ -162,6 +146,7 @@ def GMM3(lmax=120):
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/gmm3_120_sha.tab",  # noqa: E501
         known_hash="sha256:eb4913b1afb6682406e6a9dad5be7918a162fa8462473c9a2e7aae258d4c2c9c",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True)
@@ -190,6 +175,7 @@ def GMM3_RM1_1E0(lmax=150):
         url="https://core2.gsfc.nasa.gov/PGDA/data/MarsDensityRM1/sha.gmm3_l150_rm1_lambda_1",  # noqa: E501
         known_hash="sha256:b309917362bd2014df42a62cb19ea321ee8db97997b0688eda2774deb46ef538",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
                                    r0_index=1, gm_index=0, errors=False)
@@ -216,6 +202,7 @@ def MRO120D(lmax=120):
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/jgmro_120d_sha.tab",  # noqa: E501
         known_hash="sha256:00c3a2fada7bdfb8022962752b1226be1de21ea469f9e88af5d8dc47d23883bd",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True)

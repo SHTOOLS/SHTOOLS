@@ -20,6 +20,7 @@ from ..constant import G as _G
 from ..spectralanalysis import spectrum as _spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+from ..shio import read_dov as _read_dov
 from ..shio import read_bshc as _read_bshc
 from ..shio import read_icgem_gfc as _read_icgem_gfc
 from ..shtools import CilmPlusRhoHDH as _CilmPlusRhoHDH
@@ -329,9 +330,9 @@ class SHGravCoeffs(object):
     @classmethod
     def from_file(self, fname, format='shtools', gm=None, r0=None,
                   omega=None, lmax=None, normalization='4pi', skip=0,
-                  header=True, errors=False, csphase=1, r0_index=0, gm_index=1,
-                  omega_index=None, header_units='m', set_degree0=True,
-                  epoch=None, encoding=None, **kwargs):
+                  header=True, header2=False, errors=False, csphase=1,
+                  r0_index=0, gm_index=1, omega_index=None, header_units='m',
+                  set_degree0=True, epoch=None, encoding=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -341,6 +342,10 @@ class SHGravCoeffs(object):
                                    lmax, normalization, csphase, skip, header,
                                    errors, gm_index, r0_index, omega_index,
                                    header_units, set_degree0])
+        x = SHGravCoeffs.from_file(filename, format='dov', [gm, r0, omega,
+                                   lmax, normalization, csphase, skip, header,
+                                   header2, errors, gm_index, r0_index,
+                                   omega_index, header_units, set_degree0])
         x = SHGravCoeffs.from_file(filename, format='icgem', [lmax, omega,
                                    normalization, csphase, errors, set_degree0,
                                    epoch, encoding])
@@ -364,14 +369,18 @@ class SHGravCoeffs(object):
             path contains '/zip/'), the file will be uncompressed before
             parsing.
         format : str, optional, default = 'shtools'
-            'shtools' for generic ascii files, 'icgem' for ICGEM GFC formatted
-            files, 'bshc' for binary spherical harmonic coefficient files, or
-            'npy' for binary numpy files.
+            'shtools' for generic ascii files, 'dov' for [degree, order, value]
+            ascii files, 'icgem' for ICGEM GFC formatted files, 'bshc' for
+            binary spherical harmonic coefficient files, or 'npy' for binary
+            numpy files.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read from the file. The
             default is to read the entire file.
         header : bool, optional, default = True
             If True, read a list of values from the header line of an 'shtools'
+            or 'dov' formatted file.
+        header2 : bool, optional, default = False
+            If True, read a list of values from a second header line of a 'dov'
             formatted file.
         errors : bool or str, optional, default = False
             For 'shtools' formatted files: if True, read and return the
@@ -426,6 +435,9 @@ class SHGravCoeffs(object):
         If format='shtools', the spherical harmonic coefficients will be read
         from a text file using the function pyshtools.shio.shread().
 
+        If format='dov', the spherical harmonic coefficients will be read
+        from a text file using the function pyshtools.shio.read_dov().
+
         If format='icgem', the spherical harmonic coefficients will be read
         from a text file using the function pyshtools.shio.icgem_read_gfc().
 
@@ -438,23 +450,23 @@ class SHGravCoeffs(object):
         If the degree 0 term of the file is zero (or not specified), this will
         by default be set to 1.
 
-        For 'shtools', 'icgem' and 'bshc' formatted files, if filename starts
-        with 'http://', 'https://', or 'ftp://', the file will be treated as a
-        URL. In this case, the file will be downloaded in its entirety before
-        it is parsed. If the filename ends with '.gz' or '.zip' (or if the path
-        contains '/zip/'), the file will be automatically uncompressed before
-        parsing. For zip files, archives with only a single file are supported.
-        Note that reading '.gz' and '.zip' files in 'shtools' format will be
-        extremely slow if lmax is not specified.
+        For 'shtools', 'dov', 'icgem' and 'bshc' formatted files, if filename
+        starts with 'http://', 'https://', or 'ftp://', the file will be
+        treated as a URL. In this case, the file will be downloaded in its
+        entirety before it is parsed. If the filename ends with '.gz' or '.zip'
+        (or if the path contains '/zip/'), the file will be automatically
+        uncompressed before parsing. For zip files, archives with only a single
+        file are supported. Note that reading '.gz' and '.zip' files in
+        'shtools' format will be extremely slow if lmax is not specified.
 
-        For 'shtools' formatted files, the optional parameter `skip` specifies
-        how many lines should be skipped before attempting to parse the file,
-        the optional parameter `header` specifies whether to read a list of
-        values from a header line, and the optional parameter `lmax` specifies
-        the maximum degree to read from the file. If a header line is read,
-        r0_index, gm_index, and omega_index, are used as the indices to set r0,
-        gm, and omega. If header_unit is specified as 'km', the values of r0
-        and gm that are read from the header will be converted to meters.
+        For 'shtools' and 'dov' formatted files, the optional parameter `skip`
+        specifies how many lines should be skipped before attempting to parse
+        the file, the optional parameter `header` specifies whether to read a
+        list of values from a header line, and the optional parameter `lmax`
+        specifies the maximum degree to read from the file. If a header line is
+        read, r0_index, gm_index, and omega_index, are used as the indices to
+        set r0, gm, and omega. If header_unit is specified as 'km', the values
+        of r0 and gm that are read from the header will be converted to meters.
         """
         error_coeffs = None
         header_list = None
@@ -477,7 +489,7 @@ class SHGravCoeffs(object):
                 .format(repr(csphase))
                 )
 
-        if format == 'shtools':
+        if format == 'shtools' or format == 'dov':
             if header_units.lower() not in ('m', 'km'):
                 raise ValueError("header_units can be only 'm', or 'km'. "
                                  "Input value is {:s}."
@@ -517,6 +529,44 @@ class SHGravCoeffs(object):
                         fname, lmax=lmax, error=True, skip=skip)
                 else:
                     coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+
+        elif format.lower() == 'dov':
+            if header is True:
+                if errors is True:
+                    if header2:
+                        coeffs, error_coeffs, lmaxout, header_list, \
+                            header2_list = _read_dov(fname, lmax=lmax,
+                                                     skip=skip, header=True,
+                                                     header2=True, error=True)
+                    else:
+                        coeffs, error_coeffs, lmaxout, header_list = _read_dov(
+                            fname, lmax=lmax, skip=skip, header=True,
+                            error=True)
+                else:
+                    if header2:
+                        coeffs, lmaxout, header_list, header2_list = _read_dov(
+                            fname, lmax=lmax, skip=skip, header=True,
+                            header2=True)
+                    else:
+                        coeffs, lmaxout, header_list = _read_dov(
+                            fname, lmax=lmax, skip=skip, header=True)
+
+                if r0_index is not None:
+                    r0 = float(header_list[r0_index])
+                if gm_index is not None:
+                    gm = float(header_list[gm_index])
+                if omega_index is not None:
+                    omega = float(header_list[omega_index])
+                if header_units.lower() == 'km':
+                    r0 *= 1.e3
+                    gm *= 1.e9
+
+            else:
+                if errors is True:
+                    coeffs, error_coeffs, lmaxout = _read_dov(
+                        fname, lmax=lmax, error=True, skip=skip)
+                else:
+                    coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
 
         elif format.lower() == 'bshc':
             if gm is None or r0 is None:

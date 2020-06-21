@@ -17,6 +17,7 @@ from ..spectralanalysis import spectrum as _spectrum
 from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+from ..shio import read_dov as _read_dov
 from ..shio import read_bshc as _read_bshc
 
 try:
@@ -416,7 +417,7 @@ class SHCoeffs(object):
 
     @classmethod
     def from_file(self, fname, lmax=None, format='shtools', kind='real',
-                  normalization='4pi', skip=0, header=False,
+                  normalization='4pi', skip=0, header=False, header2=False,
                   csphase=1, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
@@ -425,6 +426,8 @@ class SHCoeffs(object):
         -----
         x = SHCoeffs.from_file(filename, [format='shtools', lmax,
                                normalization, csphase, skip, header])
+        x = SHCoeffs.from_file(filename, format='dov', [lmax, normalization,
+                               csphase, skip, header, header2])
         x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
                                csphase])
         x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
@@ -443,8 +446,9 @@ class SHCoeffs(object):
             if filename ends with '.gz' or '.zip', the file will be
             uncompressed before parsing.
         format : str, optional, default = 'shtools'
-            'shtools' for generic ascii files, 'bshc' for binary spherical
-            harmonic coefficient files, or 'npy' for binary numpy files.
+            'shtools' for generic ascii files, 'dov' for [degree, order, value]
+            ascii files, 'bshc' for binary spherical harmonic coefficient
+            files, or 'npy' for binary numpy files.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read from the file. The
             default is to read the entire file.
@@ -460,6 +464,9 @@ class SHCoeffs(object):
             formatted files.
         header : bool, optional, default = False
             If True, read a list of values from the header line of an 'shtools'
+            or 'dov' formatted file.
+        header2 : bool, optional, default = False
+            If True, read a list of values from a second header line of a 'dov'
             formatted file.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
@@ -469,13 +476,16 @@ class SHCoeffs(object):
         If format='shtools', the spherical harmonic coefficients will be read
         from a text file using the function pyshtools.shio.shread().
 
+        If format='dov', the spherical harmonic coefficients will be read
+        from a text file using the function pyshtools.shio.read_dov().
+
         If format='bshc', the real spherical harmonic coefficients will be read
         from a binary file using the function pyshtools.shio.read_bshc().
 
         If format='npy', the spherical harmonic coefficients will be read from
         a binary numpy 'npy' using the function numpy.load().
 
-        For 'shtools' or 'bshc' formatted files, if filename starts with
+        For 'shtools', 'dov' or 'bshc' formatted files, if filename starts with
         'http://', 'https://', or 'ftp://', the file will be treated as a URL.
         In this case, the file will be downloaded in its entirety before it is
         parsed. If the filename ends with '.gz' or '.zip', the file will be
@@ -483,11 +493,11 @@ class SHCoeffs(object):
         only a single file are supported. Note that reading '.gz' and '.zip'
         files will be extremely slow if lmax is not specified.
 
-        For 'shtools' formatted files, the optional parameter `skip` specifies
-        how many lines should be skipped before attempting to parse the file,
-        the optional parameter `header` specifies whether to read a list of
-        values from a header line, and the optional parameter `lmax` specifies
-        the maximum degree to read from the file.
+        For 'shtools' and 'dov' formatted files, the optional parameter `skip`
+        specifies how many lines should be skipped before attempting to parse
+        the file, the optional parameter `header` specifies whether to read a
+        list of values from a header line, and the optional parameter `lmax`
+        specifies the maximum degree to read from the file.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
@@ -514,6 +524,19 @@ class SHCoeffs(object):
                                                        skip=skip, header=True)
             else:
                 coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+
+        if format.lower() == 'dov':
+            if header:
+                if header2:
+                    coeffs, lmaxout, header_list, header2_list = \
+                        _read_dov(fname, lmax=lmax, skip=skip, header=True,
+                                  header2=True)
+                else:
+                    coeffs, lmaxout, header_list = _read_dov(fname, lmax=lmax,
+                                                             skip=skip,
+                                                             header=True)
+            else:
+                coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
 
         elif format.lower() == 'bshc':
             coeffs, lmaxout = _read_bshc(fname, lmax=lmax)

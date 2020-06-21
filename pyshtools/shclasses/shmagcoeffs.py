@@ -16,6 +16,7 @@ from .shtensor import SHMagTensor as _SHMagTensor
 from ..spectralanalysis import spectrum as _spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+from ..shio import read_dov as _read_dov
 from ..shio import read_bshc as _read_bshc
 from ..shio import read_igrf as _read_igrf
 from ..shtools import MakeMagGridDH as _MakeMagGridDH
@@ -283,15 +284,18 @@ class SHMagCoeffs(object):
 
     @classmethod
     def from_file(self, fname, format='shtools', r0=None, lmax=None,
-                  normalization='schmidt', skip=0, header=True, errors=False,
-                  csphase=1, r0_index=0, header_units='m', coeffs_units='nT',
-                  year=None, **kwargs):
+                  normalization='schmidt', skip=0, header=True, header2=False,
+                  errors=False, csphase=1, r0_index=0, header_units='m',
+                  coeffs_units='nT', year=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
         Usage
         -----
         x = SHMagCoeffs.from_file(filename, [format='shtools', r0, lmax,
+                                  normalization, csphase, skip, header, errors,
+                                  r0_index, header_units, coeffs_units])
+        x = SHMagCoeffs.from_file(filename, format='dov', [r0, lmax,
                                   normalization, csphase, skip, header, errors,
                                   r0_index, header_units, coeffs_units])
         x = SHMagCoeffs.from_file(filename, format='igrf', r0, year, [lmax,
@@ -315,14 +319,18 @@ class SHMagCoeffs(object):
             if filename ends with '.gz' or '.zip', the file will be
             uncompressed before parsing.
         format : str, optional, default = 'shtools'
-            'shtools' for generic ascii files, 'igrf' for International
-            Geomagnetic Reference Field files, 'bshc' for binary spherical
-            harmonic coefficient files, or 'npy' for binary numpy files.
+            'shtools' for generic ascii files, 'dov' for [degree, order, value]
+            ascii files, 'igrf' for International Geomagnetic Reference Field
+            files, 'bshc' for binary spherical harmonic coefficient files, or
+            'npy' for binary numpy files.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read from the file. The
             default is to read the entire file.
         header : bool, optional, default = True
             If True, read a list of values from the header line of an 'shtools'
+            or 'dov' formatted file.
+        header2 : bool, optional, default = False
+            If True, read a list of values from a second header line of a 'dov'
             formatted file.
         errors : bool, optional, default = False
             If True, read errors from the file (for 'shtools' formatted files
@@ -358,6 +366,9 @@ class SHMagCoeffs(object):
         If format='shtools', the spherical harmonic coefficients will be read
         from a text file using the function pyshtools.shio.shread().
 
+        If format='dov', the spherical harmonic coefficients will be read
+        from a text file using the function pyshtools.shio.read_dov().
+
         If format='igrf', the real spherical harmonic coefficients will be read
         from an International Geomagnetic Reference Field file using the
         function pyshtools.shio.read_igrf() for a specified year.
@@ -372,23 +383,24 @@ class SHMagCoeffs(object):
         If coeffs_units is specified as 'T', the coefficients read from the
         file will be converted to nT.
 
-        For 'shtools', 'igrf' and 'bshc' formatted files, if filename starts
-        with 'http://', 'https://', or 'ftp://', the file will be treated as a
-        URL. In this case, the file will be downloaded in its entirety before
-        it is parsed. If the filename ends with '.gz' or '.zip', the file will
-        be automatically uncompressed before parsing. For zip files, archives
-        with only a single file are supported. Note that reading '.gz' and
-        '.zip' files for 'shtools' formatted files will be extremely slow if
-        lmax is not specified.
+        For 'shtools', 'dob', 'igrf' and 'bshc' formatted files, if filename
+        starts with 'http://', 'https://', or 'ftp://', the file will be
+        treated as a URL. In this case, the file will be downloaded in its
+        entirety before it is parsed. If the filename ends with '.gz' or
+        '.zip', the file will be automatically uncompressed before parsing.
+        For zip files, archives with only a single file are supported. Note
+        that reading '.gz' and '.zip' files for 'shtools' formatted files will
+        be extremely slow if lmax is not specified.
 
-        If format='shtools', spherical harmonic coefficients will be read from
-        a text file. The optional parameter `skip` specifies how many lines
-        should be skipped before attempting to parse the file, the optional
-        parameter `header` specifies whether to read a list of values from a
-        header line, and the optional parameter `lmax` specifies the maximum
-        degree to read from the file. If a header line is read, r0_index is
-        used as the indice to set r0. If header_unit is specified as 'km', the
-        value of r0 read from the header will be converted to meters.
+        If format='shtools' or 'dov', spherical harmonic coefficients will be
+        read from a text file. The optional parameter `skip` specifies how many
+        lines should be skipped before attempting to parse the file, the
+        optional parameter `header` specifies whether to read a list of values
+        from a header line, and the optional parameter `lmax` specifies the
+        maximum degree to read from the file. If a header line is read,
+        r0_index is used as the indice to set r0. If header_unit is specified
+        as 'km', the value of r0 read from the header will be converted to
+        meters.
         """
         error_coeffs = None
         header_list = None
@@ -413,7 +425,7 @@ class SHMagCoeffs(object):
                 .format(repr(csphase))
                 )
 
-        if format == 'shtools':
+        if format == 'shtools' or format == 'dov':
             if r0_index is not None and r0 is not None:
                 raise ValueError('Can not specify both r0_index and r0.')
             if header is False and r0 is None:
@@ -446,6 +458,39 @@ class SHMagCoeffs(object):
                         fname, lmax=lmax, error=True, skip=skip)
                 else:
                     coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+
+        elif format.lower() == 'dov':
+            if header is True:
+                if errors is True:
+                    if header2:
+                        coeffs, error_coeffs, lmaxout, header_list, \
+                            header2_list = _read_dov(fname, lmax=lmax,
+                                                     skip=skip, header=True,
+                                                     header2=True, error=True)
+                    else:
+                        coeffs, error_coeffs, lmaxout, header_list = _read_dov(
+                            fname, lmax=lmax, skip=skip, header=True,
+                            error=True)
+                else:
+                    if header2:
+                        coeffs, lmaxout, header_list, header2_list = _read_dov(
+                            fname, lmax=lmax, skip=skip, header=True,
+                            header2=True)
+                    else:
+                        coeffs, lmaxout, header_list = _read_dov(
+                            fname, lmax=lmax, skip=skip, header=True)
+
+                if r0_index is not None:
+                    r0 = float(header_list[r0_index])
+                    if header_units.lower() == 'km':
+                        r0 *= 1.e3
+
+            else:
+                if errors is True:
+                    coeffs, error_coeffs, lmaxout = _read_dov(
+                        fname, lmax=lmax, error=True, skip=skip)
+                else:
+                    coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
 
         elif format.lower() == 'bshc':
             if r0 is None:
