@@ -432,20 +432,12 @@ class SHGravCoeffs(object):
 
         Notes
         -----
-        If format='shtools', the spherical harmonic coefficients will be read
-        from a text file using the function pyshtools.shio.shread().
-
-        If format='dov', the spherical harmonic coefficients will be read
-        from a text file using the function pyshtools.shio.read_dov().
-
-        If format='icgem', the spherical harmonic coefficients will be read
-        from a text file using the function pyshtools.shio.icgem_read_gfc().
-
-        If format='bshc', the real spherical harmonic coefficients will be read
-        from a binary file using the function pyshtools.shio.read_bshc().
-
-        If format='npy', the spherical harmonic coefficients will be read from
-        a binary numpy 'npy' file using the function numpy.load().
+        Supported file formats:
+            'shtools' (see pyshtools.shio.shread)
+            'dov' (see pyshtools.shio.shread)
+            'icgem' (see pyshtools.shio.icgem_read_gfc)
+            'bshc' (see pyshtools.shio.read_bshc)
+            'npy' (see numpy.load)
 
         If the degree 0 term of the file is zero (or not specified), this will
         by default be set to 1.

@@ -6,7 +6,7 @@ This submodule of pyshtools defines the following functions:
 Spherical harmonic I/O
 ----------------------
 shread           Read spherical harmonic coefficients from a text file.
-read_dov         Read real spherical harmonic coefficients from a text file
+read_dov         Read spherical harmonic coefficients from a text file
                  formatted as [degree, order, value].
 read_icgem_gfc   Read real spherical harmonic gravitational potential
                  coefficients and associated errors from an ICGEM GFC

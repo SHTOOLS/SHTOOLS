@@ -17,11 +17,16 @@ XGM2019E                   :  Zingerle et al. (2019); degree 2190
 
 Magnetic field
 --------------
-IGRF_13                    :  Thébault et al. (2015)
+IGRF_13                    :  Thébault et al. (2015); degree 13
+SWARM_MLI_2D_0501          :  Thébault et al. (2013); degree 133
+NGDC_720_V3                :  Maus (2010); degree 740
+WDMAM2_800                 :  Lesur et al. (2016); degree 800
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
+from pooch import FTPDownloader as _FTPDownloader
+from pooch import Unzip as _Unzip
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
 from ...shclasses import SHMagCoeffs as _SHMagCoeffs
 from ...constant.Earth import omega_egm2008 as _omega
@@ -213,7 +218,7 @@ def IGRF_13(lmax=13, year=2020.):
     field that is valid between 1900 and 2020. Coefficients are provided in 5
     year intervals, and for a given year, the values of the coefficients are
     interpolated linearly between adjacent entries. For years between 2020 and
-    2025, the coefficients are extrapolated using the provided secular
+    2025, the coefficients are extrapolated linearly using the provided secular
     variation.
 
     Parameters
@@ -239,6 +244,93 @@ def IGRF_13(lmax=13, year=2020.):
                                   lmax=lmax, year=year)
 
 
+def NGDC_720_V3(lmax=740):
+    '''
+    NGDC_720_V3 is a magnetic field model of the Earth's lithsophere that was
+    compiled from satellite, marine, aeromagnetic and ground-based magnetic
+    surveys. The model was original developped in ellipsoidal harmonics up to
+    degree 720, but the model provided here was subsequently converted to
+    spherical harmonics to degree 740. The first 15 degrees of the model are
+    equal to zero.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Maus, S. (2010). An ellipsoidal harmonic representation of Earth’s
+        lithospheric magnetic field to degree and order 720, Geochem. Geophys.
+        Geosyst., 11, Q06015, doi:10.1029/2010GC003026.
+    '''
+    fname = _retrieve(
+        url="https://www.ngdc.noaa.gov/geomag/NGDC720/data/geomag/NGDC-720_V3p0.cof.gz",  # noqa: E501
+        known_hash="sha256:d9a0f89f2845548a3a42214e1044169b0772d407a83719d146390af2591a4007",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, skip=14,
+                                  header=False)
+
+
+def WDMAM2_800(lmax=800):
+    '''
+    WDMAM2_800 is a degree 800 model of the Earth's lithospheric magnetic field
+    that is based on a worldwide compilation of near-surface magnetic data.
+    This is the second version of the World Digital Magnetic Anomaly Map
+    (WDMAM).
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Lesur, V., Hamoudi, M., Choi, Y., Dyment, J., Thébault, E. (2016). Building
+        the second version of the world digital magnetic anomaly map (WDMAM).
+        Earth, Planets and Space, 68, 27, doi:10.1186/s40623-016-0404-6.
+    '''
+    fname = _retrieve(
+        url="https://zenodo.org/record/3902903/files/WDMAM2_800.sh.gz?download=1",  # noqa: E501
+        known_hash="sha256:3ddf3d9f37cbfafebf965649c5d3745c52a5127b4c4cd7c2768ad521867e1e2d",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, header=False)
+
+
+def SWARM_MLI_2D_0501(lmax=133):
+    '''
+    SWARM_MLI_2D_0501 is a degree 133 magnetic field model of the Earth's
+    lithsophere that is based largely on satellite data. Though this model is
+    based largely on data from the SWARM mission, data from the CHAMP mission
+    and some ground-based measurements are also used.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Thébault, E., Vigneron, P., Maus, S., Chulliat, A., Sirol, O., Hulot, G.
+        (2013). Swarm SCARF dedicated lithospheric field inversion chain.
+        Earth, Planets and Space, 65, 7, doi:10.5047/eps.2013.07.008.
+    '''
+    fname = _retrieve(
+        url="ftp://swarm-diss.eo.esa.int/Level2longterm/MLI/SW_OPER_MLI_SHA_2D_00000000T000000_99999999T999999_0501.ZIP",  # noqa: E501
+        known_hash="sha256:53b92d229ff9416c4cd5663975bdcb23f193f41e7212f2956685dae34dbc6f7f",  # noqa: E501
+        downloader=_FTPDownloader(progressbar=True),
+        processor=_Unzip(),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHMagCoeffs.from_file(fname[0], format='dov', r0=6371.2e3,
+                                  r0_index=None, lmax=lmax, header=True,
+                                  header2=True, skip=3)
+
+
 __all__ = ['Earth2012', 'Earth2014', 'EGM2008', 'EIGEN_6C4',
            'GGM05C', 'GOCO06S', 'EIGEN_GRGS_RL04_MEAN_FIELD', 'XGM2019E',
-           'IGRF_13']
+           'IGRF_13', 'NGDC_720_V3', 'WDMAM2_800', 'SWARM_MLI_2D_0501']

@@ -16,7 +16,6 @@ Magnetic field
 Langlais2019     :  Langlais et al. (2019)
 Morschhauser2014 :  Morschhauser et al. (2014)
 '''
-import numpy as _np
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
@@ -49,79 +48,6 @@ def MarsTopo2600(lmax=2600):
         path=_os_cache('pyshtools'),
     )
     return _SHCoeffs.from_file(fname, lmax=lmax)
-
-
-def Langlais2019(lmax=134, nt=True):
-    '''
-    Langlais2019 is a 134 degree and order spherical harmonic model of the
-    magnetic potential of Mars. This model makes use of data from MGS MAG,
-    MGS ER and MAVEN MAG. By default, the coefficients will be output in
-    units of nT.
-
-    Parameters
-    ----------
-    lmax : int, optional
-        The maximum spherical harmonic degree to return.
-    nt : bool, optional, default = True
-        If true, the returned coefficients will be in units of nT. If false,
-        the coefficients will have units of Teslas.
-
-    References
-    ----------
-    Langlais, B., Thébault, E., Houliez, A., Purucker, M.E., Lillis, R.J.
-        (2019). A new model of the crustal magnetic field of Mars using MGS
-        and MAVEN. Journal of Geophysical Research: Planets, 124, 1542-1569,
-        doi:10.1029/2018JE005854.
-    '''
-    fname = _retrieve(
-        url="https://zenodo.org/record/3876714/files/Langlais2019.sh.gz?download=1",  # noqa: E501
-        known_hash="sha256:3cad9e268f0673be1702f1df504a4cbcb8dba4480c7b3f629921911488fe247b",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
-        path=_os_cache('pyshtools'),
-    )
-    temp = _SHMagCoeffs.from_file(fname, lmax=lmax, skip=4, r0=3393.5e3,
-                                  header=False)
-    if nt:
-        return temp
-    else:
-        return temp / 1.e9
-
-
-def Morschhauser2014(lmax=110, nt=True):
-    '''
-    Morschhauser2014 is a 110 degree and order spherical harmonic model of the
-    magnetic potential of Mars. By default, the coefficients will be output in
-    units of nT.
-
-    Parameters
-    ----------
-    lmax : int, optional
-        The maximum spherical harmonic degree to return.
-    nt : bool, optional, default = True
-        If true, the returned coefficients will be in units of nT. If false,
-        the coefficients will have units of Teslas.
-
-    References
-    ----------
-    Morschhauser, A., Lesur, V., Grott, M. (2014). A spherical harmonic model
-        of the lithospheric magnetic ﬁeld of Mars, Journal of Geophysical
-        Research: Planets, 119, 1162-1188, doi:10.1002/2013JE004555.
-    '''
-    fname = _retrieve(
-        url="https://zenodo.org/record/3876495/files/Morschhauser2014.txt.gz?download=1",  # noqa: E501
-        known_hash="sha256:a86200b3147a24447ff8bba88ec6047329823275813a9f5e9505bb611e3e86e0",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
-        path=_os_cache('pyshtools'),
-        processor=_Decompress(),
-    )
-    r0 = 3393.5e3
-    temp = _SHMagCoeffs.from_file(fname, r0=r0, skip=3, header=False,
-                                  format='dov')
-
-    if nt:
-        return temp
-    else:
-        return temp / 1.e9
 
 
 def GMM3(lmax=120):
@@ -208,5 +134,76 @@ def MRO120D(lmax=120):
                                    r0_index=0, gm_index=1, errors=True)
 
 
-__all__ = ['MarsTopo2600', 'Langlais2019', 'Morschhauser2014', 'GMM3',
-           'GMM3_RM1_1E0', 'MRO120D']
+def Langlais2019(lmax=134, nt=True):
+    '''
+    Langlais2019 is a 134 degree and order spherical harmonic model of the
+    magnetic potential of Mars. This model makes use of data from MGS MAG,
+    MGS ER and MAVEN MAG. By default, the coefficients will be output in
+    units of nT.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+    nt : bool, optional, default = True
+        If true, the returned coefficients will be in units of nT. If false,
+        the coefficients will have units of Teslas.
+
+    References
+    ----------
+    Langlais, B., Thébault, E., Houliez, A., Purucker, M.E., Lillis, R.J.
+        (2019). A new model of the crustal magnetic field of Mars using MGS
+        and MAVEN. Journal of Geophysical Research: Planets, 124, 1542-1569,
+        doi:10.1029/2018JE005854.
+    '''
+    fname = _retrieve(
+        url="https://zenodo.org/record/3876714/files/Langlais2019.sh.gz?download=1",  # noqa: E501
+        known_hash="sha256:3cad9e268f0673be1702f1df504a4cbcb8dba4480c7b3f629921911488fe247b",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    temp = _SHMagCoeffs.from_file(fname, lmax=lmax, skip=4, r0=3393.5e3,
+                                  header=False)
+    if nt:
+        return temp
+    else:
+        return temp / 1.e9
+
+
+def Morschhauser2014(lmax=110, nt=True):
+    '''
+    Morschhauser2014 is a 110 degree and order spherical harmonic model of the
+    magnetic potential of Mars. By default, the coefficients will be output in
+    units of nT.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+    nt : bool, optional, default = True
+        If true, the returned coefficients will be in units of nT. If false,
+        the coefficients will have units of Teslas.
+
+    References
+    ----------
+    Morschhauser, A., Lesur, V., Grott, M. (2014). A spherical harmonic model
+        of the lithospheric magnetic ﬁeld of Mars, Journal of Geophysical
+        Research: Planets, 119, 1162-1188, doi:10.1002/2013JE004555.
+    '''
+    fname = _retrieve(
+        url="https://zenodo.org/record/3876495/files/Morschhauser2014.txt.gz?download=1",  # noqa: E501
+        known_hash="sha256:a86200b3147a24447ff8bba88ec6047329823275813a9f5e9505bb611e3e86e0",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+        processor=_Decompress(),
+    )
+    temp = _SHMagCoeffs.from_file(fname, r0=3393.5e3, skip=3, header=False,
+                                  format='dov')
+    if nt:
+        return temp
+    else:
+        return temp / 1.e9
+
+
+__all__ = ['MarsTopo2600', 'GMM3', 'GMM3_RM1_1E0', 'MRO120D', 'Langlais2019',
+           'Morschhauser2014']

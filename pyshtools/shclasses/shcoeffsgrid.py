@@ -473,17 +473,11 @@ class SHCoeffs(object):
 
         Notes
         -----
-        If format='shtools', the spherical harmonic coefficients will be read
-        from a text file using the function pyshtools.shio.shread().
-
-        If format='dov', the spherical harmonic coefficients will be read
-        from a text file using the function pyshtools.shio.read_dov().
-
-        If format='bshc', the real spherical harmonic coefficients will be read
-        from a binary file using the function pyshtools.shio.read_bshc().
-
-        If format='npy', the spherical harmonic coefficients will be read from
-        a binary numpy 'npy' using the function numpy.load().
+        Supported file formats:
+            'shtools' (see pyshtools.shio.shread)
+            'dov' (see pyshtools.shio.shread)
+            'bshc' (see pyshtools.shio.read_bshc)
+            'npy' (see numpy.load)
 
         For 'shtools', 'dov' or 'bshc' formatted files, if filename starts with
         'http://', 'https://', or 'ftp://', the file will be treated as a URL.
@@ -525,7 +519,7 @@ class SHCoeffs(object):
             else:
                 coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
 
-        if format.lower() == 'dov':
+        elif format.lower() == 'dov':
             if header:
                 if header2:
                     coeffs, lmaxout, header_list, header2_list = \

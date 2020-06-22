@@ -363,21 +363,12 @@ class SHMagCoeffs(object):
 
         Notes
         -----
-        If format='shtools', the spherical harmonic coefficients will be read
-        from a text file using the function pyshtools.shio.shread().
-
-        If format='dov', the spherical harmonic coefficients will be read
-        from a text file using the function pyshtools.shio.read_dov().
-
-        If format='igrf', the real spherical harmonic coefficients will be read
-        from an International Geomagnetic Reference Field file using the
-        function pyshtools.shio.read_igrf() for a specified year.
-
-        If format='bshc', the real spherical harmonic coefficients will be read
-        from a binary file using the function pyshtools.shio.read_bshc().
-
-        If format='npy', the spherical harmonic coefficients will be read from
-        a binary numpy 'npy' using the function numpy.load().
+        Supported file formats:
+            'shtools' (see pyshtools.shio.shread)
+            'dov' (see pyshtools.shio.shread)
+            'igrf' (see pyshtools.shio.igrf)
+            'bshc' (see pyshtools.shio.read_bshc)
+            'npy' (see numpy.load)
 
         The coefficients read from the file are assumed to have units of nT.
         If coeffs_units is specified as 'T', the coefficients read from the
