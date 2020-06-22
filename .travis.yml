@@ -47,10 +47,12 @@ install:
         xarray
         requests
         cartopy
-        gmt=6.0.0
+        pygmt
+        gmt
+        pooch
+        tqdm
+        palettable
   - source activate test-environment
-  - pip install git+https://github.com/GenericMappingTools/pygmt.git
-  - pip install palettable
   - pip install --no-deps .
 
 script:

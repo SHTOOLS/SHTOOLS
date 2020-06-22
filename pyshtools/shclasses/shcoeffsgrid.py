@@ -6,6 +6,8 @@ import matplotlib as _mpl
 import matplotlib.pyplot as _plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
+import gzip as _gzip
+import shutil as _shutil
 import warnings as _warnings
 from scipy.special import factorial as _factorial
 import xarray as _xr
@@ -15,6 +17,8 @@ from ..spectralanalysis import spectrum as _spectrum
 from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+from ..shio import read_dov as _read_dov
+from ..shio import read_bshc as _read_bshc
 
 try:
     import cartopy.crs as _ccrs
@@ -413,7 +417,7 @@ class SHCoeffs(object):
 
     @classmethod
     def from_file(self, fname, lmax=None, format='shtools', kind='real',
-                  normalization='4pi', skip=0, header=False,
+                  normalization='4pi', skip=0, header=False, header2=False,
                   csphase=1, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
@@ -421,10 +425,13 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_file(filename, [format='shtools', lmax,
-                                          normalization, csphase, skip,
-                                          header])
-        x = SHCoeffs.from_file(filename, [format='npy', normalization,
-                                          csphase, **kwargs])
+                               normalization, csphase, skip, header])
+        x = SHCoeffs.from_file(filename, format='dov', [lmax, normalization,
+                               csphase, skip, header, header2])
+        x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
+                               csphase])
+        x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
+                               csphase, **kwargs])
 
         Returns
         -------
@@ -433,14 +440,18 @@ class SHCoeffs(object):
         Parameters
         ----------
         filename : str
-            File name or URL containing the text-formatted spherical harmonic
-            coefficients. filename will be treated as a URL if it starts with
-            'http://', 'https://', or 'ftp://'.
+            File name or URL containing the spherical harmonic coefficients.
+            filename will be treated as a URL if it starts with 'http://',
+            'https://', or 'ftp://'. For 'shtools' and 'bshc' formatted files,
+            if filename ends with '.gz' or '.zip', the file will be
+            uncompressed before parsing.
         format : str, optional, default = 'shtools'
-            'shtools' format or binary numpy 'npy' format.
+            'shtools' for generic ascii files, 'dov' for [degree, order, value]
+            ascii files, 'bshc' for binary spherical harmonic coefficient
+            files, or 'npy' for binary numpy files.
         lmax : int, optional, default = None
-            The maximum spherical harmonic degree to read from 'shtools'
-            formatted files.
+            The maximum spherical harmonic degree to read from the file. The
+            default is to read the entire file.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -449,38 +460,38 @@ class SHCoeffs(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         skip : int, optional, default = 0
-            Number of lines to skip at the beginning of the file when format is
-            'shtools'.
+            Number of lines to skip at the beginning of the file for 'shtools'
+            formatted files.
         header : bool, optional, default = False
             If True, read a list of values from the header line of an 'shtools'
+            or 'dov' formatted file.
+        header2 : bool, optional, default = False
+            If True, read a list of values from a second header line of a 'dov'
             formatted file.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
         Notes
         -----
-        If format='shtools', spherical harmonic coefficients will be read from
-        a text file. The optional parameter `skip` specifies how many lines
-        should be skipped before attempting to parse the file, the optional
-        parameter `header` specifies whether to read a list of values from a
-        header line, and the optional parameter `lmax` specifies the maximum
-        degree to read from the file. All lines that do not start with 2
-        integers and that are less than 3 words long will be treated as
-        comments and ignored. For this format, each line of the file must
-        contain
+        Supported file formats:
+            'shtools' (see pyshtools.shio.shread)
+            'dov' (see pyshtools.shio.shread)
+            'bshc' (see pyshtools.shio.read_bshc)
+            'npy' (see numpy.load)
 
-        l, m, coeffs[0, l, m], coeffs[1, l, m]
+        For 'shtools', 'dov' or 'bshc' formatted files, if filename starts with
+        'http://', 'https://', or 'ftp://', the file will be treated as a URL.
+        In this case, the file will be downloaded in its entirety before it is
+        parsed. If the filename ends with '.gz' or '.zip', the file will be
+        automatically uncompressed before parsing. For zip files, archives with
+        only a single file are supported. Note that reading '.gz' and '.zip'
+        files will be extremely slow if lmax is not specified.
 
-        where l and m are the spherical harmonic degree and order,
-        respectively. The terms coeffs[1, l, 0] can be neglected as they are
-        zero. For more information, see `shio.shread()`.
-
-        If filename starts with http://, https://, or ftp://, the file will be
-        treated as a URL. In this case, the file will be downloaded in its
-        entirety before it is parsed.
-
-        If format='npy', a binary numpy 'npy' file will be read using
-        numpy.load().
+        For 'shtools' and 'dov' formatted files, the optional parameter `skip`
+        specifies how many lines should be skipped before attempting to parse
+        the file, the optional parameter `header` specifies whether to read a
+        list of values from a header line, and the optional parameter `lmax`
+        specifies the maximum degree to read from the file.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
@@ -507,20 +518,43 @@ class SHCoeffs(object):
                                                        skip=skip, header=True)
             else:
                 coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+
+        elif format.lower() == 'dov':
+            if header:
+                if header2:
+                    coeffs, lmaxout, header_list, header2_list = \
+                        _read_dov(fname, lmax=lmax, skip=skip, header=True,
+                                  header2=True)
+                else:
+                    coeffs, lmaxout, header_list = _read_dov(fname, lmax=lmax,
+                                                             skip=skip,
+                                                             header=True)
+            else:
+                coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
+
+        elif format.lower() == 'bshc':
+            coeffs, lmaxout = _read_bshc(fname, lmax=lmax)
+
         elif format.lower() == 'npy':
             coeffs = _np.load(fname, **kwargs)
             lmaxout = coeffs.shape[1] - 1
+            if lmax is not None:
+                if lmax < lmaxout:
+                    coeffs = coeffs[:, :lmax+1, :lmax+1]
+                    lmaxout = lmax
+
         else:
             raise NotImplementedError(
                 'format={:s} not implemented.'.format(repr(format)))
 
         if normalization.lower() == 'unnorm' and lmaxout > 85:
-            _warnings.warn("Calculations using unnormalized coefficients " +
-                           "are stable only for degrees less than or equal " +
-                           "to 85. lmax for the coefficients will be set to " +
+            _warnings.warn("Calculations using unnormalized coefficients "
+                           "are stable only for degrees less than or equal "
+                           "to 85. lmax for the coefficients will be set to "
                            "85. Input value is {:d}.".format(lmaxout),
                            category=RuntimeWarning)
             lmaxout = 85
+            coeffs = coeffs[:, :lmaxout+1, :lmaxout+1]
 
         if _np.iscomplexobj(coeffs):
             kind = 'complex'
@@ -778,7 +812,8 @@ class SHCoeffs(object):
         Parameters
         ----------
         filename : str
-            Name of the output file.
+            Name of the output file. If the filename ends with '.gz', the file
+            will be compressed using gzip.
         format : str, optional, default = 'shtools'
             'shtools' or 'npy'. See method from_file() for more information.
         header : str, optional, default = None
@@ -801,9 +836,16 @@ class SHCoeffs(object):
 
         If format='npy', the spherical harmonic coefficients will be saved to
         a binary numpy 'npy' file using numpy.save().
+
+        If the filename end with '.gz', the file will be compressed using gzip.
         """
+        if filename[-3:] == '.gz':
+            filebase = filename[-3:]
+        else:
+            filebase = filename
+
         if format == 'shtools':
-            with open(filename, mode='w') as file:
+            with open(filebase, mode='w') as file:
                 if header is not None:
                     file.write(header + '\n')
                 for l in range(self.lmax+1):
@@ -812,10 +854,15 @@ class SHCoeffs(object):
                                    .format(l, m, self.coeffs[0, l, m],
                                            self.coeffs[1, l, m]))
         elif format == 'npy':
-            _np.save(filename, self.coeffs, **kwargs)
+            _np.save(filebase, self.coeffs, **kwargs)
         else:
             raise NotImplementedError(
                 'format={:s} not implemented.'.format(repr(format)))
+
+        if filename[-3:] == '.gz':
+            with open(filebase, 'rb') as f_in:
+                with _gzip.open(filename, 'wb') as f_out:
+                    _shutil.copyfileobj(f_in, f_out)
 
     def to_netcdf(self, filename, title='', description='', lmax=None):
         """
@@ -3092,6 +3139,8 @@ class SHGrid(object):
             Healy grids, the dimensions of the array must be nlon=nlat,
             nlon=2*nlat or nlon=2*nlat-1. For Gauss-Legendre Quadrature grids,
             the dimensions of the array must be nlon=2*nlat-1 or nlon=2*nlat.
+            For text files, if the filename ends in '.gz', the file will be
+            decompressed using gzip.
         binary : bool, optional, default = False
             If False, read a text file. If True, read a binary 'npy' file.
         grid : str, optional, default = 'DH'
@@ -3182,8 +3231,7 @@ class SHGrid(object):
         ----------
         filename : str
             Name of output file. For text files (default), the file will be
-            saved automatically in gzip compressed format if the filename ends
-            in .gz.
+            compressed using gzip if filename ends in '.gz.'
         binary : bool, optional, default = False
             If False, save as text using numpy.savetxt(). If True, save as a
             'npy' binary file using numpy.save().

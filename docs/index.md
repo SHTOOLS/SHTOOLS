@@ -27,9 +27,9 @@ SHTOOLS/pyshtools is extremely versatile:
 
 * The Fortran routines are OpenMP compatible and OpenMP thread-safe.
 
-* Standard data formats such as *xarray* and *netcdf* are supported.
+* Standard data formats are supported, such as *xarray* and *netcdf*.
 
-* Publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/dev/).
+* Publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/).
 
 ## Installation
 

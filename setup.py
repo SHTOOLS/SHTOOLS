@@ -185,7 +185,9 @@ INSTALL_REQUIRES = [
     'matplotlib',
     'astropy',
     'xarray',
-    'requests'
+    'requests',
+    'pooch',
+    'tqdm'
 ]
 
 # configure python extension to be compiled with f2py

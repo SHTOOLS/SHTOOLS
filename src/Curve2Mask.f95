@@ -214,7 +214,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, extend, &
                     ! There is a jump from -180 to 180
                     if (lon1 < 0._dp) lon1 = lon1 + 360._dp
                     if (lon2 < 0._dp) lon2 = lon2 + 360._dp
-                elseif (lon1 > 0._dp .and. lon2 > 0._dp) then
+                elseif (lon1 >= 0._dp .and. lon2 >= 0._dp) then
                     ! There is a jump from 360 to 0. Set the largest value
                     ! to a negative longitude.
                     if (lon1 > lon2) then
@@ -303,6 +303,7 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, extend, &
     end do
 
     if (extend_grid == 1) then
+        dhgrid(nlat_out, 1) = dhgrid(nlat_out-1, 1)
         dhgrid(1:nlat_out, nlong_out) = dhgrid(1:nlat_out, 1)
     end if
 

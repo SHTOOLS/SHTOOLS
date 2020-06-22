@@ -1,5 +1,6 @@
 """
-Functions for reading spherical harmonic coefficients from text files.
+Functions for reading spherical harmonic coefficients from text files that
+are formatted as [degree, order, value].
 """
 import os
 import io
@@ -9,17 +10,22 @@ import numpy as _np
 import requests as _requests
 
 
-def shread(filename, lmax=None, error=False, header=False, skip=0):
+def read_dov(filename, lmax=None, error=False, header=False, header2=False,
+             skip=0):
     """
-    Read spherical harmonic coefficients from a text file.
+    Read spherical harmonic coefficients from a text file formatted as
+    [degree, order, value].
 
     Usage
     -----
-    coeffs, lmaxout = shread(filename, [lmax, skip])
-    coeffs, lmaxout, header = shread(filename, header=True, [lmax, skip])
-    coeffs, errors, lmaxout = shread(filename, error=True, [lmax, skip])
-    coeffs, errors, lmaxout, header = shread(filename, error=True,
-                                             header=True, [lmax, skip])
+    coeffs, lmaxout = read_dov(filename, [lmax, skip])
+    coeffs, lmaxout, header = read_dov(filename, header=True, [lmax, skip])
+    coeffs, lmaxout, header, header2 = read_dov(filename, header=True,
+                                                header2=True, [lmax, skip])
+    coeffs, errors, lmaxout = read_dov(filename, error=True, [lmax, skip])
+    coeffs, errors, lmaxout, header, header2 = read_dov(filename, error=True,
+                                                   header=True, header2=True,
+                                                   [lmax, skip])
 
     Returns
     -------
@@ -32,6 +38,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     header : list of type str
         A list of values in the header line found before the start of the
         spherical harmonic coefficients.
+    header2 : list of type str
+        A list of values in the second header line found before the start of
+        the spherical harmonic coefficients.
 
     Parameters
     ----------
@@ -49,6 +58,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     header : bool, optional, default = False
         If True, return a list of values in the header line found before the
         start of the spherical harmonic coefficients.
+    header2 : bool, optional, default = False
+        If True, return a list of values in the second header line found before
+        the start of the spherical harmonic coefficients.
     skip : int, optional, default = 0
         The number of lines to skip before parsing the file.
 
@@ -56,8 +68,8 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     -----
     This function will read spherical harmonic coefficients from an
     ascii-formatted text file. The errors associated with the spherical
-    harmonic coefficients, as well as the values in a single header line, can
-    be read optionally by setting the parameters error and header to
+    harmonic coefficients, as well as the values in a two header lines, can
+    be read optionally by setting the parameters error, header, and header2 to
     True. The optional parameter skip specifies how many lines should be
     skipped before attempting to parse the file, and the optional parameter
     lmax specifies the maximum degree to read from the file. Both real and
@@ -65,22 +77,23 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
 
     The spherical harmonic coefficients in the file should be formatted as
 
-    l, m, coeffs[0, l, m], coeffs[1, l, m]
+    l, m, coeffs[0, l, m]
+    l, -m, coeffs[1, l, m]
 
     where l and m are the spherical harmonic degree and order, respectively.
-    The terms coeffs[1, l, 0] can be neglected as they are zero. If the errors
-    are to be read, the line should be formatted as
+    If the errors are to be read, the line should be formatted as
 
-    l, m, coeffs[0, l, m], coeffs[1, l, m], errors[0, l, m], errors[1, l, m]
+    l, m, coeffs[0, l, m], errors[0, l, m]
+    l, -m, coeffs[0, l, m], errors[1, l, m]
 
     For each value of increasing l, all the angular orders are listed in
-    inceasing order, from 0 to l.
+    pairs with inceasing abs(order), from 0 to l.
 
-    If a header line is to be read, it should be located directly after the
-    first lines to be skipped, before the start of the spherical harmonic
-    coefficents. The header values are returned as a list, where each value is
-    formatted as a string. Comment lines will be ignored, where comments start
-    with '#' or the line is all whitespace.
+    If one or two header lines are to be read, they should be located directly
+    after the first lines to be skipped, before the start of the spherical
+    harmonic coefficents. The header values are returned as a list, where each
+    value is formatted as a string. Comment lines will be ignored, where
+    comments start with '#' or the line is all whitespace.
 
     If filename starts with 'http://', 'https://', or 'ftp://', the file will
     be treated as a URL. In this case, the file will be downloaded in its
@@ -96,13 +109,13 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
         if filename[-4:] == '.zip':
             zf = zipfile.ZipFile(io.BytesIO(_response.content))
             if len(zf.namelist()) > 1:
-                raise Exception('shread can only process zip archives '
+                raise Exception('read_dov can only process zip archives '
                                 'that contain a single file. Archive '
                                 'contents:\n{}'.format(zf.namelist()))
     elif filename[-4:] == '.zip':
         zf = zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
-            raise Exception('shread can only process zip archives that '
+            raise Exception('read_dov can only process zip archives that '
                             'contain a single file. Archive contents: \n'
                             '{}'.format(zf.namelist()))
 
@@ -155,7 +168,6 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                         raise RuntimeError('Encountered beginning of file '
                                            'while attempting to determine '
                                            'lmax.')
-
         lmaxout = int(line.split()[0])
 
     else:
@@ -196,6 +208,19 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
             line = line.replace(',', ' ')
             header_list = line.split()
 
+        if header2 is True:
+            line = f.readline()
+            if line == '':
+                raise RuntimeError('End of file encountered when '
+                                   'reading header line.')
+            while _iscomment(line):
+                line = f.readline()
+                if line == '':
+                    raise RuntimeError('End of file encountered when '
+                                       'reading second header line.')
+            line = line.replace(',', ' ')
+            header2_list = line.split()
+
         # determine the starting degree
         start_position = f.tell()
         line = f.readline()
@@ -203,11 +228,10 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
             raise RuntimeError('End of file encountered when determining '
                                'value of lstart.')
         while _iscomment(line):
-            start_position = f.tell()
             line = f.readline()
             if line == '':
-                raise RuntimeError('End of file encountered when ' +
-                                   'determining value of lstart.')
+                raise RuntimeError('End of file encountered when determining '
+                                   'value of lstart.')
         line = line.replace(',', ' ')
         lstart = int(line.split()[0])
 
@@ -248,46 +272,75 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                         raise RuntimeError('End of file encountered at '
                                            'degree and order {:d}, {:d}.'
                                            .format(degree, order))
-
                 line = line.replace(',', ' ')
                 l = int(line.split()[0])
                 m = int(line.split()[1])
-
                 if degree != l or order != m:
                     raise RuntimeError('Degree and order from file do not '
                                        'correspond to expected values.\n '
-                                       'Read {:d}, {:d}. Expected {:d}, {:d}.'
-                                       .format(degree, order, l, m))
+                                       'Read {:d}, {:d}. Expected {:d}, '
+                                       '{:d}.'.format(degree, order, l, m))
+
+                if order > 0:
+                    line2 = f.readline()
+                    if line2 == '':
+                        raise RuntimeError('End of file encountered at '
+                                           'degree and order {:d}, {:d}.'
+                                           .format(degree, order))
+                    while _iscomment(line):
+                        line = f.readline()
+                        if line == '':
+                            raise RuntimeError('End of file encountered at '
+                                               'degree and order {:d}, {:d}.'
+                                               .format(degree, order))
+                    line2 = line2.replace(',', ' ')
+                    l2 = int(line2.split()[0])
+                    m2 = int(line2.split()[1])
+                    if degree != l2 or -order != m2:
+                        raise RuntimeError('Degree and order from file do not '
+                                           'correspond to expected values.\n '
+                                           'Read {:d}, {:d}. Expected {:d}, '
+                                           '{:d}.'.format(degree, -order,
+                                                          l2, m2))
+                    m2 = abs(m2)
 
                 if kind == 'real':
                     coeffs[0, l, m] = float(line.split()[2])
-                    if m > 0:
-                        coeffs[1, l, m] = float(line.split()[3])
+                    if order > 0:
+                        coeffs[1, l, m] = float(line2.split()[2])
                 else:
                     coeffs[0, l, m] = complex(line.split()[2])
-                    if m > 0:
-                        coeffs[1, l, m] = complex(line.split()[3])
+                    if order > 0:
+                        coeffs[1, l, m] = complex(line2.split()[2])
 
                 if error:
-                    if len(line.split()) < 6:
+                    if len(line.split()) < 4:
                         raise RuntimeError('When reading errors, '
                                            'each line must '
-                                           'contain at least 6 elements. '
+                                           'contain at least 4 elements. '
                                            'Last line is: {:s}'.format(line))
 
                     if kind == 'real':
-                        errors[0, l, m] = float(line.split()[4])
-                        errors[1, l, m] = float(line.split()[5])
+                        errors[0, l, m] = float(line.split()[3])
+                        if order > 0:
+                            errors[1, l, m] = float(line2.split()[3])
                     else:
-                        errors[0, l, m] = complex(line.split()[4])
-                        errors[1, l, m] = complex(line.split()[5])
+                        errors[0, l, m] = complex(line.split()[3])
+                        if order > 0:
+                            errors[1, l, m] = complex(line2.split()[3])
 
     if error is True and header is True:
-        return coeffs, errors, lmaxout, header_list
+        if header2:
+            return coeffs, errors, lmaxout, header_list, header2_list
+        else:
+            return coeffs, errors, lmaxout, header_list
     elif error is True and header is False:
         return coeffs, errors, lmaxout
     elif error is False and header is True:
-        return coeffs, lmaxout, header_list
+        if header2:
+            return coeffs, lmaxout, header_list, header2_list
+        else:
+            return coeffs, lmaxout, header_list
     else:
         return coeffs, lmaxout
 

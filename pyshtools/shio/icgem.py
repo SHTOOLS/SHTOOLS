@@ -1,8 +1,12 @@
 """
-ICGEM-format read support
+Support for reading real gravitational-potential coefficients from
+ICGEM-formatted files.
 """
+import io
+import gzip
+import zipfile
 import numpy as _np
-
+import requests as _requests
 from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
 
 
@@ -33,52 +37,74 @@ def _time_variable_part(epoch, ref_epoch, trnd, periodic):
 def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                    encoding=None):
     """
-    Read spherical harmonic coefficients from an ICGEM GFC ascii-formatted
+    Read real spherical harmonic gravity coefficients from an ICGEM formatted
     file.
-
-    This function only reads files with the gravity field spherical
-    harmonic coefficients.
 
     Returns
     -------
-    cilm : array
-        Array with the coefficients with the shape (2, lmax + 1, lmax + 1)
-        for the given epoch.
+    cilm : ndarray, size (2, lmax + 1, lmax + 1)
+        Array of '4pi' normalized spherical harmonic coefficients for the
+        given epoch.
     gm : float
-        Standard gravitational constant of the model, in m**3/s**2.
+        Gravitational constant of the model, in m**3/s**2.
     r0 : float
         Reference radius of the model, in meters.
-    errors : array, optional
-        Array with the errors of the coefficients with the shape
-        (2, lmax + 1, lmax + 1) for the given epoch.
+    errors : ndarray, optional, shape (2, lmax + 1, lmax + 1)
+        Array of the spherical harmonic error coefficients for the given epoch.
 
     Parameters
     ----------
     filename : str
-        The ascii-formatted filename containing the spherical harmonic
-        coefficients.
-    errors : str, optional
-        Which errors to read. Can be either "calibrated", "formal" or
-        None. Default is None.
-    lmax : int, optional
+        The filename containing the spherical harmonic ICGEM-formatted
+        coefficients. filename will be treated as a URL if it starts with
+        'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
+        '.zip' (or if the path contains '/zip/'), the file will be
+        uncompressed before parsing.
+    errors : str, optional, default = None
+        Which errors to read. Can be either 'calibrated', 'formal' or None.
+    lmax : int, optional, default = None
         Maximum degree to read from the file. If lmax is None, less than 0, or
         greater than lmax_model, the maximum degree of the model will be used.
-    epoch : str or float, optional
+    epoch : str or float, optional, default = None
         The epoch time to calculate time-variable coefficients in YYYYMMDD.DD
-        format. If None then reference epoch t0 of the model will be used.
-        If format of the file is 'icgem2.0' then epoch must be specified.
+        format. If None then the reference epoch t0 of the model will be used.
+        If the format of the file is 'icgem2.0' then the epoch must be
+        specified.
     encoding : str, optional
-        Encoding of the input file. Try to use 'iso-8859-1'
-        if default (UTF-8) is failed.
+        Encoding of the input file. Try to use 'iso-8859-1' if the default
+        (UTF-8) fails.
     """
-
-    # read header
     header = {}
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',
                    'gravity_constant', 'radius', 'max_degree', 'errors',
                    'tide_system', 'norm', 'format']
+    valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
 
-    with open(filename, 'r', encoding=encoding) as f:
+    # open filename as a text file
+    if _isurl(filename):
+        _response = _requests.get(filename)
+        if _iszipfile(filename):
+            zf = zipfile.ZipFile(io.BytesIO(_response.content))
+            if len(zf.namelist()) > 1:
+                raise Exception('read_icgem_gfc can only process zip archives '
+                                'that contain a single file. Archive '
+                                'contents:\n{}'.format(zf.namelist()))
+            f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        else:
+            f = io.StringIO(_response.text)
+    elif filename[-3:] == '.gz':
+        f = gzip.open(filename, mode='rt')
+    elif filename[-4:] == '.zip':
+        zf = zipfile.ZipFile(filename, 'r')
+        if len(zf.namelist()) > 1:
+            raise Exception('read_icgem_gfc can only process zip archives '
+                            'that contain a single file. Archive contents: \n'
+                            '{}'.format(zf.namelist()))
+        f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+    else:
+        f = open(filename, 'r', encoding=encoding)
+
+    with f:
         for line in f:
             if 'end_of_head' in line:
                 break
@@ -117,7 +143,6 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
             lmax = lmax_model
 
         if errors is not None:
-            valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
             if header['errors'] == 'no':
                 raise ValueError('This model has no errors.')
             elif errors not in valid_err[:-1]:
@@ -198,3 +223,35 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         return cilm[:2], gravity_constant, radius, cilm[2:]
     else:
         return cilm[:2], gravity_constant, radius
+
+
+def _isurl(filename):
+    """
+    Determine if filename is a URL. Valid URLs start with
+        'http://'
+        'https://'
+        'ftp://'
+    """
+    if filename[0:7].lower() == 'http://':
+        return True
+    elif filename[0:8].lower() == 'https://':
+        return True
+    elif filename[0:6].lower() == 'ftp://':
+        return True
+    else:
+        return False
+
+
+def _iszipfile(filename):
+    """
+    Determine if filename is a zip file. Zip files either
+        (1) end with '.zip', or
+        (2) are located in a subdirectory '/zip/' for files downloaded from
+            the ICGEM web site.
+    """
+    if '/zip/' in filename:
+        return True
+    elif filename[-4:] == '.zip':
+        return True
+    else:
+        return False

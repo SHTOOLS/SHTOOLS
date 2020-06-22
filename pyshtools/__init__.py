@@ -52,6 +52,7 @@ __author__ = 'SHTOOLS developers'
 # ---- Import shtools subpackages ----
 from . import shtools
 from . import constant
+from . import datasets
 from . import shclasses
 from . import legendre
 from . import expand
@@ -80,4 +81,4 @@ __all__ = ['constant', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',
            'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
            'SHGrid', 'SHWindow', 'Slepian', 'SlepianCoeffs', 'SHGravCoeffs',
            'SHGravGrid', 'SHGravTensor', 'SHGeoid', 'SHMagCoeffs', 'SHMagGrid',
-           'SHMagTensor']
+           'SHMagTensor', 'datasets']
