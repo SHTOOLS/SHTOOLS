@@ -73,6 +73,7 @@ class SHCoeffs(object):
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions.
+    errors        : The uncertainties of the spherical harmonic coefficients.
     normalization : The normalization of the coefficients: '4pi', 'ortho',
                     'schmidt', or 'unnorm'.
     csphase       : Defines whether the Condon-Shortley phase is used (1)
@@ -82,7 +83,10 @@ class SHCoeffs(object):
     kind          : The coefficient data type: either 'complex' or 'real'.
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
-                    formatted files).
+                    and 'dov' formatted files).
+    header2       : A list of values (of type str) from the second header line
+                    of the input file used to initialize the class (for 'dov'
+                    formatted files only).
 
     Each class instance provides the following methods:
 
@@ -135,81 +139,16 @@ class SHCoeffs(object):
 
     # ---- Factory methods ----
     @classmethod
-    def from_zeros(self, lmax, kind='real', normalization='4pi', csphase=1):
-        """
-        Initialize class with spherical harmonic coefficients set to zero from
-        degree 0 to lmax.
-
-        Usage
-        -----
-        x = SHCoeffs.from_zeros(lmax, [normalization, csphase])
-
-        Returns
-        -------
-        x : SHCoeffs class instance.
-
-        Parameters
-        ----------
-        lmax : int
-            The highest spherical harmonic degree l of the coefficients.
-        normalization : str, optional, default = '4pi'
-            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
-            orthonormalized, Schmidt semi-normalized, or unnormalized
-             coefficients, respectively.
-        csphase : int, optional, default = 1
-            Condon-Shortley phase convention: 1 to exclude the phase factor,
-            or -1 to include it.
-        kind : str, optional, default = 'real'
-            'real' or 'complex' spherical harmonic coefficients.
-        """
-        if kind.lower() not in ('real', 'complex'):
-            raise ValueError(
-                "Kind must be 'real' or 'complex'. Input value is {:s}."
-                .format(repr(kind))
-                )
-
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
-            raise ValueError(
-                "The normalization must be '4pi', 'ortho', 'schmidt', " +
-                "or 'unnorm'. Input value is {:s}."
-                .format(repr(normalization))
-                )
-
-        if csphase != 1 and csphase != -1:
-            raise ValueError(
-                "csphase must be either 1 or -1. Input value is {:s}."
-                .format(repr(csphase))
-                )
-
-        if normalization.lower() == 'unnorm' and lmax > 85:
-            _warnings.warn("Calculations using unnormalized coefficients " +
-                           "are stable only for degrees less than or equal " +
-                           "to 85. lmax for the coefficients will be set to " +
-                           "85. Input value is {:d}.".format(lmax),
-                           category=RuntimeWarning)
-            lmax = 85
-
-        nl = lmax + 1
-        if kind.lower() == 'real':
-            coeffs = _np.zeros((2, nl, nl))
-        else:
-            coeffs = _np.zeros((2, nl, nl), dtype=complex)
-
-        for cls in self.__subclasses__():
-            if cls.istype(kind):
-                return cls(coeffs, normalization=normalization.lower(),
-                           csphase=csphase)
-
-    @classmethod
-    def from_array(self, coeffs, normalization='4pi', csphase=1, lmax=None,
-                   copy=True):
+    def from_array(self, coeffs, errors=None, normalization='4pi', csphase=1,
+                   lmax=None, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
 
         Usage
         -----
-        x = SHCoeffs.from_array(array, [normalization, csphase, lmax, copy])
+        x = SHCoeffs.from_array(array, [errors, normalization, csphase, lmax,
+                                        copy])
 
         Returns
         -------
@@ -219,6 +158,8 @@ class SHCoeffs(object):
         ----------
         array : ndarray, shape (2, lmaxin+1, lmaxin+1).
             The input spherical harmonic coefficients.
+        errors : ndarray, optional, default = None
+            The uncertainties of the spherical harmonic coefficients.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -273,9 +214,273 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
+                if errors is not None:
+                    return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
+                               errors=errors[:, 0:lmax+1, 0:lmax+1],
+                               normalization=normalization.lower(),
+                               csphase=csphase, copy=copy)
+                else:
+                    return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
+                               normalization=normalization.lower(),
+                               csphase=csphase, copy=copy)
+
+    @classmethod
+    def from_zeros(self, lmax, errors=None, kind='real', normalization='4pi',
+                   csphase=1):
+        """
+        Initialize class with spherical harmonic coefficients set to zero from
+        degree 0 to lmax.
+
+        Usage
+        -----
+        x = SHCoeffs.from_zeros(lmax, [errors, normalization, csphase])
+
+        Returns
+        -------
+        x : SHCoeffs class instance.
+
+        Parameters
+        ----------
+        lmax : int
+            The highest spherical harmonic degree l of the coefficients.
+        errors : bool, optional, default = None
+            If True, initialize the attribute errors with zeros.
+        normalization : str, optional, default = '4pi'
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+             coefficients, respectively.
+        csphase : int, optional, default = 1
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
+        kind : str, optional, default = 'real'
+            'real' or 'complex' spherical harmonic coefficients.
+        """
+        error_coeffs = None
+        if kind.lower() not in ('real', 'complex'):
+            raise ValueError(
+                "Kind must be 'real' or 'complex'. Input value is {:s}."
+                .format(repr(kind))
+                )
+
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
+            raise ValueError(
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "or 'unnorm'. Input value is {:s}."
+                .format(repr(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be either 1 or -1. Input value is {:s}."
+                .format(repr(csphase))
+                )
+
+        if normalization.lower() == 'unnorm' and lmax > 85:
+            _warnings.warn("Calculations using unnormalized coefficients " +
+                           "are stable only for degrees less than or equal " +
+                           "to 85. lmax for the coefficients will be set to " +
+                           "85. Input value is {:d}.".format(lmax),
+                           category=RuntimeWarning)
+            lmax = 85
+
+        if kind.lower() == 'real':
+            coeffs = _np.zeros((2, lmax + 1, lmax + 1))
+            if errors:
+                error_coeffs = _np.zeros((2, lmax + 1, lmax + 1))
+        else:
+            coeffs = _np.zeros((2, lmax + 1, lmax + 1), dtype=complex)
+            if errors:
+                error_coeffs = _np.zeros((2, lmax + 1, lmax + 1),
+                                         dtype=complex)
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind):
+                return cls(coeffs, errors=error_coeffs,
                            normalization=normalization.lower(),
-                           csphase=csphase, copy=copy)
+                           csphase=csphase)
+
+    @classmethod
+    def from_file(self, fname, lmax=None, format='shtools', kind='real',
+                  errors=None, normalization='4pi', skip=0, header=False,
+                  header2=False, csphase=1, **kwargs):
+        """
+        Initialize the class with spherical harmonic coefficients from a file.
+
+        Usage
+        -----
+        x = SHCoeffs.from_file(filename, [format='shtools', lmax, errors,
+                               normalization, csphase, skip, header])
+        x = SHCoeffs.from_file(filename, format='dov', [lmax, errors,
+                               normalization, csphase, skip, header, header2])
+        x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
+                               csphase])
+        x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
+                               csphase, **kwargs])
+
+        Returns
+        -------
+        x : SHCoeffs class instance.
+
+        Parameters
+        ----------
+        filename : str
+            File name or URL containing the spherical harmonic coefficients.
+            filename will be treated as a URL if it starts with 'http://',
+            'https://', or 'ftp://'. For 'shtools' and 'bshc' formatted files,
+            if filename ends with '.gz' or '.zip', the file will be
+            uncompressed before parsing.
+        format : str, optional, default = 'shtools'
+            'shtools' for generic ascii files, 'dov' for [degree, order, value]
+            ascii files, 'bshc' for binary spherical harmonic coefficient
+            files, or 'npy' for binary numpy files.
+        lmax : int, optional, default = None
+            The maximum spherical harmonic degree to read from the file. The
+            default is to read the entire file.
+        errors : bool, optional, default = None
+            If True, read errors from the file (for 'shtools' and 'dov'
+            formatted files only).
+        normalization : str, optional, default = '4pi'
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+            coefficients, respectively.
+        csphase : int, optional, default = 1
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
+        skip : int, optional, default = 0
+            Number of lines to skip at the beginning of the file for 'shtools'
+            formatted files.
+        header : bool, optional, default = False
+            If True, read a list of values from the header line of an 'shtools'
+            or 'dov' formatted file.
+        header2 : bool, optional, default = False
+            If True, read a list of values from a second header line of a 'dov'
+            formatted file.
+        **kwargs : keyword argument list, optional for format = 'npy'
+            Keyword arguments of numpy.load() when format is 'npy'.
+
+        Notes
+        -----
+        Supported file formats:
+            'shtools' (see pyshtools.shio.shread)
+            'dov' (see pyshtools.shio.shread)
+            'bshc' (see pyshtools.shio.read_bshc)
+            'npy' (see numpy.load)
+
+        For 'shtools', 'dov' or 'bshc' formatted files, if filename starts with
+        'http://', 'https://', or 'ftp://', the file will be treated as a URL.
+        In this case, the file will be downloaded in its entirety before it is
+        parsed. If the filename ends with '.gz' or '.zip', the file will be
+        automatically uncompressed before parsing. For zip files, archives with
+        only a single file are supported. Note that reading '.gz' and '.zip'
+        files will be extremely slow if lmax is not specified.
+
+        For 'shtools' and 'dov' formatted files, the optional parameter `skip`
+        specifies how many lines should be skipped before attempting to parse
+        the file, the optional parameter `header` specifies whether to read a
+        list of values from a header line, and the optional parameter `lmax`
+        specifies the maximum degree to read from the file.
+        """
+        error_coeffs = None
+        header_list = None
+        header2_list = None
+
+        if type(normalization) != str:
+            raise ValueError('normalization must be a string. '
+                             'Input type is {:s}.'
+                             .format(str(type(normalization))))
+
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
+            raise ValueError(
+                "The input normalization must be '4pi', 'ortho', 'schmidt', "
+                "or 'unnorm'. Provided value is {:s}."
+                .format(repr(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be 1 or -1. Input value is {:s}."
+                .format(repr(csphase))
+                )
+
+        if format.lower() == 'shtools':
+            if header is True:
+                if errors:
+                    coeffs, error_coeffs, lmaxout, header_list = _shread(
+                        fname, lmax=lmax, skip=skip, header=True, error=True)
+                else:
+                    coeffs, lmaxout, header_list = _shread(
+                        fname, lmax=lmax, skip=skip, header=True)
+            else:
+                if errors:
+                    coeffs, error_coeffs, lmaxout = _shread(fname, lmax=lmax,
+                                                            skip=skip,
+                                                            error=True)
+                else:
+                    coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+
+        elif format.lower() == 'dov':
+            if header:
+                if errors is True:
+                    if header2:
+                        coeffs, error_coeffs, lmaxout, header_list, \
+                            header2_list = _read_dov(fname, lmax=lmax,
+                                                     skip=skip, header=True,
+                                                     header2=True, error=True)
+                    else:
+                        coeffs, error_coeffs, lmaxout, header_list = \
+                            _read_dov(fname, lmax=lmax, skip=skip, error=True,
+                                      header=True)
+                else:
+                    if header2:
+                        coeffs, lmaxout, header_list, header2_list = \
+                            _read_dov(fname, lmax=lmax, skip=skip, header=True,
+                                      header2=True)
+                    else:
+                        coeffs, lmaxout, header_list = _read_dov(
+                            fname, lmax=lmax, skip=skip, header=True)
+            else:
+                if errors is True:
+                    coeffs, error_coeffs, lmaxout = _read_dov(fname, lmax=lmax,
+                                                              skip=skip,
+                                                              error=True)
+                else:
+                    coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
+
+        elif format.lower() == 'bshc':
+            coeffs, lmaxout = _read_bshc(fname, lmax=lmax)
+
+        elif format.lower() == 'npy':
+            coeffs = _np.load(fname, **kwargs)
+            lmaxout = coeffs.shape[1] - 1
+            if lmax is not None:
+                if lmax < lmaxout:
+                    coeffs = coeffs[:, :lmax+1, :lmax+1]
+                    lmaxout = lmax
+
+        else:
+            raise NotImplementedError(
+                'format={:s} not implemented.'.format(repr(format)))
+
+        if normalization.lower() == 'unnorm' and lmaxout > 85:
+            _warnings.warn("Calculations using unnormalized coefficients "
+                           "are stable only for degrees less than or equal "
+                           "to 85. lmax for the coefficients will be set to "
+                           "85. Input value is {:d}.".format(lmaxout),
+                           category=RuntimeWarning)
+            lmaxout = 85
+            coeffs = coeffs[:, :lmaxout+1, :lmaxout+1]
+
+        if _np.iscomplexobj(coeffs):
+            kind = 'complex'
+        else:
+            kind = 'real'
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind):
+                return cls(coeffs, errors=error_coeffs,
+                           normalization=normalization.lower(),
+                           csphase=csphase, header=header_list,
+                           header2=header2_list)
 
     @classmethod
     def from_random(self, power, lmax=None, kind='real', normalization='4pi',
@@ -412,26 +617,19 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, normalization=normalization.lower(),
+                return cls(coeffs, errors=None,
+                           normalization=normalization.lower(),
                            csphase=csphase)
 
     @classmethod
-    def from_file(self, fname, lmax=None, format='shtools', kind='real',
-                  normalization='4pi', skip=0, header=False, header2=False,
-                  csphase=1, **kwargs):
+    def from_netcdf(self, filename, lmax=None, normalization='4pi', csphase=1):
         """
-        Initialize the class with spherical harmonic coefficients from a file.
+        Initialize the class with spherical harmonic coefficients from a
+        netcdf file.
 
         Usage
         -----
-        x = SHCoeffs.from_file(filename, [format='shtools', lmax,
-                               normalization, csphase, skip, header])
-        x = SHCoeffs.from_file(filename, format='dov', [lmax, normalization,
-                               csphase, skip, header, header2])
-        x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
-                               csphase])
-        x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
-                               csphase, **kwargs])
+        x = SHCoeffs.from_netcdf(filename, [lmax, normalization, csphase])
 
         Returns
         -------
@@ -440,121 +638,81 @@ class SHCoeffs(object):
         Parameters
         ----------
         filename : str
-            File name or URL containing the spherical harmonic coefficients.
-            filename will be treated as a URL if it starts with 'http://',
-            'https://', or 'ftp://'. For 'shtools' and 'bshc' formatted files,
-            if filename ends with '.gz' or '.zip', the file will be
-            uncompressed before parsing.
-        format : str, optional, default = 'shtools'
-            'shtools' for generic ascii files, 'dov' for [degree, order, value]
-            ascii files, 'bshc' for binary spherical harmonic coefficient
-            files, or 'npy' for binary numpy files.
+            Name of the file, including path.
         lmax : int, optional, default = None
-            The maximum spherical harmonic degree to read from the file. The
-            default is to read the entire file.
+            The maximum spherical harmonic degree to read.
         normalization : str, optional, default = '4pi'
-            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
-            orthonormalized, Schmidt semi-normalized, or unnormalized
-            coefficients, respectively.
+            Spherical harmonic normalization if not specified in the netcdf
+            file: '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi
+            normalized, orthonormalized, Schmidt semi-normalized, or
+            unnormalized coefficients, respectively.
         csphase : int, optional, default = 1
-            Condon-Shortley phase convention: 1 to exclude the phase factor,
-            or -1 to include it.
-        skip : int, optional, default = 0
-            Number of lines to skip at the beginning of the file for 'shtools'
-            formatted files.
-        header : bool, optional, default = False
-            If True, read a list of values from the header line of an 'shtools'
-            or 'dov' formatted file.
-        header2 : bool, optional, default = False
-            If True, read a list of values from a second header line of a 'dov'
-            formatted file.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.load() when format is 'npy'.
+            Condon-Shortley phase convention if not specified in the netcdf
+            file: 1 to exclude the phase factor, or -1 to include it.
 
-        Notes
-        -----
-        Supported file formats:
-            'shtools' (see pyshtools.shio.shread)
-            'dov' (see pyshtools.shio.shread)
-            'bshc' (see pyshtools.shio.read_bshc)
-            'npy' (see numpy.load)
-
-        For 'shtools', 'dov' or 'bshc' formatted files, if filename starts with
-        'http://', 'https://', or 'ftp://', the file will be treated as a URL.
-        In this case, the file will be downloaded in its entirety before it is
-        parsed. If the filename ends with '.gz' or '.zip', the file will be
-        automatically uncompressed before parsing. For zip files, archives with
-        only a single file are supported. Note that reading '.gz' and '.zip'
-        files will be extremely slow if lmax is not specified.
-
-        For 'shtools' and 'dov' formatted files, the optional parameter `skip`
-        specifies how many lines should be skipped before attempting to parse
-        the file, the optional parameter `header` specifies whether to read a
-        list of values from a header line, and the optional parameter `lmax`
-        specifies the maximum degree to read from the file.
+        Description
+        -----------
+        The format of the netcdf file has to be exactly as the format that is
+        used in SHCoeffs.to_netcdf().
         """
+        ds = _xr.open_dataset(filename)
+
+        try:
+            normalization = ds.coeffs.normalization
+        except:
+            pass
+
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
-                             'Input type is {:s}.'
+                             'Input type was {:s}'
                              .format(str(type(normalization))))
-
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
-                "The input normalization must be '4pi', 'ortho', 'schmidt', "
-                "or 'unnorm'. Provided value is {:s}."
+                "The input normalization must be '4pi', 'ortho', "
+                "'schmidt', or 'unnorm'. Provided value was {:s}"
                 .format(repr(normalization))
                 )
 
+        try:
+            csphase = ds.coeffs.csphase
+        except:
+            pass
+
         if csphase != 1 and csphase != -1:
             raise ValueError(
-                "csphase must be 1 or -1. Input value is {:s}."
+                "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase))
                 )
 
-        header_list = None
-        if format.lower() == 'shtools':
-            if header is True:
-                coeffs, lmaxout, header_list = _shread(fname, lmax=lmax,
-                                                       skip=skip, header=True)
-            else:
-                coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
-
-        elif format.lower() == 'dov':
-            if header:
-                if header2:
-                    coeffs, lmaxout, header_list, header2_list = \
-                        _read_dov(fname, lmax=lmax, skip=skip, header=True,
-                                  header2=True)
-                else:
-                    coeffs, lmaxout, header_list = _read_dov(fname, lmax=lmax,
-                                                             skip=skip,
-                                                             header=True)
-            else:
-                coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
-
-        elif format.lower() == 'bshc':
-            coeffs, lmaxout = _read_bshc(fname, lmax=lmax)
-
-        elif format.lower() == 'npy':
-            coeffs = _np.load(fname, **kwargs)
-            lmaxout = coeffs.shape[1] - 1
-            if lmax is not None:
-                if lmax < lmaxout:
-                    coeffs = coeffs[:, :lmax+1, :lmax+1]
-                    lmaxout = lmax
-
-        else:
-            raise NotImplementedError(
-                'format={:s} not implemented.'.format(repr(format)))
+        lmaxout = ds.dims['degree'] - 1
+        c = _np.tril(ds.coeffs.data)
+        s = _np.triu(ds.coeffs.data, k=1)
+        s = _np.vstack([s[-1], s[:-1]])
+        s = _np.transpose(s)
+        if isinstance(lmax, int):
+            c, s = c[:lmax+1, :lmax+1], s[:lmax+1, :lmax+1]
+            lmaxout = lmax
 
         if normalization.lower() == 'unnorm' and lmaxout > 85:
-            _warnings.warn("Calculations using unnormalized coefficients "
-                           "are stable only for degrees less than or equal "
-                           "to 85. lmax for the coefficients will be set to "
-                           "85. Input value is {:d}.".format(lmaxout),
+            _warnings.warn("Calculations using unnormalized coefficients " +
+                           "are stable only for degrees less than or equal " +
+                           "to 85. lmax for the coefficients will be set to " +
+                           "85. Input value was {:d}.".format(lmaxout),
                            category=RuntimeWarning)
             lmaxout = 85
-            coeffs = coeffs[:, :lmaxout+1, :lmaxout+1]
+            c, s = c[:lmaxout+1, :lmaxout+1], s[:lmaxout+1, :lmaxout+1]
+        coeffs = _np.array([c, s])
+
+        try:
+            cerrors = _np.tril(ds.errors.data)
+            serrors = _np.triu(ds.errors.data, k=1)
+            serrors = _np.vstack([serrors[-1], serrors[:-1]])
+            serrors = _np.transpose(serrors)
+            cerrors = cerrors[:lmaxout+1, :lmaxout+1]
+            serrors = serrors[:lmaxout+1, :lmaxout+1]
+            errors = _np.array([cerrors, serrors])
+        except:
+            errors = None
 
         if _np.iscomplexobj(coeffs):
             kind = 'complex'
@@ -563,8 +721,9 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, normalization=normalization.lower(),
-                           csphase=csphase, header=header_list)
+                return cls(coeffs, errors=errors,
+                           normalization=normalization.lower(),
+                           csphase=csphase)
 
     @classmethod
     def from_cap(self, theta, lmax, clat=None, clon=None, normalization='4pi',
@@ -671,99 +830,6 @@ class SHCoeffs(object):
 
         return temp
 
-    @classmethod
-    def from_netcdf(self, filename, lmax=None, normalization='4pi', csphase=1):
-        """
-        Initialize the class with spherical harmonic coefficients from a
-        netcdf file.
-
-        Usage
-        -----
-        x = SHCoeffs.from_netcdf(filename, [lmax, normalization, csphase])
-
-        Returns
-        -------
-        x : SHCoeffs class instance.
-
-        Parameters
-        ----------
-        filename : str
-            Name of the file, including path.
-        lmax : int, optional, default = None
-            The maximum spherical harmonic degree to read.
-        normalization : str, optional, default = '4pi'
-            Spherical harmonic normalization if not specified in the netcdf
-            file: '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi
-            normalized, orthonormalized, Schmidt semi-normalized, or
-            unnormalized coefficients, respectively.
-        csphase : int, optional, default = 1
-            Condon-Shortley phase convention if not specified in the netcdf
-            file: 1 to exclude the phase factor, or -1 to include it.
-
-        Description
-        -----------
-        The format of the netcdf file has to be exactly as the format that is
-        used in SHCoeffs.to_netcdf().
-        """
-        ds = _xr.open_dataset(filename)
-
-        try:
-            normalization = ds.coeffs.normalization
-        except:
-            pass
-
-        if type(normalization) != str:
-            raise ValueError('normalization must be a string. '
-                             'Input type was {:s}'
-                             .format(str(type(normalization))))
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
-            raise ValueError(
-                "The input normalization must be '4pi', 'ortho', "
-                "'schmidt', or 'unnorm'. Provided value was {:s}"
-                .format(repr(normalization))
-                )
-
-        try:
-            csphase = ds.coeffs.csphase
-        except:
-            pass
-
-        if csphase != 1 and csphase != -1:
-            raise ValueError(
-                "csphase must be 1 or -1. Input value was {:s}"
-                .format(repr(csphase))
-                )
-
-        lmaxout = ds.dims['degree'] - 1
-
-        c = _np.tril(ds.coeffs.data)
-        s = _np.triu(ds.coeffs.data, k=1)
-        s = _np.vstack([s[-1], s[:-1]])
-        s = _np.transpose(s)
-        if isinstance(lmax, int):
-            c, s = c[:lmax+1, :lmax+1], s[:lmax+1, :lmax+1]
-            lmaxout = lmax
-
-        if normalization.lower() == 'unnorm' and lmaxout > 85:
-            _warnings.warn("Calculations using unnormalized coefficients " +
-                           "are stable only for degrees less than or equal " +
-                           "to 85. lmax for the coefficients will be set to " +
-                           "85. Input value was {:d}.".format(lmaxout),
-                           category=RuntimeWarning)
-            lmaxout = 85
-            c, s = c[:lmaxout+1, :lmaxout+1], s[:lmaxout+1, :lmaxout+1]
-        coeffs = _np.array([c, s])
-
-        if _np.iscomplexobj(coeffs):
-            kind = 'complex'
-        else:
-            kind = 'real'
-
-        for cls in self.__subclasses__():
-            if cls.istype(kind):
-                return cls(coeffs, normalization=normalization.lower(),
-                           csphase=csphase)
-
     # ---- Define methods that modify internal variables ----
     def set_coeffs(self, values, ls, ms):
         """
@@ -800,13 +866,14 @@ class SHCoeffs(object):
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- IO Routines
-    def to_file(self, filename, format='shtools', header=None, **kwargs):
+    def to_file(self, filename, format='shtools', header=None, errors=False,
+                **kwargs):
         """
         Save raw spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.to_file(filename, [format='shtools', header])
+        x.to_file(filename, [format='shtools', header, errors])
         x.to_file(filename, [format='npy', **kwargs])
 
         Parameters
@@ -819,6 +886,9 @@ class SHCoeffs(object):
         header : str, optional, default = None
             A header string written to an 'shtools'-formatted file directly
             before the spherical harmonic coefficients.
+        errors : bool, optional, default = False
+            If True, save the errors in the file (for 'shtools' formatted
+            files only).
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
@@ -832,7 +902,10 @@ class SHCoeffs(object):
         l, m, coeffs[0, l, m], coeffs[1, l, m]
 
         where l and m are the spherical harmonic degree and order,
-        respectively.
+        respectively. If the errors are to be saved, the format of each line
+        will be
+
+        l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
 
         If format='npy', the spherical harmonic coefficients will be saved to
         a binary numpy 'npy' file using numpy.save().
@@ -850,9 +923,17 @@ class SHCoeffs(object):
                     file.write(header + '\n')
                 for l in range(self.lmax+1):
                     for m in range(l+1):
-                        file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
-                                   .format(l, m, self.coeffs[0, l, m],
-                                           self.coeffs[1, l, m]))
+                        if errors is True:
+                            file.write('{:d}, {:d}, {:.16e}, {:.16e}, '
+                                       '{:.16e}, {:.16e}\n'
+                                       .format(l, m, self.coeffs[0, l, m],
+                                               self.coeffs[1, l, m],
+                                               self.errors[0, l, m],
+                                               self.errors[1, l, m]))
+                        else:
+                            file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
+                                       .format(l, m, self.coeffs[0, l, m],
+                                               self.coeffs[1, l, m]))
         elif format == 'npy':
             _np.save(filebase, self.coeffs, **kwargs)
         else:
@@ -900,20 +981,31 @@ class SHCoeffs(object):
         ds['coeffs'].attrs['normalization'] = self.normalization
         ds['coeffs'].attrs['csphase'] = self.csphase
 
+        if self.errors is not None:
+            cerrors = self.errors[0, :lmax+1, :lmax+1]
+            serrors = _np.transpose(self.errors[1, :lmax+1, :lmax+1])
+            serrors = _np.vstack([serrors[1:], serrors[0]])
+            ds['errors'] = (('degree', 'order'), cerrors + serrors)
+            ds['errors'].attrs['normalization'] = self.normalization
+            ds['errors'].attrs['csphase'] = self.csphase
+
         ds.to_netcdf(filename)
 
     def to_array(self, normalization=None, csphase=None, lmax=None):
         """
-        Return spherical harmonic coefficients as a numpy array.
+        Return spherical harmonic coefficients (and errors) as a numpy array.
 
         Usage
         -----
-        coeffs = x.to_array([normalization, csphase, lmax])
+        coeffs, [errors] = x.to_array([normalization, csphase, lmax])
 
         Returns
         -------
         coeffs : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the spherical harmonic coefficients.
+        errors : ndarry, shape (2, lmax+1, lmax+1)
+            numpy ndarray of the errors of the spherical harmonic
+            coefficients if they are not None.
 
         Parameters
         ----------
@@ -937,7 +1029,8 @@ class SHCoeffs(object):
         degree is smaller than the maximum degree of the class instance, the
         coefficients will be truncated. Conversely, if this degree is larger
         than the maximum degree of the class instance, the output array will be
-        zero padded.
+        zero padded. If the errors of the coefficients are set, they will be
+        output as a separate array.
         """
         if normalization is None:
             normalization = self.normalization
@@ -951,7 +1044,14 @@ class SHCoeffs(object):
                           csphase_in=self.csphase, csphase_out=csphase,
                           lmax=lmax)
 
-        return coeffs
+        if self.errors is not None:
+            errors = _convert(self.errors, normalization_in=self.normalization,
+                              normalization_out=normalization,
+                              csphase_in=self.csphase, csphase_out=csphase,
+                              lmax=lmax)
+            return coeffs, errors
+        else:
+            return coeffs
 
     def copy(self):
         """
@@ -973,7 +1073,11 @@ class SHCoeffs(object):
         """
         print(repr(self))
 
-    # ---- Mathematical operators ----
+    # -------------------------------------------------------------------------
+    #    Mathematical operators
+    #
+    #    All operations ignore the errors of the coefficients.
+    # -------------------------------------------------------------------------
     def __add__(self, other):
         """
         Add two similar sets of coefficients or coefficients and a scalar:
@@ -1163,13 +1267,22 @@ class SHCoeffs(object):
                                       'for these operands.')
 
     def __repr__(self):
+        if self.errors is not None:
+            error_kind = True
+        else:
+            error_kind = None
+
         return ('kind = {:s}\n'
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
                 'lmax = {:d}\n'
-                'header = {:s}'.format(
+                'errors = {:s}\n'
+                'header = {:s}\n'
+                'header2 = {:s}'
+                .format(
                     repr(self.kind), repr(self.normalization), self.csphase,
-                    self.lmax, repr(self.header)))
+                    self.lmax, repr(error_kind), repr(self.header),
+                    repr(self.header2)))
 
     # ---- Extract data ----
     def degrees(self):
@@ -1195,13 +1308,16 @@ class SHCoeffs(object):
 
         Usage
         -----
-        spectrum = x.spectrum([lmax, convention, unit, base])
+        spectrum, [error_spectrum] = x.spectrum([lmax, convention, unit, base])
 
         Returns
         -------
         spectrum : ndarray, shape (lmax+1)
             1-D numpy ndarray of the spectrum, where lmax is the maximum
             spherical harmonic degree.
+        error_spectrum : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the error_spectrum (if the attribute errors
+            is not None).
 
         Parameters
         ----------
@@ -1242,9 +1358,17 @@ class SHCoeffs(object):
         and where spectrum(l, 'per_dlogl) is equal to
         spectrum(l, 'per_l')*l*log(a).
         """
-        return _spectrum(self.coeffs, normalization=self.normalization,
-                         convention=convention, unit=unit, base=base,
-                         lmax=lmax)
+        s = _spectrum(self.coeffs, normalization=self.normalization,
+                      convention=convention, unit=unit, base=base,
+                      lmax=lmax)
+
+        if self.errors is not None:
+            es = _spectrum(self.errors, normalization=self.normalization,
+                           convention=convention, unit=unit, base=base,
+                           lmax=lmax)
+            return s, es
+        else:
+            return s
 
     def cross_spectrum(self, clm, lmax=None, convention='power', unit='per_l',
                        base=10.):
@@ -1546,6 +1670,7 @@ class SHCoeffs(object):
         is larger than the maximum degree of the original class, the
         coefficients of the new class will be zero padded.
         """
+        error_coeffs = None
         if normalization is None:
             normalization = self.normalization
         if csphase is None:
@@ -1575,13 +1700,23 @@ class SHCoeffs(object):
                 temp = self._make_complex()
             else:
                 temp = self._make_real(check=check)
-            coeffs = temp.to_array(normalization=normalization.lower(),
-                                   csphase=csphase, lmax=lmax)
+            if self.errors is not None:
+                coeffs, error_coeffs = temp.to_array(
+                    normalization=normalization.lower(), csphase=csphase,
+                    lmax=lmax)
+            else:
+                coeffs = temp.to_array(normalization=normalization.lower(),
+                                       csphase=csphase, lmax=lmax)
         else:
-            coeffs = self.to_array(normalization=normalization.lower(),
-                                   csphase=csphase, lmax=lmax)
+            if self.errors is not None:
+                coeffs, error_coeffs = temp.to_array(
+                    normalization=normalization.lower(), csphase=csphase,
+                    lmax=lmax)
+            else:
+                coeffs = self.to_array(normalization=normalization.lower(),
+                                       csphase=csphase, lmax=lmax)
 
-        return SHCoeffs.from_array(coeffs,
+        return SHCoeffs.from_array(coeffs, errors=error_coeffs,
                                    normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
@@ -1614,8 +1749,14 @@ class SHCoeffs(object):
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
             clm.mask = clm.mask[:, :lmax+1, :lmax+1]
+            if self.errors is not None:
+                clm.errors = clm.errors[:, :lmax+1, :lmax+1]
         else:
             clm.coeffs = _np.pad(clm.coeffs, ((0, 0), (0, lmax - self.lmax),
+                                 (0, lmax - self.lmax)), 'constant')
+            if self.errors is not None:
+                clm.errors = _np.pad(
+                    clm.errors, ((0, 0), (0, lmax - self.lmax),
                                  (0, lmax - self.lmax)), 'constant')
             mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
             for l in _np.arange(lmax + 1):
@@ -1787,13 +1928,14 @@ class SHCoeffs(object):
         Notes
         -----
         This method plots either the power spectrum, energy spectrum, or
-        l2-norm spectrum. Total power is defined as the integral of the
-        function squared over all space, divided by the area the function
-        spans. If the mean of the function is zero, this is equivalent to the
-        variance of the function. The total energy is the integral of the
-        function squared over all space and is 4pi times the total power. For
-        normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm is
-        the sum of the magnitude of the coefficients squared.
+        l2-norm spectrum. If the error coefficients are specified, the error
+        spectrum will also be plotted. Total power is defined as the integral
+        of the function squared over all space, divided by the area the
+        function spans. If the mean of the function is zero, this is equivalent
+        to the variance of the function. The total energy is the integral of
+        the function squared over all space and is 4pi times the total power.
+        For normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm
+        is the sum of the magnitude of the coefficients squared.
 
         The output spectrum can be expresed using one of three units. 'per_l'
         returns the contribution to the total spectrum from all angular orders
@@ -1809,8 +1951,14 @@ class SHCoeffs(object):
         if lmax is None:
             lmax = self.lmax
 
-        spectrum = self.spectrum(convention=convention, unit=unit, base=base,
-                                 lmax=lmax)
+        if self.errors is not None:
+            spectrum, error_spectrum = self.spectrum(convention=convention,
+                                                     unit=unit, base=base,
+                                                     lmax=lmax)
+        else:
+            spectrum = self.spectrum(convention=convention, unit=unit,
+                                     base=base, lmax=lmax)
+
         ls = _np.arange(lmax + 1)
 
         if ax is None:
@@ -1859,9 +2007,18 @@ class SHCoeffs(object):
 
         if xscale == 'log':
             axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
+            if self.errors is not None:
+                axes.plot(ls[1:lmax+1], error_spectrum[1:lmax+1],
+                          label='error', **kwargs)
         else:
             axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
-            axes.set(xlim=(ls[0], ls[lmax]))
+            if self.errors is not None:
+                axes.plot(ls[:lmax+1], error_spectrum[:lmax+1], label='error',
+                          **kwargs)
+            if ax is None:
+                axes.set(xlim=(ls[0], ls[lmax]))
+            else:
+                axes.set(xlim=(ls[0], max(ls[lmax], ax.get_xbound()[1])))
 
         axes.grid(grid, which='major')
         axes.minorticks_on()
@@ -2017,7 +2174,10 @@ class SHCoeffs(object):
             axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
         else:
             axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
-            axes.set(xlim=(ls[0], ls[lmax]))
+            if ax is None:
+                axes.set(xlim=(ls[0], ls[lmax]))
+            else:
+                axes.set(xlim=(ls[0], max(ls[lmax], ax.get_xbound()[1])))
 
         axes.grid(grid, which='major')
         axes.minorticks_on()
@@ -2035,7 +2195,8 @@ class SHCoeffs(object):
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
                         grid=True, axes_labelsize=None, tick_labelsize=None,
                         vscale='log', vrange=None, vmin=None, vmax=None,
-                        lmax=None, show=True, ax=None, fname=None):
+                        lmax=None, errors=False, show=True, ax=None,
+                        fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
 
@@ -2043,7 +2204,7 @@ class SHCoeffs(object):
         -----
         x.plot_spectrum2d([convention, xscale, yscale, grid, axes_labelsize,
                            tick_labelsize, vscale, vrange, vmin, vmax, lmax,
-                           show, ax, fname])
+                           errors, show, ax, fname])
 
         Parameters
         ----------
@@ -2074,6 +2235,8 @@ class SHCoeffs(object):
             the spectrum will be used.
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to plot.
+        errors : bool, optional, default = False
+            If True, plot the spectrum of the errors.
         show : bool, optional, default = True
             If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -2104,12 +2267,20 @@ class SHCoeffs(object):
         degrees = _np.arange(lmax + 1)
 
         # Create the matrix of the spectrum for each coefficient
+        if errors is True:
+            if self.errors is None:
+                raise ValueError('Can not plot the error spectrum when the '
+                                 'errors are not set.')
+            coeffs = self.errors
+        else:
+            coeffs = self.coeffs
+
         spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
-        mpositive = self.coeffs[0, :lmax + 1, :lmax + 1] * \
-            self.coeffs[0, :lmax + 1, :lmax + 1].conj()
+        mpositive = coeffs[0, :lmax + 1, :lmax + 1] * \
+            coeffs[0, :lmax + 1, :lmax + 1].conj()
         mpositive[~self.mask[0, :lmax + 1, :lmax + 1]] = _np.nan
-        mnegative = self.coeffs[1, :lmax + 1, :lmax + 1] * \
-            self.coeffs[1, :lmax + 1, :lmax + 1].conj()
+        mnegative = coeffs[1, :lmax + 1, :lmax + 1] * \
+            coeffs[1, :lmax + 1, :lmax + 1].conj()
         mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
 
         spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
@@ -2462,8 +2633,8 @@ class SHRealCoeffs(SHCoeffs):
         """Test if class is Real or Complex."""
         return kind == 'real'
 
-    def __init__(self, coeffs, normalization='4pi', csphase=1, copy=True,
-                 header=None):
+    def __init__(self, coeffs, errors=None, normalization='4pi', csphase=1,
+                 copy=True, header=None, header2=None):
         """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2478,12 +2649,22 @@ class SHRealCoeffs(SHCoeffs):
         self.normalization = normalization
         self.csphase = csphase
         self.header = header
+        self.header2 = header2
 
         if copy:
             self.coeffs = _np.copy(coeffs)
             self.coeffs[~mask] = 0.
         else:
             self.coeffs = coeffs
+
+        if errors is not None:
+            if copy:
+                self.errors = _np.copy(errors)
+                self.errors[~mask] = 0.
+            else:
+                self.errors = errors
+        else:
+            self.errors = None
 
     def _make_complex(self):
         """Convert the real SHCoeffs class to the complex class."""
@@ -2641,8 +2822,8 @@ class SHComplexCoeffs(SHCoeffs):
         """Check if class has kind 'real' or 'complex'."""
         return kind == 'complex'
 
-    def __init__(self, coeffs, normalization='4pi', csphase=1, copy=True,
-                 header=None):
+    def __init__(self, coeffs, errors=None, normalization='4pi', csphase=1,
+                 copy=True, header=None, header2=None):
         """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2658,12 +2839,22 @@ class SHComplexCoeffs(SHCoeffs):
         self.normalization = normalization
         self.csphase = csphase
         self.header = header
+        self.header2 = header2
 
         if copy:
             self.coeffs = _np.copy(coeffs)
             self.coeffs[~mask] = 0.
         else:
             self.coeffs = coeffs
+
+        if errors is not None:
+            if copy:
+                self.errors = _np.copy(errors)
+                self.errors[~mask] = 0.
+            else:
+                self.errors = errors
+        else:
+            self.errors = None
 
     def _make_real(self, check=True):
         """Convert the complex SHCoeffs class to the real class."""

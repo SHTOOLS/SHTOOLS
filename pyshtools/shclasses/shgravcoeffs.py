@@ -32,7 +32,7 @@ from ..shtools import djpi2 as _djpi2
 from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
 
 # =============================================================================
-# =========    SHGravCoeffs class    =========================================
+# =========    SHGravCoeffs class    ==========================================
 # =============================================================================
 
 
@@ -85,6 +85,9 @@ class SHGravCoeffs(object):
     kind          : The coefficient data type (only 'real' is permissible).
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
+                    and 'dov' formatted files only).
+    header2       : A list of values (of type str) from the second header line
+                    of the input file used to initialize the class (for 'dov'
                     formatted files only).
 
     Each class instance provides the following methods:
@@ -256,7 +259,7 @@ class SHGravCoeffs(object):
         return clm
 
     @classmethod
-    def from_zeros(self, lmax, gm, r0, omega=None, errors=False,
+    def from_zeros(self, lmax, gm, r0, omega=None, errors=None,
                    normalization='4pi', csphase=1):
         """
         Initialize the class with spherical harmonic coefficients set to zero
@@ -282,7 +285,7 @@ class SHGravCoeffs(object):
             The reference radius of the spherical harmonic coefficients.
         omega : float, optional, default = None
             The angular rotation rate of the body.
-        errors : bool, optional, default = False
+        errors : bool, optional, default = None
             If True, initialize the attribute errors with zeros.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
@@ -315,22 +318,21 @@ class SHGravCoeffs(object):
 
         coeffs = _np.zeros((2, lmax + 1, lmax + 1))
         coeffs[0, 0, 0] = 1.0
-
-        if errors is False:
-            clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
-                                   normalization=normalization.lower(),
-                                   csphase=csphase)
+        if errors is True:
+            error_coeffs = _np.zeros((2, lmax + 1, lmax + 1))
         else:
-            clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
-                                   errors=_np.zeros((2, lmax + 1, lmax + 1)),
-                                   normalization=normalization.lower(),
-                                   csphase=csphase)
+            error_coeffs = None
+
+        clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
+                               errors=error_coeffs,
+                               normalization=normalization.lower(),
+                               csphase=csphase)
         return clm
 
     @classmethod
     def from_file(self, fname, format='shtools', gm=None, r0=None,
                   omega=None, lmax=None, normalization='4pi', skip=0,
-                  header=True, header2=False, errors=False, csphase=1,
+                  header=True, header2=False, errors=None, csphase=1,
                   r0_index=0, gm_index=1, omega_index=None, header_units='m',
                   set_degree0=True, epoch=None, encoding=None, **kwargs):
         """
@@ -382,7 +384,7 @@ class SHGravCoeffs(object):
         header2 : bool, optional, default = False
             If True, read a list of values from a second header line of a 'dov'
             formatted file.
-        errors : bool or str, optional, default = False
+        errors : bool or str, optional, default = None
             For 'shtools' formatted files: if True, read and return the
             spherical harmonic coefficients of the errors. For 'icgem'
             formatted files, specify the type of error to return: 'calibrated'
@@ -462,6 +464,7 @@ class SHGravCoeffs(object):
         """
         error_coeffs = None
         header_list = None
+        header2_list = None
 
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
@@ -616,7 +619,8 @@ class SHGravCoeffs(object):
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
                                errors=error_coeffs,
                                normalization=normalization.lower(),
-                               csphase=csphase, header=header_list)
+                               csphase=csphase, header=header_list,
+                               header2=header2_list)
         return clm
 
     @classmethod
@@ -774,6 +778,7 @@ class SHGravCoeffs(object):
         coeffs[:, 1, :] = 0.0
 
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
+                               errors=None,
                                normalization=normalization.lower(),
                                csphase=csphase)
         return clm
@@ -2392,7 +2397,10 @@ class SHGravCoeffs(object):
                       **kwargs)
 
         if xscale == 'lin':
-            axes.set(xlim=(ls[0], ls[lmax]))
+            if ax is None:
+                axes.set(xlim=(ls[0], ls[lmax]))
+            else:
+                axes.set(xlim=(ls[0], max(ls[lmax], ax.get_xbound()[1])))
 
         axes.grid(grid, which='major')
         axes.minorticks_on()
@@ -2624,7 +2632,8 @@ class SHGravRealCoeffs(SHGravCoeffs):
     """
 
     def __init__(self, coeffs, gm=None, r0=None, omega=None, errors=None,
-                 normalization='4pi', csphase=1, copy=True, header=None):
+                 normalization='4pi', csphase=1, copy=True, header=None,
+                 header2=None):
         """Initialize real gravitational potential coefficients class."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2639,6 +2648,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
         self.normalization = normalization
         self.csphase = csphase
         self.header = header
+        self.header2 = header2
         self.gm = gm
         self.r0 = r0
         self.omega = omega
@@ -2660,9 +2670,9 @@ class SHGravRealCoeffs(SHGravCoeffs):
 
     def __repr__(self):
         if self.errors is not None:
-            err_set = True
+            error_kind = True
         else:
-            err_set = False
+            error_kind = None
 
         return ('kind = {:s}\n'
                 'normalization = {:s}\n'
@@ -2671,11 +2681,13 @@ class SHGravRealCoeffs(SHGravCoeffs):
                 'GM (m3 / s2) = {:s}\n'
                 'r0 (m) = {:s}\n'
                 'Omega (rad / s) = {:s}\n'
-                'errors are set: {:s}\n'
-                'header = {:s}'
+                'errors = {:s}\n'
+                'header = {:s}\n'
+                'header2 = {:s}'
                 .format(repr(self.kind), repr(self.normalization),
                         self.csphase, self.lmax, repr(self.gm), repr(self.r0),
-                        repr(self.omega), repr(err_set), repr(self.header)))
+                        repr(self.omega), repr(error_kind), repr(self.header),
+                        repr(self.header2)))
 
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""

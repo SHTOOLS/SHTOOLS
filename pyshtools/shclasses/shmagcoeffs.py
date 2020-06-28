@@ -74,6 +74,9 @@ class SHMagCoeffs(object):
     kind          : The coefficient data type (only 'real' is permissible).
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
+                    and 'dov' formatted files only).
+    header2       : A list of values (of type str) from the second header line
+                    of the input file used to initialize the class (for 'dov'
                     formatted files only).
 
     Each class instance provides the following methods:
@@ -219,7 +222,7 @@ class SHMagCoeffs(object):
         return clm
 
     @classmethod
-    def from_zeros(self, lmax, r0, errors=False, normalization='schmidt',
+    def from_zeros(self, lmax, r0, errors=None, normalization='schmidt',
                    csphase=1):
         """
         Initialize the class with spherical harmonic coefficients set to zero.
@@ -238,7 +241,7 @@ class SHMagCoeffs(object):
             The maximum spherical harmonic degree l of the coefficients.
         r0 : float
             The reference radius of the spherical harmonic coefficients.
-        errors : bool, optional, default = False
+        errors : bool, optional, default = None
             If True, initialize the attribute errors with zeros.
         normalization : str, optional, default = 'schmidt'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
@@ -270,22 +273,20 @@ class SHMagCoeffs(object):
             lmax = 85
 
         coeffs = _np.zeros((2, lmax + 1, lmax + 1))
-
-        if errors is False:
-            clm = SHMagRealCoeffs(coeffs, r0=r0,
-                                  normalization=normalization.lower(),
-                                  csphase=csphase)
+        if errors is True:
+            error_coeffs = _np.zeros((2, lmax + 1, lmax + 1))
         else:
-            clm = SHMagRealCoeffs(coeffs, r0=r0,
-                                  errors=_np.zeros((2, lmax + 1, lmax + 1)),
-                                  normalization=normalization.lower(),
-                                  csphase=csphase)
+            error_coeffs = None
+
+        clm = SHMagRealCoeffs(coeffs, r0=r0, errors=error_coeffs,
+                              normalization=normalization.lower(),
+                              csphase=csphase)
         return clm
 
     @classmethod
     def from_file(self, fname, format='shtools', r0=None, lmax=None,
                   normalization='schmidt', skip=0, header=True, header2=False,
-                  errors=False, csphase=1, r0_index=0, header_units='m',
+                  errors=None, csphase=1, r0_index=0, header_units='m',
                   coeffs_units='nT', year=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
@@ -332,9 +333,9 @@ class SHMagCoeffs(object):
         header2 : bool, optional, default = False
             If True, read a list of values from a second header line of a 'dov'
             formatted file.
-        errors : bool, optional, default = False
-            If True, read errors from the file (for 'shtools' formatted files
-            only).
+        errors : bool, optional, default = None
+            If True, read errors from the file (for 'shtools' and 'dov'
+            formatted files only).
         r0_index : int, optional, default = 0
             For 'shtools' formatted files, if header is True, r0 will be set
             using the value from the header line with this index.
@@ -397,6 +398,7 @@ class SHMagCoeffs(object):
         header_list = None
         if not header:
             r0_index = None
+        header2_list = None
 
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
@@ -534,7 +536,8 @@ class SHMagCoeffs(object):
 
         clm = SHMagRealCoeffs(coeffs, r0=r0, errors=error_coeffs,
                               normalization=normalization.lower(),
-                              csphase=csphase, header=header_list)
+                              csphase=csphase, header=header_list,
+                              header2=header2_list)
         return clm
 
     @classmethod
@@ -680,7 +683,7 @@ class SHMagCoeffs(object):
 
         coeffs[0, 0, 0] = 0.0
 
-        clm = SHMagRealCoeffs(coeffs, r0=r0,
+        clm = SHMagRealCoeffs(coeffs, r0=r0, errors=None,
                               normalization=normalization.lower(),
                               csphase=csphase)
         return clm
@@ -1902,7 +1905,10 @@ class SHMagCoeffs(object):
                       **kwargs)
 
         if xscale == 'lin':
-            axes.set(xlim=(ls[0], ls[lmax]))
+            if ax is None:
+                axes.set(xlim=(ls[0], ls[lmax]))
+            else:
+                axes.set(xlim=(ls[0], max(ls[lmax], ax.get_xbound()[1])))
 
         axes.grid(grid, which='major')
         axes.minorticks_on()
@@ -2129,7 +2135,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
     """
 
     def __init__(self, coeffs, r0=None, errors=None, normalization='schmidt',
-                 csphase=1, copy=True, header=None):
+                 csphase=1, copy=True, header=None, header2=None):
         """Initialize real magnetic potential coefficients class."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2144,6 +2150,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
         self.normalization = normalization
         self.csphase = csphase
         self.header = header
+        self.header2 = header2
         self.r0 = r0
 
         if copy:
@@ -2163,20 +2170,22 @@ class SHMagRealCoeffs(SHMagCoeffs):
 
     def __repr__(self):
         if self.errors is not None:
-            err_set = True
+            error_kind = True
         else:
-            err_set = False
+            error_kind = None
 
         return ('kind = {:s}\n'
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
                 'lmax = {:d}\n'
                 'r0 (m) = {:s}\n'
-                'errors are set: {:s}\n'
-                'header = {:s}'
+                'errors = {:s}\n'
+                'header = {:s}\n'
+                'header2 = {:s}'
                 .format(repr(self.kind), repr(self.normalization),
                         self.csphase, self.lmax, repr(self.r0),
-                        repr(err_set), repr(self.header)))
+                        repr(error_kind), repr(self.header),
+                        repr(self.header2)))
 
     def _rotate(self, angles, dj_matrix, r0=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""

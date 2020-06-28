@@ -41,11 +41,13 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | --------- | ----------- |
 | `lmax` | The maximum spherical harmonic degree of the coefficients. |
 | `coeffs` | The raw coefficients with the specified normalization and phase conventions. |
+| `errors` | The uncertainties of the spherical harmonic coefficients. |
 | `normalization` | The normalization of the coefficients: `'4pi'`, `'ortho'`, `'schmidt'`, or `'unnorm'`. |
 | `csphase` | Defines whether the Condon-Shortley phase is used (`1`) or not (`-1`). |
 | `mask` | A boolean mask that is `True` for the permissible values of degree `l` and order `m`. |
 | `kind` | The coefficient data type: either `'complex'` or `'real'`. |
 | `header` | A list of values from the header line of the input file used to initialize the class. |
+| `header2` | A list of values from the second header line of the input file used to initialize the class. |
 
 ## Class methods
 
