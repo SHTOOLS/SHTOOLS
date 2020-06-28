@@ -38,7 +38,7 @@ def VenusTopo719(lmax=719):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
 def MGNP180U(lmax=180):

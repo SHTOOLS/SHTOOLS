@@ -44,6 +44,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `gm` | The gravitational constant times the mass that is associated with the gravitational potential coefficients. |
 | `r0` | The reference radius of the gravitational potential coefficients. |
 | `omega` | The angular rotation rate of the body. |
+| `units` | The units of the gridded gravity data. |
+| `pot_units` | The units of the gridded gravitational potential. |
 | `normalization` | The normalization of the coefficients: `'4pi'`, `'ortho'`, `'schmidt'`, or `'unnorm'`.|
 | `csphase` | Defines whether the Condon-Shortley phase is used (`1`) or not (`-1`). |
 | `mask` | A boolean mask that is `True` for the permissible values of degree `l` and order `m`. |

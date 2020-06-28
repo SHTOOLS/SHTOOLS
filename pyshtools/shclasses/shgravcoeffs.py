@@ -1382,10 +1382,9 @@ class SHGravCoeffs(object):
     # -------------------------------------------------------------------------
     #    Mathematical operators
     #
-    #    Operations that involve a change of units are not permitted, such as
-    #    SHGravCoeffs*SHGravCoeffs, SHGravCoeffs/SHGravCoeffs, and
-    #    SHGravCoeffs+SHCoeffs. All operations ignore the errors of the
-    #    coefficients.
+    #    All operations ignore the errors of the coefficients.
+    #    All operations ignore the units of the coefficients, with the
+    #    exception of multiplying and dividing by a scalar.
     # -------------------------------------------------------------------------
     def __add__(self, other):
         """
@@ -2043,7 +2042,8 @@ class SHGravCoeffs(object):
             normal_gravity=ng, extend=extend)
 
         return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
-                           self.omega, normal_gravity, lmax, lmax_calc)
+                           self.omega, normal_gravity, lmax, lmax_calc,
+                           units='m/s2', pot_units='m2/s2')
 
     def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, degree0=False,
                sampling=2, extend=True):
@@ -2155,7 +2155,8 @@ class SHGravCoeffs(object):
             lmax_calc=lmax_calc, sampling=sampling, extend=extend)
 
         return _SHGravTensor(1.e9*vxx, 1.e9*vyy, 1.e9*vzz, 1.e9*vxy, 1.e9*vxz,
-                             1.e9*vyz, self.gm, a, f, lmax, lmax_calc)
+                             1.e9*vyz, self.gm, a, f, lmax, lmax_calc,
+                             units='Eötvös')
 
     def geoid(self, potref, a=None, f=None, r=None, omega=None, order=2,
               lmax=None, lmax_calc=None, grid='DH2', extend=True):
@@ -2257,7 +2258,7 @@ class SHGravCoeffs(object):
                                  sampling=sampling, extend=extend)
 
         return _SHGeoid(geoid, self.gm, potref, a, f, omega, r, order,
-                        lmax, lmax_calc)
+                        lmax, lmax_calc, units='m')
 
     # ---- Plotting routines ----
     def plot_spectrum(self, function='geoid', unit='per_l', base=10.,

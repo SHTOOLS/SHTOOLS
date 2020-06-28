@@ -241,7 +241,7 @@ def IGRF_13(lmax=13, year=2020.):
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, format='igrf', r0=6371.2e3,
-                                  lmax=lmax, year=year)
+                                  lmax=lmax, year=year, units='nT')
 
 
 def NGDC_720_V3(lmax=740):
@@ -271,7 +271,7 @@ def NGDC_720_V3(lmax=740):
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, skip=14,
-                                  header=False)
+                                  header=False, units='nT')
 
 
 def WDMAM2_800(lmax=800):
@@ -298,7 +298,8 @@ def WDMAM2_800(lmax=800):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, header=False)
+    return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, header=False,
+                                  units='nT')
 
 
 def SWARM_MLI_2D_0501(lmax=133):
@@ -328,7 +329,7 @@ def SWARM_MLI_2D_0501(lmax=133):
     )
     return _SHMagCoeffs.from_file(fname[0], format='dov', r0=6371.2e3,
                                   r0_index=None, lmax=lmax, header=True,
-                                  header2=True, skip=3)
+                                  header2=True, skip=3, units='nT')
 
 
 __all__ = ['Earth2012', 'Earth2014', 'EGM2008', 'EIGEN_6C4',

@@ -35,6 +35,8 @@ class SHGravGrid(object):
     omega          : Angular rotation rate of the body.
     normal_gravity : True if the normal gravity is removed from the total
                      gravitational acceleration.
+    units          : The units of the gridded gravity data.
+    pot_units      : The units of the gridded gravitational potential data.
     lmax           : The maximum spherical harmonic degree resolvable by the
                      grids.
     lmax_calc      : The maximum spherical harmonic degree of the gravitational
@@ -63,15 +65,15 @@ class SHGravGrid(object):
     """
 
     def __init__(self, rad, theta, phi, total, pot, gm, a, f, omega,
-                 normal_gravity, lmax, lmax_calc):
+                 normal_gravity, lmax, lmax_calc, units=None, pot_units=None):
         """
         Initialize the SHGravGrid class.
         """
-        self.rad = _SHGrid.from_array(rad, grid='DH')
-        self.theta = _SHGrid.from_array(theta, grid='DH')
-        self.phi = _SHGrid.from_array(phi, grid='DH')
-        self.total = _SHGrid.from_array(total, grid='DH')
-        self.pot = _SHGrid.from_array(pot, grid='DH')
+        self.rad = _SHGrid.from_array(rad, grid='DH', units=units)
+        self.theta = _SHGrid.from_array(theta, grid='DH', units=units)
+        self.phi = _SHGrid.from_array(phi, grid='DH', units=units)
+        self.total = _SHGrid.from_array(total, grid='DH', units=units)
+        self.pot = _SHGrid.from_array(pot, grid='DH', units=pot_units)
         self.grid = self.rad.grid
         self.sampling = self.rad.sampling
         self.nlat = self.rad.nlat
@@ -88,6 +90,8 @@ class SHGravGrid(object):
         self.normal_gravity = normal_gravity
         self.lmax = lmax
         self.lmax_calc = lmax_calc
+        self.units = units
+        self.pot_units = pot_units
 
     def copy(self):
         """
@@ -122,11 +126,14 @@ class SHGravGrid(object):
                'a (m)= {:e}\n'
                'f = {:e}\n'
                'omega (rad / s) = {:s}\n'
-               'normal gravity is removed = {:s}'
+               'normal gravity is removed = {:s}\n'
+               'units (gravity) = {:s}\n'
+               'units (potential) = {:s}'
                .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
                        self.extend, self.lmax, self.lmax_calc, self.gm,
                        self.a, self.f, repr(self.omega),
-                       repr(self.normal_gravity)))
+                       repr(self.normal_gravity), repr(self.units),
+                       repr(self.pot_units)))
         return str
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],

@@ -34,6 +34,7 @@ class SHGeoid(object):
     sampling       : The longitudinal sampling for Driscoll and Healy grids.
                      Either 1 for equally sampled grids (nlat=nlon) or 2 for
                      equally spaced grids in degrees.
+    units          : The units of the gridded data.
     extend         : True if the grid contains the redundant column for 360 E
                      and the unnecessary row for 90 S.
 
@@ -47,11 +48,11 @@ class SHGeoid(object):
     info()         : Print a summary of the data stored in the SHGrid instance.
     """
     def __init__(self, geoid, gm, potref, a, f, omega, r, order, lmax,
-                 lmax_calc):
+                 lmax_calc, units=None):
         """
         Initialize the SHGeoid class.
         """
-        self.geoid = _SHGrid.from_array(geoid, grid='DH')
+        self.geoid = _SHGrid.from_array(geoid, grid='DH', units=units)
         self.grid = self.geoid.grid
         self.sampling = self.geoid.sampling
         self.nlat = self.geoid.nlat
@@ -70,6 +71,7 @@ class SHGeoid(object):
         self.r = r
         self.lmax = lmax
         self.lmax_calc = lmax_calc
+        self.units = units
 
     def copy(self):
         """
@@ -107,11 +109,12 @@ class SHGeoid(object):
                'f = {:e}\n'
                'omega (rad / s) = {:s}\n'
                'radius of Taylor expansion (m) = {:e}\n'
-               'order of expansion = {:d}'
+               'order of expansion = {:d}\n'
+               'units = {:s}'
                .format(repr(self.grid), self.sampling, self.nlat, self.nlon,
                        self.n, self.sampling, self.extend, self.lmax,
                        self.lmax_calc, self.gm, self.potref, self.a, self.f,
-                       repr(self.omega), self.r, self.order))
+                       repr(self.omega), self.r, self.order, repr(self.units)))
         return str
 
     def plot(self, projection=None, tick_interval=[30, 30],
@@ -256,7 +259,7 @@ class SHGeoid(object):
                  'title': title,
                  'comment': comment,
                  'long_name': 'Geoid',
-                 'units': 'meters',
+                 'units': self.units,
                  'nlat': self.geoid.nlat,
                  'nlon': self.geoid.nlon,
                  'lmax': self.lmax,
@@ -309,7 +312,7 @@ class SHGeoid(object):
                  'title': title,
                  'comment': comment,
                  'long_name': 'Geoid',
-                 'units': 'meters',
+                 'units': self.units,
                  'nlat': self.geoid.nlat,
                  'nlon': self.geoid.nlon,
                  'lmax': self.lmax,

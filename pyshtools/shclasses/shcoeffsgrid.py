@@ -81,6 +81,7 @@ class SHCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type: either 'complex' or 'real'.
+    units         : The units of the spherical harmonic coefficients.
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
                     and 'dov' formatted files).
@@ -140,7 +141,7 @@ class SHCoeffs(object):
     # ---- Factory methods ----
     @classmethod
     def from_array(self, coeffs, errors=None, normalization='4pi', csphase=1,
-                   lmax=None, copy=True):
+                   lmax=None, units=None, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
@@ -148,7 +149,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_array(array, [errors, normalization, csphase, lmax,
-                                        copy])
+                                        units, copy])
 
         Returns
         -------
@@ -170,6 +171,8 @@ class SHCoeffs(object):
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to include in the returned
             class instance. This must be less than or equal to lmaxin.
+        units : str, optional, default = None
+            The units of the spherical harmonic coefficients.
         copy : bool, optional, default = True
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
@@ -218,22 +221,23 @@ class SHCoeffs(object):
                     return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
                                errors=errors[:, 0:lmax+1, 0:lmax+1],
                                normalization=normalization.lower(),
-                               csphase=csphase, copy=copy)
+                               csphase=csphase, units=units, copy=copy)
                 else:
                     return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
                                normalization=normalization.lower(),
-                               csphase=csphase, copy=copy)
+                               csphase=csphase, units=units, copy=copy)
 
     @classmethod
     def from_zeros(self, lmax, errors=None, kind='real', normalization='4pi',
-                   csphase=1):
+                   csphase=1, units=None):
         """
         Initialize class with spherical harmonic coefficients set to zero from
         degree 0 to lmax.
 
         Usage
         -----
-        x = SHCoeffs.from_zeros(lmax, [errors, normalization, csphase])
+        x = SHCoeffs.from_zeros(lmax, [errors, normalization, csphase, kind,
+                                       units])
 
         Returns
         -------
@@ -254,6 +258,8 @@ class SHCoeffs(object):
             or -1 to include it.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
+        units : str, optional, default = None
+            The units of the spherical harmonic coefficients.
         """
         error_coeffs = None
         if kind.lower() not in ('real', 'complex'):
@@ -297,25 +303,26 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 return cls(coeffs, errors=error_coeffs,
                            normalization=normalization.lower(),
-                           csphase=csphase)
+                           csphase=csphase, units=units)
 
     @classmethod
     def from_file(self, fname, lmax=None, format='shtools', kind='real',
                   errors=None, normalization='4pi', skip=0, header=False,
-                  header2=False, csphase=1, **kwargs):
+                  header2=False, csphase=1, units=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
         Usage
         -----
         x = SHCoeffs.from_file(filename, [format='shtools', lmax, errors,
-                               normalization, csphase, skip, header])
+                               normalization, csphase, skip, header, units])
         x = SHCoeffs.from_file(filename, format='dov', [lmax, errors,
-                               normalization, csphase, skip, header, header2])
+                               normalization, csphase, skip, header, header2,
+                               units])
         x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
-                               csphase])
+                               csphase, units])
         x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
-                               csphase, **kwargs])
+                               csphase, units, **kwargs])
 
         Returns
         -------
@@ -355,6 +362,8 @@ class SHCoeffs(object):
         header2 : bool, optional, default = False
             If True, read a list of values from a second header line of a 'dov'
             formatted file.
+        units : str, optional, default = None
+            The units of the spherical harmonic coefficients.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
@@ -480,11 +489,11 @@ class SHCoeffs(object):
                 return cls(coeffs, errors=error_coeffs,
                            normalization=normalization.lower(),
                            csphase=csphase, header=header_list,
-                           header2=header2_list)
+                           header2=header2_list, units=units)
 
     @classmethod
     def from_random(self, power, lmax=None, kind='real', normalization='4pi',
-                    csphase=1, exact_power=False, seed=None):
+                    csphase=1, units=None, exact_power=False, seed=None):
         """
         Initialize the class with spherical harmonic coefficients as random
         variables with a given spectrum.
@@ -492,7 +501,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_random(power, [lmax, kind, normalization, csphase,
-                                         exact_power, seed])
+                                         units, exact_power, seed])
 
         Returns
         -------
@@ -516,6 +525,8 @@ class SHCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        units : str, optional, default = None
+            The units of the spherical harmonic coefficients.
         exact_power : bool, optional, default = False
             The total variance of the coefficients is set exactly to the input
             power. The distribution of power at degree l amongst the angular
@@ -619,17 +630,19 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 return cls(coeffs, errors=None,
                            normalization=normalization.lower(),
-                           csphase=csphase)
+                           csphase=csphase, units=units)
 
     @classmethod
-    def from_netcdf(self, filename, lmax=None, normalization='4pi', csphase=1):
+    def from_netcdf(self, filename, lmax=None, normalization='4pi', csphase=1,
+                    units=None):
         """
         Initialize the class with spherical harmonic coefficients from a
         netcdf file.
 
         Usage
         -----
-        x = SHCoeffs.from_netcdf(filename, [lmax, normalization, csphase])
+        x = SHCoeffs.from_netcdf(filename, [lmax, normalization, csphase,
+                                            units])
 
         Returns
         -------
@@ -649,6 +662,8 @@ class SHCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention if not specified in the netcdf
             file: 1 to exclude the phase factor, or -1 to include it.
+        units : str, optional, default = None
+            The units of the spherical harmonic coefficients.
 
         Description
         -----------
@@ -683,6 +698,11 @@ class SHCoeffs(object):
                 "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase))
                 )
+
+        try:
+            units = ds.coeffs.units
+        except:
+            pass
 
         lmaxout = ds.dims['degree'] - 1
         c = _np.tril(ds.coeffs.data)
@@ -723,11 +743,11 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 return cls(coeffs, errors=errors,
                            normalization=normalization.lower(),
-                           csphase=csphase)
+                           csphase=csphase, units=units)
 
     @classmethod
     def from_cap(self, theta, lmax, clat=None, clon=None, normalization='4pi',
-                 csphase=1, kind='real', degrees=True, copy=True):
+                 csphase=1, kind='real', units=None, degrees=True, copy=True):
         """
         Initialize the class with spherical harmonic coefficients of a
         spherical cap centered at the north pole.
@@ -735,7 +755,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_cap(theta, lmax, [clat, clon, normalization, csphase,
-                                            kind, degrees, copy])
+                                            kind, units, degrees, copy])
 
         Returns
         -------
@@ -759,6 +779,8 @@ class SHCoeffs(object):
             or -1 to include it.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
+        units : str, optional, default = None
+            The units of the spherical harmonic coefficients.
         degrees : bool, optional = True
             If True, theta, clat, and clon are in degrees.
         copy : bool, optional, default = True
@@ -819,7 +841,7 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 temp = cls(coeffs[:, 0:lmax+1, 0:lmax+1],
                            normalization=normalization.lower(),
-                           csphase=csphase, copy=copy)
+                           csphase=csphase, units=units, copy=copy)
 
         if clat is not None and clon is not None:
             if degrees is True:
@@ -980,6 +1002,8 @@ class SHCoeffs(object):
         ds['coeffs'].attrs['description'] = description
         ds['coeffs'].attrs['normalization'] = self.normalization
         ds['coeffs'].attrs['csphase'] = self.csphase
+        if self.units is not None:
+            ds['coeffs'].attrs['units'] = self.units
 
         if self.errors is not None:
             cerrors = self.errors[0, :lmax+1, :lmax+1]
@@ -1077,6 +1101,8 @@ class SHCoeffs(object):
     #    Mathematical operators
     #
     #    All operations ignore the errors of the coefficients.
+    #    All operations ignore the units of the coefficients, with the
+    #    exception of multiplying and dividing by a scalar.
     # -------------------------------------------------------------------------
     def __add__(self, other):
         """
@@ -1096,7 +1122,7 @@ class SHCoeffs(object):
                                            normalization=self.normalization)
             else:
                 raise ValueError('The two sets of coefficients must have the '
-                                 'same kind, normalization, csphase and '
+                                 'same kind, normalization, csphase, and '
                                  'lmax.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
@@ -1136,7 +1162,7 @@ class SHCoeffs(object):
                                            normalization=self.normalization)
             else:
                 raise ValueError('The two sets of coefficients must have the '
-                                 'same kind, normalization, csphase and '
+                                 'same kind, normalization, csphase, and '
                                  'lmax.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
@@ -1168,7 +1194,7 @@ class SHCoeffs(object):
                                            normalization=self.normalization)
             else:
                 raise ValueError('The two sets of coefficients must have the '
-                                 'same kind, normalization, csphase and '
+                                 'same kind, normalization, csphase, and '
                                  'lmax.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
@@ -1209,7 +1235,8 @@ class SHCoeffs(object):
                                  'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] * other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                       normalization=self.normalization)
+                                       normalization=self.normalization,
+                                       units=self.units)
         else:
             raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
@@ -1248,7 +1275,8 @@ class SHCoeffs(object):
                                  'a complex constant.')
             coeffs[self.mask] = self.coeffs[self.mask] / other
             return SHCoeffs.from_array(coeffs, csphase=self.csphase,
-                                       normalization=self.normalization)
+                                       normalization=self.normalization,
+                                       units=self.units)
         else:
             raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
@@ -1278,11 +1306,12 @@ class SHCoeffs(object):
                 'lmax = {:d}\n'
                 'errors = {:s}\n'
                 'header = {:s}\n'
-                'header2 = {:s}'
+                'header2 = {:s}\n'
+                'units = {:s}'
                 .format(
                     repr(self.kind), repr(self.normalization), self.csphase,
                     self.lmax, repr(error_kind), repr(self.header),
-                    repr(self.header2)))
+                    repr(self.header2), repr(self.units)))
 
     # ---- Extract data ----
     def degrees(self):
@@ -1718,7 +1747,8 @@ class SHCoeffs(object):
 
         return SHCoeffs.from_array(coeffs, errors=error_coeffs,
                                    normalization=normalization.lower(),
-                                   csphase=csphase, copy=False)
+                                   csphase=csphase, units=self.units,
+                                   copy=False)
 
     def pad(self, lmax, copy=True):
         """
@@ -2637,7 +2667,7 @@ class SHRealCoeffs(SHCoeffs):
         return kind == 'real'
 
     def __init__(self, coeffs, errors=None, normalization='4pi', csphase=1,
-                 copy=True, header=None, header2=None):
+                 units=None, copy=True, header=None, header2=None):
         """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2653,6 +2683,7 @@ class SHRealCoeffs(SHCoeffs):
         self.csphase = csphase
         self.header = header
         self.header2 = header2
+        self.units = units
 
         if copy:
             self.coeffs = _np.copy(coeffs)
@@ -2689,7 +2720,8 @@ class SHRealCoeffs(SHCoeffs):
         # passed as reference
         return SHCoeffs.from_array(complex_coeffs,
                                    normalization=self.normalization,
-                                   csphase=self.csphase, copy=False)
+                                   csphase=self.csphase, units=self.units,
+                                   copy=False)
 
     def _rotate(self, angles, dj_matrix):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
@@ -2708,9 +2740,9 @@ class SHRealCoeffs(SHCoeffs):
                             csphase_out=self.csphase)
             return SHCoeffs.from_array(
                 temp, normalization=self.normalization,
-                csphase=self.csphase, copy=False)
+                csphase=self.csphase, units=self.units, copy=False)
         else:
-            return SHCoeffs.from_array(coeffs, copy=False)
+            return SHCoeffs.from_array(coeffs, units=self.units, copy=False)
 
     def _expandDH(self, sampling, lmax, lmax_calc, extend):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
@@ -2731,7 +2763,8 @@ class SHRealCoeffs(SHCoeffs):
         data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
                                    csphase=self.csphase, lmax=lmax,
                                    lmax_calc=lmax_calc, extend=extend)
-        gridout = SHGrid.from_array(data, grid='DH', copy=False)
+        gridout = SHGrid.from_array(data, grid='DH', units=self.units,
+                                    copy=False)
         return gridout
 
     def _expandGLQ(self, zeros, lmax, lmax_calc, extend):
@@ -2756,7 +2789,8 @@ class SHRealCoeffs(SHCoeffs):
         data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
                                     csphase=self.csphase, lmax=lmax,
                                     lmax_calc=lmax_calc, extend=extend)
-        gridout = SHGrid.from_array(data, grid='GLQ', copy=False)
+        gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
+                                    copy=False)
         return gridout
 
     def _expand_coord(self, lat, lon, lmax_calc, degrees):
@@ -2826,7 +2860,7 @@ class SHComplexCoeffs(SHCoeffs):
         return kind == 'complex'
 
     def __init__(self, coeffs, errors=None, normalization='4pi', csphase=1,
-                 copy=True, header=None, header2=None):
+                 units=None, copy=True, header=None, header2=None):
         """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2843,6 +2877,7 @@ class SHComplexCoeffs(SHCoeffs):
         self.csphase = csphase
         self.header = header
         self.header2 = header2
+        self.units = units
 
         if copy:
             self.coeffs = _np.copy(coeffs)
@@ -2898,7 +2933,7 @@ class SHComplexCoeffs(SHCoeffs):
                                       switchcs=0)
         return SHCoeffs.from_array(real_coeffs,
                                    normalization=self.normalization,
-                                   csphase=self.csphase)
+                                   csphase=self.csphase, units=self.units)
 
     def _rotate(self, angles, dj_matrix):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
@@ -2946,7 +2981,8 @@ class SHComplexCoeffs(SHCoeffs):
 
         return SHCoeffs.from_array(coeffs_rot,
                                    normalization=self.normalization,
-                                   csphase=self.csphase, copy=False)
+                                   csphase=self.csphase, units=self.units,
+                                   copy=False)
 
     def _expandDH(self, sampling, lmax, lmax_calc, extend):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
@@ -2967,7 +3003,8 @@ class SHComplexCoeffs(SHCoeffs):
         data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
                                     norm=norm, csphase=self.csphase, lmax=lmax,
                                     lmax_calc=lmax_calc, extend=extend)
-        gridout = SHGrid.from_array(data, grid='DH', copy=False)
+        gridout = SHGrid.from_array(data, grid='DH', units=self.units,
+                                    copy=False)
         return gridout
 
     def _expandGLQ(self, zeros, lmax, lmax_calc, extend):
@@ -2992,7 +3029,8 @@ class SHComplexCoeffs(SHCoeffs):
         data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
                                      csphase=self.csphase, lmax=lmax,
                                      lmax_calc=lmax_calc, extend=extend)
-        gridout = SHGrid.from_array(data, grid='GLQ', copy=False)
+        gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
+                                    copy=False)
         return gridout
 
     def _expand_coord(self, lat, lon, lmax_calc, degrees):
@@ -3082,6 +3120,7 @@ class SHGrid(object):
     kind       : Either 'real' or 'complex' for the data type.
     grid       : Either 'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-
                  Legendre Quadrature grids.
+    units      : The units of the gridded data.
     zeros      : The cos(colatitude) nodes used with Gauss-Legendre
                  Quadrature grids. Default is None.
     weights    : The latitudinal weights used with Gauss-Legendre
@@ -3125,13 +3164,13 @@ class SHGrid(object):
 
     # ---- Factory methods ----
     @classmethod
-    def from_array(self, array, grid='DH', copy=True):
+    def from_array(self, array, grid='DH', units=None, copy=True):
         """
         Initialize the class instance from an input array.
 
         Usage
         -----
-        x = SHGrid.from_array(array, [grid, copy])
+        x = SHGrid.from_array(array, [grid, units, copy])
 
         Returns
         -------
@@ -3145,6 +3184,8 @@ class SHGrid(object):
         grid : str, optional, default = 'DH'
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
+        units : str, optional, default = None
+            The units of the gridded data.
         copy : bool, optional, default = True
             If True (default), make a copy of array when initializing the class
             instance. If False, initialize the class instance with a reference
@@ -3167,17 +3208,17 @@ class SHGrid(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
-                return cls(array, copy=copy)
+                return cls(array, units=units, copy=copy)
 
     @classmethod
     def from_zeros(self, lmax, grid='DH', kind='real', sampling=2,
-                   extend=True):
+                   units=None, extend=True):
         """
         Initialize the class instance using an array of zeros.
 
         Usage
         -----
-        x = SHGrid.from_zeros(lmax, [grid, kind, sampling, extend])
+        x = SHGrid.from_zeros(lmax, [grid, kind, sampling, units, extend])
 
         Returns
         -------
@@ -3197,6 +3238,8 @@ class SHGrid(object):
             for equally sampled grids (nlong=nlat) or 2 for equally spaced
             grids in degrees (nlong=2*nlat with extend=False or nlong=2*nlat-1
             with extend=True).
+        units : str, optional, default = None
+            The units of the gridded data.
         extend : bool, optional, default = True
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
@@ -3231,11 +3274,11 @@ class SHGrid(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
-                return cls(array, copy=False)
+                return cls(array, units=units, copy=False)
 
     @classmethod
     def from_cap(self, theta, clat, clon, lmax, grid='DH', kind='real',
-                 sampling=2, degrees=True, extend=True):
+                 sampling=2, degrees=True, units=None, extend=True):
         """
         Initialize the class instance with an array equal to unity within
         a spherical cap and zero elsewhere.
@@ -3243,7 +3286,7 @@ class SHGrid(object):
         Usage
         -----
         x = SHGrid.from_cap(theta, clat, clon, lmax, [grid, kind, sampling,
-                            degrees, extend])
+                            degrees, units, extend])
 
         Returns
         -------
@@ -3270,12 +3313,14 @@ class SHGrid(object):
             with extend=True).
         degrees : bool, optional = True
             If True, theta, clat, and clon are in degrees.
+        units : str, optional, default = None
+            The units of the gridded data.
         extend : bool, optional, default = True
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
         """
         temp = self.from_zeros(lmax, grid=grid, kind=kind, sampling=sampling,
-                               extend=extend)
+                               units=units, extend=extend)
 
         if degrees is True:
             theta = _np.deg2rad(theta)
@@ -3312,13 +3357,13 @@ class SHGrid(object):
         return temp
 
     @classmethod
-    def from_file(self, fname, binary=False, grid='DH', **kwargs):
+    def from_file(self, fname, binary=False, grid='DH', units=None, **kwargs):
         """
         Initialize the class instance from gridded data in a file.
 
         Usage
         -----
-        x = SHGrid.from_file(fname, [binary, grid, **kwargs])
+        x = SHGrid.from_file(fname, [binary, grid, units, **kwargs])
 
         Returns
         -------
@@ -3340,6 +3385,8 @@ class SHGrid(object):
         grid : str, optional, default = 'DH'
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
+        units : str, optional, default = None
+            The units of the gridded data.
         **kwargs : keyword arguments, optional
             Keyword arguments of numpy.loadtxt() or numpy.load().
         """
@@ -3351,10 +3398,10 @@ class SHGrid(object):
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}.'.format(binary))
 
-        return self.from_array(data, grid=grid, copy=False)
+        return self.from_array(data, grid=grid, units=units, copy=False)
 
     @classmethod
-    def from_xarray(self, data_array, grid='DH'):
+    def from_xarray(self, data_array, grid='DH', units=None):
         """
         Initialize the class instance from an xarray DataArray object.
 
@@ -3376,11 +3423,18 @@ class SHGrid(object):
         grid : str, optional, default = 'DH'
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
+        units : str, optional, default = None
+            The units of the gridded data.
         """
-        return self.from_array(data_array.values, grid=grid)
+        try:
+            units = data_array.units
+        except:
+            pass
+
+        return self.from_array(data_array.values, grid=grid, units=units)
 
     @classmethod
-    def from_netcdf(self, netcdf, grid='DH'):
+    def from_netcdf(self, netcdf, grid='DH', units=None):
         """
         Initialize the class instance from a netcdf formatted file or object.
 
@@ -3399,9 +3453,17 @@ class SHGrid(object):
         grid : str, optional, default = 'DH'
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
+        units : str, optional, default = None
+            The units of the gridded data.
         """
         data_array = _xr.open_dataarray(netcdf)
-        return self.from_array(data_array.values, grid=grid)
+
+        try:
+            units = data_array.units
+        except:
+            pass
+
+        return self.from_array(data_array.values, grid=grid, units=units)
 
     def copy(self):
         """
@@ -3479,6 +3541,8 @@ class SHGrid(object):
             attrs['title'] = title
         if long_name is not None:
             attrs['long_name'] = long_name
+        if units is None:
+            units = self.units
         if units is not None:
             attrs['units'] = units
 
@@ -3543,6 +3607,10 @@ class SHGrid(object):
             attrs['description'] = description
         if comment is not None:
             attrs['comment'] = comment
+        if units is None:
+            units = self.units
+        if units is not None:
+            attrs['units'] = units
 
         _dataset = _xr.Dataset({name: _data}, attrs=attrs)
 
@@ -3579,7 +3647,7 @@ class SHGrid(object):
         grid : SHGrid class instance
         """
         return SHGrid.from_array(self.to_array().real, grid=self.grid,
-                                 copy=False)
+                                 units=self.units, copy=False)
 
     def to_imag(self):
         """
@@ -3595,9 +3663,14 @@ class SHGrid(object):
         grid : SHGrid class instance
         """
         return SHGrid.from_array(self.to_array().imag, grid=self.grid,
-                                 copy=False)
+                                 units=self.units, copy=False)
 
-    # ---- Mathematical operators ----
+    # -------------------------------------------------------------------------
+    #    Mathematical operators
+    #
+    #    All operations ignore the units of the coefficients, with the
+    #    exception of multiplying and dividing by a scalar.
+    # -------------------------------------------------------------------------
     def min(self):
         """
         Return the minimum value of self.data using numpy.min().
@@ -3627,7 +3700,8 @@ class SHGrid(object):
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the '
-                                 'same kind and have the same shape.')
+                                 'same kind and have the same shape and '
+                                 'units.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
                 raise ValueError('Can not add a complex constant to a '
@@ -3651,7 +3725,8 @@ class SHGrid(object):
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the '
-                                 'same kind and have the same shape.')
+                                 'same kind and have the same shape and '
+                                 'units.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
                 raise ValueError('Can not subtract a complex constant from '
@@ -3671,7 +3746,8 @@ class SHGrid(object):
                 return SHGrid.from_array(data, grid=self.grid)
             else:
                 raise ValueError('The two grids must be of the '
-                                 'same kind and have the same shape.')
+                                 'same kind and have the same shape and '
+                                 'units.')
         elif _np.isscalar(other) is True:
             if self.kind == 'real' and _np.iscomplexobj(other):
                 raise ValueError('Can not subtract a complex constant from '
@@ -3697,7 +3773,7 @@ class SHGrid(object):
                 raise ValueError('Can not multiply a real grid by a complex '
                                  'constant.')
             data = self.data * other
-            return SHGrid.from_array(data, grid=self.grid)
+            return SHGrid.from_array(data, grid=self.grid, units=self.units)
         else:
             raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
@@ -3723,7 +3799,7 @@ class SHGrid(object):
                 raise ValueError('Can not divide a real grid by a complex '
                                  'constant.')
             data = self.data / other
-            return SHGrid.from_array(data, grid=self.grid)
+            return SHGrid.from_array(data, grid=self.grid, units=self.units)
         else:
             raise NotImplementedError('Mathematical operator not implemented '
                                       'for these operands.')
@@ -3749,8 +3825,9 @@ class SHGrid(object):
         str += ('nlat = {:d}\n'
                 'nlon = {:d}\n'
                 'lmax = {:d}\n'
+                'units = {:s}\n'
                 'extend = {}'.format(self.nlat, self.nlon, self.lmax,
-                                     self.extend))
+                                     repr(self.units), self.extend))
         return str
 
     # ---- Extract grid properties ----
@@ -4360,7 +4437,7 @@ class DHRealGrid(SHGrid):
     def isgrid(grid):
         return grid == 'DH'
 
-    def __init__(self, array, copy=True):
+    def __init__(self, array, units=None, copy=True):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
@@ -4384,6 +4461,7 @@ class DHRealGrid(SHGrid):
         self.lmax = int(self.n / 2 - 1)
         self.grid = 'DH'
         self.kind = 'real'
+        self.units = units
 
         if copy:
             self.data = _np.copy(array)
@@ -4429,7 +4507,8 @@ class DHRealGrid(SHGrid):
                                    sampling=self.sampling, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
-                                     csphase=csphase, copy=False)
+                                     csphase=csphase, units=self.units,
+                                     copy=False)
         return coeffs
 
     def _plot(self, projection=None, xlabel=None, ylabel=None, ax=None,
@@ -4854,7 +4933,7 @@ class DHComplexGrid(SHGrid):
     def isgrid(grid):
         return grid == 'DH'
 
-    def __init__(self, array, copy=True):
+    def __init__(self, array, units=None, copy=True):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
@@ -4878,6 +4957,7 @@ class DHComplexGrid(SHGrid):
         self.lmax = int(self.n / 2 - 1)
         self.grid = 'DH'
         self.kind = 'complex'
+        self.units = units
 
         if copy:
             self.data = _np.copy(array)
@@ -4927,7 +5007,8 @@ class DHComplexGrid(SHGrid):
                                               :self.nlon-self.extend],
                                     norm=norm, csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
-                                     csphase=csphase, copy=False)
+                                     csphase=csphase, units=self.units,
+                                     copy=False)
         return coeffs
 
     def _plot(self, projection=None, xlabel=None, ylabel=None, colorbar=None,
@@ -5060,7 +5141,7 @@ class GLQRealGrid(SHGrid):
     def isgrid(grid):
         return grid == 'GLQ'
 
-    def __init__(self, array, zeros=None, weights=None, copy=True):
+    def __init__(self, array, zeros=None, weights=None, units=None, copy=True):
         self.nlat, self.nlon = array.shape
         self.lmax = self.nlat - 1
 
@@ -5084,6 +5165,8 @@ class GLQRealGrid(SHGrid):
 
         self.grid = 'GLQ'
         self.kind = 'real'
+        self.units = units
+
         if copy:
             self.data = _np.copy(array)
         else:
@@ -5129,7 +5212,8 @@ class GLQRealGrid(SHGrid):
                                     self.weights, self.zeros, norm=norm,
                                     csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
-                                     csphase=csphase, copy=False)
+                                     csphase=csphase, units=self.units,
+                                     copy=False)
         return coeffs
 
     def _plot(self, projection=None, xlabel=None, ylabel=None, ax=None,
@@ -5369,7 +5453,7 @@ class GLQComplexGrid(SHGrid):
     def isgrid(grid):
         return grid == 'GLQ'
 
-    def __init__(self, array, zeros=None, weights=None, copy=True):
+    def __init__(self, array, zeros=None, weights=None, units=None, copy=True):
         self.nlat, self.nlon = array.shape
         self.lmax = self.nlat - 1
 
@@ -5393,6 +5477,7 @@ class GLQComplexGrid(SHGrid):
 
         self.grid = 'GLQ'
         self.kind = 'complex'
+        self.units = units
 
         if copy:
             self.data = _np.copy(array)
@@ -5433,7 +5518,8 @@ class GLQComplexGrid(SHGrid):
                                      self.weights, self.zeros, norm=norm,
                                      csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
-                                     csphase=csphase, copy=False)
+                                     csphase=csphase, units=self.units,
+                                     copy=False)
         return coeffs
 
     def _plot(self, projection=None, minor_xticks=[], minor_yticks=[],

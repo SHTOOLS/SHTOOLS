@@ -47,7 +47,7 @@ def shape_air(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
 def shape_bathy(lmax=2160):
@@ -73,7 +73,7 @@ def shape_bathy(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
 def shape_bathy_bed(lmax=2160):
@@ -101,7 +101,7 @@ def shape_bathy_bed(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
 def shape_ret(lmax=2160):
@@ -127,7 +127,7 @@ def shape_ret(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
 def topo_air(lmax=2160):
@@ -154,7 +154,7 @@ def topo_air(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
 def topo_bathy(lmax=2160):
@@ -182,7 +182,7 @@ def topo_bathy(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
 def topo_bathy_bed(lmax=2160):
@@ -211,7 +211,7 @@ def topo_bathy_bed(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
 def ret(lmax=2160):
@@ -237,7 +237,7 @@ def ret(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
 __all__ = ['shape_air', 'shape_bathy', 'shape_bathy_bed', 'shape_ret',

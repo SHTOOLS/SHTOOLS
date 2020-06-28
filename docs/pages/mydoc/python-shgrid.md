@@ -49,6 +49,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `sampling` | The longitudinal sampling for Driscoll and Healy grids. Either 1 for equally sampled grids (`nlon` = `nlat`) or 2 for equally spaced grids in degrees. |
 | `kind` | Either `'complex'` or `'real'` for the data type. |
 | `grid` | Either `'DH'` or `'GLQ'` for Driscoll and Healy grids or Gauss-Legendre quadrature grids. |
+| `units` | The units of the gridded data. |
 | `zeros` | The $$\cos(\theta)$$ nodes used with Gauss-Legendre quadrature grids. Default is `None`. |
 | `weights` | The latitudinal weights used with Gauss-Legendre quadrature grids. Default is `None`. |
 | `extend` | True if the grid contains the redundant column for 360 E and (for `'DH'` grids) the unnecessary row for 90 S. |

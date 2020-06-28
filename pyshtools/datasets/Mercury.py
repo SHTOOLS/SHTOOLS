@@ -42,7 +42,7 @@ def GTMES150(lmax=150):
         path=_os_cache('pyshtools'),
     )
     temp = _SHCoeffs.from_file(
-        fname, lmax=lmax, header=True, errors=True)
+        fname, lmax=lmax, header=True, errors=True, units='m')
     temp.coeffs *= 1000.
     temp.errors *= 1000.
     return temp

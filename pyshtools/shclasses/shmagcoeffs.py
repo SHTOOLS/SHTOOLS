@@ -72,6 +72,7 @@ class SHMagCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type (only 'real' is permissible).
+    units         : The units of the spherical harmonic coefficients.
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
                     and 'dov' formatted files only).
@@ -126,7 +127,7 @@ class SHMagCoeffs(object):
     # ---- Factory methods ----
     @classmethod
     def from_array(self, coeffs, r0, errors=None, normalization='schmidt',
-                   csphase=1, lmax=None, copy=True):
+                   csphase=1, lmax=None, units='nT', copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
@@ -134,7 +135,7 @@ class SHMagCoeffs(object):
         Usage
         -----
         x = SHMagCoeffs.from_array(array, r0, [errors, normalization, csphase,
-                                               lmax, copy])
+                                               lmax, units, copy])
 
         Returns
         -------
@@ -158,13 +159,11 @@ class SHMagCoeffs(object):
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to include in the returned
             class instance. This must be less than or equal to lmaxin.
+        units : str, optional, default = 'nT'
+            The units of the spherical harmonic coefficients.
         copy : bool, optional, default = True
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
-
-        Notes
-        -----
-        The coefficients in the input array are assumed to have units of nT.
         """
         if _np.iscomplexobj(coeffs):
             raise TypeError('The input array must be real.')
@@ -195,6 +194,10 @@ class SHMagCoeffs(object):
                     .format(repr(coeffs.shape), repr(coeffs.errors))
                     )
 
+        if units.lower() not in ('nt', 't'):
+            raise ValueError("units can be only 'T' or 'nT'. Input "
+                             "value is {:s}.".format(repr(units)))
+
         lmaxin = coeffs.shape[1] - 1
         if lmax is None:
             lmax = lmaxin
@@ -214,22 +217,23 @@ class SHMagCoeffs(object):
             clm = SHMagRealCoeffs(coeffs[:, 0:lmax+1, 0:lmax+1], r0=r0,
                                   errors=errors[:, 0:lmax+1, 0:lmax+1],
                                   normalization=normalization.lower(),
-                                  csphase=csphase, copy=copy)
+                                  csphase=csphase, units=units, copy=copy)
         else:
             clm = SHMagRealCoeffs(coeffs[:, 0:lmax+1, 0:lmax+1], r0=r0,
                                   normalization=normalization.lower(),
-                                  csphase=csphase, copy=copy)
+                                  csphase=csphase, units=units, copy=copy)
         return clm
 
     @classmethod
     def from_zeros(self, lmax, r0, errors=None, normalization='schmidt',
-                   csphase=1):
+                   csphase=1, units='nT'):
         """
         Initialize the class with spherical harmonic coefficients set to zero.
 
         Usage
         -----
-        x = SHMagCoeffs.from_zeros(lmax, r0, [errors, normalization, csphase])
+        x = SHMagCoeffs.from_zeros(lmax, r0, [errors, normalization, csphase,
+                                              units])
 
         Returns
         -------
@@ -250,6 +254,8 @@ class SHMagCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        units : str, optional, default = 'nT'
+            The units of the spherical harmonic coefficients.
         """
         if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
             raise ValueError(
@@ -263,6 +269,10 @@ class SHMagCoeffs(object):
                 "csphase must be either 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
+
+        if units.lower() not in ('nt', 't'):
+            raise ValueError("units can be only 'T' or 'nT'. Input "
+                             "value is {:s}.".format(repr(units)))
 
         if normalization.lower() == 'unnorm' and lmax > 85:
             _warnings.warn("Calculations using unnormalized coefficients "
@@ -280,14 +290,14 @@ class SHMagCoeffs(object):
 
         clm = SHMagRealCoeffs(coeffs, r0=r0, errors=error_coeffs,
                               normalization=normalization.lower(),
-                              csphase=csphase)
+                              csphase=csphase, units=units)
         return clm
 
     @classmethod
     def from_file(self, fname, format='shtools', r0=None, lmax=None,
                   normalization='schmidt', skip=0, header=True, header2=False,
                   errors=None, csphase=1, r0_index=0, header_units='m',
-                  coeffs_units='nT', year=None, **kwargs):
+                  file_units='nT', units='nT', year=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -295,16 +305,16 @@ class SHMagCoeffs(object):
         -----
         x = SHMagCoeffs.from_file(filename, [format='shtools', r0, lmax,
                                   normalization, csphase, skip, header, errors,
-                                  r0_index, header_units, coeffs_units])
+                                  r0_index, header_units, file_units, units])
         x = SHMagCoeffs.from_file(filename, format='dov', [r0, lmax,
                                   normalization, csphase, skip, header, errors,
-                                  r0_index, header_units, coeffs_units])
+                                  r0_index, header_units, file_units, units])
         x = SHMagCoeffs.from_file(filename, format='igrf', r0, year, [lmax,
-                                  normalization, csphase, coeffs_units])
+                                  normalization, csphase, file_units, units])
         x = SHMagCoeffs.from_file(filename, format='bshc', r0, [lmax,
-                                  normalization, csphase, coeffs_units])
+                                  normalization, csphase, file_units, units])
         x = SHMagCoeffs.from_file(filename, format='npy', r0, [lmax,
-                                  normalization, csphase, coeffs_units,
+                                  normalization, csphase, file_units, units,
                                   **kwargs])
 
         Returns
@@ -344,9 +354,12 @@ class SHMagCoeffs(object):
         header_units : str, optional, default = 'm'
             The units of r0 in the header line of an 'shtools' formatted file:
             'm' or 'km'. If 'km', the value of r0 will be converted to meters.
-        coeffs_units : str, optional, default = 'nT'
+        file_units : str, optional, default = 'nT'
             The units of the coefficients read from the file: 'nT' or 'T'. If
-            'T', the coefficients will be converted to nanoTeslas.
+            these differ from those of the argument units, the spherical
+            harmonic coefficients will be converted to those of units.
+        units : str, optional, default = 'nT'
+            The units of the spherical harmonic coefficients.
         normalization : str, optional, default = 'schmidt'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -371,9 +384,9 @@ class SHMagCoeffs(object):
             'bshc' (see pyshtools.shio.read_bshc)
             'npy' (see numpy.load)
 
-        The coefficients read from the file are assumed to have units of nT.
-        If coeffs_units is specified as 'T', the coefficients read from the
-        file will be converted to nT.
+        The units of the coefficients read from the file can be either 'nT' or
+        'T'. If these differ from those of the argument units, the spherical
+        harmonic coefficients will be converted.
 
         For 'shtools', 'dob', 'igrf' and 'bshc' formatted files, if filename
         starts with 'http://', 'https://', or 'ftp://', the file will be
@@ -427,9 +440,13 @@ class SHMagCoeffs(object):
                 raise ValueError("header_units can be only 'm' or 'km'. Input "
                                  "value is {:s}.".format(repr(header_units)))
 
-        if coeffs_units.lower() not in ('nt', 't'):
-            raise ValueError("coeffs_units can be only 'T' or 'nT'. Input "
-                             "value is {:s}.".format(repr(coeffs_units)))
+        if file_units.lower() not in ('nt', 't'):
+            raise ValueError("file_units can be only 'T' or 'nT'. Input "
+                             "value is {:s}.".format(repr(file_units)))
+
+        if units.lower() not in ('nt', 't'):
+            raise ValueError("units can be only 'T' or 'nT'. Input "
+                             "value is {:s}.".format(repr(units)))
 
         if format.lower() == 'shtools':
             if header is True:
@@ -529,20 +546,27 @@ class SHMagCoeffs(object):
             lmaxout = 85
             coeffs = coeffs[:, :lmaxout+1, :lmaxout+1]
 
-        if coeffs_units.lower() == 't':
+        if file_units.lower() == units.lower():
+            pass
+        elif file_units.lower() == 't' and units.lower() == 'nt':
             coeffs *= 1.e9
             if errors is True:
                 error_coeffs *= 1.e9
+        elif file_units.lower() == 'nt' and units.lower() == 't':
+            coeffs /= 1.e9
+            if errors is True:
+                error_coeffs /= 1.e9
 
         clm = SHMagRealCoeffs(coeffs, r0=r0, errors=error_coeffs,
                               normalization=normalization.lower(),
                               csphase=csphase, header=header_list,
-                              header2=header2_list)
+                              header2=header2_list, units=units)
         return clm
 
     @classmethod
     def from_random(self, power, r0, function='total', lmax=None,
-                    normalization='schmidt', csphase=1, exact_power=False):
+                    normalization='schmidt', csphase=1, units='nT',
+                    exact_power=False):
         """
         Initialize the class of magnetic potential spherical harmonic
         coefficients as random variables with a given spectrum.
@@ -550,7 +574,7 @@ class SHMagCoeffs(object):
         Usage
         -----
         x = SHMagCoeffs.from_random(power, r0, [function, lmax, normalization,
-                                                csphase, exact_power])
+                                                csphase, units, exact_power])
 
         Returns
         -------
@@ -577,6 +601,8 @@ class SHMagCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        units : str, optional, default = 'nT'
+            The units of the spherical harmonic coefficients.
         exact_power : bool, optional, default = False
             The total variance of the coefficients is set exactly to the input
             power. The distribution of power at degree l amongst the angular
@@ -593,10 +619,6 @@ class SHMagCoeffs(object):
         r0 for the magnetic potential, (l+1) for the radial magnetic field,
         or sqrt((l+1)*(2l+1)). The power spectrum of the random realization can
         be fixed exactly to the input spectrum by setting exact_power to True.
-
-        Notes
-        -----
-        The coefficients stored in the class instance have units of nT.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
@@ -622,6 +644,10 @@ class SHMagCoeffs(object):
                 "csphase must be 1 or -1. Input value is {:s}."
                 .format(repr(csphase))
                 )
+
+        if units.lower() not in ('nt', 't'):
+            raise ValueError("units can be only 'T' or 'nT'. Input "
+                             "value is {:s}.".format(repr(units)))
 
         if lmax is None:
             nl = len(power)
@@ -685,19 +711,20 @@ class SHMagCoeffs(object):
 
         clm = SHMagRealCoeffs(coeffs, r0=r0, errors=None,
                               normalization=normalization.lower(),
-                              csphase=csphase)
+                              csphase=csphase, units=units)
         return clm
 
     @classmethod
     def from_netcdf(self, filename, lmax=None, normalization='schmidt',
-                    csphase=1):
+                    csphase=1, units='nT'):
         """
         Initialize the class with spherical harmonic coefficients from a
         netcdf file.
 
         Usage
         -----
-        x = SHMagCoeffs.from_netcdf(filename, [lmax, normalization, csphase])
+        x = SHMagCoeffs.from_netcdf(filename, [lmax, normalization, csphase,
+                                               units])
 
         Returns
         -------
@@ -717,6 +744,8 @@ class SHMagCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention if not specified in the netcdf
             file: 1 to exclude the phase factor, or -1 to include it.
+        units : str, optional, default = 'nT'
+            The units of the spherical harmonic coefficients.
 
         Description
         -----------
@@ -751,6 +780,15 @@ class SHMagCoeffs(object):
                 "csphase must be 1 or -1. Input value was {:s}"
                 .format(repr(csphase))
                 )
+
+        try:
+            units = ds.coeffs.units
+        except:
+            pass
+
+        if units.lower() not in ('nt', 't'):
+            raise ValueError("units can be only 'T' or 'nT'. Input "
+                             "value is {:s}.".format(repr(units)))
 
         try:
             r0 = ds.coeffs.r0
@@ -788,12 +826,12 @@ class SHMagCoeffs(object):
             errors = None
 
         if _np.iscomplexobj(coeffs):
-            raise ValueError('Gravitational potential coefficients must be '
+            raise ValueError('Magnetic potential coefficients must be '
                              'real. Input coefficients are complex.')
 
         clm = SHMagRealCoeffs(coeffs, r0=r0, errors=errors,
                               normalization=normalization.lower(),
-                              csphase=csphase)
+                              csphase=csphase, units=units)
         return clm
 
     # ---- Define methods that modify internal variables ----
@@ -941,6 +979,8 @@ class SHMagCoeffs(object):
         ds['coeffs'].attrs['normalization'] = self.normalization
         ds['coeffs'].attrs['csphase'] = self.csphase
         ds['coeffs'].attrs['r0'] = self.r0
+        if self.units is not None:
+            ds['coeffs'].attrs['units'] = self.units
 
         if self.errors is not None:
             cerrors = self.errors[0, :lmax+1, :lmax+1]
@@ -1038,10 +1078,9 @@ class SHMagCoeffs(object):
     # -------------------------------------------------------------------------
     #    Mathematical operators
     #
-    #    Operations that involve a change of units are not permitted, such as
-    #    SHMagCoeffs*SHMagCoeffs, SHMagCoeffs/SHMagCoeffs, and
-    #    SHMagCoeffs+SHCoeffs. All operations ignore the errors of the
-    #    coefficients.
+    #    All operations ignore the errors of the coefficients.
+    #    All operations ignore the units of the coefficients, with the
+    #    exception of multiplying and dividing by a scalar.
     # -------------------------------------------------------------------------
     def __add__(self, other):
         """
@@ -1158,7 +1197,7 @@ class SHMagCoeffs(object):
             coeffs[self.mask] = self.coeffs[self.mask] * other
             return SHMagCoeffs.from_array(
                 coeffs, r0=self.r0, csphase=self.csphase,
-                normalization=self.normalization)
+                normalization=self.normalization, units=self.units)
         else:
             raise TypeError('Multiplication of an SHMagCoeffs instance is '
                             'permitted only with either an SHCoeffs instance '
@@ -1202,7 +1241,7 @@ class SHMagCoeffs(object):
             coeffs[self.mask] = self.coeffs[self.mask] / other
             return SHMagCoeffs.from_array(
                 coeffs, r0=self.r0, csphase=self.csphase,
-                normalization=self.normalization)
+                normalization=self.normalization, units=self.units)
         else:
             raise TypeError('Division of an SHMagCoeffs instance is '
                             'permitted only with either an SHCoeffs instance '
@@ -1492,13 +1531,13 @@ class SHMagCoeffs(object):
             return SHMagCoeffs.from_array(
                 coeffs, r0=self.r0, errors=errors,
                 normalization=normalization.lower(),
-                csphase=csphase, copy=False)
+                csphase=csphase, units=self.units, copy=False)
         else:
             coeffs = self.to_array(normalization=normalization.lower(),
                                    csphase=csphase, lmax=lmax)
             return SHMagCoeffs.from_array(
                 coeffs, r0=self.r0, normalization=normalization.lower(),
-                csphase=csphase, copy=False)
+                csphase=csphase, units=self.units, copy=False)
 
     def pad(self, lmax, copy=True):
         """
@@ -1666,7 +1705,8 @@ class SHMagCoeffs(object):
             coeffs, self.r0, a=a, f=f, lmax=lmax, lmax_calc=lmax_calc,
             sampling=sampling, extend=extend)
 
-        return _SHMagGrid(rad, theta, phi, total, pot, a, f, lmax, lmax_calc)
+        return _SHMagGrid(rad, theta, phi, total, pot, a, f, lmax, lmax_calc,
+                          units=self.units, pot_units='m '+self.units)
 
     def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2,
                extend=True):
@@ -1767,12 +1807,16 @@ class SHMagCoeffs(object):
         else:
             coeffs = self.to_array(normalization='schmidt', csphase=1)
 
+        if self.units.lower() == 'nt':
+            units = 'nT/m'
+        else:
+            units = 'T/m'
         vxx, vyy, vzz, vxy, vxz, vyz = _MakeMagGradGridDH(
             coeffs, self.r0, a=a, f=f, lmax=lmax, lmax_calc=lmax_calc,
             sampling=sampling, extend=extend)
 
         return _SHMagTensor(vxx, vyy, vzz, vxy, vxz, vyz, a, f, lmax,
-                            lmax_calc)
+                            lmax_calc, units=units)
 
     # ---- Plotting routines ----
     def plot_spectrum(self, function='total', unit='per_l', base=10.,
@@ -1879,11 +1923,14 @@ class SHMagCoeffs(object):
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
 
         if function == 'potential':
-            axes.set_ylabel('Power, nT$^2$ m$^2$', fontsize=axes_labelsize)
+            axes.set_ylabel('Power, ' + self.units + '$^2$ m$^2$',
+                            fontsize=axes_labelsize)
         elif function == 'radial':
-            axes.set_ylabel('Power, nT$^2$', fontsize=axes_labelsize)
+            axes.set_ylabel('Power, ' + self.units + '$^2$',
+                            fontsize=axes_labelsize)
         elif function == 'total':
-            axes.set_ylabel('Power, nT$^2$', fontsize=axes_labelsize)
+            axes.set_ylabel('Power, ' + self.units + '$^2$',
+                            fontsize=axes_labelsize)
 
         if legend is None:
             if (unit == 'per_l'):
@@ -2111,11 +2158,14 @@ class SHMagCoeffs(object):
         cb = _plt.colorbar(cmesh, ax=ax)
 
         if function == 'potential':
-            cb.set_label('Power, nT$^2$ m$^2$', fontsize=axes_labelsize)
+            cb.set_label('Power, ' + self.units + '$^2$ m$^2$',
+                         fontsize=axes_labelsize)
         elif function == 'radial':
-            cb.set_label('Power, nT$^2$', fontsize=axes_labelsize)
+            cb.set_label('Power, ' + self.units + '$^2$',
+                         fontsize=axes_labelsize)
         elif function == 'total':
-            cb.set_label('Power, nT$^2$', fontsize=axes_labelsize)
+            cb.set_label('Power, ' + self.units + '$^2$',
+                         fontsize=axes_labelsize)
 
         cb.ax.tick_params(labelsize=tick_labelsize)
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
@@ -2138,7 +2188,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
     """
 
     def __init__(self, coeffs, r0=None, errors=None, normalization='schmidt',
-                 csphase=1, copy=True, header=None, header2=None):
+                 csphase=1, copy=True, header=None, header2=None, units='nT'):
         """Initialize real magnetic potential coefficients class."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2155,6 +2205,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
         self.header = header
         self.header2 = header2
         self.r0 = r0
+        self.units = units
 
         if copy:
             self.coeffs = _np.copy(coeffs)
@@ -2184,11 +2235,12 @@ class SHMagRealCoeffs(SHMagCoeffs):
                 'r0 (m) = {:s}\n'
                 'errors = {:s}\n'
                 'header = {:s}\n'
-                'header2 = {:s}'
+                'header2 = {:s}\n'
+                'units = {:s}'
                 .format(repr(self.kind), repr(self.normalization),
                         self.csphase, self.lmax, repr(self.r0),
                         repr(error_kind), repr(self.header),
-                        repr(self.header2)))
+                        repr(self.header2), repr(self.units)))
 
     def _rotate(self, angles, dj_matrix, r0=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
