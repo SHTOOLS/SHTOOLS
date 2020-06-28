@@ -1875,16 +1875,17 @@ class SHCoeffs(object):
     # ---- Plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
-                      legend=None, axes_labelsize=None, tick_labelsize=None,
-                      show=True, ax=None, fname=None, **kwargs):
+                      legend=None, legend_error='error', axes_labelsize=None,
+                      tick_labelsize=None, show=True, ax=None, fname=None,
+                      **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
         x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, grid,
-                         axes_labelsize, tick_labelsize, legend, show, ax,
-                         fname, **kwargs])
+                         axes_labelsize, tick_labelsize, legend, legend_error,
+                         show, ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -1911,6 +1912,8 @@ class SHCoeffs(object):
             If True, plot grid lines.
         legend : str, optional, default = None
             Text to use for the legend.
+        legend_error : str, optional, default = 'error'
+            Text to use for the legend of the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -2013,8 +2016,8 @@ class SHCoeffs(object):
         else:
             axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
             if self.errors is not None:
-                axes.plot(ls[:lmax+1], error_spectrum[:lmax+1], label='error',
-                          **kwargs)
+                axes.plot(ls[:lmax+1], error_spectrum[:lmax+1],
+                          label=legend_error, **kwargs)
             if ax is None:
                 axes.set(xlim=(ls[0], ls[lmax]))
             else:

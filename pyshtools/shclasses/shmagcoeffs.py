@@ -1777,8 +1777,9 @@ class SHMagCoeffs(object):
     # ---- Plotting routines ----
     def plot_spectrum(self, function='total', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
-                      legend=None,  axes_labelsize=None, tick_labelsize=None,
-                      show=True, ax=None, fname=None, **kwargs):
+                      legend=None, legend_error='error', axes_labelsize=None,
+                      tick_labelsize=None, show=True, ax=None, fname=None,
+                      **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -1813,6 +1814,8 @@ class SHMagCoeffs(object):
             If True, plot grid lines.
         legend : str, optional, default = None
             Text to use for the legend.
+        legend_error : str, optional, default = 'error'
+            Text to use for the legend of the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -1899,7 +1902,7 @@ class SHMagCoeffs(object):
             axes.plot(ls[1:lmax + 1], spectrum[1:lmax + 1], label=legend,
                       **kwargs)
             axes.plot(ls[1:lmax + 1], error_spectrum[1:lmax + 1],
-                      label='error', **kwargs)
+                      label=legend_error, **kwargs)
         else:
             axes.plot(ls[1:lmax + 1], spectrum[1: lmax + 1], label=legend,
                       **kwargs)
