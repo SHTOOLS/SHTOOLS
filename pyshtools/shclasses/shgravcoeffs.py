@@ -2741,7 +2741,8 @@ class SHGravRealCoeffs(SHGravCoeffs):
                             csphase_out=self.csphase)
             return SHGravCoeffs.from_array(
                 temp, normalization=self.normalization,
-                csphase=self.csphase, copy=False, gm=gm, r0=r0, omega=omega)
+                csphase=self.csphase, copy=False, gm=gm, r0=r0, omega=omega,
+                epoch=self.epoch)
         else:
             return SHGravCoeffs.from_array(coeffs, gm=gm, r0=r0, omega=omega,
-                                           copy=False)
+                                           epoch=self.epoch, copy=False)

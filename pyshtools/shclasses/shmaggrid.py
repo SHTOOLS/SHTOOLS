@@ -32,6 +32,7 @@ class SHMagGrid(object):
     a              : Semimajor axis of the reference ellipsoid.
     f              : Flattening of the reference ellipsoid, f=(a-b)/a.
     units          : The units of the gridded magnetic field data.
+    year           : The year of the time-variable magnetic field data.
     pot_units      : The units of the gridded magnetic potential data.
     lmax           : The maximum spherical harmonic degree resolvable by the
                      grids.
@@ -61,7 +62,7 @@ class SHMagGrid(object):
     """
 
     def __init__(self, rad, theta, phi, total, pot, a, f, lmax, lmax_calc,
-                 units=None, pot_units=None):
+                 units=None, pot_units=None, year=None):
         """
         Initialize the SHMagGrid class.
         """
@@ -82,6 +83,7 @@ class SHMagGrid(object):
         self.lmax_calc = lmax_calc
         self.units = units
         self.pot_units = pot_units
+        self.year = year
 
     def copy(self):
         """
@@ -115,10 +117,12 @@ class SHMagGrid(object):
                'a (m)= {:e}\n'
                'f = {:e}\n'
                'units (magnetic field) = {:s}\n'
-               'units (potential) = {:s}'
+               'units (potential) = {:s}\n'
+               'year = {:s}'
                .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
                        self.extend, self.lmax, self.lmax_calc, self.a,
-                       self.f, repr(self.units), repr(self.pot_units)))
+                       self.f, repr(self.units), repr(self.pot_units),
+                       repr(self.year)))
         return str
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
@@ -833,7 +837,8 @@ class SHMagGrid(object):
                  'n': self.n,
                  'extend': repr(self.extend)
                  }
-
+        if self.year is not None:
+            attrs['year'] = self.year
         if self.units.lower() == 'nt':
             mag_units = '$nT$'
             pot_units = '$m nT$'

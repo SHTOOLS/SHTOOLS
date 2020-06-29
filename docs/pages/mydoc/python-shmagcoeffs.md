@@ -46,6 +46,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `mask` | A boolean mask that is `True` for the permissible values of degree `l` and order `m`. |
 | `kind` | The coefficient data type (only `'real'` is permissible). |
 | `units` | The units of the spherical harmonic coefficients. |
+| `year` | The year of the time-variable spherical harmonic coefficients. |
 | `header` | A list of values from the header line of the input file used to initialize the class. |
 | `header2` | A list of values from the second header line of the input file used to initialize the class. |
 

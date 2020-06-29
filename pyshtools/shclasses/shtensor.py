@@ -2887,6 +2887,8 @@ class Tensor(object):
                 attrs['epoch'] = self.epoch
             desc = 'gravity tensor component '
         else:
+            if self.year is not None:
+                attrs['year'] = self.year
             desc = 'magnetic field tensor component '
 
         _vxx = self.vxx.to_xarray(title=desc+'(Vxx)', long_name='$V_{xx}$',
@@ -3023,6 +3025,7 @@ class SHGravTensor(Tensor):
     lmax_calc        : The maximum spherical harmonic degree of the
                        gravitational potential used in creating the grids.
     units            : The units of the gridded data.
+    epoch          : The epoch time of the gravity model.
     nlat, nlon       : The number of latitude and longitude bands in the grids.
     n                : The number of samples in latitude.
     sampling         : The longitudinal sampling for Driscoll and Healy grids.
@@ -3177,6 +3180,7 @@ class SHMagTensor(Tensor):
     lmax_calc        : The maximum spherical harmonic degree of the
                        magnetic potential used in creating the grids.
     units            : The units of the gridded data.
+    year             : The year of the time-variable magnetic field data.
     nlat, nlon       : The number of latitude and longitude bands in the grids.
     sampling         : The longitudinal sampling for Driscoll and Healy grids.
                        Either 1 for equally sampled grids (nlat=nlon) or 2 for
@@ -3228,7 +3232,7 @@ class SHMagTensor(Tensor):
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, a, f, lmax,
-                 lmax_calc, units=None):
+                 lmax_calc, units=None, year=None):
         """
         Initialize the SHMagTensor class.
         """
@@ -3262,6 +3266,7 @@ class SHMagTensor(Tensor):
         self.eigh2 = None
         self.eighh = None
         self.units = units
+        self.year = year
         if self.units.lower() == 'nt/m':
             self._units_formatted = 'nT m$^{-1}$'
             self._i1_units = 'nT$^2$ m$^{-2}$'
@@ -3305,8 +3310,9 @@ class SHMagTensor(Tensor):
                'lmax_calc = {:d}\n'
                'a (m)= {:e}\n'
                'f = {:e}\n'
-               'units = {:s}'
+               'units = {:s}\n'
+               'year = {:s}'
                .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
                        self.extend, self.lmax, self.lmax_calc, self.a,
-                       self.f, repr(self.units)))
+                       self.f, repr(self.units), repr(self.year)))
         return str

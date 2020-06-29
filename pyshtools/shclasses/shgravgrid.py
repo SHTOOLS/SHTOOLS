@@ -37,6 +37,7 @@ class SHGravGrid(object):
                      gravitational acceleration.
     units          : The units of the gridded gravity data.
     pot_units      : The units of the gridded gravitational potential data.
+    epoch          : The epoch time of the gravity model.
     lmax           : The maximum spherical harmonic degree resolvable by the
                      grids.
     lmax_calc      : The maximum spherical harmonic degree of the gravitational
@@ -48,7 +49,7 @@ class SHGravGrid(object):
                      equally spaced grids in degrees.
     extend         : True if the grid contains the redundant column for 360 E
                      and the unnecessary row for 90 S.
-    epoch          : The epoch time of the gravity model.
+
 
     Methods:
 
