@@ -71,6 +71,8 @@ class SHGravCoeffs(object):
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions.
     errors        : The uncertainties of the spherical harmonic coefficients.
+    error_kind    : An arbitrary string describing the kind of errors, such as
+                    None, 'unspecified', 'calibrated' or 'formal'.
     gm            : The gravitational constant times the mass times that is
                     associated with the gravitational potential coefficients.
     r0            : The reference radius of the gravitational potential
@@ -147,7 +149,7 @@ class SHGravCoeffs(object):
     # ---- Factory methods ----
     @classmethod
     def from_array(self, coeffs, gm, r0, omega=None, errors=None,
-                   normalization='4pi', csphase=1, lmax=None,
+                   error_kind=None, normalization='4pi', csphase=1, lmax=None,
                    set_degree0=True, epoch=None, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
@@ -155,7 +157,7 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        x = SHGravCoeffs.from_array(array, gm, r0, [omega, errors,
+        x = SHGravCoeffs.from_array(array, gm, r0, [omega, errors, error_kind,
                                                     normalization, csphase,
                                                     lmax, set_degree0, epoch,
                                                     copy])
@@ -179,6 +181,9 @@ class SHGravCoeffs(object):
             The angular rotation rate of the body.
         errors : ndarray, optional, default = None
             The uncertainties of the spherical harmonic coefficients.
+        error_kind : str, optional, default = None
+            An arbitrary string describing the kind of errors, such as None,
+            'unspecified', 'calibrated' or 'formal'.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -231,6 +236,8 @@ class SHGravCoeffs(object):
                     "Shape of coeffs = {:s}, shape of errors = {:s}."
                     .format(repr(coeffs.shape), repr(coeffs.errors))
                     )
+            if error_kind is None:
+                error_kind = 'unspecified'
 
         lmaxin = coeffs.shape[1] - 1
         if lmax is None:
@@ -254,6 +261,7 @@ class SHGravCoeffs(object):
             clm = SHGravRealCoeffs(coeffs[:, 0:lmax+1, 0:lmax+1], gm=gm, r0=r0,
                                    omega=omega, errors=errors[:, 0:lmax+1,
                                                               0:lmax+1],
+                                   error_kind=error_kind,
                                    normalization=normalization.lower(),
                                    csphase=csphase, epoch=epoch, copy=copy)
         else:
@@ -265,14 +273,15 @@ class SHGravCoeffs(object):
 
     @classmethod
     def from_zeros(self, lmax, gm, r0, omega=None, errors=None,
-                   normalization='4pi', csphase=1, epoch=None):
+                   error_kind=None, normalization='4pi', csphase=1,
+                   epoch=None):
         """
         Initialize the class with spherical harmonic coefficients set to zero
         from degree 1 to lmax, and set the degree 0 term to 1.
 
         Usage
         -----
-        x = SHGravCoeffs.from_zeros(lmax, gm, r0, [omega, errors,
+        x = SHGravCoeffs.from_zeros(lmax, gm, r0, [omega, errors, error_kind,
                                                    normalization, csphase,
                                                    epoch])
 
@@ -293,6 +302,9 @@ class SHGravCoeffs(object):
             The angular rotation rate of the body.
         errors : bool, optional, default = None
             If True, initialize the attribute errors with zeros.
+        error_kind : str, optional, default = None
+            An arbitrary string describing the kind of errors, such as None,
+            'unspecified', 'calibrated' or 'formal'.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -329,11 +341,13 @@ class SHGravCoeffs(object):
         coeffs[0, 0, 0] = 1.0
         if errors is True:
             error_coeffs = _np.zeros((2, lmax + 1, lmax + 1))
+            if error_kind is None:
+                error_kind = 'unspecified'
         else:
             error_coeffs = None
 
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
-                               errors=error_coeffs,
+                               errors=error_coeffs, error_kind=error_kind,
                                normalization=normalization.lower(),
                                csphase=csphase, epoch=epoch)
         return clm
@@ -341,9 +355,10 @@ class SHGravCoeffs(object):
     @classmethod
     def from_file(self, fname, format='shtools', gm=None, r0=None,
                   omega=None, lmax=None, normalization='4pi', skip=0,
-                  header=True, header2=False, errors=None, csphase=1,
-                  r0_index=0, gm_index=1, omega_index=None, header_units='m',
-                  set_degree0=True, epoch=None, encoding=None, **kwargs):
+                  header=True, header2=False, errors=None, error_kind=None,
+                  csphase=1, r0_index=0, gm_index=1, omega_index=None,
+                  header_units='m', set_degree0=True, epoch=None,
+                  encoding=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -351,12 +366,13 @@ class SHGravCoeffs(object):
         -----
         x = SHGravCoeffs.from_file(filename, [format='shtools', gm, r0, omega,
                                    lmax, normalization, csphase, skip, header,
-                                   errors, gm_index, r0_index, omega_index,
-                                   header_units, set_degree0])
+                                   errors, error_kind, gm_index, r0_index,
+                                   omega_index, header_units, set_degree0])
         x = SHGravCoeffs.from_file(filename, format='dov', [gm, r0, omega,
                                    lmax, normalization, csphase, skip, header,
-                                   header2, errors, gm_index, r0_index,
-                                   omega_index, header_units, set_degree0])
+                                   header2, errors, error_kind, gm_index,
+                                   r0_index, omega_index, header_units,
+                                   set_degree0])
         x = SHGravCoeffs.from_file(filename, format='icgem', [lmax, omega,
                                    normalization, csphase, errors, set_degree0,
                                    epoch, encoding])
@@ -394,10 +410,14 @@ class SHGravCoeffs(object):
             If True, read a list of values from a second header line of a 'dov'
             formatted file.
         errors : bool or str, optional, default = None
-            For 'shtools' formatted files: if True, read and return the
-            spherical harmonic coefficients of the errors. For 'icgem'
+            For 'shtools' or 'dov' formatted files: if True, read and return
+            the spherical harmonic coefficients of the errors. For 'icgem'
             formatted files, specify the type of error to return: 'calibrated'
             or 'formal'.
+        error_kind : str, optional, default = None
+            For 'shtools' and 'dov' formatted files: An arbitrary string
+            describing the kind of errors, such as None, 'unspecified',
+            'calibrated' or 'formal'.
         r0_index : int, optional, default = 0
             For shtools formatted files, if header is True, r0 will be set
             using the value from the header line with this index.
@@ -534,6 +554,9 @@ class SHGravCoeffs(object):
                 else:
                     coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
 
+            if errors is True and error_kind is None:
+                error_kind = 'unspecified'
+
         elif format.lower() == 'dov':
             if header is True:
                 if errors is True:
@@ -572,6 +595,9 @@ class SHGravCoeffs(object):
                 else:
                     coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
 
+            if errors is True and error_kind is None:
+                error_kind = 'unspecified'
+
         elif format.lower() == 'bshc':
             if gm is None or r0 is None:
                 raise ValueError('For binary bshc files, gm and r0 must be '
@@ -600,6 +626,7 @@ class SHGravCoeffs(object):
                 coeffs, gm, r0, error_coeffs = _read_icgem_gfc(
                     filename=fname, errors=errors, lmax=lmax, epoch=epoch,
                     encoding=encoding)
+                error_kind = errors
             else:
                 raise ValueError('errors must be among: {}. '
                                  'Input value is {:s}.'
@@ -626,7 +653,7 @@ class SHGravCoeffs(object):
             coeffs[0, 0, 0] = 1.0
 
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
-                               errors=error_coeffs,
+                               errors=error_coeffs, error_kind=error_kind,
                                normalization=normalization.lower(),
                                csphase=csphase, header=header_list,
                                header2=header2_list, epoch=epoch)
@@ -908,15 +935,17 @@ class SHGravCoeffs(object):
             cerrors = cerrors[:lmaxout+1, :lmaxout+1]
             serrors = serrors[:lmaxout+1, :lmaxout+1]
             errors = _np.array([cerrors, serrors])
+            error_kind = ds.errors.error_kind
         except:
             errors = None
+            error_kind = None
 
         if _np.iscomplexobj(coeffs):
             raise ValueError('Gravitational potential coefficients must be '
                              'real. Input coefficients are complex.')
 
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
-                               errors=errors,
+                               errors=errors, error_kind=error_kind,
                                normalization=normalization.lower(),
                                csphase=csphase, epoch=epoch)
         return clm
@@ -1323,6 +1352,8 @@ class SHGravCoeffs(object):
                 ds['errors'].attrs['omega'] = self.omega
             if self.epoch is not None:
                 ds['errors'].attrs['epoch'] = self.epoch
+            if self.error_kind is not None:
+                ds['errors'].attrs['error_kind'] = self.error_kind
 
         ds.to_netcdf(filename)
 
@@ -1867,7 +1898,8 @@ class SHGravCoeffs(object):
                                            csphase=csphase, lmax=lmax)
             return SHGravCoeffs.from_array(
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
-                errors=errors, normalization=normalization.lower(),
+                errors=errors, error_kind=self.error_kind,
+                normalization=normalization.lower(),
                 csphase=csphase, epoch=self.epoch, copy=False)
         else:
             coeffs = self.to_array(normalization=normalization.lower(),
@@ -2665,8 +2697,8 @@ class SHGravRealCoeffs(SHGravCoeffs):
     """
 
     def __init__(self, coeffs, gm=None, r0=None, omega=None, errors=None,
-                 normalization='4pi', csphase=1, copy=True, header=None,
-                 header2=None, epoch=None):
+                 error_kind=None, normalization='4pi', csphase=1, copy=True,
+                 header=None, header2=None, epoch=None):
         """Initialize real gravitational potential coefficients class."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2686,6 +2718,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
         self.r0 = r0
         self.omega = omega
         self.epoch = epoch
+        self.error_kind = error_kind
 
         if copy:
             self.coeffs = _np.copy(coeffs)
@@ -2703,11 +2736,6 @@ class SHGravRealCoeffs(SHGravCoeffs):
             self.errors = None
 
     def __repr__(self):
-        if self.errors is not None:
-            error_kind = True
-        else:
-            error_kind = None
-
         return ('kind = {:s}\n'
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
@@ -2721,8 +2749,9 @@ class SHGravRealCoeffs(SHGravCoeffs):
                 'epoch = {:s}'
                 .format(repr(self.kind), repr(self.normalization),
                         self.csphase, self.lmax, repr(self.gm), repr(self.r0),
-                        repr(self.omega), repr(error_kind), repr(self.header),
-                        repr(self.header2), repr(self.epoch)))
+                        repr(self.omega), repr(self.error_kind),
+                        repr(self.header), repr(self.header2),
+                        repr(self.epoch)))
 
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""

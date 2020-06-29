@@ -63,6 +63,8 @@ class SHMagCoeffs(object):
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions.
     errors        : The uncertainties of the spherical harmonic coefficients.
+    error_kind    : An arbitrary string describing the kind of errors, such as
+                    None, 'unspecified', 'calibrated' or 'formal'.
     r0            : The reference radius of the magnetic potential
                     coefficients.
     normalization : The normalization of the coefficients: '4pi', 'ortho',
@@ -128,16 +130,18 @@ class SHMagCoeffs(object):
 
     # ---- Factory methods ----
     @classmethod
-    def from_array(self, coeffs, r0, errors=None, normalization='schmidt',
-                   csphase=1, lmax=None, units='nT', year=None, copy=True):
+    def from_array(self, coeffs, r0, errors=None, error_kind=None,
+                   normalization='schmidt', csphase=1, lmax=None, units='nT',
+                   year=None, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
 
         Usage
         -----
-        x = SHMagCoeffs.from_array(array, r0, [errors, normalization, csphase,
-                                               lmax, units, year, copy])
+        x = SHMagCoeffs.from_array(array, r0, [errors, error_kind,
+                                               normalization, csphase, lmax,
+                                               units, year, copy])
 
         Returns
         -------
@@ -151,6 +155,9 @@ class SHMagCoeffs(object):
             The reference radius of the spherical harmonic coefficients.
         errors : ndarray, optional, default = None
             The uncertainties of the spherical harmonic coefficients.
+        error_kind : str, optional, default = None
+            An arbitrary string describing the kind of errors, such as None,
+            'unspecified', 'calibrated' or 'formal'.
         normalization : str, optional, default = 'schmidt'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -197,6 +204,8 @@ class SHMagCoeffs(object):
                     "Shape of coeffs = {:s}, shape of errors = {:s}."
                     .format(repr(coeffs.shape), repr(coeffs.errors))
                     )
+            if error_kind is None:
+                error_kind = 'unspecified'
 
         if units.lower() not in ('nt', 't'):
             raise ValueError("units can be only 'T' or 'nT'. Input "
@@ -220,6 +229,7 @@ class SHMagCoeffs(object):
         if errors is not None:
             clm = SHMagRealCoeffs(coeffs[:, 0:lmax+1, 0:lmax+1], r0=r0,
                                   errors=errors[:, 0:lmax+1, 0:lmax+1],
+                                  error_kind=error_kind,
                                   normalization=normalization.lower(),
                                   csphase=csphase, units=units, year=year,
                                   copy=copy)
@@ -231,14 +241,15 @@ class SHMagCoeffs(object):
         return clm
 
     @classmethod
-    def from_zeros(self, lmax, r0, errors=None, normalization='schmidt',
-                   csphase=1, units='nT', year=None):
+    def from_zeros(self, lmax, r0, errors=None, error_kind=None,
+                   normalization='schmidt', csphase=1, units='nT', year=None):
         """
         Initialize the class with spherical harmonic coefficients set to zero.
 
         Usage
         -----
-        x = SHMagCoeffs.from_zeros(lmax, r0, [errors, normalization, csphase,
+        x = SHMagCoeffs.from_zeros(lmax, r0, [errors, error_kind,
+                                              normalization, csphase,
                                               units, year])
 
         Returns
@@ -253,6 +264,9 @@ class SHMagCoeffs(object):
             The reference radius of the spherical harmonic coefficients.
         errors : bool, optional, default = None
             If True, initialize the attribute errors with zeros.
+        error_kind : str, optional, default = None
+            An arbitrary string describing the kind of errors, such as None,
+            'unspecified', 'calibrated' or 'formal'.
         normalization : str, optional, default = 'schmidt'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -293,10 +307,13 @@ class SHMagCoeffs(object):
         coeffs = _np.zeros((2, lmax + 1, lmax + 1))
         if errors is True:
             error_coeffs = _np.zeros((2, lmax + 1, lmax + 1))
+            if error_kind is None:
+                error_kind = 'unspecified'
         else:
             error_coeffs = None
 
         clm = SHMagRealCoeffs(coeffs, r0=r0, errors=error_coeffs,
+                              error_kind=error_kind,
                               normalization=normalization.lower(),
                               csphase=csphase, units=units, year=year)
         return clm
@@ -304,8 +321,9 @@ class SHMagCoeffs(object):
     @classmethod
     def from_file(self, fname, format='shtools', r0=None, lmax=None,
                   normalization='schmidt', skip=0, header=True, header2=False,
-                  errors=None, csphase=1, r0_index=0, header_units='m',
-                  file_units='nT', units='nT', year=None, **kwargs):
+                  errors=None, error_kind=None, csphase=1, r0_index=0,
+                  header_units='m', file_units='nT', units='nT', year=None,
+                  **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -313,12 +331,12 @@ class SHMagCoeffs(object):
         -----
         x = SHMagCoeffs.from_file(filename, [format='shtools', r0, lmax,
                                   normalization, csphase, skip, header, errors,
-                                  r0_index, header_units, file_units, units,
-                                  year])
+                                  error_kind, r0_index, header_units,
+                                  file_units, units, year])
         x = SHMagCoeffs.from_file(filename, format='dov', [r0, lmax,
                                   normalization, csphase, skip, header, errors,
-                                  r0_index, header_units, file_units, units,
-                                  year])
+                                  error_kind, r0_index, header_units,
+                                  file_units, units, year])
         x = SHMagCoeffs.from_file(filename, format='igrf', r0, year, [lmax,
                                   normalization, csphase, file_units, units])
         x = SHMagCoeffs.from_file(filename, format='bshc', r0, [lmax,
@@ -357,6 +375,10 @@ class SHMagCoeffs(object):
         errors : bool, optional, default = None
             If True, read errors from the file (for 'shtools' and 'dov'
             formatted files only).
+        error_kind : str, optional, default = None
+            For 'shtools' and 'dov' formatted files: An arbitrary string
+            describing the kind of errors, such as None, 'unspecified',
+            'calibrated' or 'formal'.
         r0_index : int, optional, default = 0
             For 'shtools' formatted files, if header is True, r0 will be set
             using the value from the header line with this index.
@@ -480,6 +502,9 @@ class SHMagCoeffs(object):
                 else:
                     coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
 
+            if errors is True and error_kind is None:
+                error_kind = 'unspecified'
+
         elif format.lower() == 'dov':
             if header is True:
                 if errors is True:
@@ -512,6 +537,9 @@ class SHMagCoeffs(object):
                         fname, lmax=lmax, error=True, skip=skip)
                 else:
                     coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
+
+            if errors is True and error_kind is None:
+                error_kind = 'unspecified'
 
         elif format.lower() == 'bshc':
             if r0 is None:
@@ -569,6 +597,7 @@ class SHMagCoeffs(object):
                 error_coeffs /= 1.e9
 
         clm = SHMagRealCoeffs(coeffs, r0=r0, errors=error_coeffs,
+                              error_kind=error_kind,
                               normalization=normalization.lower(),
                               csphase=csphase, header=header_list,
                               header2=header2_list, units=units, year=year)
@@ -843,14 +872,17 @@ class SHMagCoeffs(object):
             cerrors = cerrors[:lmaxout+1, :lmaxout+1]
             serrors = serrors[:lmaxout+1, :lmaxout+1]
             errors = _np.array([cerrors, serrors])
+            error_kind = ds.errors.error_kind
         except:
             errors = None
+            error_kind = None
 
         if _np.iscomplexobj(coeffs):
             raise ValueError('Magnetic potential coefficients must be '
                              'real. Input coefficients are complex.')
 
         clm = SHMagRealCoeffs(coeffs, r0=r0, errors=errors,
+                              error_kind=error_kind,
                               normalization=normalization.lower(),
                               csphase=csphase, units=units, year=year)
         return clm
@@ -1002,7 +1034,7 @@ class SHMagCoeffs(object):
         ds['coeffs'].attrs['r0'] = self.r0
         if self.units is not None:
             ds['coeffs'].attrs['units'] = self.units
-        if self.units is not None:
+        if self.year is not None:
             ds['coeffs'].attrs['year'] = self.year
 
         if self.errors is not None:
@@ -1015,8 +1047,10 @@ class SHMagCoeffs(object):
             ds['errors'].attrs['r0'] = self.r0
             if self.units is not None:
                 ds['errors'].attrs['units'] = self.units
-            if self.units is not None:
+            if self.year is not None:
                 ds['errors'].attrs['year'] = self.year
+            if self.error_kind is not None:
+                ds['errors'].attrs['error_kind'] = self.error_kind
 
         ds.to_netcdf(filename)
 
@@ -1556,7 +1590,7 @@ class SHMagCoeffs(object):
             coeffs, errors = self.to_array(normalization=normalization.lower(),
                                            csphase=csphase, lmax=lmax)
             return SHMagCoeffs.from_array(
-                coeffs, r0=self.r0, errors=errors,
+                coeffs, r0=self.r0, errors=errors, error_kind=self.error_kind,
                 normalization=normalization.lower(),
                 csphase=csphase, units=self.units, year=self.year, copy=False)
         else:
@@ -1733,7 +1767,7 @@ class SHMagCoeffs(object):
             sampling=sampling, extend=extend)
 
         return _SHMagGrid(rad, theta, phi, total, pot, a, f, lmax, lmax_calc,
-                          units=self.units, pot_units='m '+self.units,
+                          units=self.units, pot_units=self.units+' m',
                           year=self.year)
 
     def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2,
@@ -2215,9 +2249,9 @@ class SHMagRealCoeffs(SHMagCoeffs):
     Real spherical harmonic coefficient class for the magnetic potential.
     """
 
-    def __init__(self, coeffs, r0=None, errors=None, normalization='schmidt',
-                 csphase=1, copy=True, header=None, header2=None, units='nT',
-                 year=None):
+    def __init__(self, coeffs, r0=None, errors=None, error_kind=None,
+                 normalization='schmidt', csphase=1, copy=True, header=None,
+                 header2=None, units='nT', year=None):
         """Initialize real magnetic potential coefficients class."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2236,6 +2270,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
         self.r0 = r0
         self.units = units
         self.year = year
+        self.error_kind = error_kind
 
         if copy:
             self.coeffs = _np.copy(coeffs)
@@ -2253,11 +2288,6 @@ class SHMagRealCoeffs(SHMagCoeffs):
             self.errors = None
 
     def __repr__(self):
-        if self.errors is not None:
-            error_kind = True
-        else:
-            error_kind = None
-
         return ('kind = {:s}\n'
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
@@ -2270,7 +2300,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
                 'year = {:s}'
                 .format(repr(self.kind), repr(self.normalization),
                         self.csphase, self.lmax, repr(self.r0),
-                        repr(error_kind), repr(self.header),
+                        repr(self.error_kind), repr(self.header),
                         repr(self.header2), repr(self.units), repr(self.year)))
 
     def _rotate(self, angles, dj_matrix, r0=None):

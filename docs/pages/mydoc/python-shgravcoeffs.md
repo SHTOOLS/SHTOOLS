@@ -41,6 +41,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `lmax` | The maximum spherical harmonic degree of the coefficients. |
 | `coeffs` | The raw coefficients with the specified normalization and phase conventions. |
 | `errors` | The uncertainties of the spherical harmonic coefficients. |
+| `error_kind` | An arbitrary string describing the kind of errors, such as `None`, `'unspecified'`, `'calibrated'` or `'formal'`. |
 | `gm` | The gravitational constant times the mass that is associated with the gravitational potential coefficients. |
 | `r0` | The reference radius of the gravitational potential coefficients. |
 | `omega` | The angular rotation rate of the body. |

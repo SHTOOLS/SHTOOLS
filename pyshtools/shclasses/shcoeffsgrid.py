@@ -74,6 +74,8 @@ class SHCoeffs(object):
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions.
     errors        : The uncertainties of the spherical harmonic coefficients.
+    error_kind    : An arbitrary string describing the kind of errors, such as
+                    None, 'unspecified', 'calibrated' or 'formal'.
     normalization : The normalization of the coefficients: '4pi', 'ortho',
                     'schmidt', or 'unnorm'.
     csphase       : Defines whether the Condon-Shortley phase is used (1)
@@ -140,16 +142,17 @@ class SHCoeffs(object):
 
     # ---- Factory methods ----
     @classmethod
-    def from_array(self, coeffs, errors=None, normalization='4pi', csphase=1,
-                   lmax=None, units=None, copy=True):
+    def from_array(self, coeffs, errors=None, error_kind=None,
+                   normalization='4pi', csphase=1, lmax=None, units=None,
+                   copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
 
         Usage
         -----
-        x = SHCoeffs.from_array(array, [errors, normalization, csphase, lmax,
-                                        units, copy])
+        x = SHCoeffs.from_array(array, [errors, error_kind, normalization,
+                                        csphase, lmax, units, copy])
 
         Returns
         -------
@@ -161,6 +164,9 @@ class SHCoeffs(object):
             The input spherical harmonic coefficients.
         errors : ndarray, optional, default = None
             The uncertainties of the spherical harmonic coefficients.
+        error_kind : str, optional, default = None
+            An arbitrary string describing the kind of errors, such as None,
+            'unspecified', 'calibrated' or 'formal'.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -200,6 +206,16 @@ class SHCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        if errors is not None:
+            if coeffs.shape != errors.shape:
+                raise ValueError(
+                    "The shape of coeffs and errors must be the same."
+                    "Shape of coeffs = {:s}, shape of errors = {:s}."
+                    .format(repr(coeffs.shape), repr(coeffs.errors))
+                    )
+            if error_kind is None:
+                error_kind = 'unspecified'
+
         lmaxin = coeffs.shape[1] - 1
         if lmax is None:
             lmax = lmaxin
@@ -220,6 +236,7 @@ class SHCoeffs(object):
                 if errors is not None:
                     return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
                                errors=errors[:, 0:lmax+1, 0:lmax+1],
+                               error_kind=error_kind,
                                normalization=normalization.lower(),
                                csphase=csphase, units=units, copy=copy)
                 else:
@@ -228,16 +245,16 @@ class SHCoeffs(object):
                                csphase=csphase, units=units, copy=copy)
 
     @classmethod
-    def from_zeros(self, lmax, errors=None, kind='real', normalization='4pi',
-                   csphase=1, units=None):
+    def from_zeros(self, lmax, errors=None, error_kind=None, kind='real',
+                   normalization='4pi', csphase=1, units=None):
         """
         Initialize class with spherical harmonic coefficients set to zero from
         degree 0 to lmax.
 
         Usage
         -----
-        x = SHCoeffs.from_zeros(lmax, [errors, normalization, csphase, kind,
-                                       units])
+        x = SHCoeffs.from_zeros(lmax, [errors, error_kind, normalization,
+                                       csphase, kind, units])
 
         Returns
         -------
@@ -249,6 +266,9 @@ class SHCoeffs(object):
             The highest spherical harmonic degree l of the coefficients.
         errors : bool, optional, default = None
             If True, initialize the attribute errors with zeros.
+        error_kind : str, optional, default = None
+            An arbitrary string describing the kind of errors, such as None,
+            'unspecified', 'calibrated' or 'formal'.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -298,27 +318,31 @@ class SHCoeffs(object):
             if errors:
                 error_coeffs = _np.zeros((2, lmax + 1, lmax + 1),
                                          dtype=complex)
+        if errors is True and error_kind is None:
+            error_kind = 'unspecified'
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, errors=error_coeffs,
+                return cls(coeffs, errors=error_coeffs, error_kind=error_kind,
                            normalization=normalization.lower(),
                            csphase=csphase, units=units)
 
     @classmethod
     def from_file(self, fname, lmax=None, format='shtools', kind='real',
-                  errors=None, normalization='4pi', skip=0, header=False,
-                  header2=False, csphase=1, units=None, **kwargs):
+                  errors=None, error_kind=None, normalization='4pi', skip=0,
+                  header=False, header2=False, csphase=1, units=None,
+                  **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
         Usage
         -----
         x = SHCoeffs.from_file(filename, [format='shtools', lmax, errors,
-                               normalization, csphase, skip, header, units])
+                               error_kind, normalization, csphase, skip,
+                               header, units])
         x = SHCoeffs.from_file(filename, format='dov', [lmax, errors,
-                               normalization, csphase, skip, header, header2,
-                               units])
+                               error_kind, normalization, csphase, skip,
+                               header, header2, units])
         x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
                                csphase, units])
         x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
@@ -346,6 +370,10 @@ class SHCoeffs(object):
         errors : bool, optional, default = None
             If True, read errors from the file (for 'shtools' and 'dov'
             formatted files only).
+        error_kind : str, optional, default = None
+            For 'shtools' and 'dov' formatted files: An arbitrary string
+            describing the kind of errors, such as None, 'unspecified',
+            'calibrated' or 'formal'.
         normalization : str, optional, default = '4pi'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -427,6 +455,9 @@ class SHCoeffs(object):
                 else:
                     coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
 
+            if errors is True and error_kind is None:
+                error_kind = 'unspecified'
+
         elif format.lower() == 'dov':
             if header:
                 if errors is True:
@@ -454,6 +485,9 @@ class SHCoeffs(object):
                                                               error=True)
                 else:
                     coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
+
+            if errors is True and error_kind is None:
+                error_kind = 'unspecified'
 
         elif format.lower() == 'bshc':
             coeffs, lmaxout = _read_bshc(fname, lmax=lmax)
@@ -486,7 +520,7 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, errors=error_coeffs,
+                return cls(coeffs, errors=error_coeffs, error_kind=error_kind,
                            normalization=normalization.lower(),
                            csphase=csphase, header=header_list,
                            header2=header2_list, units=units)
@@ -731,8 +765,10 @@ class SHCoeffs(object):
             cerrors = cerrors[:lmaxout+1, :lmaxout+1]
             serrors = serrors[:lmaxout+1, :lmaxout+1]
             errors = _np.array([cerrors, serrors])
+            error_kind = ds.errors.error_kind
         except:
             errors = None
+            error_kind = None
 
         if _np.iscomplexobj(coeffs):
             kind = 'complex'
@@ -741,7 +777,7 @@ class SHCoeffs(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind):
-                return cls(coeffs, errors=errors,
+                return cls(coeffs, errors=errors, error_kind=error_kind,
                            normalization=normalization.lower(),
                            csphase=csphase, units=units)
 
@@ -1012,6 +1048,10 @@ class SHCoeffs(object):
             ds['errors'] = (('degree', 'order'), cerrors + serrors)
             ds['errors'].attrs['normalization'] = self.normalization
             ds['errors'].attrs['csphase'] = self.csphase
+            if self.units is not None:
+                ds['errors'].attrs['units'] = self.units
+            if self.error_kind is not None:
+                ds['errors'].attrs['error_kind'] = self.error_kind
 
         ds.to_netcdf(filename)
 
@@ -1295,11 +1335,6 @@ class SHCoeffs(object):
                                       'for these operands.')
 
     def __repr__(self):
-        if self.errors is not None:
-            error_kind = True
-        else:
-            error_kind = None
-
         return ('kind = {:s}\n'
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
@@ -1310,7 +1345,7 @@ class SHCoeffs(object):
                 'units = {:s}'
                 .format(
                     repr(self.kind), repr(self.normalization), self.csphase,
-                    self.lmax, repr(error_kind), repr(self.header),
+                    self.lmax, repr(self.error_kind), repr(self.header),
                     repr(self.header2), repr(self.units)))
 
     # ---- Extract data ----
@@ -1746,6 +1781,7 @@ class SHCoeffs(object):
                                        csphase=csphase, lmax=lmax)
 
         return SHCoeffs.from_array(coeffs, errors=error_coeffs,
+                                   error_kind=self.error_kind,
                                    normalization=normalization.lower(),
                                    csphase=csphase, units=self.units,
                                    copy=False)
@@ -2666,8 +2702,9 @@ class SHRealCoeffs(SHCoeffs):
         """Test if class is Real or Complex."""
         return kind == 'real'
 
-    def __init__(self, coeffs, errors=None, normalization='4pi', csphase=1,
-                 units=None, copy=True, header=None, header2=None):
+    def __init__(self, coeffs, errors=None, error_kind=None,
+                 normalization='4pi', csphase=1, units=None, copy=True,
+                 header=None, header2=None):
         """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2684,6 +2721,7 @@ class SHRealCoeffs(SHCoeffs):
         self.header = header
         self.header2 = header2
         self.units = units
+        self.error_kind = error_kind
 
         if copy:
             self.coeffs = _np.copy(coeffs)
@@ -2859,8 +2897,9 @@ class SHComplexCoeffs(SHCoeffs):
         """Check if class has kind 'real' or 'complex'."""
         return kind == 'complex'
 
-    def __init__(self, coeffs, errors=None, normalization='4pi', csphase=1,
-                 units=None, copy=True, header=None, header2=None):
+    def __init__(self, coeffs, errors=None, error_kind=None,
+                 normalization='4pi', csphase=1, units=None, copy=True,
+                 header=None, header2=None):
         """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -2878,6 +2917,7 @@ class SHComplexCoeffs(SHCoeffs):
         self.header = header
         self.header2 = header2
         self.units = units
+        self.error_kind = error_kind
 
         if copy:
             self.coeffs = _np.copy(coeffs)
