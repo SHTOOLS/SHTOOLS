@@ -34,10 +34,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `pot` | SHGrid class instance of the magnetic potential evaluated on an ellipsoid. |
 | `a` | Semimajor axis of the reference ellipsoid. |
 | `f` | Flattening of the reference ellipsoid, f = (a - b) / a. |
-| `units` | The units of the gridded magnetic field data. |
-| `pot_units` | The units of the gridded magnetic potential data. |
 | `lmax` | The maximum spherical harmonic degree resolvable by the grids. |
 | `lmax_calc` | The maximum spherical harmonic degree of the magnetic potential used in creating the grids. |
+| `units` | The units of the gridded magnetic field data. |
+| `pot_units` | The units of the gridded magnetic potential data. |
 | `nlat`, `nlon` | The number of latitude and longitude bands in the grids. |
 | `sampling` | The longitudinal sampling scheme of the grids: either 1 for `nlon` = `nlat` or 2 for `nlon` = 2 * `nlat`. |
 

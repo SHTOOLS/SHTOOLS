@@ -40,6 +40,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `lmax_calc` | The maximum spherical harmonic degree of the gravitational potential used in creating the grids. |
 | `nlat`, `nlon` | The number of latitude and longitude bands in the grids. |
 | `sampling` | The longitudinal sampling scheme of the grids: either 1 for `nlon` = `nlat` or 2 for `nlon` = 2 * `nlat`. |
+| `epoch` | The epoch time of the gravity model. |
+
 
 ## Class methods
 

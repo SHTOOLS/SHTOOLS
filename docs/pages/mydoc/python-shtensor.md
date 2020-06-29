@@ -46,6 +46,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `units` | The units of the gridded data. |
 | `nlat`, `nlon` | The number of latitude and longitude bands in the grids. |
 | `sampling` | The longitudinal sampling scheme of the grids: either 1 for `nlon` = `nlat` or 2 for `nlon` = 2 * `nlat`. |
+| `epoch` | The epoch time for gravity models. |
+
 
 ## Class methods
 

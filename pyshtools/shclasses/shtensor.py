@@ -2883,6 +2883,8 @@ class Tensor(object):
                  }
         if isinstance(self, SHGravTensor):
             attrs['gm'] = self.gm
+            if self.epoch is not None:
+                attrs['epoch'] = self.epoch
             desc = 'gravity tensor component '
         else:
             desc = 'magnetic field tensor component '
@@ -3071,7 +3073,7 @@ class SHGravTensor(Tensor):
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, gm, a, f, lmax,
-                 lmax_calc, units='Eötvös'):
+                 lmax_calc, units='Eötvös', epoch=None):
         """
         Initialize the SHGravTensor class.
         """
@@ -3106,6 +3108,7 @@ class SHGravTensor(Tensor):
         self.eigh2 = None
         self.eighh = None
         self.units = units
+        self.epoch = epoch
 
         self._vxx_label = '$V_{xx}$, ' + self.units
         self._vxy_label = '$V_{xy}$, ' + self.units
@@ -3142,10 +3145,11 @@ class SHGravTensor(Tensor):
                'gm (m3 / s2) = {:e}\n'
                'a (m)= {:e}\n'
                'f = {:e}\n'
-               'units = {:s}'
+               'units = {:s}\n'
+               'epoch = {:s}'
                .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
                        self.extend, self.lmax, self.lmax_calc, self.gm, self.a,
-                       self.f, repr(self.units)))
+                       self.f, repr(self.units), repr(self.epoch)))
         return str
 
 

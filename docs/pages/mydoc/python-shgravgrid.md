@@ -37,12 +37,13 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `f` | Flattening of the reference ellipsoid, f = (a - b) / a. |
 | `omega` | Angular rotation rate of the body. |
 | `normal_gravity` | True if the normal gravity is removed from the total gravitational acceleration. |
-| `units` | The units of the gridded gravity data. |
-| `pot_units` | The units of the gridded gravitational potential data. |
 | `lmax` | The maximum spherical harmonic degree resolvable by the grids. |
 | `lmax_calc` | The maximum spherical harmonic degree of the gravitational potential used in creating the grids. |
+| `units` | The units of the gridded gravity data. |
+| `pot_units` | The units of the gridded gravitational potential data. |
 | `nlat`, `nlon` | The number of latitude and longitude bands in the grids. |
 | `sampling` | The longitudinal sampling scheme of the grids: either 1 for `nlon` = `nlat` or 2 for `nlon` = 2 * `nlat`. |
+| `epoch` | The epoch time of the gravity model. |
 
 ## Class methods
 

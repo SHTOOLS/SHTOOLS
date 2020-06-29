@@ -37,6 +37,7 @@ class SHGeoid(object):
     units          : The units of the gridded data.
     extend         : True if the grid contains the redundant column for 360 E
                      and the unnecessary row for 90 S.
+    epoch          : The epoch time of the gravity model.
 
     Methods:
 
@@ -48,7 +49,7 @@ class SHGeoid(object):
     info()         : Print a summary of the data stored in the SHGrid instance.
     """
     def __init__(self, geoid, gm, potref, a, f, omega, r, order, lmax,
-                 lmax_calc, units=None):
+                 lmax_calc, units=None, epoch=None):
         """
         Initialize the SHGeoid class.
         """
@@ -72,6 +73,7 @@ class SHGeoid(object):
         self.lmax = lmax
         self.lmax_calc = lmax_calc
         self.units = units
+        self.epoch = epoch
 
     def copy(self):
         """
@@ -110,11 +112,13 @@ class SHGeoid(object):
                'omega (rad / s) = {:s}\n'
                'radius of Taylor expansion (m) = {:e}\n'
                'order of expansion = {:d}\n'
-               'units = {:s}'
+               'units = {:s}\n'
+               'epoch = {:s}'
                .format(repr(self.grid), self.sampling, self.nlat, self.nlon,
                        self.n, self.sampling, self.extend, self.lmax,
                        self.lmax_calc, self.gm, self.potref, self.a, self.f,
-                       repr(self.omega), self.r, self.order, repr(self.units)))
+                       repr(self.omega), self.r, self.order, repr(self.units),
+                       repr(self.epoch)))
         return str
 
     def plot(self, projection=None, tick_interval=[30, 30],
@@ -277,7 +281,9 @@ class SHGeoid(object):
                  'n': self.n,
                  'extend': repr(self.extend)
                  }
-        print(attrs)
+        if self.epoch is not None:
+            attrs['epoch'] = self.epoch
+
         _data = _xr.DataArray(_nparray, dims=('latitude', 'longitude'),
                               coords=[('latitude', self.geoid.lats(),
                                        {'units': 'degrees_north'}),
@@ -330,6 +336,8 @@ class SHGeoid(object):
                  'n': self.n,
                  'extend': repr(self.extend)
                  }
+        if self.epoch is not None:
+            attrs['epoch'] = self.epoch
 
         return _xr.DataArray(self.geoid.to_array(),
                              dims=('latitude', 'longitude'),

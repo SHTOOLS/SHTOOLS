@@ -48,6 +48,7 @@ class SHGravGrid(object):
                      equally spaced grids in degrees.
     extend         : True if the grid contains the redundant column for 360 E
                      and the unnecessary row for 90 S.
+    epoch          : The epoch time of the gravity model.
 
     Methods:
 
@@ -65,7 +66,8 @@ class SHGravGrid(object):
     """
 
     def __init__(self, rad, theta, phi, total, pot, gm, a, f, omega,
-                 normal_gravity, lmax, lmax_calc, units=None, pot_units=None):
+                 normal_gravity, lmax, lmax_calc, units=None, pot_units=None,
+                 epoch=None):
         """
         Initialize the SHGravGrid class.
         """
@@ -92,6 +94,7 @@ class SHGravGrid(object):
         self.lmax_calc = lmax_calc
         self.units = units
         self.pot_units = pot_units
+        self.epoch = epoch
 
     def copy(self):
         """
@@ -128,12 +131,13 @@ class SHGravGrid(object):
                'omega (rad / s) = {:s}\n'
                'normal gravity is removed = {:s}\n'
                'units (gravity) = {:s}\n'
-               'units (potential) = {:s}'
+               'units (potential) = {:s}\n'
+               'epoch = {:s}'
                .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
                        self.extend, self.lmax, self.lmax_calc, self.gm,
                        self.a, self.f, repr(self.omega),
                        repr(self.normal_gravity), repr(self.units),
-                       repr(self.pot_units)))
+                       repr(self.pot_units), repr(self.pot_epoch)))
         return str
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
@@ -865,6 +869,8 @@ class SHGravGrid(object):
                  'n': self.n,
                  'extend': repr(self.extend)
                  }
+        if self.epoch is not None:
+            attrs['epoch'] = self.epoch
 
         _total = self.total.to_xarray(title='total gravity disturbance',
                                       long_name='$|g|$', units='$m s^{-2}$')
