@@ -329,7 +329,8 @@ def shwrite(filename, coeffs, errors=None, header=None, header2=None,
     ----------
     filename : str
         File name of the shtools-formatted spherical harmonic coefficients. If
-        filename ends with '.gz' the file will be automatically compressed.
+        filename ends with '.gz' the file will be automatically compressed with
+        gzip.
     coeffs : ndarray, size(2, lmaxin+1, lmaxin+1)
         The spherical harmonic coefficients.
     errors : ndarray, size(2, lmaxin+1, lmaxin+1), optional, default = None
@@ -346,10 +347,10 @@ def shwrite(filename, coeffs, errors=None, header=None, header2=None,
     Notes
     -----
     This function will write spherical harmonic coefficients (and optionally
-    the errors) to an shtools-formatted text file. If header is specified, this
-    string will be written first, directly before the spherical harmonic
-    coefficients. Both real and complex spherical harmonic coefficients are
-    supported.
+    the errors) to an shtools-formatted text file. If header or header2 are
+    specified, these strings will be written first, directly before the
+    spherical harmonic coefficients. Both real and complex spherical harmonic
+    coefficients are supported.
 
     The spherical harmonic coefficients in the file will be formatted as
 
@@ -363,7 +364,8 @@ def shwrite(filename, coeffs, errors=None, header=None, header2=None,
     For each value of increasing l, all the angular orders are listed in
     inceasing order, from 0 to l.
 
-    If the filename ends with '.gz', the file will be automatically compressed.
+    If the filename ends with '.gz', the file will be automatically compressed
+    using gzip.
     """
     if lmax is None:
         lmax = coeffs.shape[1] - 1
@@ -374,7 +376,7 @@ def shwrite(filename, coeffs, errors=None, header=None, header2=None,
                              .format(lmax, coeffs.shape[1] - 1))
 
     if filename[-3:] == '.gz':
-        filebase = filename[-3:]
+        filebase = filename[:-3]
     else:
         filebase = filename
 

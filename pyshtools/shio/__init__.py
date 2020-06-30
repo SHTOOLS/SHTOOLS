@@ -11,11 +11,15 @@ shwrite          Write shtools-formatted spherical harmonic coefficients to a
                  text file.
 read_dov         Read spherical harmonic coefficients from a text file
                  formatted as [degree, order, value].
+write_dov        Write spherical harmonic coefficients to a text file formatted
+                 as [degree, order, value].
+read_bshc        Read real spherical harmonic coefficients from a binary
+                 bshc-formatted file.
+write_bshc       Write real spherical harmonic coefficients to a binary
+                 bshc-formatted file.
 read_icgem_gfc   Read real spherical harmonic gravitational potential
                  coefficients and associated errors from an ICGEM GFC
                  formatted file.
-read_bshc        Read real spherical harmonic coefficients from a binary
-                 bshc-formatted file.
 read_igrf        Read IGRF real spherical harmonic coefficients, and return the
                  magnetic potential coefficients for the specified year.
 SHRead2          Read spherical harmonic coefficients from a CHAMP or GRACE-
@@ -61,17 +65,22 @@ from ..shtools import SHctor
 from .convert import convert
 from .shtools import shread
 from .shtools import shwrite
-from .read_dov import read_dov
+from .dov import read_dov
+from .dov import write_dov
 from .icgem import read_icgem_gfc
 from .read_igrf import read_igrf
-from .read_bshc import read_bshc
+from .bshc import read_bshc
+from .bshc import write_bshc
 from .yilm_index_vector import YilmIndexVector
 
 del shtools  # noqa: F821
+del dov  # noqa: F821
+del icgem  # noqa: F821
+del yilm_index_vector  # noqa: F821
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['SHRead2', 'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
            'SHCilmToCindex', 'SHCindexToCilm', 'SHCilmToVector',
            'SHVectorToCilm', 'SHrtoc', 'SHctor', 'convert', 'shread',
-           'shwrite', 'read_dov', 'read_icgem_gfc', 'read_bshc', 'read_igrf',
-           'YilmIndexVector', ]
+           'shwrite', 'read_dov', 'write_dov', 'read_bshc', 'write_bshc',
+           'read_icgem_gfc', 'read_igrf', 'YilmIndexVector']

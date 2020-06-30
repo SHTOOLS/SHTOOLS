@@ -20,7 +20,9 @@ from ..shio import convert as _convert
 from ..shio import shread as _shread
 from ..shio import shwrite as _shwrite
 from ..shio import read_dov as _read_dov
+from ..shio import write_dov as _write_dov
 from ..shio import read_bshc as _read_bshc
+from ..shio import write_bshc as _write_bshc
 from ..shio import read_igrf as _read_igrf
 from ..shtools import MakeMagGridDH as _MakeMagGridDH
 from ..shtools import MakeMagGradGridDH as _MakeMagGradGridDH
@@ -358,8 +360,8 @@ class SHMagCoeffs(object):
             if filename ends with '.gz' or '.zip', the file will be
             uncompressed before parsing.
         format : str, optional, default = 'shtools'
-            'shtools' for generic ascii files, 'dov' for [degree, order, value]
-            ascii files, 'igrf' for International Geomagnetic Reference Field
+            'shtools' for generic text files, 'dov' for [degree, order, value]
+            text files, 'igrf' for International Geomagnetic Reference Field
             files, 'bshc' for binary spherical harmonic coefficient files, or
             'npy' for binary numpy files.
         lmax : int, optional, default = None
@@ -413,8 +415,8 @@ class SHMagCoeffs(object):
         -----
         Supported file formats:
             'shtools' (see pyshtools.shio.shread)
-            'dov' (see pyshtools.shio.shread)
-            'igrf' (see pyshtools.shio.igrf)
+            'dov' (see pyshtools.shio.read_dov)
+            'igrf' (see pyshtools.shio.read_igrf)
             'bshc' (see pyshtools.shio.read_bshc)
             'npy' (see numpy.load)
 
@@ -482,64 +484,30 @@ class SHMagCoeffs(object):
             raise ValueError("units can be only 'T' or 'nT'. Input "
                              "value is {:s}.".format(repr(units)))
 
-        if format.lower() == 'shtools':
-            if header is True:
-                if errors is True:
-                    if header2:
-                        coeffs, error_coeffs, lmaxout, header_list, \
-                            header2_list = _shread(fname, lmax=lmax, skip=skip,
-                                                   header=True, header2=True,
-                                                   error=True)
-                    else:
-                        coeffs, error_coeffs, lmaxout, header_list = _shread(
-                            fname, lmax=lmax, skip=skip, header=True,
-                            error=True)
-                else:
-                    if header2:
-                        coeffs, lmaxout, header_list, header2_list = _shread(
-                            fname, lmax=lmax, skip=skip, header=True,
-                            header2=True)
-                    else:
-                        coeffs, lmaxout, header_list = _shread(
-                            fname, lmax=lmax, skip=skip, header=True)
-
-                if r0_index is not None:
-                    if header2:
-                        r0 = float(header2_list[r0_index])
-                    else:
-                        r0 = float(header_list[r0_index])
-                    if header_units.lower() == 'km':
-                        r0 *= 1.e3
-
+        if format.lower() == 'shtools' or format.lower() == 'dov':
+            if format.lower() == 'shtools':
+                read_func = _shread
             else:
-                if errors is True:
-                    coeffs, error_coeffs, lmaxout = _shread(
-                        fname, lmax=lmax, error=True, skip=skip)
-                else:
-                    coeffs, lmaxout = _shread(fname, lmax=lmax, skip=skip)
+                read_func = _read_dov
 
-            if errors is True and error_kind is None:
-                error_kind = 'unspecified'
-
-        elif format.lower() == 'dov':
             if header is True:
                 if errors is True:
                     if header2:
                         coeffs, error_coeffs, lmaxout, header_list, \
-                            header2_list = _read_dov(fname, lmax=lmax,
+                            header2_list = read_func(fname, lmax=lmax,
                                                      skip=skip, header=True,
                                                      header2=True, error=True)
                     else:
-                        coeffs, error_coeffs, lmaxout, header_list = _read_dov(
+                        coeffs, error_coeffs, lmaxout, header_list = read_func(
                             fname, lmax=lmax, skip=skip, header=True,
                             error=True)
                 else:
                     if header2:
-                        coeffs, lmaxout, header_list, header2_list = _read_dov(
+                        coeffs, lmaxout, header_list, header2_list = read_func(
                             fname, lmax=lmax, skip=skip, header=True,
                             header2=True)
                     else:
-                        coeffs, lmaxout, header_list = _read_dov(
+                        coeffs, lmaxout, header_list = read_func(
                             fname, lmax=lmax, skip=skip, header=True)
 
                 if r0_index is not None:
@@ -552,10 +520,10 @@ class SHMagCoeffs(object):
 
             else:
                 if errors is True:
-                    coeffs, error_coeffs, lmaxout = _read_dov(
+                    coeffs, error_coeffs, lmaxout = read_func(
                         fname, lmax=lmax, error=True, skip=skip)
                 else:
-                    coeffs, lmaxout = _read_dov(fname, lmax=lmax, skip=skip)
+                    coeffs, lmaxout = read_func(fname, lmax=lmax, skip=skip)
 
             if errors is True and error_kind is None:
                 error_kind = 'unspecified'
@@ -950,6 +918,7 @@ class SHMagCoeffs(object):
         Usage
         -----
         x.to_file(filename, [format='shtools', header, errors])
+        x.to_file(filename, [format='bshc'])
         x.to_file(filename, [format='npy', **kwargs])
 
         Parameters
@@ -958,8 +927,7 @@ class SHMagCoeffs(object):
             Name of the output file. If the filename ends with '.gz', the file
             will be compressed using gzip.
         format : str, optional, default = 'shtools'
-            'shtools', 'dov' or 'npy'. See method from_file() for more
-            information.
+            'shtools', 'dov', 'bshc' or 'npy'.
         header : str, optional, default = None
             A header string written to an 'shtools' or 'dov'-formatted file
             directly before the metadata and spherical harmonic coefficients.
@@ -974,10 +942,10 @@ class SHMagCoeffs(object):
         Notes
         -----
         Supported file formats:
-            'shtools' (see pyshtools.shio.shread)
-            'dov' (see pyshtools.shio.shread)
-            'bshc' (see pyshtools.shio.read_bshc)
-            'npy' (see numpy.load)
+            'shtools' (see pyshtools.shio.shwrite)
+            'dov' (see pyshtools.shio.write_dov)
+            'bshc' (see pyshtools.shio.write_bshc)
+            'npy' (see numpy.save)
 
         If the filename end with '.gz', the file will be compressed using gzip.
 
@@ -999,32 +967,50 @@ class SHMagCoeffs(object):
         l, m, coeffs[0, l, m], error[0, l, m]
         l, -m, coeffs[1, l, m], error[1, l, m]
 
+        'bshc': The coefficients will be written to a binary file composed
+        solely of 8-byte floats. The file starts with the minimum and maximum
+        degree, and is followed by the cosine coefficients and then sine
+        coefficients (with all orders being listed, one degree at a time). This
+        format does noe support additional metadata or coefficient errors.
+
         'npy': The spherical harmonic coefficients (but not the meta-data nor
-        errors) will be saved to a binary numpy 'npy' file using numpy.save().
+        errors) will be saved to a binary numpy 'npy' file.
         """
         if lmax is None:
             lmax = self.lmax
 
         if filename[-3:] == '.gz':
-            filebase = filename[-3:]
+            filebase = filename[:-3]
         else:
             filebase = filename
 
-        if format == 'shtools':
+        if format.lower() == 'shtools' or format.lower() == 'dov':
+            if format.lower() == 'shtools':
+                write_func = _shwrite
+            else:
+                write_func = _write_dov
+
             if errors is True and self.errors is None:
                 raise ValueError('Can not save errors when then have not been '
                                  'initialized.')
 
-            header_str = '{:.16e}, {:d}'.format(
-                    self.r0, lmax)
+            header_str = '{:.16e}, {:d}'.format(self.r0, lmax)
             if header is None:
                 header = header_str
                 header2 = None
             else:
                 header2 = header_str
 
-            _shwrite(filebase, self.coeffs, errors=self.errors, header=header,
-                     header2=header2, lmax=lmax)
+            if errors:
+                write_func(filebase, self.coeffs, errors=self.errors,
+                           header=header, header2=header2, lmax=lmax)
+            else:
+                write_func(filebase, self.coeffs, errors=None,
+                           header=header, header2=header2, lmax=lmax)
+
+        elif format.lower() == 'bshc':
+            _write_bshc(filebase, self.coeffs, lmax=lmax)
+
         elif format == 'npy':
             _np.save(filename, self.coeffs, **kwargs)
         else:

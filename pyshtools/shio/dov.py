@@ -1,13 +1,14 @@
 """
-Functions for reading spherical harmonic coefficients from text files that
-are formatted as [degree, order, value].
+Functions for reading and writing spherical harmonic coefficients from text
+files that are formatted as [degree, order, value].
 """
-import os
-import io
-import gzip
-import zipfile
+import os as _os
+import io as _io
+import gzip as _gzip
+import zipfile as _zipfile
 import numpy as _np
 import requests as _requests
+import shutil as _shutil
 
 
 def read_dov(filename, lmax=None, error=False, header=False, header2=False,
@@ -20,7 +21,6 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
     -----
     coeffs, [errors], lmaxout, [header], [header2] = read_dov(
         filename, [error=True, header=True, header2=True, lmax, skip])
-
 
     Returns
     -------
@@ -61,8 +61,8 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
 
     Notes
     -----
-    This function will read spherical harmonic coefficients from an
-    ascii-formatted text file. The errors associated with the spherical
+    This function will read spherical harmonic coefficients from a 'dov'-
+    formatted text file. The errors associated with the spherical
     harmonic coefficients, as well as the values in one or two header lines,
     can be read optionally by setting the parameters error, header, and header2
     to True. The optional parameter skip specifies how many lines should be
@@ -102,13 +102,13 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
     if _isurl(filename):
         _response = _requests.get(filename)
         if filename[-4:] == '.zip':
-            zf = zipfile.ZipFile(io.BytesIO(_response.content))
+            zf = _zipfile.ZipFile(_io.BytesIO(_response.content))
             if len(zf.namelist()) > 1:
                 raise Exception('read_dov can only process zip archives '
                                 'that contain a single file. Archive '
                                 'contents:\n{}'.format(zf.namelist()))
     elif filename[-4:] == '.zip':
-        zf = zipfile.ZipFile(filename, 'r')
+        zf = _zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
             raise Exception('read_dov can only process zip archives that '
                             'contain a single file. Archive contents: \n'
@@ -119,11 +119,11 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
     # files. Consider using indexed_gzip when SEEK_END is supported.)
     if lmax is None:
         if _isurl(filename):
-            f = io.BytesIO(_response.content)
+            f = _io.BytesIO(_response.content)
             if filename[-4:] == '.zip':
                 f = zf.open(zf.namelist()[0])
         elif filename[-3:] == '.gz':
-            f = gzip.open(filename, mode='rb')
+            f = _gzip.open(filename, mode='rb')
         elif filename[-4:] == '.zip':
             f = zf.open(zf.namelist()[0])
         else:
@@ -132,18 +132,18 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
         # determine lmax by reading the last non-comment line of the file
         with f:
             line = ''
-            if f.seek(0, os.SEEK_END) == 0:
+            if f.seek(0, _os.SEEK_END) == 0:
                 raise RuntimeError('File is empty.')
             else:
-                f.seek(-1, os.SEEK_CUR)
+                f.seek(-1, _os.SEEK_CUR)
 
             # read backwards to end of preceding line and then read the line
             while _iscomment(line):
                 while f.read(1) != b'\n':
                     try:
-                        f.seek(-2, os.SEEK_CUR)
+                        f.seek(-2, _os.SEEK_CUR)
                     except:
-                        f.seek(-1, os.SEEK_CUR)  # beginning of file
+                        f.seek(-1, _os.SEEK_CUR)  # beginning of file
                         break
 
                 if f.tell() <= 1:
@@ -158,7 +158,7 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                     line = f.readline().decode()
                     line = line.replace(',', ' ')
                     try:
-                        f.seek(-len(line)-2, os.SEEK_CUR)
+                        f.seek(-len(line)-2, _os.SEEK_CUR)
                     except:
                         raise RuntimeError('Encountered beginning of file '
                                            'while attempting to determine '
@@ -171,13 +171,13 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
     # open file, skip lines, read header, determine lstart, and then read
     # coefficients one line at a time
     if _isurl(filename):
-        f = io.StringIO(_response.text)
+        f = _io.StringIO(_response.text)
         if filename[-4:] == '.zip':
-            f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
     elif filename[-3:] == '.gz':
-        f = gzip.open(filename, mode='rt')
+        f = _gzip.open(filename, mode='rt')
     elif filename[-4:] == '.zip':
-        f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
     else:
         f = open(filename, 'r')
 
@@ -189,7 +189,7 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                     raise RuntimeError('End of file encountered when '
                                        'skipping lines.')
 
-        # read header
+        # read headers
         if header is True:
             line = f.readline()
             if line == '':
@@ -337,6 +337,109 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
             return coeffs, lmaxout, header_list
     else:
         return coeffs, lmaxout
+
+
+def write_dov(filename, coeffs, errors=None, header=None, header2=None,
+              lmax=None):
+    """
+    Write spherical harmonic coefficients to a text file formatted as
+    [degree, order, value].
+
+    Usage
+    -----
+    write_dov(filename, coeffs, [errors, header, header2, lmax])
+
+    Parameters
+    ----------
+    filename : str
+        File name of the 'dov'-formatted spherical harmonic coefficients. If
+        filename ends with '.gz' the file will be automatically compressed with
+        gzip.
+    coeffs : ndarray, size(2, lmaxin+1, lmaxin+1)
+        The spherical harmonic coefficients.
+    errors : ndarray, size(2, lmaxin+1, lmaxin+1), optional, default = None
+        The errors associated with the spherical harmonic coefficients.
+    header : str, optional default = None
+        A string to be written directly before the spherical harmonic
+        coefficients.
+    header2 : str, optional default = None
+        A second string to be written directly before the spherical harmonic
+        coefficients.
+    lmax : int, optional, default = None
+        The maximum spherical harmonic degree to write to the file.
+
+    Notes
+    -----
+    This function will write spherical harmonic coefficients (and optionally
+    the errors) to a text file formatted as [degree, order, value]. If header
+    or header2 are specified, these strings will be written first, directly
+    before the spherical harmonic coefficients. Both real and complex spherical
+    harmonic coefficients are supported.
+
+    The spherical harmonic coefficients in the file will be formatted as pairs
+    of lines as
+
+    l, m, coeffs[0, l, m]
+    l, -m, coeffs[1, l, m]
+
+    where l and m are the spherical harmonic degree and order, respectively.
+    If the errors are included, each pair of lines will be formatted as
+
+    l, m, coeffs[0, l, m], errors[0, l, m]
+    l, -m, coeffs[1, l, m], errors[1, l, m]
+
+    For each value of increasing l, all the angular orders are listed in
+    inceasing order, from 0 to l.
+
+    If the filename ends with '.gz', the file will be automatically compressed
+    using gzip.
+    """
+    if lmax is None:
+        lmax = coeffs.shape[1] - 1
+    else:
+        if lmax > coeffs.shape[1] - 1:
+            raise ValueError('lmax is greater than the input coefficients. '
+                             'lmax = {:d}, lmax of input coefficients = {:d}.'
+                             .format(lmax, coeffs.shape[1] - 1))
+
+    if filename[-3:] == '.gz':
+        filebase = filename[:-3]
+    else:
+        filebase = filename
+
+    with open(filebase, mode='w') as file:
+        if header is not None:
+            file.write(header + '\n')
+        if header2 is not None:
+            file.write(header2 + '\n')
+        for l in range(lmax+1):
+            for m in range(l+1):
+                if errors is not None:
+                    if m == 0:
+                        file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
+                                   .format(l, m, coeffs[0, l, m],
+                                           errors[0, l, m]))
+                    else:
+                        file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
+                                   .format(l, m, coeffs[0, l, m],
+                                           errors[0, l, m]))
+                        file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
+                                   .format(l, -m, coeffs[1, l, m],
+                                           errors[1, l, m]))
+                else:
+                    if m == 0:
+                        file.write('{:d}, {:d}, {:.16e}\n'
+                                   .format(l, m, coeffs[0, l, m]))
+                    else:
+                        file.write('{:d}, {:d}, {:.16e}\n'
+                                   .format(l, m, coeffs[0, l, m]))
+                        file.write('{:d}, {:d}, {:.16e}\n'
+                                   .format(l, -m, coeffs[1, l, m]))
+
+    if filename[-3:] == '.gz':
+        with open(filebase, 'rb') as f_in:
+            with _gzip.open(filename, 'wb') as f_out:
+                _shutil.copyfileobj(f_in, f_out)
 
 
 def _iscomment(line):
