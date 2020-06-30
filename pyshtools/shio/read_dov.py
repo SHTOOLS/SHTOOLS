@@ -18,14 +18,9 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
 
     Usage
     -----
-    coeffs, lmaxout = read_dov(filename, [lmax, skip])
-    coeffs, lmaxout, header = read_dov(filename, header=True, [lmax, skip])
-    coeffs, lmaxout, header, header2 = read_dov(filename, header=True,
-                                                header2=True, [lmax, skip])
-    coeffs, errors, lmaxout = read_dov(filename, error=True, [lmax, skip])
-    coeffs, errors, lmaxout, header, header2 = read_dov(filename, error=True,
-                                                   header=True, header2=True,
-                                                   [lmax, skip])
+    coeffs, [errors], lmaxout, [header], [header2] = read_dov(
+        filename, [error=True, header=True, header2=True, lmax, skip])
+
 
     Returns
     -------
@@ -68,9 +63,9 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
     -----
     This function will read spherical harmonic coefficients from an
     ascii-formatted text file. The errors associated with the spherical
-    harmonic coefficients, as well as the values in a two header lines, can
-    be read optionally by setting the parameters error, header, and header2 to
-    True. The optional parameter skip specifies how many lines should be
+    harmonic coefficients, as well as the values in one or two header lines,
+    can be read optionally by setting the parameters error, header, and header2
+    to True. The optional parameter skip specifies how many lines should be
     skipped before attempting to parse the file, and the optional parameter
     lmax specifies the maximum degree to read from the file. Both real and
     complex spherical harmonic coefficients are supported.
@@ -207,12 +202,11 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                                        'reading header line.')
             line = line.replace(',', ' ')
             header_list = line.split()
-
         if header2 is True:
             line = f.readline()
             if line == '':
                 raise RuntimeError('End of file encountered when '
-                                   'reading header line.')
+                                   'reading second header line.')
             while _iscomment(line):
                 line = f.readline()
                 if line == '':

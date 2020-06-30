@@ -8,6 +8,8 @@ import copy as _copy
 import warnings as _warnings
 import xarray as _xr
 from scipy.special import factorial as _factorial
+import gzip as _gzip
+import shutil as _shutil
 
 from .shcoeffsgrid import SHCoeffs as _SHCoeffs
 from .shmaggrid import SHMagGrid as _SHMagGrid
@@ -16,6 +18,7 @@ from .shtensor import SHMagTensor as _SHMagTensor
 from ..spectralanalysis import spectrum as _spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+from ..shio import shwrite as _shwrite
 from ..shio import read_dov as _read_dov
 from ..shio import read_bshc as _read_bshc
 from ..shio import read_igrf as _read_igrf
@@ -329,14 +332,10 @@ class SHMagCoeffs(object):
 
         Usage
         -----
-        x = SHMagCoeffs.from_file(filename, [format='shtools', r0, lmax,
-                                  normalization, csphase, skip, header, errors,
-                                  error_kind, r0_index, header_units,
-                                  file_units, units, year])
-        x = SHMagCoeffs.from_file(filename, format='dov', [r0, lmax,
-                                  normalization, csphase, skip, header, errors,
-                                  error_kind, r0_index, header_units,
-                                  file_units, units, year])
+        x = SHMagCoeffs.from_file(filename, [format='shtools' or 'dov', r0,
+                                  lmax, normalization, csphase, skip, header,
+                                  header2, errors, error_kind, r0_index,
+                                  header_units, file_units, units, year])
         x = SHMagCoeffs.from_file(filename, format='igrf', r0, year, [lmax,
                                   normalization, csphase, file_units, units])
         x = SHMagCoeffs.from_file(filename, format='bshc', r0, [lmax,
@@ -368,10 +367,12 @@ class SHMagCoeffs(object):
             default is to read the entire file.
         header : bool, optional, default = True
             If True, read a list of values from the header line of an 'shtools'
-            or 'dov' formatted file.
+            or 'dov' formatted file. The last header line will contain the
+            value for r0.
         header2 : bool, optional, default = False
-            If True, read a list of values from a second header line of a 'dov'
-            formatted file.
+            If True, read a list of values from a second header line of an
+            'shtools' or 'dov' formatted file. The last header line will
+            contain the value for r0.
         errors : bool, optional, default = None
             If True, read errors from the file (for 'shtools' and 'dov'
             formatted files only).
@@ -380,8 +381,8 @@ class SHMagCoeffs(object):
             describing the kind of errors, such as None, 'unspecified',
             'calibrated' or 'formal'.
         r0_index : int, optional, default = 0
-            For 'shtools' formatted files, if header is True, r0 will be set
-            using the value from the header line with this index.
+            For 'shtools' and 'dov' formatted files, r0 will be set using the
+            value from the last header line with this index.
         r0 : float, optional, default = None
             The reference radius of the spherical harmonic coefficients.
         header_units : str, optional, default = 'm'
@@ -433,12 +434,12 @@ class SHMagCoeffs(object):
         If format='shtools' or 'dov', spherical harmonic coefficients will be
         read from a text file. The optional parameter `skip` specifies how many
         lines should be skipped before attempting to parse the file, the
-        optional parameter `header` specifies whether to read a list of values
-        from a header line, and the optional parameter `lmax` specifies the
-        maximum degree to read from the file. If a header line is read,
-        r0_index is used as the indice to set r0. If header_unit is specified
-        as 'km', the value of r0 read from the header will be converted to
-        meters.
+        optional parameters `header` and `header2` specify whether to read a
+        list of values from one or two header line, and the optional parameter
+        `lmax` specifies the maximum degree to read from the file. If headers
+        are read, r0_index is used as the indice to set r0 from the last header
+        line. If header_unit is specified as 'km', the value of r0 read from
+        the header will be converted to meters.
         """
         error_coeffs = None
         header_list = None
@@ -484,14 +485,29 @@ class SHMagCoeffs(object):
         if format.lower() == 'shtools':
             if header is True:
                 if errors is True:
-                    coeffs, error_coeffs, lmaxout, header_list = _shread(
-                        fname, lmax=lmax, skip=skip, header=True, error=True)
+                    if header2:
+                        coeffs, error_coeffs, lmaxout, header_list, \
+                            header2_list = _shread(fname, lmax=lmax, skip=skip,
+                                                   header=True, header2=True,
+                                                   error=True)
+                    else:
+                        coeffs, error_coeffs, lmaxout, header_list = _shread(
+                            fname, lmax=lmax, skip=skip, header=True,
+                            error=True)
                 else:
-                    coeffs, lmaxout, header_list = _shread(
-                        fname, lmax=lmax, skip=skip, header=True)
+                    if header2:
+                        coeffs, lmaxout, header_list, header2_list = _shread(
+                            fname, lmax=lmax, skip=skip, header=True,
+                            header2=True)
+                    else:
+                        coeffs, lmaxout, header_list = _shread(
+                            fname, lmax=lmax, skip=skip, header=True)
 
                 if r0_index is not None:
-                    r0 = float(header_list[r0_index])
+                    if header2:
+                        r0 = float(header2_list[r0_index])
+                    else:
+                        r0 = float(header_list[r0_index])
                     if header_units.lower() == 'km':
                         r0 *= 1.e3
 
@@ -527,7 +543,10 @@ class SHMagCoeffs(object):
                             fname, lmax=lmax, skip=skip, header=True)
 
                 if r0_index is not None:
-                    r0 = float(header_list[r0_index])
+                    if header2:
+                        r0 = float(header2_list[r0_index])
+                    else:
+                        r0 = float(header_list[r0_index])
                     if header_units.lower() == 'km':
                         r0 *= 1.e3
 
@@ -924,7 +943,7 @@ class SHMagCoeffs(object):
 
     # ---- IO routines ----
     def to_file(self, filename, format='shtools', header=None, errors=False,
-                **kwargs):
+                lmax=None, **kwargs):
         """
         Save spherical harmonic coefficients to a file.
 
@@ -936,65 +955,86 @@ class SHMagCoeffs(object):
         Parameters
         ----------
         filename : str
-            Name of the output file.
+            Name of the output file. If the filename ends with '.gz', the file
+            will be compressed using gzip.
         format : str, optional, default = 'shtools'
-            'shtools' or 'npy'. See method from_file() for more information.
+            'shtools', 'dov' or 'npy'. See method from_file() for more
+            information.
         header : str, optional, default = None
-            A header string written to an 'shtools'-formatted file directly
-            before the spherical harmonic coefficients.
+            A header string written to an 'shtools' or 'dov'-formatted file
+            directly before the metadata and spherical harmonic coefficients.
         errors : bool, optional, default = False
-            If True, save the errors in the file (for 'shtools' formatted
-            files only).
+            If True, save the errors in the file (for 'shtools' and 'dov'
+            formatted files only).
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to write to the file.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
         Notes
         -----
-        If format='shtools', the coefficients and meta-data will be written to
-        an ascii formatted file. The first line is an optional user provided
-        header line, and the following line provides the attributes r0 and
-        lmax. The spherical harmonic coefficients are then listed, with
-        increasing degree and order, with the format
+        Supported file formats:
+            'shtools' (see pyshtools.shio.shread)
+            'dov' (see pyshtools.shio.shread)
+            'bshc' (see pyshtools.shio.read_bshc)
+            'npy' (see numpy.load)
 
-        l, m, coeffs[0, l, m], coeffs[1, l, m]
+        If the filename end with '.gz', the file will be compressed using gzip.
 
-        where l and m are the spherical harmonic degree and order,
-        respectively. If the errors are to be saved, the format of each line
-        will be
+        'shtools': The coefficients and meta-data will be written to an ascii
+        formatted file. The first line is an optional user provided header
+        line, and the following line provides the attributes r0, and lmax. The
+        spherical harmonic coefficients (and optionally the errors) are then
+        listed, with increasing degree and order, with the format
 
         l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
 
-        If format='npy', the spherical harmonic coefficients (but not the
-        meta-data nor errors) will be saved to a binary numpy 'npy' file using
-        numpy.save().
+        where l and m are the spherical harmonic degree and order,
+        respectively.
+
+        'dov': This format is nearly the same as 'shtools', with the exception
+        that each line contains a single coefficient (and optionally an error)
+        for each degree and order:
+
+        l, m, coeffs[0, l, m], error[0, l, m]
+        l, -m, coeffs[1, l, m], error[1, l, m]
+
+        'npy': The spherical harmonic coefficients (but not the meta-data nor
+        errors) will be saved to a binary numpy 'npy' file using numpy.save().
         """
+        if lmax is None:
+            lmax = self.lmax
+
+        if filename[-3:] == '.gz':
+            filebase = filename[-3:]
+        else:
+            filebase = filename
+
         if format == 'shtools':
             if errors is True and self.errors is None:
                 raise ValueError('Can not save errors when then have not been '
                                  'initialized.')
 
-            with open(filename, mode='w') as file:
-                if header is not None:
-                    file.write(header + '\n')
-                file.write('{:.16e}, {:d}\n'.format(self.r0, self.lmax))
-                for l in range(self.lmax+1):
-                    for m in range(l+1):
-                        if errors is True:
-                            file.write('{:d}, {:d}, {:.16e}, {:.16e}, '
-                                       '{:.16e}, {:.16e}\n'
-                                       .format(l, m, self.coeffs[0, l, m],
-                                               self.coeffs[1, l, m],
-                                               self.errors[0, l, m],
-                                               self.errors[1, l, m]))
-                        else:
-                            file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
-                                       .format(l, m, self.coeffs[0, l, m],
-                                               self.coeffs[1, l, m]))
+            header_str = '{:.16e}, {:d}'.format(
+                    self.r0, lmax)
+            if header is None:
+                header = header_str
+                header2 = None
+            else:
+                header2 = header_str
+
+            _shwrite(filebase, self.coeffs, errors=self.errors, header=header,
+                     header2=header2, lmax=lmax)
         elif format == 'npy':
             _np.save(filename, self.coeffs, **kwargs)
         else:
             raise NotImplementedError(
                 'format={:s} not implemented.'.format(repr(format)))
+
+        if filename[-3:] == '.gz':
+            with open(filebase, 'rb') as f_in:
+                with _gzip.open(filename, 'wb') as f_out:
+                    _shutil.copyfileobj(f_in, f_out)
 
     def to_netcdf(self, filename, title='', description='', lmax=None):
         """

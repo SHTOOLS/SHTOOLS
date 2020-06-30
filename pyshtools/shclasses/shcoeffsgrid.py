@@ -17,6 +17,7 @@ from ..spectralanalysis import spectrum as _spectrum
 from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
+from ..shio import shwrite as _shwrite
 from ..shio import read_dov as _read_dov
 from ..shio import read_bshc as _read_bshc
 
@@ -337,12 +338,9 @@ class SHCoeffs(object):
 
         Usage
         -----
-        x = SHCoeffs.from_file(filename, [format='shtools', lmax, errors,
-                               error_kind, normalization, csphase, skip,
-                               header, units])
-        x = SHCoeffs.from_file(filename, format='dov', [lmax, errors,
-                               error_kind, normalization, csphase, skip,
-                               header, header2, units])
+        x = SHCoeffs.from_file(filename, [format='shtools' or 'dov', lmax,
+                               errors, error_kind, normalization, csphase,
+                               skip, header, header2, units])
         x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
                                csphase, units])
         x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
@@ -388,8 +386,8 @@ class SHCoeffs(object):
             If True, read a list of values from the header line of an 'shtools'
             or 'dov' formatted file.
         header2 : bool, optional, default = False
-            If True, read a list of values from a second header line of a 'dov'
-            formatted file.
+            If True, read a list of values from a second header line of an
+            'shtools' or 'dov' formatted file.
         units : str, optional, default = None
             The units of the spherical harmonic coefficients.
         **kwargs : keyword argument list, optional for format = 'npy'
@@ -442,11 +440,23 @@ class SHCoeffs(object):
         if format.lower() == 'shtools':
             if header is True:
                 if errors:
-                    coeffs, error_coeffs, lmaxout, header_list = _shread(
-                        fname, lmax=lmax, skip=skip, header=True, error=True)
+                    if header2:
+                        coeffs, error_coeffs, lmaxout, header_list, \
+                            header2_list = _shread(fname, lmax=lmax, skip=skip,
+                                                   header=True, header2=True,
+                                                   error=True)
+                    else:
+                        coeffs, error_coeffs, lmaxout, header_list = _shread(
+                            fname, lmax=lmax, skip=skip, header=True,
+                            error=True)
                 else:
-                    coeffs, lmaxout, header_list = _shread(
-                        fname, lmax=lmax, skip=skip, header=True)
+                    if header2:
+                        coeffs, lmaxout, header_list, header2_list = _shread(
+                            fname, lmax=lmax, skip=skip, header=True,
+                            header2=True)
+                    else:
+                        coeffs, lmaxout, header_list = _shread(
+                            fname, lmax=lmax, skip=skip, header=True)
             else:
                 if errors:
                     coeffs, error_coeffs, lmaxout = _shread(fname, lmax=lmax,
@@ -924,14 +934,15 @@ class SHCoeffs(object):
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- IO Routines
-    def to_file(self, filename, format='shtools', header=None, errors=False,
-                **kwargs):
+    def to_file(self, filename, format='shtools', header=None, header2=None,
+                errors=False, lmax=None, **kwargs):
         """
         Save raw spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.to_file(filename, [format='shtools', header, errors])
+        x.to_file(filename, [format='shtools' or 'dov', header, header2,
+                             errors, lmax])
         x.to_file(filename, [format='npy', **kwargs])
 
         Parameters
@@ -940,35 +951,50 @@ class SHCoeffs(object):
             Name of the output file. If the filename ends with '.gz', the file
             will be compressed using gzip.
         format : str, optional, default = 'shtools'
-            'shtools' or 'npy'. See method from_file() for more information.
+            'shtools', 'dov', 'bshc' or 'npy'.
         header : str, optional, default = None
-            A header string written to an 'shtools'-formatted file directly
-            before the spherical harmonic coefficients.
+            A header string written to an 'shtools' or 'dov' formatted file
+            directly before the spherical harmonic coefficients.
+        header2 : str, optional, default = None
+            A second header string written to an 'shtools' or 'dov' formatted
+            file directly before the spherical harmonic coefficients.
         errors : bool, optional, default = False
             If True, save the errors in the file (for 'shtools' formatted
             files only).
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to write to the file.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
         Notes
         -----
-        If format='shtools', the coefficients will be written to an ascii
-        formatted file. The first line of the file is an optional user provided
-        header line, and the spherical harmonic coefficients are then listed,
-        with increasing degree and order, with the format
+        Supported file formats:
+            'shtools' (see pyshtools.shio.shread)
+            'dov' (see pyshtools.shio.shread)
+            'bshc' (see pyshtools.shio.read_bshc)
+            'npy' (see numpy.load)
 
-        l, m, coeffs[0, l, m], coeffs[1, l, m]
+        If the filename end with '.gz', the file will be compressed using gzip.
 
-        where l and m are the spherical harmonic degree and order,
-        respectively. If the errors are to be saved, the format of each line
-        will be
+        'shtools': The coefficients will be written to an ascii formatted file.
+        The first line of the file is an optional user provided header line,
+        and the spherical harmonic coefficients (and optionally the errors)
+        are then listed, with increasing degree and order, with the format
 
         l, m, coeffs[0, l, m], coeffs[1, l, m], error[0, l, m], error[1, l, m]
 
-        If format='npy', the spherical harmonic coefficients will be saved to
-        a binary numpy 'npy' file using numpy.save().
+        where l and m are the spherical harmonic degree and order,
+        respectively.
 
-        If the filename end with '.gz', the file will be compressed using gzip.
+        'dov': This format is nearly the same as 'shtools', with the exception
+        that each line contains a single coefficient (and optionally an error)
+        for each degree and order:
+
+        l, m, coeffs[0, l, m], error[0, l, m]
+        l, -m, coeffs[1, l, m], error[1, l, m]
+
+        'npy': The spherical harmonic coefficients will be saved to a binary
+        numpy 'npy' file using numpy.save().
         """
         if filename[-3:] == '.gz':
             filebase = filename[-3:]
@@ -976,22 +1002,34 @@ class SHCoeffs(object):
             filebase = filename
 
         if format == 'shtools':
+            _shwrite(filebase, self.coeffs, errors=self.errors, header=header,
+                     header2=header2, lmax=lmax)
+        elif format == 'dov':
             with open(filebase, mode='w') as file:
                 if header is not None:
                     file.write(header + '\n')
                 for l in range(self.lmax+1):
                     for m in range(l+1):
                         if errors is True:
-                            file.write('{:d}, {:d}, {:.16e}, {:.16e}, '
-                                       '{:.16e}, {:.16e}\n'
-                                       .format(l, m, self.coeffs[0, l, m],
-                                               self.coeffs[1, l, m],
-                                               self.errors[0, l, m],
-                                               self.errors[1, l, m]))
+                            if m == 0:
+                                file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
+                                           .format(l, m, self.coeffs[0, l, m],
+                                                   self.errors[0, l, m]))
+                            else:
+                                file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
+                                           .format(l, m, self.coeffs[0, l, m],
+                                                   self.errors[0, l, m]))
+                                file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
+                                           .format(l, -m, self.coeffs[1, l, m],
+                                                   self.errors[1, l, m]))
                         else:
-                            file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
-                                       .format(l, m, self.coeffs[0, l, m],
-                                               self.coeffs[1, l, m]))
+                            if m == 0:
+                                file.write('{:d}, {:d}, {:.16e}\n'
+                                           .format(l, m, self.coeffs[0, l, m]))
+                            else:
+                                file.write('{:d}, {:d}, {:.16e}\n'
+                                           .format(l, -m,
+                                                   self.coeffs[1, l, m]))
         elif format == 'npy':
             _np.save(filebase, self.coeffs, **kwargs)
         else:

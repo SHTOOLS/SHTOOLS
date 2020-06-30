@@ -5,7 +5,10 @@ This submodule of pyshtools defines the following functions:
 
 Spherical harmonic I/O
 ----------------------
-shread           Read spherical harmonic coefficients from a text file.
+shread           Read shtools-formatted spherical harmonic coefficients from a
+                 text file.
+shwrite          Write shtools-formatted spherical harmonic coefficients to a
+                 text file.
 read_dov         Read spherical harmonic coefficients from a text file
                  formatted as [degree, order, value].
 read_icgem_gfc   Read real spherical harmonic gravitational potential
@@ -56,17 +59,19 @@ from ..shtools import SHrtoc
 from ..shtools import SHctor
 
 from .convert import convert
-from .shread import shread
+from .shtools import shread
+from .shtools import shwrite
 from .read_dov import read_dov
 from .icgem import read_icgem_gfc
 from .read_igrf import read_igrf
 from .read_bshc import read_bshc
 from .yilm_index_vector import YilmIndexVector
 
+del shtools  # noqa: F821
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['SHRead2', 'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
            'SHCilmToCindex', 'SHCindexToCilm', 'SHCilmToVector',
            'SHVectorToCilm', 'SHrtoc', 'SHctor', 'convert', 'shread',
-           'read_dov', 'read_icgem_gfc', 'read_bshc', 'read_igrf',
-           'YilmIndexVector']
+           'shwrite', 'read_dov', 'read_icgem_gfc', 'read_bshc', 'read_igrf',
+           'YilmIndexVector', ]
