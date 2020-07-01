@@ -78,7 +78,7 @@ class SHCoeffs(object):
                     csphase conventions.
     errors        : The uncertainties of the spherical harmonic coefficients.
     error_kind    : An arbitrary string describing the kind of errors, such as
-                    None, 'unspecified', 'calibrated' or 'formal'.
+                    'unknown', 'unspecified', 'calibrated', 'formal' or None.
     normalization : The normalization of the coefficients: '4pi', 'ortho',
                     'schmidt', or 'unnorm'.
     csphase       : Defines whether the Condon-Shortley phase is used (1)
@@ -91,8 +91,8 @@ class SHCoeffs(object):
                     input file used to initialize the class (for 'shtools'
                     and 'dov' formatted files).
     header2       : A list of values (of type str) from the second header line
-                    of the input file used to initialize the class (for 'dov'
-                    formatted files only).
+                    of the input file used to initialize the class (for
+                    'shtools' and 'dov' formatted files only).
 
     Each class instance provides the following methods:
 

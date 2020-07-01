@@ -78,7 +78,7 @@ class SHGravCoeffs(object):
                     csphase conventions.
     errors        : The uncertainties of the spherical harmonic coefficients.
     error_kind    : An arbitrary string describing the kind of errors, such as
-                    None, 'unspecified', 'calibrated' or 'formal'.
+                    'unknown', 'unspecified', 'calibrated', 'formal' or None.
     gm            : The gravitational constant times the mass times that is
                     associated with the gravitational potential coefficients.
     r0            : The reference radius of the gravitational potential
@@ -96,8 +96,8 @@ class SHGravCoeffs(object):
                     input file used to initialize the class (for 'shtools'
                     and 'dov' formatted files only).
     header2       : A list of values (of type str) from the second header line
-                    of the input file used to initialize the class (for 'dov'
-                    formatted files only).
+                    of the input file used to initialize the class (for
+                    'shtools' and 'dov' formatted files only).
 
     Each class instance provides the following methods:
 
@@ -595,17 +595,6 @@ class SHGravCoeffs(object):
                                  'specified.')
             coeffs, lmaxout = _read_bshc(fname, lmax=lmax)
 
-        elif format.lower() == 'npy':
-            if gm is None or r0 is None:
-                raise ValueError('For binary npy files, gm and r0 must be '
-                                 'specified.')
-            coeffs = _np.load(fname, **kwargs)
-            lmaxout = coeffs.shape[1] - 1
-            if lmax is not None:
-                if lmax < lmaxout:
-                    coeffs = coeffs[:, :lmax+1, :lmax+1]
-                    lmaxout = lmax
-
         elif format.lower() == 'icgem':
             valid_err = ('unknown', 'calibrated', 'formal')
             if errors is False or errors is None:
@@ -623,6 +612,17 @@ class SHGravCoeffs(object):
                                  'Input value is {:s}.'
                                  .format(valid_err, repr(errors)))
             lmaxout = coeffs.shape[1] - 1
+
+        elif format.lower() == 'npy':
+            if gm is None or r0 is None:
+                raise ValueError('For binary npy files, gm and r0 must be '
+                                 'specified.')
+            coeffs = _np.load(fname, **kwargs)
+            lmaxout = coeffs.shape[1] - 1
+            if lmax is not None:
+                if lmax < lmaxout:
+                    coeffs = coeffs[:, :lmax+1, :lmax+1]
+                    lmaxout = lmax
 
         else:
             raise NotImplementedError(

@@ -23,7 +23,7 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: Overview
+    - title: Introduction
       url: /index.html
       output: web, pdf
       type: homepage
@@ -44,7 +44,7 @@ entries:
       url: /using-with-f95.html
       output: web, pdf
 
-  - title: Spherical Harmonics
+  - title: Overview
     output: web, pdf
     folderitems:
 
@@ -88,7 +88,7 @@ entries:
       url: /python-legendre-functions.html
       output: web, pdf
 
-    - title: Spherical harmonic transformations
+    - title: Spherical harmonic transforms
       url: /python-spherical-harmonic-transforms.html
       output: web, pdf
 

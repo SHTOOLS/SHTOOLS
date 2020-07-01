@@ -69,7 +69,7 @@ class SHMagCoeffs(object):
                     csphase conventions.
     errors        : The uncertainties of the spherical harmonic coefficients.
     error_kind    : An arbitrary string describing the kind of errors, such as
-                    None, 'unspecified', 'calibrated' or 'formal'.
+                    'unknown', 'unspecified', 'calibrated', 'formal' or None.
     r0            : The reference radius of the magnetic potential
                     coefficients.
     normalization : The normalization of the coefficients: '4pi', 'ortho',
@@ -86,8 +86,8 @@ class SHMagCoeffs(object):
                     input file used to initialize the class (for 'shtools'
                     and 'dov' formatted files only).
     header2       : A list of values (of type str) from the second header line
-                    of the input file used to initialize the class (for 'dov'
-                    formatted files only).
+                    of the input file used to initialize the class (for
+                    'shtools' and 'dov' formatted files only).
 
     Each class instance provides the following methods:
 
