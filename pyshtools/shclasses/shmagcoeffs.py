@@ -910,7 +910,7 @@ class SHMagCoeffs(object):
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- IO routines ----
-    def to_file(self, filename, format='shtools', header=None, errors=False,
+    def to_file(self, filename, format='shtools', header=None, errors=True,
                 lmax=None, **kwargs):
         """
         Save spherical harmonic coefficients to a file.
@@ -918,8 +918,9 @@ class SHMagCoeffs(object):
         Usage
         -----
         x.to_file(filename, [format='shtools', header, errors])
-        x.to_file(filename, [format='bshc'])
-        x.to_file(filename, [format='npy', **kwargs])
+        x.to_file(filename, format='dov', [header, errors])
+        x.to_file(filename, format='bshc', [lmax])
+        x.to_file(filename, format='npy', [**kwargs])
 
         Parameters
         ----------
@@ -931,7 +932,7 @@ class SHMagCoeffs(object):
         header : str, optional, default = None
             A header string written to an 'shtools' or 'dov'-formatted file
             directly before the metadata and spherical harmonic coefficients.
-        errors : bool, optional, default = False
+        errors : bool, optional, default = True
             If True, save the errors in the file (for 'shtools' and 'dov'
             formatted files only).
         lmax : int, optional, default = self.lmax
@@ -978,6 +979,9 @@ class SHMagCoeffs(object):
         """
         if lmax is None:
             lmax = self.lmax
+
+        if errors is True and self.errors is None:
+            errors = False
 
         if filename[-3:] == '.gz':
             filebase = filename[:-3]
@@ -2319,7 +2323,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
                 'csphase = {:d}\n'
                 'lmax = {:d}\n'
                 'r0 (m) = {:s}\n'
-                'errors = {:s}\n'
+                'error_kind = {:s}\n'
                 'header = {:s}\n'
                 'header2 = {:s}\n'
                 'units = {:s}\n'

@@ -28,6 +28,7 @@ from ..shio import write_dov as _write_dov
 from ..shio import read_bshc as _read_bshc
 from ..shio import write_bshc as _write_bshc
 from ..shio import read_icgem_gfc as _read_icgem_gfc
+from ..shio import write_icgem_gfc as _write_icgem_gfc
 from ..shtools import CilmPlusRhoHDH as _CilmPlusRhoHDH
 from ..shtools import CilmPlusDH as _CilmPlusDH
 from ..shtools import MakeGravGridDH as _MakeGravGridDH
@@ -606,7 +607,7 @@ class SHGravCoeffs(object):
                     lmaxout = lmax
 
         elif format.lower() == 'icgem':
-            valid_err = ('calibrated', 'formal')
+            valid_err = ('unknown', 'calibrated', 'formal')
             if errors is False or errors is None:
                 coeffs, gm, r0 = _read_icgem_gfc(filename=fname,
                                                  errors=None, lmax=lmax,
@@ -1208,16 +1209,19 @@ class SHGravCoeffs(object):
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- IO routines ----
-    def to_file(self, filename, format='shtools', header=None, errors=False,
-                lmax=None, **kwargs):
+    def to_file(self, filename, format='shtools', header=None, errors=True,
+                lmax=None, modelname=None, tide_system='unknown', **kwargs):
         """
         Save spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.to_file(filename, [format='shtools' or 'dov', header, errors, lmax])
-        x.to_file(filename, [format='bshc'])
-        x.to_file(filename, [format='npy', **kwargs])
+        x.to_file(filename, [format='shtools', header, errors, lmax])
+        x.to_file(filename, format='dov', [header, errors, lmax])
+        x.to_file(filename, format='bshc', [lmax])
+        x.to_file(filename, format='icgem', [header, errors, lmax, modelname,
+                                             tide_system])
+        x.to_file(filename, format='npy', [**kwargs])
 
         Parameters
         ----------
@@ -1225,15 +1229,20 @@ class SHGravCoeffs(object):
             Name of the output file. If the filename ends with '.gz', the file
             will be compressed using gzip.
         format : str, optional, default = 'shtools'
-            'shtools', 'dov', 'bshc', 'icgem_gfc' or 'npy'.
+            'shtools', 'dov', 'bshc', 'icgem' or 'npy'.
         header : str, optional, default = None
             A header string written to an 'shtools' or 'dov'-formatted file
             directly before the metadata and spherical harmonic coefficients.
-        errors : bool, optional, default = False
-            If True, save the errors in the file (for 'shtools' or 'dov'
-            formatted files only).
+        errors : bool, optional, default = True
+            If True, save the errors in the file (for 'shtools', 'dov', and
+            'icgem' formatted files only).
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to write to the file.
+        modelname : str, optional, default = None
+            The name of the model for 'icgem' formatted files.
+        tide_system : str, optional, default = 'unknown'
+            The tide system for 'icgem' formatted files: 'zero_tide',
+            'tide_free', or 'unknown'.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
@@ -1273,11 +1282,17 @@ class SHGravCoeffs(object):
         coefficients (with all orders being listed, one degree at a time). This
         format does noe support additional metadata or coefficient errors.
 
+        'icgem': The coefficients will be written to a text file using the
+        gfc format of the International Centre for Global Earth Models.
+
         'npy': The spherical harmonic coefficients (but not the meta-data nor
         errors) will be saved to a binary numpy 'npy' file.
         """
         if lmax is None:
             lmax = self.lmax
+
+        if errors is True and self.errors is None:
+            errors = False
 
         if filename[-3:] == '.gz':
             filebase = filename[:-3]
@@ -1315,6 +1330,21 @@ class SHGravCoeffs(object):
 
         elif format.lower() == 'bshc':
             _write_bshc(filebase, self.coeffs, lmax=lmax)
+
+        elif format.lower() == 'icgem':
+            if errors:
+                _write_icgem_gfc(filebase, self.coeffs, errors=self.errors,
+                                 header=header, lmax=lmax, modelname=modelname,
+                                 gm=self.gm, r0=self.r0,
+                                 error_kind=self.error_kind,
+                                 tide_system=tide_system,
+                                 normalization=self.normalization)
+            else:
+                _write_icgem_gfc(filebase, self.coeffs, header=header,
+                                 lmax=lmax, modelname=modelname,
+                                 gm=self.gm, r0=self.r0,
+                                 tide_system=tide_system,
+                                 normalization=self.normalization)
 
         elif format.lower() == 'npy':
             _np.save(filename, self.coeffs, **kwargs)
@@ -2774,7 +2804,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                 'GM (m3 / s2) = {:s}\n'
                 'r0 (m) = {:s}\n'
                 'Omega (rad / s) = {:s}\n'
-                'errors = {:s}\n'
+                'error_kind = {:s}\n'
                 'header = {:s}\n'
                 'header2 = {:s}\n'
                 'epoch = {:s}'

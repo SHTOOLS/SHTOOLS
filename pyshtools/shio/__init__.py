@@ -68,6 +68,7 @@ from .shtools import shwrite
 from .dov import read_dov
 from .dov import write_dov
 from .icgem import read_icgem_gfc
+from .icgem import write_icgem_gfc
 from .read_igrf import read_igrf
 from .bshc import read_bshc
 from .bshc import write_bshc
@@ -83,4 +84,4 @@ __all__ = ['SHRead2', 'SHRead2Error', 'SHReadJPL', 'SHReadJPLError',
            'SHCilmToCindex', 'SHCindexToCilm', 'SHCilmToVector',
            'SHVectorToCilm', 'SHrtoc', 'SHctor', 'convert', 'shread',
            'shwrite', 'read_dov', 'write_dov', 'read_bshc', 'write_bshc',
-           'read_icgem_gfc', 'read_igrf', 'YilmIndexVector']
+           'read_icgem_gfc', 'write_icgem_gfc', 'read_igrf', 'YilmIndexVector']

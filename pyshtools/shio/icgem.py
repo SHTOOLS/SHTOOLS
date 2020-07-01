@@ -1,37 +1,14 @@
 """
-Support for reading real gravitational-potential coefficients from
-ICGEM-formatted files.
+Support for reading and writing real gravitational-potential coefficients in
+ICGEM-GFC formatted files.
 """
-import io
-import gzip
-import zipfile
+import io as _io
+import gzip as _gzip
+import zipfile as _zipfile
 import numpy as _np
+import shutil as _shutil
 import requests as _requests
 from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
-
-
-def _time_variable_part(epoch, ref_epoch, trnd, periodic):
-    """
-    Return sum of the time-variable part of the coefficients
-
-    The formula is:
-    G(t) = G(t0) + trnd*(t-t0) +
-        asin1*sin(2pi/p1 * (t-t0)) + acos1*cos(2pi/p1 * (t-t0)) +
-        asin2*sin(2pi/p2 * (t-t0)) + acos2*cos(2pi/p2 * (t-t0))
-
-    This function computes all terms after G(t0).
-    """
-    delta_t = epoch - ref_epoch
-    trend = trnd * delta_t
-    periodic_sum = _np.zeros_like(trnd)
-    for period in periodic:
-        for trifunc in periodic[period]:
-            coeffs = periodic[period][trifunc]
-            if trifunc == 'acos':
-                periodic_sum += coeffs * _np.cos(2 * _np.pi / period * delta_t)
-            elif trifunc == 'asin':
-                periodic_sum += coeffs * _np.sin(2 * _np.pi / period * delta_t)
-    return trend + periodic_sum
 
 
 def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
@@ -61,7 +38,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         '.zip' (or if the path contains '/zip/'), the file will be
         uncompressed before parsing.
     errors : str, optional, default = None
-        Which errors to read. Can be either 'calibrated', 'formal' or None.
+        Which errors to read. Can be 'unknown', 'calibrated', 'formal' or None.
     lmax : int, optional, default = None
         Maximum degree to read from the file. If lmax is None, less than 0, or
         greater than lmax_model, the maximum degree of the model will be used.
@@ -78,29 +55,29 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',
                    'gravity_constant', 'radius', 'max_degree', 'errors',
                    'tide_system', 'norm', 'format']
-    valid_err = ('calibrated', 'formal', 'calibrated_and_formal')
+    valid_err = ('unknown', 'calibrated', 'formal', 'calibrated_and_formal')
 
     # open filename as a text file
     if _isurl(filename):
         _response = _requests.get(filename)
         if _iszipfile(filename):
-            zf = zipfile.ZipFile(io.BytesIO(_response.content))
+            zf = _zipfile.ZipFile(_io.BytesIO(_response.content))
             if len(zf.namelist()) > 1:
                 raise Exception('read_icgem_gfc can only process zip archives '
                                 'that contain a single file. Archive '
                                 'contents:\n{}'.format(zf.namelist()))
-            f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
         else:
-            f = io.StringIO(_response.text)
+            f = _io.StringIO(_response.text)
     elif filename[-3:] == '.gz':
-        f = gzip.open(filename, mode='rt')
+        f = _gzip.open(filename, mode='rt')
     elif filename[-4:] == '.zip':
-        zf = zipfile.ZipFile(filename, 'r')
+        zf = _zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
             raise Exception('read_icgem_gfc can only process zip archives '
                             'that contain a single file. Archive contents: \n'
                             '{}'.format(zf.namelist()))
-        f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
     else:
         f = open(filename, 'r', encoding=encoding)
 
@@ -147,9 +124,10 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                 raise ValueError('This model has no errors.')
             elif errors not in valid_err[:-1]:
                 raise ValueError(
-                    'Errors can be either "formal", "calibrated" or None.')
+                    'Errors can be either "unknown", "formal", "calibrated" '
+                    'or None.')
             elif header['errors'] in valid_err and errors in valid_err[:-1]:
-                if (errors, header['errors']) == valid_err[1:]:
+                if (errors, header['errors']) == valid_err[2:]:
                     err_cols = (7, 8)
                 elif header['errors'] != errors:
                     raise ValueError(
@@ -223,6 +201,164 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         return cilm[:2], gravity_constant, radius, cilm[2:]
     else:
         return cilm[:2], gravity_constant, radius
+
+
+def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
+                    modelname=None, product_type='gravity_field',
+                    earth_gm=None, gm=None, r0=None, error_kind=None,
+                    tide_system='unknown', normalization='4pi', format=None):
+    """
+    Write real spherical harmonic gravity coefficients to an ICGEM formatted
+    file.
+
+    Parameters
+    ----------
+    filename : str
+        The filename to save the spherical harmonic ICGEM-formatted
+        coefficients. If filename ends with '.gz' the file will be compressed
+        using gzip.
+    coeffs : ndarray, size (2, lmax + 1, lmax + 1)
+        Array of '4pi' or 'unnorm' normalized spherical harmonic coefficients.
+    errors : ndarray, optional, shape (2, lmax + 1, lmax + 1)
+        Array of the spherical harmonic error coefficients.
+    header : str, optional default = None
+        An arbitrary string to be written directly before the ICGEM header.
+    lmax : int, optional, default = None
+        Maximum degree to write to the file. The default is to write all
+        coefficients.
+    modelname : str, optional, default = None
+        The name of the model for 'icgem' formatted files.
+    product_type : str, optional, default = 'gravity_field'
+        The type of ICGEM product.
+    earth_gm : float
+        Gravitational constant of the Earth, in m**3/s**2.
+    gm : float
+        Gravitational constant of the model, in m**3/s**2.
+    r0 : float
+        Reference radius of the model, in meters.
+    error_kind : str, optional, default = None
+        Which errors to read. Can be either 'unknown', 'calibrated', or
+        'formal'.
+    tide_system : str, optional, default = 'unknown'
+        The tide system: 'zero_tide', 'tide_free', or 'unknown'.
+    normalization : str, optional, default = '4pi'
+        The normalization of the spherical harmonic coefficients: either '4pi'
+        or 'unnorm'.
+    format : str, optional, default = None
+        The format of the ICGEM spherical harmonic coefficients.
+    """
+    valid_err = ('unknown', 'calibrated', 'formal', 'calibrated_and_formal')
+    valid_tide = ('zero_tide', 'tide_free', 'unknown')
+    valid_norm = ('4pi', 'unnorm')
+
+    if lmax is None:
+        lmax = coeffs.shape[1] - 1
+
+    if errors is None:
+        error_kind = 'no'
+    else:
+        if error_kind not in valid_err[:-1]:
+            error_kind = 'unknown'
+
+    if tide_system not in valid_tide:
+        raise ValueError('tide_system can be either "zero_tide", "tide_free" '
+                         'or "unknown". Input value is {:s}'
+                         .format(repr(tide_system)))
+
+    if normalization not in valid_norm:
+        raise ValueError('normalization can be either "4pi", or "unnorm". '
+                         'Input value is {:s}'.format(repr(normalization)))
+
+    if filename[-3:] == '.gz':
+        filebase = filename[:-3]
+    else:
+        filebase = filename
+
+    with open(filebase, mode='w') as file:
+        if header is not None:
+            file.write(header + '\n')
+
+        # write gfc header
+        if errors is not None:
+            file.write('begin_of_head ' + 113*'=' + '\n')
+        else:
+            file.write('begin_of_head ' + 59*'=' + '\n')
+
+        if modelname is not None:
+            file.write('{:<28}{:}\n'.format('modelname', modelname))
+        if product_type is not None:
+            file.write('{:<28}{:}\n'.format('product_type', product_type))
+        if earth_gm is not None:
+            file.write('{:<28}{:}\n'.format('earth_gravity_constant',
+                                            earth_gm))
+        if gm is not None:
+            file.write('{:<28}{:}\n'.format('gravity_constant', gm))
+        if r0 is not None:
+            file.write('{:<28}{:}\n'.format('radius', r0))
+        if lmax is not None:
+            file.write('{:<28}{:}\n'.format('max_degree', lmax))
+        if error_kind != 'no':
+            file.write('{:<28}{:}\n'.format('errors', error_kind))
+        if tide_system is not None:
+            file.write('{:<28}{:}\n'.format('tide_system', tide_system))
+        if normalization == '4pi':
+            file.write('{:<28}{:}\n'.format('norm', 'fully_normalized'))
+        elif normalization == 'unnormalized':
+            file.write('{:<28}{:}\n'.format('norm', 'unnormalized'))
+        if format is not None:
+            file.write('{:<28}{:}\n'.format('format', format))
+
+        if errors is not None:
+            file.write('\nkey   {:>5}   {:>5}   {:>24}   {:>24}   {:>24}   '
+                       '{:>24}\n'.format('L', 'M', 'C', 'S', 'sigma C',
+                                         'sigma S'))
+            file.write('end_of_head ' + 115*'=' + '\n')
+        else:
+            file.write('\nkey   {:>5}   {:>5}   {:>24}   {:>24}\n'
+                       .format('L', 'M', 'C', 'S', 'sigma C', 'sigma S'))
+            file.write('end_of_head ' + 61*'=' + '\n')
+
+        # write the coefficients
+        for l in range(lmax+1):
+            for m in range(l+1):
+                if errors is not None:
+                    file.write('gfc   {:>5d}   {:>5d}   {:24.16e}   {:24.16e}'
+                               '   {:24.16e}   {:24.16e}\n'
+                               .format(l, m, coeffs[0, l, m], coeffs[1, l, m],
+                                       errors[0, l, m], errors[1, l, m]))
+                else:
+                    file.write('gfc   {:>5d}   {:>5d}   {:24.16e}'
+                               '   {:24.16e}\n'
+                               .format(l, m, coeffs[0, l, m], coeffs[1, l, m]))
+
+    if filename[-3:] == '.gz':
+        with open(filebase, 'rb') as f_in:
+            with _gzip.open(filename, 'wb') as f_out:
+                _shutil.copyfileobj(f_in, f_out)
+
+
+def _time_variable_part(epoch, ref_epoch, trnd, periodic):
+    """
+    Return sum of the time-variable part of the coefficients
+
+    The formula is:
+    G(t) = G(t0) + trnd*(t-t0) +
+        asin1*sin(2pi/p1 * (t-t0)) + acos1*cos(2pi/p1 * (t-t0)) +
+        asin2*sin(2pi/p2 * (t-t0)) + acos2*cos(2pi/p2 * (t-t0))
+
+    This function computes all terms after G(t0).
+    """
+    delta_t = epoch - ref_epoch
+    trend = trnd * delta_t
+    periodic_sum = _np.zeros_like(trnd)
+    for period in periodic:
+        for trifunc in periodic[period]:
+            coeffs = periodic[period][trifunc]
+            if trifunc == 'acos':
+                periodic_sum += coeffs * _np.cos(2 * _np.pi / period * delta_t)
+            elif trifunc == 'asin':
+                periodic_sum += coeffs * _np.sin(2 * _np.pi / period * delta_t)
+    return trend + periodic_sum
 
 
 def _isurl(filename):

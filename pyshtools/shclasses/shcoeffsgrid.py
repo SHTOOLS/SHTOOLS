@@ -911,16 +911,16 @@ class SHCoeffs(object):
 
     # ---- IO Routines
     def to_file(self, filename, format='shtools', header=None, header2=None,
-                errors=False, lmax=None, **kwargs):
+                errors=True, lmax=None, **kwargs):
         """
         Save raw spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.to_file(filename, [format='shtools' or 'dov', header, header2,
-                             errors, lmax])
-        x.to_file(filename, [format='bshc'])
-        x.to_file(filename, [format='npy', **kwargs])
+        x.to_file(filename, [format='shtools', header, header2, errors, lmax])
+        x.to_file(filename, format='dov', [header, header2, errors, lmax])
+        x.to_file(filename, format='bshc', [lmax])
+        x.to_file(filename, format='npy', [**kwargs])
 
         Parameters
         ----------
@@ -978,6 +978,9 @@ class SHCoeffs(object):
         'npy': The spherical harmonic coefficients will be saved to a binary
         numpy 'npy' file.
         """
+        if errors is True and self.errors is None:
+            errors = False
+
         if filename[-3:] == '.gz':
             filebase = filename[:-3]
         else:
@@ -1350,7 +1353,7 @@ class SHCoeffs(object):
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
                 'lmax = {:d}\n'
-                'errors = {:s}\n'
+                'error_kind = {:s}\n'
                 'header = {:s}\n'
                 'header2 = {:s}\n'
                 'units = {:s}'
