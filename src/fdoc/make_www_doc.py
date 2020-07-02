@@ -25,7 +25,7 @@ for fn in fdocfiles:
                   'keywords: spherical harmonics software package, ' +
                   'spherical harmonic transform, legendre functions, ' +
                   'multitaper spectral analysis, fortran, Python, ' +
-                  'gravity, magnetic field\n' + 'sidebar: mydoc_sidebar\n' +
+                  'gravity, magnetic field\n' + 'sidebar: fortran_sidebar\n' +
                   'permalink: ' + name + '.html\n' + 'summary:\n' +
                   'tags: [fortran]\n' + 'toc: false\n' + 'editdoc: fdoc\n' +
                   '---\n\n' + doc)

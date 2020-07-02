@@ -26,7 +26,7 @@ spherical harmonic transforms, multitaper spectral analyses, expansions of funct
 
 * Import research-grade gravity, topography, and magnetic field datasets with a single command.
 
-* Creation of publication quality maps using either [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/).
+* Creation of publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) and [pygmt](https://www.pygmt.org/).
 
 * OpenMP compatible and OpenMP thread-safe versions of the Fortran routines.
 

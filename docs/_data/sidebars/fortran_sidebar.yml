@@ -2,7 +2,7 @@
 
 entries:
 - title: sidebar
-  product: pyshtools
+  product: SHTOOLS
   version: 4.7
   folders:
 
@@ -24,24 +24,20 @@ entries:
     folderitems:
 
     - title: Introduction
-      url: /index.html
+      url: /index_fortran.html
       output: web, pdf
       type: homepage
 
     - title: Installing
-      url: /installing-python.html
+      url: /installing-fortran.html
       output: web, pdf
 
-    - title: The pyshtools module
-      url: /using-with-python.html
-      output: web, pdf
-
-    - title: Constants and datasets
-      url: /python-datasets-constants.html
+    - title: Using
+      url: /using-with-f95.html
       output: web, pdf
 
     - title: Tutorials & Guides
-      url: /python-examples.html
+      url: /fortran-examples.html
       output: web, pdf
 
   - title: Technical Overview
@@ -60,48 +56,48 @@ entries:
       url: /grid-formats.html
       output: web, pdf
 
-    - title: File formats
-      url: /file-formats.html
-      output: web, pdf
-
     - title: Implementation details
       url: /implementation-details.html
       output: web, pdf
 
-  - title: Python Reference
+  - title: Fortran 95 Reference
     output: web, pdf
     folderitems:
 
-    - title: Classes
-      url: /python-classes.html
+    - title: Modules
+      url: /f95-modules.html
       output: web, pdf
 
     - title: Legendre functions
-      url: /python-legendre-functions.html
+      url: /legendre-functions.html
       output: web, pdf
 
-    - title: Spherical harmonic transforms
-      url: /python-spherical-harmonic-transforms.html
+    - title: Spherical harmonic transformations
+      url: /spherical-harmonic-transforms.html
       output: web, pdf
 
     - title: I/O, storage, conversions
-      url: /python-io.html
+      url: /io.html
       output: web, pdf
 
-    - title: Global and localized spectral analysis
-      url: /python-spectral-analysis.html
+    - title: Global spectral analysis
+      url: /global-spectral-analysis.html
+      output: web, pdf
+
+    - title: Localized spectral analysis
+      url: /localized-spectral-analysis.html
       output: web, pdf
 
     - title: Spherical harmonic rotations
-      url: /python-spherical-harmonic-rotations.html
+      url: /spherical-harmonic-rotations.html
       output: web, pdf
 
     - title: Gravity and magnetics
-      url: /python-gravity-magnetics.html
+      url: /gravity-magnetics.html
       output: web, pdf
 
-    - title: Utilities
-      url: /python-utilities.html
+    - title: Miscellaneous
+      url: /miscellaneous-routines.html
       output: web, pdf
 
   - title: Support
@@ -110,6 +106,10 @@ entries:
     folderitems:
     - title: FAQ
       url: /faq.html
+      output: web, pdf
+
+    - title: Compilation problems
+      url: /fortran-95-problems.html
       output: web, pdf
 
     - title: How to contribute

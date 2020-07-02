@@ -1,5 +1,5 @@
 ---
-title: "Python tutorials & guides"
+title: "Tutorials & guides"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-examples.html
@@ -17,11 +17,11 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
-{% include note.html content="In order to access the notebooks, example programs, and example datasets, it will be necessary to download or clone the entire shtools repo from [GitHub](https://github.com/SHTOOLS/SHTOOLS/). These files are not included when installing via pip." %}
+{% include note.html content="In order to access the notebooks and example programs, it will be necessary to download or clone the entire shtools repo from [GitHub](https://github.com/SHTOOLS/SHTOOLS/). These files are not included when installing via pip or conda." %}
 
 ## Tutorials
 
-The tutorials are designed for python users who are encoutering pyshtools for the first time. Each jupyter notebook takes the user by the hand and shows how to perform the most basic operations. Each tutorial should take about 15 minutes to read, and at the end of each you will be able to do simple tasks, like make grids of data from spherical harmonic coefficients, and project these in map form.
+The tutorials are designed for python users who are encountering pyshtools for the first time. Each jupyter notebook takes the user by the hand and shows how to perform the most basic operations. Each tutorial should take about 15 minutes to read, and at the end of each you will be able to do simple tasks, like make grids of data from spherical harmonic coefficients, and project these in map form.
 
 | Tutorial | Description |
 | ------------- | ----------- |

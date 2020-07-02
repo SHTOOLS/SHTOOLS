@@ -3,7 +3,7 @@ title: "Installing pyshtools"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: installing-python.html
-summary: The python components of SHTOOLS can be installed using the pip package manager or conda.
+summary: pyshtools can be installed using the pip package manager or conda.
 toc: true
 ---
 
@@ -37,7 +37,7 @@ Then build from source using the command
 ```bash
 pip install pyshtools --no-binary pyshtools
 ```
-Note that SHTOOLS supports the use of any FFTW3-compatible library, such as Intel's [MKL](https://software.intel.com/en-us/mkl).
+Note that pyshtools supports the use of any FFTW3-compatible library, such as Intel's [MKL](https://software.intel.com/en-us/mkl).
 
 If you would like to modify the source code, you should clone the SHTOOLS repo:
 ```bash
@@ -63,10 +63,10 @@ Note that these commands will install only the Python version that corresponds t
 
 In order to use the most basic aspects of pyshtools, it will be necessary to install the following python packages:
 
-* [numpy](https://numpy.org/)
-* [scipy](https://www.scipy.org/)
-* [matplotlib](https://matplotlib.org/)
-* [astropy](https://www.astropy.org/): required for the planetary constants module.
+* [numpy](https://numpy.org/): required for all numerical calculations
+* [scipy](https://www.scipy.org/): required for a few specialized functions.
+* [matplotlib](https://matplotlib.org/): required for most plotting functions.
+* [astropy](https://www.astropy.org/): required for the constants module.
 * [xarray](https://xarray.pydata.org/en/stable/#): required for netcdf file support.
 * [requests](https://2.python-requests.org/en/master/#): required when reading files from urls.
 * [pooch](https://www.fatiando.org/pooch/latest/index.html): required for reading datasets.

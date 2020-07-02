@@ -7,7 +7,7 @@ summary: SHTOOLS is open source software and can be distributed in accordance wi
 toc: false
 ---
 
-Copyright &copy; 2005-2019, SHTOOLS<br>
+Copyright &copy; 2005-2020, SHTOOLS<br>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

@@ -1,5 +1,5 @@
 ---
-title: "SHTOOLS utilities"
+title: "Utilities"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-utilities.html
