@@ -1,9 +1,9 @@
 ---
 title: "Installing SHTOOLS"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
-sidebar: mydoc_sidebar
-permalink: installing-fortran.html
-summary: If only the fortran components of SHTOOLS are required, they can be installed manually using the Makefile or by using the macOS package manager brew.
+sidebar: fortran_sidebar
+permalink: fortran-installing.html
+summary: SHTOOLS can be installed manually using the Makefile or by using the macOS package manager brew.
 toc: true
 ---
 

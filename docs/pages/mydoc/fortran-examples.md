@@ -1,7 +1,7 @@
 ---
-title: "Fortran example programs"
+title: "Example programs"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
-sidebar: mydoc_sidebar
+sidebar: fortran_sidebar
 permalink: fortran-examples.html
 summary: If you want to learn how to incorporate shtools routines in your fortran programs, the following example programs are a good starting point to see shtools in action.
 toc: false

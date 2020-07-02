@@ -1,7 +1,7 @@
 ---
-title: "Using SHTOOLS with Fortran 95"
+title: "Using SHTOOLS"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
-sidebar: mydoc_sidebar
+sidebar: fortran_sidebar
 permalink: using-with-f95.html
 summary: SHTOOLS subroutines and functions can be accessed easily from any Fortran 95 program. It is only necessary to use the SHTOOLS module and link to the compiled archive.
 toc: true

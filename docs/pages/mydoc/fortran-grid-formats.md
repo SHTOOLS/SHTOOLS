@@ -1,9 +1,9 @@
 ---
 title: "Grid formats"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
-sidebar: mydoc_sidebar
-permalink: grid-formats.html
-summary: pyshtools supports equally sampled, equally spaced, and Gauss-Legendre quadrature grids.
+sidebar: fortran_sidebar
+permalink: fortran-grid-formats.html
+summary: SHTOOLS supports equally sampled, equally spaced, and Gauss-Legendre quadrature grids.
 toc: true
 ---
 
@@ -16,7 +16,7 @@ table:nth-of-type(n) {
 
 ## Supported grid formats
 
-pyshtools makes use of grid formats that accommodate exact quadrature. These include regularly spaced grids that satisfy the *Driscoll and Healy* (1994) sampling theorem, and grids for exact quadrature using Gauss-Legendre quadrature [e.g., Press et al. 1992].
+SHTOOLS makes use of grid formats that accommodate exact quadrature. These include regularly spaced grids that satisfy the *Driscoll and Healy* (1994) sampling theorem, and grids for exact quadrature using Gauss-Legendre quadrature [e.g., Press et al. 1992].
 
 ### Gauss-Legendre Quadrature
 
@@ -26,7 +26,7 @@ For the case of Gauss-Legendre quadrature (`GLQ`), the quadrature is exact when 
 
 The second type of grid is for data that are sampled on regular grids. As shown by *Driscoll and Healy* [1994], an exact quadrature exists when the function $$f$$ is sampled at $$N$$ equally spaced nodes in latitude and $$N$$ equally spaced nodes in longitude. For this sampling (`DH`), the grids make use of the longitude band at 90$$^{\circ}$$ N, but not 90$$^{\circ}$$ S, and the number of samples is $$2(L+1)$$, which is always even. Given that the sampling in latitude was imposed a priori, these grids contain almost twice as many samples in latitude as the grids used with Gauss-Legendre quadrature. It should be noted that for this quadrature, the longitude band at 90$$^{\circ}$$ N is ultimately downweighted to zero, and hence has no influence on the returned spherical harmonic coefficients.
 
-For geographic data, it is common to work with grids that are equally spaced in degrees latitude and longitude. pyshtools provides the option of using grids of size $$N\times2N$$, and when performing the Fourier transforms for this case (`DH2`), the coefficients $$c_{lm}$$ and $$s_{lm}$$ with $$m>L$$ are discarded. The redundant data points at 360$$^{\circ}$$ E longitude and the latitudinal band at 90$$^{\circ}$$ S are not required by the spherical harmonic transformation routines, but can be computed by specifying the optional argument `extend`.
+For geographic data, it is common to work with grids that are equally spaced in degrees latitude and longitude. SHTOOLS provides the option of using grids of size $$N\times2N$$, and when performing the Fourier transforms for this case (`DH2`), the coefficients $$c_{lm}$$ and $$s_{lm}$$ with $$m>L$$ are discarded. The redundant data points at 360$$^{\circ}$$ E longitude and the latitudinal band at 90$$^{\circ}$$ S are not required by the spherical harmonic transformation routines, but can be computed by specifying the optional argument `extend`.
 
 ## Comparison of DH and GLQ grids
 

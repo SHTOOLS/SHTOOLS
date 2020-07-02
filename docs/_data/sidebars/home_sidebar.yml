@@ -8,9 +8,9 @@ entries:
   - title: Projects
     output: web
     folderitems:
-    - title: pyshtools (Python)
+    - title: pyshtools
       url: /index.html
       output: web, pdf
-    - title: SHTOOLS (Fortran 95)
-      url: /index.html
+    - title: SHTOOLS
+      url: /index-fortran.html
       output: web, pdf

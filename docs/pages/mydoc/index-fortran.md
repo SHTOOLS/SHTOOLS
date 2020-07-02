@@ -2,7 +2,7 @@
 title: "Spherical Harmonic Tools"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Slepian functions, fortran, Python, gravity, magnetic field
 sidebar: fortran_sidebar
-permalink: index_fortran.html
+permalink: index-fortran.html
 summary: SHTOOLS is an archive of Fortran 95 software that can be used to perform spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
 toc: false
 ---
@@ -32,7 +32,7 @@ make fortran
 make fortran-mp  # for OpenMP support
 ```
 
-or alternatively install using the macOS package manager brew
+Alternatively, install using the macOS package manager brew
 
 ```bash
 brew tap shtools/shtools

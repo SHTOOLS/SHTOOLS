@@ -7,7 +7,7 @@ summary: pyshtools is an archive of Python software that can be used to perform 
 toc: false
 ---
 
-{% include note.html content="You are reading the documentation for **pyshtools**. Click [here](index_fortran.html) to access the Fortran 95 **SHTOOLS** documentation." %}
+{% include note.html content="You are reading the documentation for **pyshtools**. Click [here](index-fortran.html) to access the Fortran 95 **SHTOOLS** documentation." %}
 
 ## Features
 

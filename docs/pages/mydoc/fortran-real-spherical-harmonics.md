@@ -1,9 +1,9 @@
 ---
 title: "Real spherical harmonics"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
-sidebar: mydoc_sidebar
-permalink: real-spherical-harmonics.html
-summary: pyshtools uses by default 4&pi;-normalized spherical harmonic functions that exclude the Condon-Shortley phase factor. Schmidt semi-normalized, orthonormalized, and unnormalized harmonics can be employed in most routines by specifying optional parameters.
+sidebar: fortran_sidebar
+permalink: fortran-real-spherical-harmonics.html
+summary: SHTOOLS uses by default 4&pi;-normalized spherical harmonic functions that exclude the Condon-Shortley phase factor. Schmidt semi-normalized, orthonormalized, and unnormalized harmonics can be employed in most routines by specifying optional parameters.
 toc: true
 ---
 
@@ -111,19 +111,19 @@ Finally, SHTOOLS defines the *energy* of a function as the integral of its squar
 
 The above definitions of the Legendre functions and spherical harmonic functions do not include the Condon-Shortley phase factor of $$(-1)^m$$ that is often employed in the physics and seismology communities [Varshalovich et al. 1988, Dahlen and Tromp 1998]. Nevertheless, this phase can be included in most SHTOOLS routines by specifying the optional parameter
 
-* `csphase=0` : exclude the Condon-Shortley phase factor (default)
-* `csphase=1` : append the Condon-Shortley phase factor to the Legendre functions.
+* `csphase = 0` : exclude the Condon-Shortley phase factor (default)
+* `csphase = 1` : append the Condon-Shortley phase factor to the Legendre functions.
 
 The choice of the Condon-Shortley phase factor does not affect the numerical value of the power spectrum.
 
 ## Supported normalizations
 
-SHTOOLS supports the use of $$4\pi$$-normalized, Schmidt semi-normalized, orthonormalized, and unnormalized spherical harmonic functions. To specify which normalization should be used, it is only necessary to specify the optional parameter `normalization` in the Python routines:
+SHTOOLS supports the use of $$4\pi$$-normalized, Schmidt semi-normalized, orthonormalized, and unnormalized spherical harmonic functions. To specify which normalization should be used, it is only necessary to specify the optional parameter `norm`:
 
-* `normalization = '4pi'`: $$4\pi$$ normalized (default, unless stated otherwise)
-* `normalization = 'schmidt'`: Schmidt semi-normalized
-* `normalization = 'unnorm'`: Unnormalized
-* `normalization = 'ortho'`: Orthonormalized.
+* `norm = 1`: $$4\pi$$ normalized (default, unless stated otherwise)
+* `norm = 2`: Schmidt semi-normalized
+* `norm = 3`: Unnormalized
+* `norm = 4`: Orthonormalized.
 
 Each of these normalizations has slightly different definitions for the normalized Legendre functions, the orthogonality conditions of the Legendre functions and spherical harmonic functions, and the power spectrum. These equations are provided below.
 

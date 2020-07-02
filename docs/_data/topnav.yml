@@ -13,8 +13,8 @@ topnav_dropdowns:
   folders:
     - title: Projects
       folderitems:
-        - title: pyshtools (Python)
+        - title: pyshtools
           url: /index.html
-        - title: SHTOOLS (Fortran 95)
-          url: /index_fortran.html
+        - title: SHTOOLS
+          url: /index-fortran.html
 

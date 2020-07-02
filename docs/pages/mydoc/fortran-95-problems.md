@@ -1,7 +1,7 @@
 ---
 title: "Fortran 95 problems"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
-sidebar: mydoc_sidebar
+sidebar: fortran_sidebar
 permalink: fortran-95-problems.html
 summary: 
 toc: true

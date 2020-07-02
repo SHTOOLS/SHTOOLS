@@ -24,12 +24,12 @@ entries:
     folderitems:
 
     - title: Introduction
-      url: /index_fortran.html
+      url: /index-fortran.html
       output: web, pdf
       type: homepage
 
     - title: Installing
-      url: /installing-fortran.html
+      url: /fortran-installing.html
       output: web, pdf
 
     - title: Using
@@ -45,19 +45,19 @@ entries:
     folderitems:
 
     - title: Real spherical harmonics
-      url: /real-spherical-harmonics.html
+      url: /fortran-real-spherical-harmonics.html
       output: web, pdf
 
     - title: Complex spherical harmonics
-      url: /complex-spherical-harmonics.html
+      url: /fortran-complex-spherical-harmonics.html
       output: web, pdf
 
     - title: Grid formats
-      url: /grid-formats.html
+      url: /fortran-grid-formats.html
       output: web, pdf
 
     - title: Implementation details
-      url: /implementation-details.html
+      url: /fortran-implementation-details.html
       output: web, pdf
 
   - title: Fortran 95 Reference
@@ -105,7 +105,7 @@ entries:
 
     folderitems:
     - title: FAQ
-      url: /faq.html
+      url: /fortran-faq.html
       output: web, pdf
 
     - title: Compilation problems
@@ -113,7 +113,7 @@ entries:
       output: web, pdf
 
     - title: How to contribute
-      url: /how-to-contribute.html
+      url: /fortran-how-to-contribute.html
       output: web, pdf
 
   - title: Release Notes
@@ -121,18 +121,18 @@ entries:
     folderitems:
 
     - title: Version 4
-      url: /release-notes-v4.html
+      url: /fortran-release-notes-v4.html
       output: web, pdf
 
     - title: Version 3
-      url: /release-notes-v3.html
+      url: /fortran-release-notes-v3.html
       output: web, pdf
 
     - title: Contributors
-      url: /contributors.html
+      url: /fortran-contributors.html
       output: web, pdf
 
     - title: License
-      url: /license.html
+      url: /fortran-license.html
       output: web, pdf
 
