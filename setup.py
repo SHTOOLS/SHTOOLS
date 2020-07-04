@@ -190,6 +190,10 @@ INSTALL_REQUIRES = [
     'tqdm'
 ]
 
+EXTRAS_REQUIRE = {
+    'maps': ['cartopy', 'pygmt', 'palettable']
+}
+
 # configure python extension to be compiled with f2py
 
 
@@ -270,6 +274,7 @@ metadata = dict(
     keywords=KEYWORDS,
     python_requires=PYTHON_REQUIRES,
     install_requires=INSTALL_REQUIRES,
+    extras_require=EXTRAS_REQUIRE,
     platforms='OS Independent',
     packages=setuptools.find_packages(),
     classifiers=CLASSIFIERS,

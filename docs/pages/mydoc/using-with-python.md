@@ -1,5 +1,5 @@
 ---
-title: "The pyshtools module"
+title: "Using pyshtools"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: using-with-python.html

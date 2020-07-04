@@ -32,11 +32,11 @@ entries:
       url: /installing-python.html
       output: web, pdf
 
-    - title: The pyshtools module
+    - title: Using pyshtools
       url: /using-with-python.html
       output: web, pdf
 
-    - title: Constants and datasets
+    - title: Constants & Datasets
       url: /python-datasets-constants.html
       output: web, pdf
 

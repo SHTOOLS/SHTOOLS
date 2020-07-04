@@ -1,0 +1,8 @@
+numpy
+scipy>=0.14.0
+matplotlib
+astropy
+xarray
+requests
+pooch
+tqdm

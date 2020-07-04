@@ -1,0 +1,6 @@
+libfftw3-dev
+libblas-dev
+liblapack-dev
+g++
+gfortran
+tcsh

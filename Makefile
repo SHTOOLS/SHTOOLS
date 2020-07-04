@@ -18,6 +18,7 @@
 #       make python-tests     : Run the Python test/example suite.
 #       make python-tests-no-timing  : Run the Python test/example suite,
 #                                      (excluding timing tests).
+#       make run-notebooks    : Run notebooks to test for errors.
 #       make install-fortran  : Place the compiled libraries and docs in
 #                               $(DESTDIR)$(PREFIX) [default is /usr/local].
 #       make uninstall        : Remove files copied to $(DESTDIR)$(PREFIX).
@@ -87,7 +88,7 @@
 #       Detele all compiled Python files.
 #
 #   make notebooks
-#       Run notebooks and convert to html for web documentation.
+#       Convert notebooks html.
 #
 #   make remove-notebooks
 #       Remove html notebooks.
@@ -211,7 +212,7 @@ endif
 	run-fortran-tests-no-timing doc remove-doc python-tests \
 	python-tests-no-timing uninstall clean clean-fortran-tests \
 	clean-python-tests clean-python clean-libs remove-notebooks notebooks \
-	www remove-www help
+	run-notebooks www remove-www help
 
 help:
 	@echo "Commands:"
@@ -224,6 +225,7 @@ help:
 	@echo "  fortran-tests-no-timing      Do not run the timing tests"
 	@echo "  fortran-tests-no-timing-mp   Do not run the timing tests"
 	@echo "  python-tests-no-timing       Do not run the timing tests"
+	@echo "  run-notebooks                Execute the python notebooks"
 	@echo ""
 
 all: fortran
@@ -311,6 +313,10 @@ notebooks:
 remove-notebooks:
 	@$(MAKE) -C $(NBDIR) -f Makefile clean
 	@echo "--> Removed notebook html files"
+
+run-notebooks:
+	@$(MAKE) -C $(NBDIR) -f Makefile run-notebooks
+	@echo "--> Notebooks executed successfully"
 
 clean: clean-fortran-tests clean-python-tests clean-python clean-libs remove-www
 
