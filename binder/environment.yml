@@ -4,6 +4,7 @@ channels:
 dependencies:
     - python=3.7
     - numpy
+    - pyshtools>=4.6
     - scipy>=0.14.0
     - matplotlib
     - astropy
