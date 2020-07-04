@@ -18,7 +18,7 @@ from .shgravgrid import SHGravGrid as _SHGravGrid
 from .shtensor import SHGravTensor as _SHGravTensor
 from .shgeoid import SHGeoid as _SHGeoid
 
-from ..constant import G as _G
+from ..constants import G as _G
 from ..spectralanalysis import spectrum as _spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread

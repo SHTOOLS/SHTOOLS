@@ -29,7 +29,7 @@ from pooch import FTPDownloader as _FTPDownloader
 from pooch import Unzip as _Unzip
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
 from ...shclasses import SHMagCoeffs as _SHMagCoeffs
-from ...constant.Earth import omega_egm2008 as _omega
+from ...constants.Earth import egm2008 as _egm2008
 
 from . import Earth2012
 from . import Earth2014
@@ -61,7 +61,8 @@ def EGM2008(lmax=2190):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
-                                   errors='calibrated', omega=_omega.value)
+                                   errors='calibrated',
+                                   omega=_egm2008.omega.value)
 
 
 def EIGEN_6C4(lmax=2190):
@@ -91,7 +92,7 @@ def EIGEN_6C4(lmax=2190):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
-                                   errors='formal', omega=_omega.value,
+                                   errors='formal', omega=_egm2008.omega.value,
                                    encoding='iso-8859-1')
 
 
@@ -121,7 +122,8 @@ def GGM05C(lmax=360):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
-                                   errors='calibrated', omega=_omega.value)
+                                   errors='calibrated',
+                                   omega=_egm2008.omega.value)
 
 
 def GOCO06S(lmax=300):
@@ -149,7 +151,7 @@ def GOCO06S(lmax=300):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
-                                   errors='formal', omega=_omega.value)
+                                   errors='formal', omega=_egm2008.omega.value)
 
 
 def EIGEN_GRGS_RL04_MEAN_FIELD(epoch=None, lmax=300):
@@ -180,7 +182,7 @@ def EIGEN_GRGS_RL04_MEAN_FIELD(epoch=None, lmax=300):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
-                                   errors='formal', omega=_omega.value,
+                                   errors='formal', omega=_egm2008.omega.value,
                                    epoch=epoch)
 
 
@@ -209,7 +211,7 @@ def XGM2019E(lmax=2190):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
-                                   errors='formal', omega=_omega.value)
+                                   errors='formal', omega=_egm2008.omega.value)
 
 
 def IGRF_13(lmax=13, year=2020.):

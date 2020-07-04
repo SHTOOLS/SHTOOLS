@@ -29,7 +29,7 @@ entries:
       type: homepage
 
     - title: Installing
-      url: /installing-python.html
+      url: /python-installing.html
       output: web, pdf
 
     - title: Using pyshtools

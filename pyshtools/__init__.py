@@ -27,7 +27,7 @@ main namespace:
 
     shclasses         : All pyshtools classes and subclasses.
     shtools           : All Python-wrapped Fortran 95 routines.
-    constant          : pyshtools constants.
+    constants         : pyshtools constants.
     legendre          : Legendre functions.
     expand            : Spherical harmonic expansion routines.
     shio              : Spherical harmonic I/O, storage, and conversion
@@ -51,7 +51,7 @@ __author__ = 'SHTOOLS developers'
 
 # ---- Import shtools subpackages ----
 from . import shtools
-from . import constant
+from . import constants
 from . import datasets
 from . import shclasses
 from . import legendre
@@ -77,7 +77,7 @@ from .shclasses import SHMagGrid
 from .shclasses import SHMagTensor
 
 # ---- Define __all__ for use with: from pyshtools import * ----
-__all__ = ['constant', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',
+__all__ = ['constants', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',
            'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
            'SHGrid', 'SHWindow', 'Slepian', 'SlepianCoeffs', 'SHGravCoeffs',
            'SHGravGrid', 'SHGravTensor', 'SHGeoid', 'SHMagCoeffs', 'SHMagGrid',
