@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
 """
 This script takes the fortran documentation files, adds a YAML header with a
 custom title, strips the first two lines of the file, and outputs a new file
-in doc/pages/mydoc/fdoc.
+in doc/pages/fortran/fdoc.
 """
 import os
 import re
@@ -30,6 +31,6 @@ for fn in fdocfiles:
                   'tags: [fortran]\n' + 'toc: false\n' + 'editdoc: fdoc\n' +
                   '---\n\n' + doc)
 
-        with open('../../docs/pages/mydoc/fdoc/' + name +
+        with open('../../docs/pages/fortran/fdoc/' + name +
                   '.md', 'w') as www:
             www.write(string)
